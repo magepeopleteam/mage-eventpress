@@ -76,6 +76,51 @@ register_taxonomy('mep_org', 'mep_events', $argso);
 
 
 
+
+
+	$label_speaker = array(
+		'name'                       => _x( 'Speaker','mage-eventpress' ),
+		'singular_name'              => _x( 'Speaker','mage-eventpress' ),
+		'menu_name'                  => __( 'Speaker', 'mage-eventpress' ),
+		'all_items'                  => __( 'All Speakers', 'mage-eventpress' ),
+		'parent_item'                => __( 'Parent Speaker', 'mage-eventpress' ),
+		'parent_item_colon'          => __( 'Parent Speaker:', 'mage-eventpress' ),
+		'new_item_name'              => __( 'New Speaker Name', 'mage-eventpress' ),
+		'add_new_item'               => __( 'Add New Speaker', 'mage-eventpress' ),
+		'edit_item'                  => __( 'Edit Speaker', 'mage-eventpress' ),
+		'update_item'                => __( 'Update Speaker', 'mage-eventpress' ),
+		'view_item'                  => __( 'View Speaker', 'mage-eventpress' ),
+		'separate_items_with_commas' => __( 'Separate Speaker with commas', 'mage-eventpress' ),
+		'add_or_remove_items'        => __( 'Add or remove Speaker', 'mage-eventpress' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
+		'popular_items'              => __( 'Popular Speaker', 'mage-eventpress' ),
+		'search_items'               => __( 'Search Speaker', 'mage-eventpress' ),
+		'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
+		'no_terms'                   => __( 'No Speaker', 'mage-eventpress' ),
+		'items_list'                 => __( 'Speaker list', 'mage-eventpress' ),
+		'items_list_navigation'      => __( 'Speaker list navigation', 'mage-eventpress' ),
+	);
+
+	$argsp = array(
+		'hierarchical'          => true,
+		"public" 				=> true,
+		'labels'                => $label_speaker,
+		'show_ui'               => true,
+		'show_admin_column'     => true,
+		'update_count_callback' => '_update_post_term_count',
+		'query_var'             => true,
+		'rewrite'               => array( 'slug' => 'event-speaker' ),
+	);
+register_taxonomy('mep_event_speaker', 'mep_events', $argsp);
+
+
+
+
+
+
+
+
+
 }
 add_action("init","mep_cpt_tax",10);
 

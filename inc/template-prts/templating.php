@@ -22,3 +22,4 @@ require_once(dirname(__FILE__) . "/event_loop_minimal.php");
 require_once(dirname(__FILE__) . "/event_loop_native.php");
 require_once(dirname(__FILE__) . "/event_loop_timeline.php");
 require_once(dirname(__FILE__) . "/event_loop_title.php");
+require_once(dirname(__FILE__) . "/event_speakers_list.php");

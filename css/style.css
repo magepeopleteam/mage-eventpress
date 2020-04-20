@@ -656,6 +656,63 @@ button.mep-cat-control.mixitup-control-active {
     background: #ddd;
     color: #000;
 }
+
+/* Speaker Lists */
+.mep-default-sidebar-speaker-list {
+    display: block;
+    overflow: hidden;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.mep-default-sidebar-speaker-list h3 {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+}
+
+.mep-default-sidebar-speaker-list h3 i {
+    display: inline-block;
+}
+
+.mep-default-sidebar-speaker-list ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.mep-default-sidebar-speaker-list ul li {
+    display: inline-block;
+    width: 32%;
+    text-align: center;
+    font-size: 23px;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+.mep-default-sidebar-speaker-list ul li a {
+    display: block;
+}
+
+.mep-default-sidebar-speaker-list ul li img {
+    border-radius: 100%;
+    height: 80px;
+}
+
+.mep-default-sidebar-speaker-list ul li h6 {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
     /********Default Theme***********/

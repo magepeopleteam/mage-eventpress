@@ -1,0 +1,818 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BN\n"
+"POT-Creation-Date: 2018-12-18 11:52+0600\n"
+"PO-Revision-Date: 2018-12-18 13:17+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __(;_e;__x;_x;__\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/admin_setting_panel.php:33
+msgid "Event Settings"
+msgstr "ইভেন্টের সেটিংস"
+
+#: inc/admin_setting_panel.php:41
+msgid "General Settings"
+msgstr "সাধারণ সেটিংস"
+
+#: inc/admin_setting_panel.php:45
+msgid "Email Settings"
+msgstr "ইমেইল সেটিংস"
+
+#: inc/admin_setting_panel.php:49
+msgid "Style Settings"
+msgstr "স্টাইল সেটিংস"
+
+#: inc/admin_setting_panel.php:53
+msgid "Label Settings"
+msgstr "লেবেল সেটিংস"
+
+#: inc/admin_setting_panel.php:73
+msgid "Google Map API Key"
+msgstr "গুগুল এর এপিআই কী"
+
+#: inc/admin_setting_panel.php:74
+msgid ""
+"Enter Your Google Map API key. <a href=https://developers.google.com/maps/"
+"documentation/javascript/get-api-key target=_blank>Get KEY</a>"
+msgstr ""
+"এখানে গুগুল ম্যাপ এর কী প্রবেশ করুন <a href=https://developers.google.com/maps/"
+"documentation/javascript/get-api-key target=_blank>Get KEY</a>"
+
+#: inc/admin_setting_panel.php:81 inc/admin_setting_panel.php:82
+msgid "Event Details Template"
+msgstr "ইভেন্ট বিস্তারিত পাতার ডিজাইন"
+
+#: inc/admin_setting_panel.php:90
+msgid "Show Event Price in List?"
+msgstr "ইভেন্টের মূল্য কি লিস্টে দেখাবেন?"
+
+#: inc/admin_setting_panel.php:91
+msgid "Please select if you want to show event price in the list Yes/No"
+msgstr ""
+"আপনি যদি ইভেন্টের মূল্য লিস্টে দেখাতে চান বা না চান তবে দয়া করে হ্যা অথবা না সিলেক্ট করুন"
+
+#: inc/admin_setting_panel.php:101
+msgid "Event Price Label"
+msgstr "ইভেন্টের মূল্য লেবেল"
+
+#: inc/admin_setting_panel.php:102
+msgid ""
+"Enter The text which you want to show as price label, Its only displayed if Show "
+"Event price value is YES above. "
+msgstr ""
+"মূল্যার শিরোনাম হিসেবে যে লেখাটা দেখাতে চান দয়া করে সেটি লিখুন। এই শিরোনামটি কাজ করবে "
+"যখন উপরে হ্যা সিলেক্ট করা থাকবে. "
+
+#: inc/admin_setting_panel.php:113 inc/admin_setting_panel.php:114
+msgid "Email Form Name"
+msgstr "ইমেইল কোথা হইতে গেছে তার নাম"
+
+#: inc/admin_setting_panel.php:120 inc/admin_setting_panel.php:121
+msgid "Form Email"
+msgstr "ইমেইল কোথা হইতে যাচ্ছে"
+
+#: inc/admin_setting_panel.php:127 inc/admin_setting_panel.php:128
+msgid "Email Subject"
+msgstr "ইমেইল এর বিষয়"
+
+#: inc/admin_setting_panel.php:137 inc/admin_setting_panel.php:138
+msgid "Confirmation Email Text"
+msgstr "নিশ্চিতকরণ ইমেল টেক্সট"
+
+#: inc/admin_setting_panel.php:149
+msgid "Ticket Type Table Label"
+msgstr "টিকেটের ধরনের টেবিলের শিরোনাম"
+
+#: inc/admin_setting_panel.php:150
+msgid ""
+"Enter the text which you want to display as ticket type table in event details page."
+msgstr "টিকেট টাইপ টেবিলের শিরোনাম হিসেবে কোন নামটি দেখাতে চান সেটি লিখুন."
+
+#: inc/admin_setting_panel.php:156
+msgid "Extra Service Table Label"
+msgstr "অতিরিক্ত সেবা টেবিলের শিরোনাম"
+
+#: inc/admin_setting_panel.php:157
+msgid ""
+"Enter the text which you want to display as extra service table in event details page."
+msgstr "অতিরিক্ত সেবার শিরোনাম হিসেবে বিস্তারিত পাতায় যে লেখাটি দেখাতে চান সেটি লিখুন."
+
+#: inc/admin_setting_panel.php:163
+msgid "Cart Button Label"
+msgstr "কার্ট বাটনের শিরোনাম"
+
+#: inc/admin_setting_panel.php:164
+msgid "Enter the text which you want to display in Cart button in event details page."
+msgstr "কার্ট বাটনের শিরোনাম হিসেবে বিস্তারিত পাতায় যে লেখাটি দেখাতে চান সেটি লিখুন."
+
+#: inc/admin_setting_panel.php:172
+msgid "Add Calender Button Label"
+msgstr "ক্যালেন্ডার বাটনের শিরোনাম"
+
+#: inc/admin_setting_panel.php:173
+msgid ""
+"Enter the text which you want to display in Add you calender in event details page."
+msgstr "ক্যালেন্ডার বাটনের শিরোনাম হিসেবে বিস্তারিত পাতায় যে লেখাটি দেখাতে চান সেটি লিখুন."
+
+#: inc/admin_setting_panel.php:180
+msgid "Social Share Label"
+msgstr "সামাজিক মাধ্যমে শেয়ার এর বাটনের শিরোনাম"
+
+#: inc/admin_setting_panel.php:181
+msgid ""
+"Enter the text which you want to display as share button title in event details page."
+msgstr "সামাজিক যোগাযোগের শিরোনাম হিসেবে যে লেখাটি দেখাতে চান সেটি লিখুন."
+
+#: inc/admin_setting_panel.php:190
+msgid "Base Color"
+msgstr "মূল রং"
+
+#: inc/admin_setting_panel.php:191
+msgid "Select a Basic Color, It will chanage the icon background color, border color"
+msgstr ""
+"মূল একটি রং নির্বাচন করুন, এটি আইকন এর ব্যাকগ্রাউন্ড এর রং ও বর্ডার এর রং হিসেবে পরিবর্তন হয়ে "
+"যাবে"
+
+#: inc/admin_setting_panel.php:197
+msgid "Label Background Color"
+msgstr "লেবেল এর ব্যকগ্রাউন্ড রং"
+
+#: inc/admin_setting_panel.php:198
+msgid "Select a Color Label Background"
+msgstr "লেবেল এর ব্যাকগ্রাউন্ড এর রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:204
+msgid "Label Text Color"
+msgstr "লেবেল এর লেখার রং"
+
+#: inc/admin_setting_panel.php:205
+msgid "Select a Color Label Text"
+msgstr "লেবেল এর লেখার রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:211
+msgid "Cart Button Background Color"
+msgstr "কার্ট বাটনের ব্যাকগ্রাউন্ড রং"
+
+#: inc/admin_setting_panel.php:212
+msgid "Select a color for Cart Button Background"
+msgstr "কার্ট বাটনের ব্যাকগ্রাউন্ডের রং নির্বচন করুন"
+
+#: inc/admin_setting_panel.php:218
+msgid "Cart Button Text Color"
+msgstr "কার্ট বাটনের লেখার রং"
+
+#: inc/admin_setting_panel.php:219
+msgid "Select a color for Cart Button Text"
+msgstr "কার্ট বাটনের লেখার রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:225
+msgid "Calender Button Background Color"
+msgstr "ক্যালেন্ডার বাটনের ব্যাকগ্রাউন্ড রং"
+
+#: inc/admin_setting_panel.php:226
+msgid "Select a color for Calender Button Background"
+msgstr "ক্যালেন্ডার বাটনের ব্যাকগ্রাউন্ড রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:232
+msgid "Calender Button Text Color"
+msgstr "ক্যালেন্ডার বাটনের লেখার রং"
+
+#: inc/admin_setting_panel.php:233
+msgid "Select a color for Calender Button Text"
+msgstr "ক্যালেন্ডার বাটনের লেখার রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:239
+msgid "FAQ Title Background Color"
+msgstr "প্রশ্নউত্তর এর শিরোনাম এর ব্যাকগ্রাউন্ড এর রং"
+
+#: inc/admin_setting_panel.php:240
+msgid "Select a color for FAQ title Background"
+msgstr "প্রশ্নউত্তর এর শিরোনাম এর ব্যাকগ্রাউন্ড এর রং নির্বাচন করুন"
+
+#: inc/admin_setting_panel.php:246
+msgid "FAQ Title Text Color"
+msgstr "প্রশ্নউত্তর এর শিরোনাম এর লেখার রং"
+
+#: inc/admin_setting_panel.php:247
+msgid "Select a color for FAQ Title Text"
+msgstr "প্রশ্নউত্তর এর শিরোনাম এর লেখার এর রং নির্বাচন করুন"
+
+#: inc/mep_cpt.php:8 inc/mep_cpt.php:9 inc/mep_cpt.php:10 inc/mep_cpt.php:11
+msgid "Events"
+msgstr "ইভেন্টস"
+
+#: inc/mep_cpt.php:12 inc/mep_cpt.php:13
+msgid "Events List"
+msgstr "ইভেন্ট এর তালিকা"
+
+#: inc/mep_cpt.php:14
+msgid "Event Item:"
+msgstr "ইভেন্ট এর আইটেম:"
+
+#: inc/mep_cpt.php:15
+msgid "All Events"
+msgstr "সকল ইভেন্টস"
+
+#: inc/mep_cpt.php:16 inc/mep_cpt.php:17
+msgid "Add New Event"
+msgstr "নতুন একটি ইভেন্ট যোগ করুন"
+
+#: inc/mep_cpt.php:18
+msgid "New Event"
+msgstr "নতুন ইভেন্ট"
+
+#: inc/mep_cpt.php:19
+msgid "Edit Event"
+msgstr "ইভেন্ট পরিবর্তন করুন"
+
+#: inc/mep_cpt.php:20
+msgid "Update Event"
+msgstr "ইভেন্ট হালনাগাদ করুন"
+
+#: inc/mep_cpt.php:21 inc/mep_cpt.php:22
+msgid "View Event"
+msgstr "ইভেন্ট দেখুন"
+
+#: inc/mep_cpt.php:23
+msgid "Search Event"
+msgstr "ইভেন্ট খুজুন"
+
+#: inc/mep_cpt.php:24
+msgid "Event Not found"
+msgstr "ইভেন্ট খুজে পাওয়া যায় নাই"
+
+#: inc/mep_cpt.php:25
+msgid "Event Not found in Trash"
+msgstr "কোন ইভেন্ট খুজে পা্ওয়া যায় নাই"
+
+#: inc/mep_cpt.php:26
+msgid "Event Feature Image"
+msgstr "ইভেন্ট এর ফিচার ছবি"
+
+#: inc/mep_cpt.php:27
+msgid "Set Event featured image"
+msgstr "ইভেন্ট এর ফিচার ছবি নির্বাচন করুন"
+
+#: inc/mep_cpt.php:28
+msgid "Remove Event featured image"
+msgstr "ইভেন্ট এর ফিচার ছবি মুছে ফেলুন"
+
+#: inc/mep_cpt.php:29
+msgid "Use as Event featured image"
+msgstr "ইভেন্ট এর ফিচার ছবি হিসেবে ব্যবহার করুন"
+
+#: inc/mep_cpt.php:30
+msgid "Insert into Event"
+msgstr "ইভেন্টের মধ্য যুক্ত করুন"
+
+#: inc/mep_cpt.php:31
+msgid "Uploaded to this Event"
+msgstr "ইভেন্টের প্রতি আপলোড করা হয়েছে"
+
+#: inc/mep_cpt.php:32
+msgid "Event list"
+msgstr "ইভেন্টের তালিকা"
+
+#: inc/mep_cpt.php:33
+msgid "Event list navigation"
+msgstr "ইভেন্ট লিস্ট নেভিগেশন"
+
+#: inc/mep_cpt.php:34
+msgid "Filter Event list"
+msgstr "ইভেন্টের তালিকার ছাকনি"
+
+#: inc/mep_csv_export.php:19
+msgid "Export to CSV"
+msgstr "CSV হিসেবে রপ্তানী করুন"
+
+#: inc/mep_event_meta.php:6
+msgid "Event Venue"
+msgstr "ইভেন্টর স্থান"
+
+#: inc/mep_event_meta.php:8
+msgid ""
+"Event Price (Event Base price, It will not work if you add Event Ticket type Price)"
+msgstr ""
+"ইভেন্টের মূল্য ( এটা প্রধান মূল্য, তবে যদি ইভেন্টের টিকেট টাইপ যুক্ত করা থাকে এটি কাজ করবে না )"
+
+#: inc/mep_event_meta.php:10
+msgid ""
+"Event Extra Service (Extra Service as Product that you can sell and it is not "
+"included on event package)"
+msgstr ""
+"ইভেন্টর অতিরিক্ত সেবা (অতিরিক্ত সেবাগুলো পণ্য হিসেবে বিক্রয় করতে পারেন, এটি ইভেন্টের মূল "
+"প্যাকেজের সাথে সম্পৃক্ত না)"
+
+#: inc/mep_event_meta.php:12
+msgid "Event Ticket Type"
+msgstr "ইভেন্টের টিকেটের ধরন"
+
+#: inc/mep_event_meta.php:14
+msgid "Event Date & Time"
+msgstr "ইভেন্টের দিন তারিখ ও সময়"
+
+#: inc/mep_event_meta.php:16
+msgid "Event Email text"
+msgstr "ইভেন্টর ইমেইল এর বিস্তারিত"
+
+#: inc/mep_event_meta.php:18
+msgid "Template"
+msgstr "নকশা"
+
+#: inc/mep_event_meta.php:22 templates/template-prts/faq.php:9
+msgid "Event F.A.Q"
+msgstr "ইভেন্টের প্রশ্ন ও উত্তর"
+
+#: inc/mep_event_meta.php:25
+msgid "Registration Status"
+msgstr "রেজিস্ট্রেশন এর অবস্থা"
+
+#: inc/mep_event_meta.php:27
+msgid "Show Available Seat Count?"
+msgstr "পর্যাপ্ত সিট আছে মেসেজটি দেখাবেন ?"
+
+#: inc/mep_event_meta.php:35
+msgid "Registration On/Off:"
+msgstr "রেজিস্ট্রেশন অন/অফ:"
+
+#: inc/mep_event_meta.php:49
+msgid "Show Available Seat?"
+msgstr "পর্যাপ্ত সিট আছে মেসেজটি দেখাবেন?"
+
+#: inc/mep_event_meta.php:92
+msgid "Location/Venue:"
+msgstr "অবস্থান / স্থান:"
+
+#: inc/mep_event_meta.php:100
+msgid "Street:"
+msgstr "রাস্তা:"
+
+#: inc/mep_event_meta.php:107
+msgid "City:"
+msgstr "শহর:"
+
+#: inc/mep_event_meta.php:114
+msgid "State:"
+msgstr "প্রদেশ:"
+
+#: inc/mep_event_meta.php:121
+msgid "Postcode:"
+msgstr "পোস্টকোড:"
+
+#: inc/mep_event_meta.php:128
+msgid "Country:"
+msgstr "দেশ:"
+
+#: inc/mep_event_meta.php:136
+msgid "Show Google Map:"
+msgstr "গুগল ম্যাপ:"
+
+#: inc/mep_event_meta.php:268
+msgid "Price Label"
+msgstr "মূল্য লেবেল"
+
+#: inc/mep_event_meta.php:269 templates/template-prts/event_extra_service.php:18
+msgid "Price"
+msgstr "মূল্য"
+
+#: inc/mep_event_meta.php:270 templates/template-prts/event_extra_service.php:17
+msgid "Quantity"
+msgstr "সংখ্যা"
+
+#: inc/mep_event_meta.php:271
+msgid "Input Type"
+msgstr "ইনপুটের ধরন"
+
+#: inc/mep_event_meta.php:272
+msgid "Show Quantity Box"
+msgstr "পরিমাণ বক্স প্রদর্শন করুন"
+
+#: inc/mep_event_meta.php:282 inc/mep_event_meta.php:484 inc/mep_event_meta.php:505
+#: inc/mep_event_meta.php:577 inc/mep_event_meta.php:595
+msgid "Input Box"
+msgstr "পরিমাণ বক্স"
+
+#: inc/mep_event_meta.php:283 inc/mep_event_meta.php:485 inc/mep_event_meta.php:506
+#: inc/mep_event_meta.php:578 inc/mep_event_meta.php:595
+msgid "Dropdown List"
+msgstr "ড্রপডাউন তালিকা"
+
+#: inc/mep_event_meta.php:285
+msgid "Yes"
+msgstr "হ্যা"
+
+#: inc/mep_event_meta.php:349 inc/mep_event_meta.php:366 inc/mep_event_meta.php:488
+#: inc/mep_event_meta.php:508 inc/mep_event_meta.php:581 inc/mep_event_meta.php:596
+msgid "Remove"
+msgstr "মুছে ফেলুন"
+
+#: inc/mep_event_meta.php:365
+msgid "FAQ Contents"
+msgstr "প্রায়শই জিজ্ঞাসিত প্রশ্নাবলীর উত্তর"
+
+#: inc/mep_event_meta.php:374
+msgid "Add New F.A.Q"
+msgstr "প্রায়শই জিজ্ঞাসিত প্রশ্নাবলী যোগ করুন"
+
+#: inc/mep_event_meta.php:460
+msgid "Extra Service Name"
+msgstr "অতিরিক্ত সেবা নাম"
+
+#: inc/mep_event_meta.php:461
+msgid "Service Price"
+msgstr "সেবা মূল্য"
+
+#: inc/mep_event_meta.php:462 inc/mep_event_meta.php:556
+msgid "Available Qty"
+msgstr "প্রাপ্তিসিাধ্য সংখ্যা"
+
+#: inc/mep_event_meta.php:463 inc/mep_event_meta.php:557
+msgid "Qty Box Type"
+msgstr "সংখ্যা বক্সের ধরন"
+
+#: inc/mep_event_meta.php:504 inc/mep_event_meta.php:595
+msgid "Please Select Type"
+msgstr "দয়া করে ধরন নির্বাচন করুন"
+
+#: inc/mep_event_meta.php:513
+msgid "Add Extra Price"
+msgstr "অতিরিক্ত মূল্য যোগ করুন"
+
+#: inc/mep_event_meta.php:554
+msgid "Ticket Type Name"
+msgstr "টিকেটের ধরনের নাম"
+
+#: inc/mep_event_meta.php:555
+msgid "Ticket Price"
+msgstr "টিকেটের মূল্য"
+
+#: inc/mep_event_meta.php:600
+msgid "Add New Ticket Type"
+msgstr "নতুন টিকেটের ধরন যোগ করুন"
+
+#: inc/mep_event_meta.php:621
+msgid "Start Date & Time:"
+msgstr "শুরুর দিন ও সময়:"
+
+#: inc/mep_event_meta.php:627
+msgid "End Date & Time:"
+msgstr "শেষের দিন ও সময়:"
+
+#: inc/mep_event_meta.php:641
+msgid "Confirmation Email Text:"
+msgstr "নিশ্চিতকরণ ইমেল টেক্সট:"
+
+#: inc/mep_event_meta.php:987
+msgid "Event:"
+msgstr "ইভেন্ট:"
+
+#: inc/mep_event_meta.php:992
+msgid "UserID:"
+msgstr "ইউজার আইডি:"
+
+#: inc/mep_event_meta.php:999
+msgid "Full Name:"
+msgstr "পূর্ণ নাম:"
+
+#: inc/mep_event_meta.php:1004
+msgid "Email:"
+msgstr "ইমেইল:"
+
+#: inc/mep_event_meta.php:1009
+msgid "Phone:"
+msgstr "ফোন:"
+
+#: inc/mep_event_meta.php:1014
+msgid "Addres:"
+msgstr "ঠিকানা:"
+
+#: inc/mep_event_meta.php:1021
+msgid "Gender:"
+msgstr "লিঙ্গ:"
+
+#: inc/mep_event_meta.php:1028
+msgid "Company:"
+msgstr "কোম্পানী:"
+
+#: inc/mep_event_meta.php:1035
+msgid "Designation:"
+msgstr "পদবী:"
+
+#: inc/mep_event_meta.php:1042
+msgid "Website:"
+msgstr "ওয়েবসাইট:"
+
+#: inc/mep_event_meta.php:1050
+msgid "Vegetarian?:"
+msgstr "নিরামিষ?:"
+
+#: inc/mep_event_meta.php:1058
+msgid "T-Shirt Size?:"
+msgstr "টিশার্টের সাইজ:"
+
+#: inc/mep_event_meta.php:1089
+msgid "Ticket Type:"
+msgstr "টিকেটের ধরন:"
+
+#: inc/mep_event_meta.php:1095
+msgid "Order ID:"
+msgstr "অর্ডার আইডি:"
+
+#: inc/mep_event_meta.php:1103
+msgid "View Order"
+msgstr "অর্ডার দেখুন"
+
+#: inc/mep_tax.php:7 inc/mep_tax.php:8
+msgid "Event Category"
+msgstr "ইভেন্ট এর বিভাগ"
+
+#: inc/mep_tax.php:9
+msgid "Category"
+msgstr "ইভেন্টের বিভাগ"
+
+#: inc/mep_tax.php:10
+msgid "All Event Category"
+msgstr "সকল ইভেন্ট এর বিভাগ"
+
+#: inc/mep_tax.php:11
+msgid "Parent Category"
+msgstr "ইভেন্ট এর মূল বিভাগ"
+
+#: inc/mep_tax.php:12
+msgid "Parent Category:"
+msgstr "ইভেন্ট এর প্রধান বিভাগ:"
+
+#: inc/mep_tax.php:13
+msgid "New Category Name"
+msgstr "নতুন একটি ইভেন্ট বিভাগের নাম"
+
+#: inc/mep_tax.php:14
+msgid "Add New Category"
+msgstr "নতুন একটি ইভেন্টের বিভাগ যোগ করুন"
+
+#: inc/mep_tax.php:15
+msgid "Edit Category"
+msgstr "ইভেন্ট এর বিভাগ পরিবর্তন করুন"
+
+#: inc/mep_tax.php:16
+msgid "Update Category"
+msgstr "ইভেন্ট এর বিভাগ হালনাগাদ করুন"
+
+#: inc/mep_tax.php:17
+msgid "View Category"
+msgstr "ইভেন্ট এর বিভাগ দেখুন"
+
+#: inc/mep_tax.php:18
+msgid "Separate Category with commas"
+msgstr "ইভেন্টের বিভাগ কমা (,) দিয়ে আলাদা করুন"
+
+#: inc/mep_tax.php:19
+msgid "Add or remove Category"
+msgstr "ইভেন্ট এর বিভাগ যুক্ত/মুছে ফেলুন"
+
+#: inc/mep_tax.php:20 inc/mep_tax.php:56
+msgid "Choose from the most used"
+msgstr "সর্বাধিক ব্যবহৃত হইতে একটি পছন্দ করুন"
+
+#: inc/mep_tax.php:21
+msgid "Popular Category"
+msgstr "জনপ্রিয় বিভাগ"
+
+#: inc/mep_tax.php:22
+msgid "Search Category"
+msgstr "ইভেন্টের বিভাগ খুজুন"
+
+#: inc/mep_tax.php:23 inc/mep_tax.php:59
+msgid "Not Found"
+msgstr "খুজে পাওয়া যায় নাই"
+
+#: inc/mep_tax.php:24
+msgid "No Category"
+msgstr "ইভেন্ট এর কোন বিভাগ নাই"
+
+#: inc/mep_tax.php:25
+msgid "Category list"
+msgstr "বিভাগের লিস্ট"
+
+#: inc/mep_tax.php:26
+msgid "Category list navigation"
+msgstr "বিভাগের লিস্টের নেভিগেশন"
+
+#: inc/mep_tax.php:43 inc/mep_tax.php:44
+msgid "Event Organizer"
+msgstr "ইভেন্ট সংগঠক"
+
+#: inc/mep_tax.php:45
+msgid "Organizer"
+msgstr "সংগঠন"
+
+#: inc/mep_tax.php:46
+msgid "All Event Organizer"
+msgstr "ইভেন্ট সকল সংগঠক"
+
+#: inc/mep_tax.php:47
+msgid "Parent Organizer"
+msgstr "মূল ইভেন্ট সংগঠক"
+
+#: inc/mep_tax.php:48
+msgid "Parent Organizer:"
+msgstr "ইভেন্ট প্যারেন্ট সংগঠক:"
+
+#: inc/mep_tax.php:49
+msgid "New Organizer Name"
+msgstr "নতুন ইভেন্ট সংগঠক"
+
+#: inc/mep_tax.php:50
+msgid "Add New Organizer"
+msgstr "ইভেন্ট সংগঠক যুোগ করুন"
+
+#: inc/mep_tax.php:51
+msgid "Edit Organizer"
+msgstr "ইভেন্ট সংগঠক পরিবর্তন করুন"
+
+#: inc/mep_tax.php:52
+msgid "Update Organizer"
+msgstr "ইভেন্ট সংগঠক হালনাগাদ করুন"
+
+#: inc/mep_tax.php:53
+msgid "View Organizer"
+msgstr "ইভেন্ট সংগঠক দেখুন"
+
+#: inc/mep_tax.php:54
+msgid "Separate Organizer with commas"
+msgstr "ইভেন্ট সংগঠক কমা (,) দিয়ে আলাদা করুন"
+
+#: inc/mep_tax.php:55
+msgid "Add or remove Organizer"
+msgstr "ইভেন্ট সংগঠক যোগ/মুছে ফেলুন"
+
+#: inc/mep_tax.php:57
+msgid "Popular Organizer"
+msgstr "জনপ্রিয় সংগঠন"
+
+#: inc/mep_tax.php:58
+msgid "Search Organizer"
+msgstr "ইভেন্ট সংগঠক খুজুন"
+
+#: inc/mep_tax.php:60
+msgid "No Organizer"
+msgstr "কোন সংগঠন নাই"
+
+#: inc/mep_tax.php:61
+msgid "Organizer list"
+msgstr "সংগঠন এর লিস্ট"
+
+#: inc/mep_tax.php:62
+msgid "Organizer list navigation"
+msgstr "ইভেন্ট সংগঠক লিস্ট নেভিগেশন"
+
+#: templates/single-mep_events_attendees.php:75
+msgid "Email"
+msgstr "ইমেইল"
+
+#: templates/single-mep_events_attendees.php:80
+msgid "Phone"
+msgstr "ফোন"
+
+#: templates/single-mep_events_attendees.php:85
+msgid "Address"
+msgstr "ঠিকানা"
+
+#: templates/single-mep_events_attendees.php:90
+msgid "Designation"
+msgstr "পদবী"
+
+#: templates/single-mep_events_attendees.php:95
+msgid "Company"
+msgstr "কোম্পানী"
+
+#: templates/single-mep_events_attendees.php:100
+msgid "Website"
+msgstr "ওয়েবসাইট"
+
+#: templates/single-mep_events_attendees.php:105
+msgid "Gender"
+msgstr "লিঙ্গ"
+
+#: templates/single-mep_events_attendees.php:111
+msgid "Vegetarian"
+msgstr "নিরামিষ"
+
+#: templates/single-mep_events_attendees.php:118
+msgid "T Shirt Size"
+msgstr "টিশার্ঠের সাইজ"
+
+#: templates/single-mep_events_attendees.php:125
+msgid "Ticket Type"
+msgstr "টিকেটের ধরন"
+
+#: templates/template-prts/event_add_cart.php:57
+msgid "Event Expired"
+msgstr "মেয়াদোত্তীর্ণ ইভেন্ট"
+
+#: templates/template-prts/event_add_cart.php:64
+#: templates/template-prts/event_ticket_type.php:49
+msgid "No Seat Available"
+msgstr "কোন সিট ফাকা নেই"
+
+#: templates/template-prts/event_add_cart.php:94
+msgid "Register Now:"
+msgstr "এখনই নিবন্ধন করুন:"
+
+#: templates/template-prts/event_add_cart.php:102
+msgid "Quantity:"
+msgstr "সংখ্যা:"
+
+#: templates/template-prts/event_add_cart.php:119
+msgid "Total"
+msgstr "সর্বমোট"
+
+#: templates/template-prts/event_extra_service.php:16 woocommerce-event-press.php:639
+msgid "Name"
+msgstr "নাম"
+
+#: templates/template-prts/event_extra_service.php:45
+msgid "Not Available"
+msgstr "পাওয়া যায় নাই"
+
+#: templates/template-prts/event_ticket_type.php:33
+msgid "Left"
+msgstr "বাকী"
+
+#: templates/template-prts/event_ticket_type.php:36
+msgid "Ticket Qty:"
+msgstr "টিকেটের সংখ্যা:"
+
+#: templates/template-prts/event_ticket_type.php:44 woocommerce-event-press.php:640
+msgid "Ticket"
+msgstr "টিকেট"
+
+#: templates/template-prts/event_ticket_type.php:59
+msgid "Per Ticket Price:"
+msgstr "প্রতি টিকেটের মূল্য:"
+
+#: templates/template-prts/organizer.php:7
+msgid "By:"
+msgstr "দ্বারা:"
+
+#: templates/template-prts/total_seat.php:37 templates/template-prts/total_seat.php:42
+msgid "Total Seat:"
+msgstr "সর্বমোট সিট:"
+
+#: templates/themes/default-theme.php:17
+msgid "Event Date:"
+msgstr "ইভেন্ট তারিখ:"
+
+#: templates/themes/default-theme.php:24
+msgid "Event Time:"
+msgstr "ইভেন্ট এর সময়:"
+
+#: templates/themes/default-theme.php:31 templates/themes/default-theme.php:53
+#: templates/themes/theme-1.php:48
+msgid "Event Location:"
+msgstr "ইভেন্টের স্থান:"
+
+#: templates/themes/theme-1.php:26
+msgid "Date and Time:"
+msgstr "তারিখ ও সময়:"
+
+#: templates/themes/theme-1.php:34
+msgid "Description"
+msgstr "বর্ণনা"
+
+#: templates/themes/theme-2.php:33
+msgid "Organizer:"
+msgstr "সংগঠন:"
+
+#: templates/themes/theme-2.php:35
+msgid "Venue:"
+msgstr "স্থান:"
+
+#: templates/themes/theme-3.php:41
+msgid "About The Event"
+msgstr "ইভেন্ট সম্পর্কে"
+
+#: woocommerce-event-press.php:48
+msgid "Invalid product."
+msgstr "পণ্যটি সঠিক নয়."
+
+#: woocommerce-event-press.php:641
+msgid "Event"
+msgstr "ইভেন্ট"
+
+#: woocommerce-event-press.php:642 woocommerce-event-press.php:671
+msgid "Download"
+msgstr "ডাউনলোড"
+
+#: woocommerce-event-press.php:853
+msgid "Status"
+msgstr "অবস্থা"

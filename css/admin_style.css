@@ -1,0 +1,222 @@
+.inside .sec {
+    display: block;
+    font-size: 15px;
+    font-weight: normal;
+    margin: 15px 0;
+}
+.sec label {
+    font-size: 16px;
+    font-weight: bold;
+}
+.mep_status .active {
+  background: green none repeat scroll 0 0;
+  color: #fff;
+  padding: 6px 10px;
+}
+.mep_status .err {
+  background: red none repeat scroll 0 0;
+  color: #fff;
+  padding: 6px 10px;
+}
+#mep_uid {
+  width: 65px;
+}
+.inside .sec input {
+  border: 1px solid #ddd;
+  padding: 5px;
+  width: 100%;
+  color: #000;
+}
+.inside .sec label {
+  font-weight: normal;
+  display: block;
+}
+table.atendee-info {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 250px;
+}
+
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  margin: 10px 10px 0 0;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  font-family: Roboto;
+}
+
+#pac-container {
+  padding-bottom: 12px;
+  margin-right: 12px;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.pac-controls label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+div#mep_event_faq_r {
+    display: block;
+    width: 94%;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+.mep-faq-input {
+    width: 100%;
+    display: block;
+    border: 1px solid #8a8a8a;
+    padding: 5px;
+    margin: 15px 0;
+}
+
+div#mep-event-faq-box {
+    overflow: hidden;
+}
+
+a.button.remove-faq-row {
+    /* float: right; */
+    overflow: hidden;
+    display: inline-block;
+}
+.settings_page_mep_event_settings_page h2 {
+    padding-left: 10px;
+}
+.mep-attendee-sec-details span {
+    border: 1px solid #ddd;
+    padding: 10px;
+    display: inline-block;
+}
+
+.mep-attendee-sec-details .ea-label {
+    width: 200px!important;
+    font-weight: bold;
+}
+
+.mep-attendee-sec-details .ea-value {
+    width: 68%!important;
+}
+
+.mep-attendee-sec-details .sec {
+    margin: 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+      float: right;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 10px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+div#mep-event-price {
+    border: 5px solid red;
+}
+
+div#mep-event-price h2 {
+    background: red;
+    color: #fff;
+}
+
+div#mage-primary-button{
+background:green !important;
+color:white !important;
+}
+ul.mep_rt_settings_list li {
+    display: block;
+    margin: 20px 0;
+    border-bottom: 1px solid #ddd;
+    padding: 5px 0 10px;
+}

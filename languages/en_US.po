@@ -1,0 +1,871 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EN\n"
+"POT-Creation-Date: 2018-11-01 11:20+0600\n"
+"PO-Revision-Date: 2018-11-01 11:21+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/admin_setting_panel.php:39
+msgid "General Settings"
+msgstr ""
+
+#: inc/admin_setting_panel.php:43
+msgid "Email Settings"
+msgstr ""
+
+#: inc/admin_setting_panel.php:47
+msgid "Style Settings"
+msgstr ""
+
+#: inc/admin_setting_panel.php:51
+msgid "Label Settings"
+msgstr ""
+
+#: inc/admin_setting_panel.php:71
+msgid "Google Map API Key"
+msgstr ""
+
+#: inc/admin_setting_panel.php:72
+msgid ""
+"Enter Your Google Map API key. <a href=https://developers.google.com/maps/"
+"documentation/javascript/get-api-key target=_blank>Get KEY</a>"
+msgstr ""
+
+#: inc/admin_setting_panel.php:79 inc/admin_setting_panel.php:80
+msgid "Event Details Template"
+msgstr ""
+
+#: inc/admin_setting_panel.php:92 inc/admin_setting_panel.php:93
+msgid "Email Form Name"
+msgstr ""
+
+#: inc/admin_setting_panel.php:99 inc/admin_setting_panel.php:100
+msgid "Form Email"
+msgstr ""
+
+#: inc/admin_setting_panel.php:106 inc/admin_setting_panel.php:107
+msgid "Email Subject"
+msgstr ""
+
+#: inc/admin_setting_panel.php:116 inc/admin_setting_panel.php:117
+msgid "Confirmation Email Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:128
+msgid "Ticket Type Table Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:129
+msgid ""
+"Enter the text which you want to display as ticket type table in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:135
+msgid "Extra Service Table Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:136
+msgid ""
+"Enter the text which you want to display as extra service table in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:142
+msgid "Cart Button Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:143
+msgid ""
+"Enter the text which you want to display in Cart button in event details "
+"page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:151
+msgid "Add Calender Button Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:152
+msgid ""
+"Enter the text which you want to display in Add you calender in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:159
+msgid "Social Share Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:160
+msgid ""
+"Enter the text which you want to display as share button title in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:169
+msgid "Base Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:170
+msgid ""
+"Select a Basic Color, It will chanage the icon background color, border color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:176
+msgid "Label Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:177
+msgid "Select a Color Label Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:183
+msgid "Label Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:184
+msgid "Select a Color Label Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:190
+msgid "Cart Button Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:191
+msgid "Select a color for Cart Button Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:197
+msgid "Cart Button Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:198
+msgid "Select a color for Cart Button Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:204
+msgid "Calender Button Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:205
+msgid "Select a color for Calender Button Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:211
+msgid "Calender Button Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:212
+msgid "Select a color for Calender Button Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:218
+msgid "FAQ Title Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:219
+msgid "Select a color for FAQ title Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:225
+msgid "FAQ Title Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:226
+msgid "Select a color for FAQ Title Text"
+msgstr ""
+
+#: inc/mep_cpt.php:10 inc/mep_cpt.php:11
+msgid "Events"
+msgstr ""
+
+#: inc/mep_cpt.php:12 inc/mep_cpt.php:13
+msgid "Events List"
+msgstr ""
+
+#: inc/mep_cpt.php:14
+msgid "Event Item:"
+msgstr ""
+
+#: inc/mep_cpt.php:15
+msgid "All Events"
+msgstr ""
+
+#: inc/mep_cpt.php:16 inc/mep_cpt.php:17
+msgid "Add New Event"
+msgstr ""
+
+#: inc/mep_cpt.php:18
+msgid "New Event"
+msgstr ""
+
+#: inc/mep_cpt.php:19
+msgid "Edit Event"
+msgstr ""
+
+#: inc/mep_cpt.php:20
+msgid "Update Event"
+msgstr ""
+
+#: inc/mep_cpt.php:21 inc/mep_cpt.php:22
+msgid "View Event"
+msgstr ""
+
+#: inc/mep_cpt.php:23
+msgid "Search Event"
+msgstr ""
+
+#: inc/mep_cpt.php:24
+msgid "Event Not found"
+msgstr ""
+
+#: inc/mep_cpt.php:25
+msgid "Event Not found in Trash"
+msgstr ""
+
+#: inc/mep_cpt.php:26
+msgid "Event Feature Image"
+msgstr ""
+
+#: inc/mep_cpt.php:27
+msgid "Set Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:28
+msgid "Remove Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:29
+msgid "Use as Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:30
+msgid "Insert into Event"
+msgstr ""
+
+#: inc/mep_cpt.php:31
+msgid "Uploaded to this Event"
+msgstr ""
+
+#: inc/mep_cpt.php:32
+msgid "Event list"
+msgstr ""
+
+#: inc/mep_cpt.php:33
+msgid "Event list navigation"
+msgstr ""
+
+#: inc/mep_cpt.php:34
+msgid "Filter Event list"
+msgstr ""
+
+#: inc/mep_csv_export.php:19
+msgid "Export to CSV"
+msgstr ""
+
+#: inc/mep_event_meta.php:33
+msgid "Registration On/Off:"
+msgstr ""
+
+#: inc/mep_event_meta.php:69
+msgid "Location/Venue:"
+msgstr ""
+
+#: inc/mep_event_meta.php:77
+msgid "Street:"
+msgstr ""
+
+#: inc/mep_event_meta.php:84
+msgid "City:"
+msgstr ""
+
+#: inc/mep_event_meta.php:91
+msgid "State:"
+msgstr ""
+
+#: inc/mep_event_meta.php:98
+msgid "Postcode:"
+msgstr ""
+
+#: inc/mep_event_meta.php:105
+msgid "Country:"
+msgstr ""
+
+#: inc/mep_event_meta.php:113
+msgid "Show Google Map:"
+msgstr ""
+
+#: inc/mep_event_meta.php:245
+msgid "Price Label"
+msgstr ""
+
+#: inc/mep_event_meta.php:246
+#: templates/template-prts/event_extra_service.php:18
+msgid "Price"
+msgstr ""
+
+#: inc/mep_event_meta.php:247
+#: templates/template-prts/event_extra_service.php:17
+msgid "Quantity"
+msgstr ""
+
+#: inc/mep_event_meta.php:248
+msgid "Input Type"
+msgstr ""
+
+#: inc/mep_event_meta.php:249
+msgid "Show Quantity Box"
+msgstr ""
+
+#: inc/mep_event_meta.php:259 inc/mep_event_meta.php:461
+#: inc/mep_event_meta.php:482 inc/mep_event_meta.php:554
+#: inc/mep_event_meta.php:572
+msgid "Input Box"
+msgstr ""
+
+#: inc/mep_event_meta.php:260 inc/mep_event_meta.php:462
+#: inc/mep_event_meta.php:483 inc/mep_event_meta.php:555
+#: inc/mep_event_meta.php:572
+msgid "Dropdown List"
+msgstr ""
+
+#: inc/mep_event_meta.php:262 templates/single-events.php:151
+#: templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Yes"
+msgstr ""
+
+#: inc/mep_event_meta.php:326 inc/mep_event_meta.php:343
+#: inc/mep_event_meta.php:465 inc/mep_event_meta.php:485
+#: inc/mep_event_meta.php:558 inc/mep_event_meta.php:573
+msgid "Remove"
+msgstr ""
+
+#: inc/mep_event_meta.php:351
+msgid "Add New F.A.Q"
+msgstr ""
+
+#: inc/mep_event_meta.php:437
+msgid "Extra Service Name"
+msgstr ""
+
+#: inc/mep_event_meta.php:438
+msgid "Service Price"
+msgstr ""
+
+#: inc/mep_event_meta.php:439 inc/mep_event_meta.php:533
+msgid "Available Qty"
+msgstr ""
+
+#: inc/mep_event_meta.php:440 inc/mep_event_meta.php:534
+msgid "Qty Box Type"
+msgstr ""
+
+#: inc/mep_event_meta.php:481 inc/mep_event_meta.php:572
+msgid "Please Select Type"
+msgstr ""
+
+#: inc/mep_event_meta.php:490
+msgid "Add Extra Price"
+msgstr ""
+
+#: inc/mep_event_meta.php:531
+msgid "Ticket Type Name"
+msgstr ""
+
+#: inc/mep_event_meta.php:532
+msgid "Ticket Price"
+msgstr ""
+
+#: inc/mep_event_meta.php:577
+msgid "Add New Ticket Type"
+msgstr ""
+
+#: inc/mep_event_meta.php:598
+msgid "Start Date & Time:"
+msgstr ""
+
+#: inc/mep_event_meta.php:604
+msgid "End Date & Time:"
+msgstr ""
+
+#: inc/mep_event_meta.php:618
+msgid "Confirmation Email Text:"
+msgstr ""
+
+#: inc/mep_event_meta.php:635 woocommerce-event-press.php:629
+msgid "Full Name"
+msgstr ""
+
+#: inc/mep_event_meta.php:640
+msgid "Email Address"
+msgstr ""
+
+#: inc/mep_event_meta.php:645
+msgid "Phone Number"
+msgstr ""
+
+#: inc/mep_event_meta.php:650 templates/single-mep_events_attendees.php:85
+msgid "Address"
+msgstr ""
+
+#: inc/mep_event_meta.php:656 templates/single-events.php:151
+#: templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "T-Shirt Size"
+msgstr ""
+
+#: inc/mep_event_meta.php:659
+msgid "Input Tshirts size, separetd by comma (M,L,XL)"
+msgstr ""
+
+#: inc/mep_event_meta.php:671 templates/single-events.php:151
+#: templates/single-events.php:178 templates/single-mep_events_attendees.php:90
+#: templates/template-prts/event_add_cart.php:126
+msgid "Designation"
+msgstr ""
+
+#: inc/mep_event_meta.php:675 templates/single-events.php:151
+#: templates/single-events.php:178
+#: templates/single-mep_events_attendees.php:100
+#: templates/template-prts/event_add_cart.php:126
+msgid "Website"
+msgstr ""
+
+#: inc/mep_event_meta.php:680 templates/single-events.php:151
+#: templates/single-events.php:178
+#: templates/single-mep_events_attendees.php:111
+#: templates/template-prts/event_add_cart.php:126
+msgid "Vegetarian"
+msgstr ""
+
+#: inc/mep_event_meta.php:684
+msgid "Company Name"
+msgstr ""
+
+#: inc/mep_event_meta.php:688 templates/single-events.php:151
+#: templates/single-events.php:178
+#: templates/single-mep_events_attendees.php:105
+#: templates/template-prts/event_add_cart.php:126
+msgid "Gender"
+msgstr ""
+
+#: inc/mep_event_meta.php:1028
+msgid "Event:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1033
+msgid "UserID:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1040
+msgid "Full Name:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1045
+msgid "Email:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1050
+msgid "Phone:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1055
+msgid "Addres:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1062
+msgid "Gender:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1069
+msgid "Company:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1076
+msgid "Designation:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1083
+msgid "Website:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1091
+msgid "Vegetarian?:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1099
+msgid "T-Shirt Size?:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1130
+msgid "Ticket Type:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1136
+msgid "Order ID:"
+msgstr ""
+
+#: inc/mep_event_meta.php:1144
+msgid "View Order"
+msgstr ""
+
+#: inc/mep_extra_price.php:249 inc/mep_extra_price.php:268
+msgid " x "
+msgstr ""
+
+#: inc/mep_extra_price.php:276
+msgid "_event_user_info"
+msgstr ""
+
+#: inc/mep_shortcode.php:97 inc/mep_shortcode.php:113 inc/mep_shortcode.php:317
+#: inc/mep_shortcode.php:333
+msgid "All"
+msgstr ""
+
+#: inc/mep_shortcode.php:203
+msgid "Price Start from:"
+msgstr ""
+
+#: inc/mep_shortcode.php:219 inc/mep_shortcode.php:439
+msgid "Organized By:"
+msgstr ""
+
+#: inc/mep_shortcode.php:226 inc/mep_shortcode.php:446
+msgid "Location:"
+msgstr ""
+
+#: inc/mep_shortcode.php:233 inc/mep_shortcode.php:453
+msgid "Time:"
+msgstr ""
+
+#: inc/mep_tax.php:9
+msgid "Category"
+msgstr ""
+
+#: inc/mep_tax.php:10
+msgid "All Event Category"
+msgstr ""
+
+#: inc/mep_tax.php:11
+msgid "Parent Category"
+msgstr ""
+
+#: inc/mep_tax.php:12
+msgid "Parent Category:"
+msgstr ""
+
+#: inc/mep_tax.php:13
+msgid "New Category Name"
+msgstr ""
+
+#: inc/mep_tax.php:14
+msgid "Add New Category"
+msgstr ""
+
+#: inc/mep_tax.php:15
+msgid "Edit Category"
+msgstr ""
+
+#: inc/mep_tax.php:16
+msgid "Update Category"
+msgstr ""
+
+#: inc/mep_tax.php:17
+msgid "View Category"
+msgstr ""
+
+#: inc/mep_tax.php:18
+msgid "Separate Category with commas"
+msgstr ""
+
+#: inc/mep_tax.php:19
+msgid "Add or remove Category"
+msgstr ""
+
+#: inc/mep_tax.php:20 inc/mep_tax.php:56
+msgid "Choose from the most used"
+msgstr ""
+
+#: inc/mep_tax.php:21
+msgid "Popular Category"
+msgstr ""
+
+#: inc/mep_tax.php:22
+msgid "Search Category"
+msgstr ""
+
+#: inc/mep_tax.php:23 inc/mep_tax.php:59
+msgid "Not Found"
+msgstr ""
+
+#: inc/mep_tax.php:24
+msgid "No Category"
+msgstr ""
+
+#: inc/mep_tax.php:25
+msgid "Category list"
+msgstr ""
+
+#: inc/mep_tax.php:26
+msgid "Category list navigation"
+msgstr ""
+
+#: inc/mep_tax.php:45
+msgid "Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:46
+msgid "All Event Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:47
+msgid "Parent Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:48
+msgid "Parent Organizer:"
+msgstr ""
+
+#: inc/mep_tax.php:49
+msgid "New Organizer Name"
+msgstr ""
+
+#: inc/mep_tax.php:50
+msgid "Add New Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:51
+msgid "Edit Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:52
+msgid "Update Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:53
+msgid "View Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:54
+msgid "Separate Organizer with commas"
+msgstr ""
+
+#: inc/mep_tax.php:55
+msgid "Add or remove Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:57
+msgid "Popular Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:58
+msgid "Search Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:60
+msgid "No Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:61
+msgid "Organizer list"
+msgstr ""
+
+#: inc/mep_tax.php:62
+msgid "Organizer list navigation"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+msgid "Attendee info:"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Enter Your Name"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Enter Your Email"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Enter Your Phone"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Enter you address"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Please Select"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Male"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "Female"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/single-mep_events_attendees.php:95
+#: templates/template-prts/event_add_cart.php:126
+msgid "Company"
+msgstr ""
+
+#: templates/single-events.php:151 templates/single-events.php:178
+#: templates/template-prts/event_add_cart.php:126
+msgid "No"
+msgstr ""
+
+#: templates/single-mep_events_attendees.php:75
+msgid "Email"
+msgstr ""
+
+#: templates/single-mep_events_attendees.php:80
+msgid "Phone"
+msgstr ""
+
+#: templates/single-mep_events_attendees.php:118
+msgid "T Shirt Size"
+msgstr ""
+
+#: templates/single-mep_events_attendees.php:125
+msgid "Ticket Type"
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:55
+msgid "\"<span class=event-expire-btn>Event Expired</span>\""
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:58
+msgid "\"<span class=event-expire-btn>No Seat Available</span>\""
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:87
+msgid "Register Now:"
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:95
+msgid "Quantity:"
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:112
+msgid "Total"
+msgstr ""
+
+#: templates/template-prts/event_add_cart.php:126
+msgid "Attendee info"
+msgstr ""
+
+#: templates/template-prts/event_extra_service.php:12
+msgid "<h3 class='ex-sec-title'>"
+msgstr ""
+
+#: templates/template-prts/event_extra_service.php:16
+#: woocommerce-event-press.php:844
+msgid "Name"
+msgstr ""
+
+#: templates/template-prts/event_ticket_type.php:28
+msgid "Left"
+msgstr ""
+
+#: templates/template-prts/event_ticket_type.php:31
+msgid "Ticket Qty:"
+msgstr ""
+
+#: templates/template-prts/event_ticket_type.php:38
+#: woocommerce-event-press.php:634 woocommerce-event-press.php:845
+msgid "Ticket"
+msgstr ""
+
+#: templates/template-prts/event_ticket_type.php:53
+msgid "Per Ticket Price:"
+msgstr ""
+
+#: templates/template-prts/faq.php:9
+msgid "Event F.A.Q"
+msgstr ""
+
+#: templates/template-prts/organizer.php:7
+msgid "By:"
+msgstr ""
+
+#: templates/template-prts/total_seat.php:29
+#: templates/template-prts/total_seat.php:34
+msgid "Total Seat:"
+msgstr ""
+
+#: templates/themes/default-theme.php:17
+msgid "Event Date:"
+msgstr ""
+
+#: templates/themes/default-theme.php:24
+msgid "Event Time:"
+msgstr ""
+
+#: templates/themes/default-theme.php:31 templates/themes/default-theme.php:53
+#: templates/themes/theme-1.php:48
+msgid "Event Location:"
+msgstr ""
+
+#: templates/themes/theme-1.php:26
+msgid "Date and Time:"
+msgstr ""
+
+#: templates/themes/theme-1.php:34
+msgid "Description"
+msgstr ""
+
+#: templates/themes/theme-2.php:33
+msgid "Organizer:"
+msgstr ""
+
+#: templates/themes/theme-2.php:35
+msgid "Venue:"
+msgstr ""
+
+#: templates/themes/theme-3.php:41
+msgid "About The Event"
+msgstr ""
+
+#: woocommerce-event-press.php:42
+msgid "Invalid product."
+msgstr ""
+
+#: woocommerce-event-press.php:561
+msgid "Status"
+msgstr ""
+
+#: woocommerce-event-press.php:562
+msgid "Attendees"
+msgstr ""
+
+#: woocommerce-event-press.php:628
+msgid "Unique ID"
+msgstr ""
+
+#: woocommerce-event-press.php:635 woocommerce-event-press.php:846
+msgid "Event"
+msgstr ""
+
+#: woocommerce-event-press.php:847 woocommerce-event-press.php:876
+msgid "Download"
+msgstr ""

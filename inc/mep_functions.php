@@ -2463,29 +2463,16 @@ function mage_array_strip($string, $allowed_tags = NULL){
     return strip_tags($string, $allowed_tags);
  }
 
-
+/**
+ * The Giant SEO Plugin Yoast PRO doing some weird thing and that is its auto create a 301 redirect url when delete a post its causing our event some issue Thats why i disable those part for our event post type with the below filter hoook which is provide by Yoast.
+ */
 add_filter('wpseo_premium_post_redirect_slug_change', '__return_true' );                    
 add_filter('wpseo_premium_term_redirect_slug_change', '__return_true' );
 add_filter('wpseo_enable_notification_term_slug_change','__return_false');
 
-
-
-add_filter( 'woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_data_from_thankyou_and_email', 10, 1 );
-function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta){
-    $temp_metas = [];
-    foreach($formatted_meta as $key => $meta) {
-        if ( isset( $meta->key ) && ! in_array( $meta->key, [
-                'event_id'
-                // 'Location',
-                // 'Date'
-            ] ) ) {
-            $temp_metas[ $key ] = $meta;
-        }
-    }
-    return $temp_metas;
-}
-
-
+/**
+ * The below function will add the event more date list into the event list shortcode, Bu default it will be hide with a Show Date button, after click on that button it will the full list. 
+ */
 add_action('mep_event_list_loop_footer','mep_event_recurring_date_list_in_event_list_loop');
 function mep_event_recurring_date_list_in_event_list_loop($event_id){
         $recurring              = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
@@ -2494,12 +2481,8 @@ function mep_event_recurring_date_list_in_event_list_loop($event_id){
          $start_date                = get_post_meta($event_id,'event_start_date',true);
          $end_date                  = get_post_meta($event_id,'event_end_date',true);
          $end_datetime              = get_post_meta($event_id,'event_end_datetime',true);
-
-        $show_multidate             = mep_get_option('mep_date_list_in_event_listing', 'general_setting_sec', 'no');
-       
-       
-       
-       
+         $show_multidate             = mep_get_option('mep_date_list_in_event_listing', 'general_setting_sec', 'no');
+                            
        if(is_array($more_date) && sizeof($more_date) > 0){
 
         ?>
@@ -2522,9 +2505,7 @@ function mep_event_recurring_date_list_in_event_list_loop($event_id){
                             echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text') . ' - ';
                         }
                         echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time'); ?></span></li>
-                    <?php
-                 
-                
+                    <?php                                 
             }
         }
         echo '</ul>';
@@ -2555,7 +2536,9 @@ function mep_event_get_the_content( $post = 0 ){
 }
 
 
-
+/**
+ * This the function which will create the Rich Text Schema For each event into the <head></head> section.
+ */
 add_action('wp_head','mep_event_rich_text_data');
 function mep_event_rich_text_data(){
     global $post;
@@ -2612,6 +2595,9 @@ function mep_event_rich_text_data(){
 }
 
 
+/**
+ * We added event id with every order for using in the attendee & seat inventory calculation, but this info was showing in the thank you page, so i decided to hide this, and here is the fucntion which will hide the event id from the thank you page.
+ */
 add_filter( 'woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_meta_in_emails' );
 function mep_hide_event_order_meta_in_emails( $meta ) {
     if( ! is_admin() ) {
@@ -2619,4 +2605,61 @@ function mep_hide_event_order_meta_in_emails( $meta ) {
         $meta = wp_list_filter( $meta, $criteria, 'NOT' );
     }
     return $meta;
+}
+add_filter( 'woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_data_from_thankyou_and_email', 10, 1 );
+function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta){
+    $temp_metas = [];
+    foreach($formatted_meta as $key => $meta) {
+        if ( isset( $meta->key ) && ! in_array( $meta->key, [
+                'event_id'
+                // 'Location',
+                // 'Date'
+            ] ) ) {
+            $temp_metas[ $key ] = $meta;
+        }
+    }
+    return $temp_metas;
+}
+
+
+
+/**
+ * This will create a new section Custom CSS into the Event Settings Page, I write this code here instead of the Admin Settings Class because of YOU! Yes who is reading this comment!! to get the clear idea how you can craete your own settings section and settings fields by using the filter hook from any where or your own plugin. Thanks For reading this comment. Cheers!!
+ */
+add_filter('mep_settings_sec_reg','my_settings_reg');
+function my_settings_reg($default_sec){
+    $sections = array(
+        array(
+            'id' => 'mep_settings_custom_css',
+            'title' => __( 'Custom CSS', 'mage-eventpress' )
+        )
+    );
+  return array_merge($default_sec,$sections);
+}
+add_filter('mep_settings_sec_fields','my_sectings_fields');
+function my_sectings_fields($default_fields){
+  $settings_fields = array(
+    'mep_settings_custom_css' => array(
+          array(
+              'name' => 'mep_custom_css',
+              'label' => __( 'Custom CSS', 'mage-eventpress' ),
+              'desc' => __( 'Write Your Custom CSS Code Here', 'mage-eventpress' ),
+              'type' => 'textarea',
+              
+          )                              
+      )
+    );
+    return array_merge($default_fields,$settings_fields);
+}
+add_action('wp_head','mep_apply_custom_css',90);
+function mep_apply_custom_css(){
+  $custom_css = mep_get_option( 'mep_custom_css', 'mep_settings_custom_css', '');
+  ob_start();
+?>
+<style>
+  /*  Custom CSS Code From WooCommerce Event Manager Plugin */
+<?php echo $custom_css; ?>
+</style>
+<?php
+  echo ob_get_clean();
 }

@@ -88,6 +88,6 @@ function mep_cpt()
         'show_in_menu' => 'edit.php?post_type=mep_events',
 
     );
-    register_post_type('mep_event_speaker', $args);
+    //register_post_type('mep_event_speaker', $args);
 }
 add_action('init', 'mep_cpt');

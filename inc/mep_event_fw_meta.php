@@ -101,5 +101,5 @@ function mep_fw_meta_boxs()
 
         ),
     );
-    new AddMetaBox($events_speaker_list_meta_args);
+    //new AddMetaBox($events_speaker_list_meta_args);
 }

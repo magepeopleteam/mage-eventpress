@@ -29,6 +29,7 @@ function mep_ev_extra_serv(){
                         <div class="xtra-item-left"><?php echo $ext_left; ?>
                             <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:','mage-eventpress');  ?>
                         </div>
+                        <input type="hidden" name='mep_event_start_date_es[]' value='<?php echo $event_date; ?>'>
                     </td>
                     <td class="mage_text_center">
                         <?php

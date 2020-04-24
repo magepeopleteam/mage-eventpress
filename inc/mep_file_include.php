@@ -24,6 +24,3 @@ require_once(dirname(__DIR__) . "/inc/mep_addon_list.php");
 require_once(dirname(__DIR__) . "/inc/mep_upgrade.php");
 require_once(dirname(__DIR__) . "/inc/mep_functions.php");
 require_once(dirname(__DIR__) . "/inc/mep_query.php");
-
-
-

@@ -402,23 +402,13 @@ add_filter('template_include', 'template_chooser');
   
 
   
-  function mep_attendee_extra_service_create($order_id,$event_id){
+  function mep_attendee_extra_service_create($order_id,$event_id, $_event_extra_service){
   
-      $order              = wc_get_order( $order_id );
-      $order_meta         = get_post_meta($order_id); 
-      $order_status       = $order->get_status();
-    foreach ( $order->get_items() as $item_id => $item_values ) {
-      $item_id                    = $item_id;
-    }
-     $_event_extra_service   = wc_get_order_item_meta($item_id,'_event_extra_service',true);
-     $date   = date('Y-m-d H:i:s',strtotime(wc_get_order_item_meta($item_id,'Date',true)));
-     
+
      if(is_array($_event_extra_service) && sizeof($_event_extra_service) > 0){
   
      foreach($_event_extra_service as $extra_serive){
       $uname = 'Extra Service for '.get_the_title($event_id).' Order #'.$order_id;
-      // echo $extra_serive['service_price'];
-      //   die();
       $new_post = array(
         'post_title'    =>   $uname,
         'post_content'  =>   '',
@@ -430,7 +420,6 @@ add_filter('template_include', 'template_chooser');
   
        $pid             = wp_insert_post($new_post);
      
-      
       update_post_meta( $pid, 'ea_extra_service_name', $extra_serive['service_name'] );
       update_post_meta( $pid, 'ea_extra_service_qty', $extra_serive['service_qty'] );
       update_post_meta( $pid, 'ea_extra_service_unit_price', $extra_serive['service_price'] );
@@ -438,11 +427,11 @@ add_filter('template_include', 'template_chooser');
       update_post_meta( $pid, 'ea_extra_service_event', $event_id );
       update_post_meta( $pid, 'ea_extra_service_order', $order_id );
       update_post_meta( $pid, 'ea_extra_service_order_status', $order_status );
-      update_post_meta( $pid, 'ea_extra_service_event_date', $date );
+      update_post_meta( $pid, 'ea_extra_service_event_date', $extra_serive['event_date'] );
      }
   
   }
-  
+
   }
   
   
@@ -502,8 +491,9 @@ add_filter('template_include', 'template_chooser');
           $user_info_arr          = wc_get_order_item_meta($item_id,'_event_user_info',true);
           $service_info_arr       = wc_get_order_item_meta($item_id,'_event_service_info',true);
           $event_ticket_info_arr  = wc_get_order_item_meta($item_id,'_event_ticket_info',true);
+          $_event_extra_service   = wc_get_order_item_meta($item_id,'_event_extra_service',true);
           $item_quantity          = 0;
-          mep_attendee_extra_service_create($order_id,$event_id);
+          mep_attendee_extra_service_create($order_id,$event_id,$_event_extra_service);
           foreach ( $event_ticket_info_arr as $field ) {
             if($field['ticket_qty']>0){
                 $item_quantity    = $item_quantity + $field['ticket_qty'];
@@ -529,33 +519,6 @@ add_filter('template_include', 'template_chooser');
   }
   
   
-  
-  add_action('woocommerce_checkout_order_processed', 'mep_event_order_status_make_pending', 10, 1);
-  
-  function mep_event_order_status_make_pending($order_id)
-  {
-     // Getting an instance of the order object
-      $order      = wc_get_order( $order_id );
-      $order_meta = get_post_meta($order_id); 
-  
-     # Iterating through each order items (WC_Order_Item_Product objects in WC 3+)
-      foreach ( $order->get_items() as $item_id => $item_values ) {
-          $item_quantity = $item_values->get_quantity();
-          $item_id = $item_id;
-      }
-    $ordr_total             = $order->get_total();
-    $product_id             = mep_event_get_order_meta($item_id,'_product_id');
-    if($product_id==0){
-    $event_id             = mep_event_get_order_meta($item_id,'event_id');
-    if (get_post_type($event_id) == 'mep_events') { 
-        $mep_atnd           = "_mep_atnd_".$order_id;
-        update_post_meta( $event_id, $mep_atnd, "a1");
-        $order_meta_text  = "_stock_msg_".$order_id;
-        $order_processing = "pending_".$order_id;
-        update_post_meta( $event_id, $order_meta_text, $order_processing);
-    }
-  }
-  }
   
   
   function change_attandee_order_status($order_id,$set_status,$post_status,$qr_status=null){
@@ -2662,4 +2625,102 @@ function mep_apply_custom_css(){
 </style>
 <?php
   echo ob_get_clean();
+}
+
+
+
+function mep_cart_ticket_type($type,$total_price,$product_id){
+
+  $mep_event_start_date   = isset($_POST['mep_event_start_date']) ? $_POST['mep_event_start_date'] : array();
+  $names                  = isset($_POST['option_name']) ? $_POST['option_name'] : array();
+  $qty                    = isset($_POST['option_qty']) ? $_POST['option_qty'] : array(); 
+  $max_qty                = isset($_POST['max_qty']) ? $_POST['max_qty'] : array();
+  $price                  = isset($_POST['option_price']) ? $_POST['option_price'] : array();
+  $count                  = count( $names );
+  $ticket_type_arr        = [];
+  $vald = 0;
+  if(sizeof($names) > 0){
+    for ( $i = 0; $i < $count; $i++ ) {
+      if($qty[$i] > 0){
+            $ticket_type_arr[$i]['ticket_name']   = !empty($names[$i]) ? stripslashes( strip_tags( $names[$i] ) ) : '';
+            $ticket_type_arr[$i]['ticket_price']  = !empty($price[$i]) ? stripslashes( strip_tags( $price[$i] ) ) : '';
+            $ticket_type_arr[$i]['ticket_qty']    = !empty($qty[$i]) ? stripslashes( strip_tags( $qty[$i] ) ) : '';
+            $ticket_type_arr[$i]['max_qty']       = !empty($max_qty[$i]) ? stripslashes( strip_tags( $max_qty[$i] ) ) : '';
+            $ticket_type_arr[$i]['event_date']    = !empty($mep_event_start_date[$i]) ? stripslashes( strip_tags( $mep_event_start_date[$i] ) ) : '';
+            $opttprice                            = ($price[$i]*$qty[$i]);
+            $total_price                          = ($total_price+$opttprice);
+            $validate[$i]['validation_ticket_qty'] = $vald + stripslashes( strip_tags( $qty[$i]  ) );              
+            $validate[$i]['event_id']             = stripslashes( strip_tags( $product_id ) );                
+        }
+    }
+  }
+  if($type == 'ticket_price'){
+    return $total_price;
+  }elseif($type == 'validation_data'){
+    return $validate;
+  }else{
+    return $ticket_type_arr;
+  }
+}
+
+
+function mep_cart_event_extra_service($type,$total_price){
+  $mep_event_start_date_es   = isset($_POST['mep_event_start_date_es']) ? $_POST['mep_event_start_date_es'] : array();
+  $extra_service_name     = isset($_POST['event_extra_service_name']) ? mage_array_strip($_POST['event_extra_service_name']) : array();
+  $extra_service_qty      = isset($_POST['event_extra_service_qty']) ? mage_array_strip($_POST['event_extra_service_qty']):array();
+  $extra_service_price    = isset($_POST['event_extra_service_price']) ? mage_array_strip($_POST['event_extra_service_price']):array();
+  $event_extra            = [];
+
+  if($extra_service_name){
+      for ( $i = 0; $i < count($extra_service_name); $i++ ) {
+        if($extra_service_qty[$i] > 0){
+          $event_extra[$i]['service_name']  = !empty($extra_service_name[$i]) ? stripslashes( strip_tags( $extra_service_name[$i] ) ) : '';
+          $event_extra[$i]['service_price'] = !empty($extra_service_price[$i]) ? stripslashes( strip_tags( $extra_service_price[$i] ) ) : '';
+          $event_extra[$i]['service_qty']   = !empty($extra_service_qty[$i]) ? stripslashes( strip_tags( $extra_service_qty[$i] ) ) : '';
+          $event_extra[$i]['event_date']    = !empty($mep_event_start_date_es[$i]) ? stripslashes( strip_tags( $mep_event_start_date_es[$i] ) ) : '';
+          $extprice                         = ($extra_service_price[$i]*$extra_service_qty[$i]);
+          $total_price                      = ($total_price+$extprice);
+    }
+  }
+}
+  if($type == 'ticket_price'){
+    return $total_price;
+  }else{
+    return $event_extra;
+  }
+}
+
+function mep_cart_display_user_list($user_info){
+  ob_start();
+  foreach ($user_info as $userinf) {
+    ?>
+      <ul>
+        <?php if ($userinf['user_name']) { ?> <li><?php _e('Name: ', 'mage-eventpress');
+                                                echo $userinf['user_name']; ?></li> <?php } ?>
+        <?php if ($userinf['user_email']) { ?> <li><?php _e('Email: ', 'mage-eventpress');
+                                                  echo $userinf['user_email']; ?></li> <?php } ?>
+        <?php if ($userinf['user_phone']) { ?> <li><?php _e('Phone: ', 'mage-eventpress');
+                                                  echo $userinf['user_phone']; ?></li> <?php } ?>
+        <?php if ($userinf['user_address']) { ?> <li><?php _e('Address: ', 'mage-eventpress');
+                                                    echo $userinf['user_address']; ?></li> <?php } ?>
+        <?php if ($userinf['user_gender']) { ?> <li><?php _e('Gender: ', 'mage-eventpress');
+                                                  echo $userinf['user_gender']; ?></li> <?php } ?>
+        <?php if ($userinf['user_tshirtsize']) { ?> <li><?php _e('T-Shirt Size: ', 'mage-eventpress');
+                                                      echo $userinf['user_tshirtsize']; ?></li> <?php } ?>
+        <?php if ($userinf['user_company']) { ?> <li><?php _e('Company: ', 'mage-eventpress');
+                                                    echo $userinf['user_company']; ?></li> <?php } ?>
+        <?php if ($userinf['user_designation']) { ?> <li><?php _e('Designation: ', 'mage-eventpress');
+                                                        echo $userinf['user_designation']; ?></li> <?php } ?>
+        <?php if ($userinf['user_website']) { ?> <li><?php _e('Website: ', 'mage-eventpress');
+                                                    echo $userinf['user_website']; ?></li> <?php } ?>
+        <?php if ($userinf['user_vegetarian']) { ?> <li><?php _e('Vegetarian: ', 'mage-eventpress');
+                                                      echo $userinf['user_vegetarian']; ?></li> <?php } ?>
+        <?php if ($userinf['user_ticket_type']) { ?> <li><?php _e('Ticket Type: ', 'mage-eventpress');
+                                                        echo $userinf['user_ticket_type']; ?></li> <?php } ?>
+        <li><?php _e('Event Date:', 'mage-eventpress'); ?> <?php echo get_mep_datetime($userinf['user_event_date'], 'date-time-text'); ?></li>
+      </ul>
+
+      <?php
+    }
+    return ob_get_clean();
 }

@@ -2589,7 +2589,7 @@ function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta){
 /**
  * This will create a new section Custom CSS into the Event Settings Page, I write this code here instead of the Admin Settings Class because of YOU! Yes who is reading this comment!! to get the clear idea how you can craete your own settings section and settings fields by using the filter hook from any where or your own plugin. Thanks For reading this comment. Cheers!!
  */
-add_filter('mep_settings_sec_reg','my_settings_reg');
+add_filter('mep_settings_sec_reg','my_settings_reg',90);
 function my_settings_reg($default_sec){
     $sections = array(
         array(
@@ -2599,7 +2599,7 @@ function my_settings_reg($default_sec){
     );
   return array_merge($default_sec,$sections);
 }
-add_filter('mep_settings_sec_fields','my_sectings_fields');
+add_filter('mep_settings_sec_fields','my_sectings_fields',90);
 function my_sectings_fields($default_fields){
   $settings_fields = array(
     'mep_settings_custom_css' => array(

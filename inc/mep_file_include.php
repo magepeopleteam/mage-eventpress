@@ -1,7 +1,5 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-
-
 require_once(dirname(__DIR__) . '/lib/classes/class-wc-product-data.php');
 require_once(dirname(__DIR__) . '/lib/classes/class-form-fields-generator.php');
 require_once(dirname(__DIR__) . '/lib/classes/class-form-fields-wrapper.php');

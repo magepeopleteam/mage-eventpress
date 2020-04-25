@@ -11,7 +11,7 @@ $hide_address_details = mep_get_option('mep_event_hide_address_from_details', 'g
 $hide_schedule_details = mep_get_option('mep_event_hide_event_schedule_details', 'general_setting_sec', 'no');
 $hide_share_details = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
 $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
-
+$speaker_status = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
 ?>
 
 <div class="mep-default-theme mep_flex default_theme">
@@ -47,12 +47,13 @@ $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'gene
                 <div class="mep-default-sidrbar-meta">
                     <i class="fa fa-link"></i> <?php do_action('mep_event_organizer'); ?>
                 </div>
-            <?php } ?>
+            <?php } if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-sidebar-speaker-list">
                 <h3><i class="fa fa-microphone"></i> <?php _e("Speaker's","mage-eventpress"); ?></h3>
                     <?php do_action('mep_event_speakers_list',get_the_id()); ?>
                 </div>
             <?php 
+            }
             if ($hide_schedule_details == 'no') { ?>
                 <div class="mep-default-sidrbar-events-schedule">
                     <?php do_action('mep_event_date_default_theme'); ?>

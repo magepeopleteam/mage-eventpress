@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
 
 /**
  * In the Version 3.5 we will introducing Mage Freamwork, All of our Plugin will use this same Freamwork, This is the Beta test in the Event Plugin.
@@ -7,7 +10,7 @@
 add_action('admin_init', 'mep_fw_meta_boxs');
 function mep_fw_meta_boxs()
 {
-
+    $speaker_status = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
     /**
      * This Will create Meta Boxes For Speakers Custom Post Type.
      */
@@ -101,5 +104,9 @@ function mep_fw_meta_boxs()
 
         ),
     );
-    //new AddMetaBox($events_speaker_list_meta_args);
+
+    if($speaker_status == 'yes'){
+       new AddMetaBox($events_speaker_list_meta_args);
+    }
+    
 }

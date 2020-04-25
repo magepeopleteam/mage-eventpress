@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
  */
 function mep_cpt()
 {
+    $speaker_status = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
 
     $labels = array(
         'name'                  => __('Events', 'mage-eventpress'),
@@ -88,6 +89,9 @@ function mep_cpt()
         'show_in_menu' => 'edit.php?post_type=mep_events',
 
     );
-    //register_post_type('mep_event_speaker', $args);
+    
+    if($speaker_status == 'yes'){
+        register_post_type('mep_event_speaker', $args);
+    }
 }
 add_action('init', 'mep_cpt');

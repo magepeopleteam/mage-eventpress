@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
 
 /**
  * MagePeople Settings API
@@ -93,7 +96,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => ''
                     ),
-
+                    array(
+                        'name' => 'mep_enable_speaker_list',
+                        'label' => __('Enable Speaker List?', 'mage-eventpress'),
+                        'desc' => __('If you want to enable speaker list, Please select Yes by default its disable', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'no',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
+                    ),
                     array(
                         'name' => 'mep_global_single_template',
                         'label' => __('Event Details Template', 'mage-eventpress'),

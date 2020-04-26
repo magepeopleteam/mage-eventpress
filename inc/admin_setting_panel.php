@@ -548,6 +548,13 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => 'Please select atleast one(1) ticket Quantity !'
                     ),
+                    array(
+                        'name' => 'mep_event_virtual_label',
+                        'label' => __('Virtual Event Rebon', 'mage-eventpress'),
+                        'desc' => __('Enter Text For Virtual Event Rebon', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Virtual Event'
+                    ),
                 ),
 
                 'style_setting_sec' => array(

@@ -20,7 +20,8 @@ function mep_display_event_loop_list($event_id,$columnNumber,$style){
                 $hide_time_list         = mep_get_option('mep_event_hide_time_list', 'general_setting_sec', 'no');
                 $hide_only_end_time_list = mep_get_option('mep_event_hide_end_time_list', 'general_setting_sec', 'no');
                 $recurring              = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';                
-    
+                $event_type              = get_post_meta(get_the_id(),'mep_event_type',true) ? get_post_meta(get_the_id(),'mep_event_type',true) : '';
+
 ob_start();
 ?>
     
@@ -36,6 +37,10 @@ ob_start();
                         <?php } if(is_array($event_multidate) && sizeof($event_multidate) >0){ ?>
                         <div class='mep-multidate-ribbon mep-tem3-title-sec'>
                             <span><?php _e('Multi Date Event','mage-eventpress'); ?></span>
+                        </div>
+                        <?php } if($event_type == 'online'){ ?>
+                        <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
+                            <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec') ? mep_get_option('mep_event_virtual_label', 'label_setting_sec') : _e('Virtual Event','mage-eventpress'); ?></span>
                         </div>
                         <?php } ?>
                     </div>

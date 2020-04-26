@@ -719,7 +719,12 @@ button.mep-cat-control.mixitup-control-active {
     text-align: center;
 }
 
-
+.mep-eventtype-ribbon {
+    position: absolute;
+    bottom: 0;
+    padding: 2px 21px;
+    color: #000;
+}
 
 
 

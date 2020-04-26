@@ -2673,6 +2673,7 @@ function mep_cart_display_user_list($user_info){
 add_action('mep_event_single_template_end','mep_single_page_js_script');
 add_action('mep_add_to_cart_shortcode_js','mep_single_page_js_script');
 function mep_single_page_js_script($event_id){
+  $currency_pos = get_option('woocommerce_currency_pos');
   ob_start();
 ?>
 <script>

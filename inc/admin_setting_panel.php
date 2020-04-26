@@ -354,7 +354,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'name' => 'mep_confirmation_email_text',
                         'label' => __('Confirmation Email Text', 'mage-eventpress'),
                         'desc' => __('Confirmation Email Text', 'mage-eventpress'),
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'default' => '',
                     ),
                 ),

@@ -48,8 +48,6 @@ function mep_fw_meta_boxs()
     //new AddMetaBox( $speaker_meta_args );
 
 
-
-
     /**
      * This Will create Meta Boxes For Events Custom Post Type.
      */
@@ -62,7 +60,22 @@ function mep_fw_meta_boxs()
                 'description'     => __('', 'mage-eventpress'),
                 'options'     => array(
                     // Meta Boxes Will Here as Array
-
+                    array(
+                        'id'		=> 'mep_event_speaker_icon',
+                        'title'		=> __('Speaker Icon','mage-eventpress'),
+                        'details'	=> __('Please Select the Icon which will show as Speaker Icon','mage-eventpress'),
+                        'default'	=> 'fas fa-microphone',
+                        'type'		=> 'icon',
+                        'args'		=> 'FONTAWESOME_ARRAY',
+                    ),
+                    array(
+                        'id'		    => 'mep_speaker_title',
+                        'title'		    => __('Section Label','mage-eventpress'),
+                        'details'	    => __('This Text will be the heading of the Speaker List in the frontend. by default: Speakers ','mage-eventpress'),
+                        'type'		    => 'text',
+                        'default'		=> "Speaker's",
+                        'placeholder'   => __("Speaker's",'mage-eventpress'),
+                    ),                    
                     array(
                         'id'            => 'mep_event_speakers_list',
                         'title'            => __('Speakers', 'mage-eventpress'),
@@ -76,7 +89,7 @@ function mep_fw_meta_boxs()
                     array(
                         'id'            => 'mep_event_type',
                         'title'            => __('Event Type', 'mage-eventpress'),
-                        'details'        => __('Please Select Event Type', 'mage-eventpress'),
+                        'details'        => __('Please Select Event Type, This will add a Rebon in the event list', 'mage-eventpress'),
                         'type'            => 'select',
                         'args'            => array(
                             'offline' => __('Offline Event', 'mage-eventpress'),
@@ -90,19 +103,17 @@ function mep_fw_meta_boxs()
     );
     $events_speaker_list_meta_args = array(
         'meta_box_id'               => 'mep_event_speakers_list_meta_boxes',
-        'meta_box_title'            => __('Event Additional Information', 'mage-eventpress'),
-        //'callback'       => '_meta_box_callback',
+        'meta_box_title'            => __('Event Speaker Information', 'mage-eventpress'),
         'screen'                    => array('mep_events'),
-        'context'                   => 'normal', // 'normal', 'side', and 'advanced'
-        'priority'                  => 'high', // 'high', 'low'
+        'context'                   => 'normal',
+        'priority'                  => 'high', 
         'callback_args'             => array(),
-        'nav_position'              => 'none', // right, top, left, none
+        'nav_position'              => 'none',
         'item_name'                 => "MagePeople",
         'item_version'              => "2.0",
         'panels'                     => array(
             'events_speaker_list_meta_boxs' => $events_speaker_list_meta_boxs
-
-        ),
+        )
     );
 
     if($speaker_status == 'yes'){

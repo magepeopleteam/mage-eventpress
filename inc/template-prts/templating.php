@@ -23,3 +23,5 @@ require_once(dirname(__FILE__) . "/event_loop_native.php");
 require_once(dirname(__FILE__) . "/event_loop_timeline.php");
 require_once(dirname(__FILE__) . "/event_loop_title.php");
 require_once(dirname(__FILE__) . "/event_speakers_list.php");
+require_once(dirname(__FILE__) . "/shortcode_add_cart_section.php");
+require_once(dirname(__FILE__) . "/shortcode_speaker_list.php");

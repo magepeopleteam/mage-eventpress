@@ -124,11 +124,6 @@ if( ! class_exists( 'TaxonomyEdit' ) ) {
             $option['value'] = is_serialized($option_value) ? unserialize($option_value): $option_value;
 
 
-            ?>
-            <pre><?php //echo var_export($term_id, true)?></pre>
-            <?php
-
-
             if( isset($option['type']) && $option['type'] === 'text' ){
                 echo $FormFieldsGenerator->field_text($option);
             }

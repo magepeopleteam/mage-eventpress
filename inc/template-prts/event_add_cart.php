@@ -2,10 +2,10 @@
 add_action('mep_add_to_cart','mep_get_event_reg_btn');
 
 // Get Event Registration Button
-function mep_get_event_reg_btn(){
+function mep_get_event_reg_btn($event_id=''){
     global $post,$event_meta;
     $total_book                 = 0;
-    $post_id                    = $post->ID;
+    $post_id                    = $event_id ? $event_id : get_the_id();
     $event_meta                 = get_post_custom($post_id);
     $event_expire_on_old 		= mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
     $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
@@ -30,12 +30,12 @@ function mep_get_event_reg_btn(){
     $datetime2                  = new DateTime($newformat);
     $interval                   = $datetime1->diff($datetime2);
     $mep_event_ticket_type      = get_post_meta($post_id, 'mep_event_ticket_type', true) ? get_post_meta($post_id, 'mep_event_ticket_type', true) : array();
-    $total_seat                 = mep_event_total_seat(get_the_id(),'total');
-	$total_resv                 = mep_event_total_seat(get_the_id(),'resv');
-	$total_sold                 = mep_ticket_sold(get_the_id());
+    $total_seat                 = mep_event_total_seat($post_id,'total');
+	$total_resv                 = mep_event_total_seat($post_id,'resv');
+	$total_sold                 = mep_ticket_sold($post_id);
 	$total_left                 = $total_seat - ($total_sold + $total_resv);
     $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? $event_meta['mep_reg_status'][0] : '';
-    $seat_left                  = apply_filters( 'mep_event_total_seat_count', $total_left, get_the_id() );
+    $seat_left                  = apply_filters( 'mep_event_total_seat_count', $total_left, $post_id );
     $current                    = current_time('Y-m-d H:i:s');
     $time                       = strtotime($event_expire_date);
     $newformat                  = date('Y-m-d H:i:s',$time);
@@ -56,7 +56,7 @@ function mep_get_event_reg_btn(){
     $interval                   = date_diff($datetime2, $datetime1);
     $mep_available_seat         = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
 
-    $leftt                      = apply_filters( 'mep_event_total_seat_count', $total_left, get_the_id() );
+    $leftt                      = apply_filters( 'mep_event_total_seat_count', $total_left, $post_id );
     $days                       = $interval->d;
     $hours                      = $interval->h;
     $minutes                    = $interval->i;
@@ -104,7 +104,7 @@ if($reg_status!='off'){
             /**
             * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/event_ticket_type_extra_service.php
             */
-            do_action('mep_event_ticket_type_extra_service');  
+            do_action('mep_event_ticket_type_extra_service',$post_id);  
         ?>
         <input type='hidden' id='rowtotal' value="<?php echo get_post_meta($post_id,"_price",true); ?>"/>
     

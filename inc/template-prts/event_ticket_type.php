@@ -1,47 +1,36 @@
 <?php
-
 add_action('mep_event_ticket_types','mep_ev_ticket_type');
-
-function mep_ev_ticket_type(){
+function mep_ev_ticket_type($post_id){
     global $post, $product,$event_meta;
-    $pid = $post->ID;
     $count=1;
     ob_start();
-
-    if(array_key_exists('mep_available_seat', $event_meta)){
-        $mep_available_seat = $event_meta['mep_available_seat'][0];
-    }else{
-        $mep_available_seat = 'on';
-    }
-
-    $mep_event_ticket_type = get_post_meta($post->ID, 'mep_event_ticket_type', true);
+    $mep_available_seat     = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
+    $mep_event_ticket_type  = get_post_meta($post_id, 'mep_event_ticket_type', true) ? get_post_meta($post_id, 'mep_event_ticket_type', true) : array();
 
     if($mep_event_ticket_type){
         ?>
-        <?php echo "<h3 class='ex-sec-title'>".mep_get_label($pid,'mep_event_ticket_type_text','Ticket Type:
-')."</h3>"; ?>
-        
+        <?php echo "<h3 class='ex-sec-title'>".mep_get_label($post_id,'mep_event_ticket_type_text','Ticket Type:')."</h3>"; ?>    
+
         <table>
             <?php
             $count =1;
             foreach ( $mep_event_ticket_type as $field ) {
-                $qty_t_type         = $field['option_qty_t_type'];
-                $total_quantity     = isset($field['option_qty_t']) ? $field['option_qty_t'] : 0;
-                $default_qty        = isset($field['option_default_qty_t']) && $field['option_default_qty_t'] > 0 ? $field['option_default_qty_t'] : 0;
-                $total_resv_quantity = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
-                $event_date = get_post_meta($post->ID, 'event_start_date', true).' '.get_post_meta($post->ID, 'event_start_time', true);
-                $total_sold = (int) mep_ticket_type_sold(get_the_id(),$field['option_name_t'],$event_date);
-                $total_tickets = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);
-                $total_seats        = apply_filters('mep_total_ticket_of_type',$total_tickets,get_the_id(),$field);
-                $total_min_seat     = apply_filters('mep_ticket_min_qty',0,get_the_id(),$field);
-                $default_quantity   = apply_filters('mep_ticket_default_qty',$default_qty,get_the_id(),$field);
-                $total_left      = apply_filters('mep_total_ticket_of_type',$total_tickets,get_the_id(),$field);
-                // $total_left         = $total_tickets;
-                $passed             =  apply_filters('mep_ticket_type_validation',true);
+                $qty_t_type             = $field['option_qty_t_type'];
+                $total_quantity         = isset($field['option_qty_t']) ? $field['option_qty_t'] : 0;
+                $default_qty            = isset($field['option_default_qty_t']) && $field['option_default_qty_t'] > 0 ? $field['option_default_qty_t'] : 0;
+                $total_resv_quantity    = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
+                $event_date             = get_post_meta($post_id, 'event_start_date', true).' '.get_post_meta($post_id, 'event_start_time', true);
+                $total_sold             = (int) mep_ticket_type_sold($post_id,$field['option_name_t'],$event_date);
+                $total_tickets          = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);
+                $total_seats            = apply_filters('mep_total_ticket_of_type',$total_tickets,$post_id,$field);
+                $total_min_seat         = apply_filters('mep_ticket_min_qty',0,$post_id,$field);
+                $default_quantity       = apply_filters('mep_ticket_default_qty',$default_qty,$post_id,$field);
+                $total_left             = apply_filters('mep_total_ticket_of_type',$total_tickets,$post_id,$field);
+                $passed                 =  apply_filters('mep_ticket_type_validation',true);
                 ?>
                 <tr>
                     <td align="Left"><?php echo $field['option_name_t']; ?>
-                    <input type="hidden" name='mep_event_start_date[]' value="<?php echo get_post_meta($post->ID, 'event_start_datetime', true); ?>">
+                    <input type="hidden" name='mep_event_start_date[]' value="<?php echo get_post_meta($post_id, 'event_start_datetime', true); ?>">
                         <?php if($mep_available_seat=='on'){ ?><div class="xtra-item-left"><?php echo max($total_left,0); ?>
 
                             <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:','mage-eventpress');  ?>
@@ -49,10 +38,9 @@ function mep_ev_ticket_type(){
                             </div> <?php } ?>
                     </td>
                     <td class="ticket-qty">
-<span class="tkt-qty">
-<?php echo mep_get_option('mep_ticket_qty_text', 'label_setting_sec') ? mep_get_option('mep_ticket_qty_text', 'label_setting_sec') : _e('Ticket Qty:','mage-eventpress');  ?>
- </span>
-
+                        <span class="tkt-qty">
+                            <?php echo mep_get_option('mep_ticket_qty_text', 'label_setting_sec') ? mep_get_option('mep_ticket_qty_text', 'label_setting_sec') : _e('Ticket Qty:','mage-eventpress');  ?>
+                        </span>
                         <?php
                         if($total_left>0){
                             if($qty_t_type=='dropdown'){ ?>
@@ -74,7 +62,7 @@ function mep_ev_ticket_type(){
                                     </div>
                                         <?php } }else{ _e('No Seat Available','mage-eventpress'); } 
                                         $ticket_name = $field['option_name_t'];
-                                        do_action('mep_after_ticket_type_qty',get_the_id(),$ticket_name,$field,$default_quantity);
+                                        do_action('mep_after_ticket_type_qty',$post_id,$ticket_name,$field,$default_quantity);
                                         ?>
                                         
                                         
@@ -103,7 +91,7 @@ function mep_ev_ticket_type(){
     }
 
     $content = ob_get_clean();
-    echo apply_filters('mage_event_ticket_type_list', $content,$pid,$event_meta);
+    echo apply_filters('mage_event_ticket_type_list', $content,$post_id,$event_meta);
     ?>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {

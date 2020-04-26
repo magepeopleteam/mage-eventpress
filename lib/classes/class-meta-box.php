@@ -242,7 +242,7 @@ if( ! class_exists( 'AddMetaBox' ) ) {
                                         </table>
 
                                     </div>
-                                    <pre><?php //echo var_export($section, true); ?></pre>
+                             
                                     <?php
 
 
@@ -301,7 +301,7 @@ if( ! class_exists( 'AddMetaBox' ) ) {
             //var_dump($prent_option_value);
 
             ?>
-            <pre><?php //echo var_export($option, true)?></pre>
+
             <?php
 
 

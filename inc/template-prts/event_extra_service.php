@@ -1,14 +1,14 @@
 <?php
 
 add_action('mep_event_extra_service', 'mep_ev_extra_serv');
-function mep_ev_extra_serv(){
+function mep_ev_extra_serv($post_id){
     global $post, $product;
-    $pid                        = $post->ID;
+    $post_id                        = $post_id;
     $count                      = 1;
-    $mep_events_extra_prices    = get_post_meta($post->ID, 'mep_events_extra_prices', true) ? get_post_meta($post->ID, 'mep_events_extra_prices', true) : array();
+    $mep_events_extra_prices    = get_post_meta($post_id, 'mep_events_extra_prices', true) ? get_post_meta($post_id, 'mep_events_extra_prices', true) : array();
     ob_start();
     if (sizeof($mep_events_extra_prices) > 0) {
-        echo "<h3 class='ex-sec-title'>" . mep_get_label($pid, 'mep_event_extra_service_text', 'Extra Service:') . "</h3>";
+        echo "<h3 class='ex-sec-title'>" . mep_get_label($post_id, 'mep_event_extra_service_text', 'Extra Service:') . "</h3>";
         ?>
         <table>
             <tr>
@@ -18,10 +18,10 @@ function mep_ev_extra_serv(){
             </tr>
             <?php
             foreach ($mep_events_extra_prices as $field) {
-                $event_date = get_post_meta($post->ID, 'event_start_date', true).' '.get_post_meta($post->ID, 'event_start_time', true);
+                $event_date = get_post_meta($post_id, 'event_start_date', true).' '.get_post_meta($post_id, 'event_start_time', true);
                 $total_extra_service = (int)$field['option_qty'];
                 $qty_type = $field['option_qty_type'];
-                $total_sold = (int) mep_extra_service_sold(get_the_id(),$field['option_name'],$event_date);
+                $total_sold = (int) mep_extra_service_sold($post_id,$field['option_name'],$event_date);
                 $ext_left = ($total_extra_service - $total_sold);
                 ?>
                 <tr>
@@ -69,7 +69,6 @@ function mep_ev_extra_serv(){
         <?php
     }
     $content = ob_get_clean();
-    $event_meta = get_post_custom($pid);
-    echo apply_filters('mage_event_extra_service_list', $content,$pid,$event_meta);
-
+    $event_meta = get_post_custom($post_id);
+    echo apply_filters('mage_event_extra_service_list', $content,$post_id,$event_meta);
 }

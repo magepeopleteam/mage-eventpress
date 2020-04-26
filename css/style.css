@@ -689,11 +689,12 @@ button.mep-cat-control.mixitup-control-active {
 
 .mep-default-sidebar-speaker-list ul li {
     display: inline-block;
-    width: 32%;
+    width: 120px;
     text-align: center;
     font-size: 23px;
     font-weight: bold;
     padding: 0 5px;
+    vertical-align: top;
 }
 
 .mep-default-sidebar-speaker-list ul li a {
@@ -701,17 +702,42 @@ button.mep-cat-control.mixitup-control-active {
 }
 
 .mep-default-sidebar-speaker-list ul li img {
+    height: 100px;
+    width: 100px;
     border-radius: 100%;
-    height: 80px;
+    margin: 0 auto!important;
 }
 
 .mep-default-sidebar-speaker-list ul li h6 {
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.mep_speaker_thumbnail {
+    display: block;
+    text-align: center;
 }
 
 
 
+
+
+.mep_speaker_thumbnail img {
+    display: inline-block;
+    border-radius: 100%;
+    min-height: 280px;
+    border: 5px solid #ddd;
+    padding: 3px;
+}
+
+.mep_speaker_name {
+    text-align: center;
+}
+.mep-events-shortcode-cart-section .mep-events-wrapper {
+    margin: 0 auto;
+    padding: 0;
+}
 
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {

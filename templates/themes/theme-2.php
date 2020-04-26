@@ -12,6 +12,9 @@ $hide_address_details = mep_get_option('mep_event_hide_address_from_details', 'g
 $hide_schedule_details = mep_get_option('mep_event_hide_event_schedule_details', 'general_setting_sec', 'no');
 $hide_share_details = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
 $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
+$speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
+$speaker_icon               = get_post_meta(get_the_id(),'mep_event_speaker_icon',true) ? get_post_meta(get_the_id(),'mep_event_speaker_icon',true) : 'fa fa-microphone';
+$speaker_label              = get_post_meta(get_the_id(),'mep_speaker_title',true) ? get_post_meta(get_the_id(),'mep_speaker_title',true) : __("Speaker's","mage-eventpress");
 
 ?>
 <div class="mep-default-theme franklin">
@@ -25,16 +28,25 @@ $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'gene
         <h4 class="mep-cart-table-title"><?php _e('Description', 'mage-eventpress'); ?></h4>
         <?php do_action('mep_event_details'); ?>
         <div class="mep-theme1-faq-sec">
-            <?php do_action('mep_event_faq'); ?>
+            <?php do_action('mep_event_faq',get_the_id()); ?>
         </div>
     </div>
     <div class="franklin_divided">
         <div class="franklin_divided_left">
             <div class="mep-default-sidrbar-map">
-                <?php do_action('mep_event_map'); ?>
+                <?php do_action('mep_event_map',get_the_id()); ?>
             </div>
+            <?php
+            if($speaker_status == 'yes'){ ?>
+                <div class="mep-default-feature-content mep_theme_franklin_sidebar_speaker_list mep-default-sidebar-speaker-list">
+                <h3><?php ?><i class="<?php echo $speaker_icon; ?>"></i> <?php echo $speaker_label; ?></h3>
+                    <?php do_action('mep_event_speakers_list',get_the_id()); ?>
+                </div>
+            <?php 
+            }
+    ?>            
             <div class="mep-default-feature-cart-sec">
-                <?php do_action('mep_add_to_cart') ?>
+                <?php do_action('mep_add_to_cart',get_the_id()) ?>
             </div>
         </div>
         <div class="franklin_divided_sidebar">
@@ -63,7 +75,7 @@ $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'gene
                 <?php }
                 if ($hide_schedule_details == 'no') { ?>
                     <div class="mep-default-sidrbar-events-schedule">
-                        <?php do_action('mep_event_date_default_theme'); ?>
+                        <?php do_action('mep_event_date_default_theme',get_the_id()); ?>
                     </div>
                 <?php }
                 if ($hide_share_details == 'no') { ?>
@@ -73,7 +85,7 @@ $hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'gene
                 <?php }
                 if ($hide_calendar_details == 'no') { ?>
                     <div class="mep-default-sidrbar-calender-btn">
-                        <?php do_action('mep_event_add_calender'); ?>
+                        <?php do_action('mep_event_add_calender',get_the_id()); ?>
                     </div>
                 <?php } ?>
             </div>

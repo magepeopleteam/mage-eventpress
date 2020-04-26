@@ -5910,18 +5910,10 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             $default = isset( $option['default'] ) ? $option['default'] : "";
             $editor_settings= isset( $option['editor_settings'] ) ? $option['editor_settings'] : array('textarea_name'=>$field_name);
 
-            //echo '<pre>'.var_export($option, true).'</pre>';
-
-
             $value 			= isset( $option['value'] ) ? $option['value'] : "";
-
-            //echo '<pre>'.var_export($value, true).'</pre>';
             $value = !empty($value) ? $value : $default;
 
             $field_id       = $id;
-            //$field_name     = !empty( $field_name ) ? $field_name : $id;
-
-            //echo '<pre>'.var_export($value, true).'</pre>';
 
             if(!empty($conditions)):
 

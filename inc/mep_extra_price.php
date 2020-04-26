@@ -31,11 +31,6 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $validate               = mep_cart_ticket_type('validation_data', $total_price,$product_id);
 
 
-
-// echo '<pre>';
-// print_r($event_extra);
-// die();
-
     /**
      * Now Store the datas into Cart Session
      */

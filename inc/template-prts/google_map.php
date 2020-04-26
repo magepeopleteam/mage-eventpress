@@ -1,14 +1,14 @@
 <?php 
 add_action('mep_event_map','mep_event_google_map');	
-function mep_event_google_map(){
+function mep_event_google_map($event_id){
 global $post,$event_meta,$user_api;
 
 $map_type       = mep_get_option( 'mep_google_map_type', 'general_setting_sec', 'iframe');	
-$location_sts   = get_post_meta($post->ID,'mep_org_address',true) ? get_post_meta($post->ID,'mep_org_address',true) : '';
+$location_sts   = get_post_meta($event_id,'mep_org_address',true) ? get_post_meta($event_id,'mep_org_address',true) : '';
 ob_start();
 do_action('mep_event_before_google_map');
 if($location_sts){
-	$org_arr 	= get_the_terms( $post->ID, 'mep_org' );
+	$org_arr 	= get_the_terms( $event_id, 'mep_org' );
 	$org_id 	= $org_arr[0]->term_id;
 	$lat 		= get_term_meta( $org_id, 'latitude', true );
 	$lon 		= get_term_meta( $org_id, 'longitude', true );
@@ -17,25 +17,17 @@ if($location_sts){
 	$lon 		= $event_meta['longitude'][0];
 }
 
-
-
-
-	 if($event_meta['mep_sgm'][0]){
+if($event_meta['mep_sgm'][0]){
 
 if($map_type=='iframe'){
 ?>
 <div class="mep-gmap-sec">
- <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo mep_get_event_locaion_item($post->ID,'mep_location_venue'); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style='width: 100%;min-height: 250px;'></iframe>
+ <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo mep_get_event_locaion_item($event_id,'mep_location_venue'); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style='width: 100%;min-height: 250px;'></iframe>
 </div>
 <?php
 }else{
 
-
-
-
-
  if($user_api){ 
-// echo $user_api;
  ?>
 		<div class="mep-gmap-sec">
 			<div id="map" class='mep_google_map'></div>
@@ -66,10 +58,7 @@ if($map_type=='iframe'){
 				  	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $user_api; ?>&callback=initMap"
 				    async defer></script>		
 <?php } } } 
-
 do_action('mep_event_after_google_map');
     $content = ob_get_clean();
-    echo apply_filters('mage_event_google_map', $content,$post->ID);
-
-
+    echo apply_filters('mage_event_google_map', $content,$event_id);
 }?>

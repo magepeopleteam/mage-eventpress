@@ -76,7 +76,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
         {
             $settings_fields = array(
                 'general_setting_sec' => array(
-
                     array(
                         'name' => 'mep_google_map_type',
                         'label' => __('Google Map Type?', 'mage-eventpress'),
@@ -115,7 +114,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'default' => 'no',
                         'options' =>  mep_event_template_name()
                     ),
-
                     array(
                         'name' => 'mep_event_price_show',
                         'label' => __('Show Event Price in List?', 'mage-eventpress'),
@@ -127,7 +125,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_date_list_in_event_listing',
                         'label' => __('Show Multi Date List in Event listing Page?', 'mage-eventpress'),
@@ -139,7 +136,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_product_type',
                         'label' => __('Enable Shipping Method on event?', 'mage-eventpress'),
@@ -190,8 +186,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'event_expire_datetime' => 'Event End Time'
                         )
                     ),
-
-
                     array(
                         'name' => 'mep_event_hide_organizer_list',
                         'label' => __('Hide Organizer Section from list ?', 'mage-eventpress'),
@@ -225,7 +219,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_end_time_list',
                         'label' => __('Hide Only End Time Section from list ?', 'mage-eventpress'),
@@ -237,8 +230,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
-
                     array(
                         'name' => 'mep_event_hide_date_from_details',
                         'label' => __('Hide Event Date Section from Details page ?', 'mage-eventpress'),
@@ -250,8 +241,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
-
                     array(
                         'name' => 'mep_event_hide_time_from_details',
                         'label' => __('Hide Event Time Section from Details page ?', 'mage-eventpress'),
@@ -263,7 +252,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_location_from_details',
                         'label' => __('Hide Event Location Section from Details page ?', 'mage-eventpress'),
@@ -275,8 +263,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
-
                     array(
                         'name' => 'mep_event_hide_total_seat_from_details',
                         'label' => __('Hide Event Total Seat Section from Details page ?', 'mage-eventpress'),
@@ -288,7 +274,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_org_from_details',
                         'label' => __('Hide "Org By" Section from Details page ?', 'mage-eventpress'),
@@ -300,7 +285,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_address_from_details',
                         'label' => __('Hide Event Address Section from Details page ?', 'mage-eventpress'),
@@ -312,7 +296,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_event_schedule_details',
                         'label' => __('Hide Event Schedule Section from Details page ?', 'mage-eventpress'),
@@ -324,7 +307,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_share_this_details',
                         'label' => __('Hide Event Share this Section from Details page ?', 'mage-eventpress'),
@@ -336,7 +318,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     ),
-
                     array(
                         'name' => 'mep_event_hide_calendar_details',
                         'label' => __('Hide Add Calendar Button from Details page ?', 'mage-eventpress'),
@@ -348,40 +329,27 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     )
-
-
-
-
-
                 ),
 
                 'email_setting_sec' => array(
-
-
                     array(
                         'name' => 'mep_email_form_name',
                         'label' => __('Email Form Name', 'mage-eventpress'),
                         'desc' => __('Email Form Name', 'mage-eventpress'),
                         'type' => 'text'
                     ),
-
                     array(
                         'name' => 'mep_email_form_email',
                         'label' => __('Form Email', 'mage-eventpress'),
                         'desc' => __('Form Email', 'mage-eventpress'),
                         'type' => 'text'
                     ),
-
                     array(
                         'name' => 'mep_email_subject',
                         'label' => __('Email Subject', 'mage-eventpress'),
                         'desc' => __('Email Subject', 'mage-eventpress'),
                         'type' => 'text'
                     ),
-
-
-
-
                     array(
                         'name' => 'mep_confirmation_email_text',
                         'label' => __('Confirmation Email Text', 'mage-eventpress'),
@@ -392,8 +360,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 ),
 
                 'label_setting_sec' => array(
-
-
                     array(
                         'name' => 'mep_event_ticket_type_text',
                         'label' => __('Ticket Type Table Label', 'mage-eventpress'),
@@ -414,9 +380,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc' => __('Enter the text which you want to display in Cart button in event details page.', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => 'Register This Event'
-
                     ),
-
                     array(
                         'name' => 'mep_calender_btn_text',
                         'label' => __('Add Calendar Button Label', 'mage-eventpress'),
@@ -424,7 +388,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => 'ADD TO YOUR CALENDAR'
                     ),
-
                     array(
                         'name' => 'mep_share_text',
                         'label' => __('Social Share Label', 'mage-eventpress'),
@@ -432,7 +395,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => 'Share This Event'
                     ),
-
                     array(
                         'name' => 'mep_organized_by_text',
                         'label' => __('Organized By:', 'mage-eventpress'),
@@ -440,7 +402,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => ''
                     ),
-
                     array(
                         'name' => 'mep_location_text',
                         'label' => __('Location:', 'mage-eventpress'),
@@ -455,7 +416,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => ''
                     ),
-
                     array(
                         'name' => 'mep_event_location_text',
                         'label' => __('Event Location:', 'mage-eventpress'),
@@ -567,8 +527,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => ''
                     ),
-
-
                     array(
                         'name' => 'mep_left_text',
                         'label' => __('Left', 'mage-eventpress'),
@@ -590,8 +548,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => 'Please select atleast one(1) ticket Quantity !'
                     ),
-
-
                 ),
 
                 'style_setting_sec' => array(
@@ -600,63 +556,54 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'label' => __('Base Color', 'mage-eventpress'),
                         'desc' => __('Select a Basic Color, It will chanage the icon background color, border color', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_title_bg_color',
                         'label' => __('Label Background Color', 'mage-eventpress'),
                         'desc' => __('Select a Color Label Background', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_title_text_color',
                         'label' => __('Label Text Color', 'mage-eventpress'),
                         'desc' => __('Select a Color Label Text', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_cart_btn_bg_color',
                         'label' => __('Cart Button Background Color', 'mage-eventpress'),
                         'desc' => __('Select a color for Cart Button Background', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_cart_btn_text_color',
                         'label' => __('Cart Button Text Color', 'mage-eventpress'),
                         'desc' => __('Select a color for Cart Button Text', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_calender_btn_bg_color',
                         'label' => __('Calender Button Background Color', 'mage-eventpress'),
                         'desc' => __('Select a color for Calender Button Background', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_calender_btn_text_color',
                         'label' => __('Calender Button Text Color', 'mage-eventpress'),
                         'desc' => __('Select a color for Calender Button Text', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_faq_title_bg_color',
                         'label' => __('FAQ Title Background Color', 'mage-eventpress'),
                         'desc' => __('Select a color for FAQ title Background', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                     array(
                         'name' => 'mep_faq_title_text_color',
                         'label' => __('FAQ Title Text Color', 'mage-eventpress'),
                         'desc' => __('Select a color for FAQ Title Text', 'mage-eventpress'),
                         'type' => 'color',
-
                     ),
                 )
 
@@ -668,7 +615,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 
         function plugin_page()
         {
-            echo '<div class="wrap">';
+            echo '<div class="wrap mage_settings_panel_wrap">';
 
             $this->settings_api->show_navigation();
             $this->settings_api->show_forms();

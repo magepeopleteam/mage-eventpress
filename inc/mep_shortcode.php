@@ -10,7 +10,7 @@ add_shortcode('event-city-list', 'mep_event_city_list_shortcode_func');
 function mep_event_city_list_shortcode_func($atts, $content = null)
 {
     ob_start();
-    echo mep_event_get_event_city_list();
+     echo mep_event_get_event_city_list();
     return ob_get_clean();
 }
 
@@ -351,6 +351,47 @@ function mep_expire_event_list($atts, $content = null)
 }
 
 
+
+add_shortcode('event-add-cart-section', 'mep_event_add_to_cart_section');
+function mep_event_add_to_cart_section($atts, $content = null)
+{
+    $defaults = array(
+        "event" => "0"
+    );
+    $params = shortcode_atts($defaults, $atts);
+    $event = $params['event'];
+    if($event > 0){
+        do_action('mep_shortcode_add_cart_section',$event);                
+    }
+}
+
+
+
+add_shortcode('event-speaker-list', 'mep_event_speaker_list_shortcode_section');
+function mep_event_speaker_list_shortcode_section($atts, $content = null)
+{
+    $defaults = array(
+        "event" => "0"
+    );
+    $params = shortcode_atts($defaults, $atts);
+    $event = $params['event'];
+    if($event > 0){
+        do_action('mep_event_speakers_list_shortcode_template',$event);                
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 add_shortcode('event-list-onepage', 'mep_event_onepage_list');
 function mep_event_onepage_list($atts, $content = null)
 {
@@ -481,7 +522,6 @@ function mep_event_onepage_list($atts, $content = null)
             </div>
         </div>
     </div>
-
 <?php
     $content = ob_get_clean();
     return $content;

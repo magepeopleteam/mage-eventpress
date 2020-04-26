@@ -731,9 +731,10 @@ button.mep-cat-control.mixitup-control-active {
 .mep_speaker_thumbnail img {
     display: inline-block;
     border-radius: 100%;
-    min-height: 280px;
+    height: 280px;
     border: 5px solid #ddd;
     padding: 3px;
+    width: 280px;
 }
 
 .mep_speaker_name {

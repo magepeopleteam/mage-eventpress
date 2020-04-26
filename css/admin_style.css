@@ -220,10 +220,56 @@ ul.mep_rt_settings_list li {
     border-bottom: 1px solid #ddd;
     padding: 5px 0 10px;
 }
-#wpbody-content .metabox-holder {
+.mage_settings_panel_wrap .metabox-holder {
   padding-top: 10px;
   background: #fff;
   padding: 20px;
-  border: 5px solid #ddd;
-  border-top: 0px;
+  border: 5px solid #0071a1;
+  /* border-top: 0px; */
+}
+
+.mage_settings_panel_wrap .nav-tab {
+  float: left;
+  border: 2px solid #0e678c;
+  border-bottom: none;
+  margin-left: .5em;
+  padding: 5px 10px;
+  font-size: 14px;
+  line-height: 1.71428571;
+  font-weight: 600;
+  background: #0071a1;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mage_settings_panel_wrap .nav-tab.nav-tab-active {
+  background: #5ea8c8;
+}
+.mage_settings_panel_wrap table th {
+  width: 330px;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 10px 0 0;
+  font-size: 13px;
+}
+
+.mage_settings_panel_wrap table td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.mage_settings_panel_wrap p.submit {
+  text-align: right;
+}
+
+.mage_settings_panel_wrap p.submit input {
+  font-size: 16px;
+  padding: 5px 30px;
+  border-radius: 0;
+}
+.mage_settings_panel_wrap .metabox-holder h2 {
+  border-bottom: 2px solid #0071a1;
+  font-size: 20px;
+  padding: 15px;
+  background: #ddd;
+  margin-bottom: 30px;
+  margin-top: 10px;
 }

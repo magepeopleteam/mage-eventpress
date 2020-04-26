@@ -359,10 +359,12 @@ function mep_event_add_to_cart_section($atts, $content = null)
         "event" => "0"
     );
     $params = shortcode_atts($defaults, $atts);
-    $event = $params['event'];
+    $event = $params['event'];   
+    ob_start();
     if($event > 0){
-        do_action('mep_shortcode_add_cart_section',$event);                
+       echo mep_shortcode_add_cart_section_html($event);            
     }
+    return ob_get_clean();
 }
 
 
@@ -375,9 +377,11 @@ function mep_event_speaker_list_shortcode_section($atts, $content = null)
     );
     $params = shortcode_atts($defaults, $atts);
     $event = $params['event'];
+    ob_start();
     if($event > 0){
-        do_action('mep_event_speakers_list_shortcode_template',$event);                
+        echo mep_shortcode_speaker_list_html($event);              
     }
+    return ob_get_clean();
 }
 
 

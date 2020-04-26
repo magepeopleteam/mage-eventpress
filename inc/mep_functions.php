@@ -2737,7 +2737,7 @@ function mep_single_page_js_script($event_id){
                     jQuery('#rowtotal').val(total);
                 }).change(); //trigger change event on page load
                 <?php
-                $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true);
+                $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
                 if ($mep_event_ticket_type) {
                     $count = 1;                  
                     $event_more_date[0]['event_more_start_date']    = date('Y-m-d', strtotime(get_post_meta($event_id, 'event_start_date', true)));
@@ -2772,7 +2772,7 @@ function mep_single_page_js_script($event_id){
                                     jQuery('#dadainfo_<?php echo $count; ?>').append(
                                         jQuery('<div/>')
                                         .attr("id", "newDiv" + i)
-                                        .html("<?php do_action('mep_reg_fields', $start_date); ?>")
+                                        .html("<?php do_action('mep_reg_fields', $start_date, $event_id); ?>")
                                     );
                                 }
                                 jQuery('#eventpxtp_<?php echo $count; ?>').on('change', function() {
@@ -2794,7 +2794,7 @@ function mep_single_page_js_script($event_id){
                                         jQuery('#dadainfo_<?php echo $count; ?>').append(
                                             jQuery('<div/>')
                                             .attr("id", "newDiv" + i)
-                                            .html("<?php do_action('mep_reg_fields', $start_date); ?>")
+                                            .html("<?php do_action('mep_reg_fields', $start_date, $event_id); ?>")
                                         );
                                     }
                                 });
@@ -2808,5 +2808,5 @@ function mep_single_page_js_script($event_id){
 });
 </script>
 <?php
-  echo ob_get_clean();
+echo ob_get_clean();
 }

@@ -7,7 +7,13 @@
  add_action('mep_event_speakers_list','mep_display_speaker_list');
  function mep_display_speaker_list($event_id){
     $speakers_id = get_post_meta($event_id,'mep_event_speakers_list',true) ? maybe_unserialize(get_post_meta($event_id,'mep_event_speakers_list',true)) : array();
+    $speaker_icon               = get_post_meta($event_id,'mep_event_speaker_icon',true) ? get_post_meta($event_id,'mep_event_speaker_icon',true) : 'fa fa-microphone';
+    $speaker_label              = get_post_meta($event_id,'mep_speaker_title',true) ? get_post_meta($event_id,'mep_speaker_title',true) : __("Speaker's","mage-eventpress");
+    
     if(is_array($speakers_id) && sizeof($speakers_id) > 0){
+        ?>
+ <h3><?php ?><i class="<?php echo $speaker_icon; ?>"></i> <?php echo $speaker_label; ?></h3>
+        <?php
         echo '<ul>';
         foreach($speakers_id as $speakers){
         ?>

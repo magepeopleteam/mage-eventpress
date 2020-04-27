@@ -1,9 +1,9 @@
 <?php
 /**
-* Plugin Name: Woocommerce Events Manager (New)
+* Plugin Name: Woocommerce Events Manager
 * Plugin URI: http://mage-people.com
 * Description: A Complete Event Solution for WordPress by MagePeople..
-* Version: 3.2.3
+* Version: 3.2.4
 * Author: MagePeople Team
 * Author URI: http://www.mage-people.com/
 * Text Domain: mage-eventpress

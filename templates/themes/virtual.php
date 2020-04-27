@@ -12,8 +12,6 @@ $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_deta
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
-$speaker_icon               = get_post_meta(get_the_id(),'mep_event_speaker_icon',true) ? get_post_meta(get_the_id(),'mep_event_speaker_icon',true) : 'fa fa-microphone';
-$speaker_label              = get_post_meta(get_the_id(),'mep_speaker_title',true) ? get_post_meta(get_the_id(),'mep_speaker_title',true) : __("Speaker's","mage-eventpress");
 ?>
 
 <div class="mep-default-theme mep_flex default_theme">
@@ -46,8 +44,7 @@ $speaker_label              = get_post_meta(get_the_id(),'mep_speaker_title',tru
                     <i class="fa fa-link"></i> <?php do_action('mep_event_organizer'); ?>
                 </div>
             <?php } if($speaker_status == 'yes'){ ?>
-                <div class="mep-default-sidebar-speaker-list">
-                <h3><?php ?><i class="<?php echo $speaker_icon; ?>"></i> <?php echo $speaker_label; ?></h3>
+                <div class="mep-default-sidebar-speaker-list">               
                     <?php do_action('mep_event_speakers_list',get_the_id()); ?>
                 </div>
             <?php 

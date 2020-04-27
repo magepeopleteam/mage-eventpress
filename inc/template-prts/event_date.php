@@ -87,7 +87,7 @@ function mep_date_in_default_theme($event_id){
     ?>
     <h3><i class="fa fa-calendar"></i> <?php _e('Event Schedule Details', 'mage-eventpress'); ?></h3>
     <?php
-    echo '<ul>';
+    if(sizeof($more_date) > 2){ echo '<ul id="mep_event_date_sch">'; }else{ echo '<ul>'; }
 
     if ($recurring == 'yes') {
         if (strtotime(current_time('Y-m-d H:i')) < strtotime($start_datetime)) {
@@ -147,6 +147,12 @@ function mep_date_in_default_theme($event_id){
         }
     }
     echo '</ul>';
+    if(sizeof($more_date) > 2){
+    ?>
+    <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php _e('View All Date','mage-eventpress'); ?></p>
+    <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php _e('Hide All Date','mage-eventpress'); ?></p>
+    <?php
+    }
 }
 
 

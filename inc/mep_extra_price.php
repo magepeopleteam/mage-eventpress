@@ -30,7 +30,6 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $user                   = $form_position == 'details_page' ? mep_save_attendee_info_into_cart($product_id) : array();
     $validate               = mep_cart_ticket_type('validation_data', $total_price,$product_id);
 
-
     /**
      * Now Store the datas into Cart Session
      */

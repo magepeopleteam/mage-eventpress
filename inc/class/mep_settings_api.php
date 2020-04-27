@@ -1,13 +1,7 @@
 <?php
 
 /**
- * weDevs Settings API wrapper class
- *
- * @version 1.3 (27-Sep-2016)
- *
- * @author Tareq Hasan <tareq@weDevs.com>
- * @link https://tareq.co Tareq Hasan
- * @example example/oop-example.php How to use the class
+ * MagePeople Settings API wrapper class
  */
 if ( !class_exists( 'MAGE_Setting_API' ) ):
 class MAGE_Setting_API {

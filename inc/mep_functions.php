@@ -8,6 +8,14 @@ function mep_language_load(){
     load_plugin_textdomain( 'mage-eventpress', false, $plugin_dir );
 }
 
+function mep_get_builder_version(){
+  if(is_plugin_active( 'woocommerce-event-manager-addon-form-builder/addon-builder.php' )){
+    $data = get_plugin_data( ABSPATH . "wp-content/plugins/woocommerce-event-manager-addon-form-builder/addon-builder.php", false, false );
+    return $data['Version'];
+  }else{
+    return 0;
+  }
+}
 
 function mep_check_builder_status(){
     $version = '3.2';
@@ -2756,7 +2764,7 @@ function mep_single_page_js_script($event_id){
                         $start_date = date('Y-m-d H:i', strtotime($event_date['event_more_start_date'] . ' ' . $event_date['event_more_start_time']));
                         if (strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)) {
                             foreach ($mep_event_ticket_type as $field) {
-                                $qm = $field['option_name_t'];
+                                $ticket_type = $field['option_name_t'];
                             ?>
                                 var inputs = jQuery("#ttyttl").html() || 0;
                                 var inputs = jQuery('#eventpxtp_<?php echo $count; ?>').val() || 0;
@@ -2773,7 +2781,7 @@ function mep_single_page_js_script($event_id){
                                     jQuery('#dadainfo_<?php echo $count; ?>').append(
                                         jQuery('<div/>')
                                         .attr("id", "newDiv" + i)
-                                        .html("<?php do_action('mep_reg_fields', $start_date, $event_id); ?>")
+                                        .html("<?php do_action('mep_reg_fields', $start_date, $event_id, $ticket_type); ?>")
                                     );
                                 }
                                 jQuery('#eventpxtp_<?php echo $count; ?>').on('change', function() {
@@ -2795,7 +2803,7 @@ function mep_single_page_js_script($event_id){
                                         jQuery('#dadainfo_<?php echo $count; ?>').append(
                                             jQuery('<div/>')
                                             .attr("id", "newDiv" + i)
-                                            .html("<?php do_action('mep_reg_fields', $start_date, $event_id); ?>")
+                                            .html("<?php do_action('mep_reg_fields', $start_date, $event_id, $ticket_type); ?>")
                                         );
                                     }
                                 });
@@ -2810,4 +2818,26 @@ function mep_single_page_js_script($event_id){
 </script>
 <?php
 echo ob_get_clean();
+}
+
+add_action('after-single-events','mep_single_page_script');
+function mep_single_page_script(){
+  ob_start();
+?>
+        <script>
+           // jQuery('.mep-more-date-lists<?php echo $event_id; ?>, #hide_event_schdule<?php echo $event_id; ?>').hide();
+            
+            jQuery('#mep_single_view_all_date').click(function(){
+                 jQuery(this).hide()
+                 jQuery('#mep_event_date_sch').addClass('mep_view_all_date');
+                 jQuery('#mep_single_hide_all_date').show();
+            });
+            jQuery('#mep_single_hide_all_date').click(function(){
+                 jQuery(this).hide()
+                 jQuery('#mep_event_date_sch').removeClass('mep_view_all_date');
+                 jQuery('#mep_single_view_all_date').show()
+            });            
+        </script>
+<?php
+  echo ob_get_clean();
 }

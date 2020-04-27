@@ -749,6 +749,30 @@ button.mep-cat-control.mixitup-control-active {
     padding: 0;
 }
 
+#mep_single_hide_all_date{
+    display: none;
+}
+
+#mep_event_date_sch {
+    height: 270px;
+    overflow: hidden;
+}
+.mep_view_all_date{
+    height: auto!important;
+}
+
+span.mep_single_date_btn {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}
+.mep-tem3-title-sec.mep_single_date_btn {
+    text-align: center;
+    color: #fff;
+    padding: 5px;
+    cursor: pointer;
+}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
     /********Default Theme***********/

@@ -20,7 +20,7 @@ function mep_display_event_loop_list($event_id,$columnNumber,$style){
                 $hide_time_list         = mep_get_option('mep_event_hide_time_list', 'general_setting_sec', 'no');
                 $hide_only_end_time_list = mep_get_option('mep_event_hide_end_time_list', 'general_setting_sec', 'no');
                 $recurring              = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';                
-                $event_type              = get_post_meta(get_the_id(),'mep_event_type',true) ? get_post_meta(get_the_id(),'mep_event_type',true) : '';
+                $event_type              = get_post_meta(get_the_id(),'mep_event_type',true) ? get_post_meta(get_the_id(),'mep_event_type',true) : 'offline';
 
 ob_start();
 ?>
@@ -79,6 +79,7 @@ ob_start();
                                             </div>
                                         </li>
                                     <?php }
+                                    if($event_type != 'online'){
                                     if ($hide_location_list == 'no') { ?>
 
                                         <li>
@@ -91,7 +92,7 @@ ob_start();
                                                 <h6><?php mep_get_event_city($event_id); ?></h6>
                                             </div>
                                         </li>
-                                    <?php }
+                                    <?php } }
                                     if ($hide_time_list == 'no') { ?>
                                         <li>
                                             <div class="evl-ico"><i class="fa fa-calendar"></i></div>

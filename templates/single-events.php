@@ -35,8 +35,8 @@ $currency_pos = get_option('woocommerce_currency_pos');
     <?php do_action('after-single-events'); ?>
 </div>
 <?php 
-$builder_version = mep_get_builder_version();
-if($builder_version < 3.5){
+echo $builder_version = mep_get_builder_version();
+if($builder_version < 3.5.0){
 ?>
 <script>
 jQuery('#quantity_5a7abbd1bff73').click(function() {

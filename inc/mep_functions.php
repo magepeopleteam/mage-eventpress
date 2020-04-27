@@ -2746,8 +2746,10 @@ function mep_single_page_js_script($event_id){
                     jQuery('#rowtotal').val(total);
                 }).change(); //trigger change event on page load
                 <?php
-                $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
-                if ($mep_event_ticket_type) {
+               $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
+//This is if no ticket type
+                if (sizeof($mep_event_ticket_type) > 0 ) {
+                  //This is if get ticket type
                     $count = 1;                  
                     $event_more_date[0]['event_more_start_date']    = date('Y-m-d', strtotime(get_post_meta($event_id, 'event_start_date', true)));
                     $event_more_date[0]['event_more_start_time']    = date('H:i', strtotime(get_post_meta($event_id, 'event_start_time', true)));
@@ -2819,6 +2821,8 @@ function mep_single_page_js_script($event_id){
 <?php
 echo ob_get_clean();
 }
+
+
 
 add_action('after-single-events','mep_single_page_script');
 function mep_single_page_script(){

@@ -35,8 +35,8 @@ $currency_pos = get_option('woocommerce_currency_pos');
     <?php do_action('after-single-events'); ?>
 </div>
 <?php 
-echo $builder_version = mep_get_builder_version();
-if($builder_version < 3.5.0){
+$builder_version = mep_get_builder_version();
+if($builder_version < 3.5){
 ?>
 <script>
 jQuery('#quantity_5a7abbd1bff73').click(function() {
@@ -135,7 +135,7 @@ if($recurring == 'yes'){
 }
 
 foreach($event_multi_date as $event_date){
-$start_date = date('Y-m-d H:i',strtotime($event_date['event_more_start_date'].' '.$event_date['event_more_start_time']));
+    $start_date = $recurring == 'yes' ? date('Y-m-d H:i:s', strtotime($event_date['event_more_start_date'] . ' ' . $event_date['event_more_start_time'])) : date('Y-m-d H:i:s', strtotime(mep_get_event_expire_date($event_id)));
 if(strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)){
 foreach ( $mep_event_ticket_type as $field ) {
 $qm = $field['option_name_t'];

@@ -2676,6 +2676,14 @@ function mep_cart_display_user_list($user_info){
     return ob_get_clean();
 }
 
+function mep_get_event_expire_date($event_id){
+  $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+  $event_expire_on    = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
+  $event_start_datetime = get_post_meta($event_id, 'event_start_datetime', true);
+  $event_expire_datetime = get_post_meta($event_id, 'event_expire_datetime', true);
+  $expire_date = $event_expire_on == 'event_expire_datetime' ? $event_expire_datetime : $event_start_datetime;
+return $expire_date;
+}
 
 
 add_action('mep_event_single_template_end','mep_single_page_js_script');
@@ -2763,7 +2771,9 @@ function mep_single_page_js_script($event_id){
                         $event_multi_date                               = $event_more_date;
                     }
                     foreach ($event_multi_date as $event_date) {
-                        $start_date = date('Y-m-d H:i', strtotime($event_date['event_more_start_date'] . ' ' . $event_date['event_more_start_time']));
+                      
+                        $start_date = $recurring == 'yes' ? date('Y-m-d H:i:s', strtotime($event_date['event_more_start_date'] . ' ' . $event_date['event_more_start_time'])) : date('Y-m-d H:i:s', strtotime(mep_get_event_expire_date($event_id)));
+                        
                         if (strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)) {
                             foreach ($mep_event_ticket_type as $field) {
                                 $ticket_type = $field['option_name_t'];

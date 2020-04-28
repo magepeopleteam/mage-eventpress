@@ -44,12 +44,10 @@ var $form = jQuery('form'); //on a real app it would be better to have a class o
 var $totalQuant = jQuery('#quantity_5a7abbd1bff73', $form);
 jQuery('#quantity_5a7abbd1bff73', $form).change(calculateTotal);
 
-
 function calculateTotal() {
    var sum = jQuery('#rowtotal').val();
    jQuery('#usertotal').html('<?php if($currency_pos=="left"){ echo get_woocommerce_currency_symbol(); } ?>' + sum * parseInt( $totalQuant.val() || 0, 10) + "<?php if($currency_pos=="right"){ echo get_woocommerce_currency_symbol(); } ?>");
 }
-
 });
 
 

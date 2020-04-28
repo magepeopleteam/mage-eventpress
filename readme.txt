@@ -4,7 +4,7 @@ Tags: event, woocomerce events manager, events manager, Wordpress Events plugin,
 Requires at least: 5.3
 Stable tag: trunk
 Version: 2.1.3
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 7.0
 WC requires at least: 3.0
 WC tested up to: 4.0
@@ -141,7 +141,7 @@ To Show the Event Only Title Style. example 👉[Title Style Demo](https://demo.
 `
 
 **Event Carousal:**  
-To Show the Event Carousal. example 👉[Title Style Demo](https://demo.vaincode.com/mage-event/event-carousal/)👈:   
+To Show the Event Carousal. example 👉[Event Carousal Demo](https://demo.vaincode.com/mage-event/event-carousal/)👈:   
 
 `
 [event-list style='grid' pagination='carousal' carousal-dots='yes' carousal-nav='yes' column=3]
@@ -177,7 +177,7 @@ By default there is no pagination with the event list but if you want to show pa
 `
 
 **Filter By City:**  
-Filter Event by City. example 👉[Title Style Demo](https://demo.vaincode.com/mage-event/event-list-filter-by-city/)👈:   
+Filter Event by City. example 👉[Filter By City Demo](https://demo.vaincode.com/mage-event/event-list-filter-by-city/)👈:   
 
 `
 [event-list style='grid' city='Dhaka' column=3 show=8]
@@ -185,7 +185,7 @@ Filter Event by City. example 👉[Title Style Demo](https://demo.vaincode.com/m
 `
 
 **Filter By Country:**  
-Filter Event by Country.example 👉[Title Style Demo](https://demo.vaincode.com/mage-event/event-list-filter-by-country/)👈:   
+Filter Event by Country.example 👉[Filter By Country Demo](https://demo.vaincode.com/mage-event/event-list-filter-by-country/)👈:   
 
 `
 [event-list style='grid' country='India' column=3 show=8]
@@ -208,10 +208,24 @@ You can sort event list by event start datetime. By default it showing as Assend
 
 `
 
-### Event City List ShortCode:
+### Event Add To Cart Section ShortCode:
+You can show Event Cart Section with Ticket type & extra servive list anywhere in your website by using the below shortcode. example 👉[See Demo](https://demo.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
+`
+[event-add-cart-section event=EventID]
 
 `
+
+### Event City List ShortCode:
+Display the City List which is used in the event anywhere in your website by using below shortcode. example 👉[City List Demo](https://demo.vaincode.com/mage-event/event-city-list/)👈:  
+`
 [event-city-list]
+
+`
+
+### Event Speaker List ShortCode:
+Display Event Speaker List Any Post or Page by using the below Shortcode.. example 👉[View Demo](https://demo.vaincode.com/mage-event/speaker-list/)👈:  
+`
+[event-speaker-list event=EventID]
 
 `
 
@@ -505,3 +519,21 @@ Fixed Grid style broken issue
 Date Timezone Wrong name Display issue fixed
 Calendar No Event Display Issue Fixed
 11 April 2020*
+
+
+= 3.2.4 =
+* Update Release:
+Code Optimized & Improved
+Expire Event List Not showing issue fixed
+Wrong Download Button Removed from order list
+Wrong Timezone name show into Date issue fixed
+Virtual Event Theme Added
+Speaker List Added with Speaker Template
+Speaker List Shortcode Added
+Event Cart Section Shortcode Added
+Custom CSS Code section added into Event Settings 
+Event Settings Page Design Improved
+Event Location & Date Show/Hide from Order Details and Email Body option added into the event settings
+Multi Date Expand/Collapse option added into Event Details Page.
+
+28 April 2020*

@@ -907,12 +907,18 @@ function mep_template_file_path($file_name){
     return $the_file_path;
 }
 
+
+function mep_template_part_file_path($file_name){
+      $the_file_path       = plugin_dir_path( __DIR__ ) . 'inc/template-prts/'.$file_name;  
+    return $the_file_path;
+}
+
   
   function mep_load_events_templates($template) {
     global $post;
     
     if ($post->post_type == "mep_events"){
-      $template = mep_template_file_path('single-events.php');
+      $template = mep_template_part_file_path('single-events.php');
       return $template;
     }  
 
@@ -922,7 +928,7 @@ function mep_template_file_path($file_name){
     }  
 
     if ($post->post_type == "mep_events_attendees"){
-      $template = mep_template_file_path('single-mep_events_attendees.php');
+      $template = mep_template_part_file_path('single-mep_events_attendees.php');
       return $template;          
     }
   
@@ -949,9 +955,6 @@ function mep_template_file_path($file_name){
   ?>
   <ul class='mep-social-share'>
          <li> <a data-toggle="tooltip" title="" class="facebook" onclick="window.open('https://www.facebook.com/sharer.php?u=<?php the_permalink(); ?>','Facebook','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;" href="http://www.facebook.com/sharer.php?u=<?php the_permalink(); ?>" data-original-title="Share on Facebook"><i class="fa fa-facebook"></i></a></li>
-  
-          <!-- <li><a data-toggle="tooltip" title="" class="gpuls" onclick="window.open('https://plus.google.com/share?url=<?php the_permalink(); ?>','Google plus','width=585,height=666,left='+(screen.availWidth/2-292)+',top='+(screen.availHeight/2-333)+''); return false;" href="https://plus.google.com/share?url=<?php the_permalink(); ?>" data-original-title="Share on Google Plus"><i class="fa fa-google-plus"></i></a> </li>  -->                 
-  
           <li><a data-toggle="tooltip" title="" class="twitter" onclick="window.open('https://twitter.com/share?url=<?php the_permalink(); ?>&amp;text=<?php the_title(); ?>','Twitter share','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;" href="http://twitter.com/share?url=<?php the_permalink(); ?>&amp;text=<?php the_title(); ?>" data-original-title="Twittet it"><i class="fa fa-twitter"></i></a></li>
           </ul>
   <?php
@@ -2522,13 +2525,18 @@ function mep_hide_event_order_meta_in_emails( $meta ) {
 }
 add_filter( 'woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_data_from_thankyou_and_email', 10, 1 );
 function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta){
+  $hide_location_status  = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
+  $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
+  $hide_location  = $hide_location_status == 'yes' ? array('Location') : array();
+  $hide_date  = $hide_date_status == 'yes' ? array('Date') : array();
+  $default = array('event_id');
+  $default = array_merge($default,$hide_date);
+
+  $hide_them = array_merge($default,$hide_location);
+
     $temp_metas = [];
     foreach($formatted_meta as $key => $meta) {
-        if ( isset( $meta->key ) && ! in_array( $meta->key, [
-                'event_id'
-                // 'Location',
-                // 'Date'
-            ] ) ) {
+        if ( isset( $meta->key ) && ! in_array( $meta->key, $hide_them ) ) {
             $temp_metas[ $key ] = $meta;
         }
     }

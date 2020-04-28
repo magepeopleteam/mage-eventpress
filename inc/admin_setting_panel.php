@@ -328,6 +328,28 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'yes' => 'Yes',
                             'no' => 'No'
                         )
+                    ),
+                    array(
+                        'name' => 'mep_hide_location_from_order_page',
+                        'label' => __('Hide Location From Order Details & Email Section?', 'mage-eventpress'),
+                        'desc' => __('If you want to hide Location from order details section in the tankyou page & from the confirmation email body, Please select Yes. By default is: No.', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'no',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
+                    ),
+                    array(
+                        'name' => 'mep_hide_date_from_order_page',
+                        'label' => __('Hide Date From Order Details & Email Section?', 'mage-eventpress'),
+                        'desc' => __('If you want to hide Date from order details section in the tankyou page & from the confirmation email body, Please select Yes. By default is: No.', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'no',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
                     )
                 ),
 

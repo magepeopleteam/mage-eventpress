@@ -93,14 +93,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
 
             if ($hide_address_details == 'no') { ?>
                 <div class="mep-default-sidrbar-address">
-                    <ul>
-                        <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?></li>
-                        <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?></li>
-                        <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li>
-                        <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?></li>
-                        <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country'); ?>
-                        </li>
-                    </ul>
+                    <?php do_action('mep_event_address_list_sidebar',get_the_id()); ?>
                 </div>
             <?php }
             if ($hide_schedule_details == 'no') { ?>

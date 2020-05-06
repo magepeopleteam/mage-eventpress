@@ -9,9 +9,20 @@ ob_start();
 if($location_sts){
     $org_arr    = get_the_terms( $event_id, 'mep_org' );
     $org_id     = $org_arr[0]->term_id;
-        echo  get_term_meta( $org_id, 'org_location', true ); ?>,<?php if(get_term_meta( $org_id, 'org_street', true )){ ?><?php echo get_term_meta( $org_id, 'org_street', true ); ?>, <?php }  if(get_term_meta( $org_id, 'org_city', true )){ ?> <?php echo get_term_meta( $org_id, 'org_city', true ); ?>, <?php } if(get_term_meta( $org_id, 'org_state', true )){ echo get_term_meta( $org_id, 'org_state', true ); ?>, <?php } if(get_term_meta( $org_id, 'org_postcode', true )){ ?> <?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>, <?php } if(get_term_meta( $org_id, 'org_country', true )){ ?> <?php echo get_term_meta( $org_id, 'org_country', true ); ?> <?php } 
+        echo  get_term_meta( $org_id, 'org_location', true ); ?>,<?php if(get_term_meta( $org_id, 'org_street', true )){ ?><?php echo get_term_meta( $org_id, 'org_street', true ); ?>,
+<?php }  if(get_term_meta( $org_id, 'org_city', true )){ ?> <?php echo get_term_meta( $org_id, 'org_city', true ); ?>,
+<?php } if(get_term_meta( $org_id, 'org_state', true )){ echo get_term_meta( $org_id, 'org_state', true ); ?>,
+<?php } if(get_term_meta( $org_id, 'org_postcode', true )){ ?>
+<?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>,
+<?php } if(get_term_meta( $org_id, 'org_country', true )){ ?>
+<?php echo get_term_meta( $org_id, 'org_country', true ); ?> <?php } 
     }else{
-        echo $event_meta['mep_location_venue'][0]; ?>, <?php if($event_meta['mep_street'][0]){ ?><?php echo $event_meta['mep_street'][0]; ?>, <?php }  if($event_meta['mep_city'][0]){ ?> <?php echo $event_meta['mep_city'][0]; ?>, <?php } if($event_meta['mep_state'][0]){ ?> <?php echo $event_meta['mep_state'][0]; ?>, <?php } if($event_meta['mep_postcode'][0]){ ?> <?php echo $event_meta['mep_postcode'][0]; ?>, <?php } if($event_meta['mep_country'][0]){ ?> <?php echo $event_meta['mep_country'][0]; ?> <?php } 
+        echo $event_meta['mep_location_venue'][0]; ?>,
+<?php if($event_meta['mep_street'][0]){ ?><?php echo $event_meta['mep_street'][0]; ?>,
+<?php }  if($event_meta['mep_city'][0]){ ?> <?php echo $event_meta['mep_city'][0]; ?>,
+<?php } if($event_meta['mep_state'][0]){ ?> <?php echo $event_meta['mep_state'][0]; ?>,
+<?php } if($event_meta['mep_postcode'][0]){ ?> <?php echo $event_meta['mep_postcode'][0]; ?>,
+<?php } if($event_meta['mep_country'][0]){ ?> <?php echo $event_meta['mep_country'][0]; ?> <?php } 
      }
      
      
@@ -29,20 +40,24 @@ if($location_sts){
 $org_arr    = get_the_terms( $event_id, 'mep_org' );
 $org_id     = $org_arr[0]->term_id;
 ?>
- 		  <?php echo get_term_meta( $org_id, 'org_location', true ); ?>,
-          <?php if(get_term_meta( $org_id, 'org_street', true )){ ?><?php echo get_term_meta( $org_id, 'org_street', true ); ?>, <?php } ?> 
-          <?php if(get_term_meta( $org_id, 'org_city', true )){ ?> <?php echo get_term_meta( $org_id, 'org_city', true ); ?>, <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_state', true )){ ?> <?php echo get_term_meta( $org_id, 'org_state', true ); ?>, <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_postcode', true )){ ?> <?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>, <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_country', true )){ ?> <?php echo get_term_meta( $org_id, 'org_country', true ); ?> <?php } 
+<?php echo get_term_meta( $org_id, 'org_location', true ); ?>,
+<?php if(get_term_meta( $org_id, 'org_street', true )){ ?><?php echo get_term_meta( $org_id, 'org_street', true ); ?>,
+<?php } ?>
+<?php if(get_term_meta( $org_id, 'org_city', true )){ ?> <?php echo get_term_meta( $org_id, 'org_city', true ); ?>,
+<?php } ?>
+<?php if(get_term_meta( $org_id, 'org_state', true )){ ?> <?php echo get_term_meta( $org_id, 'org_state', true ); ?>,
+<?php } ?>
+<?php if(get_term_meta( $org_id, 'org_postcode', true )){ ?>
+<?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>, <?php } ?>
+<?php if(get_term_meta( $org_id, 'org_country', true )){ ?> <?php echo get_term_meta( $org_id, 'org_country', true ); ?> <?php } 
 }else{
 ?>
-		 <?php echo $event_meta['mep_location_venue'][0]; ?>,
-          <?php if($event_meta['mep_street'][0]){ ?><?php echo $event_meta['mep_street'][0]; ?>, <?php } ?> 
-          <?php if($event_meta['mep_city'][0]){ ?> <?php echo $event_meta['mep_city'][0]; ?>, <?php } ?>
-          <?php if($event_meta['mep_state'][0]){ ?> <?php echo $event_meta['mep_state'][0]; ?>, <?php } ?>
-          <?php if($event_meta['mep_postcode'][0]){ ?> <?php echo $event_meta['mep_postcode'][0]; ?>, <?php } ?>
-          <?php if($event_meta['mep_country'][0]){ ?> <?php echo $event_meta['mep_country'][0]; ?> <?php } 
+<?php echo $event_meta['mep_location_venue'][0]; ?>,
+<?php if($event_meta['mep_street'][0]){ ?><?php echo $event_meta['mep_street'][0]; ?>, <?php } ?>
+<?php if($event_meta['mep_city'][0]){ ?> <?php echo $event_meta['mep_city'][0]; ?>, <?php } ?>
+<?php if($event_meta['mep_state'][0]){ ?> <?php echo $event_meta['mep_state'][0]; ?>, <?php } ?>
+<?php if($event_meta['mep_postcode'][0]){ ?> <?php echo $event_meta['mep_postcode'][0]; ?>, <?php } ?>
+<?php if($event_meta['mep_country'][0]){ ?> <?php echo $event_meta['mep_country'][0]; ?> <?php } 
          
 	}
     $content = ob_get_clean();
@@ -58,20 +73,25 @@ if($location_sts){
 $org_arr = get_the_terms( $post->ID, 'mep_org' );
 $org_id = $org_arr[0]->term_id;
 ?>
- 		  <p><?php echo get_term_meta( $org_id, 'org_location', true ); ?>,</p>
-          <?php if(get_term_meta( $org_id, 'org_street', true )){ ?><p><?php echo get_term_meta( $org_id, 'org_street', true ); ?>,</p> <?php } ?> 
-          <?php if(get_term_meta( $org_id, 'org_city', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_city', true ); ?>,</p> <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_state', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_state', true ); ?>,</p> <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_postcode', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>,</p> <?php } ?>
-          <?php if(get_term_meta( $org_id, 'org_country', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_country', true ); ?></p> <?php } 
+<p><?php echo get_term_meta( $org_id, 'org_location', true ); ?>,</p>
+<?php if(get_term_meta( $org_id, 'org_street', true )){ ?><p>
+    <?php echo get_term_meta( $org_id, 'org_street', true ); ?>,</p> <?php } ?>
+<?php if(get_term_meta( $org_id, 'org_city', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_city', true ); ?>,
+</p> <?php } ?>
+<?php if(get_term_meta( $org_id, 'org_state', true )){ ?> <p><?php echo get_term_meta( $org_id, 'org_state', true ); ?>,
+</p> <?php } ?>
+<?php if(get_term_meta( $org_id, 'org_postcode', true )){ ?> <p>
+    <?php echo get_term_meta( $org_id, 'org_postcode', true ); ?>,</p> <?php } ?>
+<?php if(get_term_meta( $org_id, 'org_country', true )){ ?> <p>
+    <?php echo get_term_meta( $org_id, 'org_country', true ); ?></p> <?php } 
 }else{
 ?>
-		 <p><?php echo $event_meta['mep_location_venue'][0]; ?>,</p>
-          <?php if($event_meta['mep_street'][0]){ ?><p><?php echo $event_meta['mep_street'][0]; ?>,</p> <?php } ?> 
-          <?php if($event_meta['mep_city'][0]){ ?> <p><?php echo $event_meta['mep_city'][0]; ?>,</p> <?php } ?>
-          <?php if($event_meta['mep_state'][0]){ ?> <p><?php echo $event_meta['mep_state'][0]; ?>,</p> <?php } ?>
-          <?php if($event_meta['mep_postcode'][0]){ ?> <p><?php echo $event_meta['mep_postcode'][0]; ?>,</p> <?php } ?>
-          <?php if($event_meta['mep_country'][0]){ ?> <p><?php echo $event_meta['mep_country'][0]; ?></p> <?php } 
+<p><?php echo $event_meta['mep_location_venue'][0]; ?>,</p>
+<?php if($event_meta['mep_street'][0]){ ?><p><?php echo $event_meta['mep_street'][0]; ?>,</p> <?php } ?>
+<?php if($event_meta['mep_city'][0]){ ?> <p><?php echo $event_meta['mep_city'][0]; ?>,</p> <?php } ?>
+<?php if($event_meta['mep_state'][0]){ ?> <p><?php echo $event_meta['mep_state'][0]; ?>,</p> <?php } ?>
+<?php if($event_meta['mep_postcode'][0]){ ?> <p><?php echo $event_meta['mep_postcode'][0]; ?>,</p> <?php } ?>
+<?php if($event_meta['mep_country'][0]){ ?> <p><?php echo $event_meta['mep_country'][0]; ?></p> <?php } 
          
 	}
     $content = ob_get_clean();
@@ -91,7 +111,7 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_location', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_location_venue'][0]; ?></span>
+<span><?php echo $event_meta['mep_location_venue'][0]; ?></span>
 <?php
 }
 }
@@ -186,7 +206,7 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_street', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_street'][0]; ?></span>
+<span><?php echo $event_meta['mep_street'][0]; ?></span>
 <?php
 }
 }
@@ -202,7 +222,7 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_city', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_city'][0]; ?></span>
+<span><?php echo $event_meta['mep_city'][0]; ?></span>
 <?php
 }
 }
@@ -218,7 +238,7 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_state', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_state'][0]; ?></span>
+<span><?php echo $event_meta['mep_state'][0]; ?></span>
 <?php
 }
 }
@@ -234,7 +254,7 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_postcode', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_postcode'][0]; ?></span>
+<span><?php echo $event_meta['mep_postcode'][0]; ?></span>
 <?php
 }
 }
@@ -250,7 +270,37 @@ $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_country', true )."</span>";
 }else{
 ?>
-	<span><?php echo $event_meta['mep_country'][0]; ?></span>
+<span><?php echo $event_meta['mep_country'][0]; ?></span>
 <?php
 }
+}
+
+add_action('mep_event_address_list_sidebar','mep_event_address_list_sidebar_html');
+function mep_event_address_list_sidebar_html($event_id){
+    $location_sts   = get_post_meta($event_id,'mep_org_address',true);
+    $org_arr        = get_the_terms( $event_id, 'mep_org' );
+    $org_id         = $org_arr[0]->term_id;    
+
+    $venue = !empty($location_sts) ? get_term_meta( $org_id, 'org_location', true ) : get_post_meta($event_id,'mep_location_venue',true);
+    $street = !empty($location_sts) ? get_term_meta( $org_id, 'org_street', true ) : get_post_meta($event_id,'mep_street',true);
+    $city = !empty($location_sts) ? get_term_meta( $org_id, 'org_city', true ) : get_post_meta($event_id,'mep_city',true);
+    $state = !empty($location_sts) ? get_term_meta( $org_id, 'org_state', true ) : get_post_meta($event_id,'mep_state',true);
+    $country = !empty($location_sts) ? get_term_meta( $org_id, 'org_country', true ) : get_post_meta($event_id,'mep_country',true);
+    ob_start();
+?>
+<ul>
+    <?php if($venue){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?>
+    </li> <?php } ?>
+    <?php if($street){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?>
+    </li><?php } ?>
+    <?php if($city){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li>
+    <?php } ?>
+    <?php if($state){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?>
+    </li><?php } ?>
+    <?php if($country){ ?><li><i class="fa fa-arrow-circle-right"></i>
+        <?php do_action('mep_event_location_country'); ?><?php } ?>
+    </li>
+</ul>
+<?php
+    echo ob_get_clean();
 }

@@ -71,12 +71,14 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
 
     </div>
     <div class="mep-default-sidebar">
+    <?php   if ($hide_location_details == 'no') { ?>
         <div class="mep-default-sidrbar-map">
             <h3>
                 <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : _e('Event Location:', 'mage-eventpress'); ?>
             </h3>
             <?php do_action('mep_event_map',get_the_id()); ?>
         </div>
+    <?php } ?>
         <div class="df-sidebar-part">
             <?php if ($hide_total_seat_details == 'no') { ?>
                 <div class="mep-default-sidrbar-price-seat">

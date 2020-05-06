@@ -25,3 +25,4 @@ require_once(dirname(__FILE__) . "/event_loop_title.php");
 require_once(dirname(__FILE__) . "/event_speakers_list.php");
 require_once(dirname(__FILE__) . "/shortcode_add_cart_section.php");
 require_once(dirname(__FILE__) . "/shortcode_speaker_list.php");
+require_once(dirname(__FILE__) . "/event_ticket_type_loop_list.php");

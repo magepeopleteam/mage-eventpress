@@ -19,7 +19,7 @@ $mep_reg_tshirtsize    = strip_tags($event_meta['mep_reg_tshirtsize'][0]);
 $global_template       = mep_get_option('mep_global_single_template', 'general_setting_sec', 'default-theme.php');
 $current_template      = $event_meta['mep_event_template'][0];
 $_current_template     = $current_template ? $current_template : $global_template;
-$currency_pos = get_option('woocommerce_currency_pos');
+$currency_pos           = get_option('woocommerce_currency_pos');
 ?>
 <div class="mep-events-wrapper">
     <?php

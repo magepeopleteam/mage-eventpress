@@ -144,17 +144,17 @@ a.button.remove-faq-row {
     margin: 0;
 }
 
-.switch {
+.post-type-mep_events .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 24px;
-      float: right;
+  float: right;
 }
 
-.switch input {display:none;}
+.post-type-mep_events .switch input {display:none;}
 
-.slider {
+.post-type-mep_events .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -166,7 +166,7 @@ a.button.remove-faq-row {
   transition: .4s;
 }
 
-.slider:before {
+.post-type-mep_events .slider:before {
 position: absolute;
     content: "";
     height: 17px;
@@ -178,26 +178,26 @@ position: absolute;
     transition: .4s;
 }
 
-input:checked + .slider {
+.post-type-mep_events  input:checked + .slider {
   background-color: #2196F3;
 }
 
-input:focus + .slider {
+.post-type-mep_events  input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+.post-type-mep_events  input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
 /* Rounded sliders */
-.slider.round {
+.post-type-mep_events .slider.round {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.post-type-mep_events .slider.round:before {
   border-radius: 50%;
 }
 

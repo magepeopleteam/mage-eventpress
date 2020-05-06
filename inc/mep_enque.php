@@ -14,10 +14,10 @@ function mep_add_admin_scripts($hook)
    */
   if ($hook == 'post-new.php' || $hook == 'post.php') {
     if ('mep_events' === $post->post_type) {
-      wp_enqueue_script('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'js/jquery-ui-timepicker-addon.js', array('jquery', 'jquery-ui-core'), 1, true);
-      wp_enqueue_script('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'js/jquery-ui-sliderAccess.js', array('jquery', 'jquery-ui-core', 'jquery-ui-timepicker-addon'), 1, true);
-      wp_enqueue_script('mep_datepicker', plugin_dir_url(__DIR__) . 'js/mep_datepicker.js', array('jquery', 'jquery-ui-core', 'jquery-ui-timepicker-addon'), 1, true);
-      wp_enqueue_style('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'css/jquery-ui-timepicker-addon.css', array());
+    //   wp_enqueue_script('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'js/jquery-ui-timepicker-addon.js', array('jquery', 'jquery-ui-core'), 1, true);
+    //  wp_enqueue_script('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'js/jquery-ui-sliderAccess.js', array('jquery', 'jquery-ui-core', 'jquery-ui-timepicker-addon'), 1, true);
+    //  wp_enqueue_script('mep_datepicker', plugin_dir_url(__DIR__) . 'js/mep_datepicker.js', array('jquery', 'jquery-ui-core', 'jquery-ui-timepicker-addon'), 1, true);
+    //  wp_enqueue_style('jquery-ui-timepicker-addon', plugin_dir_url(__DIR__) . 'css/jquery-ui-timepicker-addon.css', array());
       wp_enqueue_style('mep-jquery-ui-style', plugin_dir_url(__DIR__) . 'css/jquery-ui.css', array());
       wp_enqueue_script('gmap-scripts', plugin_dir_url(__DIR__) . 'js/mkb-admin.js', array('jquery', 'jquery-ui-core'), 1, true);
     }

@@ -847,15 +847,9 @@ add_filter('template_include', 'mep_city_template_chooser');
   // Getting event exprie date & time
   function mep_get_event_status($startdatetime){
   
-   // $default_timezone_val     = wp_timezone_string();
-    // date_default_timezone_set($default_timezone_val);
-  
     $current = current_time('Y-m-d H:i:s');
     $newformat = date('Y-m-d H:i:s',strtotime($startdatetime));
-  
-  
-  //   date_default_timezone_set(get_option('timezone_string'));
-  
+    
     $datetime1 = new DateTime($newformat);
     $datetime2 = new DateTime($current);
   
@@ -876,7 +870,13 @@ add_filter('template_include', 'mep_city_template_chooser');
   }
   
   
-  
+function mep_merge_saved_array($arr1,$arr2){
+    $output = [];
+    for ($i=0; $i<count($arr1); $i++) {
+        $output[$i] = array_merge($arr1[$i], $arr2[$i]);
+    }
+    return $output;
+}
   
   
   // Redirect to Checkout after successfuly event registration
@@ -2754,10 +2754,10 @@ function mep_single_page_js_script($event_id){
                         // price.closest('tr').find('.cart_total_price').html(sum + "â‚´");
 
                     });
-                    jQuery('#usertotal').html("<?php if ($currency_pos == "left") {
+                    jQuery('#usertotal').html("<?php if ($currency_pos == "left" || $currency_pos == 'left_space') {
                         echo get_woocommerce_currency_symbol();
-                    } ?>" + total + "<?php if ($currency_pos == "right") {
-                        get_woocommerce_currency_symbol();
+                    } ?>" + total + "<?php if ($currency_pos == "right" || $currency_pos == 'right_space') {
+                       echo get_woocommerce_currency_symbol();
                     } ?>");
                     jQuery('#rowtotal').val(total);
                 }).change(); //trigger change event on page load

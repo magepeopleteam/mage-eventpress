@@ -119,5 +119,16 @@ function mep_fw_meta_boxs()
     if($speaker_status == 'yes'){
        new AddMetaBox($events_speaker_list_meta_args);
     }
+
+
+
+
+
+
+
+
+
+
+
     
 }

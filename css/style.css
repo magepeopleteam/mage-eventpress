@@ -573,12 +573,13 @@ ul.event-custom-price li ul {
     padding: 10px 5px;
     text-align: left;
 }
-div.mep-default-feature-content p {
+div.mep-default-feature-content p, div.mep-default-feature-content ul, div.mep-default-feature-content ul li {
     color: #3a3a3a;
     font-size: 16px;
     padding: inherit;
     margin: 15px 0;
-    line-height: 20px;
+    line-height: 22px;
+    list-style: inherit;
 }
 .mep-events-wrapper p:not(.mep-events-wrapper .mep-default-feature-content p){
     line-height: 1.2;

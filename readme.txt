@@ -547,3 +547,13 @@ New Feature: You can hide Event Date & location from the cart section display
 New Filter & Action hooks added
 
 08 May 2020*
+
+
+= 3.2.6 =
+* Update Release:
+Code Optimized & Improved
+Fix Event Date issue in Event List For Multidate
+Event Location modified in event list
+WooCommerce Hidden Product issue fixed
+New Filter hooked added in Total Seat value
+24 May 2020*

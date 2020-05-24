@@ -12,7 +12,7 @@ if (!function_exists('mep_display_event_loop_list')) {
 
         $show_price_label       = mep_get_option('event-price-label', 'general_setting_sec', 'Price Starts from:');
         $event_meta             = get_post_custom($event_id);
-        $author_terms           = get_the_terms($event_id, 'mep_org');
+        $author_terms           = get_the_terms($event_id, 'mep_org') ? get_the_terms($event_id, 'mep_org') : [];
         $time                   = strtotime($event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0]);
         $newformat              = date_i18n('Y-m-d H:i:s', $time);
         $tt                     = get_the_terms($event_id, 'mep_cat');
@@ -73,19 +73,22 @@ if (!function_exists('mep_display_event_loop_list')) {
 
                     <div class="mep-list-footer">
                         <ul>
-                            <?php if ($hide_org_list == 'no') { ?>
+                            <?php 
+                            if ($hide_org_list == 'no') { 
+                                if(sizeof($author_terms) > 0) {    
+                            ?>
                                 <li>
                                     <div class="evl-ico"><i class="fa fa-university"></i></div>
                                     <div class="evl-cc">
                                         <h5>
                                             <?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec') ? mep_get_option('mep_organized_by_text', 'label_setting_sec') : _e('Organized By:', 'mage-eventpress'); ?>
                                         </h5>
-                                        <h6><?php if ($author_terms) {
+                                        <h6><?php 
                                                 echo $author_terms[0]->name;
-                                            } ?></h6>
+                                             ?></h6>
                                     </div>
                                 </li>
-                                <?php }
+                                <?php } }
                             if ($event_type != 'online') {
                                 if ($hide_location_list == 'no') { ?>
 
@@ -101,22 +104,25 @@ if (!function_exists('mep_display_event_loop_list')) {
                                     </li>
                                 <?php }
                             }
-                            if ($hide_time_list == 'no') { ?>
+                            if ($hide_time_list == 'no') { 
+                                if (strtotime(current_time('Y-m-d H:i')) < strtotime($event_meta['event_start_datetime'][0])) { 
+                                ?>
                                 <li>
                                     <div class="evl-ico"><i class="fa fa-calendar"></i></div>
                                     <div class="evl-cc">
                                         <h5>
                                             <?php if (sizeof($event_multidate) > 0) {
-                                                echo get_mep_datetime($event_meta['event_start_datetime'][0], 'date-text');
-                                            } ?>
+                                                
+                                                    echo get_mep_datetime($event_meta['event_start_datetime'][0], 'date-text');
+                                                 }
+                                            ?>
                                             <?php echo mep_get_option('mep_time_text', 'label_setting_sec') ? mep_get_option('mep_time_text', 'label_setting_sec') : _e('Time:', 'mage-eventpress'); ?>
                                         </h5>
                                         <h6><?php echo get_mep_datetime($event_meta['event_start_datetime'][0], 'time');
-                                            if ($hide_only_end_time_list == 'no') { ?> - <?php echo get_mep_datetime($event_meta['event_end_datetime'][0], 'time');
-                                                                                                } ?></h6>
+                                            if ($hide_only_end_time_list == 'no') { ?> - <?php echo get_mep_datetime($event_meta['event_end_datetime'][0], 'time'); } ?></h6>
                                     </div>
                                 </li>
-                            <?php } ?>
+                            <?php } } ?>
                         </ul>
                 </a>
                 <?php do_action('mep_event_list_loop_footer', $event_id); ?>

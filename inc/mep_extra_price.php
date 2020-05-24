@@ -169,28 +169,28 @@ function mep_checkout_validation($posted)
   foreach ($items as $item => $values) {
     $event_id              = array_key_exists('event_id', $values) ? $values['event_id'] : 0; // $values['event_id'];
     if (get_post_type($event_id) == 'mep_events') {
-      $total_seat = mep_event_total_seat($event_id, 'total');
-      $total_resv = mep_event_total_seat($event_id, 'resv');
+      $recurring                  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+      $total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
+      $total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);      
       $total_sold = mep_ticket_sold($event_id);
       $total_left = $total_seat - ($total_sold + $total_resv);
-
-      $event_validate_info        = $values['event_validate_info'] ? $values['event_validate_info'] : array();
-
-      $ee = 0;
-
-      if (is_array($event_validate_info) && sizeof($event_validate_info) > 0) {
-        foreach ($event_validate_info as $inf) {
-          $ee = $ee + $inf['validation_ticket_qty'];
+      if($recurring == 'no'){
+        $event_validate_info        = $values['event_validate_info'] ? $values['event_validate_info'] : array();
+        $ee = 0;
+        if (is_array($event_validate_info) && sizeof($event_validate_info) > 0) {
+          foreach ($event_validate_info as $inf) {
+            $ee = $ee + $inf['validation_ticket_qty'];
+          }
         }
-      }
-
-      if ($ee > $total_left) {
-        $event = get_the_title($event_id);
-        wc_add_notice(__("Sorry, Seats are not available in <b>$event</b>, Available Seats <b>$total_left</b> but you selected <b>$ee</b>", 'mage-eventpress'), 'error');
-      }
+        if ($ee > $total_left) {
+          $event = get_the_title($event_id);
+          wc_add_notice(__("Sorry, Seats are not available in <b>$event</b>, Available Seats <b>$total_left</b> but you selected <b>$ee</b>", 'mage-eventpress'), 'error');
+        }
+    }
     }
   }
 }
+
 
 
 /**

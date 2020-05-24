@@ -108,16 +108,21 @@ $org_id = $org_arr[0]->term_id;
 
 add_action('mep_event_location_venue','mep_ev_venue');
 if (!function_exists('mep_ev_venue')) {
-function mep_ev_venue(){
+function mep_ev_venue($event_id=''){
 global $post,$event_meta;	
-$location_sts = get_post_meta($post->ID,'mep_org_address',true);
+if($event_id){
+    $event = $event_id;
+}else{
+    $event = $post->ID;
+}
+$location_sts = get_post_meta($event,'mep_org_address',true);
 if($location_sts){
-$org_arr = get_the_terms( $post->ID, 'mep_org' );
+$org_arr = get_the_terms( $event, 'mep_org' );
 $org_id = $org_arr[0]->term_id;
 	echo "<span>".get_term_meta( $org_id, 'org_location', true )."</span>";
 }else{
 ?>
-<span><?php echo $event_meta['mep_location_venue'][0]; ?></span>
+<span><?php echo get_post_meta($event,'mep_location_venue',true); ?></span>
 <?php
 }
 }
@@ -175,6 +180,10 @@ $location_sts = get_post_meta($event_id,'mep_org_address',true);
          return get_post_meta($event_id,'mep_state',true); 
     }
 }
+}
+
+function mep_get_location_name_for_list($event_id){
+
 }
 
 if (!function_exists('mep_get_event_location_postcode')) {

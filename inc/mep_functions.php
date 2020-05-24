@@ -1307,12 +1307,10 @@ if (!function_exists('mep_get_event_city')) {
   $org_arr = get_the_terms( $id, 'mep_org' );
   if(is_array($org_arr) && sizeof($org_arr) > 0 ){
   $org_id = $org_arr[0]->term_id;
-    echo "<span>".get_term_meta( $org_id, 'org_city', true )."</span>";
+    echo "<span>".mep_ev_venue($id).', '.get_term_meta( $org_id, 'org_city', true )."</span>";
   }
   }else{
-  
-    echo "<span>".$event_meta['mep_city'][0]."</span>";
-  
+    echo "<span>".mep_ev_venue($id).', '.$event_meta['mep_city'][0]."</span>";
   }
   }
 }  

@@ -1,9 +1,14 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
+
 /**
  * This is the templates of the event timeline view shortcode
  */
  
 add_filter('mage_event_loop_list_shortcode','mep_event_loop_timeline_style',10,3);
+if (!function_exists('mep_event_loop_timeline_style')) {
 function mep_event_loop_timeline_style($content, $event_id,$style){
     if($style == 'timeline'){
         
@@ -63,9 +68,10 @@ $content = ob_get_clean();
         return $content;
     }
 }
-
+}
 
 add_action('mep_event_shortcode_js_script','mep_shortcode_timeline_js_script');
+if (!function_exists('mep_shortcode_timeline_js_script')) {
 function mep_shortcode_timeline_js_script($params){
     $cat            = $params['cat'];
     $org            = $params['org'];
@@ -95,4 +101,5 @@ function mep_shortcode_timeline_js_script($params){
     <?php
     }
     echo ob_get_clean();
+}
 }

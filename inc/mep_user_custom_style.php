@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
 
 add_action('wp_head', 'mep_user_custom_styles', 10, 999);
 function mep_user_custom_styles()

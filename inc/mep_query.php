@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
+
 /**
  * This is the Main Query Function For Query the Event List, Just Pass the Required values It will return the Query As Object.
  */

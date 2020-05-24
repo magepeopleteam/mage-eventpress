@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABSPATH')) {
+  die;
+} // Cannot access pages directly.
+
 /**
  * This File is a very important file, Because Its gettings Data from user selection on event details page, and prepare the data send to cart item and lastly save into order table after checkout
  */
@@ -10,7 +14,8 @@
 function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $variation_id)
 {
 
-  $product_id             = get_post_meta($product_id, 'link_mep_event', true) ? get_post_meta($product_id, 'link_mep_event', true) : $product_id;
+  $linked_event_id        = get_post_meta($product_id, 'link_mep_event', true) ? get_post_meta($product_id, 'link_mep_event', true) : $product_id;
+  $product_id             = mep_product_exists($linked_event_id) ? $linked_event_id : $product_id;
   $recurring              = get_post_meta($product_id, 'mep_enable_recurring', true) ? get_post_meta($product_id, 'mep_enable_recurring', true) : 'no';
 
   if (get_post_type($product_id) == 'mep_events') {
@@ -30,6 +35,11 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $user                   = $form_position == 'details_page' ? mep_save_attendee_info_into_cart($product_id) : array();
     $validate               = mep_cart_ticket_type('validation_data', $total_price,$product_id);
 
+
+//     echo '<pre>';
+// print_r($ticket_type_arr);
+// // print_r($qty);
+// die();
     /**
      * Now Store the datas into Cart Session
      */
@@ -85,6 +95,8 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
   $eid                    = array_key_exists('event_id', $cart_item) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 
   if (get_post_type($eid) == 'mep_events') {
+$hide_location_status  = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
+$hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
     $user_info                  = $cart_item['event_user_info'];
     $ticket_type_arr            = $cart_item['event_ticket_info'];
     $event_extra_service        = $cart_item['event_extra_service'];
@@ -97,37 +109,38 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
 
     if ($recurring == 'yes') {
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0 && sizeof($user_info) == 0) {
+     
         foreach ($ticket_type_arr as $_event_recurring_date) {
+            if($hide_date_status == 'no'){
           ?>
-          <li><?php _e('Event Date', 'mage-eventpress'); ?>: <?php echo $cart_item['event_cart_date']; ?></li>
+          <li><?php _e('Event Date', 'mage-eventpress'); ?>: <?php echo get_mep_datetime($_event_recurring_date['event_date'],'date-text'); ?></li>
         <?php
+            }
         }
       }
-
       if (is_array($user_info) && sizeof($user_info) > 0) {
         echo '<li>';
            echo mep_cart_display_user_list($user_info);
         echo '</li>';
       }
     } else {
-
       if (is_array($user_info) && sizeof($user_info) > 0) {
         echo '<li>';
           echo mep_cart_display_user_list($user_info);
-          ?>
-          
-        <?php
         echo '</li>';
       } else {
+           if($hide_date_status == 'no'){
       ?>
         <li><?php _e('Event Date', 'mage-eventpress'); ?>: <?php echo get_mep_datetime($cart_item['event_cart_display_date'],'date-time-text'); ?></li>
       <?php
+           }
       }
     }
-    ?>
-    
+     if($hide_location_status == 'no'){
+  ?>    
     <li><?php _e('Event Location', 'mage-eventpress'); ?>: <?php echo $cart_item['event_cart_location']; ?></li>
   <?php
+     }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
       foreach ($ticket_type_arr as $ticket) {
         echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price($ticket['ticket_price'] * $ticket['ticket_qty']) . '</li>';
@@ -135,7 +148,7 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     }
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
-        echo '<li>' . $extra_service['service_name'] . " - " . wc_price($extra_service['service_price']) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price($extra_service['service_price'] * $extra_service['service_qty']) . '</li>';
+        echo '<li>' . $extra_service['service_name'] . " - " . wc_price($extra_service['service_price']) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( (int) $extra_service['service_price'] * (int) $extra_service['service_qty']) . '</li>';
       }
     }
     echo "</ul>";

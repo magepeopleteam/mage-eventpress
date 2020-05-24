@@ -1,10 +1,14 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
 
 /**
  * This Function will hooked up with the speaker action hook mep_event_speakers_list to display the Event Speaker List
  */
 
  add_action('mep_event_speakers_list','mep_display_speaker_list');
+ if (!function_exists('mep_display_speaker_list')) {
  function mep_display_speaker_list($event_id){
     $speakers_id = get_post_meta($event_id,'mep_event_speakers_list',true) ? maybe_unserialize(get_post_meta($event_id,'mep_event_speakers_list',true)) : array();
     $speaker_icon               = get_post_meta($event_id,'mep_event_speaker_icon',true) ? get_post_meta($event_id,'mep_event_speaker_icon',true) : 'fa fa-microphone';
@@ -26,3 +30,4 @@
         echo '</ul>';
     }
  }
+}

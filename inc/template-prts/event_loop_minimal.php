@@ -1,10 +1,13 @@
 <?php
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
+
 /**
  * This is the templates of the event minimal list shortcode
  */
- 
-
 add_filter('mage_event_loop_list_shortcode','mep_event_loop_minimal_style',10,3);
+if (!function_exists('mep_event_loop_minimal_style')) {
 function mep_event_loop_minimal_style($content, $event_id,$style){
     if($style == 'minimal'){
         
@@ -66,4 +69,5 @@ $content = ob_get_clean();
     }else{
         return $content;
     }
+}
 }

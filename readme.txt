@@ -537,3 +537,13 @@ Event Location & Date Show/Hide from Order Details and Email Body option added i
 Multi Date Expand/Collapse option added into Event Details Page.
 
 28 April 2020*
+
+
+= 3.2.5 =
+* Update Release:
+Code Optimized & Improved
+Fix Event Start Date Time Wrong Display issue
+New Feature: You can hide Event Date & location from the cart section display
+New Filter & Action hooks added
+
+08 May 2020*

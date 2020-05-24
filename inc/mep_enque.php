@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+  die;
+} // Cannot access pages directly.
 
 /**
  * The Admin Enqueue Scripts & Style Files are Hooked up below for WooOCmmerce Event Manager Plugin

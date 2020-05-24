@@ -489,6 +489,27 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'default' => ''
                     ),
                     array(
+                        'name' => 'mep_name_text',
+                        'label' => __('Name:', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Name in event details page.', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Name:'
+                    ),
+                    array(
+                        'name' => 'mep_price_text',
+                        'label' => __('Price:', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Price in event details page.', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Price:'
+                    ),
+                    array(
+                        'name' => 'mep_event_schedule_text',
+                        'label' => __('Event Schedule Details', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Event Schedule Details in event details page.', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Event Schedule Details'
+                    ),
+                    array(
                         'name' => 'mep_total_text',
                         'label' => __('Total:', 'mage-eventpress'),
                         'desc' => __('Enter the text which you want to display as Total in event details page.', 'mage-eventpress'),

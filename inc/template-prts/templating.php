@@ -1,4 +1,8 @@
 <?php 
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
+
 require_once(dirname(__FILE__) . "/thumbnail.php");
 require_once(dirname(__FILE__) . "/title.php");
 require_once(dirname(__FILE__) . "/organizer.php");

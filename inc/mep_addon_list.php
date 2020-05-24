@@ -1,4 +1,7 @@
 <?php 
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
 
 add_action( 'admin_menu', 'mep_addon_list_menu',10,99);
 function mep_addon_list_menu() {

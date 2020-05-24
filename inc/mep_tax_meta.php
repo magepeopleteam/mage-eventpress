@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+  die;
+} // Cannot access pages directly.
 
 add_action('mep_org_add_form_fields', 'mep_org_tax_location_fileds', 10, 2);
 function mep_org_tax_location_fileds($taxonomy)

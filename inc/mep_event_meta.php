@@ -151,7 +151,6 @@ function mep_event_tax_cb($post){
     $values = get_post_custom( $post->ID );
 wp_nonce_field( 'mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce' );
 $check_values = isset($values['_tax_status'][0]) ? $values['_tax_status'][0] : "";
-echo $check_values;
 
 if(array_key_exists('_tax_status', $values)){ $tx_status = $values['_tax_status'][0]; }else{ $tx_status = ''; }
 

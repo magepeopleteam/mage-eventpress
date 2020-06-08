@@ -385,6 +385,13 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       update_post_meta( $pid, 'ea_order_status', $order_status );
       update_post_meta( $order_id, 'ea_order_status', $order_status );
   
+      $hooking_data = apply_filters('mep_event_attendee_dynamic_data',array(),$pid,$type,$order_id,$event_id,$_user_info); 
+      if(is_array($hooking_data) && sizeof($hooking_data) > 0){
+        foreach ($hooking_data as $_data) {
+          update_post_meta( $pid, $_data['name'], $_data['value'] );
+        }
+      }
+
     // Checking if the form builder addon is active and have any custom fields
     $mep_form_builder_data = get_post_meta($event_id, 'mep_form_builder_data', true);
       if ( $mep_form_builder_data ) {
@@ -400,10 +407,13 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
 if (!function_exists('mep_attendee_extra_service_create')) { 
   function mep_attendee_extra_service_create($order_id,$event_id, $_event_extra_service){
   
-
+    $order              = wc_get_order( $order_id );
+    $order_meta         = get_post_meta($order_id); 
+    $order_status       = $order->get_status();
      if(is_array($_event_extra_service) && sizeof($_event_extra_service) > 0){
   
      foreach($_event_extra_service as $extra_serive){
+       if($extra_serive['service_name']){
       $uname = 'Extra Service for '.get_the_title($event_id).' Order #'.$order_id;
       $new_post = array(
         'post_title'    =>   $uname,
@@ -424,6 +434,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
       update_post_meta( $pid, 'ea_extra_service_order', $order_id );
       update_post_meta( $pid, 'ea_extra_service_order_status', $order_status );
       update_post_meta( $pid, 'ea_extra_service_event_date', $extra_serive['event_date'] );
+    }
      }
   
   }
@@ -491,6 +502,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
           $event_ticket_info_arr  = wc_get_order_item_meta($item_id,'_event_ticket_info',true);
           $_event_extra_service   = wc_get_order_item_meta($item_id,'_event_extra_service',true);
           $item_quantity          = 0;
+
           mep_attendee_extra_service_create($order_id,$event_id,$_event_extra_service);
           foreach ( $event_ticket_info_arr as $field ) {
             if($field['ticket_qty']>0){
@@ -1649,7 +1661,7 @@ if (!function_exists('mep_save_attendee_info_into_cart')) {
         }
       }
     }
-    return $user;
+    return apply_filters('mep_cart_user_data_prepare',$user,$product_id);
   }
 }  
   
@@ -2413,8 +2425,8 @@ function mep_event_recurring_date_list_in_event_list_loop($event_id){
         }
         echo '</ul>';
         ?>
-        <?php if($show_multidate == 'yes'){ ?><span id="show_event_schdule<?php echo $event_id; ?>" class='mep_more_date_btn mep-tem3-title-sec'><?php _e('View More Date','mage-eventpress'); ?></span><?php } ?>
-        <span id="hide_event_schdule<?php echo $event_id; ?>" class='mep_more_date_btn mep-tem3-title-sec'><?php _e('Hide Date Lists','mage-eventpress'); ?></span>
+        <?php if($show_multidate == 'yes'){ ?><span id="show_event_schdule<?php echo $event_id; ?>" class='mep_more_date_btn mep-tem3-title-sec'><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); //_e('View More Date','mage-eventpress'); ?></span><?php } ?>
+        <span id="hide_event_schdule<?php echo $event_id; ?>" class='mep_more_date_btn mep-tem3-title-sec'><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress')); // _e('Hide Date Lists','mage-eventpress'); ?></span>
         <script>
             jQuery('.mep-more-date-lists<?php echo $event_id; ?>, #hide_event_schdule<?php echo $event_id; ?>').hide();
             
@@ -2619,7 +2631,7 @@ function mep_cart_ticket_type($type,$total_price,$product_id){
   }elseif($type == 'validation_data'){
     return $validate;
   }else{
-    return $ticket_type_arr;
+    return apply_filters('mep_cart_ticket_type_data_prepare',$ticket_type_arr,$type,$total_price,$product_id);
   }
 }
 }
@@ -2685,9 +2697,35 @@ function mep_cart_display_user_list($user_info){
 
       <?php
     }
-    return ob_get_clean();
+    return apply_filters('mep_display_user_info_in_cart_list',ob_get_clean(),$user_info);
 }
 }
+
+
+if (!function_exists('mep_cart_display_ticket_type_list')) { 
+function mep_cart_display_ticket_type_list($ticket_type_arr){
+ob_start();
+  foreach ($ticket_type_arr as $ticket) {
+    echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price((int) $ticket['ticket_price'] * (int) $ticket['ticket_qty']) . '</li>';
+  }
+  return apply_filters('mep_display_ticket_in_cart_list',ob_get_clean(),$ticket_type_arr);
+}
+}
+
+
+
+if (!function_exists('mep_cart_order_data_save_ticket_type')) { 
+function mep_cart_order_data_save_ticket_type($item,$ticket_type_arr){
+  foreach ($ticket_type_arr as $ticket) {
+    $ticket_type_name = $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ';
+    $ticket_type_val = wc_price($ticket['ticket_price'] * $ticket['ticket_qty']);
+    $ticket_name_meta = apply_filters('mep_event_order_meta_ticket_name_filter',$ticket_type_name,$ticket);
+    $item->add_meta_data($ticket_name_meta, $ticket_type_val);
+  }
+}
+}
+
+
 
 
 if (!function_exists('mep_get_event_expire_date')) { 

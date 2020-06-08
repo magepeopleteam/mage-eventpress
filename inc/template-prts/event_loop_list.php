@@ -41,7 +41,7 @@ if (!function_exists('mep_display_event_loop_list')) {
                 <?php }
                 if (is_array($event_multidate) && sizeof($event_multidate) > 0) { ?>
                     <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                        <span><?php _e('Multi Date Event', 'mage-eventpress'); ?></span>
+                        <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', __('Multi Date Event', 'mage-eventpress')); //_e('Multi Date Event', 'mage-eventpress'); ?></span>
                     </div>
                 <?php }
                 if ($event_type == 'online') { ?>

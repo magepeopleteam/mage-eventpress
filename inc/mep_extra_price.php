@@ -36,9 +36,9 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $validate               = mep_cart_ticket_type('validation_data', $total_price,$product_id);
 
 
-//     echo '<pre>';
+// echo '<pre>';
+// print_r($user);
 // print_r($ticket_type_arr);
-// // print_r($qty);
 // die();
     /**
      * Now Store the datas into Cart Session
@@ -142,9 +142,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
   <?php
      }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
-      foreach ($ticket_type_arr as $ticket) {
-        echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price($ticket['ticket_price'] * $ticket['ticket_qty']) . '</li>';
-      }
+      echo mep_cart_display_ticket_type_list($ticket_type_arr);
     }
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
@@ -221,12 +219,10 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
       $item->add_meta_data('Date',$cart_date);
     }
 
-    if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {      
-      foreach ($ticket_type_arr as $ticket) {
-        $ticket_type_name = $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ';
-        $ticket_type_val = wc_price($ticket['ticket_price'] * $ticket['ticket_qty']);
-        $item->add_meta_data($ticket_type_name, $ticket_type_val);
-      }
+    if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {    
+      
+     mep_cart_order_data_save_ticket_type($item,$ticket_type_arr);
+
     }
 
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {

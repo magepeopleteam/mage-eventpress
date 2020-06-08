@@ -598,6 +598,27 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'text',
                         'default' => 'Virtual Event'
                     ),
+                    array(
+                        'name' => 'mep_event_multidate_ribon_text',
+                        'label' => __('Multi Date Event Rebon', 'mage-eventpress'),
+                        'desc' => __('Enter Text For Multi Date Event Rebon', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Multi Date Event'
+                    ),
+                    array(
+                        'name' => 'mep_event_view_more_date_btn_text',
+                        'label' => __('View More Date Button', 'mage-eventpress'),
+                        'desc' => __('Enter Text For View More Date button', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'View More Date'
+                    ),
+                    array(
+                        'name' => 'mep_event_hide_date_list_btn_text',
+                        'label' => __('Hide Date Lists Button', 'mage-eventpress'),
+                        'desc' => __('Enter Text For Hide Date Lists button', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Hide Date Lists'
+                    ),
                 ),
 
                 'style_setting_sec' => array(

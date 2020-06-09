@@ -7,7 +7,8 @@ add_action('mep_event_seat', 'mep_ev_seat');
 if (!function_exists('mep_ev_seat')) {
 	function mep_ev_seat()
 	{
-		global $post, $event_meta;
+		global $post;
+		$event_meta               = get_post_custom( get_the_id() );  
 		$recurring = get_post_meta(get_the_id(), 'mep_enable_recurring', true) ? get_post_meta(get_the_id(), 'mep_enable_recurring', true) : 'no';
 		ob_start();
 		if ($recurring == 'no') {

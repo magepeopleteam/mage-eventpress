@@ -2461,9 +2461,11 @@ add_action('wp_head','mep_event_rich_text_data');
 if (!function_exists('mep_event_rich_text_data')) {  
 function mep_event_rich_text_data(){
     global $post;
-    $event_id = $post->ID;
-    if(is_single() && $event_id && get_post_type($event_id) == 'mep_events'){
-        
+
+    if(is_single()){
+      $event_id = $post->ID;
+if($event_id && get_post_type($event_id) == 'mep_events'){
+
         $event_name = get_the_title($event_id);
         $event_start_date = get_post_meta($post->ID,'event_start_datetime',true) ? get_post_meta($post->ID,'event_start_datetime',true) : '';
         $event_end_date = get_post_meta($post->ID,'event_end_datetime',true) ? get_post_meta($post->ID,'event_end_datetime',true) : '';
@@ -2510,6 +2512,7 @@ function mep_event_rich_text_data(){
         
         <?php
         echo $content = ob_get_clean();
+  }
     }
 }
 }

@@ -5,7 +5,7 @@ function mep_event_meta_box_add(){
   
     add_meta_box( 'mep-event-meta', __('<span class="dashicons dashicons-location" style="color:green; padding-right:10px;"></span>Event Venue','mage-eventpress'), 'mep_event_venue_meta_box_cb', 'mep_events', 'normal', 'high' );
 
-    add_meta_box( 'mep-event-price', __('Event Price (Event Base price, It will not work if you add Event Ticket type Price)','mage-eventpress'), 'mep_event_price_meta_box_cb', 'mep_events', 'normal', 'high' );
+    // add_meta_box( 'mep-event-price', __('Event Price (Event Base price, It will not work if you add Event Ticket type Price)','mage-eventpress'), 'mep_event_price_meta_box_cb', 'mep_events', 'normal', 'high' );
 
     add_meta_box( 'mep-event-ticket-type', __('<span class="dashicons dashicons-buddicons-tracking" style="color:green; padding-right:10px;"></span>Event Ticket Type and Pricing','mage-eventpress'), 'mep_event_ticket_type', 'mep_events', 'normal', 'high' );
 
@@ -1447,17 +1447,17 @@ if (get_post_type($post_id) == 'mep_events') {
     $event_rt_atdnce_mode       = $_POST['mep_rt_event_attandence_mode'];
     $event_rt_prv_date          = $_POST['mep_rt_event_prvdate'];
     
-    $seat               = isset( $_POST['mep_total_seat'] ) ? strip_tags( $_POST['mep_total_seat'] ) : "";
-    $rsvs               = isset( $_POST['mep_rsv_seat'] ) ? strip_tags( $_POST['mep_rsv_seat'] ) : "";
+    $seat               = 0;
+    $rsvs               = 0;
     $mep_location_venue = isset( $_POST['mep_location_venue'] ) ? strip_tags( $_POST['mep_location_venue'] ) : "";
     $mep_street         = isset( $_POST['mep_street'] ) ? strip_tags( $_POST['mep_street'] ) : "";
     $mep_city           = isset( $_POST['mep_city'] ) ? strip_tags( $_POST['mep_city'] ) : "";
     $mep_state          = isset($_POST['mep_state']) ? strip_tags( $_POST['mep_state'] ) : "";
     $mep_postcode       = isset($_POST['mep_postcode']) ? strip_tags( $_POST['mep_postcode'] ) : "";
     $mep_country        = isset($_POST['mep_country']) ? strip_tags( $_POST['mep_country'] ) : "";
-    $mep_price_label    = isset($_POST['mep_price_label']) ? strip_tags( $_POST['mep_price_label'] ) : "";
-    $mep_sqi            = isset($_POST['mep_sqi']) ? strip_tags( $_POST['mep_sqi'] ) : "";
-    $qty_box_type       = isset($_POST['qty_box_type']) ? strip_tags( $_POST['qty_box_type'] ) : "";
+    // $mep_price_label    = isset($_POST['mep_price_label']) ? strip_tags( $_POST['mep_price_label'] ) : "";
+    // $mep_sqi            = isset($_POST['mep_sqi']) ? strip_tags( $_POST['mep_sqi'] ) : "";
+    // $qty_box_type       = isset($_POST['qty_box_type']) ? strip_tags( $_POST['qty_box_type'] ) : "";
     $mep_sgm            = isset($_POST['mep_sgm']) ? strip_tags( $_POST['mep_sgm'] ) : "";
     $mep_org_address    = isset($_POST['mep_org_address']) ? strip_tags( $_POST['mep_org_address'] ) : "";
     $_price             = isset($_POST['_price']) ? strip_tags( $_POST['_price'] ) : "";
@@ -1538,11 +1538,11 @@ if (get_post_type($post_id) == 'mep_events') {
     update_post_meta( $pid, 'mep_state', $mep_state);
     update_post_meta( $pid, 'mep_postcode', $mep_postcode);
     update_post_meta( $pid, 'mep_country', $mep_country);
-    update_post_meta( $pid, 'mep_sqi', $mep_sqi);
-    update_post_meta( $pid, 'qty_box_type', $qty_box_type);
+    // update_post_meta( $pid, 'mep_sqi', $mep_sqi);
+    // update_post_meta( $pid, 'qty_box_type', $qty_box_type);
     update_post_meta( $pid, 'mep_sgm', $mep_sgm);
-    update_post_meta( $pid, 'mep_price_label', $mep_price_label);
-    update_post_meta( $pid, '_price', $_price);
+    // update_post_meta( $pid, 'mep_price_label', $mep_price_label);
+    update_post_meta( $pid, '_price', 0);
     update_post_meta( $pid, '_virtual', 'yes');
     update_post_meta( $pid, 'mep_event_cc_email_text', $mep_event_cc_email_text);
     update_post_meta( $pid, '_sku', $pid);

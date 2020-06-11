@@ -1,0 +1,1 @@
+<h5><strong><?php echo mep_get_option('mep_total_seat_text', 'label_setting_sec') ? mep_get_option('mep_total_seat_text', 'label_setting_sec') : _e('Total Seat:', 'mage-eventpress');  ?></strong> <?php echo $total_seat; if ($mep_available_seat == 'on') { ?> (<strong><?php echo max($total_left, 0); ?></strong> <?php _e('Left', 'mage-eventpress'); ?>)<?php } ?></h5>

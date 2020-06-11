@@ -8,6 +8,8 @@
  * Author URI: http://www.mage-people.com/
  * Text Domain: mage-eventpress
  * Domain Path: /languages/
+  * WC requires at least: 3.0.9
+ * WC tested up to: 4.2.0* 
  */
 
 if (!defined('ABSPATH')) {

@@ -9,11 +9,7 @@ if (!function_exists('mep_thumbnail')) {
     {
         global $post;
         ob_start();
-?>
-        <div class="mep-event-thumbnail">
-            <?php the_post_thumbnail('full'); ?>
-        </div>
-<?php
+        require(mep_template_file_path('single/thumbnail.php'));
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_thumbnail', $content, $post->ID);
     }

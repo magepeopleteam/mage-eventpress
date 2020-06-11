@@ -321,21 +321,7 @@ function mep_event_address_list_sidebar_html($event_id){
     $state = !empty($location_sts) ? get_term_meta( $org_id, 'org_state', true ) : get_post_meta($event_id,'mep_state',true);
     $country = !empty($location_sts) ? get_term_meta( $org_id, 'org_country', true ) : get_post_meta($event_id,'mep_country',true);
     ob_start();
-?>
-<ul>
-    <?php if($venue){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?>
-    </li> <?php } ?>
-    <?php if($street){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?>
-    </li><?php } ?>
-    <?php if($city){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li>
-    <?php } ?>
-    <?php if($state){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?>
-    </li><?php } ?>
-    <?php if($country){ ?><li><i class="fa fa-arrow-circle-right"></i>
-        <?php do_action('mep_event_location_country'); ?><?php } ?>
-    </li>
-</ul>
-<?php
+        require(mep_template_file_path('single/location_list.php')); 
     echo ob_get_clean();
 }
 }

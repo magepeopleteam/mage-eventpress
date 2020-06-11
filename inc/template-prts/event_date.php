@@ -90,9 +90,7 @@ if (!function_exists('mep_date_in_default_theme')) {
         $mep_show_upcoming_event    = get_post_meta($event_id, 'mep_show_upcoming_event', true) ? get_post_meta($event_id, 'mep_show_upcoming_event', true) : 'no';
         $cn                         = 1;
         $more_date                  = array_key_exists('mep_event_more_date', $event_meta) ? unserialize($event_meta['mep_event_more_date'][0]) : array();
-        ?>
-        <h3><i class="fa fa-calendar"></i> <?php echo mep_get_option('mep_event_schedule_text', 'label_setting_sec', __('Event Schedule Details', 'mage-eventpress')); ?></h3>
-        <?php
+            require(mep_template_file_path('single/date_list_title.php')); 
         if (sizeof($more_date) > 2) {
             echo '<ul id="mep_event_date_sch">';
         } else {
@@ -101,14 +99,14 @@ if (!function_exists('mep_date_in_default_theme')) {
 
         if ($recurring == 'yes') {
             if (strtotime(current_time('Y-m-d H:i')) < strtotime($start_datetime)) {
-        ?>
-                <li><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($start_datetime, 'date-text'); ?> <br><i class="fa fa-clock-o"></i> <?php echo get_mep_datetime($start_datetime, 'time'); ?> - <?php if ($start_date != $end_date) {
-                                                                                                                                                                                                                    echo get_mep_datetime($end_datetime, 'date-text') . ' - ';
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                echo get_mep_datetime($end_datetime, 'time'); ?></li>
-                <?php
+                require(mep_template_file_path('single/date_list.php')); 
             }
             foreach ($more_date as $_more_date) {
+                $start_date = $_more_date['event_more_start_date'];
+                $end_date = $_more_date['event_more_end_date'];
+                $start_datetime = $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'];
+                $end_datetime = $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'];
+
                 if (strtotime(current_time('Y-m-d H:i')) < strtotime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'])) {
                     if ($mep_show_upcoming_event == 'yes') {
                         $cnt = 1;
@@ -116,43 +114,23 @@ if (!function_exists('mep_date_in_default_theme')) {
                         $cnt = $cn;
                     }
                     if ($cn == $cnt) {
-                ?>
-                        <li><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text'); ?> <br><i class="fa fa-clock-o"></i> <?php echo get_mep_datetime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time'); ?> - <?php if ($_more_date['event_more_start_date'] != $_more_date['event_more_end_date']) {
-                                                                                                                                                                                                                                                                                                                                                                echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text') . ' - ';
-                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                            echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time'); ?></li>
-                <?php
+                        require(mep_template_file_path('single/date_list.php')); 
                         $cn++;
                     }
                 }
             }
         } else {
             if (is_array($more_date) && sizeof($more_date) > 0) {
-                ?>
-                <li><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($start_datetime, 'date-text'); ?><br>
-                    <i class="fa fa-clock-o"></i> <?php echo get_mep_datetime($start_datetime, 'time'); ?> <?php if ($start_date != $end_date) {
-                                                                                                                echo ' - ' . get_mep_datetime($end_datetime, 'date-text');
-                                                                                                            }
-                                                                                                            echo ' - ' . get_mep_datetime($end_datetime, 'time'); ?></li>
-                <?php
-
-
+                require(mep_template_file_path('single/date_list.php')); 
                 foreach ($more_date as $_more_date) {
-                ?>
-                    <li><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text'); ?> <br><i class="fa fa-clock-o"></i> <?php echo get_mep_datetime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time'); ?> - <?php if ($_more_date['event_more_start_date'] != $_more_date['event_more_end_date']) {
-                                                                                                                                                                                                                                                                                                                                                            echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text') . ' - ';
-                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                        echo get_mep_datetime($_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time'); ?></li>
-                <?php
+                    $start_date = $_more_date['event_more_start_date'];
+                    $end_date = $_more_date['event_more_end_date'];
+                    $start_datetime = $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'];
+                    $end_datetime = $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'];
+                    require(mep_template_file_path('single/date_list.php')); 
                 }
             } else {
-
-                ?>
-                <li><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($start_datetime, 'date-text'); ?> <br><i class="fa fa-clock-o"></i> <?php echo get_mep_datetime($start_datetime, 'time'); ?> - <?php if ($start_date != $end_date) {
-                                                                                                                                                                                                                    echo get_mep_datetime($end_datetime, 'date-text') . ' - ';
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                                echo get_mep_datetime($end_datetime, 'time'); ?></li>
-            <?php
+                require(mep_template_file_path('single/date_list.php')); 
             }
         }
         echo '</ul>';

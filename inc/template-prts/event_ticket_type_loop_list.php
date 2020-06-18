@@ -27,6 +27,7 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             $total_left             = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field);
             $ticket_price           = apply_filters('mep_ticket_type_price', $field['option_price_t'], $field['option_name_t'], $post_id, $field);
             $passed                 = apply_filters('mep_ticket_type_validation', true);
+            $start_date = get_post_meta($post_id, 'event_start_datetime', true);
             require(mep_template_file_path('single/ticket_type_list.php'));
              $count++;
         } ?>

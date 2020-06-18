@@ -153,7 +153,7 @@ $qm = $field['option_name_t'];
                 jQuery('#dadainfo_<?php echo $count; ?>').append(
                 jQuery('<div/>')
                     .attr("id", "newDiv" + i)
-                    .html("<?php do_action('mep_reg_fields',$start_date); ?>")
+                    .html("<?php do_action('mep_reg_fields',$start_date, get_the_id(), $qm); ?>")
                 );
             }
 
@@ -176,7 +176,7 @@ jQuery('#eventpxtp_<?php echo $count; ?>').on('change', function () {
             jQuery('#dadainfo_<?php echo $count; ?>').append(
             jQuery('<div/>')
                 .attr("id", "newDiv" + i)
-                .html("<?php do_action('mep_reg_fields',$start_date); ?>")
+                .html("<?php do_action('mep_reg_fields',$start_date, get_the_id(), $qm); ?>")
             );
         }
     });

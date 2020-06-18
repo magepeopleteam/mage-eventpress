@@ -2606,8 +2606,11 @@ function mep_cart_ticket_type($type,$total_price,$product_id){
   $price                  = isset($_POST['option_price']) ? $_POST['option_price'] : array();
   $count                  = count( $names );
   $ticket_type_arr        = [];
-
-
+//   echo '<pre>';
+// print_r($names);
+// print_r($mep_event_start_date);
+// print_r($qty);
+// echo '</pre>';
   $vald = 0;
   if(sizeof($names) > 0){
     for ( $i = 0; $i < $count; $i++ ) {
@@ -2917,3 +2920,5 @@ function mep_product_exists( $id ) {
   return is_string( get_post_status( $id ) );	
 }
 }
+
+

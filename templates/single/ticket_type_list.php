@@ -1,6 +1,6 @@
                 <tr>
                     <td align="Left"><?php echo $field['option_name_t']; ?>
-                        <input type="hidden" name='mep_event_start_date[]' value="<?php echo get_post_meta($post_id, 'event_start_datetime', true); ?>">
+
                         <?php if ($mep_available_seat == 'on') { ?><div class="xtra-item-left"><?php echo max($total_left, 0); ?>
 
                                 <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:', 'mage-eventpress');  ?>
@@ -31,8 +31,11 @@
                                     <input id="eventpxtp_<?php echo $count; ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo $ticket_price; ?>' value='<?php echo $default_quantity; ?>' min="<?php echo $total_min_seat; ?>" max="<?php echo max($total_seats, 0); ?>">
                                     <span class="fa fa-plus qty_inc"></span>
                                 </div>
-                        <?php }
+                            <?php }
                         } else {
+                            ?>
+                            <input id="eventpxtp_<?php echo $count; ?>" type="hidden" class='extra-qty-box etp' name='option_qty[]' data-price='0' value='0' min="0" max="0">
+                        <?php
                             _e('No Seat Available', 'mage-eventpress');
                         }
                         $ticket_name = $field['option_name_t'];
@@ -44,14 +47,16 @@
                         </span> <strong><?php echo wc_price($ticket_price); ?></strong>
                         <?php if ($total_left > 0) { ?>
                             <p style="display: none;" class="price_jq"><?php echo $ticket_price; ?></p>
-                            <input type="hidden" name='option_name[]' value='<?php echo $field['option_name_t']; ?>'>
-                            <input type="hidden" name='option_price[]' value='<?php echo $ticket_price; ?>'>
-                            <input type="hidden" name='max_qty[]' value='<?php echo $field['option_max_qty']; ?>'>
+
                         <?php } ?>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3" class='user-innnf'>
+                        <input type="hidden" name='mep_event_start_date[]' value="<?php echo $start_date; ?>">
+                        <input type="hidden" name='option_name[]' value='<?php echo $field['option_name_t']; ?>'>
+                        <input type="hidden" name='option_price[]' value='<?php echo $ticket_price; ?>'>
+                        <input type="hidden" name='max_qty[]' value='<?php echo $field['option_max_qty']; ?>'>
                         <div class="user-info-sec">
                             <div id="dadainfo_<?php echo $count; ?>" class="dada-info"></div>
                         </div>

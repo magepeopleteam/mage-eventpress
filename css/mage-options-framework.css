@@ -1841,7 +1841,7 @@ div > .ppof-metabox {
 .form-table th,
 .form-table td,
 #postbox-container-2 p.description{padding: 5px;line-height: 1;}
-.form-table pre{display: none;}
+/* .form-table pre{display: none;} */
 .ppof-button,
 #create_seat_plan,
 #create_seat_plan_dd,

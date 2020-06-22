@@ -16,11 +16,11 @@ if (!function_exists('mep_event_google_map')) {
 		if ($location_sts) {
 			$org_arr 	= get_the_terms($event_id, 'mep_org');
 			$org_id 	= $org_arr[0]->term_id;
-			$lat 		= get_term_meta($org_id, 'latitude', true);
-			$lon 		= get_term_meta($org_id, 'longitude', true);
+			$lat 		= get_term_meta($org_id, 'latitude', true) ? get_term_meta($org_id, 'latitude', true) : 0;
+			$lon 		= get_term_meta($org_id, 'longitude', true) ? get_term_meta($org_id, 'longitude', true) : 0;
 		} else {
-			$lat 		= $event_meta['latitude'][0];
-			$lon 		= $event_meta['longitude'][0];
+			$lat 		= $event_meta['latitude'][0] ? $event_meta['latitude'][0] : 0;
+			$lon 		= $event_meta['longitude'][0] ? $event_meta['longitude'][0] : 0;
 		}
 
 		if ($event_meta['mep_sgm'][0]) {

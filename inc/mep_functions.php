@@ -2789,11 +2789,7 @@ function mep_single_page_js_script($event_id){
                 //Bind the change event
                 jQuery(".extra-qty-box").on('change', function() {
                     var sum = 0;
-                    var total = <?php if ($event_meta['_price'][0]) {
-                                    echo $event_meta['_price'][0];
-                                } else {
-                                    echo 0;
-                                } ?>;
+                    var total = 0;
                     jQuery('.price_jq').each(function() {
                         var price = jQuery(this);
                         var count = price.closest('tr').find('.extra-qty-box');

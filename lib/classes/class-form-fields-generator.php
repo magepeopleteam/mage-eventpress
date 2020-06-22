@@ -1,5 +1,5 @@
 <?php
-if ( ! defined('ABSPATH')) exit;  // if direct access
+if ( ! defined('ABSPATH')) exit;  // if direct access 
 
 
 /*Input fields
@@ -5909,12 +5909,9 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             $placeholder = isset( $option['placeholder'] ) ? $option['placeholder'] : "";
             $default = isset( $option['default'] ) ? $option['default'] : "";
             $editor_settings= isset( $option['editor_settings'] ) ? $option['editor_settings'] : array('textarea_name'=>$field_name);
-
             $value 			= isset( $option['value'] ) ? $option['value'] : "";
             $value = !empty($value) ? $value : $default;
-
             $field_id       = $id;
-
             if(!empty($conditions)):
 
                 $depends = '';
@@ -8451,17 +8448,14 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             foreach ($fields as $key => $value) {
                 # code...
                 $new[$key]['type']      = $fields[$key]['type'];
-                $new[$key]['default']   = isset($fields[$key]['default']) ? $fields[$key]['default'] : "";
+                $new[$key]['default']   = $fields[$key]['default'];
                 $new[$key]['item_id']   = $fields[$key]['item_id'];
                 $new[$key]['name']      = $fields[$key]['name'];
-
-                $define_args = isset($fields[$key]['args']) ? $fields[$key]['args'] : "";
-
-                $new[$key]['args']      = $this->args_from_string( $define_args );
-
+                $new[$key]['args']      = !is_array($fields[$key]['args']) ? $this->args_from_string($fields[$key]['args']):$fields[$key]['args'];
+                 
             }
             $fields = $new;
-
+  
 
             if(!empty($conditions)):
 
@@ -8649,7 +8643,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                             }else if(type == 'select'){
                                 args = element.args;
                                 html+='<select name="<?php echo $field_name; ?>['+now+']['+element.item_id+']">';
-                                for(argKey in args){
+                                for(argKey in args){                                                                       
                                     html+='<option value="'+argKey+'">'+args[argKey]+'</option>';
                                 }
                                 html+='</select>';
@@ -8700,7 +8694,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             </script>
             <div <?php if(!empty($depends)) {?> data-depends="[<?php echo $depends; ?>]" <?php } ?> id="field-wrapper-<?php echo $id; ?>" class="<?php if(!empty($depends)) echo 'dependency-field'; ?> field-wrapper field-repeatable-wrapper
             field-repeatable-wrapper-<?php echo $id; ?>">
-
+                
                 <div class="field-list <?php if($sortable){ echo 'sortable'; }?>" id="<?php echo $id; ?>">
                     <?php
                     if(!empty($values)):
@@ -8712,7 +8706,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                 <?php if($collapsible):?>
                                 <div class="header">
                                     <?php endif; ?>
-
+                                  
 <!--                                    <span index_id="--><?php //echo $index; ?><!--" class="button clone"><i class="far fa-clone"></i></span>-->
                                     <?php if($sortable):?>
                                         <span class="button sort"><i class="fas fa-arrows-alt"></i></span>
@@ -8723,7 +8717,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                 </div>
                             <?php endif; ?>
                                 <?php foreach ($fields as $field_index => $field):
-                                    $type = $field['type'];
+                                    $type   = $field['type'];
                                     $item_id = $field['item_id'];
                                     $name = $field['name'];
                                     $title_field_class = ($title_field == $field_index) ? 'title-field':'';
@@ -8794,10 +8788,10 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                                 $value = !empty($val[$item_id]) ? $val[$item_id] : $default;
                                                 ?>
                                                 <select class="" name="<?php echo $field_name; ?>[<?php echo $index; ?>][<?php echo $item_id; ?>]">
-                                                <?php
-                                                   if(!is_array($args)){
+                                                <?php                                                    
+                                                   if(!is_array($args)){                                                   
                                                    $this->args_from_string($args);
-                                                   }else{
+                                                   }else{                                                    
                                                         foreach ($args as $argIndex => $argName):
                                                         $selected = ($argIndex == $value) ? 'selected' : '';
                                                         ?>
@@ -8809,13 +8803,13 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                                 $default = isset($field['default']) ? $field['default'] : '';
                                                 $value = !empty($val[$item_id]) ? $val[$item_id] : $default;
                                                 ?>
-                                                <?php
-                                                if(!is_array($args)){
+                                                <?php 
+                                                if(!is_array($args)){                                                   
                                                     $this->args_from_string($args);
-                                                }else{
+                                                }else{                                                  
                                                 foreach ($args as $argIndex => $argName):
                                                 $checked = ($argIndex == $value) ? 'checked' : '';
-
+                                                
                                                 ?>
                                                 <label class="" >
                                                     <input  type="radio" name="<?php echo $field_name; ?>[<?php echo $index; ?>][<?php echo $item_id; ?>]" <?php echo $checked; ?>  value="<?php echo $argIndex; ?>"><?php echo $argName; ?></input>
@@ -8826,10 +8820,13 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                                 $default = isset($field['default']) ? $field['default'] : '';
                                                 $value = !empty($val[$item_id]) ? $val[$item_id] : $default;
                                                 ?>
-                                                <?php
-
+                                                <?php 
+                                                
                                                 foreach ($args as $argIndex => $argName):
+                                                $value = is_array($value) ? $value : array();
+                                                // print_r($value);
                                                 $checked = in_array($argIndex, $value ) ? 'checked' : '';
+                                                // $checked = isset($argIndex) ? 'checked' : '';
                                                 ?>
                                                 <label class="" >
                                                     <input  type="checkbox" name="<?php echo $field_name; ?>[<?php echo $index; ?>][<?php echo $item_id; ?>][]" <?php echo $checked; ?>  value="<?php echo $argIndex; ?>"><?php echo $argName; ?></input>
@@ -8846,7 +8843,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                     </div>
                                 <?php endforeach; ?>
                             </div>
-
+                            
                             <?php
                             //endforeach;
                             $count++;
@@ -8858,7 +8855,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                         ?>
                     <?php
                     endif;
-                    ?>
+                    ?>                    
                 </div>
                 <div class="error-mgs"></div>
                 <div class="ppof-button add-item"><i class="fas fa-plus-square"></i> <?php echo $btntext; ?></div>

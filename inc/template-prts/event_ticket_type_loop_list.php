@@ -14,18 +14,22 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
         <?php
         $count = 1;
         foreach ($mep_event_ticket_type as $field) {
-            $qty_t_type             = $field['option_qty_t_type'];
+            $ticket_type_name       = array_key_exists('option_name_t',$field)  ? $field['option_name_t'] : '';
+            $ticket_type            = array_key_exists('option_qty_t_type',$field)  ? $field['option_qty_t_type'] : '';
+            $ticket_type_qty        = array_key_exists('option_qty_t',$field) ? $field['option_qty_t'] : 0;
+            $ticket_type_price      = array_key_exists('option_price_t',$field) ? $field['option_price_t'] : 0;
+            $qty_t_type             = $ticket_type;
             $total_quantity         = isset($field['option_qty_t']) ? $field['option_qty_t'] : 0;
             $default_qty            = isset($field['option_default_qty_t']) && $field['option_default_qty_t'] > 0 ? $field['option_default_qty_t'] : 0;
             $total_resv_quantity    = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
             $event_date             = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
-            $total_sold             = (int) mep_ticket_type_sold($post_id, $field['option_name_t'], $event_date);
+            $total_sold             = (int) mep_ticket_type_sold($post_id, $ticket_type_name, $event_date);
             $total_tickets          = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);
             $total_seats            = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field);
             $total_min_seat         = apply_filters('mep_ticket_min_qty', 0, $post_id, $field);
             $default_quantity       = apply_filters('mep_ticket_default_qty', $default_qty, $post_id, $field);
             $total_left             = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field);
-            $ticket_price           = apply_filters('mep_ticket_type_price', $field['option_price_t'], $field['option_name_t'], $post_id, $field);
+            $ticket_price           = apply_filters('mep_ticket_type_price', $ticket_type_price, $ticket_type_name, $post_id, $field);
             $passed                 = apply_filters('mep_ticket_type_validation', true);
             $start_date = get_post_meta($post_id, 'event_start_datetime', true);
             require(mep_template_file_path('single/ticket_type_list.php'));

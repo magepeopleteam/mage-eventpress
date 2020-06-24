@@ -1813,6 +1813,7 @@ if (!function_exists('mep_get_term_as_class')) {
   
 if (!function_exists('mep_ticket_type_sold')) {   
   function mep_ticket_type_sold($event_id,$type,$date=''){
+    
      if($date){
     $args = array(
             'post_type' => 'mep_events_attendees',
@@ -2055,7 +2056,7 @@ if (!function_exists('mep_get_event_upcomming_date')) {
         
     if(sizeof($more_date) > 0){
         foreach($more_date as $mdate){
-            $all_datetime[] = date('Y-m-d H:i:s',strtotime($mdate['event_more_start_date'].' '.$madate['event_more_start_time']));
+            $all_datetime[] = date('Y-m-d H:i:s',strtotime($mdate['event_more_start_date'].' '.$mdate['event_more_start_time']));
         }
     }
     
@@ -2065,8 +2066,9 @@ if (!function_exists('mep_get_event_upcomming_date')) {
             $adt[] = $ald;
         }
     }
-    
-    return get_mep_datetime($adt[0],$type);
+    if(sizeof($adt) > 0){
+      return get_mep_datetime($adt[0],$type);
+    }
  }
 }
   
@@ -2741,6 +2743,7 @@ return $expire_date;
 }
 
 
+
 add_action('mep_event_single_template_end','mep_single_page_js_script');
 add_action('mep_add_to_cart_shortcode_js','mep_single_page_js_script');
 if (!function_exists('mep_single_page_js_script')) { 
@@ -2892,9 +2895,7 @@ if (!function_exists('mep_single_page_script')) {
 function mep_single_page_script(){
   ob_start();
 ?>
-        <script>
-           // jQuery('.mep-more-date-lists<?php echo $event_id; ?>, #hide_event_schdule<?php echo $event_id; ?>').hide();
-            
+        <script>               
             jQuery('#mep_single_view_all_date').click(function(){
                  jQuery(this).hide()
                  jQuery('#mep_event_date_sch').addClass('mep_view_all_date');

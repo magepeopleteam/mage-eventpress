@@ -83,4 +83,6 @@ function mep_event_enqueue_scripts()
   wp_enqueue_script('mep-owl-carousel-min', plugin_dir_url(__DIR__) . 'js/owl.carousel.min.js', array('jquery'), 1, true);
   wp_enqueue_script('mep-timeline-min', plugin_dir_url(__DIR__) . 'js/timeline.min.js', array('jquery'), 1, true);
   wp_enqueue_script('mep-event-custom-scripts', plugin_dir_url(__DIR__) . 'js/mkb-scripts.js', array(), 1, true);
+  wp_localize_script('jquery', 'mep_ajax', array( 'mep_ajaxurl' => admin_url( 'admin-ajax.php')));
 }
+

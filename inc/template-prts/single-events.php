@@ -20,6 +20,7 @@ $global_template       = mep_get_option('mep_global_single_template', 'general_s
 $current_template      = $event_meta['mep_event_template'][0];
 $_current_template     = $current_template ? $current_template : $global_template;
 $currency_pos           = get_option('woocommerce_currency_pos');
+do_action('mep_event_single_page_after_header');
 ?>
 <div class="mep-events-wrapper">
     <?php
@@ -36,6 +37,7 @@ $currency_pos           = get_option('woocommerce_currency_pos');
 </div>
 <?php 
 $builder_version = mep_get_builder_version();
+
 if($builder_version < 3.5){
 ?>
 <script>
@@ -211,4 +213,6 @@ jQuery('#quantity_5a7abbd1bff73').on('change', function () {
 }else{
     do_action('mep_event_single_template_end',get_the_id()); 
 }?>
-<?php get_footer(); ?>
+<?php 
+do_action('mep_event_single_page_before_footer');
+get_footer(); 

@@ -56,7 +56,7 @@
                         <input type="hidden" name='mep_event_start_date[]' value="<?php echo $start_date; ?>">
                         <input type="hidden" name='option_name[]' value='<?php echo $field['option_name_t']; ?>'>
                         <input type="hidden" name='option_price[]' value='<?php echo $ticket_price; ?>'>
-                        <input type="hidden" name='max_qty[]' value='<?php echo $field['option_max_qty']; ?>'>
+                        <input type="hidden" name='max_qty[]' value='<?php if(array_key_exists('option_max_qty',$field)){ echo $field['option_max_qty']; }else{ echo ''; } ?>'>
                         <div class="user-info-sec">
                             <div id="dadainfo_<?php echo $count; ?>" class="dada-info"></div>
                         </div>

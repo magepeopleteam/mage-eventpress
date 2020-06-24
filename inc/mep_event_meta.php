@@ -1003,7 +1003,7 @@ $opt_rst_qty = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
   <tr>
     <td><input type="text" class="widefat" name="option_name_t[]" placeholder="Ex: Adult" value="<?php if($field['option_name_t'] != '') echo esc_attr( $field['option_name_t'] ); ?>" /></td>
 
-    <td><input type="number" size="4" pattern="[0-9]*" step="0.01" class="widefat" name="option_price_t[]" placeholder="Ex: 10" value="<?php if ($field['option_price_t'] != '') echo esc_attr( $field['option_price_t'] ); else echo ''; ?>" /></td>
+    <td><input type="number" size="4" pattern="[0-9]*" step="0.01" class="widefat" name="option_price_t[]" placeholder="Ex: 10" value="<?php if (array_key_exists('option_price_t',$field) && $field['option_price_t'] != '') echo esc_attr( $field['option_price_t'] ); else echo ''; ?>" /></td>
 
     <td><input type="number" size="4" pattern="[0-9]*" step="1" class="widefat" name="option_qty_t[]" placeholder="Ex: 500" value="<?php if(isset($field['option_qty_t'])){ echo $field['option_qty_t']; }else{ echo 0; } ?>" /></td>
     <td><input type="number" size="2" pattern="[0-9]*" step="1" class="widefat" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php if(isset($field['option_default_qty_t'])){ echo $field['option_default_qty_t']; }else{ echo 0; } ?>" /></td>

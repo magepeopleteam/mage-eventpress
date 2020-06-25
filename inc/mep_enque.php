@@ -68,6 +68,8 @@ add_action('wp_enqueue_scripts', 'mep_event_enqueue_scripts', 90);
 function mep_event_enqueue_scripts()
 {
   wp_enqueue_script('jquery');
+  wp_enqueue_script('jquery-ui-datepicker');
+  wp_enqueue_script('jquery-ui-core');
   wp_enqueue_script('jquery-ui-accordion');
   wp_enqueue_style('mep-jquery-ui-style', plugin_dir_url(__DIR__) . 'css/jquery-ui.css', array());
   wp_enqueue_style('mep-event-style', plugin_dir_url(__DIR__) . 'css/style.css', array());

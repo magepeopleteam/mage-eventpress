@@ -68,6 +68,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $qty_typec                  = $event_meta['qty_box_type'][0];
         $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_attr(get_post_meta($post_id, 'link_wc_product', true)) : esc_attr($post_id);
 
+        
 
         /**
          * First Checking If the registration status enable or disable 
@@ -76,7 +77,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
             /**
              * Then Checking If the event date already gone or not 
              */
-            if (strtotime(current_time('Y-m-d H:i:s')) > strtotime($newformat)) {
+            if (strtotime(current_time('Y-m-d H:i:s')) > strtotime(apply_filters('mep_event_expire_datetime_val',$newformat,$post_id))) {
                 /**
                  * If The event expired then it fire below Hook, The event expire texts arein the inc/template-parts/event_labels.php file
                  */

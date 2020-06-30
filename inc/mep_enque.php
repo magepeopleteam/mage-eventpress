@@ -59,6 +59,7 @@ function mep_add_admin_scripts($hook)
   wp_enqueue_script('select2.min', plugins_url('js/select2.min.js', __DIR__), array('jquery'));
   wp_enqueue_script('codemirror', plugin_dir_url(__DIR__) . 'js/codemirror.min.js', array('jquery'), null, false);
   wp_enqueue_script('form-field-dependency', plugins_url('js/form-field-dependency.js', __DIR__), array('jquery'), null, false);
+  wp_localize_script('jquery', 'mep_ajax', array( 'mep_ajaxurl' => admin_url( 'admin-ajax.php')));
 }
 
 /**

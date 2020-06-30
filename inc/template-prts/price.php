@@ -1,5 +1,10 @@
 <?php 
+if (!defined('ABSPATH')) {
+    die;
+} // Cannot access pages directly.
+
 add_action('mep_event_price','mep_ev_price');
+if (!function_exists('mep_ev_price')) {
 function mep_ev_price(){
 global $post,$event_meta;
  ob_start();
@@ -11,4 +16,5 @@ global $post,$event_meta;
     } 
 $content = ob_get_clean();
 echo apply_filters('mage_event_single_price', $content,$post->ID);
+}
 }

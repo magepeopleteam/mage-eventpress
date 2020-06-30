@@ -9,16 +9,19 @@ function mep_ev_ticket_type($post_id){
 
     if($mep_event_ticket_type){
         ?>
-        <?php echo "<h3 class='ex-sec-title'>".mep_get_label($post_id,'mep_event_ticket_type_text','Ticket Type:')."</h3>"; ?>           
+        <?php echo "<h3 class='ex-sec-title'>".mep_get_label($post_id,'mep_event_ticket_type_text','Ticket Type:')."</h3>"; ?>  
+                 
         <table>
             <?php do_action('mep_event_ticket_type_loop_list',$post_id); ?>
         </table>
         <?php
     }
-
     $content = ob_get_clean();
     echo apply_filters('mage_event_ticket_type_list', $content,$post_id,$event_meta);
     ?>
+
+
+
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
             $('.qty_dec').on('click', function () {

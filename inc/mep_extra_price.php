@@ -40,9 +40,16 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
 // print_r($user);
 // print_r($ticket_type_arr);
 // die();
+
     /**
      * Now Store the datas into Cart Session
      */
+    $time_slot_text = isset($_REQUEST['time_slot_name']) ? $_REQUEST['time_slot_name'] : '';
+    if(!empty($time_slot_text)){
+     $cart_item_data['event_everyday_time_slot']  = $time_slot_text;
+    } 
+    
+    
     $cart_item_data['event_ticket_info']    = $ticket_type_arr;
     $cart_item_data['event_validate_info']  = $validate;
     $cart_item_data['event_user_info']      = $user;
@@ -55,6 +62,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $cart_item_data['event_recurring_date'] = array_unique($recurring_event_date);
     $cart_item_data['event_recurring_date_arr'] = $recurring_event_date;
     $cart_item_data['event_cart_display_date']  = $mep_event_start_date[0];
+    do_action('mep_event_cart_data_reg');
   }
   $cart_item_data['event_id']             = $product_id;
 
@@ -101,6 +109,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
     $ticket_type_arr            = $cart_item['event_ticket_info'];
     $event_extra_service        = $cart_item['event_extra_service'];
     $event_recurring_date       = $cart_item['event_recurring_date'];
+ 
 
 
     $recurring = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
@@ -149,6 +158,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
         echo '<li>' . $extra_service['service_name'] . " - " . wc_price($extra_service['service_price']) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( (int) $extra_service['service_price'] * (int) $extra_service['service_qty']) . '</li>';
       }
     }
+    do_action('mep_after_cart_item_display_list',$cart_item);
     echo "</ul>";
   }
   return $item_data;
@@ -240,6 +250,7 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $item->add_meta_data('event_id', $eid);
     $item->add_meta_data('_product_id', $eid);
     $item->add_meta_data('_event_extra_service', $event_extra_service);
+    do_action('mep_event_cart_order_data_add',$values,$item);
   }
 }
 add_action('woocommerce_checkout_create_order_line_item', 'mep_add_custom_fields_text_to_order_items', 90, 4);

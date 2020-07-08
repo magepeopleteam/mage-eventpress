@@ -15,7 +15,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $event_expire_on_old         = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
         $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
         $event_expire_date          = $event_meta[$event_expire_on][0];
-        $event_sqi                  = $event_meta['mep_sqi'][0];
+       // $event_sqi                  = array_key_exists('mep_sqi',$event_meta) ? $event_meta['mep_sqi'][0] : '';
         $mep_full_name              = strip_tags($event_meta['mep_full_name'][0]);
         $mep_reg_email              = strip_tags($event_meta['mep_reg_email'][0]);
         $mep_reg_phone              = strip_tags($event_meta['mep_reg_phone'][0]);
@@ -65,7 +65,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $dd                         = $days > 0 ? $days . " days " : '';
         $hh                         = $hours > 0 ? $hours . " hours " : '';
         $mm                         = $minutes > 0 ? $minutes . " minutes " : '';
-        $qty_typec                  = $event_meta['qty_box_type'][0];
+       // $qty_typec                  = array_key_exists('qty_box_type',$event_meta) ? $event_meta['qty_box_type'][0] : '';
         $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_attr(get_post_meta($post_id, 'link_wc_product', true)) : esc_attr($post_id);
 
         
@@ -155,7 +155,7 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $event_expire_on_old         = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
         $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
         $event_expire_date          = $event_meta[$event_expire_on][0];
-        $event_sqi                  = $event_meta['mep_sqi'][0];
+       // $event_sqi                  = $event_meta['mep_sqi'][0];
         $mep_full_name              = strip_tags($event_meta['mep_full_name'][0]);
         $mep_reg_email              = strip_tags($event_meta['mep_reg_email'][0]);
         $mep_reg_phone              = strip_tags($event_meta['mep_reg_phone'][0]);
@@ -208,7 +208,7 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $dd                         = $days > 0 ? $days . " days " : '';
         $hh                         = $hours > 0 ? $hours . " hours " : '';
         $mm                         = $minutes > 0 ? $minutes . " minutes " : '';
-        $qty_typec                  = $event_meta['qty_box_type'][0];
+       // $qty_typec                  = $event_meta['qty_box_type'][0];
         $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_attr(get_post_meta($post_id, 'link_wc_product', true)) : esc_attr($post_id);
 
 

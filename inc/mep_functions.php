@@ -386,6 +386,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       update_post_meta( $order_id, 'ea_order_status', $order_status );
   
       $hooking_data = apply_filters('mep_event_attendee_dynamic_data',array(),$pid,$type,$order_id,$event_id,$_user_info); 
+      
       if(is_array($hooking_data) && sizeof($hooking_data) > 0){
         foreach ($hooking_data as $_data) {
           update_post_meta( $pid, $_data['name'], $_data['value'] );

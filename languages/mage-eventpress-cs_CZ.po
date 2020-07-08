@@ -1,0 +1,6212 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EN\n"
+"POT-Creation-Date: 2020-05-14 14:56+0200\n"
+"PO-Revision-Date: 2020-05-16 11:44+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/admin_setting_panel.php:40
+msgid "Event Settings"
+msgstr "Nastavení události"
+
+#: inc/admin_setting_panel.php:49
+msgid "General Settings"
+msgstr "Hlavní nastavení"
+
+#: inc/admin_setting_panel.php:53
+msgid "Email Settings"
+msgstr "Nastavení e-mailu"
+
+#: inc/admin_setting_panel.php:57
+msgid "Style Settings"
+msgstr ""
+
+#: inc/admin_setting_panel.php:61
+msgid "Translation Settings"
+msgstr "Nastavení překladu"
+
+#: inc/admin_setting_panel.php:81
+msgid "Google Map Type?"
+msgstr "Google Typ mapy?"
+
+#: inc/admin_setting_panel.php:82
+msgid ""
+"Please select the map type you  want to show in fronntend, Note it: Iframe "
+"Not always show the accurate location where API enable map has drag & drop "
+"feature so you can drag the point to accurate location."
+msgstr ""
+
+#: inc/admin_setting_panel.php:93
+msgid "Google Map API Key"
+msgstr "Google MAP API klíč"
+
+#: inc/admin_setting_panel.php:94
+msgid ""
+"Enter Your Google Map API key. <a href=https://developers.google.com/maps/"
+"documentation/javascript/get-api-key target=_blank>Get KEY</a>. Note: You "
+"must enter billing address and information into google map api account to "
+"work perfectly the google map in website."
+msgstr ""
+
+#: inc/admin_setting_panel.php:100
+msgid "Enable Speaker List?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:101
+msgid ""
+"If you want to enable speaker list, Please select Yes by default its disable"
+msgstr ""
+
+#: inc/admin_setting_panel.php:111 inc/admin_setting_panel.php:112
+msgid "Event Details Template"
+msgstr ""
+
+#: inc/admin_setting_panel.php:119
+msgid "Show Event Price in List?"
+msgstr "Zobrazit cenu události v seznamu?"
+
+#: inc/admin_setting_panel.php:120
+msgid "Please select if you want to show event price in the list Yes/No"
+msgstr "Vyberte, zda chcete zobrazit cenu události v seznamu Ano/Ne"
+
+#: inc/admin_setting_panel.php:130
+msgid "Show Multi Date List in Event listing Page?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:131
+msgid ""
+"Please select if you want to show the full date list for multi date event in "
+"the event listing page"
+msgstr ""
+
+#: inc/admin_setting_panel.php:141
+msgid "Enable Shipping Method on event?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:142
+msgid ""
+"Please Select The event product type which is using in WooCommerce, By "
+"default its virtual. If you change this type you need to re-save all the "
+"event again."
+msgstr ""
+
+#: inc/admin_setting_panel.php:152
+msgid "Event Price Label"
+msgstr "Popisek ceny události"
+
+#: inc/admin_setting_panel.php:153
+msgid ""
+"Enter The text which you want to show as price label, Its only displayed if "
+"Show Event price value is YES above. "
+msgstr ""
+"Zadejte Text, který chcete zobrazit jako cenový štítek, Zobrazí se pouze v "
+"případě, že hodnota ceny Zobrazit událost je ANO výše."
+
+#: inc/admin_setting_panel.php:159
+msgid "Event Time Format"
+msgstr "Formát času události"
+
+#: inc/admin_setting_panel.php:160
+msgid "Please select what format time you want to display in event fronntend."
+msgstr ""
+
+#: inc/admin_setting_panel.php:169
+msgid "Redirect Checkout after Booking?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:170
+msgid ""
+"If you want to go direct checkout page after booking an event please enable/"
+"disable this."
+msgstr ""
+
+#: inc/admin_setting_panel.php:180
+msgid "When will event expire"
+msgstr ""
+
+#: inc/admin_setting_panel.php:181
+msgid ""
+"Please select when event will expire, On event start time or event endtime"
+msgstr ""
+
+#: inc/admin_setting_panel.php:191
+msgid "Hide Organizer Section from list ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:192
+msgid "Select yes to hide organizer section from list."
+msgstr ""
+
+#: inc/admin_setting_panel.php:202
+msgid "Hide Location Section from list ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:203
+msgid "Select yes to hide location section from list."
+msgstr ""
+
+#: inc/admin_setting_panel.php:213
+msgid "Hide Full Time Section from list ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:214
+msgid "Select yes to hide time section from list."
+msgstr ""
+
+#: inc/admin_setting_panel.php:224
+msgid "Hide Only End Time Section from list ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:225
+msgid "Select yes to hide Only End Time  section from list."
+msgstr ""
+
+#: inc/admin_setting_panel.php:235
+msgid "Hide Event Date Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:236 inc/admin_setting_panel.php:247
+msgid "Select yes to hide time section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:246
+msgid "Hide Event Time Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:257
+msgid "Hide Event Location Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:258
+msgid "Select yes to hide location section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:268
+msgid "Hide Event Total Seat Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:269
+msgid "Select yes to hide Total Seat Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:279
+msgid "Hide \"Org By\" Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:280
+msgid "Select yes to Event by Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:290
+msgid "Hide Event Address Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:291
+msgid "Select yes to Event Address Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:301
+msgid "Hide Event Schedule Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:302
+msgid "Select yes to Event Schedule Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:312
+msgid "Hide Event Share this Section from Details page ?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:313
+msgid "Select yes to Event Share this Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:323
+msgid "Hide Add Calendar Button from Details page ?"
+msgstr "Skrýt tlačítko Přidat kalendář na stránce Podrobnosti?"
+
+#: inc/admin_setting_panel.php:324
+msgid "Select yes to Event google map Section from details."
+msgstr ""
+
+#: inc/admin_setting_panel.php:334
+msgid "Hide Location From Order Details & Email Section?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:335
+msgid ""
+"If you want to hide Location from order details section in the tankyou page "
+"& from the confirmation email body, Please select Yes. By default is: No."
+msgstr ""
+"Pokud chcete skrýt polohu z části s podrobnostmi objednávky na stránce tank "
+"you a z těla potvrzovacího e-mailu, vyberte možnost Ano. Ve výchozím "
+"nastavení je: Ne."
+
+#: inc/admin_setting_panel.php:345
+msgid "Hide Date From Order Details & Email Section?"
+msgstr ""
+
+#: inc/admin_setting_panel.php:346
+msgid ""
+"If you want to hide Date from order details section in the tankyou page & "
+"from the confirmation email body, Please select Yes. By default is: No."
+msgstr ""
+"Pokud chcete skrýt datum z části s podrobnostmi objednávky na stránce "
+"tankyou a z těla potvrzovacího e-mailu, vyberte možnost Ano. Ve výchozím "
+"nastavení je: Ne."
+
+#: inc/admin_setting_panel.php:359 inc/admin_setting_panel.php:360
+msgid "Email Form Name"
+msgstr ""
+
+#: inc/admin_setting_panel.php:365 inc/admin_setting_panel.php:366
+msgid "Form Email"
+msgstr "Formulář email"
+
+#: inc/admin_setting_panel.php:371 inc/admin_setting_panel.php:372
+msgid "Email Subject"
+msgstr "Předmět emailu"
+
+#: inc/admin_setting_panel.php:377 inc/admin_setting_panel.php:378
+msgid "Confirmation Email Text"
+msgstr "Text potvrzovacího e-mailu"
+
+#: inc/admin_setting_panel.php:387
+msgid "Ticket Type Table Label"
+msgstr "Štítek tabulky typů vstupenek"
+
+#: inc/admin_setting_panel.php:388
+msgid ""
+"Enter the text which you want to display as ticket type table in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:394
+msgid "Extra Service Table Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:395
+msgid ""
+"Enter the text which you want to display as extra service table in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:401
+msgid "Cart Button Label"
+msgstr "Štítok tlačidla košíka"
+
+#: inc/admin_setting_panel.php:402
+msgid ""
+"Enter the text which you want to display in Cart button in event details "
+"page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:408
+msgid "Add Calendar Button Label"
+msgstr "Popisek tlačítka Přidat kalendář"
+
+#: inc/admin_setting_panel.php:409
+msgid ""
+"Enter the text which you want to display in Add you calender in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:415
+msgid "Social Share Label"
+msgstr ""
+
+#: inc/admin_setting_panel.php:416
+msgid ""
+"Enter the text which you want to display as share button title in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:422 inc/template-prts/event_loop_list.php:74
+msgid "Organized By:"
+msgstr "Pořadatel:"
+
+#: inc/admin_setting_panel.php:423
+msgid ""
+"Enter the text which you want to display as Organized By in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:429 inc/template-prts/event_loop_list.php:89
+msgid "Location:"
+msgstr "Umístění:"
+
+#: inc/admin_setting_panel.php:430
+msgid ""
+"Enter the text which you want to display as Location in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:436 inc/template-prts/event_loop_list.php:102
+msgid "Time:"
+msgstr "Čas:"
+
+#: inc/admin_setting_panel.php:437
+msgid "Enter the text which you want to display as Time in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:443 templates/themes/default-theme.php:53
+#: templates/themes/default-theme.php:77 templates/themes/theme-1.php:62
+#: templates/themes/theme-3.php:42 templates/themes/theme-3.php:84
+msgid "Event Location:"
+msgstr "Místo konání:"
+
+#: inc/admin_setting_panel.php:444
+msgid ""
+"Enter the text which you want to display as Event Location in event list "
+"page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:450 inc/mep_functions.php:2679
+#: templates/themes/default-theme.php:31
+msgid "Event Date:"
+msgstr "Datum události:"
+
+#: inc/admin_setting_panel.php:451
+msgid ""
+"Enter the text which you want to display as Event Date in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:457 templates/themes/default-theme.php:42
+msgid "Event Time:"
+msgstr "Čas události:"
+
+#: inc/admin_setting_panel.php:458
+msgid ""
+"Enter the text which you want to display as Event Time in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:465 inc/template-prts/organizer.php:6
+msgid "By:"
+msgstr "Autor:"
+
+#: inc/admin_setting_panel.php:466
+msgid "Enter the text which you want to display as By in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:472 inc/template-prts/total_seat.php:18
+msgid "Total Seat:"
+msgstr "Počet míst:"
+
+#: inc/admin_setting_panel.php:473
+msgid ""
+"Enter the text which you want to display as Total Seat in event list page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:479 inc/template-prts/event_add_cart.php:99
+#: inc/template-prts/event_add_cart.php:240
+msgid "Register Now:"
+msgstr "Zaregistrovat nyní:"
+
+#: inc/admin_setting_panel.php:480
+msgid ""
+"Enter the text which you want to display as Register Now in event details "
+"page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:486 inc/template-prts/event_add_cart.php:114
+#: inc/template-prts/event_add_cart.php:256
+#: inc/template-prts/event_extra_service.php:16
+msgid "Quantity:"
+msgstr "Množství:"
+
+#: inc/admin_setting_panel.php:487
+msgid ""
+"Enter the text which you want to display as Quantity in event details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:493 inc/template-prts/event_extra_service.php:15
+msgid "Name:"
+msgstr "Jméno:"
+
+#: inc/admin_setting_panel.php:494
+msgid "Enter the text which you want to display as Name in event details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:500 inc/template-prts/event_extra_service.php:17
+msgid "Price:"
+msgstr "Cena:"
+
+#: inc/admin_setting_panel.php:501
+msgid ""
+"Enter the text which you want to display as Price in event details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:507 inc/template-prts/event_date.php:88
+msgid "Event Schedule Details"
+msgstr "Podrobnosti události"
+
+#: inc/admin_setting_panel.php:508
+msgid ""
+"Enter the text which you want to display as Event Schedule Details in event "
+"details page."
+msgstr ""
+"Zadejte text, který chcete zobrazit jako podrobnosti plánu událostí na "
+"stránce podrobností o události."
+
+#: inc/admin_setting_panel.php:514
+msgid "Total:"
+msgstr "Cena celkem:"
+
+#: inc/admin_setting_panel.php:515
+msgid ""
+"Enter the text which you want to display as Total in event details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:521
+msgid "Ticket Qty"
+msgstr "Množství vstupenek"
+
+#: inc/admin_setting_panel.php:522
+msgid ""
+"Enter the text which you want to display as Ticket Qty in event details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:528
+#: inc/template-prts/event_ticket_type_loop_list.php:72
+msgid "Per Ticket Price:"
+msgstr "Cena za vstupenku:"
+
+#: inc/admin_setting_panel.php:529
+msgid ""
+"Enter the text which you want to display as per Ticket price in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:536
+msgid "No Ticket Selected!"
+msgstr ""
+
+#: inc/admin_setting_panel.php:537
+msgid ""
+"Enter the text which you want to display as No Ticket Selected in event "
+"details page."
+msgstr ""
+
+#: inc/admin_setting_panel.php:544
+#: inc/template-prts/event_ticket_type_extra_service.php:17
+#: inc/template-prts/event_ticket_type_loop_list.php:61
+msgid "No Seat Available"
+msgstr ""
+
+#: inc/admin_setting_panel.php:545
+msgid "Enter the text which you want to display as No Seat Available."
+msgstr ""
+
+#: inc/admin_setting_panel.php:552 inc/template-prts/event_extra_service.php:53
+msgid "Not Available"
+msgstr ""
+
+#: inc/admin_setting_panel.php:553
+msgid "Enter the text which you want to display as Not Available."
+msgstr ""
+
+#: inc/admin_setting_panel.php:560
+msgid "Event Expired"
+msgstr "Tato událost vypršela"
+
+#: inc/admin_setting_panel.php:561
+msgid "Enter the text which you want to display as Event Expired."
+msgstr ""
+
+#: inc/admin_setting_panel.php:568 inc/mep_functions.php:1077
+msgid "Ticket"
+msgstr "Vstupenka"
+
+#: inc/admin_setting_panel.php:569
+msgid "Enter the text which you want to display as Ticket."
+msgstr ""
+
+#: inc/admin_setting_panel.php:575 inc/template-prts/total_seat.php:18
+msgid "Left"
+msgstr "Dostupných"
+
+#: inc/admin_setting_panel.php:576
+msgid "Enter the text which you want to display as Left."
+msgstr ""
+
+#: inc/admin_setting_panel.php:582
+msgid "Attendee info:"
+msgstr ""
+
+#: inc/admin_setting_panel.php:583
+msgid "Enter the text which you want to display as Attendee info:"
+msgstr ""
+
+#: inc/admin_setting_panel.php:589
+msgid "Select Ticket Error Message:"
+msgstr "Vyberte chybovou zprávu lístku:"
+
+#: inc/admin_setting_panel.php:590
+msgid ""
+"Enter the text which you want to display when no ticket selected popup "
+"display:"
+msgstr ""
+
+#: inc/admin_setting_panel.php:596
+msgid "Virtual Event Rebon"
+msgstr ""
+
+#: inc/admin_setting_panel.php:597
+msgid "Enter Text For Virtual Event Rebon"
+msgstr ""
+
+#: inc/admin_setting_panel.php:606
+msgid "Base Color"
+msgstr "Základní barva"
+
+#: inc/admin_setting_panel.php:607
+msgid ""
+"Select a Basic Color, It will chanage the icon background color, border color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:612
+msgid "Label Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:613
+msgid "Select a Color Label Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:618
+msgid "Label Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:619
+msgid "Select a Color Label Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:624
+msgid "Cart Button Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:625
+msgid "Select a color for Cart Button Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:630
+msgid "Cart Button Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:631
+msgid "Select a color for Cart Button Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:636
+msgid "Calender Button Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:637
+msgid "Select a color for Calender Button Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:642
+msgid "Calender Button Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:643
+msgid "Select a color for Calender Button Text"
+msgstr ""
+
+#: inc/admin_setting_panel.php:648
+msgid "FAQ Title Background Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:649
+msgid "Select a color for FAQ title Background"
+msgstr ""
+
+#: inc/admin_setting_panel.php:654
+msgid "FAQ Title Text Color"
+msgstr ""
+
+#: inc/admin_setting_panel.php:655
+msgid "Select a color for FAQ Title Text"
+msgstr ""
+
+#: inc/class/mep_settings_api.php:364
+msgid "Choose File"
+msgstr ""
+
+#: inc/mep_addon_list.php:5
+msgid "Get Addon"
+msgstr ""
+
+#: inc/mep_addon_list.php:5
+msgid "<span style=\"color:red\">Get Addons</span>"
+msgstr ""
+
+#: inc/mep_cpt.php:14 inc/mep_cpt.php:15 inc/mep_cpt.php:16 inc/mep_cpt.php:17
+msgid "Events"
+msgstr "Události"
+
+#: inc/mep_cpt.php:18 inc/mep_cpt.php:19
+msgid "Events List"
+msgstr ""
+
+#: inc/mep_cpt.php:20
+msgid "Event Item:"
+msgstr ""
+
+#: inc/mep_cpt.php:21
+msgid "All Events"
+msgstr "Všechny události"
+
+#: inc/mep_cpt.php:22 inc/mep_cpt.php:23
+msgid "Add New Event"
+msgstr "Vytvořit novou událost"
+
+#: inc/mep_cpt.php:24
+msgid "New Event"
+msgstr "Nová událost"
+
+#: inc/mep_cpt.php:25
+msgid "Edit Event"
+msgstr "Upravit událost"
+
+#: inc/mep_cpt.php:26
+msgid "Update Event"
+msgstr "Aktualizovat událost"
+
+#: inc/mep_cpt.php:27 inc/mep_cpt.php:28
+msgid "View Event"
+msgstr "Zobrazit událost"
+
+#: inc/mep_cpt.php:29
+msgid "Search Event"
+msgstr "Hledat událost"
+
+#: inc/mep_cpt.php:30
+msgid "Event Not found"
+msgstr ""
+
+#: inc/mep_cpt.php:31
+msgid "Event Not found in Trash"
+msgstr ""
+
+#: inc/mep_cpt.php:32
+msgid "Event Feature Image"
+msgstr ""
+
+#: inc/mep_cpt.php:33
+msgid "Set Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:34
+msgid "Remove Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:35
+msgid "Use as Event featured image"
+msgstr ""
+
+#: inc/mep_cpt.php:36
+msgid "Insert into Event"
+msgstr ""
+
+#: inc/mep_cpt.php:37
+msgid "Uploaded to this Event"
+msgstr ""
+
+#: inc/mep_cpt.php:38
+msgid "Event list"
+msgstr ""
+
+#: inc/mep_cpt.php:39
+msgid "Event list navigation"
+msgstr ""
+
+#: inc/mep_cpt.php:40
+msgid "Filter Event list"
+msgstr ""
+
+#: inc/mep_cpt.php:54 inc/mep_cpt.php:56 inc/mep_cpt.php:57 inc/mep_cpt.php:61
+#: inc/mep_event_fw_meta.php:81
+msgid "Speakers"
+msgstr ""
+
+#: inc/mep_cpt.php:55
+msgid "Speaker"
+msgstr ""
+
+#: inc/mep_cpt.php:58 inc/mep_cpt.php:59
+msgid "Speakers List"
+msgstr ""
+
+#: inc/mep_cpt.php:60
+msgid "Speakers Item:"
+msgstr ""
+
+#: inc/mep_cpt.php:62 inc/mep_cpt.php:63
+msgid "Add New Speaker"
+msgstr "Přidat nového přednášejíciho"
+
+#: inc/mep_cpt.php:64
+msgid "New Speaker"
+msgstr ""
+
+#: inc/mep_cpt.php:65
+msgid "Edit Speaker"
+msgstr "Upravit přednášejíciho"
+
+#: inc/mep_cpt.php:66
+msgid "Update Speaker"
+msgstr "Aktualizovat přednášejíciho"
+
+#: inc/mep_cpt.php:67 inc/mep_cpt.php:68
+msgid "View Speaker"
+msgstr "Zobrazit přednášejíciho"
+
+#: inc/mep_cpt.php:69
+msgid "Search Speaker"
+msgstr "Hledat přednášejíciho"
+
+#: inc/mep_cpt.php:70
+msgid "Speaker Not found"
+msgstr "Mluvčí nebyl nalezen"
+
+#: inc/mep_cpt.php:71
+msgid "Speaker Not found in Trash"
+msgstr ""
+
+#: inc/mep_cpt.php:72
+msgid "Speaker Image"
+msgstr ""
+
+#: inc/mep_cpt.php:73
+msgid "Set Speaker image"
+msgstr ""
+
+#: inc/mep_cpt.php:74
+msgid "Remove Speaker image"
+msgstr ""
+
+#: inc/mep_cpt.php:75
+msgid "Use as Speaker image"
+msgstr ""
+
+#: inc/mep_cpt.php:76
+msgid "Insert into Speaker"
+msgstr ""
+
+#: inc/mep_cpt.php:77
+msgid "Uploaded to this Speaker"
+msgstr ""
+
+#: inc/mep_cpt.php:78
+msgid "Speaker list"
+msgstr "Seznam přednášejících"
+
+#: inc/mep_cpt.php:79
+msgid "Speaker list navigation"
+msgstr ""
+
+#: inc/mep_cpt.php:80
+msgid "Filter Speaker list"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:18
+msgid "Speakers Meta Box"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:34
+msgid "Speakers Additional Information"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:55
+msgid "Event Additional Meta Boxes"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:65
+msgid "Speaker Icon"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:66
+msgid "Please Select the Icon which will show as Speaker Icon"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:73
+msgid "Section Label"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:74
+msgid ""
+"This Text will be the heading of the Speaker List in the frontend. by "
+"default: Speakers "
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:77 inc/template-prts/event_speakers_list.php:11
+msgid "Speaker's"
+msgstr "Řečníci"
+
+#: inc/mep_event_fw_meta.php:82
+msgid "Please select Speakers, You can <a href=\""
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:91
+msgid "Event Type"
+msgstr "Typ události"
+
+#: inc/mep_event_fw_meta.php:92
+msgid "Please Select Event Type, This will add a Rebon in the event list"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:95
+msgid "Offline Event"
+msgstr "Událost offline"
+
+#: inc/mep_event_fw_meta.php:96
+msgid "Online/Virtual Event"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:106
+msgid "Event Speaker Information"
+msgstr ""
+
+#: inc/mep_event_meta.php:6
+msgid ""
+"<span class=\"dashicons dashicons-location\" style=\"color:green; padding-"
+"right:10px;\"></span>Event Venue"
+msgstr ""
+
+#: inc/mep_event_meta.php:8
+msgid ""
+"Event Price (Event Base price, It will not work if you add Event Ticket type "
+"Price)"
+msgstr ""
+
+#: inc/mep_event_meta.php:10
+msgid ""
+"<span class=\"dashicons dashicons-buddicons-tracking\" style=\"color:green; "
+"padding-right:10px;\"></span>Event Ticket Type and Pricing"
+msgstr ""
+
+#: inc/mep_event_meta.php:12
+msgid ""
+"<span class=\"dashicons dashicons-awards\" style=\"color:green; padding-"
+"right:10px;\"></span>Event Extra Service (Extra Service as Product that you "
+"can sell and it is not included on event package)"
+msgstr ""
+
+#: inc/mep_event_meta.php:14
+msgid ""
+"<span class=\"dashicons dashicons-calendar-alt\" style=\"color:green; "
+"padding-right:10px;\"></span>Event Date & Time"
+msgstr ""
+
+#: inc/mep_event_meta.php:16
+msgid ""
+"<span class=\"dashicons dashicons-email-alt\" style=\"color:green; padding-"
+"right:10px;\"></span>Event Email text"
+msgstr ""
+
+#: inc/mep_event_meta.php:18
+msgid "Template"
+msgstr ""
+
+#: inc/mep_event_meta.php:20
+msgid ""
+"<span class=\"dashicons dashicons-info\" style=\"color:green; padding-"
+"right:10px;\"></span>Event F.A.Q"
+msgstr ""
+"<span class=\"dashicons dashicons-info\" style=\"color:green; padding-"
+"right:10px;\"></span>Nejčastější otázky"
+
+#: inc/mep_event_meta.php:22
+msgid "Registration Status"
+msgstr ""
+
+#: inc/mep_event_meta.php:24
+msgid "Show Available Seat Count?"
+msgstr ""
+
+#: inc/mep_event_meta.php:26
+msgid ""
+"<span class=\"dashicons dashicons-analytics\" style=\"color:green; padding-"
+"right:10px;\"></span>Event Daywise Details"
+msgstr ""
+"<span class=\"dashicons dashicons-analytics\" style=\"color:green; padding-"
+"right:10px;\"></span>Denní Podrobnosti Události "
+
+#: inc/mep_event_meta.php:30
+msgid "Event Tax"
+msgstr "Daň z událostí"
+
+#: inc/mep_event_meta.php:33
+msgid "Event Reset Booking Count"
+msgstr ""
+
+#: inc/mep_event_meta.php:38
+msgid ""
+"<span class=\"dashicons dashicons-admin-generic\" style=\"color:green; "
+"padding-right:10px;\"></span>Event Rich text"
+msgstr ""
+
+#: inc/mep_event_meta.php:113
+msgid "Current Status"
+msgstr "Aktuální stav"
+
+#: inc/mep_event_meta.php:114
+msgid ""
+"If you reset this count, All booking information will be removed including "
+"attendee list & its impossible to undo"
+msgstr ""
+
+#: inc/mep_event_meta.php:115
+msgid "Reset Booking Count :"
+msgstr ""
+
+#: inc/mep_event_meta.php:133
+msgid "Registration On/Off:"
+msgstr ""
+
+#: inc/mep_event_meta.php:161
+msgid "Tax status"
+msgstr "Daňový status"
+
+#: inc/mep_event_meta.php:170
+msgid "Tax class"
+msgstr ""
+
+#: inc/mep_event_meta.php:190
+msgid "Show Available Seat?"
+msgstr ""
+
+#: inc/mep_event_meta.php:279
+msgid "Show Address from Organizer?:"
+msgstr "Zobrazit adresu organizátora?:"
+
+#: inc/mep_event_meta.php:289
+msgid "Location/Venue:"
+msgstr ""
+
+#: inc/mep_event_meta.php:297 inc/mep_tax_meta.php:13 inc/mep_tax_meta.php:213
+msgid "Street:"
+msgstr "Ulice:"
+
+#: inc/mep_event_meta.php:304 inc/mep_tax_meta.php:18 inc/mep_tax_meta.php:219
+msgid "City:"
+msgstr "Město:"
+
+#: inc/mep_event_meta.php:311 inc/mep_tax_meta.php:23 inc/mep_tax_meta.php:225
+msgid "State:"
+msgstr "Stát:"
+
+#: inc/mep_event_meta.php:318 inc/mep_tax_meta.php:28 inc/mep_tax_meta.php:231
+msgid "Postcode:"
+msgstr "Psč:"
+
+#: inc/mep_event_meta.php:325 inc/mep_tax_meta.php:33 inc/mep_tax_meta.php:237
+msgid "Country:"
+msgstr "Země:"
+
+#: inc/mep_event_meta.php:329
+msgid "Show Google Map:"
+msgstr "Zobrazit Mapu Google:"
+
+#: inc/mep_event_meta.php:522
+msgid "Price Label"
+msgstr "Cenový štítek"
+
+#: inc/mep_event_meta.php:523
+msgid "Price"
+msgstr "Cena"
+
+#: inc/mep_event_meta.php:524
+msgid "Quantity"
+msgstr "Množství"
+
+#: inc/mep_event_meta.php:525
+msgid "Reserve Qty"
+msgstr "Rezervní množství"
+
+#: inc/mep_event_meta.php:526
+msgid "Input Type"
+msgstr "Typ vstupu"
+
+#: inc/mep_event_meta.php:527
+msgid "Show Quantity Box"
+msgstr ""
+
+#: inc/mep_event_meta.php:538 inc/mep_event_meta.php:892
+#: inc/mep_event_meta.php:916 inc/mep_event_meta.php:1017
+#: inc/mep_event_meta.php:1043
+msgid "Input Box"
+msgstr ""
+
+#: inc/mep_event_meta.php:539 inc/mep_event_meta.php:893
+#: inc/mep_event_meta.php:917 inc/mep_event_meta.php:1018
+#: inc/mep_event_meta.php:1043
+msgid "Dropdown List"
+msgstr ""
+
+#: inc/mep_event_meta.php:541
+msgid "Yes"
+msgstr "Ano"
+
+#: inc/mep_event_meta.php:610 inc/mep_event_meta.php:628
+#: inc/mep_event_meta.php:747 inc/mep_event_meta.php:766
+#: inc/mep_event_meta.php:897 inc/mep_event_meta.php:922
+#: inc/mep_event_meta.php:1023 inc/mep_event_meta.php:1046
+#: inc/mep_event_meta.php:1144 inc/mep_event_meta.php:1167
+msgid "Remove"
+msgstr "Odstranit"
+
+#: inc/mep_event_meta.php:626
+msgid "FAQ Contents"
+msgstr ""
+
+#: inc/mep_event_meta.php:638
+msgid "Add New F.A.Q"
+msgstr ""
+
+#: inc/mep_event_meta.php:763
+msgid "Day Details"
+msgstr ""
+
+#: inc/mep_event_meta.php:777
+msgid "Add New Day"
+msgstr "Přidat nový den"
+
+#: inc/mep_event_meta.php:867
+msgid "Extra Service Name"
+msgstr ""
+
+#: inc/mep_event_meta.php:868
+msgid "Service Price"
+msgstr "Cena služby"
+
+#: inc/mep_event_meta.php:869 inc/mep_event_meta.php:985
+msgid "Available Qty"
+msgstr "Dostupné množství"
+
+#: inc/mep_event_meta.php:870 inc/mep_event_meta.php:989
+msgid "Qty Box Type"
+msgstr "Typ pole množství"
+
+#: inc/mep_event_meta.php:915
+msgid "Please Select Type"
+msgstr ""
+
+#: inc/mep_event_meta.php:933
+msgid "Add Extra Price"
+msgstr "Přidat extra cenu"
+
+#: inc/mep_event_meta.php:983
+msgid "Ticket Type Name"
+msgstr "Název typu lístku"
+
+#: inc/mep_event_meta.php:984
+msgid "Ticket Price"
+msgstr "Cena vstupenky"
+
+#: inc/mep_event_meta.php:986
+msgid "Default Qty"
+msgstr "Výchozí množství"
+
+#: inc/mep_event_meta.php:1054
+msgid "Add New Ticket Type"
+msgstr "Přidat nový typ lístku"
+
+#: inc/mep_event_meta.php:1173
+msgid "Add More Date"
+msgstr "Přidat další datum"
+
+#: inc/mep_event_meta.php:1186
+msgid "Confirmation Email Text:"
+msgstr "Text potvrzovacího e-mailu:"
+
+#: inc/mep_extra_price.php:106 inc/mep_extra_price.php:129
+msgid "Event Date"
+msgstr "Datum události"
+
+#: inc/mep_extra_price.php:137
+msgid "Event Location"
+msgstr "Místo konání"
+
+#: inc/mep_functions.php:65 lib/classes/class-wc-product-data.php:21
+msgid "Invalid product."
+msgstr "Neplatný produkt."
+
+#: inc/mep_functions.php:143 woocommerce-event-press.php:24
+msgid ""
+"You Must Install WooCommerce Plugin before activating WooCommerce Event "
+"Manager, Becuase It is dependent on Woocommerce Plugin"
+msgstr ""
+
+#: inc/mep_functions.php:1076 inc/mep_tax.php:88 inc/mep_tax.php:117
+msgid "Name"
+msgstr "Jméno"
+
+#: inc/mep_functions.php:1078
+msgid "Event"
+msgstr "Událost"
+
+#: inc/mep_functions.php:1293
+msgid "Status"
+msgstr "Stav"
+
+#: inc/mep_functions.php:1423
+msgid "End"
+msgstr ""
+
+#: inc/mep_functions.php:1812
+msgid "Seats"
+msgstr ""
+
+#: inc/mep_functions.php:2430
+msgid "View More Date"
+msgstr ""
+
+#: inc/mep_functions.php:2431
+msgid "Hide Date Lists"
+msgstr ""
+
+#: inc/mep_functions.php:2556 inc/mep_functions.php:2567
+msgid "Custom CSS"
+msgstr ""
+
+#: inc/mep_functions.php:2568
+msgid "Write Your Custom CSS Code Here"
+msgstr ""
+
+#: inc/mep_functions.php:2657
+msgid "Name: "
+msgstr "Jméno: "
+
+#: inc/mep_functions.php:2659
+msgid "Email: "
+msgstr "Email: "
+
+#: inc/mep_functions.php:2661
+msgid "Phone: "
+msgstr "Telefon: "
+
+#: inc/mep_functions.php:2663
+msgid "Address: "
+msgstr "Adresa: "
+
+#: inc/mep_functions.php:2665
+msgid "Gender: "
+msgstr "Pohlaví: "
+
+#: inc/mep_functions.php:2667
+msgid "T-Shirt Size: "
+msgstr ""
+
+#: inc/mep_functions.php:2669
+msgid "Company: "
+msgstr "Společnost:"
+
+#: inc/mep_functions.php:2671
+msgid "Designation: "
+msgstr "Označení:"
+
+#: inc/mep_functions.php:2673
+msgid "Website: "
+msgstr "Webová stránka:"
+
+#: inc/mep_functions.php:2675
+msgid "Vegetarian: "
+msgstr "Vegetarián"
+
+#: inc/mep_functions.php:2677
+msgid "Ticket Type: "
+msgstr "Typ vstupenky:"
+
+#: inc/mep_tax.php:9
+msgid "Category"
+msgstr "Kategorie"
+
+#: inc/mep_tax.php:10
+msgid "All Event Category"
+msgstr ""
+
+#: inc/mep_tax.php:11
+msgid "Parent Category"
+msgstr "Nadřazená kategorie"
+
+#: inc/mep_tax.php:12
+msgid "Parent Category:"
+msgstr "Nadřazená kategorie:"
+
+#: inc/mep_tax.php:13
+msgid "New Category Name"
+msgstr "Název nové kategorie"
+
+#: inc/mep_tax.php:14
+msgid "Add New Category"
+msgstr "Přidat novou kategorii"
+
+#: inc/mep_tax.php:15
+msgid "Edit Category"
+msgstr "Upravit kategorii"
+
+#: inc/mep_tax.php:16
+msgid "Update Category"
+msgstr "Aktualizovat kategorii"
+
+#: inc/mep_tax.php:17
+msgid "View Category"
+msgstr "Zobrazit kategorii"
+
+#: inc/mep_tax.php:18
+msgid "Separate Category with commas"
+msgstr ""
+
+#: inc/mep_tax.php:19
+msgid "Add or remove Category"
+msgstr ""
+
+#: inc/mep_tax.php:20 inc/mep_tax.php:56
+msgid "Choose from the most used"
+msgstr "Vyberte z nejpoužívanějších"
+
+#: inc/mep_tax.php:21
+msgid "Popular Category"
+msgstr "Populární kategorie"
+
+#: inc/mep_tax.php:22
+msgid "Search Category"
+msgstr "Vyhledat kategorii"
+
+#: inc/mep_tax.php:23 inc/mep_tax.php:59
+msgid "Not Found"
+msgstr "Nic jsme nenašli"
+
+#: inc/mep_tax.php:24
+msgid "No Category"
+msgstr "Žádná kategorie"
+
+#: inc/mep_tax.php:25
+msgid "Category list"
+msgstr "Seznam kategorií"
+
+#: inc/mep_tax.php:26
+msgid "Category list navigation"
+msgstr ""
+
+#: inc/mep_tax.php:45
+msgid "Organizer"
+msgstr "Organizátor"
+
+#: inc/mep_tax.php:46
+msgid "All Event Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:47
+msgid "Parent Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:48
+msgid "Parent Organizer:"
+msgstr ""
+
+#: inc/mep_tax.php:49
+msgid "New Organizer Name"
+msgstr ""
+
+#: inc/mep_tax.php:50
+msgid "Add New Organizer"
+msgstr "Přidat nového organizátora"
+
+#: inc/mep_tax.php:51
+msgid "Edit Organizer"
+msgstr "Upravit organizátora"
+
+#: inc/mep_tax.php:52
+msgid "Update Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:53
+msgid "View Organizer"
+msgstr "Zobrazit organizátora"
+
+#: inc/mep_tax.php:54
+msgid "Separate Organizer with commas"
+msgstr ""
+
+#: inc/mep_tax.php:55
+msgid "Add or remove Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:57
+msgid "Popular Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:58
+msgid "Search Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:60
+msgid "No Organizer"
+msgstr ""
+
+#: inc/mep_tax.php:61
+msgid "Organizer list"
+msgstr ""
+
+#: inc/mep_tax.php:62
+msgid "Organizer list navigation"
+msgstr ""
+
+#: inc/mep_tax.php:91 inc/mep_tax.php:120
+msgid "Slug"
+msgstr ""
+
+#: inc/mep_tax.php:92 inc/mep_tax.php:121
+msgid "Posts"
+msgstr ""
+
+#: inc/mep_tax_meta.php:8 inc/mep_tax_meta.php:207
+msgid "Location/Venue"
+msgstr "Umístění/Místo"
+
+#: inc/mep_tax_meta.php:243
+msgid "Map:"
+msgstr ""
+
+#: inc/template-prts/event_add_cart.php:119
+#: inc/template-prts/event_add_cart.php:261
+msgid "Total"
+msgstr "Cena celkem:"
+
+#: inc/template-prts/event_date.php:152
+msgid "View All Date"
+msgstr "Zobrazit všechna data"
+
+#: inc/template-prts/event_date.php:153
+msgid "Hide All Date"
+msgstr ""
+
+#: inc/template-prts/event_details.php:22
+msgid "Event Days"
+msgstr "Dny událostí"
+
+#: inc/template-prts/event_extra_service.php:30
+#: inc/template-prts/event_ticket_type_loop_list.php:31
+msgid "Left:"
+msgstr "Dostupných"
+
+#: inc/template-prts/event_labels.php:8
+msgid "Sorry, Event Expired"
+msgstr ""
+
+#: inc/template-prts/event_labels.php:20
+msgid "No Seat Availables"
+msgstr "K dispozici není žádné místo"
+
+#: inc/template-prts/event_list_tax_name_list.php:13
+#: inc/template-prts/event_list_tax_name_list.php:39
+msgid "All"
+msgstr "Vše"
+
+#: inc/template-prts/event_loop_list.php:39
+msgid "Multi Date Event"
+msgstr "Událost s více daty"
+
+#: inc/template-prts/event_loop_list.php:43
+msgid "Virtual Event"
+msgstr "Virtuální událost"
+
+#: inc/template-prts/event_ticket_type_loop_list.php:37
+msgid "Ticket Qty:"
+msgstr "Množství vstupenek"
+
+#: inc/template-prts/event_ticket_type_loop_list.php:48
+msgid "Ticket:"
+msgstr "Vstupenka:"
+
+#: inc/template-prts/faq.php:9
+msgid "Event F.A.Q"
+msgstr "Nejčastější otázky"
+
+#: inc/template-prts/single-mep_events_attendees.php:112
+msgid "Ticket No"
+msgstr "Vstupenka č "
+
+#: inc/template-prts/single-mep_events_attendees.php:117
+msgid "Order ID"
+msgstr "ID objednávky"
+
+#: inc/template-prts/single-mep_events_attendees.php:122
+msgid "Email"
+msgstr "Email"
+
+#: inc/template-prts/single-mep_events_attendees.php:127
+msgid "Phone"
+msgstr "Telefon"
+
+#: inc/template-prts/single-mep_events_attendees.php:132
+msgid "Address"
+msgstr "Adresa"
+
+#: inc/template-prts/single-mep_events_attendees.php:137
+msgid "Designation"
+msgstr "Označení"
+
+#: inc/template-prts/single-mep_events_attendees.php:142
+msgid "Company"
+msgstr "Společnost"
+
+#: inc/template-prts/single-mep_events_attendees.php:147
+msgid "Website"
+msgstr "Webová stránka"
+
+#: inc/template-prts/single-mep_events_attendees.php:152
+msgid "Gender"
+msgstr "Pohlaví"
+
+#: inc/template-prts/single-mep_events_attendees.php:158
+msgid "Vegetarian"
+msgstr "Vegetarián"
+
+#: inc/template-prts/single-mep_events_attendees.php:165
+msgid "T Shirt Size"
+msgstr ""
+
+#: inc/template-prts/single-mep_events_attendees.php:170
+msgid "Ticket Type"
+msgstr "Typ vstupenky:"
+
+#: inc/template-prts/single-mep_events_attendees.php:199
+#: inc/template-prts/single-mep_events_attendees.php:202
+msgid ""
+"Sorry, You Can not see this page, Because Its not your Attendee Information."
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:3056
+#: lib/classes/class-form-fields-generator.php:5082
+msgid "Add"
+msgstr "Přidat"
+
+#: lib/classes/class-form-fields-generator.php:5394
+msgid "Choose User"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:5395
+#: lib/classes/class-form-fields-generator.php:5569
+#: lib/classes/class-form-fields-generator.php:5705
+msgid "Start typing..."
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:5568
+#: lib/classes/class-form-fields-generator.php:5704
+msgid "Choose Icon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:7645
+#: lib/classes/class-form-fields-generator.php:8119
+#: lib/classes/class-form-fields-generator.php:8252
+msgid "Upload"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:8119
+#: lib/classes/class-form-fields-generator.php:8255
+msgid "Clear"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9036
+#: lib/classes/class-form-fields-wrapper.php:7898
+msgid "500px"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9037
+#: lib/classes/class-form-fields-wrapper.php:7899
+msgid "accessible-icon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9038
+#: lib/classes/class-form-fields-wrapper.php:7900
+msgid "accusoft"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9039
+#: lib/classes/class-form-fields-generator.php:9040
+#: lib/classes/class-form-fields-wrapper.php:7901
+#: lib/classes/class-form-fields-wrapper.php:7902
+msgid "address-book"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9041
+#: lib/classes/class-form-fields-generator.php:9042
+#: lib/classes/class-form-fields-wrapper.php:7903
+#: lib/classes/class-form-fields-wrapper.php:7904
+msgid "address-card"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9043
+#: lib/classes/class-form-fields-wrapper.php:7905
+msgid "adjust"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9044
+#: lib/classes/class-form-fields-wrapper.php:7906
+msgid "adn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9045
+#: lib/classes/class-form-fields-wrapper.php:7907
+msgid "adversal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9046
+#: lib/classes/class-form-fields-wrapper.php:7908
+msgid "affiliatetheme"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9047
+#: lib/classes/class-form-fields-wrapper.php:7909
+msgid "algolia"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9048
+#: lib/classes/class-form-fields-wrapper.php:7910
+msgid "align-center"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9049
+#: lib/classes/class-form-fields-wrapper.php:7911
+msgid "align-justify"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9050
+#: lib/classes/class-form-fields-wrapper.php:7912
+msgid "align-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9051
+#: lib/classes/class-form-fields-wrapper.php:7913
+msgid "align-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9052
+#: lib/classes/class-form-fields-wrapper.php:7914
+msgid "allergies"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9053
+#: lib/classes/class-form-fields-wrapper.php:7915
+msgid "amazon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9054
+#: lib/classes/class-form-fields-wrapper.php:7916
+msgid "amazon-pay"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9055
+#: lib/classes/class-form-fields-wrapper.php:7917
+msgid "ambulance"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9056
+#: lib/classes/class-form-fields-wrapper.php:7918
+msgid "american-sign-language-interpreting"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9057
+#: lib/classes/class-form-fields-wrapper.php:7919
+msgid "amilia"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9058
+#: lib/classes/class-form-fields-wrapper.php:7920
+msgid "anchor"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9059
+#: lib/classes/class-form-fields-wrapper.php:7921
+msgid "android"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9060
+#: lib/classes/class-form-fields-wrapper.php:7922
+msgid "angellist"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9061
+#: lib/classes/class-form-fields-wrapper.php:7923
+msgid "angle-double-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9062
+#: lib/classes/class-form-fields-wrapper.php:7924
+msgid "angle-double-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9063
+#: lib/classes/class-form-fields-wrapper.php:7925
+msgid "angle-double-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9064
+#: lib/classes/class-form-fields-wrapper.php:7926
+msgid "angle-double-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9065
+#: lib/classes/class-form-fields-wrapper.php:7927
+msgid "angle-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9066
+#: lib/classes/class-form-fields-wrapper.php:7928
+msgid "angle-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9067
+#: lib/classes/class-form-fields-wrapper.php:7929
+msgid "angle-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9068
+#: lib/classes/class-form-fields-wrapper.php:7930
+msgid "angle-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9069
+#: lib/classes/class-form-fields-wrapper.php:7931
+msgid "angrycreative"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9070
+#: lib/classes/class-form-fields-wrapper.php:7932
+msgid "angular"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9071
+#: lib/classes/class-form-fields-wrapper.php:7933
+msgid "app-store"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9072
+#: lib/classes/class-form-fields-wrapper.php:7934
+msgid "app-store-ios"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9073
+#: lib/classes/class-form-fields-wrapper.php:7935
+msgid "apper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9074
+#: lib/classes/class-form-fields-wrapper.php:7936
+msgid "apple"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9075
+#: lib/classes/class-form-fields-wrapper.php:7937
+msgid "apple-pay"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9076
+#: lib/classes/class-form-fields-wrapper.php:7938
+msgid "archive"
+msgstr "archiv"
+
+#: lib/classes/class-form-fields-generator.php:9077
+#: lib/classes/class-form-fields-generator.php:9078
+#: lib/classes/class-form-fields-wrapper.php:7939
+#: lib/classes/class-form-fields-wrapper.php:7940
+msgid "arrow-alt-circle-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9079
+#: lib/classes/class-form-fields-generator.php:9080
+#: lib/classes/class-form-fields-wrapper.php:7941
+#: lib/classes/class-form-fields-wrapper.php:7942
+msgid "arrow-alt-circle-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9081
+#: lib/classes/class-form-fields-generator.php:9082
+#: lib/classes/class-form-fields-wrapper.php:7943
+#: lib/classes/class-form-fields-wrapper.php:7944
+msgid "arrow-alt-circle-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9083
+#: lib/classes/class-form-fields-generator.php:9084
+#: lib/classes/class-form-fields-wrapper.php:7945
+#: lib/classes/class-form-fields-wrapper.php:7946
+msgid "arrow-alt-circle-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9085
+#: lib/classes/class-form-fields-wrapper.php:7947
+msgid "arrow-circle-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9086
+#: lib/classes/class-form-fields-wrapper.php:7948
+msgid "arrow-circle-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9087
+#: lib/classes/class-form-fields-wrapper.php:7949
+msgid "arrow-circle-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9088
+#: lib/classes/class-form-fields-wrapper.php:7950
+msgid "arrow-circle-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9089
+#: lib/classes/class-form-fields-wrapper.php:7951
+msgid "arrow-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9090
+#: lib/classes/class-form-fields-wrapper.php:7952
+msgid "arrow-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9091
+#: lib/classes/class-form-fields-wrapper.php:7953
+msgid "arrow-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9092
+#: lib/classes/class-form-fields-wrapper.php:7954
+msgid "arrow-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9093
+#: lib/classes/class-form-fields-wrapper.php:7955
+msgid "arrows-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9094
+#: lib/classes/class-form-fields-wrapper.php:7956
+msgid "arrows-alt-h"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9095
+#: lib/classes/class-form-fields-wrapper.php:7957
+msgid "arrows-alt-v"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9096
+#: lib/classes/class-form-fields-wrapper.php:7958
+msgid "assistive-listening-systems"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9097
+#: lib/classes/class-form-fields-wrapper.php:7959
+msgid "asterisk"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9098
+#: lib/classes/class-form-fields-wrapper.php:7960
+msgid "asymmetrik"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9099
+#: lib/classes/class-form-fields-wrapper.php:7961
+msgid "at"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9100
+#: lib/classes/class-form-fields-wrapper.php:7962
+msgid "audible"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9101
+#: lib/classes/class-form-fields-wrapper.php:7963
+msgid "audio-description"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9102
+#: lib/classes/class-form-fields-wrapper.php:7964
+msgid "autoprefixer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9103
+#: lib/classes/class-form-fields-wrapper.php:7965
+msgid "avianex"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9104
+#: lib/classes/class-form-fields-wrapper.php:7966
+msgid "aviato"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9105
+#: lib/classes/class-form-fields-wrapper.php:7967
+msgid "aws"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9106
+#: lib/classes/class-form-fields-wrapper.php:7968
+msgid "backward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9107
+#: lib/classes/class-form-fields-wrapper.php:7969
+msgid "balance-scale"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9108
+#: lib/classes/class-form-fields-wrapper.php:7970
+msgid "ban"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9109
+#: lib/classes/class-form-fields-wrapper.php:7971
+msgid "band-aid"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9110
+#: lib/classes/class-form-fields-wrapper.php:7972
+msgid "bandcamp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9111
+#: lib/classes/class-form-fields-wrapper.php:7973
+msgid "barcode"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9112
+#: lib/classes/class-form-fields-wrapper.php:7974
+msgid "bars"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9113
+#: lib/classes/class-form-fields-wrapper.php:7975
+msgid "baseball-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9114
+#: lib/classes/class-form-fields-wrapper.php:7976
+msgid "basketball-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9115
+#: lib/classes/class-form-fields-wrapper.php:7977
+msgid "bath"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9116
+#: lib/classes/class-form-fields-wrapper.php:7978
+msgid "battery-empty"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9117
+#: lib/classes/class-form-fields-wrapper.php:7979
+msgid "battery-full"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9118
+#: lib/classes/class-form-fields-wrapper.php:7980
+msgid "battery-half"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9119
+#: lib/classes/class-form-fields-wrapper.php:7981
+msgid "battery-quarter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9120
+#: lib/classes/class-form-fields-wrapper.php:7982
+msgid "battery-three-quarters"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9121
+#: lib/classes/class-form-fields-wrapper.php:7983
+msgid "bed"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9122
+#: lib/classes/class-form-fields-wrapper.php:7984
+msgid "beer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9123
+#: lib/classes/class-form-fields-wrapper.php:7985
+msgid "behance"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9124
+#: lib/classes/class-form-fields-wrapper.php:7986
+msgid "behance-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9125
+#: lib/classes/class-form-fields-generator.php:9126
+#: lib/classes/class-form-fields-wrapper.php:7987
+#: lib/classes/class-form-fields-wrapper.php:7988
+msgid "bell"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9127
+#: lib/classes/class-form-fields-generator.php:9128
+#: lib/classes/class-form-fields-wrapper.php:7989
+#: lib/classes/class-form-fields-wrapper.php:7990
+msgid "bell-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9129
+#: lib/classes/class-form-fields-wrapper.php:7991
+msgid "bicycle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9130
+#: lib/classes/class-form-fields-wrapper.php:7992
+msgid "bimobject"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9131
+#: lib/classes/class-form-fields-wrapper.php:7993
+msgid "binoculars"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9132
+#: lib/classes/class-form-fields-wrapper.php:7994
+msgid "birthday-cake"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9133
+#: lib/classes/class-form-fields-wrapper.php:7995
+msgid "bitbucket"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9134
+#: lib/classes/class-form-fields-wrapper.php:7996
+msgid "bitcoin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9135
+#: lib/classes/class-form-fields-wrapper.php:7997
+msgid "bity"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9136
+#: lib/classes/class-form-fields-wrapper.php:7998
+msgid "black-tie"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9137
+#: lib/classes/class-form-fields-wrapper.php:7999
+msgid "blackberry"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9138
+#: lib/classes/class-form-fields-wrapper.php:8000
+msgid "blind"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9139
+#: lib/classes/class-form-fields-wrapper.php:8001
+msgid "blogger"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9140
+#: lib/classes/class-form-fields-wrapper.php:8002
+msgid "blogger-b"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9141
+#: lib/classes/class-form-fields-wrapper.php:8003
+msgid "bluetooth"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9142
+#: lib/classes/class-form-fields-wrapper.php:8004
+msgid "bluetooth-b"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9143
+#: lib/classes/class-form-fields-wrapper.php:8005
+msgid "bold"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9144
+#: lib/classes/class-form-fields-wrapper.php:8006
+msgid "bolt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9145
+#: lib/classes/class-form-fields-wrapper.php:8007
+msgid "bomb"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9146
+#: lib/classes/class-form-fields-wrapper.php:8008
+msgid "book"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9147
+#: lib/classes/class-form-fields-generator.php:9148
+#: lib/classes/class-form-fields-wrapper.php:8009
+#: lib/classes/class-form-fields-wrapper.php:8010
+msgid "bookmark"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9149
+#: lib/classes/class-form-fields-wrapper.php:8011
+msgid "bowling-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9150
+#: lib/classes/class-form-fields-wrapper.php:8012
+msgid "box"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9151
+#: lib/classes/class-form-fields-wrapper.php:8013
+msgid "box-open"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9152
+#: lib/classes/class-form-fields-wrapper.php:8014
+msgid "boxes"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9153
+#: lib/classes/class-form-fields-wrapper.php:8015
+msgid "braille"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9154
+#: lib/classes/class-form-fields-wrapper.php:8016
+msgid "briefcase"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9155
+#: lib/classes/class-form-fields-wrapper.php:8017
+msgid "briefcase-medical"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9156
+#: lib/classes/class-form-fields-wrapper.php:8018
+msgid "btc"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9157
+#: lib/classes/class-form-fields-wrapper.php:8019
+msgid "bug"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9158
+#: lib/classes/class-form-fields-generator.php:9159
+#: lib/classes/class-form-fields-wrapper.php:8020
+#: lib/classes/class-form-fields-wrapper.php:8021
+msgid "building"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9160
+#: lib/classes/class-form-fields-wrapper.php:8022
+msgid "bullhorn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9161
+#: lib/classes/class-form-fields-wrapper.php:8023
+msgid "bullseye"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9162
+#: lib/classes/class-form-fields-wrapper.php:8024
+msgid "burn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9163
+#: lib/classes/class-form-fields-wrapper.php:8025
+msgid "buromobelexperte"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9164
+#: lib/classes/class-form-fields-wrapper.php:8026
+msgid "bus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9165
+#: lib/classes/class-form-fields-wrapper.php:8027
+msgid "buysellads"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9166
+#: lib/classes/class-form-fields-wrapper.php:8028
+msgid "calculator"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9167
+#: lib/classes/class-form-fields-generator.php:9168
+#: lib/classes/class-form-fields-wrapper.php:8029
+#: lib/classes/class-form-fields-wrapper.php:8030
+msgid "calendar"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9169
+#: lib/classes/class-form-fields-generator.php:9170
+#: lib/classes/class-form-fields-wrapper.php:8031
+#: lib/classes/class-form-fields-wrapper.php:8032
+msgid "calendar-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9171
+#: lib/classes/class-form-fields-generator.php:9172
+#: lib/classes/class-form-fields-wrapper.php:8033
+#: lib/classes/class-form-fields-wrapper.php:8034
+msgid "calendar-check"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9173
+#: lib/classes/class-form-fields-generator.php:9174
+#: lib/classes/class-form-fields-wrapper.php:8035
+#: lib/classes/class-form-fields-wrapper.php:8036
+msgid "calendar-minus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9175
+#: lib/classes/class-form-fields-generator.php:9176
+#: lib/classes/class-form-fields-wrapper.php:8037
+#: lib/classes/class-form-fields-wrapper.php:8038
+msgid "calendar-plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9177
+#: lib/classes/class-form-fields-generator.php:9178
+#: lib/classes/class-form-fields-wrapper.php:8039
+#: lib/classes/class-form-fields-wrapper.php:8040
+msgid "calendar-times"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9179
+#: lib/classes/class-form-fields-wrapper.php:8041
+msgid "camera"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9180
+#: lib/classes/class-form-fields-wrapper.php:8042
+msgid "camera-retro"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9181
+#: lib/classes/class-form-fields-wrapper.php:8043
+msgid "capsules"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9182
+#: lib/classes/class-form-fields-wrapper.php:8044
+msgid "car"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9183
+#: lib/classes/class-form-fields-wrapper.php:8045
+msgid "caret-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9184
+#: lib/classes/class-form-fields-wrapper.php:8046
+msgid "caret-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9185
+#: lib/classes/class-form-fields-wrapper.php:8047
+msgid "caret-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9186
+#: lib/classes/class-form-fields-generator.php:9187
+#: lib/classes/class-form-fields-wrapper.php:8048
+#: lib/classes/class-form-fields-wrapper.php:8049
+msgid "caret-square-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9188
+#: lib/classes/class-form-fields-generator.php:9189
+#: lib/classes/class-form-fields-wrapper.php:8050
+#: lib/classes/class-form-fields-wrapper.php:8051
+msgid "caret-square-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9190
+#: lib/classes/class-form-fields-generator.php:9191
+#: lib/classes/class-form-fields-wrapper.php:8052
+#: lib/classes/class-form-fields-wrapper.php:8053
+msgid "caret-square-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9192
+#: lib/classes/class-form-fields-generator.php:9193
+#: lib/classes/class-form-fields-wrapper.php:8054
+#: lib/classes/class-form-fields-wrapper.php:8055
+msgid "caret-square-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9194
+#: lib/classes/class-form-fields-wrapper.php:8056
+msgid "caret-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9195
+#: lib/classes/class-form-fields-wrapper.php:8057
+msgid "cart-arrow-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9196
+#: lib/classes/class-form-fields-wrapper.php:8058
+msgid "cart-plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9197
+#: lib/classes/class-form-fields-wrapper.php:8059
+msgid "cc-amazon-pay"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9198
+#: lib/classes/class-form-fields-wrapper.php:8060
+msgid "cc-amex"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9199
+#: lib/classes/class-form-fields-wrapper.php:8061
+msgid "cc-apple-pay"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9200
+#: lib/classes/class-form-fields-wrapper.php:8062
+msgid "cc-diners-club"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9201
+#: lib/classes/class-form-fields-wrapper.php:8063
+msgid "cc-discover"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9202
+#: lib/classes/class-form-fields-wrapper.php:8064
+msgid "cc-jcb"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9203
+#: lib/classes/class-form-fields-wrapper.php:8065
+msgid "cc-mastercard"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9204
+#: lib/classes/class-form-fields-wrapper.php:8066
+msgid "cc-paypal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9205
+#: lib/classes/class-form-fields-wrapper.php:8067
+msgid "cc-stripe"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9206
+#: lib/classes/class-form-fields-wrapper.php:8068
+msgid "cc-visa"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9207
+#: lib/classes/class-form-fields-wrapper.php:8069
+msgid "centercode"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9208
+#: lib/classes/class-form-fields-wrapper.php:8070
+msgid "certificate"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9209
+#: lib/classes/class-form-fields-wrapper.php:8071
+msgid "chart-area"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9210
+#: lib/classes/class-form-fields-generator.php:9211
+#: lib/classes/class-form-fields-wrapper.php:8072
+#: lib/classes/class-form-fields-wrapper.php:8073
+msgid "chart-bar"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9212
+#: lib/classes/class-form-fields-wrapper.php:8074
+msgid "chart-line"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9213
+#: lib/classes/class-form-fields-wrapper.php:8075
+msgid "chart-pie"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9214
+#: lib/classes/class-form-fields-wrapper.php:8076
+msgid "check"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9215
+#: lib/classes/class-form-fields-generator.php:9216
+#: lib/classes/class-form-fields-wrapper.php:8077
+#: lib/classes/class-form-fields-wrapper.php:8078
+msgid "check-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9217
+#: lib/classes/class-form-fields-generator.php:9218
+#: lib/classes/class-form-fields-wrapper.php:8079
+#: lib/classes/class-form-fields-wrapper.php:8080
+msgid "check-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9219
+#: lib/classes/class-form-fields-wrapper.php:8081
+msgid "chess"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9220
+#: lib/classes/class-form-fields-wrapper.php:8082
+msgid "chess-bishop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9221
+#: lib/classes/class-form-fields-wrapper.php:8083
+msgid "chess-board"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9222
+#: lib/classes/class-form-fields-wrapper.php:8084
+msgid "chess-king"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9223
+#: lib/classes/class-form-fields-wrapper.php:8085
+msgid "chess-knight"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9224
+#: lib/classes/class-form-fields-wrapper.php:8086
+msgid "chess-pawn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9225
+#: lib/classes/class-form-fields-wrapper.php:8087
+msgid "chess-queen"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9226
+#: lib/classes/class-form-fields-wrapper.php:8088
+msgid "chess-rook"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9227
+#: lib/classes/class-form-fields-wrapper.php:8089
+msgid "chevron-circle-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9228
+#: lib/classes/class-form-fields-wrapper.php:8090
+msgid "chevron-circle-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9229
+#: lib/classes/class-form-fields-wrapper.php:8091
+msgid "chevron-circle-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9230
+#: lib/classes/class-form-fields-wrapper.php:8092
+msgid "chevron-circle-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9231
+#: lib/classes/class-form-fields-wrapper.php:8093
+msgid "chevron-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9232
+#: lib/classes/class-form-fields-wrapper.php:8094
+msgid "chevron-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9233
+#: lib/classes/class-form-fields-wrapper.php:8095
+msgid "chevron-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9234
+#: lib/classes/class-form-fields-wrapper.php:8096
+msgid "chevron-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9235
+#: lib/classes/class-form-fields-wrapper.php:8097
+msgid "child"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9236
+#: lib/classes/class-form-fields-wrapper.php:8098
+msgid "chrome"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9237
+#: lib/classes/class-form-fields-generator.php:9238
+#: lib/classes/class-form-fields-wrapper.php:8099
+#: lib/classes/class-form-fields-wrapper.php:8100
+msgid "circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9239
+#: lib/classes/class-form-fields-wrapper.php:8101
+msgid "circle-notch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9240
+#: lib/classes/class-form-fields-generator.php:9241
+#: lib/classes/class-form-fields-wrapper.php:8102
+#: lib/classes/class-form-fields-wrapper.php:8103
+msgid "clipboard"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9242
+#: lib/classes/class-form-fields-wrapper.php:8104
+msgid "clipboard-check"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9243
+#: lib/classes/class-form-fields-wrapper.php:8105
+msgid "clipboard-list"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9244
+#: lib/classes/class-form-fields-generator.php:9245
+#: lib/classes/class-form-fields-wrapper.php:8106
+#: lib/classes/class-form-fields-wrapper.php:8107
+msgid "clock"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9246
+#: lib/classes/class-form-fields-generator.php:9247
+#: lib/classes/class-form-fields-wrapper.php:8108
+#: lib/classes/class-form-fields-wrapper.php:8109
+msgid "clone"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9248
+#: lib/classes/class-form-fields-generator.php:9249
+#: lib/classes/class-form-fields-wrapper.php:8110
+#: lib/classes/class-form-fields-wrapper.php:8111
+msgid "closed-captioning"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9250
+#: lib/classes/class-form-fields-wrapper.php:8112
+msgid "cloud"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9251
+#: lib/classes/class-form-fields-wrapper.php:8113
+msgid "cloud-download-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9252
+#: lib/classes/class-form-fields-wrapper.php:8114
+msgid "cloud-upload-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9253
+#: lib/classes/class-form-fields-wrapper.php:8115
+msgid "cloudscale"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9254
+#: lib/classes/class-form-fields-wrapper.php:8116
+msgid "cloudsmith"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9255
+#: lib/classes/class-form-fields-wrapper.php:8117
+msgid "cloudversify"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9256
+#: lib/classes/class-form-fields-wrapper.php:8118
+msgid "code"
+msgstr "kód"
+
+#: lib/classes/class-form-fields-generator.php:9257
+#: lib/classes/class-form-fields-wrapper.php:8119
+msgid "code-branch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9258
+#: lib/classes/class-form-fields-wrapper.php:8120
+msgid "codepen"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9259
+#: lib/classes/class-form-fields-wrapper.php:8121
+msgid "codiepie"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9260
+#: lib/classes/class-form-fields-wrapper.php:8122
+msgid "coffee"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9261
+#: lib/classes/class-form-fields-wrapper.php:8123
+msgid "cog"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9262
+#: lib/classes/class-form-fields-wrapper.php:8124
+msgid "cogs"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9263
+#: lib/classes/class-form-fields-wrapper.php:8125
+msgid "columns"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9264
+#: lib/classes/class-form-fields-generator.php:9265
+#: lib/classes/class-form-fields-wrapper.php:8126
+#: lib/classes/class-form-fields-wrapper.php:8127
+msgid "comment"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9266
+#: lib/classes/class-form-fields-generator.php:9267
+#: lib/classes/class-form-fields-wrapper.php:8128
+#: lib/classes/class-form-fields-wrapper.php:8129
+msgid "comment-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9268
+#: lib/classes/class-form-fields-wrapper.php:8130
+msgid "comment-dots"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9269
+#: lib/classes/class-form-fields-wrapper.php:8131
+msgid "comment-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9270
+#: lib/classes/class-form-fields-generator.php:9271
+#: lib/classes/class-form-fields-wrapper.php:8132
+#: lib/classes/class-form-fields-wrapper.php:8133
+msgid "comments"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9272
+#: lib/classes/class-form-fields-generator.php:9273
+#: lib/classes/class-form-fields-wrapper.php:8134
+#: lib/classes/class-form-fields-wrapper.php:8135
+msgid "compass"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9274
+#: lib/classes/class-form-fields-wrapper.php:8136
+msgid "compress"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9275
+#: lib/classes/class-form-fields-wrapper.php:8137
+msgid "connectdevelop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9276
+#: lib/classes/class-form-fields-wrapper.php:8138
+msgid "contao"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9277
+#: lib/classes/class-form-fields-generator.php:9278
+#: lib/classes/class-form-fields-wrapper.php:8139
+#: lib/classes/class-form-fields-wrapper.php:8140
+msgid "copy"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9279
+#: lib/classes/class-form-fields-generator.php:9280
+#: lib/classes/class-form-fields-wrapper.php:8141
+#: lib/classes/class-form-fields-wrapper.php:8142
+msgid "copyright"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9281
+#: lib/classes/class-form-fields-wrapper.php:8143
+msgid "couch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9282
+#: lib/classes/class-form-fields-wrapper.php:8144
+msgid "cpanel"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9283
+#: lib/classes/class-form-fields-wrapper.php:8145
+msgid "creative-commons"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9284
+#: lib/classes/class-form-fields-generator.php:9285
+#: lib/classes/class-form-fields-wrapper.php:8146
+#: lib/classes/class-form-fields-wrapper.php:8147
+msgid "credit-card"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9286
+#: lib/classes/class-form-fields-wrapper.php:8148
+msgid "crop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9287
+#: lib/classes/class-form-fields-wrapper.php:8149
+msgid "crosshairs"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9288
+#: lib/classes/class-form-fields-wrapper.php:8150
+msgid "css3"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9289
+#: lib/classes/class-form-fields-wrapper.php:8151
+msgid "css3-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9290
+#: lib/classes/class-form-fields-wrapper.php:8152
+msgid "cube"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9291
+#: lib/classes/class-form-fields-wrapper.php:8153
+msgid "cubes"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9292
+#: lib/classes/class-form-fields-wrapper.php:8154
+msgid "cut"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9293
+#: lib/classes/class-form-fields-wrapper.php:8155
+msgid "cuttlefish"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9294
+#: lib/classes/class-form-fields-wrapper.php:8156
+msgid "d-and-d"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9295
+#: lib/classes/class-form-fields-wrapper.php:8157
+msgid "dashcube"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9296
+#: lib/classes/class-form-fields-wrapper.php:8158
+msgid "database"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9297
+#: lib/classes/class-form-fields-wrapper.php:8159
+msgid "deaf"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9298
+#: lib/classes/class-form-fields-wrapper.php:8160
+msgid "delicious"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9299
+#: lib/classes/class-form-fields-wrapper.php:8161
+msgid "deploydog"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9300
+#: lib/classes/class-form-fields-wrapper.php:8162
+msgid "deskpro"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9301
+#: lib/classes/class-form-fields-wrapper.php:8163
+msgid "desktop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9302
+#: lib/classes/class-form-fields-wrapper.php:8164
+msgid "deviantart"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9303
+#: lib/classes/class-form-fields-wrapper.php:8165
+msgid "diagnoses"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9304
+#: lib/classes/class-form-fields-wrapper.php:8166
+msgid "digg"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9305
+#: lib/classes/class-form-fields-wrapper.php:8167
+msgid "digital-ocean"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9306
+#: lib/classes/class-form-fields-wrapper.php:8168
+msgid "discord"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9307
+#: lib/classes/class-form-fields-wrapper.php:8169
+msgid "discourse"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9308
+#: lib/classes/class-form-fields-wrapper.php:8170
+msgid "dna"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9309
+#: lib/classes/class-form-fields-wrapper.php:8171
+msgid "dochub"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9310
+#: lib/classes/class-form-fields-wrapper.php:8172
+msgid "docker"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9311
+#: lib/classes/class-form-fields-wrapper.php:8173
+msgid "dollar-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9312
+#: lib/classes/class-form-fields-wrapper.php:8174
+msgid "dolly"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9313
+#: lib/classes/class-form-fields-wrapper.php:8175
+msgid "dolly-flatbed"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9314
+#: lib/classes/class-form-fields-wrapper.php:8176
+msgid "donate"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9315
+#: lib/classes/class-form-fields-generator.php:9316
+#: lib/classes/class-form-fields-wrapper.php:8177
+#: lib/classes/class-form-fields-wrapper.php:8178
+msgid "dot-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9317
+#: lib/classes/class-form-fields-wrapper.php:8179
+msgid "dove"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9318
+#: lib/classes/class-form-fields-wrapper.php:8180
+msgid "download"
+msgstr "Stáhnout"
+
+#: lib/classes/class-form-fields-generator.php:9319
+#: lib/classes/class-form-fields-wrapper.php:8181
+msgid "draft2digital"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9320
+#: lib/classes/class-form-fields-wrapper.php:8182
+msgid "dribbble"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9321
+#: lib/classes/class-form-fields-wrapper.php:8183
+msgid "dribbble-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9322
+#: lib/classes/class-form-fields-wrapper.php:8184
+msgid "dropbox"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9323
+#: lib/classes/class-form-fields-wrapper.php:8185
+msgid "drupal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9324
+#: lib/classes/class-form-fields-wrapper.php:8186
+msgid "dyalog"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9325
+#: lib/classes/class-form-fields-wrapper.php:8187
+msgid "earlybirds"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9326
+#: lib/classes/class-form-fields-wrapper.php:8188
+msgid "edge"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9327
+#: lib/classes/class-form-fields-generator.php:9328
+#: lib/classes/class-form-fields-wrapper.php:8189
+#: lib/classes/class-form-fields-wrapper.php:8190
+msgid "edit"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9329
+#: lib/classes/class-form-fields-wrapper.php:8191
+msgid "eject"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9330
+#: lib/classes/class-form-fields-wrapper.php:8192
+msgid "elementor"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9331
+#: lib/classes/class-form-fields-wrapper.php:8193
+msgid "ellipsis-h"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9332
+#: lib/classes/class-form-fields-wrapper.php:8194
+msgid "ellipsis-v"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9333
+#: lib/classes/class-form-fields-wrapper.php:8195
+msgid "ember"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9334
+#: lib/classes/class-form-fields-wrapper.php:8196
+msgid "empire"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9335
+#: lib/classes/class-form-fields-generator.php:9336
+#: lib/classes/class-form-fields-wrapper.php:8197
+#: lib/classes/class-form-fields-wrapper.php:8198
+msgid "envelope"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9337
+#: lib/classes/class-form-fields-generator.php:9338
+#: lib/classes/class-form-fields-wrapper.php:8199
+#: lib/classes/class-form-fields-wrapper.php:8200
+msgid "envelope-open"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9339
+#: lib/classes/class-form-fields-wrapper.php:8201
+msgid "envelope-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9340
+#: lib/classes/class-form-fields-wrapper.php:8202
+msgid "envira"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9341
+#: lib/classes/class-form-fields-wrapper.php:8203
+msgid "eraser"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9342
+#: lib/classes/class-form-fields-wrapper.php:8204
+msgid "erlang"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9343
+#: lib/classes/class-form-fields-wrapper.php:8205
+msgid "ethereum"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9344
+#: lib/classes/class-form-fields-wrapper.php:8206
+msgid "etsy"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9345
+#: lib/classes/class-form-fields-wrapper.php:8207
+msgid "euro-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9346
+#: lib/classes/class-form-fields-wrapper.php:8208
+msgid "exchange-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9347
+#: lib/classes/class-form-fields-wrapper.php:8209
+msgid "exclamation"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9348
+#: lib/classes/class-form-fields-wrapper.php:8210
+msgid "exclamation-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9349
+#: lib/classes/class-form-fields-wrapper.php:8211
+msgid "exclamation-triangle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9350
+#: lib/classes/class-form-fields-wrapper.php:8212
+msgid "expand"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9351
+#: lib/classes/class-form-fields-wrapper.php:8213
+msgid "expand-arrows-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9352
+#: lib/classes/class-form-fields-wrapper.php:8214
+msgid "expeditedssl"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9353
+#: lib/classes/class-form-fields-wrapper.php:8215
+msgid "external-link-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9354
+#: lib/classes/class-form-fields-wrapper.php:8216
+msgid "external-link-square-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9355
+#: lib/classes/class-form-fields-wrapper.php:8217
+msgid "eye"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9356
+#: lib/classes/class-form-fields-wrapper.php:8218
+msgid "eye-dropper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9357
+#: lib/classes/class-form-fields-generator.php:9358
+#: lib/classes/class-form-fields-wrapper.php:8219
+#: lib/classes/class-form-fields-wrapper.php:8220
+msgid "eye-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9359
+#: lib/classes/class-form-fields-wrapper.php:8221
+msgid "facebook"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9360
+#: lib/classes/class-form-fields-wrapper.php:8222
+msgid "facebook-f"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9361
+#: lib/classes/class-form-fields-wrapper.php:8223
+msgid "facebook-messenger"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9362
+#: lib/classes/class-form-fields-wrapper.php:8224
+msgid "facebook-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9363
+#: lib/classes/class-form-fields-wrapper.php:8225
+msgid "fast-backward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9364
+#: lib/classes/class-form-fields-wrapper.php:8226
+msgid "fast-forward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9365
+#: lib/classes/class-form-fields-wrapper.php:8227
+msgid "fax"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9366
+#: lib/classes/class-form-fields-wrapper.php:8228
+msgid "female"
+msgstr "Žena"
+
+#: lib/classes/class-form-fields-generator.php:9367
+#: lib/classes/class-form-fields-wrapper.php:8229
+msgid "fighter-jet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9368
+#: lib/classes/class-form-fields-generator.php:9369
+#: lib/classes/class-form-fields-wrapper.php:8230
+#: lib/classes/class-form-fields-wrapper.php:8231
+msgid "file"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9370
+#: lib/classes/class-form-fields-generator.php:9371
+#: lib/classes/class-form-fields-wrapper.php:8232
+#: lib/classes/class-form-fields-wrapper.php:8233
+msgid "file-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9372
+#: lib/classes/class-form-fields-generator.php:9373
+#: lib/classes/class-form-fields-wrapper.php:8234
+#: lib/classes/class-form-fields-wrapper.php:8235
+msgid "file-archive"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9374
+#: lib/classes/class-form-fields-generator.php:9375
+#: lib/classes/class-form-fields-wrapper.php:8236
+#: lib/classes/class-form-fields-wrapper.php:8237
+msgid "file-audio"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9376
+#: lib/classes/class-form-fields-generator.php:9377
+#: lib/classes/class-form-fields-wrapper.php:8238
+#: lib/classes/class-form-fields-wrapper.php:8239
+msgid "file-code"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9378
+#: lib/classes/class-form-fields-generator.php:9379
+#: lib/classes/class-form-fields-wrapper.php:8240
+#: lib/classes/class-form-fields-wrapper.php:8241
+msgid "file-excel"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9380
+#: lib/classes/class-form-fields-generator.php:9381
+#: lib/classes/class-form-fields-wrapper.php:8242
+#: lib/classes/class-form-fields-wrapper.php:8243
+msgid "file-image"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9382
+#: lib/classes/class-form-fields-wrapper.php:8244
+msgid "file-medical"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9383
+#: lib/classes/class-form-fields-wrapper.php:8245
+msgid "file-medical-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9384
+#: lib/classes/class-form-fields-generator.php:9385
+#: lib/classes/class-form-fields-wrapper.php:8246
+#: lib/classes/class-form-fields-wrapper.php:8247
+msgid "file-pdf"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9386
+#: lib/classes/class-form-fields-generator.php:9387
+#: lib/classes/class-form-fields-wrapper.php:8248
+#: lib/classes/class-form-fields-wrapper.php:8249
+msgid "file-powerpoint"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9388
+#: lib/classes/class-form-fields-generator.php:9389
+#: lib/classes/class-form-fields-wrapper.php:8250
+#: lib/classes/class-form-fields-wrapper.php:8251
+msgid "file-video"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9390
+#: lib/classes/class-form-fields-generator.php:9391
+#: lib/classes/class-form-fields-wrapper.php:8252
+#: lib/classes/class-form-fields-wrapper.php:8253
+msgid "file-word"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9392
+#: lib/classes/class-form-fields-wrapper.php:8254
+msgid "film"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9393
+#: lib/classes/class-form-fields-wrapper.php:8255
+msgid "filter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9394
+#: lib/classes/class-form-fields-wrapper.php:8256
+msgid "fire"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9395
+#: lib/classes/class-form-fields-wrapper.php:8257
+msgid "fire-extinguisher"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9396
+#: lib/classes/class-form-fields-wrapper.php:8258
+msgid "firefox"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9397
+#: lib/classes/class-form-fields-wrapper.php:8259
+msgid "first-aid"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9398
+#: lib/classes/class-form-fields-wrapper.php:8260
+msgid "first-order"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9399
+#: lib/classes/class-form-fields-wrapper.php:8261
+msgid "firstdraft"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9400
+#: lib/classes/class-form-fields-generator.php:9401
+#: lib/classes/class-form-fields-wrapper.php:8262
+#: lib/classes/class-form-fields-wrapper.php:8263
+msgid "flag"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9402
+#: lib/classes/class-form-fields-wrapper.php:8264
+msgid "flag-checkered"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9403
+#: lib/classes/class-form-fields-wrapper.php:8265
+msgid "flask"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9404
+#: lib/classes/class-form-fields-wrapper.php:8266
+msgid "flickr"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9405
+#: lib/classes/class-form-fields-wrapper.php:8267
+msgid "flipboard"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9406
+#: lib/classes/class-form-fields-wrapper.php:8268
+msgid "fly"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9407
+#: lib/classes/class-form-fields-generator.php:9408
+#: lib/classes/class-form-fields-wrapper.php:8269
+#: lib/classes/class-form-fields-wrapper.php:8270
+msgid "folder"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9409
+#: lib/classes/class-form-fields-generator.php:9410
+#: lib/classes/class-form-fields-wrapper.php:8271
+#: lib/classes/class-form-fields-wrapper.php:8272
+msgid "folder-open"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9411
+#: lib/classes/class-form-fields-wrapper.php:8273
+msgid "font"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9412
+#: lib/classes/class-form-fields-wrapper.php:8274
+msgid "font-awesome"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9413
+#: lib/classes/class-form-fields-wrapper.php:8275
+msgid "font-awesome-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9414
+#: lib/classes/class-form-fields-wrapper.php:8276
+msgid "font-awesome-flag"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9415
+#: lib/classes/class-form-fields-wrapper.php:8277
+msgid "fonticons"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9416
+#: lib/classes/class-form-fields-wrapper.php:8278
+msgid "fonticons-fi"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9417
+#: lib/classes/class-form-fields-wrapper.php:8279
+msgid "football-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9418
+#: lib/classes/class-form-fields-wrapper.php:8280
+msgid "fort-awesome"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9419
+#: lib/classes/class-form-fields-wrapper.php:8281
+msgid "fort-awesome-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9420
+#: lib/classes/class-form-fields-wrapper.php:8282
+msgid "forumbee"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9421
+#: lib/classes/class-form-fields-wrapper.php:8283
+msgid "forward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9422
+#: lib/classes/class-form-fields-wrapper.php:8284
+msgid "foursquare"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9423
+#: lib/classes/class-form-fields-wrapper.php:8285
+msgid "free-code-camp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9424
+#: lib/classes/class-form-fields-wrapper.php:8286
+msgid "freebsd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9425
+#: lib/classes/class-form-fields-generator.php:9426
+#: lib/classes/class-form-fields-wrapper.php:8287
+#: lib/classes/class-form-fields-wrapper.php:8288
+msgid "frown"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9427
+#: lib/classes/class-form-fields-generator.php:9428
+#: lib/classes/class-form-fields-wrapper.php:8289
+#: lib/classes/class-form-fields-wrapper.php:8290
+msgid "futbol"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9429
+#: lib/classes/class-form-fields-wrapper.php:8291
+msgid "gamepad"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9430
+#: lib/classes/class-form-fields-wrapper.php:8292
+msgid "gavel"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9431
+#: lib/classes/class-form-fields-generator.php:9432
+#: lib/classes/class-form-fields-wrapper.php:8293
+#: lib/classes/class-form-fields-wrapper.php:8294
+msgid "gem"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9433
+#: lib/classes/class-form-fields-wrapper.php:8295
+msgid "genderless"
+msgstr "bez pohlaví"
+
+#: lib/classes/class-form-fields-generator.php:9434
+#: lib/classes/class-form-fields-wrapper.php:8296
+msgid "get-pocket"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9435
+#: lib/classes/class-form-fields-wrapper.php:8297
+msgid "gg"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9436
+#: lib/classes/class-form-fields-wrapper.php:8298
+msgid "gg-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9437
+#: lib/classes/class-form-fields-wrapper.php:8299
+msgid "gift"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9438
+#: lib/classes/class-form-fields-wrapper.php:8300
+msgid "git"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9439
+#: lib/classes/class-form-fields-wrapper.php:8301
+msgid "git-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9440
+#: lib/classes/class-form-fields-wrapper.php:8302
+msgid "github"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9441
+#: lib/classes/class-form-fields-wrapper.php:8303
+msgid "github-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9442
+#: lib/classes/class-form-fields-wrapper.php:8304
+msgid "github-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9443
+#: lib/classes/class-form-fields-wrapper.php:8305
+msgid "gitkraken"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9444
+#: lib/classes/class-form-fields-wrapper.php:8306
+msgid "gitlab"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9445
+#: lib/classes/class-form-fields-wrapper.php:8307
+msgid "gitter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9446
+#: lib/classes/class-form-fields-wrapper.php:8308
+msgid "glass-martini"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9447
+#: lib/classes/class-form-fields-wrapper.php:8309
+msgid "glide"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9448
+#: lib/classes/class-form-fields-wrapper.php:8310
+msgid "glide-g"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9449
+#: lib/classes/class-form-fields-wrapper.php:8311
+msgid "globe"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9450
+#: lib/classes/class-form-fields-wrapper.php:8312
+msgid "gofore"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9451
+#: lib/classes/class-form-fields-wrapper.php:8313
+msgid "golf-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9452
+#: lib/classes/class-form-fields-wrapper.php:8314
+msgid "goodreads"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9453
+#: lib/classes/class-form-fields-wrapper.php:8315
+msgid "goodreads-g"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9454
+#: lib/classes/class-form-fields-wrapper.php:8316
+msgid "google"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9455
+#: lib/classes/class-form-fields-wrapper.php:8317
+msgid "google-drive"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9456
+#: lib/classes/class-form-fields-wrapper.php:8318
+msgid "google-play"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9457
+#: lib/classes/class-form-fields-wrapper.php:8319
+msgid "google-plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9458
+#: lib/classes/class-form-fields-wrapper.php:8320
+msgid "google-plus-g"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9459
+#: lib/classes/class-form-fields-wrapper.php:8321
+msgid "google-plus-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9460
+#: lib/classes/class-form-fields-wrapper.php:8322
+msgid "google-wallet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9461
+#: lib/classes/class-form-fields-wrapper.php:8323
+msgid "graduation-cap"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9462
+#: lib/classes/class-form-fields-wrapper.php:8324
+msgid "gratipay"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9463
+#: lib/classes/class-form-fields-wrapper.php:8325
+msgid "grav"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9464
+#: lib/classes/class-form-fields-wrapper.php:8326
+msgid "gripfire"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9465
+#: lib/classes/class-form-fields-wrapper.php:8327
+msgid "grunt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9466
+#: lib/classes/class-form-fields-wrapper.php:8328
+msgid "gulp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9467
+#: lib/classes/class-form-fields-wrapper.php:8329
+msgid "h-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9468
+#: lib/classes/class-form-fields-wrapper.php:8330
+msgid "hacker-news"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9469
+#: lib/classes/class-form-fields-wrapper.php:8331
+msgid "hacker-news-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9470
+#: lib/classes/class-form-fields-wrapper.php:8332
+msgid "hand-holding"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9471
+#: lib/classes/class-form-fields-wrapper.php:8333
+msgid "hand-holding-heart"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9472
+#: lib/classes/class-form-fields-wrapper.php:8334
+msgid "hand-holding-usd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9473
+#: lib/classes/class-form-fields-generator.php:9474
+#: lib/classes/class-form-fields-wrapper.php:8335
+#: lib/classes/class-form-fields-wrapper.php:8336
+msgid "hand-lizard"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9475
+#: lib/classes/class-form-fields-generator.php:9476
+#: lib/classes/class-form-fields-wrapper.php:8337
+#: lib/classes/class-form-fields-wrapper.php:8338
+msgid "hand-paper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9477
+#: lib/classes/class-form-fields-generator.php:9478
+#: lib/classes/class-form-fields-wrapper.php:8339
+#: lib/classes/class-form-fields-wrapper.php:8340
+msgid "hand-peace"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9479
+#: lib/classes/class-form-fields-generator.php:9480
+#: lib/classes/class-form-fields-wrapper.php:8341
+#: lib/classes/class-form-fields-wrapper.php:8342
+msgid "hand-point-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9481
+#: lib/classes/class-form-fields-generator.php:9482
+#: lib/classes/class-form-fields-wrapper.php:8343
+#: lib/classes/class-form-fields-wrapper.php:8344
+msgid "hand-point-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9483
+#: lib/classes/class-form-fields-generator.php:9484
+#: lib/classes/class-form-fields-wrapper.php:8345
+#: lib/classes/class-form-fields-wrapper.php:8346
+msgid "hand-point-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9485
+#: lib/classes/class-form-fields-generator.php:9486
+#: lib/classes/class-form-fields-wrapper.php:8347
+#: lib/classes/class-form-fields-wrapper.php:8348
+msgid "hand-point-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9487
+#: lib/classes/class-form-fields-generator.php:9488
+#: lib/classes/class-form-fields-wrapper.php:8349
+#: lib/classes/class-form-fields-wrapper.php:8350
+msgid "hand-pointer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9489
+#: lib/classes/class-form-fields-generator.php:9490
+#: lib/classes/class-form-fields-wrapper.php:8351
+#: lib/classes/class-form-fields-wrapper.php:8352
+msgid "hand-rock"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9491
+#: lib/classes/class-form-fields-generator.php:9492
+#: lib/classes/class-form-fields-wrapper.php:8353
+#: lib/classes/class-form-fields-wrapper.php:8354
+msgid "hand-scissors"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9493
+#: lib/classes/class-form-fields-generator.php:9494
+#: lib/classes/class-form-fields-wrapper.php:8355
+#: lib/classes/class-form-fields-wrapper.php:8356
+msgid "hand-spock"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9495
+#: lib/classes/class-form-fields-wrapper.php:8357
+msgid "hands"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9496
+#: lib/classes/class-form-fields-wrapper.php:8358
+msgid "hands-helping"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9497
+#: lib/classes/class-form-fields-generator.php:9498
+#: lib/classes/class-form-fields-wrapper.php:8359
+#: lib/classes/class-form-fields-wrapper.php:8360
+msgid "handshake"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9499
+#: lib/classes/class-form-fields-wrapper.php:8361
+msgid "hashtag"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9500
+#: lib/classes/class-form-fields-generator.php:9501
+#: lib/classes/class-form-fields-wrapper.php:8362
+#: lib/classes/class-form-fields-wrapper.php:8363
+msgid "hdd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9502
+#: lib/classes/class-form-fields-wrapper.php:8364
+msgid "heading"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9503
+#: lib/classes/class-form-fields-wrapper.php:8365
+msgid "headphones"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9504
+#: lib/classes/class-form-fields-generator.php:9505
+#: lib/classes/class-form-fields-wrapper.php:8366
+#: lib/classes/class-form-fields-wrapper.php:8367
+msgid "heart"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9506
+#: lib/classes/class-form-fields-wrapper.php:8368
+msgid "heartbeat"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9507
+#: lib/classes/class-form-fields-wrapper.php:8369
+msgid "hips"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9508
+#: lib/classes/class-form-fields-wrapper.php:8370
+msgid "hire-a-helper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9509
+#: lib/classes/class-form-fields-wrapper.php:8371
+msgid "history"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9510
+#: lib/classes/class-form-fields-wrapper.php:8372
+msgid "hockey-puck"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9511
+#: lib/classes/class-form-fields-wrapper.php:8373
+msgid "home"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9512
+#: lib/classes/class-form-fields-wrapper.php:8374
+msgid "hooli"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9513
+#: lib/classes/class-form-fields-generator.php:9514
+#: lib/classes/class-form-fields-wrapper.php:8375
+#: lib/classes/class-form-fields-wrapper.php:8376
+msgid "hospital"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9515
+#: lib/classes/class-form-fields-wrapper.php:8377
+msgid "hospital-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9516
+#: lib/classes/class-form-fields-wrapper.php:8378
+msgid "hospital-symbol"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9517
+#: lib/classes/class-form-fields-wrapper.php:8379
+msgid "hotjar"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9518
+#: lib/classes/class-form-fields-generator.php:9519
+#: lib/classes/class-form-fields-wrapper.php:8380
+#: lib/classes/class-form-fields-wrapper.php:8381
+msgid "hourglass"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9520
+#: lib/classes/class-form-fields-wrapper.php:8382
+msgid "hourglass-end"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9521
+#: lib/classes/class-form-fields-wrapper.php:8383
+msgid "hourglass-half"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9522
+#: lib/classes/class-form-fields-wrapper.php:8384
+msgid "hourglass-start"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9523
+#: lib/classes/class-form-fields-wrapper.php:8385
+msgid "houzz"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9524
+#: lib/classes/class-form-fields-wrapper.php:8386
+msgid "html5"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9525
+#: lib/classes/class-form-fields-wrapper.php:8387
+msgid "hubspot"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9526
+#: lib/classes/class-form-fields-wrapper.php:8388
+msgid "i-cursor"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9527
+#: lib/classes/class-form-fields-generator.php:9528
+#: lib/classes/class-form-fields-wrapper.php:8389
+#: lib/classes/class-form-fields-wrapper.php:8390
+msgid "id-badge"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9529
+#: lib/classes/class-form-fields-generator.php:9530
+#: lib/classes/class-form-fields-wrapper.php:8391
+#: lib/classes/class-form-fields-wrapper.php:8392
+msgid "id-card"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9531
+#: lib/classes/class-form-fields-wrapper.php:8393
+msgid "id-card-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9532
+#: lib/classes/class-form-fields-generator.php:9533
+#: lib/classes/class-form-fields-wrapper.php:8394
+#: lib/classes/class-form-fields-wrapper.php:8395
+msgid "image"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9534
+#: lib/classes/class-form-fields-generator.php:9535
+#: lib/classes/class-form-fields-wrapper.php:8396
+#: lib/classes/class-form-fields-wrapper.php:8397
+msgid "images"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9536
+#: lib/classes/class-form-fields-wrapper.php:8398
+msgid "imdb"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9537
+#: lib/classes/class-form-fields-wrapper.php:8399
+msgid "inbox"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9538
+#: lib/classes/class-form-fields-wrapper.php:8400
+msgid "indent"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9539
+#: lib/classes/class-form-fields-wrapper.php:8401
+msgid "industry"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9540
+#: lib/classes/class-form-fields-wrapper.php:8402
+msgid "info"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9541
+#: lib/classes/class-form-fields-wrapper.php:8403
+msgid "info-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9542
+#: lib/classes/class-form-fields-wrapper.php:8404
+msgid "instagram"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9543
+#: lib/classes/class-form-fields-wrapper.php:8405
+msgid "internet-explorer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9544
+#: lib/classes/class-form-fields-wrapper.php:8406
+msgid "ioxhost"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9545
+#: lib/classes/class-form-fields-wrapper.php:8407
+msgid "italic"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9546
+#: lib/classes/class-form-fields-wrapper.php:8408
+msgid "itunes"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9547
+#: lib/classes/class-form-fields-wrapper.php:8409
+msgid "itunes-note"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9548
+#: lib/classes/class-form-fields-wrapper.php:8410
+msgid "java"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9549
+#: lib/classes/class-form-fields-wrapper.php:8411
+msgid "jenkins"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9550
+#: lib/classes/class-form-fields-wrapper.php:8412
+msgid "joget"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9551
+#: lib/classes/class-form-fields-wrapper.php:8413
+msgid "joomla"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9552
+#: lib/classes/class-form-fields-wrapper.php:8414
+msgid "js"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9553
+#: lib/classes/class-form-fields-wrapper.php:8415
+msgid "js-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9554
+#: lib/classes/class-form-fields-wrapper.php:8416
+msgid "jsfiddle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9555
+#: lib/classes/class-form-fields-wrapper.php:8417
+msgid "key"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9556
+#: lib/classes/class-form-fields-generator.php:9557
+#: lib/classes/class-form-fields-wrapper.php:8418
+#: lib/classes/class-form-fields-wrapper.php:8419
+msgid "keyboard"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9558
+#: lib/classes/class-form-fields-wrapper.php:8420
+msgid "keycdn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9559
+#: lib/classes/class-form-fields-wrapper.php:8421
+msgid "kickstarter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9560
+#: lib/classes/class-form-fields-wrapper.php:8422
+msgid "kickstarter-k"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9561
+#: lib/classes/class-form-fields-wrapper.php:8423
+msgid "korvue"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9562
+#: lib/classes/class-form-fields-wrapper.php:8424
+msgid "language"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9563
+#: lib/classes/class-form-fields-wrapper.php:8425
+msgid "laptop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9564
+#: lib/classes/class-form-fields-wrapper.php:8426
+msgid "laravel"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9565
+#: lib/classes/class-form-fields-wrapper.php:8427
+msgid "lastfm"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9566
+#: lib/classes/class-form-fields-wrapper.php:8428
+msgid "lastfm-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9567
+#: lib/classes/class-form-fields-wrapper.php:8429
+msgid "leaf"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9568
+#: lib/classes/class-form-fields-wrapper.php:8430
+msgid "leanpub"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9569
+#: lib/classes/class-form-fields-generator.php:9570
+#: lib/classes/class-form-fields-wrapper.php:8431
+#: lib/classes/class-form-fields-wrapper.php:8432
+msgid "lemon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9571
+#: lib/classes/class-form-fields-wrapper.php:8433
+msgid "less"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9572
+#: lib/classes/class-form-fields-wrapper.php:8434
+msgid "level-down-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9573
+#: lib/classes/class-form-fields-wrapper.php:8435
+msgid "level-up-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9574
+#: lib/classes/class-form-fields-generator.php:9575
+#: lib/classes/class-form-fields-wrapper.php:8436
+#: lib/classes/class-form-fields-wrapper.php:8437
+msgid "life-ring"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9576
+#: lib/classes/class-form-fields-generator.php:9577
+#: lib/classes/class-form-fields-wrapper.php:8438
+#: lib/classes/class-form-fields-wrapper.php:8439
+msgid "lightbulb"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9578
+#: lib/classes/class-form-fields-wrapper.php:8440
+msgid "line"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9579
+#: lib/classes/class-form-fields-wrapper.php:8441
+msgid "link"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9580
+#: lib/classes/class-form-fields-wrapper.php:8442
+msgid "linkedin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9581
+#: lib/classes/class-form-fields-wrapper.php:8443
+msgid "linkedin-in"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9582
+#: lib/classes/class-form-fields-wrapper.php:8444
+msgid "linode"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9583
+#: lib/classes/class-form-fields-wrapper.php:8445
+msgid "linux"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9584
+#: lib/classes/class-form-fields-wrapper.php:8446
+msgid "lira-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9585
+#: lib/classes/class-form-fields-wrapper.php:8447
+msgid "list"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9586
+#: lib/classes/class-form-fields-generator.php:9587
+#: lib/classes/class-form-fields-wrapper.php:8448
+#: lib/classes/class-form-fields-wrapper.php:8449
+msgid "list-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9588
+#: lib/classes/class-form-fields-wrapper.php:8450
+msgid "list-ol"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9589
+#: lib/classes/class-form-fields-wrapper.php:8451
+msgid "list-ul"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9590
+#: lib/classes/class-form-fields-wrapper.php:8452
+msgid "location-arrow"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9591
+#: lib/classes/class-form-fields-wrapper.php:8453
+msgid "lock"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9592
+#: lib/classes/class-form-fields-wrapper.php:8454
+msgid "lock-open"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9593
+#: lib/classes/class-form-fields-wrapper.php:8455
+msgid "long-arrow-alt-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9594
+#: lib/classes/class-form-fields-wrapper.php:8456
+msgid "long-arrow-alt-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9595
+#: lib/classes/class-form-fields-wrapper.php:8457
+msgid "long-arrow-alt-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9596
+#: lib/classes/class-form-fields-wrapper.php:8458
+msgid "long-arrow-alt-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9597
+#: lib/classes/class-form-fields-wrapper.php:8459
+msgid "low-vision"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9598
+#: lib/classes/class-form-fields-wrapper.php:8460
+msgid "lyft"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9599
+#: lib/classes/class-form-fields-wrapper.php:8461
+msgid "magento"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9600
+#: lib/classes/class-form-fields-wrapper.php:8462
+msgid "magic"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9601
+#: lib/classes/class-form-fields-wrapper.php:8463
+msgid "magnet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9602
+#: lib/classes/class-form-fields-wrapper.php:8464
+msgid "male"
+msgstr "muž"
+
+#: lib/classes/class-form-fields-generator.php:9603
+#: lib/classes/class-form-fields-generator.php:9604
+#: lib/classes/class-form-fields-wrapper.php:8465
+#: lib/classes/class-form-fields-wrapper.php:8466
+msgid "map"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9605
+#: lib/classes/class-form-fields-wrapper.php:8467
+msgid "map-marker"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9606
+#: lib/classes/class-form-fields-wrapper.php:8468
+msgid "map-marker-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9607
+#: lib/classes/class-form-fields-wrapper.php:8469
+msgid "map-pin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9608
+#: lib/classes/class-form-fields-wrapper.php:8470
+msgid "map-signs"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9609
+#: lib/classes/class-form-fields-wrapper.php:8471
+msgid "mars"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9610
+#: lib/classes/class-form-fields-wrapper.php:8472
+msgid "mars-double"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9611
+#: lib/classes/class-form-fields-wrapper.php:8473
+msgid "mars-stroke"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9612
+#: lib/classes/class-form-fields-wrapper.php:8474
+msgid "mars-stroke-h"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9613
+#: lib/classes/class-form-fields-wrapper.php:8475
+msgid "mars-stroke-v"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9614
+#: lib/classes/class-form-fields-wrapper.php:8476
+msgid "maxcdn"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9615
+#: lib/classes/class-form-fields-wrapper.php:8477
+msgid "medapps"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9616
+#: lib/classes/class-form-fields-wrapper.php:8478
+msgid "medium"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9617
+#: lib/classes/class-form-fields-wrapper.php:8479
+msgid "medium-m"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9618
+#: lib/classes/class-form-fields-wrapper.php:8480
+msgid "medkit"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9619
+#: lib/classes/class-form-fields-wrapper.php:8481
+msgid "medrt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9620
+#: lib/classes/class-form-fields-wrapper.php:8482
+msgid "meetup"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9621
+#: lib/classes/class-form-fields-generator.php:9622
+#: lib/classes/class-form-fields-wrapper.php:8483
+#: lib/classes/class-form-fields-wrapper.php:8484
+msgid "meh"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9623
+#: lib/classes/class-form-fields-wrapper.php:8485
+msgid "mercury"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9624
+#: lib/classes/class-form-fields-wrapper.php:8486
+msgid "microchip"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9625
+#: lib/classes/class-form-fields-wrapper.php:8487
+msgid "microphone"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9626
+#: lib/classes/class-form-fields-wrapper.php:8488
+msgid "microphone-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9627
+#: lib/classes/class-form-fields-wrapper.php:8489
+msgid "microsoft"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9628
+#: lib/classes/class-form-fields-wrapper.php:8490
+msgid "minus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9629
+#: lib/classes/class-form-fields-wrapper.php:8491
+msgid "minus-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9630
+#: lib/classes/class-form-fields-generator.php:9631
+#: lib/classes/class-form-fields-wrapper.php:8492
+#: lib/classes/class-form-fields-wrapper.php:8493
+msgid "minus-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9632
+#: lib/classes/class-form-fields-wrapper.php:8494
+msgid "mix"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9633
+#: lib/classes/class-form-fields-wrapper.php:8495
+msgid "mixcloud"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9634
+#: lib/classes/class-form-fields-wrapper.php:8496
+msgid "mizuni"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9635
+#: lib/classes/class-form-fields-wrapper.php:8497
+msgid "mobile"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9636
+#: lib/classes/class-form-fields-wrapper.php:8498
+msgid "mobile-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9637
+#: lib/classes/class-form-fields-wrapper.php:8499
+msgid "modx"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9638
+#: lib/classes/class-form-fields-wrapper.php:8500
+msgid "monero"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9639
+#: lib/classes/class-form-fields-generator.php:9640
+#: lib/classes/class-form-fields-wrapper.php:8501
+#: lib/classes/class-form-fields-wrapper.php:8502
+msgid "money-bill-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9641
+#: lib/classes/class-form-fields-generator.php:9642
+#: lib/classes/class-form-fields-wrapper.php:8503
+#: lib/classes/class-form-fields-wrapper.php:8504
+msgid "moon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9643
+#: lib/classes/class-form-fields-wrapper.php:8505
+msgid "motorcycle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9644
+#: lib/classes/class-form-fields-wrapper.php:8506
+msgid "mouse-pointer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9645
+#: lib/classes/class-form-fields-wrapper.php:8507
+msgid "music"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9646
+#: lib/classes/class-form-fields-wrapper.php:8508
+msgid "napster"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9647
+#: lib/classes/class-form-fields-wrapper.php:8509
+msgid "neuter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9648
+#: lib/classes/class-form-fields-generator.php:9649
+#: lib/classes/class-form-fields-wrapper.php:8510
+#: lib/classes/class-form-fields-wrapper.php:8511
+msgid "newspaper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9650
+#: lib/classes/class-form-fields-wrapper.php:8512
+msgid "nintendo-switch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9651
+#: lib/classes/class-form-fields-wrapper.php:8513
+msgid "node"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9652
+#: lib/classes/class-form-fields-wrapper.php:8514
+msgid "node-js"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9653
+#: lib/classes/class-form-fields-wrapper.php:8515
+msgid "notes-medical"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9654
+#: lib/classes/class-form-fields-wrapper.php:8516
+msgid "npm"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9655
+#: lib/classes/class-form-fields-wrapper.php:8517
+msgid "ns8"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9656
+#: lib/classes/class-form-fields-wrapper.php:8518
+msgid "nutritionix"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9657
+#: lib/classes/class-form-fields-generator.php:9658
+#: lib/classes/class-form-fields-wrapper.php:8519
+#: lib/classes/class-form-fields-wrapper.php:8520
+msgid "object-group"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9659
+#: lib/classes/class-form-fields-generator.php:9660
+#: lib/classes/class-form-fields-wrapper.php:8521
+#: lib/classes/class-form-fields-wrapper.php:8522
+msgid "object-ungroup"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9661
+#: lib/classes/class-form-fields-wrapper.php:8523
+msgid "odnoklassniki"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9662
+#: lib/classes/class-form-fields-wrapper.php:8524
+msgid "odnoklassniki-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9663
+#: lib/classes/class-form-fields-wrapper.php:8525
+msgid "opencart"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9664
+#: lib/classes/class-form-fields-wrapper.php:8526
+msgid "openid"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9665
+#: lib/classes/class-form-fields-wrapper.php:8527
+msgid "opera"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9666
+#: lib/classes/class-form-fields-wrapper.php:8528
+msgid "optin-monster"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9667
+#: lib/classes/class-form-fields-wrapper.php:8529
+msgid "osi"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9668
+#: lib/classes/class-form-fields-wrapper.php:8530
+msgid "outdent"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9669
+#: lib/classes/class-form-fields-wrapper.php:8531
+msgid "page4"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9670
+#: lib/classes/class-form-fields-wrapper.php:8532
+msgid "pagelines"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9671
+#: lib/classes/class-form-fields-wrapper.php:8533
+msgid "paint-brush"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9672
+#: lib/classes/class-form-fields-wrapper.php:8534
+msgid "palfed"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9673
+#: lib/classes/class-form-fields-wrapper.php:8535
+msgid "pallet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9674
+#: lib/classes/class-form-fields-generator.php:9675
+#: lib/classes/class-form-fields-wrapper.php:8536
+#: lib/classes/class-form-fields-wrapper.php:8537
+msgid "paper-plane"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9676
+#: lib/classes/class-form-fields-wrapper.php:8538
+msgid "paperclip"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9677
+#: lib/classes/class-form-fields-wrapper.php:8539
+msgid "parachute-box"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9678
+#: lib/classes/class-form-fields-wrapper.php:8540
+msgid "paragraph"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9679
+#: lib/classes/class-form-fields-wrapper.php:8541
+msgid "paste"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9680
+#: lib/classes/class-form-fields-wrapper.php:8542
+msgid "patreon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9681
+#: lib/classes/class-form-fields-wrapper.php:8543
+msgid "pause"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9682
+#: lib/classes/class-form-fields-generator.php:9683
+#: lib/classes/class-form-fields-wrapper.php:8544
+#: lib/classes/class-form-fields-wrapper.php:8545
+msgid "pause-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9684
+#: lib/classes/class-form-fields-wrapper.php:8546
+msgid "paw"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9685
+#: lib/classes/class-form-fields-wrapper.php:8547
+msgid "paypal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9686
+#: lib/classes/class-form-fields-wrapper.php:8548
+msgid "pen-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9687
+#: lib/classes/class-form-fields-wrapper.php:8549
+msgid "pencil-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9688
+#: lib/classes/class-form-fields-wrapper.php:8550
+msgid "people-carry"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9689
+#: lib/classes/class-form-fields-wrapper.php:8551
+msgid "percent"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9690
+#: lib/classes/class-form-fields-wrapper.php:8552
+msgid "periscope"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9691
+#: lib/classes/class-form-fields-wrapper.php:8553
+msgid "phabricator"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9692
+#: lib/classes/class-form-fields-wrapper.php:8554
+msgid "phoenix-framework"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9693
+#: lib/classes/class-form-fields-wrapper.php:8555
+msgid "phone"
+msgstr "Telefon"
+
+#: lib/classes/class-form-fields-generator.php:9694
+#: lib/classes/class-form-fields-wrapper.php:8556
+msgid "phone-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9695
+#: lib/classes/class-form-fields-wrapper.php:8557
+msgid "phone-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9696
+#: lib/classes/class-form-fields-wrapper.php:8558
+msgid "phone-volume"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9697
+#: lib/classes/class-form-fields-wrapper.php:8559
+msgid "php"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9698
+#: lib/classes/class-form-fields-wrapper.php:8560
+msgid "pied-piper"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9699
+#: lib/classes/class-form-fields-wrapper.php:8561
+msgid "pied-piper-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9700
+#: lib/classes/class-form-fields-wrapper.php:8562
+msgid "pied-piper-hat"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9701
+#: lib/classes/class-form-fields-wrapper.php:8563
+msgid "pied-piper-pp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9702
+#: lib/classes/class-form-fields-wrapper.php:8564
+msgid "piggy-bank"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9703
+#: lib/classes/class-form-fields-wrapper.php:8565
+msgid "pills"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9704
+#: lib/classes/class-form-fields-wrapper.php:8566
+msgid "pinterest"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9705
+#: lib/classes/class-form-fields-wrapper.php:8567
+msgid "pinterest-p"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9706
+#: lib/classes/class-form-fields-wrapper.php:8568
+msgid "pinterest-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9707
+#: lib/classes/class-form-fields-wrapper.php:8569
+msgid "plane"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9708
+#: lib/classes/class-form-fields-wrapper.php:8570
+msgid "play"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9709
+#: lib/classes/class-form-fields-generator.php:9710
+#: lib/classes/class-form-fields-wrapper.php:8571
+#: lib/classes/class-form-fields-wrapper.php:8572
+msgid "play-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9711
+#: lib/classes/class-form-fields-wrapper.php:8573
+msgid "playstation"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9712
+#: lib/classes/class-form-fields-wrapper.php:8574
+msgid "plug"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9713
+#: lib/classes/class-form-fields-wrapper.php:8575
+msgid "plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9714
+#: lib/classes/class-form-fields-wrapper.php:8576
+msgid "plus-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9715
+#: lib/classes/class-form-fields-generator.php:9716
+#: lib/classes/class-form-fields-wrapper.php:8577
+#: lib/classes/class-form-fields-wrapper.php:8578
+msgid "plus-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9717
+#: lib/classes/class-form-fields-wrapper.php:8579
+msgid "podcast"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9718
+#: lib/classes/class-form-fields-wrapper.php:8580
+msgid "poo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9719
+#: lib/classes/class-form-fields-wrapper.php:8581
+msgid "pound-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9720
+#: lib/classes/class-form-fields-wrapper.php:8582
+msgid "power-off"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9721
+#: lib/classes/class-form-fields-wrapper.php:8583
+msgid "prescription-bottle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9722
+#: lib/classes/class-form-fields-wrapper.php:8584
+msgid "prescription-bottle-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9723
+#: lib/classes/class-form-fields-wrapper.php:8585
+msgid "print"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9724
+#: lib/classes/class-form-fields-wrapper.php:8586
+msgid "procedures"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9725
+#: lib/classes/class-form-fields-wrapper.php:8587
+msgid "product-hunt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9726
+#: lib/classes/class-form-fields-wrapper.php:8588
+msgid "pushed"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9727
+#: lib/classes/class-form-fields-wrapper.php:8589
+msgid "puzzle-piece"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9728
+#: lib/classes/class-form-fields-wrapper.php:8590
+msgid "python"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9729
+#: lib/classes/class-form-fields-wrapper.php:8591
+msgid "qq"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9730
+#: lib/classes/class-form-fields-wrapper.php:8592
+msgid "qrcode"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9731
+#: lib/classes/class-form-fields-wrapper.php:8593
+msgid "question"
+msgstr "otazka"
+
+#: lib/classes/class-form-fields-generator.php:9732
+#: lib/classes/class-form-fields-generator.php:9733
+#: lib/classes/class-form-fields-wrapper.php:8594
+#: lib/classes/class-form-fields-wrapper.php:8595
+msgid "question-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9734
+#: lib/classes/class-form-fields-wrapper.php:8596
+msgid "quidditch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9735
+#: lib/classes/class-form-fields-wrapper.php:8597
+msgid "quinscape"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9736
+#: lib/classes/class-form-fields-wrapper.php:8598
+msgid "quora"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9737
+#: lib/classes/class-form-fields-wrapper.php:8599
+msgid "quote-left"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9738
+#: lib/classes/class-form-fields-wrapper.php:8600
+msgid "quote-right"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9739
+#: lib/classes/class-form-fields-wrapper.php:8601
+msgid "random"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9740
+#: lib/classes/class-form-fields-wrapper.php:8602
+msgid "ravelry"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9741
+#: lib/classes/class-form-fields-wrapper.php:8603
+msgid "react"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9742
+#: lib/classes/class-form-fields-wrapper.php:8604
+msgid "readme"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9743
+#: lib/classes/class-form-fields-wrapper.php:8605
+msgid "rebel"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9744
+#: lib/classes/class-form-fields-wrapper.php:8606
+msgid "recycle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9745
+#: lib/classes/class-form-fields-wrapper.php:8607
+msgid "red-river"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9746
+#: lib/classes/class-form-fields-wrapper.php:8608
+msgid "reddit"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9747
+#: lib/classes/class-form-fields-wrapper.php:8609
+msgid "reddit-alien"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9748
+#: lib/classes/class-form-fields-wrapper.php:8610
+msgid "reddit-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9749
+#: lib/classes/class-form-fields-wrapper.php:8611
+msgid "redo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9750
+#: lib/classes/class-form-fields-wrapper.php:8612
+msgid "redo-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9751
+#: lib/classes/class-form-fields-generator.php:9752
+#: lib/classes/class-form-fields-wrapper.php:8613
+#: lib/classes/class-form-fields-wrapper.php:8614
+msgid "registered"
+msgstr "registrovaný"
+
+#: lib/classes/class-form-fields-generator.php:9753
+#: lib/classes/class-form-fields-wrapper.php:8615
+msgid "rendact"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9754
+#: lib/classes/class-form-fields-wrapper.php:8616
+msgid "renren"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9755
+#: lib/classes/class-form-fields-wrapper.php:8617
+msgid "reply"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9756
+#: lib/classes/class-form-fields-wrapper.php:8618
+msgid "reply-all"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9757
+#: lib/classes/class-form-fields-wrapper.php:8619
+msgid "replyd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9758
+#: lib/classes/class-form-fields-wrapper.php:8620
+msgid "resolving"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9759
+#: lib/classes/class-form-fields-wrapper.php:8621
+msgid "retweet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9760
+#: lib/classes/class-form-fields-wrapper.php:8622
+msgid "ribbon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9761
+#: lib/classes/class-form-fields-wrapper.php:8623
+msgid "road"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9762
+#: lib/classes/class-form-fields-wrapper.php:8624
+msgid "rocket"
+msgstr "raketa"
+
+#: lib/classes/class-form-fields-generator.php:9763
+#: lib/classes/class-form-fields-wrapper.php:8625
+msgid "rocketchat"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9764
+#: lib/classes/class-form-fields-wrapper.php:8626
+msgid "rockrms"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9765
+#: lib/classes/class-form-fields-wrapper.php:8627
+msgid "rss"
+msgstr "rss"
+
+#: lib/classes/class-form-fields-generator.php:9766
+#: lib/classes/class-form-fields-wrapper.php:8628
+msgid "rss-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9767
+#: lib/classes/class-form-fields-wrapper.php:8629
+msgid "ruble-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9768
+#: lib/classes/class-form-fields-wrapper.php:8630
+msgid "rupee-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9769
+#: lib/classes/class-form-fields-wrapper.php:8631
+msgid "safari"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9770
+#: lib/classes/class-form-fields-wrapper.php:8632
+msgid "sass"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9771
+#: lib/classes/class-form-fields-generator.php:9772
+#: lib/classes/class-form-fields-wrapper.php:8633
+#: lib/classes/class-form-fields-wrapper.php:8634
+msgid "save"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9773
+#: lib/classes/class-form-fields-wrapper.php:8635
+msgid "schlix"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9774
+#: lib/classes/class-form-fields-wrapper.php:8636
+msgid "scribd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9775
+#: lib/classes/class-form-fields-wrapper.php:8637
+msgid "search"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9776
+#: lib/classes/class-form-fields-wrapper.php:8638
+msgid "search-minus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9777
+#: lib/classes/class-form-fields-wrapper.php:8639
+msgid "search-plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9778
+#: lib/classes/class-form-fields-wrapper.php:8640
+msgid "searchengin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9779
+#: lib/classes/class-form-fields-wrapper.php:8641
+msgid "seedling"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9780
+#: lib/classes/class-form-fields-wrapper.php:8642
+msgid "sellcast"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9781
+#: lib/classes/class-form-fields-wrapper.php:8643
+msgid "sellsy"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9782
+#: lib/classes/class-form-fields-wrapper.php:8644
+msgid "server"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9783
+#: lib/classes/class-form-fields-wrapper.php:8645
+msgid "servicestack"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9784
+#: lib/classes/class-form-fields-wrapper.php:8646
+msgid "share"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9785
+#: lib/classes/class-form-fields-wrapper.php:8647
+msgid "share-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9786
+#: lib/classes/class-form-fields-wrapper.php:8648
+msgid "share-alt-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9787
+#: lib/classes/class-form-fields-generator.php:9788
+#: lib/classes/class-form-fields-wrapper.php:8649
+#: lib/classes/class-form-fields-wrapper.php:8650
+msgid "share-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9789
+#: lib/classes/class-form-fields-wrapper.php:8651
+msgid "shekel-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9790
+#: lib/classes/class-form-fields-wrapper.php:8652
+msgid "shield-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9791
+#: lib/classes/class-form-fields-wrapper.php:8653
+msgid "ship"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9792
+#: lib/classes/class-form-fields-wrapper.php:8654
+msgid "shipping-fast"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9793
+#: lib/classes/class-form-fields-wrapper.php:8655
+msgid "shirtsinbulk"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9794
+#: lib/classes/class-form-fields-wrapper.php:8656
+msgid "shopping-bag"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9795
+#: lib/classes/class-form-fields-wrapper.php:8657
+msgid "shopping-basket"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9796
+#: lib/classes/class-form-fields-wrapper.php:8658
+msgid "shopping-cart"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9797
+#: lib/classes/class-form-fields-wrapper.php:8659
+msgid "shower"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9798
+#: lib/classes/class-form-fields-wrapper.php:8660
+msgid "sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9799
+#: lib/classes/class-form-fields-wrapper.php:8661
+msgid "sign-in-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9800
+#: lib/classes/class-form-fields-wrapper.php:8662
+msgid "sign-language"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9801
+#: lib/classes/class-form-fields-wrapper.php:8663
+msgid "sign-out-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9802
+#: lib/classes/class-form-fields-wrapper.php:8664
+msgid "signal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9803
+#: lib/classes/class-form-fields-wrapper.php:8665
+msgid "simplybuilt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9804
+#: lib/classes/class-form-fields-wrapper.php:8666
+msgid "sistrix"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9805
+#: lib/classes/class-form-fields-wrapper.php:8667
+msgid "sitemap"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9806
+#: lib/classes/class-form-fields-wrapper.php:8668
+msgid "skyatlas"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9807
+#: lib/classes/class-form-fields-wrapper.php:8669
+msgid "skype"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9808
+#: lib/classes/class-form-fields-wrapper.php:8670
+msgid "slack"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9809
+#: lib/classes/class-form-fields-wrapper.php:8671
+msgid "slack-hash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9810
+#: lib/classes/class-form-fields-wrapper.php:8672
+msgid "sliders-h"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9811
+#: lib/classes/class-form-fields-wrapper.php:8673
+msgid "slideshare"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9812
+#: lib/classes/class-form-fields-generator.php:9813
+#: lib/classes/class-form-fields-wrapper.php:8674
+#: lib/classes/class-form-fields-wrapper.php:8675
+msgid "smile"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9814
+#: lib/classes/class-form-fields-wrapper.php:8676
+msgid "smoking"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9815
+#: lib/classes/class-form-fields-wrapper.php:8677
+msgid "snapchat"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9816
+#: lib/classes/class-form-fields-wrapper.php:8678
+msgid "snapchat-ghost"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9817
+#: lib/classes/class-form-fields-wrapper.php:8679
+msgid "snapchat-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9818
+#: lib/classes/class-form-fields-generator.php:9819
+#: lib/classes/class-form-fields-wrapper.php:8680
+#: lib/classes/class-form-fields-wrapper.php:8681
+msgid "snowflake"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9820
+#: lib/classes/class-form-fields-wrapper.php:8682
+msgid "sort"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9821
+#: lib/classes/class-form-fields-wrapper.php:8683
+msgid "sort-alpha-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9822
+#: lib/classes/class-form-fields-wrapper.php:8684
+msgid "sort-alpha-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9823
+#: lib/classes/class-form-fields-wrapper.php:8685
+msgid "sort-amount-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9824
+#: lib/classes/class-form-fields-wrapper.php:8686
+msgid "sort-amount-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9825
+#: lib/classes/class-form-fields-wrapper.php:8687
+msgid "sort-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9826
+#: lib/classes/class-form-fields-wrapper.php:8688
+msgid "sort-numeric-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9827
+#: lib/classes/class-form-fields-wrapper.php:8689
+msgid "sort-numeric-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9828
+#: lib/classes/class-form-fields-wrapper.php:8690
+msgid "sort-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9829
+#: lib/classes/class-form-fields-wrapper.php:8691
+msgid "soundcloud"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9830
+#: lib/classes/class-form-fields-wrapper.php:8692
+msgid "space-shuttle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9831
+#: lib/classes/class-form-fields-wrapper.php:8693
+msgid "speakap"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9832
+#: lib/classes/class-form-fields-wrapper.php:8694
+msgid "spinner"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9833
+#: lib/classes/class-form-fields-wrapper.php:8695
+msgid "spotify"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9834
+#: lib/classes/class-form-fields-generator.php:9835
+#: lib/classes/class-form-fields-wrapper.php:8696
+#: lib/classes/class-form-fields-wrapper.php:8697
+msgid "square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9836
+#: lib/classes/class-form-fields-wrapper.php:8698
+msgid "square-full"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9837
+#: lib/classes/class-form-fields-wrapper.php:8699
+msgid "stack-exchange"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9838
+#: lib/classes/class-form-fields-wrapper.php:8700
+msgid "stack-overflow"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9839
+#: lib/classes/class-form-fields-generator.php:9840
+#: lib/classes/class-form-fields-wrapper.php:8701
+#: lib/classes/class-form-fields-wrapper.php:8702
+msgid "star"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9841
+#: lib/classes/class-form-fields-generator.php:9842
+#: lib/classes/class-form-fields-wrapper.php:8703
+#: lib/classes/class-form-fields-wrapper.php:8704
+msgid "star-half"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9843
+#: lib/classes/class-form-fields-wrapper.php:8705
+msgid "staylinked"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9844
+#: lib/classes/class-form-fields-wrapper.php:8706
+msgid "steam"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9845
+#: lib/classes/class-form-fields-wrapper.php:8707
+msgid "steam-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9846
+#: lib/classes/class-form-fields-wrapper.php:8708
+msgid "steam-symbol"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9847
+#: lib/classes/class-form-fields-wrapper.php:8709
+msgid "step-backward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9848
+#: lib/classes/class-form-fields-wrapper.php:8710
+msgid "step-forward"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9849
+#: lib/classes/class-form-fields-wrapper.php:8711
+msgid "stethoscope"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9850
+#: lib/classes/class-form-fields-wrapper.php:8712
+msgid "sticker-mule"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9851
+#: lib/classes/class-form-fields-generator.php:9852
+#: lib/classes/class-form-fields-wrapper.php:8713
+#: lib/classes/class-form-fields-wrapper.php:8714
+msgid "sticky-note"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9853
+#: lib/classes/class-form-fields-wrapper.php:8715
+msgid "stop"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9854
+#: lib/classes/class-form-fields-generator.php:9855
+#: lib/classes/class-form-fields-wrapper.php:8716
+#: lib/classes/class-form-fields-wrapper.php:8717
+msgid "stop-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9856
+#: lib/classes/class-form-fields-wrapper.php:8718
+msgid "stopwatch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9857
+#: lib/classes/class-form-fields-wrapper.php:8719
+msgid "strava"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9858
+#: lib/classes/class-form-fields-wrapper.php:8720
+msgid "street-view"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9859
+#: lib/classes/class-form-fields-wrapper.php:8721
+msgid "strikethrough"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9860
+#: lib/classes/class-form-fields-wrapper.php:8722
+msgid "stripe"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9861
+#: lib/classes/class-form-fields-wrapper.php:8723
+msgid "stripe-s"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9862
+#: lib/classes/class-form-fields-wrapper.php:8724
+msgid "studiovinari"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9863
+#: lib/classes/class-form-fields-wrapper.php:8725
+msgid "stumbleupon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9864
+#: lib/classes/class-form-fields-wrapper.php:8726
+msgid "stumbleupon-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9865
+#: lib/classes/class-form-fields-wrapper.php:8727
+msgid "subscript"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9866
+#: lib/classes/class-form-fields-wrapper.php:8728
+msgid "subway"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9867
+#: lib/classes/class-form-fields-wrapper.php:8729
+msgid "suitcase"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9868
+#: lib/classes/class-form-fields-generator.php:9869
+#: lib/classes/class-form-fields-wrapper.php:8730
+#: lib/classes/class-form-fields-wrapper.php:8731
+msgid "sun"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9870
+#: lib/classes/class-form-fields-wrapper.php:8732
+msgid "superpowers"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9871
+#: lib/classes/class-form-fields-wrapper.php:8733
+msgid "superscript"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9872
+#: lib/classes/class-form-fields-wrapper.php:8734
+msgid "supple"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9873
+#: lib/classes/class-form-fields-wrapper.php:8735
+msgid "sync"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9874
+#: lib/classes/class-form-fields-wrapper.php:8736
+msgid "sync-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9875
+#: lib/classes/class-form-fields-wrapper.php:8737
+msgid "syringe"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9876
+#: lib/classes/class-form-fields-wrapper.php:8738
+msgid "table"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9877
+#: lib/classes/class-form-fields-wrapper.php:8739
+msgid "table-tennis"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9878
+#: lib/classes/class-form-fields-wrapper.php:8740
+msgid "tablet"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9879
+#: lib/classes/class-form-fields-wrapper.php:8741
+msgid "tablet-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9880
+#: lib/classes/class-form-fields-wrapper.php:8742
+msgid "tablets"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9881
+#: lib/classes/class-form-fields-wrapper.php:8743
+msgid "tachometer-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9882
+#: lib/classes/class-form-fields-wrapper.php:8744
+msgid "tag"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9883
+#: lib/classes/class-form-fields-wrapper.php:8745
+msgid "tags"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9884
+#: lib/classes/class-form-fields-wrapper.php:8746
+msgid "tape"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9885
+#: lib/classes/class-form-fields-wrapper.php:8747
+msgid "tasks"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9886
+#: lib/classes/class-form-fields-wrapper.php:8748
+msgid "taxi"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9887
+#: lib/classes/class-form-fields-wrapper.php:8749
+msgid "telegram"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9888
+#: lib/classes/class-form-fields-wrapper.php:8750
+msgid "telegram-plane"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9889
+#: lib/classes/class-form-fields-wrapper.php:8751
+msgid "tencent-weibo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9890
+#: lib/classes/class-form-fields-wrapper.php:8752
+msgid "terminal"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9891
+#: lib/classes/class-form-fields-wrapper.php:8753
+msgid "text-height"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9892
+#: lib/classes/class-form-fields-wrapper.php:8754
+msgid "text-width"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9893
+#: lib/classes/class-form-fields-wrapper.php:8755
+msgid "th"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9894
+#: lib/classes/class-form-fields-wrapper.php:8756
+msgid "th-large"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9895
+#: lib/classes/class-form-fields-wrapper.php:8757
+msgid "th-list"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9896
+#: lib/classes/class-form-fields-wrapper.php:8758
+msgid "themeisle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9897
+#: lib/classes/class-form-fields-wrapper.php:8759
+msgid "thermometer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9898
+#: lib/classes/class-form-fields-wrapper.php:8760
+msgid "thermometer-empty"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9899
+#: lib/classes/class-form-fields-wrapper.php:8761
+msgid "thermometer-full"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9900
+#: lib/classes/class-form-fields-wrapper.php:8762
+msgid "thermometer-half"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9901
+#: lib/classes/class-form-fields-wrapper.php:8763
+msgid "thermometer-quarter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9902
+#: lib/classes/class-form-fields-wrapper.php:8764
+msgid "thermometer-three-quarters"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9903
+#: lib/classes/class-form-fields-generator.php:9904
+#: lib/classes/class-form-fields-wrapper.php:8765
+#: lib/classes/class-form-fields-wrapper.php:8766
+msgid "thumbs-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9905
+#: lib/classes/class-form-fields-generator.php:9906
+#: lib/classes/class-form-fields-wrapper.php:8767
+#: lib/classes/class-form-fields-wrapper.php:8768
+msgid "thumbs-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9907
+#: lib/classes/class-form-fields-wrapper.php:8769
+msgid "thumbtack"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9908
+#: lib/classes/class-form-fields-wrapper.php:8770
+msgid "ticket-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9909
+#: lib/classes/class-form-fields-wrapper.php:8771
+msgid "times"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9910
+#: lib/classes/class-form-fields-generator.php:9911
+#: lib/classes/class-form-fields-wrapper.php:8772
+#: lib/classes/class-form-fields-wrapper.php:8773
+msgid "times-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9912
+#: lib/classes/class-form-fields-wrapper.php:8774
+msgid "tint"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9913
+#: lib/classes/class-form-fields-wrapper.php:8775
+msgid "toggle-off"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9914
+#: lib/classes/class-form-fields-wrapper.php:8776
+msgid "toggle-on"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9915
+#: lib/classes/class-form-fields-wrapper.php:8777
+msgid "trademark"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9916
+#: lib/classes/class-form-fields-wrapper.php:8778
+msgid "train"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9917
+#: lib/classes/class-form-fields-wrapper.php:8779
+msgid "transgender"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9918
+#: lib/classes/class-form-fields-wrapper.php:8780
+msgid "transgender-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9919
+#: lib/classes/class-form-fields-wrapper.php:8781
+msgid "trash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9920
+#: lib/classes/class-form-fields-generator.php:9921
+#: lib/classes/class-form-fields-wrapper.php:8782
+#: lib/classes/class-form-fields-wrapper.php:8783
+msgid "trash-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9922
+#: lib/classes/class-form-fields-wrapper.php:8784
+msgid "tree"
+msgstr "strom"
+
+#: lib/classes/class-form-fields-generator.php:9923
+#: lib/classes/class-form-fields-wrapper.php:8785
+msgid "trello"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9924
+#: lib/classes/class-form-fields-wrapper.php:8786
+msgid "tripadvisor"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9925
+#: lib/classes/class-form-fields-wrapper.php:8787
+msgid "trophy"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9926
+#: lib/classes/class-form-fields-wrapper.php:8788
+msgid "truck"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9927
+#: lib/classes/class-form-fields-wrapper.php:8789
+msgid "truck-loading"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9928
+#: lib/classes/class-form-fields-wrapper.php:8790
+msgid "truck-moving"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9929
+#: lib/classes/class-form-fields-wrapper.php:8791
+msgid "tty"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9930
+#: lib/classes/class-form-fields-wrapper.php:8792
+msgid "tumblr"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9931
+#: lib/classes/class-form-fields-wrapper.php:8793
+msgid "tumblr-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9932
+#: lib/classes/class-form-fields-wrapper.php:8794
+msgid "tv"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9933
+#: lib/classes/class-form-fields-wrapper.php:8795
+msgid "twitch"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9934
+#: lib/classes/class-form-fields-wrapper.php:8796
+msgid "twitter"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9935
+#: lib/classes/class-form-fields-wrapper.php:8797
+msgid "twitter-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9936
+#: lib/classes/class-form-fields-wrapper.php:8798
+msgid "typo3"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9937
+#: lib/classes/class-form-fields-wrapper.php:8799
+msgid "uber"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9938
+#: lib/classes/class-form-fields-wrapper.php:8800
+msgid "uikit"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9939
+#: lib/classes/class-form-fields-wrapper.php:8801
+msgid "umbrella"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9940
+#: lib/classes/class-form-fields-wrapper.php:8802
+msgid "underline"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9941
+#: lib/classes/class-form-fields-wrapper.php:8803
+msgid "undo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9942
+#: lib/classes/class-form-fields-wrapper.php:8804
+msgid "undo-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9943
+#: lib/classes/class-form-fields-wrapper.php:8805
+msgid "uniregistry"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9944
+#: lib/classes/class-form-fields-wrapper.php:8806
+msgid "universal-access"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9945
+#: lib/classes/class-form-fields-wrapper.php:8807
+msgid "university"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9946
+#: lib/classes/class-form-fields-wrapper.php:8808
+msgid "unlink"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9947
+#: lib/classes/class-form-fields-wrapper.php:8809
+msgid "unlock"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9948
+#: lib/classes/class-form-fields-wrapper.php:8810
+msgid "unlock-alt"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9949
+#: lib/classes/class-form-fields-wrapper.php:8811
+msgid "untappd"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9950
+#: lib/classes/class-form-fields-wrapper.php:8812
+msgid "upload"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9951
+#: lib/classes/class-form-fields-wrapper.php:8813
+msgid "usb"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9952
+#: lib/classes/class-form-fields-generator.php:9953
+#: lib/classes/class-form-fields-wrapper.php:8814
+#: lib/classes/class-form-fields-wrapper.php:8815
+msgid "user"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9954
+#: lib/classes/class-form-fields-generator.php:9955
+#: lib/classes/class-form-fields-wrapper.php:8816
+#: lib/classes/class-form-fields-wrapper.php:8817
+msgid "user-circle"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9956
+#: lib/classes/class-form-fields-wrapper.php:8818
+msgid "user-md"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9957
+#: lib/classes/class-form-fields-wrapper.php:8819
+msgid "user-plus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9958
+#: lib/classes/class-form-fields-wrapper.php:8820
+msgid "user-secret"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9959
+#: lib/classes/class-form-fields-wrapper.php:8821
+msgid "user-times"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9960
+#: lib/classes/class-form-fields-wrapper.php:8822
+msgid "users"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9961
+#: lib/classes/class-form-fields-wrapper.php:8823
+msgid "ussunnah"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9962
+#: lib/classes/class-form-fields-wrapper.php:8824
+msgid "utensil-spoon"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9963
+#: lib/classes/class-form-fields-wrapper.php:8825
+msgid "utensils"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9964
+#: lib/classes/class-form-fields-wrapper.php:8826
+msgid "vaadin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9965
+#: lib/classes/class-form-fields-wrapper.php:8827
+msgid "venus"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9966
+#: lib/classes/class-form-fields-wrapper.php:8828
+msgid "venus-double"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9967
+#: lib/classes/class-form-fields-wrapper.php:8829
+msgid "venus-mars"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9968
+#: lib/classes/class-form-fields-wrapper.php:8830
+msgid "viacoin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9969
+#: lib/classes/class-form-fields-wrapper.php:8831
+msgid "viadeo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9970
+#: lib/classes/class-form-fields-wrapper.php:8832
+msgid "viadeo-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9971
+#: lib/classes/class-form-fields-wrapper.php:8833
+msgid "vial"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9972
+#: lib/classes/class-form-fields-wrapper.php:8834
+msgid "vials"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9973
+#: lib/classes/class-form-fields-wrapper.php:8835
+msgid "viber"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9974
+#: lib/classes/class-form-fields-wrapper.php:8836
+msgid "video"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9975
+#: lib/classes/class-form-fields-wrapper.php:8837
+msgid "video-slash"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9976
+#: lib/classes/class-form-fields-wrapper.php:8838
+msgid "vimeo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9977
+#: lib/classes/class-form-fields-wrapper.php:8839
+msgid "vimeo-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9978
+#: lib/classes/class-form-fields-wrapper.php:8840
+msgid "vimeo-v"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9979
+#: lib/classes/class-form-fields-wrapper.php:8841
+msgid "vine"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9980
+#: lib/classes/class-form-fields-wrapper.php:8842
+msgid "vk"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9981
+#: lib/classes/class-form-fields-wrapper.php:8843
+msgid "vnv"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9982
+#: lib/classes/class-form-fields-wrapper.php:8844
+msgid "volleyball-ball"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9983
+#: lib/classes/class-form-fields-wrapper.php:8845
+msgid "volume-down"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9984
+#: lib/classes/class-form-fields-wrapper.php:8846
+msgid "volume-off"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9985
+#: lib/classes/class-form-fields-wrapper.php:8847
+msgid "volume-up"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9986
+#: lib/classes/class-form-fields-wrapper.php:8848
+msgid "vuejs"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9987
+#: lib/classes/class-form-fields-wrapper.php:8849
+msgid "warehouse"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9988
+#: lib/classes/class-form-fields-wrapper.php:8850
+msgid "weibo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9989
+#: lib/classes/class-form-fields-wrapper.php:8851
+msgid "weight"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9990
+#: lib/classes/class-form-fields-wrapper.php:8852
+msgid "weixin"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9991
+#: lib/classes/class-form-fields-wrapper.php:8853
+msgid "whatsapp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9992
+#: lib/classes/class-form-fields-wrapper.php:8854
+msgid "whatsapp-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9993
+#: lib/classes/class-form-fields-wrapper.php:8855
+msgid "wheelchair"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9994
+#: lib/classes/class-form-fields-wrapper.php:8856
+msgid "whmcs"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9995
+#: lib/classes/class-form-fields-wrapper.php:8857
+msgid "wifi"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9996
+#: lib/classes/class-form-fields-wrapper.php:8858
+msgid "wikipedia-w"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9997
+#: lib/classes/class-form-fields-generator.php:9998
+#: lib/classes/class-form-fields-wrapper.php:8859
+#: lib/classes/class-form-fields-wrapper.php:8860
+msgid "window-close"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:9999
+#: lib/classes/class-form-fields-generator.php:10000
+#: lib/classes/class-form-fields-wrapper.php:8861
+#: lib/classes/class-form-fields-wrapper.php:8862
+msgid "window-maximize"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10001
+#: lib/classes/class-form-fields-generator.php:10002
+#: lib/classes/class-form-fields-wrapper.php:8863
+#: lib/classes/class-form-fields-wrapper.php:8864
+msgid "window-minimize"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10003
+#: lib/classes/class-form-fields-generator.php:10004
+#: lib/classes/class-form-fields-wrapper.php:8865
+#: lib/classes/class-form-fields-wrapper.php:8866
+msgid "window-restore"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10005
+#: lib/classes/class-form-fields-wrapper.php:8867
+msgid "windows"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10006
+#: lib/classes/class-form-fields-wrapper.php:8868
+msgid "wine-glass"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10007
+#: lib/classes/class-form-fields-wrapper.php:8869
+msgid "won-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10008
+#: lib/classes/class-form-fields-wrapper.php:8870
+msgid "wordpress"
+msgstr "wordPress"
+
+#: lib/classes/class-form-fields-generator.php:10009
+#: lib/classes/class-form-fields-wrapper.php:8871
+msgid "wordpress-simple"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10010
+#: lib/classes/class-form-fields-wrapper.php:8872
+msgid "wpbeginner"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10011
+#: lib/classes/class-form-fields-wrapper.php:8873
+msgid "wpexplorer"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10012
+#: lib/classes/class-form-fields-wrapper.php:8874
+msgid "wpforms"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10013
+#: lib/classes/class-form-fields-wrapper.php:8875
+msgid "wrench"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10014
+#: lib/classes/class-form-fields-wrapper.php:8876
+msgid "x-ray"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10015
+#: lib/classes/class-form-fields-wrapper.php:8877
+msgid "xbox"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10016
+#: lib/classes/class-form-fields-wrapper.php:8878
+msgid "xing"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10017
+#: lib/classes/class-form-fields-wrapper.php:8879
+msgid "xing-square"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10018
+#: lib/classes/class-form-fields-wrapper.php:8880
+msgid "y-combinator"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10019
+#: lib/classes/class-form-fields-wrapper.php:8881
+msgid "yahoo"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10020
+#: lib/classes/class-form-fields-wrapper.php:8882
+msgid "yandex"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10021
+#: lib/classes/class-form-fields-wrapper.php:8883
+msgid "yandex-international"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10022
+#: lib/classes/class-form-fields-wrapper.php:8884
+msgid "yelp"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10023
+#: lib/classes/class-form-fields-wrapper.php:8885
+msgid "yen-sign"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10024
+#: lib/classes/class-form-fields-wrapper.php:8886
+msgid "yoast"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10025
+#: lib/classes/class-form-fields-wrapper.php:8887
+msgid "youtube"
+msgstr ""
+
+#: lib/classes/class-form-fields-generator.php:10026
+#: lib/classes/class-form-fields-wrapper.php:8888
+msgid "youtube-square"
+msgstr ""
+
+#: lib/classes/class-menu-page.php:344 lib/classes/class-meta-box.php:82
+#: lib/classes/class-theme-page.php:302
+#, php-format
+msgid "Version: %s"
+msgstr ""
+
+#: templates/themes/theme-1.php:52 templates/themes/theme-3.php:32
+msgid "Date and Time:"
+msgstr ""
+
+#: templates/themes/theme-1.php:84 templates/themes/theme-2.php:26
+msgid "Description"
+msgstr "Popis"
+
+#: templates/themes/theme-3.php:79
+msgid "About The Event"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Export to CSV"
+#~ msgstr "Exportovat do CSV"
+
+#, fuzzy
+#~ msgid "Start Date & Time:"
+#~ msgstr "Dátum a čas začiatku:"
+
+#, fuzzy
+#~ msgid "End Date & Time:"
+#~ msgstr "Dátum a čas ukončenia:"
+
+#, fuzzy
+#~ msgid "Full Name"
+#~ msgstr "Celé jméno"
+
+#, fuzzy
+#~ msgid "Email Address"
+#~ msgstr "E-mailová adresa"
+
+#, fuzzy
+#~ msgid "Phone Number"
+#~ msgstr "Telefonní číslo"
+
+#, fuzzy
+#~ msgid "Company Name"
+#~ msgstr "Název společnosti"
+
+#, fuzzy
+#~ msgid "Event:"
+#~ msgstr "Událost:"
+
+#, fuzzy
+#~ msgid "Addres:"
+#~ msgstr "Adresa:"
+
+#, fuzzy
+#~ msgid "View Order"
+#~ msgstr "Zobrazit objednávku"
+
+#, fuzzy
+#~ msgid " x "
+#~ msgstr " x "
+
+#, fuzzy
+#~ msgid "Please Select"
+#~ msgstr "Prosím vyberte"
+
+#, fuzzy
+#~ msgid "Male"
+#~ msgstr "Muž"
+
+#, fuzzy
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#, fuzzy
+#~ msgid "Organizer:"
+#~ msgstr "Organizátor:"
+
+#, fuzzy
+#~ msgid "Venue:"
+#~ msgstr "Místo:"
+
+#, fuzzy
+#~ msgid "Unique ID"
+#~ msgstr "Unikátní ID"

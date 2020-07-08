@@ -73,6 +73,7 @@ function mep_user_custom_styles()
         .mep_list_event_details p.read-more a{
             color: <?php echo $base_color; ?>;
         }
+        <?php do_action('mep_event_user_custom_styling'); ?>
     </style>
     <?php
 }

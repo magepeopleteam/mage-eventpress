@@ -75,7 +75,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
         function get_settings_fields()
         {
             $settings_fields = array(
-                'general_setting_sec' => array(
+                'general_setting_sec' => apply_filters('mep_settings_general_arr',array(
                     array(
                         'name' => 'mep_google_map_type',
                         'label' => __('Google Map Type?', 'mage-eventpress'),
@@ -351,9 +351,10 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'no' => 'No'
                         )
                     )
+                )
                 ),
 
-                'email_setting_sec' => array(
+                'email_setting_sec' => apply_filters('mep_settings_email_arr',array(
                     array(
                         'name' => 'mep_email_form_name',
                         'label' => __('Email Form Name', 'mage-eventpress'),
@@ -379,9 +380,10 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'type' => 'wysiwyg',
                         'default' => '',
                     ),
+                )
                 ),
 
-                'label_setting_sec' => array(
+                'label_setting_sec' =>  apply_filters('mep_translation_string_arr',array(
                     array(
                         'name' => 'mep_event_ticket_type_text',
                         'label' => __('Ticket Type Table Label', 'mage-eventpress'),
@@ -618,10 +620,11 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc' => __('Enter Text For Hide Date Lists button', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => 'Hide Date Lists'
-                    ),
-                ),
+                    )
+                   
+                )),
 
-                'style_setting_sec' => array(
+                'style_setting_sec' => apply_filters('mep_settings_styling_arr',array(
                     array(
                         'name' => 'mep_base_color',
                         'label' => __('Base Color', 'mage-eventpress'),
@@ -678,7 +681,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                     ),
                 )
 
-
+                )
             );
 
             return apply_filters('mep_settings_sec_fields', $settings_fields);

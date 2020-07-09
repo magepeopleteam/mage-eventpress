@@ -380,6 +380,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       update_post_meta( $pid, 'ea_order_id', $order_id );
       update_post_meta( $pid, 'ea_user_id', $user_id );
       update_post_meta( $order_id, 'ea_user_id', $user_id );
+      update_post_meta( $order_id, 'order_type_name', 'mep_events' );
       update_post_meta( $pid, 'ea_ticket_no', $pin );
       update_post_meta( $pid, 'ea_event_date', $event_date );
       update_post_meta( $pid, 'ea_order_status', $order_status );

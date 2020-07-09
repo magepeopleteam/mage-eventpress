@@ -2,12 +2,13 @@
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 function mep_cpt_tax(){
 
+	$event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 
 	$labels = array(
-		'name'                       => _x( 'Event Category','mage-eventpress' ),
-		'singular_name'              => _x( 'Event Category','mage-eventpress' ),
+		'name'                       => _x( $event_label.' Category','mage-eventpress' ),
+		'singular_name'              => _x( $event_label.' Category','mage-eventpress' ),
 		'menu_name'                  => __( 'Category', 'mage-eventpress' ),
-		'all_items'                  => __( 'All Event Category', 'mage-eventpress' ),
+		'all_items'                  => __( 'All '.$event_label.' Category', 'mage-eventpress' ),
 		'parent_item'                => __( 'Parent Category', 'mage-eventpress' ),
 		'parent_item_colon'          => __( 'Parent Category:', 'mage-eventpress' ),
 		'new_item_name'              => __( 'New Category Name', 'mage-eventpress' ),
@@ -40,10 +41,10 @@ register_taxonomy('mep_cat', 'mep_events', $args);
 
 
 	$labelso = array(
-		'name'                       => _x( 'Event Organizer','mage-eventpress' ),
-		'singular_name'              => _x( 'Event Organizer','mage-eventpress' ),
+		'name'                       => _x( $event_label.' Organizer','mage-eventpress' ),
+		'singular_name'              => _x( $event_label.' Organizer','mage-eventpress' ),
 		'menu_name'                  => __( 'Organizer', 'mage-eventpress' ),
-		'all_items'                  => __( 'All Event Organizer', 'mage-eventpress' ),
+		'all_items'                  => __( 'All '.$event_label.' Organizer', 'mage-eventpress' ),
 		'parent_item'                => __( 'Parent Organizer', 'mage-eventpress' ),
 		'parent_item_colon'          => __( 'Parent Organizer:', 'mage-eventpress' ),
 		'new_item_name'              => __( 'New Organizer Name', 'mage-eventpress' ),

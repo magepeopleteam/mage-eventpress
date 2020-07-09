@@ -35,9 +35,10 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 
         function admin_menu()
         {
+            $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
             //add_options_page( 'Event Settings', 'Event Settings', 'delete_posts', 'mep_event_settings_page', array($this, 'plugin_page') );
 
-            add_submenu_page('edit.php?post_type=mep_events', __('Event Settings', 'mage-eventpress'), __('Event Settings', 'mage-eventpress'), 'manage_options', 'mep_event_settings_page', array($this, 'plugin_page'));
+            add_submenu_page('edit.php?post_type=mep_events', __($event_label.' Settings', 'mage-eventpress'), __($event_label.' Settings', 'mage-eventpress'), 'manage_options', 'mep_event_settings_page', array($this, 'plugin_page'));
         }
 
         function get_settings_sections()
@@ -76,6 +77,32 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
         {
             $settings_fields = array(
                 'general_setting_sec' => apply_filters('mep_settings_general_arr',array(
+                   
+                    array(
+                        'name' => 'mep_event_label',
+                        'label' => __('Event Label', 'mage-eventpress'),
+                        'desc' => __('If you want to change the event label in the dashboard menu you can change here', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Events'
+                    ),
+                   
+                    array(
+                        'name' => 'mep_event_slug',
+                        'label' => __('Event Slug', 'mage-eventpress'),
+                        'desc' => __('Please enter the slug name you want. Remember after change this slug you need to flush permalink, Just go to Settings->Permalink hit the Save Settings button', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'events'
+                    ),
+                   
+                    array(
+                        'name' => 'mep_event_icon',
+                        'label' => __('Event Icon', 'mage-eventpress'),
+                        'desc' => __('If you want to change the event icon in the dashboard menu you can change from here, Dashboard icon only support dashicon, So please go to <a href=https://developer.wordpress.org/resource/dashicons/#calendar-alt target=_blank>Dash Icon</a> and copy your icon code and paste here', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'dashicons-calendar-alt'
+                    ),
+                   
+                   
                     array(
                         'name' => 'mep_google_map_type',
                         'label' => __('Google Map Type?', 'mage-eventpress'),

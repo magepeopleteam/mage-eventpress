@@ -287,6 +287,23 @@ function mep_city_template_chooser($template){
 add_filter('template_include', 'mep_city_template_chooser');
 
   
+
+function mep_get_event_ticket_price_by_name($event,$type) {
+  $ticket_type = get_post_meta($event,'mep_event_ticket_type',true);
+  if(sizeof($ticket_type)){    
+         foreach ($ticket_type as $key => $val) {
+         if ($val['option_name_t'] === $type) {
+          return $val['option_price_t'];
+         }
+     }
+     return 0;
+  }
+  }
+
+
+
+
+
 if (!function_exists('mep_attendee_create')) {  
 function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
   
@@ -346,6 +363,8 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
   }
   
   
+// $ticket_single_price = mep_get_event_ticket_price_by_name($event_id,$ticket_type);
+$ticket_total_price = (mep_get_event_ticket_price_by_name($event_id,$ticket_type) * $ticket_qty);
   
   $new_post = array(
     'post_title'    =>   $uname,
@@ -370,7 +389,8 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       update_post_meta( $pid, 'ea_vegetarian', $vegetarian );
       update_post_meta( $pid, 'ea_tshirtsize', $tshirtsize );
       update_post_meta( $pid, 'ea_ticket_type', $ticket_type );
-      update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty);
+      update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty);      
+      update_post_meta( $pid, 'ea_ticket_price', $ticket_total_price);
       update_post_meta( $order_id, 'ea_ticket_qty', $ticket_qty);
       update_post_meta( $order_id, 'ea_ticket_type', $ticket_type );
       update_post_meta( $order_id, 'ea_event_id', $event_id );
@@ -724,9 +744,7 @@ if (!function_exists('change_wc_event_product_status')) {
         }
       } // End of Post Type Check
      } // End order item foreach
-
-  } // End Function
-  
+  } // End Function  
 }
   
   
@@ -1518,6 +1536,13 @@ if (!function_exists('mep_get_event_locaion_item')) {
   }
 }
   
+
+
+
+
+
+
+
 if (!function_exists('mep_save_attendee_info_into_cart')) {  
   function mep_save_attendee_info_into_cart($product_id){
   
@@ -1596,6 +1621,12 @@ if (!function_exists('mep_save_attendee_info_into_cart')) {
       $mep_user_cfd           = "";
     }
   
+
+// echo $p =  
+
+
+
+
     if($mep_user_name){ $count_user = count($mep_user_name); } else{ $count_user = 0; }
   
     for ( $iu = 0; $iu < $count_user; $iu++ ) {
@@ -1643,6 +1674,10 @@ if (!function_exists('mep_save_attendee_info_into_cart')) {
       if (isset($mep_user_ticket_type[$iu])) :
         $user[$iu]['user_ticket_type'] = stripslashes( strip_tags( $mep_user_ticket_type[$iu] ) );
         endif;    
+  
+      // if ($ticket_price) :
+        // $user[$iu]['user_ticket_price'] =  mep_get_event_ticket_price_by_name($mep_event_id,$mep_user_ticket_type);
+        // endif;    
   
       if (isset($event_date[$iu])) :
         $user[$iu]['user_event_date'] = stripslashes( strip_tags( $event_date[$iu] ) );

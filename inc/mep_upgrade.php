@@ -59,7 +59,6 @@ add_action('admin_init', 'mep_flash_permalink_once');
 
 
 add_action('admin_init', 'mep_get_all_order_data_and_create_attendee');
-
 function mep_get_all_order_data_and_create_attendee()
 {
 
@@ -305,6 +304,41 @@ function mep_get_all_order_data_and_create_attendee()
         }
         update_option('mep_event_magor_update_3', 'completed');
     }
+
+
+
+/**
+ * Update Ticket Price for all existing event attendee
+ */
+
+if (get_option('mep_attendee_price_update_2') != 'completed') {
+    $args = array(
+        'post_type' => 'mep_events_attendees',
+        'posts_per_page' => -1
+    );
+    $qr = new WP_Query($args);
+    foreach ($qr->posts as $result) {
+        $post_id = $result->ID;
+        $ea_ticket_price        = get_post_meta($post_id, 'ea_ticket_price', true);
+        // if (empty($ea_ticket_price)) {
+            $event_id               = get_post_meta($post_id, 'ea_event_id', true);
+            $ea_ticket_type         = get_post_meta($post_id, 'ea_ticket_type', true);
+            $ticket_total_price     = mep_get_event_ticket_price_by_name($event_id,$ea_ticket_type);
+            update_post_meta($post_id, 'ea_ticket_price', $ticket_total_price);
+        // }
+    }
+    update_option('mep_attendee_price_update_2', 'completed');
+}
+
+
+
+
+
+
+
+
+
+
 }
 
 

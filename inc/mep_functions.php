@@ -290,7 +290,7 @@ add_filter('template_include', 'mep_city_template_chooser');
 
 function mep_get_event_ticket_price_by_name($event,$type) {
   $ticket_type = get_post_meta($event,'mep_event_ticket_type',true);
-  if(sizeof($ticket_type)){    
+  if(sizeof($ticket_type) > 0){    
          foreach ($ticket_type as $key => $val) {
          if ($val['option_name_t'] === $type) {
           return $val['option_price_t'];

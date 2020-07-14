@@ -11,7 +11,7 @@ function mep_event_meta_box_add(){
 
     add_meta_box( 'mep-event-extra-price', __('<span class="dashicons dashicons-awards" style="color:green; padding-right:10px;"></span>Event Extra Service (Extra Service as Product that you can sell and it is not included on event package)','mage-eventpress'), 'mep_event_extra_price_option', 'mep_events', 'normal', 'high' );
 
-    add_meta_box( 'mep-event-date', __('<span class="dashicons dashicons-calendar-alt" style="color:green; padding-right:10px;"></span>Event Date & Time','mage-eventpress'), 'mep_event_date_meta_box_cb', 'mep_events', 'normal', 'high' );
+    add_meta_box( 'mep-event-date', __('<span class="dashicons dashicons-calendar-alt" style="color:green; padding-right:10px;"></span>Event Date & Time','mage-eventpress'), 'mep_event_date_meta_box_cb', 'mep_events', 'advanced', 'high' );
 
     add_meta_box( 'mep-event-emails', __('<span class="dashicons dashicons-email-alt" style="color:green; padding-right:10px;"></span>Event Email text','mage-eventpress'), 'mep_event_email_meta_box_cb', 'mep_events', 'normal', 'high' );
 

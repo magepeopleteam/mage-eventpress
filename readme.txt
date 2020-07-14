@@ -7,7 +7,7 @@ Version: 2.1.3
 Tested up to: 5.4
 Requires PHP: 7.0
 WC requires at least: 3.0
-WC tested up to: 4.0
+WC tested up to: 4.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -557,3 +557,15 @@ Event Location modified in event list
 WooCommerce Hidden Product issue fixed
 New Filter hooked added in Total Seat value
 24 May 2020*
+
+
+
+= 3.3.0 =
+* Update Release:
+Code Optimized & Improved
+Child Theme Support added for event temlates
+New Hooks added
+Event Label & Slug change settings added
+PHP Warning in cart page issue fixed
+More...
+12 July 2020*

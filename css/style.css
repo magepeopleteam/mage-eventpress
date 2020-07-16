@@ -316,6 +316,20 @@ h3.mep_list_date {font-size: 16px; font-style: italic;font-weight: bold;color: #
 .mep_event_grid_item .mep-list-header{padding: 0 0 0 10px;}
 .mep_event_grid_item .mep-list-footer { padding: 10px 0 0 10px;}
 .mep_event_grid_item .mep_list_event_details{padding: 0 10px 20px 0;}
+
+
+
+.mep-user-info-sec>label{display: -webkit-flex;-webkit-align-items: center;display: flex;align-items: center;margin: 10px;}
+.mep-user-info-sec>label input[type="checkbox"]{width: auto;height: auto;margin: 0 10px 0 0;}
+
+.mep-user-info-sec>label.mep-show{display:block;margin:10px 0 0 0;}
+.mep-user-info-sec>label select{width: 100%;}
+.mep-user-info-sec textarea{width: 100%;padding: 10px;}
+
+
+
+
+
 /********Category filter***********/
 .mep_cat-details div.mep_event_list_item{}
 button.single_add_to_cart_button.button.alt.btn-mep-event-cart { cursor: pointer; }

@@ -19,3 +19,21 @@ if (!function_exists('mep_display_speaker_list')) {
         }
     }
 }
+
+if (!function_exists('mep_display_all_speaker_list')) {
+    function mep_display_all_speaker_list()
+    {
+        $args = array(
+            'post_type'         => array('mep_event_speaker'),
+            'posts_per_page'    => -1
+
+        );
+        $loop = new WP_Query($args);
+        echo '<ul>';
+        foreach ($loop->posts as $speaker) {
+            $speakers = $speaker->ID;
+            require(mep_template_file_path('all-speaker-list.php'));
+        }
+        echo '</ul>';
+    }
+}

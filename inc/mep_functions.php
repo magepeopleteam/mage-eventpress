@@ -867,20 +867,20 @@ if (!function_exists('change_wc_event_product_status')) {
             ?>
             <form action="" method="get">
               <?php 
-  if($recurring == 'everyday'){
-    do_action('mep_before_attendee_list_btn',$post_id);
-  }else{
+              if($recurring == 'everyday'){
+                do_action('mep_before_attendee_list_btn',$post_id);
+              }else{
               ?>
               <select name="ea_event_date" id="" style='font-size: 14px;border: 1px solid blue;width: 110px;display:<?php if($recurring == 'yes'){ echo 'block'; }else{ echo 'none'; } ?>'>
-                  <option value="<?php echo get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true); ?>"><?php echo get_mep_datetime(get_post_meta($post_id,'event_start_date',true),'date-text').' '.get_mep_datetime(get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true),'time'); ?></option>
+                  <option value="<?php echo date('Y-m-d H:i:s',strtotime(get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true))); ?>"><?php echo get_mep_datetime(get_post_meta($post_id,'event_start_date',true),'date-text').' '.get_mep_datetime(get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true),'time'); ?></option>
                   <?php foreach($multi_date as $multi){ ?>
-                    <option value="<?php echo $multi['event_more_start_date'].' '.$multi['event_more_start_time']; ?>"><?php echo get_mep_datetime($multi['event_more_start_date'],'date-text').' '.get_mep_datetime($multi['event_more_start_time'],'time'); ?></option>
+                    <option value="<?php echo date('Y-m-d H:i:s',strtotime($multi['event_more_start_date'].' '.$multi['event_more_start_time'])); ?>"><?php echo get_mep_datetime($multi['event_more_start_date'],'date-text').' '.get_mep_datetime($multi['event_more_start_time'],'time'); ?></option>
                   <?php } ?>
               </select>
-                  <?php } ?>
+              <?php } ?>
               <input type="hidden" name='post_type' value='mep_events_attendees'>
               <input type="hidden" name='event_id' value='<?php echo $post_id; ?>'>
-              <button class="button button-primary button-large">Attendees List</button>
+              <button class="button button-primary button-large"><?php _e('Attendees List','mage-eventpress'); ?></button>
             </form>
             <?php
             // }else{
@@ -1857,7 +1857,7 @@ if (!function_exists('mep_get_term_as_class')) {
 if (!function_exists('mep_ticket_type_sold')) {   
   function mep_ticket_type_sold($event_id,$type,$date=''){
     
-     if($date){
+  if($date){
     $args = array(
             'post_type' => 'mep_events_attendees',
             'posts_per_page' => -1,

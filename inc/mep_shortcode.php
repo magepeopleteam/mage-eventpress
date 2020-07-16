@@ -380,6 +380,8 @@ function mep_event_speaker_list_shortcode_section($atts, $content = null)
     ob_start();
     if($event > 0){
         echo mep_shortcode_speaker_list_html($event);              
+    }else{
+        echo mep_shortcode_all_speaker_list_html();              
     }
     return ob_get_clean();
 }

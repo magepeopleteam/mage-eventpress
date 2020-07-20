@@ -383,9 +383,22 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 
                 'email_setting_sec' => apply_filters('mep_settings_email_arr',array(
                     array(
+                        'name' => 'mep_email_sending_order_status',
+                        'label' => __( 'Email Sent on order status', 'mage-eventpress' ),
+                        'desc' => __( 'Please Select when and which order status event confirmation email will send to customer', 'mage-eventpress' ),
+                        'type' => 'multicheck',
+                        'default' => array( 'completed' => 'completed' ),
+                        'options' => array(
+                            'processing' => 'Processing',
+                            'completed' => 'Completed'
+                        )
+                    ),        
+                                           
+                    array(
                         'name' => 'mep_email_form_name',
                         'label' => __('Email Form Name', 'mage-eventpress'),
                         'desc' => __('Email Form Name', 'mage-eventpress'),
+                        'default' => '',
                         'type' => 'text'
                     ),
                     array(

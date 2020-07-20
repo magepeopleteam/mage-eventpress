@@ -95,6 +95,7 @@
                             </li>
                     <?php }
                     } ?>
+                   
                 </ul>
         </a>
         <?php do_action('mep_event_list_loop_footer', $event_id); ?>

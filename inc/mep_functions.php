@@ -1,6 +1,8 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
+appsero_init_tracker_mage_eventpress();
+
 // Language Load
 add_action( 'init', 'mep_language_load');
 if (!function_exists('mep_language_load')) {
@@ -690,9 +692,11 @@ if (!function_exists('change_wc_event_product_status')) {
     // Getting an instance of the order object
      $order      = wc_get_order( $order_id );
      $order_meta = get_post_meta($order_id); 
-     $email            = isset($order_meta['_billing_email'][0]) ? $order_meta['_billing_email'][0] : array();
-  
-  
+     $email      = isset($order_meta['_billing_email'][0]) ? $order_meta['_billing_email'][0] : array();
+     $email_send_status = mep_get_option('mep_email_sending_order_status','email_setting_sec',array('completed' => 'completed'));
+    //  mep_email_sending_order_status
+
+    
   
      foreach ( $order->get_items() as $item_id => $item_values ) {
       $item_id        = $item_id;
@@ -702,11 +706,19 @@ if (!function_exists('change_wc_event_product_status')) {
   
   
         if($order->has_status( 'processing' ) ) {
+
+          if(in_array('processing',$email_send_status)){
+            mep_event_confirmation_email_sent($event_id,$email);
+          }
+
           change_attandee_order_status($order_id,'publish','trash','processing');
           change_attandee_order_status($order_id,'publish','publish','processing');        
           
           change_extra_service_status($order_id,'publish','trash','processing');
           change_extra_service_status($order_id,'publish','publish','processing');
+
+
+
         }
         if($order->has_status( 'pending' )) {
           change_attandee_order_status($order_id,'publish','trash','pending');
@@ -720,7 +732,11 @@ if (!function_exists('change_wc_event_product_status')) {
           change_attandee_order_status($order_id,'publish','publish','on-hold');
         }
         if($order->has_status( 'completed' ) ) {
-          mep_event_confirmation_email_sent($event_id,$email);
+
+          if(in_array('completed',$email_send_status)){
+            mep_event_confirmation_email_sent($event_id,$email);
+          }
+
           change_attandee_order_status($order_id,'publish','trash','completed');
           change_attandee_order_status($order_id,'publish','publish','completed');        
           

@@ -119,11 +119,10 @@ $location_sts = get_post_meta($event,'mep_org_address',true);
 if($location_sts){
 $org_arr = get_the_terms( $event, 'mep_org' );
 $org_id = $org_arr[0]->term_id;
-	echo "<span>".get_term_meta( $org_id, 'org_location', true )."</span>";
+	echo get_term_meta( $org_id, 'org_location', true );
 }else{
-?>
-<span><?php echo get_post_meta($event,'mep_location_venue',true); ?></span>
-<?php
+ echo get_post_meta($event,'mep_location_venue',true);
+
 }
 }
 }

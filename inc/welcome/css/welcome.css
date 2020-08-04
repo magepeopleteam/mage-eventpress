@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Poppins:wght@300;400;500;700&display=swap');
+
+@import "include/variable.css";
+@import "include/general.css";
+@import "include/grid.css";
+@import "include/font-size.css";
+@import "include/button.css";
+
+@import "include/loader.css";
+@import "include/default.css";
+
+@import "include/helper.css";
+@import "include/flex.css";
+@import "include/shadows.css";
+@import "include/radious.css";
+@import "include/icons.css";
+@import "include/color.css";
+@import "include/media.css";
+@import "include/menu.css";
+
+
+@import "include/click-slider.css";
+@import "include/popup.css";
+@import "include/form.css";
+@import "include/list.css";
+@import "include/table.css";
+@import "include/tabs.css";
+
+@import "include/faq.css";
+
+
+@import "include/info.css";
+
+@import "include/content.css";
+@import "include/custom.css";
+@import "include/responsive.css";
+@import "include/cart.css";
+
+.mage-event-welcome {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px 10px 10px 10px;
+}
+h2.nav-tab-wrapper.mage-event-welcome-tab {
+    border: 0;
+}
+
+h2.nav-tab-wrapper.mage-event-welcome-tab a.nav-tab {
+    background: #6c57c1;
+    border-radius: 10px 10px 0px 0px;
+    border-color: #fff;
+    margin-left: 0.3em;
+    font-size: 16px;
+    padding: 10px 20px;
+    color: #fff;
+}
+h2.nav-tab-wrapper.mage-event-welcome-tab a.nav-tab.nav-tab-active {
+    background: #fff;
+    color: #000;
+}
+header.mageStyle h2, header.mageStyle h3 {
+    color: #fff;
+}
+header.mageStyle {
+    padding: 0;
+    margin-bottom: -6px;
+}
+.addon_list_sec .mep_addon_list li img{
+    max-width: 100%;
+    width: auto;
+}
+.addon_list_sec .mep_addon_list li {
+border: 1px solid #ddd!important;
+display: inline-block!important;
+float: left;
+margin: 10px!important;
+min-height: 405px;
+padding: 0px;
+position: relative;
+text-align: center;
+vertical-align: top;
+width: 31.2%!important;
+box-shadow: 3px 4px 5px #d9e1e7;
+background: #fff;
+overflow: hidden;
+}
+.addon_list_sec .mep_addon_list li a {
+display: block;
+background: #0000b5;
+color: #fff;
+width: 100%;
+margin: 0 auto;
+padding: 10px;
+text-decoration: none;
+font-size: 15px;
+position: absolute;
+bottom: 0;
+left: 0;
+right: auto;
+}
+.addon_list_sec .mep_addon_list li h3 {
+margin-top: 10px;
+}
+
+.addon_list_sec .mep_addon_list li p {
+padding: 0 15px;
+font-size: 12px;
+}
+
+.addon_list_sec .mep_addon_list li h4 {
+background: #e74635;
+color: #fff;
+font-size: 20px;
+padding: 10px;
+width: 50px;
+position: absolute;
+bottom: 40%;
+top: auto;
+}

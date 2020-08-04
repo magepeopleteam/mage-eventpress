@@ -1,0 +1,49 @@
+*, *::after, *::before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body{margin: 0;padding: 0;}
+body.noScroll {overflow: hidden;}
+[class^="mageStyle"] {
+    font-size: var(--default-font-size);
+    font-weight: var(--default-font-weight);
+    color: var(--default-color);
+    line-height: 1.25 !important;
+    font-family: var(--font-family);
+}
+[class^="mageStyle"] hr{margin: 10px 0;line-height: 1;border-color: #ddd;}
+[class^="mageStyle"] *,
+[class^="mageStyle"] h1,
+[class^="mageStyle"] h2,
+[class^="mageStyle"] h3,
+[class^="mageStyle"] h4,
+[class^="mageStyle"] h5,
+[class^="mageStyle"] h6,
+[class^="mageStyle"] p,
+[class^="mageStyle"] form,
+[class^="mageStyle"] ul {margin: 0;padding: 0;line-height: 1.25 !important;}
+
+[class^="mageStyle"] button,
+[class^="mageStyle"] input,
+[class^="mageStyle"] optgroup,
+[class^="mageStyle"] select,
+[class^="mageStyle"] textarea {font-family: inherit;}
+
+[class^="mageStyle"] a {color: #0E6BB7;}
+[class^="mageStyle"] a:hover {color: var(--default-active-color);}
+
+[class^="mageStyle"] a,
+[class^="mageStyle"] a:hover {text-decoration: none;}
+
+[class^="mageStyle"] a,
+[class^="mageStyle"] [class*="transition"],
+[class^="mageStyle"] [class*="magePopup"] .popupClose,
+[class^="mageStyle"] [class*="magePopup"],
+[class^="mageStyle"] .customCheckbox,
+[class^="mageStyle"] [class*='faqItem'],
+[class^="mageStyle"] button[class*="mage_button"] {
+    -webkit-transition: 250ms ease-in-out;
+    -moz-transition: 250ms ease-in-out;
+    -o-transition: 250ms ease-in-out;
+    transition: 250ms ease-in-out;
+}

@@ -3,6 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
 appsero_init_tracker_mage_eventpress();
 
+
+
 // Language Load
 add_action( 'init', 'mep_language_load');
 if (!function_exists('mep_language_load')) {
@@ -874,35 +876,7 @@ if (!function_exists('change_wc_event_product_status')) {
             }           
             echo mep_get_event_status($event_date); 
           break;
-  
-          case 'mep_atten' :
-            $multi_date           = get_post_meta($post_id,'mep_event_more_date',true) ? get_post_meta($post_id,'mep_event_more_date',true) : array();
-            $recurring            = get_post_meta($post_id, 'mep_enable_recurring', true) ? get_post_meta($post_id, 'mep_enable_recurring', true) : 'no';
-            // print_r($multi_date);
-            // if($recurring == 'yes'){ 
-            ?>
-            <form action="" method="get">
-              <?php 
-              if($recurring == 'everyday'){
-                do_action('mep_before_attendee_list_btn',$post_id);
-              }else{
-              ?>
-              <select name="ea_event_date" id="" style='font-size: 14px;border: 1px solid blue;width: 110px;display:<?php if($recurring == 'yes'){ echo 'block'; }else{ echo 'none'; } ?>'>
-                  <option value="<?php echo date('Y-m-d H:i:s',strtotime(get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true))); ?>"><?php echo get_mep_datetime(get_post_meta($post_id,'event_start_date',true),'date-text').' '.get_mep_datetime(get_post_meta($post_id,'event_start_date',true).' '.get_post_meta($post_id,'event_start_time',true),'time'); ?></option>
-                  <?php foreach($multi_date as $multi){ ?>
-                    <option value="<?php echo date('Y-m-d H:i:s',strtotime($multi['event_more_start_date'].' '.$multi['event_more_start_time'])); ?>"><?php echo get_mep_datetime($multi['event_more_start_date'],'date-text').' '.get_mep_datetime($multi['event_more_start_time'],'time'); ?></option>
-                  <?php } ?>
-              </select>
-              <?php } ?>
-              <input type="hidden" name='post_type' value='mep_events_attendees'>
-              <input type="hidden" name='event_id' value='<?php echo $post_id; ?>'>
-              <button class="button button-primary button-large"><?php _e('Attendees List','mage-eventpress'); ?></button>
-            </form>
-            <?php
-            // }else{
-            //  echo '<a class="button button-primary button-large" href="'.get_site_url().'/wp-admin/edit.php?post_type=mep_events_attendees&meta_value='.$post_id.'">Attendees List</a></form>'; 
-            // }
-              break;
+        
       }
   }
 }
@@ -2768,7 +2742,7 @@ if (!function_exists('mep_cart_display_ticket_type_list')) {
 function mep_cart_display_ticket_type_list($ticket_type_arr){
 ob_start();
   foreach ($ticket_type_arr as $ticket) {
-    echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price((int) $ticket['ticket_price'] * (int) $ticket['ticket_qty']) . '</li>';
+    echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price((float) $ticket['ticket_price'] * (float) $ticket['ticket_qty']) . '</li>';
   }
   return apply_filters('mep_display_ticket_in_cart_list',ob_get_clean(),$ticket_type_arr);
 }
@@ -2805,6 +2779,7 @@ return $expire_date;
 
 add_action('mep_event_single_template_end','mep_single_page_js_script');
 add_action('mep_add_to_cart_shortcode_js','mep_single_page_js_script');
+add_action('mep_event_admin_booking_js','mep_single_page_js_script');
 if (!function_exists('mep_single_page_js_script')) { 
 function mep_single_page_js_script($event_id){
   $currency_pos = get_option('woocommerce_currency_pos');
@@ -2812,10 +2787,10 @@ function mep_single_page_js_script($event_id){
 ?>
 <script>
     jQuery(document).ready(function() {
-                jQuery("#mep-event-accordion").accordion({
-                    collapsible: true,
-                    active: false
-                });
+                // jQuery("#mep-event-accordion").accordion({
+                //     collapsible: true,
+                //     active: false
+                // });
                 jQuery(document).on("change", ".etp", function() {
                     var sum = 0;
                     jQuery(".etp").each(function() {
@@ -2975,4 +2950,32 @@ if (!function_exists('mep_product_exists')) {
 function mep_product_exists( $id ) {	  
   return is_string( get_post_status( $id ) );	
 }
+}
+
+if (!function_exists('mep_get_event_dates_arr')) { 
+  function mep_get_event_dates_arr($event_id){
+      $now = current_time('Y-m-d H:i:s');
+      $event_start_datetime      = get_post_meta($event_id,'event_start_datetime',true);
+      $event_expire_datetime     = get_post_meta($event_id,'event_end_datetime',true);
+      $event_more_dates          = get_post_meta($event_id,'mep_event_more_date',true) ? get_post_meta($event_id,'mep_event_more_date',true) : [];
+      $date_arr  = array(array(
+      'start' =>  $event_start_datetime,
+      'end' => $event_expire_datetime
+      ));
+      $m_date_arr = [];
+      if(sizeof($event_more_dates) > 0){
+        $i=0;
+          foreach ($event_more_dates as $mdate) {   
+              if(strtotime($now) < strtotime($mdate['event_more_start_date'].' '.$mdate['event_more_start_time'])){       
+              $mstart = $mdate['event_more_start_date'].' '.$mdate['event_more_start_time'];
+              $mend = $mdate['event_more_end_date'].' '.$mdate['event_more_end_time'];
+              $m_date_arr[$i]['start'] = $mstart;
+              $m_date_arr[$i]['end'] = $mend;
+              }
+              $i++;
+          }
+      }
+      $event_dates = array_merge($date_arr,$m_date_arr);
+      return apply_filters('mep_event_dates_in_calender_free',$event_dates,$event_id);
+  }
 }

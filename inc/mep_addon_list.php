@@ -65,6 +65,7 @@ function mep_addon_list_sec(){
     top: auto;
 }
 </style>
+
 <?php
 $json = file_get_contents('http://vaincode.com/update/addon-list.json');
 $obj = json_decode($json, true);

@@ -1,0 +1,13 @@
+/*******Click slider***************/
+[class^='mageStyle'] [class*='clickSlide']{background-color: var(--click-slide-bg);padding: var(--default-mp);}
+[class^='mageStyle'] [class*='slideItem']{display: none;}
+[class^='mageStyle'] [class*='slideItem'].active{display: block;}
+[class^='mageStyle'] [class*='slideItem'] img{width: 100%;}
+
+[class^='mageStyle'] [class*='slideIndicator']{margin: var(--default-mp) 0 0 0;}
+
+[class^='mageStyle'] [class*='slideIndicatorItem']{border: 3px solid var(--default-border-color);margin: 0 5px;background-color: var(--default-border-color);}
+[class^='mageStyle'] [class*='slideIndicatorItem'].active{border-color: var(--default-active-color);background-color: var(--default-active-color)}
+
+[class^='mageStyle'] [class*='slideIndicatorItem'] img{height: 30px;width: auto;}
+[class^='mageStyle'] [class*='slideIndicatorItem'].active img{height: 35px;}

@@ -36,7 +36,7 @@ function mep_add_admin_scripts($hook)
   /**
    * Enquue Admin Styles
    */
-
+  
   wp_enqueue_style('mage-jquery-ui-style', plugin_dir_url(__DIR__) . 'css/jquery-ui.css', array());
   wp_enqueue_style('mage-options-framework', plugin_dir_url(__DIR__) . 'css/mage-options-framework.css');
   wp_enqueue_style('jquery-ui', plugin_dir_url(__DIR__) . 'css/jquery-ui.css');
@@ -68,14 +68,15 @@ function mep_add_admin_scripts($hook)
 add_action('wp_enqueue_scripts', 'mep_event_enqueue_scripts', 90);
 function mep_event_enqueue_scripts()
 {
+  $owlThemeLoad = mep_get_option('mep_load_carousal_from_theme', 'carousel_setting_sec', 'no');
+
   wp_enqueue_script('jquery');
   wp_enqueue_script('jquery-ui-datepicker');
   wp_enqueue_script('jquery-ui-core');
   wp_enqueue_script('jquery-ui-accordion');
   wp_enqueue_style('mep-jquery-ui-style', plugin_dir_url(__DIR__) . 'css/jquery-ui.css', array());
   wp_enqueue_style('mep-event-style', plugin_dir_url(__DIR__) . 'css/style.css', array());
-  wp_enqueue_style('mep-event-owl-carousal-main-style', plugin_dir_url(__DIR__) . 'css/owl.carousel.min.css', array('mep-event-style'));
-  wp_enqueue_style('mep-event-owl-carousal-default-style', plugin_dir_url(__DIR__) . 'css/owl.theme.default.min.css', array('mep-event-style'));
+
   wp_enqueue_style('mep-event-timeline-min-style', plugin_dir_url(__DIR__) . 'css/timeline.min.css', array('mep-event-style'));
   wp_enqueue_style('font-awesome-css-cdn-5.2.0', "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.2.0/css/all.min.css", null, 1);
   wp_enqueue_style('font-awesome-css-cdn', "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css", null, 1);
@@ -83,9 +84,18 @@ function mep_event_enqueue_scripts()
   wp_enqueue_script('mep-moment-js', plugin_dir_url(__DIR__) . 'js/moment.js', array(), 1, true);
   wp_enqueue_script('mep-calendar-scripts', plugin_dir_url(__DIR__) . 'js/calendar.min.js', array('jquery', 'mep-moment-js'), 1, false);
   wp_enqueue_script('mep-mixitup-min-js', plugin_dir_url(__DIR__) . 'js/mixitup.min.js', array(), 1, true);
-  wp_enqueue_script('mep-owl-carousel-min', plugin_dir_url(__DIR__) . 'js/owl.carousel.min.js', array('jquery'), 1, true);
+
+
   wp_enqueue_script('mep-timeline-min', plugin_dir_url(__DIR__) . 'js/timeline.min.js', array('jquery'), 1, true);
   wp_enqueue_script('mep-event-custom-scripts', plugin_dir_url(__DIR__) . 'js/mkb-scripts.js', array(), 1, true);
   wp_localize_script('jquery', 'mep_ajax', array( 'mep_ajaxurl' => admin_url( 'admin-ajax.php')));
+
+
+if($owlThemeLoad == 'no'){
+  wp_enqueue_style('mep-event-owl-carousal-main-style', plugin_dir_url(__DIR__) . 'css/owl.carousel.min.css', array('mep-event-style'));
+  wp_enqueue_style('mep-event-owl-carousal-default-style', plugin_dir_url(__DIR__) . 'css/owl.theme.default.min.css', array('mep-event-style'));
+  wp_enqueue_script('mep-owl-carousel-min', plugin_dir_url(__DIR__) . 'js/owl.carousel.min.js', array('jquery'), 1, true);
+}
+
 }
 

@@ -1,0 +1,21 @@
+/************Box shadow**********/
+[class*='slideIndicatorItem'].active,
+.mage_item_list.booked.active,
+.mage_bus_seat_item.mage_selected span.mage_bus_seat_icon{
+    -webkit-box-shadow: 0 2px 10px #444;
+    -moz-box-shadow: 0 2px 10px #444;
+    -o-box-shadow: 0 2px 10px #444;
+    box-shadow: 0 2px 10px #444;
+}
+ul.mage_input_select_list{
+    -webkit-box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    -o-box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+}
+[class^='mageStyle'] button[class*='mage_button']{
+    -webkit-box-shadow: var(--button-shadows);
+    -moz-box-shadow: var(--button-shadows);
+    -o-box-shadow: var(--button-shadows);
+    box-shadow: var(--button-shadows);
+}

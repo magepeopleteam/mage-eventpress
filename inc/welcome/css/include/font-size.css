@@ -1,0 +1,17 @@
+/********Font weight***********/
+[class^='mageStyle'] h1,
+[class^='mageStyle'] h2,
+[class^='mageStyle'] h3,
+[class^='mageStyle'] h4,
+[class^='mageStyle'] h5,
+[class^='mageStyle'] h6{font-weight: 500;}
+[class^='mageStyle'] strong{font-weight: bold;}
+[class^='mageStyle'] [class*='extraBold']{font-weight: 900;}
+/********Font Size***********/
+[class^='mageStyle'] h1{font-size: var(--font-size-h1);}
+[class^='mageStyle'] h2{font-size: var(--font-size-h2);}
+[class^='mageStyle'] h3{font-size: var(--font-size-h3);}
+[class^='mageStyle'] h4{font-size: var(--font-size-h4);}
+[class^='mageStyle'] h5{font-size: var(--font-size-h5);}
+[class^='mageStyle'] h6{font-size: var(--font-size-h6);}
+[class^='mageStyle'] label{font-size: var(--font-size-label);}

@@ -1,0 +1,24 @@
+/**********Button************/
+[class^='mageStyle'] button[class*='defaultButton'] {
+    padding: 0 var(--default-mp);
+    color: var(--button-color);
+    font-size: var(--button-fs);
+    background-color: var(--button-bg);
+    cursor: pointer;
+    min-width: var(--button-width);
+    height: auto;
+    min-height: var(--button-height);
+    -webkit-appearance: button;
+    overflow: visible;
+
+}
+[class^='mageStyle'] button[class*='defaultButton_xs']{
+    min-width:auto;
+    padding: var(--default-mp-xs) !important;
+    font-size: 70%;
+}
+[class^='mageStyle'] button[class*='defaultButton'] span {padding: 0 7px 0 0;}
+[class^='mageStyle'] button[class*='defaultButton']:hover,
+[class^='mageStyle'] button[class*='defaultButton']:focus {text-decoration: none;opacity: 0.9;}
+
+/*************/

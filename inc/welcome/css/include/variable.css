@@ -1,0 +1,101 @@
+/******Default*******/
+:root {
+    --font-family: "Poppins", sans-serif;
+    --custom-font-family: "Lato", sans-serif;
+    --default-font-size: 15px;
+    --default-font-weight: normal;
+    --default-color: #273B5E;
+    --container-max-width: 1200px;
+
+    --default-mp: 15px;
+    --default-mp-xs: 7px;
+    --default-border-radious: 5px;
+    --medium-border-radious: 10px;
+    --default-border-color: #DDD;
+
+    --default-active-color: #0E6BB7;
+
+    --default-bg: #FFF;
+}
+/*****Font size********/
+:root {
+    --font-size-label: 14px;
+    --font-size-h6: 16px;
+    --font-size-h5: 18px;
+    --font-size-h4: 20px;
+    --font-size-h3: 25px;
+    --font-size-h2: 30px;
+    --font-size-h1: 50px;
+}
+/*****Button********/
+:root {
+    --button-bg: #0071C2;
+    --button-color: #FFF;
+    --button-fs: 16px;
+    --button-height: 40px;
+    --button-width: 120px;
+    --button-shadows: 1px 1px 4px 3px #2C3E50CC;
+}
+/*****Header********/
+:root {
+    --header-bg: #2C3E50;
+    --header-color: #FFF;
+    --header-padding: 20px 0;
+    --header-fs: 16px;
+    --header-shadows: 0 3px 20px rgba(0, 0, 0, 0.1);
+}
+/*****Section********/
+:root {
+    --section-bg: #F2F2F2;
+    --section-padding: 30px 0;
+    --section-margin: 0;
+    --left-sidebar-width: 300px;
+    --main-content-width: calc(100% - 315px);
+    --right-sidebar-width: 300px;
+}
+/******Footer*******/
+:root {
+    --footer-bg: #FFF;
+    --footer-padding: 0;
+    --footer-fs: 16px;
+    --footer-color: #777;
+
+    --footer-top-bg: tranparent;
+    --footer-top-color: #555;
+    --footer-top-padding: 50px 0;
+
+    --footer-bottom-bg: #2C3E50;
+    --footer-bottom-color: #FFF;
+    --footer-bottom-padding: 15px 0;
+}
+/*****Bus seat color********/
+:root {
+    --seat-selected-bg-color: green;
+    --seat-selected-border-color: darkgreen;
+    --seat-selected-text-color: #FFF;
+
+    --seat-booked-bg-color: #777;
+    --seat-booked-border-color: #FFF;
+    --seat-booked-text-color: #FFF;
+
+    --seat-confirm-bg-color: #777;
+    --seat-confirm-border-color: #FFF;
+    --seat-confirm-text-color: #FFF;
+
+    --seat-cart-bg-color: #77BF44;
+    --seat-cart-border-color: darkgreen;
+    --seat-cart-text-color: #FFF;
+}
+/*******Color***********/
+:root {
+    --info-bg: #F2F2F2;
+    --success-color: #49ab56;
+    --danger-color: #C00;
+    --light-color: #F2F2F2;
+    --yellow-color: #FEBB02;
+    --blue-color: #07C;
+}
+/*****Click Slider******/
+:root {
+    --click-slide-bg: #F2F2F2;
+}

@@ -1,0 +1,55 @@
+/************flex**********/
+[class^="mageStyle"] [class*="flexColumn"],
+[class^="mageStyle"] [class*="flexEqual"],
+[class^="mageStyle"] [class*="customCheckbox"],
+div.mage_form_qty,
+div[class*="mage_qty"] {display: -webkit-flex;display: flex;}
+[class^="mageStyle"] label,
+[class^="mageStyle"] [class*="dFlex"],
+[class^="mageStyle"] [class*="listInline"],
+div.mage_row,
+[class^="mageStyle"] [class*="align"], [class^="mageStyle"] [class*="justify"],
+[class*="inputGroup"],
+[class*="inputInline"] [class*="mageForm"],
+ul.mage-list-double,
+[class^="mageStyle"] [class^="mage_menu"] {
+    display: -webkit-flex;display: flex;
+    -webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;
+}
+
+[class*="flexEqual"] > *,
+[class*="listInline"] > li,
+[class*="inputInline"] [class*="inputList"] {-webkit-flex: 1;-ms-flex: 1;flex: 1;}
+
+[class*="alignCenter"],
+[class*="mage_qty"],
+label {-webkit-align-items: center;align-items: center;}
+[class*="alignBaseline"] {-webkit-align-items: baseline;align-items: baseline;}
+
+[class*="justifyCenter"],
+[class*="mage_qty"]{-webkit-justify-content: center;justify-content: center;}
+
+[class*="justifyBetween"],
+[class*="customCheckbox"] {-webkit-justify-content: space-between;justify-content: space-between;}
+
+[class*="justifyAround"] {-webkit-justify-content: space-around;justify-content: space-around;}
+[class*="justifyEnd"] {-webkit-justify-content: flex-end;justify-content: flex-end;}
+
+[class*="flexColumn"],
+[class*="column"] {-webkit-flex-flow: column;flex-flow: column;}
+
+[class^="mageStyle"] [class*="nowrap"]{-webkit-flex-wrap: nowrap;flex-wrap: nowrap;}
+
+[class*="inputInline"] [class*="inputList"] {-webkit-flex-basis: 100%;flex-basis: 100%;}
+
+[class^="mageStyle"] [class*="allCenter"],
+[class^="mageStyle"] button[class*="defaultButton"],
+[class^="mageStyle"] [class*="slideIndicator"],
+[class^="mageStyle"] [class*='defaultLoader'],
+[class^="mageStyle"] [class*="magePopup"].in,
+[class^="mageStyle"] [class*="magePopup"] .popupClose {
+    display: -webkit-flex;display: flex;
+    -webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;
+    -webkit-justify-content: center;justify-content: center;
+    -webkit-align-items: center;align-items: center;
+}

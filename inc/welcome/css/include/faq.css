@@ -1,0 +1,31 @@
+/********Faq***********/
+[class*='faqItem'] {
+    margin: var(--default-mp) 0 0 0;
+    background-color: var(--section-bg);
+}
+[class*='faqItem']:hover {
+    background-color: #f7f7f7;
+}
+[class*='faqItem'].mage_faq_active {
+    border: 1px solid var(--default-border-color);
+    background-color: var(--default-active-color);
+    color: #fff;
+}
+[class*='faqItem'] h6 {
+    color: #555555;
+    padding: var(--default-mp);
+    cursor: pointer;
+    margin: 0 !important;
+}
+[class*='faqItem'] h6 span {
+    margin: 0 7px 0 0;
+    color: #707;
+}
+[class*='faqItem'] p {
+    display: none;
+    padding: var(--default-mp);
+    color: #222;
+    background-color: #f7f7f7;
+    border-top: 1px solid var(--default-border-color);
+    margin: 0 !important;
+}

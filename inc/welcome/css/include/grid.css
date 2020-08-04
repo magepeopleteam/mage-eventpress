@@ -1,0 +1,80 @@
+[class^='mageStyle'] [class*='mage_container'] {max-width: var(--container-max-width);width: 95%;margin: 0 auto;}
+
+[class^='mageStyle'] [class*='mage_row'] {min-height: 1px;}
+
+[class^='mageStyle'] [class*='fullWidth'] {width: 100%;max-width: 100%;}
+[class^='mageStyle'] [class*='fullHeight'] {height: 100%;}
+
+[class^='mageStyle'] [class*='col_1'] {width: 8.3333333333%;}
+[class^='mageStyle'] [class*='col_2'] {width: 16.666666667%;}
+[class^='mageStyle'] [class*='col_3'] {width: 25%;}
+[class^='mageStyle'] [class*='col_4'] {width: 33.333333333%;}
+[class^='mageStyle'] [class*='col_5'] {width: 41.666666667%;}
+[class^='mageStyle'] [class*='col_6'] {width: 50%;}
+[class^='mageStyle'] [class*='col_7'] {width: 58.333333333%;}
+[class^='mageStyle'] [class*='col_8'] {width: 66.666666667%;}
+[class^='mageStyle'] [class*='col_9'] {width: 75%;}
+[class^='mageStyle'] [class*='col_10'] {width: 83.33333333%;}
+[class^='mageStyle'] [class*='col_11'] {width: 91.66666667%;}
+[class^='mageStyle'] [class*='col_12'] {width: 100%;}
+
+/******large device*******/
+@media only screen and (max-width: 1100px) {
+    [class^='mageStyle'] [class*='ld_1'] {width: 8.3333333333%;}
+    [class^='mageStyle'] [class*='ld_2'] {width: 16.666666667%;}
+    [class^='mageStyle'] [class*='ld_3'] {width: 25%;}
+    [class^='mageStyle'] [class*='ld_4'] {width: 33.333333333%;}
+    [class^='mageStyle'] [class*='ld_5'] {width: 41.666666667%;}
+    [class^='mageStyle'] [class*='ld_6'] {width: 50%;}
+    [class^='mageStyle'] [class*='ld_7'] {width: 58.333333333%;}
+    [class^='mageStyle'] [class*='ld_8'] {width: 66.666666667%;}
+    [class^='mageStyle'] [class*='ld_9'] {width: 75%;}
+    [class^='mageStyle'] [class*='ld_10'] {width: 83.33333333%;}
+    [class^='mageStyle'] [class*='ld_11'] {width: 91.66666667%;}
+    [class^='mageStyle'] [class*='ld_12'] {width: 100%;}
+}
+/*****medium device*******/
+@media only screen and (max-width: 900px) {
+    [class^='mageStyle'] [class*='md_1'] {width: 8.3333333333%;}
+    [class^='mageStyle'] [class*='md_2'] {width: 16.666666667%;}
+    [class^='mageStyle'] [class*='md_3'] {width: 25%;}
+    [class^='mageStyle'] [class*='md_4'] {width: 33.333333333%;}
+    [class^='mageStyle'] [class*='md_5'] {width: 41.666666667%;}
+    [class^='mageStyle'] [class*='md_6'] {width: 50%;}
+    [class^='mageStyle'] [class*='md_7'] {width: 58.333333333%;}
+    [class^='mageStyle'] [class*='md_8'] {width: 66.666666667%;}
+    [class^='mageStyle'] [class*='md_9'] {width: 75%;}
+    [class^='mageStyle'] [class*='md_10'] {width: 83.33333333%;}
+    [class^='mageStyle'] [class*='md_11'] {width: 91.66666667%;}
+    [class^='mageStyle'] [class*='md_12'] {width: 100%;}
+}
+/***small device****/
+@media only screen and (max-width: 700px) {
+    [class^='mageStyle'] [class*='sd_1'] {width: 8.3333333333%;}
+    [class^='mageStyle'] [class*='sd_2'] {width: 16.666666667%;}
+    [class^='mageStyle'] [class*='sd_3'] {width: 25%;}
+    [class^='mageStyle'] [class*='sd_4'] {width: 33.333333333%;}
+    [class^='mageStyle'] [class*='sd_5'] {width: 41.666666667%;}
+    [class^='mageStyle'] [class*='sd_6'] {width: 50%;}
+    [class^='mageStyle'] [class*='sd_7'] {width: 58.333333333%;}
+    [class^='mageStyle'] [class*='sd_8'] {width: 66.666666667%;}
+    [class^='mageStyle'] [class*='sd_9'] {width: 75%;}
+    [class^='mageStyle'] [class*='sd_10'] {width: 83.33333333%;}
+    [class^='mageStyle'] [class*='sd_11'] {width: 91.66666667%;}
+    [class^='mageStyle'] [class*='sd_12'] {width: 100%;}
+}
+/******extra small device*******/
+@media only screen and (max-width: 500px) {
+    [class^='mageStyle'] [class*='es_1'] {width: 8.3333333333%;}
+    [class^='mageStyle'] [class*='es_2'] {width: 16.666666667%;}
+    [class^='mageStyle'] [class*='es_3'] {width: 25%;}
+    [class^='mageStyle'] [class*='es_4'] {width: 33.333333333%;}
+    [class^='mageStyle'] [class*='es_5'] {width: 41.666666667%;}
+    [class^='mageStyle'] [class*='es_6'] {width: 50%;}
+    [class^='mageStyle'] [class*='es_7'] {width: 58.333333333%;}
+    [class^='mageStyle'] [class*='es_8'] {width: 66.666666667%;}
+    [class^='mageStyle'] [class*='es_9'] {width: 75%;}
+    [class^='mageStyle'] [class*='es_10'] {width: 83.33333333%;}
+    [class^='mageStyle'] [class*='es_11'] {width: 91.66666667%;}
+    [class^='mageStyle'] [class*='es_12'] {width: 100%;}
+}

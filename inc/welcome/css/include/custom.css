@@ -1,0 +1,231 @@
+.shadow_one{
+    -webkit-box-shadow: 0 8px 15px #f0f0f0;
+    box-shadow: 0 8px 15px #f0f0f0;
+}
+.shadow_two{
+    -webkit-box-shadow: 0 8px 15px #f0f0f0;
+    box-shadow: 0 8px 15px #f0f0f0;
+    background-color: #fbfdff;
+    width: 48%;
+}
+header{color: #fff;}
+header .textContent{margin: 50px 0 0 0;}
+p{color: #606b7b;}
+p.textColor{color: #3f3f3f;}
+/* label{color: #273b5e;font-size: 18px;font-weight: bold;font-family: var(--custom-font-family);} */
+/* label span{color: #ff555d;} */
+.top_icon_area {
+    width: 350px;float: right;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    -o-transform: rotate(40deg);
+    transform: rotate(40deg);
+    -webkit-transform-origin: 50% 85%;
+    -moz-transform-origin: 50% 85%;
+    -ms-transform-origin: 50% 85%;
+    -o-transform-origin: 50% 85%;
+    transform-origin: 50% 85%;
+    overflow: hidden;
+}
+.top_icon_area ul {height: 120px;}
+/****/
+[class^='mageStyle'] section h1{margin: 0 0 50px 0;}
+[class^='mageStyle'] section h2{margin: 0 0 20px 0;}
+[class^='mageStyle'] section p{margin: 0 0 10px 0;}
+[class^='mageStyle'] section label{margin: 15px 0 0 0;}
+
+/****/
+[class^='mageStyle'] [class*='customButton']{
+    min-width: 95px;width:auto;height: 45px;color: #fff;font-size: 20px;font-weight: 500;position: relative;
+    background-image: -webkit-linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+    background-image: -moz-linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+    background-image: linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+    border-radius: 5px;
+    display: -webkit-inline-flex;display: inline-flex;
+    margin: 0 0 20px 0;padding: 0 20px;
+}
+[class^='mageStyle'] a[class*='customButton']{color: #fff;min-width: 170px;}
+[class^='mageStyle'] a[class*='customButton'].customSupport{background-color: #49ab56;background-image: none;}
+[class^='mageStyle'] a[class*='customButton'].customSubscription{background-color: #544fb8;background-image: none;}
+[class^='mageStyle'] a[class*='customButton']:hover{color: #F2F2F2;}
+.preDash::before,
+.postDash::after {
+    position: absolute;
+    content: "";
+    top: 23px;
+    width: 45px;
+    height: 2px;
+    background-color: #F26E26;
+}
+.preDash::before{left: -65px;}
+.postDash::after{right: -65px;}
+
+[class^="mageStyle"] .features [class*="customButton"]{font-size: 16px;margin: 20px 0;}
+[class^="mageStyle"]  [class*="customButton"].customIcon{height: 90px;width: 90px;border-radius: 50%;padding: 0;min-width: auto;}
+[class^="mageStyle"]  [class*="customButton"].customIcon::after{top: 44px;}
+/******/
+[class^='mageStyle'] .buttonOutline{
+    min-width: 160px;min-height: 60px;border: 2px solid #ff555d;color: #ff555d;font-size: 16px;font-weight: 500;
+    display: -webkit-inline-flex;display: inline-flex;
+    margin: 30px 0 0 0;padding: 0 15px;
+}
+[class^='mageStyle'] .buttonOutline:hover{
+    background-color: #ff555d;color: #fff;
+}
+/********/
+.preset,.widget,.tutorial{background-color: #f7faff;}
+
+.unlimited_section .textContent{padding: 0 0 0 30px;}
+.unlimited_section .textContent h4{margin: 0 0 10px 0;}
+.unlimited_section .content_area {padding: 25px 15px 0 0;}
+.getPro{padding: 50px 0;}
+/***************/
+[class^='mageStyle'] .widgetButton{
+    padding: 0;
+    color: #fff;
+    display: -webkit-inline-flex;display: inline-flex;
+    font-size: 22px;
+    background-color: #6c57c1;
+    cursor: pointer;
+    width: calc(25% - 20px);
+    height: auto;
+    min-height: 60px;
+    -webkit-appearance: button;
+    overflow: visible;
+    border-radius: 30px;
+    border: none;
+    margin: 0 0 20px 0;
+}
+[class^='mageStyle'] .widgetButton:hover,
+[class^='mageStyle'] .widgetButton:focus {text-decoration: none;opacity: 0.9;background-color: #4aac57;}
+
+[class^='mageStyle'] .widgetButton.load_more{margin: 40px 0 0 0;
+    background-image: -webkit-linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+    background-image: -moz-linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+    background-image: linear-gradient(#ff8f8e,#ff8787,#ff7b7d,#ff6369,#ff575f,#ff515a);
+}
+
+.withOurWork .withWork{padding: 15px;border: 1px solid #815efb;}
+
+.features,.preset,.widget,.tutorial,.knowledge,.unlimited_section,.faqContent,.missing_feature,.withOurWork{padding: 60px 0;}
+
+[class^='mageStyle'] .knowledge a[class*='customButton']{margin: 30px 0 20px 0;}
+
+@media only screen and (max-width: 1500px) {
+    .top_icon_area {
+        -webkit-transform-origin: 35% 40%;
+        -moz-transform-origin: 35% 40%;
+        -ms-transform-origin: 35% 40%;
+        -o-transform-origin: 35% 40%;
+        transform-origin: 35% 40%;
+        width: 240px;
+    }
+    .top_icon_area img{max-width: 75px;}
+    .top_icon_area ul{max-height: 80px;}
+
+    [class^='mageStyle'] section h1{margin: 0 0 40px 0;}
+    [class^='mageStyle'] section h2{margin: 0 0 15px 0;}
+    [class^='mageStyle'] section p{margin: 0 0 7px 0;}
+    [class^='mageStyle'] section label{margin: 10px 0 0 0;}
+
+    .unlimited_section .textContent{padding: 0 0 0 25px;}
+
+    .unlimited_section .content_area {padding: 20px 10px 0 0;}
+}
+@media only screen and (max-width: 1100px) {
+    .features,.preset,.widget,.tutorial,.knowledge,.unlimited_section,.faqContent,.missing_feature,.withOurWork{padding: 50px 0;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon{height: 80px;width: 80px;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon::after{top: 39px;}
+
+    header .textContent{margin: 40px 0 0 0;}
+    [class^='mageStyle'] h2{font-size: 22px}
+    [class^='mageStyle'] h3{font-size: 18px}
+    .top_icon_area{width: 195px;}
+    .top_icon_area img{max-width: 60px;}
+    .top_icon_area ul{max-height: 65px;}
+
+    [class^="mageStyle"] section h1{margin: 0 0 25px 0;font-size: 45px;}
+
+    .unlimited_section .textContent{padding: 0 0 0 20px;}
+    .unlimited_section .content_area {padding: 15px 10px 0 0;}
+    .unlimited_section .textContent h4{margin: 0 0 7px 0;font-size: 18px;}
+
+    [class^='mageStyle'] .buttonOutline{min-height: 50px;font-size: 15px;margin: 20px 0 0 0;}
+
+    [class^='mageStyle'] .widgetButton{font-size: 20px;width: calc(25% - 15px);min-height: 60px;margin: 0 0 15px 0;}
+    [class^="mageStyle"] [class*="customButton"]{font-size: 18px;}
+}
+@media only screen and (max-width: 900px) {
+    .features,.preset,.widget,.tutorial,.knowledge,.unlimited_section,.faqContent,.missing_feature,.withOurWork{padding: 40px 0;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon{height: 70px;width: 70px;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon::after{top: 34px;}
+    header .textContent{margin: 20px 0 0 0;}
+    [class^='mageStyle'] header h2{font-size: 18px;}
+    [class^='mageStyle'] header h3{font-size: 16px;}
+    .top_icon_area{width: 150px;}
+    .top_icon_area img{max-width: 45px;}
+    .top_icon_area ul{max-height: 50px;}
+
+    [class^='mageStyle'] section h1{margin: 0 0 30px 0;}
+    [class^='mageStyle'] section h2{margin: 0 0 10px 0;}
+    [class^='mageStyle'] section p{margin: 0 0 5px 0;}
+    [class^='mageStyle'] section label{margin: 7px 0 0 0;}
+
+    [class^="mageStyle"] section h1{margin: 0 0 20px 0;font-size: 40px;}
+
+    .unlimited_section .textContent{padding: 0 0 0 15px;}
+    .unlimited_section .content_area {padding: 10px 7px 0 0;}
+    .unlimited_section .textContent h4{font-size: 16px;}
+
+    [class^='mageStyle'] .buttonOutline{min-height: 45px;font-size: 15px;margin: 15px 0 0 0;}
+
+    [class^='mageStyle'] .widgetButton{font-size: 18px;width: calc(33.3333% - 15px);min-height: 50px;margin: 0 0 15px 0;}
+}
+@media only screen and (max-width: 700px) {
+    .features,.preset,.widget,.tutorial,.knowledge,.unlimited_section,.faqContent,.missing_feature,.withOurWork{padding: 30px 0;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon{height: 60px;width: 60px;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon::after{top: 29px;}
+    [class^="mageStyle"] [class*="extraBold"]{font-weight: 500;}
+    header .textContent{margin: 15px 0 0 0;}
+    [class^='mageStyle'] header h2{font-size: 16px;font-weight: 500;}
+    [class^='mageStyle'] header h3{font-size: 14px;font-weight: 500;}
+    .top_icon_area{width: 120px;}
+    .top_icon_area img{max-width: 35px;}
+    .top_icon_area ul{max-height: 40px;}
+
+    [class^="mageStyle"] [class*="customButton"]{height: 30px;font-size: 14px;margin: 0 0 10px 0;}
+    .preDash::before, .postDash::after{top: 15px;width: 40px;height: 1px;}
+    .preDash::before {left: -50px;}
+    .postDash::after {right: -50px;}
+
+    [class^="mageStyle"] section h1{margin: 0 0 15px 0;font-size: 30px;}
+    [class^="mageStyle"] section h2{font-size: 20px;}
+    [class^="mageStyle"] section h4{font-size: 14px;}
+    [class^="mageStyle"] section p{font-size: 13px;}
+
+    .unlimited_section .textContent{padding: 0 0 0 10px;}
+
+    [class^='mageStyle'] .buttonOutline{min-height: 40px;font-size: 14px;margin: 10px 0 0 0;}
+    [class^='mageStyle'] .widgetButton{font-size: 16px;width: calc(33.3333% - 15px);min-height: 45px;margin: 0 0 15px 0;}
+}
+@media only screen and (max-width: 500px) {
+    .features,.preset,.widget,.tutorial,.knowledge,.unlimited_section,.faqContent,.missing_feature,.withOurWork{padding: 25px 0;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon{height: 50px;width: 50px;}
+    [class^="mageStyle"]  [class*="customButton"].customIcon::after{top: 24px;}
+    header .textContent{margin:0;}
+    [class^='mageStyle'] header h2{font-size: 14px;}
+    [class^='mageStyle'] header h3{font-size: 12px;}
+    [class^='mageStyle'] header h4{font-size: 12px;}
+    .top_icon_area{width: 90px;}
+    .top_icon_area img{max-width: 25px;}
+    .top_icon_area ul{max-height: 30px;}
+
+    [class^="mageStyle"] section h1{font-size: 25px;}
+    [class^="mageStyle"] section h2{font-size: 18px;}
+    [class^="mageStyle"] section p{font-size: 12px;}
+
+    [class^='mageStyle'] .widgetButton{font-size: 15px;width: calc(50% - 10px);min-height: 40px;margin: 0 0 10px 0;}
+
+    [class^="mageStyle"] .widgetButton.load_more{width: 100%;margin: 20px 0 0 0;}
+}

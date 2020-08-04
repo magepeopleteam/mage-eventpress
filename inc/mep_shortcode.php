@@ -48,39 +48,26 @@ function mep_event_calender()
                 while ($loop->have_posts()) {
                     $loop->the_post();
                     $event_meta = get_post_custom(get_the_id());
-                    $author_terms = get_the_terms(get_the_id(), 'mep_org');
-                    $time = strtotime($event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0]);
-                    $newformat = date_i18n('Y-m-d H:i:s', $time);
-                ?> {
-                        start: '<?php echo date_i18n('Y-m-d H:i', strtotime($event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0])); ?>',
-                        end: '<?php echo date_i18n('Y-m-d H:i', strtotime($event_meta['event_end_date'][0] . ' ' . $event_meta['event_end_time'][0])); ?>',
+$event_dates = mep_get_event_dates_arr(get_the_id());
+
+foreach ($event_dates as $_dates) {
+    ?>
+{
+                        start: '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',
+                        end: '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['end'])); ?>',
                         title: '<?php the_title(); ?>',
                         url: '<?php the_permalink(); ?>',
                         class: '',
                         color: '#000',
                         data: {}
                     },
-                    <?php
-                    $event_multidate = maybe_unserialize($event_meta['mep_event_more_date'][0]);
-                    if (is_array($event_multidate) && sizeof($event_multidate) > 0) {
-                        foreach ($event_multidate as $_event_multidate) {
-                    ?>
-
-                            {
-                                start: '<?php echo date_i18n('Y-m-d H:i', strtotime($_event_multidate['event_more_start_date'] . ' ' . $_event_multidate['event_more_start_time'])); ?>',
-                                end: '<?php echo date_i18n('Y-m-d H:i', strtotime($_event_multidate['event_more_end_date'] . ' ' . $_event_multidate['event_more_end_time'])); ?>',
-                                title: '<?php the_title(); ?>',
-                                url: '<?php the_permalink(); ?>',
-                                class: '',
-                                color: '#000',
-                                data: {}
-                            },
+    <?php
+}
 
 
-                <?php }
                     }
                     $i++;
-                }
+                
                 wp_reset_postdata(); ?>
             ]
 
@@ -204,9 +191,10 @@ function mep_event_list($atts, $content = null)
             var mixer = mixitup(containerEl);
             <?php if ($pagination == 'carousal') { ?>
                 jQuery('#mep-carousel<?php echo $cid; ?>').owlCarousel({
-                    autoplay: true,
+                    autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,
+                    autoplayTimeout:<?php echo mep_get_option('mep_speed_carousal', 'carousel_setting_sec', '5000'); ?>,
                     autoplayHoverPause: true,
-                    loop: true,
+                    loop: <?php echo mep_get_option('mep_loop_carousal', 'carousel_setting_sec', 'true'); ?>,
                     margin: 20,
                     nav: <?php echo $nav; ?>,
                     dots: <?php echo $dot; ?>,

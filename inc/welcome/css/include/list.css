@@ -1,0 +1,13 @@
+[class^='mageStyle'] ul{list-style-type: none;}
+/******list Horizontal*****/
+ul.mage_list{margin: var(--default-mp) 0 0 0;}
+ul.mage_list li{padding: var(--default-mp-xs) 0;}
+/******All in one line*****/
+[class^='mageStyle'] ul[class*='listInline'] li{text-align: center;border-right: 1px solid;}
+[class^='mageStyle'] ul[class*='listInline'] li:last-child{border: none;}
+[class^='mageStyle'] ul[class*='listInline'] li a{padding: var(--default-mp-xs);display: block;}
+[class^='mageStyle'] ul[class*='listInline'] li.mage_active{background-color: var(--default-active-color)}
+[class^='mageStyle'] ul[class*='listInline'] li.mage_active a{color: #fff;}
+/***lint inline two li***/
+ul.mage-list-double li{width: 50%;padding: var(--default-mp-xs);}
+ul.mage-list-double li span{margin: 0 var(--default-mp-xs) 0 0;}

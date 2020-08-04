@@ -1,0 +1,4 @@
+[class^="mageStyle"] .mageTabs ul .in {background-color: #0AB21B;color: #FFF;}
+[class^="mageStyle"] .tabsItem {display: none;}
+[class^="mageStyle"] .tabsItem.active {display: block;}
+[class^="mageStyle"] .tabsContent {margin: 10px 0 0 0;position: relative;}

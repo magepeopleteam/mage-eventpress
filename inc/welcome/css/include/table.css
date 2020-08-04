@@ -1,0 +1,3 @@
+[class^='mageStyle'] table {table-layout: fixed;border-collapse: collapse;text-align: center;}
+[class^='mageStyle'] table th,
+[class^='mageStyle'] table td {border: 1px solid var(--default-border-color);}

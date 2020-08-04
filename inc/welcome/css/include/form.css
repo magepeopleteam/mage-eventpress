@@ -1,0 +1,75 @@
+[class^="mageStyle"] [class*="mageForm"] label {margin: var(--default-mp-xs) 0 0 0;text-transform: capitalize;}
+[class^="mageStyle"] [class*="mageForm"] label span {width: 100%;margin: 0 0 var(--default-mp-xs) 0 !important;}
+[class^="mageStyle"] [class*="mageForm"] label span::before {padding: 0 var(--default-mp-xs);}
+[class^="mageStyle"] [class*="mageForm"] button[class*="mage_button"] {height: 40px;}
+[class^="mageStyle"] [class*="formControl"] {
+    width: 100%;color: #222;
+    height: 40px;
+    border: 1px solid var(--default-border-color);
+    padding: 7px var(--default-mp);
+    font-size: var(--default-font-size);
+}
+/****************/
+[class^="mageStyle"] [class*="inputList"] {margin: var(--default-mp) 0 0 0;position: relative;}
+[class^="mageStyle"] [class*="inputList"] textarea[class*="formControl"] { height: auto !important;}
+/******* group form*********/
+[class^="mageStyle"] [class*="inputGroup"] {width: 100%;padding: 0 0 var(--default-mp-xs) 0;}
+[class^="mageStyle"] [class*="inputGroup"] label {width: auto;padding: 0 var(--default-mp) 0 0;}
+[class^="mageStyle"] [class*="inputGroup"] label input[type="checkbox"] {margin: 0 var(--default-mp-xs);}
+/******* input as a select*********/
+[class^="mageStyle"] [class*="inputList"] .mage_input_select [class*="formControl"]:focus {border-color: var(--default-border-color);}
+[class^="mageStyle"] div.mage_input_select {position: relative;}
+[class^="mageStyle"] ul.mage_input_select_list {
+    display: none;z-index: 111;overflow: auto;max-height: 250px;height: auto;width: 100%;margin: 1px 0 0 0 !important;padding: 10px !important;
+    position: absolute;left: 0;top: 100%;right: 0;
+    border: 1px solid var(--default-border-color);
+    background-color: var(--default-bg);
+}
+[class^="mageStyle"] ul.mage_input_select_list li {padding: 10px;cursor: pointer;border-bottom: 1px solid var(--default-border-color);margin: 0;list-style-type: none;}
+[class^="mageStyle"] ul.mage_input_select_list li:last-child {border-bottom: none;}
+[class^="mageStyle"] ul.mage_input_select_list li:hover {background-color: #777;color: #FFF;}
+/*****Form inline*******/
+[class^="mageStyle"] [class*="inputInline"] {padding: 15px;margin: 15px 0 0 0;}
+[class^="mageStyle"] [class*="inputInline"] [class*="inputList"] {max-width: calc(20% - 10px);width: 100%;margin: 0 5px;}
+/********Form Horizontal**************/
+[class^="mageStyle"] [class*="inputHorizontal"] [class*="mageForm"]{max-width: 500px;width: 100%;}
+/*****Form Qty inc dec*******/
+[class^="mageStyle"] div.mage_form_qty {max-width: 140px;border: 1px solid var(--default-border-color);margin: 0;background-color: var(--default-bg);text-align: center;}
+[class^="mageStyle"] div.mage_form_qty [class*="formControl"] {width: 50%;border-top: none !important;border-bottom: none !important;text-align: center;}
+[class^="mageStyle"] [class*="mage_qty"] {width: 25%;color: #777;font-size: var(--default-font-size) !important;cursor: pointer;}
+[class^="mageStyle"] [class*="mage_qty"] span {margin: 0 !important;}
+/**********Checkbox Custom*********/
+[class^="mageStyle"] .customCheckbox {padding: 3px 0 0 30px;position: relative;width: 100%;}
+[class^="mageStyle"] .customCheckbox::before{
+    content: "";position: absolute;
+    left: 0;top: 0;height: 20px;width: 20px;
+    background-color: #FFF;
+    border: 2px rgba(0, 0, 0, 0.5) solid;
+    border-radius: 2px;
+}
+[class^="mageStyle"] .customCheckboxLabel{padding: 0 0 10px 0;}
+[class^="mageStyle"] .customCheckboxLabel input:checked~ .customCheckbox::before{border-color: #07c;background: #07c;}
+[class^="mageStyle"] .customCheckboxLabel input:focus ~ .customCheckbox::before {
+    border-color: #07C;outline: 0;
+    -webkit-box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.3); box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.3);
+}
+[class^="mageStyle"] .customCheckboxLabel input:checked~ .customCheckbox::after{
+    content: "";position: absolute;
+    left: 2px;top: 4px;height: 8px;width: 16px;
+    border: 2px solid #fff;border-top: none;border-right: none;
+    z-index: 11;background-color: transparent;
+    -webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);
+}
+/**********Responsive*********/
+@media only screen and (max-width: 1250px) {
+    [class^="mageStyle"] [class*="inputInline"] [class*="inputList"] {max-width: calc(25% - 10px);}
+}
+@media only screen and (max-width: 1050px) {
+    [class^="mageStyle"] [class*="inputInline"] [class*="inputList"] {max-width: calc(33.33% - 10px);}
+}
+@media only screen and (max-width: 850px) {
+    [class^="mageStyle"] [class*="inputInline"] [class*="inputList"] {max-width: calc(50% - 10px);}
+}
+@media only screen and (max-width: 600px) {
+    [class^="mageStyle"] [class*="inputInline"] [class*="inputList"] {max-width: 100%;min-width: 100%;}
+}

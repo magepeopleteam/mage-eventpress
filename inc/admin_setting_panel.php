@@ -60,6 +60,10 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 array(
                     'id' => 'label_setting_sec',
                     'title' => __('Translation Settings', 'mage-eventpress')
+                ),
+                array(
+                    'id' => 'carousel_setting_sec',
+                    'title' => __('Carousel Settings', 'mage-eventpress')
                 )
             );
 
@@ -719,6 +723,58 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc' => __('Select a color for FAQ Title Text', 'mage-eventpress'),
                         'type' => 'color',
                     ),
+                )
+                ),
+
+                'carousel_setting_sec' => apply_filters('mep_settings_carousel_arr',array(
+
+                    array(
+                        'name' => 'mep_load_carousal_from_theme',
+                        'label' => __('Load owlCarousel From Theme', 'mage-eventpress'),
+                        'desc' => __('If your theme Carousel stop working or in your theme already loaded the OWL Carousel Lib, then you can set this yes?', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'no',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
+                    ),
+
+                    array(
+                        'name' => 'mep_autoplay_carousal',
+                        'label' => __('Auto Play', 'mage-eventpress'),
+                        'desc' => __('Please select Carousel will auto play or not.', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'yes',
+                        'options' =>  array(
+                            'true' => 'Yes',
+                            'false' => 'No'
+                        )
+                    ),
+                    array(
+                        'name' => 'mep_loop_carousal',
+                        'label' => __('Infinite Loop', 'mage-eventpress'),
+                        'desc' => __('Please select Carousel will Infinite Loop or not.', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'yes',
+                        'options' =>  array(
+                            'true' => 'Yes',
+                            'false' => 'No'
+                        )
+                        ),
+                        array(
+                            'name' => 'mep_speed_carousal',
+                            'label' => __('Carousel Auto Play Speed', 'mage-eventpress'),
+                            'desc' => __('Please Enter Carousel Auto Play Speed, Default 5000', 'mage-eventpress'),
+                            'type' => 'text',
+                            'default' => '5000'
+                        ),                        
+
+
+
+
+
+
                 )
 
                 )

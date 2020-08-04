@@ -1,0 +1,3 @@
+ul.cart_list{list-style-type: none;line-height: 1.25;font-size: 14px;color:#444;padding: 0 0 0 10px;}
+ul.cart_list li{display: block;padding: 3px 0;}
+.cart_product_item{border: 1px solid #ddd;margin: 7px 0 0 0;padding: 7px;border-radius: 5px;}

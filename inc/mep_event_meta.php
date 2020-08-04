@@ -35,7 +35,7 @@ add_meta_box( 'mep-event-rest-count-sec', __('Event Reset Booking Count','mage-e
 
 
 
- add_meta_box( 'mep-event-rich-text', __('<span class="dashicons dashicons-admin-generic" style="color:green; padding-right:10px;"></span>Event Rich text','mage-eventpress'), 'mep_event_rich_text_meta_box_cb', 'mep_events', 'normal', 'high' );
+ add_meta_box( 'mep-event-rich-text', __('<span class="dashicons dashicons-admin-generic" style="color:green; padding-right:10px;"></span>Event Rich text','mage-eventpress'), 'mep_event_rich_text_meta_box_cb', 'mep_events', 'normal', 'low' );
 
 }
 

@@ -1,0 +1,24 @@
+[data-target-popup]{cursor: pointer;}
+[class^="mageStyle"] [class*="magePopup"] {
+    display: none;position: fixed;
+    left: 0;right: 0;top: 0;bottom: 0;z-index: 1111;
+    overflow: hidden auto;background: #000C;
+}
+[class^="mageStyle"] [class*="magePopup"] .popupMainArea {
+    min-width: 500px;max-width: 700px;width: auto;
+    min-height: 50vh;max-height: 100vh;height: auto;
+    background-color: #FFF;
+    border: 20px solid #444;
+    padding: 10px;
+    position: relative;
+}
+[class^="mageStyle"] [class*="magePopup"] .popupClose{
+    position: fixed;z-index: 1111;cursor: pointer;
+    top: 50px;right: 50px;
+    width: 50px;height: 50px;
+    background-color: #444;color: #fff;
+    font-size: 20px;
+}
+[class^="mageStyle"] [class*="magePopup"] .popupClose:hover{color: #444;background-color: #fff;}
+
+[class^="mageStyle"] [class*="magePopup"] [class*='defaultLayout']{margin: 0;}

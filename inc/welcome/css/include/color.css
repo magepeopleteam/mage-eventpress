@@ -1,0 +1,18 @@
+[class^='mageStyle'] .error {background-color: red;color: #fff;}
+/*****Success*********/
+[class^='mageStyle'] [class*='textSuccess'] {color: var(--success-color);}
+[class^='mageStyle'] [class*='bgSuccess'] {background-color: var(--success-color);}
+/*****danger*********/
+[class^='mageStyle'] [class*='textDanger'] {color: var(--danger-color);}
+[class^='mageStyle'] [class*='bgDanger'] {background-color: var(--danger-color);}
+/*****Light*********/
+[class^='mageStyle'] [class*='textLight'] {color: var(--light-color);}
+[class^='mageStyle'] [class*='bgLight'] {background-color: var(--light-color);}
+/*****Light*********/
+[class^='mageStyle'] [class*='textYellow'] {color: var(--yellow-color);}
+[class^='mageStyle'] [class*='bgYellow'] {background-color: var(--yellow-color);}
+/*****blue*********/
+[class^='mageStyle'] [class*='textBlue'] {color: var(--blue-color);}
+[class^='mageStyle'] [class*='bgBlue'] {background-color: var(--blue-color);}
+[class^='mageStyle'] [class*='borderBlue'] {border-color: var(--blue-color);}
+[class^='mageStyle'] [class*='textBorderBlue'] {border-color: var(--blue-color);color: var(--blue-color);}

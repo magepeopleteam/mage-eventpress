@@ -1,0 +1,12 @@
+@media only screen and (max-width: 1100px) {
+
+}
+@media only screen and (max-width: 900px) {
+
+}
+@media only screen and (max-width: 700px) {
+
+}
+@media only screen and (max-width: 500px) {
+    [class^="mageStyle"] [class*="dNoneEs"] {display: none;}
+}

@@ -16,15 +16,26 @@ if (!defined('ABSPATH')) {
   die;
 } // Cannot access pages directly.
 
+
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (is_plugin_active('woocommerce/woocommerce.php')) {
-  function appsero_init_tracker_mage_eventpress() {
-    if ( ! class_exists( 'Appsero\Client' ) ) {
+  function appsero_init_tracker_mage_eventpress()
+  {
+    if (!class_exists('Appsero\Client')) {
       require_once __DIR__ . '/lib/appsero/src/Client.php';
     }
-    $client = new Appsero\Client( '08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'WooCommerce Event Manager', __FILE__ );    
+    $client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'WooCommerce Event Manager', __FILE__);
     $client->insights()->init();
-}  
+  }
+
+  function mep_event_activation_redirect($plugin)
+  {
+    if ($plugin == plugin_basename(__FILE__)) {
+      exit(wp_redirect(admin_url('edit.php?post_type=mep_events&page=mep_event_welcome_page')));
+    }
+  }
+  add_action('activated_plugin', 'mep_event_activation_redirect');
+
   require_once(dirname(__FILE__) . "/inc/mep_file_include.php");
 } else {
   function mep_admin_notice_wc_not_active()

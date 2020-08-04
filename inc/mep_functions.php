@@ -346,8 +346,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       $ticket_qty =  $_user_info['ticket_qty'];
   
   }elseif($type == 'user_form'){
-  
-  
+    
       $uname          = $_user_info['user_name'];
       $email          = $_user_info['user_email'];
       $phone          = $_user_info['user_phone'];
@@ -482,10 +481,12 @@ if (!function_exists('mep_attendee_extra_service_create')) {
   $order              = wc_get_order( $order_id );
   $order_meta         = get_post_meta($order_id); 
   $order_status       = $order->get_status();
-  
+  if($order_status != 'failed'){
   $form_position = mep_get_option( 'mep_user_form_position', 'general_attendee_sec', 'details_page' );
   
   if($form_position=='checkout_page'){
+
+
   
     foreach ( $order->get_items() as $item_id => $item_values ) {
       $item_id                    = $item_id;
@@ -517,6 +518,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
           }
       }  
     }
+  
   }else{
     foreach ( $order->get_items() as $item_id => $item_values ) {
       $item_id                    = $item_id;
@@ -551,7 +553,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
   }
   do_action('mep_after_event_booking',$order_id,$order->get_status());
   
-    
+    }
   }
 }
   

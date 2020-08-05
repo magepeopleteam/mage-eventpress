@@ -46,11 +46,19 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                 </div>
             </div>
         <?php } ?>
+
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
                 <?php do_action('mep_event_social_share'); ?>
             </div>
         <?php } ?>
+
+
+        <?php if ($hide_org_by_details == 'no') { ?>
+                <div class="mep-default-sidrbar-meta">
+                    <i class="fa fa-link"></i> <?php do_action('mep_event_organizer'); ?>
+                </div>
+            <?php } ?>        
     </div>
     <div class="bristol_center_box">
         <?php if ($hide_total_seat_details == 'no') { ?>

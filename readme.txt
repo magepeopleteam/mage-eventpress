@@ -585,3 +585,16 @@ Code Optimized & Improved
 Location Typo fixed in event list
 Event Confirmation email sending based on order status settings added
 20 July 2020*
+
+
+= 3.3.2 =
+* Update Release:
+Code Optimized & Improved
+Event Category & Organizer Custom Slug added in settings page
+Event List Carousel Settings added
+Card Decline Attendee reduced issue fixed
+Calendar issue fixed
+Decimal Amount calculation issue fixed in cart
+Google Schema text warning issue fixed
+
+20 July 2020*

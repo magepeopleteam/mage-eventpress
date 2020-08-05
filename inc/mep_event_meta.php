@@ -67,7 +67,7 @@ function mep_event_rich_text_meta_box_cb($post){
                 <li><b>End Date:</b><br/> <?php if($event_end_date){ echo get_mep_datetime($event_end_date,'date-time-text'); } ?></li>
                 <li><b>Event Status:</b><br/>
                       <select style="" id="mep_rt_event_status" name="mep_rt_event_status" class="select short">
-                            <option value="EventScheduled" <?php if($event_rt_status=='EventScheduled'){ echo 'Selected'; } ?>>Event Scheduled</option>
+                            <!-- <option value="EventScheduled" <?php if($event_rt_status=='EventScheduled'){ echo 'Selected'; } ?>>Event Scheduled</option> -->
                             <option value="EventRescheduled" <?php if($event_rt_status=='EventRescheduled'){ echo 'Selected'; } ?>>Event Rescheduled</option>
                             <option value="EventMovedOnline" <?php if($event_rt_status=='EventMovedOnline'){ echo 'Selected'; } ?>>Event Moved Online</option>
                             <option value="EventPostponed" <?php if($event_rt_status=='EventPostponed'){ echo 'Selected'; } ?>>Event Postponed</option>

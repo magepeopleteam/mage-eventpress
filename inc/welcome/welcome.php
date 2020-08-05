@@ -36,7 +36,7 @@
     </div>
 </header>
 <section class="mageStyle">
-    <div class="features">
+    <!--<div class="features">
         <div class="mage_container">
             <div class="mage_row">
                 <div class="col_12">
@@ -76,38 +76,40 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="unlimited_section">
         <div class="mage_container">
             <div class="mage_row">
                 <div class="col_6 sd_12 alignCenter">
                     <div>
-                        <span class="postDash customButton allCenter">PRO</span>
-                        <h2>Unlimited Section Nesting</h2>
-                        <p>Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus aenean lacinia bibendum. Cum sociis natoque penatibus et magnis dis parturient montes Cum sociis natoque </p>
+                        <span class="postDash buttonOutline allCenter" style="margin-bottom:30px;">PRO VERSION FEATURES</span>
+                        <h2>Attendee Form buider for attendee management Pdf Ticket and Emailing Feature.</h2>
+                        <p>Event Manager Pro feature include two addons form builder and pdf ticket and emailing feature. with this pro version someone can take any kind information of attendee, attendee list can be exported as CSV. pdf ticket can send to buyer email
+                        after ticket purchasing etc.</p>
                         <div>
                             <div class="alignCenter content_area nowrap">
                                 <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/icon_1.png" alt="icon" />
                                 <div class="textContent">
-                                    <h4>All-in-One Solution</h4>
-                                    <p>Cum sociis natoque penatibus et magnis dis parturient montess.</p>
+                                    <h4>Attendee Management</h4>
+                                    <p>Attendee can be managed easily with attendee form builder and attendee information can edit also can export as CSV</p>
                                 </div>
                             </div>
                             <div class="alignCenter content_area nowrap">
                                 <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/icon_2.png" alt="icon" />
                                 <div class="textContent">
-                                    <h4>Visual Design</h4>
-                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                    <h4>PDF Ticketing </h4>
+                                    <p>every ticket purchased a pdf ticket will be generate that can print as entry document, different pdf template possible.</p>
                                 </div>
                             </div>
                             <div class="alignCenter content_area nowrap">
                                 <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/icon_3.png" alt="icon" />
                                 <div class="textContent">
-                                    <h4>Faster Performance</h4>
-                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                    <h4>Emailing Features</h4>
+                                    <p>Pro version has email feature, after purchase complete, pdf ticket can send to buyer by email, it has customize email shortcode.</p>
                                 </div>
                             </div>
                         </div>
+                        <a href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/" target="_blank" class="buttonOutline allCenter_radius_transition customButton">Bu Event Manager Pro Today</a>
                     </div>
                 </div>
                 <div class="col_6 sd_12">
@@ -121,7 +123,7 @@
             <div class="mage_row">
                 <div class="col_12">
                     <div class="justifyCenter">
-                        <span class="preDash postDash customButton allCenter">PRO</span>
+                        <span class="preDash postDash customButton allCenter">Available Supportive Addon List</span>
                     </div>
                     <h1 class="textCenter">Addons</h1>
                     <div class="justifyBetween">
@@ -134,7 +136,7 @@ foreach ($obj as $list) {
 echo '<li>';
 	echo '<img src='.$list['banner'].'>';
 	echo '<h3>'.$list['name'].'</h3>';
-	echo '<p>'.$list['excerpt'].'</p>';
+//	echo '<p>'.$list['excerpt'].'</p>';
 	echo '<h4>'.$list['price'].'</h4>';
 	echo '<a href='.$list['url'].' target="_blank">'.$list['btn_txt'].'</a>';
 echo '</li>';
@@ -151,12 +153,15 @@ echo '</ul></div>';
         <div class="mage_container">
             <div class="mage_row">
                 <div class="col_12">
-                    <h2 class="textCenter">Get Pro and Experience all those exciting features and widgets</h2>
+                    <h2 class="textCenter">Get Pro and Others Available Addon to get all these exciting features</h2>
                     <div class="justifyCenter">
-                        <a href="#" class="prePostDash customButton allCenter">Get Pro</a>
+                        <a href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/" target="_blank" class="prePostDash customButton allCenter">Buy Now</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<style>
+.widget h3{font-size:18px;}    
+</style>

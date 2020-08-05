@@ -106,6 +106,36 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'default' => 'dashicons-calendar-alt'
                     ),
                    
+
+                    array(
+                        'name' => 'mep_event_cat_label',
+                        'label' => __('Event category Label', 'mage-eventpress'),
+                        'desc' => __('If you want to change the event category label in the dashboard menu you can change here', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Category'
+                    ),
+                    array(
+                        'name' => 'mep_event_cat_slug',
+                        'label' => __('Event Category Slug', 'mage-eventpress'),
+                        'desc' => __('Please enter the slug name you want for event category. Remember after change this slug you need to flush permalink, Just go to Settings->Permalink hit the Save Settings button', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'mep_cat'
+                    ),
+                    array(
+                        'name' => 'mep_event_org_label',
+                        'label' => __('Event Organizer Label', 'mage-eventpress'),
+                        'desc' => __('If you want to change the event category label in the dashboard menu you can change here', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Organizer'
+                    ),
+                    array(
+                        'name' => 'mep_event_org_slug',
+                        'label' => __('Event Organizer Slug', 'mage-eventpress'),
+                        'desc' => __('Please enter the slug name you want for event category. Remember after change this slug you need to flush permalink, Just go to Settings->Permalink hit the Save Settings button', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'mep_org'
+                    ),
+
                    
                     array(
                         'name' => 'mep_google_map_type',

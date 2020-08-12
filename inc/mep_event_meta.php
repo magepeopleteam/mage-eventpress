@@ -1427,7 +1427,7 @@ if (get_post_type($post_id) == 'mep_events') {
   $more_start_time    = isset($_POST['event_more_start_time']) ? $_POST['event_more_start_time'] : '';
   $more_end_date      = isset($_POST['event_more_end_date']) ? $_POST['event_more_end_date'] : '';
   $more_end_time      = isset($_POST['event_more_end_time']) ? $_POST['event_more_end_time'] : '';
-  
+  $mdate              = [];
   
   $mcount = count( $more_start_date );
   

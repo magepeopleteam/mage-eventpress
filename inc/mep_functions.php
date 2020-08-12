@@ -2978,6 +2978,9 @@ if (!function_exists('mep_get_event_dates_arr')) {
           }
       }
       $event_dates = array_merge($date_arr,$m_date_arr);
+
+// print_r($event_dates);
+
       return apply_filters('mep_event_dates_in_calender_free',$event_dates,$event_id);
   }
 }

@@ -32,10 +32,10 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             $event_start_date       = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
             $total_sold             = (int) mep_ticket_type_sold($post_id, $ticket_type_name, $event_date);
             $total_tickets          = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);
-            $total_seats            = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field);
+            $total_seats            = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field, $event_date);
             $total_min_seat         = apply_filters('mep_ticket_min_qty', 0, $post_id, $field);
             $default_quantity       = apply_filters('mep_ticket_default_qty', $default_qty, $post_id, $field);
-            $total_left             = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field);
+            $total_left             = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field, $event_date);
             $ticket_price           = apply_filters('mep_ticket_type_price', $ticket_type_price, $ticket_type_name, $post_id, $field);
             $passed                 = apply_filters('mep_ticket_type_validation', true);
             $start_date = get_post_meta($post_id, 'event_start_datetime', true);

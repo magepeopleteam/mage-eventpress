@@ -123,11 +123,11 @@ jQuery(document).ready(function($) {
     })
 
 
-    $('.field-select2-wrapper select').select2({
-        width: '320px',
-        allowClear: true
+    // $('.field-select2-wrapper select').select2({
+    //     width: '320px',
+    //     allowClear: true
 
-    });
+    // });
 
 
 

@@ -2785,14 +2785,20 @@ add_action('mep_event_admin_booking_js','mep_single_page_js_script');
 if (!function_exists('mep_single_page_js_script')) { 
 function mep_single_page_js_script($event_id){
   $currency_pos = get_option('woocommerce_currency_pos');
+  $mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? get_post_meta($event_id, 'mep_event_faq', true) : [];
   ob_start();
 ?>
 <script>
     jQuery(document).ready(function() {
-                // jQuery("#mep-event-accordion").accordion({
-                //     collapsible: true,
-                //     active: false
-                // });
+
+
+<?php if(sizeof($mep_event_faq) > 0){ ?>
+                jQuery("#mep-event-accordion").accordion({
+                    collapsible: true,
+                    active: false
+                });
+<?php } ?>
+
                 jQuery(document).on("change", ".etp", function() {
                     var sum = 0;
                     jQuery(".etp").each(function() {

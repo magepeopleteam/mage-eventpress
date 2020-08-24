@@ -272,18 +272,24 @@ function mep_event_venue_meta_box_cb($post){
 $values   = get_post_custom( $post->ID );
 $user_api = mep_get_option( 'google-map-api', 'general_setting_sec', '');
 $map_type = mep_get_option( 'mep_google_map_type', 'general_setting_sec', 'iframe');
+
+$mep_org_address = array_key_exists('mep_org_address', $values) ? $values['mep_org_address'][0] : 0 ;
 ?>
 
-
 <div class='sec'>
-    <label for="mep_ev_9890"> <?php _e('Show Address from Organizer?:','mage-eventpress'); ?> </label>
-    <span><input style='text-align: left;width: auto;' id='mep_ev_9890' type="checkbox" name='mep_org_address' value='1' <?php if(array_key_exists('mep_org_address', $values)){ $mep_org_address = $values['mep_org_address'][0]; if($mep_org_address==1){ echo 'checked'; } } ?> > Yes (If Yes, Organizer Address will show from organizer area.)</span>
+    <label for="mep_ev_9890"> <?php _e('Event Location Source:','mage-eventpress'); ?> 
+    <select name="mep_org_address" id="mep_ev_9890">
+      <option value='0' <?php if($mep_org_address == 0){ echo 'selected'; } ?>><?php _e('Event Details','mage-eventpress'); ?></option>
+      <option value='1' <?php if($mep_org_address == 1){ echo 'selected'; } ?>><?php _e('Organizer','mage-eventpress'); ?></option>
+    </select>
+    <span class='event_meta_help_txt'>Select Organizer if you already save the organizer details. Please remember if you select orginizer and not checked the the organizer from the Event Organizer list from the right sidebar, Event Location section if the frontend will be blank.  </span>
+</label>
+
+
+
 </div>
 
-
-
-
-
+<div class='mep_event_metabox_address' style='display:<?php if($mep_org_address == 0){ echo 'block'; }else{ 'none'; } ?>;'>
 
 <div class='sec'>
     <label for="mep_ev_2"> <?php _e('Location/Venue:','mage-eventpress'); ?> </label>
@@ -325,20 +331,32 @@ $map_type = mep_get_option( 'mep_google_map_type', 'general_setting_sec', 'ifram
     <label for="mep_ev_7"> <?php _e('Country:','mage-eventpress'); ?> </label>
     <span><input id='mep_ev_7' type="text" name='mep_country' placeholder="Ex: USA" value='<?php echo mep_get_event_locaion_item($post->ID,'mep_country'); ?>'> </span>
 </div>
+
+
+</div>
+
 <div class='sec'>
     <label for="mep_ev_989"> <?php _e('Show Google Map:','mage-eventpress'); ?> </label>
     <span><input style='text-align: left;width: auto;' id='mep_ev_989' type="checkbox" name='mep_sgm' value='1' <?php if(array_key_exists('mep_sgm', $values)){ $mep_sgm = $values['mep_sgm'][0]; if($mep_sgm==1){ echo 'checked'; } } ?> > Yes</span>
 </div>
-
-
-
 <!-- <a id="check_gmap"  type="submit" style="display: block;background: #3496f3;text-align: center;color: #fff;font-size: 19px;padding: 15px 20px;margin: 20px auto;width: 200px;cursor: pointer;">Show Google Map</a> -->
 <script type="text/javascript">
 
-jQuery("#mep_ev_9890").click(function(){
+// jQuery("#mep_ev_9890").click(function(){
 
-  if(jQuery(this).is(':checked')){
-  
+// }
+
+
+
+
+jQuery("#mep_ev_9890").change(function(){
+
+var source = jQuery(this).val();
+
+  // if(jQuery(this).is(':checked')){
+
+    if(source == '1'){
+  jQuery('.mep_event_metabox_address').hide();
     jQuery('#mep_ev_2').val('<?php echo mep_event_org_location_item($post->ID,'org_location'); ?>');
     jQuery('#mep_ev_3').val('<?php echo mep_event_org_location_item($post->ID,'org_street'); ?>');
     jQuery('#mep_ev_4').val('<?php echo mep_event_org_location_item($post->ID,'org_city'); ?>');
@@ -348,7 +366,7 @@ jQuery("#mep_ev_9890").click(function(){
       var location = jQuery('#mep_ev_2').val();
         jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q='+location+'&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
 }else{
-
+  jQuery('.mep_event_metabox_address').show();
     jQuery('#mep_ev_2').val('<?php echo mep_event_location_item($post->ID,'mep_location_venue'); ?>');
     jQuery('#mep_ev_3').val('<?php echo mep_event_location_item($post->ID,'mep_street'); ?>');
     jQuery('#mep_ev_4').val('<?php echo mep_event_location_item($post->ID,'mep_city'); ?>');

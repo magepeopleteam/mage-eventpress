@@ -12,11 +12,21 @@
   background: green none repeat scroll 0 0;
   color: #fff;
   padding: 6px 10px;
+  display: block;
+  font-size: 12px;
+  text-align: center;
 }
 .mep_status .err {
   background: red none repeat scroll 0 0;
   color: #fff;
   padding: 6px 10px;
+  display: block;
+  font-size: 12px;
+  text-align: center;
+}
+td.mep_event_seat.column-mep_event_seat span {
+  display: block;
+  text-align: center;
 }
 #mep_uid {
   width: 65px;
@@ -272,4 +282,18 @@ ul.mep_rt_settings_list li {
   background: #ddd;
   margin-bottom: 30px;
   margin-top: 10px;
+}
+.mep_event_metabox_address .sec {
+  width: 48%;
+  display: inline-block;
+  padding: 0px 10px;
+}
+#poststuff .stuffbox>h3, #poststuff h2, #poststuff h3.hndle {
+  display: block;
+}
+span.event_meta_help_txt {
+  display: block;
+  font-size: 13px;
+  margin: 2px 0 20px;
+  color: #ba2720;
 }

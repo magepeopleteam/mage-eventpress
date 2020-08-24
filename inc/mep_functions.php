@@ -1836,7 +1836,7 @@ if (!function_exists('mep_get_term_as_class')) {
       if($tt){
       $t_class = array();
       foreach($tt as $tclass){
-          $t_class[] = 'mage-'.$tclass->slug;         
+          $t_class[] = 'mage-'.$tclass->term_id;         
       }
       $main_class = implode(' ',$t_class);
       return $main_class;
@@ -2989,4 +2989,28 @@ if (!function_exists('mep_get_event_dates_arr')) {
 
       return apply_filters('mep_event_dates_in_calender_free',$event_dates,$event_id);
   }
+}
+
+add_action('rest_api_init', 'mep_event_cunstom_fields_to_rest_init');
+if (!function_exists('mep_event_cunstom_fields_to_rest_init')) {
+    function mep_event_cunstom_fields_to_rest_init()
+    {
+        register_rest_field('mep_events', 'event_informations', array(
+            'get_callback'    => 'mep_get_events_custom_meta_for_api',
+            'schema'          => null,
+        ));
+    }
+}
+if (!function_exists('mep_get_events_custom_meta_for_api')) {
+    function mep_get_events_custom_meta_for_api($object)
+    {
+        $post_id = $object['id'];
+
+        $post_meta = get_post_meta( $post_id );
+        $post_image = get_post_thumbnail_id( $post_id );      
+        $post_meta["event_feature_image"] = wp_get_attachment_image_src($post_image,'full')[0];
+
+
+        return $post_meta;
+    }
 }

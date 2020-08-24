@@ -40,6 +40,8 @@ function mep_cpt_tax(){
 		'update_count_callback' => '_update_post_term_count',
 		'query_var'             => true,
 		'rewrite'               => array( 'slug' => $event_cat_slug ),
+		'show_in_rest'          => true,
+		'rest_base'             => 'mep_cat'
 	);
 register_taxonomy('mep_cat', 'mep_events', $args);
 
@@ -76,6 +78,8 @@ register_taxonomy('mep_cat', 'mep_events', $args);
 		'update_count_callback' => '_update_post_term_count',
 		'query_var'             => true,
 		'rewrite'               => array( 'slug' => $event_org_slug ),
+		'show_in_rest'          => true,
+		'rest_base'             => 'mep_org',		
 	);
 register_taxonomy('mep_org', 'mep_events', $argso);
 

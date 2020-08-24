@@ -95,3 +95,14 @@ if($owlThemeLoad == 'no'){
 
 }
 
+// Ajax Issue
+add_action('wp_head','mep_ajax_url',5);
+add_action('admin_head','mep_ajax_url',5);
+function mep_ajax_url(){
+?>
+<script type="text/javascript">
+// WooCommerce Event Manager Ajax URL
+    var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
+</script>
+<?php
+}

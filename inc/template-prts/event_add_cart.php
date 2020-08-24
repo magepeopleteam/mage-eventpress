@@ -92,6 +92,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
                  */
                 do_action('mep_event_no_seat_text');
                 do_action('mep_after_no_seat_notice');
+
             } else {
                 /**
                  * If everything is fine then its go on ....
@@ -143,7 +144,6 @@ if (!function_exists('mep_get_event_reg_btn')) {
 
 
 add_action('mep_add_to_cart_list', 'mep_get_event_reg_btn_list');
-
 if (!function_exists('mep_get_event_reg_btn_list')) {
     // Get Event Registration Button
     function mep_get_event_reg_btn_list()

@@ -1,7 +1,7 @@
                 <tr>
                     <td align="Left"><?php echo $field['option_name_t']; ?>
 
-                        <?php if ($mep_available_seat == 'on') { ?><div class="xtra-item-left"><?php echo max($total_left, 0); ?>
+                        <?php if ($mep_available_seat == 'on') { ?><div class="xtra-item-left"><?php echo max($total_seats, 0); ?>
 
                                 <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:', 'mage-eventpress');  ?>
 
@@ -28,7 +28,7 @@
 
                                 <div class="mage_input_group">
                                     <span class="fa fa-minus qty_dec"></span>
-                                    <input id="eventpxtp_<?php echo $count; ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo $ticket_price; ?>' value='<?php echo $default_quantity; ?>' min="<?php echo $total_min_seat; ?>" max="<?php echo max($total_seats, 0); ?>">
+                                    <input id="eventpxtp_<?php echo $count; ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo $ticket_price; ?>' value='<?php echo $default_quantity; ?>' min="<?php echo $total_min_seat; ?>" max="<?php echo max($total_left, 0); ?>">
                                     <span class="fa fa-plus qty_inc"></span>
                                 </div>
                             <?php }
@@ -39,13 +39,13 @@
                             _e('No Seat Available', 'mage-eventpress');
                         }
                         $ticket_name = $field['option_name_t'];
-                        do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity);
+                        do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity,$start_date);
                         ?>
                     </td>
                     <td class="ticket-price"><span class="tkt-pric">
                             <?php echo mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') ? mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') : _e('Per Ticket Price:', 'mage-eventpress');  ?>
                         </span> <strong><?php echo wc_price($ticket_price); ?></strong>
-                        <?php if ($total_left > 0) { ?>
+                        <?php if ($total_seats > 0) { ?>
                             <p style="display: none;" class="price_jq"><?php echo $ticket_price; ?></p>
 
                         <?php } ?>

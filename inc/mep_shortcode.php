@@ -390,27 +390,48 @@ add_shortcode('event-list-onepage', 'mep_event_onepage_list');
 function mep_event_onepage_list($atts, $content = null)
 {
     $defaults = array(
-        "cat" => "0",
-        "org" => "0",
-        "style" => "grid",
-        "cat-filter" => "no",
-        "org-filter" => "no",
-        "show" => "-1",
-        "pagination" => "no",
-        'sort' => 'ASC'
+        "cat"           => "0",
+        "org"           => "0",
+        "style"         => "grid",
+        "column"        => 3,
+        "cat-filter"    => "no",
+        "org-filter"    => "no",
+        "show"          => "-1",
+        "pagination"    => "no",
+        "city"          => "",
+        "country"       => "",
+        "carousal-nav"  => "no",
+        "carousal-dots" => "yes",
+        "carousal-id" => "102448",
+        "timeline-mode" => "vertical",
+        'sort'          => 'ASC',
+        'status'          => 'upcoming'
     );
+    $params         = shortcode_atts($defaults, $atts);
+    $cat            = $params['cat'];
+    $org            = $params['org'];
+    $style          = $params['style'];
+    $cat_f          = $params['cat-filter'];
+    $org_f          = $params['org-filter'];
+    $show           = $params['show'];
+    $pagination     = $params['pagination'];
+    $sort           = $params['sort'];
+    $column         = $style != 'grid' ? 1 : $params['column'];
+    $nav            = $params['carousal-nav'] == 'yes' ? 1 : 0;
+    $dot            = $params['carousal-dots'] == 'yes' ? 1 : 0;
+    $city           = $params['city'];
+    $country        = $params['country'];
+    $cid            = $params['carousal-id'];
+    $status            = $params['status'];
+    $main_div       = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
 
-    $params = shortcode_atts($defaults, $atts);
-    $cat = $params['cat'];
-    $org = $params['org'];
-    $style = $params['style'];
-    $cat_f = $params['cat-filter'];
-    $org_f = $params['org-filter'];
-    $show = $params['show'];
-    $pagination = $params['pagination'];
-    $sort = $params['sort'];
-    $event_expire_on             = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
-    ob_start();
+    $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
+    $time_line_div_end      = $style == 'timeline' ? '</div></div></div>' : '';
+
+    $flex_column    = $column;
+    $mage_div_count = 0;
+    $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+   ob_start();
     do_action('woocommerce_before_single_product');
 ?>
     <div class='mep_event_list'>
@@ -434,30 +455,24 @@ function mep_event_onepage_list($atts, $content = null)
             $show_price_label   = mep_get_option('event-price-label', 'general_setting_sec', 'Price Starts from:');
             $paged              = get_query_var("paged") ? get_query_var("paged") : 1;
 
-            /**
-             * The Main Query function mep_event_query is locet in inc/mep_query.php File
-             */
-            if ($cat > 0) {
-                $loop =  mep_event_query('cat', $show, $sort, $cat, 0, 'upcoming');
-            } elseif ($org > 0) {
-                $loop =  mep_event_query('org', $show, $sort, 0, $org, 'upcoming');
-            } else {
-                $loop =  mep_event_query('all', $show, $sort, 0, 0, 'upcoming');
-            }
+
+
             ?>
             <div class="mep_event_list_sec">
                 <?php
+
                 /**
                  * The Main Query function mep_event_query is locet in inc/mep_query.php File
                  */
-                if ($cat > 0) {
-                    $loop =  mep_event_query('cat', $show, $sort, $cat, 0, 'upcoming');
-                } elseif ($org > 0) {
-                    $loop =  mep_event_query('org', $show, $sort, 0, $org, 'upcoming');
-                } else {
-                    $loop =  mep_event_query('all', $show, $sort, 0, 0, 'upcoming');
-                }
+                $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
                 $loop->the_post();
+
+
+                echo '<pre>';
+                print_r($loop);
+                echo '</pre>';
+
+
                 $event_meta         = get_post_custom(get_the_id());
                 $author_terms       = get_the_terms(get_the_id(), 'mep_org');
                 $start_datetime     = $event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0];

@@ -1,5 +1,5 @@
 <h3 class='ex-sec-title'><?php echo mep_get_label($post_id, 'mep_event_extra_service_text', 'Extra Service:'); ?></h3>
-            <table>
+            <table id='mep_event_extra_service_table'>
                 <tr>
                     <td align="left"><?php echo mep_get_option('mep_name_text', 'label_setting_sec', __('Name:', 'mage-eventpress')); ?></td>
                     <td class="mage_text_center"><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec', __('Quantity:', 'mage-eventpress')); ?></td>

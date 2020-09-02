@@ -16,7 +16,7 @@ if (!function_exists('mep_ev_ticket_type')) {
         if ($mep_event_ticket_type) {
 ?>
             <?php echo "<h3 class='ex-sec-title'>" . mep_get_label($post_id, 'mep_event_ticket_type_text', 'Ticket Type:') . "</h3>"; ?>
-            <table>
+            <table id='mep_event_ticket_type_table'>
                 <?php do_action('mep_event_ticket_type_loop_list', $post_id); ?>
             </table>
         <?php

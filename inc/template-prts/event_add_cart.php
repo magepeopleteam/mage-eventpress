@@ -232,8 +232,8 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
                 /**
                  * If All the seats are booked then it fire the below hooks, The event no seat texts are in the inc/template-parts/event_labels.php file
                  */
-                do_action('mep_event_no_seat_text');
-                do_action('mep_after_no_seat_notice');
+                do_action('mep_event_no_seat_text',$post_id);
+                do_action('mep_after_no_seat_notice',$post_id);
             } else {
                 /**
                  * If everything is fine then its go on ....

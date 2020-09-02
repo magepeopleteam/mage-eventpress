@@ -46,7 +46,7 @@
                     if ($hide_org_list == 'no') {
                         if (sizeof($author_terms) > 0) {
                     ?>
-                            <li>
+                            <li class="mep_list_org_name">
                                 <div class="evl-ico"><i class="fa fa-university"></i></div>
                                 <div class="evl-cc">
                                     <h5>
@@ -62,7 +62,7 @@
                     if ($event_type != 'online') {
                         if ($hide_location_list == 'no') { ?>
 
-                            <li>
+                            <li class="mep_list_location_name">
                                 <div class="evl-ico"><i class="fa fa-location-arrow"></i></div>
                                 <div class="evl-cc">
                                     <h5>
@@ -77,7 +77,7 @@
                     if ($hide_time_list == 'no') {
                         if (strtotime(current_time('Y-m-d H:i')) < strtotime($event_meta['event_start_datetime'][0])) {
                         ?>
-                            <li>
+                            <li class="mep_list_event_date">
                                 <div class="evl-ico"><i class="fa fa-calendar"></i></div>
                                 <div class="evl-cc">
                                     <h5>

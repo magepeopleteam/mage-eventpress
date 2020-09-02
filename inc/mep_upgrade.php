@@ -182,6 +182,27 @@ function mep_get_all_order_data_and_create_attendee()
 
 
 
+    if (get_option('mep_attendee_checkin_update_01') != 'completed') {
+
+        $args = array(
+            'post_type' => 'mep_events_attendees',
+            'posts_per_page' => -1
+        );
+
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id = $result->ID;
+            $ea_checkin   = get_post_meta($post_id, 'mep_checkin', true) ? get_post_meta($post_id, 'mep_checkin', true) : 'No';
+            if ($ea_checkin == 'No') {
+                $event_id    = get_post_meta($post_id, 'ea_event_id', true);                
+                update_post_meta($post_id, 'mep_checkin', 'No');
+            }
+        }
+        update_option('mep_attendee_checkin_update_01', 'completed');
+    }
+
+
+
 
     if (get_option('mep_event_multidate_update_2') != 'completed') {
 

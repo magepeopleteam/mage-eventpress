@@ -402,6 +402,7 @@ $ticket_total_price = (mep_get_event_ticket_price_by_name($event_id,$ticket_type
       update_post_meta( $pid, 'ea_event_id', $event_id );
       update_post_meta( $pid, 'ea_order_id', $order_id );
       update_post_meta( $pid, 'ea_user_id', $user_id );
+      update_post_meta( $pid, 'mep_checkin', 'No' );
       update_post_meta( $order_id, 'ea_user_id', $user_id );
       update_post_meta( $order_id, 'order_type_name', 'mep_events' );
       update_post_meta( $pid, 'ea_ticket_no', $pin );
@@ -3013,4 +3014,23 @@ if (!function_exists('mep_get_events_custom_meta_for_api')) {
 
         return $post_meta;
     }
+}
+
+
+
+
+
+function mep_elementor_get_tax_term( $tax ) {
+  $terms = get_terms( array(
+		'taxonomy'   => $tax,
+		'hide_empty' => false,
+	) );
+ 
+	$list  = array( '0' => __( 'Show All', '' ) );
+	
+	foreach ( $terms as $_term ) {
+		$list[ $_term->term_id ] = $_term->name;
+	}
+	
+	return $list;
 }

@@ -134,13 +134,13 @@ function mep_event_list($atts, $content = null)
             /**
              * This is the hook where category filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_cat_names');
+            do_action('mep_event_list_cat_names',$cat);
         }
         if ($org_f == 'yes') {
             /**
              * This is the hook where Organization filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_org_names');
+            do_action('mep_event_list_org_names',$org);
         } ?>
 
         <div class="mep_event_list_sec">
@@ -281,13 +281,13 @@ function mep_expire_event_list($atts, $content = null)
             /**
              * This is the hook where category filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_cat_names');
+            do_action('mep_event_list_cat_names',$cat);
         }
         if ($org_f == 'yes') {
             /**
              * This is the hook where Organization filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_org_names');
+            do_action('mep_event_list_org_names',$org);
         } ?>
         <div class="mep_event_list_sec">
             <?php
@@ -439,13 +439,13 @@ function mep_event_onepage_list($atts, $content = null)
             /**
              * This is the hook where category filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_cat_names');
+            do_action('mep_event_list_cat_names',$cat);
         }
         if ($org_f == 'yes') {
             /**
              * This is the hook where Organization filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_org_names');
+            do_action('mep_event_list_org_names',$org);
         } ?>
 
         <div class="mep_event_list_sec">
@@ -466,11 +466,6 @@ function mep_event_onepage_list($atts, $content = null)
                  */
                 $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
                 $loop->the_post();
-
-
-                echo '<pre>';
-                print_r($loop);
-                echo '</pre>';
 
 
                 $event_meta         = get_post_custom(get_the_id());

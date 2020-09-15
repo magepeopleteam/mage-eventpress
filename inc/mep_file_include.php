@@ -23,4 +23,4 @@ require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
 require_once(dirname(__DIR__) . "/inc/mep_upgrade.php");
 require_once(dirname(__DIR__) . "/inc/mep_functions.php");
 require_once(dirname(__DIR__) . "/inc/mep_query.php");
-require_once(dirname(__DIR__) . "/support/elementor/elementor-support.php");
+// require_once(dirname(__DIR__) . "/support/elementor/elementor-support.php");

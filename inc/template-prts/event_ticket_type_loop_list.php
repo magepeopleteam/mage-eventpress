@@ -20,7 +20,7 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             require($ticket_type_file_path);
         }else{
         foreach ($mep_event_ticket_type as $field) {
-            $ticket_type_name       = array_key_exists('option_name_t',$field)  ? $field['option_name_t'] : '';
+            $ticket_type_name       = array_key_exists('option_name_t',$field)  ? mep_remove_apostopie($field['option_name_t']) : '';
             $ticket_type            = array_key_exists('option_qty_t_type',$field)  ? $field['option_qty_t_type'] : '';
             $ticket_type_qty        = array_key_exists('option_qty_t',$field) ? $field['option_qty_t'] : 0;
             $ticket_type_price      = array_key_exists('option_price_t',$field) ? $field['option_price_t'] : 0;
@@ -36,7 +36,7 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             $total_min_seat         = apply_filters('mep_ticket_min_qty', 0, $post_id, $field);
             $default_quantity       = apply_filters('mep_ticket_default_qty', $default_qty, $post_id, $field);
             $total_left             = apply_filters('mep_total_ticket_of_type', $total_tickets, $post_id, $field, $event_date);
-            
+            $total_ticket_left      = apply_filters('mep_total_ticket_left_of_type', $total_tickets, $post_id, $field, $event_date);
             $ticket_price           = apply_filters('mep_ticket_type_price', $ticket_type_price, $ticket_type_name, $post_id, $field);
             $passed                 = apply_filters('mep_ticket_type_validation', true);
             $start_date = get_post_meta($post_id, 'event_start_datetime', true);

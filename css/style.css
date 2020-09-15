@@ -372,7 +372,14 @@ button.single_add_to_cart_button.button.alt.btn-mep-event-cart { cursor: pointer
     font-size: 70px!important;
 }
 
-
+.mep-wailist-form input {
+    display: block;
+    overflow: hidden;
+    margin: 20px auto!important;
+    width: 100%;
+    padding: 10px!important;
+    background: #fff!important;
+}
 
 /* Minimal Styles */
 .mep_event_minimal_list {

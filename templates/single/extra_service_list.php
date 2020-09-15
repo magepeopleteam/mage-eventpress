@@ -34,7 +34,7 @@
                                     <div class="mage_input_group">
                                         <span class="fa fa-minus qty_dec"></span>
                                         <input id="eventpx" <?php //if($ext_left<=0){ echo "disabled"; }
-                                                            ?> size="4" inputmode="numeric" type="text" class='extra-qty-box' name='event_extra_service_qty[]' data-price='<?php echo $field['option_price']; ?>' value='0' min="0" max="<?php echo $ext_left; ?>">
+                                                            ?> size="4" inputmode="numeric" type="text" class='extra-qty-box' name='event_extra_service_qty[]' data-price='<?php echo mep_get_price_including_tax($post_id,$field['option_price']); ?>' value='0' min="0" max="<?php echo $ext_left; ?>">
                                         <span class="fa fa-plus qty_inc"></span>
                                     </div>
                             <?php }
@@ -42,9 +42,9 @@
                                 echo mep_get_option('mep_not_available_text', 'label_setting_sec') ? mep_get_option('mep_not_available_text', 'label_setting_sec') : _e('Not Available', 'mage-eventpress');
                             } ?>
                         </td>
-                        <td class="mage_text_center"><?php echo wc_price($field['option_price']);
+                        <td class="mage_text_center"><?php echo wc_price(mep_get_price_including_tax($post_id, $field['option_price']));
                                                         if ($ext_left > 0) { ?>
-                                <p style="display: none;" class="price_jq"><?php echo $field['option_price']; ?></p>
+                                <p style="display: none;" class="price_jq"><?php echo mep_get_price_including_tax($post_id,$field['option_price']); ?></p>
                                 <input type="hidden" name='event_extra_service_name[]' value='<?php echo $field['option_name']; ?>'>
                                 <input type="hidden" name='event_extra_service_price[]' value='<?php echo $field['option_price']; ?>'>
                             <?php } ?>

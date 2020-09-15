@@ -341,7 +341,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
     $country          = isset($order_meta['_billing_country'][0]) ? $order_meta['_billing_country'][0] : '';
     $email            = isset($order_meta['_billing_email'][0]) ? $order_meta['_billing_email'][0] : '';
     $phone            = isset($order_meta['_billing_phone'][0]) ? $order_meta['_billing_phone'][0] : '';
-    $ticket_type      = $_user_info['ticket_name'];
+    $ticket_type      =  stripslashes($_user_info['ticket_name']);
     $event_date       = $_user_info['event_date'];
       $ticket_qty =  $_user_info['ticket_qty'];
   
@@ -357,7 +357,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
       $website        = $_user_info['user_website'];
       $vegetarian     = $_user_info['user_vegetarian'];
       $tshirtsize     = $_user_info['user_tshirtsize'];
-      $ticket_type    = $_user_info['user_ticket_type'];
+      $ticket_type    = stripslashes($_user_info['user_ticket_type']);
       $ticket_qty     = $_user_info['user_ticket_qty'];
       $event_date     = $_user_info['user_event_date'];
       $event_id       = $_user_info['user_event_id'] ? $_user_info['user_event_id'] : $event_id;
@@ -879,6 +879,13 @@ if (!function_exists('change_wc_event_product_status')) {
             }           
             echo mep_get_event_status($event_date); 
           break;
+  
+
+          case 'mep_event_date' :          
+          
+             echo "<span class='mep_event_date'>" . get_mep_datetime(get_post_meta($post_id,'event_start_datetime',true),'date-time-text')."</span>";
+            
+          break;
         
       }
   }
@@ -1280,12 +1287,55 @@ if (!function_exists('mep_get_label')) {
   }
 }
   
+
+
+
+
+add_filter( 'manage_edit-mep_events_sortable_columns', 'mep_set_column_soartable' );
+if (!function_exists('mep_set_column_soartable')) { 
+function mep_set_column_soartable( $columns ) {
+    $columns['mep_event_date'] = 'event_start_datetime';
+ 
+    //To make a column 'un-sortable' remove it from the array
+    //unset($columns['mep_event_date']);
+ 
+    return $columns;
+}
+}
+
+
+
+  function mep_remove_date_filter_dropdown( $months ) {
+    global $typenow; // use this to restrict it to a particular post type
+    if ( $typenow == 'mep_events' ) {
+        return array(); // return an empty array
+    }
+    return $months; // otherwise return the original for other post types
+  }
+  add_filter('months_dropdown_results', 'mep_remove_date_filter_dropdown');
+
+
+
+
+  add_action( 'pre_get_posts', 'mep_filter_event_list_by_date' );
+  function mep_filter_event_list_by_date( $query ) {
+      if( ! is_admin() )
+          return;
+      $orderby = $query->get( 'orderby');
+      if( 'event_start_datetime' == $orderby ) {
+          $query->set('meta_key','event_start_datetime');
+          $query->set('orderby','meta_value');
+      }
+  }
+
   // Add the custom columns to the book post type:
   add_filter( 'manage_mep_events_posts_columns', 'mep_set_custom_edit_event_columns' );
+  // add_filter( 'manage_mep_events_sortable_column', 'mep_set_custom_edit_event_columns' );
   if (!function_exists('mep_set_custom_edit_event_columns')) {     
   function mep_set_custom_edit_event_columns($columns) {
       unset( $columns['date'] );
       $columns['mep_status'] = __( 'Status', 'mage-eventpress' );  
+      $columns['mep_event_date'] = __( 'Event Start Date', 'mage-eventpress' );  
       return $columns;
   }
   }  
@@ -1665,7 +1715,7 @@ if (!function_exists('mep_save_attendee_info_into_cart')) {
         endif;
   
       if (isset($mep_user_ticket_type[$iu])) :
-        $user[$iu]['user_ticket_type'] = stripslashes( strip_tags( $mep_user_ticket_type[$iu] ) );
+        $user[$iu]['user_ticket_type'] =  strip_tags( $mep_user_ticket_type[$iu] ) ;
         endif;    
   
       // if ($ticket_price) :
@@ -1766,7 +1816,7 @@ if (!function_exists('mep_reset_event_booking')) {
     $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true);
     if($mep_event_ticket_type){
         foreach ( $mep_event_ticket_type as $field ) {
-          $qm = $field['option_name_t'];
+          $qm = mep_remove_apostopie($field['option_name_t']);
           $tesqn = $event_id.str_replace(' ', '', $qm);
           $reset =  update_post_meta($event_id,"mep_xtra_$tesqn",0);
         }
@@ -1994,7 +2044,7 @@ if (!function_exists('mep_ticket_sold')) {
     $sold = 0;
     if(is_array($get_ticket_type_list) && sizeof($get_ticket_type_list) > 0){
         foreach($get_ticket_type_list as $ticket_type){
-          $sold = $sold + mep_ticket_type_sold($event_id,$ticket_type['option_name_t'],$event_start_date);
+          $sold = $sold + mep_ticket_type_sold($event_id,mep_remove_apostopie($ticket_type['option_name_t']),$event_start_date);
         }
     }
     
@@ -2005,7 +2055,7 @@ if (!function_exists('mep_ticket_sold')) {
           foreach ($mep_event_more_date as $md) {
                if(is_array($get_ticket_type_list) && sizeof($get_ticket_type_list) > 0){
                       foreach($get_ticket_type_list as $ticket_type){
-                        $sold = $sold + mep_ticket_type_sold($event_id,$ticket_type['option_name_t'],$md['event_more_start_date']);
+                        $sold = $sold + mep_ticket_type_sold($event_id,mep_remove_apostopie($ticket_type['option_name_t']),$md['event_more_start_date']);
                       }
                }
           }
@@ -2301,7 +2351,7 @@ if (!function_exists('get_event_list_js')) {
   if($mep_event_ticket_type){
   $count =1;
   foreach ( $mep_event_ticket_type as $field ) {
-  $qm = $field['option_name_t'];
+  $qm = mep_remove_apostopie($field['option_name_t']);
   ?>
   
   //jQuery('.btn-mep-event-cart').hide();
@@ -2646,14 +2696,15 @@ function mep_cart_ticket_type($type,$total_price,$product_id){
   $ticket_type_arr        = [];
 //   echo '<pre>';
 // print_r($names);
-// print_r($mep_event_start_date);
-// print_r($qty);
+// // print_r($mep_event_start_date);
+// // print_r($qty);
 // echo '</pre>';
   $vald = 0;
   if(sizeof($names) > 0){
     for ( $i = 0; $i < $count; $i++ ) {
       if($qty[$i] > 0){
-            $ticket_type_arr[$i]['ticket_name']   = !empty($names[$i]) ? stripslashes( strip_tags( $names[$i] ) ) : '';
+            $ticket_type_arr[$i]['ticket_name']   = !empty($names[$i]) ? strip_tags($names[$i]) : '';
+
             $ticket_type_arr[$i]['ticket_price']  = !empty($price[$i]) ? stripslashes( strip_tags( $price[$i] ) ) : '';
             $ticket_type_arr[$i]['ticket_qty']    = !empty($qty[$i]) ? stripslashes( strip_tags( $qty[$i] ) ) : '';
             $ticket_type_arr[$i]['max_qty']       = !empty($max_qty[$i]) ? stripslashes( strip_tags( $max_qty[$i] ) ) : '';
@@ -2742,22 +2793,22 @@ function mep_cart_display_user_list($user_info){
 
 
 if (!function_exists('mep_cart_display_ticket_type_list')) { 
-function mep_cart_display_ticket_type_list($ticket_type_arr){
+function mep_cart_display_ticket_type_list($ticket_type_arr,$eid){
 ob_start();
   foreach ($ticket_type_arr as $ticket) {
-    echo '<li>' . $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price((float) $ticket['ticket_price'] * (float) $ticket['ticket_qty']) . '</li>';
+    echo '<li>' . $ticket['ticket_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$ticket['ticket_price'])) . ' x ' . $ticket['ticket_qty'] . ' = ' . wc_price(mep_get_price_including_tax($eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'])) . '</li>';
   }
-  return apply_filters('mep_display_ticket_in_cart_list',ob_get_clean(),$ticket_type_arr);
+  return apply_filters('mep_display_ticket_in_cart_list',ob_get_clean(),$ticket_type_arr,$eid);
 }
 }
 
 
 
 if (!function_exists('mep_cart_order_data_save_ticket_type')) { 
-function mep_cart_order_data_save_ticket_type($item,$ticket_type_arr){
+function mep_cart_order_data_save_ticket_type($item,$ticket_type_arr,$eid){
   foreach ($ticket_type_arr as $ticket) {
-    $ticket_type_name = $ticket['ticket_name'] . " - " . wc_price($ticket['ticket_price']) . ' x ' . $ticket['ticket_qty'] . ' = ';
-    $ticket_type_val = wc_price($ticket['ticket_price'] * $ticket['ticket_qty']);
+    $ticket_type_name = $ticket['ticket_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$ticket['ticket_price'])) . ' x ' . $ticket['ticket_qty'] . ' = ';
+    $ticket_type_val = wc_price(mep_get_price_including_tax($eid,$ticket['ticket_price'] * $ticket['ticket_qty']));
     $ticket_name_meta = apply_filters('mep_event_order_meta_ticket_name_filter',$ticket_type_name,$ticket);
     $item->add_meta_data($ticket_name_meta, $ticket_type_val);
   }
@@ -2780,6 +2831,14 @@ return $expire_date;
 
 
 
+function mep_remove_apostopie($string){
+  $str = str_replace("'", '', $string);
+  return $str;
+
+}
+
+
+
 add_action('mep_event_single_template_end','mep_single_page_js_script');
 add_action('mep_add_to_cart_shortcode_js','mep_single_page_js_script');
 add_action('mep_event_admin_booking_js','mep_single_page_js_script');
@@ -2793,7 +2852,7 @@ function mep_single_page_js_script($event_id){
     jQuery(document).ready(function() {
 
 
-<?php if(sizeof($mep_event_faq) > 0){ ?>
+<?php if(sizeof($mep_event_faq) > 0 && !is_admin() ){ ?>
                 jQuery("#mep-event-accordion").accordion({
                     collapsible: true,
                     active: false
@@ -2875,7 +2934,7 @@ function mep_single_page_js_script($event_id){
                         
                         if (strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)) {
                             foreach ($mep_event_ticket_type as $field) {
-                                $ticket_type = $field['option_name_t'];
+                                $ticket_type = mep_remove_apostopie($field['option_name_t']);
                             ?>
                                 var inputs = jQuery("#ttyttl").html() || 0;
                                 var inputs = jQuery('#eventpxtp_<?php echo $count; ?>').val() || 0;
@@ -2975,18 +3034,18 @@ if (!function_exists('mep_get_event_dates_arr')) {
       if(sizeof($event_more_dates) > 0){
         $i=0;
           foreach ($event_more_dates as $mdate) {   
-              if(strtotime($now) < strtotime($mdate['event_more_start_date'].' '.$mdate['event_more_start_time'])){       
+              // if(strtotime($now) < strtotime($mdate['event_more_start_date'].' '.$mdate['event_more_start_time'])){       
               $mstart = $mdate['event_more_start_date'].' '.$mdate['event_more_start_time'];
               $mend = $mdate['event_more_end_date'].' '.$mdate['event_more_end_time'];
               $m_date_arr[$i]['start'] = $mstart;
               $m_date_arr[$i]['end'] = $mend;
-              }
+              // }
               $i++;
           }
       }
       $event_dates = array_merge($date_arr,$m_date_arr);
 
-// print_r($event_dates);
+
 
       return apply_filters('mep_event_dates_in_calender_free',$event_dates,$event_id);
   }
@@ -3033,4 +3092,110 @@ function mep_elementor_get_tax_term( $tax ) {
 	}
 	
 	return $list;
+}
+
+
+
+
+// add_action('init','price_test');
+
+function price_test(){
+  echo mep_get_price_including_tax( 408, 100);
+  die();
+}
+
+
+function mep_get_price_including_tax( $event, $price, $args = array() ) {
+
+	$args = wp_parse_args(
+		$args,
+		array(
+			'qty'   => '',
+			'price' => '',
+		)
+  );
+  
+  $_product = get_post_meta($event, 'link_wc_product', true) ? get_post_meta($event, 'link_wc_product', true) : $event;
+	// $price = '' !== $args['price'] ? max( 0.0, (float) $args['price'] ) : $product->get_price();
+	$qty   = '' !== $args['qty'] ? max( 0.0, (float) $args['qty'] ) : 1;
+  $product = wc_get_product( $_product );
+
+	if ( '' === $price ) {
+		return '';
+	} elseif ( empty( $qty ) ) {
+		return 0.0;
+	}
+
+	$line_price   = $price * $qty;
+	$return_price = $line_price;
+
+	if ( $product->is_taxable() ) {
+
+
+
+
+
+		if ( ! wc_prices_include_tax() ) {
+
+			$tax_rates = WC_Tax::get_rates( $product->get_tax_class() );
+			$taxes     = WC_Tax::calc_tax( $line_price, $tax_rates, false );
+
+			if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
+				$taxes_total = array_sum( $taxes );
+			} else {
+				$taxes_total = array_sum( array_map( 'wc_round_tax_total', $taxes ) );
+			}
+
+			$return_price = round( $line_price, wc_get_price_decimals() );
+		} else {
+
+
+      // print_r($product);
+
+		  $tax_rates      = WC_Tax::get_rates( $product->get_tax_class() );
+			$base_tax_rates = WC_Tax::get_base_tax_rates( $product->get_tax_class( 'unfiltered' ) );
+
+
+// print_r($base_tax_rates);
+
+
+			/**
+			 * If the customer is excempt from VAT, remove the taxes here.
+			 * Either remove the base or the user taxes depending on woocommerce_adjust_non_base_location_prices setting.
+			 */
+			if ( ! empty( WC()->customer ) && WC()->customer->get_is_vat_exempt() ) { // @codingStandardsIgnoreLine.
+				$remove_taxes = apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ? WC_Tax::calc_tax( $line_price, $base_tax_rates, true ) : WC_Tax::calc_tax( $line_price, $tax_rates, true );
+
+				if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
+					$remove_taxes_total = array_sum( $remove_taxes );
+				} else {
+					$remove_taxes_total = array_sum( array_map( 'wc_round_tax_total', $remove_taxes ) );
+				}
+
+				$return_price = round( $line_price, wc_get_price_decimals() );
+       
+				/**
+			 * The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing with out of base locations.
+			 * e.g. If a product costs 10 including tax, all users will pay 10 regardless of location and taxes.
+			 * This feature is experimental @since 2.4.7 and may change in the future. Use at your risk.
+			 */
+			} else{
+			$base_taxes   = WC_Tax::calc_tax( $line_price, $base_tax_rates, true );
+			$modded_taxes = WC_Tax::calc_tax( $line_price - array_sum( $base_taxes ), $tax_rates, false );
+
+				if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
+					$base_taxes_total   = array_sum( $base_taxes );
+					$modded_taxes_total = array_sum( $modded_taxes );
+				} else {
+					$base_taxes_total   = array_sum( array_map( 'wc_round_tax_total', $base_taxes ) );
+					$modded_taxes_total = array_sum( array_map( 'wc_round_tax_total', $modded_taxes ) );
+				}
+				$return_price = round( $line_price - $base_taxes_total , wc_get_price_decimals() );
+      }
+      
+
+      
+		}
+	}
+	return apply_filters( 'woocommerce_get_price_including_tax', $return_price, $qty, $product );
 }

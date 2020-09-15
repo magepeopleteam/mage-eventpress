@@ -297,3 +297,12 @@ span.event_meta_help_txt {
   margin: 2px 0 20px;
   color: #ba2720;
 }
+span.mep_event_date {
+  background: #b2833f;
+  font-size: 11px;
+  display: block;
+  text-align: center;
+  height: auto;
+  padding: 7px 3px;
+  color: #fff;
+}

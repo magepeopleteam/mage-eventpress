@@ -40,6 +40,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
 // echo '<pre>';
 // // print_r($user);
 // print_r($ticket_type_arr);
+// echo '</pre>';
 // die();
 
     /**
@@ -152,11 +153,12 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
   <?php
      }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
-      echo mep_cart_display_ticket_type_list($ticket_type_arr);
+      // echo $eid;
+      echo mep_cart_display_ticket_type_list($ticket_type_arr, $eid);
     }
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
-        echo '<li>' . $extra_service['service_name'] . " - " . wc_price($extra_service['service_price']) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( (int) $extra_service['service_price'] * (int) $extra_service['service_qty']) . '</li>';
+        echo '<li>' . $extra_service['service_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'])) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( mep_get_price_including_tax($eid,(int) $extra_service['service_price'] * (int) $extra_service['service_qty'])) . '</li>';
       }
     }
     do_action('mep_after_cart_item_display_list',$cart_item);
@@ -232,14 +234,14 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
 
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {    
       
-     mep_cart_order_data_save_ticket_type($item,$ticket_type_arr);
+     mep_cart_order_data_save_ticket_type($item,$ticket_type_arr,$eid);
 
     }
 
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
-        $service_type_name = $extra_service['service_name'] . " - " . wc_price($extra_service['service_price']) . ' x ' . $extra_service['service_qty'] . ' = ';
-        $service_type_val = wc_price($extra_service['service_price'] * $extra_service['service_qty']);
+        $service_type_name = $extra_service['service_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'])) . ' x ' . $extra_service['service_qty'] . ' = ';
+        $service_type_val = wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'] * $extra_service['service_qty']));
         $item->add_meta_data($service_type_name, $service_type_val);
       }
     }

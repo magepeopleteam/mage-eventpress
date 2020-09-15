@@ -37,7 +37,7 @@ do_action('mep_event_single_page_after_header');
 </div>
 <?php 
 $builder_version = mep_get_builder_version();
-
+$mep_event_faq = get_post_meta(get_the_id(), 'mep_event_faq', true) ? get_post_meta(get_the_id(), 'mep_event_faq', true) : [];
 if($builder_version < 3.5){
 ?>
 <script>
@@ -54,12 +54,13 @@ function calculateTotal() {
 
 
 jQuery(document).ready(function () {
-
+    <?php if(sizeof($mep_event_faq) > 0 && !is_admin() ){ ?>
   jQuery( "#mep-event-accordion" ).accordion({
         collapsible: true,
         active: false
   });
-
+  <?php } ?>
+  
 jQuery(document).on("change", ".etp", function() {
     var sum = 0;
     jQuery(".etp").each(function(){
@@ -138,7 +139,7 @@ foreach($event_multi_date as $event_date){
     $start_date = $recurring == 'yes' ? date('Y-m-d H:i:s', strtotime($event_date['event_more_start_date'] . ' ' . $event_date['event_more_start_time'])) : date('Y-m-d H:i:s', strtotime(mep_get_event_expire_date($event_id)));
 if(strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)){
 foreach ( $mep_event_ticket_type as $field ) {
-$qm = $field['option_name_t'];
+$qm = mep_remove_apostopie($field['option_name_t']);
 ?>
             var inputs = jQuery("#ttyttl").html() || 0;
             var inputs = jQuery('#eventpxtp_<?php echo $count; ?>').val() || 0;

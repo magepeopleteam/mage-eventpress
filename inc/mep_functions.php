@@ -3100,7 +3100,7 @@ function mep_elementor_get_tax_term( $tax ) {
 // add_action('init','price_test');
 
 function price_test(){
-  echo mep_get_price_including_tax( 408, 100);
+  echo wc_get_price_including_tax( 408, 100);
   die();
 }
 
@@ -3146,7 +3146,8 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
 				$taxes_total = array_sum( array_map( 'wc_round_tax_total', $taxes ) );
 			}
 
-			$return_price = round( $line_price, wc_get_price_decimals() );
+      // $return_price = round( $line_price, wc_get_price_decimals() );
+      $return_price = round( $line_price + $taxes_total, wc_get_price_decimals() );
 		} else {
 
 
@@ -3172,8 +3173,8 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
 					$remove_taxes_total = array_sum( array_map( 'wc_round_tax_total', $remove_taxes ) );
 				}
 
-				$return_price = round( $line_price, wc_get_price_decimals() );
-       
+				// $return_price = round( $line_price, wc_get_price_decimals() );
+        $return_price = round( $line_price - $remove_taxes_total, wc_get_price_decimals() );
 				/**
 			 * The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing with out of base locations.
 			 * e.g. If a product costs 10 including tax, all users will pay 10 regardless of location and taxes.
@@ -3190,7 +3191,8 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
 					$base_taxes_total   = array_sum( array_map( 'wc_round_tax_total', $base_taxes ) );
 					$modded_taxes_total = array_sum( array_map( 'wc_round_tax_total', $modded_taxes ) );
 				}
-				$return_price = round( $line_price - $base_taxes_total , wc_get_price_decimals() );
+        // $return_price = round( $line_price - $base_taxes_total , wc_get_price_decimals() );
+        $return_price = round( $line_price - $base_taxes_total + $modded_taxes_total, wc_get_price_decimals() );
       }
       
 

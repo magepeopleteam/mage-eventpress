@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
  * In the Version 3.5 we will introducing Mage Freamwork, All of our Plugin will use this same Freamwork, This is the Beta test in the Event Plugin.
  */
 
+ 
 add_action('admin_init', 'mep_fw_meta_boxs');
 function mep_fw_meta_boxs()
 {

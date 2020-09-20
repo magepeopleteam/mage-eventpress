@@ -1,8 +1,8 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-add_action('plugins_loaded', 'mqtc_load_wc_class');
-function mqtc_load_wc_class() {
+add_action('plugins_loaded', 'mep_wc_load_wc_class');
+function mep_wc_load_wc_class() {
 
 if ( class_exists('WC_Product_Data_Store_CPT') && !class_exists('MAGE_Product_Data_Store_CPT')) {
 

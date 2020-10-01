@@ -10,6 +10,7 @@ if (!function_exists('mep_ev_social_share')) {
         global $post;
         ob_start();
         $post_id = $post->ID;
+        $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
         require(mep_template_file_path('single/share_btn.php'));
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_social_share', $content, $post->ID);

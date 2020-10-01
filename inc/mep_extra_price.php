@@ -111,7 +111,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
     $ticket_type_arr            = $cart_item['event_ticket_info'];
     $event_extra_service        = $cart_item['event_extra_service'];
     $event_recurring_date       = $cart_item['event_recurring_date'];
- 
+    $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 
 
     $recurring = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
@@ -124,7 +124,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
         foreach ($ticket_type_arr as $_event_recurring_date) {
             if($hide_date_status == 'no'){
           ?>
-          <li><?php _e('Event Date', 'mage-eventpress'); ?>: <?php echo get_mep_datetime($_event_recurring_date['event_date'],'date-text'); ?></li>
+          <li><?php _e("$event_label Date", 'mage-eventpress'); ?>: <?php echo get_mep_datetime($_event_recurring_date['event_date'],'date-text'); ?></li>
         <?php
             }
         }
@@ -142,14 +142,14 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
       } else {
            if($hide_date_status == 'no'){
       ?>
-        <li><?php _e('Event Date', 'mage-eventpress'); ?>: <?php echo get_mep_datetime($cart_item['event_cart_display_date'],'date-time-text'); ?></li>
+        <li><?php _e("$event_label Date", 'mage-eventpress'); ?>: <?php echo get_mep_datetime($cart_item['event_cart_display_date'],'date-time-text'); ?></li>
       <?php
            }
       }
     }
      if($hide_location_status == 'no'){
   ?>    
-    <li><?php _e('Event Location', 'mage-eventpress'); ?>: <?php echo $cart_item['event_cart_location']; ?></li>
+    <li><?php _e("$event_label Location", 'mage-eventpress'); ?>: <?php echo $cart_item['event_cart_location']; ?></li>
   <?php
      }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
@@ -221,7 +221,7 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $form_position           = mep_get_option('mep_user_form_position', 'general_attendee_sec', 'details_page');
     $event_user_info         = $form_position == 'details_page' ? $values['event_user_info'] : mep_save_attendee_info_into_cart($eid);
     $recurring               = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
-
+    $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
     if ($recurring == 'yes') {
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
         foreach ($ticket_type_arr as $_event_recurring_date) {

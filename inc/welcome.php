@@ -8,6 +8,10 @@ if (!defined('ABSPATH')) {
 add_action('admin_enqueue_scripts', 'mep_event_welcome_enqueue_scripts', 10, 1);
 function mep_event_welcome_enqueue_scripts()
 {
+    $current_screen = get_current_screen();
+    if ( 'mep_events_page_mep_event_welcome_page' != $current_screen->base ) {
+        return;
+    }
     wp_enqueue_style('mep-welcome-style', plugin_dir_url(__DIR__) . 'inc/welcome/css/welcome.css', array());
 }
 

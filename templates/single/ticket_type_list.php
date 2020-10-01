@@ -35,11 +35,10 @@
                         } else {
                             ?>
                             <input id="eventpxtp_<?php echo $count; ?>" type="hidden" class='extra-qty-box etp' name='option_qty[]' data-price='0' value='0' min="0" max="0">
-                        <?php
-                            _e('No Seat Available', 'mage-eventpress');
+                            <?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec') ? mep_get_option('mep_no_seat_available_text', 'label_setting_sec') : _e('No Seat Availables', 'mage-eventpress');                      
                         }
                         $ticket_name = mep_remove_apostopie($field['option_name_t']);
-                        do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity,$start_date);
+                            do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity,$start_date);
                         ?>
                     </td>
                     <td class="ticket-price"><span class="tkt-pric">

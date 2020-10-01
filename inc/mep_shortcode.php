@@ -127,6 +127,7 @@ function mep_event_list($atts, $content = null)
     $flex_column    = $column;
     $mage_div_count = 0;
     $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+    $unq_id = 'abr'.uniqid();
     ob_start();
 ?>
     <div class='mep_event_list'>
@@ -134,16 +135,16 @@ function mep_event_list($atts, $content = null)
             /**
              * This is the hook where category filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_cat_names',$cat);
+            do_action('mep_event_list_cat_names',$cat,$unq_id);
         }
         if ($org_f == 'yes') {
             /**
              * This is the hook where Organization filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
-            do_action('mep_event_list_org_names',$org);
+            do_action('mep_event_list_org_names',$org,$unq_id);
         } ?>
 
-        <div class="mep_event_list_sec">
+        <div class="mep_event_list_secxx" id='mep_event_list_<?php echo $unq_id; ?>'>
             <?php
             /**
              * The Main Query function mep_event_query is locet in inc/mep_query.php File
@@ -170,7 +171,7 @@ function mep_event_list($atts, $content = null)
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
-                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style);
+                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$unq_id);
             }
             wp_reset_postdata();
             echo $time_line_div_end;
@@ -187,8 +188,11 @@ function mep_event_list($atts, $content = null)
     </div>
     <script>
         jQuery(document).ready(function() {
-            var containerEl = document.querySelector('.mep_event_list_sec');
+            var containerEl = document.querySelector('#mep_event_list_<?php echo $unq_id; ?>');
             var mixer = mixitup(containerEl);
+
+
+            
             <?php if ($pagination == 'carousal') { ?>
                 jQuery('#mep-carousel<?php echo $cid; ?>').owlCarousel({
                     autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,

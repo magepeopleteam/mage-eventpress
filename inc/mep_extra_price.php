@@ -154,7 +154,7 @@ $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_se
      }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
       // echo $eid;
-      echo mep_cart_display_ticket_type_list($ticket_type_arr, $eid);
+     echo mep_cart_display_ticket_type_list($ticket_type_arr, $eid);
     }
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
@@ -180,24 +180,32 @@ function mep_checkout_validation($posted)
   foreach ($items as $item => $values) {
     $event_id              = array_key_exists('event_id', $values) ? $values['event_id'] : 0; // $values['event_id'];
     if (get_post_type($event_id) == 'mep_events') {
-      $recurring                  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+      $recurring  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
       $total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
       $total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);      
-      $total_sold = mep_ticket_sold($event_id);
-      $total_left = $total_seat - ($total_sold + $total_resv);
-      if($recurring == 'no'){
-        $event_validate_info        = $values['event_validate_info'] ? $values['event_validate_info'] : array();
-        $ee = 0;
-        if (is_array($event_validate_info) && sizeof($event_validate_info) > 0) {
-          foreach ($event_validate_info as $inf) {
-            $ee = $ee + $inf['validation_ticket_qty'];
-          }
+      // $total_sold = mep_ticket_sold($event_id);
+      
+
+      $ticket_arr   = $values['event_ticket_info'];
+
+      foreach($ticket_arr as $ticket){
+
+          $event_name     = get_the_title($event_id);
+          $type           = $ticket['ticket_name'];
+          $event_date     = $ticket['event_date'];
+          $ticket_qty     = $ticket['ticket_qty'];
+          $event_date_txt = get_mep_datetime($ticket['event_date'],'date-time-text');
+          $total_sold     = mep_ticket_type_sold($event_id,$type,$event_date);
+          $available_seat = $total_seat - ($total_resv + $total_sold);
+
+      }
+
+        if($ticket_qty > $available_seat){
+
+              wc_add_notice("Sorry, $type not availabe. Total available $type is $available_seat of $event_name on $event_date_txt but you select $ticket_qty . Please Try Again", 'error');
+
         }
-        if ($ee > $total_left) {
-          $event = get_the_title($event_id);
-          wc_add_notice(__("Sorry, Seats are not available in <b>$event</b>, Available Seats <b>$total_left</b> but you selected <b>$ee</b>", 'mage-eventpress'), 'error');
-        }
-    }
+
     }
   }
 }

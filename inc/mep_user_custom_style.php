@@ -19,6 +19,12 @@ function mep_user_custom_styles()
 
     ?>
     <style>
+        div.item_hover_effect a{
+            background-color:<?php echo $base_color; ?>;
+        }
+        div.item_hover_effect a:hover{
+            color:<?php echo $base_color; ?>;background-color:#fff;border:1px solid <?php echo $base_color; ?>;
+        }
         .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .mep-list-footer ul li i, .df-ico i, .mep-default-sidrbar-meta i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, .mep-tem3-title-sec, button.mep-cat-control, .pagination-sec a {
             background: <?php echo $base_color; ?>;
         }

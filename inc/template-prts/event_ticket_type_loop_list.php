@@ -51,6 +51,6 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
 
 <?php
         $loop_list = ob_get_clean();
-        echo apply_filters('mep_event_ticket_type_loop', $loop_list, $post_id);
+       echo apply_filters('mep_event_ticket_type_loop', $loop_list, $post_id);
     }
 }

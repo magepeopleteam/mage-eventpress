@@ -343,7 +343,7 @@ function mep_attendee_create($type,$order_id,$event_id,$_user_info = array()){
     $phone            = isset($order_meta['_billing_phone'][0]) ? $order_meta['_billing_phone'][0] : '';
     $ticket_type      =  stripslashes($_user_info['ticket_name']);
     $event_date       = $_user_info['event_date'];
-      $ticket_qty =  $_user_info['ticket_qty'];
+    $ticket_qty       = $_user_info['ticket_qty'];
   
   }elseif($type == 'user_form'){
     
@@ -673,10 +673,8 @@ if (!function_exists('change_attandee_order_status')) {
           $loop = new WP_Query($args);
            $tid = array();
           foreach ($loop->posts as $ticket) {
-              $post_id = $ticket->ID;
-          
-              update_post_meta($post_id, 'ea_order_status', $qr_status);
-              
+              $post_id = $ticket->ID;          
+              update_post_meta($post_id, 'ea_order_status', $qr_status);              
               $current_post = get_post( $post_id, 'ARRAY_A' );
               $current_post['post_status'] = $set_status;
               wp_update_post($current_post);
@@ -1482,10 +1480,10 @@ if (!function_exists('mep_get_event_city')) {
   $org_arr = get_the_terms( $id, 'mep_org' );
   if(is_array($org_arr) && sizeof($org_arr) > 0 ){
   $org_id = $org_arr[0]->term_id;
-    echo "<span>".mep_ev_venue($id).', '.get_term_meta( $org_id, 'org_city', true )."</span>";
+    echo "<span>".mep_ev_venue($id).' '.get_term_meta( $org_id, 'org_city', true )."</span>";
   }
   }else{
-    echo "<span>".mep_ev_venue($id).', '.$event_meta['mep_city'][0]."</span>";
+    echo "<span>".mep_ev_venue($id).' '.$event_meta['mep_city'][0]."</span>";
   }
   }
 }  
@@ -1982,8 +1980,8 @@ if (!function_exists('mep_reset_event_booking')) {
   
 if (!function_exists('mep_get_term_as_class')) {    
   function mep_get_term_as_class($post_id,$taxonomy,$unq_id=''){
-      $tt     = get_the_terms($post_id,$taxonomy);
-      if($tt){
+      $tt     = get_the_terms($post_id,$taxonomy) ? get_the_terms($post_id,$taxonomy) : [];
+      if(is_array($tt) && sizeof($tt) > 0){
       $t_class = array();
       foreach($tt as $tclass){
           $t_class[] = $unq_id.'mage-'.$tclass->term_id;         
@@ -2164,6 +2162,8 @@ if (!function_exists('mep_ticket_sold')) {
     return $sold;
   }
 }  
+  
+
   
   
 if (!function_exists('mep_event_total_seat')) { 
@@ -3221,7 +3221,7 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
   $product = wc_get_product( $_product );
 
 
-   $tax_with_price = get_option('woocommerce_tax_display_shop');
+  $tax_with_price = get_option('woocommerce_tax_display_shop');
 
 
 	if ( '' === $price ) {
@@ -3256,7 +3256,7 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
 			}
 
       $return_price = $tax_with_price == 'excl' ? round( $line_price, wc_get_price_decimals() ) : round( $line_price + $taxes_total, wc_get_price_decimals() );
-      
+     
 
 		} else {
 
@@ -3299,6 +3299,54 @@ function mep_get_price_including_tax( $event, $price, $args = array() ) {
         $return_price = $tax_with_price == 'excl' ? round( $line_price - $base_taxes_total , wc_get_price_decimals() ) : round( $line_price - $base_taxes_total + $modded_taxes_total, wc_get_price_decimals() );
       }            
 		}
-	}
-	return apply_filters( 'woocommerce_get_price_including_tax', $return_price, $qty, $product );
+  }
+  // return 0;
+	return apply_filters( 'woocommerce_get_price_including_tax', $return_price , $qty, $product );
+}
+
+
+
+function mep_check_ticket_type_availaility_before_checkout($event_id,$type,$date){
+  //echo $date;
+$args = array(
+        'post_type' => 'mep_events_attendees',
+        'posts_per_page' => -1,
+
+          'meta_query' => array(    
+              'relation' => 'AND',
+              array(    
+              'relation' => 'AND',           
+              array(
+                  'key'       => 'ea_event_id',
+                  'value'     => $event_id,
+                  'compare'   => '='
+              ),		        
+              array(
+                  'key'       => 'ea_ticket_type',
+                  'value'     => $type,
+                  'compare'   => '='          
+              ),		        
+              array(
+                  'key'       => 'ea_event_date',
+                  'value'     => $date,
+                  'compare'   => '='
+              )
+              ),array(    
+                  'relation' => 'OR',           
+                  array(
+                  'key'       => 'ea_order_status',
+                  'value'     => 'processing',
+                  'compare'   => '='
+                  ),		        
+                  array(
+                  'key'       => 'ea_order_status',
+                  'value'     => 'completed',
+                  'compare'   => '='
+                  )
+                  )
+              )            
+    );            
+ $loop = new WP_Query($args);
+ $count = $loop->post_count;   
+return $count;
 }

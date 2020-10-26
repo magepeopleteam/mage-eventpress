@@ -53,7 +53,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : _e('Event Location:', 'mage-eventpress'); ?>
                         </h3>
                         <p><?php do_action('mep_event_location_venue'); ?>
-                            , <?php do_action('mep_event_location_city'); ?>    </p>
+                            <?php //do_action('mep_event_location_city'); ?>    </p>
                     </div>
                 </div>
             <?php } ?>

@@ -1,4 +1,4 @@
-<div class='mep-event-list-loop  mep_event_list_item mep_event_native_list mix <?php if ($tt) {  echo $org_class;  } ?> <?php if ($torg) {  echo $cat_class;  } ?>'>
+<div class='mep-event-list-loop  mep_event_list_item mep_event_native_list mix <?php echo $org_class.' '.$cat_class; ?>'>
     <?php do_action('mep_event_minimal_list_loop_header',$event_id); ?>
                     <div class="mep_list_thumb">
                         <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo get_the_post_thumbnail($event_id,'full'); ?></a>

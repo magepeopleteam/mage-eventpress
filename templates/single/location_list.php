@@ -1,5 +1,5 @@
 <ul>
-    <?php if($venue){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?>
+    <?php if($venue){ ?> <li><i class="fa fa-arrow-circle-right"></i> <span><?php do_action('mep_event_location_venue'); ?></span>
     </li> <?php } ?>
     <?php if($street){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?>
     </li><?php } ?>

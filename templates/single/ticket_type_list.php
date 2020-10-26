@@ -1,6 +1,5 @@
                 <tr>
                     <td align="Left"><?php echo $field['option_name_t']; ?>
-
                         <?php if ($mep_available_seat == 'on') { ?><div class="xtra-item-left"><?php echo max($total_ticket_left, 0); ?>
 
                                 <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:', 'mage-eventpress');  ?>

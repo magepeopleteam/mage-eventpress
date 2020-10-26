@@ -127,7 +127,7 @@ function mep_event_list($atts, $content = null)
     $flex_column    = $column;
     $mage_div_count = 0;
     $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
-    $unq_id = 'abr'.uniqid();
+   $unq_id = 'abr'.uniqid();  
     ob_start();
 ?>
     <div class='mep_event_list'>
@@ -171,6 +171,8 @@ function mep_event_list($atts, $content = null)
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
+               
+
                 do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$unq_id);
             }
             wp_reset_postdata();

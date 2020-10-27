@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 add_action('mep_event_list_shortcode', 'mep_display_event_loop_list', 10, 4);
 if (!function_exists('mep_display_event_loop_list')) {
-    function mep_display_event_loop_list($event_id, $columnNumber, $style, $unq_id ='')
+    function mep_display_event_loop_list($event_id, $columnNumber, $style,$width, $unq_id ='')
     {
         
         $now                    = current_time('Y-m-d H:i:s');

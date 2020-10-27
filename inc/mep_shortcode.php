@@ -155,25 +155,19 @@ function mep_event_list($atts, $content = null)
             echo $time_line_div_start;
             while ($loop->have_posts()) {
                 $loop->the_post();
-                if ($style == 'grid') {
-                    if ($column == 2) {
-                        $columnNumber = 'two_column';
-                    } elseif ($column == 3) {
-                        $columnNumber = 'three_column';
-                    } elseif ($column == 4) {
-                        $columnNumber = 'four_column';
-                    } else {
-                        $columnNumber = 'two_column';
-                    }
+                if ($style == 'grid' && (int)$column>0) {
+	                $columnNumber='column_style';
+	                $width=100/(int)$column;
                 } else {
                     $columnNumber = 'one_column';
+                    $width=100;
                 }
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
                
 
-                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$unq_id);
+                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width,$unq_id);
             }
             wp_reset_postdata();
             echo $time_line_div_end;
@@ -305,23 +299,17 @@ function mep_expire_event_list($atts, $content = null)
             echo '<div class="mage_grid_box">';
             while ($loop->have_posts()) {
                 $loop->the_post();
-                if ($style == 'grid') {
-                    if ($column == 2) {
-                        $columnNumber = 'two_column';
-                    } elseif ($column == 3) {
-                        $columnNumber = 'three_column';
-                    } elseif ($column == 4) {
-                        $columnNumber = 'four_column';
-                    } else {
-                        $columnNumber = 'two_column';
-                    }
-                } else {
-                    $columnNumber = 'one_column';
-                }
+	            if ($style == 'grid' && (int)$column>0) {
+		            $columnNumber='column_style';
+		            $width=100/(int)$column;
+	            } else {
+		            $columnNumber = 'one_column';
+		            $width=100;
+	            }
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
-                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style);
+                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width);
             }
             wp_reset_postdata();
             echo '</div>';
@@ -487,23 +475,17 @@ function mep_event_onepage_list($atts, $content = null)
                 echo '<div class="mage_grid_box">';
                 while ($loop->have_posts()) {
                     $loop->the_post();
-                    if ($style == 'grid') {
-                        if ($column == 2) {
-                            $columnNumber = 'two_column';
-                        } elseif ($column == 3) {
-                            $columnNumber = 'three_column';
-                        } elseif ($column == 4) {
-                            $columnNumber = 'four_column';
-                        } else {
-                            $columnNumber = 'two_column';
-                        }
-                    } else {
-                        $columnNumber = 'one_column';
-                    }
+	                if ($style == 'grid' && (int)$column>0) {
+		                $columnNumber='column_style';
+		                $width=100/(int)$column;
+	                } else {
+		                $columnNumber = 'one_column';
+		                $width=100;
+	                }
                     /**
                      * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                      */
-                    do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style);
+                    do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width);
 
                     $currency_pos = get_option('woocommerce_currency_pos');
                     $mep_full_name = strip_tags($event_meta['mep_full_name'][0]);

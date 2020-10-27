@@ -411,7 +411,26 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'yes' => 'Yes',
                             'no' => 'No'
                         )
-                    )
+                    ),
+	                array(
+		                'name'    => 'mep_hide_event_hover_btn',
+		                'label'   => __( 'Hide / Visible Event Hover Book Now Button ?', 'mage-eventpress' ),
+		                'desc'    => __( 'If you want to Hide / Visible Event Hover Book Now Button , Please select Yes. By default is: No.', 'mage-eventpress' ),
+		                'type'    => 'select',
+		                'default' => 'no',
+		                'options' => array(
+			                'yes' => 'Yes',
+			                'no'  => 'No'
+		                )
+	                ),
+	                array(
+		                'name'    => 'mep_hide_event_hover_btn_text',
+		                'label'   => __( 'Event Hover Book Now Button Text ?', 'mage-eventpress' ),
+		                'desc'    => __( 'Pleaase Type Event Hover Book Now Button Text . OtherWise It will be Book Now.', 'mage-eventpress' ),
+		                'type'    => 'text',
+		                'default' => 'Book Now',
+		                'placeholder'=>'Book Now'
+	                )
                 )
                 ),
 

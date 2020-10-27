@@ -1,4 +1,8 @@
-<div class='mep-event-list-loop <?php echo $columnNumber; ?> mep_event_<?php echo $style; ?>_item mix <?php echo $org_class.' '.$cat_class; ?>'>
+<?php
+$mep_hide_event_hover_btn             = mep_get_option('mep_hide_event_hover_btn', 'general_setting_sec', 'no');
+$mep_hide_event_hover_btn_text             = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
+?>
+<div class='mep-event-list-loop <?php echo $columnNumber; ?> mep_event_<?php echo $style; ?>_item mix <?php echo $org_class.' '.$cat_class; ?>' style="width:calc(<?php echo $width; ?>% - 14px);">
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo get_the_post_thumbnail($event_id, 'full'); ?></a>
@@ -100,7 +104,9 @@
         </a>
         <?php do_action('mep_event_list_loop_footer', $event_id); ?>
     </div>
+    <?php if('yes'==$mep_hide_event_hover_btn){ ?>
     <div class="item_hover_effect">
-        <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo __('Book Now', 'mage-eventpress'); ?></a>
+        <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo $mep_hide_event_hover_btn_text; ?></a>
     </div>
+    <?php } ?>
 </div>

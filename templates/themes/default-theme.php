@@ -12,6 +12,7 @@ $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_deta
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
+
 ?>
 
 <div class="mep-default-theme mep_flex default_theme">

@@ -1,11 +1,11 @@
 <?php
-$mep_hide_event_hover_btn             = mep_get_option('mep_hide_event_hover_btn', 'general_setting_sec', 'no');
-$mep_hide_event_hover_btn_text             = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
+$mep_hide_event_hover_btn        = mep_get_option('mep_hide_event_hover_btn', 'general_setting_sec', 'no');
+$mep_hide_event_hover_btn_text   = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
 ?>
 <div class='mep-event-list-loop <?php echo $columnNumber; ?> mep_event_<?php echo $style; ?>_item mix <?php echo $org_class.' '.$cat_class; ?>' style="width:calc(<?php echo $width; ?>% - 14px);">
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
-        <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo get_the_post_thumbnail($event_id, 'full'); ?></a>
+        <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id);  ?></a>
         <?php if (sizeof($event_multidate) == 0) { ?>
             <div class="mep-ev-start-date">
                 <div class="mep-day"><?php echo get_mep_datetime($event_meta['event_start_datetime'][0], 'day'); ?></div>

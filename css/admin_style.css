@@ -306,3 +306,39 @@ span.mep_event_date {
   padding: 7px 3px;
   color: #fff;
 }
+
+div#mep_event_list_thumbnail_meta_boxes table th, div#mep_event_list_thumbnail_meta_boxes table td {
+  width: 100%;
+  display: block;
+  float: none;
+  overflow: hidden;
+}
+
+div#mep_event_list_thumbnail_meta_boxes table, div#mep_event_list_thumbnail_meta_boxes table tbody {
+  width: 100%!important;
+  overflow: hidden;
+  display: block;
+}
+
+div#mep_event_list_thumbnail_meta_boxes table td input {
+  width: 93%!important;
+}
+div#mep_event_list_thumbnail_meta_boxes span.slider:before {
+  display: none;
+}
+div#mep_event_list_thumbnail_meta_boxes table td input#enable_global_qty {
+  width: auto!important;
+}
+#mep_event_list_thumbnail_meta_boxes table.form-table {
+  width: 100%!important;
+  margin: 0!important;
+  padding: 0!important;
+}
+
+#mep_event_list_thumbnail_meta_boxes table.form-table tbody th, #mep_event_list_thumbnail_meta_boxes table.form-table tbody td {
+  display: block;
+  width: 100%;
+}
+#mep_event_list_thumbnail_meta_boxes .media_preview {
+  width: 92%!important;
+}

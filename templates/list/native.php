@@ -1,7 +1,7 @@
 <div class='mep-event-list-loop  mep_event_list_item mep_event_native_list mix <?php echo $org_class.' '.$cat_class; ?>'>
     <?php do_action('mep_event_minimal_list_loop_header',$event_id); ?>
                     <div class="mep_list_thumb">
-                        <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo get_the_post_thumbnail($event_id,'full'); ?></a>
+                        <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id); ?></a>
                     </div>
                     <div class="mep_list_event_details">
                         <a href="<?php the_permalink(); ?>">

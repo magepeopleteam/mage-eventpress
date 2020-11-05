@@ -805,8 +805,8 @@ div.mep_event_native_list .mep_list_event_details{min-height:auto;}
 div.column_style{
     display:-webkit-flex;display:flex;
     -webkit-flex-direction:column;flex-direction:column;
-    -webkit-justify-content: space-between;justify-content: space-between;
 }
+div.column_style .mep_list_thumb img{height:160px;}
 @media only screen and (max-width: 650px){
     .mep_list_thumb,
     .mep_list_event_details{width:100%;min-height:100px;}
@@ -815,13 +815,13 @@ div.column_style{
 /******Style added by sumon*******/
 div.mep_event_list div.mage_grid_box{-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 div.two_column{width:calc(50% - 18px);margin: 0 15px 15px 0;}
-
 div.four_column{width:calc(25% - 18px);margin: 0 15px 15px 0;}
-
 div.item_hover_effect{position:absolute;left:0;top:0;right:0;bottom:0;background-color:#0009;display:none;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;}
 .mep-event-list-loop:hover div.item_hover_effect{display: -webkit-flex;display: flex;}
 div.item_hover_effect a{font-size:22px;font-weight:500;color:#fff;padding:15px 30px;border-radius:5px;background-color:#346B80;transition: 250ms ease-in-out;border:1px solid #FFF;}
 div.item_hover_effect a:hover{color:#346B80;background-color:#fff;border:1px solid #346B80;}
+.mep-event-list-loop.column_style {-webkit-box-sizing: border-box;box-sizing: border-box;}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
     /********Default Theme***********/

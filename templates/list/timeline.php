@@ -3,7 +3,7 @@
             <div class='mep_event_timeline_list'>
                 <?php do_action('mep_event_minimal_list_loop_header',$event_id); ?>
                     <div class="mep_list_thumb">
-                        <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo get_the_post_thumbnail($event_id,'full'); ?></a>
+                        <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id); ?></a>
                         <div class="mep-ev-start-date">
                             <div class="mep-day"><?php echo get_mep_datetime($event_meta['event_start_datetime'][0],'day'); ?></div>
                             <div class="mep-month"><?php echo get_mep_datetime($event_meta['event_start_datetime'][0],'month'); ?></div>

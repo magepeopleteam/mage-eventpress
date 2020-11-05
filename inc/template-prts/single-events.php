@@ -24,7 +24,9 @@ do_action('mep_event_single_page_after_header');
 ?>
 <div class="mep-events-wrapper">
     <?php
+    
     do_action('woocommerce_before_single_product');
+
     $theme_name = "/themes/$_current_template";
     require_once(mep_template_file_path($theme_name));
     if (comments_open() || get_comments_number()) {
@@ -113,6 +115,10 @@ jQuery(".extra-qty-box").on('change', function() {
 
         });
 
+        //Fix Tony 5.9.2020: Immer 2 Nachkommastellen anzeigen
+        total = total.toFixed(2);
+        //End of fix
+        
         jQuery('#usertotal').html("<?php if($currency_pos=="left"){ echo get_woocommerce_currency_symbol(); } ?>" + total + "<?php if($currency_pos=="right"){ echo get_woocommerce_currency_symbol(); } ?>");
         jQuery('#rowtotal').val(total);
 

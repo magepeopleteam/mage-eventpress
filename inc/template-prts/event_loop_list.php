@@ -3,11 +3,10 @@ if (!defined('ABSPATH')) {
     die;
 } // Cannot access pages directly.
 
-add_action('mep_event_list_shortcode', 'mep_display_event_loop_list', 10, 4);
+add_action('mep_event_list_shortcode', 'mep_display_event_loop_list', 10, 5);
 if (!function_exists('mep_display_event_loop_list')) {
-    function mep_display_event_loop_list($event_id, $columnNumber, $style,$width, $unq_id ='')
+    function mep_display_event_loop_list($event_id, $columnNumber='', $style='',$width='', $unq_id ='')
     {
-        
         $now                    = current_time('Y-m-d H:i:s');
         $show_price             = mep_get_option('mep_event_price_show', 'general_setting_sec', 'yes');
         $show_price_label       = mep_get_option('event-price-label', 'general_setting_sec', 'Price Starts from:');

@@ -554,22 +554,31 @@ function ttttt(){
       } 
       if(is_array($user_info_arr) & sizeof($user_info_arr) > 0){
         foreach ($user_info_arr as $_user_info) {
-          if($check_before_create == 0){
-                mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
-          }else{
-            mep_delete_attandee_of_an_order($order_id,$event_id);
-                mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
-          }
+
+          mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+
+          // if($check_before_create == 0){
+          //       mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+          // }else{
+          //   mep_delete_attandee_of_an_order($order_id,$event_id);
+          //       mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+          // }
+
         } 
       }else{
           foreach($event_ticket_info_arr as $tinfo){
             for ($x = 1; $x <= $tinfo['ticket_qty']; $x++) {
-              if($check_before_create == 0){  
-                mep_attendee_create('billing',$order_id,$event_id,$tinfo);
-              }else{
-                mep_delete_attandee_of_an_order($order_id,$event_id);
-                mep_attendee_create('billing',$order_id,$event_id,$tinfo);
-          }
+
+              mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+
+            //   if($check_before_create == 0){  
+            //     mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+            //   }else{
+            //     mep_delete_attandee_of_an_order($order_id,$event_id);
+            //     mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+            //  }
+
+
             } 
           }
       }  
@@ -595,22 +604,30 @@ function ttttt(){
           } 
           if(is_array($user_info_arr) & sizeof($user_info_arr) > 0){
             foreach ($user_info_arr as $_user_info) {
-              if($check_before_create == 0){
+
                 mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
-              }else{
-                mep_delete_attandee_of_an_order($order_id,$event_id);
-                mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
-          }
+
+              // if($check_before_create == 0){
+              //   mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+              // }else{
+              //   mep_delete_attandee_of_an_order($order_id,$event_id);
+              //   mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+              // }
+
             } 
           }else{
               foreach($event_ticket_info_arr as $tinfo){
                 for ($x = 1; $x <= $tinfo['ticket_qty']; $x++) {
-                  if($check_before_create == 0){
-                    mep_attendee_create('billing',$order_id,$event_id,$tinfo);
-                  }else{
-                    mep_delete_attandee_of_an_order($order_id,$event_id);
-                    mep_attendee_create('billing',$order_id,$event_id,$tinfo);
-                  }
+                  mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+                  
+                  // if($check_before_create == 0){
+                  //   mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+                  // }else{
+                  //   mep_delete_attandee_of_an_order($order_id,$event_id);
+                  //   mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+                  // }
+
+
                 } 
               }
           }  
@@ -639,7 +656,12 @@ function mep_delete_attandee_of_an_order($order_id,$event_id){
                            'key'       => 'ea_event_id',
                            'value'     => $event_id,
                            'compare'   => '='
-              )
+           ),
+           array(
+            'key'       => 'ea_order_status',
+            'value'     => 'pending',
+            'compare'   => '='
+          )           
            )
        );
       $loop = new WP_Query($args);
@@ -2859,29 +2881,29 @@ function mep_cart_display_user_list($user_info){
   foreach ($user_info as $userinf) {
     ?>
       <ul>
-        <?php if ($userinf['user_name']) { ?> <li><?php _e('Name: ', 'mage-eventpress');
+        <?php if ($userinf['user_name']) { ?> <li><?php _e('Name', 'mage-eventpress'); echo ": ";
                                                 echo $userinf['user_name']; ?></li> <?php } ?>
-        <?php if ($userinf['user_email']) { ?> <li><?php _e('Email: ', 'mage-eventpress');
+        <?php if ($userinf['user_email']) { ?> <li><?php _e('Email', 'mage-eventpress'); echo ": ";
                                                   echo $userinf['user_email']; ?></li> <?php } ?>
-        <?php if ($userinf['user_phone']) { ?> <li><?php _e('Phone: ', 'mage-eventpress');
+        <?php if ($userinf['user_phone']) { ?> <li><?php _e('Phone', 'mage-eventpress'); echo ": ";
                                                   echo $userinf['user_phone']; ?></li> <?php } ?>
-        <?php if ($userinf['user_address']) { ?> <li><?php _e('Address: ', 'mage-eventpress');
+        <?php if ($userinf['user_address']) { ?> <li><?php _e('Address', 'mage-eventpress'); echo ": ";
                                                     echo $userinf['user_address']; ?></li> <?php } ?>
-        <?php if ($userinf['user_gender']) { ?> <li><?php _e('Gender: ', 'mage-eventpress');
+        <?php if ($userinf['user_gender']) { ?> <li><?php _e('Gender', 'mage-eventpress'); echo ": ";
                                                   echo $userinf['user_gender']; ?></li> <?php } ?>
-        <?php if ($userinf['user_tshirtsize']) { ?> <li><?php _e('T-Shirt Size: ', 'mage-eventpress');
+        <?php if ($userinf['user_tshirtsize']) { ?> <li><?php _e('T-Shirt Size', 'mage-eventpress'); echo ": ";
                                                       echo $userinf['user_tshirtsize']; ?></li> <?php } ?>
-        <?php if ($userinf['user_company']) { ?> <li><?php _e('Company: ', 'mage-eventpress');
+        <?php if ($userinf['user_company']) { ?> <li><?php _e('Company', 'mage-eventpress'); echo ": ";
                                                     echo $userinf['user_company']; ?></li> <?php } ?>
-        <?php if ($userinf['user_designation']) { ?> <li><?php _e('Designation: ', 'mage-eventpress');
+        <?php if ($userinf['user_designation']) { ?> <li><?php _e('Designation', 'mage-eventpress'); echo ": ";
                                                         echo $userinf['user_designation']; ?></li> <?php } ?>
-        <?php if ($userinf['user_website']) { ?> <li><?php _e('Website: ', 'mage-eventpress');
+        <?php if ($userinf['user_website']) { ?> <li><?php _e('Website', 'mage-eventpress'); echo ": ";
                                                     echo $userinf['user_website']; ?></li> <?php } ?>
-        <?php if ($userinf['user_vegetarian']) { ?> <li><?php _e('Vegetarian: ', 'mage-eventpress');
+        <?php if ($userinf['user_vegetarian']) { ?> <li><?php _e('Vegetarian', 'mage-eventpress'); echo ": ";
                                                       echo $userinf['user_vegetarian']; ?></li> <?php } ?>
-        <?php if ($userinf['user_ticket_type']) { ?> <li><?php _e('Ticket Type: ', 'mage-eventpress');
+        <?php if ($userinf['user_ticket_type']) { ?> <li><?php _e('Ticket Type', 'mage-eventpress'); echo ": ";
                                                         echo $userinf['user_ticket_type']; ?></li> <?php } ?>
-        <li><?php _e('Event Date:', 'mage-eventpress'); ?> <?php echo get_mep_datetime($userinf['user_event_date'], 'date-time-text'); ?></li>
+        <li><?php _e('Event Date', 'mage-eventpress');  echo ": "; ?> <?php echo get_mep_datetime($userinf['user_event_date'], 'date-time-text'); ?></li>
       </ul>
 
       <?php
@@ -3002,6 +3024,8 @@ function mep_single_page_js_script($event_id){
                         // price.closest('tr').find('.cart_total_price').html(sum + "â‚´");
 
                     });
+                    //Fix 27.10.2020 Tony
+                    total = total.toFixed(2);
                     jQuery('#usertotal').html("<?php if ($currency_pos == "left" || $currency_pos == 'left_space') {
                         echo get_woocommerce_currency_symbol();
                     } ?>" + total + "<?php if ($currency_pos == "right" || $currency_pos == 'right_space') {
@@ -3349,4 +3373,22 @@ $args = array(
  $loop = new WP_Query($args);
  $count = $loop->post_count;   
 return $count;
+}
+
+function mep_get_list_thumbnail($event_id){
+
+  $thumbnail_id = get_post_meta($event_id,'mep_list_thumbnail',true) ? get_post_meta($event_id,'mep_list_thumbnail',true) : 0;
+
+
+if($thumbnail_id > 0){
+  // echo $thumbnail_id;
+  $thumbnail = wp_get_attachment_image_src($thumbnail_id,'full');
+
+  
+  ?>
+<img src="<?php echo $thumbnail[0]; ?>" class="attachment-full size-full wp-post-image" alt="<?php echo get_the_title($event_id); ?>"/>
+  <?php
+}else{
+  echo get_the_post_thumbnail($event_id, 'full');
+}
 }

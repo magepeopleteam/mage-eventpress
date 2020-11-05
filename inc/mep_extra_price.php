@@ -179,12 +179,12 @@ function mep_checkout_validation($posted)
   $items    = $woocommerce->cart->get_cart();
   foreach ($items as $item => $values) {
     $event_id              = array_key_exists('event_id', $values) ? $values['event_id'] : 0; // $values['event_id'];
-    if (get_post_type($event_id) == 'mep_events') {
+    $check_seat_plan       = get_post_meta($event_id,'mepsp_event_seat_plan_info',true) ? get_post_meta($event_id,'mepsp_event_seat_plan_info',true) : array();
+   
+    if (get_post_type($event_id) == 'mep_events' && sizeof($check_seat_plan) == 0) {
       $recurring  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
       $total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
       $total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);      
-      // $total_sold = mep_ticket_sold($event_id);
-      
 
       $ticket_arr   = $values['event_ticket_info'];
 
@@ -197,7 +197,6 @@ function mep_checkout_validation($posted)
           $event_date_txt = get_mep_datetime($ticket['event_date'],'date-time-text');
           $total_sold     = mep_ticket_type_sold($event_id,$type,$event_date);
           $available_seat = $total_seat - ($total_resv + $total_sold);
-
       }
 
         if($ticket_qty > $available_seat){

@@ -13,7 +13,7 @@ function mep_event_meta_box_add(){
 
     add_meta_box( 'mep-event-date', __('<span class="dashicons dashicons-calendar-alt" style="color:green; padding-right:10px;"></span>Event Date & Time','mage-eventpress'), 'mep_event_date_meta_box_cb', 'mep_events', 'advanced', 'high' );
 
-    add_meta_box( 'mep-event-emails', __('<span class="dashicons dashicons-email-alt" style="color:green; padding-right:10px;"></span>Event Email text','mage-eventpress'), 'mep_event_email_meta_box_cb', 'mep_events', 'normal', 'high' );
+    // add_meta_box( 'mep-event-emails', __('<span class="dashicons dashicons-email-alt" style="color:green; padding-right:10px;"></span>Event Email text','mage-eventpress'), 'mep_event_email_meta_box_cb', 'mep_events', 'normal', 'high' );
 
     add_meta_box( 'mep-event-template', __('Template','mage-eventpress'), 'mep_event_template_meta_box_cb', 'mep_events', 'side', 'low' );
 
@@ -1198,6 +1198,7 @@ function mep_event_date_meta_box_cb($post){
 
 
 function mep_event_email_meta_box_cb($post){
+
 $values = get_post_custom( $post->ID );
 ?>
 <div class='sec'>
@@ -1485,7 +1486,7 @@ if (get_post_type($post_id) == 'mep_events') {
     $event_end_date                 = strip_tags($_POST['event_end_date']);
     $event_end_time                 = strip_tags($_POST['event_end_time']);
     // $mep_event_end_date          = strip_tags($_POST['mep_event_end_date']);
-    $mep_event_cc_email_text        = $_POST['mep_event_cc_email_text'];
+    // $mep_event_cc_email_text        = $_POST['mep_event_cc_email_text'];
     
     
     $latitude                       = isset($_POST['latitude']) ? strip_tags($_POST['latitude']) : "";
@@ -1562,7 +1563,7 @@ if (get_post_type($post_id) == 'mep_events') {
     // update_post_meta( $pid, 'mep_price_label', $mep_price_label);
     update_post_meta( $pid, '_price', 0);
     update_post_meta( $pid, '_virtual', 'yes');
-    update_post_meta( $pid, 'mep_event_cc_email_text', $mep_event_cc_email_text);
+    // update_post_meta( $pid, 'mep_event_cc_email_text', $mep_event_cc_email_text);
     update_post_meta( $pid, '_sku', $pid);
 
     if ( !empty( $mdate ) && $mdate != $oldm )

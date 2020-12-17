@@ -14,7 +14,9 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
         <?php
         $count = 1;
         $seat_plan = get_post_meta($post_id, 'mepsp_event_seat_plan_info', true) ? get_post_meta($post_id, 'mepsp_event_seat_plan_info', true) : [];
-        if (sizeof($seat_plan) > 0) {
+        $seat_plan_visible = get_post_meta($post_id, 'mp_event_seat_plan_visible', true) ? get_post_meta($post_id, 'mp_event_seat_plan_visible', true) : '1';
+
+        if (sizeof($seat_plan) > 0 && $seat_plan_visible ==2) {
             $event_start_date       = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
             $ticket_type_file_path = apply_filters('mep_ticket_type_file_path',mep_template_file_path('single/ticket_type_list.php'),$post_id);
             require($ticket_type_file_path);

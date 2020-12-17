@@ -522,7 +522,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                     array(
                         'name' => 'mep_location_text',
                         'label' => __('Location:', 'mage-eventpress'),
-                        'desc' => __('Enter the text which you want to display as Location in event list page.', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Location in event list page & Order Confirmation Page.', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => ''
                     ),
@@ -543,7 +543,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                     array(
                         'name' => 'mep_event_date_text',
                         'label' => __('Event Date:', 'mage-eventpress'),
-                        'desc' => __('Enter the text which you want to display as Event Date in event list page.', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Event Date in event list page & Order Confirmation Page', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => ''
                     ),
@@ -713,6 +713,13 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc' => __('Enter Text For Hide Date Lists button', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => 'Hide Date Lists'
+                    ),
+                    array(
+                        'name' => 'mep_event_recurring_ribon_text',
+                        'label' => __('Recurring Ribon Text', 'mage-eventpress'),
+                        'desc' => __('Recurring Event ribon text', 'mage-eventpress'),
+                        'type' => 'text',
+                        'default' => 'Recurring Event'
                     )
                    
                 )),

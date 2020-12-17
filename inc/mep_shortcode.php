@@ -155,13 +155,18 @@ function mep_event_list($atts, $content = null)
             echo $time_line_div_start;
             while ($loop->have_posts()) {
                 $loop->the_post();
-                if ($style == 'grid' && (int)$column>0) {
+
+                if ($style == 'grid' && (int)$column>0 && $pagination != 'carousal') {
 	                $columnNumber='column_style';
 	                $width=100/(int)$column;
+                }elseif($pagination == 'carousal' && $style == 'grid'){
+                    $columnNumber = 'grid';
+                    $width=100;                    
                 } else {
                     $columnNumber = 'one_column';
                     $width=100;
                 }
+                
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */

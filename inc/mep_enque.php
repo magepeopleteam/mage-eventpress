@@ -82,6 +82,8 @@ function mep_event_enqueue_scripts()
   wp_enqueue_script('mep-calendar-scripts', plugin_dir_url(__DIR__) . 'js/calendar.min.js', array('jquery', 'mep-moment-js'), 1, false);
   wp_enqueue_script('mep-mixitup-min-js', plugin_dir_url(__DIR__) . 'js/mixitup.min.js', array(), 1, true);
 
+  wp_enqueue_script('mp_event_custom_script', plugin_dir_url(__DIR__) . 'js/mp_event_custom_script.js', array(), 1, true);
+
 
   wp_enqueue_script('mep-timeline-min', plugin_dir_url(__DIR__) . 'js/timeline.min.js', array('jquery'), 1, true);
   wp_enqueue_script('mep-event-custom-scripts', plugin_dir_url(__DIR__) . 'js/mkb-scripts.js', array(), 1, true);

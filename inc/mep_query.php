@@ -11,7 +11,19 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
     $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
     $event_expire_on    = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
     $now                = current_time('Y-m-d H:i:s');
-    $paged              = get_query_var("paged") ? get_query_var("paged") : 1;
+    if ( get_query_var('paged') ) {
+
+        $paged = get_query_var('paged');
+    
+    } elseif ( get_query_var('page') ) {
+    
+        $paged = get_query_var('page');
+    
+    } else {
+    
+        $paged = 1;
+    
+    }
     $etype              = $evnt_type == 'expired' ? '<' : '>';
 
     $cat_filter = !empty($cat) ? array(
@@ -73,7 +85,21 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
  */
 function mep_event_pagination($total_page)
 {
-    $paged  = get_query_var("paged") ? get_query_var("paged") : 1;
+
+    if ( get_query_var('paged') ) {
+
+        $paged = get_query_var('paged');
+    
+    } elseif ( get_query_var('page') ) {
+    
+        $paged = get_query_var('page');
+    
+    } else {
+    
+        $paged = 1;
+    
+    }
+
 ?>
     <div class="row">
         <div class="col-md-12">
@@ -88,3 +114,5 @@ function mep_event_pagination($total_page)
     </div>
 <?php
 }
+
+

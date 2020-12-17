@@ -23,7 +23,7 @@ if (!function_exists('mep_display_event_daywise_details')) {
   function mep_display_event_daywise_details()
   {
     global $post, $event_meta;
-    $mep_event_day = get_post_meta($post->ID, 'mep_event_day', true) ? get_post_meta($post->ID, 'mep_event_day', true) : array();
+    $mep_event_day = get_post_meta($post->ID, 'mep_event_day', true) ?  maybe_unserialize(get_post_meta($post->ID, 'mep_event_day', true)) : array();
     if (sizeof($mep_event_day) > 0) {
       require(mep_template_file_path('single/daywise_details.php'));    
     }

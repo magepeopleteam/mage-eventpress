@@ -90,8 +90,9 @@ if (!function_exists('mep_date_in_default_theme')) {
         $recurring                  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
         $mep_show_upcoming_event    = get_post_meta($event_id, 'mep_show_upcoming_event', true) ? get_post_meta($event_id, 'mep_show_upcoming_event', true) : 'no';
         $cn                         = 1;
-        $more_date                  = array_key_exists('mep_event_more_date', $event_meta) ? unserialize($event_meta['mep_event_more_date'][0]) : array();
-            require(mep_template_file_path('single/date_list_title.php')); 
+        $_more_date                 = array_key_exists('mep_event_more_date', $event_meta) ? unserialize($event_meta['mep_event_more_date'][0]) : array();
+        $more_date                  = apply_filters('mep_event_date_more_date_array',$_more_date,$event_id);
+        require(mep_template_file_path('single/date_list_title.php')); 
         if (sizeof($more_date) > 2) {
             echo '<ul id="mep_event_date_sch">';
         } else {
@@ -120,7 +121,9 @@ if (!function_exists('mep_date_in_default_theme')) {
                     }
                 }
             }
-        } else {
+        }elseif ($recurring == 'everyday') { 
+            do_action('mep_event_everyday_date_list_display',$event_id);
+        }else {
             if (is_array($more_date) && sizeof($more_date) > 0) {
                 require(mep_template_file_path('single/date_list.php')); 
                 foreach ($more_date as $_more_date) {
@@ -135,10 +138,10 @@ if (!function_exists('mep_date_in_default_theme')) {
             }
         }
         echo '</ul>';
-        if (sizeof($more_date) > 2) {
+        if (sizeof($more_date) > 2) { 
             ?>
-            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php _e('View All Date', 'mage-eventpress'); ?></p>
-            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php _e('Hide All Date', 'mage-eventpress'); ?></p>
+            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?></p>
+            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress')); ?></p>
             <?php
         }
     }
@@ -146,7 +149,7 @@ if (!function_exists('mep_date_in_default_theme')) {
 
 add_action('mep_event_date_only', 'mep_ev_date');
 if (!function_exists('mep_ev_date')) {
-    function mep_ev_date()
+    function mep_ev_date($event_id)
     {
         global $event_meta;
         $start_datetime = $event_meta['event_start_datetime'][0];
@@ -164,7 +167,7 @@ if (!function_exists('mep_ev_date')) {
 
 
         if ($recurring == 'yes') {
-            $event_more_dates = get_post_meta(get_the_id(), 'mep_event_more_date', true);
+            $event_more_dates = get_post_meta(get_the_id(), 'mep_event_more_date', true) ? get_post_meta(get_the_id(), 'mep_event_more_date', true) : [];
             foreach ($event_more_dates as $md) {
                 $more_date[] = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
             }
@@ -186,7 +189,7 @@ if (!function_exists('mep_ev_date')) {
             }
         } else {
             ?>
-            <p><?php echo get_mep_datetime($start_datetime, 'date-text'); ?></p>
+            <p><?php echo  apply_filters('mep_display_date_only',get_mep_datetime($start_datetime, 'date-text'),$event_id); ?></p>
             <?php
         }
     }
@@ -194,7 +197,7 @@ if (!function_exists('mep_ev_date')) {
 
 add_action('mep_event_time_only', 'mep_ev_time');
 if (!function_exists('mep_ev_time')) {
-    function mep_ev_time()
+    function mep_ev_time($event_id)
     {
         global $event_meta;
         $start_datetime             = $event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0];
@@ -210,7 +213,7 @@ if (!function_exists('mep_ev_time')) {
 
 
         if ($recurring == 'yes') {
-            $event_more_dates       = get_post_meta(get_the_id(), 'mep_event_more_date', true);
+            $event_more_dates       = get_post_meta(get_the_id(), 'mep_event_more_date', true) ? get_post_meta(get_the_id(), 'mep_event_more_date', true) : [];
             foreach ($event_more_dates as $md) {
                 $more_date[]        = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
             }
@@ -224,7 +227,7 @@ if (!function_exists('mep_ev_time')) {
                     }
                     if ($cn == $cnt) {
             ?>
-                        <p><?php echo get_mep_datetime($ev_date, 'time'); ?> </p>
+                        <p><?php echo apply_filters('mep_event_details_only_time',get_mep_datetime($ev_date, 'time'),$event_id); ?> </p>
             <?php
                         $cn++;
                     }
@@ -232,7 +235,7 @@ if (!function_exists('mep_ev_time')) {
             }
         } else {
             ?>
-            <p><?php echo get_mep_datetime($start_datetime, 'time'); ?></p>
+            <p><?php echo apply_filters('mep_event_details_only_time',get_mep_datetime($start_datetime, 'time'),$event_id); ?></p>
 <?php
         }
     }

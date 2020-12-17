@@ -86,17 +86,6 @@ function mep_fw_meta_boxs()
                         'type'            => 'select2',
                         'args'            => 'CPT_%mep_event_speaker%',
                     ),
-
-                    array(
-                        'id'            => 'mep_event_type',
-                        'title'            => __('Event Type', 'mage-eventpress'),
-                        'details'        => __('Please Select Event Type, This will add a Rebon in the event list', 'mage-eventpress'),
-                        'type'            => 'select',
-                        'args'            => array(
-                            'offline' => __('Offline Event', 'mage-eventpress'),
-                            'online' => __('Online/Virtual Event', 'mage-eventpress')
-                        )
-                    ),
                 )
             ),
 
@@ -104,7 +93,7 @@ function mep_fw_meta_boxs()
     );
     $events_speaker_list_meta_args = array(
         'meta_box_id'               => 'mep_event_speakers_list_meta_boxes',
-        'meta_box_title'            => __('Event Speaker Information', 'mage-eventpress'),
+        'meta_box_title'            => '<span class="dashicons dashicons-businessman"></span>&nbsp;&nbsp;'.__('Speaker Information', 'mage-eventpress'),
         'screen'                    => array('mep_events'),
         'context'                   => 'normal',
         'priority'                  => 'high', 
@@ -120,6 +109,117 @@ function mep_fw_meta_boxs()
     if($speaker_status == 'yes'){
        new AddMetaBox($events_speaker_list_meta_args);
     }
+
+
+
+
+    $events_faq_boxs = array(
+        'page_nav'     => __('Event FAQ', 'mage-eventpress'),
+        'priority' => 10,
+        'sections' => array(
+            'section_2' => array(
+                'title'     =>     __('', 'mage-eventpress'),
+                'description'     => __('', 'mage-eventpress'),
+                'options'     => array(
+                    array(
+                            'id' => 'mep_event_faq',
+                            'title' => __('F.A.Q Details', 'mage-eventpress'),
+                            'details' => __('', 'mage-eventpress'),
+                            'collapsible' => true,
+                            'type' => 'repeatable',
+                            'btn_text' => 'Add New F.A.Q',
+                            'title_field' => 'mep_faq_title',
+                            'fields' => array(                              
+                                array(
+                                    'type' => 'text',
+                                    'default' => '',
+                                    'item_id' => 'mep_faq_title',
+                                    'name' => 'Title'
+                                ),
+                                array(
+                                    'type' => 'textarea',
+                                    'default' => '',
+                                    'item_id' => 'mep_faq_content',
+                                    'name' => 'Content'
+                                ),
+                            ),
+                        ),
+                )
+            ),
+
+        ),
+    );
+    $events_faq_meta_args = array(
+        'meta_box_id'               => 'mep_event_faq_meta_boxes',
+        'meta_box_title'            => '<span class="dashicons dashicons-info"></span>&nbsp;&nbsp;'.__('F.A.Q', 'mage-eventpress'),
+        'screen'                    => array('mep_events'),
+        'context'                   => 'normal',
+        'priority'                  => 'high', 
+        'callback_args'             => array(),
+        'nav_position'              => 'none',
+        'item_name'                 => "MagePeople",
+        'item_version'              => "2.0",
+        'panels'                     => array(
+            'events_faq_meta_boxs' => $events_faq_boxs
+        )
+    );
+    new AddMetaBox($events_faq_meta_args);
+
+
+
+
+
+    $events_dd_boxs = array(
+        'page_nav'     => __('Event Daywise Details', 'mage-eventpress'),
+        'priority' => 10,
+        'sections' => array(
+            'section_2' => array(
+                'title'     =>     __('', 'mage-eventpress'),
+                'description'     => __('', 'mage-eventpress'),
+                'options'     => array(
+                    array(
+                            'id' => 'mep_event_day',
+                            'title' => __('Daywise Details', 'mage-eventpress'),
+                            'details' => __('', 'mage-eventpress'),
+                            'collapsible' => true,
+                            'type' => 'repeatable',
+                            'btn_text' => 'Add New Days',
+                            'title_field' => 'mep_day_title',
+                            'fields' => array(                              
+                                array(
+                                    'type' => 'text',
+                                    'default' => '',
+                                    'item_id' => 'mep_day_title',
+                                    'name' => 'Title'
+                                ),
+                                array(
+                                    'type' => 'textarea',
+                                    'default' => '',
+                                    'item_id' => 'mep_day_content',
+                                    'name' => 'Content'
+                                ),
+                            ),
+                        ),
+                )
+            ),
+
+        ),
+    );
+    $events_dd_meta_args = array(
+        'meta_box_id'               => 'mep_event_dd_meta_boxes',
+        'meta_box_title'            => '<span class="dashicons dashicons-analytics"></span>&nbsp;&nbsp;'.__('Daywise Details', 'mage-eventpress'),
+        'screen'                    => array('mep_events'),
+        'context'                   => 'normal',
+        'priority'                  => 'high', 
+        'callback_args'             => array(),
+        'nav_position'              => 'none',
+        'item_name'                 => "MagePeople",
+        'item_version'              => "2.0",
+        'panels'                     => array(
+            'events_dd_meta_boxs' => $events_dd_boxs
+        )
+    );
+    new AddMetaBox($events_dd_meta_args);
 
 
 
@@ -199,7 +299,7 @@ function mep_fw_meta_boxs()
 
     $email_body_meta_args = array(
         'meta_box_id'               => 'mep_event_email_body_meta_boxes',
-        'meta_box_title'            => __('Event Email Confirmation Text', 'mage-eventpress'),
+        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;&nbsp;'.__('Email Confirmation Text', 'mage-eventpress'),
         //'callback'       => '_meta_box_callback',
         'screen'                    => array('mep_events'),
         'context'                   => 'normal', // 'normal', 'side', and 'advanced'
@@ -212,7 +312,6 @@ function mep_fw_meta_boxs()
             'speakers_meta_boxs' => $email_body_meta_boxs
         ),
     );
-
     new AddMetaBox( $email_body_meta_args );
 
 

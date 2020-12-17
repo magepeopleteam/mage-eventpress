@@ -8451,7 +8451,9 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                 $new[$key]['default']   = $fields[$key]['default'];
                 $new[$key]['item_id']   = $fields[$key]['item_id'];
                 $new[$key]['name']      = $fields[$key]['name'];
-                $new[$key]['args']      = !is_array($fields[$key]['args']) ? $this->args_from_string($fields[$key]['args']):$fields[$key]['args'];
+                if($args){
+                $new[$key]['args']      = !is_array($fields[$key]['args']) ? $this->args_from_string($fields[$key]['args']) : $fields[$key]['args'];
+                }
                  
             }
             $fields = $new;

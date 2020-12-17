@@ -31,7 +31,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                         <h3>
                             <?php echo mep_get_option('mep_event_date_text', 'label_setting_sec') ? mep_get_option('mep_event_date_text', 'label_setting_sec') : _e('Event Date:', 'mage-eventpress'); ?>
                         </h3>
-                        <?php do_action('mep_event_date_only'); ?>
+                        <?php do_action('mep_event_date_only',get_the_id()); ?>
                     </div>
                 </div>
             <?php }
@@ -42,7 +42,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                         <h3>
                             <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec') ? mep_get_option('mep_event_time_text', 'label_setting_sec') : _e('Event Time:', 'mage-eventpress'); ?>
                         </h3>
-                        <?php do_action('mep_event_time_only'); ?>
+                        <?php do_action('mep_event_time_only',get_the_id()); ?>
                     </div>
                 </div>
             <?php }

@@ -232,6 +232,8 @@ Display Event Speaker List Any Post or Page by using the below Shortcode.. examp
 
 = Some Others Very Nice Addon Support Available =
 
+👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
+
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
 
 👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
@@ -245,6 +247,23 @@ Display Event Speaker List Any Post or Page by using the below Shortcode.. examp
 👉[Event User Registration Form Position](https://mage-people.com/product/woocommerce-event-user-registration-form-position/) 👈
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
+
+👉[Related Event Addon](https://mage-people.com/product/related-events-addon-for-event-manager/)👈
+
+👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
+
+👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
+
+👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
+
+👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
+
+👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
+
+👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
+
+
+
 
 
 
@@ -598,3 +617,50 @@ Decimal Amount calculation issue fixed in cart
 Google Schema text warning issue fixed
 
 20 July 2020*
+
+
+= 3.3.3 =
+* Update Release:
+Code Optimized & Improved
+Bug Fixed
+
+14 Sept 2020*
+
+
+= 3.3.4 =
+* Update Release:
+Conflict issue fixed with bus plugin
+Tax Pricing issue fixed
+Code Optimized & Improved
+Bug Fixed
+
+20 Sept 2020*
+
+= 3.3.5 =
+* Update Release:
+Tax Pricing issue fixed
+CSS DEsign issue fixed
+Duplicate booking issue fixed
+New Hooks added
+Code Optimized & Improved
+Bug Fixed
+
+26 Oct 2020*
+
+
+= 3.3.6 =
+* Update Release:
+Quick Update for Book Now Button Issue
+Added Settings to Disbale/Enable Book Now Button
+Event List Column 1 issue fixed
+Event List Thumbnail Feature Added
+
+28 Oct 2020*
+
+= 3.3.8 =
+* Update Release:
+PHP Errors issue fixed
+WP Editor added into Event Confirmation Text
+Hook Added
+
+05 Nov 2020*

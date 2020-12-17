@@ -8,7 +8,7 @@ if (!function_exists('mep_faq_part')) {
     function mep_faq_part($event_id)
     {
         ob_start();
-        $mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? get_post_meta($event_id, 'mep_event_faq', true) : '';
+        $mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : '';
         if ($mep_event_faq) {
             require(mep_template_file_path('single/faq.php'));
         }

@@ -209,7 +209,7 @@ ul.mep-social-share a{color: #fff;font-size: 25px;width: 50px;height: 50px;}
 .mep-default-sidrbar-events-schedule ul li {border-top: 1px dashed #ddd;padding: 10px 0 10px 20px}
 .mep-default-sidrbar-events-schedule ul li:first-child{border: none;}
 .mep-default-sidrbar-events-schedule ul li:last-child{padding: 10px 0 0 20px;}
-.mep-default-sidrbar-events-schedule ul li i {display: -webkit-inline-flex;display: inline-flex;margin: 0 0 7px 0;}
+.mep-default-sidrbar-events-schedule ul li i {display: -webkit-inline-flex;display: inline-flex;}
 /********social share ***********/
 .mep-event-meta {font-size: 20px;font-weight: 600;text-align: center;padding: 20px;line-height: 1;}
 ul.mep-social-share{padding: 15px 0 0 0;}
@@ -317,7 +317,7 @@ h3.mep_list_date {font-size: 16px; font-style: italic;font-weight: bold;color: #
 .mep_event_grid_item .mep_list_thumb{width: 100%}
 .mep_event_grid_item .mep_list_event_details{margin: 0;}
 .mep_event_grid_item .mep-list-header{padding: 0 0 0 10px;}
-.mep_event_grid_item .mep-list-footer { padding: 10px 0 0 10px;}
+.mep_event_grid_item .mep-list-footer { padding: 10px 0 10px 10px }
 .mep_event_grid_item .mep_list_event_details{padding: 15px;}
 
 
@@ -331,7 +331,10 @@ h3.mep_list_date {font-size: 16px; font-style: italic;font-weight: bold;color: #
 
 
 
-
+.mep-list-footer .mep-more-date-lists li i {
+    display: inline-block;
+    padding: 6px 5px 5px 6px;
+}
 
 /********Category filter***********/
 .mep_cat-details div.mep_event_list_item{}
@@ -594,7 +597,7 @@ div.mep-default-feature-content p, div.mep-default-feature-content ul, div.mep-d
     line-height: 22px;
     list-style: inherit;
 }
-.mep-events-wrapper p:not(.mep-events-wrapper .mep-default-feature-content p){
+.mep-events-wrapper p:not(.mep-events-wrapper .mep-default-feature-content p,.ui-accordion .ui-accordion-content){
     line-height: 1.2;
     margin: 0;
     padding: 0;
@@ -640,6 +643,7 @@ ul.mep-more-date-lists li {
     left: auto;
     text-align: center;
     right: 0;
+    z-index:1111;
 }
 span#hide_event_schdule {
 position: relative;
@@ -653,9 +657,7 @@ position: relative;
 .mep-event-list-loop {
     position: relative;
 }
-ul.mep-more-date-lists {
-    margin: 0;
-}
+
 button.mep-cat-control {
     background: #fa6630;
     padding: 10px 20px;
@@ -807,6 +809,37 @@ div.column_style{
     -webkit-flex-direction:column;flex-direction:column;
 }
 div.column_style .mep_list_thumb img{height:160px;}
+
+ul.mp_event_more_date_list,
+.mp_event_hide_event_time{display:none;}
+
+ul.mp_event_more_date_list{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 111111;
+    background-color: #fff;
+    padding: 10px;
+    border-top: 5px solid #000b;
+    border-bottom: 10px solid #000b;
+    max-height: 350px;
+    overflow: auto;
+    -webkit-box-shadow: 10px 10px 5px grey;box-shadow: 10px 10px 5px grey;
+}
+ul.mp_event_more_date_list li{
+    display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items: flex-start;align-items: flex-start;
+    border-bottom:1px solid #0009;
+}
+ul.mp_event_more_date_list li span,
+span.mep-more-date,
+span.mep-more-time{
+    display:-webkit-flex;display:flex;-webkit-align-items: center;align-items: center;
+    margin:5px 0;padding:0;
+}
+ul.mp_event_more_date_list li span i,
+span.mep-more-date i,
+span.mep-more-time i{margin:0 7px 0 0;padding:0;}
 @media only screen and (max-width: 650px){
     .mep_list_thumb,
     .mep_list_event_details{width:100%;min-height:100px;}
@@ -821,7 +854,13 @@ div.item_hover_effect{position:absolute;left:0;top:0;right:0;bottom:0;background
 div.item_hover_effect a{font-size:22px;font-weight:500;color:#fff;padding:15px 30px;border-radius:5px;background-color:#346B80;transition: 250ms ease-in-out;border:1px solid #FFF;}
 div.item_hover_effect a:hover{color:#346B80;background-color:#fff;border:1px solid #346B80;}
 .mep-event-list-loop.column_style {-webkit-box-sizing: border-box;box-sizing: border-box;}
+/************************/
+.mep-day-details-section h4{font-size: 22px;font-weight: bold;}
+.mep-day-details-section .mep-day-title{font-size: 20px;font-weight: 600;}
+.mep-day-details-section .mep-day-details{font-size: 16px;margin: 0 0 0 30px;padding: 0 0 0 5px;border-left: 2px solid #ddd;}
 
+.ui-accordion .ui-accordion-header{background-image: none;margin: 10px 0 0 0;}
+.ui-accordion .ui-accordion-header.ui-state-active{background-image: none;background-color: #1D4A68;color: #fff;font-size: 18px;}
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
     /********Default Theme***********/

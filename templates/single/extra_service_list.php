@@ -6,8 +6,8 @@
                     <td class="mage_text_center"><?php echo mep_get_option('mep_price_text', 'label_setting_sec', __('Price:', 'mage-eventpress')); ?></td>
                 </tr>
                 <?php
-                foreach ($mep_events_extra_prices as $field) {
-                    $event_date = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
+
+                foreach ($mep_events_extra_prices as $field) {                    
                     $total_extra_service = (int) $field['option_qty'];
                     $qty_type = $field['option_qty_type'];
                     $total_sold = (int) mep_extra_service_sold($post_id, $field['option_name'], $event_date);

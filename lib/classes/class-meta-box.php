@@ -61,8 +61,9 @@ if ( ! class_exists( 'AddMetaBox' ) ) {
 								$option_value = serialize( $option_value );
 							}
 
-
-							update_post_meta( $post_id, $option['id'], $option_value );
+							if(!empty($option['id'])){
+								update_post_meta( $post_id, $option['id'], $option_value );
+							}
 
 						endforeach;
 					endforeach;

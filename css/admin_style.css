@@ -364,11 +364,6 @@ div#mep_event_list_thumbnail_meta_boxes table td input#enable_global_qty {
     padding: 10px;
     min-height: 200px;
 }
-label.mp_event_virtual_type_des textarea {
-    display: block;
-    margin-top: 20px;
-    min-height: 100px;
-}
 #wp-mep_event_cc_email_text-media-buttons button{width:auto !important;}
 .wrap.mage_settings_panel_wrap #setting-error-tgmpa{order: 0;width: 100%;}
 #mp_event_all_info_in_tab table.form-table{table-layout: inherit;}
@@ -465,5 +460,5 @@ label.mp_event_virtual_type_des textarea{width:100%;}
 #mp_event_all_info_in_tab .mp_event_type_sortable_button{ border-radius: 0 5px 5px 0;border-left: none;cursor: move;}
 /****************/
 #mp_event_all_info_in_tab table button#mep_event_cc_email_text-tmce,
-#mp_event_all_info_in_tab table button#mep_event_cc_email_text-html{width:auto;}
+#mp_event_all_info_in_tab table button#mep_event_cc_email_text-html{width:100px;}
 

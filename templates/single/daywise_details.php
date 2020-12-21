@@ -1,5 +1,5 @@
 <div class="mep-day-details-section">
-    <h4><?php _e('Event Days', 'mage-eventpress'); ?></h4>
+    <h4><?php _e('Event Timelines', 'mage-eventpress'); ?></h4>
     <?php
     foreach ($mep_event_day as $field) {
     ?>

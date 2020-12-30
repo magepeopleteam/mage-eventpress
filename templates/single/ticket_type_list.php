@@ -14,6 +14,7 @@
 						$actual_price=strip_tags(wc_price(mep_get_price_including_tax($post_id,$ticket_price)));
                         $data_price=str_replace(get_woocommerce_currency_symbol(), '', $actual_price);
                         $data_price=str_replace(wc_get_price_thousand_separator(), '', $data_price);
+						$data_price=str_replace(wc_get_price_decimal_separator(), '.', $data_price);
                         if ($total_left > 0) {
                             if ($qty_t_type == 'dropdown') { ?>
                                 <select name="option_qty[]" id="eventpxtp_<?php echo $count; ?>" <?php if ($total_left <= 0) { ?> style='display: none!important;' <?php } ?> class='extra-qty-box etp'>

@@ -1,5 +1,7 @@
 <?php
-$recurring     = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+$day                             = mep_get_event_upcomming_date($event_id,'day');
+$month                           = mep_get_event_upcomming_date($event_id,'month');
+$recurring                       = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 $mep_hide_event_hover_btn        = mep_get_option('mep_hide_event_hover_btn', 'general_setting_sec', 'no');
 $mep_hide_event_hover_btn_text   = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
 ?>
@@ -9,10 +11,12 @@ $mep_hide_event_hover_btn_text   = mep_get_option('mep_hide_event_hover_btn_text
         <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id);  ?></a>
         <?php if ($recurring == 'no') { ?>
             <div class="mep-ev-start-date">
-                <div class="mep-day"><?php echo apply_filters('mep_event_list_only_day_number',get_mep_datetime($event_meta['event_start_datetime'][0], 'day'),$event_id); ?></div>
-                <div class="mep-month"><?php echo apply_filters('mep_event_list_only_month_name',get_mep_datetime($event_meta['event_start_datetime'][0], 'month'),$event_id); ?></div>
+                <div class="mep-day"><?php echo apply_filters('mep_event_list_only_day_number',$day,$event_id); ?></div>
+                <div class="mep-month"><?php echo apply_filters('mep_event_list_only_month_name',$month,$event_id); ?></div>
             </div>
-        <?php }
+        <?php }else{
+            do_action('mep_event_list_only_date_show',$event_id);
+        }
 
         if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>

@@ -190,7 +190,6 @@ function mep_get_all_tax_list($current_tax=null){
   }
 
 
-
   if (!function_exists('mep_event_get_order_meta')) {  
   function mep_event_get_order_meta($item_id,$key){
   global $wpdb;
@@ -2411,9 +2410,13 @@ if (!function_exists('get_event_list_js')) {
               // price.closest('tr').find('.cart_total_price').html(sum + "â‚´");
   
           });
-  
+	  jQuery('#rowtotal_<?php echo $id; ?>').val(total);
+  					total = total.toFixed(2);
+                    let total_part=total.toString().split(".");
+                    total_part[0] = total_part[0].replace(/\B(?=(\d{3})+(?!\d))/g, "<?php echo wc_get_price_thousand_separator(); ?>");
+                    total=total_part.join("<?php echo wc_get_price_decimal_separator(); ?>");
           jQuery('#usertotal_<?php echo $id; ?>').html("<?php if($currency_pos=="left"){ echo get_woocommerce_currency_symbol(); } ?>" + total + "<?php if($currency_pos=="right"){ echo get_woocommerce_currency_symbol(); } ?>");
-          jQuery('#rowtotal_<?php echo $id; ?>').val(total);
+          
   
       }).change(); //trigger change event on page load
   
@@ -2582,8 +2585,7 @@ function mep_event_recurring_date_list_in_event_list_loop($event_id){
         do_action('mep_event_everyday_date_list_display',$event_id);
       }else{
         foreach ($more_date as $_more_date) {
-          if (strtotime(current_time('Y-m-d H:i')) < strtotime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'])) {
-           
+          if (strtotime(current_time('Y-m-d H:i')) < strtotime($_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'])) {           
                   ?>
                   <li>
                      <span class='mep-more-date'>
@@ -2602,16 +2604,6 @@ function mep_event_recurring_date_list_in_event_list_loop($event_id){
           }
       }
       }
-
-
-
-
-
-
-
-
-
-
         echo '</ul>';
         ?>
         <?php if($show_multidate == 'yes'){ ?>
@@ -2648,14 +2640,16 @@ function mep_event_rich_text_data(){
       $event_id = $post->ID;
 if($event_id && get_post_type($event_id) == 'mep_events'){
 
-        $event_name = get_the_title($event_id);
-        $event_start_date = get_post_meta($post->ID,'event_start_datetime',true) ? get_post_meta($post->ID,'event_start_datetime',true) : '';
-        $event_end_date = get_post_meta($post->ID,'event_end_datetime',true) ? get_post_meta($post->ID,'event_end_datetime',true) : '';
-        $event_rt_status = get_post_meta($post->ID,'mep_rt_event_status',true) ? get_post_meta($post->ID,'mep_rt_event_status',true) : 'EventRescheduled';
+        $event_name           = get_the_title($event_id);
+        $event_start_date     = get_post_meta($post->ID,'event_start_datetime',true) ? get_post_meta($post->ID,'event_start_datetime',true) : '';
+        $event_end_date       = get_post_meta($post->ID,'event_end_datetime',true) ? get_post_meta($post->ID,'event_end_datetime',true) : '';
+        $event_rt_status      = get_post_meta($post->ID,'mep_rt_event_status',true) ? get_post_meta($post->ID,'mep_rt_event_status',true) : 'EventRescheduled';
         $event_rt_atdnce_mode = get_post_meta($post->ID,'mep_rt_event_attandence_mode',true) ? get_post_meta($post->ID,'mep_rt_event_attandence_mode',true) : 'OfflineEventAttendanceMode';
-        $event_rt_prv_date = get_post_meta($post->ID,'mep_rt_event_prvdate',true) ? get_post_meta($post->ID,'mep_rt_event_prvdate',true) : $event_start_date;
-        $terms      = get_the_terms( $event_id, 'mep_org' );
-        $org_name   = is_array($terms) && sizeof($terms) > 0 ? $terms[0]->name : 'No Performer';
+        $event_rt_prv_date    = get_post_meta($post->ID,'mep_rt_event_prvdate',true) ? get_post_meta($post->ID,'mep_rt_event_prvdate',true) : $event_start_date;
+        $terms                = get_the_terms( $event_id, 'mep_org' );
+        $org_name             = is_array($terms) && sizeof($terms) > 0 ? $terms[0]->name : 'No Performer';
+        $rt_status    		  = get_post_meta($event_id, 'mep_rich_text_status', true) ? get_post_meta($event_id, 'mep_rich_text_status', true) : 'enable';
+        if($rt_status == 'enable'){
         ob_start();
         
         ?>
@@ -2694,6 +2688,7 @@ if($event_id && get_post_type($event_id) == 'mep_events'){
         
         <?php
         echo $content = ob_get_clean();
+  }
   }
     }
 }
@@ -3043,13 +3038,17 @@ function mep_single_page_js_script($event_id){
 
                     });
                     //Fix 27.10.2020 Tony
+                    jQuery('#rowtotal').val(total);
                     total = total.toFixed(2);
+                    let total_part=total.toString().split(".");
+                    total_part[0] = total_part[0].replace(/\B(?=(\d{3})+(?!\d))/g, "<?php echo wc_get_price_thousand_separator(); ?>");
+                    total=total_part.join("<?php echo wc_get_price_decimal_separator(); ?>");
                     jQuery('#usertotal').html("<?php if ($currency_pos == "left" || $currency_pos == 'left_space') {
                         echo get_woocommerce_currency_symbol();
                     } ?>" + total + "<?php if ($currency_pos == "right" || $currency_pos == 'right_space') {
                        echo get_woocommerce_currency_symbol();
                     } ?>");
-                    jQuery('#rowtotal').val(total);
+                    
                 }).change(); //trigger change event on page load
                 <?php
                $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
@@ -3238,12 +3237,6 @@ function mep_elementor_get_tax_term( $tax ) {
 
 
 
-// add_action('init','price_test');
-
-function price_test(){
-  echo wc_get_price_including_tax( 408, 100);
-  die();
-}
 
 
 function mep_get_price_including_tax( $event, $price, $args = array() ) {
@@ -3484,3 +3477,33 @@ function mep_virtual_join_info_event_email_text($content,$event_id,$order_id){
   }
 return $content;
 }
+
+
+
+
+// function mep_get_event_upcomming_date($event_id){
+//   $date = [];
+//   $event_start_datetime = get_post_meta($event_id,'event_start_datetime',true);
+//   $event_end_datetime = get_post_meta($event_id,'event_end_datetime',true);
+//   $event_multidate = get_post_meta($event_id,'mep_event_more_date',true);
+//   $event_std[] = array(
+//       'event_std' => $event_start_datetime,
+//       'event_etd' => $event_end_datetime
+//   );
+//   $a = 1;
+//   foreach($event_multidate as $event_mdt){
+//       $event_std[$a]['event_std'] = $event_mdt['event_more_start_date'].' '.$event_mdt['event_more_start_time'];
+//       $event_std[$a]['event_etd'] = $event_mdt['event_more_end_date'].' '.$event_mdt['event_more_end_time'];
+//       $a++;
+//   }
+//   $cn = 0;
+//   foreach($event_std as $_event_std){
+//       $std = $_event_std['event_std'];
+//       $start_date = date('Y-m-d H:i:s',strtotime($_event_std['event_std']));
+//       $end_date   = date('Y-m-d',strtotime($_event_std['event_etd']));
+//       if (strtotime(current_time('Y-m-d H:i')) < strtotime($std) && $cn == 0) {
+//           $date   = $start_date;   
+//           $cn++;
+//       }
+//   }
+// }

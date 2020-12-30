@@ -12,6 +12,10 @@
                     $qty_type = $field['option_qty_type'];
                     $total_sold = (int) mep_extra_service_sold($post_id, $field['option_name'], $event_date);
                     $ext_left = ($total_extra_service - $total_sold);
+					
+					$actual_price=strip_tags(wc_price(mep_get_price_including_tax($post_id, $field['option_price'])));
+	                $data_price=str_replace(get_woocommerce_currency_symbol(), '', $actual_price);
+	                $data_price=str_replace(wc_get_price_thousand_separator(), '', $data_price);
                 ?>
                     <tr>
                         <td align="Left"><?php echo $field['option_name']; ?>
@@ -34,7 +38,7 @@
                                     <div class="mage_input_group">
                                         <span class="fa fa-minus qty_dec"></span>
                                         <input id="eventpx" <?php //if($ext_left<=0){ echo "disabled"; }
-                                                            ?> size="4" inputmode="numeric" type="text" class='extra-qty-box' name='event_extra_service_qty[]' data-price='<?php echo mep_get_price_including_tax($post_id,$field['option_price']); ?>' value='0' min="0" max="<?php echo $ext_left; ?>">
+                                                            ?> size="4" inputmode="numeric" type="text" class='extra-qty-box' name='event_extra_service_qty[]' data-price='<?php echo $data_price; ?>' value='0' min="0" max="<?php echo $ext_left; ?>">
                                         <span class="fa fa-plus qty_inc"></span>
                                     </div>
                             <?php }
@@ -44,7 +48,7 @@
                         </td>
                         <td class="mage_text_center"><?php echo wc_price(mep_get_price_including_tax($post_id, $field['option_price']));
                                                         if ($ext_left > 0) { ?>
-                                <p style="display: none;" class="price_jq"><?php echo mep_get_price_including_tax($post_id,$field['option_price']); ?></p>
+                                <p style="display: none;" class="price_jq"><?php echo $data_price; ?></p>
                                 <input type="hidden" name='event_extra_service_name[]' value='<?php echo $field['option_name']; ?>'>
                                 <input type="hidden" name='event_extra_service_price[]' value='<?php echo $field['option_price']; ?>'>
                             <?php } ?>

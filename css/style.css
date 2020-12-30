@@ -314,7 +314,7 @@ h3.mep_list_date {font-size: 16px; font-style: italic;font-weight: bold;color: #
 .mage_grid_box .blank_div{margin: 0 20px 0 0;}
 .mage_grid_box .blank_div:last-child{margin: 0 0 15px 0;}
 .mep_event_grid_item .mep_list_event_details,
-.mep_event_grid_item .mep_list_thumb{width: 100%}
+.mep_event_grid_item .mep_list_thumb{width: 100%;min-height: 160px;}
 .mep_event_grid_item .mep_list_event_details{margin: 0;}
 .mep_event_grid_item .mep-list-header{padding: 0 0 0 10px;}
 .mep_event_grid_item .mep-list-footer { padding: 10px 0 10px 10px }

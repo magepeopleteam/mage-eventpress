@@ -696,8 +696,18 @@ class MP_Event_All_Info_In_One
 		$event_rt_status      = get_post_meta($post_id, 'mep_rt_event_status', true) ? get_post_meta($post_id, 'mep_rt_event_status', true) : '';
 		$event_rt_atdnce_mode = get_post_meta($post_id, 'mep_rt_event_attandence_mode', true) ? get_post_meta($post_id, 'mep_rt_event_attandence_mode', true) : '';
 		$event_rt_prv_date    = get_post_meta($post_id, 'mep_rt_event_prvdate', true) ? get_post_meta($post_id, 'mep_rt_event_prvdate', true) : $event_start_date;
+		$rt_status    		  = get_post_meta($post_id, 'mep_rich_text_status', true) ? get_post_meta($post_id, 'mep_rich_text_status', true) : 'enable';
 	?>
-		<table>
+<div class='mep_rich_text_status_section'>
+<label for='mep_rich_text_status'>
+<?php _e('Rich Text Status','mage-eventpress'); ?>
+	<select id='mep_rich_text_status' name='mep_rich_text_status'>
+			<option value='enable' <?php if($rt_status == 'enable'){ echo 'Selected'; } ?>><?php _e('Enable','mage-eventpress'); ?></option>
+			<option value='disable' <?php if($rt_status == 'disable'){ echo 'Selected'; } ?>><?php _e('Disable','mage-eventpress'); ?></option>
+	</select>
+</label>
+</div>
+		<table id='mep_rich_text_table' <?php if($rt_status == 'disable'){ ?> style='display:none;' <?php } ?>>
 			<tr>
 				<th><span><?php _e('Type :', 'mage-eventpress'); ?></span></th>
 				<td colspan="3"><?php _e('Event', 'mage-eventpress'); ?></td>
@@ -761,6 +771,22 @@ class MP_Event_All_Info_In_One
 				</td>
 			</tr>
 		</table>
+<script>
+ 	jQuery('[name="mep_rich_text_status"]').change(function() {
+		var rich_status = jQuery(this).val() ? jQuery(this).val() : 'enable';
+		if(rich_status == 'enable'){
+			// mep_rich_text_table
+			jQuery('#mep_rich_text_table').show(500);
+		}
+		else if(rich_status == 'disable'){
+			jQuery('#mep_rich_text_table').hide(500);
+		}
+	 });
+</script>
+
+
+
+
 	<?php
 	}
 
@@ -1192,11 +1218,13 @@ function mep_event_meta_save($post_id)
 		$mep_available_seat = isset($_POST['mep_available_seat']) ? strip_tags($_POST['mep_available_seat']) : 'off';
 		$_tax_status = isset($_POST['_tax_status']) ? strip_tags($_POST['_tax_status']) : 'none';
 		$_tax_class = isset($_POST['_tax_class']) ? strip_tags($_POST['_tax_class']) : '';
+		$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? strip_tags($_POST['mep_rich_text_status']) : 'enable';
 
 		if ($mep_reset_status == 'on') {
 			mep_reset_event_booking($post_id);
 		}
 
+		update_post_meta($post_id, 'mep_rich_text_status', $mep_rich_text_status);
 		update_post_meta($post_id, 'mep_available_seat', $mep_available_seat);
 		update_post_meta($post_id, 'mep_reg_status', $mep_reg_status);
 		update_post_meta($post_id, '_tax_status', $_tax_status);

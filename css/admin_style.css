@@ -462,3 +462,14 @@ label.mp_event_virtual_type_des textarea{width:100%;}
 #mp_event_all_info_in_tab table button#mep_event_cc_email_text-tmce,
 #mp_event_all_info_in_tab table button#mep_event_cc_email_text-html{width:100px;}
 
+.ppof-settings.ppof-metabox .notice.notice-warning.is-dismissible, .ppof-settings.ppof-metabox .notice {
+    display: none;
+}
+.wrap.mage_settings_panel_wrap .notice.notice-warning {
+    display: none;
+    }
+    .mep_rich_text_status_section {
+        display: block;
+        text-align: center;
+        padding: 15px;
+    }

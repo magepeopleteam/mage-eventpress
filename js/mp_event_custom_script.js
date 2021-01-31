@@ -16,3 +16,18 @@
         });
     });
 }(jQuery));
+
+
+
+
+
+
+jQuery(document).ready(function($){
+    function mp_remove_required(){
+        jQuery('input, select, textarea').each(function (){
+            jQuery(this).removeAttr('required');
+        });
+    }
+mp_remove_required();
+
+}); 

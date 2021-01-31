@@ -168,6 +168,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         )
                     ),
                     array(
+                        'name' => 'mep_show_product_cat_in_event',
+                        'label' => __('Show Product Category in Event?', 'mage-eventpress'),
+                        'desc' => __('Want to show Product Category in Event Edit Page? If you want set product category based coupon code you need to assign event into Product category, Please set yes only when you need it', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'no',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
+                    ),
+                    array(
                         'name' => 'mep_global_single_template',
                         'label' => __('Event Details Template', 'mage-eventpress'),
                         'desc' => __('Event Details Template', 'mage-eventpress'),

@@ -81,12 +81,10 @@ function mep_get_all_order_data_and_create_attendee()
 
 
     if (get_option('mep_event_default_date_update_2020') != 'completed') {
-
         $args = array(
             'post_type' => 'mep_events',
             'posts_per_page' => -1
         );
-
         $qr = new WP_Query($args);
         foreach ($qr->posts as $result) {
             $post_id = $result->ID;
@@ -101,8 +99,7 @@ function mep_get_all_order_data_and_create_attendee()
             update_post_meta($post_id, 'event_start_datetime', $event_start_datetime);
             update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
         }
-        update_option('mep_event_default_date_update_2020', 'completed');
-        //die();
+        update_option('mep_event_default_date_update_2020', 'completed');        
     }
 
     /**
@@ -123,8 +120,7 @@ function mep_get_all_order_data_and_create_attendee()
             $event_expire_datetime  = sizeof($md) > 0 ? date('Y-m-d H:i:s', strtotime($md['event_more_end_date'] . ' ' . $md['event_more_end_time'])) : date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, 'event_end_datetime', true)));
             update_post_meta($post_id, 'event_expire_datetime', $event_expire_datetime);
         }
-        update_option('mep_event_expire_date_upgration', 'completed');
-        // die();
+        update_option('mep_event_expire_date_upgration', 'completed');        
     }
 
 

@@ -127,20 +127,20 @@ function mep_fw_meta_boxs()
                             'details' => __('', 'mage-eventpress'),
                             'collapsible' => true,
                             'type' => 'repeatable',
-                            'btn_text' => 'Add New F.A.Q',
+                            'btn_text' => __('Add New F.A.Q','mage-eventpress'),
                             'title_field' => 'mep_faq_title',
                             'fields' => array(                              
                                 array(
                                     'type' => 'text',
                                     'default' => '',
                                     'item_id' => 'mep_faq_title',
-                                    'name' => 'Title'
+                                    'name' => __('Title','mage-eventpress')
                                 ),
                                 array(
                                     'type' => 'textarea',
                                     'default' => '',
                                     'item_id' => 'mep_faq_content',
-                                    'name' => 'Content'
+                                    'name' => __('Content','mage-eventpress')
                                 ),
                             ),
                         ),
@@ -183,20 +183,20 @@ function mep_fw_meta_boxs()
                             'details' => __('', 'mage-eventpress'),
                             'collapsible' => true,
                             'type' => 'repeatable',
-                            'btn_text' => 'Add New Days',
+                            'btn_text' => __('Add New Days','mage-eventpress'),
                             'title_field' => 'mep_day_title',
                             'fields' => array(                              
                                 array(
                                     'type' => 'text',
                                     'default' => '',
                                     'item_id' => 'mep_day_title',
-                                    'name' => 'Title'
+                                    'name' => __('Title','mage-eventpress')
                                 ),
                                 array(
                                     'type' => 'textarea',
                                     'default' => '',
                                     'item_id' => 'mep_day_content',
-                                    'name' => 'Content'
+                                    'name' => __('Content','mage-eventpress')
                                 ),
                             ),
                         ),
@@ -232,14 +232,14 @@ function mep_fw_meta_boxs()
         'priority' => 10,
         'sections' => array(
             'section_2' => array(
-                'title'     =>     __('', 'mage-eventpress-gq'),
-                'description'     => __('', 'mage-eventpress-gq'),
+                'title'     =>     __('', 'mage-eventpress'),
+                'description'     => __('', 'mage-eventpress'),
                 'options'     => array(
 
                     array(
                         'id'          => 'mep_list_thumbnail',
-                        'title'       => __('Thumbmnail ','text-domain'),
-                        'details'     => __('Please upload image for event list','text-domain'),
+                        'title'       => __('Thumbmnail ','mage-eventpress'),
+                        'details'     => __('Please upload image for event list','mage-eventpress'),
                         'placeholder' => 'https://via.placeholder.com/1000x500',
                         'type'        => 'media',
                     )
@@ -269,10 +269,6 @@ function mep_fw_meta_boxs()
     new AddMetaBox( $list_thumb_meta_args );
 
 
-
-
-
-
     $email_body_meta_boxs = array(
         'page_nav'     => __('Event List Thumbnail', 'mage-eventpress-gq'),
         'priority' => 10,
@@ -284,11 +280,11 @@ function mep_fw_meta_boxs()
 
                     array(
                         'id'    => 'mep_event_cc_email_text',
-                        'title'    => __('Confirmation Email Text:','text-domain'),
-                        'details'  => __('','text-domain'),
+                        'title'    => __('Confirmation Email Text:','mage-eventpress'),
+                        'details'  => __('','mage-eventpress'),
                         'type'    => 'wp_editor',
                         // 'editor_settings'=>array('textarea_name'=>'wp_editor_field', 'editor_height'=>'150px'),
-                        'placeholder' => __('wp_editor value','text-domain'),
+                        'placeholder' => __('wp_editor value','mage-eventpress'),
                         'default'    => '',
                     ),
                 )
@@ -296,7 +292,6 @@ function mep_fw_meta_boxs()
 
         ),
     );
-
     $email_body_meta_args = array(
         'meta_box_id'               => 'mep_event_email_body_meta_boxes',
         'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;&nbsp;'.__('Email Confirmation Text', 'mage-eventpress'),
@@ -313,14 +308,4 @@ function mep_fw_meta_boxs()
         ),
     );
     new AddMetaBox( $email_body_meta_args );
-
-
-
-
-
-
-
-
-
-    
 }

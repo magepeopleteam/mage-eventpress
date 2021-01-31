@@ -19,7 +19,7 @@ class MP_Event_All_Info_In_One
 	public function mp_event_all_in_tab()
 	{
 		$event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-		$post_id = get_the_id();
+		$post_id 			= get_the_id();
 ?>
 		<div class="mp_event_all_meta_in_tab mp_event_tab_area">
 			<div class="mp_tab_menu">
@@ -127,12 +127,17 @@ class MP_Event_All_Info_In_One
 				do_action('mep_admin_event_details_end_of_tab_details', $post_id); ?>
 			</div>
 		</div>
+		<script type="text/javascript">
+			jQuery(function($) {
+				$( "#mp_event_all_info_in_tab" ).parent().removeClass('meta-box-sortables');
+			});
+		</script>
 	<?php
 	}
 
 	public function mp_event_venue($post_id)
 	{
-		$event_label      = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
+		$event_label     = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 		$values          = get_post_custom($post_id);
 		$user_api        = mep_get_option('google-map-api', 'general_setting_sec', '');
 		$map_type        = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');
@@ -366,8 +371,6 @@ class MP_Event_All_Info_In_One
 					jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
 				}
 			})
-
-
 			jQuery('[name="mep_location_venue"]').keypress(function() {
 				let location = jQuery(this).val();
 				if (location === '') {
@@ -392,8 +395,9 @@ class MP_Event_All_Info_In_One
 					<th><?php _e('Ticket Price', 'mage-eventpress'); ?></th>
 					<th><?php _e('Available Qty', 'mage-eventpress'); ?></th>
 					<th><?php _e('Default Qty', 'mage-eventpress'); ?></th>
-					<?php echo $rsvqty = '<th>' . esc_html__("Reserve Qty", "mage-eventpress") . '</th>';
+					<?php echo $rsvqty = '<th>' . esc_html__("Reserve Qty", "mage-eventpress") . '</th>';					
 					apply_filters('mep_add_extra_column', $rsvqty); ?>
+					<th style='width:220px'><?php _e('Sale End Date', 'mage-eventpress'); ?></th>					
 					<th><?php _e('Qty Box Type', 'mage-eventpress'); ?></th>
 					<th></th>
 				</tr>
@@ -412,7 +416,7 @@ class MP_Event_All_Info_In_One
 																																	echo esc_attr($field['option_name_t']);
 																																} ?>" /></td>
 
-							<td><input type="number" size="4" pattern="[0-9]*" step="0.01" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php if (array_key_exists('option_price_t', $field) && $field['option_price_t'] != '') {
+							<td><input type="number" size="4" pattern="[0-9]*" step="0.001" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php if (array_key_exists('option_price_t', $field) && $field['option_price_t'] != '') {
 																																											echo esc_attr($field['option_price_t']);
 																																										} else {
 																																											echo '';
@@ -436,7 +440,9 @@ class MP_Event_All_Info_In_One
 																																} ?>" /></td>
 
 							<?php do_action('mep_add_extra_input_box', $field) ?>
-
+							<td><input style='width:220px;' type="datetime-local" id="ticket_sale_start" value='<?php if ($field['option_sale_end_date_t'] != '') {
+																																	echo esc_attr($field['option_sale_end_date_t']);
+																																} ?>' name="option_sale_end_date_t[]"></td>
 							<td>
 								<select name="option_qty_t_type[]" class='mp_formControl'>
 									<option value="inputbox" <?php if ($qty_t_type == 'inputbox') {
@@ -447,7 +453,7 @@ class MP_Event_All_Info_In_One
 																} ?>><?php _e('Dropdown List', 'mage-eventpress'); ?></option>
 								</select>
 							</td>
-
+																								
 							<td>
 								<div class="mp_event_remove_move">
 									<button class="button remove-row-t" type="button"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span></button>
@@ -465,7 +471,7 @@ class MP_Event_All_Info_In_One
 				<!-- empty hidden one for jQuery -->
 				<tr class="empty-row-t screen-reader-text">
 					<td><input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" /></td>
-					<td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.01" name="option_price_t[]" placeholder="Ex: 10" value="" /></td>
+					<td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_t[]" placeholder="Ex: 10" value="" /></td>
 					<td><input type="number" size="4" pattern="[0-9]*" step="1" class="mp_formControl" name="option_qty_t[]" placeholder="Ex: 15" value="" /></td>
 					<td><input type="number" size="2" pattern="[0-9]*" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="" /></td>
 					<?php echo $option_rsv_t = '<td><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value=""/></td>' ?>
@@ -518,7 +524,7 @@ class MP_Event_All_Info_In_One
 																																echo esc_attr($field['option_name']);
 																															} ?>" /></td>
 
-							<td><input type="number" step="0.01" class="mp_formControl" name="option_price[]" placeholder="Ex: 10" value="<?php if ($field['option_price'] != '') {
+							<td><input type="number" step="0.001" class="mp_formControl" name="option_price[]" placeholder="Ex: 10" value="<?php if ($field['option_price'] != '') {
 																																				echo esc_attr($field['option_price']);
 																																			} else {
 																																				echo '';
@@ -557,7 +563,7 @@ class MP_Event_All_Info_In_One
 				<!-- empty hidden one for jQuery -->
 				<tr class="empty-row screen-reader-text">
 					<td><input type="text" class="mp_formControl" name="option_name[]" placeholder="Ex: Cap" /></td>
-					<td><input type="number" class="mp_formControl" step="0.01" name="option_price[]" placeholder="Ex: 10" value="" /></td>
+					<td><input type="number" class="mp_formControl" step="0.001" name="option_price[]" placeholder="Ex: 10" value="" /></td>
 					<td><input type="number" class="mp_formControl" name="option_qty[]" placeholder="Ex: 100" value="" /></td>
 
 					<td><select name="option_qty_type[]" class='mp_formControl'>
@@ -1018,6 +1024,7 @@ function mep_events_ticket_type_save($post_id)
 		$dflt_qty     = $_POST['option_default_qty_t'] ? $_POST['option_default_qty_t'] : array();
 		$rsv          = $_POST['option_rsv_t'] ? $_POST['option_rsv_t'] : array();
 		$qty_type     = $_POST['option_qty_t_type'] ? $_POST['option_qty_t_type'] : array();
+		$sale_end     = $_POST['option_sale_end_date_t'] ? $_POST['option_sale_end_date_t'] : array();
 
 		$count = count($names);
 
@@ -1035,7 +1042,6 @@ function mep_events_ticket_type_save($post_id)
 				$new[$i]['option_qty_t'] = stripslashes(strip_tags($qty[$i]));
 			endif;
 
-
 			if ($rsv[$i] != '') :
 				$new[$i]['option_rsv_t'] = stripslashes(strip_tags($rsv[$i]));
 			endif;
@@ -1047,10 +1053,14 @@ function mep_events_ticket_type_save($post_id)
 			if ($qty_type[$i] != '') :
 				$new[$i]['option_qty_t_type'] = stripslashes(strip_tags($qty_type[$i]));
 			endif;
+
+			if ($sale_end[$i] != '') :
+				$new[$i]['option_sale_end_date_t'] = stripslashes(strip_tags($sale_end[$i]));
+			endif;
+
 		}
 
 		$ticket_type_list = apply_filters('mep_ticket_type_arr_save', $new);
-
 
 		if (!empty($ticket_type_list) && $ticket_type_list != $old) {
 			update_post_meta($post_id, 'mep_event_ticket_type', $ticket_type_list);
@@ -1083,9 +1093,9 @@ function mep_events_repeatable_meta_box_save($post_id)
 	if (get_post_type($post_id) == 'mep_events') {
 
 
-		$old = get_post_meta($post_id, 'mep_events_extra_prices', true);
-		$new = array();
-		$names = $_POST['option_name'];
+		$old 	  = get_post_meta($post_id, 'mep_events_extra_prices', true);
+		$new 	  = array();
+		$names 	  = $_POST['option_name'];
 		$urls     = $_POST['option_price'];
 		$qty      = $_POST['option_qty'];
 		$qty_type = $_POST['option_qty_type'];
@@ -1093,7 +1103,6 @@ function mep_events_repeatable_meta_box_save($post_id)
 		$count    = count($names);
 
 		for ($i = 0; $i < $count; $i++) {
-
 			if ($names[$i] != '') :
 				$new[$i]['option_name'] = stripslashes(strip_tags($names[$i]));
 			endif;
@@ -1139,7 +1148,6 @@ function mep_event_meta_save($post_id)
 	if (!current_user_can('edit_post', $post_id)) {
 		return;
 	}
-
 
 	/**
 	 * If the saving post is event then go on
@@ -1190,7 +1198,7 @@ function mep_event_meta_save($post_id)
 
 		$latitude      = isset($_POST['latitude']) ? strip_tags($_POST['latitude']) : "";
 		$longitude     = isset($_POST['latitude']) ? strip_tags($_POST['longitude']) : "";
-		$location_name = isset($_POST['location_name']) ? strip_tags($_POST['location_name']) : "";
+		$location_name 			= isset($_POST['location_name']) ? strip_tags($_POST['location_name']) : "";
 
 		$mep_full_name           = isset($_POST['mep_full_name']) ? strip_tags($_POST['mep_full_name']) : "";
 		$mep_reg_email           = isset($_POST['mep_reg_email']) ? strip_tags($_POST['mep_reg_email']) : "";
@@ -1206,19 +1214,19 @@ function mep_event_meta_save($post_id)
 		$mep_event_template      = isset($_POST['mep_event_template']) ? strip_tags($_POST['mep_event_template']) : "";
 
 
-		$event_start_datetime  = date('Y-m-d H:i:s', strtotime($event_start_date . ' ' . $event_start_time));
-		$event_end_datetime    = date('Y-m-d H:i:s', strtotime($event_end_date . ' ' . $event_end_time));
-		$md                    = sizeof($mdate) > 0 ? end($mdate) : array();
-		$event_expire_datetime = sizeof($md) > 0 ? date('Y-m-d H:i:s', strtotime($md['event_more_end_date'] . ' ' . $md['event_more_end_time'])) : $event_end_datetime;
+		$event_start_datetime  	= date('Y-m-d H:i:s', strtotime($event_start_date . ' ' . $event_start_time));
+		$event_end_datetime    	= date('Y-m-d H:i:s', strtotime($event_end_date . ' ' . $event_end_time));
+		$md                    	= sizeof($mdate) > 0 ? end($mdate) : array();
+		$event_expire_datetime 	= sizeof($md) > 0 ? date('Y-m-d H:i:s', strtotime($md['event_more_end_date'] . ' ' . $md['event_more_end_time'])) : $event_end_datetime;
 
 
 
-		$mep_reg_status = isset($_POST['mep_reg_status']) ? strip_tags($_POST['mep_reg_status']) : 'off';
-		$mep_reset_status = isset($_POST['mep_reset_status']) ? strip_tags($_POST['mep_reset_status']) : 'off';
-		$mep_available_seat = isset($_POST['mep_available_seat']) ? strip_tags($_POST['mep_available_seat']) : 'off';
-		$_tax_status = isset($_POST['_tax_status']) ? strip_tags($_POST['_tax_status']) : 'none';
-		$_tax_class = isset($_POST['_tax_class']) ? strip_tags($_POST['_tax_class']) : '';
-		$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? strip_tags($_POST['mep_rich_text_status']) : 'enable';
+		$mep_reg_status 		= isset($_POST['mep_reg_status']) ? strip_tags($_POST['mep_reg_status']) : 'off';
+		$mep_reset_status 		= isset($_POST['mep_reset_status']) ? strip_tags($_POST['mep_reset_status']) : 'off';
+		$mep_available_seat 	= isset($_POST['mep_available_seat']) ? strip_tags($_POST['mep_available_seat']) : 'off';
+		$_tax_status 			= isset($_POST['_tax_status']) ? strip_tags($_POST['_tax_status']) : 'none';
+		$_tax_class 			= isset($_POST['_tax_class']) ? strip_tags($_POST['_tax_class']) : '';
+		$mep_rich_text_status 	= isset($_POST['mep_rich_text_status']) ? strip_tags($_POST['mep_rich_text_status']) : 'enable';
 
 		if ($mep_reset_status == 'on') {
 			mep_reset_event_booking($post_id);
@@ -1241,6 +1249,7 @@ function mep_event_meta_save($post_id)
 		update_post_meta($pid, 'mep_reg_address', $mep_reg_address);
 		update_post_meta($pid, 'mep_reg_designation', $mep_reg_designation);
 		update_post_meta($pid, 'mep_reg_website', $mep_reg_website);
+
 		update_post_meta($pid, 'mep_reg_veg', $mep_reg_veg);
 		update_post_meta($pid, 'mep_reg_company', $mep_reg_company);
 		update_post_meta($pid, 'mep_reg_gender', $mep_reg_gender);
@@ -1257,6 +1266,7 @@ function mep_event_meta_save($post_id)
 		update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
 		update_post_meta($post_id, 'event_expire_datetime', $event_expire_datetime);
 		update_post_meta($pid, '_stock', $seat);
+
 		update_post_meta($pid, '_stock_msg', 'new');
 		update_post_meta($pid, 'longitude', $longitude);
 		update_post_meta($pid, 'latitude', $latitude);
@@ -1264,6 +1274,7 @@ function mep_event_meta_save($post_id)
 		update_post_meta($pid, 'mep_location_venue', $mep_location_venue);
 		update_post_meta($pid, 'mep_street', $mep_street);
 		update_post_meta($pid, '_sold_individually', 'no');
+		
 		update_post_meta($pid, 'mep_city', $mep_city);
 		update_post_meta($pid, 'mep_state', $mep_state);
 		update_post_meta($pid, 'mep_postcode', $mep_postcode);

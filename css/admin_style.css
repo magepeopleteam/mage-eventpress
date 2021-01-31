@@ -473,3 +473,6 @@ label.mp_event_virtual_type_des textarea{width:100%;}
         text-align: center;
         padding: 15px;
     }
+    div#mp_event_all_info_in_tab .handle-actions.hide-if-no-js {
+        display: none;
+    }    

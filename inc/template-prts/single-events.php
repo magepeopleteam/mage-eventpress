@@ -7,7 +7,6 @@ if ( post_password_required() ) {
     echo get_the_password_form(); // WPCS: XSS ok.
     echo '</div>';
 }else{
-
 $event_meta            = get_post_custom(get_the_id());
 $author_terms          = get_the_terms(get_the_id(), 'mep_org');
 $book_count            = get_post_meta(get_the_id(), 'total_booking', true);

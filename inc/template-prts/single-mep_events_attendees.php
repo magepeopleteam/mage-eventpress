@@ -171,8 +171,9 @@ if($ticket_user_id == $current_user_id ||  in_array( 'administrator', (array) $u
 				<td><?php echo $values['ea_ticket_type'][0]; ?> </td>
 			</tr>	
 			<?php } 
-			$mep_form_builder_data = get_post_meta($values['ea_event_id'][0], 'mep_form_builder_data', true);
-			  if ( $mep_form_builder_data ) {
+			$reg_form_id = mep_fb_get_reg_form_id($values['ea_event_id'][0]);   
+			$mep_form_builder_data = get_post_meta($reg_form_id, 'mep_form_builder_data', true) ? get_post_meta($reg_form_id, 'mep_form_builder_data', true) : [];
+			  if (sizeof($mep_form_builder_data) > 0 ) {
 			    foreach ( $mep_form_builder_data as $_field ) {
 			$vname = "ea_".$_field['mep_fbc_id']; 
 			$vals = $values[$vname][0];

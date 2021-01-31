@@ -321,7 +321,7 @@ msgstr ""
 
 #: inc/admin_setting_panel.php:540
 msgid "Enter the text which you want to display as Left."
-msgstr "Geben Sie den Text für die Anzeige Links ein."
+msgstr "Geben Sie den Text für die Anzeige Verfügbar ein."
 
 #: inc/admin_setting_panel.php:412
 msgid ""

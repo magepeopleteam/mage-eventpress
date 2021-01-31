@@ -13,7 +13,7 @@ if (!function_exists('mep_ev_datetime')) {
         $start_datetime         = get_post_meta(get_the_id(),'event_start_datetime',true);
         $start_date             = get_post_meta(get_the_id(),'event_start_date',true); //$event_meta['event_start_date'][0];
         $start_time             = get_post_meta(get_the_id(),'event_start_time',true); //$event_meta['event_start_time'][0];
-        $end_datetime           = get_post_meta(get_the_id(),'event_expire_datetime',true); //$event_meta['event_end_date'][0] . ' ' . $event_meta['event_end_time'][0];
+        $end_datetime           = get_post_meta(get_the_id(),'event_end_datetime',true); //$event_meta['event_end_date'][0] . ' ' . $event_meta['event_end_time'][0];
         $end_date               = get_post_meta(get_the_id(),'event_end_date',true); //$event_meta['event_end_date'][0];
         $end_time               = get_post_meta(get_the_id(),'event_end_time',true); //$event_meta['event_end_time'][0];
         $more_date              = get_post_meta(get_the_id(),'mep_event_more_date',true) ? maybe_unserialize(get_post_meta(get_the_id(),'mep_event_more_date',true)) : []; //array_key_exists('mep_event_more_date', $event_meta) ? unserialize($event_meta['mep_event_more_date'][0]) : array();

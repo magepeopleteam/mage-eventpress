@@ -35,11 +35,9 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $user                   = $form_position == 'details_page' ? mep_save_attendee_info_into_cart($product_id) : array();
     $validate               = mep_cart_ticket_type('validation_data', $total_price,$product_id);
     
-    // echo '<pre>';
-    // // print_r($user);
-    // print_r($ticket_type_arr);
-    // echo '</pre>';
-    // die();
+
+
+
 
     /**
      * Now Store the datas into Cart Session
@@ -103,13 +101,13 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
   $eid                    = array_key_exists('event_id', $cart_item) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 
   if (get_post_type($eid) == 'mep_events') {
-    $hide_location_status  = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
-    $hide_date_status  = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
+    $hide_location_status       = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
+    $hide_date_status           = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
     $user_info                  = $cart_item['event_user_info'];
     $ticket_type_arr            = $cart_item['event_ticket_info'];
     $event_extra_service        = $cart_item['event_extra_service'];
     $event_recurring_date       = $cart_item['event_recurring_date'];
-    $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
+    $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 
 
     $recurring = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
@@ -129,13 +127,13 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
       }
       if (is_array($user_info) && sizeof($user_info) > 0) {
         echo '<li>';
-           echo mep_cart_display_user_list($user_info);
+           echo mep_cart_display_user_list($user_info,$eid);
         echo '</li>';
       }
     } else {
       if (is_array($user_info) && sizeof($user_info) > 0) {
         echo '<li>';
-          echo mep_cart_display_user_list($user_info);
+          echo mep_cart_display_user_list($user_info,$eid);
         echo '</li>';
       } else {
            if($hide_date_status == 'no'){
@@ -244,6 +242,29 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
      mep_cart_order_data_save_ticket_type($item,$ticket_type_arr,$eid);
 
     }
+    $custom_forms_id = mep_get_user_custom_field_ids($eid);
+
+    foreach ($event_user_info as $userinf) {      
+      if ($userinf['user_name']) {  $item->add_meta_data(__('Name', 'mage-eventpress'), $userinf['user_name']); } 
+      if ($userinf['user_email']) {  $item->add_meta_data(__('Email', 'mage-eventpress'), $userinf['user_email']); } 
+      if ($userinf['user_phone']) {  $item->add_meta_data(__('Phone', 'mage-eventpress'), $userinf['user_phone']); } 
+      if ($userinf['user_address']) {  $item->add_meta_data(__('Address', 'mage-eventpress'), $userinf['user_address']); } 
+      if ($userinf['user_gender']) {  $item->add_meta_data(__('Gender', 'mage-eventpress'), $userinf['user_gender']); } 
+      if ($userinf['user_tshirtsize']) {  $item->add_meta_data(__('T-Shirt Size', 'mage-eventpress'), $userinf['user_tshirtsize']); } 
+      if ($userinf['user_company']) {  $item->add_meta_data(__('Company', 'mage-eventpress'), $userinf['user_company']); } 
+      if ($userinf['user_designation']) {  $item->add_meta_data(__('Designation', 'mage-eventpress'), $userinf['user_designation']); } 
+      if ($userinf['user_website']) {  $item->add_meta_data(__('Website', 'mage-eventpress'), $userinf['user_website']); } 
+      if ($userinf['user_vegetarian']) {  $item->add_meta_data(__('Vegetarian', 'mage-eventpress'), $userinf['user_vegetarian']); }    
+      if(sizeof($custom_forms_id) > 0){
+        foreach($custom_forms_id as $key => $value){  
+          $item->add_meta_data(__($key, 'mage-eventpress'), $userinf[$value]);           
+        }
+      }         
+    }
+
+
+
+
 
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {

@@ -68,10 +68,7 @@ if ( ! class_exists( 'AddMetaBox' ) ) {
 						endforeach;
 					endforeach;
 				endforeach;
-
 			endif;
-
-
 		}
 
 		public function mp_event_all_in_tab_menu_list() {

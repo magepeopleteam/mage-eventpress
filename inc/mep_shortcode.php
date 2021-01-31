@@ -79,7 +79,7 @@ foreach ($event_dates as $_dates) {
 <?php
 }
 
-/**
+/** 
  * The Magical & The Main Event Listing Shortcode is Here, You can check the details with demo here https://wordpress.org/plugins/mage-eventpress/
  */
 add_shortcode('event-list', 'mep_event_list');
@@ -148,7 +148,7 @@ function mep_event_list($atts, $content = null)
             <?php
             /**
              * The Main Query function mep_event_query is locet in inc/mep_query.php File
-             */
+             */ 
             $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
             $total_post = $loop->post_count;
             echo $main_div;

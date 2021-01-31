@@ -45,6 +45,7 @@ function mep_cpt()
 
     $args = array(
         'public'                => true,
+        'has_archive'           => true,
         'labels'                => $labels,
         'menu_icon'             => $event_icon,
         'supports'              => array('title', 'editor', 'thumbnail', 'excerpt'),

@@ -294,7 +294,7 @@ function mep_fw_meta_boxs()
     );
     $email_body_meta_args = array(
         'meta_box_id'               => 'mep_event_email_body_meta_boxes',
-        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;&nbsp;'.__('Email Confirmation Text', 'mage-eventpress'),
+        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;'.__('Email Text', 'mage-eventpress'),
         //'callback'       => '_meta_box_callback',
         'screen'                    => array('mep_events'),
         'context'                   => 'normal', // 'normal', 'side', and 'advanced'

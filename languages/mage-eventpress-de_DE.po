@@ -82,7 +82,7 @@ msgid "Add Extra Price"
 msgstr "extra Preis hinzufügen"
 
 #: inc/mep_event_meta.php:1121
-msgid "Add More Date"
+msgid "Add More Dates"
 msgstr "Datum hinzufügen"
 
 #: inc/mep_tax.php:14
@@ -257,7 +257,7 @@ msgid "Email"
 msgstr "E-Mail"
 
 #: inc/admin_setting_panel.php:328 inc/admin_setting_panel.php:329
-msgid "Email Form Name"
+msgid "Email From Name"
 msgstr "E-Mail Formularname"
 
 #: inc/admin_setting_panel.php:45

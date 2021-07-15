@@ -9,14 +9,14 @@ $mep_hide_event_hover_btn_text   = mep_get_option('mep_hide_event_hover_btn_text
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id);  ?></a>
-        <?php if ($recurring == 'no') { ?>
+        <?php //if ($recurring == 'no') { ?>
             <div class="mep-ev-start-date">
                 <div class="mep-day"><?php echo apply_filters('mep_event_list_only_day_number',$day,$event_id); ?></div>
                 <div class="mep-month"><?php echo apply_filters('mep_event_list_only_month_name',$month,$event_id); ?></div>
             </div>
-        <?php }else{
-            do_action('mep_event_list_only_date_show',$event_id);
-        }
+        <?php //}else{
+            //do_action('mep_event_list_only_date_show',$event_id);
+        //}
 
         if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>

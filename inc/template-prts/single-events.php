@@ -32,11 +32,13 @@ do_action('mep_event_single_page_after_header');
     
     do_action('woocommerce_before_single_product');
 
-    $theme_name = "/themes/$_current_template";
+   $theme_name = "/themes/$_current_template";
+
     require_once(mep_template_file_path($theme_name));
+    
     if (comments_open() || get_comments_number()) {
         comments_template();
-    }
+    }    
     ?>
 </div>
 <div class="mep-related-events-sec">

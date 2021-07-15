@@ -8,7 +8,14 @@ if (!function_exists('mep_get_event_reg_btn')) {
     // Get Event Registration Button
     function mep_get_event_reg_btn($event_id = '')
     {
+
         global $post, $event_meta;
+        $saved_user_role 	= get_post_meta($event_id, 'mep_member_only_user_role', true) ? get_post_meta($event_id, 'mep_member_only_user_role', true) : [];
+        $event_member_type 	= get_post_meta($event_id, 'mep_member_only_event', true) ? get_post_meta($event_id, 'mep_member_only_event', true) : 'for_all';        
+
+
+
+
         $total_book                 = 0;
         $post_id                    = $event_id ? $event_id : get_the_id();
         $event_meta                 = get_post_custom($post_id);
@@ -97,9 +104,17 @@ if (!function_exists('mep_get_event_reg_btn')) {
                 /**
                  * If everything is fine then its go on ....
                  */
+
+                
+
+                 if( $event_member_type == 'for_all' || ($event_member_type != 'for_all'  && is_user_logged_in() && ( in_array(wp_get_current_user()->roles[0],$saved_user_role) || in_array('all',$saved_user_role) ) )){
+
+                    
+
+                    //if( in_array($user_role,$saved_user_role) ){
 ?>
-                <!-- Register Now Title -->
-                <h4 class="mep-cart-table-title">
+      <!-- Register Now Title -->
+      <h4 class="mep-cart-table-title">
                     <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : _e('Register Now:', 'mage-eventpress');  ?>
                 </h4>
                 <!--The event add to cart main form start here-->
@@ -111,6 +126,12 @@ if (!function_exists('mep_get_event_reg_btn')) {
                     do_action('mep_event_ticket_type_extra_service', $post_id);
                     ?>
                     <input type='hidden' id='rowtotal' value="<?php echo get_post_meta($post_id, "_price", true); ?>" />
+					
+					<input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
+                    <input type="hidden" name='currency_position' value="<?php echo get_option('woocommerce_currency_pos'); ?>">
+                    <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
+                    <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
+                    <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
 
                     <!--The Add to cart button table start Here-->
                     <table class='table table-bordered mep_event_add_cart_table'>
@@ -134,8 +155,25 @@ if (!function_exists('mep_get_event_reg_btn')) {
                     <!--The Add to cart button table start Here-->
                 </form>
                 <!--The event add to cart main form end here-->
+
+<?php
+                 }else{
+                     echo '<span class="mep_warning">';
+                    _e("Whoops, this event for members only. Login to view content. Not a member? That's easy.","mage-eventpress");
+                    echo '</span>';
+                 }
+?>
+          
             <?php
-            }
+            
+
+
+
+
+
+
+
+        }
         } // End Of checking Registration status  
     }
 }
@@ -253,6 +291,12 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
                     do_action('mep_event_extra_service_list');
                     ?>
                     <input type='hidden' id='rowtotal' value="<?php echo get_post_meta($post_id, "_price", true); ?>" />
+					
+					<input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
+                    <input type="hidden" name='currency_position' value="<?php echo get_option('woocommerce_currency_pos'); ?>">
+                    <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
+                    <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
+                    <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
 
                     <!--The Add to cart button table start Here-->
                     <table class='table table-bordered mep_event_add_cart_table'>

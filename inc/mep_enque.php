@@ -72,11 +72,9 @@ function mep_event_enqueue_scripts()
   wp_enqueue_script('jquery-ui-accordion');
   wp_enqueue_style('mep-jquery-ui-style', plugin_dir_url(__DIR__) . 'css/jquery-ui.css', array());
   wp_enqueue_style('mep-event-style', plugin_dir_url(__DIR__) . 'css/style.css', array());
-
   wp_enqueue_style('mep-event-timeline-min-style', plugin_dir_url(__DIR__) . 'css/timeline.min.css', array('mep-event-style'));
-
   wp_enqueue_style('font-awesome-css-cdn', "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css", null, 1);
-   wp_enqueue_style('font-awesome-css-cdn-5.2.0', "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.2.0/css/all.min.css", null, 1); 
+  wp_enqueue_style('font-awesome-css-cdn-5.2.0', "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.2.0/css/all.min.css", null, 1); 
   wp_enqueue_style('mep-calendar-min-style', plugin_dir_url(__DIR__) . 'css/calendar.min.css', array());
   wp_enqueue_script('mep-moment-js', plugin_dir_url(__DIR__) . 'js/moment.js', array(), 1, true);
   wp_enqueue_script('mep-calendar-scripts', plugin_dir_url(__DIR__) . 'js/calendar.min.js', array('jquery', 'mep-moment-js'), 1, false);

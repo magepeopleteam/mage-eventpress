@@ -81,7 +81,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
         {
             $settings_fields = array(
                 'general_setting_sec' => apply_filters('mep_settings_general_arr',array(
-                   
+                    array(
+                        'name' => 'mep_disable_block_editor',
+                        'label' => __('Disable Block/Gutenberg Editor', 'mage-eventpress'),
+                        'desc' => __('If you want to disable WordPress new Block/Gutenberg editor for event please select Yes', 'mage-eventpress'),
+                        'type' => 'select',
+                        'default' => 'yes',
+                        'options' =>  array(
+                            'yes' => 'Yes',
+                            'no' => 'No'
+                        )
+                    ),                   
                     array(
                         'name' => 'mep_event_label',
                         'label' => __('Event Label', 'mage-eventpress'),
@@ -337,8 +347,8 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                     ),
                     array(
                         'name' => 'mep_event_hide_total_seat_from_details',
-                        'label' => __('Hide Event Total Seat Section from Details page ?', 'mage-eventpress'),
-                        'desc' => __('Select yes to hide Total Seat Section from details.', 'mage-eventpress'),
+                        'label' => __('Hide Event Total Seats Section from Details page ?', 'mage-eventpress'),
+                        'desc' => __('Select yes to hide Total Seats Section from details.', 'mage-eventpress'),
                         'type' => 'select',
                         'default' => 'no',
                         'options' =>  array(
@@ -441,7 +451,32 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 		                'type'    => 'text',
 		                'default' => 'Book Now',
 		                'placeholder'=>'Book Now'
-	                )
+                    ),
+	                array(
+		                'name'    => 'mep_show_zero_as_free',
+		                'label'   => __( 'Show 0 Price as Free ?', 'mage-eventpress' ),
+		                'desc'    => __( 'If you want to show 0 Price as Free , Please select Yes.', 'mage-eventpress' ),
+		                'type'    => 'select',
+		                'default' => 'yes',
+		                'options' => array(
+			                'yes' => 'Yes',
+			                'no'  => 'No'
+		                )
+	                ),                    
+	                array(
+		                'name'    => 'mep_ticket_expire_time',
+		                'label'   => __( 'Event Ticket Expire before minutes', 'mage-eventpress' ),
+		                'desc'    => __( 'Please enter the minute that you want attendee can not book/register the ticket before start of the event', 'mage-eventpress' ),
+		                'type'    => 'text',
+		                'default' => '0',
+		                'placeholder'=>'15'
+                    ),
+
+
+
+
+
+
                 )
                 ),
 
@@ -460,15 +495,15 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                            
                     array(
                         'name' => 'mep_email_form_name',
-                        'label' => __('Email Form Name', 'mage-eventpress'),
-                        'desc' => __('Email Form Name', 'mage-eventpress'),
+                        'label' => __('Email From Name', 'mage-eventpress'),
+                        'desc' => __('Email From Name', 'mage-eventpress'),
                         'default' => '',
                         'type' => 'text'
                     ),
                     array(
                         'name' => 'mep_email_form_email',
-                        'label' => __('Form Email', 'mage-eventpress'),
-                        'desc' => __('Form Email', 'mage-eventpress'),
+                        'label' => __('From Email', 'mage-eventpress'),
+                        'desc' => __('From Email', 'mage-eventpress'),
                         'type' => 'text'
                     ),
                     array(
@@ -488,6 +523,14 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 ),
 
                 'label_setting_sec' =>  apply_filters('mep_translation_string_arr',array(
+	                array(
+		                'name'    => 'mep_free_price_text',
+		                'label'   => __( 'Free ?', 'mage-eventpress' ),
+		                'desc'    => __( 'Pleaase Type the text which you want to as 0 Price.', 'mage-eventpress' ),
+		                'type'    => 'text',
+		                'default' => 'Free',
+		                'placeholder'=>'Free'
+                    ),                    
                     array(
                         'name' => 'mep_event_ticket_type_text',
                         'label' => __('Ticket Type Table Label', 'mage-eventpress'),
@@ -575,8 +618,8 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                     ),
                     array(
                         'name' => 'mep_total_seat_text',
-                        'label' => __('Total Seat:', 'mage-eventpress'),
-                        'desc' => __('Enter the text which you want to display as Total Seat in event list page.', 'mage-eventpress'),
+                        'label' => __('Total Seats:', 'mage-eventpress'),
+                        'desc' => __('Enter the text which you want to display as Total Seats in event list page.', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => ''
                     ),
@@ -797,7 +840,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 
                     array(
                         'name' => 'mep_load_carousal_from_theme',
-                        'label' => __('Load owlCarousel From Theme', 'mage-eventpress'),
+                        'label' => __('Load owl Carousel From Theme', 'mage-eventpress'),
                         'desc' => __('If your theme Carousel stop working or in your theme already loaded the OWL Carousel Lib, then you can set this yes?', 'mage-eventpress'),
                         'type' => 'select',
                         'default' => 'no',

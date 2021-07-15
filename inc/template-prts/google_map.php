@@ -8,6 +8,7 @@ if (!function_exists('mep_event_google_map')) {
 	function mep_event_google_map($event_id)
 	{
 		global $post, $event_meta, $user_api;
+		
 
 		$map_type       = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');
 		$location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : '';

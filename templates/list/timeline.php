@@ -1,3 +1,7 @@
+<?php 
+$day                             = get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'day');
+$month                           = get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'month');
+?>
 <div class="timeline__item">
         <div class="timeline__content">
             <div class='mep_event_timeline_list'>
@@ -5,8 +9,8 @@
                     <div class="mep_list_thumb">
                         <a href="<?php echo get_the_permalink($event_id); ?>"><?php mep_get_list_thumbnail($event_id); ?></a>
                         <div class="mep-ev-start-date">
-                            <div class="mep-day"><?php echo get_mep_datetime($event_meta['event_start_datetime'][0],'day'); ?></div>
-                            <div class="mep-month"><?php echo get_mep_datetime($event_meta['event_start_datetime'][0],'month'); ?></div>
+                            <div class="mep-day"><?php echo apply_filters('mep_event_list_only_day_number',$day,$event_id); ?></div>
+                            <div class="mep-month"><?php echo apply_filters('mep_event_list_only_month_name',$month,$event_id); ?></div>
                         </div>
                     </div>
                     <div class="mep_list_event_details">

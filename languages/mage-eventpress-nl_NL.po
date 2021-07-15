@@ -46,7 +46,7 @@ msgid "Event Details Template"
 msgstr "Template evenementdetails"
 
 #: inc/admin_setting_panel.php:92 inc/admin_setting_panel.php:93
-msgid "Email Form Name"
+msgid "Email From Name"
 msgstr "Naam e-mailformulier"
 
 #: inc/admin_setting_panel.php:99 inc/admin_setting_panel.php:100

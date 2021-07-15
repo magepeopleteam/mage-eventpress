@@ -266,7 +266,7 @@ msgstr ""
 "nastavení je: Ne."
 
 #: inc/admin_setting_panel.php:359 inc/admin_setting_panel.php:360
-msgid "Email Form Name"
+msgid "Email From Name"
 msgstr ""
 
 #: inc/admin_setting_panel.php:365 inc/admin_setting_panel.php:366
@@ -1121,7 +1121,7 @@ msgid "Add New Ticket Type"
 msgstr "Přidat nový typ lístku"
 
 #: inc/mep_event_meta.php:1173
-msgid "Add More Date"
+msgid "Add More Dates"
 msgstr "Přidat další datum"
 
 #: inc/mep_event_meta.php:1186

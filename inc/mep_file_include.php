@@ -9,6 +9,7 @@ require_once(dirname(__DIR__) . '/lib/classes/class-theme-page.php');
 require_once(dirname(__DIR__) . '/lib/classes/class-menu-page.php');
 require_once(dirname(__DIR__) . "/inc/class/mep_settings_api.php");
 require_once(dirname(__DIR__) . "/inc/welcome.php");
+require_once(dirname(__DIR__) . "/inc/status.php");
 require_once(dirname(__DIR__) . "/inc/mep_cpt.php");
 require_once(dirname(__DIR__) . "/inc/mep_tax.php");
 require_once(dirname(__DIR__) . "/inc/mep_event_meta.php");

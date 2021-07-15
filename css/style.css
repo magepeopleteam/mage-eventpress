@@ -148,6 +148,27 @@ div.df-dtl p {color: #444;font-weight: 600;font-size: 14px;margin: 0 0 5px 0;}
 div.mep-default-feature-content p{color: #3a3a3a;font-size: 16px;}
 .mep-event-details p{font-size: 16px;margin: 0;font-weight: 400;line-height: 1.5;}
 .mep-events-wrapper p#mep_btn_notice{text-align: center;font-size: 15px;color: red;margin: 0 0 7px 0;}
+span.mep_warning {
+    text-align: center;
+    display: block;
+    border: 1px solid #005373;
+    color: #005373;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 20px 0;
+    text-transform: capitalize;
+}
+.mep_sidebar {
+    padding: 10px;
+}
+.mep_sidebar h3 {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.mep_google_map {
+    height: 300px;
+}
 /******table*******/
 .mep-events-wrapper table {width: 100%;table-layout: fixed;margin: 0 0 15px 0;}
 .mep-events-wrapper table td {text-align:left;border-bottom: 1px solid #f0f0f0;padding: 10px;vertical-align: middle;font-size: 16px;font-weight: 500;}
@@ -1015,3 +1036,4 @@ div.item_hover_effect a:hover{color:#346B80;background-color:#fff;border:1px sol
     div.four_column{width:100%;margin: 0 0 15px 0;}
     div.column_style{min-width: calc(100% - 14px) !important;}
 }
+.mep-default-sidrbar-meta i{margin: 0 7px 0 0;}

@@ -128,8 +128,19 @@
                     <h1 class="textCenter">Addons</h1>
                     <div class="justifyBetween">
 <?php
-$json = file_get_contents('http://vaincode.com/update/addon-list.json');
-$obj = json_decode($json, true);
+
+
+$url        = 'https://vaincode.com/update/addon-list.json';
+$curl       = curl_init();
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HEADER, false);
+$data = curl_exec($curl);
+curl_close($curl);
+$obj = json_decode($data, true);
+
+// print_r($data);
+
 if(is_array($obj) && sizeof($obj) > 0){
 echo '<div class="addon_list_sec"><ul class="mep_addon_list">';
 foreach ($obj as $list) {

@@ -58,9 +58,29 @@ function mep_flash_permalink_once()
 add_action('admin_init', 'mep_flash_permalink_once');
 
 
+
+
+
+
 add_action('admin_init', 'mep_get_all_order_data_and_create_attendee');
 function mep_get_all_order_data_and_create_attendee()
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     if (get_option('mep_hidden_product_thumbnail_update_02') != 'completed') {
@@ -77,6 +97,22 @@ function mep_get_all_order_data_and_create_attendee()
             set_post_thumbnail($product_id, get_post_thumbnail_id($post_id));
         }
         update_option('mep_hidden_product_thumbnail_update_02', 'completed');
+    }
+
+
+    // Event Upcoming Date Upgrade
+    if (get_option('mep_event_upcoming_date_add_03') != 'completed') {
+        $args = array(
+            'post_type' => 'mep_events',
+            'posts_per_page' => -1
+        );
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id        = $result->ID;
+            $upcoming_date  = mep_get_event_upcoming_date($post_id);
+            update_post_meta($post_id, 'event_upcoming_datetime', $upcoming_date);
+        }
+        update_option('mep_event_upcoming_date_add_03', 'completed');
     }
 
 
@@ -174,6 +210,24 @@ function mep_get_all_order_data_and_create_attendee()
             }
         }
         update_option('mep_attendee_event_date_update_20', 'completed');
+    }
+
+
+    
+    if (get_option('mep_attendee_ticket_price_update_01') != 'completed') {
+        $args = array(
+            'post_type' => 'mep_events_attendees',
+            'posts_per_page' => -1
+        );
+
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id        = $result->ID;
+            $event_id       = get_post_meta($post_id,'ea_event_id',true);
+            $ticket_type    = get_post_meta($post_id,'ea_ticket_type',true);
+            update_post_meta($post_id, 'ea_ticket_price', mep_get_ticket_price_by_event($event_id,$ticket_type,0));
+        }
+        update_option('mep_attendee_ticket_price_update_01', 'completed');
     }
 
 
@@ -346,11 +400,6 @@ if (get_option('mep_attendee_price_update_2') != 'completed') {
     }
     update_option('mep_attendee_price_update_2', 'completed');
 }
-
-
-
-
-
 
 
 

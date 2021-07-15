@@ -14,6 +14,7 @@ if (!function_exists('mep_ev_seat')) {
 		if ($recurring == 'no') {
 
 			$mep_event_ticket_type      = get_post_meta($post->ID, 'mep_event_ticket_type', true) ? get_post_meta($post->ID, 'mep_event_ticket_type', true) : array();
+			$event_date      = get_post_meta($post->ID, 'event_start_date', true) ? get_post_meta($post->ID, 'event_start_date', true) : '';
 			$mep_available_seat         = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
 
 			if (is_array($mep_event_ticket_type) && sizeof($mep_event_ticket_type) > 0) {
@@ -21,6 +22,8 @@ if (!function_exists('mep_ev_seat')) {
 				$total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat(get_the_id(), 'resv'), get_the_id());
 				$total_sold = mep_ticket_sold(get_the_id());
 				$total_left = $total_seat - ($total_sold + $total_resv);
+				// mep_total_available_seat
+				$total_left = apply_filters('mep_total_available_seat', $total_left, get_the_id(),'',$event_date);;
 				require(mep_template_file_path('single/total_seat.php'));
 			}
 		}

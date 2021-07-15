@@ -48,7 +48,7 @@ function mep_cpt()
         'has_archive'           => true,
         'labels'                => $labels,
         'menu_icon'             => $event_icon,
-        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'supports'              => apply_filters('mep_events_post_type_support',array('title', 'editor', 'thumbnail', 'excerpt')),
         'rewrite'               => array('slug' => $event_slug),
         'show_in_rest'          => true
 

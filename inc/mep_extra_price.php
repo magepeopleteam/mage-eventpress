@@ -37,7 +37,8 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     
 
 
-
+// print_r($ticket_type_arr);
+// die();
 
     /**
      * Now Store the datas into Cart Session
@@ -110,11 +111,51 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 
 
-    $recurring = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
-
+    $recurring              = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';    
+    $time_status            = get_post_meta($eid, 'mep_disable_ticket_time', true) ? get_post_meta($eid, 'mep_disable_ticket_time', true) : 'no';
+    $start_time = get_post_meta($eid,'event_start_time',true);
     echo "<ul class='event-custom-price'>";
 
-    if ($recurring == 'yes') {
+
+
+     if($recurring == 'everyday' && $time_status == 'no'){ 
+        
+      if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0 && sizeof($user_info) == 0) {
+     
+        foreach ($ticket_type_arr as $_event_recurring_date) {
+            if($hide_date_status == 'no'){
+          ?>
+          <li><?php _e("$event_label Date", 'mage-eventpress'); ?>: <?php echo get_mep_datetime($_event_recurring_date['event_date'].' '.$start_time,'date-time-text'); ?></li>
+        <?php
+            }
+        }
+      }
+
+      if (is_array($user_info) && sizeof($user_info) > 0) {
+          echo '<li>';
+            echo mep_cart_display_user_list($user_info,$eid);
+          echo '</li>';
+      }      
+      
+    }elseif($recurring == 'everyday' && $time_status == 'yes'){
+      if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0 && sizeof($user_info) == 0) {
+     
+        foreach ($ticket_type_arr as $_event_recurring_date) {
+            if($hide_date_status == 'no'){
+          ?>
+          <li><?php _e("$event_label Date", 'mage-eventpress'); ?>: <?php echo get_mep_datetime($_event_recurring_date['event_date'],'date-time-text'); ?></li>
+        <?php
+            }
+        }
+      }
+
+      if (is_array($user_info) && sizeof($user_info) > 0) {
+          echo '<li>';
+            echo mep_cart_display_user_list($user_info,$eid);
+          echo '</li>';
+      }
+    }elseif ($recurring == 'yes') {
+
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0 && sizeof($user_info) == 0) {
      
         foreach ($ticket_type_arr as $_event_recurring_date) {
@@ -125,18 +166,25 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
             }
         }
       }
+
       if (is_array($user_info) && sizeof($user_info) > 0) {
-        echo '<li>';
-           echo mep_cart_display_user_list($user_info,$eid);
-        echo '</li>';
+          echo '<li>';
+            echo mep_cart_display_user_list($user_info,$eid);
+          echo '</li>';
       }
-    } else {
+
+
+      } else {
       if (is_array($user_info) && sizeof($user_info) > 0) {
-        echo '<li>';
-          echo mep_cart_display_user_list($user_info,$eid);
-        echo '</li>';
+          echo '<li>';
+            echo mep_cart_display_user_list($user_info,$eid);
+          echo '</li>';
       } else {
            if($hide_date_status == 'no'){
+
+
+
+            
       ?>
         <li><?php _e("$event_label Date", 'mage-eventpress'); ?>: <?php echo get_mep_datetime($cart_item['event_cart_display_date'],'date-time-text'); ?></li>
       <?php
@@ -148,13 +196,12 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     <li><?php _e("$event_label Location", 'mage-eventpress'); ?>: <?php echo $cart_item['event_cart_location']; ?></li>
   <?php
      }
-    if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
-      // echo $eid;
-     echo mep_cart_display_ticket_type_list($ticket_type_arr, $eid);
+    if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {      
+        echo mep_cart_display_ticket_type_list($ticket_type_arr, $eid);
     }
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
-        echo '<li>' . $extra_service['service_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'])) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( mep_get_price_including_tax($eid,(int) $extra_service['service_price'] * (int) $extra_service['service_qty'])) . '</li>';
+        echo '<li>' . $extra_service['service_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'])) . ' x ' . $extra_service['service_qty'] . ' = ' . wc_price( mep_get_price_including_tax($eid,(float) $extra_service['service_price'] * (float) $extra_service['service_qty'])) . '</li>';
       }
     }
     do_action('mep_after_cart_item_display_list',$cart_item);
@@ -214,20 +261,41 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
 {
 
   $eid            = array_key_exists('event_id', $values) ? $values['event_id'] : 0; //$values['event_id'];
+  $start_time = get_post_meta($eid,'event_start_time',true);
   $location_text  = mep_get_option('mep_location_text', 'label_setting_sec', __('Location', 'mage-eventpress')) ? mep_get_option('mep_location_text', 'label_setting_sec', __('Location', 'mage-eventpress')) : 'Location';
   $date_text      = mep_get_option('mep_event_date_text', 'label_setting_sec', __('Date', 'mage-eventpress')) ? mep_get_option('mep_event_date_text', 'label_setting_sec', __('Date', 'mage-eventpress')) : 'Date';
   if (get_post_type($eid) == 'mep_events') {
-    $mep_events_extra_prices = $values['event_extra_option'];
-    $cart_location           = $values['event_cart_location'];
-    $event_extra_service     = $values['event_extra_service'];
-    $ticket_type_arr         = $values['event_ticket_info'];
+      $event_id = $eid;
+    $mep_events_extra_prices = array_key_exists('event_extra_option', $values) ? $values['event_extra_option'] : [];
+    $cart_location           = array_key_exists('event_cart_location', $values) ? $values['event_cart_location'] : '';
+    $event_extra_service     = array_key_exists('event_extra_service', $values) ? $values['event_extra_service'] : [];
+    $ticket_type_arr         = array_key_exists('event_ticket_info', $values) ? $values['event_ticket_info'] : '';
     $cart_date               = get_mep_datetime($values['event_cart_date'],'date-time-text');
     $form_position           = mep_get_option('mep_user_form_position', 'general_attendee_sec', 'details_page');
     $event_user_info         = $form_position == 'details_page' ? $values['event_user_info'] : mep_save_attendee_info_into_cart($eid);
     $recurring               = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
     $event_label             = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
+    $time_status             = get_post_meta($eid, 'mep_disable_ticket_time', true) ? get_post_meta($eid, 'mep_disable_ticket_time', true) : 'no';
     
-    if ($recurring == 'yes') {
+    $name_lable             = get_post_meta($event_id,'mep_name_label',true) ? get_post_meta($event_id,'mep_name_label',true) : __('Name', 'mage-eventpress');
+    $email_lable            = get_post_meta($event_id,'mep_email_label',true) ? get_post_meta($event_id,'mep_email_label',true) : __('Email', 'mage-eventpress');
+    $phone_lable            = get_post_meta($event_id,'mep_phone_label',true) ? get_post_meta($event_id,'mep_phone_label',true) : __('Phone', 'mage-eventpress');
+    $address_lable          = get_post_meta($event_id,'mep_address_label',true) ? get_post_meta($event_id,'mep_address_label',true) : __('Address', 'mage-eventpress');
+    $tshirt_lable           = get_post_meta($event_id,'mep_tshirt_label',true) ? get_post_meta($event_id,'mep_tshirt_label',true) : __('T-Shirt Size', 'mage-eventpress');
+    $gender_lable           = get_post_meta($event_id,'mep_gender_label',true) ? get_post_meta($event_id,'mep_gender_label',true) : __('Gender', 'mage-eventpress');
+    $company_lable          = get_post_meta($event_id,'mep_company_label',true) ? get_post_meta($event_id,'mep_company_label',true) : __('Company', 'mage-eventpress');
+    $desg_lable             = get_post_meta($event_id,'mep_desg_label',true) ? get_post_meta($event_id,'mep_desg_label',true) : __('Designation', 'mage-eventpress');
+    $website_lable          = get_post_meta($event_id,'mep_website_label',true) ? get_post_meta($event_id,'mep_website_label',true) : __('Website', 'mage-eventpress');
+    $veg_lable              = get_post_meta($event_id,'mep_veg_label',true) ? get_post_meta($event_id,'mep_veg_label',true) : __('Vegetarian', 'mage-eventpress');
+    
+        
+     if($recurring == 'everyday' && $time_status == 'no'){
+      if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
+        foreach ($ticket_type_arr as $_event_recurring_date) {
+          $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'].' '.$start_time, 'date-time-text'));
+        }
+      }
+     }elseif ($recurring == 'yes') {
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
         foreach ($ticket_type_arr as $_event_recurring_date) {
           $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'], 'date-time-text'));
@@ -245,16 +313,16 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $custom_forms_id = mep_get_user_custom_field_ids($eid);
 
     foreach ($event_user_info as $userinf) {      
-      if ($userinf['user_name']) {  $item->add_meta_data(__('Name', 'mage-eventpress'), $userinf['user_name']); } 
-      if ($userinf['user_email']) {  $item->add_meta_data(__('Email', 'mage-eventpress'), $userinf['user_email']); } 
-      if ($userinf['user_phone']) {  $item->add_meta_data(__('Phone', 'mage-eventpress'), $userinf['user_phone']); } 
-      if ($userinf['user_address']) {  $item->add_meta_data(__('Address', 'mage-eventpress'), $userinf['user_address']); } 
-      if ($userinf['user_gender']) {  $item->add_meta_data(__('Gender', 'mage-eventpress'), $userinf['user_gender']); } 
-      if ($userinf['user_tshirtsize']) {  $item->add_meta_data(__('T-Shirt Size', 'mage-eventpress'), $userinf['user_tshirtsize']); } 
-      if ($userinf['user_company']) {  $item->add_meta_data(__('Company', 'mage-eventpress'), $userinf['user_company']); } 
-      if ($userinf['user_designation']) {  $item->add_meta_data(__('Designation', 'mage-eventpress'), $userinf['user_designation']); } 
-      if ($userinf['user_website']) {  $item->add_meta_data(__('Website', 'mage-eventpress'), $userinf['user_website']); } 
-      if ($userinf['user_vegetarian']) {  $item->add_meta_data(__('Vegetarian', 'mage-eventpress'), $userinf['user_vegetarian']); }    
+      if ($userinf['user_name']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Name'), $userinf['user_name']); } 
+      if ($userinf['user_email']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Email'), $userinf['user_email']); } 
+      if ($userinf['user_phone']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Phone'), $userinf['user_phone']); } 
+      if ($userinf['user_address']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Address'), $userinf['user_address']); } 
+      if ($userinf['user_gender']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Gender'), $userinf['user_gender']); } 
+      if ($userinf['user_tshirtsize']) {  $item->add_meta_data(mep_get_reg_label($event_id,'T-Shirt Size'), $userinf['user_tshirtsize']); } 
+      if ($userinf['user_company']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Company'), $userinf['user_company']); } 
+      if ($userinf['user_designation']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Designation'), $userinf['user_designation']); } 
+      if ($userinf['user_website']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Website'), $userinf['user_website']); } 
+      if ($userinf['user_vegetarian']) {  $item->add_meta_data(mep_get_reg_label($event_id,'Vegetarian'), $userinf['user_vegetarian']); }    
       if(sizeof($custom_forms_id) > 0){
         foreach($custom_forms_id as $key => $value){  
           $item->add_meta_data(__($key, 'mage-eventpress'), $userinf[$value]);           
@@ -269,7 +337,7 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     if (is_array($event_extra_service) && sizeof($event_extra_service) > 0) {
       foreach ($event_extra_service as $extra_service) {
         $service_type_name = $extra_service['service_name'] . " - " . wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'])) . ' x ' . $extra_service['service_qty'] . ' = ';
-        $service_type_val = wc_price(mep_get_price_including_tax($eid,$extra_service['service_price'] * $extra_service['service_qty']));
+        $service_type_val = wc_price(mep_get_price_including_tax($eid,(float) $extra_service['service_price'] * (float) $extra_service['service_qty']));
         $item->add_meta_data($service_type_name, $service_type_val);
       }
     }

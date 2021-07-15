@@ -53,7 +53,13 @@ class MP_Event_All_Info_In_One
 					</li>
 					<?php do_action('mep_admin_event_details_before_tab_name_rich_text', $post_id); ?>
 					<?php do_action('mp_event_all_in_tab_menu'); ?>
-					
+
+					<?php if (class_exists('MP_ESP_Admin')) { ?>
+						<li data-target-tabs="#mp_esp_seat_plan_setting">
+							<span class="dashicons dashicons-admin-settings"></span>&nbsp;&nbsp;<?php _e('Seat Plan Settings', 'mage-eventpress'); ?>
+						</li>
+					<?php } ?>
+
 					<?php do_action('mep_admin_event_details_end_of_tab_name', $post_id); ?>
 				</ul>
 			</div>
@@ -108,7 +114,14 @@ class MP_Event_All_Info_In_One
 					</div>
 				<?php } ?>
 				<?php do_action('mp_event_all_in_tab_item', $post_id); ?>
-				<?php
+				
+				<?php if (class_exists('MP_ESP_Admin')) { ?>
+					<div class="mp_tab_item" data-tab-item="#mp_esp_seat_plan_setting">
+						<?php do_action('mp_event_all_in_tab_item_seat_plan', $post_id); ?>
+					</div>
+				<?php }
+
+
 				do_action('mep_admin_event_details_end_of_tab_details', $post_id); ?>
 			</div>
 		</div>
@@ -928,7 +941,7 @@ class MP_Event_All_Info_In_One
 					<input class="mp_opacity_zero" type="checkbox" name="mep_reset_status" class="switch_checkbox" />
 					<span class="slider round"></span>
 					<span style="padding: 0 0 0 60px;"><?php _e('Current Booking Status :', 'mage-eventpress'); ?></span>
-					<span><?php mep_get_event_total_seat($post_id); ?></span>
+					<span><?php echo mep_get_event_total_seat($post_id); ?></span>
 				</label>
 			</td>
 		</tr>

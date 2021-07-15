@@ -256,6 +256,7 @@ function mep_expire_event_list($atts, $content = null)
         "timeline-mode" => "vertical",
         'sort'          => 'ASC'
     );
+    
     $params         = shortcode_atts($defaults, $atts);
     $cat            = $params['cat'];
     $org            = $params['org'];
@@ -349,7 +350,8 @@ function mep_event_add_to_cart_section($atts, $content = null)
     $event = $params['event'];   
     ob_start();
     if($event > 0){
-       echo mep_shortcode_add_cart_section_html($event);            
+       echo mep_shortcode_add_cart_section_html($event);     
+       do_action('mep_after_event_cart_shortcode',$event);       
     }
     return ob_get_clean();
 }

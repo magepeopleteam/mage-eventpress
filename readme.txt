@@ -4,14 +4,14 @@ Tags: event, woocomerce events manager, events manager, Wordpress Events plugin,
 Requires at least: 5.3
 Stable tag: trunk
 Version: 2.1.3
-Tested up to: 5.5
+Tested up to: 5.7
 Requires PHP: 7.0
 WC requires at least: 3.0
-WC tested up to: 4.4
+WC tested up to: 5.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
+ 
 WooCommerce Event Manager is a Event Plugin for WordPress which is based on WooCommerce.
 
 == Description ==
@@ -233,37 +233,49 @@ Display Event Speaker List Any Post or Page by using the below Shortcode.. examp
 = Some Others Very Nice Addon Support Available =
 
 👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
-
+  With this addon Repeating Event feature can be added with event manager, For example if someone like to sell daily ticket, Weekly Ticket or monthly Ticket with time selection option also possible 
+  Any kind of appointment, Salon Booking, Park ticket, Zoo Ticket selling, Musuem Ticket selling, Daily City tour, and Any kind of ticket selling possible with this addon.
+  
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
+  With QR code addon, QR code will be printed to PDF ticket, that can be used for ticket validation using mobile apps. Check in and CheckOut record can be saved to database as history so organizer can easily find details of participant information after filtering or CSV export.
 
 👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
+  Event Calender addon will enahnce display of event calender feature with images and calender wise details.
 
 👉[Event Coupon Code Addon](https://mage-people.com/product/woocommerce-event-coupon-code-addon/) 👈
+  With This addon coupon code can be added per event.
 
 👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈
+  Waitlist addon will help to add a waitlist form on event page when event ticket will be sold out, When customer can register waitlist and admin will send email notifiation when seat will be available. 
 
 👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
+  This Book event from dashboard addon will add feature to purchase with from wordpress admin panel. This is for admin use only. when admin need to book any ticket for any customer then admin can sell ticket from admin side. it can be also used counter ticket sell on spot or event location.
 
 👉[Event User Registration Form Position](https://mage-people.com/product/woocommerce-event-user-registration-form-position/) 👈
+  With this addon, admin can choose where the event Attendee/user form will display into the event details page or into the checkout page, Right now by default this form displaying in the event details page.
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
+  This is must needed addon if someone like to duplicate any event.
 
 👉[Related Event Addon](https://mage-people.com/product/related-events-addon-for-event-manager/)👈
 
 👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
-
+  With this addon, Woocommerce Event manager Plugin’s Ticket price can set as different member price.  Pricing will works depends on member Type login. Currently it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
+ 
 👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
+  Max Min Quantity Limiting Event function addon for WooCommerce Event Manager, With this addon, admin can enable a events to sell with limiting quantity.
 
 👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
+  With this addon, Woocommerce Event manager Plugin’s Ticket QTY can manage  a Common QTY or Global QTY.  Default QTY works with Ticket type’s QTY but with this addon easily can manage as common quanity.
 
 👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
+  This is Event rating and review Addon. Admin can enable review and rating section event wise. Admin can setup who can setup review with this addon
 
 👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
+  This is Event Plugin addon for Seat Plan, With this addon. Anyone can sell ticket with seat plan also.  also different type seat plan different pricing possible and very flexible for seat mapping.
 
 👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
-
-
-
+  This is WooCommerce Event Manager Frontend submit  addon, With this addon. Organizer can submit Event from my account of organizer page.  also organizer can see balance of this event ticket selling, Attendee list also attendee list download also possible by organizer.
 
 
 
@@ -273,8 +285,8 @@ our support team will back to you shortly.
 
 
 
-### How to install Woo Commerce Event Manager Plugin in 3 Minutes
-https://www.youtube.com/watch?v=_CRPyKHPhTU
+### How to Install & Create Event 10 minutes using Woocommerce Event Manager Plugin
+https://www.youtube.com/watch?v=zP2ADxzUrYw
 
 ### WooCommerce Event Manager Pro Addons Setup And Full Functionality Explained
 https://www.youtube.com/watch?v=LZj6oUavTQg
@@ -288,7 +300,8 @@ https://www.youtube.com/watch?v=F9wnlUjXa6I
 **CHECKOUR OUR OTHER PLUGINS** 
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
 [Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
-[Woocommerce Events Manager](https://wordpress.org/plugins/mage-eventpress/)
+[Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/tour-booking-manager/)
+
 
 
 ## Privacy Policy 
@@ -664,3 +677,65 @@ WP Editor added into Event Confirmation Text
 Hook Added
 
 05 Nov 2020*
+
+= 3.3.9 =
+* Update Release:
+PHP Errors issue fixed
+WP Editor added into Event Confirmation Text
+Hook Added
+
+28 Nov 2020*
+
+= 3.4.0 =
+* Update Release:
+A new UI Added in the backend/Dashboard
+CSS Issue fixed.
+Hook Added
+Some Bug fixed.
+Password Protected Event feature enabled 
+Multi Currenncy Support feature added
+Currency symbol issue fixed in the live calculation
+
+27 Dec 2020*
+
+
+
+= 3.4.1 =
+* Update Release:
+CSS Issue fixed.
+Hook Added
+Some Bug fixed.
+Early Bird Ticket Feature added
+
+25 Jan 2021*
+
+
+= 3.4.2=
+* Update Release:
+Event SKU Added.
+Hook Added
+Some Bug fixed.
+Event Server Status Check Page Added
+
+03 Feb 2021*
+
+= 3.4.5=
+* Update Release:
+Multi cat id support in Shortcode 
+Member Role wise event feature added
+Early bird feature added in ticket type
+Bug fixed
+Hook added
+25 Feb 2021*
+
+= 3.4.6=
+* Update Release:
+Total Price 0 issue fixed
+02 March 2021*
+
+= 3.4.8=
+* Update Release:
+New Social Icon added
+Bug Fixed
+Hook Added
+15 March 2021*

@@ -1,11 +1,16 @@
-<?php $recurring     = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no'; ?>
+<?php 
+$recurring     = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no'; 
+$day                             = get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'day');
+$month                           = get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'month');
+
+?>
 <div class='mep-event-list-loop  mep_event_list_item mep_event_minimal_list mix <?php echo $org_class.' '.$cat_class; ?>'>
     <?php do_action('mep_event_minimal_list_loop_header',$event_id); ?>
                     <div class="mep_list_thumb">
                         <a href="<?php echo get_the_permalink($event_id); ?>"></a>
                         <div class="mep-ev-start-date">
-                            <div class="mep-day"><?php echo mep_get_event_upcomming_date($event_id,'day'); //get_mep_datetime($event_meta['event_start_datetime'][0],'day'); ?></div>
-                            <div class="mep-month"><?php echo mep_get_event_upcomming_date($event_id,'month'); //get_mep_datetime($event_meta['event_start_datetime'][0],'month'); ?></div>
+                            <div class="mep-day"><?php echo apply_filters('mep_event_list_only_day_number',$day,$event_id); ?></div>
+                            <div class="mep-month"><?php echo apply_filters('mep_event_list_only_month_name',$month,$event_id); ?></div>
                         </div>
                     </div>
                     <div class="mep_list_event_details">

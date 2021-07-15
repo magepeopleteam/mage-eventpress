@@ -122,7 +122,9 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                 <div class="mep-default-sidrbar-calender-btn">
                     <?php do_action('mep_event_add_calender',get_the_id()); ?>
                 </div>
-            <?php } ?>
+            <?php }                         
+            dynamic_sidebar('mep_default_sidebar');
+            ?>
         </div>
     </div>
 </div>

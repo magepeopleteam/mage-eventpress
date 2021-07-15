@@ -7,19 +7,28 @@
                 </tr>
                 <?php
 
-                foreach ($mep_events_extra_prices as $field) {                    
-                    $total_extra_service = (int) $field['option_qty'];
-                    $qty_type = $field['option_qty_type'];
-                    $total_sold = (int) mep_extra_service_sold($post_id, $field['option_name'], $event_date);
+                foreach ($mep_events_extra_prices as $field) {  
+                    
+                    $service_name       = array_key_exists('option_name',$field) ? $field['option_name'] : '';
+                    $service_qty        = array_key_exists('option_qty',$field) ? $field['option_qty'] : 0;
+                    $service_price      = array_key_exists('option_price',$field) ? $field['option_price'] : 0;
+                    $service_qty_type   = array_key_exists('option_qty_type',$field) ? $field['option_qty_type'] : 'input';
+
+
+
+                    $total_extra_service = (int) $service_qty;
+                    $qty_type = $service_qty_type;
+                    $total_sold = (int) mep_extra_service_sold($post_id, $service_name, $event_date);
                     $ext_left = ($total_extra_service - $total_sold);
 					
-					$actual_price=strip_tags(wc_price(mep_get_price_including_tax($post_id, $field['option_price'])));
+					$tic_price=mep_get_price_including_tax($post_id, $service_price);
+					$actual_price=strip_tags(wc_price(mep_get_price_including_tax($post_id, $service_price)));
 	                $data_price=str_replace(get_woocommerce_currency_symbol(), '', $actual_price);
 	                $data_price=str_replace(wc_get_price_thousand_separator(), '', $data_price);
 					$data_price=str_replace(wc_get_price_decimal_separator(), '.', $data_price);
                 ?>
                     <tr>
-                        <td align="Left"><?php echo $field['option_name']; ?>
+                        <td align="Left"><?php echo $service_name; ?>
                             <div class="xtra-item-left"><?php echo $ext_left; ?>
                                 <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : _e('Left:', 'mage-eventpress');  ?>
                             </div>
@@ -32,7 +41,7 @@
                                     <select name="event_extra_service_qty[]" id="eventpxtp_<?php //echo $count;
                                                                                             ?>" class='extra-qty-box'>
                                         <?php for ($i = 0; $i <= $ext_left; $i++) { ?>
-                                            <option value="<?php echo $i; ?>"><?php echo $i; ?> <?php echo $field['option_name']; ?></option>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?> <?php echo $service_name; ?></option>
                                         <?php } ?>
                                     </select>
                                 <?php } else { ?>
@@ -47,11 +56,11 @@
                                 echo mep_get_option('mep_not_available_text', 'label_setting_sec') ? mep_get_option('mep_not_available_text', 'label_setting_sec') : _e('Not Available', 'mage-eventpress');
                             } ?>
                         </td>
-                        <td class="mage_text_center"><?php echo wc_price(mep_get_price_including_tax($post_id, $field['option_price']));
+                        <td class="mage_text_center"><?php echo wc_price(mep_get_price_including_tax($post_id, $service_price));
                                                         if ($ext_left > 0) { ?>
-                                <p style="display: none;" class="price_jq"><?php echo $data_price; ?></p>
-                                <input type="hidden" name='event_extra_service_name[]' value='<?php echo $field['option_name']; ?>'>
-                                <input type="hidden" name='event_extra_service_price[]' value='<?php echo $field['option_price']; ?>'>
+                                <p style="display: none;" class="price_jq"><?php echo $tic_price > 0 ? $tic_price : 0;  ?></p>
+                                <input type="hidden" name='event_extra_service_name[]' value='<?php echo $service_name; ?>'>
+                                <input type="hidden" name='event_extra_service_price[]' value='<?php echo $service_price; ?>'>
                             <?php } ?>
                         </td>
                     </tr>

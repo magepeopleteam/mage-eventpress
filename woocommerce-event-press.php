@@ -3,13 +3,13 @@
  * Plugin Name: Woocommerce Events Manager
  * Plugin URI: http://mage-people.com
  * Description: A Complete Event Solution for WordPress by MagePeople..
- * Version: 3.4.1
+ * Version: 3.4.8
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: mage-eventpress
  * Domain Path: /languages/
  * WC requires at least: 3.0.9
- * WC tested up to: 4.7.1 
+ * WC tested up to: 5.0
  */
 
 if (!defined('ABSPATH')) {

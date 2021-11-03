@@ -53,13 +53,13 @@ $event_dates = mep_get_event_dates_arr(get_the_id());
 foreach ($event_dates as $_dates) {
     ?>
 {
-                        start: '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',
-                        end: '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['end'])); ?>',
-                        title: '<?php the_title(); ?>',
-                        url: '<?php the_permalink(); ?>',
-                        class: '',
-                        color: '#000',
-                        data: {}
+                        start   : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',
+                        end     : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['end'])); ?>',
+                        title   : '<?php the_title(); ?>',
+                        url     : '<?php the_permalink(); ?>',
+                        class   : '',
+                        color   : '#000',
+                        data    : {}
                     },
     <?php
 }
@@ -94,6 +94,7 @@ function mep_event_list($atts, $content = null)
         "org-filter"    => "no",
         "show"          => "-1",
         "pagination"    => "no",
+        "pagination-style"    => "load_more",
         "city"          => "",
         "country"       => "",
         "carousal-nav"  => "no",
@@ -101,7 +102,13 @@ function mep_event_list($atts, $content = null)
         "carousal-id" => "102448",
         "timeline-mode" => "vertical",
         'sort'          => 'ASC',
-        'status'          => 'upcoming'
+        'status'          => 'upcoming',
+        'search-filter' => '',
+        'title-filter' => 'yes',
+        'category-filter' => 'yes',
+        'organizer-filter' => 'yes',
+        'city-filter' => 'yes',
+        'date-filter' => 'yes'
     );
     $params         = shortcode_atts($defaults, $atts);
     $cat            = $params['cat'];
@@ -119,6 +126,10 @@ function mep_event_list($atts, $content = null)
     $country        = $params['country'];
     $cid            = $params['carousal-id'];
     $status            = $params['status'];
+
+    $filter = $params['search-filter'];
+    $show = ($filter == 'yes' || $pagination == 'yes' && $style != 'timeline') ? -1 : $show;
+
     $main_div       = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
 
     $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
@@ -129,8 +140,12 @@ function mep_event_list($atts, $content = null)
     $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
    $unq_id = 'abr'.uniqid();  
     ob_start();
+    /**
+     * The Main Query function mep_event_query is locet in inc/mep_query.php File
+     */
+    $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
 ?>
-    <div class='mep_event_list'>
+    <div class='list_with_filter_section mep_event_list'>
         <?php if ($cat_f == 'yes') {
             /**
              * This is the hook where category filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
@@ -142,17 +157,17 @@ function mep_event_list($atts, $content = null)
              * This is the hook where Organization filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
              */
             do_action('mep_event_list_org_names',$org,$unq_id);
-        } ?>
+        }
+        if ($filter == 'yes' && $style != 'timeline') {
+            do_action('mpwem_list_with_filter_section', $loop, $params);
+        }
+        ?>
 
-        <div class="mep_event_list_secxx" id='mep_event_list_<?php echo $unq_id; ?>'>
+        <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr($unq_id); ?>'>
             <?php
-            /**
-             * The Main Query function mep_event_query is locet in inc/mep_query.php File
-             */ 
-            $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
-            $total_post = $loop->post_count;
-            echo $main_div;
-            echo $time_line_div_start;
+            $total_item = $loop->post_count;
+            echo wp_kses_post($main_div);
+            echo wp_kses_post($time_line_div_start);
             while ($loop->have_posts()) {
                 $loop->the_post();
 
@@ -170,57 +185,44 @@ function mep_event_list($atts, $content = null)
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
-               
-
                 do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width,$unq_id);
             }
             wp_reset_postdata();
-            echo $time_line_div_end;
-            if ($pagination == 'yes') {
-                /**
-                 * The Pagination function mep_event_pagination is locet in inc/mep_query.php File
-                 */
-                mep_event_pagination($loop->max_num_pages);
-            } ?>
-
-
+            echo wp_kses_post($time_line_div_end);
+            ?>
         </div>
     </div>
+    <?php
+    do_action('mpwem_pagination',$params,$total_item);
+    ?>
     </div>
     <script>
         jQuery(document).ready(function() {
-            var containerEl = document.querySelector('#mep_event_list_<?php echo $unq_id; ?>');
-            var mixer = mixitup(containerEl);
-
-
-            
+            var containerEl = document.querySelector('#mep_event_list_<?php echo esc_attr($unq_id); ?>');
+            var mixer = mixitup(containerEl);            
             <?php if ($pagination == 'carousal') { ?>
-                jQuery('#mep-carousel<?php echo $cid; ?>').owlCarousel({
+                jQuery('#mep-carousel<?php echo esc_attr($cid); ?>').owlCarousel({
                     autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,
                     autoplayTimeout:<?php echo mep_get_option('mep_speed_carousal', 'carousel_setting_sec', '5000'); ?>,
                     autoplayHoverPause: true,
                     loop: <?php echo mep_get_option('mep_loop_carousal', 'carousel_setting_sec', 'true'); ?>,
                     margin: 20,
-                    nav: <?php echo $nav; ?>,
-                    dots: <?php echo $dot; ?>,
+                    nav: <?php echo esc_attr($nav); ?>,
+                    dots: <?php echo esc_attr($dot); ?>,
                     responsiveClass: true,
                     responsive: {
                         0: {
                             items: 1,
-
                         },
                         600: {
                             items: 2,
-
                         },
                         1000: {
-                            items: <?php echo $column; ?>,
+                            items: <?php echo esc_attr($column); ?>,
                         }
                     }
                 });
-
             <?php } ?>
-
             <?php do_action('mep_event_shortcode_js_script', $params); ?>
         });
     </script>
@@ -256,6 +258,7 @@ function mep_expire_event_list($atts, $content = null)
         "timeline-mode" => "vertical",
         'sort'          => 'ASC'
     );
+    
     $params         = shortcode_atts($defaults, $atts);
     $cat            = $params['cat'];
     $org            = $params['org'];
@@ -271,7 +274,7 @@ function mep_expire_event_list($atts, $content = null)
     $city           = $params['city'];
     $country        = $params['country'];
     $cid            = $params['carousal-id'];
-    $main_div       = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
+    $main_div       =  $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
 
     $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
     $time_line_div_end      = $style == 'timeline' ? '</div></div></div>' : '';
@@ -301,13 +304,17 @@ function mep_expire_event_list($atts, $content = null)
              */
             $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, 'expired');
             $total_post =    $loop->post_count;
-            echo '<div class="mage_grid_box">';
+            echo wp_kses_post($main_div);
             while ($loop->have_posts()) {
                 $loop->the_post();
 	            if ($style == 'grid' && (int)$column>0) {
 		            $columnNumber='column_style';
-		            $width=100/(int)$column;
-	            } else {
+					if($pagination == 'carousal'){
+						$width=100;
+					}else{
+						$width=100/(int)$column;						
+					}
+	            }else {
 		            $columnNumber = 'one_column';
 		            $width=100;
 	            }
@@ -317,13 +324,44 @@ function mep_expire_event_list($atts, $content = null)
                 do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width);
             }
             wp_reset_postdata();
-            echo '</div>';
+            ?>
+            </div>
+        <?php
             if ($pagination == 'yes') {
                 /**
                  * The Pagination function mep_event_pagination is locet in inc/mep_query.php File
                  */
                 mep_event_pagination($loop->max_num_pages);
-            } ?>
+            }elseif($pagination == 'carousal'){
+			?>			
+			<script>
+			jQuery(function(){
+				jQuery("<?php echo '#mep-carousel'.esc_attr($cid); ?>").owlCarousel({
+                    autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,
+                    autoplayTimeout:<?php echo mep_get_option('mep_speed_carousal', 'carousel_setting_sec', '5000'); ?>,
+                    autoplayHoverPause: true,
+                    loop: <?php echo mep_get_option('mep_loop_carousal', 'carousel_setting_sec', 'true'); ?>,
+					margin:20,
+					nav:<?php echo esc_attr($nav); ?>,
+					dots:<?php echo esc_attr($dot); ?>,
+					navText: ["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"],
+					responsive:{
+						0:{
+							items:1
+						},
+						600:{
+							items:<?php echo esc_attr($column); ?>
+						},
+						1000:{
+							items:<?php echo esc_attr($column); ?>
+						}
+					}
+				});
+			});
+			</script>
+			<?php	
+			}
+			?>
         </div>
     </div>
     <script>
@@ -338,18 +376,21 @@ function mep_expire_event_list($atts, $content = null)
 }
 
 
-
 add_shortcode('event-add-cart-section', 'mep_event_add_to_cart_section');
 function mep_event_add_to_cart_section($atts, $content = null)
 {
     $defaults = array(
-        "event" => "0"
+        "event" => "0",
+        "cart-btn-label" => "Register For This Event",
+        "ticket-label" => "Ticket Type",
+        "extra-service-label" => "Extra Service"
     );
     $params = shortcode_atts($defaults, $atts);
     $event = $params['event'];   
     ob_start();
     if($event > 0){
-       echo mep_shortcode_add_cart_section_html($event);            
+       echo mep_shortcode_add_cart_section_html($event,$params);     
+       do_action('mep_after_event_cart_shortcode',$event);       
     }
     return ob_get_clean();
 }
@@ -372,16 +413,6 @@ function mep_event_speaker_list_shortcode_section($atts, $content = null)
     }
     return ob_get_clean();
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -421,7 +452,7 @@ function mep_event_onepage_list($atts, $content = null)
     $city           = $params['city'];
     $country        = $params['country'];
     $cid            = $params['carousal-id'];
-    $status            = $params['status'];
+    $status         = $params['status'];
     $main_div       = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
 
     $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
@@ -463,20 +494,20 @@ function mep_event_onepage_list($atts, $content = null)
                 /**
                  * The Main Query function mep_event_query is locet in inc/mep_query.php File
                  */
-                $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
+                $loop               =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
                 $loop->the_post();
 
 
                 $event_meta         = get_post_custom(get_the_id());
                 $author_terms       = get_the_terms(get_the_id(), 'mep_org');
                 $start_datetime     = $event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0];
-                $time = strtotime($start_datetime);
-                $newformat = date_i18n('Y-m-d H:i:s', $time);
-                $tt = get_the_terms(get_the_id(), 'mep_cat');
-                $torg = get_the_terms(get_the_id(), 'mep_org');
-                $org_class = mep_get_term_as_class(get_the_id(), 'mep_org');
-                $cat_class = mep_get_term_as_class(get_the_id(), 'mep_cat');
-                $available_seat = mep_get_total_available_seat(get_the_id(), $event_meta);
+                $time               = strtotime($start_datetime);
+                $newformat          = date_i18n('Y-m-d H:i:s', $time);
+                $tt                 = get_the_terms(get_the_id(), 'mep_cat');
+                $torg               = get_the_terms(get_the_id(), 'mep_org');
+                $org_class          = mep_get_term_as_class(get_the_id(), 'mep_org');
+                $cat_class          = mep_get_term_as_class(get_the_id(), 'mep_cat');
+                $available_seat     = mep_get_total_available_seat(get_the_id(), $event_meta);
                 echo '<div class="mage_grid_box">';
                 while ($loop->have_posts()) {
                     $loop->the_post();
@@ -493,16 +524,16 @@ function mep_event_onepage_list($atts, $content = null)
                     do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width);
 
                     $currency_pos = get_option('woocommerce_currency_pos');
-                    $mep_full_name = strip_tags($event_meta['mep_full_name'][0]);
-                    $mep_reg_email = strip_tags($event_meta['mep_reg_email'][0]);
-                    $mep_reg_phone = strip_tags($event_meta['mep_reg_phone'][0]);
-                    $mep_reg_address = strip_tags($event_meta['mep_reg_address'][0]);
-                    $mep_reg_designation = strip_tags($event_meta['mep_reg_designation'][0]);
-                    $mep_reg_website = strip_tags($event_meta['mep_reg_website'][0]);
-                    $mep_reg_veg = strip_tags($event_meta['mep_reg_veg'][0]);
-                    $mep_reg_company = strip_tags($event_meta['mep_reg_company'][0]);
-                    $mep_reg_gender = strip_tags($event_meta['mep_reg_gender'][0]);
-                    $mep_reg_tshirtsize = strip_tags($event_meta['mep_reg_tshirtsize'][0]);
+                    $mep_full_name = mage_array_strip($event_meta['mep_full_name'][0]);
+                    $mep_reg_email = mage_array_strip($event_meta['mep_reg_email'][0]);
+                    $mep_reg_phone = mage_array_strip($event_meta['mep_reg_phone'][0]);
+                    $mep_reg_address = mage_array_strip($event_meta['mep_reg_address'][0]);
+                    $mep_reg_designation = mage_array_strip($event_meta['mep_reg_designation'][0]);
+                    $mep_reg_website = mage_array_strip($event_meta['mep_reg_website'][0]);
+                    $mep_reg_veg = mage_array_strip($event_meta['mep_reg_veg'][0]);
+                    $mep_reg_company = mage_array_strip($event_meta['mep_reg_company'][0]);
+                    $mep_reg_gender = mage_array_strip($event_meta['mep_reg_gender'][0]);
+                    $mep_reg_tshirtsize = mage_array_strip($event_meta['mep_reg_tshirtsize'][0]);
                     echo '<div class=event-cart-section-list>';
                     do_action('mep_add_to_cart_list');
                     echo '</div>';

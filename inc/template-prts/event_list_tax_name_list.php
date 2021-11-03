@@ -22,9 +22,9 @@ if (!function_exists('mep_display_event_cat_name_in_list')) {
             }
             ?>
             <div class="mep-event-cat-controls">
-                <button type="button" class="mep-cat-control" data-filter="all"><?php _e('All', 'mage-eventpress'); ?></button>
+                <button type="button" class="mep-cat-control" data-filter="all"><?php esc_html_e('All', 'mage-eventpress'); ?></button>
                 <?php foreach ($terms as $_terms) { ?>
-                    <button type="button" class="mep-cat-control" data-filter=".<?php echo $unq_id.'mage-' . $_terms->term_id; ?>"><?php echo $_terms->name; ?></button>
+                    <button type="button" class="mep-cat-control" data-filter=".<?php echo esc_attr($unq_id.'mage-' . $_terms->term_id); ?>"><?php echo esc_html($_terms->name); ?></button>
                 <?php } ?>
             </div>
         </div>
@@ -57,8 +57,8 @@ if (!function_exists('mep_display_event_org_name_in_list')) {
                 }
             ?>
             <div class="mep-event-cat-controls">
-                <button type="button" class="mep-cat-control" data-filter="all"><?php _e('All', 'mage-eventpress'); ?></button><?php  foreach ($terms as $_terms) {  ?>
-                    <button type="button" class="mep-cat-control" data-filter=".<?php echo $unq_id.'mage-' . $_terms->term_id; ?>"><?php echo $_terms->name; ?></button><?php  }  ?>
+                <button type="button" class="mep-cat-control" data-filter="all"><?php esc_html_e('All', 'mage-eventpress'); ?></button><?php  foreach ($terms as $_terms) {  ?>
+                    <button type="button" class="mep-cat-control" data-filter=".<?php echo esc_attr($unq_id.'mage-' . $_terms->term_id); ?>"><?php echo esc_html($_terms->name); ?></button><?php  }  ?>
             </div>
         </div>
     <?php

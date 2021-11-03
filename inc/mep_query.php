@@ -12,31 +12,30 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
     $event_expire_on    = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
     $now                = current_time('Y-m-d H:i:s');
     if ( get_query_var('paged') ) {
-
-        $paged = get_query_var('paged');
-    
-    } elseif ( get_query_var('page') ) {
-    
-        $paged = get_query_var('page');
-    
-    } else {
-    
-        $paged = 1;
-    
+        $paged = get_query_var('paged');    
+    } elseif ( get_query_var('page') ) {    
+        $paged = get_query_var('page');    
+    } else {    
+        $paged = 1;   
     }
     $etype              = $evnt_type == 'expired' ? '<' : '>';
+
+
+    $cat_id = explode(',',$cat);
+    $org_id = explode(',',$org);
+
 
     $cat_filter = !empty($cat) ? array(
         'taxonomy'  => 'mep_cat',
         'field'     => 'term_id',
-        'terms'     => $cat
+        'terms'     => $cat_id
     ) : '';
 
 
     $org_filter = !empty($org) ? array(
         'taxonomy'  => 'mep_org',
         'field'     => 'term_id',
-        'terms'     => $org
+        'terms'     => $org_id
     ) : '';
 
     $city_filter = !empty($city) ? array(
@@ -62,7 +61,8 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'posts_per_page'    => $show,
         'order'             => $sort,
         'orderby'           => 'meta_value',
-        'meta_key'          => 'event_start_datetime',
+        // 'meta_key'          => 'event_start_datetime',
+        'meta_key'          => 'event_upcoming_datetime',
         'meta_query' => array(
             $expire_filter,
             $city_filter,
@@ -108,8 +108,8 @@ function mep_event_pagination($total_page)
                                     "current" => $paged,
                                     "total" => $total_page
                                 );
-                                echo "<div class='pagination-sec'>" . paginate_links($pargs) . "</div>";
-            ?>
+                                ?>
+                                <div class='pagination-sec'><?php echo paginate_links($pargs); ?></div>
         </div>
     </div>
 <?php

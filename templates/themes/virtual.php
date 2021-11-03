@@ -13,7 +13,6 @@ $hide_share_details         = mep_get_option('mep_event_hide_share_this_details'
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
 ?>
-
 <div class="mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mep-default-title">
@@ -41,7 +40,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
             <?php } ?>
             <?php if ($hide_org_by_details == 'no') { ?>
                 <div class="mep-default-sidrbar-meta">
-                    <i class="fa fa-link"></i> <?php do_action('mep_event_organizer'); ?>
+                <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer'); ?>
                 </div>
             <?php } if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-sidebar-speaker-list">               

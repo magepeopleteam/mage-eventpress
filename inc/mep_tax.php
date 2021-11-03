@@ -108,7 +108,7 @@ add_filter("manage_mep_cat_custom_column", 'mep_display_cat_id_to_column', 10, 3
 function mep_display_cat_id_to_column($out, $column_name, $theme_id) {
     switch ($column_name) {
         case 'mep_cat_id': 
-                echo $theme_id;
+                echo esc_html($theme_id);
             break;
  
         default:
@@ -137,7 +137,7 @@ add_filter("manage_mep_org_custom_column", 'mep_display_org_id_to_column', 10, 3
 function mep_display_org_id_to_column($out, $column_name, $theme_id) {
     switch ($column_name) {
         case 'mep_org_id': 
-                echo $theme_id;
+                echo esc_html($theme_id);
             break;
  
         default:

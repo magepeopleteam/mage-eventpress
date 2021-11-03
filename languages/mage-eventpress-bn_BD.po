@@ -73,7 +73,7 @@ msgstr ""
 "যখন উপরে হ্যা সিলেক্ট করা থাকবে. "
 
 #: inc/admin_setting_panel.php:113 inc/admin_setting_panel.php:114
-msgid "Email Form Name"
+msgid "Email From Name"
 msgstr "ইমেইল কোথা হইতে গেছে তার নাম"
 
 #: inc/admin_setting_panel.php:120 inc/admin_setting_panel.php:121

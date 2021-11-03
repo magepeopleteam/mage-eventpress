@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     die;
 } // Cannot access pages directly.
 
-function mep_check_attendee_exists($event_id, $order_id, $name = null, $email = null, $phone = null, $address = null, $gender = null, $company = null, $desg = null, $website = null, $veg = null, $tshirt = null, $type)
+function mep_check_attendee_exists($event_id, $order_id, $name = null, $email = null, $phone = null, $address = null, $gender = null, $company = null, $desg = null, $website = null, $veg = null, $tshirt = null, $type=null)
 {
 
     $args = array(
@@ -58,11 +58,13 @@ function mep_flash_permalink_once()
 add_action('admin_init', 'mep_flash_permalink_once');
 
 
+
+
+
+
 add_action('admin_init', 'mep_get_all_order_data_and_create_attendee');
 function mep_get_all_order_data_and_create_attendee()
 {
-
-
     if (get_option('mep_hidden_product_thumbnail_update_02') != 'completed') {
 
         $args = array(
@@ -77,6 +79,21 @@ function mep_get_all_order_data_and_create_attendee()
             set_post_thumbnail($product_id, get_post_thumbnail_id($post_id));
         }
         update_option('mep_hidden_product_thumbnail_update_02', 'completed');
+    }
+
+    // Event Upcoming Date Upgrade
+    if (get_option('mep_event_upcoming_date_add_03') != 'completed') {
+        $args = array(
+            'post_type' => 'mep_events',
+            'posts_per_page' => -1
+        );
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id        = $result->ID;
+            $upcoming_date  = mep_get_event_upcoming_date($post_id);
+            update_post_meta($post_id, 'event_upcoming_datetime', $upcoming_date);
+        }
+        update_option('mep_event_upcoming_date_add_03', 'completed');
     }
 
 
@@ -177,6 +194,24 @@ function mep_get_all_order_data_and_create_attendee()
     }
 
 
+    
+    if (get_option('mep_attendee_ticket_price_update_01') != 'completed') {
+        $args = array(
+            'post_type' => 'mep_events_attendees',
+            'posts_per_page' => -1
+        );
+
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id        = $result->ID;
+            $event_id       = get_post_meta($post_id,'ea_event_id',true);
+            $ticket_type    = get_post_meta($post_id,'ea_ticket_type',true);
+            update_post_meta($post_id, 'ea_ticket_price', mep_get_ticket_price_by_event($event_id,$ticket_type,0));
+        }
+        update_option('mep_attendee_ticket_price_update_01', 'completed');
+    }
+
+
 
     if (get_option('mep_attendee_checkin_update_01') != 'completed') {
 
@@ -216,10 +251,10 @@ function mep_get_all_order_data_and_create_attendee()
                 foreach ($more_date as $_multi_date) {
                     $start_date = date('Y-m-d', strtotime($_multi_date['event_more_date']));
                     $start_time = date('H:i A', strtotime($_multi_date['event_more_date']));
-                    $multi_dates[$count]['event_more_start_date'] = stripslashes(strip_tags($start_date));
-                    $multi_dates[$count]['event_more_start_time'] = stripslashes(strip_tags($start_time));
-                    $multi_dates[$count]['event_more_end_date'] = stripslashes(strip_tags(''));
-                    $multi_dates[$count]['event_more_end_time'] = stripslashes(strip_tags(''));
+                    $multi_dates[$count]['event_more_start_date'] = stripslashes(mage_array_strip($start_date));
+                    $multi_dates[$count]['event_more_start_time'] = stripslashes(mage_array_strip($start_time));
+                    $multi_dates[$count]['event_more_end_date'] = stripslashes(mage_array_strip(''));
+                    $multi_dates[$count]['event_more_end_time'] = stripslashes(mage_array_strip(''));
                     $count++;
                 }
                 update_post_meta($post_id, 'mep_event_more_date', $multi_dates);
@@ -346,11 +381,6 @@ if (get_option('mep_attendee_price_update_2') != 'completed') {
     }
     update_option('mep_attendee_price_update_2', 'completed');
 }
-
-
-
-
-
 
 
 

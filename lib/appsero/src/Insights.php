@@ -391,7 +391,7 @@ class Insights {
         $notice .= 'We are using Appsero to collect your data. <a href="' . $policy_url . '">Learn more</a> about how Appsero collects and handle your data.</p>';
 
         echo '<div class="updated"><p>';
-            echo $notice;
+            echo mep_esc_html($notice);
             echo '</p><p class="submit">';
             echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . $this->client->__trans( 'Allow' ) . '</a>';
             echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . $this->client->__trans( 'No thanks' ) . '</a>';
@@ -412,14 +412,14 @@ class Insights {
      */
     public function handle_optin_optout() {
 
-        if ( isset( $_GET[ $this->client->slug . '_tracker_optin' ] ) && $_GET[ $this->client->slug . '_tracker_optin' ] == 'true' ) {
+        if ( isset( $_GET[ $this->client->slug . '_tracker_optin' ] ) && mage_array_strip($_GET[ $this->client->slug . '_tracker_optin' ]) == 'true' ) {
             $this->optin();
 
             wp_redirect( remove_query_arg( $this->client->slug . '_tracker_optin' ) );
             exit;
         }
 
-        if ( isset( $_GET[ $this->client->slug . '_tracker_optout' ] ) && $_GET[ $this->client->slug . '_tracker_optout' ] == 'true' ) {
+        if ( isset( $_GET[ $this->client->slug . '_tracker_optout' ] ) && mage_array_strip($_GET[ $this->client->slug . '_tracker_optout' ]) == 'true' ) {
             $this->optout();
 
             wp_redirect( remove_query_arg( $this->client->slug . '_tracker_optout' ) );
@@ -756,7 +756,7 @@ class Insights {
         $custom_reasons = apply_filters( 'appsero_custom_deactivation_reasons', array() );
         ?>
 
-        <div class="wd-dr-modal" id="<?php echo $this->client->slug; ?>-wd-dr-modal">
+        <div class="wd-dr-modal" id="<?php echo esc_attr($this->client->slug); ?>-wd-dr-modal">
             <div class="wd-dr-modal-wrap">
                 <div class="wd-dr-modal-header">
                     <h3><?php $this->client->_etrans( 'Goodbyes are always hard. If you have a moment, please let us know how we can improve.' ); ?></h3>
@@ -767,9 +767,9 @@ class Insights {
                         <?php foreach ( $reasons as $reason ) { ?>
                             <li data-placeholder="<?php echo esc_attr( $reason['placeholder'] ); ?>">
                                 <label>
-                                    <input type="radio" name="selected-reason" value="<?php echo $reason['id']; ?>">
-                                    <div class="wd-de-reason-icon"><?php echo $reason['icon']; ?></div>
-                                    <div class="wd-de-reason-text"><?php echo $reason['text']; ?></div>
+                                    <input type="radio" name="selected-reason" value="<?php echo esc_attr($reason['id']); ?>">
+                                    <div class="wd-de-reason-icon"><?php echo mep_esc_html($reason['icon']); ?></div>
+                                    <div class="wd-de-reason-text"><?php echo esc_html($reason['text']); ?></div>
                                 </label>
                             </li>
                         <?php } ?>
@@ -779,9 +779,9 @@ class Insights {
                         <?php foreach ( $custom_reasons as $reason ) { ?>
                             <li data-placeholder="<?php echo esc_attr( $reason['placeholder'] ); ?>" data-customreason="true">
                                 <label>
-                                    <input type="radio" name="selected-reason" value="<?php echo $reason['id']; ?>">
-                                    <div class="wd-de-reason-icon"><?php echo $reason['icon']; ?></div>
-                                    <div class="wd-de-reason-text"><?php echo $reason['text']; ?></div>
+                                    <input type="radio" name="selected-reason" value="<?php echo esc_attr($reason['id']); ?>">
+                                    <div class="wd-de-reason-icon"><?php echo mep_esc_html($reason['icon']); ?></div>
+                                    <div class="wd-de-reason-text"><?php echo esc_html($reason['text']); ?></div>
                                 </label>
                             </li>
                         <?php } ?>
@@ -810,11 +810,11 @@ class Insights {
         <script type="text/javascript">
             (function($) {
                 $(function() {
-                    var modal = $( '#<?php echo $this->client->slug; ?>-wd-dr-modal' );
+                    var modal = $( '#<?php echo esc_attr($this->client->slug); ?>-wd-dr-modal' );
                     var deactivateLink = '';
 
                     // Open modal
-                    $( '#the-list' ).on('click', 'a.<?php echo $this->client->slug; ?>-deactivate-link', function(e) {
+                    $( '#the-list' ).on('click', 'a.<?php echo esc_attr($this->client->slug); ?>-deactivate-link', function(e) {
                         e.preventDefault();
 
                         modal.addClass('modal-active');
@@ -872,7 +872,7 @@ class Insights {
                             url: ajaxurl,
                             type: 'POST',
                             data: {
-                                action: '<?php echo $this->client->slug; ?>_submit-uninstall-reason',
+                                action: '<?php echo esc_attr($this->client->slug); ?>_submit-uninstall-reason',
                                 reason_id: ( 0 === $radio.length ) ? 'none' : $radio.val(),
                                 reason_info: ( 0 !== $input.length ) ? $input.val().trim() : ''
                             },

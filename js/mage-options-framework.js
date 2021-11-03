@@ -221,8 +221,8 @@ jQuery(document).ready(function($) {
             score_text = 'Week';
         }
         html = '<span style="width:'+parseInt(score)+'%;background-color: '+score_style+'"></span>';
-        $(".field-password-wrapper-<?php echo $id; ?> .scorePassword").html(html)
-        $(".field-password-wrapper-<?php echo $id; ?> .scoreText").html(score_text)
+        $(".field-password-wrapper- .scorePassword").html(html)
+        $(".field-password-wrapper- .scoreText").html(score_text)
     })
 
 

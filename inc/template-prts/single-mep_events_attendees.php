@@ -91,105 +91,13 @@ if($ticket_user_id == $current_user_id ||  in_array( 'administrator', (array) $u
     text-transform: capitalize;
     padding: 20px;
 }
+<?php do_action('mep_attendee_details_page_style',get_the_id()); ?>
 </style>	
 </head>
 <body>
 	<div class="mep-wrapper">
 	<div class="mep-reg-user-details">
-		<table>
-			<tr>
-				<td colspan="2" align="center">
-					<center>
-					<?php echo get_avatar( $values['ea_email'][0], 128 ); ?>
-					<h2><?php echo $values['ea_name'][0]; ?></h2>
-					<?php do_action('mep_qr_code_checkin_btn',$values['ea_user_id'][0],get_the_id()); ?>
-					<h4><?php echo $values['ea_event_name'][0]; ?></h4>
-				</center>
-				</td>
-			</tr>
-			<?php do_action('mep_attendee_table_row_start',get_the_id()); ?>			
-			<tr>
-				<td><?php _e('Ticket No','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_user_id'][0].$values['ea_order_id'][0].get_the_id(); ?></td>
-			</tr>
-					
-			<tr>
-				<td><?php _e('Order ID','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_order_id'][0]; ?></td>
-			</tr>			
-			<?php if($values['ea_email'][0]){ ?>
-			<tr>
-				<td><?php _e('Email','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_email'][0]; ?></td>
-			</tr>
-			<?php } if($values['ea_phone'][0]){ ?>
-			<tr>
-				<td><?php _e('Phone','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_phone'][0]; ?></td>
-			</tr>
-			<?php } if($values['ea_address_1'][0]){ ?>
-			<tr>
-				<td><?php _e('Address','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_address_1'][0]; ?> </td>
-			</tr>
-			<?php } if($values['ea_desg'][0]){ ?>
-			<tr>
-				<td><?php _e('Designation','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_desg'][0]; ?></td>
-			</tr>
-			<?php } if($values['ea_company'][0]){ ?>
-			<tr>
-				<td><?php _e('Company','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_company'][0]; ?></td>
-			</tr>
-			<?php } if($values['ea_website'][0]){ ?>
-			<tr>
-				<td><?php _e('Website','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_website'][0]; ?> </td>
-			</tr>
-			<?php } if($values['ea_gender'][0]){ ?>
-			<tr>
-				<td><?php _e('Gender','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_gender'][0]; ?> </td>
-			</tr>
-
-			<?php } if($values['ea_vegetarian'][0]){ ?>
-			<tr>
-				<td><?php _e('Vegetarian','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_vegetarian'][0]; ?> </td>
-			</tr>	
-		
-
-			<?php } if($values['ea_tshirtsize'][0]){ ?>
-			<tr>
-				<td><?php _e('T Shirt Size','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_tshirtsize'][0]; ?> </td>
-			</tr>		
-			<?php } if($values['ea_ticket_type'][0]){ ?>
-			<tr>
-				<td><?php _e('Ticket Type','mage-eventpress'); ?></td>
-				<td><?php echo $values['ea_ticket_type'][0]; ?> </td>
-			</tr>	
-			<?php } 
-			$reg_form_id = mep_fb_get_reg_form_id($values['ea_event_id'][0]);   
-			$mep_form_builder_data = get_post_meta($reg_form_id, 'mep_form_builder_data', true) ? get_post_meta($reg_form_id, 'mep_form_builder_data', true) : [];
-			  if (sizeof($mep_form_builder_data) > 0 ) {
-			    foreach ( $mep_form_builder_data as $_field ) {
-			$vname = "ea_".$_field['mep_fbc_id']; 
-			$vals = $values[$vname][0];
-			if($vals){
-			?>
-			<tr>
-				<td><?php echo $_field['mep_fbc_label']; ?></td>
-				<td><?php echo $vals; ?></td>
-			</tr>	
-		<?php
-		}
-	}
-}
-do_action('mep_attendee_table_row_end',get_the_id());
-?>
-		</table>
+		<?php do_action('mep_attendee_details_page',get_the_id()); ?>
 	</div>
 </div>
 <?php
@@ -197,10 +105,10 @@ do_action('mep_attendee_table_row_end',get_the_id());
 ?>
 <html>
     <head>
-        <title><?php _e('Sorry, You Can not see this page, Because Its not your Attendee Information.','mage-eventpress'); ?></title>
+        <title><?php esc_html_e('Sorry, You Can not see this page, Because Its not your Attendee Information.','mage-eventpress'); ?></title>
     </head>    
 <body>
-<h3 style="text-align: center;border: 2px solid red;color: red;font-size: 30px;width: 60%;margin: 100px auto;padding: 30px;"><?php _e('Sorry, You Can not see this page, Because Its not your Attendee Information.','mage-eventpress'); ?></h3>
+<h3 style="text-align: center;border: 2px solid red;color: red;font-size: 30px;width: 60%;margin: 100px auto;padding: 30px;"><?php esc_html_e('Sorry, You Can not see this page, Because Its not your Attendee Information.','mage-eventpress'); ?></h3>
 <?php
 }
 do_action('at_footer'); 

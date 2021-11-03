@@ -67,7 +67,7 @@ if (!function_exists('mep_shortcode_timeline_js_script')) {
 ?>
 
             jQuery('.timeline').timeline({
-            mode: '<?php echo $tmode; ?>',
+            mode: '<?php echo esc_attr($tmode); ?>',
             visibleItems: 4
             });
 <?php

@@ -3,29 +3,40 @@ if (!defined('ABSPATH')) {
     die;
 } // Cannot access pages directly.
 
-add_action('mep_add_to_cart', 'mep_get_event_reg_btn');
+add_action('mep_add_to_cart', 'mep_get_event_reg_btn',10,2);
 if (!function_exists('mep_get_event_reg_btn')) {
     // Get Event Registration Button
-    function mep_get_event_reg_btn($event_id = '')
-    {
+    function mep_get_event_reg_btn($event_id = '',$params=[])
+    {        
         global $post, $event_meta;
+        $event_id                     = mep_get_default_lang_event_id($event_id);
+
+        $saved_user_role 	          = get_post_meta($event_id, 'mep_member_only_user_role', true) ? get_post_meta($event_id, 'mep_member_only_user_role', true) : [];
+        $event_member_type 	          = get_post_meta($event_id, 'mep_member_only_event', true) ? get_post_meta($event_id, 'mep_member_only_event', true) : 'for_all';        
+
+
+        $cart_btn_label               = array_key_exists('cart-btn-label',$params) ? esc_html($params['cart-btn-label']) : mep_get_label($event_id, 'mep_cart_btn_text', esc_html__('Register This Event','mage-eventpress'));
+        $ticket_type_label            = array_key_exists('ticket-label',$params) ? esc_html($params['ticket-label']) : mep_get_label($event_id, 'mep_event_ticket_type_text', esc_html__('Ticket Type:','mage-eventpress'));
+        $extra_service_label          = array_key_exists('extra-service-label',$params) ? esc_html($params['extra-service-label']) : mep_get_label($event_id, 'mep_event_extra_service_text', esc_html__('Extra Service:','mage-eventpress'));
+        $select_date_label            = array_key_exists('select-date-label',$params) ? esc_html($params['select-date-label']) : mep_get_option('mep_event_rec_select_event_date_text', 'label_setting_sec', esc_html__('Select Event Date:', 'mage-eventpress'));
+        // $select_date_label            = 'U lala lala';
         $total_book                 = 0;
         $post_id                    = $event_id ? $event_id : get_the_id();
         $event_meta                 = get_post_custom($post_id);
         $event_expire_on_old         = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
-        $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
+        $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? esc_html('event_expire_datetime') : $event_expire_on_old;
         $event_expire_date          = $event_meta[$event_expire_on][0];
        // $event_sqi                  = array_key_exists('mep_sqi',$event_meta) ? $event_meta['mep_sqi'][0] : '';
-        $mep_full_name              = strip_tags($event_meta['mep_full_name'][0]);
-        $mep_reg_email              = strip_tags($event_meta['mep_reg_email'][0]);
-        $mep_reg_phone              = strip_tags($event_meta['mep_reg_phone'][0]);
-        $mep_reg_address            = strip_tags($event_meta['mep_reg_address'][0]);
-        $mep_reg_designation        = strip_tags($event_meta['mep_reg_designation'][0]);
-        $mep_reg_website            = strip_tags($event_meta['mep_reg_website'][0]);
-        $mep_reg_veg                = strip_tags($event_meta['mep_reg_veg'][0]);
-        $mep_reg_company            = strip_tags($event_meta['mep_reg_company'][0]);
-        $mep_reg_gender             = strip_tags($event_meta['mep_reg_gender'][0]);
-        $mep_reg_tshirtsize         = strip_tags($event_meta['mep_reg_tshirtsize'][0]);
+        $mep_full_name              = mage_array_strip($event_meta['mep_full_name'][0]);
+        $mep_reg_email              = mage_array_strip($event_meta['mep_reg_email'][0]);
+        $mep_reg_phone              = mage_array_strip($event_meta['mep_reg_phone'][0]);
+        $mep_reg_address            = mage_array_strip($event_meta['mep_reg_address'][0]);
+        $mep_reg_designation        = mage_array_strip($event_meta['mep_reg_designation'][0]);
+        $mep_reg_website            = mage_array_strip($event_meta['mep_reg_website'][0]);
+        $mep_reg_veg                = mage_array_strip($event_meta['mep_reg_veg'][0]);
+        $mep_reg_company            = mage_array_strip($event_meta['mep_reg_company'][0]);
+        $mep_reg_gender             = mage_array_strip($event_meta['mep_reg_gender'][0]);
+        $mep_reg_tshirtsize         = mage_array_strip($event_meta['mep_reg_tshirtsize'][0]);
         $time                       = strtotime($event_expire_date);
         $newformat                  = date('Y-m-d H:i:s', $time);
         $datetime1                  = new DateTime();
@@ -36,7 +47,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $total_resv                 = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($post_id, 'resv'), $post_id);
         $total_sold                 = mep_ticket_sold($post_id);
         $total_left                 = $total_seat - ($total_sold + $total_resv);
-        $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? $event_meta['mep_reg_status'][0] : '';
+        $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? esc_html($event_meta['mep_reg_status'][0]) : '';
         $seat_left                  = apply_filters('mep_event_total_seat_count', $total_left, $post_id);
         $current                    = current_time('Y-m-d H:i:s');
         $time                       = strtotime($event_expire_date);
@@ -67,7 +78,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $mm                         = $minutes > 0 ? $minutes . " minutes " : '';
        // $qty_typec                  = array_key_exists('qty_box_type',$event_meta) ? $event_meta['qty_box_type'][0] : '';
         $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_attr(get_post_meta($post_id, 'link_wc_product', true)) : esc_attr($post_id);
-
+        $not_in_the_cart            = apply_filters('mep_check_product_into_cart',true,$cart_product_id);
         
 
         /**
@@ -97,45 +108,81 @@ if (!function_exists('mep_get_event_reg_btn')) {
                 /**
                  * If everything is fine then its go on ....
                  */
-?>
-                <!-- Register Now Title -->
-                <h4 class="mep-cart-table-title">
-                    <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : _e('Register Now:', 'mage-eventpress');  ?>
+
+                
+
+                 if( $event_member_type == 'for_all' || ($event_member_type != 'for_all'  && is_user_logged_in() && ( in_array(wp_get_current_user()->roles[0],$saved_user_role) || in_array('all',$saved_user_role) ) )){
+                     ?>
+
+                    <input type='hidden' value="<?php echo esc_attr($extra_service_label); ?>" id='mep_extra_service_label'/>
+                    <input type='hidden' value="<?php echo esc_attr($select_date_label); ?>" id='mep_select_date_label'/>
+
+
+      <!-- Register Now Title -->
+      <h4 class="mep-cart-table-title">
+                    <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : esc_html__('Register Now:', 'mage-eventpress');  ?>
                 </h4>
                 <!--The event add to cart main form start here-->
                 <form action="" method='post' id="mage_event_submit">
+                
                     <?php
                     /**
                      * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/event_ticket_type_extra_service.php
                      */
-                    do_action('mep_event_ticket_type_extra_service', $post_id);
+                    do_action('mep_event_ticket_type_extra_service', $post_id, $ticket_type_label,$extra_service_label,$select_date_label );
                     ?>
                     <input type='hidden' id='rowtotal' value="<?php echo get_post_meta($post_id, "_price", true); ?>" />
-
+					
+					<input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
+                    <input type="hidden" name='currency_position' value="<?php echo get_option('woocommerce_currency_pos'); ?>">
+                    <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
+                    <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
+                    <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
+                    <?php do_action('mep_add_term_condition',$post_id); ?>
                     <!--The Add to cart button table start Here-->
                     <table class='table table-bordered mep_event_add_cart_table'>
                         <tr>
-                            <td align="left" class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : _e('Quantity:', 'mage-eventpress');
+                            <td align="left" class='total-col'>
+                            <?php do_action('mep_before_price_calculation',$post_id); ?>
+                            <?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : esc_html__('Quantity:', 'mage-eventpress');
                                                                 if ($mep_event_ticket_type) { ?>
-                                    <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo $leftt; ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
+                                    <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo esc_attr($leftt); ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
                                     <span id="ttyttl"></span>
                                 <?php } ?>
-                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : _e('Total', 'mage-eventpress');  ?>
+                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : esc_html__('Total', 'mage-eventpress');  ?>
                                     <span id="usertotal"></span>
                                 </span>
+                                <?php do_action('mep_after_price_calculation',$post_id); ?>
                             </td>
                             <td align="right">
+                                <?php do_action('mep_before_add_cart_btn',$post_id); ?>
                                 <input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta)); ?>">
                                 <input type="hidden" name="mep_event_date_cart" value="<?php do_action('mep_event_date'); ?>">
-                                <button type="submit" name="add-to-cart" value="<?php echo $cart_product_id; ?>" class="single_add_to_cart_button button alt btn-mep-event-cart"><?php _e(mep_get_label($post_id, 'mep_cart_btn_text', 'Register This Event'), 'mage-eventpress'); ?> </button>
+                                <?php if($not_in_the_cart){ ?>
+                                <button type="submit" name="add-to-cart" value="<?php echo esc_attr($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php echo esc_html($cart_btn_label); ?></button>
+                                <?php }else{
+                                    ?>
+                                        <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('Already Added into Cart! View Cart', 'mage-eventpress'); ?> </a>
+                                    <?php
+                                } ?>
+                                <?php do_action('mep_after_add_cart_btn',$post_id); ?>
                             </td>
                         </tr>
                     </table>
                     <!--The Add to cart button table start Here-->
                 </form>
                 <!--The event add to cart main form end here-->
-            <?php
-            }
+                <?php
+                 }else{
+                     ?>
+                        <span class="mep_warning">
+                         <?php
+                            esc_html_e("Whoops, this event for members only. Login to view content. Not a member? That's easy.","mage-eventpress");
+                            ?>
+                        </span>
+                     <?php
+                 }        
+        }
         } // End Of checking Registration status  
     }
 }
@@ -153,19 +200,19 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $post_id                    = $post->ID;
         $event_meta                 = get_post_custom($post_id);
         $event_expire_on_old         = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
-        $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
+        $event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? esc_html('event_expire_datetime') : $event_expire_on_old;
         $event_expire_date          = $event_meta[$event_expire_on][0];
        // $event_sqi                  = $event_meta['mep_sqi'][0];
-        $mep_full_name              = strip_tags($event_meta['mep_full_name'][0]);
-        $mep_reg_email              = strip_tags($event_meta['mep_reg_email'][0]);
-        $mep_reg_phone              = strip_tags($event_meta['mep_reg_phone'][0]);
-        $mep_reg_address            = strip_tags($event_meta['mep_reg_address'][0]);
-        $mep_reg_designation        = strip_tags($event_meta['mep_reg_designation'][0]);
-        $mep_reg_website            = strip_tags($event_meta['mep_reg_website'][0]);
-        $mep_reg_veg                = strip_tags($event_meta['mep_reg_veg'][0]);
-        $mep_reg_company            = strip_tags($event_meta['mep_reg_company'][0]);
-        $mep_reg_gender             = strip_tags($event_meta['mep_reg_gender'][0]);
-        $mep_reg_tshirtsize         = strip_tags($event_meta['mep_reg_tshirtsize'][0]);
+        $mep_full_name              = mage_array_strip($event_meta['mep_full_name'][0]);
+        $mep_reg_email              = mage_array_strip($event_meta['mep_reg_email'][0]);
+        $mep_reg_phone              = mage_array_strip($event_meta['mep_reg_phone'][0]);
+        $mep_reg_address            = mage_array_strip($event_meta['mep_reg_address'][0]);
+        $mep_reg_designation        = mage_array_strip($event_meta['mep_reg_designation'][0]);
+        $mep_reg_website            = mage_array_strip($event_meta['mep_reg_website'][0]);
+        $mep_reg_veg                = mage_array_strip($event_meta['mep_reg_veg'][0]);
+        $mep_reg_company            = mage_array_strip($event_meta['mep_reg_company'][0]);
+        $mep_reg_gender             = mage_array_strip($event_meta['mep_reg_gender'][0]);
+        $mep_reg_tshirtsize         = mage_array_strip($event_meta['mep_reg_tshirtsize'][0]);
         // $simple_rsv                 = array_key_exists('mep_rsv_seat', $event_meta) ? $event_meta['mep_rsv_seat'][0] : 0;
         // $total_book                 = ($total_book + $simple_rsv);
         // $seat_left                  = ((int)$event_meta['mep_total_seat'][0]- (int)$total_book);
@@ -209,9 +256,8 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $hh                         = $hours > 0 ? $hours . " hours " : '';
         $mm                         = $minutes > 0 ? $minutes . " minutes " : '';
        // $qty_typec                  = $event_meta['qty_box_type'][0];
-        $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_attr(get_post_meta($post_id, 'link_wc_product', true)) : esc_attr($post_id);
-
-
+        $cart_product_id            = get_post_meta($post_id, 'link_wc_product', true) ? esc_html(get_post_meta($post_id, 'link_wc_product', true)) : esc_html($post_id);
+        $not_in_the_cart            = apply_filters('mep_check_product_into_cart',true,$cart_product_id);
         /**
          * First Checking If the registration status enable or disable 
          */
@@ -241,7 +287,7 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
             ?>
                 <!-- Register Now Title -->
                 <h4 class="mep-cart-table-title">
-                    <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : _e('Register Now:', 'mage-eventpress');  ?>
+                    <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : esc_html__('Register Now:', 'mage-eventpress');  ?>
                 </h4>
                 <!--The event add to cart main form start here-->
                 <form action="" method='post' id="mage_event_submit">
@@ -253,23 +299,33 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
                     do_action('mep_event_extra_service_list');
                     ?>
                     <input type='hidden' id='rowtotal' value="<?php echo get_post_meta($post_id, "_price", true); ?>" />
-
-                    <!--The Add to cart button table start Here-->
+					
+					<input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
+                    <input type="hidden" name='currency_position' value="<?php echo get_option('woocommerce_currency_pos'); ?>">
+                    <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
+                    <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
+                    <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
+                    <?php do_action('mep_add_term_condition',$post_id); ?>
+                    <!--The Add to cart button table start Here fff-->
                     <table class='table table-bordered mep_event_add_cart_table'>
                         <tr>
-                            <td align="left" class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : _e('Quantity:', 'mage-eventpress');
+                            <td align="left" class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : esc_html_e('Quantity:', 'mage-eventpress');
                                                                 if ($mep_event_ticket_type) { ?>
-                                    <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo $leftt; ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
+                                    <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo esc_attr($leftt); ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
                                     <span id="ttyttl"></span>
                                 <?php } ?>
-                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : _e('Total', 'mage-eventpress');  ?>
+                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : esc_html_e('Total', 'mage-eventpress');  ?>
                                     <span id="usertotal"></span>
                                 </span>
                             </td>
-                            <td align="right">
+                            <td align="right" class='mep-event-cart-btn-sec'>
                                 <input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta)); ?>">
                                 <input type="hidden" name="mep_event_date_cart" value="<?php do_action('mep_event_date'); ?>">
-                                <button type="submit" name="add-to-cart" value="<?php echo $cart_product_id; ?>" class="single_add_to_cart_button button alt btn-mep-event-cart"><?php _e(mep_get_label($post_id, 'mep_cart_btn_text', 'Register This Event'), 'mage-eventpress'); ?> </button>
+                                <?php if($not_in_the_cart){ ?>
+                                    <button type="submit" name="add-to-cart" value="<?php echo esc_html($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e(mep_get_label($post_id, 'mep_cart_btn_text', 'Register This Event'), 'mage-eventpress'); ?></button>
+                                <?php }else{ ?>
+                                     <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('Already Added into Cart!', 'mage-eventpress'); ?> </a>
+                                <?php } ?>
                             </td>
                         </tr>
                     </table>

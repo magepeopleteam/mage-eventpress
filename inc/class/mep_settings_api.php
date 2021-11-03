@@ -100,7 +100,7 @@ class MAGE_Setting_API {
             if ( isset($section['desc']) && !empty($section['desc']) ) {
                 $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
                 $callback = function() use ( $section ) {
-		    echo str_replace( '"', '\"', $section['desc'] );
+		    echo str_replace( '"', '\"', esc_html($section['desc']) );
 		};
             } else if ( isset( $section['callback'] ) ) {
                 $callback = $section['callback'];
@@ -115,10 +115,10 @@ class MAGE_Setting_API {
         foreach ( $this->settings_fields as $section => $field ) {
             foreach ( $field as $option ) {
 
-                $name = $option['name'];
-                $type = isset( $option['type'] ) ? $option['type'] : 'text';
-                $label = isset( $option['label'] ) ? $option['label'] : '';
-                $callback = isset( $option['callback'] ) ? $option['callback'] : array( $this, 'callback_' . $type );
+                $name           = $option['name'];
+                $type           = isset( $option['type'] ) ? $option['type'] : 'text';
+                $label          = isset( $option['label'] ) ? $option['label'] : '';
+                $callback       = isset( $option['callback'] ) ? $option['callback'] : array( $this, 'callback_' . $type );
 
                 $args = array(
                     'id'                => $name,
@@ -178,7 +178,7 @@ class MAGE_Setting_API {
         $html        = sprintf( '<input type="%1$s" class="%2$s-text" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder );
         $html       .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -207,7 +207,7 @@ class MAGE_Setting_API {
         $html        = sprintf( '<input type="%1$s" class="%2$s-number" id="%3$s[%4$s]" name="%3$s[%4$s]" value="%5$s"%6$s%7$s%8$s%9$s/>', $type, $size, $args['section'], $args['id'], $value, $placeholder, $min, $max, $step );
         $html       .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -226,7 +226,7 @@ class MAGE_Setting_API {
         $html  .= sprintf( '%1$s</label>', $args['desc'] );
         $html  .= '</fieldset>';
 
-        echo $html;
+        echo mep_esc_html($html);        
     }
 
     /**
@@ -249,7 +249,7 @@ class MAGE_Setting_API {
         $html .= $this->get_field_description( $args );
         $html .= '</fieldset>';
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -271,7 +271,7 @@ class MAGE_Setting_API {
         $html .= $this->get_field_description( $args );
         $html .= '</fieldset>';
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -292,7 +292,7 @@ class MAGE_Setting_API {
         $html .= sprintf( '</select>' );
         $html .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -309,7 +309,7 @@ class MAGE_Setting_API {
         $html        = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]"%4$s>%5$s</textarea>', $size, $args['section'], $args['id'], $placeholder, $value );
         $html        .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -319,7 +319,7 @@ class MAGE_Setting_API {
      * @return string
      */
     function callback_html( $args ) {
-        echo $this->get_field_description( $args );
+        echo mep_esc_html($this->get_field_description( $args ));
     }
 
     /**
@@ -348,7 +348,7 @@ class MAGE_Setting_API {
 
         echo '</div>';
 
-        echo $this->get_field_description( $args );
+        echo wp_kses_post($this->get_field_description( $args ));
     }
 
     /**
@@ -367,7 +367,7 @@ class MAGE_Setting_API {
         $html  .= '<input type="button" class="button wpsa-browse" value="' . $label . '" />';
         $html  .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -383,7 +383,7 @@ class MAGE_Setting_API {
         $html  = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['section'], $args['id'], $value );
         $html  .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -399,7 +399,8 @@ class MAGE_Setting_API {
         $html  = sprintf( '<input type="text" class="%1$s-text wp-color-picker-field" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" />', $size, $args['section'], $args['id'], $value, $args['std'] );
         $html  .= $this->get_field_description( $args );
 
-        echo $html;
+        echo mep_esc_html($html);
+    
     }
 
 
@@ -417,7 +418,7 @@ class MAGE_Setting_API {
             'echo'     => 0
         );
         $html = wp_dropdown_pages( $dropdown_args );
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -497,21 +498,17 @@ class MAGE_Setting_API {
      */
     function show_navigation() {
         $html = '<h2 class="nav-tab-wrapper">';
-
         $count = count( $this->settings_sections );
-
         // don't show the navigation if only one section exists
         if ( $count === 1 ) {
             return;
         }
-
         foreach ( $this->settings_sections as $tab ) {
             $html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title'] );
         }
-
         $html .= '</h2>';
 
-        echo $html;
+        echo mep_esc_html($html);
     }
 
     /**
@@ -523,14 +520,14 @@ class MAGE_Setting_API {
         ?>
         <div class="metabox-holder">
             <?php foreach ( $this->settings_sections as $form ) { ?>
-                <div id="<?php echo $form['id']; ?>" class="group" style="display: none;">
+                <div id="<?php echo esc_attr($form['id']); ?>" class="group" style="display: none;">
                     <form method="post" action="options.php">
                         <?php
                         do_action( 'wsa_form_top_' . $form['id'], $form );
                         settings_fields( $form['id'] );
                         do_settings_sections( $form['id'] );
                         do_action( 'wsa_form_bottom_' . $form['id'], $form );
-                        if ( isset( $this->settings_fields[ $form['id'] ] ) ):
+                        if ( isset( $this->settings_fields[ $form['id'] ] ) ): 
                         ?>
                         <div style="padding-left: 10px">
                             <?php submit_button(); ?>
@@ -648,5 +645,4 @@ class MAGE_Setting_API {
     }
 
 }
-
 endif;

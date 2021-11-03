@@ -129,6 +129,7 @@ function mep_fw_meta_boxs()
                             'type' => 'repeatable',
                             'btn_text' => __('Add New F.A.Q','mage-eventpress'),
                             'title_field' => 'mep_faq_title',
+                            'args' => '',
                             'fields' => array(                              
                                 array(
                                     'type' => 'text',
@@ -141,7 +142,7 @@ function mep_fw_meta_boxs()
                                     'default' => '',
                                     'item_id' => 'mep_faq_content',
                                     'name' => __('Content','mage-eventpress')
-                                ),
+                                )                                
                             ),
                         ),
                 )
@@ -281,7 +282,13 @@ function mep_fw_meta_boxs()
                     array(
                         'id'    => 'mep_event_cc_email_text',
                         'title'    => __('Confirmation Email Text:','mage-eventpress'),
-                        'details'  => __('','mage-eventpress'),
+                        'details'  => __('<b>Usable Dynamic tags:</b><br/> Attendee
+                        Name:<b>{name}</b><br/>
+                        Event Name: <b>{event}</b><br/>
+                        Ticket Type: <b>{ticket_type}</b><br/>
+                        Event Date: <b>{event_date}</b><br/>
+                        Start Time: <b>{event_time}</b><br/>
+                        Full DateTime: <b>{event_datetime}</b>','mage-eventpress'),
                         'type'    => 'wp_editor',
                         // 'editor_settings'=>array('textarea_name'=>'wp_editor_field', 'editor_height'=>'150px'),
                         'placeholder' => __('wp_editor value','mage-eventpress'),
@@ -294,7 +301,7 @@ function mep_fw_meta_boxs()
     );
     $email_body_meta_args = array(
         'meta_box_id'               => 'mep_event_email_body_meta_boxes',
-        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;&nbsp;'.__('Email Confirmation Text', 'mage-eventpress'),
+        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;'.__('Email Text', 'mage-eventpress'),
         //'callback'       => '_meta_box_callback',
         'screen'                    => array('mep_events'),
         'context'                   => 'normal', // 'normal', 'side', and 'advanced'

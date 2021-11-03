@@ -67,15 +67,9 @@
 	<li>EventWise Speaker list: <pre>[event-speaker-list event=EventID]</pre> <a href="https://vaincode.com/reevent/speaker-list/">View Example</a></li>
 	<li>Event Cart Section only:<pre>[[event-add-cart-section event=EventID]</pre> <a href="https://vaincode.com/reevent/event-add-to-cart-section/">View Example</a></li>
 </ul>  
-                        
-                        
-                        
-                        
+                                                                                                
                     </div>
                 </div>
-                <!--<div class="col_6 sd_12">
-                    <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/knowledge_img.png" alt="feature" />
-                </div>-->
             </div>
         </div>
     </div>
@@ -144,85 +138,11 @@
                         <h5>Do you offer customization?</h5>
                         <p class="marT">: Yes! we offer customization service for our client. If you want any new features don’t
 hesitate to contact us. Email: magepeopleteam@gmail.com.</p>
-                    </div>
-                    
-                    
-                    
-                </div>
-                <!--<div class="col_12 mt_40 justifyBetween">
-                    <div class="shadow_two sd_12 pad_25">
-                        <div class="postDash customButton customIcon">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/faq_icon.png" alt="icon" />
-                        </div>
-                        <h3>Support And Feedback</h3>
-                        <p class="marT">Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus aenean lacinia bibendum. Cum sociis natoque penatibus et magnis dis parturient montes </p>
-                        <p class="marT textColor">Cum sociis natoque penatibus et magnis dis parturientmo
-                            ntes nascetur ridiculus mus aenean lacinia bibendum. </p>
-                        <a href="#" class="customButton allCenter customSupport marT">Get Support</a>
-                    </div>
-                    <div class="shadow_two sd_12 pad_25">
-                        <div class="postDash customButton customIcon">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/faq_icon.png" alt="icon" />
-                        </div>
-                        <h3>Newsletter Subscription</h3>
-                        <p class="marT">Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus aenean lacinia bibendum. Cum sociis natoque penatibus et magnis dis parturient montes </p>
-                        <p class="marT textColor">Cum sociis natoque penatibus et magnis dis parturientmo
-                            ntes nascetur ridiculus mus aenean lacinia bibendum. </p>
-                        <a href="#" class="customButton allCenter customSubscription marT">Subscrible Now</a>
-                    </div>
-                </div>-->
-                
-                
-                
-                
-                
-  
-
-
-
-                
-                
-                
-                
-                
-                
-                
+                    </div>                                                            
+                </div>                               
             </div>
         </div>
     </div>
-    
-     <!--<div class="tutorial">
-        <div class="mage_container">
-            <div class="mage_row">
-                <div class="col_12">
-                    <div>
-                        <div class="postDash customButton customIcon">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/tutorial_icon.png" alt="icon" />
-                        </div>
-                        <h2>Video Tutorial</h2>
-                        <p>Cum sociis natoque penatibus et magnis dis parturient montes nascetur </p>
-                    </div>
-                    <div class="mage_row">
-                        <div class="col_4_sd_6_es_12_padding">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/tutorial_img.png" alt="tutorial" />
-                            <h4 class="textCenter marT">Cross Domain Copy Paste (Pro)</h4>
-                        </div>
-                        <div class="col_4_sd_6_es_12_padding">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/tutorial_img.png" alt="tutorial" />
-                            <h4 class="textCenter marT">Mage Effects-CSS Transform</h4>
-                        </div>
-                        <div class="col_4_sd_6_es_12_padding">
-                            <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/tutorial_img.png" alt="tutorial" />
-                            <h4 class="textCenter marT">Mage Effects-Floating Effects</h4>
-                        </div>
-                    </div>
-                    <div class="justifyCenter">
-                        <button class="widgetButton allCenter load_more" type="button">View Load More</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
     
     <div class="missing_feature">
         <div class="mage_container">
@@ -241,20 +161,6 @@ hesitate to contact us. Email: magepeopleteam@gmail.com.</p>
             </div>
         </div>
     </div>
-    <!--<div class="withOurWork">
-        <div class="mage_container">
-            <div class="withWork allCenter">
-                <div class="col_4 sd_12">
-                    <img src="<?php echo plugin_dir_url(__DIR__).'welcome/' ?>img/withMage.png" alt="icon" />
-                </div>
-                <div class="col_8 sd_12 pad_25">
-                    <h3>MagePeople With Our Work?</h3>
-                    <p class="marT">Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus aenean lacinia bib endum. Cum sociis natoque penatibus et magnis dis parturient montesCum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus aenean Cum sociis natoque penatibus et magnis dis parturient montes nascetu parturient montes nascetur.</p>
-                    <a href="#" class="customButton allCenter marT">I'm Mage to Give You 5</a>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </section>
 
 <style>

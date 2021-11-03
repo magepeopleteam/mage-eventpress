@@ -76,9 +76,9 @@ if (!function_exists('mep_ev_datetime')) {
     }
 }
 
-add_action('mep_event_date_default_theme', 'mep_date_in_default_theme');
+add_action('mep_event_date_default_theme', 'mep_date_in_default_theme',10,2);
 if (!function_exists('mep_date_in_default_theme')) {
-    function mep_date_in_default_theme($event_id)
+    function mep_date_in_default_theme($event_id,$title='yes')
     {
         $event_meta                 = get_post_custom($event_id);
         $start_datetime             = $event_meta['event_start_datetime'][0];
@@ -92,7 +92,14 @@ if (!function_exists('mep_date_in_default_theme')) {
         $cn                         = 1;
         $_more_date                 = array_key_exists('mep_event_more_date', $event_meta) ? unserialize($event_meta['mep_event_more_date'][0]) : array();
         $more_date                  = apply_filters('mep_event_date_more_date_array',$_more_date,$event_id);
-        require(mep_template_file_path('single/date_list_title.php')); 
+        $show_end_date              = get_post_meta($event_id, 'mep_show_end_datetime', true) ? get_post_meta($event_id, 'mep_show_end_datetime', true) : 'yes';
+        $end_date_display_status    = apply_filters('mep_event_datetime_status',$show_end_date,$event_id);  
+
+
+
+        if($title == 'yes'){
+            require(mep_template_file_path('single/date_list_title.php')); 
+        }
         if (sizeof($more_date) > 2) {
             echo '<ul id="mep_event_date_sch">';
         } else {
@@ -140,8 +147,8 @@ if (!function_exists('mep_date_in_default_theme')) {
         echo '</ul>';
         if (sizeof($more_date) > 2) { 
             ?>
-            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?></p>
-            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress')); ?></p>
+            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__('View More Date', 'mage-eventpress')); ?></p>
+            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', esc_html__('Hide Date Lists', 'mage-eventpress')); ?></p>
             <?php
         }
     }

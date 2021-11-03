@@ -3,15 +3,15 @@
 
 
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
-$hide_date_details = mep_get_option('mep_event_hide_date_from_details', 'general_setting_sec', 'no');
-$hide_time_details = mep_get_option('mep_event_hide_time_from_details', 'general_setting_sec', 'no');
-$hide_location_details = mep_get_option('mep_event_hide_location_from_details', 'general_setting_sec', 'no');
-$hide_total_seat_details = mep_get_option('mep_event_hide_total_seat_from_details', 'general_setting_sec', 'no');
-$hide_org_by_details = mep_get_option('mep_event_hide_org_from_details', 'general_setting_sec', 'no');
-$hide_address_details = mep_get_option('mep_event_hide_address_from_details', 'general_setting_sec', 'no');
-$hide_schedule_details = mep_get_option('mep_event_hide_event_schedule_details', 'general_setting_sec', 'no');
-$hide_share_details = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
-$hide_calendar_details = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
+$hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'general_setting_sec', 'no');
+$hide_time_details          = mep_get_option('mep_event_hide_time_from_details', 'general_setting_sec', 'no');
+$hide_location_details      = mep_get_option('mep_event_hide_location_from_details', 'general_setting_sec', 'no');
+$hide_total_seat_details    = mep_get_option('mep_event_hide_total_seat_from_details', 'general_setting_sec', 'no');
+$hide_org_by_details        = mep_get_option('mep_event_hide_org_from_details', 'general_setting_sec', 'no');
+$hide_address_details       = mep_get_option('mep_event_hide_address_from_details', 'general_setting_sec', 'no');
+$hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_details', 'general_setting_sec', 'no');
+$hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
+$hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
 
 ?>
@@ -23,7 +23,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
         <?php do_action('mep_event_thumbnail'); ?>
     </div>
     <div class="mep-default-feature-content">
-        <h4 class="mep-cart-table-title"><?php _e('Description', 'mage-eventpress'); ?></h4>
+        <h4 class="mep-cart-table-title"><?php esc_html_e('Description', 'mage-eventpress'); ?></h4>
         <?php do_action('mep_event_details'); ?>
         <div class="mep-theme1-faq-sec">
             <?php do_action('mep_event_faq',get_the_id()); ?>
@@ -55,17 +55,17 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
                 <?php } ?>
                 <?php if ($hide_org_by_details == 'no') { ?>
                     <div class="mep-default-sidrbar-meta">
-                        <i class="fa fa-link"></i> <?php do_action('mep_event_organizer'); ?>
+                    <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer'); ?>
                     </div>
-                <?php }
+                <?php } 
                 if ($hide_address_details == 'no') { ?>
                     <div class="mep-default-sidrbar-address">
                         <ul>
-                            <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?></li>
-                            <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?></li>
-                            <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li>
-                            <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?></li>
-                            <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country'); ?>
+                           <?php if(mep_location_existis('mep_location_venue',get_the_id())){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_street',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_city',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_state',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_country',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country'); ?><?php } ?>
                             </li>
                         </ul>
                     </div>

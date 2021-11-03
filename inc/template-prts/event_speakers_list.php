@@ -13,7 +13,7 @@ if (!function_exists('mep_display_speaker_list')) {
     {
         $speakers_id = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
         $speaker_icon               = get_post_meta($event_id, 'mep_event_speaker_icon', true) ? get_post_meta($event_id, 'mep_event_speaker_icon', true) : 'fa fa-microphone';
-        $speaker_label              = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : __("Speaker's", "mage-eventpress");
+        $speaker_label              = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker's", "mage-eventpress");
         if (is_array($speakers_id) && sizeof($speakers_id) > 0) {
             require(mep_template_file_path('single/speaker-list.php'));
         }
@@ -29,11 +29,15 @@ if (!function_exists('mep_display_all_speaker_list')) {
 
         );
         $loop = new WP_Query($args);
-        echo '<ul>';
+        ?>
+        <ul>
+    <?php
         foreach ($loop->posts as $speaker) {
             $speakers = $speaker->ID;
             require(mep_template_file_path('all-speaker-list.php'));
         }
-        echo '</ul>';
+        ?>
+        </ul>
+<?php
     }
 }

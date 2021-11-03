@@ -7,8 +7,7 @@ use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Scheme_Typography;
-
+use Elementor\Core\Schemes\Typography;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
@@ -26,7 +25,7 @@ class MEPEventListWidget extends Widget_Base {
 	}
 
 	public function get_icon() {
-		return 'fa fa-list-alt';
+		return 'eicon-archive-posts';
 	}
 
 	public function get_categories() {
@@ -70,28 +69,30 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_list_style',
 			[
-				'label' => __( 'List Style', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'grid',				
-				'options' => [
-					'grid' => __( 'Grid', 'mage-eventpress' ),
-					'list' => __( 'List', 'mage-eventpress' ),
-					'minimal' => __( 'Minimal', 'mage-eventpress' ),
-					'native' => __( 'Native', 'mage-eventpress' ),
-					'timeline' => __( 'Timeline', 'mage-eventpress' ),
-					'title' => __( 'Title Only', 'mage-eventpress' ),
+				'label' 		=> __( 'List Style', 'mage-eventpress' ),
+				'type' 			=> Controls_Manager::SELECT,
+				'default' 		=> 'grid',				
+				'options' 		=> [
+					'grid' 		=> __( 'Grid', 'mage-eventpress' ),
+					'list' 		=> __( 'List', 'mage-eventpress' ),
+					'minimal' 	=> __( 'Minimal', 'mage-eventpress' ),
+					'native' 	=> __( 'Native', 'mage-eventpress' ),
+					'timeline' 	=> __( 'Timeline', 'mage-eventpress' ),
+					'title' 	=> __( 'Title Only', 'mage-eventpress' ),
+					'spring' 	=> __( 'Spring', 'mage-eventpress' ),
+					'winter' 	=> __( 'Winter', 'mage-eventpress' ),
 				],			
-				'separator' => 'none',
+				'separator' 	=> 'none',
 			]
 		);
 
 		$this->add_control(
 			'mep_event_list_column',
 			[
-				'label' => __( 'Column', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => '3',				
-				'options' => [
+				'label' 		=> __( 'Column', 'mage-eventpress' ),
+				'type' 			=> Controls_Manager::SELECT,
+				'default' 		=> '3',				
+				'options' 		=> [
 					'1' => __( '1', 'mage-eventpress' ),
 					'2' => __( '2', 'mage-eventpress' ),
 					'3' => __( '3', 'mage-eventpress' ),
@@ -253,28 +254,23 @@ class MEPEventListWidget extends Widget_Base {
 				'separator' => 'none',
 				'selectors' => [
                     '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_thumb' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_spring_thumb_wrapper' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_winter_thumb_wrapper' => 'display: {{VALUE}};',
                    
                 ],				
 			]
 		);		
 
-	
-
-		
-
-
-
-
-	
+				
 
 		$this->add_control(
 			'mep_event_show_multidate_ribbon',
 			[
-				'label' => __( 'Show Multi Date Ribbon', 'mage-eventpress' ),
+				'label' => __( 'Show Ribbon', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'inline',
+				'default' => 'flex',
 				'options' => [
-					'inline' => __( 'Yes', 'mage-eventpress' ),
+					'flex' => __( 'Yes', 'mage-eventpress' ),
 					'none' => __( 'No', 'mage-eventpress' )
 				
 				],			
@@ -289,7 +285,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_show_view_more_date_ribbon',
 			[
-				'label' => __( 'Show View More Date Ribbon', 'mage-eventpress' ),
+				'label' => __( 'Show View More Date Button', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'inline',
 				'options' => [
@@ -299,13 +295,11 @@ class MEPEventListWidget extends Widget_Base {
 				],			
 				'separator' => 'none',
 				'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_more_date_btn.mep-tem3-title-sec' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_more_date_btn.mep-tem3-title-sec:not(.mep_more_date_btn.mep-tem3-title-sec.mp_event_hide_event_time)' => 'display: {{VALUE}};',
                    
                 ],				
 			]
-		);		
-
-      
+		);		      
 		$this->end_controls_section();
         
     
@@ -414,6 +408,9 @@ class MEPEventListWidget extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list .mep_list_date_wrapper' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_date_wrapper' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_date_wrapper i' => 'color: {{VALUE}};',
 				],
 			]
         );
@@ -425,6 +422,8 @@ class MEPEventListWidget extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list .mep_list_date_wrapper .mep_spring_list_date' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_date_wrapper .mep_winter_list_date' => 'color: {{VALUE}};',
 				],
 			]
         ); 
@@ -433,22 +432,13 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_date_typo',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date',
+				'scheme' => Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date,{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list .mep_list_date_wrapper .mep_spring_list_date,{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date,{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_date_wrapper .mep_winter_list_date',
 			]
-        );  
-
-
+        );
 
         $this->end_controls_section();  
 		
-		
-
-
-
-
-
-
         // Title Style
 		$this->start_controls_section(
 			'mep_event_title_style',
@@ -491,7 +481,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_title_style_type',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+				'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_title',
 			]
         );    
@@ -502,6 +492,7 @@ class MEPEventListWidget extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [				
 					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_title a' => 'color: {{VALUE}};',
 				],
 			]
         );            
@@ -542,6 +533,7 @@ class MEPEventListWidget extends Widget_Base {
 				'separator' => 'none',
 				'selectors' => [
                     '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_date' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_price' => 'display: {{VALUE}};',
                    
                 ],				
 			]
@@ -554,6 +546,7 @@ class MEPEventListWidget extends Widget_Base {
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_date' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_price' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);   
@@ -561,8 +554,9 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_price_style_type',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+				'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_date',
+				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_price',
 			]
         );    
 		$this->add_control(
@@ -572,6 +566,7 @@ class MEPEventListWidget extends Widget_Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [				
 					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_date' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_price' => 'color: {{VALUE}};',
 				],
 			]
         );            
@@ -602,8 +597,9 @@ class MEPEventListWidget extends Widget_Base {
 				],			
 				'separator' => 'none',
 				'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer' => 'display: {{VALUE}};',
-                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list .mep_list_details_col_one' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_details_col_one' => 'display: {{VALUE}};',                   
                 ],				
 			]
 		);		
@@ -616,8 +612,7 @@ class MEPEventListWidget extends Widget_Base {
 				'default' => 'flex',
 				'options' => [
 					'flex' => __( 'Yes', 'mage-eventpress' ),
-					'none' => __( 'No', 'mage-eventpress' )
-				
+					'none' => __( 'No', 'mage-eventpress' )				
 				],			
 				'separator' => 'none',
 				'selectors' => [
@@ -634,12 +629,13 @@ class MEPEventListWidget extends Widget_Base {
 				'default' => 'flex',
 				'options' => [
 					'flex' => __( 'Yes', 'mage-eventpress' ),
-					'none' => __( 'No', 'mage-eventpress' )
-				
+					'none' => __( 'No', 'mage-eventpress' )				
 				],			
 				'separator' => 'none',
 				'selectors' => [
                     '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_location_name' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_spring_event_location' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_winter_event_location' => 'display: {{VALUE}};',                   
                 ],				
 			]
 		);		
@@ -652,12 +648,13 @@ class MEPEventListWidget extends Widget_Base {
 				'default' => 'flex',
 				'options' => [
 					'flex' => __( 'Yes', 'mage-eventpress' ),
-					'none' => __( 'No', 'mage-eventpress' )
-				
+					'none' => __( 'No', 'mage-eventpress' )				
 				],			
 				'separator' => 'none',
 				'selectors' => [
                     '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_event_date' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_spring_event_date' => 'display: {{VALUE}};',                   
+                    '{{WRAPPER}} .mep-elementor-event-list-widget .mep_winter_event_date' => 'display: {{VALUE}};',                   
                 ],				
 			]
 		);	
@@ -666,8 +663,8 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_info_style_typo',
-				'scheme' => Scheme_Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer',
+				'scheme' => Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer,{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_details_col_one',
 			]
 		);    
 		
@@ -677,7 +674,7 @@ class MEPEventListWidget extends Widget_Base {
 				'label' => __( 'Text Color', 'mage-eventpress' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [				
-					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer h5, {{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer h6, {{WRAPPER}}  ul.mep-more-date-lists li' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer h5, {{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer h6, {{WRAPPER}}  ul.mep-more-date-lists li,{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_details_col_one span' => 'color: {{VALUE}};',
 				],
 			]
 		);  
@@ -688,7 +685,7 @@ class MEPEventListWidget extends Widget_Base {
 				'label' => __( 'Icon Background Color', 'mage-eventpress' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [				
-					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer li .evl-ico i, {{WRAPPER}}  ul.mep-more-date-lists i' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer li .evl-ico i, {{WRAPPER}}  ul.mep-more-date-lists i,{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_details_col_one span i' => 'background-color: {{VALUE}};',
 				],
 			]
 		);  
@@ -699,21 +696,114 @@ class MEPEventListWidget extends Widget_Base {
 				'label' => __( 'Icon Color', 'mage-eventpress' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [				
-					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer li .evl-ico i, {{WRAPPER}}  ul.mep-more-date-lists i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer li .evl-ico i, {{WRAPPER}}  ul.mep-more-date-lists i,{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_details_col_one span i' => 'color: {{VALUE}};',
 				],
 			]
-		);  
+		);
+		$this->add_control(
+			'mep_event_info_style_thumb_border_color',
+			[
+				'label' => __( 'Thumbnail Border Color', 'mage-eventpress' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [				
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_winter_thumb' => 'border-color: {{VALUE}};',
+				],
+				'conditions' => [
+		            'terms' => [
+		                [
+		                    'name' => 'mep_event_list_style',
+		                    'operator' => '==',
+		                    'value' => 'winter'
+		                ]
+		            ]
+		        ]
+			]
+		);
+		$this->add_control(
+			'mep_event_info_style_list_bg_color',
+			[
+				'label' => __( 'List Background Color', 'mage-eventpress' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [				
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list' => 'background: {{VALUE}};',
+				],
+				'conditions' => [
+					'relation' => 'or',
+		            'terms' => [
+		                [
+		                    'name' => 'mep_event_list_style',
+		                    'operator' => '==',
+		                    'value' => 'winter'
+		                ],
+		                [
+		                    'name' => 'mep_event_list_style',
+		                    'operator' => '==',
+		                    'value' => 'spring'
+		                ]		                
+		            ]
+		        ]				
+			]
+		);
+		$this->add_control(
+			'mep_event_info_style_ribbon_bg_color',
+			[
+				'label' => __( 'Ribbon Background Color', 'mage-eventpress' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [				
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-multidate-ribbon' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep-eventtype-ribbon' => 'background: {{VALUE}};',
+				],
+			]
+		);						  				
+		$this->end_controls_section();   
 		
 		
 
-
+		$this->start_controls_section(
+			'mep_event_btn_style',
+			[
+				'label' => __( 'Button Style', 'mage-eventpress' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+			             
+   
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'mep_event_btn_style_type',
+				'scheme' => Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-tem3-title-sec, {{WRAPPER}} .mep-elementor-event-list-widget .pagination-sec a',
+			]
+        );    
+		$this->add_control(
+			'mep_event_btn_bg_color',
+			[
+				'label' => __( 'Background Color', 'mage-eventpress' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [				
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_more_date_btn.mep-tem3-title-sec, {{WRAPPER}} .mep-elementor-event-list-widget .pagination-sec a' => 'background-color: {{VALUE}};',
+				],
+			]
+        );            
+		$this->add_control(
+			'mep_event_btn_text_color',
+			[
+				'label' => __( 'Text Color', 'mage-eventpress' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [				
+					'{{WRAPPER}} .mep-elementor-event-list-widget .mep_more_date_btn.mep-tem3-title-sec, {{WRAPPER}} .mep-elementor-event-list-widget .pagination-sec a' => 'color: {{VALUE}};',
+				],
+			]
+        );            
         $this->end_controls_section();  
-        
 
 
 
-        
-        
+
+
+
 
 	}
 
@@ -726,42 +816,21 @@ class MEPEventListWidget extends Widget_Base {
 
 
 
-		$cat = $settings['mep_event_list_cat'] > 0 ? $settings['mep_event_list_cat'] : '';
-		$org = $settings['mep_event_list_org'] > 0 ? $settings['mep_event_list_org'] : '';
+		$cat 			= $settings['mep_event_list_cat'] > 0 ? esc_attr($settings['mep_event_list_cat']) : '';
+		$org 			= $settings['mep_event_list_org'] > 0 ? esc_attr($settings['mep_event_list_org']) : '';
 
-		$style = $settings['mep_event_list_style'] ? $settings['mep_event_list_style'] : 'grid';
-		$column = $settings['mep_event_list_column'] ? $settings['mep_event_list_column'] : '3';
-		$cat_filter = $settings['mep_event_list_cat_filter'] ? $settings['mep_event_list_cat_filter'] : 'no';
-		$org_filter = $settings['mep_event_list_org_filter'] ? $settings['mep_event_list_org_filter'] : 'no';
-		$show = $settings['mep_event_list_show'] ? $settings['mep_event_list_show'] : '10';
-		$pagination = $settings['mep_event_list_pagination'] ? $settings['mep_event_list_pagination'] : 'no';
-		$carousal_id = $settings['mep_event_carousal_id'] ? $settings['mep_event_carousal_id'] : '102448';
-		$carousal_nav = $settings['mep_event_list_carousal_nav'] ? $settings['mep_event_list_carousal_nav'] : 'no';
-		$carousal_dot = $settings['mep_event_list_carousal_dot'] ? $settings['mep_event_list_carousal_dot'] : 'yes';
-		$timeline_style = $settings['mep_event_list_timeline_mode'] ? $settings['mep_event_list_timeline_mode'] : 'vertical';
-		$sort = $settings['mep_event_list_sort'] ? $settings['mep_event_list_sort'] : 'ASC';
-		$status = $settings['mep_event_list_status'] ? $settings['mep_event_list_status'] : 'upcoming';
-
-
-
-        // "cat"           => "0",
-        // "org"           => "0",
-        // "style"         => "grid",
-        // "column"        => 3,
-        // "cat-filter"    => "no",
-        // "org-filter"    => "no",
-        // "show"          => "-1",
-        // "pagination"    => "no",
-        // "city"          => "",
-        // "country"       => "",
-        // "carousal-nav"  => "no",
-        // "carousal-dots" => "yes",
-        // "carousal-id" => "102448",
-        // "timeline-mode" => "vertical",
-        // 'sort'          => 'ASC',
-        // 'status'          => 'upcoming'
-
-
+		$style 			= $settings['mep_event_list_style'] ? esc_attr($settings['mep_event_list_style']) : 'grid';
+		$column 		= $settings['mep_event_list_column'] ? esc_attr($settings['mep_event_list_column']) : '3';
+		$cat_filter 	= $settings['mep_event_list_cat_filter'] ? esc_attr($settings['mep_event_list_cat_filter']) : 'no';
+		$org_filter 	= $settings['mep_event_list_org_filter'] ? esc_attr($settings['mep_event_list_org_filter']) : 'no';
+		$show 			= $settings['mep_event_list_show'] ? esc_attr($settings['mep_event_list_show']) : '10';
+		$pagination 	= $settings['mep_event_list_pagination'] ? esc_attr($settings['mep_event_list_pagination']) : 'no';
+		$carousal_id 	= $settings['mep_event_carousal_id'] ? esc_attr($settings['mep_event_carousal_id']) : '102448';
+		$carousal_nav 	= $settings['mep_event_list_carousal_nav'] ? esc_attr($settings['mep_event_list_carousal_nav']) : 'no';
+		$carousal_dot 	= $settings['mep_event_list_carousal_dot'] ? esc_attr($settings['mep_event_list_carousal_dot']) : 'yes';
+		$timeline_style = $settings['mep_event_list_timeline_mode'] ? esc_attr($settings['mep_event_list_timeline_mode']) : 'vertical';
+		$sort 			= $settings['mep_event_list_sort'] ? esc_attr($settings['mep_event_list_sort']) : 'ASC';
+		$status 		= $settings['mep_event_list_status'] ? esc_attr($settings['mep_event_list_status']) : 'upcoming';
 
 ?>
 <div class="mep-elementor-event-list-widget">
@@ -769,8 +838,4 @@ class MEPEventListWidget extends Widget_Base {
 </div>
 <?php
 }
-
-	protected function _content_template() {
-	
-	}
 }

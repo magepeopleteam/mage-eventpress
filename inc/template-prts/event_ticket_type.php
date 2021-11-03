@@ -3,9 +3,9 @@ if (!defined('ABSPATH')) {
     die;
 } // Cannot access pages directly.
 
-add_action('mep_event_ticket_types', 'mep_ev_ticket_type');
+add_action('mep_event_ticket_types', 'mep_ev_ticket_type',10,3);
 if (!function_exists('mep_ev_ticket_type')) {
-    function mep_ev_ticket_type($post_id)
+    function mep_ev_ticket_type($post_id,$ticket_type_label,$select_date_label)
     {
         global $post, $product, $event_meta;
         $count = 1;
@@ -15,7 +15,7 @@ if (!function_exists('mep_ev_ticket_type')) {
 
         if ($mep_event_ticket_type) {
 ?>
-            <?php echo "<h3 class='ex-sec-title'>" . mep_get_label($post_id, 'mep_event_ticket_type_text', 'Ticket Type:') . "</h3>"; ?>
+            <h3 class='ex-sec-title mep_ticket_type_title'><?php echo esc_html($ticket_type_label); ?> </h3>
             <table id='mep_event_ticket_type_table'>
                 <?php do_action('mep_event_ticket_type_loop_list', $post_id); ?>
             </table>
@@ -23,7 +23,7 @@ if (!function_exists('mep_ev_ticket_type')) {
         }
 
         $content = ob_get_clean();
-        echo apply_filters('mage_event_ticket_type_list', $content, $post_id, $event_meta);
+        echo apply_filters('mage_event_ticket_type_list', $content, $post_id, $event_meta,$ticket_type_label,$select_date_label);
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function($) {

@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: Woocommerce Events Manager
+ * Plugin Name: Event Manager for WooCommerce
  * Plugin URI: http://mage-people.com
  * Description: A Complete Event Solution for WordPress by MagePeople..
- * Version: 3.4.1
+ * Version: 3.5.3
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: mage-eventpress
  * Domain Path: /languages/
  * WC requires at least: 3.0.9
- * WC tested up to: 4.7.1 
+ * WC tested up to: 5.8
  */
 
 if (!defined('ABSPATH')) {
@@ -24,7 +24,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     if (!class_exists('Appsero\Client')) {
       require_once __DIR__ . '/lib/appsero/src/Client.php';
     }
-    $client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'WooCommerce Event Manager', __FILE__);
+    $client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
     $client->insights()->init();
   }
 
@@ -42,7 +42,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     $class = 'notice notice-error';
     printf(
       '<div class="error" style="background:red; color:#fff;"><p>%s</p></div>',
-      __('You Must Install WooCommerce Plugin before activating WooCommerce Event Manager, Becuase It is dependent on Woocommerce Plugin')
+      __('You Must Install WooCommerce Plugin before activating Event Manager For Woocommerce , Becuase It is dependent on Woocommerce Plugin')
     );
   }
   add_action('admin_notices', 'mep_admin_notice_wc_not_active');

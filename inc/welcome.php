@@ -3,8 +3,6 @@ if (!defined('ABSPATH')) {
     die;
 } // Cannot access pages directly.
 
-
-
 add_action('admin_enqueue_scripts', 'mep_event_welcome_enqueue_scripts', 10, 1);
 function mep_event_welcome_enqueue_scripts()
 {
@@ -31,13 +29,13 @@ function mep_event_welcome_page()
         <?php
         $active_tab = 'welcome';
         if (isset($_GET['tab'])) {
-            $active_tab = $_GET['tab'];
+            $active_tab = mage_array_strip($_GET['tab']);
         } // end if
         ?>
 
         <h2 class="nav-tab-wrapper mage-event-welcome-tab">
-            <a href="edit.php?post_type=mep_events&page=mep_event_welcome_page&tab=welcome" class="nav-tab <?php echo $active_tab == 'welcome' ? 'nav-tab-active' : ''; ?>">Welcome</a>
-            <a href="edit.php?post_type=mep_events&page=mep_event_welcome_page&tab=kwb" class="nav-tab <?php echo $active_tab == 'kwb' ? 'nav-tab-active' : ''; ?>">Support & Knowladgebase</a>
+            <a href="edit.php?post_type=mep_events&page=mep_event_welcome_page&tab=welcome" class="nav-tab <?php echo esc_html($active_tab) == 'welcome' ? 'nav-tab-active' : ''; ?>">Welcome</a>
+            <a href="edit.php?post_type=mep_events&page=mep_event_welcome_page&tab=kwb" class="nav-tab <?php echo esc_html($active_tab) == 'kwb' ? 'nav-tab-active' : ''; ?>">Support & Knowladgebase</a>
         </h2>
 
         <div class="tab-content">

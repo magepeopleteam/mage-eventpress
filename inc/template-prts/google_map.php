@@ -7,10 +7,10 @@ add_action('mep_event_map', 'mep_event_google_map');
 if (!function_exists('mep_event_google_map')) {
 	function mep_event_google_map($event_id)
 	{
-		global $post, $event_meta, $user_api;
-
+		global $post, $event_meta, $user_api;		
 		$map_type       = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');
 		$location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : '';
+		$status   		= get_post_meta($event_id, 'mep_sgm', true) ? get_post_meta($event_id, 'mep_sgm', true) : '';
 		ob_start();
 		do_action('mep_event_before_google_map');
 		if ($location_sts) {
@@ -19,12 +19,10 @@ if (!function_exists('mep_event_google_map')) {
 			$lat 		= get_term_meta($org_id, 'latitude', true) ? get_term_meta($org_id, 'latitude', true) : 0;
 			$lon 		= get_term_meta($org_id, 'longitude', true) ? get_term_meta($org_id, 'longitude', true) : 0;
 		} else {
-			$lat 		= $event_meta['latitude'][0] ? $event_meta['latitude'][0] : 0;
-			$lon 		= $event_meta['longitude'][0] ? $event_meta['longitude'][0] : 0;
+			$lat 		= get_post_meta($event_id, 'latitude', true) ? get_post_meta($event_id, 'latitude', true) : 0;			
+			$lon 		= get_post_meta($event_id, 'longitude', true) ? get_post_meta($event_id, 'longitude', true) : 0;						
 		}
-
-		if ($event_meta['mep_sgm'][0]) {
-
+		if ($status) {
 			if ($map_type == 'iframe') {
 ?>
 				<div class="mep-gmap-sec">
@@ -32,7 +30,6 @@ if (!function_exists('mep_event_google_map')) {
 				</div>
 				<?php
 			} else {
-
 				if ($user_api) {
 				?>
 					<div class="mep-gmap-sec">
@@ -40,12 +37,11 @@ if (!function_exists('mep_event_google_map')) {
 					</div>
 					<script>
 						var map;
-
 						function initMap() {
 							map = new google.maps.Map(document.getElementById('map'), {
 								center: {
-									lat: <?php echo $lat; ?>,
-									lng: <?php echo $lon; ?>
+									lat: <?php echo esc_attr($lat); ?>,
+									lng: <?php echo esc_attr($lon); ?>
 								},
 								zoom: 17
 							});
@@ -54,8 +50,8 @@ if (!function_exists('mep_event_google_map')) {
 								draggable: false,
 								animation: google.maps.Animation.DROP,
 								position: {
-									lat: <?php echo $lat; ?>,
-									lng: <?php echo $lon; ?>
+									lat: <?php echo esc_attr($lat); ?>,
+									lng: <?php echo esc_attr($lon); ?>
 								}
 							});
 							marker.addListener('click', toggleBounce);
@@ -69,8 +65,8 @@ if (!function_exists('mep_event_google_map')) {
 							}
 						}
 					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $user_api; ?>&callback=initMap" async defer></script>
-<?php }
+					<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($user_api); ?>&callback=initMap" async defer></script>
+			<?php }
 			}
 		}
 		do_action('mep_event_after_google_map');

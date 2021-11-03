@@ -1838,9 +1838,9 @@ div > .ppof-metabox {
 .ppof-metabox .form-wrapper.full-width,
 .form-table,
 .field-repeatable-wrapper .field-list{margin: 0;}
-.form-table th,
-.form-table td,
-#postbox-container-2 p.description{padding: 5px;line-height: 1;}
+
+
+.ppof-metabox .form-table th, .ppof-metabox .form-table td, .ppof-metabox #postbox-container-2 p.description{padding: 5px;line-height: 1;}
 /* .form-table pre{display: none;} */
 .ppof-button,
 #create_seat_plan,

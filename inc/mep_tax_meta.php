@@ -43,8 +43,7 @@ function mep_org_tax_location_fileds($taxonomy)
     $user_api = mep_get_option('google-map-api', 'general_setting_sec', '');
     if ($user_api) {
     ?>
-      <input id="pac-input" name='location_name' value='<?php //echo $values['location_name'][0]; 
-                                                        ?>' />
+      <input id="pac-input" name='location_name' value='' />
 
 
       <input type="text" class="form-control" style="display: none;" name="latitude" value="">
@@ -55,7 +54,7 @@ function mep_org_tax_location_fileds($taxonomy)
       if ($user_api) {
         //wp_enqueue_script('gmap-libs','https://maps.googleapis.com/maps/api/js?key='.$user_api.'&libraries=places&callback=initMap',array('jquery','gmap-scripts'),1,true);
       ?>
-        <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo $user_api; ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
+        <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($user_api); ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
       <?php
       }
       ?>
@@ -156,44 +155,44 @@ function mep_org_tax_location_fileds($taxonomy)
 <?php
 }
 
-add_action('created_mep_org', 'save_feature_meta', 10, 2);
+add_action('created_mep_org', 'mep_save_feature_meta', 10, 2);
 
-function save_feature_meta($term_id, $tt_id)
+function mep_save_feature_meta($term_id, $tt_id)
 {
 
   if (isset($_POST['org_location'])) {
-    $org_location = strip_tags($_POST['org_location']);
+    $org_location = sanitize_text_field($_POST['org_location']);
     add_term_meta($term_id, 'org_location', $org_location);
   }
   if (isset($_POST['org_street'])) {
-    $org_street = strip_tags($_POST['org_street']);
+    $org_street = sanitize_text_field($_POST['org_street']);
     add_term_meta($term_id, 'org_street', $org_street);
   }
   if (isset($_POST['org_city'])) {
-    $org_city = strip_tags($_POST['org_city']);
+    $org_city = sanitize_text_field($_POST['org_city']);
     add_term_meta($term_id, 'org_city', $org_city);
   }
   if (isset($_POST['org_state'])) {
-    $org_state = strip_tags($_POST['org_state']);
+    $org_state = sanitize_text_field($_POST['org_state']);
     add_term_meta($term_id, 'org_state', $org_state);
   }
   if (isset($_POST['org_postcode'])) {
-    $org_postcode = strip_tags($_POST['org_postcode']);
+    $org_postcode = sanitize_text_field($_POST['org_postcode']);
     add_term_meta($term_id, 'org_postcode', $org_postcode);
   }
 
   if (isset($_POST['org_country'])) {
-    $org_country = strip_tags($_POST['org_country']);
+    $org_country = sanitize_text_field($_POST['org_country']);
     add_term_meta($term_id, 'org_country', $org_country);
   }
 
   if (isset($_POST['latitude'])) {
-    $latitude = strip_tags($_POST['latitude']);
+    $latitude = sanitize_text_field($_POST['latitude']);
     add_term_meta($term_id, 'latitude', $latitude);
   }
 
   if (isset($_POST['longitude'])) {
-    $longitude = strip_tags($_POST['longitude']);
+    $longitude = sanitize_text_field($_POST['longitude']);
     add_term_meta($term_id, 'longitude', $longitude);
   }
 }
@@ -201,9 +200,9 @@ function save_feature_meta($term_id, $tt_id)
 
 
 
-add_action('mep_org_edit_form_fields', 'edit_feature_group_field', 10, 2);
+add_action('mep_org_edit_form_fields', 'mep_edit_feature_group_field', 10, 2);
 
-function edit_feature_group_field($term, $taxonomy)
+function mep_edit_feature_group_field($term, $taxonomy)
 {
 ?>
   <tr class="form-field term-group-wrap">
@@ -251,8 +250,7 @@ function edit_feature_group_field($term, $taxonomy)
       if ($user_api) {
       ?>
         <div class='sec'>
-          <input id="pac-input" name='location_name' value='<?php //echo $values['location_name'][0]; 
-                                                            ?>' />
+          <input id="pac-input" name='location_name' value='' />
         </div>
 
         <input type="text" class="form-control" style="display: none;" name="latitude" value="<?php echo get_term_meta($term->term_id, 'latitude', true); ?>">
@@ -262,7 +260,7 @@ function edit_feature_group_field($term, $taxonomy)
 
         if ($user_api) {
         ?>
-          <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo $user_api; ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
+          <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($user_api); ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
         <?php
         }
         if (get_term_meta($term->term_id, 'latitude', true)) {
@@ -283,8 +281,8 @@ function edit_feature_group_field($term, $taxonomy)
           function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
               center: {
-                lat: <?php echo $lat; ?>,
-                lng: <?php echo $lon; ?>
+                lat: <?php echo esc_attr($lat); ?>,
+                lng: <?php echo esc_attr($lon); ?>
               },
               zoom: 17
             });
@@ -307,8 +305,8 @@ function edit_feature_group_field($term, $taxonomy)
               anchorPoint: new google.maps.Point(0, -29),
               draggable: true,
               position: {
-                lat: <?php echo $lat; ?>,
-                lng: <?php echo $lon; ?>
+                lat: <?php echo esc_attr($lat); ?>,
+                lng: <?php echo esc_attr($lon); ?>
               }
             });
 
@@ -376,48 +374,48 @@ function edit_feature_group_field($term, $taxonomy)
 }
 
 
-add_action('edited_mep_org', 'update_feature_meta', 10, 2);
+add_action('edited_mep_org', 'mep_update_feature_meta', 10, 2);
 
-function update_feature_meta($term_id, $tt_id)
+function mep_update_feature_meta($term_id, $tt_id)
 {
 
   if (isset($_POST['org_location'])) {
-    $org_location = strip_tags($_POST['org_location']);
+    $org_location = sanitize_text_field($_POST['org_location']);
     update_term_meta($term_id, 'org_location', $org_location);
   }
 
   if (isset($_POST['org_street'])) {
-    $org_street = strip_tags($_POST['org_street']);
+    $org_street = sanitize_text_field($_POST['org_street']);
     update_term_meta($term_id, 'org_street', $org_street);
   }
 
   if (isset($_POST['org_city'])) {
-    $org_city = strip_tags($_POST['org_city']);
+    $org_city = sanitize_text_field($_POST['org_city']);
     update_term_meta($term_id, 'org_city', $org_city);
   }
 
   if (isset($_POST['org_state'])) {
-    $org_state = strip_tags($_POST['org_state']);
+    $org_state = sanitize_text_field($_POST['org_state']);
     update_term_meta($term_id, 'org_state', $org_state);
   }
 
   if (isset($_POST['org_postcode'])) {
-    $org_postcode = strip_tags($_POST['org_postcode']);
+    $org_postcode = sanitize_text_field($_POST['org_postcode']);
     update_term_meta($term_id, 'org_postcode', $org_postcode);
   }
 
   if (isset($_POST['org_country'])) {
-    $org_country = strip_tags($_POST['org_country']);
+    $org_country = sanitize_text_field($_POST['org_country']);
     update_term_meta($term_id, 'org_country', $org_country);
   }
 
   if (isset($_POST['latitude'])) {
-    $latitude = strip_tags($_POST['latitude']);
+    $latitude = sanitize_text_field($_POST['latitude']);
     update_term_meta($term_id, 'latitude', $latitude);
   }
 
   if (isset($_POST['longitude'])) {
-    $longitude = strip_tags($_POST['longitude']);
+    $longitude = sanitize_text_field($_POST['longitude']);
     update_term_meta($term_id, 'longitude', $longitude);
   }
 }

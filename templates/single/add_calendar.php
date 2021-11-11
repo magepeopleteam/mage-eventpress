@@ -1,4 +1,6 @@
-<div id="mep_add_calender_button" class='mep-add-calender'><i class="fa fa-calendar"></i><?php esc_html_e(mep_get_label($pid,'mep_calender_btn_text','Add Calendar'),'mage-eventpress'); ?></div>  
+<div id="mep_add_calender_button" class='mep-add-calender'>
+    <i class="fa fa-calendar"></i><?php echo esc_html(mep_get_label($pid,'mep_calender_btn_text',esc_html__('Add Calendar','mage-eventpress'))); ?>
+</div>  
   <ul id="mep_add_calender_links">
     <li><a href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_html($event->post_title); ?>&dates=<?php echo esc_html(mep_calender_date($event_start)); ?>/<?php echo esc_html(mep_calender_date($event_end)); ?>&details=<?php echo esc_html(substr(mage_array_strip($event->post_content),0,1000)); ?>&location=<?php echo esc_html($location); ?>&sf=true" rel="noopener noreferrer" target='_blank' class='mep-add-calender' rel="nofollow"><?php esc_html_e('Google','mage-eventpress'); ?></a></li>
     <li><a href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_html($event->post_title); ?>&st=<?php echo esc_html(mep_calender_date($event_start)); ?>&et=<?php echo esc_html(mep_calender_date($event_end)); ?>&desc=<?php echo esc_html(substr(mage_array_strip($event->post_content),0,1000)); ?>&in_loc=<?php echo esc_html($location); ?>&uid=" rel="noopener noreferrer" target='_blank' class='mep-add-calender' rel="nofollow"><?php esc_html_e('Yahoo','mage-eventpress'); ?></a></li>

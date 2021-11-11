@@ -1552,6 +1552,7 @@ function mep_esc_html($string){
             'class'     => [],
             'value'     => [],
             'id'        => [],
+            'selected'  => [],
         ],
         'textarea' => [
             'class'     => [],
@@ -2928,13 +2929,13 @@ if (!function_exists('mep_avada_mini_cart_price_fixed')) {
 if (!function_exists('mage_array_strip')) {
     function mage_array_strip($array_or_string) {
         if (is_string($array_or_string)) {
-            $array_or_string = sanitize_text_field($array_or_string);
+            $array_or_string = sanitize_text_field(htmlentities(nl2br($array_or_string)));
         } elseif (is_array($array_or_string)) {
             foreach ($array_or_string as $key => &$value) {
                 if (is_array($value)) {
                     $value = mage_array_strip($value);
                 } else {
-                    $value = sanitize_text_field($value);
+                    $value = sanitize_text_field(htmlentities(nl2br($value)));
                 }
             }
         }

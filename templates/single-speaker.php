@@ -1,6 +1,7 @@
 <?php
 get_header();
 the_post();
+do_action('mep_before_events_speaker_wrapper');
 ?>
 <div class="mep_events_speaker_wraper">
     <div class="mep_speaker_thumbnail">
@@ -46,4 +47,5 @@ the_post();
     </div>
 </div>
 <?php
+do_action('mep_after_events_speaker_wrapper');
 get_footer();

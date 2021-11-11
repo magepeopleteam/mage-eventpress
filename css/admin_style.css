@@ -413,7 +413,7 @@ iframe#gmap_canvas {width: 100%; height: 300px;}
 #mp_event_all_info_in_tab p button span {margin: 0 7px 0 0;}
 
 #mp_event_all_info_in_tab ul {list-style-type: none;margin: 0;padding: 0;}
-#mp_event_all_info_in_tab ul li {-webkit-align-items: center;align-items: center;}
+#mp_event_all_info_in_tab ul li {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;}
 #mp_event_all_info_in_tab h5 {font-size: 18px;font-weight: 500;margin: 0 0 5px 0;}
 
 #mp_event_all_info_in_tab .mp_ticket_type_table~.mp_form_area label{margin: 15px 0;}

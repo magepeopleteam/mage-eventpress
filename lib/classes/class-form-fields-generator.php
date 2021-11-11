@@ -5986,7 +5986,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             <div <?php if(!empty($depends)) {?> data-depends="[<?php echo esc_attr($depends); ?>]" <?php } ?> id="field-wrapper-<?php echo esc_attr($id); ?>" class="<?php if(!empty($depends)) echo 'dependency-field'; ?> field-wrapper field-wp_editor-wrapper
             field-wp_editor-wrapper-<?php echo esc_attr($id); ?>">
                 <?php
-                wp_editor( $value, $id, $settings = $editor_settings);
+                wp_editor( html_entity_decode(nl2br($value)), $id, $settings = $editor_settings);
                 ?>
                 <div class="error-mgs"></div>
             </div>

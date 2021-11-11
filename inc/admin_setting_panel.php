@@ -840,6 +840,36 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'desc' => __('Select a color for FAQ Title Text', 'mage-eventpress'),
                             'type' => 'color',
                         ),
+                        array(
+                            'name' => 'mep_royal_primary_bg_color',
+                            'label' => __('Royal Template Primary Background Color', 'mage-eventpress'),
+                            'desc' => __('Select a primary background color for royal template', 'mage-eventpress'),
+                            'type' => 'color',
+                        ),
+                        array(
+                            'name' => 'mep_royal_secondary_bg_color',
+                            'label' => __('Royal Template Secondary Background Color', 'mage-eventpress'),
+                            'desc' => __('Select a secondary background color for royal template', 'mage-eventpress'),
+                            'type' => 'color',
+                        ),
+                        array(
+                            'name' => 'mep_royal_icons_bg_color',
+                            'label' => __('Royal Template Icons Background Color', 'mage-eventpress'),
+                            'desc' => __('Select icons background color for royal template', 'mage-eventpress'),
+                            'type' => 'color',
+                        ),
+                        array(
+                            'name' => 'mep_royal_border_color',
+                            'label' => __('Royal Template Border Color', 'mage-eventpress'),
+                            'desc' => __('Select border color for royal template', 'mage-eventpress'),
+                            'type' => 'color',
+                        ),
+                        array(
+                            'name' => 'mep_royal_text_color',
+                            'label' => __('Royal Template Text Color', 'mage-eventpress'),
+                            'desc' => __('Select text color for royal template', 'mage-eventpress'),
+                            'type' => 'color',
+                        ),						
                     )
                 ),
 

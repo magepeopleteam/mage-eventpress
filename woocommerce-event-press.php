@@ -17,6 +17,7 @@ if (!defined('ABSPATH')) {
 } // Cannot access pages directly.
 
 
+
 // Checking woo
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (is_plugin_active('woocommerce/woocommerce.php')) {

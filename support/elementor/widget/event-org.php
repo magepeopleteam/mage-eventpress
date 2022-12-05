@@ -114,7 +114,7 @@ class MEPEventOrgWidget extends Widget_Base {
         if(sizeof($author_terms) > 0){
 	?>	
         <div class="mep-default-org mep-elementor-widget-org">
-		<span><?php echo esc_html($before_text); ?></span> <span><?php echo esc_html($author_terms[0]->name); ?></span> <span><?php echo esc_html($after_text); ?></span>
+		<span><?php echo mep_esc_html($before_text); ?></span> <span><?php echo esc_html($author_terms[0]->name); ?></span> <span><?php echo mep_esc_html($after_text); ?></span>
         </div>
 	<?php
         }

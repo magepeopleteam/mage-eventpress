@@ -110,7 +110,7 @@ class MEPEventSeattWidget extends Widget_Base {
 		if (get_post_type($event_id) == 'mep_events') {
 	?>	
         <div class="mep-default-seat mep-elementor-widget-seat">
-			<span><?php echo esc_html($before_text); ?></span> <span><?php do_action('mep_event_seat',$event_id); ?></span><span><?php echo esc_html($after_text); ?></span>
+			<span><?php echo mep_esc_html($before_text); ?></span> <span><?php do_action('mep_event_seat',$event_id); ?></span><span><?php echo mep_esc_html($after_text); ?></span>
         </div>
 	<?php
 }

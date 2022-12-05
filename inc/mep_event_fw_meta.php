@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 add_action('admin_init', 'mep_fw_meta_boxs');
 function mep_fw_meta_boxs()
 {
-    $speaker_status = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
+    $speaker_status = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
     /**
      * This Will create Meta Boxes For Speakers Custom Post Type.
      */
@@ -64,7 +64,7 @@ function mep_fw_meta_boxs()
                     array(
                         'id'		=> 'mep_event_speaker_icon',
                         'title'		=> __('Speaker Icon','mage-eventpress'),
-                        'details'	=> __('Please Select the Icon which will show as Speaker Icon','mage-eventpress'),
+                        'details'	=> __('Please select the icon that will be used for the speaker icon.','mage-eventpress'),
                         'default'	=> 'fas fa-microphone',
                         'type'		=> 'icon',
                         'args'		=> 'FONTAWESOME_ARRAY',
@@ -72,7 +72,7 @@ function mep_fw_meta_boxs()
                     array(
                         'id'		    => 'mep_speaker_title',
                         'title'		    => __('Section Label','mage-eventpress'),
-                        'details'	    => __('This Text will be the heading of the Speaker List in the frontend. by default: Speakers ','mage-eventpress'),
+                        'details'	    => __('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers." ','mage-eventpress'),
                         'type'		    => 'text',
                         'default'		=> "Speaker's",
                         'placeholder'   => __("Speaker's",'mage-eventpress'),
@@ -152,7 +152,7 @@ function mep_fw_meta_boxs()
     );
     $events_faq_meta_args = array(
         'meta_box_id'               => 'mep_event_faq_meta_boxes',
-        'meta_box_title'            => '<span class="dashicons dashicons-info"></span>&nbsp;&nbsp;'.__('F.A.Q', 'mage-eventpress'),
+        'meta_box_title'            => '<i class="fas fa-question-circle"></i>'.__('F.A.Q', 'mage-eventpress'),
         'screen'                    => array('mep_events'),
         'context'                   => 'normal',
         'priority'                  => 'high', 
@@ -199,6 +199,7 @@ function mep_fw_meta_boxs()
                                     'item_id' => 'mep_day_content',
                                     'name' => __('Content','mage-eventpress')
                                 ),
+                                
                             ),
                         ),
                 )
@@ -208,7 +209,7 @@ function mep_fw_meta_boxs()
     );
     $events_dd_meta_args = array(
         'meta_box_id'               => 'mep_event_dd_meta_boxes',
-        'meta_box_title'            => '<span class="dashicons dashicons-analytics"></span>&nbsp;&nbsp;'.__('Daywise Details', 'mage-eventpress'),
+        'meta_box_title'            => '<i class="fas fa-newspaper"></i>'.__('Daywise Details', 'mage-eventpress'),
         'screen'                    => array('mep_events'),
         'context'                   => 'normal',
         'priority'                  => 'high', 
@@ -301,7 +302,7 @@ function mep_fw_meta_boxs()
     );
     $email_body_meta_args = array(
         'meta_box_id'               => 'mep_event_email_body_meta_boxes',
-        'meta_box_title'            => '<span class="dashicons dashicons-email"></span>&nbsp;'.__('Email Text', 'mage-eventpress'),
+        'meta_box_title'            => '<i class="far fa-envelope-open"></i>'.__('Email Text', 'mage-eventpress'),
         //'callback'       => '_meta_box_callback',
         'screen'                    => array('mep_events'),
         'context'                   => 'normal', // 'normal', 'side', and 'advanced'
@@ -314,5 +315,5 @@ function mep_fw_meta_boxs()
             'speakers_meta_boxs' => $email_body_meta_boxs
         ),
     );
-    new AddMetaBox( $email_body_meta_args );
+    // new AddMetaBox( $email_body_meta_args );
 }

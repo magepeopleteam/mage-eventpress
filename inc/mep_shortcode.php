@@ -181,11 +181,13 @@ function mep_event_list($atts, $content = null)
                     $columnNumber = 'one_column';
                     $width=100;
                 }
-                
+              
+
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */
-                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width,$unq_id);
+                do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width,$unq_id);                
+
             }
             wp_reset_postdata();
             echo wp_kses_post($time_line_div_end);
@@ -198,8 +200,15 @@ function mep_event_list($atts, $content = null)
     </div>
     <script>
         jQuery(document).ready(function() {
+    
             var containerEl = document.querySelector('#mep_event_list_<?php echo esc_attr($unq_id); ?>');
-            var mixer = mixitup(containerEl);            
+            var mixer = mixitup(containerEl, {
+            selectors: {
+                target: '.mep-event-list-loop',
+                control: '[data-mixitup-control]'
+            }
+            });
+            
             <?php if ($pagination == 'carousal') { ?>
                 jQuery('#mep-carousel<?php echo esc_attr($cid); ?>').owlCarousel({
                     autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,
@@ -381,9 +390,9 @@ function mep_event_add_to_cart_section($atts, $content = null)
 {
     $defaults = array(
         "event" => "0",
-        "cart-btn-label" => "Register For This Event",
-        "ticket-label" => "Ticket Type",
-        "extra-service-label" => "Extra Service"
+        "cart-btn-label" => __( 'Register For This Event', 'mage-eventpress' ),
+        "ticket-label" => __( 'Ticket Type', 'mage-eventpress' ),
+        "extra-service-label" => __( 'Extra Service', 'mage-eventpress' )
     );
     $params = shortcode_atts($defaults, $atts);
     $event = $params['event'];   
@@ -481,7 +490,7 @@ function mep_event_onepage_list($atts, $content = null)
         <div class="mep_event_list_sec">
             <?php
             $now                = current_time('Y-m-d H:i:s');
-            $show_price         = mep_get_option('mep_event_price_show', 'general_setting_sec', 'yes');
+            $show_price         = mep_get_option('mep_event_price_show', 'event_list_setting_sec', 'yes');
             $show_price_label   = mep_get_option('event-price-label', 'general_setting_sec', 'Price Starts from:');
             $paged              = get_query_var("paged") ? get_query_var("paged") : 1;
 

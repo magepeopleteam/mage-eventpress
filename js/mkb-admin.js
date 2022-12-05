@@ -19,13 +19,55 @@
         }
         return false;
     });
+
+    
     $(document).on('click', 'label.mp_event_virtual_type_des_switch input', function () {
         if ($(this).is(":checked")) {
             $(this).parents('label.mp_event_virtual_type_des_switch').siblings('label.mp_event_virtual_type_des').slideDown(200);
+            $(".mep_event_tab_location_content").hide(200);
         } else {
             $(this).parents('label.mp_event_virtual_type_des_switch').siblings('label.mp_event_virtual_type_des').val('').slideUp(200);
+            $(".mep_event_tab_location_content").show(200);
         }
     });
+
+
+    
+    $(document).on('click', 'label.mp_event_ticket_type_des_switch input', function () {
+        if ($(this).is(":checked")) {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
+            $(".mep_ticket_type_setting_sec").slideDown(200);
+        } else {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
+            $(".mep_ticket_type_setting_sec").slideUp(200);
+        }
+    });
+
+    $(document).on('click', 'label.mep_enable_custom_dt_format input', function () {
+        if ($(this).is(":checked")) {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
+            $(".mep_custom_timezone_setting").slideDown(200);
+        } else {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
+            $(".mep_custom_timezone_setting").slideUp(200);
+        }
+    });
+
+    $(document).on('click', 'label.mp_event_ticket_type_advance_col_switch input', function () {
+        if ($(this).is(":checked")) {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
+            $(".mep_hide_on_load").slideDown(200);
+        } else {
+            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
+            $(".mep_hide_on_load").slideUp(200);
+        }
+    });
+
+
+
+
+
+
     $(document).ready(function () {
         $('#add-row-t').on('click', function () {
             var row = $('.empty-row-t.screen-reader-text').clone(true);
@@ -33,7 +75,7 @@
             row.insertBefore('#repeatable-fieldset-one-t tbody>tr:last');
             $('#mep_ticket_type_empty option[value=inputbox]').attr('selected', 'selected');
             $('.empty-row-t #mep_ticket_type_empty option[value=inputbox]').removeAttr('selected');
-            return false;
+            //return false;
         });
 
         $('.remove-row-t').on('click', function () {
@@ -80,5 +122,8 @@
             }
         });
     });
-
+$(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"],.mp_ticket_type_table [name="option_name[]"]', function () {
+        let n = $(this).val();
+        $(this).val(n.replace(/[@%'":;&_]/g, ''));
+    });
 }(jQuery));

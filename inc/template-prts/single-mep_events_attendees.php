@@ -24,7 +24,7 @@ if($ticket_user_id == $current_user_id ||  in_array( 'administrator', (array) $u
     margin: 0 auto;
     border-top: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    background: #fff;
+    margin-top:50px;
     border-right: 1px solid #ddd;
 }
 .mep-reg-user-details table tr td {
@@ -51,9 +51,12 @@ if($ticket_user_id == $current_user_id ||  in_array( 'administrator', (array) $u
 }
 .mep-reg-user-details table tr td h4 {
     font-size: 16px;
+    margin-bottom: 20px;
 }
 .mep-reg-user-details table {
     width: 100%;
+    background: #fff;
+    margin:0;
 }
 .mep-reg-user-details h4, .mep-reg-user-details h2 {
     padding: 0;

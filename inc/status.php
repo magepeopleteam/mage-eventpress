@@ -17,28 +17,11 @@ $wc_i 			= mep_woo_install_check();
 $from_name 		= mep_get_option( 'mep_email_form_name', 'email_setting_sec', '');
 $from_email 	= mep_get_option( 'mep_email_form_email', 'email_setting_sec', '');
 ?>
-<style>
-.mep_success{
-    color:green;
-    font-weight: bold;
-}
-
-.mep_warning{
-    color:#e6b14e;
-    font-weight: bold;
-}
-
-.mep_error{
-    color:red;
-    font-weight: bold;
-    text-align: center;
-    display: block;
-}
-</style>
 
     <!-- Create a header in the default WordPress 'wrap' container -->
-    <div class="wrap">   
-    <?php do_action('mep_event_status_notice_sec'); ?>    
+    <div class="wrap"></div>   
+    <?php do_action('mep_event_status_notice_sec'); ?>
+	<div class="wc_status_table_wrapper">  
     <table class="wc_status_table widefat" cellspacing="0" id="status">
 	<thead>
 		<tr>
@@ -77,6 +60,6 @@ $from_email 	= mep_get_option( 'mep_email_form_email', 'email_setting_sec', '');
         do_action('mep_event_status_table_item_sec'); ?>    
 	</tbody>
 </table>
-    </div>
+</div>   
 <?php
 }

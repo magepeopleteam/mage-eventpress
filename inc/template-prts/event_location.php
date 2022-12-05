@@ -30,7 +30,7 @@ if (!function_exists('mep_ev_location_cart')) {
         }
 
         $location_arr = [$location, $street, $city, $state, $zip, $country];
-        echo esc_html(implode(',', array_filter($location_arr)));
+        echo esc_html(implode(', ', array_filter($location_arr)));
 
         $content = ob_get_clean();
 
@@ -74,7 +74,7 @@ if (!function_exists('mep_ev_location_ticket')) {
 
 
         $location_arr   = [$location, $street, $city, $state, $zip, $country];
-        echo esc_html(implode(',', array_filter($location_arr)));
+        echo esc_html(implode(', ', array_filter($location_arr)));
         $content = ob_get_clean();
         $address_arr = array(
             'location'  => $location,
@@ -116,7 +116,7 @@ if (!function_exists('mep_ev_location')) {
 
 
         $location_arr = [$location, $street, $city, $state, $zip, $country];
-        echo esc_html(implode(',', array_filter($location_arr)));
+        echo esc_html(implode(', ', array_filter($location_arr)));
         $content = ob_get_clean();
         $address_arr = array(
             'location'  => $location,

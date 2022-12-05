@@ -283,7 +283,7 @@ class MAGE_Setting_API {
 
         $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size  = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
-        $html  = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
+        $html  = sprintf( '<select class="%1$s %3$s" name="%2$s[%3$s]"  id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
 
         foreach ( $args['options'] as $key => $label ) {
             $html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $value, $key, false ), $label );
@@ -419,6 +419,31 @@ class MAGE_Setting_API {
         );
         $html = wp_dropdown_pages( $dropdown_args );
         echo mep_esc_html($html);
+    }
+
+    /**
+     * Displays a icon library
+     *
+     * @param array   $args settings field args
+     */
+    function callback_iconlib( $args ) {
+        $output = '';
+        $desc   = $this->get_field_description( $args );
+        $value  = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+        $id     = esc_attr($args['id']);
+        $type   = 'hidden';
+        $class  = 'mep_global_settings_icon'; 
+        if(! empty($value)){
+            $output .= '<div class="mep_global_settings_icon_preview" data-key="'.$id.'">';
+            $output .= '<i class="'.$value.'"></i>';
+            $output .= '</div>';
+        }
+        $output .= '<a class="mep_global_icon_lib_btn" data-key="'.$id.'">'.esc_html__('Icon Library','mage-eventpress').'</a>';
+
+        $output .= sprintf( '<input type="%1$s" class="%2$s" id="%4$s" name="%3$s[%4$s]" value="%5$s" data-key="'.$id.'"/>', $type, $class, $args['section'], $args['id'], $value);
+
+        $output .= $desc;
+        echo $output;
     }
 
     /**

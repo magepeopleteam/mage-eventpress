@@ -5,13 +5,16 @@ $taxonomy_category = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
 $taxonomy_organizer = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
+$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
+$event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class='filter_item mep-event-list-loop  mep_event_list_item mep_event_winter_list mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>'
      data-title="<?php echo esc_attr(get_the_title($event_id)); ?>"
      data-city-name="<?php echo esc_attr(get_post_meta($event_id, 'mep_city', true)); ?>"
      data-category="<?php echo esc_attr($taxonomy_category); ?>"
      data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>"
-     data-date="<?php echo esc_attr(get_mep_datetime($date, 'date')); ?>"
+     data-date="<?php echo esc_attr(date('m/d/Y',strtotime($date))); ?>"
 >
     <?php do_action('mep_event_winter_list_loop_header', $event_id); ?>
     <div class="mep_list_date_wrapper">
@@ -34,9 +37,9 @@ $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
                         </span>
                 <a href="<?php the_permalink(); ?>">
 
-                    <span class="mep_winter_event_time"><i class="far fa-clock"></i> <?php echo esc_html($start_time_format); ?> - <?php echo esc_html($end_time_format); ?></span>
-                    <span class='mep_winter_event_location'><i class="fas fa-map-marker-alt"></i> <?php mep_get_event_city($event_id); ?></span>
-                    <span class="mep_winter_event_date"><i class="far fa-calendar-alt"></i> <?php echo esc_html($start_date_format); ?> - <?php echo esc_html($end_date_format); ?></span>
+                    <span class="mep_winter_event_time"><i class="<?php echo $event_time_icon; ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></span>
+                    <span class='mep_winter_event_location'><i class="<?php echo $event_location_icon; ?>"></i> <?php mep_get_event_city($event_id); ?></span>
+                    <span class="mep_winter_event_date"><i class="<?php echo $event_date_icon; ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></span>
 
                 </a>
             </div>

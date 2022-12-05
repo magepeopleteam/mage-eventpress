@@ -12,7 +12,7 @@ class MP_Event_All_Info_In_One
 	public function mp_event_all_info_in_tab()
 	{
 		$event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-		add_meta_box('mp_event_all_info_in_tab', __('<span class="dashicons dashicons-info"></span>' . $event_label . ' Information : ', 'mage-eventpress') . get_the_title(get_the_id()), array($this, 'mp_event_all_in_tab'), 'mep_events', 'normal', 'high');
+		add_meta_box('mp_event_all_info_in_tab', __('<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress') . get_the_title(get_the_id()), array($this, 'mp_event_all_in_tab'), 'mep_events', 'normal', 'high');
 		add_meta_box('mep-event-template', __('Template', 'mage-eventpress'), array($this, 'mep_event_template_meta_box_cb'), 'mep_events', 'side', 'low');
 	}
 
@@ -26,20 +26,20 @@ class MP_Event_All_Info_In_One
 				<ul>
 					<?php do_action('mep_admin_event_details_before_tab_name_location', $post_id); ?>
 					<li data-target-tabs="#mp_event_venue">
-						<span class="dashicons dashicons-location"></span>&nbsp;&nbsp;<?php esc_html_e('Venue/Location', 'mage-eventpress'); ?>
+						<i class="fas fa-map-marked"></i><?php esc_html_e('Venue/Location', 'mage-eventpress'); ?>
 					</li>
 					<?php do_action('mep_admin_event_details_after_tab_name_location', $post_id); ?>
 					<li data-target-tabs="#mp_ticket_type_pricing">
-						<span class="dashicons dashicons-buddicons-tracking"></span>&nbsp;<?php esc_html_e('Ticket & Pricing', 'mage-eventpress'); ?>
+						<i class="fas fa-dollar-sign"></i><?php esc_html_e('Ticket & Pricing', 'mage-eventpress'); ?>
 					</li>
 					<?php do_action('mep_admin_event_details_before_tab_name_ticket_type', $post_id); ?>
 					<li data-target-tabs="#mp_event_time">
-						<span class="dashicons dashicons-calendar-alt"></span>&nbsp;&nbsp;<?php esc_html_e('Date & Time', 'mage-eventpress'); ?>
+						<i class="far fa-calendar-alt"></i><?php esc_html_e('Date & Time', 'mage-eventpress'); ?>
 					</li>
 					<?php do_action('mep_admin_event_details_before_tab_name_date_time', $post_id); ?>
 
 					<li data-target-tabs="#mp_event_settings">
-						<span class="dashicons dashicons-admin-generic"></span>&nbsp;&nbsp;<?php esc_html_e('Settings', 'mage-eventpress'); ?>
+						<i class="fas fa-users-cog"></i><?php esc_html_e('Settings', 'mage-eventpress'); ?>
 					</li>
 					<?php do_action('mep_admin_event_details_before_tab_name_settings', $post_id); ?>
 					<?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
@@ -49,7 +49,10 @@ class MP_Event_All_Info_In_One
 					<?php } ?>
 					<?php do_action('mep_admin_event_details_before_tab_name_tax', $post_id); ?>
 					<li data-target-tabs="#mp_event_rich_text">
-						<span class="dashicons dashicons-admin-settings"></span>&nbsp;&nbsp;<?php esc_html_e('Rich text', 'mage-eventpress'); ?>
+						<i class="far fa-newspaper"></i><?php esc_html_e('Rich text', 'mage-eventpress'); ?>
+					</li>
+					<li data-target-tabs="#mp_event_email_text">
+						<i class="far fa-envelope-open"></i><?php esc_html_e('Email Text', 'mage-eventpress'); ?>
 					</li>
 					<?php do_action('mep_admin_event_details_before_tab_name_rich_text', $post_id); ?>
 					<?php do_action('mp_event_all_in_tab_menu'); ?>
@@ -60,19 +63,26 @@ class MP_Event_All_Info_In_One
 			<div class="mp_tab_details">
 				<?php do_action('mep_admin_event_details_before_tab_details_location', $post_id); ?>
 				<div class="mp_tab_item active" data-tab-item="#mp_event_venue">
-					<h3><?php echo esc_html($event_label);
-						esc_html_e(' Location :', 'mage-eventpress'); ?></h3>
+				<?php do_action('mep_event_tab_before_location',$post_id); ?>
+				<div class='mep_event_tab_location_content'>
+					<h3><?php echo esc_html($event_label); esc_html_e(' Location :', 'mage-eventpress'); ?></h3>
 					<hr />
 					<?php $this->mp_event_venue($post_id); ?>
 				</div>
+					<?php do_action('mep_event_tab_after_location'); ?>
+				</div>
 				<?php do_action('mep_admin_event_details_after_tab_details_location', $post_id); ?>
 				<div class="mp_tab_item" data-tab-item="#mp_ticket_type_pricing">
+					<?php do_action('mep_event_tab_before_ticket_pricing',$post_id); ?>
+				<div class='mep_ticket_type_setting_sec'>
 					<h3><?php esc_html_e('Ticket Type List :', 'mage-eventpress'); ?></h3>
 					<hr />
 					<?php $this->mep_event_ticket_type($post_id); ?>
 					<h3><?php esc_html_e('Extra service Area :', 'mage-eventpress'); ?></h3>
 					<hr />
 					<?php $this->mep_event_extra_price_option($post_id); ?>
+				</div>
+					<?php do_action('mep_event_tab_after_ticket_pricing'); ?>
 				</div>
 				<?php do_action('mep_admin_event_details_after_tab_details_ticket_type', $post_id); ?>
 				<div class="mp_tab_item" data-tab-item="#mp_event_time">
@@ -89,6 +99,7 @@ class MP_Event_All_Info_In_One
 						esc_html_e(' Rich Texts for SEO & Google Schema Text :', 'mage-eventpress'); ?></h3>
 					<hr />
 					<?php $this->mp_event_rich_text($post_id); ?>
+					<?php do_action('mep_event_tab_after_rich_text'); ?>
 				</div>
 				<?php do_action('mep_admin_event_details_after_tab_details_rich_text', $post_id); ?>
 				<div class="mp_tab_item" data-tab-item="#mp_event_settings">
@@ -96,20 +107,40 @@ class MP_Event_All_Info_In_One
 						esc_html_e(' Settings :', 'mage-eventpress'); ?></h3>
 					<hr />
 					<?php $this->mp_event_settings($post_id); ?>
+					<?php do_action('mep_event_tab_after_settings'); ?>
 				</div>
 				<?php do_action('mep_admin_event_details_after_tab_details_settings', $post_id); ?>
 				<?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
+					
 					<div class="mp_tab_item" data-tab-item="#mp_event_tax_settings">
 
 						<h3><?php echo esc_html($event_label);
 							esc_html_e(' Tax Settings :', 'mage-eventpress'); ?></h3>
 						<hr />
 						<?php $this->mp_event_tax($post_id); ?>
-					</div>
+						<?php do_action('mep_event_tab_after_tax_settings'); ?>
+						
+					</div>				
 				<?php } ?>
+				<div class="mp_tab_item" data-tab-item="#mp_event_email_text">
+                        <?php 
+                        $text= get_post_meta($post_id, 'mep_event_cc_email_text' , true );
+                        wp_editor( htmlspecialchars_decode($text), 'mep_event_cc_email_text', $settings = array('textarea_name'=>'mep_event_cc_email_text',  'editor_height' => 625,) );
+                        ?>
+                        <b>Usable Dynamic tags:</b>
+                        <br/> Attendee Name:<b>{name}</b><br/>
+                        Event Name: <b>{event}</b><br/>
+                        Ticket Type: <b>{ticket_type}</b><br/>
+                        Event Date: <b>{event_date}</b><br/>
+                        Start Time: <b>{event_time}</b><br/>
+                        Full DateTime: <b>{event_datetime}</b>                        
+                </div>					
 				<?php do_action('mp_event_all_in_tab_item', $post_id); ?>
 				<?php
 				do_action('mep_admin_event_details_end_of_tab_details', $post_id); ?>
+				<p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;">
+					#WC:<?php echo get_post_meta($post_id, 'link_wc_product', true); ?>
+				</p>
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -169,15 +200,15 @@ class MP_Event_All_Info_In_One
 				<tr>
 					<th style="min-width: 160px;"><?php esc_html_e(" Location Source:", "mage-eventpress"); ?></th>
 					<td colspan="3" style="min-width: 450px;">
-						<label>
-							<select class="mp_formControl" name="mep_org_address">
+						<label for='mep_org_address_list'>
+							<select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
 								<option value="0" <?php echo ($mep_org_address == 0) ? esc_attr('selected') : ''; ?>><?php echo esc_html($event_label);
 																												_e(' Details', 'mage-eventpress'); ?></option>
 								<option value="1" <?php echo ($mep_org_address == 1) ? esc_attr('selected') : ''; ?>><?php esc_html_e('Organizer', 'mage-eventpress'); ?></option>
 							</select>
 						</label>
 						<p class="event_meta_help_txt">
-							<?php esc_html_e('Select Organizer if you already save the organizer details. Please remember if you select orginizer and not checked the the organizer from the Event Organizer list from the right sidebar, Event Location section if the frontend will be blank.', 'mage-eventpress'); ?>
+						<?php esc_html_e('If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress'); ?>
 						</p>
 					</td>
 				</tr>
@@ -406,22 +437,61 @@ class MP_Event_All_Info_In_One
 	{
 		$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true);
 		wp_nonce_field('mep_event_ticket_type_nonce', 'mep_event_ticket_type_nonce');
+
+		$values = get_post_custom($post_id);
+		wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
+		$reg_checked = '';
+		$col_display = 'none';
+		if (array_key_exists('mep_show_advance_col_status', $values)) {
+			if ($values['mep_show_advance_col_status'][0] == 'on') {
+				$reg_checked = 'checked';
+				$col_display = 'table-cell';
+			}
+		}
+
 	?>
+<style>
+	.mep_hide_on_load{
+		display:<?php echo $col_display; ?>;
+	}
+</style>
+		<div class='mep-event-show-advance-col-info'>
+			<ul>
+				<li><span><?php esc_html_e('Show Advanced Column:', 'mage-eventpress'); ?></span></li>
+				<li>
+					<label class='mp_event_ticket_type_advance_col_switch'>
+						<input class="mp_opacity_zero" type="checkbox" name="mep_show_advance_col_status" <?php echo esc_attr($reg_checked); ?> /><span class="slider round"></span>
+					</label>
+					</li>
+			</ul>
+		</div>
 		<div class="mp_ticket_type_table">
 			<table id="repeatable-fieldset-one-t">
 				<thead>
 					<tr>
 						<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Type Name', 'mage-eventpress'); ?>"><?php esc_html_e('Ticket', 'mage-eventpress'); ?></th>
+						<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Type Details', 'mage-eventpress'); ?>"><?php esc_html_e('Short Desc.', 'mage-eventpress'); ?></th>
 						<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Price', 'mage-eventpress'); ?>"><?php esc_html_e('Price', 'mage-eventpress'); ?></th>
 						<?php do_action('mep_pricing_table_head_after_price_col'); ?>
-						<th style="min-width: 80px;" title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Available', 'mage-eventpress'); ?></th>
-						<th style="min-width: 80px;" title="<?php esc_attr_e('Default Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Default', 'mage-eventpress'); ?></th>
-						<?php $rsvqty = '<th style="min-width: 80px;" title="' . esc_attr__("Reserve Qty", "mage-eventpress") . '">' . esc_html__("Reserve", "mage-eventpress") . '</th>';
-						echo apply_filters('mep_add_extra_column', mep_esc_html($rsvqty)); ?>
-						<th style="min-width: 150px;" title="<?php esc_attr_e('Sale End Date', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Date', 'mage-eventpress'); ?></th>
-						<th style="min-width: 120px;" title="<?php esc_attr_e('Sale End Time', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Time', 'mage-eventpress'); ?></th>
+						<th style="min-width: 80px;" title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Capacity', 'mage-eventpress'); ?>
+					
+					</th>
+						
+
+						<th class='mep_hide_on_load' style="min-width: 80px;" title="<?php esc_attr_e('Default Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Default Qty', 'mage-eventpress'); ?></th>
+						<th class='mep_hide_on_load' style="min-width: 80px;" title="<?php esc_attr_e('Reserve Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Reserve Qty', 'mage-eventpress'); ?>
+						<?php do_action('add_extra_field_icon',$post_id); ?>
+						</th>
+                        <?php do_action('mep_add_extra_column'); ?>
+						<th class='mep_hide_on_load' style="min-width: 150px;" title="<?php esc_attr_e('Sale End Date', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Date', 'mage-eventpress'); ?></th>
+						<th class='mep_hide_on_load' style="min-width: 120px;" title="<?php esc_attr_e('Sale End Time', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Time', 'mage-eventpress'); ?></th>
+
+
+
 						<th style="min-width: 140px;" title="<?php esc_attr_e('Qty Box Type', 'mage-eventpress'); ?>"><?php esc_html_e('Qty Box', 'mage-eventpress'); ?></th>
-						<th style="min-width: 80px;"><?php esc_html_e('Action', 'mage-eventpress'); ?></th>
+						<th style="min-width: 80px;"><?php esc_html_e('Action', 'mage-eventpress'); ?>
+						
+					</th>
 					</tr>
 				</thead>
 				<tbody class="mp_event_type_sortable">
@@ -435,11 +505,11 @@ class MP_Event_All_Info_In_One
 					?>
 							<tr>
 								<td>
-									<input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php if ($field['option_name_t'] != '') {
-																																		echo esc_attr($field['option_name_t']);
-																																	} ?>" />
+									<input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php if ($field['option_name_t'] != '') { echo esc_attr($field['option_name_t']); } ?>" />
 								</td>
-
+								<td>
+									<input type="text" class="mp_formControl" name="option_details_t[]" placeholder="" value="<?php  if (array_key_exists('option_details_t', $field) && $field['option_price_t'] != '') { echo esc_attr($field['option_details_t']); } ?>" />
+								</td>
 								<td>
 									<input type="number" size="4" pattern="[0-9]*" step="0.001" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php if (array_key_exists('option_price_t', $field) && $field['option_price_t'] != '') {
 																																												echo esc_attr($field['option_price_t']);
@@ -455,14 +525,14 @@ class MP_Event_All_Info_In_One
 																																											echo 0;
 																																										} ?>" />
 								</td>
-								<td>
+								<td class='mep_hide_on_load'>
 									<input type="number" size="2" pattern="[0-9]*" step="1" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php if (isset($field['option_default_qty_t'])) {
 																																												echo esc_attr($field['option_default_qty_t']);
 																																											} else {
 																																												echo 0;
 																																											} ?>" />
 								</td>
-								<td>
+								<td class='mep_hide_on_load'>
 									<input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php if (isset($field['option_rsv_t'])) {
 																																		echo esc_attr($field['option_rsv_t']);
 																																	} else {
@@ -470,15 +540,15 @@ class MP_Event_All_Info_In_One
 																																	} ?>" />
 								</td>
 
-								<?php do_action('mep_add_extra_input_box', $field) ?>
-								<td>
+								<?php do_action('mep_add_extra_input_box', $field,$count) ?>
+								<td class='mep_hide_on_load'>
 									<div class="sell_expire_date">
 										<input type="date" id="ticket_sale_start_date" class="mp_formControl" value='<?php if (array_key_exists('option_sale_end_date_t', $field) && $field['option_sale_end_date_t'] != '') {
 																															echo esc_attr(date('Y-m-d', strtotime($field['option_sale_end_date_t'])));
 																														} ?>' name="option_sale_end_date[]" />
 									</div>
 								</td>
-								<td>
+								<td class='mep_hide_on_load'>
 									<div class="sell_expire_date">
 
 										<input type="time" id="ticket_sale_start_time" class="mp_formControl" value='<?php if (array_key_exists('option_sale_end_date_t', $field) && $field['option_sale_end_date_t'] != '') {
@@ -514,18 +584,20 @@ class MP_Event_All_Info_In_One
 					<!-- empty hidden one for jQuery -->
 					<tr class="empty-row-t screen-reader-text">
 						<td><input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" /></td>
+						<td><input type="text" class="mp_formControl" name="option_details_t[]" placeholder="" /></td>
 						<td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_t[]" placeholder="Ex: 10" value="" /></td>
 						<?php do_action('mep_pricing_table_empty_after_price_col'); ?>
 						<td><input type="number" size="4" pattern="[0-9]*" step="1" class="mp_formControl" name="option_qty_t[]" placeholder="Ex: 15" value="" /></td>
-						<td><input type="number" size="2" pattern="[0-9]*" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="" /></td>
-						<?php $option_rsv_t = '<td><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value=""/></td>'; ?>
+						<td class='mep_hide_on_load'><input type="number" size="2" pattern="[0-9]*" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="" /></td>
+						<?php $option_rsv_t = '<td class="mep_hide_on_load"><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value=""/></td>'; ?>
 						<?php echo apply_filters('mep_add_field_to_ticket_type', mep_esc_html($option_rsv_t)); ?>
-						<td>
-							<div class="sell_expire_date">
+						<?php do_action('mep_add_extra_column_empty'); ?> 
+						<td class="mep_hide_on_load">
+							<div class="sell_expire_date" >
 								<input type="date" id="ticket_sale_start_date" value='' name="option_sale_end_date[]" />
 							</div>
 						</td>
-						<td>
+						<td class="mep_hide_on_load"> 
 							<div class="sell_expire_date">
 								<input type="time" id="ticket_sale_start_time" value='' name="option_sale_end_time[]" />
 							</div>
@@ -538,15 +610,20 @@ class MP_Event_All_Info_In_One
 							</select>
 						</td>
 						<td>
-							<button class="button remove-row-t" type="button"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span></button>
+						<button class="button remove-row-t" type="button"><i class="fas fa-trash"></i></button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<p>
-			<button id="add-row-t" class="button" style="background:green; color:white;"><span class="dashicons dashicons-plus-alt" style="margin-top: 3px;color: white;"></span><?php esc_html_e('Add New Ticket Type', 'mage-eventpress'); ?></button>
+		<button id="add-row-t" class="button" type="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add New Ticket Type', 'mage-eventpress'); ?></button>
 		</p>
+
+
+
+
+
 
 	<?php
 	}
@@ -563,7 +640,7 @@ class MP_Event_All_Info_In_One
 					<tr>
 						<th title="<?php esc_attr_e('Extra Service Name', 'mage-eventpress'); ?>"><?php esc_html_e('Name', 'mage-eventpress'); ?></th>
 						<th title="<?php esc_attr_e('Extra Service Price', 'mage-eventpress'); ?>"><?php esc_html_e('Price', 'mage-eventpress'); ?></th>
-						<th title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Available', 'mage-eventpress'); ?></th>
+						<th title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Available Qty', 'mage-eventpress'); ?></th>
 						<th title="<?php esc_attr_e('Qty Box Type', 'mage-eventpress'); ?>" style="min-width: 140px;"><?php esc_html_e('Qty Box', 'mage-eventpress'); ?></th>
 						<th></th>
 					</tr>
@@ -604,8 +681,8 @@ class MP_Event_All_Info_In_One
 								</td>
 								<td>
 									<div class="mp_event_remove_move">
-										<button class="button remove-row" type="button"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span></button>
-										<div class="mp_event_type_sortable_button"><span class="dashicons dashicons-move"></span></div>
+									<button class="button remove-row" type="button"><i class="fas fa-trash"></i></button>
+										<div class="mp_event_type_sortable_button"><i class="fas fa-grip-vertical"></i></div>
 									</div>
 								</td>
 							</tr>
@@ -627,14 +704,14 @@ class MP_Event_All_Info_In_One
 								<option value="dropdown"><?php esc_html_e('Dropdown List', 'mage-eventpress'); ?></option>
 							</select></td>
 						<td>
-							<button class="button remove-row"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span><?php esc_html_e('Remove', 'mage-eventpress'); ?></button>
+							<button class="button remove-row"><i class="fas fa-trash"></i></button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<p>
-			<button id="add-row" class="button" style="background:green; color:white;"><span class="dashicons dashicons-plus-alt" style="margin-top: 3px;color: white;"></span><?php esc_html_e('Add Extra Price', 'mage-eventpress'); ?></button>
+		<button id="add-row" class="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add Extra Price', 'mage-eventpress'); ?></button>
 		</p>
 	<?php
 	}
@@ -714,8 +791,8 @@ class MP_Event_All_Info_In_One
 
 									<td>
 										<div class="mp_event_remove_move">
-											<button class="button remove-row-d" type="button"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span></button>
-											<div class="mp_event_type_sortable_button"><span class="dashicons dashicons-move"></span></div>
+											<button class="button remove-row-d" type="button"><i class="fas fa-trash"></i></button>
+											<div class="mp_event_type_sortable_button"><i class="fas fa-grip-vertical"></i></div>
 										</div>
 									</td>
 								</tr>
@@ -740,13 +817,13 @@ class MP_Event_All_Info_In_One
 							</td>
 							<?php do_action('mep_date_table_empty', $post_id); ?>
 							<td>
-								<button class="button remove-row-d"><span class="dashicons dashicons-trash" style="margin-top: 3px;color: red;"></span><?php esc_html_e('Remove', 'mage-eventpress'); ?></button>
+								<button class="button remove-row-d"><i class="fas fa-trash"></i></button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<button id="add-new-date-row" class="button" style="background:green; color:white;"><span class="dashicons dashicons-plus-alt" style="margin-top: 3px;color: white;"></span><?php esc_html_e('Add More Dates', 'mage-eventpress'); ?></button>
+			<button id="add-new-date-row" class="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add More Dates', 'mage-eventpress'); ?></button>
 		</div>
 
 	<?php
@@ -916,7 +993,7 @@ class MP_Event_All_Info_In_One
 			$reg_checked = 'checked';
 		}
 	?>
-		<tr>
+	<tr>
 			<th title="<?php esc_html_e('Event SKU No:', 'mage-eventpress'); ?>"><span><?php esc_html_e('SKU No:', 'mage-eventpress'); ?></span></th>
 			<td colspan="3">
 				<label>
@@ -925,7 +1002,7 @@ class MP_Event_All_Info_In_One
 			</td>
 		</tr>
 
-		<tr>
+		<!--tr>
 			<th><span><?php esc_html_e('Registration On/Off:', 'mage-eventpress'); ?></span></th>
 			<td colspan="3">
 				<label>
@@ -933,7 +1010,7 @@ class MP_Event_All_Info_In_One
 					<span class="slider round"></span>
 				</label>
 			</td>
-		</tr>
+		</tr> -->
 	<?php
 	}
 
@@ -980,7 +1057,7 @@ class MP_Event_All_Info_In_One
 		<tr>
 			<td colspan="4">
 				<p class="event_meta_help_txt">
-					<?php esc_html_e('If you reset this count, All booking information will be removed including attendee list & its impossible to undo', 'mage-eventpress'); ?>
+					<?php esc_html_e('If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress'); ?>
 				</p>
 			</td>
 		</tr>
@@ -993,14 +1070,11 @@ class MP_Event_All_Info_In_One
 		$event_type 		= get_post_meta($post_id, 'mep_event_type', true);
 		$event_member_type 	= get_post_meta($post_id, 'mep_member_only_event', true);
 		$saved_user_role 	= get_post_meta($post_id, 'mep_member_only_user_role', true) ? get_post_meta($post_id, 'mep_member_only_user_role', true) : [];
-		$description 		= get_post_meta($post_id, 'mp_event_virtual_type_des', true);
+		$description 		= html_entity_decode(get_post_meta($post_id, 'mp_event_virtual_type_des', true));
 		$checked 			= ($event_type == 'online') ? 'checked' : '';
 		$member_checked 	= ($event_member_type == 'member_only') ? 'checked' : '';
-
-
-		// print_r($saved_user_role);
 	?>
-		<tr>
+		<!-- <tr>
 			<th><span><?php esc_html_e('Virtual ', 'mage-eventpress');
 						echo esc_html($event_label . '?');  ?></span></th>
 			<td colspan="3">
@@ -1010,11 +1084,11 @@ class MP_Event_All_Info_In_One
 				</label>
 				<p></p>
 				<label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
-					<?php wp_editor(htmlspecialchars_decode($description), 'mp_event_virtual_type_des'); ?>
-					<p class="event_meta_help_txt"><?php esc_html_e('Please Enter Your Virtual event joining details Information. these information will send to buyer with confirmation email.', 'mage-eventpress') ?></p>
+					<?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
+					<p class="event_meta_help_txt"><?php esc_html_e('Please enter your virtual event joining details information below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
 				</label>
 			</td>
-		</tr>
+		</tr> -->
 		<tr>
 			<th><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></th>
 			<td colspan="3">
@@ -1025,9 +1099,7 @@ class MP_Event_All_Info_In_One
 				<p></p>
 				<label class="mp_event_virtual_type_des <?php echo ($event_member_type == 'member_only') ? esc_attr('active') : ''; ?>">
 					<select name='mep_member_only_user_role[]' multiple>
-						<option value="all" <?php if (in_array('all', $saved_user_role)) {
-												echo esc_attr('Selected');
-											} ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
+						<option value="all" <?php if (in_array('all', $saved_user_role)) { echo esc_attr('Selected'); } ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
 						<?php echo mep_get_user_list($saved_user_role); ?>
 					</select>
 				</label>
@@ -1075,7 +1147,7 @@ class MP_Event_All_Info_In_One
 						</select>
 					</label>
 					<p class="event_meta_help_txt">
-						<?php esc_html_e('To add any new tax class , Please go to WooCommerce ->Settings->Tax Area', 'mage-eventpress'); ?>
+						<?php esc_html_e('In order to add a new tax class, please go to WooCommerce -> Settings -> Tax Area', 'mage-eventpress'); ?>
 					</p>
 				</td>
 			</tr>
@@ -1087,7 +1159,7 @@ class MP_Event_All_Info_In_One
 	public function mep_event_template_meta_box_cb($post)
 	{
 		$values          = get_post_custom($post->ID);
-		$global_template = mep_get_option('mep_global_single_template', 'general_setting_sec', 'theme-2');
+		$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'theme-2');
 		if (array_key_exists('mep_event_template', $values)) {
 			$current_template = $values['mep_event_template'][0];
 		} else {
@@ -1140,6 +1212,7 @@ function mep_events_ticket_type_save($post_id)
 
 		$new          		= array();
 		$names        		= $_POST['option_name_t'] ? mage_array_strip($_POST['option_name_t']) : array();
+		$details        	= $_POST['option_details_t'] ? mage_array_strip($_POST['option_details_t']) : array();
 		$ticket_price 		= $_POST['option_price_t'] ? mage_array_strip($_POST['option_price_t']) : array();
 		$qty          		= $_POST['option_qty_t'] ? mage_array_strip($_POST['option_qty_t']) : array();
 		$dflt_qty     		= $_POST['option_default_qty_t'] ? mage_array_strip($_POST['option_default_qty_t']) : array();
@@ -1154,6 +1227,10 @@ function mep_events_ticket_type_save($post_id)
 
 			if ($names[$i] != '') :
 				$new[$i]['option_name_t'] 			= stripslashes(strip_tags($names[$i]));
+			endif;
+
+			if ($details[$i] != '') :
+				$new[$i]['option_details_t'] 		= stripslashes(strip_tags($details[$i]));
 			endif;
 
 			if ($ticket_price[$i] != '') :
@@ -1292,9 +1369,6 @@ function mep_event_meta_save($post_id)
 		$more_end_time   = isset($_POST['event_more_end_time']) ? mage_array_strip($_POST['event_more_end_time']) : '';
 		$mdate           = [];
 
-		if (isset($_POST['post_author_gutenberg'])) {
-			$wpdb->get_results("UPDATE " . $table_name . " SET post_author=" . mage_array_strip($_POST['post_author_gutenberg']) . " WHERE ID=" . $pid);
-		}
 
 		$mcount = count($more_start_date);
 
@@ -1356,6 +1430,8 @@ function mep_event_meta_save($post_id)
 
 
 		$mep_reg_status 		= isset($_POST['mep_reg_status']) ? sanitize_text_field($_POST['mep_reg_status']) : 'off';
+		$mep_show_advance_col_status 		= isset($_POST['mep_show_advance_col_status']) ? sanitize_text_field($_POST['mep_show_advance_col_status']) : 'off';
+		$mep_enable_custom_dt_format 		= isset($_POST['mep_enable_custom_dt_format']) ? sanitize_text_field($_POST['mep_enable_custom_dt_format']) : 'off';
 		$mep_show_end_datetime 		= isset($_POST['mep_show_end_datetime']) ? sanitize_text_field($_POST['mep_show_end_datetime']) : 'no';
 		$mep_reset_status 		= isset($_POST['mep_reset_status']) ? sanitize_text_field($_POST['mep_reset_status']) : 'off';
 		$mep_available_seat 	= isset($_POST['mep_available_seat']) ? sanitize_text_field($_POST['mep_available_seat']) : 'off';
@@ -1369,10 +1445,51 @@ function mep_event_meta_save($post_id)
 			mep_reset_event_booking($post_id);
 		}
 
+
+		$date_format = get_option('date_format');
+		$time_format = get_option('time_format');
+		
+		$date_format_arr = mep_date_format_list();
+		$time_format_arr = mep_time_format_list();
+
+		$current_global_date_format = mep_get_option('mep_global_date_format','datetime_setting_sec',$date_format);
+		$current_global_time_format = mep_get_option('mep_global_time_format','datetime_setting_sec',$time_format);
+	
+		$current_global_custom_date_format = mep_get_option('mep_global_custom_date_format','datetime_setting_sec',$date_format);
+		$current_global_custom_time_format = mep_get_option('mep_global_custom_time_format','datetime_setting_sec',$time_format);
+	
+		$current_global_timezone_display = mep_get_option('mep_global_timezone_display','datetime_setting_sec','no');
+
+
+		$mep_event_date_format 			= isset($_POST['mep_event_date_format']) ? sanitize_text_field($_POST['mep_event_date_format']) : $current_global_date_format;
+
+		$mep_event_time_format 			= isset($_POST['mep_event_time_format']) ? sanitize_text_field($_POST['mep_event_time_format']) : $current_global_time_format;
+
+		$mep_event_custom_date_format 	= isset($_POST['mep_event_custom_date_format']) ? sanitize_text_field($_POST['mep_event_custom_date_format']) : $current_global_custom_date_format;
+
+		$mep_custom_event_time_format 	= isset($_POST['mep_custom_event_time_format']) ? sanitize_text_field($_POST['mep_custom_event_time_format']) : $current_global_custom_time_format;
+
+		$mep_time_zone_display 			= isset($_POST['mep_time_zone_display']) ? sanitize_text_field($_POST['mep_time_zone_display']) : $current_global_timezone_display;
+		
+		$mep_event_cc_email_text 			= isset($_POST['mep_event_cc_email_text']) ? wp_kses_post($_POST['mep_event_cc_email_text']) : '';
+
+		if($mep_reg_status == 'on'){
+			update_post_meta($post_id, 'mep_event_date_format', $mep_event_date_format);
+			update_post_meta($post_id, 'mep_event_time_format', $mep_event_time_format);
+			update_post_meta($post_id, 'mep_event_custom_date_format', $mep_event_custom_date_format);
+			update_post_meta($post_id, 'mep_custom_event_time_format', $mep_custom_event_time_format);
+			update_post_meta($post_id, 'mep_time_zone_display', $mep_time_zone_display);
+		}
+
+
+
+		update_post_meta($post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text);
 		update_post_meta($post_id, 'mep_show_end_datetime', $mep_show_end_datetime);
 		update_post_meta($post_id, 'mep_rich_text_status', $mep_rich_text_status);
 		update_post_meta($post_id, 'mep_available_seat', $mep_available_seat);
 		update_post_meta($post_id, 'mep_reg_status', $mep_reg_status);
+		update_post_meta($post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status);
+		update_post_meta($post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format);
 		update_post_meta($post_id, '_tax_status', $_tax_status);
 		update_post_meta($post_id, '_tax_class', $_tax_class);
 

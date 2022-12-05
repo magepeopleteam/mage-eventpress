@@ -98,7 +98,7 @@ class MEPEventFaqtWidget extends Widget_Base {
 					foreach ($mep_event_faq as $field) {
 					?>
 						<h3><?php if ($field['mep_faq_title'] != '') echo esc_attr($field['mep_faq_title']); ?></h3>
-						<p><?php if ($field['mep_faq_content'] != '') echo esc_attr($field['mep_faq_content']); ?></p>
+						<p><?php if ($field['mep_faq_content'] != '') echo mep_esc_html(strip_tags(html_entity_decode($field['mep_faq_content']))); ?></p>
 					<?php
 					}
 					?>

@@ -211,8 +211,8 @@ class MEPEventDateWidget extends Widget_Base {
         if(!empty($event_datetime)){
 		?>	
 			<div class="mep-default-datetime mep-elementor-widget-datetime">
-				<span><?php echo esc_html($mep_location_icon.' '.$before_text); ?></span>
-                <span><?php echo esc_html(get_mep_datetime($event_datetime,$datetdisplaystyle)); ?></span> <span><?php echo esc_html($after_text); ?></span>
+				<span><?php echo mep_esc_html($mep_location_icon.' '.$before_text); ?></span>
+                <span><?php echo esc_html(get_mep_datetime($event_datetime,$datetdisplaystyle)); ?></span> <span><?php echo mep_esc_html($after_text); ?></span>
 			</div>
 		<?php
         }

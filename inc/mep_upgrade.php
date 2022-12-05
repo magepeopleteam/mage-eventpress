@@ -46,16 +46,7 @@ function mep_check_attendee_exists($event_id, $order_id, $name = null, $email = 
     return $loop->post_count;
 }
 
-// Flash Permalink only Once 
-function mep_flash_permalink_once()
-{
-    if (get_option('mep_flash_event_permalink') != 'completed') {
-        global $wp_rewrite;
-        $wp_rewrite->flush_rules();
-        update_option('mep_flash_event_permalink', 'completed');
-    }
-}
-add_action('admin_init', 'mep_flash_permalink_once');
+
 
 
 

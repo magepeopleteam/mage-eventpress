@@ -12,7 +12,7 @@ if (!function_exists('mep_ev_extra_serv')) {
         $count                      = 1;
         $mep_events_extra_prices    = get_post_meta($post_id, 'mep_events_extra_prices', true) ? get_post_meta($post_id, 'mep_events_extra_prices', true) : array();
         $event_date                 = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
-        
+        $mep_available_seat         = get_post_meta($post_id, 'mep_available_seat', true) ? get_post_meta($post_id, 'mep_available_seat', true) : 'on';
         ob_start();
        
         if (sizeof($mep_events_extra_prices) > 0) {

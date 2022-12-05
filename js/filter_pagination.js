@@ -9,7 +9,7 @@ function mpwem_add_loader_xs(target) {
 }
 
 function mpwem_remove_loader(target) {
-    target.children('.spinner_loading').remove();
+    target.find('.spinner_loading').remove();
 }
 
 function mpwem_page_scroll_to(target) {
@@ -29,6 +29,7 @@ function mpwem_page_scroll_to(target) {
             bg_image_load = true;
         });
         if (!bg_image_load) {
+			load_bg_img();
             $(document).scroll(function () {
                 load_bg_img();
                 bg_image_load = true;
@@ -128,7 +129,7 @@ function mpwem_page_scroll_to(target) {
         let start_date = date_convert_to_str(parent.find('.search_with_start_date').val());
         let end_date = date_convert_to_str(parent.find('.search_with_end_date').val());
         let date = date_convert_to_str(target.attr('data-date'));
-        return (date > start_date && end_date > date) ? 2 : 0;
+         return (date >= start_date && end_date >= date) ? 2 : 0;
     }
 
     function check_search_value_exit(parent) {
@@ -147,7 +148,7 @@ function mpwem_page_scroll_to(target) {
             let target = $(this);
             if (target.find('[data-bg-image]').css('background-image') === 'none') {
                 target.find('[data-bg-image]').css('background-image', 'url("' + target.find('[data-bg-image]').data('bg-image') + '")').promise().done(function () {
-                    mpwem_remove_loader($(this));
+                    mpwem_remove_loader(target);
                 });
             }
         });
@@ -184,7 +185,7 @@ function mpwem_page_scroll_to(target) {
         let pagination_page = parseInt($(this).attr('data-load-more'));
         let parent = $(this).closest('.list_with_filter_section');
         let item_class = get_item_class(parent);
-        if (parent.find(item_class + ':hidden').size() > 0) {
+        if (parent.find(item_class + ':hidden').length > 0) {
             pagination_page = pagination_page + 1;
         } else {
             pagination_page = 0;

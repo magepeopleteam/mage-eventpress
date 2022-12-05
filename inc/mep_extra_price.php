@@ -20,7 +20,7 @@ function mep_basic_before_cart_add_validation($passed)
   if (get_post_type($event_id) == 'mep_events') {
     $not_in_the_cart            = apply_filters('mep_check_product_into_cart', true, $wc_product_id);
     if (!$not_in_the_cart) {
-      wc_add_notice("Sorry, This Event already added into the cart. Please First remove this event from the cart to add it again.", 'error');
+      wc_add_notice("This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error');
       $passed = false;
     }
   }
@@ -49,7 +49,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $total_price            = get_post_meta($product_id, '_price', true);
     $form_position          = mep_get_option('mep_user_form_position', 'general_attendee_sec', 'details_page');
     $mep_event_start_date   = isset($_POST['mep_event_start_date']) ? mage_array_strip($_POST['mep_event_start_date']) : array();
-    $event_cart_location    = isset($_POST['mep_event_location_cart']) ? mage_array_strip($_POST['mep_event_location_cart']) : array();
+    $event_cart_location    = isset($_POST['mep_event_location_cart']) ? sanitize_text_field($_POST['mep_event_location_cart']) : array();
     $event_cart_date        = isset($_POST['mep_event_date_cart']) ? mage_array_strip($_POST['mep_event_date_cart']) : array();
     $recurring_event_date   = $recurring == 'yes' && isset($_POST['recurring_event_date']) ? mage_array_strip($_POST['recurring_event_date']) : array();
     $ticket_type_arr        = mep_cart_ticket_type('ticket_type', $total_price, $product_id);
@@ -58,6 +58,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $total_price            = mep_cart_event_extra_service('ticket_price', $total_price, $product_id);
     $user                   = $form_position == 'details_page' ? mep_save_attendee_info_into_cart($product_id) : array();
     $validate               = mep_cart_ticket_type('validation_data', $total_price, $product_id);
+
 
     /**
      * Now Store the datas into Cart Session
@@ -95,7 +96,7 @@ add_filter('woocommerce_add_cart_item_data', 'mep_add_custom_fields_text_to_cart
 /**
  * Now need to update the cart price according to user selection, the below function is doing this part, Its getting the new parice and update the cart price to new
  */
-add_action('woocommerce_before_calculate_totals', 'mep_add_custom_price', 90, 1);
+add_action('woocommerce_before_calculate_totals', 'mep_add_custom_price', 10000, 1);
 function mep_add_custom_price($cart_object)
 {
   foreach ($cart_object->cart_contents as $key => $value) {
@@ -119,6 +120,8 @@ function mep_add_custom_price($cart_object)
  */
 function mep_display_custom_fields_text_cart($item_data, $cart_item)
 {
+
+  ob_start();
   $mep_events_extra_prices = array_key_exists('event_extra_option', $cart_item) ? $cart_item['event_extra_option'] : array(); //$cart_item['event_extra_option'];
 
   $eid                    = array_key_exists('event_id', $cart_item) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
@@ -130,9 +133,7 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     $ticket_type_arr            = $cart_item['event_ticket_info'];
     $event_extra_service        = $cart_item['event_extra_service'];
     $event_recurring_date       = $cart_item['event_recurring_date'];
-    $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-
-
+    // echo '<pre>'; print_r($ticket_type_arr); echo '</pre>';
     $recurring                  = get_post_meta($eid, 'mep_enable_recurring', true) ? get_post_meta($eid, 'mep_enable_recurring', true) : 'no';
     $time_status                = get_post_meta($eid, 'mep_disable_ticket_time', true) ? get_post_meta($eid, 'mep_disable_ticket_time', true) : 'no';
     $start_time                 = get_post_meta($eid, 'event_start_time', true);
@@ -144,9 +145,8 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
 
         foreach ($ticket_type_arr as $_event_recurring_date) {
           if ($hide_date_status == 'no') {
-?>
-            <li><?php echo esc_html($event_label);
-                esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], 'date-time-text')); ?></li>
+          ?>
+            <li><?php esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], apply_filters('mep_cart_date_format','date-time-text'))); ?></li>
           <?php
           }
         }
@@ -163,8 +163,7 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
         foreach ($ticket_type_arr as $_event_recurring_date) {
           if ($hide_date_status == 'no') {
           ?>
-            <li><?php echo esc_html($event_label);
-                esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], 'date-time-text')); ?></li>
+            <li><?php esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], apply_filters('mep_cart_date_format','date-time-text'))); ?></li>
           <?php
           }
         }
@@ -182,8 +181,7 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
         foreach ($ticket_type_arr as $_event_recurring_date) {
           if ($hide_date_status == 'no') {
           ?>
-            <li><?php echo esc_html($event_label);
-                esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], 'date-text')); ?></li>
+            <li><?php esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($_event_recurring_date['event_date'], apply_filters('mep_cart_date_format','date-text'))); ?></li>
           <?php
           }
         }
@@ -202,16 +200,14 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
       } else {
         if ($hide_date_status == 'no') {
           ?>
-          <li><?php echo esc_html($event_label);
-              esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($cart_item['event_cart_display_date'], 'date-time-text')); ?></li>
+          <li><?php esc_html_e(" Date", 'mage-eventpress'); ?>: <?php echo esc_html(get_mep_datetime($cart_item['event_cart_display_date'], apply_filters('mep_cart_date_format','date-time-text'))); ?></li>
       <?php
         }
       }
     }
     if ($hide_location_status == 'no') {
       ?>
-      <li><?php echo esc_html($event_label);
-          esc_html_e(" Location", 'mage-eventpress'); ?>: <?php echo esc_html($cart_item['event_cart_location']); ?></li>
+      <li><?php esc_html_e(" Location", 'mage-eventpress'); ?>: <?php echo esc_html($cart_item['event_cart_location']); ?></li>
 <?php
     }
     if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
@@ -225,9 +221,13 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     do_action('mep_after_cart_item_display_list', $cart_item);
     echo "</ul>";
   }
+
+  $item_data[] = array('key' => __('Details Information','mage-eventpress'), 'value' => ob_get_clean());
   return $item_data;
 }
 add_filter('woocommerce_get_item_data', 'mep_display_custom_fields_text_cart', 90, 2);
+
+
 
 
 /**
@@ -281,6 +281,7 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
   $start_time     = get_post_meta($eid, 'event_start_time', true);
   $location_text  = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) ? mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) : 'Location';
   $date_text      = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) ? mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) : 'Date';
+  
   if (get_post_type($eid) == 'mep_events') {
     $event_id = $eid;
     $mep_events_extra_prices = array_key_exists('event_extra_option', $values) ? $values['event_extra_option'] : [];
@@ -294,28 +295,28 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $event_label             = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
     $time_status             = get_post_meta($eid, 'mep_disable_ticket_time', true) ? get_post_meta($eid, 'mep_disable_ticket_time', true) : 'no';
 
-    $name_lable             = get_post_meta($event_id, 'mep_name_label', true) ? get_post_meta($event_id, 'mep_name_label', true) : esc_html__('Name', 'mage-eventpress');
-    $email_lable            = get_post_meta($event_id, 'mep_email_label', true) ? get_post_meta($event_id, 'mep_email_label', true) : esc_html__('Email', 'mage-eventpress');
-    $phone_lable            = get_post_meta($event_id, 'mep_phone_label', true) ? get_post_meta($event_id, 'mep_phone_label', true) : esc_html__('Phone', 'mage-eventpress');
-    $address_lable          = get_post_meta($event_id, 'mep_address_label', true) ? get_post_meta($event_id, 'mep_address_label', true) : esc_html__('Address', 'mage-eventpress');
-    $tshirt_lable           = get_post_meta($event_id, 'mep_tshirt_label', true) ? get_post_meta($event_id, 'mep_tshirt_label', true) : esc_html__('T-Shirt Size', 'mage-eventpress');
-    $gender_lable           = get_post_meta($event_id, 'mep_gender_label', true) ? get_post_meta($event_id, 'mep_gender_label', true) : esc_html__('Gender', 'mage-eventpress');
-    $company_lable          = get_post_meta($event_id, 'mep_company_label', true) ? get_post_meta($event_id, 'mep_company_label', true) : esc_html__('Company', 'mage-eventpress');
-    $desg_lable             = get_post_meta($event_id, 'mep_desg_label', true) ? get_post_meta($event_id, 'mep_desg_label', true) : esc_html__('Designation', 'mage-eventpress');
-    $website_lable          = get_post_meta($event_id, 'mep_website_label', true) ? get_post_meta($event_id, 'mep_website_label', true) : esc_html__('Website', 'mage-eventpress');
-    $veg_lable              = get_post_meta($event_id, 'mep_veg_label', true) ? get_post_meta($event_id, 'mep_veg_label', true) : esc_html__('Vegetarian', 'mage-eventpress');
+    $name_lable              = get_post_meta($event_id, 'mep_name_label', true) ? get_post_meta($event_id, 'mep_name_label', true) : esc_html__('Name', 'mage-eventpress');
+    $email_lable             = get_post_meta($event_id, 'mep_email_label', true) ? get_post_meta($event_id, 'mep_email_label', true) : esc_html__('Email', 'mage-eventpress');
+    $phone_lable             = get_post_meta($event_id, 'mep_phone_label', true) ? get_post_meta($event_id, 'mep_phone_label', true) : esc_html__('Phone', 'mage-eventpress');
+    $address_lable           = get_post_meta($event_id, 'mep_address_label', true) ? get_post_meta($event_id, 'mep_address_label', true) : esc_html__('Address', 'mage-eventpress');
+    $tshirt_lable            = get_post_meta($event_id, 'mep_tshirt_label', true) ? get_post_meta($event_id, 'mep_tshirt_label', true) : esc_html__('T-Shirt Size', 'mage-eventpress');
+    $gender_lable            = get_post_meta($event_id, 'mep_gender_label', true) ? get_post_meta($event_id, 'mep_gender_label', true) : esc_html__('Gender', 'mage-eventpress');
+    $company_lable           = get_post_meta($event_id, 'mep_company_label', true) ? get_post_meta($event_id, 'mep_company_label', true) : esc_html__('Company', 'mage-eventpress');
+    $desg_lable              = get_post_meta($event_id, 'mep_desg_label', true) ? get_post_meta($event_id, 'mep_desg_label', true) : esc_html__('Designation', 'mage-eventpress');
+    $website_lable           = get_post_meta($event_id, 'mep_website_label', true) ? get_post_meta($event_id, 'mep_website_label', true) : esc_html__('Website', 'mage-eventpress');
+    $veg_lable               = get_post_meta($event_id, 'mep_veg_label', true) ? get_post_meta($event_id, 'mep_veg_label', true) : esc_html__('Vegetarian', 'mage-eventpress');
 
 
     if ($recurring == 'everyday' && $time_status == 'no') {
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
         foreach ($ticket_type_arr as $_event_recurring_date) {
-          $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'] . ' ' . $start_time, 'date-time-text'));
+          $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'], apply_filters('mep_cart_date_format','date-time-text')));
         }
       }
     } elseif ($recurring == 'yes') {
       if (is_array($ticket_type_arr) && sizeof($ticket_type_arr) > 0) {
         foreach ($ticket_type_arr as $_event_recurring_date) {
-          $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'], 'date-time-text'));
+          $item->add_meta_data($date_text, get_mep_datetime($_event_recurring_date['event_date'], apply_filters('mep_cart_date_format','date-time-text')));
         }
       }
     } else {
@@ -383,7 +384,7 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $item->add_meta_data('_event_user_info', $event_user_info);
     $item->add_meta_data('_event_service_info', $mep_events_extra_prices);
     $item->add_meta_data('event_id', $eid);
-    $item->add_meta_data('_product_id', $eid);
+    // $item->add_meta_data('_product_id', $eid);
     $item->add_meta_data('_event_extra_service', $event_extra_service);
     do_action('mep_event_cart_order_data_add', $values, $item);
   }

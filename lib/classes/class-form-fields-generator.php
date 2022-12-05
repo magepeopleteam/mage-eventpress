@@ -2940,7 +2940,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             $field_name 	= isset( $option['field_name'] ) ? $option['field_name'] : $id;
             $conditions 	= isset( $option['conditions'] ) ? $option['conditions'] : array();
             $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
-            $remove_text 	= isset( $option['remove_text'] ) ? $option['remove_text'] : '<i class="fas fa-times"></i>';
+            $remove_text 	= isset( $option['remove_text'] ) ? $option['remove_text'] : '<i class="fas fa-trash"></i>';
             $sortable 	    = isset( $option['sortable'] ) ? $option['sortable'] : true;
             $default 	    = isset( $option['default'] ) ? $option['default'] : array();
 
@@ -3164,8 +3164,9 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             $default 	    = isset( $option['default'] ) ? $option['default'] : array();
 
             $value 	        = isset( $option['value'] ) ? $option['value'] : "";
-            $value          = !empty($value) ? $value : $default;
-
+            $_value         = !empty($value) ? $value : $default;
+            $__value        = str_replace('<br />', PHP_EOL, html_entity_decode($_value));
+                  
             $field_id       = $id;
             $field_name     = !empty( $field_name ) ? $field_name : $id;
 
@@ -3258,9 +3259,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             ?>
             <div <?php if(!empty($depends)) {?> data-depends="[<?php echo esc_attr($depends); ?>]" <?php } ?>
                     id="field-wrapper-<?php echo esc_attr($id); ?>" class="<?php if(!empty($depends)) echo 'dependency-field'; ?> field-wrapper field-textarea-wrapper field-textarea-wrapper-<?php echo esc_attr($field_id); ?>">
-                <textarea name='<?php echo esc_attr($field_name); ?>' id='<?php echo esc_attr($field_id); ?>'
-                          cols='40' rows='5'
-                          placeholder='<?php echo esc_attr($placeholder); ?>'><?php echo esc_attr($value); ?></textarea>
+                <textarea name='<?php echo esc_attr($field_name); ?>' id='<?php echo esc_attr($field_id); ?>' cols='40' rows='5' placeholder='<?php echo esc_attr($placeholder); ?>'><?php echo mep_esc_html($__value); ?></textarea>
                 <div class="error-mgs"></div>
             </div>
 
@@ -5892,12 +5891,18 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             if(empty($id)) return;
             $field_name 	= isset( $option['field_name'] ) ? $option['field_name'] : $id;
             $conditions 	= isset( $option['conditions'] ) ? $option['conditions'] : array();
-            $placeholder = isset( $option['placeholder'] ) ? $option['placeholder'] : "";
-            $default = isset( $option['default'] ) ? $option['default'] : "";
+            $placeholder    = isset( $option['placeholder'] ) ? $option['placeholder'] : "";
+            $default        = isset( $option['default'] ) ? $option['default'] : "";
             $editor_settings= isset( $option['editor_settings'] ) ? $option['editor_settings'] : array('textarea_name'=>$field_name);
             $value 			= isset( $option['value'] ) ? $option['value'] : "";
-            $value = !empty($value) ? $value : $default;
+            $value          = !empty($value) ? $value : $default;
             $field_id       = $id;
+            
+            
+            // $value = preg_replace('#^<\/p>|<p>&nbsp;$#', '', $value);
+// $value = preg_replace('/^[ \t]*[\r\n]+/m', '', $value);
+
+            
             if(!empty($conditions)):
 
                 $depends = '';
@@ -5986,11 +5991,10 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             <div <?php if(!empty($depends)) {?> data-depends="[<?php echo esc_attr($depends); ?>]" <?php } ?> id="field-wrapper-<?php echo esc_attr($id); ?>" class="<?php if(!empty($depends)) echo 'dependency-field'; ?> field-wrapper field-wp_editor-wrapper
             field-wp_editor-wrapper-<?php echo esc_attr($id); ?>">
                 <?php
-                wp_editor( html_entity_decode(nl2br($value)), $id, $settings = $editor_settings);
+                wp_editor( htmlspecialchars_decode($value), $id, $settings = $editor_settings);
                 ?>
                 <div class="error-mgs"></div>
             </div>
-
             <?php
             return ob_get_clean();
         }
@@ -8035,7 +8039,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
             $collapsible 	= isset( $option['collapsible'] ) ? $option['collapsible'] : true;
             $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
             $values			= isset( $option['value'] ) ? $option['value'] : '';
-            $btntext			= isset( $option['btn_text'] ) ? $option['btn_text'] : 'Add';
+            $btntext		= isset( $option['btn_text'] ) ? $option['btn_text'] : 'Add';
             $fields 		= isset( $option['fields'] ) ? $option['fields'] : array();
             $title_field 	= isset( $option['title_field'] ) ? $option['title_field'] : '';
             $remove_text 	= isset( $option['remove_text'] ) ? $option['remove_text'] : '<i class="fas fa-times"></i>';
@@ -8067,17 +8071,17 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
 
                 $depends = '';
 
-                $field = isset($conditions['field']) ? $conditions['field'] :'';
+                $field      = isset($conditions['field']) ? $conditions['field'] :'';
                 $cond_value = isset($conditions['value']) ? $conditions['value']: '';
-                $type = isset($conditions['type']) ? $conditions['type'] : '';
-                $pattern = isset($conditions['pattern']) ? $conditions['pattern'] : '';
-                $modifier = isset($conditions['modifier']) ? $conditions['modifier'] : '';
-                $like = isset($conditions['like']) ? $conditions['like'] : '';
-                $strict = isset($conditions['strict']) ? $conditions['strict'] : '';
-                $empty = isset($conditions['empty']) ? $conditions['empty'] : '';
-                $sign = isset($conditions['sign']) ? $conditions['sign'] : '';
-                $min = isset($conditions['min']) ? $conditions['min'] : '';
-                $max = isset($conditions['max']) ? $conditions['max'] : '';
+                $type       = isset($conditions['type']) ? $conditions['type'] : '';
+                $pattern    = isset($conditions['pattern']) ? $conditions['pattern'] : '';
+                $modifier   = isset($conditions['modifier']) ? $conditions['modifier'] : '';
+                $like       = isset($conditions['like']) ? $conditions['like'] : '';
+                $strict     = isset($conditions['strict']) ? $conditions['strict'] : '';
+                $empty      = isset($conditions['empty']) ? $conditions['empty'] : '';
+                $sign       = isset($conditions['sign']) ? $conditions['sign'] : '';
+                $min        = isset($conditions['min']) ? $conditions['min'] : '';
+                $max        = isset($conditions['max']) ? $conditions['max'] : '';
 
                 $depends .= "{'[name=".$field."]':";
                 $depends .= '{';
@@ -8184,37 +8188,21 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                         <?php
                         endif;
                         ?>
-
-                        //$( this ).parent().appendTo( '.field-text-multi-wrapper-<?php echo esc_attr($id); ?> .field-list' );
-
-
-                        //$('.field-repeatable-wrapper-<?php //echo esc_attr($id); ?>// .field-list .item-wrap').each(function( index ) {
-                        //
-                        //    $(this).children('.item .content').each(function( index2 ) {
-                        //        console.log(index2);
-                        //    })
-                        //
-                        //
-                        //});
-
-
-
-
                     })
 
                     jQuery(document).on('click', '.field-repeatable-wrapper-<?php echo esc_attr($id); ?> .add-item', function() {
                         now = jQuery.now();
                         fields_arr = <?php echo json_encode($fields); ?>;
-                        html = '<div class="item-wrap collapsible"><div class="header"><span class="button remove" ' +
+                        html  = '<div class="item-wrap collapsible"><div class="header">';
+                        html += '<span class="button title-text"><i class="fas fa-angle-double-down"></i> Expand</span> ';
+                        html += '<span class="button remove" ' +
                             'onclick="jQuery(this).parent().parent().remove()"><?php echo mep_esc_html($remove_text); ?></span> ';
-
-                        //html += '<span index_id="" class="button clone"><i class="far fa-clone"></i></span>';
-
+                        
                         <?php if($sortable):?>
-                        html += '<span class="button sort" ><i class="fas fa-arrows-alt"></i></span>';
+                        html += '<span class="button sort" ><i class="fas fa-grip-vertical"></i></span>';
                         <?php endif; ?>
-                        html += ' <span  class="title-text" style="cursor:pointer;display: inline-block;width: 84%;">==> Click to Expand</span></div>';
-                        // html += ' <span  class="title-text">#'+now+'</span></div>';
+                        html += '</div>';
+                         // html += ' <span  class="title-text">#'+now+'</span></div>';
                         fields_arr.forEach(function(element) {
                             type = element.type;
                             item_id = element.item_id;
@@ -8245,7 +8233,18 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                             }else if(type == 'email'){
                                 html+='<input type="email" name="<?php echo esc_attr($field_name); ?>['+now+']['+element.item_id+']"/>';
                             }else if(type == 'textarea'){
-                                html+='<textarea name="<?php echo esc_attr($field_name); ?>['+now+']['+element.item_id+']"></textarea>';
+
+                                html+='<textarea id="<?php echo esc_attr($field_name); ?>'+now+'" name="<?php echo esc_attr($field_name); ?>['+now+']['+element.item_id+']"></textarea>';
+                               
+                                jQuery(function(){
+                                    tinymce.init({
+                                        selector:"#<?php echo esc_attr($field_name); ?>"+now,
+                                        menubar: true,
+                                        toolbar: 'undo redo formatselect bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat fullscreen',
+                                        plugins: 'fullscreen'
+                                    });
+                                });                          
+                                
                             }else if(type == 'select'){
                                 args = element.args;
                                 html+='<select name="<?php echo esc_attr($field_name); ?>['+now+']['+element.item_id+']">';
@@ -8311,14 +8310,12 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                             <div class="item-wrap <?php if($collapsible) echo 'collapsible'; ?>">
                                 <?php if($collapsible):?>
                                 <div class="header">
-                                    <?php endif; ?>
-                                  
-<!--                                    <span index_id="--><?php //echo esc_attr($i)ndex; ?><!--" class="button clone"><i class="far fa-clone"></i></span>-->
+                                    <?php endif; ?>                                  
                                     <?php if($sortable):?>
                                         <span class="button sort"><i class="fas fa-arrows-alt"></i></span>
                                     <?php endif; ?>
-                                    <span class="title-text" style="cursor:pointer;display: inline-block;width: 84%;"><?php echo esc_html($title_field_val); ?></span>
-                                    <span class="button remove" onclick="jQuery(this).parent().parent().remove()"><?php echo esc_html($remove_text); ?></span>
+                                    <span class="title-text" style="cursor:pointer;display: inline-block;width: 84%;"><?php echo mep_esc_html($title_field_val); ?></span>
+                                    <span class="button remove" onclick="jQuery(this).parent().parent().remove()"><?php echo mep_esc_html($remove_text); ?></span>
                                     <?php if($collapsible):?>
                                 </div>
                             <?php endif; ?>
@@ -8327,15 +8324,12 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                     $item_id            = $field['item_id'];
                                     $name               = $field['name'];
                                     $title_field_class = ($title_field == $field_index) ? 'title-field':'';
-
-
-
                                     ?>
                                     <div class="item <?php echo esc_attr($title_field_class); ?>">
                                         <?php if($collapsible):?>
                                         <div class="content">
                                             <?php endif; ?>
-                                            <div><?php echo esc_attr($name); ?></div>
+                                            <div class="item-title"><?php echo esc_attr($name); ?></div>
                                             <?php if($type == 'text'):
                                                 $default = isset($field['default']) ? $field['default'] : '';
                                                 $value = !empty($val[$item_id]) ? $val[$item_id] : $default;
@@ -8387,10 +8381,24 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                                 ?>
                                                 <input type="email" class="regular-text" name="<?php echo esc_attr($field_name); ?>[<?php echo esc_attr($index); ?>][<?php echo esc_attr($item_id); ?>]" placeholder="" value="<?php echo esc_html($value); ?>">
                                             <?php elseif($type == 'textarea'):
-                                                $default = isset($field['default']) ? $field['default'] : '';
-                                                $value = !empty($val[$item_id]) ? $val[$item_id] : $default;
+                                                $default    = isset($field['default']) ? $field['default'] : '';
+                                                $_value     = !empty($val[$item_id]) ? $val[$item_id] : $default;
+                                                $__value    = str_replace('<br />', PHP_EOL, html_entity_decode($_value));;
                                                 ?>
-                                                <textarea name="<?php echo esc_attr($field_name); ?>[<?php echo esc_attr($index); ?>][<?php echo esc_attr($item_id); ?>]"><?php echo esc_html($value); ?></textarea>
+                                                
+                                                <?php $rnd = rand(); ?>
+                                                <textarea id="<?php echo esc_attr($field_name).$rnd; ?>" name="<?php echo esc_attr($field_name); ?>[<?php echo esc_attr($index); ?>][<?php echo esc_attr($item_id); ?>]"><?php echo $__value; ?></textarea>
+                                                <script>
+                                                jQuery(function(){
+                                                    tinymce.init({
+                                                        selector: "#<?php echo esc_attr($field_name).$rnd; ?>",
+                                                        menubar: true,
+                                                        toolbar: 'undo redo formatselect bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat fullscreen',
+                                                        plugins: 'fullscreen'
+                                                    });
+                                                });
+                                                </script>
+                                              
                                             <?php elseif($type == 'select'):
                                                 $args = isset($field['args']) ? $field['args'] : array();
                                                 $default = isset($field['default']) ? $field['default'] : '';
@@ -8469,7 +8477,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                     ?>                    
                 </div>
                 <div class="error-mgs"></div>
-                <div class="ppof-button add-item"><i class="fas fa-plus-square"></i> <?php echo esc_html($btntext); ?></div>
+                <div class="ppof-button add-item"><i class="fas fa-plus-circle"></i> <?php echo esc_html($btntext); ?></div>
             </div>
 
             <?php
@@ -8478,7 +8486,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
 
         public function get_tax_data($args){
             foreach ($this->get_rep_taxonomies_array( $args ) as $argIndex => $argName):
-            $selected = ($argIndex == $value) ? 'selected' : ''; ?><option <?php echo esc_attr($selected); ?>  value="<?php echo esc_attr($argIndex); ?>"><?php echo esc_html($argName); ?></option> <?php endforeach;
+            $selected = ($argIndex == $argName) ? 'selected' : ''; ?><option <?php echo esc_attr($selected); ?>  value="<?php echo esc_attr($argIndex); ?>"><?php echo esc_html($argName); ?></option> <?php endforeach;
         }
 
 

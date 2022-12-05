@@ -91,7 +91,13 @@ function mep_user_custom_styles()
             background: <?php echo esc_attr($base_color); ?>;
         }
 
+        .ex-sec-title{
+            background: <?php echo esc_attr($base_color); ?>;
+            color: <?php echo esc_attr($label_text_color); ?>;
+        }
+
         /*Cart Button Style*/
+		button.mpwemasp_get_sp,
         .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart, .mep-event-theme-1 .btn-mep-event-cart, .mep-template-2-hamza .btn-mep-event-cart, .mep-tem3-mid-sec .btn-mep-event-cart, .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
             background: <?php echo esc_attr($cart_btn_bg_color); ?>;
             color: <?php echo esc_attr($cart_btn_txt_color); ?> !important;
@@ -122,7 +128,9 @@ function mep_user_custom_styles()
 		}
 		.royal_theme .df-ico i,
 		.royal_theme .mep-default-sidrbar-social ul li a,
-		.royal_theme .mep-default-sidrbar-events-schedule ul li i{
+		.royal_theme .mep-default-sidrbar-events-schedule ul li i,
+        .royal_theme .mep-default-sidrbar-meta .fa-list-alt,
+        .royal_theme .mep-default-sidrbar-events-schedule h3 i{
 			background-color: <?php echo esc_attr($royal_icons_bg_color); ?>;
 		}
 		.royal_theme .mep-default-title,

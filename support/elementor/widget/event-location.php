@@ -193,9 +193,9 @@ class MEPEventLocationWidget extends Widget_Base {
         if(!empty($mep_event_location_style)){
 	?>	
         <div class="mep-default-location mep-elementor-widget-location">
-		<span><?php echo esc_html($mep_location_icon.' '.$before_text); ?></span>
+		<span><?php echo mep_esc_html($mep_location_icon.' '.$before_text); ?></span>
             <span><?php mep_get_location($event_id,$mep_event_location_style); ?></span>
-            <span><?php echo esc_html($after_text); ?></span>
+            <span><?php echo mep_esc_html($after_text); ?></span>
         </div>
 	<?php
         }

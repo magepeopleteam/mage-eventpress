@@ -43,10 +43,25 @@ if (!class_exists('AddMetaBox')) {
 
 
 		public function save_post($post_id)
-		{
+		{  
 
 			$get_option_name = $this->get_option_name();
 			$post_id         = $this->get_post_id();
+
+
+
+			if ( !isset($_POST['mep_fw_nonce']) || !wp_verify_nonce($_POST['mep_fw_nonce'], 'mep_fw_nonce') ) {
+				return;
+			}
+		
+			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+				return;
+			}
+		
+			if (!current_user_can('edit_post', $post_id)) {
+				return;
+			}
+
 
 			if (!empty($get_option_name)) :
 				$option_value = serialize(stripslashes_deep(mage_array_strip($_POST[$get_option_name])));
@@ -173,6 +188,7 @@ if (!class_exists('AddMetaBox')) {
 					?>
 
 					<div class="form-wrapper <?php echo esc_attr($form_wrapper_position); ?>">
+					<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
 						<div class="form-section">
 							<?php
 							$current_page = 1;

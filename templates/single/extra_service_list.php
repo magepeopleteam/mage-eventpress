@@ -1,10 +1,5 @@
 <h3 class='ex-sec-title mep_extra_service_title'><?php echo esc_html($extra_service_label); ?></h3>
-<table id='mep_event_extra_service_table'>
-    <tr class='mep_extra_service_table_head'>
-        <td align="left"><?php echo mep_get_option('mep_name_text', 'label_setting_sec', esc_html__('Name:', 'mage-eventpress')); ?></td>
-        <td class="mage_text_center"><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec', esc_html__('Quantity:', 'mage-eventpress')); ?></td>
-        <td class="mage_text_center"><?php echo mep_get_option('mep_price_text', 'label_setting_sec', esc_html__('Price:', 'mage-eventpress')); ?></td>
-    </tr>
+<table id='mep_event_extra_service_table'>    
     <?php
 
     foreach ($mep_events_extra_prices as $field) {
@@ -13,8 +8,6 @@
         $service_qty        = array_key_exists('option_qty', $field) ? $field['option_qty'] : 0;
         $service_price      = array_key_exists('option_price', $field) ? $field['option_price'] : 0;
         $service_qty_type   = array_key_exists('option_qty_type', $field) ? $field['option_qty_type'] : 'input';
-
-
 
         $total_extra_service    = (int) $service_qty;
         $qty_type               = $service_qty_type;
@@ -29,9 +22,12 @@
     ?>
         <tr>
             <td align="Left"><?php echo esc_html($service_name); ?>
+            <?php if ($mep_available_seat == 'on') { ?>
                 <div class="xtra-item-left"><?php echo esc_html($ext_left); ?>
                     <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : esc_html__('Left:', 'mage-eventpress');  ?>
                 </div>
+                <?php } ?>
+                
                 <input type="hidden" name='mep_event_start_date_es[]' value='<?php echo esc_attr($event_date); ?>'>
             </td>
             <td class="mage_text_center">

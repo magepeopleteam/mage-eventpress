@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
  */
 function mep_cpt()
 {
-    $speaker_status     = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
+    $speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
     $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
     $event_slug         = mep_get_option('mep_event_slug', 'general_setting_sec', 'events');
     $event_icon         = mep_get_option('mep_event_icon', 'general_setting_sec', 'dashicons-calendar-alt');
@@ -42,15 +42,22 @@ function mep_cpt()
         'items_list_navigation' => __($event_label . ' list navigation', 'mage-eventpress'),
         'filter_items_list'     => __('Filter ' . $event_label . ' list', 'mage-eventpress'),
     );
-
+    
+     $rewrite = array(
+          'slug'                => $event_slug,
+          'with_front'          => true,
+          'pages'               => true,
+          'feeds'               => true,
+    );
+    
     $args = array(
         'public'                => true,
-        'has_archive'           => true,
+        'has_archive'           => false,
         'labels'                => $labels,
         'menu_icon'             => $event_icon,
         'supports'              => apply_filters('mep_events_post_type_support',array('title', 'editor', 'thumbnail', 'excerpt')),
-        'rewrite'               => array('slug' => $event_slug),
-        'show_in_rest'          => true
+        'rewrite'               => $rewrite,
+        'show_in_rest'          => apply_filters('mep_events_post_type_show_in_rest',true)
 
     );
     register_post_type('mep_events', $args);
@@ -84,16 +91,21 @@ function mep_cpt()
         'items_list_navigation' => __('Speaker list navigation', 'mage-eventpress'),
         'filter_items_list'     => __('Filter Speaker list', 'mage-eventpress'),
     );
-
+     $sprewrite = array(
+          'slug'                => 'event-speaker',
+          'with_front'          => true,
+          'pages'               => true,
+          'feeds'               => true,
+    );
+    
     $args = array(
         'public'                => true,
         'labels'                => $labels,
         'menu_icon'             => 'dashicons-calendar-alt',
         'supports'              => array('title', 'editor', 'thumbnail', 'excerpt'),
-        'rewrite'               => array('slug' => 'event-speaker'),
+        'rewrite'               => $sprewrite,
         'show_in_menu'          => 'edit.php?post_type=mep_events',
-        'show_in_rest'          => true
-
+        'show_in_rest'          => apply_filters('mep_speaker_post_type_show_in_rest',true)
     );
 
     if ($speaker_status == 'yes') {

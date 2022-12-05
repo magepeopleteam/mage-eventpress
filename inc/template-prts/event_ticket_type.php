@@ -15,8 +15,27 @@ if (!function_exists('mep_ev_ticket_type')) {
 
         if ($mep_event_ticket_type) {
 ?>
-            <h3 class='ex-sec-title mep_ticket_type_title'><?php echo esc_html($ticket_type_label); ?> </h3>
+            <!-- <h3 class='ex-sec-title mep_ticket_type_title'><?php echo esc_html($ticket_type_label); ?> </h3> -->
             <table id='mep_event_ticket_type_table'>
+                <thead class='ex-sec-title mep_ticket_type_title'>
+                    <tr>
+                        <th>
+                        <span class="tkt-qty" style="text-align: left;">
+                            <?php echo _e('Ticket type','mage-eventpress'); ?> 
+                        </span>
+                        </th>
+                        <th>
+                        <span class="tkt-qty" style="text-align: center;">
+                            <?php echo mep_get_option('mep_ticket_qty_text', 'label_setting_sec') ? mep_get_option('mep_ticket_qty_text', 'label_setting_sec') : esc_html__('Ticket Qty:', 'mage-eventpress');  ?>
+                        </span>
+                        </th>
+                        <th>
+                        <span class="tkt-pric" style="text-align: center;">
+                            <?php echo mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') ? mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') : esc_html__('Per Ticket Price:', 'mage-eventpress');  ?>
+                        </span> 
+                        </th>
+                    </tr>
+                </thead>
                 <?php do_action('mep_event_ticket_type_loop_list', $post_id); ?>
             </table>
         <?php
@@ -45,7 +64,8 @@ if (!function_exists('mep_ev_ticket_type')) {
                     }
 
                 });
-                $('#mage_event_submit').on('submit', function() {
+                $('#mage_event_submit').on('submit', function(e) {
+					//e.stopPropagation();
                     if (mageErrorQty()) {
                         return true;
                     }

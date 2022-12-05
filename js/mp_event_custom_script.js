@@ -66,4 +66,7 @@ function mp_event_wo_commerce_price_format(price) {
 
         });
     });
+	$(document).on('click', 'button.mep_view_vr_btn', function () {
+        $(this).closest('tr').next('tr.mep_virtual_event_info_sec').slideToggle('fast');
+    });
 }(jQuery));

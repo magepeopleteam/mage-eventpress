@@ -1,21 +1,20 @@
-=== Event Manager for WooCommerce ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce ===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 3.5.4
-Version: 2.1.3
-Tested up to: 5.8.1
+Stable tag: 3.7.8
+Version: 3.7.8
+Tested up to: 6.0 
 WC requires at least: 3.0
-WC tested up to: 5.8
+WC tested up to: 6.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Event Manager for WooCommerce is a Event Plugin for WordPress which is based on WooCommerce.
+Event Manager and Tickets Selling Plugin for WooCommerce is a Event Plugin for WordPress which is based on WooCommerce.
 
 == Description ==
-Event Manager for WooCommerce Plugin- is one of the best and simple event management plugin available in WordPress directory & the best event manager plugin for WordPress. It uses WooCommerce to take payment, which provides freedom for using popular payment getaway via WooCommerce. This plugin supports all WordPress version and can be used to create any types of any types of events. 
-
+Event Manager and Tickets Selling Plugin for WooCommerce is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress, because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
 
 ###  Free Version Plugin Features:
 
@@ -34,16 +33,15 @@ Event Manager for WooCommerce Plugin- is one of the best and simple event manage
 ➡ Multiple Event Templates (You can select a different template for each event) 
 ➡ Works with Any Standards Compliant WordPress Theme.
 ➡ WooCommerce Support, You can Sell product and Event Separately. There is no mixing with Event with the WooCommerce Products.
-➡ [View Live Demo For Business](https://vaincode.com/event-demo/)
-➡ [View Live Demo For Cooking](https://vaincode.com/event-demo/home-cooking/)
-➡ [View Live Demo For Indoor Games](https://vaincode.com/event-demo/home-indoor-games/)
+➡ [View Live Demo For Business Event](https://event.mage-people.com/)
+
 
 ###  [Pro Version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
 ➡   Download PDF tickets for event attendee.
 ➡   Custom Registration Form for Event Attendees.
 ➡   Automatic Email Conformation Message and Pdf Tickets Mailing Features
 ➡   Export Attendee List as CSV Format. 
-➡   [Buy Event Manager for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 
+➡   [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 
 
 
 ###  Other Available Addons 
@@ -57,12 +55,10 @@ Event Manager for WooCommerce Plugin- is one of the best and simple event manage
 ➡ Related Events Addon - You can select related event and display to event details page.
 
 
-➡ [View Live Demo For Business](https://vaincode.com/event-demo/)
-➡ [View Live Demo For Cooking](https://vaincode.com/event-demo/home-cooking/)
-➡ [View Live Demo For Indoor Games](https://vaincode.com/event-demo/home-indoor-games/)
+➡ [View Live Demo For Business Event](https://event.mage-people.com/)
 👉  [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 
-👉[Buy Event Manager for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
+👉[Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
 
 
 
@@ -73,21 +69,21 @@ Event Manager for WooCommerce Plugin- is one of the best and simple event manage
 `
 
 **cat:**  
-By default showing all event, but if you want to show event list of a particular category you can use this attribute, just put the category id with this. example:  
+This Shortcode allows you to show event lists for a specific category by using the category ID. For example:  
 
 `
 [event-list cat='ID']
 `
 
 **org:**  
-By default showing all event, but if you want to show event list of a particular organization you can use this attribute, just put the category id with this. example:  
+If you want to display a list of events for a specific organization, you can use this attribute by including the organizer's ID. For example:  
 
 `
 [event-list org='ID']
 `
 
 **Grid style:**  
-To Show the Event in Grid Style. example 👉[Grid Style Demo](https://vaincode.com/event-demo/events-grid-style/)👈:  
+To Show the Events in Grid Style. example 👉[Grid Style Demo](https://event.mage-people.com/events-grid-style/)👈:  
 
 `
 [event-list style='grid']
@@ -95,7 +91,7 @@ To Show the Event in Grid Style. example 👉[Grid Style Demo](https://vaincode.
 
 
 **List style:**  
-To Show the Event in List Style. example 👉[List Style Demo](https://vaincode.com/event-demo/events-list-style//)👈:   
+To Show the Events in List Style. example 👉[List Style Demo](https://event.mage-people.com/events-list-style/)👈:   
 
 `
 [event-list style='list']
@@ -103,7 +99,7 @@ To Show the Event in List Style. example 👉[List Style Demo](https://vaincode.
 
 
 **Minimal style:**  
-To Show the Event in Minimal Style. example 👉[Minimal Style Demo](https://vaincode.com/event-demo/events-minimal-style/)👈:   
+To Show the Events in Minimal Style view. example 👉[Minimal Style Demo](https://event.mage-people.com/events-minimal-style/)👈:   
 
 `
 [event-list style='minimal' show=10 pagination='yes']
@@ -111,7 +107,7 @@ To Show the Event in Minimal Style. example 👉[Minimal Style Demo](https://vai
 `
 
 **Native style:**  
-To Show the Event in Native Style. example 👉[Native Style Demo](https://vaincode.com/event-demo/events-native-style/)👈:   
+To Show the Event in Native Style. example 👉[Native Style Demo](https://event.mage-people.com/events-native-style/)👈:   
 
 `
 [event-list style='native' show='8' pagination='yes']
@@ -120,7 +116,7 @@ To Show the Event in Native Style. example 👉[Native Style Demo](https://vainc
 
 
 **Vertical Timeline style:**  
-To Show the Event in Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://vaincode.com/event-demo/events-vertical-timeline-style/)👈:   
+To Show the Event in Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://event.mage-people.com/events-vertical-timeline-style/)👈:   
 
 `
 [event-list style='timeline' timeline-mode='vertical']
@@ -128,7 +124,7 @@ To Show the Event in Vertical Timeline Style. example 👉[Vertical Timeline Sty
 `
 
 **Horizontal Timeline style:**  
-To Show the Event in Horizontal Timeline Style. example 👉[Horizontal Timeline Style Demo](https://vaincode.com/event-demo/events-horizontal-timeline-style/)👈:   
+To Show the Event in Horizontal Timeline Style. example 👉[Horizontal Timeline Style Demo](https://event.mage-people.com/events-horizontal-timeline-style/)👈:   
 
 `
 [event-list style='timeline' timeline-mode='horizontal']
@@ -136,7 +132,7 @@ To Show the Event in Horizontal Timeline Style. example 👉[Horizontal Timeline
 `
 
 **Title Only style:**  
-To Show the Event Only Title Style. example 👉[Title Style Demo](https://vaincode.com/event-demo/events-title-style/)👈:   
+To Show the Event Only Title Style. example 👉[Title Style Demo](https://event.mage-people.com/events-title-style/)👈:   
 
 `
 [event-list style='title']
@@ -144,7 +140,7 @@ To Show the Event Only Title Style. example 👉[Title Style Demo](https://vainc
 `
 
 **Event Carousal:**  
-To Show the Event Carousal. example 👉[Event Carousal Demo](https://vaincode.com/event-demo/events-carousel-style/)👈:   
+To Show the Event Carousal. example 👉[Event Carousal Demo](https://event.mage-people.com/events-carousel-style/)👈:   
 
 `
 [event-list style='grid' pagination='carousal' carousal-dots='yes' carousal-nav='yes' column=3]
@@ -152,27 +148,27 @@ To Show the Event Carousal. example 👉[Event Carousal Demo](https://vaincode.c
 `
 
 **cat-filter:**  
-By default showing all event without any filter option. If you want to change it to with category filter use this. example:  
+By default, events are shown without any filter options. If you want to change it to with category filter, use this example:  
 
 `
 [event-list cat-filter='yes']
 `
 **org-filter:**  
-By default showing all event without any filter option. If you want to change it to with organization filter use this. example:  
+This code will allow you to show events with an organizer filter option instead of without one. For example:
 
 `
 [event-list org-filter='yes']
 `
 
 **show:**  
-By default showing all event without any limition. If you want to change it and set limit input the limit number. example:  
+By default, all events are shown without any limit. If you want to change it and set a limit, input the limit number. For example: 
 
 `
 [event-list show='10']
 `
 
 **pagination:**  
-By default there is no pagination with the event list but if you want to show pagination set yes the value. example:  
+If you want to show pagination with the event list, you can set the value to "yes." For example:  
 
 `
 [event-list pagination='yes']
@@ -180,7 +176,7 @@ By default there is no pagination with the event list but if you want to show pa
 `
 
 **Filter By City:**  
-Filter Event by City. example 👉[Filter By City Demo](https://vaincode.com/event-demo/events-by-city/)👈:   
+Filter Event by City. example 👉[Filter By City Demo](https://event.mage-people.com/events-by-city/)👈:   
 
 `
 [event-list style='grid' city='Dhaka' column=3 show=8]
@@ -188,7 +184,7 @@ Filter Event by City. example 👉[Filter By City Demo](https://vaincode.com/eve
 `
 
 **Filter By Country:**  
-Filter Event by Country.example 👉[Filter By Country Demo](https://vaincode.com/event-demo/events-by-country/)👈:   
+Filter Event by Country.example 👉[Filter By Country Demo](https://event.mage-people.com/events-by-country/)👈:   
 
 `
 [event-list style='grid' country='India' column=3 show=8]
@@ -198,7 +194,7 @@ Filter Event by Country.example 👉[Filter By Country Demo](https://vaincode.co
 
 
 **sort:**
-You can sort event list by event start datetime. By default it showing as Assending format, If you want to change the sorting format you need you use this attribute. example:  
+You can sort your event list by event start date and time in ascending or descending order. By default, the list is displayed in ascending order, but you can change the sorting format by using this attribute. For example: 
 
 `
 [event-list sort='ASC/DESC']
@@ -212,21 +208,23 @@ You can sort event list by event start datetime. By default it showing as Assend
 `
 
 ### Event Add To Cart Section ShortCode:
-You can show Event Cart Section with Ticket type & extra servive list anywhere in your website by using the below shortcode. example 👉[See Demo](https://demo.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
+The Event Cart Section shortcode allows you to display a list of tickets and extra services anywhere on your website. This is a great way to make sure your visitors can easily find the information they need when planning an event.
+
+To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website:. example 👉[See Demo](https://demo.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
 `
 [event-add-cart-section event=EventID]
 
 `
 
 ### Event City List ShortCode:
-Display the City List which is used in the event anywhere in your website by using below shortcode. example 👉[City List Demo](https://demo.vaincode.com/mage-event/event-city-list/)👈:  
+You can display the City List by using the shortcode below anywhere on your website. This will come in handy for events that are taking place in different cities. example 👉[City List Demo](https://event.mage-people.com/events-city-list/)👈:  
 `
 [event-city-list]
 
 `
 
 ### Event Speaker List ShortCode:
-Display Event Speaker List Any Post or Page by using the below Shortcode.. example 👉[View Demo](https://demo.vaincode.com/mage-event/speaker-list/)👈:  
+Our shortcode allows you to easily display a list of speakers for any event on any post or page. Simply use the below shortcode to display the list. example 👉[View Demo](https://event.mage-people.com/speakers/)👈:  
 `
 [event-speaker-list event=EventID]
 
@@ -236,26 +234,25 @@ Display Event Speaker List Any Post or Page by using the below Shortcode.. examp
 = Some Others Very Nice Addon Support Available =
 
 👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
-  With this addon Repeating Event feature can be added with event manager, For example if someone like to sell daily ticket, Weekly Ticket or monthly Ticket with time selection option also possible 
-  Any kind of appointment, Salon Booking, Park ticket, Zoo Ticket selling, Musuem Ticket selling, Daily City tour, and Any kind of ticket selling possible with this addon.
+  The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. You can also use it to sell tickets for one-time events with time selection options. This addon is perfect for selling tickets for any kind of event, including city tours, museum visits, and zoo visits.
   
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
-  With QR code addon, QR code will be printed to PDF ticket, that can be used for ticket validation using mobile apps. Check in and CheckOut record can be saved to database as history so organizer can easily find details of participant information after filtering or CSV export.
+  The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history, so organizers can easily find details of participant information after filtering or CSV export.
 
 👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
-  Event Calender addon will enahnce display of event calender feature with images and calender wise details.
+  The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information. This will make it easier to see what events are coming up and get a better sense of what each event entails.
 
-👉[Event Coupon Code Addon](https://mage-people.com/product/woocommerce-event-coupon-code-addon/) 👈
-  With This addon coupon code can be added per event.
+👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
+  Advanced Coupon code addon helps admins create coupons based on per event ticket type, buying qty, which can help boost sales of event tickets.
 
 👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈
-  Waitlist addon will help to add a waitlist form on event page when event ticket will be sold out, When customer can register waitlist and admin will send email notifiation when seat will be available. 
+  Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. Customers can register for the waitlist, and admins will get email notifications when seats become available.
 
 👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
-  This Book event from dashboard addon will add feature to purchase with from wordpress admin panel. This is for admin use only. when admin need to book any ticket for any customer then admin can sell ticket from admin side. it can be also used counter ticket sell on spot or event location.
+  This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. This is for admin use only. When an admin needs to book a ticket for a customer, they can sell the ticket from the admin side. This can also be used to sell tickets on the spot or at an event location.
 
 👉[Event User Registration Form Position](https://mage-people.com/product/woocommerce-event-user-registration-form-position/) 👈
-  With this addon, admin can choose where the event Attendee/user form will display into the event details page or into the checkout page, Right now by default this form displaying in the event details page.
+  This addon gives administrators the ability to choose whether the event Attendee/user form will be displayed on the event details page or on the checkout page. By default, this form is displayed on the event details page.
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
   This is must needed addon if someone like to duplicate any event.
@@ -263,36 +260,33 @@ Display Event Speaker List Any Post or Page by using the below Shortcode.. examp
 👉[Related Event Addon](https://mage-people.com/product/related-events-addon-for-event-manager/)👈
 
 👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
-  With this addon, Event Manager for WooCommerce Plugin’s Ticket price can set as different member price.  Pricing will works depends on member Type login. Currently it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
+  This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin's tickets. Pricing will work depending on the member type that is logged in. Currently, it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
  
 👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
-  Max Min Quantity Limiting Event function addon for Event Manager for WooCommerce, With this addon, admin can enable a events to sell with limiting quantity.
-
+  This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. This can be ideal for selling tickets to popular events where you want to ensure that everyone who wants to attend can get a ticket.
 👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
-  With this addon, Event Manager for WooCommerce Plugin’s Ticket QTY can manage  a Common QTY or Global QTY.  Default QTY works with Ticket type’s QTY but with this addon easily can manage as common quanity.
+  With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin's Ticket QTY can manage a Common QTY or Global QTY. Default QTY works with Ticket type's QTY but with this addon you can easily manage a common quantity.
 
 👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
-  This is Event rating and review Addon. Admin can enable review and rating section event wise. Admin can setup who can setup review with this addon
+  This is the Event Rating and Review Addon. With this addon, admin can enable review and rating section for each event. Admin can also setup who can setup review for each event.
 
 👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
-  This is Event Plugin addon for Seat Plan, With this addon. Anyone can sell ticket with seat plan also.  also different type seat plan different pricing possible and very flexible for seat mapping.
+  This plugin allows you to sell tickets with different seat plans. You can map out the seats in a flexible way and set different prices for each seat plan.
 
 👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
-  This is Event Manager for WooCommerce Frontend submit  addon, With this addon. Organizer can submit Event from my account of organizer page.  also organizer can see balance of this event ticket selling, Attendee list also attendee list download also possible by organizer.
+  This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts. Organizers can also see a balance of tickets sold, as well as a list of attendees. This list can be downloaded by the organizer.
 
 
 
 ### Note:
-We do best support for our plugin, we have fully confidence that our plugin working very well for any theme. in case you face any problem with our plugin or any customization needed please email us: magepeopleteam@gmail.com
-our support team will back to you shortly.
+We have full confidence in our plugin and its ability to work well with any theme. If you have any questions or encounter any problems, please email us at support@mage-people.com and our support team will get back to you as soon as possible. Thank you for choosing our plugin!
 
 
-
-### How to Install & Create Event 10 minutes using Event Manager for WooCommerce Plugin
+### How to Install & Create Event 10 minutes using Event Manager and Tickets Selling Plugin for WooCommerce Plugin
 https://www.youtube.com/watch?v=zP2ADxzUrYw
 
-### Event Manager for WooCommerce Pro Addons Setup And Full Functionality Explained
-https://www.youtube.com/watch?v=LZj6oUavTQg
+### Event Manager and Tickets Selling Plugin for WooCommerce Pro Addons Setup And Full Functionality Explained
+https://www.youtube.com/watch?v=9ur9Mnq20mc
 
 ### How to Configure Event Manager Attendee Registration Form 
 https://www.youtube.com/watch?v=F9wnlUjXa6I
@@ -304,11 +298,16 @@ https://www.youtube.com/watch?v=F9wnlUjXa6I
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
 [Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
 [Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/tour-booking-manager/)
+[Advanced – Deposit & Partial Payment for WooCommerce
+](https://wordpress.org/plugins/advanced-partial-payment-or-deposit-for-woocommerce/)
+[Booking and Rental Manager Pro for WordPress
+](https://mage-people.com/product/booking-and-rental-manager-for-woocommerce-pro/)
 
-
+**CHECKOUR OUR Themes** 
+[Event Theme](https://mage-people.com/product/vaincode-wordpress-theme-for-event-manager-and-travel-booking-plugin/)
 
 ## Privacy Policy 
-Event Manager for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+Event Manager and Tickets Selling Plugin for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
 
 Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. 
 
@@ -329,9 +328,7 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 A. Yes! Woocommerce Events Manager is free.
 
 You can check the demo of this plugin from here:
-[View Live Demo For Business](https://vaincode.com/event-demo/)
-[View Live Demo For Cooking](https://vaincode.com/event-demo/home-cooking/)
-[View Live Demo For Indoor Games](https://vaincode.com/event-demo/home-indoor-games/)
+[View Live Demo For Business](https://event.mage-people.com/)
 
 
 
@@ -780,3 +777,124 @@ Security issue fixed
 Style Issue fixed
 Bug Fixed
 28 Oct 2021*
+
+= 3.5.4=
+* Update Release:
+Event Setting Not saving issue fixed
+Email Body Text Formating issue fixed 
+Royel Theme styling issue fixed
+Mobile Responsive issue fixed
+Security issue fixed
+Style Issue fixed
+Bug Fixed
+11 Nov 2021*
+
+= 3.5.5=
+* Update Release:
+Email Text HTML tag issue fixed
+Translation Issue fixed
+Event List Image Quality issue fixed
+Style Issue fixed
+Bug Fixed
+24 Nov 2021*
+
+= 3.5.6=
+* Update Release:
+Event Duplicate Warning issue fixed
+Style Issue fixed
+Bug Fixed
+more....
+28 Dec 2021*
+
+= 3.5.7=
+* Update Release:
+Winter & Spring date missing issue fixed
+Slow Query Issue fixed
+New Hook Added
+Style Issue fixed
+Bug Fixed
+more....
+21 Jan 2022*
+
+= 3.5.8=
+* Update Release:
+Style Issue fixed
+Bug Fixed
+more....
+17 Feb 2022*
+
+
+= 3.6.1=
+* Update Release:
+Style Issue fixed
+New Hook added
+05 April 2022*
+
+= 3.6.3=
+* Update Release:
+Admin Settings Fatal Error Issue fixed.
+Live Icon filter added.
+13 April 2022*
+
+
+= 3.6.5=
+* Update Release:
+Warning: Invaild Product ID in Checkout Page fixed
+11 May 2022*
+
+= 3.6.6=
+* Update Release:
+Bug fixed
+09 Jun 2022*
+
+= 3.6.7=
+* Update Release:
+Ticket Allocation issue fixed for special char.
+Bug fixed
+27 Jun 2022*
+
+
+= 3.6.8=
+* Update Release:
+Quick Setup Page Added
+Bug fixed
+04 Aug 2022*
+
+= 3.7.0=
+* Update Release:
+Rich Schmea Error issue fixed
+Multiple Event Add to cart issue fixed
+Bug fixed
+04 Aug 2022*
+
+= 3.7.2=
+* Update Release:
+Event Based Date Time Format has been added.
+Bug fixed
+08 Sep 2022*
+
+= 3.7.5=
+* Update Release:
+Email Text Blank Space issue fixed
+Gurenberg Editor error issue fixed
+Bug fixed
+05 Oct 2022*
+
+= 3.7.6=
+* Update Release:
+Email Content Missing issue fixed
+Code Optimized
+New Filter & Action Hook added
+Bug fixed
+01 Nov 2022*
+
+= 3.7.8=
+* Update Release:
+Email Sending Disable Option
+TimeZone not showing issue fixed
+Afterpay Payment Gateway Issue fixed
+WooCommerce Subscrption Issue fixed
+Code Optimized
+New Filter & Action Hook added
+Bug fixed
+24 Nov 2022*

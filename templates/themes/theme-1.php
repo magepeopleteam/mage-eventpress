@@ -2,16 +2,18 @@
 // Template Name: Springfield
 
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
-$hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'general_setting_sec', 'no');
-$hide_time_details          = mep_get_option('mep_event_hide_time_from_details', 'general_setting_sec', 'no');
-$hide_location_details      = mep_get_option('mep_event_hide_location_from_details', 'general_setting_sec', 'no');
-$hide_total_seat_details    = mep_get_option('mep_event_hide_total_seat_from_details', 'general_setting_sec', 'no');
-$hide_org_by_details        = mep_get_option('mep_event_hide_org_from_details', 'general_setting_sec', 'no');
-$hide_address_details       = mep_get_option('mep_event_hide_address_from_details', 'general_setting_sec', 'no');
-$hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_details', 'general_setting_sec', 'no');
-$hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'general_setting_sec', 'no');
-$hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'general_setting_sec', 'no');
-$speaker_status             = mep_get_option('mep_enable_speaker_list', 'general_setting_sec', 'no');
+$hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');
+$hide_time_details          = mep_get_option('mep_event_hide_time_from_details', 'single_event_setting_sec', 'no');
+$hide_location_details      = mep_get_option('mep_event_hide_location_from_details', 'single_event_setting_sec', 'no');
+$hide_total_seat_details    = mep_get_option('mep_event_hide_total_seat_from_details', 'single_event_setting_sec', 'no');
+$hide_org_by_details        = mep_get_option('mep_event_hide_org_from_details', 'single_event_setting_sec', 'no');
+$hide_address_details       = mep_get_option('mep_event_hide_address_from_details', 'single_event_setting_sec', 'no');
+$hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_details', 'single_event_setting_sec', 'no');
+$hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
+$hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
+$speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class="mep-default-theme spring_field">
     <div class="mep_flex">
@@ -47,7 +49,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
     <div class="mep_spring_date">
         <?php if ($hide_schedule_details == 'no') { ?>
             <div class="mep-default-feature-date">
-                <div class="df-ico"><i class="fa fa-calendar"></i></div>
+                <div class="df-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
                 <div class='df-dtl'>
                     <h3><?php esc_html_e('Date and Time:', 'mage-eventpress'); ?></h3>
                     <?php do_action('mep_event_date'); ?>
@@ -56,7 +58,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'general
         <?php } ?>
         <?php if ($hide_location_details == 'no') { ?>
             <div class="mep-default-feature-location">
-                <div class="df-ico"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                 <div class='df-dtl'>
                     <h3>
                         <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>

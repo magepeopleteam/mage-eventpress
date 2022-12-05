@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce
+ * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce (DEV)
  * Plugin URI: http://mage-people.com
  * Description: A Complete Event Solution for WordPress by MagePeople..
- * Version: 3.7.8
+ * Version: 3.7.9
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: mage-eventpress

@@ -30,6 +30,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     $client->insights()->init();
   }
 
+
   function mep_event_activation_redirect($plugin)
   {
     $check_quick_setup = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'no-done';
@@ -39,6 +40,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
       exit(wp_redirect(admin_url($slug)));
     }
   }
+
   
   // add_action('activated_plugin', 'mep_event_activation_redirect');
   require_once(dirname(__FILE__) . "/inc/mep_file_include.php");

@@ -41,7 +41,6 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     }
   }
 
-  
   // add_action('activated_plugin', 'mep_event_activation_redirect');
   require_once(dirname(__FILE__) . "/inc/mep_file_include.php");
 

@@ -2410,9 +2410,10 @@ if (!function_exists('mep_get_event_total_seat')) {
 
         ob_start();
         if ($recurring != 'no') {
-            $total = (int)$total_seat * (int)$m;
-            $sold = $total - ($total_sold + $total_resv);
-            $available = $total - $sold;
+			$total_sold     = $recurring == 'everyday' ? mep_get_event_total_seat_left($event_id, $event_date) : mep_get_event_total_seat_left($event_id, $upcoming_date);
+            $total          = $m != null ? (int)$total_seat * (int)$m : $total_seat;
+            $sold           = $total - ($total_sold + $total_resv);
+            $available      = $total - $sold;
             ?>
             <span style="background: #dc3232;color: #fff;padding: 5px 10px; display:block">
                 <span class="mep_seat_stat_info_<?php echo $event_id; ?>">

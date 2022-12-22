@@ -1,6 +1,6 @@
 <?php
-$day                            = mep_get_event_upcomming_date($event_id, 'day');
-$month                          = mep_get_event_upcomming_date($event_id, 'month-name');
+$day                            = mep_get_event_upcomming_date($event_id, 'day'); 
+$month                          = mep_get_event_upcomming_date($event_id, 'month-name'); 
 $recurring                      = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 $mep_hide_event_hover_btn       = mep_get_option('mep_hide_event_hover_btn', 'event_list_setting_sec', 'no');
 $mep_hide_event_hover_btn_text  = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
@@ -30,17 +30,13 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                 <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', esc_html__('Multi Date Event', 'mage-eventpress')); ?></span>
             </div>
 
-        <?php } elseif ($recurring != 'no') {
-            ?>
+        <?php } elseif ($recurring != 'no') {  ?>
 
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>
                 <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', esc_html__('Recurring Event', 'mage-eventpress')); ?></span>
             </div>
 
-            <?php
-        }
-
-        if ($event_type == 'online') { ?>
+        <?php  }  if ($event_type == 'online') { ?>
 
             <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
                 <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec') ? mep_get_option('mep_event_virtual_label', 'label_setting_sec') : esc_html__('Virtual Event', 'mage-eventpress'); ?></span>

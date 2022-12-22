@@ -15,8 +15,8 @@ if (!function_exists('mep_event_loop_winter_style')) {
         if ($style == 'winter') {
             $now                        = current_time('Y-m-d H:i:s');
             $show_price                 = mep_get_option('mep_event_price_show', 'event_list_setting_sec', 'yes');
-            $price_count            = mep_event_list_price($event_id, 'count');
-            $show_price_label       = $price_count == 1 ? mep_get_option('event_price_label_single', 'general_setting_sec', __('Price:','mage-eventpress'))  : mep_get_option('event-price-label', 'general_setting_sec', __('Price Starts from:','mage-eventpress'));
+            $price_count                = mep_event_list_price($event_id, 'count');
+            $show_price_label           = $price_count == 1 ? mep_get_option('event_price_label_single', 'general_setting_sec', __('Price:','mage-eventpress'))  : mep_get_option('event-price-label', 'general_setting_sec', __('Price Starts from:','mage-eventpress'));
       
             $event_meta                 = get_post_custom($event_id);
             $author_terms               = get_the_terms($event_id, 'mep_org');
@@ -39,7 +39,7 @@ if (!function_exists('mep_event_loop_winter_style')) {
             $hide_time_list             = mep_get_option('mep_event_hide_time_list', 'event_list_setting_sec', 'no');
             $hide_only_end_time_list    = mep_get_option('mep_event_hide_end_time_list', 'event_list_setting_sec', 'no');
             $recurring                  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
-            $event_type             = get_post_meta(get_the_id(), 'mep_event_type', true) ? get_post_meta(get_the_id(), 'mep_event_type', true) : 'offline';
+            $event_type                 = get_post_meta(get_the_id(), 'mep_event_type', true) ? get_post_meta(get_the_id(), 'mep_event_type', true) : 'offline';
             ob_start();
             require(mep_template_file_path('list/winter.php'));
             $content = ob_get_clean();

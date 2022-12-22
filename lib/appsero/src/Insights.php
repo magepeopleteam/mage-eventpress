@@ -39,9 +39,17 @@ class Insights {
     protected $client;
 
     /**
+     * @var boolean
+     */
+    private $plugin_data = false;
+
+
+    /**
      * Initialize the class
      *
-     * @param AppSero\Client
+     * @param      $client
+     * @param null $name
+     * @param null $file
      */
     public function __construct( $client, $name = null, $file = null ) {
 
@@ -66,6 +74,17 @@ class Insights {
     }
 
     /**
+     * Add plugin data if needed
+     *
+     * @return \self
+     */
+    public function add_plugin_data() {
+        $this->plugin_data = true;
+
+        return $this;
+    }
+
+    /**
      * Add extra data if needed
      *
      * @param array $data
@@ -85,7 +104,7 @@ class Insights {
      *
      * @return \self
      */
-    public function notice( $text ) {
+    public function notice($text='' ) {
         $this->notice = $text;
 
         return $this;
@@ -165,11 +184,6 @@ class Insights {
      * @return void
      */
     public function send_tracking_data( $override = false ) {
-        // skip on AJAX Requests
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-            return;
-        }
-
         if ( ! $this->tracking_allowed() && ! $override ) {
             return;
         }
@@ -227,7 +241,32 @@ class Insights {
             'ip_address'       => $this->get_user_ip_address(),
             'project_version'  => $this->client->project_version,
             'tracking_skipped' => false,
+            'is_local'         => $this->is_local_server(),
         );
+
+        // Add Plugins
+        if ($this->plugin_data) {
+            
+            $plugins_data = array();
+
+            foreach ($all_plugins['active_plugins'] as $slug => $plugin) {
+                $slug = strstr($slug, '/', true);
+                if (! $slug) {
+                    continue;
+                }
+
+                $plugins_data[ $slug ] = array(
+                    'name' => isset($plugin['name']) ? $plugin['name'] : '',
+                    'version' => isset($plugin['version']) ? $plugin['version'] : '',
+                );
+            }
+
+            if (array_key_exists($this->client->slug, $plugins_data)) {
+                unset($plugins_data[$this->client->slug]);
+            }
+            
+            $data['plugins'] = $plugins_data;
+        }
 
         // Add metadata
         if ( $extra = $this->get_extra_data() ) {
@@ -274,9 +313,13 @@ class Insights {
             'Number of users in your site',
             'Site language',
             'Number of active and inactive plugins',
-            'Site name and url',
+            'Site name and URL',
             'Your name and email address',
         );
+
+        if ($this->plugin_data) { 
+            array_splice($data, 4, 0, ["active plugins' name"]);
+        }
 
         return $data;
     }
@@ -322,9 +365,17 @@ class Insights {
      * @return boolean
      */
     private function is_local_server() {
-        return false;
 
-        $is_local = in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) );
+        $host       = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        $ip         = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : '127.0.0.1';
+        $is_local   = false;
+
+        if( in_array( $ip,array( '127.0.0.1', '::1' ) )
+            || ! strpos( $host, '.' )
+            || in_array( strrchr( $host, '.' ), array( '.test', '.testing', '.local', '.localhost', '.localdomain' ) )
+        ) {
+            $is_local = true;
+        }
 
         return apply_filters( 'appsero_is_local', $is_local );
     }
@@ -388,10 +439,10 @@ class Insights {
 
         $notice .= ' (<a class="' . $this->client->slug . '-insights-data-we-collect" href="#">' . $this->client->__trans( 'what we collect' ) . '</a>)';
         $notice .= '<p class="description" style="display:none;">' . implode( ', ', $this->data_we_collect() ) . '. No sensitive data is tracked. ';
-        $notice .= 'We are using Appsero to collect your data. <a href="' . $policy_url . '">Learn more</a> about how Appsero collects and handle your data.</p>';
+        $notice .= 'We are using Appsero to collect your data. <a href="' . $policy_url . '" target="_blank">Learn more</a> about how Appsero collects and handle your data.</p>';
 
         echo '<div class="updated"><p>';
-            echo mep_esc_html($notice);
+            echo $notice;
             echo '</p><p class="submit">';
             echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-primary button-large">' . $this->client->__trans( 'Allow' ) . '</a>';
             echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary button-large">' . $this->client->__trans( 'No thanks' ) . '</a>';
@@ -412,14 +463,14 @@ class Insights {
      */
     public function handle_optin_optout() {
 
-        if ( isset( $_GET[ $this->client->slug . '_tracker_optin' ] ) && mage_array_strip($_GET[ $this->client->slug . '_tracker_optin' ]) == 'true' ) {
+        if ( isset( $_GET[ $this->client->slug . '_tracker_optin' ] ) && $_GET[ $this->client->slug . '_tracker_optin' ] == 'true' ) {
             $this->optin();
 
             wp_redirect( remove_query_arg( $this->client->slug . '_tracker_optin' ) );
             exit;
         }
 
-        if ( isset( $_GET[ $this->client->slug . '_tracker_optout' ] ) && mage_array_strip($_GET[ $this->client->slug . '_tracker_optout' ]) == 'true' ) {
+        if ( isset( $_GET[ $this->client->slug . '_tracker_optout' ] ) && $_GET[ $this->client->slug . '_tracker_optout' ] == 'true' ) {
             $this->optout();
 
             wp_redirect( remove_query_arg( $this->client->slug . '_tracker_optout' ) );
@@ -730,6 +781,14 @@ class Insights {
             wp_send_json_error();
         }
 
+        if ( ! wp_verify_nonce( $_POST['nonce'], 'appsero-security-nonce' ) ) {
+            wp_send_json_error( 'Nonce verification failed' );
+        }
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( 'You are not allowed for this task' );
+        }
+
         $data                = $this->get_tracking_data();
         $data['reason_id']   = sanitize_text_field( $_POST['reason_id'] );
         $data['reason_info'] = isset( $_REQUEST['reason_info'] ) ? trim( stripslashes( $_REQUEST['reason_info'] ) ) : '';
@@ -756,7 +815,7 @@ class Insights {
         $custom_reasons = apply_filters( 'appsero_custom_deactivation_reasons', array() );
         ?>
 
-        <div class="wd-dr-modal" id="<?php echo esc_attr($this->client->slug); ?>-wd-dr-modal">
+        <div class="wd-dr-modal" id="<?php echo $this->client->slug; ?>-wd-dr-modal">
             <div class="wd-dr-modal-wrap">
                 <div class="wd-dr-modal-header">
                     <h3><?php $this->client->_etrans( 'Goodbyes are always hard. If you have a moment, please let us know how we can improve.' ); ?></h3>
@@ -767,9 +826,9 @@ class Insights {
                         <?php foreach ( $reasons as $reason ) { ?>
                             <li data-placeholder="<?php echo esc_attr( $reason['placeholder'] ); ?>">
                                 <label>
-                                    <input type="radio" name="selected-reason" value="<?php echo esc_attr($reason['id']); ?>">
-                                    <div class="wd-de-reason-icon"><?php echo mep_esc_html($reason['icon']); ?></div>
-                                    <div class="wd-de-reason-text"><?php echo esc_html($reason['text']); ?></div>
+                                    <input type="radio" name="selected-reason" value="<?php echo $reason['id']; ?>">
+                                    <div class="wd-de-reason-icon"><?php echo $reason['icon']; ?></div>
+                                    <div class="wd-de-reason-text"><?php echo $reason['text']; ?></div>
                                 </label>
                             </li>
                         <?php } ?>
@@ -779,9 +838,9 @@ class Insights {
                         <?php foreach ( $custom_reasons as $reason ) { ?>
                             <li data-placeholder="<?php echo esc_attr( $reason['placeholder'] ); ?>" data-customreason="true">
                                 <label>
-                                    <input type="radio" name="selected-reason" value="<?php echo esc_attr($reason['id']); ?>">
-                                    <div class="wd-de-reason-icon"><?php echo mep_esc_html($reason['icon']); ?></div>
-                                    <div class="wd-de-reason-text"><?php echo esc_html($reason['text']); ?></div>
+                                    <input type="radio" name="selected-reason" value="<?php echo $reason['id']; ?>">
+                                    <div class="wd-de-reason-icon"><?php echo $reason['icon']; ?></div>
+                                    <div class="wd-de-reason-text"><?php echo $reason['text']; ?></div>
                                 </label>
                             </li>
                         <?php } ?>
@@ -810,11 +869,11 @@ class Insights {
         <script type="text/javascript">
             (function($) {
                 $(function() {
-                    var modal = $( '#<?php echo esc_attr($this->client->slug); ?>-wd-dr-modal' );
+                    var modal = $( '#<?php echo $this->client->slug; ?>-wd-dr-modal' );
                     var deactivateLink = '';
 
                     // Open modal
-                    $( '#the-list' ).on('click', 'a.<?php echo esc_attr($this->client->slug); ?>-deactivate-link', function(e) {
+                    $( '#the-list' ).on('click', 'a.<?php echo $this->client->slug; ?>-deactivate-link', function(e) {
                         e.preventDefault();
 
                         modal.addClass('modal-active');
@@ -872,7 +931,8 @@ class Insights {
                             url: ajaxurl,
                             type: 'POST',
                             data: {
-                                action: '<?php echo esc_attr($this->client->slug); ?>_submit-uninstall-reason',
+                                nonce: '<?php echo wp_create_nonce( 'appsero-security-nonce' ); ?>',
+                                action: '<?php echo $this->client->slug; ?>_submit-uninstall-reason',
                                 reason_id: ( 0 === $radio.length ) ? 'none' : $radio.val(),
                                 reason_info: ( 0 !== $input.length ) ? $input.val().trim() : ''
                             },

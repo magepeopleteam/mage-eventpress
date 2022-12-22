@@ -1560,6 +1560,8 @@ if (!function_exists('mep_ticket_lits_users')) {
                             <td><?php echo get_post_meta(get_the_id(), 'ea_event_name', true);
                                 if ($virtual_info) { ?>
                                     <button id='mep_vr_view_btn_<?php echo get_the_id(); ?>' class='mep_view_vr_btn'><?php esc_html_e('View Virtual Info', 'mage-eventpress'); ?></button> <?php } ?>
+
+                                    <?php do_action('mep_user_order_list_table_action_col', get_the_id()); ?>
                             </td>
                             <?php do_action('mep_user_order_list_table_row', get_the_id()); ?>
                         </tr>
@@ -4948,10 +4950,12 @@ function mep_event_tab_before_location_virtual_event($post_id){
 					<span class="slider round"></span>
 				</label>
 				<p class="event_meta_help_txt"><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></p>
-				<label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
+				<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
+                <label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
 					<?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
 					<p class="event_meta_help_txt"><?php esc_html_e('Please enter your virtual event joining details in the form below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
 				</label>
+                <?php do_action('mep_event_details_after_virtual_event_info_text_box',$post_id); ?>
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {

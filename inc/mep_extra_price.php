@@ -69,6 +69,11 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     }
 
 
+// print_r($ticket_type_arr);
+// die();
+
+
+
     $cart_item_data['event_ticket_info']        = $ticket_type_arr;
     $cart_item_data['event_validate_info']      = $validate;
     $cart_item_data['event_user_info']          = $user;

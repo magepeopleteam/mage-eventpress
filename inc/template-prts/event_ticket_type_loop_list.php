@@ -59,6 +59,7 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             $ticket_price           = apply_filters('mep_ticket_type_price', $ticket_type_price, $ticket_type_name, $post_id, $field);
             $passed                 = apply_filters('mep_ticket_type_validation', true);
             $start_date             = get_post_meta($post_id, 'event_start_datetime', true);
+            $end_date               = get_post_meta($post_id, 'event_end_datetime', true);
             $default_path           = mep_template_file_path('single/ticket_type_list.php'); 
             $ticket_type_file_path  = apply_filters('mep_ticket_type_file_path',$default_path,$post_id);
 

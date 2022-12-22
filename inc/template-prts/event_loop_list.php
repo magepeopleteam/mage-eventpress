@@ -12,6 +12,7 @@ if (!function_exists('mep_display_event_loop_list')) {
         $price_count            = mep_event_list_price($event_id, 'count');
         // event_price_label_single
         $show_price_label       = $price_count == 1 ? mep_get_option('event_price_label_single', 'label_setting_sec', __('Price:','mage-eventpress'))  : mep_get_option('event-price-label', 'label_setting_sec', __('Price Starts from:','mage-eventpress'));
+       
         
         $event_meta             = get_post_custom($event_id);
         $author_terms           = get_the_terms($event_id, 'mep_org') ? get_the_terms($event_id, 'mep_org') : [];
@@ -33,20 +34,17 @@ if (!function_exists('mep_display_event_loop_list')) {
         
         // $post_id = get_the_id();
 
-        $total_seat                = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
-        $total_resv                = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);
-        $total_sold 			   = mep_get_event_total_seat_left($event_id);
-        $_total_left 			   = $total_seat - ($total_sold + $total_resv);                    
-        $total_left 			   = apply_filters('mep_event_total_seat_left_count', $_total_left, $event_id);
-        // $available_seat  			= $total_left;
+        $total_seat = mep_event_total_seat($event_id, 'total');
+        $total_resv = mep_event_total_seat($event_id, 'resv');
+        $total_sold = mep_get_event_total_seat_left($event_id);
+        $_total_left = $total_seat - ($total_sold + $total_resv);    
+                
+        $total_left = apply_filters('mep_event_list_total_seat_count', $_total_left, $event_id);
         $s = $total_left;
                 
         if($s > 0){
-            
             $class_name = 'event-availabe-seat';
-
         }else{
-
             $class_name = 'event-no-availabe-seat';
         }        
         

@@ -57,9 +57,11 @@
                     </td>
                     <?php do_action('mep_ticket_type_list_row_end',$field, $post_id); ?>
                 </tr>
-                <tr>
+                <tr> 
                     <td colspan="<?php echo apply_filters('mep_hidden_row_colspan_no',3); ?>" class='user-innnf'>
+                    
                         <input type="hidden" name='mep_event_start_date[]' value="<?php echo esc_attr($start_date); ?>">
+                        <input type="hidden" name='mep_event_end_date[]' value="<?php echo esc_attr($end_date); ?>">
                         <input type="hidden" name='option_name[]' value='<?php echo esc_attr(mep_remove_apostopie($field['option_name_t'])); ?>'>
                         <input type="hidden" name='option_price[]' value='<?php echo esc_attr($ticket_price); ?>'>
                         <input type="hidden" name='max_qty[]' value='<?php if(array_key_exists('option_max_qty',$field)){ echo esc_attr($field['option_max_qty']); }else{ echo ''; } ?>'>

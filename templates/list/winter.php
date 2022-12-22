@@ -8,6 +8,12 @@ $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+
+// mep_get_event_upcomming_date($event_id, 'day');
+
+
+// echo get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'day');
+
 ?>
 <div class='filter_item mep-event-list-loop  mep_event_list_item mep_event_winter_list mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>'
      data-title="<?php echo esc_attr(get_the_title($event_id)); ?>"
@@ -19,7 +25,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
     <?php do_action('mep_event_winter_list_loop_header', $event_id); ?>
     <div class="mep_list_date_wrapper">
         <i class="fas fa-caret-right"></i>
-        <h4 class='mep_winter_list_date'><span class="mep_winter_list_dd"><?php echo esc_html($start_dd); ?></span><span class="mep_winter_list_mm_yy"><?php echo esc_html($start_mm_yy); ?></span></h4>
+        <h4 class='mep_winter_list_date'><span class="mep_winter_list_dd"><?php echo esc_html(get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'day')); ?></span><span class="mep_winter_list_mm_yy"><?php echo esc_html($start_mm_yy); ?></span></h4>
     </div>
     <div class="mep_list_winter_thumb_wrapper">
         <a href="<?php echo get_the_permalink($event_id); ?>">

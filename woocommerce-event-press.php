@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce
+ * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce (DEV)
  * Plugin URI: http://mage-people.com
  * Description: A Complete Event Solution for WordPress by MagePeople..
- * Version: 3.7.8
+ * Version: 3.7.9
  * Author: MagePeople Team
  * Author URI: http://www.mage-people.com/
  * Text Domain: mage-eventpress
@@ -12,10 +12,13 @@
  * WC tested up to: 6.5
  */
 
+
 if (!defined('ABSPATH')) {
   die;
 } // Cannot access pages directly.
 
+
+// Checking woo
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (is_plugin_active('woocommerce/woocommerce.php')) {
   function appsero_init_tracker_mage_eventpress()
@@ -27,6 +30,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     $client->insights()->init();
   }
 
+
   function mep_event_activation_redirect($plugin)
   {
     $check_quick_setup = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'no-done';
@@ -36,6 +40,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
       exit(wp_redirect(admin_url($slug)));
     }
   }
+
   // add_action('activated_plugin', 'mep_event_activation_redirect');
   require_once(dirname(__FILE__) . "/inc/mep_file_include.php");
 

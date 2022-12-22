@@ -171,6 +171,8 @@ function mep_event_list($atts, $content = null)
             while ($loop->have_posts()) {
 
                 $loop->the_post();
+                
+                mep_update_event_upcoming_date(get_the_id());
 
                 mep_update_event_upcoming_date(get_the_id());
 

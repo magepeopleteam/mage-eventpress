@@ -12,10 +12,10 @@
  * WC tested up to: 6.5
  */
 
+
 if (!defined('ABSPATH')) {
   die;
 } // Cannot access pages directly.
-
 
 
 // Checking woo

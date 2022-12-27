@@ -48,9 +48,10 @@ function mep_event_calender()
                 while ($loop->have_posts()) {
                     $loop->the_post();
                     $event_meta = get_post_custom(get_the_id());
-$event_dates = mep_get_event_dates_arr(get_the_id());
-
+                    $event_dates = mep_get_event_dates_arr(get_the_id());
+                    $now 		= current_time('Y-m-d H:i:s');
 foreach ($event_dates as $_dates) {
+    if(strtotime($now) < strtotime($_dates['start']) ){
     ?>
 {
                         start   : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',
@@ -62,11 +63,10 @@ foreach ($event_dates as $_dates) {
                         data    : {}
                     },
     <?php
+    }
 }
-
-
-                    }
-                    $i++;
+}
+$i++;
                 
                 wp_reset_postdata(); ?>
             ]

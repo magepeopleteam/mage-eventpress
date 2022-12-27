@@ -1287,23 +1287,23 @@ if (!function_exists('mep_get_event_status')) {
         $interval = date_diff($datetime2, $datetime1);
 
         if (current_time('Y-m-d H:i:s') > $newformat) {
-            return "<span class=err>Expired</span>";
+            return __("<span class=err>Expired</span>","mep-eventpress");
         } else {
             $days = $interval->days;
             $hours = $interval->h;
             $minutes = $interval->i;
             if ($days > 0) {
-                $dd = $days . " days ";
+                $dd = $days . __(" days ","mage-eventpress");
             } else {
                 $dd = "";
             }
             if ($hours > 0) {
-                $hh = $hours . " hours ";
+                $hh = $hours . __(" hours ","mage-eventpress");
             } else {
                 $hh = "";
             }
             if ($minutes > 0) {
-                $mm = $minutes . " minutes ";
+                $mm = $minutes . __(" minutes ","mage-eventpress");
             } else {
                 $mm = "";
             }

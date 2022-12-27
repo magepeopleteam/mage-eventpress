@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Woocommerce Events Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 14:41+0000\n"
-"PO-Revision-Date: 2022-11-24 03:16+0000\n"
+"PO-Revision-Date: 2022-12-27 05:19+0000\n"
 "Last-Translator: shamim <shamim.link@yahoo.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -20,8 +20,8 @@ msgstr ""
 msgid " Category"
 msgstr "keine Kategorie"
 
-#: inc/mep_extra_price.php:149 inc/mep_extra_price.php:166
-#: inc/mep_extra_price.php:184 inc/mep_extra_price.php:203
+#: inc/mep_extra_price.php:154 inc/mep_extra_price.php:171
+#: inc/mep_extra_price.php:189 inc/mep_extra_price.php:208
 msgid " Date"
 msgstr ""
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid " list navigation"
 msgstr "Eventlistennavigation"
 
-#: inc/mep_extra_price.php:210
+#: inc/mep_extra_price.php:215
 msgid " Location"
 msgstr ""
 
@@ -137,9 +137,9 @@ msgstr ""
 msgid "%s Welcome"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:166
 #: support/elementor/widget/expired-event-list.php:165
 #: support/elementor/widget/event-list.php:96
-#: support/elementor/widget/event-list-recurring.php:166
 msgid "1"
 msgstr ""
 
@@ -147,15 +147,15 @@ msgstr ""
 msgid "10"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:327
 #: support/elementor/widget/expired-event-list.php:327
 #: support/elementor/widget/event-list.php:161
-#: support/elementor/widget/event-list-recurring.php:327
 msgid "102448"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:167
 #: support/elementor/widget/expired-event-list.php:166
 #: support/elementor/widget/event-list.php:97
-#: support/elementor/widget/event-list-recurring.php:167
 msgid "2"
 msgstr ""
 
@@ -163,17 +163,17 @@ msgstr ""
 msgid "24-hours"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:83
+#: support/elementor/widget/event-list-recurring.php:168
 #: support/elementor/widget/expired-event-list.php:82
 #: support/elementor/widget/expired-event-list.php:167
 #: support/elementor/widget/event-list.php:98
-#: support/elementor/widget/event-list-recurring.php:83
-#: support/elementor/widget/event-list-recurring.php:168
 msgid "3"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:169
 #: support/elementor/widget/expired-event-list.php:168
 #: support/elementor/widget/event-list.php:99
-#: support/elementor/widget/event-list-recurring.php:169
 msgid "4"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "<span style=\"color:#10dd10\">Dummy Import</span>"
 msgstr ""
 
-#: woocommerce-event-press.php:109 inc/welcome.php:26
+#: woocommerce-event-press.php:114 inc/welcome.php:26
 msgid "<span style=\"color:#10dd10\">Quick Setup</span>"
 msgstr ""
 
@@ -264,6 +264,10 @@ msgstr "extra Preis hinzufügen"
 msgid "Add More Dates"
 msgstr "Datum hinzufügen"
 
+#: inc/mep_cpt.php:25 inc/mep_cpt.php:26
+msgid "Add New "
+msgstr ""
+
 #: inc/mep_event_fw_meta.php:187
 #, fuzzy
 #| msgid "Add New Day"
@@ -290,7 +294,7 @@ msgstr ""
 msgid "add-1"
 msgstr ""
 
-#: inc/mep_extra_price.php:301
+#: inc/mep_extra_price.php:306
 msgid "Address"
 msgstr "Adresse"
 
@@ -320,8 +324,8 @@ msgstr ""
 
 #: support/elementor/widget/event-location.php:73
 #: support/elementor/widget/event-total-seat.php:62
-#: support/elementor/widget/event-date.php:62
 #: support/elementor/widget/event-org.php:63
+#: support/elementor/widget/event-date.php:62
 msgid "After Text"
 msgstr ""
 
@@ -353,6 +357,10 @@ msgstr ""
 #: inc/template-prts/event_list_tax_name_list.php:60
 msgid "All"
 msgstr "Alles"
+
+#: inc/mep_cpt.php:24
+msgid "All "
+msgstr ""
 
 #: templates/single-speaker.php:18
 msgid "All Events Of "
@@ -550,8 +558,8 @@ msgstr ""
 msgid "arrows-alt-v"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:287
 #: support/elementor/widget/event-list-recurring.php:287
+#: support/elementor/widget/expired-event-list.php:287
 msgid "Ascending"
 msgstr ""
 
@@ -632,10 +640,10 @@ msgstr ""
 #: support/elementor/widget/event-countdown.php:222
 #: support/elementor/widget/event-countdown.php:324
 #: support/elementor/widget/event-countdown.php:425
+#: support/elementor/widget/event-add-calender.php:66
 #: support/elementor/widget/event-share-btn.php:67
 #: support/elementor/widget/event-list.php:407
 #: support/elementor/widget/event-list.php:783
-#: support/elementor/widget/event-add-calender.php:66
 msgid "Background Color"
 msgstr ""
 
@@ -729,8 +737,8 @@ msgstr ""
 
 #: support/elementor/widget/event-location.php:65
 #: support/elementor/widget/event-total-seat.php:54
-#: support/elementor/widget/event-date.php:54
 #: support/elementor/widget/event-org.php:55
+#: support/elementor/widget/event-date.php:54
 msgid "Before Text"
 msgstr ""
 
@@ -1050,8 +1058,8 @@ msgstr ""
 msgid "Carousel Auto Play Speed"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:309
 #: support/elementor/widget/event-list-recurring.php:309
+#: support/elementor/widget/expired-event-list.php:309
 msgid "Carousel Mode"
 msgstr ""
 
@@ -1059,8 +1067,8 @@ msgstr ""
 msgid "Carousel Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:325
 #: support/elementor/widget/event-list-recurring.php:325
+#: support/elementor/widget/expired-event-list.php:325
 msgid "Carousel Unique ID"
 msgstr ""
 
@@ -1530,8 +1538,8 @@ msgstr ""
 
 #: support/elementor/widget/event-location.php:116
 #: support/elementor/widget/event-total-seat.php:89
-#: support/elementor/widget/event-date.php:132
 #: support/elementor/widget/event-org.php:91
+#: support/elementor/widget/event-date.php:132
 msgid "Color"
 msgstr ""
 
@@ -1566,7 +1574,7 @@ msgstr ""
 msgid "comments"
 msgstr ""
 
-#: inc/mep_extra_price.php:304
+#: inc/mep_extra_price.php:309
 msgid "Company"
 msgstr "Firma"
 
@@ -1721,7 +1729,7 @@ msgstr ""
 msgid "database"
 msgstr ""
 
-#: inc/mep_extra_price.php:283 support/elementor/widget/event-date.php:89
+#: inc/mep_extra_price.php:288 support/elementor/widget/event-date.php:89
 #: support/elementor/widget/event-list.php:313
 msgid "Date"
 msgstr ""
@@ -1794,16 +1802,16 @@ msgstr ""
 msgid "deploydog"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:288
 #: support/elementor/widget/event-list-recurring.php:288
+#: support/elementor/widget/expired-event-list.php:288
 msgid "Descending"
 msgstr ""
 
-#: templates/themes/theme-2.php:25 templates/themes/theme-1.php:85
+#: templates/themes/theme-1.php:85 templates/themes/theme-2.php:25
 msgid "Description"
 msgstr "Beschreibung"
 
-#: inc/mep_extra_price.php:305
+#: inc/mep_extra_price.php:310
 msgid "Designation"
 msgstr "Bezeichnung"
 
@@ -1823,7 +1831,7 @@ msgstr ""
 msgid "Dessending"
 msgstr ""
 
-#: inc/mep_extra_price.php:225
+#: inc/mep_extra_price.php:230
 msgid "Details Information"
 msgstr ""
 
@@ -1922,7 +1930,7 @@ msgstr ""
 msgid "docker"
 msgstr ""
 
-#: woocommerce-event-press.php:73 woocommerce-event-press.php:79
+#: woocommerce-event-press.php:78 woocommerce-event-press.php:84
 msgid "Docs"
 msgstr ""
 
@@ -2020,6 +2028,10 @@ msgstr ""
 msgid "edit"
 msgstr ""
 
+#: inc/mep_cpt.php:28
+msgid "Edit "
+msgstr ""
+
 #: inc/mep_cpt.php:77
 msgid "Edit Speaker"
 msgstr ""
@@ -2044,7 +2056,7 @@ msgstr ""
 msgid "ellipsis-v"
 msgstr ""
 
-#: inc/mep_extra_price.php:299
+#: inc/mep_extra_price.php:304
 msgid "Email"
 msgstr "E-Mail"
 
@@ -2118,8 +2130,8 @@ msgstr ""
 msgid "End Date :"
 msgstr ""
 
-#: support/elementor/widget/event-date.php:75
 #: support/elementor/widget/event-countdown.php:59
+#: support/elementor/widget/event-date.php:75
 msgid "End Datetime"
 msgstr ""
 
@@ -2206,23 +2218,23 @@ msgstr ""
 msgid "Event Availabe Seat"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:794
 #: support/elementor/widget/event-list-recurring.php:787
+#: support/elementor/widget/expired-event-list.php:794
 msgid "Event Badge Background"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:849
 #: support/elementor/widget/event-list-recurring.php:842
+#: support/elementor/widget/expired-event-list.php:849
 msgid "Event Box Background"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:738
 #: support/elementor/widget/event-list-recurring.php:731
+#: support/elementor/widget/expired-event-list.php:738
 msgid "Event Button Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:758
 #: support/elementor/widget/event-list-recurring.php:751
+#: support/elementor/widget/expired-event-list.php:758
 msgid "Event Button Typography"
 msgstr ""
 
@@ -2234,13 +2246,13 @@ msgstr ""
 msgid "Event Cancelled"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:774
 #: support/elementor/widget/event-list-recurring.php:767
+#: support/elementor/widget/expired-event-list.php:774
 msgid "Event Carousel Nav Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:44
 #: support/elementor/widget/event-list-recurring.php:45
+#: support/elementor/widget/expired-event-list.php:44
 #, fuzzy
 #| msgid "Parent Category"
 msgid "Event Category"
@@ -2286,18 +2298,18 @@ msgstr ""
 msgid "Event Date Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:500
 #: support/elementor/widget/event-list-recurring.php:493
+#: support/elementor/widget/expired-event-list.php:500
 msgid "Event Date Text Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:519
 #: support/elementor/widget/event-list-recurring.php:512
+#: support/elementor/widget/expired-event-list.php:519
 msgid "Event Date Typography"
 msgstr ""
 
-#: inc/admin_setting_panel.php:690 templates/themes/royal.php:38
-#: templates/themes/default-theme.php:35 templates/themes/vanilla.php:34
+#: inc/admin_setting_panel.php:690 templates/themes/vanilla.php:34
+#: templates/themes/default-theme.php:35 templates/themes/royal.php:38
 msgid "Event Date:"
 msgstr "Eventdatum:"
 
@@ -2305,8 +2317,8 @@ msgstr "Eventdatum:"
 msgid "Event DateTime"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:464
 #: support/elementor/widget/event-list-recurring.php:457
+#: support/elementor/widget/expired-event-list.php:464
 msgid "Event Day Background Color"
 msgstr ""
 
@@ -2314,13 +2326,13 @@ msgstr ""
 msgid "Event Daywise Details"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:572
 #: support/elementor/widget/event-list-recurring.php:565
+#: support/elementor/widget/expired-event-list.php:572
 msgid "Event Description Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:591
 #: support/elementor/widget/event-list-recurring.php:584
+#: support/elementor/widget/expired-event-list.php:591
 msgid "Event Description Typography"
 msgstr ""
 
@@ -2328,8 +2340,8 @@ msgstr ""
 msgid "Event Details"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:812
 #: support/elementor/widget/event-list-recurring.php:805
+#: support/elementor/widget/expired-event-list.php:812
 msgid "Event Details Background"
 msgstr ""
 
@@ -2373,33 +2385,33 @@ msgstr "Event Eigenschaftsbild"
 msgid "Event Feature Image Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:886
 #: support/elementor/widget/event-list-recurring.php:879
+#: support/elementor/widget/expired-event-list.php:886
 msgid "Event Filter Active Button Background"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:904
 #: support/elementor/widget/event-list-recurring.php:897
+#: support/elementor/widget/expired-event-list.php:904
 msgid "Event Filter Active Button Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:868
 #: support/elementor/widget/event-list-recurring.php:861
+#: support/elementor/widget/expired-event-list.php:868
 msgid "Event Filter Button Background"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:701
 #: support/elementor/widget/event-list-recurring.php:694
+#: support/elementor/widget/expired-event-list.php:701
 msgid "Event Footer Text Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:722
 #: support/elementor/widget/event-list-recurring.php:715
+#: support/elementor/widget/expired-event-list.php:722
 msgid "Event Footer Text Typography"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:681
 #: support/elementor/widget/event-list-recurring.php:674
+#: support/elementor/widget/expired-event-list.php:681
 msgid "Event Footer Title Color"
 msgstr ""
 
@@ -2407,13 +2419,13 @@ msgstr ""
 msgid "Event Google Map"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:161
 #: support/elementor/widget/event-list-recurring.php:162
+#: support/elementor/widget/expired-event-list.php:161
 msgid "Event Grid Column"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:642
 #: support/elementor/widget/event-list-recurring.php:635
+#: support/elementor/widget/expired-event-list.php:642
 msgid "Event Header Border Color"
 msgstr ""
 
@@ -2421,8 +2433,8 @@ msgstr ""
 msgid "Event Icon"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:660
 #: support/elementor/widget/event-list-recurring.php:653
+#: support/elementor/widget/expired-event-list.php:660
 msgid "Event Icon Color"
 msgstr ""
 
@@ -2462,8 +2474,8 @@ msgstr ""
 msgid "Event List Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:96
 #: support/elementor/widget/event-list-recurring.php:97
+#: support/elementor/widget/expired-event-list.php:96
 msgid "Event List Style"
 msgstr ""
 
@@ -2479,9 +2491,9 @@ msgstr "Veranstaltungsort"
 msgid "Event Location Settings"
 msgstr ""
 
-#: inc/admin_setting_panel.php:683 templates/themes/royal.php:60
-#: templates/themes/default-theme.php:57 templates/themes/default-theme.php:81
-#: templates/themes/theme-1.php:64 templates/themes/vanilla.php:56
+#: inc/admin_setting_panel.php:683 templates/themes/theme-1.php:64
+#: templates/themes/vanilla.php:56 templates/themes/default-theme.php:57
+#: templates/themes/default-theme.php:81 templates/themes/royal.php:60
 msgid "Event Location:"
 msgstr "Veranstaltungsort:"
 
@@ -2490,7 +2502,7 @@ msgid "Event Manager and Tickets Selling Plugin"
 msgstr ""
 
 #. Name of the plugin
-msgid "Event Manager and Tickets Selling Plugin for WooCommerce"
+msgid "Event Manager and Tickets Selling Plugin for WooCommerce (DEV)"
 msgstr ""
 
 #: support/elementor/elementor-support.php:26
@@ -2501,8 +2513,8 @@ msgstr ""
 msgid "Event Map Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:482
 #: support/elementor/widget/event-list-recurring.php:475
+#: support/elementor/widget/expired-event-list.php:482
 msgid "Event Month Background Color"
 msgstr ""
 
@@ -2520,8 +2532,8 @@ msgstr ""
 msgid "Event Org Settings"
 msgstr "Event Einstellungen"
 
-#: support/elementor/widget/expired-event-list.php:62
 #: support/elementor/widget/event-list-recurring.php:63
+#: support/elementor/widget/expired-event-list.php:62
 #, fuzzy
 #| msgid "Parent Organizer"
 msgid "Event Organizer"
@@ -2535,18 +2547,18 @@ msgstr ""
 msgid "Event Organizer Slug"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:940
 #: support/elementor/widget/event-list-recurring.php:933
+#: support/elementor/widget/expired-event-list.php:940
 msgid "Event Pagination Active Button Background"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:958
 #: support/elementor/widget/event-list-recurring.php:951
+#: support/elementor/widget/expired-event-list.php:958
 msgid "Event Pagination Active Button Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:922
 #: support/elementor/widget/event-list-recurring.php:915
+#: support/elementor/widget/expired-event-list.php:922
 msgid "Event Pagination Button Background"
 msgstr ""
 
@@ -2554,13 +2566,13 @@ msgstr ""
 msgid "Event Postponed"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:607
 #: support/elementor/widget/event-list-recurring.php:600
+#: support/elementor/widget/expired-event-list.php:607
 msgid "Event Price Color"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:626
 #: support/elementor/widget/event-list-recurring.php:619
+#: support/elementor/widget/expired-event-list.php:626
 msgid "Event Price Typography"
 msgstr ""
 
@@ -2628,8 +2640,8 @@ msgstr ""
 msgid "Event Start Time"
 msgstr ""
 
-#: support/elementor/widget/event-date.php:70
 #: support/elementor/widget/event-countdown.php:54
+#: support/elementor/widget/event-date.php:70
 msgid "Event Start/End Date"
 msgstr ""
 
@@ -2657,8 +2669,8 @@ msgstr ""
 msgid "Event Ticket Expire before minutes"
 msgstr ""
 
-#: inc/admin_setting_panel.php:697 templates/themes/royal.php:49
-#: templates/themes/default-theme.php:46 templates/themes/vanilla.php:45
+#: inc/admin_setting_panel.php:697 templates/themes/vanilla.php:45
+#: templates/themes/default-theme.php:46 templates/themes/royal.php:49
 msgid "Event Time:"
 msgstr "Eventuhrzeit:"
 
@@ -2670,8 +2682,8 @@ msgstr ""
 msgid "Event Title"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:535
 #: support/elementor/widget/event-list-recurring.php:528
+#: support/elementor/widget/expired-event-list.php:535
 msgid "Event Title Color"
 msgstr ""
 
@@ -2679,12 +2691,12 @@ msgstr ""
 msgid "Event Title Settings"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:555
 #: support/elementor/widget/event-list-recurring.php:548
+#: support/elementor/widget/expired-event-list.php:555
 msgid "Event Title Typography"
 msgstr ""
 
-#: woocommerce-event-press.php:108
+#: woocommerce-event-press.php:113
 msgid "Events"
 msgstr "Events"
 
@@ -2736,7 +2748,7 @@ msgstr ""
 msgid "external-link-square-alt"
 msgstr ""
 
-#: inc/mep_shortcode.php:395
+#: inc/mep_shortcode.php:401
 msgid "Extra Service"
 msgstr ""
 
@@ -2909,13 +2921,17 @@ msgstr ""
 msgid "filter"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:203
+#: inc/mep_cpt.php:43
+msgid "Filter "
+msgstr ""
+
 #: support/elementor/widget/event-list-recurring.php:203
+#: support/elementor/widget/expired-event-list.php:203
 msgid "Filter Events by Category"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:243
 #: support/elementor/widget/event-list-recurring.php:243
+#: support/elementor/widget/expired-event-list.php:243
 msgid "Filter Events by Organizer"
 msgstr ""
 
@@ -3124,7 +3140,7 @@ msgstr ""
 msgid "gem"
 msgstr ""
 
-#: inc/mep_extra_price.php:303
+#: inc/mep_extra_price.php:308
 msgid "Gender"
 msgstr "Geschlecht"
 
@@ -3295,9 +3311,9 @@ msgstr ""
 msgid "grav"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:101
 #: support/elementor/widget/expired-event-list.php:100
 #: support/elementor/widget/event-list.php:76
-#: support/elementor/widget/event-list-recurring.php:101
 msgid "Grid"
 msgstr ""
 
@@ -3555,9 +3571,9 @@ msgstr ""
 msgid "hooli"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:126
 #: support/elementor/widget/expired-event-list.php:125
 #: support/elementor/widget/event-list.php:201
-#: support/elementor/widget/event-list-recurring.php:126
 msgid "Horizontal"
 msgstr ""
 
@@ -3637,10 +3653,10 @@ msgid "Icon Before Title"
 msgstr ""
 
 #: support/elementor/widget/event-location.php:154
-#: support/elementor/widget/event-date.php:170
-#: support/elementor/widget/event-share-btn.php:78
-#: support/elementor/widget/event-list.php:696
 #: support/elementor/widget/event-add-calender.php:77
+#: support/elementor/widget/event-share-btn.php:78
+#: support/elementor/widget/event-date.php:170
+#: support/elementor/widget/event-list.php:696
 msgid "Icon Color"
 msgstr ""
 
@@ -3775,6 +3791,10 @@ msgstr ""
 #: inc/mep_event_meta.php:676 inc/mep_event_meta.php:703
 msgid "Input Box"
 msgstr "Eingabetext"
+
+#: inc/mep_cpt.php:39
+msgid "Insert into "
+msgstr ""
 
 #: inc/mep_cpt.php:88
 msgid "Insert into Speaker"
@@ -3954,8 +3974,8 @@ msgstr "frei"
 msgid "left-arrow-inside-a-circle"
 msgstr ""
 
-#: templates/single/extra_service_list.php:27
 #: templates/single/ticket_type_list.php:48 templates/single/total_seat.php:10
+#: templates/single/extra_service_list.php:27
 msgid "Left:"
 msgstr "frei:"
 
@@ -4018,9 +4038,9 @@ msgstr ""
 msgid "lira-sign"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:102
 #: support/elementor/widget/expired-event-list.php:101
 #: support/elementor/widget/event-list.php:77
-#: support/elementor/widget/event-list-recurring.php:102
 msgid "List"
 msgstr ""
 
@@ -4066,7 +4086,7 @@ msgstr ""
 msgid "Load Owl Carousel From Theme"
 msgstr ""
 
-#: inc/mep_extra_price.php:282
+#: inc/mep_extra_price.php:287
 msgid "Location"
 msgstr ""
 
@@ -4090,7 +4110,7 @@ msgstr "Veranstaltungsort"
 msgid "Location/Venue:"
 msgstr "Veranstaltungsort:"
 
-#: inc/admin_setting_panel.php:669 templates/list/default.php:100
+#: inc/admin_setting_panel.php:669 templates/list/default.php:96
 msgid "Location:"
 msgstr "Ort:"
 
@@ -4285,9 +4305,9 @@ msgstr ""
 msgid "microsoft"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:103
 #: support/elementor/widget/expired-event-list.php:102
 #: support/elementor/widget/event-list.php:78
-#: support/elementor/widget/event-list-recurring.php:103
 msgid "Minimal"
 msgstr ""
 
@@ -4381,7 +4401,7 @@ msgid "movie-tickets"
 msgstr ""
 
 #: inc/admin_setting_panel.php:843 templates/list/spring.php:49
-#: templates/list/winter.php:54 templates/list/default.php:30
+#: templates/list/default.php:30 templates/list/winter.php:60
 msgid "Multi Date Event"
 msgstr ""
 
@@ -4398,7 +4418,7 @@ msgstr ""
 msgid "music-player"
 msgstr ""
 
-#: inc/mep_event_meta.php:641 inc/mep_extra_price.php:298
+#: inc/mep_extra_price.php:303 inc/mep_event_meta.php:641
 msgid "Name"
 msgstr "Name"
 
@@ -4414,14 +4434,18 @@ msgstr ""
 msgid "napster"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:104
 #: support/elementor/widget/expired-event-list.php:103
 #: support/elementor/widget/event-list.php:79
-#: support/elementor/widget/event-list-recurring.php:104
 msgid "Native"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:628
 msgid "neuter"
+msgstr ""
+
+#: inc/mep_cpt.php:27
+msgid "New "
 msgstr ""
 
 #: inc/mep_cpt.php:76
@@ -4450,10 +4474,6 @@ msgstr ""
 msgid "nintendo-switch"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:208
-#: support/elementor/widget/expired-event-list.php:248
-#: support/elementor/widget/expired-event-list.php:433
-#: support/elementor/widget/event-schedule.php:162
 #: support/elementor/widget/event-add-cart-section.php:62
 #: support/elementor/widget/event-add-cart-section.php:104
 #: support/elementor/widget/event-add-cart-section.php:128
@@ -4466,6 +4486,13 @@ msgstr ""
 #: support/elementor/widget/event-countdown.php:195
 #: support/elementor/widget/event-countdown.php:297
 #: support/elementor/widget/event-countdown.php:398
+#: support/elementor/widget/event-schedule.php:162
+#: support/elementor/widget/event-list-recurring.php:208
+#: support/elementor/widget/event-list-recurring.php:248
+#: support/elementor/widget/event-list-recurring.php:433
+#: support/elementor/widget/expired-event-list.php:208
+#: support/elementor/widget/expired-event-list.php:248
+#: support/elementor/widget/expired-event-list.php:433
 #: support/elementor/widget/event-list.php:113
 #: support/elementor/widget/event-list.php:127
 #: support/elementor/widget/event-list.php:151
@@ -4481,9 +4508,6 @@ msgstr ""
 #: support/elementor/widget/event-list.php:615
 #: support/elementor/widget/event-list.php:632
 #: support/elementor/widget/event-list.php:651
-#: support/elementor/widget/event-list-recurring.php:208
-#: support/elementor/widget/event-list-recurring.php:248
-#: support/elementor/widget/event-list-recurring.php:433
 msgid "No"
 msgstr ""
 
@@ -4511,8 +4535,8 @@ msgstr ""
 msgid "No Ticket Selected!"
 msgstr "Es wurde kein Ticket gewählt!"
 
-#: support/elementor/widget/expired-event-list.php:80
 #: support/elementor/widget/event-list-recurring.php:81
+#: support/elementor/widget/expired-event-list.php:80
 msgid "No. of Events Show"
 msgstr ""
 
@@ -4525,8 +4549,8 @@ msgid "node-js"
 msgstr ""
 
 #: inc/mep_event_meta.php:1135
-#: support/elementor/widget/expired-event-list.php:310
 #: support/elementor/widget/event-list-recurring.php:310
+#: support/elementor/widget/expired-event-list.php:310
 msgid "None"
 msgstr ""
 
@@ -4558,8 +4582,8 @@ msgstr ""
 msgid "ns8"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:308
 #: support/elementor/widget/event-list-recurring.php:308
+#: support/elementor/widget/expired-event-list.php:308
 msgid "Number Mode"
 msgstr ""
 
@@ -4589,10 +4613,10 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:365
-#: support/elementor/widget/expired-event-list.php:404
 #: support/elementor/widget/event-list-recurring.php:365
 #: support/elementor/widget/event-list-recurring.php:404
+#: support/elementor/widget/expired-event-list.php:365
+#: support/elementor/widget/expired-event-list.php:404
 msgid "Off"
 msgstr ""
 
@@ -4600,10 +4624,10 @@ msgstr ""
 msgid "OfflineEventAttendanceMode"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:364
-#: support/elementor/widget/expired-event-list.php:403
 #: support/elementor/widget/event-list-recurring.php:364
 #: support/elementor/widget/event-list-recurring.php:403
+#: support/elementor/widget/expired-event-list.php:364
+#: support/elementor/widget/expired-event-list.php:403
 msgid "On"
 msgstr ""
 
@@ -4611,13 +4635,13 @@ msgstr ""
 msgid "On/Off Block/Gutenberg Editor"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:399
 #: support/elementor/widget/event-list-recurring.php:399
+#: support/elementor/widget/expired-event-list.php:399
 msgid "On/Off Carousel Dot"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:360
 #: support/elementor/widget/event-list-recurring.php:360
+#: support/elementor/widget/expired-event-list.php:360
 msgid "On/Off Carousel Navigation"
 msgstr ""
 
@@ -4675,7 +4699,7 @@ msgstr ""
 msgid "order"
 msgstr ""
 
-#: inc/admin_setting_panel.php:662 templates/list/default.php:86
+#: inc/admin_setting_panel.php:662 templates/list/default.php:82
 msgid "Organized By:"
 msgstr "organisiert durch:"
 
@@ -4709,9 +4733,9 @@ msgstr ""
 msgid "pagelines"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:304
 #: support/elementor/widget/expired-event-list.php:304
 #: support/elementor/widget/event-list.php:145
-#: support/elementor/widget/event-list-recurring.php:304
 msgid "Pagination"
 msgstr ""
 
@@ -4806,7 +4830,7 @@ msgstr ""
 msgid "phoenix-framework"
 msgstr ""
 
-#: inc/mep_extra_price.php:300
+#: inc/mep_extra_price.php:305
 msgid "Phone"
 msgstr "Telefon"
 
@@ -5302,24 +5326,24 @@ msgstr ""
 msgid "Price"
 msgstr "Preis"
 
-#: inc/admin_setting_panel.php:605 inc/template-prts/event_loop_title.php:19
-#: inc/template-prts/event_loop_timeline.php:18
-#: inc/template-prts/event_loop_list.php:14
-#: inc/template-prts/event_loop_winter.php:19
+#: inc/admin_setting_panel.php:605 inc/template-prts/event_loop_winter.php:19
 #: inc/template-prts/event_loop_spring.php:19
-#: inc/template-prts/event_loop_native.php:18
+#: inc/template-prts/event_loop_timeline.php:18
 #: inc/template-prts/event_loop_minimal.php:18
+#: inc/template-prts/event_loop_list.php:14
+#: inc/template-prts/event_loop_title.php:19
+#: inc/template-prts/event_loop_native.php:18
 msgid "Price Starts from:"
 msgstr ""
 
 #: inc/admin_setting_panel.php:612 inc/admin_setting_panel.php:740
-#: inc/template-prts/event_loop_title.php:19
-#: inc/template-prts/event_loop_timeline.php:18
-#: inc/template-prts/event_loop_list.php:14
 #: inc/template-prts/event_loop_winter.php:19
 #: inc/template-prts/event_loop_spring.php:19
-#: inc/template-prts/event_loop_native.php:18
+#: inc/template-prts/event_loop_timeline.php:18
 #: inc/template-prts/event_loop_minimal.php:18
+#: inc/template-prts/event_loop_list.php:14
+#: inc/template-prts/event_loop_title.php:19
+#: inc/template-prts/event_loop_native.php:18
 msgid "Price:"
 msgstr ""
 
@@ -5381,7 +5405,7 @@ msgstr ""
 msgid "question-circle"
 msgstr ""
 
-#: woocommerce-event-press.php:109 inc/welcome.php:26
+#: woocommerce-event-press.php:114 inc/welcome.php:26
 msgid "Quick Setup"
 msgstr ""
 
@@ -5430,7 +5454,7 @@ msgid "rebel"
 msgstr ""
 
 #: inc/admin_setting_panel.php:864 templates/list/spring.php:54
-#: templates/list/winter.php:58 templates/list/default.php:37
+#: templates/list/default.php:36 templates/list/winter.php:64
 msgid "Recurring Event"
 msgstr ""
 
@@ -5472,7 +5496,7 @@ msgstr ""
 msgid "redo-alt"
 msgstr ""
 
-#: inc/mep_shortcode.php:393 inc/template-prts/event_add_cart.php:24
+#: inc/mep_shortcode.php:399 inc/template-prts/event_add_cart.php:24
 #: support/elementor/widget/event-add-cart-section.php:76
 #: support/elementor/widget/event-add-cart-section.php:489
 msgid "Register For This Event"
@@ -5498,6 +5522,10 @@ msgstr "Registrierung An/Aus:"
 
 #: lib/classes/class-icon-library.php:1069
 msgid "reload"
+msgstr ""
+
+#: inc/mep_cpt.php:37
+msgid "Remove "
 msgstr ""
 
 #: inc/mep_cpt.php:86
@@ -5664,6 +5692,10 @@ msgstr ""
 msgid "search"
 msgstr ""
 
+#: inc/mep_cpt.php:32
+msgid "Search "
+msgstr ""
+
 #: lib/classes/class-icon-popup.php:70
 msgid "Search Icon..."
 msgstr ""
@@ -5714,21 +5746,21 @@ msgstr "Kategorie suchen"
 msgid "Select City"
 msgstr ""
 
-#: support/elementor/widget/event-location.php:45
-#: support/elementor/widget/event-map.php:45
-#: support/elementor/widget/event-faq.php:45
-#: support/elementor/widget/event-details.php:45
-#: support/elementor/widget/event-total-seat.php:45
-#: support/elementor/widget/event-date.php:45
-#: support/elementor/widget/event-schedule.php:45
 #: support/elementor/widget/event-add-cart-section.php:45
 #: support/elementor/widget/event-countdown.php:45
-#: support/elementor/widget/event-share-btn.php:45
-#: support/elementor/widget/event-thumbnail.php:45
-#: support/elementor/widget/event-org.php:45
-#: support/elementor/widget/event-add-calender.php:45
+#: support/elementor/widget/event-location.php:45
+#: support/elementor/widget/event-details.php:45
+#: support/elementor/widget/event-total-seat.php:45
+#: support/elementor/widget/event-faq.php:45
 #: support/elementor/widget/event-speaker-list.php:45
+#: support/elementor/widget/event-add-calender.php:45
+#: support/elementor/widget/event-share-btn.php:45
+#: support/elementor/widget/event-schedule.php:45
 #: support/elementor/widget/event-title.php:45
+#: support/elementor/widget/event-org.php:45
+#: support/elementor/widget/event-date.php:45
+#: support/elementor/widget/event-thumbnail.php:45
+#: support/elementor/widget/event-map.php:45
 #, fuzzy
 #| msgid "Search Event"
 msgid "Select Event"
@@ -5765,6 +5797,10 @@ msgstr ""
 msgid "servicestack"
 msgstr ""
 
+#: inc/mep_cpt.php:36
+msgid "Set "
+msgstr ""
+
 #: inc/mep_cpt.php:85
 msgid "Set Speaker image"
 msgstr ""
@@ -5773,7 +5809,7 @@ msgstr ""
 msgid "setting"
 msgstr ""
 
-#: woocommerce-event-press.php:58 inc/mep_event_meta.php:42
+#: woocommerce-event-press.php:63 inc/mep_event_meta.php:42
 msgid "Settings"
 msgstr ""
 
@@ -5880,9 +5916,9 @@ msgstr ""
 msgid "Show Available Seat?"
 msgstr "Anzeige freier Plätze?"
 
+#: support/elementor/widget/event-list-recurring.php:428
 #: support/elementor/widget/expired-event-list.php:428
 #: support/elementor/widget/event-list.php:320
-#: support/elementor/widget/event-list-recurring.php:428
 msgid "Show Date"
 msgstr ""
 
@@ -6063,7 +6099,7 @@ msgstr ""
 msgid "snowflake"
 msgstr ""
 
-#: inc/admin_setting_panel.php:871 templates/list/default.php:51
+#: inc/admin_setting_panel.php:871 templates/list/default.php:47
 msgid "Sold Out"
 msgstr ""
 
@@ -6094,8 +6130,8 @@ msgstr ""
 msgid "sort"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:283
 #: support/elementor/widget/event-list-recurring.php:283
+#: support/elementor/widget/expired-event-list.php:283
 msgid "Sort Events"
 msgstr ""
 
@@ -6286,8 +6322,8 @@ msgstr ""
 msgid "Start Date :"
 msgstr ""
 
-#: support/elementor/widget/event-date.php:74
 #: support/elementor/widget/event-countdown.php:58
+#: support/elementor/widget/event-date.php:74
 #, fuzzy
 #| msgid "Start Date & Time:"
 msgid "Start Datetime"
@@ -6409,15 +6445,15 @@ msgstr ""
 
 #: inc/admin_setting_panel.php:65
 #: support/elementor/widget/event-location.php:101
-#: support/elementor/widget/event-faq.php:59
 #: support/elementor/widget/event-details.php:59
 #: support/elementor/widget/event-total-seat.php:74
-#: support/elementor/widget/event-date.php:117
-#: support/elementor/widget/event-schedule.php:59
-#: support/elementor/widget/event-share-btn.php:59
-#: support/elementor/widget/event-org.php:76
+#: support/elementor/widget/event-faq.php:59
 #: support/elementor/widget/event-add-calender.php:59
+#: support/elementor/widget/event-share-btn.php:59
+#: support/elementor/widget/event-schedule.php:59
 #: support/elementor/widget/event-title.php:59
+#: support/elementor/widget/event-org.php:76
+#: support/elementor/widget/event-date.php:117
 msgid "Style Settings"
 msgstr "Einstellungen \"style\""
 
@@ -6454,7 +6490,7 @@ msgstr ""
 msgid "supple"
 msgstr ""
 
-#: woocommerce-event-press.php:74 woocommerce-event-press.php:80
+#: woocommerce-event-press.php:79 woocommerce-event-press.php:85
 msgid "Support"
 msgstr ""
 
@@ -6474,7 +6510,7 @@ msgstr ""
 msgid "syringe"
 msgstr ""
 
-#: inc/mep_extra_price.php:302
+#: inc/mep_extra_price.php:307
 #, fuzzy
 #| msgid "T Shirt Size"
 msgid "T-Shirt Size"
@@ -6749,7 +6785,7 @@ msgstr ""
 msgid "tick-inside-a-circle"
 msgstr ""
 
-#: inc/mep_event_meta.php:472 inc/admin_setting_panel.php:808
+#: inc/admin_setting_panel.php:808 inc/mep_event_meta.php:472
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -6769,7 +6805,7 @@ msgstr "Ticketmenge"
 msgid "Ticket Qty:"
 msgstr "Ticketmenge:"
 
-#: inc/mep_shortcode.php:394
+#: inc/mep_shortcode.php:400
 msgid "Ticket Type"
 msgstr "Tickettyp"
 
@@ -6842,14 +6878,14 @@ msgstr ""
 msgid "Time:"
 msgstr "Zeit:"
 
+#: support/elementor/widget/event-list-recurring.php:105
 #: support/elementor/widget/expired-event-list.php:104
 #: support/elementor/widget/event-list.php:80
-#: support/elementor/widget/event-list-recurring.php:105
 msgid "Timeline"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:120
 #: support/elementor/widget/event-list-recurring.php:121
+#: support/elementor/widget/expired-event-list.php:120
 msgid "Timeline Events Style"
 msgstr ""
 
@@ -6886,9 +6922,9 @@ msgstr ""
 msgid "Title Color"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:106
 #: support/elementor/widget/expired-event-list.php:105
 #: support/elementor/widget/event-list.php:81
-#: support/elementor/widget/event-list-recurring.php:106
 msgid "Title Only"
 msgstr ""
 
@@ -7100,21 +7136,29 @@ msgstr ""
 msgid "Upcoming"
 msgstr ""
 
-#: support/elementor/widget/event-date.php:76
 #: support/elementor/widget/event-countdown.php:60
+#: support/elementor/widget/event-date.php:76
 msgid "Upcoming Datetime"
+msgstr ""
+
+#: inc/mep_cpt.php:29
+msgid "Update "
 msgstr ""
 
 #: inc/mep_cpt.php:78
 msgid "Update Speaker"
 msgstr ""
 
-#: woocommerce-event-press.php:75
+#: woocommerce-event-press.php:80
 msgid "Upgrade to PRO Version"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:931
 msgid "upload"
+msgstr ""
+
+#: inc/mep_cpt.php:40
+msgid "Uploaded to this "
 msgstr ""
 
 #: inc/mep_cpt.php:89
@@ -7123,6 +7167,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:932
 msgid "usb"
+msgstr ""
+
+#: inc/mep_cpt.php:38
+msgid "Use as "
 msgstr ""
 
 #: inc/mep_cpt.php:87
@@ -7175,7 +7223,7 @@ msgstr ""
 msgid "vaadin"
 msgstr ""
 
-#: inc/mep_extra_price.php:307
+#: inc/mep_extra_price.php:312
 msgid "Vegetarian"
 msgstr "Vegetarier"
 
@@ -7195,9 +7243,9 @@ msgstr ""
 msgid "venus-mars"
 msgstr ""
 
+#: support/elementor/widget/event-list-recurring.php:125
 #: support/elementor/widget/expired-event-list.php:124
 #: support/elementor/widget/event-list.php:200
-#: support/elementor/widget/event-list-recurring.php:125
 msgid "Vertical"
 msgstr ""
 
@@ -7231,6 +7279,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:956
 msgid "video-slash"
+msgstr ""
+
+#: inc/mep_cpt.php:30 inc/mep_cpt.php:31
+msgid "View "
 msgstr ""
 
 #: support/elementor/widget/event-schedule.php:181
@@ -7278,7 +7330,7 @@ msgid "Virtual "
 msgstr ""
 
 #: inc/admin_setting_panel.php:836 templates/list/spring.php:60
-#: templates/list/winter.php:63 templates/list/default.php:46
+#: templates/list/default.php:42 templates/list/winter.php:69
 msgid "Virtual Event"
 msgstr ""
 
@@ -7314,7 +7366,7 @@ msgstr ""
 msgid "warehouse"
 msgstr ""
 
-#: inc/mep_extra_price.php:306
+#: inc/mep_extra_price.php:311
 msgid "Website"
 msgstr "Internetseite"
 
@@ -7514,10 +7566,6 @@ msgstr ""
 msgid "yen-sign"
 msgstr ""
 
-#: support/elementor/widget/expired-event-list.php:207
-#: support/elementor/widget/expired-event-list.php:247
-#: support/elementor/widget/expired-event-list.php:432
-#: support/elementor/widget/event-schedule.php:161
 #: support/elementor/widget/event-add-cart-section.php:61
 #: support/elementor/widget/event-add-cart-section.php:103
 #: support/elementor/widget/event-add-cart-section.php:127
@@ -7530,6 +7578,13 @@ msgstr ""
 #: support/elementor/widget/event-countdown.php:194
 #: support/elementor/widget/event-countdown.php:296
 #: support/elementor/widget/event-countdown.php:397
+#: support/elementor/widget/event-schedule.php:161
+#: support/elementor/widget/event-list-recurring.php:207
+#: support/elementor/widget/event-list-recurring.php:247
+#: support/elementor/widget/event-list-recurring.php:432
+#: support/elementor/widget/expired-event-list.php:207
+#: support/elementor/widget/expired-event-list.php:247
+#: support/elementor/widget/expired-event-list.php:432
 #: support/elementor/widget/event-list.php:112
 #: support/elementor/widget/event-list.php:126
 #: support/elementor/widget/event-list.php:149
@@ -7545,9 +7600,6 @@ msgstr ""
 #: support/elementor/widget/event-list.php:614
 #: support/elementor/widget/event-list.php:631
 #: support/elementor/widget/event-list.php:650
-#: support/elementor/widget/event-list-recurring.php:207
-#: support/elementor/widget/event-list-recurring.php:247
-#: support/elementor/widget/event-list-recurring.php:432
 msgid "Yes"
 msgstr "Ja"
 

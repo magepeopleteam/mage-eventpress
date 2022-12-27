@@ -4,7 +4,7 @@ Tags: event, woocomerce events manager, events manager, Wordpress Events plugin,
 Requires at least: 5.3
 Stable tag: 3.7.8
 Version: 3.7.8
-Tested up to: 6.0 
+Tested up to: 6.1
 WC requires at least: 3.0
 WC tested up to: 6.5
 Requires PHP: 7.0

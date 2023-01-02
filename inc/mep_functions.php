@@ -1287,7 +1287,7 @@ if (!function_exists('mep_get_event_status')) {
         $interval = date_diff($datetime2, $datetime1);
 
         if (current_time('Y-m-d H:i:s') > $newformat) {
-            return __("<span class=err>Expired</span>","mep-eventpress");
+            return __("<span class=err>Expired</span>","mage-eventpress");
         } else {
             $days = $interval->days;
             $hours = $interval->h;

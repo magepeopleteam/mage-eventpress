@@ -12,7 +12,7 @@ $event_location_icon            = mep_get_option('mep_event_location_icon', 'ico
 $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 
 ?>
-<div class='filter_item mep-event-list-loop <?php echo esc_attr($columnNumber); echo ' '.$class_name; ?> mep_event_<?php echo esc_attr($style); ?>_item mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>' data-title="<?php echo get_the_title($event_id); ?>" data-city-name="<?php echo get_post_meta($event_id, 'mep_city', true); ?>" data-category="<?php echo esc_attr($taxonomy_category); ?>" data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>" data-date="<?php echo esc_attr(date('m/d/Y',strtotime($date))); ?>" style="width:calc(<?php echo esc_attr($width); ?>% - 14px);">
+<div class='filter_item mep-event-list-loop <?php echo esc_attr($columnNumber); echo ' '.esc_attr($class_name); ?> mep_event_<?php echo esc_attr($style); ?>_item mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>' data-title="<?php echo esc_attr(get_the_title($event_id)); ?>" data-city-name="<?php echo esc_attr(get_post_meta($event_id, 'mep_city', true)); ?>" data-category="<?php echo esc_attr($taxonomy_category); ?>" data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>" data-date="<?php echo esc_attr(date('m/d/Y',strtotime($date))); ?>" style="width:calc(<?php echo esc_attr($width); ?>% - 14px);">
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo esc_url(get_the_permalink()); ?>">
@@ -44,7 +44,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
 
         <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
 
-            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec') ? mep_get_option('mep_event_sold_out_label', 'label_setting_sec') : esc_html__('Sold Out', 'mage-eventpress'); ?></div>
+            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec') ? esc_html(mep_get_option('mep_event_sold_out_label', 'label_setting_sec')) : esc_html__('Sold Out', 'mage-eventpress'); ?></div>
         
         <?php } ?>        
     </div>
@@ -76,10 +76,10 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                         if (sizeof($author_terms) > 0) {
                             ?>
                             <li class="mep_list_org_name">
-                                <div class="evl-ico"><i class="<?php echo $event_organizer_icon; ?>"></i></div>
+                                <div class="evl-ico"><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i></div>
                                 <div class="evl-cc">
                                     <h5>
-                                        <?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec') ? mep_get_option('mep_organized_by_text', 'label_setting_sec') : esc_html__('Organized By:', 'mage-eventpress'); ?>
+                                        <?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec') ? esc_html(mep_get_option('mep_organized_by_text', 'label_setting_sec')) : esc_html__('Organized By:', 'mage-eventpress'); ?>
                                     </h5>
                                     <h6><?php echo esc_html($author_terms[0]->name); ?></h6>
                                 </div>
@@ -90,10 +90,10 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                         if ($hide_location_list == 'no') { ?>
 
                             <li class="mep_list_location_name">
-                                <div class="evl-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
+                                <div class="evl-ico"><i class="<?php echo esc_attr($event_location_icon); ?>"></i></div>
                                 <div class="evl-cc">
                                     <h5>
-                                        <?php echo mep_get_option('mep_location_text', 'label_setting_sec') ? mep_get_option('mep_location_text', 'label_setting_sec') : esc_html__('Location:', 'mage-eventpress'); ?>
+                                        <?php echo mep_get_option('mep_location_text', 'label_setting_sec') ? esc_html(mep_get_option('mep_location_text', 'label_setting_sec')) : esc_html__('Location:', 'mage-eventpress'); ?>
 
                                     </h5>
                                     <h6><?php mep_get_event_city($event_id); ?></h6>
@@ -113,7 +113,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
     </div>
     <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
         <div class="item_hover_effect">
-            <a href="<?php echo get_the_permalink($event_id); ?>"><?php echo esc_html($mep_hide_event_hover_btn_text); ?></a>
+            <a href="<?php echo esc_url(get_the_permalink($event_id)); ?>"><?php echo esc_html($mep_hide_event_hover_btn_text); ?></a>
         </div>
     <?php } ?>
 </div>

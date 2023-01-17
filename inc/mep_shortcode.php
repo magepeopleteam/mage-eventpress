@@ -35,6 +35,8 @@ function mep_event_calender()
             const myEvents = [
                 <?php
                 // $loop       = mep_event_query('all',-1);
+                $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+                $event_expire_on    = $event_expire_on_old == 'event_expire_datetime' ? 'end' : 'start';                   
                 $args = array(
                     'post_type'         => array('mep_events'),
                     'posts_per_page'    => -1,
@@ -51,7 +53,7 @@ function mep_event_calender()
                     $event_dates = mep_get_event_dates_arr(get_the_id());
                     $now 		= current_time('Y-m-d H:i:s');
 foreach ($event_dates as $_dates) {
-    if(strtotime($now) < strtotime($_dates['start']) ){
+    if(strtotime($now) < strtotime($_dates[$event_expire_on]) ){
     ?>
 {
                         start   : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',

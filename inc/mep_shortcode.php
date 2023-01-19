@@ -69,8 +69,8 @@ foreach ($event_dates as $_dates) {
 }
 }
 $i++;
-                
-                wp_reset_postdata(); ?>
+    wp_reset_postdata(); 
+?>
             ]
 
             jQuery('.event-calendar').equinox({

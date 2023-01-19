@@ -56,14 +56,13 @@ if (!function_exists('mep_get_event_reg_btn')) {
 		$upcoming_date              = $recurring == 'no' ? '' : $_upcoming_date;
         $total_sold                 = mep_get_event_total_seat_left($post_id, $upcoming_date);
         $total_left                 = $total_seat - ($total_sold + $total_resv);        
-        // $total_left                  = mep_get_event_total_seat_left($post_id, $upcoming_date);
-
+        $total_left                 = $recurring == 'no' ? $total_left : 1;
         $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? esc_html($event_meta['mep_reg_status'][0]) : '';
         $seat_left                  = apply_filters('mep_event_total_seat_left_count', $total_left, $post_id);
         $current                    = current_time('Y-m-d H:i:s');
         $time                       = strtotime($event_expire_date);
         $newformat                  = date('Y-m-d H:i:s', $time);
-        $recurring                  = get_post_meta($post_id, 'mep_enable_recurring', true) ? get_post_meta($post_id, 'mep_enable_recurring', true) : 'no';
+        
 
         if ($recurring == 'yes') {
             $event_more_dates         = get_post_meta($post_id, 'mep_event_more_date', true) ? get_post_meta($post_id, 'mep_event_more_date', true) : array();
@@ -112,8 +111,8 @@ if (!function_exists('mep_get_event_reg_btn')) {
                 /**
                  * If All the seats are booked then it fire the below hooks, The event no seat texts are in the inc/template-parts/event_labels.php file
                  */
-                do_action('mep_event_no_seat_text',$post_id);
-                do_action('mep_after_no_seat_notice',$post_id);
+               do_action('mep_event_no_seat_text',$post_id);
+               do_action('mep_after_no_seat_notice',$post_id);
 
             } else {
                 /**

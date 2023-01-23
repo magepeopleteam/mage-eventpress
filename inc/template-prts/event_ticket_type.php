@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) {
     die;
-} // Cannot access pages directly.
+} // Cannot access pages directly.  
 
 add_action('mep_event_ticket_types', 'mep_ev_ticket_type',10,3);
 if (!function_exists('mep_ev_ticket_type')) {
@@ -19,9 +19,10 @@ if (!function_exists('mep_ev_ticket_type')) {
             <table id='mep_event_ticket_type_table'>
                 <thead class='ex-sec-title mep_ticket_type_title'>
                     <tr>
-                        <th>
+                        <th> 
                         <span class="tkt-qty" style="text-align: left;">
-                            <?php echo _e('Ticket type','mage-eventpress'); ?> 
+                            <?php //_e('Ticket type','mage-eventpress'); ?> 
+                            <?php echo mep_get_option('mep_event_ticket_type_text', 'label_setting_sec') ? mep_get_option('mep_event_ticket_type_text', 'label_setting_sec') : esc_html__('Ticket type:', 'mage-eventpress');  ?>                            
                         </span>
                         </th>
                         <th>

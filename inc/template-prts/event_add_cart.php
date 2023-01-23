@@ -161,7 +161,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
                                     <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo esc_attr($leftt); ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
                                     <span id="ttyttl"></span>
                                 <?php } ?>
-                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : esc_html__('Total', 'mage-eventpress');  ?>
+                                <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec', __('Total', 'mage-eventpress'));  ?>
                                     <span id="usertotal"></span>
                                 </span>
                                 <?php do_action('mep_after_price_calculation',$post_id); ?>

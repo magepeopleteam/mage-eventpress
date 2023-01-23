@@ -9,6 +9,7 @@ if (!defined('ABSPATH')) {
 function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming')
 {
     $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+    $event_order_by = mep_get_option('mep_event_list_order_by', 'general_setting_sec', 'meta_value');    
     $event_expire_on    = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
     $now                = current_time('Y-m-d H:i:s');
     if ( get_query_var('paged') ) {
@@ -60,7 +61,7 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'paged'             => $paged,
         'posts_per_page'    => $show,
         'order'             => $sort,
-        'orderby'           => 'meta_value',
+        'orderby'           => $event_order_by,
         // 'meta_key'          => 'event_start_datetime',
         'meta_key'          => 'event_upcoming_datetime',
         'meta_query' => array(

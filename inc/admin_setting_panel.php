@@ -114,14 +114,14 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             )
                         ),
                         array(
-                            'name' => 'mep_event_list_order_by',
-                            'label' => __('Event List Order By', 'mage-eventpress'),
-                            'desc' => __('Please select Event list order by which value Event Title or Event Date. By Default is: Event Upcoming Date', 'mage-eventpress'),
-                            'type' => 'select',
-                            'default' => 'meta_value',
-                            'options' => array(
-                                'meta_value' => 'Event Upcoming Date',
-                                'title' => 'Event Title'
+                            'name'      => 'mep_event_list_order_by',
+                            'label'     => __('Event List Order By', 'mage-eventpress'),
+                            'desc'      => __('Please select Event list order by which value Event Title or Event Date. By Default is: Event Upcoming Date', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'meta_value',
+                            'options'   => array(
+                                'meta_value'    => 'Event Upcoming Date',
+                                'title'         => 'Event Title'
                             )
                         ),                        
                         array(

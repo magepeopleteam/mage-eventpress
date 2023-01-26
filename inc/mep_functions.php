@@ -3692,7 +3692,7 @@ if (!function_exists('mep_cart_display_ticket_type_list')) {
     function mep_cart_display_ticket_type_list($ticket_type_arr, $eid) {
         ob_start();
         foreach ($ticket_type_arr as $ticket) {
-            echo '<li>' . esc_attr($ticket['ticket_name']) . " - " . wc_price(esc_attr(mep_get_price_including_tax($eid, $ticket['ticket_price']))) . ' x ' . esc_attr($ticket['ticket_qty']) . ' = ' . wc_price(esc_attr(mep_get_price_including_tax($eid, (float)$ticket['ticket_price'] * (float)$ticket['ticket_qty']))) . '</li>';
+            echo '<li>' . esc_attr($ticket['ticket_name']) . " - " . wc_price(esc_attr(mep_get_price_including_tax($eid, (float)$ticket['ticket_price']))) . ' x ' . esc_attr($ticket['ticket_qty']) . ' = ' . wc_price(esc_attr(mep_get_price_including_tax($eid, (float)$ticket['ticket_price'] * (float)$ticket['ticket_qty']))) . '</li>';
         }
         return apply_filters('mep_display_ticket_in_cart_list', ob_get_clean(), $ticket_type_arr, $eid);
     }

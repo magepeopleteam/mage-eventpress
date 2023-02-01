@@ -35,7 +35,9 @@ function mep_event_calender()
             const myEvents = [
                 <?php
                 // $loop       = mep_event_query('all',-1);
+                // mep_hide_expired_date_in_calendar
                 $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+                $hide_expired = mep_get_option('mep_hide_expired_date_in_calendar', 'general_setting_sec', 'no');
                 $event_expire_on    = $event_expire_on_old == 'event_expire_datetime' ? 'end' : 'start';                   
                 $args = array(
                     'post_type'         => array('mep_events'),
@@ -53,6 +55,23 @@ function mep_event_calender()
                     $event_dates = mep_get_event_dates_arr(get_the_id());
                     $now 		= current_time('Y-m-d H:i:s');
 foreach ($event_dates as $_dates) {
+
+
+if($hide_expired == 'no'){
+    ?>
+{
+                        start   : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['start'])); ?>',
+                        end     : '<?php echo date_i18n('Y-m-d H:i', strtotime($_dates['end'])); ?>',
+                        title   : '<?php the_title(); ?>',
+                        url     : '<?php the_permalink(); ?>',
+                        class   : '',
+                        color   : '#000',
+                        data    : {}
+                    },
+    <?php
+}else{
+
+
     if(strtotime($now) < strtotime($_dates[$event_expire_on]) ){
     ?>
 {
@@ -66,6 +85,7 @@ foreach ($event_dates as $_dates) {
                     },
     <?php
     }
+}
 }
 }
 $i++;

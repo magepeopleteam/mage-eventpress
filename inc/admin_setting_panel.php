@@ -242,6 +242,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             )
                         ),
                         array(
+                            'name' => 'mep_hide_expired_date_in_calendar',
+                            'label' => __('Hide Expired Event from Calendar', 'mage-eventpress'),
+                            'desc' => __('If you want to hide the expired event from the calendar please select Yes. Its applicable for the Free Calendar', 'mage-eventpress'),
+                            'type' => 'select',
+                            'default' => 'no',
+                            'options' => array(
+                                'yes' => 'Yes',
+                                'no' => 'No'
+                            )
+                        ),                        
+                        array(
                             'name' => 'mep_event_direct_checkout',
                             'label' => __('Redirect Checkout after Booking', 'mage-eventpress'),
                             'desc' => __('This setting controls whether or not the checkout page is redirected after booking an event.', 'mage-eventpress'),

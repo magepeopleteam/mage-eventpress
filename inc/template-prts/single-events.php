@@ -34,8 +34,10 @@ if (post_password_required()) {
             <?php
             if (!class_exists('WC_Bundles')) {
 				if (!class_exists('WEPOF_Extra_Product_Options')) {	
-					if (!class_exists('WC_Advanced_Country_Restrictions_Dist')) {
+					if (!class_exists('WC_Advanced_Country_Restrictions_Dist')) {						
+						if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
                			 do_action('woocommerce_before_single_product');
+						}
 					}
 			   }
             }

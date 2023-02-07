@@ -90,6 +90,22 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
         function get_settings_fields() {
             $settings_fields = array(
                 'general_setting_sec' => apply_filters('mep_settings_general_arr', array(
+
+                    array(
+                        'name'          => 'seat_reserved_order_status',
+                        'label'         => __('Seat Reserved Order Status', 'mage-eventpress'),
+                        'desc'          => __('Please select in which order status seat will mark as reserved/booked. By Default is Processing & Completed.', 'mage-eventpress'),
+                        'type'          => 'multicheck',
+                        'default'       => array('processing' => 'processing','completed' => 'completed'),
+                        'options' => array(
+                            'on-hold'       => 'On Hold',
+                            'pending'       => 'Pending',
+                            'processing'    => 'Processing',
+                            'completed'     => 'Completed'
+                            // 'cancelled'     => 'Cancelled'
+                        )
+                    ),
+
                         array(
                             'name' => 'mep_disable_block_editor',
                             'label' => __('On/Off Block/Gutenberg Editor', 'mage-eventpress'),

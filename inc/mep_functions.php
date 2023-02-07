@@ -128,27 +128,14 @@ if (!function_exists('mep_displays_cart_products_feature_image')) {
 if (!function_exists('mep_get_attendee_info_query')) {
 function mep_get_attendee_info_query($event_id, $order_id) {
 
-    $pending_status_filter = array(
-        'key' => 'ea_order_status',
-        'value' => 'pending',
-        'compare' => '='
-    );
+    $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+    $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
+    $order_status       = array_values($_order_status);
 
-    $hold_status_filter = array(
+    $order_status_filter =      array(
         'key' => 'ea_order_status',
-        'value' => 'on-hold',
-        'compare' => '='
-    );
-
-    $processing_status_filter = array(
-        'key' => 'ea_order_status',
-        'value' => 'processing',
-        'compare' => '='
-    );
-    $completed_status_filter = array(
-        'key' => 'ea_order_status',
-        'value' => 'completed',
-        'compare' => '='
+        'value' => $order_status,
+        'compare' => 'OR'
     );
 
     $args = array(
@@ -169,11 +156,7 @@ function mep_get_attendee_info_query($event_id, $order_id) {
                     'compare' => '='
                 )
             ),
-            array(
-                'relation' => 'OR',
-                $processing_status_filter,
-                $completed_status_filter
-            )
+            $order_status_filter
         )
     );
     $loop = new WP_Query($args);
@@ -556,7 +539,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
                     update_post_meta($pid, 'ea_extra_service_name', $extra_serive['service_name']);
                     update_post_meta($pid, 'ea_extra_service_qty', $extra_serive['service_qty']);
                     update_post_meta($pid, 'ea_extra_service_unit_price', $extra_serive['service_price']);
-                    update_post_meta($pid, 'ea_extra_service_total_price', $extra_serive['service_qty'] * $extra_serive['service_price']);
+                    update_post_meta($pid, 'ea_extra_service_total_price', $extra_serive['service_qty'] * (int) $extra_serive['service_price']);
                     update_post_meta($pid, 'ea_extra_service_event', $event_id);
                     update_post_meta($pid, 'ea_extra_service_order', $order_id);
                     update_post_meta($pid, 'ea_extra_service_order_status', $order_status);
@@ -1532,16 +1515,22 @@ if (!function_exists('mep_ticket_lits_users')) {
                     <?php do_action('mep_user_order_list_table_head'); ?>
                 </tr>
                 <?php
+                    $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+                    $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
+                    $order_status       = array_values($_order_status);
+                
+                    $order_status_filter =      array(
+                        'key' => 'ea_order_status',
+                        'value' => $order_status,
+                        'compare' => 'OR'
+                    );
+
                 $args_search_qqq = array(
                     'post_type' => array('mep_events_attendees'),
                     'posts_per_page' => -1,
                     'author__in' => array(get_current_user_id()),
                     'meta_query' => array(
-                        array(
-                            'key' => 'ea_order_status',
-                            'value' => array('completed', 'processing'),
-                            'compare' => 'IN'
-                        )
+                        $order_status_filter
                     )
                 );
                 $loop = new WP_Query($args_search_qqq);
@@ -2495,9 +2484,22 @@ if (!function_exists('mep_get_term_as_class')) {
     }
 }
 
+
+
 if (!function_exists('mep_ticket_type_sold')) {
     function mep_ticket_type_sold($event_id, $type = '', $date = '') {
         $type           = !empty($type) ? $type : '';
+
+        $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+        $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
+        $order_status       = array_values($_order_status);
+
+        $order_status_filter =      array(
+            'key' => 'ea_order_status',
+            'value' => $order_status,
+            'compare' => 'OR'
+        );
+
         $type_filter = !empty($type) ? array(
             'key' => 'ea_ticket_type',
             'value' => $type,
@@ -2509,16 +2511,6 @@ if (!function_exists('mep_ticket_type_sold')) {
             'value' => $date,
             'compare' => 'LIKE'
         ) : '';
-        $processing_status_filter = array(
-            'key' => 'ea_order_status',
-            'value' => 'processing',
-            'compare' => '='
-        );
-        $completed_status_filter = array(
-            'key' => 'ea_order_status',
-            'value' => 'completed',
-            'compare' => '='
-        );
 
         $args = array(
             'post_type' => 'mep_events_attendees',
@@ -2534,15 +2526,12 @@ if (!function_exists('mep_ticket_type_sold')) {
                     ),
                     $type_filter,
                     apply_filters('mep_sold_meta_query_and_attribute', $date_filter)
-                ), array(
-                    'relation' => 'OR',
-                    $processing_status_filter,
-                    $completed_status_filter,
-                    apply_filters('mep_sold_meta_query_or_attribute', array())
-                )
+                ), 
+                $order_status_filter
             )
         );
         $loop = new WP_Query($args);
+
         return $loop->post_count;
     }
 }
@@ -4027,7 +4016,7 @@ function mep_get_price_including_tax($event, $price, $args = array()) {
     $args = wp_parse_args(
         $args,
         array(
-            'qty' => '',
+            'qty'   => '',
             'price' => '',
         )
     );
@@ -4133,6 +4122,17 @@ function mep_show_custom_text_for_zero_price($return, $price, $args, $unformatte
 
 if (!function_exists('mep_check_ticket_type_availaility_before_checkout')) {
 function mep_check_ticket_type_availaility_before_checkout($event_id, $type, $date) {
+
+    $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+    $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
+    $order_status       = array_values($_order_status);
+
+    $order_status_filter =      array(
+        'key' => 'ea_order_status',
+        'value' => $order_status,
+        'compare' => 'OR'
+    );
+
     $args = array(
         'post_type' => 'mep_events_attendees',
         'posts_per_page' => -1,
@@ -4156,19 +4156,8 @@ function mep_check_ticket_type_availaility_before_checkout($event_id, $type, $da
                     'value' => $date,
                     'compare' => '='
                 )
-            ), array(
-                'relation' => 'OR',
-                array(
-                    'key' => 'ea_order_status',
-                    'value' => 'processing',
-                    'compare' => '='
-                ),
-                array(
-                    'key' => 'ea_order_status',
-                    'value' => 'completed',
-                    'compare' => '='
-                )
-            )
+            ), 
+            $order_status_filter
         )
     );
     $loop = new WP_Query($args);

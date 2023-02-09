@@ -130,8 +130,7 @@ div.buttonGroup > *,
     display: -webkit-flex;
     display: flex;
     border: 1px solid #DDD;
-    -webkit-flex-direction: column;
-    flex-direction: column;
+    -webkit-flex-wrap: wrap;flex-wrap: wrap;
     padding: 5px;
 }
 .list_with_filter_section .sort_code_search_box label {display: block; margin: 0;}

@@ -70,7 +70,7 @@ if (!class_exists('MPWEM_Helper')) {
                             <?php if ($params['title-filter'] == 'yes') { ?>
                                 <div class="filter_input_area">
                                     <label>
-                                        <input name="title_filter" placeholder="<?php esc_html_e('Type Name here ....', 'mage-eventpress'); ?>" class="formControl"/>
+                                        <input type="text" name="title_filter" placeholder="<?php esc_html_e('Type Name here ....', 'mage-eventpress'); ?>" class="formControl"/>
                                     </label>
                                 </div>
                             <?php } ?>

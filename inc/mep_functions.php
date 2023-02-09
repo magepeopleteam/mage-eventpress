@@ -2930,6 +2930,7 @@ if (!function_exists('mep_wc_link_product_on_save')) {
 
 add_action('admin_head', 'mep_hide_date_from_order_page');
 if (!function_exists('mep_hide_date_from_order_page')) {
+
 function mep_hide_date_from_order_page() {
     $product_id = [];
     $args = array(
@@ -2945,6 +2946,32 @@ function mep_hide_date_from_order_page() {
     $parr = implode(', ', $product_id);
     echo '<style> ' . esc_html($parr) . '{display:none!important}' . ' </style>';
 }
+
+}
+
+add_action('init','mep_get_all_hidden_product_id_array');
+function mep_get_all_hidden_product_id_array() {
+    $product_id = [];
+    $args = array(
+        'post_type' => 'mep_events',
+        'posts_per_page' => -1
+    );
+    $qr = new WP_Query($args);
+    foreach ($qr->posts as $result) {
+        $post_id = $result->ID;
+        $product_id[] = get_post_meta($post_id, 'link_wc_product', true) ? get_post_meta($post_id, 'link_wc_product', true) : '';
+    }
+    $product_id = array_filter($product_id);
+    return $product_id;
+}
+
+add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', 'mep_get_all_hidden_product_id_array' );
+
+
+
+
+
+
 
 // add_action('parse_query', 'mep_product_tags_sorting_query');
 if (!function_exists('mep_product_tags_sorting_query')) {
@@ -2972,7 +2999,7 @@ if (!function_exists('mep_product_tags_sorting_query')) {
 
     }
 }
-}
+
 
 add_action('wp_head', 'mep_exclude_hidden_product_from_search_engine');
 if (!function_exists('mep_exclude_hidden_product_from_search_engine')) {

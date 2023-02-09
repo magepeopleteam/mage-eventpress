@@ -1722,8 +1722,7 @@ div.mep_event_native_list .mep_list_event_details {
 div.column_style {
     display: -webkit-flex;
     display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
+    -webkit-flex-wrap: wrap;flex-wrap: wrap;
 }
 
 div.column_style .mep_list_thumb img {

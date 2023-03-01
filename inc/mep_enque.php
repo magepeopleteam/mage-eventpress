@@ -61,7 +61,6 @@ function mep_add_admin_scripts($hook)
   wp_enqueue_script('wp-color-picker');
   wp_enqueue_script('magepeople-options-framework', plugins_url('js/mage-options-framework.js', __DIR__), array('jquery'));
   wp_localize_script('PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array('PickpluginsOptionsFramework_ajaxurl' => admin_url('admin-ajax.php')));
-//   wp_enqueue_script('select2.min', plugins_url('js/select2.min.js', __DIR__), array('jquery'));
   wp_enqueue_script('codemirror', plugin_dir_url(__DIR__) . 'js/codemirror.min.js', array('jquery'), null, false);
   wp_enqueue_script('form-field-dependency', plugins_url('js/form-field-dependency.js', __DIR__), array('jquery'), null, false);
   wp_localize_script('jquery', 'mep_ajax', array( 'mep_ajaxurl' => admin_url( 'admin-ajax.php')));
@@ -126,7 +125,7 @@ function mep_event_enqueue_scripts()
   wp_enqueue_script('filter_pagination', plugin_dir_url(__DIR__) . 'js/filter_pagination.js', array(), time(), true);
   wp_enqueue_script('mp_event_custom_script', plugin_dir_url(__DIR__) . 'js/mp_event_custom_script.js', array(), time(), true);
 
-  wp_enqueue_script('mep-moment-js',plugin_dir_url( __DIR__ ).'js/moment.js',array(),1,true);
+  wp_enqueue_script('mep-moment-js','https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js',array(),1,true);
   wp_enqueue_script('mep-timeline-min', plugin_dir_url(__DIR__) . 'js/timeline.min.js', array('jquery'), 1, true);
   wp_enqueue_script('mep-event-custom-scripts', plugin_dir_url(__DIR__) . 'js/mkb-scripts.js', array(), time(), true);
   wp_localize_script('jquery', 'mep_ajax', array( 'mep_ajaxurl' => admin_url( 'admin-ajax.php')));

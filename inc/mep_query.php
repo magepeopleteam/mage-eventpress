@@ -57,6 +57,7 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'compare'   => $etype
     ) : '';
 
+    
     $args = array(
         'post_type'         => array('mep_events'),
         'paged'             => $paged,

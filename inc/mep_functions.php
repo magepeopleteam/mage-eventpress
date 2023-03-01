@@ -1501,6 +1501,13 @@ if (!function_exists('mep_get_event_order_metadata')) {
     }
 }
 
+
+// add_action( 'wp_head', 'mep_remove_my_event_order_list_from_my_account_page_action' );
+// function mep_remove_my_event_order_list_from_my_account_page_action() {
+// 	remove_action( 'woocommerce_account_dashboard', 'mep_ticket_lits_users' );
+// }
+
+
 add_action('woocommerce_account_dashboard', 'mep_ticket_lits_users');
 if (!function_exists('mep_ticket_lits_users')) {
     function mep_ticket_lits_users() {
@@ -2599,7 +2606,9 @@ if (!function_exists('mep_ticket_sold')) {
         $sold = 0;
         if (is_array($get_ticket_type_list) && sizeof($get_ticket_type_list) > 0) {
             foreach ($get_ticket_type_list as $ticket_type) {
-                $sold = $sold + mep_ticket_type_sold($event_id, mep_remove_apostopie($ticket_type['option_name_t']), $event_start_date);
+                if(array_key_exists('option_name_t',$ticket_type)){
+                    $sold = $sold + mep_ticket_type_sold($event_id, mep_remove_apostopie($ticket_type['option_name_t']), $event_start_date);
+                }
             }
         }
 
@@ -2610,7 +2619,9 @@ if (!function_exists('mep_ticket_sold')) {
                 foreach ($mep_event_more_date as $md) {
                     if (is_array($get_ticket_type_list) && sizeof($get_ticket_type_list) > 0) {
                         foreach ($get_ticket_type_list as $ticket_type) {
-                            $sold = $sold + mep_ticket_type_sold($event_id, mep_remove_apostopie($ticket_type['option_name_t']), $md['event_more_start_date']);
+                            if(array_key_exists('option_name_t',$ticket_type)){
+                             $sold = $sold + mep_ticket_type_sold($event_id, mep_remove_apostopie($ticket_type['option_name_t']), $md['event_more_start_date']);
+                            }
                         }
                     }
                 }
@@ -3639,36 +3650,36 @@ if (!function_exists('mep_cart_display_user_list')) {
         foreach ($user_info as $userinf) {
 
             ?>
-            <ul>
+            <ul class='mep_cart_user_inforation_details'>
                 <?php if ($userinf['user_name']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Name')) . ": ";
+                    <li class='mep_cart_user_name'><?php echo esc_attr(mep_get_reg_label($event_id, 'Name')) . ": ";
                         echo esc_attr($userinf['user_name']); ?></li> <?php } ?>
                 <?php if ($userinf['user_email']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Email')) . ": ";
+                    <li class='mep_cart_user_email'><?php echo esc_attr(mep_get_reg_label($event_id, 'Email')) . ": ";
                         echo esc_attr($userinf['user_email']); ?></li> <?php } ?>
                 <?php if ($userinf['user_phone']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Phone')) . ": ";
+                    <li class='mep_cart_user_phone'><?php echo esc_attr(mep_get_reg_label($event_id, 'Phone')) . ": ";
                         echo esc_attr($userinf['user_phone']); ?></li> <?php } ?>
                 <?php if ($userinf['user_address']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Address')) . ": ";
+                    <li class='mep_cart_user_address'><?php echo esc_attr(mep_get_reg_label($event_id, 'Address')) . ": ";
                         echo esc_attr($userinf['user_address']); ?></li> <?php } ?>
                 <?php if ($userinf['user_gender']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Gender')) . ": ";
+                    <li class='mep_cart_user_gender'><?php echo esc_attr(mep_get_reg_label($event_id, 'Gender')) . ": ";
                         echo esc_attr($userinf['user_gender']); ?></li> <?php } ?>
                 <?php if ($userinf['user_tshirtsize']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'T-Shirt Size')) . ": ";
+                    <li class='mep_cart_user_tshirt'><?php echo esc_attr(mep_get_reg_label($event_id, 'T-Shirt Size')) . ": ";
                         echo esc_attr($userinf['user_tshirtsize']); ?></li> <?php } ?>
                 <?php if ($userinf['user_company']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Company')) . ": ";
+                    <li class='mep_cart_user_company'><?php echo esc_attr(mep_get_reg_label($event_id, 'Company')) . ": ";
                         echo esc_attr($userinf['user_company']); ?></li> <?php } ?>
                 <?php if ($userinf['user_designation']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Designation')) . ": ";
+                    <li class='mep_cart_user_designation'><?php echo esc_attr(mep_get_reg_label($event_id, 'Designation')) . ": ";
                         echo esc_attr($userinf['user_designation']); ?></li> <?php } ?>
                 <?php if ($userinf['user_website']) { ?>
-                    <li><?php echo esc_attr(mep_get_reg_label($event_id, 'Website')) . ": ";
+                    <li class='mep_cart_user_website'><?php echo esc_attr(mep_get_reg_label($event_id, 'Website')) . ": ";
                         echo esc_attr($userinf['user_website']); ?></li> <?php } ?>
                 <?php if ($userinf['user_vegetarian']) { ?>
-                    <li>
+                    <li class='mep_cart_user_vegitarian'>
 						<?php
                         $vegetarian=strtolower($userinf['user_vegetarian'])=='yes'?esc_html__('Yes','mage-eventpress'):esc_html__('No','mage-eventpress');
                         echo esc_attr(mep_get_reg_label($event_id, 'Vegetarian')) . ": ";
@@ -3684,15 +3695,15 @@ if (!function_exists('mep_cart_display_user_list')) {
                     }
                 } ?>
                 <?php if ($userinf['user_ticket_type']) { ?>
-                    <li><?php esc_html_e('Ticket Type', 'mage-eventpress');
+                    <li class='mep_cart_user_ticket_type'><?php esc_html_e('Ticket Type', 'mage-eventpress');
                         echo ": " . esc_attr($userinf['user_ticket_type']); ?></li> <?php } ?>
 
                 <?php if ($recurring == 'everyday' && $time_status == 'no') { ?>
-                    <li><?php
+                    <li class='mep_cart_user_date'><?php
                         esc_html_e(' Date', 'mage-eventpress');
                         echo ": "; ?><?php echo esc_attr(get_mep_datetime($userinf['user_event_date'], 'date-text')); ?></li>
                 <?php } else { ?>
-                    <li><?php
+                    <li class='mep_cart_user_date'><?php
                         esc_html_e(' Date', 'mage-eventpress');
                         echo ": "; ?><?php echo esc_attr(get_mep_datetime($userinf['user_event_date'], 'date-time-text')); ?></li>
                 <?php } ?>
@@ -4456,6 +4467,7 @@ if (!function_exists('mep_add_expire_min_in_current_date')) {
 function mep_add_expire_min_in_current_date($current_date, $event_date, $event_id) {
 
     $minutes_to_add = (int)mep_get_option('mep_ticket_expire_time', 'general_setting_sec', 0);
+    
     $time = new DateTime($current_date);
     $time->add(new DateInterval('PT' . $minutes_to_add . 'M'));
     $current_date = $time->format('Y-m-d H:i');
@@ -4673,8 +4685,6 @@ add_filter('mep_check_product_into_cart', 'mep_disable_add_to_cart_if_product_is
 if (!function_exists('mep_disable_add_to_cart_if_product_is_in_cart')) {
 function mep_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $product) {
     
-    
-    // print_r(WC()->cart->get_cart());
     
     // Loop through cart items checking if the product is already in cart
     if (isset(WC()->cart) && !is_admin() && !empty(WC()->cart->get_cart())) {

@@ -33,7 +33,7 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
  
         foreach ($mep_event_ticket_type as $field) {
 // echo get_post_meta($post_id, $event_expire_on, true);
-         echo   $current_time           = apply_filters('mep_ticket_current_time',current_time('Y-m-d H:i'),get_post_meta($post_id, $event_expire_on, true),$post_id);
+            $current_time           = apply_filters('mep_ticket_current_time',current_time('Y-m-d H:i'),get_post_meta($post_id, $event_expire_on, true),$post_id);
 
             $ticket_type_name       = array_key_exists('option_name_t',$field)  ? mep_remove_apostopie($field['option_name_t']) : '';
             $ticket_type            = array_key_exists('option_qty_t_type',$field)  ? $field['option_qty_t_type'] : 'input';

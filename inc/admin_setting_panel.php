@@ -352,7 +352,62 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 'yes'   => 'Yes',
                                 'no'    => 'No'
                             )
-                        ),                                                                    
+                        ),   
+                        // array(
+                        //     'name'      => 'mep_allow_multiple_add_cart_event',
+                        //     'label'     => __('Allow multiple Add to Cart of a Single event?', 'mage-eventpress'),
+                        //     'desc'      => __('By Default adding to the cart of a single event is disabled. If you want to enable it select Yes', 'mage-eventpress'),
+                        //     'type'      => 'select',
+                        //     'default'   => 'no',
+                        //     'options'   => array(
+                        //         'yes'   => 'Yes',
+                        //         'no'    => 'No'
+                        //     )
+                        // ),  
+
+                        array(
+                            'name'      => 'mep_show_hidden_wc_product',
+                            'label'     => __('Show Hidden Woocommerce Products?', 'mage-eventpress'),
+                            'desc'      => __('With every creation of an event there is a Woocommerce product is also created. By default its hidden in the Product list. If you want to show them in the list select Yes', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'no',
+                            'options'   => array(
+                                'yes'   => 'Yes',
+                                'no'    => 'No'
+                            )
+                        ),  
+
+                        array(
+                            'name'      => 'mep_google_map_zoom_level',
+                            'label'     => __('Set the Google Map Zoom Level', 'mage-eventpress'),
+                            'desc'      => __('Select the Google Map zoom level. By default is 17', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => '17',
+                            'options'   => array(
+                                '5'   => '5',
+                                '6'   => '6',
+                                '7'   => '7',
+                                '8'   => '8',
+                                '9'   => '9',
+                                '10'   => '10',
+                                '11'   => '11',
+                                '12'   => '12',
+                                '13'   => '13',
+                                '14'   => '14',
+                                '15'   => '15',
+                                '16'   => '16',
+                                '17'   => '17',
+                                '18'   => '18',
+                                '19'   => '19',
+                                '20'   => '20',                                
+                                '21'   => '21',
+                                '22'   => '22',
+                                '23'   => '23',
+                                '24'   => '24',
+                                '25'   => '25'
+                            )
+                        ),                          
+                        
                     )
                 ),
                 'event_list_setting_sec' => apply_filters('mep_settings_event_list_arr', array(

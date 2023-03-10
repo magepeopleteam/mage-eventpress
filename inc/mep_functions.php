@@ -613,6 +613,19 @@ function mep_check_attendee_exist_before_create($order_id, $event_id, $date ='')
 }
 }
 
+
+
+// add_filter('mep_check_product_into_cart', 'mep_beta_disable_add_to_cart_if_product_is_in_cart', 90, 2);
+function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $product){
+    $all_multiple_cart        = mep_get_option('mep_allow_multiple_add_cart_event', 'general_setting_sec', 'no');
+    if($all_multiple_cart == 'yes'){
+        return true;
+    }
+    
+}
+
+
+
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90);
   // add_action('woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90);
@@ -696,22 +709,44 @@ function mep_check_attendee_exist_before_create($order_id, $event_id, $date ='')
           if(is_array($user_info_arr) & sizeof($user_info_arr) > 0){
             foreach ($user_info_arr as $_user_info) {
                 $check_before_create_date      = mep_check_attendee_exist_before_create($order_id,$event_id, $_user_info['user_event_date']);
-            //   if($check_before_create < count($user_info_arr)){
-                // if($check_before_create_date == 0){
+           
+                if(function_exists('mep_re_language_load')){               
+               
                     mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
-                // }
-            //   }
+
+                }else{
+
+                  if($check_before_create < count($user_info_arr)){
+                        if($check_before_create_date == 0){
+                            mep_attendee_create('user_form',$order_id,$event_id,$_user_info);
+                        }
+                    }
+
+                }
+
 
             } 
           }else{
               foreach($event_ticket_info_arr as $tinfo){
                 for ($x = 1; $x <= $tinfo['ticket_qty']; $x++) {
+
+
+                    
                     $check_before_create_date      = mep_check_attendee_exist_before_create($order_id,$event_id, $tinfo['event_date']);
-                //   if($check_before_create < count($event_ticket_info_arr)){
-                    // if($check_before_create_date == 0){
+               
+                    if(function_exists('mep_re_language_load')){               
+               
                         mep_attendee_create('billing',$order_id,$event_id,$tinfo);
-                    // }
-                //   }
+
+                    }else{
+                        if($check_before_create < count($event_ticket_info_arr)){
+                            if($check_before_create_date == 0){
+                                mep_attendee_create('billing',$order_id,$event_id,$tinfo);
+                            }
+                        }
+                    }
+
+
                   
                 } 
               }
@@ -2944,6 +2979,7 @@ if (!function_exists('mep_hide_date_from_order_page')) {
 
 function mep_hide_date_from_order_page() {
     $product_id = [];
+    $hide_wc       = mep_get_option('mep_show_hidden_wc_product', 'general_setting_sec', 'no');    
     $args = array(
         'post_type' => 'mep_events',
         'posts_per_page' => -1
@@ -2955,7 +2991,9 @@ function mep_hide_date_from_order_page() {
     }
     $product_id = array_filter($product_id);
     $parr = implode(', ', $product_id);
+if($hide_wc == 'no'){
     echo '<style> ' . esc_html($parr) . '{display:none!important}' . ' </style>';
+}
 }
 
 }

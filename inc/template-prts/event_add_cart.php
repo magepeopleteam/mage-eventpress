@@ -174,7 +174,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
 						  <button type="submit" class="mpwemasp_get_sp"><?php esc_html_e("View Seat Plan","mage-eventpress"); ?></button>
 						  <?php }if($not_in_the_cart){ ?>
 						  <button type="submit" name="add-to-cart" value="<?php echo esc_attr($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php do_action('mep_before_add_cart_button',$post_id); echo "<span class='mep-cart-btn-text'>".esc_html($cart_btn_label)."</span>"; do_action('mep_after_add_cart_button',$post_id); ?></button>
-					  <?php }else{  ?>
+					    <?php }else{  ?>
                                         <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('You"ve already added this item to your cart! View your cart to continue shopping or checkout now.', 'mage-eventpress'); ?> </a>
                                     <?php } ?>
                                 <?php do_action('mep_after_add_cart_btn',$post_id); ?>

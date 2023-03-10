@@ -9,6 +9,7 @@ if (!function_exists('mep_event_google_map')) {
 	{
 		global $post, $event_meta, $user_api;		
 		$map_type       = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');
+		$map_zoom       = mep_get_option('mep_google_map_zoom_level', 'general_setting_sec', '17');
 		$location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : '';
 		$status   		= get_post_meta($event_id, 'mep_sgm', true) ? get_post_meta($event_id, 'mep_sgm', true) : '';
 		ob_start();
@@ -43,7 +44,7 @@ if (!function_exists('mep_event_google_map')) {
 									lat: <?php echo esc_attr($lat); ?>,
 									lng: <?php echo esc_attr($lon); ?>
 								},
-								zoom: 17
+								zoom: <?php echo $map_zoom; ?>
 							});
 							marker = new google.maps.Marker({
 								map: map,

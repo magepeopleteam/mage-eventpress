@@ -700,7 +700,10 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
           $item_quantity          = 0;
           $check_before_create      = mep_check_attendee_exist_before_create($order_id,$event_id);
           mep_attendee_extra_service_create($order_id,$event_id,$_event_extra_service);
+
           mep_delete_attandee_of_an_order($order_id, $event_id);
+
+
           foreach ( $event_ticket_info_arr as $field ) {
             if($field['ticket_qty']>0){
                 $item_quantity    = $item_quantity + $field['ticket_qty'];
@@ -777,6 +780,15 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
   }
 }
 
+
+if (!function_exists('mep_diff_two_datetime')) {
+    function mep_diff_two_datetime($d1,$d2){
+        $timeFirst  = strtotime($d1);
+        $timeSecond = strtotime($d2);
+        return $differenceInSeconds = $timeSecond - $timeFirst;
+    }
+}
+
 if (!function_exists('mep_delete_attandee_of_an_order')) {
 function mep_delete_attandee_of_an_order($order_id, $event_id) {
 
@@ -794,14 +806,9 @@ function mep_delete_attandee_of_an_order($order_id, $event_id) {
                 'value' => $event_id,
                 'compare' => '='
             ),
-            // array(
-            //     'key' => 'ea_flag',
-            //     'value' => 'checkout_processed',
-            //     'compare' => '='
-            // )
             array(
-                'key' => 'ea_order_status',
-                'value' => 'pending',
+                'key' => 'ea_flag',
+                'value' => 'checkout_processed',
                 'compare' => '='
             )
         )
@@ -809,10 +816,15 @@ function mep_delete_attandee_of_an_order($order_id, $event_id) {
     $loop = new WP_Query($args);
     foreach ($loop->posts as $ticket) {
         $post_id = $ticket->ID;
-        wp_delete_post($post_id, true);
+        $post_date = get_the_date('Y-m-d H:i:s',$post_id);
+        $time_diff = mep_diff_two_datetime($post_date,current_time('Y-m-d H:i:s'));
+        if($time_diff > 15){
+            wp_delete_post($post_id, true);
+        }
     }
 }
 }
+
 
 if (!function_exists('change_attandee_order_status')) {
     function change_attandee_order_status($order_id, $set_status, $post_status, $qr_status = null) {

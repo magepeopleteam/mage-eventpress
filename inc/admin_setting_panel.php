@@ -1302,10 +1302,17 @@ function mep_get_option($option, $section, $default = '') {
     $options = get_option($section);
 
     if (isset($options[$option])) {
-        return esc_html($options[$option]);
+        if(is_array($options[$option])){
+            return $options[$option];
+        }else{
+            return wp_kses_post($options[$option]);
+        }
     }
-
- return esc_html($default);
+    if(is_array($default)){
+        return $default;
+    }else{
+        return wp_kses_post($default);
+    }
 }
 
 

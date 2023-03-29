@@ -8240,6 +8240,8 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                     tinymce.init({
                                         selector:"#<?php echo esc_attr($field_name); ?>"+now,
                                         menubar: true,
+                                        relative_urls : 0,
+                                        remove_script_host : 0,
                                         toolbar: 'undo redo link formatselect bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat fullscreen',
                                                         plugins: 'fullscreen link'
                                     });
@@ -8393,6 +8395,8 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                                                     tinymce.init({
                                                         selector: "#<?php echo esc_attr($field_name).$rnd; ?>",
                                                         menubar: true,
+                                                        relative_urls : 0,
+                                                        remove_script_host : 0,                                                        
                                                         toolbar: 'undo redo link formatselect bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat fullscreen',
                                                         plugins: 'fullscreen link'
                                                     });

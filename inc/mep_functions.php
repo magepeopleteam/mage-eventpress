@@ -762,7 +762,9 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
                     if(!class_exists( 'Afterpay_Plugin' )){ 
                         if(!class_exists( 'WC_Subscriptions' )){ 
                             if ( !is_plugin_active( 'woo-juno/main.php' )){ 
-                                $woocommerce->cart->empty_cart(); 		
+                                if ( ! class_exists( 'WC_Saferpay' ) ) { 
+                                    $woocommerce->cart->empty_cart(); 	
+                                }	
                               }
                         }	 
                     }	 
@@ -1930,8 +1932,7 @@ if (!function_exists('mep_event_list_price')) {
                 $price_arr[]    = array_key_exists('option_price_t',$ticket) ? $ticket['option_price_t'] : null;
             }
         }
-
-        return $type == 'price' && sizeof($price_arr) > 0 ?  wc_price(min($price_arr)) : count($price_arr);
+        return $type == 'price' && sizeof($price_arr) > 0 ?  wc_price(mep_get_price_including_tax($pid,min($price_arr))) : count($price_arr);
     }
 }
 

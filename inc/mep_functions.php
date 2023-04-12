@@ -6,6 +6,13 @@ if (!defined('ABSPATH')) {
 appsero_init_tracker_mage_eventpress();
 
 
+function mep_add_event_into_feed_request($qv) {
+    if (isset($qv['feed']) && !isset($qv['post_type']))
+        $qv['post_type'] = array('mep_events');
+    return $qv;
+}
+add_filter('request', 'mep_add_event_into_feed_request');
+
 // Language Load
 add_action('init', 'mep_language_load');
 if (!function_exists('mep_language_load')) {
@@ -2541,6 +2548,9 @@ if (!function_exists('mep_get_term_as_class')) {
 
 
 
+
+
+
 if (!function_exists('mep_ticket_type_sold')) {
     function mep_ticket_type_sold($event_id, $type = '', $date = '') {
         $type           = !empty($type) ? $type : '';
@@ -2549,11 +2559,24 @@ if (!function_exists('mep_ticket_type_sold')) {
         $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
         $order_status       = array_values($_order_status);
 
-        $order_status_filter =      array(
-            'key' => 'ea_order_status',
-            'value' => $order_status,
-            'compare' => 'OR'
-        );
+        // $order_status_filter =      array(
+        //     'key' => 'ea_order_status',
+        //     'value' => $order_status,
+        //     'compare' => 'OR'
+        // );
+
+
+        if ( count( $order_status ) > 1 ) { // check if more then one tag
+            $order_status_filter['relation'] = 'OR';
+            
+            foreach($order_status as $tag) { // create a LIKE-comparison for every single tag
+                $order_status_filter[] = array( 'key' => 'ea_order_status', 'value' => $tag, 'compare' => '=' );
+            }
+
+        } else { // if only one tag then proceed with simple query
+                $order_status_filter[] = array( 'key' => 'ea_order_status', 'value' => $order_status[0], 'compare' => '=' );
+        }
+
 
         $type_filter = !empty($type) ? array(
             'key' => 'ea_ticket_type',
@@ -2586,7 +2609,8 @@ if (!function_exists('mep_ticket_type_sold')) {
             )
         );
         $loop = new WP_Query($args);
-
+        // echo '<pre>'; print_r($loop); echo '</pre>';
+        // // die();
         return $loop->post_count;
     }
 }

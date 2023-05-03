@@ -335,34 +335,34 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     $custom_forms_id = mep_get_user_custom_field_ids($eid);
 
     foreach ($event_user_info as $userinf) {
-      if ($userinf['user_name']) {
+      if (array_key_exists('user_name',$userinf) && !empty($userinf['user_name'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Name'), $userinf['user_name']);
       }
-      if ($userinf['user_email']) {
+      if (array_key_exists('user_email',$userinf) && !empty($userinf['user_email'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Email'), $userinf['user_email']);
       }
-      if ($userinf['user_phone']) {
+      if (array_key_exists('user_phone',$userinf) && !empty($userinf['user_phone'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Phone'), $userinf['user_phone']);
       }
-      if ($userinf['user_address']) {
+      if (array_key_exists('user_address',$userinf) && !empty($userinf['user_address'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Address'), $userinf['user_address']);
       }
-      if ($userinf['user_gender']) {
+      if (array_key_exists('user_gender',$userinf) && !empty($userinf['user_gender'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Gender'), $userinf['user_gender']);
       }
-      if ($userinf['user_tshirtsize']) {
+      if (array_key_exists('user_tshirtsize',$userinf) && !empty($userinf['user_tshirtsize'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'T-Shirt Size'), $userinf['user_tshirtsize']);
       }
-      if ($userinf['user_company']) {
+      if (array_key_exists('user_company',$userinf) && !empty($userinf['user_company'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Company'), $userinf['user_company']);
       }
-      if ($userinf['user_designation']) {
+      if (array_key_exists('user_designation',$userinf) && !empty($userinf['user_designation'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Designation'), $userinf['user_designation']);
       }
-      if ($userinf['user_website']) {
+      if (array_key_exists('user_website',$userinf) && !empty($userinf['user_website'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Website'), $userinf['user_website']);
       }
-      if ($userinf['user_vegetarian']) {
+      if (array_key_exists('user_vegetarian',$userinf) && !empty($userinf['user_vegetarian'])) {
         $item->add_meta_data(mep_get_reg_label($event_id, 'Vegetarian'), $userinf['user_vegetarian']);
       }
       if (sizeof($custom_forms_id) > 0) {

@@ -435,19 +435,19 @@ if (!function_exists('mep_attendee_create')) {
 
         } elseif ($type == 'user_form') {
 
-            $_uname              = sanitize_text_field($_user_info['user_name']);
-            $email              = sanitize_text_field($_user_info['user_email']);
-            $phone              = sanitize_text_field($_user_info['user_phone']);
-            $address            = sanitize_text_field($_user_info['user_address']);
-            $gender             = sanitize_text_field($_user_info['user_gender']);
-            $company            = sanitize_text_field($_user_info['user_company']);
-            $designation        = sanitize_text_field($_user_info['user_designation']);
-            $website            = sanitize_text_field($_user_info['user_website']);
-            $vegetarian         = sanitize_text_field($_user_info['user_vegetarian']);
-            $tshirtsize         = sanitize_text_field($_user_info['user_tshirtsize']);
-            $ticket_type        = stripslashes($_user_info['user_ticket_type']);
-            $ticket_qty         = sanitize_text_field($_user_info['user_ticket_qty']);
-            $event_date         = sanitize_text_field($_user_info['user_event_date']);
+            $_uname             = array_key_exists('user_name',$_user_info) ? sanitize_text_field($_user_info['user_name']) : "";
+            $email              = array_key_exists('user_email',$_user_info) ? sanitize_text_field($_user_info['user_email']) : "";
+            $phone              = array_key_exists('user_phone',$_user_info) ? sanitize_text_field($_user_info['user_phone']) : "";
+            $address            = array_key_exists('user_address',$_user_info) ? sanitize_text_field($_user_info['user_address']) : "";
+            $gender             = array_key_exists('user_gender',$_user_info) ? sanitize_text_field($_user_info['user_gender']) : "";
+            $company            = array_key_exists('user_company',$_user_info) ? sanitize_text_field($_user_info['user_company']) : "";
+            $designation        = array_key_exists('user_designation',$_user_info) ? sanitize_text_field($_user_info['user_designation']) : "";
+            $website            = array_key_exists('user_website',$_user_info) ? sanitize_text_field($_user_info['user_website']) : "";
+            $vegetarian         = array_key_exists('user_vegetarian',$_user_info) ? sanitize_text_field($_user_info['user_vegetarian']) : "";
+            $tshirtsize         = array_key_exists('user_tshirtsize',$_user_info) ? sanitize_text_field($_user_info['user_tshirtsize']) : "";
+            $ticket_type        = array_key_exists('user_ticket_type',$_user_info) ? stripslashes($_user_info['user_ticket_type']) : "";
+            $ticket_qty         = array_key_exists('user_ticket_qty',$_user_info) ? sanitize_text_field($_user_info['user_ticket_qty']) : "";
+            $event_date         = array_key_exists('user_event_date',$_user_info) ? sanitize_text_field($_user_info['user_event_date']) : "";
             $event_id           = $_user_info['user_event_id'] ? sanitize_text_field($_user_info['user_event_id']) : $event_id;
             $mep_ucf            = isset($_user_info['mep_ucf']) ? sanitize_text_field($_user_info['mep_ucf']) : "";
 
@@ -3723,37 +3723,37 @@ if (!function_exists('mep_cart_display_user_list')) {
 
 
         foreach ($user_info as $userinf) {
-
+            // array_key_exists(
             ?>
             <ul class='mep_cart_user_inforation_details'>
-                <?php if ($userinf['user_name']) { ?>
+                <?php if (array_key_exists('user_name',$userinf) && !empty($userinf['user_name'])) { ?>
                     <li class='mep_cart_user_name'><?php echo esc_attr(mep_get_reg_label($event_id, 'Name')) . ": ";
                         echo esc_attr($userinf['user_name']); ?></li> <?php } ?>
-                <?php if ($userinf['user_email']) { ?>
+                <?php if (array_key_exists('user_email',$userinf) && !empty($userinf['user_email'])) { ?>
                     <li class='mep_cart_user_email'><?php echo esc_attr(mep_get_reg_label($event_id, 'Email')) . ": ";
                         echo esc_attr($userinf['user_email']); ?></li> <?php } ?>
-                <?php if ($userinf['user_phone']) { ?>
+                <?php if (array_key_exists('user_phone',$userinf) && !empty($userinf['user_phone'])) { ?>
                     <li class='mep_cart_user_phone'><?php echo esc_attr(mep_get_reg_label($event_id, 'Phone')) . ": ";
                         echo esc_attr($userinf['user_phone']); ?></li> <?php } ?>
-                <?php if ($userinf['user_address']) { ?>
+                <?php if (array_key_exists('user_address',$userinf) && !empty($userinf['user_address'])) { ?>
                     <li class='mep_cart_user_address'><?php echo esc_attr(mep_get_reg_label($event_id, 'Address')) . ": ";
                         echo esc_attr($userinf['user_address']); ?></li> <?php } ?>
-                <?php if ($userinf['user_gender']) { ?>
+                <?php if (array_key_exists('user_gender',$userinf) && !empty($userinf['user_gender'])) { ?>
                     <li class='mep_cart_user_gender'><?php echo esc_attr(mep_get_reg_label($event_id, 'Gender')) . ": ";
                         echo esc_attr($userinf['user_gender']); ?></li> <?php } ?>
-                <?php if ($userinf['user_tshirtsize']) { ?>
+                <?php if (array_key_exists('user_tshirtsize',$userinf) && !empty($userinf['user_tshirtsize'])) { ?>
                     <li class='mep_cart_user_tshirt'><?php echo esc_attr(mep_get_reg_label($event_id, 'T-Shirt Size')) . ": ";
                         echo esc_attr($userinf['user_tshirtsize']); ?></li> <?php } ?>
-                <?php if ($userinf['user_company']) { ?>
+                <?php if (array_key_exists('user_company',$userinf) && !empty($userinf['user_company'])) { ?>
                     <li class='mep_cart_user_company'><?php echo esc_attr(mep_get_reg_label($event_id, 'Company')) . ": ";
                         echo esc_attr($userinf['user_company']); ?></li> <?php } ?>
-                <?php if ($userinf['user_designation']) { ?>
+                <?php if (array_key_exists('user_designation',$userinf) && !empty($userinf['user_designation'])) { ?>
                     <li class='mep_cart_user_designation'><?php echo esc_attr(mep_get_reg_label($event_id, 'Designation')) . ": ";
                         echo esc_attr($userinf['user_designation']); ?></li> <?php } ?>
-                <?php if ($userinf['user_website']) { ?>
+                <?php if (array_key_exists('user_website',$userinf) && !empty($userinf['user_website'])) { ?>
                     <li class='mep_cart_user_website'><?php echo esc_attr(mep_get_reg_label($event_id, 'Website')) . ": ";
                         echo esc_attr($userinf['user_website']); ?></li> <?php } ?>
-                <?php if ($userinf['user_vegetarian']) { ?>
+                <?php if (array_key_exists('user_vegetarian',$userinf) && !empty($userinf['user_vegetarian'])) { ?>
                     <li class='mep_cart_user_vegitarian'>
 						<?php
                         $vegetarian=strtolower($userinf['user_vegetarian'])=='yes'?esc_html__('Yes','mage-eventpress'):esc_html__('No','mage-eventpress');

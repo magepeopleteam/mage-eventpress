@@ -234,10 +234,10 @@ ul#mep_add_calender_links li a {
 .mep_event_list ul li,
 .mep_event_list p,
 .mep_event_list a {
-    line-height: 1.2;
+/*     line-height: 1.2;
     margin: 0;
     padding: 0;
-    letter-spacing: inherit;
+    letter-spacing: inherit; */
 }
 
 
@@ -2608,10 +2608,10 @@ div.three_column {
     justify-content: inherit;
 }
 
-.mep-events-wrapper strong {
+/* .mep-events-wrapper strong {
     font-weight: 500;
     font-size: 16px;
-}
+} */
 
 .woocommerce-Price-amount {
     font-weight: 600;
@@ -2723,8 +2723,8 @@ h3.mep_list_date i {
 }
 
 div.mep-default-feature-content p {
-    margin-top: 0 !important;
-    margin-bottom: 10px !important;
+/*     margin-top: 0 !important;
+    margin-bottom: 10px !important; */
 }
 
 .mep-event-meta {

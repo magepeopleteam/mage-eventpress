@@ -23,13 +23,13 @@ add_action('admin_menu', 'mep_event_welcome_admin_menu');
 function mep_event_welcome_admin_menu()
 {
     add_submenu_page('edit.php?post_type=mep_events', __('Welcome', 'mage-eventpress'), __('<span style="color:#10dd10">Welcome</span>', 'mage-eventpress'), 'manage_options', 'mep_event_welcome_page',  'mep_event_welcome_page');
-    add_submenu_page('edit.php?post_type=mep_events', __('Quick Setup', 'mage-eventpress'), __('<span style="color:#10dd10">Quick Setup</span>', 'mage-eventpress'), 'manage_options', 'mep_event_quick_setup_page',  'mep_event_quick_setup_page');
+   // add_submenu_page('edit.php?post_type=mep_events', __('Quick Setup', 'mage-eventpress'), __('<span style="color:#10dd10">Quick Setup</span>', 'mage-eventpress'), 'manage_options', 'mep_event_quick_setup_page',  'mep_event_quick_setup_page');
     add_submenu_page('edit.php?post_type=mep_events', __('Dummy Import', 'mage-eventpress'), __('<span style="color:#10dd10">Dummy Import</span>', 'mage-eventpress'), 'manage_options', 'mep_event_import_page',  'mep_event_import_page');
 }
 
 
 function mep_event_quick_setup_page(){
-    require_once(dirname(__DIR__) . "/inc/quick_setup.php");
+    //require_once(dirname(__DIR__) . "/inc/quick_setup.php");
 }
 
 

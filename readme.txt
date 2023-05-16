@@ -2,9 +2,9 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 3.7.8
-Version: 3.7.8
-Tested up to: 6.1
+Stable tag: 3.9.2
+Version: 3.9.2
+Tested up to: 6.2
 WC requires at least: 3.0
 WC tested up to: 6.5
 Requires PHP: 7.0
@@ -33,7 +33,7 @@ Event Manager and Tickets Selling Plugin for WooCommerce is one of the best, sim
 ➡ Multiple Event Templates (You can select a different template for each event) 
 ➡ Works with Any Standards Compliant WordPress Theme.
 ➡ WooCommerce Support, You can Sell product and Event Separately. There is no mixing with Event with the WooCommerce Products.
-➡ [View Live Demo For Business Event](https://event.mage-people.com/)
+➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
 
 
 ###  [Pro Version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
@@ -55,7 +55,7 @@ Event Manager and Tickets Selling Plugin for WooCommerce is one of the best, sim
 ➡ Related Events Addon - You can select related event and display to event details page.
 
 
-➡ [View Live Demo For Business Event](https://event.mage-people.com/)
+➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
 👉  [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 
 👉[Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
@@ -210,7 +210,7 @@ You can sort your event list by event start date and time in ascending or descen
 ### Event Add To Cart Section ShortCode:
 The Event Cart Section shortcode allows you to display a list of tickets and extra services anywhere on your website. This is a great way to make sure your visitors can easily find the information they need when planning an event.
 
-To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website:. example 👉[See Demo](https://demo.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
+To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website:. example 👉[See PRO Version Demo](https://event.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
 `
 [event-add-cart-section event=EventID]
 
@@ -321,17 +321,13 @@ Learn more about how [Appsero collects and uses this data](https://appsero.com/p
 Extract the zip file and just drop the contents in the wp-content/plugins/ directory of your WordPress installation and then activate the Plugin from Plugins page.
 
 
-
 == Frequently Asked Questions ==
 
 = Q.Is Woocommerce Events Manager Free? =
 A. Yes! Woocommerce Events Manager is free.
 
 You can check the demo of this plugin from here:
-[View Live Demo For Business](https://event.mage-people.com/)
-
-
-
+[View Live PRO Version Demo For Business](https://event.mage-people.com/)
 
 = Q.Any Documentation? =
 A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
@@ -360,212 +356,139 @@ A. Event Pro Version has major two version.
     ➡ Attendee form builder and attendee list with CSV export 
     ➡ PDF ticketing and Email Attachment
 
-
 = Q.I need More features what can I do ?   =
 A. you can create support ticket here with features details that you need, one of our support member will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
 
 = Q.How can I get best support from plugin Company   =
 A. you can create support ticket here with problem details with possible screenshot that you have problem, one of our support member will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
 
+
 == Changelog ==
 
-= 1.0.0 =
-*Initial Release Date - 02 February 2018*
-
-= 1.0.2 =
-*Quantity Manage Added - 14 February 2018*
-
-= 1.0.5 =
-*Update Release, Google Map and Add to calender feture added and some bug fixed - 22 February 2018*
-
-= 1.0.6 =
-*Update Release, Event Extra option feature added. So now you can add as many option with a event with price - 27 February 2018*
-
-= 2.0 =
-*Update Release, A Huge update released, added so many features. - 02 July 2018*
-
-= 2.0.3 =
-*Update Release, Responsive issue fixed, added label setting panel so now easily all lable changable from dashboard. 03 July 2018*
-
-= 2.0.4 =
-*Update Release, Minor Bug Fixs. 04 July 2018*
-
-= 2.0.5 =
-*Update Release,F.A.Q Feature added into every events. 07 July 2018*
-
-= 2.0.6 =
-*Update Release,Styling Section added into Event Setting Section, Now users can control all type of styling issue from dashboard. 09 July 2018*
-
-= 2.0.8 =
-*Update Release,Minor Bux Fixed 13 July 2018*
-
-= 2.0.9 =
-*Update Release,Quantity Box issue Fixed & Datepcker missing Next and Previuos button fixed 6 Aug 2018*
-
-= 2.1.0 =
-*Update Release, jQuery Conflict fixed with DiVi theme. 8 Aug 2018*
-
-= 2.1.1 =
-*Update Release, php warning and notice removed and date issue fixed. 16 Aug 2018*
-
-= 2.1.2 =
-*Update Release, php warning and notice removed and date issue fixed. 25 Aug 2018*
-
-= 2.1.3 =
-*Update Release, Date display issue fixed. 14 Sep 2018*
-
-= 2.1.4 =
-*Update Release, Sorting feture added into shortcode. 18 Sep 2018*
-
-= 2.1.5 =
-*Update Release, Fixed Google Calender Time issue fixed. 06 Nov 2018
-
-= 2.1.6 =
-*Update Release, Event Expired Listing Query Issue has been fixed in this version.. 06 Nov 2018*
-
-= 2.1.9 =
-*Update Release, Custom email sending issue has been fixed. 28 Nov 2018*
-
-= 2.2.0 =
-*Update Release, Fixed no numeric error, and add feature to hide available seat count. 29 Nov 2018*
-
-= 2.2.1 & 2.2.2 =
-*Update Release, fixed cart wrong calculation issue. 02 Dec 2018*
-
-= 2.2.3 =
-*Update Release:
-Added custom excerpt option into event, Fix zero amount add to cart issue, Showing Not Ticket available message when all tickets sold out, Price Label settings has been added into Event Settings. 02 Dec 2018*
-
-= 2.2.6 =
-*Update Release:Translation ready,Bangla language fully supported,NL language fully supported. 18 Dec 2018*
-
-= 2.3.1 =
-*Update Release: PDF Ticket New Design,Now you can add custom image as background of PDF Ticket,Terms and Condition text in PDF Ticket,Seat Reservation Feature added. Now owner can reserve of event seat,Add to cart Button issue fixed. 31 Jan 2019*
-
-= 2.3.2 =
-*Update Release: France Language Pack Ready. 05 Feb 2019*
-
-= 2.5.8 =
-*Update Release: Security Vulnerability Issue Fixed. 28 April 2019*
-
-= 2.6 =
-*Update Release: CSV Blank issue fixed, Multiple Add Calender feature added. 21 May 2019*
-
-= 2.6.1 =
-*Update Release: Templating issue fixed in child theme. 03 June 2019*
-
-= 2.6.2 & 2.6.3 =
-*Update Release: Calendar Button issue fixed, Calendar Button label text issue fixed, Template broken issue fixed ,Add Ticket Number into CSV File, Dynamic Column feature in CSV file. 11 June 2019*
-
-= 2.6.4 =
-*Update Release: Booking counting duplicating issue fixed in free event, Add new feature Reset Booking count option. 19 June 2019*
-
-= 2.6.5 =
-*Update Release: Fixed Security issue in Attandee Page. 15 June 2019*
-
-= 2.6.6 =
-*Update Release: Added new strings into Translation setting page, Fixed event details page not showing in some theme issue, Mixitup Filter for multiple sub category issue fixed. 1 July 2019*
-
-= 2.6.7 =
-* Update Release: Timezone issue fixed, Added Event expire date change settings, Negative value display issue fixed. 3 July 2019*
-
-= 2.6.8 =
-* Update Release: Quick fix, Double booking issue fixed. 5 July 2019*
-
-= 2.6.9 =
-* Update Release: PHP warning fixed, Date Display. 18 July 2019*
-
-= 2.7.0 =
-* Update Release: Removed Single Price Section, Added missing values into product set_props. 01 Aug 2019*
-
-= 2.7.1 =
-* Update Release: Removed Organizer address php warning issue in dashboard, Fix woocomerce product showing warning issue in the thankyou page, 07 Aug 2019*
-
-= 2.7.2 =
-* Update Release: Bug Fixed, 15 Sep 2019*
-
-
-= 2.8.0 =
-* Update Release: Bug Fixed, Event seating issue fixed while order status chganged. 04 Nov 2019*
-
-= 3.0.0 =
-* Update Release: Code Improved, Facebook For Woocommerce Issue Fixed, Bug Fixed. 10 Dec 2019*
-
-= 3.0.1 =
-* Update Release: Shortcode not showing issue fixed, Timezone issue fixed, Time Format issue fixed. 15 Dec 2019*
-
-= 3.0.2 =
-* Update Release: Add Calendar Button issue fixed, Event Checkout Validation, Missing Translation added. 17 Dec 2019*
-
-= 3.0.3 =
-* Update Release: Code Improved, Date Issue Fixed in Some template and organizer page & PDF Ticket, Email HTML support issue fixed. 02 Jan 2020*
-
-= 3.0.5 =
-* Update Release: Code Improved, Date Issue Fixed in Event List, Email HTML support issue fixed. 15 Jan 2020*
-
-= 3.0.6 =
-* Update Release: Code Improved, Design Issue Fixed, Template Missing issue fixed. 22 Jan 2020*
-
-= 3.0.7 =
-* Update Release: Design Issue Fixed, Event Image is Cart not Showing issue fixed, Event List Last item broken issue fixed. 23 Jan 2020*
-
-= 3.0.9 =
+= 3.9.3 =
 * Update Release:
-Design Issue Fixed
-Extra Service Intentory System Added, 
-Cart Display Information Improved, 
-Tax Issue solved, 
-Google Map Display Issue fixed, 
-Cart Message Display issue fixed in Event Details Page, 
-Event Date Wrong Icon issue fixed, 
-Event Date removed start & end text from first date. 
-29 Jan 2020*
+* Email Text Formating issue fixed
+* Extra Service Calcualtion issue fixed for decimal value
+* Code Optimized
+* Bug Fixed
+16 May 2023*
 
-= 3.1.0 =
+
+= 3.9.2 =
 * Update Release:
-Default Value option Added
-jQuery Validation Added
-CatID & OrgID Column Added
-Some Bug Fixed
-Code Improved
-Expire Event List Shortcode issue fixed
-05 Feb 2020*
+Editor HTML tag issue fixed.
+PHP warning issue fixed.
+03 May 2023*
 
-
-= 3.1.5 =
+= 3.9.0 =
 * Update Release:
-Some Bug Fixed
-Code Improved
-11 March 2020*
+URL issue fixed in FAQ editor.
+29 March 2023*
 
-
-= 3.2.1 =
+= 3.8.9 =
 * Update Release:
-Some Bug Fixed
-Code Improved
-Multi date list added in the Event listing page
-Schema Rich Text Added, Now it ca be easily add the rich text schema text. 
-PHP Warning removed
-Added some Action & Filter Hooks
-Pagination Styling issue fixed
-24 March 2020*
+Email & PDF Text Format issue fixed
+23 March 2023*
 
-
-= 3.2.3 =
+= 3.8.8 =
 * Update Release:
-Some Bug Fixed
-Code Improved
-Added some new Action & Filter Hooks
-Added New style in event list shortcode, New styles are Minimal Style [event-list style='minimal'], Native Style [event-list style='native'], Timeline Style [event-list style='timeline'] & Title only [event-list style='title']
-Added New Shortcode [event-city-list] For display the City list of Event
-Now Tou can easily filter event by city [event-list city='Dhaka'] or country [event-list country='India'] on event list shortcode 
-Added Event Carousal in Event list shortcode.[event-list pagination='carousal' carousal-dots='yes' carousal-nav='yes']
-Multidate List in Event List shortcode, you can turn off/on from event settings page
-Fixed Grid style broken issue
-Date Timezone Wrong name Display issue fixed
-Calendar No Event Display Issue Fixed
-11 April 2020*
+Event List Page Broken Issue Fixed
+Fatal error warning issue fixed.
+21 March 2023*
 
+= 3.8.7 =
+* Update Release:
+Link Enabled in FAQ Editor
+Label Escpaing issue fixed
+Double Booking issue fixed
+20 March 2023*
+
+= 3.8.6 =
+* Update Release:
+Fixed the Date showing above the ticket type table issue.
+14 March 2023*
+
+
+= 3.7.8 =
+* Update Release:
+Email Sending Disable Option
+TimeZone not showing issue fixed
+Afterpay Payment Gateway Issue fixed
+WooCommerce Subscrption Issue fixed
+Code Optimized
+New Filter & Action Hook added
+Bug fixed
+24 Nov 2022*
+
+= 3.7.6 =
+* Update Release:
+Email Content Missing issue fixed
+Code Optimized
+New Filter & Action Hook added
+Bug fixed
+01 Nov 2022*
+
+= 3.7.5 =
+* Update Release:
+Email Text Blank Space issue fixed
+Gurenberg Editor error issue fixed
+Bug fixed
+05 Oct 2022*
+
+= 3.7.2 =
+* Update Release:
+Event Based Date Time Format has been added.
+Bug fixed
+08 Sep 2022*
+
+= 3.7.0 =
+* Update Release:
+Rich Schmea Error issue fixed
+Multiple Event Add to cart issue fixed
+Bug fixed
+04 Aug 2022*
+
+= 3.6.8 =
+* Update Release:
+Quick Setup Page Added
+Bug fixed
+04 Aug 2022*
+
+= 3.6.7 =
+* Update Release:
+Ticket Allocation issue fixed for special char.
+Bug fixed
+27 Jun 2022*
+
+= 3.6.6 =
+* Update Release:
+Bug fixed
+09 Jun 2022*
+
+= 3.5.4 =
+* Update Release:
+Event Setting Not saving issue fixed
+Email Body Text Formating issue fixed 
+Royel Theme styling issue fixed
+Mobile Responsive issue fixed
+Security issue fixed
+Style Issue fixed
+Bug Fixed
+11 Nov 2021*
+
+= 3.5.0 =
+* Update Release:
+Elementor Support & Widget
+Multilingual Support (WPML & Polylang)
+Style Issue fixed
+Google Map Issue fixed
+New List Style added (Spring, Winter)
+New Theme Added (Vanila)
+PHP 8 Supported
+New Features & Settings added
+Bug Fixed
+Hook Added
+20 Sep 2021*
 
 = 3.2.4 =
 * Update Release:
@@ -584,317 +507,59 @@ Multi Date Expand/Collapse option added into Event Details Page.
 
 28 April 2020*
 
-
-= 3.2.5 =
+= 3.2.3 =
 * Update Release:
-Code Optimized & Improved
-Fix Event Start Date Time Wrong Display issue
-New Feature: You can hide Event Date & location from the cart section display
-New Filter & Action hooks added
+Some Bug Fixed
+Code Improved
+Added some new Action & Filter Hooks
+Added New style in event list shortcode, New styles are Minimal Style [event-list style='minimal'], Native Style [event-list style='native'], Timeline Style [event-list style='timeline'] & Title only [event-list style='title']
+Added New Shortcode [event-city-list] For display the City list of Event
+Now Tou can easily filter event by city [event-list city='Dhaka'] or country [event-list country='India'] on event list shortcode 
+Added Event Carousal in Event list shortcode.[event-list pagination='carousal' carousal-dots='yes' carousal-nav='yes']
+Multidate List in Event List shortcode, you can turn off/on from event settings page
+Fixed Grid style broken issue
+Date Timezone Wrong name Display issue fixed
+Calendar No Event Display Issue Fixed
+11 April 2020*
 
-08 May 2020*
 
-
-= 3.2.6 =
+= 3.0.9 =
 * Update Release:
-Code Optimized & Improved
-Fix Event Date issue in Event List For Multidate
-Event Location modified in event list
-WooCommerce Hidden Product issue fixed
-New Filter hooked added in Total Seat value
-24 May 2020*
+Design Issue Fixed
+Extra Service Intentory System Added, 
+Cart Display Information Improved, 
+Tax Issue solved, 
+Google Map Display Issue fixed, 
+Cart Message Display issue fixed in Event Details Page, 
+Event Date Wrong Icon issue fixed, 
+Event Date removed start & end text from first date. 
+29 Jan 2020*
+
+= 3.0.7 =
+* Update Release: Design Issue Fixed, Event Image is Cart not Showing issue fixed, Event List Last item broken issue fixed. 23 Jan 2020*
+
+= 2.7.1 =
+* Update Release: Removed Organizer address php warning issue in dashboard, Fix woocomerce product showing warning issue in the thankyou page, 07 Aug 2019*
+
+= 2.6.4 =
+*Update Release: Booking counting duplicating issue fixed in free event, Add new feature Reset Booking count option. 19 June 2019*
+
+= 2.2.3 =
+*Update Release:
+Added custom excerpt option into event, Fix zero amount add to cart issue, Showing Not Ticket available message when all tickets sold out, Price Label settings has been added into Event Settings. 02 Dec 2018*
+
+= 2.0.5 =
+*Update Release,F.A.Q Feature added into every events. 07 July 2018*
+
+= 2.0 =
+*Update Release, A Huge update released, added so many features. - 02 July 2018*
+
+= 1.0.6 =
+*Update Release, Event Extra option feature added. So now you can add as many option with a event with price - 27 February 2018*
 
 
+= 1.0.2 =
+*Quantity Manage Added - 14 February 2018*
 
-= 3.3.0 =
-* Update Release:
-Code Optimized & Improved
-Child Theme Support added for event temlates
-New Hooks added
-Event Label & Slug change settings added
-PHP Warning in cart page issue fixed
-More...
-12 July 2020*
-
-
-= 3.3.1 =
-* Update Release:
-Code Optimized & Improved
-Location Typo fixed in event list
-Event Confirmation email sending based on order status settings added
-20 July 2020*
-
-
-= 3.3.2 =
-* Update Release:
-Code Optimized & Improved
-Event Category & Organizer Custom Slug added in settings page
-Event List Carousel Settings added
-Card Decline Attendee reduced issue fixed
-Calendar issue fixed
-Decimal Amount calculation issue fixed in cart
-Google Schema text warning issue fixed
-
-20 July 2020*
-
-
-= 3.3.3 =
-* Update Release:
-Code Optimized & Improved
-Bug Fixed
-
-14 Sept 2020*
-
-
-= 3.3.4 =
-* Update Release:
-Conflict issue fixed with bus plugin
-Tax Pricing issue fixed
-Code Optimized & Improved
-Bug Fixed
-
-20 Sept 2020*
-
-= 3.3.5 =
-* Update Release:
-Tax Pricing issue fixed
-CSS DEsign issue fixed
-Duplicate booking issue fixed
-New Hooks added
-Code Optimized & Improved
-Bug Fixed
-
-26 Oct 2020*
-
-
-= 3.3.6 =
-* Update Release:
-Quick Update for Book Now Button Issue
-Added Settings to Disbale/Enable Book Now Button
-Event List Column 1 issue fixed
-Event List Thumbnail Feature Added
-
-28 Oct 2020*
-
-= 3.3.8 =
-* Update Release:
-PHP Errors issue fixed
-WP Editor added into Event Confirmation Text
-Hook Added
-
-05 Nov 2020*
-
-= 3.3.9 =
-* Update Release:
-PHP Errors issue fixed
-WP Editor added into Event Confirmation Text
-Hook Added
-
-28 Nov 2020*
-
-= 3.4.0 =
-* Update Release:
-A new UI Added in the backend/Dashboard
-CSS Issue fixed.
-Hook Added
-Some Bug fixed.
-Password Protected Event feature enabled 
-Multi Currenncy Support feature added
-Currency symbol issue fixed in the live calculation
-
-27 Dec 2020*
-
-
-
-= 3.4.1 =
-* Update Release:
-CSS Issue fixed.
-Hook Added
-Some Bug fixed.
-Early Bird Ticket Feature added
-
-25 Jan 2021*
-
-
-= 3.4.2=
-* Update Release:
-Event SKU Added.
-Hook Added
-Some Bug fixed.
-Event Server Status Check Page Added
-
-03 Feb 2021*
-
-= 3.4.5=
-* Update Release:
-Multi cat id support in Shortcode 
-Member Role wise event feature added
-Early bird feature added in ticket type
-Bug fixed
-Hook added
-25 Feb 2021*
-
-= 3.4.6=
-* Update Release:
-Total Price 0 issue fixed
-02 March 2021*
-
-= 3.4.8=
-* Update Release:
-New Social Icon added
-Bug Fixed
-Hook Added
-15 March 2021*
-
-= 3.5.0=
-* Update Release:
-Elementor Support & Widget
-Multilingual Support (WPML & Polylang)
-Style Issue fixed
-Google Map Issue fixed
-New List Style added (Spring, Winter)
-New Theme Added (Vanila)
-PHP 8 Supported
-New Features & Settings added
-Bug Fixed
-Hook Added
-20 Sep 2021*
-
-= 3.5.1=
-* Update Release:
-Event Date not showing in cart issue fixed
-Security issue fixed
-Style Issue fixed
-Bug Fixed
-26 Sep 2021*
-
-= 3.5.3=
-* Update Release:
-Event Search Feature Added
-Speed optimization
-New Event list style 
-Security issue fixed
-Style Issue fixed
-Bug Fixed
-28 Oct 2021*
-
-= 3.5.4=
-* Update Release:
-Event Setting Not saving issue fixed
-Email Body Text Formating issue fixed 
-Royel Theme styling issue fixed
-Mobile Responsive issue fixed
-Security issue fixed
-Style Issue fixed
-Bug Fixed
-11 Nov 2021*
-
-= 3.5.5=
-* Update Release:
-Email Text HTML tag issue fixed
-Translation Issue fixed
-Event List Image Quality issue fixed
-Style Issue fixed
-Bug Fixed
-24 Nov 2021*
-
-= 3.5.6=
-* Update Release:
-Event Duplicate Warning issue fixed
-Style Issue fixed
-Bug Fixed
-more....
-28 Dec 2021*
-
-= 3.5.7=
-* Update Release:
-Winter & Spring date missing issue fixed
-Slow Query Issue fixed
-New Hook Added
-Style Issue fixed
-Bug Fixed
-more....
-21 Jan 2022*
-
-= 3.5.8=
-* Update Release:
-Style Issue fixed
-Bug Fixed
-more....
-17 Feb 2022*
-
-
-= 3.6.1=
-* Update Release:
-Style Issue fixed
-New Hook added
-05 April 2022*
-
-= 3.6.3=
-* Update Release:
-Admin Settings Fatal Error Issue fixed.
-Live Icon filter added.
-13 April 2022*
-
-
-= 3.6.5=
-* Update Release:
-Warning: Invaild Product ID in Checkout Page fixed
-11 May 2022*
-
-= 3.6.6=
-* Update Release:
-Bug fixed
-09 Jun 2022*
-
-= 3.6.7=
-* Update Release:
-Ticket Allocation issue fixed for special char.
-Bug fixed
-27 Jun 2022*
-
-
-= 3.6.8=
-* Update Release:
-Quick Setup Page Added
-Bug fixed
-04 Aug 2022*
-
-= 3.7.0=
-* Update Release:
-Rich Schmea Error issue fixed
-Multiple Event Add to cart issue fixed
-Bug fixed
-04 Aug 2022*
-
-= 3.7.2=
-* Update Release:
-Event Based Date Time Format has been added.
-Bug fixed
-08 Sep 2022*
-
-= 3.7.5=
-* Update Release:
-Email Text Blank Space issue fixed
-Gurenberg Editor error issue fixed
-Bug fixed
-05 Oct 2022*
-
-= 3.7.6=
-* Update Release:
-Email Content Missing issue fixed
-Code Optimized
-New Filter & Action Hook added
-Bug fixed
-01 Nov 2022*
-
-= 3.7.8=
-* Update Release:
-Email Sending Disable Option
-TimeZone not showing issue fixed
-Afterpay Payment Gateway Issue fixed
-WooCommerce Subscrption Issue fixed
-Code Optimized
-New Filter & Action Hook added
-Bug fixed
-24 Nov 2022*
+= 1.0.0 =
+*Initial Release Date - 02 February 2018*

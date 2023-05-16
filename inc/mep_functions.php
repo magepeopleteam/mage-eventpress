@@ -5455,4 +5455,4 @@ $button = apply_filters('mep_cart_icon',"<i class='fa fa-shopping-cart'></i>",$e
 
 echo '<span class="mep-cart-btn-icon">'.$button.'</span>';
 
-}
+}git 

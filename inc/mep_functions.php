@@ -546,7 +546,7 @@ if (!function_exists('mep_attendee_extra_service_create')) {
                     update_post_meta($pid, 'ea_extra_service_name', $extra_serive['service_name']);
                     update_post_meta($pid, 'ea_extra_service_qty', $extra_serive['service_qty']);
                     update_post_meta($pid, 'ea_extra_service_unit_price', $extra_serive['service_price']);
-                    update_post_meta($pid, 'ea_extra_service_total_price', $extra_serive['service_qty'] * (int) $extra_serive['service_price']);
+                    update_post_meta($pid, 'ea_extra_service_total_price', $extra_serive['service_qty'] * (float) $extra_serive['service_price']);
                     update_post_meta($pid, 'ea_extra_service_event', $event_id);
                     update_post_meta($pid, 'ea_extra_service_order', $order_id);
                     update_post_meta($pid, 'ea_extra_service_order_status', $order_status);
@@ -1165,7 +1165,7 @@ function mep_update_event_seat_inventory($event_id,$ticket_array,$type='order'){
     
     foreach($ticket_array as $ticket){
         $name                  = $ticket['ticket_name'];
-        $date                  = $ticket['event_date'];
+        $date                  = date('Y-m-d H:i',strtotime($ticket['event_date']));
         $_date                 = date('YmdHi',strtotime($date));
         $total_quantity        = (int) mep_get_ticket_type_info_by_name($name, $event_id);
         $total_resv_quantity   = (int) mep_get_ticket_type_info_by_name($name, $event_id,'option_rsv_t');
@@ -1185,6 +1185,8 @@ function mep_update_event_seat_inventory($event_id,$ticket_array,$type='order'){
 
         // Update Total Event By Date Seat Count
         update_post_meta($event_id,$event_name,$seat_left_date);
+
+        // mep_update_ticket_type_seat($event_id,$name,$date,$total_quantity,$total_resv_quantity);
 
     }
 
@@ -2391,7 +2393,7 @@ if (!function_exists('mep_save_attendee_info_into_cart')) {
             $mep_form_builder_data = get_post_meta($reg_form_id, 'mep_form_builder_data', true);
             if ($mep_form_builder_data) {
                 foreach ($mep_form_builder_data as $_field) {
-                    $user[$iu][$_field['mep_fbc_id']] = stripslashes(mage_array_strip($_POST[$_field['mep_fbc_id']][$iu]));
+                    $user[$iu][$_field['mep_fbc_id']] = isset($_POST[$_field['mep_fbc_id']][$iu]) ? stripslashes(mage_array_strip($_POST[$_field['mep_fbc_id']][$iu])) : "";
 			    //mep_attendee_upload_file_system($user,$iu,$_field);
 			    $user=apply_filters('mep_attendee_upload_file',$user,$iu,$_field);
                 }
@@ -4783,12 +4785,16 @@ function mep_get_default_lang_event_id($event_id) {
         $defaultLanguage = function_exists('pll_default_language') ? pll_default_language() : get_locale();
         $translations = function_exists('pll_get_post_translations') ? pll_get_post_translations($event_id) : [];
         $event_id = sizeof($translations) > 0 ? $translations[$defaultLanguage] : $event_id;
+
     } elseif ($multi_lang_plugin == 'wpml') {
         // WPML
         $default_language = function_exists('wpml_loaded') ? $sitepress->get_default_language() : get_locale(); // will return 'en'
         $event_id = apply_filters('wpml_object_id', $event_id, 'mep_events', TRUE, $default_language);
+
     } else {
+
         $event_id = $event_id;
+        
     }
     return $event_id;
 }

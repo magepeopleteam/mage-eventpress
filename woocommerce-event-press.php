@@ -106,7 +106,7 @@ if (is_plugin_active('woocommerce/woocommerce.php')) {
     wp_register_style('welcome-tabs', plugin_dir_url(__FILE__) . 'css/welcome-tabs.css');
   }
 
-
+//dgdg
 
   add_action('admin_menu', 'mep_event_welcome_admin_menu');
   function mep_event_welcome_admin_menu(){  

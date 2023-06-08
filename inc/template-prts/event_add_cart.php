@@ -10,7 +10,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
     {        
         global $post, $event_meta;
         $event_id                     = mep_get_default_lang_event_id($event_id);
-        $new_registration_system_sp	          = get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) ? get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) : 'off';
+        $new_registration_system_sp	  = get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) ? get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) : 'off';
 	    $seat_plan                 = get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) ? get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) : [];
 	    $seat_plan_visible         = get_post_meta($event_id, 'mp_event_seat_plan_visible', true) ? get_post_meta($event_id, 'mp_event_seat_plan_visible', true) : '1';
 //	  if(class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible ==2 &&$new_registration_system_sp=='on'){
@@ -175,7 +175,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
 						  <?php }if($not_in_the_cart){ ?>
 						  <button type="submit" name="add-to-cart" value="<?php echo esc_attr($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php do_action('mep_before_add_cart_button',$post_id); echo "<span class='mep-cart-btn-text'>".esc_html($cart_btn_label)."</span>"; do_action('mep_after_add_cart_button',$post_id); ?></button>
 					    <?php }else{  ?>
-                                        <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('You"ve already added this item to your cart! View your cart to continue shopping or checkout now.', 'mage-eventpress'); ?> </a>
+                                        <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('You have already added this item to your cart! View your cart to continue shopping or checkout now.', 'mage-eventpress'); ?> </a>
                                     <?php } ?>
                                 <?php do_action('mep_after_add_cart_btn',$post_id); ?>
                             </td>

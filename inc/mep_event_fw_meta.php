@@ -171,7 +171,7 @@ function mep_fw_meta_boxs()
 
 
     $events_dd_boxs = array(
-        'page_nav'     => __('Event Daywise Details', 'mage-eventpress'),
+        'page_nav'     => __('Event Timeline Details', 'mage-eventpress'),
         'priority' => 10,
         'sections' => array(
             'section_2' => array(
@@ -180,11 +180,11 @@ function mep_fw_meta_boxs()
                 'options'     => array(
                     array(
                             'id' => 'mep_event_day',
-                            'title' => __('Daywise Details', 'mage-eventpress'),
+                            'title' => __('Timeline Details', 'mage-eventpress'),
                             'details' => __('', 'mage-eventpress'),
                             'collapsible' => true,
                             'type' => 'repeatable',
-                            'btn_text' => __('Add New Days','mage-eventpress'),
+                            'btn_text' => __('Add New Timeline','mage-eventpress'),
                             'title_field' => 'mep_day_title',
                             'fields' => array(                              
                                 array(
@@ -209,7 +209,7 @@ function mep_fw_meta_boxs()
     );
     $events_dd_meta_args = array(
         'meta_box_id'               => 'mep_event_dd_meta_boxes',
-        'meta_box_title'            => '<i class="fas fa-newspaper"></i>'.__('Daywise Details', 'mage-eventpress'),
+        'meta_box_title'            => '<i class="fas fa-newspaper"></i>'.__('Timeline Details', 'mage-eventpress'),
         'screen'                    => array('mep_events'),
         'context'                   => 'normal',
         'priority'                  => 'high', 

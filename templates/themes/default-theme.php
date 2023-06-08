@@ -121,8 +121,10 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                 <div class="mep-default-sidrbar-calender-btn">
                     <?php do_action('mep_event_add_calender',get_the_id()); ?>
                 </div>
-            <?php }                         
+            <?php }    
+
             dynamic_sidebar('mep_default_sidebar');
+            
             ?>
         </div>
     </div>

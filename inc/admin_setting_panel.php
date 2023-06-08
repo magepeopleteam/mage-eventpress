@@ -214,16 +214,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'type' => 'text',
                             'default' => ''
                         ),
-                        // array(
-                        //     'name' => 'mep_event_time_format',
-                        //     'label' => __('Event Time Format', 'mage-eventpress'),
-                        //     'desc' => __('Please select what format time you want to display in the event front-end.', 'mage-eventpress'),
-                        //     'type' => 'select',
-                        //     'default' => 'wtss',
-                        //     'options' => array(
-                        //         'wtss' => 'WordPress TimeStamp Settings'
-                        //     )
-                        // ),
                         array(
                             'name' => 'mep_event_expire_on_datetimes',
                             'label' => __('When will the event expire', 'mage-eventpress'),
@@ -353,17 +343,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 'no'    => 'No'
                             )
                         ),   
-                        // array(
-                        //     'name'      => 'mep_allow_multiple_add_cart_event',
-                        //     'label'     => __('Allow multiple Add to Cart of a Single event?', 'mage-eventpress'),
-                        //     'desc'      => __('By Default adding to the cart of a single event is disabled. If you want to enable it select Yes', 'mage-eventpress'),
-                        //     'type'      => 'select',
-                        //     'default'   => 'no',
-                        //     'options'   => array(
-                        //         'yes'   => 'Yes',
-                        //         'no'    => 'No'
-                        //     )
-                        // ),  
+                     
 
                         array(
                             'name'      => 'mep_show_hidden_wc_product',
@@ -406,7 +386,24 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 '24'   => '24',
                                 '25'   => '25'
                             )
+                        ),   
+                        
+                        array(
+                            'name'      => 'mep_show_event_sidebar',
+                            'label'     => __('Show Event Sidebar Widgets?', 'mage-eventpress'),
+                            'desc'      => __('If you enable this then a Widget area will be registred and you can add any widgets from the Widget Menu. By default its disabled', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'disable',
+                            'options'   => array(
+                                'enable'   => 'Enable',
+                                'disable'    => 'Disable'
+                            )
                         ),                          
+
+
+
+
+
                         
                     )
                 ),

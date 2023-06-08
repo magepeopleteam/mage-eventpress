@@ -24,6 +24,7 @@ if (!class_exists('EDD_SL_Plugin_Updater')) {
     require_once(dirname(__DIR__) . "/inc/mep_enque.php");
     require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
     require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
+    require_once(dirname(__DIR__) . "/inc/mep_dummy_import.php");
     
     require_once(dirname(__DIR__) . "/inc/mep_functions.php");
     require_once(dirname(__DIR__) . "/inc/mep_query.php");

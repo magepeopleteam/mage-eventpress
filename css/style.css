@@ -50,6 +50,8 @@
 .mep-events-wrapper ul,
 .mep-related-events-sec ul {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .mep-events-wrapper .mage_text_center {
@@ -1050,7 +1052,15 @@ h3.mep_list_date {
     padding: 10px 0 0 0;
 }
 
-.mep-list-footer ul {}
+.list_with_filter_section.mep_event_list {
+    max-width: 1270px;
+}
+
+.mep-list-footer ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
 
 .mep-list-footer ul li {
     margin: 7px 0 0 0;

@@ -196,7 +196,8 @@ if (!function_exists('mep_ev_date')) {
             }
         } else {
             ?>
-            <p><?php echo  apply_filters('mep_display_date_only',get_mep_datetime($start_datetime, 'date-text'),$event_id); ?></p>
+            <p><?php    
+             echo  apply_filters('mep_display_date_only',get_mep_datetime($start_datetime, 'date-text'),$event_id); ?></p>
             <?php
         }
     }

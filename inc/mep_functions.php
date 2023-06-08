@@ -6,6 +6,59 @@ if (!defined('ABSPATH')) {
 appsero_init_tracker_mage_eventpress();
 
 
+
+// add_action('init','mep_test');
+// function mep_test(){
+//     $t = mep_get_page_by_slug('shopXX');
+
+// if($t){
+//     echo 123;
+//     print_r($t);
+// }
+
+   
+//     die();
+// }
+
+
+
+function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
+	global $wpdb;
+
+	if ( is_array( $post_type ) ) {
+		$post_type = esc_sql( $post_type );
+		$post_type_in_string = "'" . implode( "','", $post_type ) . "'";
+		$sql = $wpdb->prepare( "
+			SELECT ID
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			AND post_type IN ($post_type_in_string)
+		", $page_slug );
+	} else {
+		$sql = $wpdb->prepare( "
+			SELECT ID
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			AND post_type = %s
+		", $page_slug, $post_type );
+	}
+
+	$page = $wpdb->get_var( $sql );
+
+	if ( $page )
+		return get_post( $page, $output );
+
+	return null;
+}
+
+
+
+
+
+
+
+
+
 function mep_add_event_into_feed_request($qv) {
     if (isset($qv['feed']) && !isset($qv['post_type']))
         $qv['post_type'] = array('mep_events');
@@ -2521,8 +2574,8 @@ if (!function_exists('mep_mep_events_column')) {
                 if ($recurring == 'yes') {
                     $more_date = get_post_meta($post_id, 'mep_event_more_date', true) ? get_post_meta($post_id, 'mep_event_more_date', true) : array();
                     $event_more_dates = is_array($more_date) && sizeof($more_date) > 0 ? count($more_date) + 1 : '';
-
-                    echo mep_get_event_total_seat($post_id, $event_more_dates, 'multi');
+                        
+                    echo apply_filters( 'mep_attendee_stat_recurring', mep_get_event_total_seat($post_id, $event_more_dates, 'multi'),$post_id);
                 } else {
                     echo mep_get_event_total_seat($post_id);
                 }
@@ -3015,26 +3068,24 @@ if (!function_exists('mep_wc_link_product_on_save')) {
 
 add_action('admin_head', 'mep_hide_date_from_order_page');
 if (!function_exists('mep_hide_date_from_order_page')) {
-
-function mep_hide_date_from_order_page() {
-    $product_id = [];
-    $hide_wc       = mep_get_option('mep_show_hidden_wc_product', 'general_setting_sec', 'no');    
-    $args = array(
-        'post_type' => 'mep_events',
-        'posts_per_page' => -1
-    );
-    $qr = new WP_Query($args);
-    foreach ($qr->posts as $result) {
-        $post_id = $result->ID;
-        $product_id[] = get_post_meta($post_id, 'link_wc_product', true) ? '.woocommerce-page .post-' . get_post_meta($post_id, 'link_wc_product', true) . '.type-product' : '';
+    function mep_hide_date_from_order_page() {
+        $product_id = [];
+        $hide_wc       = mep_get_option('mep_show_hidden_wc_product', 'general_setting_sec', 'no');    
+        $args = array(
+            'post_type'         => 'mep_events',
+            'posts_per_page'    => -1
+        );
+        $qr = new WP_Query($args);
+        foreach ($qr->posts as $result) {
+            $post_id = $result->ID;
+            $product_id[] = get_post_meta($post_id, 'link_wc_product', true) ? '.woocommerce-page .post-' . get_post_meta($post_id, 'link_wc_product', true) . '.type-product' : '';
+        }
+        $product_id = array_filter($product_id);
+        $parr = implode(', ', $product_id);
+        if($hide_wc == 'no'){
+            echo '<style> ' . esc_html($parr) . '{display:none!important}' . ' </style>';
+        }
     }
-    $product_id = array_filter($product_id);
-    $parr = implode(', ', $product_id);
-if($hide_wc == 'no'){
-    echo '<style> ' . esc_html($parr) . '{display:none!important}' . ' </style>';
-}
-}
-
 }
 
 add_action('init','mep_get_all_hidden_product_id_array');
@@ -3052,12 +3103,7 @@ function mep_get_all_hidden_product_id_array() {
     $product_id = array_filter($product_id);
     return $product_id;
 }
-
 add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', 'mep_get_all_hidden_product_id_array' );
-
-
-
-
 
 
 
@@ -4488,6 +4534,9 @@ function mep_get_event_add_cart_sec($post_id) {
 
 if (!function_exists('mep_default_sidebar_reg')) {
 function mep_default_sidebar_reg() {
+$check_sidebar_status = mep_get_option('mep_show_event_sidebar', 'general_setting_sec','disable');
+
+if($check_sidebar_status == 'enable'){
     register_sidebar(array(
         'name' => __('Event Manager For Woocommerce Sidebar', 'mage-eventpress'),
         'id' => 'mep_default_sidebar',
@@ -4498,9 +4547,10 @@ function mep_default_sidebar_reg() {
         'after_title' => '</h3>',
     ));
 }
+
+}
 }
 add_action('widgets_init', 'mep_default_sidebar_reg');
-
 
 
 function mep_html_chr($string){    
@@ -4722,86 +4772,73 @@ function mep_location_existis($meta_name, $event_id) {
  * Functions Dev by @Ariful
  **************************/
 if (!function_exists('mep_elementor_get_events')) {
-function mep_elementor_get_events($default) {
-    $args = array('post_type' => 'mep_events',);
-    $list = array('0' => $default);
-
-    $the_query = new WP_Query($args);
-
-
-    if ($the_query->have_posts()) {
-        while ($the_query->have_posts()) {
-            $the_query->the_post();
-            $list[get_the_id()] = get_the_title();
+    function mep_elementor_get_events($default) {
+        $args = array('post_type' => 'mep_events',);
+        $list = array('0' => $default);
+        $the_query = new WP_Query($args);
+        if ($the_query->have_posts()) {
+            while ($the_query->have_posts()) {
+                $the_query->the_post();
+                $list[get_the_id()] = get_the_title();
+            }
         }
+        wp_reset_postdata();
+        return $list;
     }
-
-    wp_reset_postdata();
-
-    return $list;
-}
 }
 
 if (!function_exists('mep_get_list_thumbnail_src')) {
-function mep_get_list_thumbnail_src($event_id,$size='full') {
+    function mep_get_list_thumbnail_src($event_id,$size='full') {
 
-    $thumbnail_id = get_post_meta($event_id, 'mep_list_thumbnail', true) ? get_post_meta($event_id, 'mep_list_thumbnail', true) : 0;
+        $thumbnail_id = get_post_meta($event_id, 'mep_list_thumbnail', true) ? get_post_meta($event_id, 'mep_list_thumbnail', true) : 0;
 
-    if ($thumbnail_id > 0) {
-        $thumbnail = wp_get_attachment_image_src($thumbnail_id, $size);
-        echo esc_attr(is_array($thumbnail) && sizeof($thumbnail) > 0 ? $thumbnail[0] : '');
-    } else {
-        $thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id($event_id), $size);
-        echo esc_attr(is_array($thumbnail) && sizeof($thumbnail) > 0 ? $thumbnail[0] : '');
+        if ($thumbnail_id > 0) {
+            $thumbnail = wp_get_attachment_image_src($thumbnail_id, $size);
+            echo esc_attr(is_array($thumbnail) && sizeof($thumbnail) > 0 ? $thumbnail[0] : '');
+        } else {
+            $thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id($event_id), $size);
+            echo esc_attr(is_array($thumbnail) && sizeof($thumbnail) > 0 ? $thumbnail[0] : '');
+        }
     }
-}
 }
 
 
 add_filter('mep_check_product_into_cart', 'mep_disable_add_to_cart_if_product_is_in_cart', 10, 2);
 if (!function_exists('mep_disable_add_to_cart_if_product_is_in_cart')) {
-function mep_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $product) {
-    
-    
-    // Loop through cart items checking if the product is already in cart
-    if (isset(WC()->cart) && !is_admin() && !empty(WC()->cart->get_cart())) {
-        foreach (WC()->cart->get_cart() as $cart_item) {
-            if ($cart_item['data']->get_id() == $product) {
-                return false;
+    function mep_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $product) {        
+        // Loop through cart items checking if the product is already in cart
+        if (isset(WC()->cart) && !is_admin() && !empty(WC()->cart->get_cart())) {
+            foreach (WC()->cart->get_cart() as $cart_item) {
+                if ($cart_item['data']->get_id() == $product) {
+                    return false;
+                }
             }
         }
+        return $is_purchasable;
     }
-    return $is_purchasable;
-}
 }
 
 if (!function_exists('mep_get_default_lang_event_id')) {
-function mep_get_default_lang_event_id($event_id) {
-    global $sitepress;
-    $multi_lang_plugin = mep_get_option('mep_multi_lang_plugin', 'general_setting_sec', 'none');
+    function mep_get_default_lang_event_id($event_id) {
+        global $sitepress;
+        $multi_lang_plugin = mep_get_option('mep_multi_lang_plugin', 'general_setting_sec', 'none');
 
-    if ($multi_lang_plugin == 'polylang') {
-        // Get PolyLang ID
-        $defaultLanguage = function_exists('pll_default_language') ? pll_default_language() : get_locale();
-        $translations = function_exists('pll_get_post_translations') ? pll_get_post_translations($event_id) : [];
-        $event_id = sizeof($translations) > 0 ? $translations[$defaultLanguage] : $event_id;
+        if ($multi_lang_plugin == 'polylang') {
+            // Get PolyLang ID
+            $defaultLanguage = function_exists('pll_default_language') ? pll_default_language() : get_locale();
+            $translations = function_exists('pll_get_post_translations') ? pll_get_post_translations($event_id) : [];
+            $event_id = sizeof($translations) > 0 ? $translations[$defaultLanguage] : $event_id;
 
-    } elseif ($multi_lang_plugin == 'wpml') {
-        // WPML
-        $default_language = function_exists('wpml_loaded') ? $sitepress->get_default_language() : get_locale(); // will return 'en'
-        $event_id = apply_filters('wpml_object_id', $event_id, 'mep_events', TRUE, $default_language);
-
-    } else {
-
-        $event_id = $event_id;
-        
+        } elseif ($multi_lang_plugin == 'wpml') {
+            // WPML
+            $default_language = function_exists('wpml_loaded') ? $sitepress->get_default_language() : get_locale(); // will return 'en'
+            $event_id = apply_filters('wpml_object_id', $event_id, 'mep_events', TRUE, $default_language);
+        } else {
+            $event_id = $event_id;        
+        }
+        return $event_id;
     }
-    return $event_id;
 }
-}
-
-
-
 
 
 /**

@@ -121,11 +121,21 @@ if (!class_exists('mep_dummy_import')) {
 
                                 foreach ($dummy_post as $dummy_data) {
                                     $title = $dummy_data['name'];
+                                    $content = $dummy_data['content'];
                                     $post_id = wp_insert_post([
                                         'post_title' => $title,
+                                        'post_content' => $content,
                                         'post_status' => 'publish',
                                         'post_type' => $custom_post,
                                     ]);
+
+                                    if (array_key_exists('taxonomy_terms', $dummy_data) && count($dummy_data['taxonomy_terms'])) 
+                                    {
+                                        foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) 
+                                        {
+                                            wp_set_object_terms( $post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true );
+                                        }
+                                    }
 
                                     if (array_key_exists('post_data', $dummy_data)) {
                                         foreach ($dummy_data['post_data'] as $meta_key => $data) {
@@ -270,6 +280,28 @@ if (!class_exists('mep_dummy_import')) {
                     'mep_events' => [
                         0 => [
                             'name' => 'Coxesbazar Sea beach Chair Booking',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Home Event',
+                                        1=>'Indoor Games',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Duperstar LLC',
+                                        1=>'Doogle Inc',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -372,11 +404,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -392,6 +432,32 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         1 => [
                             'name' => 'American Towman ShowPlace',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Business Event',
+                                        1=>'Cooking Class',
+                                        2=>'Home Event',
+                                        3=>'Indoor Games',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Best Buy Ltd',
+                                        1=>'Cooking Studio',
+                                        2=>'Duperstar LLC',
+                                        3=>'Doogle Inc',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -511,11 +577,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -531,6 +605,28 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         2 => [
                             'name' => 'Sistahs in Business Expo 2021',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Indoor Games',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Best Buy Ltd',
+                                        1=>'Cooking Studio',
+                                        2=>'Duperstar LLC',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -650,11 +746,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -670,6 +774,28 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         3 => [
                             'name' => 'Tech Career Fair: Exclusive Tech Hiring Event',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Business Event',
+                                        1=>'Cooking Class',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Best Buy Ltd',
+                                        1=>'Cooking Studio',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -789,11 +915,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -809,6 +943,27 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         4 => [
                             'name' => 'Free Networking Event In NYC',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Cooking Class',
+                                        1=>'Home Event',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Duperstar LLC',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -940,11 +1095,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -960,6 +1123,29 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         5 => [
                             'name' => 'Austin Tech Career Fair',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Business Event',
+                                        1=>'Cooking Class',
+                                        2=>'Home Event',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Duperstar LLC',
+                                        1=>'Doogle Inc',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -1078,11 +1264,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -1098,6 +1292,29 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         6 => [
                             'name' => 'Ohio and Kentucky Cannabis & Hemp Expo',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Home Event',
+                                        1=>'Indoor Games',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Cooking Studio',
+                                        1=>'Duperstar LLC',
+                                        2=>'Doogle Inc',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -1229,11 +1446,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 
@@ -1249,6 +1474,29 @@ if (!class_exists('mep_dummy_import')) {
                         ],
                         7 => [
                             'name' => 'Greenwich Economic Forum',
+                            'content' => '
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.
+                            ',
+                            'taxonomy_terms' => [
+                                0 => array(
+                                    'taxonomy_name' => 'mep_cat',
+                                    'terms' => array(
+                                        0=>'Business Event',
+                                        1=>'Cooking Class',
+                                    )
+                                ),
+                                1 => array(
+                                    'taxonomy_name' => 'mep_org',
+                                    'terms' => array(
+                                        0=>'Best Buy Ltd',
+                                        1=>'Cooking Studio',
+                                        2=>'Duperstar LLC',
+                                    )
+                                )                                
+                            ],
                             'post_data' => [
 
                                 //venue/location
@@ -1380,11 +1628,19 @@ if (!class_exists('mep_dummy_import')) {
                                 'mep_event_faq' => array(
                                     0 => array(
                                         'mep_faq_title' => 'Who can attend this event?',
-                                        'mep_faq_content' => 'This event is scheduled for all participants',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                     1 => array(
                                         'mep_faq_title' => 'How to attend this event?',
-                                        'mep_faq_content' => 'After purchasing ticket, you can attend this event',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    2 => array(
+                                        'mep_faq_title' => 'When is the event?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                                    ),
+                                    3 => array(
+                                        'mep_faq_title' => 'What is the exact location?',
+                                        'mep_faq_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                                     ),
                                 ),
 

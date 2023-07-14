@@ -82,7 +82,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
             </h3>
             <?php do_action('mep_event_map',get_the_id()); ?>
         </div>
-    <?php } ?>
+    <?php } ?> 
         <div class="df-sidebar-part">
             <?php if ($hide_total_seat_details == 'no') { ?>
                 <div class="mep-default-sidrbar-price-seat">

@@ -18,3 +18,23 @@ if (!function_exists('mep_ev_org')) {
         echo apply_filters('mage_event_single_org_name', $content, $post->ID);
     }
 }
+
+
+add_action('mep_event_organizer_name', 'mep_ev_org_name');
+if (!function_exists('mep_ev_org_name')) {
+    function mep_ev_org_name()
+    {
+        global $post, $author_terms;
+        ob_start();
+            $org = get_the_terms(get_the_id(), 'mep_org');
+            $names = [];
+            if(sizeof($org) > 0){
+            foreach ($org as $key => $value) {
+                $names[] = $value->name;
+            }
+            }
+            echo esc_html(join($names,', '));        
+        $content = ob_get_clean();
+        echo apply_filters('mage_event_single_org_name', $content, $post->ID);
+    }
+}

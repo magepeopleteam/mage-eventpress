@@ -119,7 +119,10 @@ function mep_event_enqueue_scripts()
 
   wp_enqueue_script('mep-calendar-scripts', plugin_dir_url(__DIR__) . 'js/calendar.min.js', array('jquery', 'mep-moment-js'), 1, false);
   wp_enqueue_script('mep-mixitup-min-js', plugin_dir_url(__DIR__) . 'js/mixitup.min.js', array(), 1, true);
-  wp_enqueue_script('mep-countdown-js', plugin_dir_url(__DIR__) . 'js/countdown.jquery.min.js', array(), 1, true);
+	
+//   wp_enqueue_script('mep-countdown-js', plugin_dir_url(__DIR__) . 'js/countdown.jquery.min.js', array(), 1, true);
+wp_enqueue_script('mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array(), 1, true);
+	
   //wp_enqueue_script('mep-lazysizes', plugin_dir_url(__DIR__) . 'js/lazysizes.min.js', array(), 1, true);
 
   wp_enqueue_script('filter_pagination', plugin_dir_url(__DIR__) . 'js/filter_pagination.js', array(), time(), true);

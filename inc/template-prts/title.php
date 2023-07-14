@@ -14,3 +14,15 @@ if (!function_exists('mep_ev_title')) {
         echo apply_filters('mage_event_single_title', $content, $post->ID);
     }
 }
+
+add_action('mep_event_only_title', 'mep_ev_only_title');
+if (!function_exists('mep_ev_only_title')) {
+    function mep_ev_only_title()
+    {
+        global $post;
+        ob_start();
+        require(mep_template_file_path('single/title_only.php'));
+        $content = ob_get_clean();
+        echo apply_filters('mage_event_single_title', $content, $post->ID);
+    }
+}

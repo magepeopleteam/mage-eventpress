@@ -1,7 +1,7 @@
 <tr>
                 <?php do_action('mep_ticket_type_list_row_start',$field, $post_id); ?>
                     <td align="Left">
-                                                <span class='mep_ticket_type_name'> <?php echo esc_html($field['option_name_t']); ?></span>
+                        <span class='mep_ticket_type_name'> <?php echo esc_html($field['option_name_t']); ?></span>
                         <?php if(!empty($ticket_details)){ ?>
                         <div class="mep_ticket_details">
                             <p><?php echo esc_html($ticket_details); ?></p>

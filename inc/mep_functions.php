@@ -7,19 +7,8 @@ appsero_init_tracker_mage_eventpress();
 
 
 
-// add_action('init','mep_test');
-// function mep_test(){
-//     $t = mep_get_page_by_slug('shopXX');
-
-// if($t){
-//     echo 123;
-//     print_r($t);
-// }
-
-   
-//     die();
-// }
-
+define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
+define( 'MEP_PATH', plugin_dir_path(__DIR__ ) );
 
 
 function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
@@ -3643,8 +3632,8 @@ if (!function_exists('mep_cart_ticket_type')) {
                     $ticket_type_arr[$i]['ticket_qty'] = !empty($qty[$i]) ? stripslashes(strip_tags($qty[$i])) : '';
                     $ticket_type_arr[$i]['max_qty'] = !empty($max_qty[$i]) ? stripslashes(strip_tags($max_qty[$i])) : '';
                     $ticket_type_arr[$i]['event_date'] = !empty($mep_event_start_date[$i]) ? stripslashes(strip_tags($mep_event_start_date[$i])) : '';
-                    $opttprice = ($price[$i] * $qty[$i]);
-                    $total_price = ($total_price + $opttprice);
+                    $opttprice = ( (float) $price[$i] * (float) $qty[$i]);
+                    $total_price = ( (float) $total_price + (float) $opttprice);
                     $validate[$i]['validation_ticket_qty'] = $vald + stripslashes(strip_tags($qty[$i]));
                     $validate[$i]['event_id'] = stripslashes(strip_tags($product_id));
                 }
@@ -3701,8 +3690,8 @@ if (!function_exists('mep_cart_event_extra_service')) {
                     $event_extra[$i]['service_price']   = !empty($extra_service_price[$i]) ? stripslashes(strip_tags($extra_service_price[$i])) : '';
                     $event_extra[$i]['service_qty']     = !empty($extra_service_qty[$i]) ? stripslashes(strip_tags($extra_service_qty[$i])) : '';
                     $event_extra[$i]['event_date']      = !empty($mep_event_start_date_es[$i]) ? stripslashes(strip_tags($mep_event_start_date_es[$i])) : '';
-                    $extprice                           = ($extra_service_price[$i] * $extra_service_qty[$i]);
-                    $total_price                        = ($total_price + $extprice);
+                    $extprice                           = ( (float) $extra_service_price[$i] * (float) $extra_service_qty[$i]);
+                    $total_price                        = ( (float) $total_price + (float) $extprice);
                 }
             }
         }
@@ -4157,7 +4146,7 @@ function mep_get_price_excluding_tax($event, $price, $args = array()) {
         return 0.0;
     }
 
-    $line_price = $price * $qty;
+    $line_price = (float) $price * (float) $qty;
 
     if ($product->is_taxable() && wc_prices_include_tax()) {
         $tax_rates = WC_Tax::get_rates($product->get_tax_class());
@@ -4170,6 +4159,15 @@ function mep_get_price_excluding_tax($event, $price, $args = array()) {
     return apply_filters('woocommerce_get_price_excluding_tax', $return_price, $qty, $product);
 }
 }
+
+
+function mep_filter_post_name( $data, $postarr, $unsanitized_postarr){
+    $data['post_title'] = sanitize_text_field($data['post_title']);
+    return $data;
+}
+add_filter( 'wp_insert_post_data', 'mep_filter_post_name',10,3);
+
+
 
 if (!function_exists('mep_get_price_including_tax')) {
 function mep_get_price_including_tax($event, $price, $args = array()) {
@@ -4198,7 +4196,7 @@ function mep_get_price_including_tax($event, $price, $args = array()) {
         return 0.0;
     }
 
-    $line_price = $price * $qty;
+    $line_price = (float) $price * (float) $qty;
     $return_price = $line_price;
 
     if ($product->is_taxable()) {

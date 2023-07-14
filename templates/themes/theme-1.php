@@ -63,7 +63,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <h3>
                         <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
                     </h3>
-                    <p><?php do_action('mep_event_location', get_the_id()); ?></p>
+                        <p><?php do_action('mep_event_location', get_the_id()); ?></p>
                 </div>
             </div>
         <?php } ?>

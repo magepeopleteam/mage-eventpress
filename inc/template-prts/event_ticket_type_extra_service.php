@@ -19,6 +19,8 @@ if (!function_exists('mep_output_add_to_cart_custom_fields')) {
     
 
     $total_left = apply_filters('mep_event_total_seat_count', $_total_left, $post_id);
+
+    // $total_left = 10;
     
     if ($total_left > 0) {
       

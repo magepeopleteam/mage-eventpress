@@ -17,6 +17,18 @@ if (!function_exists('mep_ev_details')) {
   }
 }
 
+add_action('mep_event_details_only', 'mep_ev_details_only');
+if (!function_exists('mep_ev_details_only')) {
+  function mep_ev_details_only()
+  {
+    global $post, $event_meta;
+    $content_event      = get_post($post->ID);
+    $content            = $content_event->post_content;
+    $content            = apply_filters('the_content', $content);
+    $content            = str_replace(']]>', ']]&gt;', $content);
+    echo $content;
+  }
+}
 
 add_action('mep_after_event_details', 'mep_display_event_daywise_details');
 if (!function_exists('mep_display_event_daywise_details')) {

@@ -25,11 +25,14 @@ if ( wp_is_block_theme() ) {
 </header>
 </div>
     <?php
+
 } else {
     // Code for classic themes goes here.
     get_header();
 }
 
+$event_id = get_the_id();
+global $event_id;
 the_post();
 global $post, $woocommerce;
 if (post_password_required()) {
@@ -39,9 +42,13 @@ if (post_password_required()) {
     </div>
     <?php
 } else {
-    $event_meta            = get_post_custom(get_the_id());
-    $author_terms          = get_the_terms(get_the_id(), 'mep_org');
-    $book_count            = get_post_meta(get_the_id(), 'total_booking', true);
+    // echo $event_id;
+    $event_meta            = get_post_custom($event_id);
+
+// print_r($event_meta);
+
+    $author_terms          = get_the_terms($event_id, 'mep_org');
+    $book_count            = get_post_meta($event_id, 'total_booking', true);
     $user_api              = mep_get_option('google-map-api', 'general_setting_sec', '');
     $mep_full_name         = mage_array_strip($event_meta['mep_full_name'][0]);
     $mep_reg_email         = mage_array_strip($event_meta['mep_reg_email'][0]);
@@ -57,7 +64,7 @@ if (post_password_required()) {
     $current_template      = $event_meta['mep_event_template'][0];
     $_current_template     = $current_template ? $current_template : $global_template;
     $currency_pos           = get_option('woocommerce_currency_pos');
-    do_action('mep_event_single_page_after_header',get_the_id());
+    do_action('mep_event_single_page_after_header',$event_id);
 ?>
     <div class="mep-events-wrapper wrapper">
         <div class="mep-events-container">

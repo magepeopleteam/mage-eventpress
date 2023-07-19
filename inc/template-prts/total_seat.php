@@ -8,6 +8,7 @@ if (!function_exists('mep_ev_seat')) {
 	function mep_ev_seat()
 	{
 		global $post;
+		echo $event_id;
 		$event_id                 = mep_get_default_lang_event_id(get_the_id());
 		$event_meta               = get_post_custom($event_id);
 		$recurring 				  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
@@ -15,7 +16,8 @@ if (!function_exists('mep_ev_seat')) {
 		if ($recurring == 'no') {
 			$mep_event_ticket_type      = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
 			$event_date      			= get_post_meta($event_id, 'event_start_date', true) ? get_post_meta($event_id, 'event_start_date', true) : '';
-			$mep_available_seat         = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
+			$mep_available_seat         = get_post_meta($event_id, 'mep_available_seat', true) ? get_post_meta($event_id, 'mep_available_seat', true) : 'on';
+			//array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
 			if (is_array($mep_event_ticket_type) && sizeof($mep_event_ticket_type) > 0) {
 				$upcoming_date  = '';				
 				$total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);

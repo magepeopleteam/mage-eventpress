@@ -18,10 +18,10 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 ?>
 <div class="mep-default-theme bristol">
     <div class="mep-default-feature-image">
-        <?php do_action('mep_event_thumbnail'); ?>
+        <?php do_action('mep_event_thumbnail', $event_id); ?>
     </div>
     <div class="mep-default-title">
-        <?php do_action('mep_event_title'); ?>
+        <?php do_action('mep_event_title', $event_id); ?>
     </div>
     <div class="bristol_divided">
         <?php if ($hide_schedule_details == 'no') { ?>
@@ -29,7 +29,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <div class="df-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
                 <div class='df-dtl'>
                     <h3><?php esc_html_e('Date and Time:', 'mage-eventpress'); ?></h3>
-                    <?php do_action('mep_event_date'); ?>
+                    <?php do_action('mep_event_date', $event_id); ?>
                 </div>
             </div>
         <?php }?>
@@ -40,14 +40,14 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <h3>
                         <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__("$event_label Location:", 'mage-eventpress'); ?>
                     </h3>
-                    <p><?php do_action('mep_event_location',get_the_id()); ?></p>
+                    <p><?php do_action('mep_event_location',$event_id); ?></p>
                 </div>
             </div>
         <?php } ?>
 
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
-                <?php do_action('mep_event_social_share'); ?>
+                <?php do_action('mep_event_social_share', $event_id); ?>
             </div>
         <?php } ?>
 
@@ -66,20 +66,20 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
         <?php } ?>
         <?php if ($hide_calendar_details == 'no') { ?>
             <div class="mep-default-sidrbar-calender-btn">
-                <?php do_action('mep_event_add_calender',get_the_id()); ?>
+                <?php do_action('mep_event_add_calender',$event_id); ?>
             </div>
         <?php } ?>
     </div>
     <?php
             if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-feature-content mep_theme_franklin_sidebar_speaker_list mep-default-sidebar-speaker-list">               
-                    <?php do_action('mep_event_speakers_list',get_the_id()); ?>
+                    <?php do_action('mep_event_speakers_list',$event_id); ?>
                 </div>
             <?php 
             }
     ?>    
     <div class="mep-default-feature-cart-sec">
-        <?php do_action('mep_add_to_cart',get_the_id()) ?>
+        <?php do_action('mep_add_to_cart',$event_id) ?>
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e("About The ", 'mage-eventpress'); echo esc_html($event_label); ?></h4>
@@ -89,6 +89,6 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
         <h4 class="mep-cart-table-title">
             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__("$event_label Location:", 'mage-eventpress'); ?>
         </h4>
-        <?php do_action('mep_event_map',get_the_id()); ?>
+        <?php do_action('mep_event_map',$event_id); ?>
     </div>
 </div>

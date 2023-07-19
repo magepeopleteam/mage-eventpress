@@ -22,10 +22,10 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 <div class="mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mep-default-title">
-            <?php do_action('mep_event_title'); ?>
+            <?php do_action('mep_event_title', $event_id); ?>
         </div>
         <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail'); ?>
+            <?php do_action('mep_event_thumbnail', $event_id); ?>
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
@@ -59,14 +59,14 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                         <h3>
                             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
                         </h3>
-                        <p><?php do_action('mep_event_location_venue'); ?>
+                        <p><?php do_action('mep_event_location_venue', $event_id); ?>
                             <?php //do_action('mep_event_location_city'); ?>    </p>
                     </div>
                 </div>
             <?php } ?>
         </div>
         <div class="mep-default-feature-content">
-            <?php do_action('mep_event_details'); ?>
+            <?php do_action('mep_event_details', $event_id); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
             <?php do_action('mep_add_to_cart', $event_id) ?>
@@ -89,12 +89,12 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
         <div class="df-sidebar-part">
             <?php if ($hide_total_seat_details == 'no') { ?>
                 <div class="mep-default-sidrbar-price-seat">
-                    <div class="df-seat"><?php do_action('mep_event_seat'); ?></div>
+                    <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
                 </div>
             <?php } ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>
                 <div class="mep-default-sidrbar-meta">
-                <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer'); ?>
+                <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer', $event_id); ?>
                 </div>
             <?php }
 
@@ -110,7 +110,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
             <?php }
             if ($hide_share_details == 'no') { ?>
                 <div class="mep-default-sidrbar-social">
-                    <?php do_action('mep_event_social_share'); ?>
+                    <?php do_action('mep_event_social_share', $event_id); ?>
                 </div>
             <?php }
             if($speaker_status == 'yes'){ ?>

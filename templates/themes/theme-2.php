@@ -16,72 +16,72 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 ?>
 <div class="mep-default-theme franklin">
     <div class="mep-default-title">
-        <?php do_action('mep_event_title'); ?>
+        <?php do_action('mep_event_title', $event_id); ?>
     </div>
     <div class="mep-default-feature-image">
-        <?php do_action('mep_event_thumbnail'); ?>
+        <?php do_action('mep_event_thumbnail', $event_id); ?>
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e('Description', 'mage-eventpress'); ?></h4>
-        <?php do_action('mep_event_details'); ?>
+        <?php do_action('mep_event_details', $event_id); ?>
         <div class="mep-theme1-faq-sec">
-            <?php do_action('mep_event_faq',get_the_id()); ?>
+            <?php do_action('mep_event_faq',$event_id); ?>
         </div>
     </div>
     <div class="franklin_divided">
         <div class="franklin_divided_left">
             <div class="mep-default-sidrbar-map">
-                <?php do_action('mep_event_map',get_the_id()); ?>
+                <?php do_action('mep_event_map',$event_id); ?>
             </div>
             <?php
             if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-feature-content mep_theme_franklin_sidebar_speaker_list mep-default-sidebar-speaker-list">              
-                    <?php do_action('mep_event_speakers_list',get_the_id()); ?>
+                    <?php do_action('mep_event_speakers_list',$event_id); ?>
                 </div>
             <?php 
             }
     ?>            
             <div class="mep-default-feature-cart-sec">
-                <?php do_action('mep_add_to_cart',get_the_id()) ?>
+                <?php do_action('mep_add_to_cart',$event_id) ?>
             </div>
         </div>
         <div class="franklin_divided_sidebar">
             <div class="franklin_divided_sidebar_bac">
                 <?php if ($hide_total_seat_details == 'no') { ?>
                     <div class="mep-default-sidrbar-price-seat">
-                        <div class="df-seat"><?php do_action('mep_event_seat'); ?></div>
+                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
                     </div>
                 <?php } ?>
                 <?php if ($hide_org_by_details == 'no') { ?>
                     <div class="mep-default-sidrbar-meta">
-                    <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer'); ?>
+                    <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $event_id); ?>
                     </div>
                 <?php } 
                 if ($hide_address_details == 'no') { ?>
                     <div class="mep-default-sidrbar-address">
                         <ul>
-                           <?php if(mep_location_existis('mep_location_venue',get_the_id())){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue'); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_street',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street'); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_city',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city'); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_state',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state'); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_country',get_the_id())){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country'); ?><?php } ?>
+                           <?php if(mep_location_existis('mep_location_venue',$event_id)){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue', $event_id); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_street',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street', $event_id); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_city',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city', $event_id); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_state',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state', $event_id); ?></li><?php } ?>
+                           <?php if(mep_location_existis('mep_country',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country', $event_id); ?><?php } ?>
                             </li>
                         </ul>
                     </div>
                 <?php }
                 if ($hide_schedule_details == 'no') { ?>
                     <div class="mep-default-sidrbar-events-schedule">
-                        <?php do_action('mep_event_date_default_theme',get_the_id()); ?>
+                        <?php do_action('mep_event_date_default_theme',$event_id); ?>
                     </div>
                 <?php }
                 if ($hide_share_details == 'no') { ?>
                     <div class="mep-default-sidrbar-social">
-                        <?php do_action('mep_event_social_share'); ?>
+                        <?php do_action('mep_event_social_share', $event_id); ?>
                     </div>
                 <?php }
                 if ($hide_calendar_details == 'no') { ?>
                     <div class="mep-default-sidrbar-calender-btn">
-                        <?php do_action('mep_event_add_calender',get_the_id()); ?>
+                        <?php do_action('mep_event_add_calender',$event_id); ?>
                     </div>
                 <?php } ?>
             </div>

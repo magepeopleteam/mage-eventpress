@@ -1,7 +1,7 @@
 <?php
-//  get_header();
-?>
-
+if ( wp_is_block_theme() ) {
+    // Code for block themes goes here.
+    ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -24,11 +24,12 @@
     <?php block_header_area(); ?>
 </header>
 </div>
+    <?php
+} else {
+    // Code for classic themes goes here.
+    get_header();
+}
 
-
-
-
-<?php
 the_post();
 global $post, $woocommerce;
 if (post_password_required()) {
@@ -85,4 +86,17 @@ if (post_password_required()) {
     do_action('mep_event_single_template_end', get_the_id());
     do_action('mep_event_single_page_before_footer');
 }
-get_footer();
+
+if ( wp_is_block_theme() ) {
+// Code for block themes goes here.
+?>
+<footer class="wp-block-template-part">
+    <?php block_footer_area(); ?>
+</footer>
+<?php wp_footer(); ?>
+</body>    
+<?php
+} else {
+    get_footer();
+}
+?>

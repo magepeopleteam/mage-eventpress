@@ -105,14 +105,14 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             </div>
         </div>
         <div class="mep-default-feature-content">
-            <?php do_action('mep_event_details'); ?>
+            <?php do_action('mep_event_details', $event_id); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
             <?php do_action('mep_add_to_cart', $event_id) ?>
         </div>
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
-                <?php do_action('mep_event_social_share'); ?>
+                <?php do_action('mep_event_social_share', $event_id); ?>
             </div>
         <?php } ?>
         <div class="mep-default-feature-faq-sec">

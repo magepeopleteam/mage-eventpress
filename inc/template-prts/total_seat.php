@@ -5,13 +5,14 @@ if (!defined('ABSPATH')) {
 
 add_action('mep_event_seat', 'mep_ev_seat');
 if (!function_exists('mep_ev_seat')) {
-	function mep_ev_seat()
+	function mep_ev_seat($event_id)
 	{
 		global $post;
-		echo $event_id;
-		$event_id                 = mep_get_default_lang_event_id(get_the_id());
+		// echo $event_id;
+		$event_id                 = mep_get_default_lang_event_id($event_id);
 		$event_meta               = get_post_custom($event_id);
 		$recurring 				  = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+		
 		ob_start();
 		if ($recurring == 'no') {
 			$mep_event_ticket_type      = get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();

@@ -54,14 +54,14 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 
         <?php if ($hide_org_by_details == 'no') { ?>
                 <div class="mep-default-sidrbar-meta">
-                <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer'); ?>
+                <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $event_id); ?>
                 </div>
             <?php } ?>        
     </div>
     <div class="bristol_center_box">
         <?php if ($hide_total_seat_details == 'no') { ?>
             <div class="mep-default-sidrbar-price-seat">
-                <div class="df-seat"><?php do_action('mep_event_seat'); ?></div>
+                <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
             </div>
         <?php } ?>
         <?php if ($hide_calendar_details == 'no') { ?>
@@ -83,7 +83,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e("About The ", 'mage-eventpress'); echo esc_html($event_label); ?></h4>
-        <?php do_action('mep_event_details'); ?>
+        <?php do_action('mep_event_details', $event_id); ?>
     </div>
     <div class="mep-default-sidrbar-map">
         <h4 class="mep-cart-table-title">

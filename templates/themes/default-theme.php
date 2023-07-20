@@ -94,7 +94,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
             <?php } ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>
                 <div class="mep-default-sidrbar-meta">
-                <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer', $event_id); ?>
+                    <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer', $event_id); ?>
                 </div>
             <?php }
 
@@ -132,4 +132,3 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
         </div>
     </div>
 </div>
-

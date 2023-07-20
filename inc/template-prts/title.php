@@ -5,10 +5,10 @@ if (!defined('ABSPATH')) {
 
 add_action('mep_event_title', 'mep_ev_title');
 if (!function_exists('mep_ev_title')) {
-    function mep_ev_title()
+    function mep_ev_title($event_id)
     {
         
-        global $post, $event_id;      
+        global $post;      
         ob_start();
         require(mep_template_file_path('single/title.php'));
         $content = ob_get_clean();

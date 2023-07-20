@@ -16,6 +16,7 @@ $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_settin
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
+$show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post_meta($event_id,'mep_sgm',true) : 'no';
 // echo $event_id;
 ?>
 
@@ -52,7 +53,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                     </div>
                 </div>
             <?php }
-            if ($hide_location_details == 'no') { ?>
+            if ($hide_location_details == 'no' ) { ?>
                 <div class="mep-default-feature-location">
                 <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
@@ -78,7 +79,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 
     </div>
     <div class="mep-default-sidebar">
-    <?php   if ($hide_location_details == 'no') { ?>
+    <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
         <div class="mep-default-sidrbar-map">
             <h3>
                 <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>

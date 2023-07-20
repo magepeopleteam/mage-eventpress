@@ -1,5 +1,5 @@
 <?php
-// Template Name: Royal
+// Template Name: Royal Theme
 
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
 $hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');

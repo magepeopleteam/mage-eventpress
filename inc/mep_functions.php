@@ -1727,7 +1727,8 @@ if (!function_exists('event_single_template_list')) {
             } else {
                 $cc = '';
             }
-            $buffer .= "<option value=$num $cc>$desc</option>";
+            $name = preg_replace("/[^a-zA-Z0-9]+/", " ", $desc);
+            $buffer .= "<option value=$num $cc>$name</option>";
         }//end foreach
         $buffer .= '</select>';
         echo wp_kses($buffer,['select' => array('name'=>[]),'option' => array('value'=>[], 'selected'=>[])]);
@@ -4162,7 +4163,11 @@ function mep_get_price_excluding_tax($event, $price, $args = array()) {
 
 
 function mep_filter_post_name( $data, $postarr, $unsanitized_postarr){
-    $data['post_title'] = sanitize_text_field($data['post_title']);
+	$post_id 	= $postarr['ID'];
+	$post_type 	= get_post_type($post_id);
+	if ($post_type === 'mep_events'){
+    	$data['post_title'] = wp_kses_post($data['post_title']);
+	}
     return $data;
 }
 add_filter( 'wp_insert_post_data', 'mep_filter_post_name',10,3);

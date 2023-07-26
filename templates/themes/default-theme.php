@@ -19,7 +19,6 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post_meta($event_id,'mep_sgm',true) : 'no';
 // echo $event_id;
 ?>
-
 <div class="mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mep-default-title">

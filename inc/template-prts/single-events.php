@@ -90,8 +90,8 @@ if (post_password_required()) {
         </div>
     </div>
 <?php
-    do_action('mep_event_single_template_end', get_the_id());
-    do_action('mep_event_single_page_before_footer');
+    do_action('mep_event_single_template_end', $event_id);
+    do_action('mep_event_single_page_before_footer', $event_id);
 }
 
 if ( wp_is_block_theme() ) {

@@ -15,6 +15,7 @@ function mep_event_city_list_shortcode_func($atts, $content = null)
 }
 
 
+
 /**
  * This is the Shortcode For Display Event Calendar
  */
@@ -226,8 +227,7 @@ function mep_event_list($atts, $content = null)
     ?>
     </div>
     <script>
-        jQuery(document).ready(function() {
-    
+    jQuery(document).ready(function() {
             var containerEl = document.querySelector('#mep_event_list_<?php echo esc_attr($unq_id); ?>');
             var mixer = mixitup(containerEl, {
             selectors: {
@@ -235,7 +235,6 @@ function mep_event_list($atts, $content = null)
                 control: '[data-mixitup-control]'
             }
             });
-            
             <?php if ($pagination == 'carousal') { ?>
                 jQuery('#mep-carousel<?php echo esc_attr($cid); ?>').owlCarousel({
                     autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,

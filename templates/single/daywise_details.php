@@ -3,6 +3,7 @@
     <?php
     $i = 1;
     foreach ($mep_event_day as $field):
+        if(!empty($field['mep_day_title'])){
     ?>
     <div class="mep-day-details-item">
         <div class="mep-day-icon"><?php echo $i; ?></div>
@@ -15,6 +16,7 @@
     </div>    
     <?php
     $i++;
+    }
     endforeach;
     ?>
 </div>

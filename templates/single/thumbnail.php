@@ -1,3 +1,3 @@
 <div class="mep-event-thumbnail">
-    <?php the_post_thumbnail('full'); ?>
+    <?php echo get_the_post_thumbnail($event_id,'full'); ?>
 </div>

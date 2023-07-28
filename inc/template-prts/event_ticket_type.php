@@ -7,7 +7,8 @@ add_action('mep_event_ticket_types', 'mep_ev_ticket_type',10,3);
 if (!function_exists('mep_ev_ticket_type')) {
     function mep_ev_ticket_type($post_id,$ticket_type_label,$select_date_label)
     {
-        global $post, $product, $event_meta;
+        global $post, $product, $event_meta; 
+        $event_meta = get_post_custom($post_id);
         $count = 1;
         ob_start();
         $mep_available_seat     = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';

@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 if (!class_exists('EDD_SL_Plugin_Updater')) {
     require_once(dirname(__DIR__) . '/lib/classes/EDD_SL_Plugin_Updater.php');
 }
-    require_once(dirname(__DIR__) . '/lib/classes/class-wc-product-data.php');
+    // require_once(dirname(__DIR__) . '/lib/classes/class-wc-product-data.php');
     require_once(dirname(__DIR__) . '/lib/classes/class-form-fields-generator.php');    
     require_once(dirname(__DIR__) . '/lib/classes/class-meta-box.php');
     require_once(dirname(__DIR__) . '/lib/classes/class-taxonomy-edit.php');

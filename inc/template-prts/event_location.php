@@ -134,14 +134,16 @@ if (!function_exists('mep_ev_location')) {
 
 add_action('mep_event_location_venue', 'mep_ev_venue');
 if (!function_exists('mep_ev_venue')) {
-    function mep_ev_venue($event_id = '')
+    function mep_ev_venue($event_id)
     {
         global $post, $event_meta;
+
         if ($event_id) {
             $event = $event_id;
         } else {
             $event = $post->ID;
         }
+        
         $location_sts = get_post_meta($event, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($event, 'mep_org');
@@ -152,6 +154,7 @@ if (!function_exists('mep_ev_venue')) {
         }
     }
 }
+
 /**
  * Event Location Get Functions
  */

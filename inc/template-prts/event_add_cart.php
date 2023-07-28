@@ -11,11 +11,12 @@ if (!function_exists('mep_get_event_reg_btn')) {
         global $post, $event_meta;
         $event_id                     = mep_get_default_lang_event_id($event_id);
         $new_registration_system_sp	  = get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) ? get_post_meta($event_id, 'mpwemasp_seat_plan_system', true) : 'off';
-	    $seat_plan                 = get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) ? get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) : [];
-	    $seat_plan_visible         = get_post_meta($event_id, 'mp_event_seat_plan_visible', true) ? get_post_meta($event_id, 'mp_event_seat_plan_visible', true) : '1';
-//	  if(class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible ==2 &&$new_registration_system_sp=='on'){
-//		  do_action('mpwem_new_registration_system_sp',$event_id);
-//	  }else{
+	    $seat_plan                    = get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) ? get_post_meta($event_id, 'mepsp_event_seat_plan_info', true) : [];
+	    $seat_plan_visible            = get_post_meta($event_id, 'mp_event_seat_plan_visible', true) ? get_post_meta($event_id, 'mp_event_seat_plan_visible', true) : '1';
+
+  //	  if(class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible ==2 &&$new_registration_system_sp=='on'){
+ //		    do_action('mpwem_new_registration_system_sp',$event_id);
+//	      }else{
 
         $saved_user_role 	          = get_post_meta($event_id, 'mep_member_only_user_role', true) ? get_post_meta($event_id, 'mep_member_only_user_role', true) : [];
         $event_member_type 	          = get_post_meta($event_id, 'mep_member_only_event', true) ? get_post_meta($event_id, 'mep_member_only_event', true) : 'for_all';
@@ -57,7 +58,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $total_sold                 = mep_get_event_total_seat_left($post_id, $upcoming_date);
         $total_left                 = $total_seat - ($total_sold + $total_resv);        
         $total_left                 = $recurring == 'no' ? $total_left : 1;
-        $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? esc_html($event_meta['mep_reg_status'][0]) : '';
+       $reg_status                 = get_post_meta($event_id,'mep_reg_status',true) ? get_post_meta($event_id,'mep_reg_status',true) : '';
         $seat_left                  = apply_filters('mep_event_total_seat_left_count', $total_left, $post_id);
         $current                    = current_time('Y-m-d H:i:s');
         $time                       = strtotime($event_expire_date);
@@ -77,7 +78,8 @@ if (!function_exists('mep_get_event_reg_btn')) {
         $datetime1                  = new DateTime($newformat);
         $datetime2                  = new DateTime($current);
         $interval                   = date_diff($datetime2, $datetime1);
-        $mep_available_seat         = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
+        $mep_available_seat         = get_post_meta($event_id,'mep_available_seat',true) ? get_post_meta($event_id,'mep_available_seat',true) : 'on';
+			//array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
 
         $leftt                      = apply_filters('mep_event_total_seat_count', $total_left, $post_id);
         $days                       = $interval->d;
@@ -246,7 +248,7 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $total_left                 = $total_seat - ($total_sold + $total_resv);        
         // $total_left              = mep_get_event_total_seat_left($post_id, $upcoming_date);
 
-        $reg_status                 = array_key_exists('mep_reg_status', $event_meta) ? $event_meta['mep_reg_status'][0] : '';
+       $reg_status                 = get_post_meta($event_id,'mep_reg_status',true) ? get_post_meta($event_id,'mep_reg_status',true) : '';
         $seat_left                  = apply_filters('mep_event_total_seat_left_count', $total_left, get_the_id());
         $current                    = current_time('Y-m-d H:i:s');
         $time                       = strtotime($event_expire_date);
@@ -266,7 +268,9 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
         $datetime1                  = new DateTime($newformat);
         $datetime2                  = new DateTime($current);
         $interval                   = date_diff($datetime2, $datetime1);
-        $mep_available_seat         = array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
+        $mep_available_seat         = get_post_meta($event_id,'mep_available_seat',true) ? get_post_meta($event_id,'mep_available_seat',true) : 'on';
+			
+			//array_key_exists('mep_available_seat', $event_meta) ? $event_meta['mep_available_seat'][0] : 'on';
 
         $leftt                      = apply_filters('mep_event_total_seat_left_count', $total_left, get_the_id());
         $days                       = $interval->d;
@@ -352,7 +356,7 @@ if (!function_exists('mep_get_event_reg_btn_list')) {
                     <!--The Add to cart button table start Here-->
                 </form>
                 <!--The event add to cart main form end here-->
-<?php
+            <?php
             }
         } // End Of checking Registration status    
     }

@@ -74,7 +74,7 @@ if (!class_exists('TaxonomyEdit')) {
             if (empty($id)) return;
             $option['field_name']       = $id;
             $option_value               = get_term_meta($term_id,  $id, true);
-            $option['value']            = is_serialized($option_value) ? unserialize($option_value) : $option_value;
+            $option['value']            = is_serialized($option_value) ? maybe_unserialize($option_value) : $option_value;
 
             if (sizeof($option) > 0 && isset($option['type'])) {
                 echo mep_field_generator($option['type'], $option);

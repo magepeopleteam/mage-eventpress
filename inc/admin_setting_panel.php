@@ -58,7 +58,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 ),
                 array(
                     'id' => 'datetime_setting_sec',
-                    'title' => '<i class="fas fa-envelope"></i>'.__('Date & Time Format Settings', 'mage-eventpress')
+                    'title' => '<i class="fas fa-clock"></i>'.__('Date & Time Format Settings', 'mage-eventpress')
                 ),
                 array(
                     'id' => 'style_setting_sec',

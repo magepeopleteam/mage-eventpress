@@ -3947,3 +3947,972 @@ tr.mep_virtual_event_info_sec {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+
+
+
+
+/* New Theme Deora CSS */
+
+
+.mpe-new-event h1{
+    font-family: 'Outfit', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 30px;
+  letter-spacing: 2px;
+  color: #000000;
+  }
+  
+  .mpe-new-event h2 {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0.025em;
+    text-transform: capitalize;
+    color: #878787;
+    display: block;
+    margin: 20px 0 9px;
+      
+  }
+  .mpe-new-event-meta {
+      display: flex;
+      align-items: center;
+  }
+  .mpe-new-event-meta .mpe-new-location , .mpe-new-time {
+      display: flex;
+      width: 100%;
+      align-items: center;
+  }
+  .mpe-new-event-meta .mpe-new-icon-holder{
+      margin-right: 10px;
+  }
+  
+  .mpe-new-event-meta .mpe-new-icon-holder img , .mpe-new-time img{
+      height: 22px;
+      width: 22px;
+      border-radius: 5px;
+  }
+  
+  .mpe-new-event-meta .mpe-new-text-holder p {
+   font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: 1.5px;
+  color: #393332;
+  }
+  
+  
+  /*------------ image section -------------*/
+  
+  .mpe-new-imageSection {
+    display: flex;
+    justify-content: space-between;
+  }
+  .mpe-new-imageSection .mpe-new-thubnail-big{
+    width: 70%;
+  }
+  .mpe-new-imageSection .mpe-new-side-thubnail{
+    width: 30%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .mpe-new-imageSection .mpe-new-thubnail-big img{
+    width: 100%;
+  }
+  .mpe-new-imageSection .mpe-new-side-thubnail ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0px;
+    padding-left: 20px;
+  }
+  .mpe-new-imageSection .mpe-new-side-thubnail img{
+    width: 100%;
+    
+  }
+  
+  
+  /*---------------- event description -----------------------*/
+  .mpe-new-description-Section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .mpe-new-description-Section h2 {
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  
+  color: #001A26;
+  }
+  .mpe-new-event-desctiption{
+    width: 65%;
+    margin-right: 30px;
+  }
+  .mpe-new-event-desctiption p {
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 170%;
+  color: #8D8D8D;
+  }
+  
+  .mpe-new-tp-form{ display: block;}
+  
+  .mpe-new-datepicker input[type=date] , 
+  .mpe-new-timepicker input[type=time]{
+    width: 96%;
+  border: 1px solid #6046FF;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: white;
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 25px;
+  }
+  .tmpe-new-p-form .mpe-new-datepicker input[type=date]{
+  color: #6046FF;
+  }
+  .mpe-new-tp-form .mpe-new-timepicker input[type=time]{
+  color: white;
+  background-color: #6046FF;
+  }
+  /* ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  } */
+  
+  
+  /*----------------------ticket ----------------------*/
+  
+  
+  .mpe-new-ticket{
+    display: block;
+    border:  2px solid #6046FF;
+    border-radius: 5px;
+    width: 100%;
+  }
+  .mpe-new-ticket-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    border-bottom: 3px solid #989898;
+  }
+  .mpe-new-ticket-card:last-child{
+    border-bottom: none;
+  }
+  .mpe-new-ticket-info{
+    width: 75%;
+  }
+  .mpe-new-ticket-info h3{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22.81px;
+  line-height: 22px;
+  text-transform: capitalize;
+  color: #121212;
+  }
+  .mpe-new-ticket-info span{
+    font-family: Outfit;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #FF2424;
+  }
+  
+  .mpe-new-ticket-info p {
+    font-family: Outfit;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #909090;
+  
+  }
+  .mpe-new-ticket-price{
+    width: 25%;
+    text-align: end;
+  }
+  .mpe-new-ticket-price .price {
+  font-family: Outfit;
+  font-size: 31px;
+  font-weight: 500;
+  line-height: 0px;
+  letter-spacing: 0em;
+  color: #525252;
+  margin: 0px;
+  }
+  .mpe-new-buy-ticket {
+    display: flex;
+    justify-content: end;
+  }
+  .mpe-new-buy-ticket button{
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  input.mpe-new-input-group-field {
+    width: 50px;
+    text-align: center;
+  }
+  .impe-new-nput-group-field::-webkit-inner-spin-button,
+  .impe-new-nput-group-field ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  .mpe-new-ticket-btns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .mpe-new-ticket-btns a{
+    text-decoration: none;
+    font-family: Outfit;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: 0em;
+    text-align: center;
+    
+  }
+  .mpe-new-ticket-btns .mpe-new-totalPrice{
+    border: 1px solid #6046FF;
+    padding: 10px 40px;
+  }
+  
+  .mpe-new-ticket-btns .mpe-new-register{
+    border: 1px solid #6046FF;
+    padding: 10px 40px;
+    background-color: #6046FF;
+    color: white;
+  
+  }
+  /*-------------------------- Description sidebar -------------------------*/
+  
+  .mpe-new-description-sidebar{
+    width: 35%;
+  }
+  .mpe-new-date-and-time-card{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mpe-new-ww-card{
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+  box-shadow: 0px 2px 48px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  border-bottom: 1px solid rgb(209, 209, 209);
+  }
+  
+  .mpe-new-ww-card .mpe-new-card-icon{
+    margin-right: 30px;
+  }
+  
+  .mpe-new-ww-card .mpe-new-card-content .mpe-new-card-btn img{
+    height: 22px;
+    width: auto;
+    margin-right: 15px;
+  }
+  
+  .mpe-new-ww-card .mpe-new-card-content .mpe-new-card-btn button{
+    border: 1px solid #6046FF;
+    padding: 5px 16px;
+    border-radius: 5px;
+    background-color: white;
+  }
+  .mpe-new-ww-card .mpe-new-card-content .mpe-new-card-btn a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+  color: #6046FF;
+  
+  }
+  .mpe-new-ww-social-card {
+    background: #FFFFFF;
+    box-shadow: 0px 2px 48px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    border-bottom: 1px solid rgb(209, 209, 209);
+  }
+  .mpe-new-ww-social-card h2 {
+    text-align: center;
+  }
+  .mpe-new-ww-social-card ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mpe-new-ww-social-card ul li{
+    padding-right: 10px;
+  }
+  
+  
+  .mpe-new-speaker{
+    margin-top: 130px;
+  }
+  
+  .mpe-new-speaker-card{
+    display: flex;
+    background-color: white;
+    padding: 20px;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .mpe-new-speaker-card .mpe-new-speaker-image img{
+    height: 80px;
+    width: auto;
+    margin-right: 25px;
+  }
+  .mpe-new-speaker-card .mpe-new-speaker-data h3{
+    font-family: Outfit;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: left;
+  color: #000000;
+  }
+  
+  .mpe-new-speaker-card .mpe-new-speaker-data p {
+    font-family: Outfit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 1.6923084259033203px;
+  text-align: left;
+  }
+  
+  
+  
+  /*------------- Schedule Details -----------------------*/
+  
+  .mpe-new-schedule-details{
+    margin-bottom: 100px;
+    margin-top: 50px;
+  }
+  .mpe-new-schedule-details p {
+    font-family: Outfit;
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #121212;
+  line-height: 20px;
+  }
+  .mpe-new-schedule-details p span {
+    font-family: Outfit;
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #6046FF;
+  }
+  
+  .mpe-new-schedule-details .mpe-new-detailed-text{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: capitalize;
+  color: #909090;
+  }
+  
+  .mpe-new-sechule-container{
+    display: flex;
+    flex-direction: column;
+    background-color: #F2F0FF;
+    justify-content: center;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .mpe-new-schedules{
+    display: flex;
+    position: relative;
+  }
+  .mpe-new-iconEffect::before {
+    content: " ";
+    position: absolute;
+    left: 30px;
+    top: 60px;
+    height: 90px;
+    width: 10px;
+    background: #D9D2FF;
+  }
+  
+  .mpe-new-icon img{
+    margin-top: 15px;
+  }
+  
+  
+  /*----------- Map Location --------------*/
+  .mpe-new-map-location h2{
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  color: #001A26;
+  margin-bottom: 20px;
+  }
+  
+  .mpe-new-map iframe{
+    border-radius: 5px;
+  }
+  
+  
+  /*----------- Faq Section  --------------*/
+  .mpe-new-faq-section{
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .mpe-new-faqHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    margin: auto;
+  }
+  .mpe-new-faq-section h2{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  color: #001A26;
+  margin-bottom: 20px;
+  }
+  
+  .mpe-new-faq-section .mpe-new-faqHeader p{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  color: #888888;
+  text-align: center;
+  }
+  
+  .mpe-new-faqs{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .mpe-new-questions {
+    flex-basis: 48%;
+    margin: 5px;
+  }
+  
+  .mpe-new-panel p{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  text-transform: lowercase;
+  color: #3a3a3a;
+  }
+  
+  
+  
+  .mpe-new-accordion {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+  
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 30px;
+  text-transform: lowercase;
+  color: #2C3C4D;
+  
+  }
+  
+  .mpe-new-active, .mpe-new-accordion:hover {
+    background-color: #ccc;
+  }
+  
+  .mpe-new-panel {
+    padding: 0 18px;
+    background-color: rgb(255, 255, 255);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+  
+  
+  /*----------- Attendee Section  --------------*/
+  
+  .mpe-new-attendee{
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .mpe-new-attendee h2{
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    color: #001A26;
+    margin-bottom: 20px;
+  }
+  
+  
+  .mpe-new-attende-container{
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .mpe-new-attende-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(81, 81, 81, 0.03);
+    padding: 10px;
+    margin: 5px;
+    flex-basis: 11.5%;
+    border-radius: 5px;
+  }
+  
+  .mpe-new-attende-details img{
+    height: 77px;
+    width: auto;
+  }
+  
+  .mpe-new-attende-details p {
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16.7778px;
+  line-height: 21px;
+  text-transform: capitalize;
+  color: #3F4145;
+  }
+  
+  
+  
+  /*----------- Related Events Section  --------------*/
+  .mpe-new-related-events {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  .mpe-new-related-events h2{
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    color: #001A26;
+    margin-bottom: 20px;
+  }
+  
+  .mpe-new-slider-btn {
+    display: flex;
+    justify-content: end;
+    /* margin-top: 50px; */
+    position: absolute;
+    top: 20px;
+    right: 10px;
+  }
+  
+  .mpe-new-slider-btn button{
+    margin-left: 10px;
+  }
+  
+  .mpe-new-slider-btn .mpe-new-next-slide , .mpe-new-previous-slide {
+      height: 33px;
+      width: auto;
+      border: none;
+      outline: none;
+      /* color: white; */
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      /* display: block; */
+  }
+  
+  .mpe-new-slider-btn .mpe-new-active {
+    background: #6046FF;
+  }
+  .mpe-new-slider-items{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  
+  .mpe-new-related-items{
+    background-color: white;
+    border-radius: 5px;
+    width: 32%;
+    box-shadow: 10px 9px 33px rgba(0, 0, 0, 0.03);
+  }
+  
+  .mpe-new-related-items img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .mpe-new-related-items-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .mpe-new-related-content h3{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 0px;
+  letter-spacing: 0.02em;
+  color: #0F0F0F;
+  }
+  .mpe-new-related-content .mpe-new-events-place{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 10px;
+  letter-spacing: 0.02em;
+  color: #808184;
+  }
+  
+  .mpe-new-related-item-price{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+  .mpe-new-related-item-price p{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  color: #6046FF;
+  margin: 0;
+  }
+  
+  .mpe-new-related-item-price .mpe-new-price-category{
+    font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: #6D6D6D;
+  text-align: right;
+  }
+  #owl-demo .item{
+    background: #ffffff;
+    margin: 10px;
+    color: #FFF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: Left;
+  }
+  .owl-item{
+    background: transparent;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    /*--------Xlg---------*/
+    @media (max-width: 1400px) {}
+  
+    /*--------lg---------*/
+    @media (max-width: 1200px) {}
+    /*--------md---------*/
+    @media (max-width: 992px) {
+      .mpe-new-container {
+        max-width: 992px;
+        margin: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .mpe-new-qustions p{
+      font-size: 18px;
+      line-height: 24px;
+      }
+      .mpe-new-attende-details{
+        flex-basis: 16.5%;
+      }
+      .mpe-new-ticket-card{
+        margin: 10px;
+      }
+    }
+    /*--------sm---------*/
+    @media (max-width: 768px) {
+      .mpe-new-container {
+        max-width: 768px;
+        margin: auto;
+      }
+      .mpe-new-event h1 {
+        font-size: 40px;
+      }
+      .mpe-new-event-meta .mpe-new-text-holder p{
+        font-size: 16px;
+      }
+      .mpe-new-schedule-details{
+        margin-bottom: 50px;
+      }
+      .mpe-new-description-Section{
+        margin-top: 20px;
+      }
+      .mpe-new-description-Section h2{
+        font-size: 25px;
+      }
+      .mpe-new-card-content p {
+        line-height: 22px;
+      }
+      .mpe-new-ww-card .mpe-new-card-content .mpe-new-card-btn a{
+        font-size: 14px;
+      }
+      .mpe-new-ww-card{
+        padding: 10px;
+      }
+      .mpe-new-card-icon a img {
+        height: 40px;
+        width: auto;
+    }
+    .mpe-new-ticket-btns a{
+      font-size: 16px;
+    }
+    .mpe-new-schedule-details p , 
+    .mpe-new-schedule-details p span{
+      font-size: 18px;
+    }
+    .mpe-new-speaker {
+      margin-top: 260px;
+    }
+    .mpe-new-ww-card .mpe-new-card-icon{
+      margin-right: 10px;
+    }
+    .mpe-new-ww-social-card ul li a img{
+      height: 30px;
+    }
+    .mpe-new-speaker-card .mpe-new-speaker-data h3{
+      font-size: 18px;
+    }
+    .mpe-new-speaker-card .mpe-new-speaker-image img{
+      height: 60px;
+      width: auto;
+      margin-right: 12px;
+    }
+    
+  .mpe-new-attende-details p {
+    font-size: 14px;
+  }
+    .mpe-new-map-location h2{
+      font-size: 25px;
+    }
+    .mpe-new-faq-section h2{
+      font-size: 25px;
+    }
+    .mpe-new-qustions p{
+      font-size: 14px;
+      text-align: left;
+    }
+  
+    .mpe-new-faq-section .mpe-new-faqHeader p{
+      font-size: 18px;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .mpe-new-attendee h2 {
+      font-size: 25px;
+    }
+    .mpe-new-related-events h2{
+      font-size: 25px;
+    }
+    .mpe-new-related-items-row{
+      padding: 15px;
+    }
+    .mpe-new-related-content h3{
+      font-size: 16px;
+    }
+    .mpe-new-related-content .mpe-new-events-place{
+      font-size: 14px;
+    }
+    .mpe-new-related-item-price p{
+      font-size: 20px;
+    }
+    }
+  
+  
+    /*--------xsm---------*/
+    @media (max-width: 575px) {
+      .mpe-new-container {
+        max-width: 575px;
+        margin: auto;
+      }
+      .mpe-new-event-meta{
+        flex-direction: column;
+      }
+      .mpe-new-event h1{
+        font-size: 26px;
+      }
+      .mpe-new-event h2{
+        font-size: 18px;
+        margin: 0;
+      }
+      .mpe-new-faqHeader{
+        width: 100%;
+      }
+      .mpe-new-datepicker input[type=date], .mpe-new-timepicker input[type=time]{
+        width: 92%;
+      }
+    .mpe-new-event-meta .mpe-new-icon-holder{
+    margin-right: 5px;
+    }
+    .mpe-new-event-meta .mpe-new-text-holder p{
+      font-size: 11px;
+      margin: 3px;
+    }
+    .mpe-new-description-Section{
+      flex-direction: column;
+    }
+    .mpe-new-event-desctiption{
+      width: 100%;
+    }
+    .mpe-new-description-sidebar{
+      width: 100%;
+    }
+    .mpe-new-ww-social-card ul {
+      padding: 0;
+    }
+    .mpe-new-speaker-card{
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .mpe-new-ticket-info h3{
+      font-size: 16px;
+    }
+    .mpe-new-ticket-price .mpe-new-price{
+      font-size: 24px;
+    }
+    .mpe-new-event-desctiption p{
+      font-size: 14px;
+    }
+    .mpe-new-ww-card{
+      flex-direction: column;
+    }
+    .mpe-new-card-content{
+      width: 100%;
+      text-align: center;
+    }
+    .mpe-new-speaker{
+      margin-top: 20px;
+    }
+    .mpe-new-speaker-card .mpe-new-speaker-data h3{
+      text-align: center;
+    }
+    .mpe-new-map-location h2 {
+      font-size: 18px;
+    }
+    .mpe-new-faq-section h2{
+      font-size: 18px;
+    }
+    .mpe-new-faq-section .mpe-new-faqHeader p{
+      font-size: 16px;
+    }
+    .mpe-new-questions{
+      flex-basis: 100%;
+    }
+    .mpe-new-accordion{
+      font-size: 16px;
+    }
+    .mpe-new-qustions img {
+      position: absolute;
+      top: 70%;
+      right: 10px;
+      rotate: 37deg;
+    }
+    .mpe-new-attendee h2{
+      font-size: 18px;
+    }
+    .mpe-new-attende-details p{
+      font-size: 12px;
+    }
+    .mpe-new-related-events h2 {
+      font-size: 18px;
+    }
+    .mpe-new-related-content h3 {
+      font-size: 14px;
+    }
+    .mpe-new-related-items-row {
+      flex-direction: column;
+  }
+  .mpe-new-related-content {
+    text-align: center;
+  }
+  .mpe-new-related-item-price {
+      text-align: center;
+      margin-top: 10px;
+  }
+  
+  .mpe-new-related-item-price .mpe-new-price-category{
+      text-align: center;
+  }
+  .mpe-new-related-events.mpe-new-container {
+    margin-bottom: 50px;
+  }
+  .mpe-new-ticket-btns .mpe-new-totalPrice{
+    padding: 8px 10px;
+  }
+  input.mpe-new-input-group-field{
+    width: 20px;
+  }
+  
+  }

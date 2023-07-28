@@ -1,6 +1,8 @@
 <?php
 // Template Name: Vanilla
 
+
+
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
 $hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');
 $hide_time_details          = mep_get_option('mep_event_hide_time_from_details', 'single_event_setting_sec', 'no');
@@ -20,10 +22,10 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 <div class="mep-default-theme vanilla_theme">
     <div class="mep-default-content">
         <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail'); ?>
+            <?php do_action('mep_event_thumbnail', $event_id ); ?>
         </div>
         <div class="mep-default-title">
-            <?php do_action('mep_event_title'); ?>
+            <?php do_action('mep_event_title', $event_id); ?>
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
@@ -33,7 +35,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                         <h3>
                             <?php echo mep_get_option('mep_event_date_text', 'label_setting_sec') ? mep_get_option('mep_event_date_text', 'label_setting_sec') : esc_html__('Event Date:', 'mage-eventpress'); ?>
                         </h3>
-                        <?php do_action('mep_event_date_only', get_the_id()); ?>
+                        <?php do_action('mep_event_date_only', $event_id); ?>
                     </div>
                 </div>
             <?php }
@@ -44,7 +46,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                         <h3>
                             <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec') ? mep_get_option('mep_event_time_text', 'label_setting_sec') : esc_html__('Event Time:', 'mage-eventpress'); ?>
                         </h3>
-                        <?php do_action('mep_event_time_only', get_the_id()); ?>
+                        <?php do_action('mep_event_time_only', $event_id); ?>
                     </div>
                 </div>
             <?php }
@@ -56,11 +58,11 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
                         </h3>
                         <p>
-                            <span><?php do_action('mep_event_location_venue'); ?></span>
-                            <?php do_action('mep_event_location_street'); ?>
-                            <?php do_action('mep_event_location_city'); ?>
-                            <?php do_action('mep_event_location_state'); ?>
-                            <?php do_action('mep_event_location_country'); ?>
+                            <span><?php do_action('mep_event_location_venue', $event_id); ?></span>
+                            <?php do_action('mep_event_location_street', $event_id); ?>
+                            <?php do_action('mep_event_location_city', $event_id); ?>
+                            <?php do_action('mep_event_location_state', $event_id); ?>
+                            <?php do_action('mep_event_location_country', $event_id); ?>
 
                         </p>
                     </div>
@@ -74,12 +76,12 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                         <h3>
                             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Find Location On Google Map:', 'mage-eventpress'); ?>
                         </h3>
-                        <?php do_action('mep_event_map', get_the_id()); ?>
+                        <?php do_action('mep_event_map', $event_id); ?>
                     </div>
 
                     <?php if ($hide_calendar_details == 'no') { ?>
                         <div class="mep-default-sidrbar-calender-btn">
-                            <?php do_action('mep_event_add_calender', get_the_id()); ?>
+                            <?php do_action('mep_event_add_calender', $event_id); ?>
                         </div>
                     <?php } ?>
                 </div>
@@ -87,36 +89,36 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <div class="mep-default-col-2">
                 <?php if ($hide_org_by_details == 'no') { ?>
                     <div class="mep-default-sidrbar-meta">
-                        <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer'); ?>
+                        <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $event_id); ?>
                     </div>
                 <?php }
 
                 if ($hide_schedule_details == 'no') { ?>
                     <div class="mep-default-sidrbar-events-schedule">
-                        <?php do_action('mep_event_date_default_theme', get_the_id()); ?>
+                        <?php do_action('mep_event_date_default_theme', $event_id); ?>
                     </div>
                 <?php } ?>
 
                 <?php if ($hide_total_seat_details == 'no') { ?>
                     <div class="mep-default-sidrbar-price-seat">
-                        <div class="df-seat"><?php do_action('mep_event_seat'); ?></div>
+                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
                     </div>
                 <?php } ?>
             </div>
         </div>
         <div class="mep-default-feature-content">
-            <?php do_action('mep_event_details'); ?>
+            <?php do_action('mep_event_details', $event_id); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
-            <?php do_action('mep_add_to_cart', get_the_id()) ?>
+            <?php do_action('mep_add_to_cart', $event_id) ?>
         </div>
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
-                <?php do_action('mep_event_social_share'); ?>
+                <?php do_action('mep_event_social_share', $event_id); ?>
             </div>
         <?php } ?>
         <div class="mep-default-feature-faq-sec">
-            <?php do_action('mep_event_faq', get_the_id()); ?>
+            <?php do_action('mep_event_faq', $event_id); ?>
         </div>
     </div>
 </div>

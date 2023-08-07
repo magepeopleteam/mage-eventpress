@@ -2,8 +2,8 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 3.9.2
-Version: 3.9.2
+Stable tag: 3.9.9
+Version: 3.9.9
 Tested up to: 6.2
 WC requires at least: 3.0
 WC tested up to: 6.5
@@ -364,6 +364,35 @@ A. you can create support ticket here with problem details with possible screens
 
 
 == Changelog ==
+
+= 3.9.9 =
+* Broken issue fixed in Virtual Template
+* Bug Fixed.
+  26 July 2023*
+
+= 3.9.8 =
+* Header & Footer issue solved in Block Themes
+* Bug Fixed.
+25 July 2023*
+
+= 3.9.7 =
+* Event Title Sanitize Issue fixed with Span and other allowed tags. 
+22 June 2023*
+
+
+= 3.9.6 =
+* Event Title Sanitize Issue fixed. 
+22 June 2023*
+
+= 3.9.5 =
+* Update Release:
+* Dummy Import Added.
+12 June 2023*
+
+= 3.9.4 =
+* Update Release:
+* Bug Fixed
+30 May 2023*
 
 = 3.9.3 =
 * Update Release:

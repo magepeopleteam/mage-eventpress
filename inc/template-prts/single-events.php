@@ -1,7 +1,4 @@
-<?php
-if ( wp_is_block_theme() ) {
-    // Code for block themes goes here.
-    ?>
+<?php if ( wp_is_block_theme() ) {  ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -14,8 +11,7 @@ if ( wp_is_block_theme() ) {
 		</div>
 		<!-- /wp:group -->'
  	);
- 	?>
-	<?php wp_head(); ?>
+    wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -24,17 +20,18 @@ if ( wp_is_block_theme() ) {
     <?php block_header_area(); ?>
 </header>
 </div>
-    <?php
-
+<?php
 } else {
-    // Code for classic themes goes here.
-    get_header();
+    get_header();	
+    the_post();
 }
 
-$event_id = get_the_id();
-global $event_id;
-the_post();
-global $post, $woocommerce;
+
+$event_id       = get_the_id();
+global $event_id, $post, $woocommerce;
+$event_id       = !empty($event_id) ? $event_id : $post->ID;
+$_the_event_id  = $event_id;
+
 if (post_password_required()) {
     ?>
     <div class="mep-events-wrapper">
@@ -64,7 +61,7 @@ if (post_password_required()) {
     $current_template      = $event_meta['mep_event_template'][0];
     $_current_template     = $current_template ? $current_template : $global_template;
     $currency_pos           = get_option('woocommerce_currency_pos');
-    do_action('mep_event_single_page_after_header',$event_id);
+    do_action('mep_event_single_page_after_header',$_the_event_id);
 ?>
     <div class="mep-events-wrapper wrapper">
         <div class="mep-events-container">
@@ -90,8 +87,9 @@ if (post_password_required()) {
         </div>
     </div>
 <?php
-    do_action('mep_event_single_template_end', $event_id);
-    do_action('mep_event_single_page_before_footer', $event_id);
+// 	echo $_the_event_id;
+    do_action('mep_event_single_template_end', $_the_event_id);
+    do_action('mep_event_single_page_before_footer', $_the_event_id);
 }
 
 if ( wp_is_block_theme() ) {
@@ -106,4 +104,3 @@ if ( wp_is_block_theme() ) {
 } else {
     get_footer();
 }
-?>

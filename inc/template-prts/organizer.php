@@ -9,11 +9,10 @@ if (!function_exists('mep_ev_org')) {
     {
         global $post, $author_terms;
         ob_start();
-        if ($author_terms) {
-            $org = get_the_terms($event_id, 'mep_org');
+        $org = get_the_terms($event_id, 'mep_org');
+		if(!empty($org)){
             require(mep_template_file_path('single/organizer.php'));
-
-        }
+		}
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_org_name', $content, $event_id);
     }

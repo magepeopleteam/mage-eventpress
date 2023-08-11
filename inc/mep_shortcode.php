@@ -418,13 +418,13 @@ add_shortcode('event-add-cart-section', 'mep_event_add_to_cart_section');
 function mep_event_add_to_cart_section($atts, $content = null)
 {
     $defaults = array(
-        "event" => "0",
-        "cart-btn-label" => __( 'Register For This Event', 'mage-eventpress' ),
-        "ticket-label" => __( 'Ticket Type', 'mage-eventpress' ),
-        "extra-service-label" => __( 'Extra Service', 'mage-eventpress' )
+        "event"                 => "0",
+        "cart-btn-label"        => __( 'Register For This Event', 'mage-eventpress' ),
+        "ticket-label"          => __( 'Ticket Type', 'mage-eventpress' ),
+        "extra-service-label"   => __( 'Extra Service', 'mage-eventpress' )
     );
-    $params = shortcode_atts($defaults, $atts);
-    $event = $params['event'];   
+    $params                     = shortcode_atts($defaults, $atts);
+    $event                      = $params['event'];   
     ob_start();
     if($event > 0){
        echo mep_shortcode_add_cart_section_html($event,$params);     

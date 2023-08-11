@@ -163,8 +163,13 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'type' => 'text',
                             'default' => 'dashicons-calendar-alt'
                         ),
-
-
+                        array(
+                            'name' => 'mep_event_online_event_label',
+                            'label' => __('Virtual/Online Event Label/Text', 'mage-eventpress'),
+                            'desc' => __('Please enter the online/virtual event text of <strong>Online</strong>. which will display in the front-end', 'mage-eventpress'),
+                            'type' => 'text',
+                            'default' => 'Online'
+                        ),
                         array(
                             'name' => 'mep_event_cat_label',
                             'label' => __('Event Category Label', 'mage-eventpress'),
@@ -962,7 +967,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc' => __('Please enter the translated text of <strong>Sold Out</strong>.', 'mage-eventpress'),
                         'type' => 'text',
                         'default' => 'Sold Out'
-                    )
+                    )                   
 
                 )),
 

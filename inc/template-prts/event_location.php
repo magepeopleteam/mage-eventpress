@@ -138,12 +138,12 @@ if (!function_exists('mep_ev_venue')) {
     {
         global $post, $event_meta;
 
-        if ($event_id) {
-            $event = $event_id;
-        } else {
-            $event = $post->ID;
-        }
-        
+        $event_id       = !empty($event_id) ? $event_id : $post->ID;
+        $online_event_text = mep_get_option('mep_event_online_event_label', 'general_setting_sec', 'Online','mage-eventpress');
+        $event_type     = get_post_meta($event_id, 'mep_event_type', true) ? get_post_meta($event_id, 'mep_event_type', true) : "offline";
+        if($event_type == 'online'){
+            echo esc_html( $online_event_text);
+        }else{
         $location_sts = get_post_meta($event, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($event, 'mep_org');
@@ -152,6 +152,7 @@ if (!function_exists('mep_ev_venue')) {
         } else {
             echo get_post_meta($event, 'mep_location_venue', true);
         }
+    }
     }
 }
 
@@ -272,17 +273,27 @@ if (!function_exists('mep_ev_street')) {
 
 add_action('mep_event_location_city', 'mep_ev_city');
 if (!function_exists('mep_ev_city')) {
-    function mep_ev_city()
+    function mep_ev_city($event_id)
     {
         global $post, $event_meta;
-        $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
+
+        $event_id       = !empty($event_id) ? $event_id : $post->ID;
+        $event_type     = get_post_meta($event_id, 'mep_event_type', true) ? get_post_meta($event_id, 'mep_event_type', true) : "";
+        $location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : "";
+
         if ($location_sts) {
-            $org_arr = get_the_terms($post->ID, 'mep_org');
-            $org_id = $org_arr[0]->term_id;
+
+            $org_arr    = get_the_terms($event_id, 'mep_org');
+            $org_id     = $org_arr[0]->term_id;
+
             ?>
+
             <span><?php echo get_term_meta($org_id, 'org_city', true); ?></span>
+
        <?php } else {  ?>
+
             <span><?php echo esc_html($event_meta['mep_city'][0]); ?></span>
+
         <?php
         }
     }

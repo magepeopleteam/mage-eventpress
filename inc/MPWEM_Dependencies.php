@@ -132,7 +132,6 @@
 				//custom
 				wp_enqueue_style('filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.css', array(), time());
 				wp_enqueue_script('filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), time(), true);
-				wp_enqueue_style('mep-event-style', MPWEM_PLUGIN_URL . '/assets/frontend/style.css', array(), time());
 				wp_enqueue_style('mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time());
 				wp_enqueue_script('mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array('jquery'), time(), true);
 				do_action('add_mpwem_frontend_script');

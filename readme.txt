@@ -2,9 +2,9 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 3.9.9
-Version: 3.9.9
-Tested up to: 6.2
+Stable tag: 4.0.1
+Version: 4.0.1
+Tested up to: 6.3
 WC requires at least: 3.0
 WC tested up to: 6.5
 Requires PHP: 7.0
@@ -365,6 +365,15 @@ A. you can create support ticket here with problem details with possible screens
 
 == Changelog ==
 
+= 4.0.1 =
+* Bug Fixed.
+  09 Aug 2023*
+
+
+= 4.0.0 =
+* Bug Fixed.
+  09 Aug 2023*
+  
 = 3.9.9 =
 * Broken issue fixed in Virtual Template
 * Bug Fixed.

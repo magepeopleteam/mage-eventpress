@@ -928,7 +928,7 @@ class Insights {
                         var $input = $('.wd-dr-modal-reason-input textarea');
 
                         $.ajax({
-                            url: ajaxurl,
+                            url: mp_ajax_url,
                             type: 'POST',
                             data: {
                                 nonce: '<?php echo wp_create_nonce( 'appsero-security-nonce' ); ?>',

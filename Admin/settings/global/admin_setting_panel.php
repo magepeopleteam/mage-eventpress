@@ -1260,7 +1260,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
 	        ?>
 	        <div class="mp_settings_panel_header">
 		        <h3>
-			        <?php echo esc_html($label . esc_html__(' Global Settings', 'mptbm_plugin')); ?>
+			        <?php echo esc_html($label . esc_html__(' Global Settings', 'mage-eventpress')); ?>
 		        </h3>
 	        </div>
 	        <div class="mp_settings_panel">

@@ -1225,3 +1225,12 @@ h3.mep_virtual_sec_title {
 	border-bottom: 1px solid #DDD;
 	padding-bottom: 10px;
 }
+/******************************************************************** Welcome page ************************************************/
+@media only screen and (min-width: 10px) {
+	div.mpwem_welcome_page table tbody th{text-align: left;vertical-align: top;}
+	div.mpwem_pro_feature {width: calc(25% - 10px);margin: 5px;}
+	div.mpwem_welcome_page code { background-color: #E3E3E3; padding: 3px 5px; font-weight: 400; border-radius: 5px; font-size: 16px; display: block; }
+}
+/********************************************************************  ************************************************/
+@media only screen and (min-width: 10px) {
+}

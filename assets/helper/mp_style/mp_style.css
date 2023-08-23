@@ -272,6 +272,7 @@
 	.mpStyle small { font-size: var(--fs_small); }
 	/********Helper Class***********/
 	.mpStyle .divider, .mpStyle [class*="_divider"], .mpStyle hr { margin: var(--dMP_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
+	.mpStyle .divider_3, .mpStyle [class*="_divider_3"]{ margin: var(--dMP_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 3px; background-color: var(--color_border); width: 100%; }
 	.mpStyle .dividerL, .mpStyle [class*="_dividerL"] { margin: var(--dMP) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
 	.mpStyle .separatorRight > *, .mpStyle [class*="_separatorRight"] > * { border-right: 2px solid var(--color_border); }
 	.mpStyle .separatorRight > *, .mpStyle [class*="_separatorRight"] > :last-child { border-right: none; }
@@ -291,6 +292,7 @@
 	.mpStyle .fRight, .mpStyle [class*="_fRight"] { float: right; }
 	/**************/
 	/**************/
+	.mpStyle .textLeft, .mpStyle [class*="_textLeft"] { text-align: left; }
 	.mpStyle .textCenter, .mpStyle [class*="_textCenter"] { text-align: center; }
 	.mpStyle .textRight, .mpStyle [class*="_textRight"] { text-align: right; }
 	.mpStyle .textCapitalize, .mpStyle [class*="_textCapitalize"] { text-transform: capitalize; }
@@ -1050,6 +1052,12 @@
 }
 /******************************************************************** Faq section ************************************************/
 @media only screen and (min-width: 10px) {
+	div.mp_faq_item {margin: 0 0 var(--dMP_xs) 0;}
+	div.mp_faq_item .mp_faq_title {background-color: #FFF;border: 1px solid #DDD;border-radius: 5px;font-weight: normal;text-transform: none;}
+	div.mp_faq_item .mp_faq_title.active {border-color: var(--color_theme);border-radius: 5px 5px 0 0;background-color: var(--color_theme);color: var(--color_theme_alter); }
+	div.mp_faq_item .mp_faq_title span {padding: 10px;}
+	div.mp_faq_content {background-color: #FFF;padding: var(--dMP);border: 1px solid var(--color_theme);border-radius: 0 0 5px 5px;overflow: hidden;color: #606b7b;font-size: var(--fs_label);}
+	div.mp_faq_item div.superSlider {min-width: 300px;max-width: 50%; margin: 0 var(--dMP_xs) var(--dMP_xs) 0;float: left;}
 }
 /******************************************************************** Popup section ************************************************/
 @media only screen and (min-width: 10px) {
@@ -1337,6 +1345,9 @@
 	/*****Gray*********/
 	div.mpStyle .textGray, div.mpStyle [class*='_textGray'] { color: gray; }
 	div.mpStyle .bgGray, div.mpStyle [class*='_bgGray'] { background-color: gray; }
+	/*****Black*********/
+	div.mpStyle .textBlack, div.mpStyle [class*='_textBlack'] { color: var(--color_black); }
+	div.mpStyle .bgBlack, div.mpStyle [class*='_bgBlack'] { background-color: var(--color_black);}
 	/*****yellow*********/
 	div.mpStyle .textYellow, div.textYellow, .mpStyle [class*='textYellow'] { color: var(--color_yellow); }
 	div.mpStyle [class*='bgYellow'] { background-color: var(--color_yellow); }

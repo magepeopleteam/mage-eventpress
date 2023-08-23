@@ -259,7 +259,7 @@
 			public static function get_image_url($post_id = '', $image_id = '', $size = 'full') {
 				if ($post_id) {
 					$image_id = get_post_thumbnail_id($post_id);
-					$image_id = $image_id ?:self::get_post_info($post_id, 'mp_thumbnail') ;
+					$image_id = $image_id ?: self::get_post_info($post_id, 'mp_thumbnail');
 				}
 				return wp_get_attachment_image_url($image_id, $size);
 			}
@@ -327,13 +327,13 @@
 			}
 			public static function week_day(): array {
 				return [
-					'monday' => esc_html__('Monday', 'mptbm_plugin'),
-					'tuesday' => esc_html__('Tuesday', 'mptbm_plugin'),
-					'wednesday' => esc_html__('Wednesday', 'mptbm_plugin'),
-					'thursday' => esc_html__('Thursday', 'mptbm_plugin'),
-					'friday' => esc_html__('Friday', 'mptbm_plugin'),
-					'saturday' => esc_html__('Saturday', 'mptbm_plugin'),
-					'sunday' => esc_html__('Sunday', 'mptbm_plugin'),
+					'monday' => esc_html__('Monday', 'mage-eventpress'),
+					'tuesday' => esc_html__('Tuesday', 'mage-eventpress'),
+					'wednesday' => esc_html__('Wednesday', 'mage-eventpress'),
+					'thursday' => esc_html__('Thursday', 'mage-eventpress'),
+					'friday' => esc_html__('Friday', 'mage-eventpress'),
+					'saturday' => esc_html__('Saturday', 'mage-eventpress'),
+					'sunday' => esc_html__('Sunday', 'mage-eventpress'),
 				];
 			}
 			public static function get_plugin_data($data) {

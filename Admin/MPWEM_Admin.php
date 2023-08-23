@@ -34,11 +34,11 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/global/MAGE_Setting_API.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/global/admin_setting_panel.php';
 				//************************************//
-				require_once MPWEM_PLUGIN_DIR . '/Admin/welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/mep_dummy_import.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/mep_cpt.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/status.php';
-//				require_once MPWEM_PLUGIN_DIR . '/Admin/MPTBM_Guideline.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Welcome.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
 //				//****************Taxi settings************************//
 //				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_Settings.php';
 //				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_General_Settings.php';

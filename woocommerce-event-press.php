@@ -32,7 +32,7 @@
 		}
 		function mep_event_activation_redirect($plugin) {
 			$check_quick_setup = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'no-done';
-			$slug = $check_quick_setup == 'done' ? 'edit.php?post_type=mep_events&page=mep_event_welcome_page' : 'edit.php?post_type=mep_events&page=mep_event_quick_setup_page';
+			$slug = $check_quick_setup == 'done' ? 'edit.php?post_type=mep_events&page=mep_event_welcome_page' : 'edit.php?post_type=mep_events&page=mpwem_quick_setup';
 			if ($plugin == plugin_basename(__FILE__)) {
 				exit(wp_redirect(admin_url($slug)));
 			}
@@ -78,24 +78,12 @@
 		}
 	}
 	else {
-		add_action('admin_enqueue_scripts', 'mep_add_admin_scripts', 10, 1);
-		function mep_add_admin_scripts($hook) {
-			wp_register_script('welcome-tabs', MPWEM_PLUGIN_URL . '/assets/admin/welcome-tabs.js', array('jquery'));
-			wp_register_style('welcome-tabs', MPWEM_PLUGIN_URL . '/assets/admin/welcome-tabs.css');
-		}
-		add_action('admin_menu', 'mep_event_welcome_admin_menu');
-		function mep_event_welcome_admin_menu() {
-			add_menu_page(__('Events', 'mage-eventpress'), __('Events', 'mage-eventpress'), 'manage_options', 'mep_events', 'mep_event_quick_setup_page', 'dashicons-calendar-alt', 6);
-			add_submenu_page('mep_events', __('Quick Setup', 'mage-eventpress'), __('<span style="color:#10dd10">Quick Setup</span>', 'mage-eventpress'), 'manage_options', 'mep_event_quick_setup_page', 'mep_event_quick_setup_page');
-		}
-		function mep_event_quick_setup_page() {
-			require_once(dirname(__FILE__) . "/inc/quick_setup.php");
-		}
+		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
+		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
+		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
 		function mep_no_woo_event_activation_redirect($plugin) {
-			// $check_quick_setup = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'no-done';
-			$slug = 'admin.php?page=mep_event_quick_setup_page';
 			if ($plugin == plugin_basename(__FILE__)) {
-				exit(wp_redirect(admin_url($slug)));
+				exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
 			}
 		}
 		add_action('activated_plugin', 'mep_no_woo_event_activation_redirect');

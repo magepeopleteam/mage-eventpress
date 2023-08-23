@@ -39,7 +39,6 @@
 				require_once(dirname(__DIR__) . "/inc/mep_shortcode.php");
 				require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
-				
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
 				//require_once MPWEM_PLUGIN_DIR . '/inc/MPTBM_Function.php';
 				//require_once MPTBM_PLUGIN_DIR . '/inc/MPTBM_Query.php';
@@ -69,8 +68,10 @@
 					wp_enqueue_style('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4');
 					wp_enqueue_script('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array(), '2.3.4');
 				}
-				//wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
-				//wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
+				if (is_admin()) {
+					wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
+					wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
+				}
 				do_action('add_mpwem_common_script');
 			}
 			public function admin_enqueue($hook) {
@@ -101,9 +102,6 @@
 				wp_enqueue_script('magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array('jquery'));
 				wp_localize_script('PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array('PickpluginsOptionsFramework_ajaxurl' => admin_url('admin-ajax.php')));
 				wp_enqueue_script('form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array('jquery'), null, false);
-				//loading welcome tab
-				wp_register_script('welcome-tabs', MPWEM_PLUGIN_URL . '/assets/admin/welcome-tabs.js', array('jquery'));
-				wp_register_style('welcome-tabs', MPWEM_PLUGIN_URL . '/assets/admin/welcome-tabs.css');
 				//loading modal
 				wp_enqueue_style('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.css', array(), 1.0);
 				wp_enqueue_script('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.js', array('jquery'), 1.0, true);

@@ -4215,14 +4215,14 @@ function mep_get_price_including_tax($event, $price, $args = array()) {
 
             if ('yes' === get_option('woocommerce_tax_round_at_subtotal')) {
 
-                $taxes_total = array_sum($taxes);
+                $taxes_total        = array_sum($taxes);
 
             } else {
 
-                $taxes_total = array_sum(array_map('wc_round_tax_total', $taxes));
+                $taxes_total        = array_sum(array_map('wc_round_tax_total', $taxes));
             }
 
-            $return_price = $tax_with_price == 'excl' ? round($line_price, wc_get_price_decimals()) : round($line_price + $taxes_total, wc_get_price_decimals());
+            $return_price           = $tax_with_price == 'excl' ? round($line_price, wc_get_price_decimals()) : round($line_price + $taxes_total, wc_get_price_decimals());
 
 
         } else {

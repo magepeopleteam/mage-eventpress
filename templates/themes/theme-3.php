@@ -40,7 +40,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                 <div class='df-dtl'>
                     <h3>
-                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__("$event_label Location:", 'mage-eventpress'); ?>
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
                     </h3>
                     <p><?php do_action('mep_event_location',$event_id); ?></p>
                 </div>
@@ -89,7 +89,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
     </div>
     <div class="mep-default-sidrbar-map">
         <h4 class="mep-cart-table-title">
-            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__("$event_label Location:", 'mage-eventpress'); ?>
+            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
         </h4>
         <?php do_action('mep_event_map',$event_id); ?>
     </div>

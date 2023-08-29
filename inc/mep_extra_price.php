@@ -284,8 +284,8 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
 
   $eid            = array_key_exists('event_id', $values) ? $values['event_id'] : 0; //$values['event_id'];
   $start_time     = get_post_meta($eid, 'event_start_time', true);
-  $location_text  = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) ? mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) : 'Location';
-  $date_text      = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) ? mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) : 'Date';
+  $location_text  = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress'));
+  $date_text      = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress'));
   
   if (get_post_type($eid) == 'mep_events') {
     $event_id = $eid;

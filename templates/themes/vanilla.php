@@ -33,7 +33,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <div class="df-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
-                            <?php echo mep_get_option('mep_event_date_text', 'label_setting_sec') ? mep_get_option('mep_event_date_text', 'label_setting_sec') : esc_html__('Event Date:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_date_text', 'label_setting_sec',__('Event Date:', 'mage-eventpress')); ?>
                         </h3>
                         <?php do_action('mep_event_date_only', $event_id); ?>
                     </div>
@@ -44,7 +44,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <div class="df-ico"><i class="<?php echo $event_time_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
-                            <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec') ? mep_get_option('mep_event_time_text', 'label_setting_sec') : esc_html__('Event Time:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec', __('Event Time:', 'mage-eventpress')); ?>
                         </h3>
                         <?php do_action('mep_event_time_only', $event_id); ?>
                     </div>
@@ -55,7 +55,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
-                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                         </h3>
                         <p>
                             <span><?php do_action('mep_event_location_venue', $event_id); ?></span>
@@ -74,7 +74,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <div class="mep-default-col-1">
                     <div class="mep-default-sidrbar-map">
                         <h3>
-                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Find Location On Google Map:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Find Location On Google Map:', 'mage-eventpress')); ?>
                         </h3>
                         <?php do_action('mep_event_map', $event_id); ?>
                     </div>

@@ -57,16 +57,16 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 
                 <?php if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
                     <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                        <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', esc_html__('Multi Date Event', 'mage-eventpress')); ?></span>
+                        <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', __('Multi Date Event', 'mage-eventpress')); ?></span>
                     </div>
                 <?php } elseif ($recurring != 'no') { ?>
                     <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                        <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', esc_html__('Recurring Event', 'mage-eventpress')); ?></span>
+                        <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring Event', 'mage-eventpress')); ?></span>
                     </div>
                 <?php }
                 if ($event_type == 'online') { ?>
                     <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
-                        <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec') ? mep_get_option('mep_event_virtual_label', 'label_setting_sec') : esc_html__('Virtual Event', 'mage-eventpress'); ?></span>
+                        <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual Event', 'mage-eventpress')); ?></span>
                     </div>
                 <?php } ?>
                 <?php do_action('mep_event_list_loop_footer', $event_id); ?>

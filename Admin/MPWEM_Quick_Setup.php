@@ -212,11 +212,12 @@
 				<?php
 			}
 			public function setup_general_content() {
+				$url                 = (isset($_SERVER['HTTPS']) ? "" : "") . "$_SERVER[HTTP_HOST]";
 				$label = MP_Global_Function::get_settings('general_setting_sec', 'mep_event_label', 'Events');
 				$slug = MP_Global_Function::get_settings('general_setting_sec', 'mep_event_slug', 'event');
 				$expire = MP_Global_Function::get_settings('general_setting_sec', 'mep_event_expire_on_datetimes', 'event_expire_datetime');
 				$from_email = MP_Global_Function::get_settings('email_setting_sec', 'mep_email_form_name', get_bloginfo('name'));
-				$from_email_address = MP_Global_Function::get_settings('email_setting_sec', 'mep_email_form_email', 'no-reply@$url');
+				$from_email_address = MP_Global_Function::get_settings('email_setting_sec', 'mep_email_form_email', "no-reply@$url");
 				?>
 				<div data-tabs-next="#mpwem_qs_general">
 					<div class="section">

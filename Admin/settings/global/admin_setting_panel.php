@@ -1293,20 +1293,37 @@ $settings = new MAGE_Events_Setting_Controls();
 
 
 function mep_get_option($option, $section, $default = '') {
+
     $options = get_option($section);
 
     if (isset($options[$option])) {
         if(is_array($options[$option])){
-            return $options[$option];
+
+            if(!empty($options[$option])){
+                return $options[$option];
+            }else{
+                return $default;
+            }
+
         }else{
-            return wp_kses_post($options[$option]);
+            
+            if(!empty($options[$option])){
+                // return $options[$option];
+                return wp_kses_post($options[$option]);
+            }else{
+                return $default;
+            }
+           
+
         }
     }
+
     if(is_array($default)){
         return $default;
     }else{
         return wp_kses_post($default);
     }
+
 }
 
 

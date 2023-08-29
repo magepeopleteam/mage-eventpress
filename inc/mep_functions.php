@@ -3382,18 +3382,17 @@ if (!function_exists('mep_hide_event_order_meta_in_emails')) {
 add_filter('woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_data_from_thankyou_and_email', 10, 1);
 if (!function_exists('mep_hide_event_order_data_from_thankyou_and_email')) {
     function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta) {
-        $hide_location_status = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
-        $hide_date_status = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
-        $location_text = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) ? mep_get_option('mep_location_text', 'label_setting_sec', __('Location', 'mage-eventpress')) : 'Location';
-        $date_text = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) ? mep_get_option('mep_event_date_text', 'label_setting_sec', __('Date', 'mage-eventpress')) : 'Date';
 
-        $hide_location = $hide_location_status == 'yes' ? array($location_text) : array();
-        $hide_date = $hide_date_status == 'yes' ? array($date_text) : array();
-        $default = array('event_id');
-        $default = array_merge($default, $hide_date);
-        $hide_them = array_merge($default, $hide_location);
-
-        $temp_metas = [];
+        $hide_location_status   = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
+        $hide_date_status       = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
+        $location_text          = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress'));
+        $date_text              = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress'));
+        $hide_location          = $hide_location_status == 'yes' ? array($location_text) : array();
+        $hide_date              = $hide_date_status == 'yes' ? array($date_text) : array();
+        $default                = array('event_id');
+        $default                = array_merge($default, $hide_date);
+        $hide_them              = array_merge($default, $hide_location);
+        $temp_metas             = [];
 
         foreach ($formatted_meta as $key => $meta) {
             if (isset($meta->key) && !in_array($meta->key, $hide_them)) {
@@ -4377,7 +4376,7 @@ function mep_get_event_add_cart_sec($post_id) {
     ?>
     <!-- Register Now Title -->
     <h4 class="mep-cart-table-title">
-        <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : esc_html__('Register Now:', 'mage-eventpress'); ?>
+        <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec',__('Register Now:', 'mage-eventpress')); ?>
     </h4>
     <!--The event add to cart main form start here-->
     <form action="" method='post' id="mage_event_submit" enctype="multipart/form-data">
@@ -4397,12 +4396,12 @@ function mep_get_event_add_cart_sec($post_id) {
         <!--The Add to cart button table start Here-->
         <table class='table table-bordered mep_event_add_cart_table'>
             <tr>
-                <td style='text-align:left;' class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : esc_html__('Quantity:', 'mage-eventpress');
+                <td style='text-align:left;' class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec',__('Quantity:', 'mage-eventpress'));
                     if ($mep_event_ticket_type) { ?>
                         <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
                         <span id="ttyttl"></span>
                     <?php } ?>
-                    <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : esc_html__('Total', 'mage-eventpress'); ?>
+                    <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec', __('Total', 'mage-eventpress')); ?>
                                     <span id="usertotal"></span>
                                 </span>
                 </td>
@@ -4736,9 +4735,9 @@ if (!function_exists('mep_event_recurring_date_list_in_event_list_loop')) {
                 <span class='mep_more_date_btn mep-tem3-title-sec mp_event_visible_event_time'
                       data-event-id="<?php echo esc_attr($event_id); ?>"
                       data-active-text="<?php echo esc_attr(mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__('View More Date', 'mage-eventpress'))); ?>"
-                      data-hide-text="<?php echo esc_attr(mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', esc_html__('Hide Date Lists', 'mage-eventpress'))); ?>"
+                      data-hide-text="<?php echo esc_attr(mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress'))); ?>"
                 >
-            <?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__('View More Date', 'mage-eventpress')); ?>
+            <?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?>
         </span>
             <?php } ?>
             <?php

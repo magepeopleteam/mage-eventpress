@@ -61,7 +61,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                 <div class='df-dtl'>
                     <h3>
-                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                     </h3>
                         <p><?php do_action('mep_event_location', $event_id); ?></p>
                 </div>

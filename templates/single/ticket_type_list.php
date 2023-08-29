@@ -22,7 +22,7 @@
                                     <?php
                                     for ($i = $total_min_seat; $i <= $total_left; $i++) { ?>
                                         <option value="<?php echo esc_attr($i); ?>" <?php if ($i == $default_quantity) { echo esc_attr('Selected'); } ?>><?php echo esc_html($i); ?>
-                                            <?php echo mep_get_option('mep_ticket_text', 'label_setting_sec') ? mep_get_option('mep_ticket_text', 'label_setting_sec') : esc_html__('Ticket:', 'mage-eventpress');  ?>
+                                            <?php echo mep_get_option('mep_ticket_text', 'label_setting_sec', __('Ticket:', 'mage-eventpress'));  ?>
                                         </option>
                                     <?php } ?>
                                 </select>
@@ -37,7 +37,7 @@
                         } else {
                             ?>
                             <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="hidden" class='extra-qty-box etp' name='option_qty[]' data-price='0' value='0' min="0" max="0">
-                            <?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec') ? mep_get_option('mep_no_seat_available_text', 'label_setting_sec') : esc_html__('No Seat Availables', 'mage-eventpress');
+                            <?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec', __('No Seat Availables', 'mage-eventpress'));
                         }
                         $ticket_name = mep_remove_apostopie($field['option_name_t']);
                             do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity,$start_date);
@@ -45,7 +45,7 @@
                         ?>
                         <?php if ($mep_available_seat == 'on') { ?>                            
                             <div class="xtra-item-left"><?php echo esc_html(max($total_ticket_left, 0)); ?>
-                                <?php echo mep_get_option('mep_left_text', 'label_setting_sec') ? mep_get_option('mep_left_text', 'label_setting_sec') : esc_html__('Left:', 'mage-eventpress');  ?>
+                                <?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress'));  ?>
                             </div> 
                         <?php } ?>                        
                     </td>

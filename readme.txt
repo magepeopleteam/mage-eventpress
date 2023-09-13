@@ -1,4 +1,4 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce -WpEvently ===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
@@ -11,10 +11,10 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Event Manager and Tickets Selling Plugin for WooCommerce is an Event Plugin for WordPress that is based on WooCommerce.
+WpEvently is an Event Manager Plugin and Tickets Selling Solution for WooCommerce is an Event Plugin for WordPress that is based on WooCommerce.
 
 == Description ==
-Event Manager and Tickets Selling Plugin for WooCommerce is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress, because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
+Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress, because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
 
 ###  Free Version Plugin Features:
 

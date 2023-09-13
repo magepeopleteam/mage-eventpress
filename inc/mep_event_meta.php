@@ -460,7 +460,7 @@ class MP_Event_All_Info_In_One
 				<li><span><?php esc_html_e('Show Advanced Column:', 'mage-eventpress'); ?></span></li>
 				<li>
 					<label class='mp_event_ticket_type_advance_col_switch'>
-						<input class="mp_opacity_zero" type="checkbox" name="mep_show_advance_col_status" <?php echo esc_attr($reg_checked); ?> /><span class="slider round"></span>
+						<input class="mp_opacity_zero" type="checkbox" name="mep_show_advance_col_status" <?php echo esc_attr($reg_checked); ?> /><span class="mep_slider round"></span>
 					</label>
 					</li>
 			</ul>
@@ -972,7 +972,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label>
 					<input class="mp_opacity_zero" type="checkbox" name="mep_show_end_datetime" value='yes' <?php echo esc_attr($mep_show_end_datetime); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 			</td>
 		</tr>
@@ -1007,7 +1007,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label>
 					<input class="mp_opacity_zero" type="checkbox" name="mep_reg_status" <?php echo esc_attr($reg_checked); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 			</td>
 		</tr> -->
@@ -1032,7 +1032,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label>
 					<input class="mp_opacity_zero" type="checkbox" name="mep_available_seat" <?php echo esc_attr($seat_checked); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 			</td>
 		</tr>
@@ -1048,7 +1048,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label>
 					<input class="mp_opacity_zero" type="checkbox" name="mep_reset_status" class="switch_checkbox" />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 					<span style="padding: 0 0 0 60px;"><?php esc_html_e('Current Booking Status :', 'mage-eventpress'); ?></span>
 					<span><?php mep_get_event_total_seat($post_id); ?></span>
 				</label>
@@ -1080,7 +1080,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label class="mp_event_virtual_type_des_switch">
 					<input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 				<p></p>
 				<label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
@@ -1094,7 +1094,7 @@ class MP_Event_All_Info_In_One
 			<td colspan="3">
 				<label class="mp_event_virtual_type_des_switch">
 					<input class="mp_opacity_zero" type="checkbox" name="mep_member_only_event" <?php echo esc_attr($member_checked); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 				<p></p>
 				<label class="mp_event_virtual_type_des <?php echo ($event_member_type == 'member_only') ? esc_attr('active') : ''; ?>">

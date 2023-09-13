@@ -1,4 +1,4 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently ===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3

@@ -78,6 +78,7 @@ if (post_password_required()) {
 			   }
             }
             $theme_name = "/themes/$_current_template";
+         
             require_once(mep_template_file_path($theme_name));
             if (comments_open() || get_comments_number()) {
                 comments_template();

@@ -23,17 +23,17 @@ if (!function_exists('mep_ev_ticket_type')) {
                         <th> 
                         <span class="tkt-qty" style="text-align: left;">
                             <?php //_e('Ticket type','mage-eventpress'); ?> 
-                            <?php echo mep_get_option('mep_event_ticket_type_text', 'label_setting_sec') ? mep_get_option('mep_event_ticket_type_text', 'label_setting_sec') : esc_html__('Ticket type:', 'mage-eventpress');  ?>                            
+                            <?php echo mep_get_option('mep_event_ticket_type_text', 'label_setting_sec', __('Ticket type:', 'mage-eventpress'));  ?>                            
                         </span>
                         </th>
                         <th>
                         <span class="tkt-qty" style="text-align: center;">
-                            <?php echo mep_get_option('mep_ticket_qty_text', 'label_setting_sec') ? mep_get_option('mep_ticket_qty_text', 'label_setting_sec') : esc_html__('Ticket Qty:', 'mage-eventpress');  ?>
+                            <?php echo mep_get_option('mep_ticket_qty_text', 'label_setting_sec', __('Ticket Qty:', 'mage-eventpress'));  ?>
                         </span>
                         </th>
                         <th>
                         <span class="tkt-pric" style="text-align: center;">
-                            <?php echo mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') ? mep_get_option('mep_per_ticket_price_text', 'label_setting_sec') : esc_html__('Per Ticket Price:', 'mage-eventpress');  ?>
+                            <?php echo mep_get_option('mep_per_ticket_price_text', 'label_setting_sec', __('Per Ticket Price:', 'mage-eventpress'));  ?>
                         </span> 
                         </th>
                     </tr>

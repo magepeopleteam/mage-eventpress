@@ -30,7 +30,7 @@ if (!function_exists('mep_output_add_to_cart_custom_fields')) {
     } else {
 ?>
       <span class=event-expire-btn>
-        <?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec') ? mep_get_option('mep_no_seat_available_text', 'label_setting_sec') : esc_html__('Sorry, There Are No Seats Available', 'mage-eventpress');  ?>
+        <?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec', __('Sorry, There Are No Seats Available', 'mage-eventpress'));  ?>
       </span>
 <?php
       do_action('mep_after_no_seat_notice');

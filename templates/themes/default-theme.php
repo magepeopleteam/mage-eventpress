@@ -34,7 +34,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
                     <div class='df-dtl'>
                         <h3>
                             <?php 
-                             echo mep_get_option('mep_event_date_text', 'label_setting_sec') ? mep_get_option('mep_event_date_text', 'label_setting_sec') : esc_html__('Event Date:', 'mage-eventpress'); 
+                             echo mep_get_option('mep_event_date_text', 'label_setting_sec', __('Event Date:', 'mage-eventpress')); 
                             ?>
                         </h3>
                         <?php do_action('mep_event_date_only',$event_id); ?>
@@ -46,7 +46,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
                     <div class="df-ico"><i class="<?php echo $event_time_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
-                            <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec') ? mep_get_option('mep_event_time_text', 'label_setting_sec') : esc_html__('Event Time:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_time_text', 'label_setting_sec', __('Event Time:', 'mage-eventpress')); ?>
                         </h3>
                         <?php do_action('mep_event_time_only',$event_id); ?>
                     </div>
@@ -57,7 +57,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
                 <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
-                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
+                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                         </h3>
                         <p><?php do_action('mep_event_location_venue', $event_id); ?>
                             <?php //do_action('mep_event_location_city'); ?>    </p>
@@ -81,7 +81,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
     <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
         <div class="mep-default-sidrbar-map">
             <h3>
-                <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec') ? mep_get_option('mep_event_location_text', 'label_setting_sec') : esc_html__('Event Location:', 'mage-eventpress'); ?>
+                <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
             </h3>
             <?php do_action('mep_event_map',$event_id); ?>
         </div>

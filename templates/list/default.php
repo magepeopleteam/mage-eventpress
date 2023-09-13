@@ -3,7 +3,7 @@ $day                            = mep_get_event_upcomming_date($event_id, 'day')
 $month                          = mep_get_event_upcomming_date($event_id, 'month-name'); 
 $recurring                      = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 $mep_hide_event_hover_btn       = mep_get_option('mep_hide_event_hover_btn', 'event_list_setting_sec', 'no');
-$mep_hide_event_hover_btn_text  = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', 'Book Now');
+$mep_hide_event_hover_btn_text  = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', __('Book Now','mage-eventpress'));
 $sold_out_ribbon                = mep_get_option('mep_show_sold_out_ribbon_list_page', 'general_setting_sec', 'no');
 $taxonomy_category              = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
 $taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
@@ -27,24 +27,24 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
         if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
 
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', esc_html__('Multi Date Event', 'mage-eventpress')); ?></span>
+                <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', __('Multi Date Event', 'mage-eventpress')); ?></span>
             </div>
 
         <?php } elseif ($recurring != 'no') {  ?>
 
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', esc_html__('Recurring Event', 'mage-eventpress')); ?></span>
+                <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring Event', 'mage-eventpress')); ?></span>
             </div>
 
         <?php  }  if ($event_type == 'online') { ?>
 
             <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec') ? mep_get_option('mep_event_virtual_label', 'label_setting_sec') : esc_html__('Virtual Event', 'mage-eventpress'); ?></span>
+                <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual Event', 'mage-eventpress')); ?></span>
             </div>
 
         <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
 
-            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec') ? esc_html(mep_get_option('mep_event_sold_out_label', 'label_setting_sec')) : esc_html__('Sold Out', 'mage-eventpress'); ?></div>
+            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?></div>
         
         <?php } ?>        
     </div>
@@ -79,7 +79,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                                 <div class="evl-ico"><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i></div>
                                 <div class="evl-cc">
                                     <h5>
-                                        <?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec') ? esc_html(mep_get_option('mep_organized_by_text', 'label_setting_sec')) : esc_html__('Organized By:', 'mage-eventpress'); ?>
+                                        <?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec', __('Organized By:', 'mage-eventpress')); ?>
                                     </h5>
                                     <h6><?php echo esc_html($author_terms[0]->name); ?></h6>
                                 </div>
@@ -93,7 +93,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                                 <div class="evl-ico"><i class="<?php echo esc_attr($event_location_icon); ?>"></i></div>
                                 <div class="evl-cc">
                                     <h5>
-                                        <?php echo mep_get_option('mep_location_text', 'label_setting_sec') ? esc_html(mep_get_option('mep_location_text', 'label_setting_sec')) : esc_html__('Location:', 'mage-eventpress'); ?>
+                                        <?php echo mep_get_option('mep_location_text', 'label_setting_sec', __('Location:', 'mage-eventpress')); ?>
 
                                     </h5>
                                     <h6><?php mep_get_event_city($event_id); ?></h6>

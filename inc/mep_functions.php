@@ -39,9 +39,9 @@ function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page'
 
 	return null;
 }
-
-
-
+	
+	
+	
 
 
 
@@ -55,14 +55,6 @@ function mep_add_event_into_feed_request($qv) {
 }
 add_filter('request', 'mep_add_event_into_feed_request');
 
-// Language Load
-add_action('init', 'mep_language_load');
-if (!function_exists('mep_language_load')) {
-    function mep_language_load() {
-        $plugin_dir = basename(dirname(__DIR__)) . "/languages/";
-        load_plugin_textdomain('mage-eventpress', false, $plugin_dir);
-    }
-}
 if (!function_exists('mepfix_sitemap_exclude_post_type')) {
 function mepfix_sitemap_exclude_post_type() {
     return ['auto-draft'];
@@ -3374,87 +3366,6 @@ function mep_string_sanitize($s) {
 
 }
 
-
-
-
-/**
- * This the function which will create the Rich Text Schema For each event into the <head></head> section.
- */
-
-if (!function_exists('mep_event_rich_text_data')) {
-    function mep_event_rich_text_data() {
-        global $post;
-
-        if (is_single()) {
-            $event_id = $post->ID;
-            if ($event_id && get_post_type($event_id) == 'mep_events') {
-                $event_name = get_the_title($event_id);
-                $event_start_date = get_post_meta($post->ID, 'event_start_datetime', true) ? wp_date('Y-m-d H:i:s T', strtotime(get_post_meta($post->ID, 'event_start_datetime', true))) : '';
-                $event_end_date = get_post_meta($post->ID, 'event_end_datetime', true) ? get_post_meta($post->ID, 'event_end_datetime', true) : '';
-                $event_rt_status = get_post_meta($post->ID, 'mep_rt_event_status', true) ? get_post_meta($post->ID, 'mep_rt_event_status', true) : 'EventRescheduled';
-                $event_rt_atdnce_mode = get_post_meta($post->ID, 'mep_rt_event_attandence_mode', true) ? get_post_meta($post->ID, 'mep_rt_event_attandence_mode', true) : 'OfflineEventAttendanceMode';
-                $event_rt_prv_date = get_post_meta($post->ID, 'mep_rt_event_prvdate', true) ? get_post_meta($post->ID, 'mep_rt_event_prvdate', true) : $event_start_date;
-                $terms = get_the_terms($event_id, 'mep_org');
-                $org_name = is_array($terms) && sizeof($terms) > 0 ? $terms[0]->name : 'No Performer';
-                $rt_status = get_post_meta($event_id, 'mep_rich_text_status', true) ? get_post_meta($event_id, 'mep_rich_text_status', true) : 'enable';
-                if ($rt_status == 'enable') {
-                    ob_start();
-
-                    ?>
-                    <script type="application/ld+json">
-                            {
-                            "@context"  : "https://schema.org",
-                            "@type"     : "Event",
-                            "name"      : "<?php echo esc_attr($event_name); ?>",
-                            "startDate" : "<?php echo esc_attr($event_start_date); ?>",
-                            "endDate"   : "<?php echo esc_attr($event_end_date); ?>",                            
-                            "offers": {
-                                "@type"         : "Offer",
-                                "url"           : "<?php echo get_the_permalink($event_id); ?>",
-                                "price"         : "<?php echo strip_tags(mep_event_list_number_price($event_id)); ?>",
-                                "priceCurrency" : "<?php echo get_woocommerce_currency(); ?>",
-                                "availability"  : "https://schema.org/InStock",
-                                "validFrom"     : "<?php echo esc_attr($event_end_date); ?>"
-                            },
-                            "organizer": {
-                                "@type" : "Organization",
-                                "name"  : "<?php echo esc_attr($org_name); ?>",
-                                "url"   : "<?php echo get_the_permalink($event_id); ?>"
-                            },
-                            "eventStatus"           : "https://schema.org/<?php echo esc_attr($event_rt_status); ?>",
-                            "eventAttendanceMode"   : "https://schema.org/<?php echo esc_attr($event_rt_atdnce_mode); ?>",
-                            "previousStartDate"     : "<?php echo esc_attr($event_rt_prv_date); ?>",
-                            "location"  : {
-                                "@type"         : "Place",
-                                "name"          : "<?php echo mep_get_event_location($event_id); ?>",
-                                "address"       : {
-                                "@type"         : "PostalAddress",
-                                "streetAddress" : "<?php echo mep_get_event_location_street($event_id); ?>",
-                                "addressLocality": "<?php echo mep_get_event_location_city($event_id); ?>",
-                                "postalCode"    : "<?php echo mep_get_event_location_postcode($event_id) ?>",
-                                "addressRegion" : "<?php echo mep_get_event_location_state($event_id) ?>",
-                                "addressCountry": "<?php echo mep_get_event_location_country($event_id) ?>"
-                                }
-                            },
-                            "image": [
-                                "<?php echo get_the_post_thumbnail_url($event_id, 'full'); ?>"
-                            ],
-                            "description": "<?php echo strip_tags(mep_string_sanitize(get_the_excerpt($event_id))); ?>",
-                            "performer": {
-                                "@type" : "PerformingGroup",
-                                "name"  : "<?php echo esc_attr($org_name); ?>"
-                            }
-                            }
-                    </script>
-
-                    <?php
-                    return ob_get_clean();
-                }
-            }
-        }
-    }
-}
-
 /**
  * We added event id with every order for using in the attendee & seat inventory calculation, but this info was showing in the thank you page, so i decided to hide this, and here is the fucntion which will hide the event id from the thank you page.
  */
@@ -3471,18 +3382,17 @@ if (!function_exists('mep_hide_event_order_meta_in_emails')) {
 add_filter('woocommerce_order_item_get_formatted_meta_data', 'mep_hide_event_order_data_from_thankyou_and_email', 10, 1);
 if (!function_exists('mep_hide_event_order_data_from_thankyou_and_email')) {
     function mep_hide_event_order_data_from_thankyou_and_email($formatted_meta) {
-        $hide_location_status = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
-        $hide_date_status = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
-        $location_text = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress')) ? mep_get_option('mep_location_text', 'label_setting_sec', __('Location', 'mage-eventpress')) : 'Location';
-        $date_text = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress')) ? mep_get_option('mep_event_date_text', 'label_setting_sec', __('Date', 'mage-eventpress')) : 'Date';
 
-        $hide_location = $hide_location_status == 'yes' ? array($location_text) : array();
-        $hide_date = $hide_date_status == 'yes' ? array($date_text) : array();
-        $default = array('event_id');
-        $default = array_merge($default, $hide_date);
-        $hide_them = array_merge($default, $hide_location);
-
-        $temp_metas = [];
+        $hide_location_status   = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
+        $hide_date_status       = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
+        $location_text          = mep_get_option('mep_location_text', 'label_setting_sec', esc_html__('Location', 'mage-eventpress'));
+        $date_text              = mep_get_option('mep_event_date_text', 'label_setting_sec', esc_html__('Date', 'mage-eventpress'));
+        $hide_location          = $hide_location_status == 'yes' ? array($location_text) : array();
+        $hide_date              = $hide_date_status == 'yes' ? array($date_text) : array();
+        $default                = array('event_id');
+        $default                = array_merge($default, $hide_date);
+        $hide_them              = array_merge($default, $hide_location);
+        $temp_metas             = [];
 
         foreach ($formatted_meta as $key => $meta) {
             if (isset($meta->key) && !in_array($meta->key, $hide_them)) {
@@ -3528,31 +3438,6 @@ if (!function_exists('mep_custom_css_sectings_fields')) {
             )
         );
         return array_merge($default_fields, $settings_fields);
-    }
-}
-// add_action('wp_head', 'mep_apply_custom_css', 90);
-if (!function_exists('mep_apply_custom_css')) {
-    function mep_apply_custom_css() {
-        $custom_css                 = mep_get_option('mep_custom_css', 'mep_settings_custom_css', '');
-        $hide_booked_event_on_list  = mep_get_option('mep_hide_not_available_event_from_list_page', 'general_setting_sec', 'no');
-        ob_start();
-        ?>
-        <style>
-            /*  Custom CSS Code From Event Manager For Woocommerce  Plugin */
-            <?php 
-            echo esc_attr($custom_css); 
-            
-            if($hide_booked_event_on_list == 'yes'){
-                ?>
-                .event-no-availabe-seat{
-                    display: none !important;
-                }
-                <?php
-            }
-            ?>
-        </style>
-        <?php
-        return ob_get_clean();
     }
 }
 
@@ -4491,7 +4376,7 @@ function mep_get_event_add_cart_sec($post_id) {
     ?>
     <!-- Register Now Title -->
     <h4 class="mep-cart-table-title">
-        <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec') ? mep_get_option('mep_register_now_text', 'label_setting_sec') : esc_html__('Register Now:', 'mage-eventpress'); ?>
+        <?php echo mep_get_option('mep_register_now_text', 'label_setting_sec',__('Register Now:', 'mage-eventpress')); ?>
     </h4>
     <!--The event add to cart main form start here-->
     <form action="" method='post' id="mage_event_submit" enctype="multipart/form-data">
@@ -4511,12 +4396,12 @@ function mep_get_event_add_cart_sec($post_id) {
         <!--The Add to cart button table start Here-->
         <table class='table table-bordered mep_event_add_cart_table'>
             <tr>
-                <td style='text-align:left;' class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec') ? mep_get_option('mep_quantity_text', 'label_setting_sec') : esc_html__('Quantity:', 'mage-eventpress');
+                <td style='text-align:left;' class='total-col'><?php echo mep_get_option('mep_quantity_text', 'label_setting_sec',__('Quantity:', 'mage-eventpress'));
                     if ($mep_event_ticket_type) { ?>
                         <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
                         <span id="ttyttl"></span>
                     <?php } ?>
-                    <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec') ? mep_get_option('mep_total_text', 'label_setting_sec') : esc_html__('Total', 'mage-eventpress'); ?>
+                    <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec', __('Total', 'mage-eventpress')); ?>
                                     <span id="usertotal"></span>
                                 </span>
                 </td>
@@ -4607,16 +4492,6 @@ function mep_add_expire_min_in_current_date($current_date, $event_date, $event_i
 }
 }
 
-add_filter('use_block_editor_for_post_type', 'mep_disable_gutenberg', 10, 2);
-if (!function_exists('mep_disable_gutenberg')) {
-function mep_disable_gutenberg($current_status, $post_type) {
-    $user_status = mep_get_option('mep_disable_block_editor', 'general_setting_sec', 'yes');
-    // Use your post type key instead of 'mep_events'
-    if ($post_type === 'mep_events' && $user_status == 'yes')
-        return false;
-    return $current_status;
-}
-}
 
 if (!function_exists('mep_enable_big_selects_for_queries')) {
 function mep_enable_big_selects_for_queries() {
@@ -4860,9 +4735,9 @@ if (!function_exists('mep_event_recurring_date_list_in_event_list_loop')) {
                 <span class='mep_more_date_btn mep-tem3-title-sec mp_event_visible_event_time'
                       data-event-id="<?php echo esc_attr($event_id); ?>"
                       data-active-text="<?php echo esc_attr(mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__('View More Date', 'mage-eventpress'))); ?>"
-                      data-hide-text="<?php echo esc_attr(mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', esc_html__('Hide Date Lists', 'mage-eventpress'))); ?>"
+                      data-hide-text="<?php echo esc_attr(mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress'))); ?>"
                 >
-            <?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__('View More Date', 'mage-eventpress')); ?>
+            <?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?>
         </span>
             <?php } ?>
             <?php

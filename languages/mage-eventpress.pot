@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Event Manager and Tickets Selling Plugin for WooCommerce "
 "3.6.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mage-eventpress\n"
-"POT-Creation-Date: 2022-12-27 05:18+0000\n"
+"POT-Creation-Date: 2023-08-29 05:30+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,10 +17,15 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Loco https://localise.biz/"
 
+#: inc/mep_functions.php:5168
+msgid " (Off/On):"
+msgstr ""
+
 #: inc/mep_tax.php:15
 msgid " Category"
 msgstr ""
 
+#: inc/mep_functions.php:3701 inc/mep_functions.php:3705
 #: inc/mep_extra_price.php:154 inc/mep_extra_price.php:171
 #: inc/mep_extra_price.php:189 inc/mep_extra_price.php:208
 msgid " Date"
@@ -30,35 +35,55 @@ msgstr ""
 msgid " Date & TIme :"
 msgstr ""
 
+#: inc/mep_functions.php:1371
+msgid " days "
+msgstr ""
+
 #: inc/mep_event_meta.php:206
 msgid " Details"
 msgstr ""
 
-#: inc/mep_cpt.php:35
+#: Admin/mep_cpt.php:32
 msgid " Feature Image"
 msgstr ""
 
-#: inc/mep_cpt.php:36 inc/mep_cpt.php:37 inc/mep_cpt.php:38
+#: Admin/mep_cpt.php:33 Admin/mep_cpt.php:34 Admin/mep_cpt.php:35
 msgid " featured image"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:1263
+msgid " Global Settings"
+msgstr ""
+
+#: inc/mep_functions.php:1376
+msgid " hours "
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:996
+msgid ""
+" If you visit attendee list menu in event section then you will see all "
+"attendee list here. You can filter choosing event name and date if event is "
+"recurring event."
 msgstr ""
 
 #: inc/mep_event_meta.php:15
 msgid " Information : "
 msgstr ""
 
-#: inc/mep_cpt.php:23
+#: Admin/mep_cpt.php:20
 msgid " Item:"
 msgstr ""
 
-#: inc/mep_cpt.php:21 inc/mep_cpt.php:22
+#: Admin/mep_cpt.php:18 Admin/mep_cpt.php:19
 msgid " List"
 msgstr ""
 
-#: inc/mep_tax.php:30 inc/mep_tax.php:68 inc/mep_cpt.php:41 inc/mep_cpt.php:43
+#: Admin/mep_cpt.php:38 Admin/mep_cpt.php:40 inc/mep_tax.php:30
+#: inc/mep_tax.php:68
 msgid " list"
 msgstr ""
 
-#: inc/mep_tax.php:31 inc/mep_tax.php:69 inc/mep_cpt.php:42
+#: Admin/mep_cpt.php:39 inc/mep_tax.php:31 inc/mep_tax.php:69
 msgid " list navigation"
 msgstr ""
 
@@ -74,15 +99,19 @@ msgstr ""
 msgid " Location Source:"
 msgstr ""
 
+#: inc/mep_functions.php:1381
+msgid " minutes "
+msgstr ""
+
 #: inc/mep_tax.php:18 inc/mep_tax.php:56
 msgid " Name"
 msgstr ""
 
-#: inc/mep_cpt.php:33
+#: Admin/mep_cpt.php:30
 msgid " Not found"
 msgstr ""
 
-#: inc/mep_cpt.php:34
+#: Admin/mep_cpt.php:31
 msgid " Not found in Trash"
 msgstr ""
 
@@ -90,7 +119,7 @@ msgstr ""
 msgid " Rich Texts for SEO & Google Schema Text :"
 msgstr ""
 
-#: inc/admin_setting_panel.php:37
+#: Admin/settings/global/admin_setting_panel.php:37
 msgid " Settings"
 msgstr ""
 
@@ -108,26 +137,6 @@ msgstr ""
 
 #: inc/mep_event_fw_meta.php:83
 msgid "\">Add New Speakers From Here</a>"
-msgstr ""
-
-#: inc/quick_setup.php:29
-#, php-format
-msgid "%s Done"
-msgstr ""
-
-#: inc/quick_setup.php:21
-#, php-format
-msgid "%s General"
-msgstr ""
-
-#: inc/quick_setup.php:221
-#, php-format
-msgid "%s Previous"
-msgstr ""
-
-#: inc/quick_setup.php:14
-#, php-format
-msgid "%s Welcome"
 msgstr ""
 
 #: support/elementor/widget/event-list-recurring.php:166
@@ -182,10 +191,19 @@ msgstr ""
 msgid ":"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1116 inc/admin_setting_panel.php:1132
+#: inc/mep_functions.php:5187
+msgid ": "
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:1206
+#: Admin/settings/global/admin_setting_panel.php:1222
 msgid ""
 "<a href=\"https://wordpress.org/support/article/formatting-date-and-time/\" "
 "target=\"_blank\">Documentation on date and time formatting</a>"
+msgstr ""
+
+#: inc/mep_functions.php:5013
+msgid "<b>Add To Cart Form Shortcode</b>"
 msgstr ""
 
 #: inc/mep_event_fw_meta.php:286
@@ -199,19 +217,15 @@ msgid ""
 "                        Full DateTime: <b>{event_datetime}</b>"
 msgstr ""
 
-#: inc/welcome.php:27
-msgid "<span style=\"color:#10dd10\">Dummy Import</span>"
+#: inc/mep_functions.php:1365
+msgid "<span class=err>Expired</span>"
 msgstr ""
 
-#: woocommerce-event-press.php:114 inc/welcome.php:26
-msgid "<span style=\"color:#10dd10\">Quick Setup</span>"
-msgstr ""
-
-#: inc/welcome.php:25
+#: Admin/MPWEM_Welcome.php:15
 msgid "<span style=\"color:#10dd10\">Welcome</span>"
 msgstr ""
 
-#: inc/status.php:10
+#: Admin/status.php:8
 msgid "<span style=\"color:yellow\">Status</span>"
 msgstr ""
 
@@ -223,7 +237,7 @@ msgstr ""
 msgid "abc-block"
 msgstr ""
 
-#: templates/themes/theme-3.php:85
+#: templates/themes/theme-3.php:87
 msgid "About The "
 msgstr ""
 
@@ -239,6 +253,10 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
+#: Admin/MPWEM_Quick_Setup.php:208
+msgid "Active Now"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:1102
 msgid "add"
 msgstr ""
@@ -251,23 +269,24 @@ msgstr ""
 msgid "Add Extra Price"
 msgstr ""
 
+#: inc/global/MP_Select_Icon_image.php:23
+#: inc/global/MP_Select_Icon_image.php:26
+msgid "Add Icon"
+msgstr ""
+
 #: inc/mep_event_meta.php:826
 msgid "Add More Dates"
 msgstr ""
 
-#: inc/mep_cpt.php:25 inc/mep_cpt.php:26
+#: Admin/mep_cpt.php:22 Admin/mep_cpt.php:23
 msgid "Add New "
-msgstr ""
-
-#: inc/mep_event_fw_meta.php:187
-msgid "Add New Days"
 msgstr ""
 
 #: inc/mep_event_fw_meta.php:130
 msgid "Add New F.A.Q"
 msgstr ""
 
-#: inc/mep_cpt.php:74 inc/mep_cpt.php:75
+#: Admin/mep_cpt.php:67 Admin/mep_cpt.php:68
 msgid "Add New Speaker"
 msgstr ""
 
@@ -275,7 +294,11 @@ msgstr ""
 msgid "Add New Ticket Type"
 msgstr ""
 
-#: inc/admin_setting_panel.php:648
+#: inc/mep_event_fw_meta.php:187
+msgid "Add New Timeline"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:738
 msgid "Add To Your Calender"
 msgstr ""
 
@@ -283,7 +306,7 @@ msgstr ""
 msgid "add-1"
 msgstr ""
 
-#: inc/mep_extra_price.php:306
+#: inc/mep_functions.php:3618 inc/mep_extra_price.php:306
 msgid "Address"
 msgstr ""
 
@@ -347,7 +370,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: inc/mep_cpt.php:24
+#: Admin/mep_cpt.php:21
 msgid "All "
 msgstr ""
 
@@ -355,11 +378,19 @@ msgstr ""
 msgid "All Events Of "
 msgstr ""
 
+#: inc/global/MP_Select_Icon_image.php:61
+msgid "All Icon"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:143
+msgid "All Shortcode list"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:33
 msgid "allergies"
 msgstr ""
 
-#: inc/template-prts/event_add_cart.php:348
+#: inc/template-prts/event_add_cart.php:354
 msgid "Already Added into Cart!"
 msgstr ""
 
@@ -580,8 +611,24 @@ msgstr ""
 msgid "attachment-1"
 msgstr ""
 
-#: inc/admin_setting_panel.php:822
+#: Admin/MPWEM_Welcome.php:109
+msgid "Attendee CSV Export"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:85
+msgid "Attendee Custom Form"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:103
+msgid "Attendee Edit Feature"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:912
 msgid "Attendee info:"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:79
+msgid "Attendee Management"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:81
@@ -592,7 +639,7 @@ msgstr ""
 msgid "audio-description"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1069
+#: Admin/settings/global/admin_setting_panel.php:1159
 msgid "Auto Play"
 msgstr ""
 
@@ -676,7 +723,7 @@ msgstr ""
 msgid "bars"
 msgstr ""
 
-#: inc/admin_setting_panel.php:882
+#: Admin/settings/global/admin_setting_panel.php:972
 msgid "Base Color"
 msgstr ""
 
@@ -825,7 +872,8 @@ msgstr ""
 msgid "book"
 msgstr ""
 
-#: inc/admin_setting_panel.php:597
+#: templates/list/default.php:6
+#: Admin/settings/global/admin_setting_panel.php:687
 msgid "Book Now"
 msgstr ""
 
@@ -912,11 +960,16 @@ msgstr ""
 msgid "Button Style"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:56 Admin/MPWEM_Welcome.php:982
+msgid "Buy Now"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:146
 msgid "buysellads"
 msgstr ""
 
-#: inc/admin_setting_panel.php:705 templates/single/organizer.php:2
+#: templates/single/organizer.php:3
+#: Admin/settings/global/admin_setting_panel.php:795
 msgid "By:"
 msgstr ""
 
@@ -955,11 +1008,11 @@ msgstr ""
 msgid "calendar-times"
 msgstr ""
 
-#: inc/admin_setting_panel.php:917
+#: Admin/settings/global/admin_setting_panel.php:1007
 msgid "Calender Button Background Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:924
+#: Admin/settings/global/admin_setting_panel.php:1014
 msgid "Calender Button Text Color"
 msgstr ""
 
@@ -969,6 +1022,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:161
 msgid "camera-retro"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1019
+msgid "Can I hide any section from event list and details page?"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1110
@@ -1043,7 +1100,7 @@ msgstr ""
 msgid "Carousal Unique ID"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1091
+#: Admin/settings/global/admin_setting_panel.php:1181
 msgid "Carousel Auto Play Speed"
 msgstr ""
 
@@ -1052,7 +1109,7 @@ msgstr ""
 msgid "Carousel Mode"
 msgstr ""
 
-#: inc/admin_setting_panel.php:77
+#: Admin/settings/global/admin_setting_panel.php:77
 msgid "Carousel Settings"
 msgstr ""
 
@@ -1061,8 +1118,8 @@ msgstr ""
 msgid "Carousel Unique ID"
 msgstr ""
 
-#: inc/admin_setting_panel.php:903
 #: support/elementor/widget/event-add-cart-section.php:405
+#: Admin/settings/global/admin_setting_panel.php:993
 msgid "Cart Button Background Color"
 msgstr ""
 
@@ -1074,8 +1131,8 @@ msgstr ""
 msgid "Cart Button Text"
 msgstr ""
 
-#: inc/admin_setting_panel.php:910
 #: support/elementor/widget/event-add-cart-section.php:381
+#: Admin/settings/global/admin_setting_panel.php:1000
 msgid "Cart Button Text Color"
 msgstr ""
 
@@ -1151,7 +1208,7 @@ msgstr ""
 msgid "certificate"
 msgstr ""
 
-#: inc/admin_setting_panel.php:165
+#: Admin/settings/global/admin_setting_panel.php:192
 msgid ""
 "Changing the event organizer slug will have an effect on the entire plugin. "
 "Remember, after changing the slug, you will need to flush the permalinks. To "
@@ -1267,77 +1324,77 @@ msgstr ""
 msgid "child"
 msgstr ""
 
-#: inc/admin_setting_panel.php:883
+#: Admin/settings/global/admin_setting_panel.php:973
 msgid ""
 "Choose a basic color, it will change the icon background color & border "
 "color."
 msgstr ""
 
-#: inc/admin_setting_panel.php:965
+#: Admin/settings/global/admin_setting_panel.php:1055
 msgid "Choose border color for royal template"
 msgstr ""
 
-#: inc/admin_setting_panel.php:918
+#: Admin/settings/global/admin_setting_panel.php:1008
 msgid "Choose calender button background color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:925
+#: Admin/settings/global/admin_setting_panel.php:1015
 msgid "Choose calender button text color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:904
+#: Admin/settings/global/admin_setting_panel.php:994
 msgid "Choose cart button background color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:911
+#: Admin/settings/global/admin_setting_panel.php:1001
 msgid "Choose cart button text color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:982
+#: Admin/settings/global/admin_setting_panel.php:1072
 msgid "Choose Event Date Icon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:996
+#: Admin/settings/global/admin_setting_panel.php:1086
 msgid "Choose Event Location Icon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1003
+#: Admin/settings/global/admin_setting_panel.php:1093
 msgid "Choose Event Organizer Icon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1010
+#: Admin/settings/global/admin_setting_panel.php:1100
 msgid "Choose Event Sidebar Location List Icon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1045
+#: Admin/settings/global/admin_setting_panel.php:1135
 msgid "Choose Event Social Share Icon for Email"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1017
+#: Admin/settings/global/admin_setting_panel.php:1107
 msgid "Choose Event Social Share Icon for Facebook"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1031
+#: Admin/settings/global/admin_setting_panel.php:1121
 msgid "Choose Event Social Share Icon for Linkedin"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1024
+#: Admin/settings/global/admin_setting_panel.php:1114
 msgid "Choose Event Social Share Icon for Twitter"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1038
+#: Admin/settings/global/admin_setting_panel.php:1128
 msgid "Choose Event Social Share Icon for Whatsapp"
 msgstr ""
 
-#: inc/admin_setting_panel.php:989
+#: Admin/settings/global/admin_setting_panel.php:1079
 msgid "Choose Event Time Icon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:932
+#: Admin/settings/global/admin_setting_panel.php:1022
 msgid "Choose FAQ title background color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:939
+#: Admin/settings/global/admin_setting_panel.php:1029
 msgid "Choose FAQ title text color"
 msgstr ""
 
@@ -1345,35 +1402,35 @@ msgstr ""
 msgid "Choose from the most used"
 msgstr ""
 
-#: inc/admin_setting_panel.php:958
+#: Admin/settings/global/admin_setting_panel.php:1048
 msgid "Choose icons background color for royal template"
 msgstr ""
 
-#: inc/admin_setting_panel.php:890
+#: Admin/settings/global/admin_setting_panel.php:980
 msgid "Choose label background color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:897
+#: Admin/settings/global/admin_setting_panel.php:987
 msgid "Choose label text color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:106
+#: Admin/settings/global/admin_setting_panel.php:122
 msgid "Choose Multilingual Plugin"
 msgstr ""
 
-#: inc/admin_setting_panel.php:946
+#: Admin/settings/global/admin_setting_panel.php:1036
 msgid "Choose primary background color for royal template"
 msgstr ""
 
-#: inc/admin_setting_panel.php:952
+#: Admin/settings/global/admin_setting_panel.php:1042
 msgid "Choose secondary background color for royal template"
 msgstr ""
 
-#: inc/quick_setup.php:281
+#: Admin/MPWEM_Quick_Setup.php:225
 msgid "Choose some general option."
 msgstr ""
 
-#: inc/admin_setting_panel.php:971
+#: Admin/settings/global/admin_setting_panel.php:1061
 msgid "Choose text color for royal template"
 msgstr ""
 
@@ -1555,7 +1612,7 @@ msgstr ""
 msgid "comments"
 msgstr ""
 
-#: inc/mep_extra_price.php:309
+#: inc/mep_functions.php:3624 inc/mep_extra_price.php:309
 msgid "Company"
 msgstr ""
 
@@ -1576,11 +1633,11 @@ msgstr ""
 msgid "confirm-schedule"
 msgstr ""
 
-#: inc/admin_setting_panel.php:580
+#: Admin/settings/global/admin_setting_panel.php:670
 msgid "Confirmation Email Text"
 msgstr ""
 
-#: inc/admin_setting_panel.php:581
+#: Admin/settings/global/admin_setting_panel.php:671
 msgid ""
 "Confirmation Email Text <b>Usable Dynamic tags:</b><br/> Attendee\n"
 "                                        Name:<b>{name}</b><br/>\n"
@@ -1682,11 +1739,25 @@ msgstr ""
 msgid "Current Booking Status :"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1115
+#: inc/mep_functions.php:3416 inc/mep_functions.php:3433
+msgid "Custom CSS"
+msgstr ""
+
+#: inc/mep_functions.php:5210 inc/mep_functions.php:5281
+#: Admin/settings/global/admin_setting_panel.php:1205
 msgid "Custom Date Format"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1131
+#: Admin/MPWEM_Welcome.php:97
+msgid "Custom Emailing"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:121
+msgid "Custom Style Settings"
+msgstr ""
+
+#: inc/mep_functions.php:5235 inc/mep_functions.php:5292
+#: Admin/settings/global/admin_setting_panel.php:1221
 msgid "Custom Time Format"
 msgstr ""
 
@@ -1710,7 +1781,8 @@ msgstr ""
 msgid "database"
 msgstr ""
 
-#: inc/mep_extra_price.php:288 support/elementor/widget/event-date.php:89
+#: inc/mep_functions.php:3389 inc/mep_extra_price.php:288
+#: support/elementor/widget/event-date.php:89
 #: support/elementor/widget/event-list.php:313
 msgid "Date"
 msgstr ""
@@ -1719,15 +1791,16 @@ msgstr ""
 msgid "Date & Time"
 msgstr ""
 
-#: inc/admin_setting_panel.php:61
+#: Admin/settings/global/admin_setting_panel.php:61
 msgid "Date & Time Format Settings"
 msgstr ""
 
-#: templates/themes/theme-1.php:54 templates/themes/theme-3.php:31
+#: templates/themes/theme-1.php:54 templates/themes/theme-3.php:33
 msgid "Date and Time:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1106
+#: inc/mep_functions.php:5195
+#: Admin/settings/global/admin_setting_panel.php:1196
 msgid "Date Format"
 msgstr ""
 
@@ -1759,10 +1832,6 @@ msgstr ""
 msgid "Days Style Settings"
 msgstr ""
 
-#: inc/mep_event_fw_meta.php:183 inc/mep_event_fw_meta.php:212
-msgid "Daywise Details"
-msgstr ""
-
 #: lib/classes/class-icon-library.php:278
 msgid "deaf"
 msgstr ""
@@ -1792,7 +1861,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: inc/mep_extra_price.php:310
+#: inc/mep_functions.php:3626 inc/mep_extra_price.php:310
 msgid "Designation"
 msgstr ""
 
@@ -1844,7 +1913,7 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: inc/admin_setting_panel.php:298
+#: Admin/settings/global/admin_setting_panel.php:326
 msgid "Disappear Event from list when fully booked?"
 msgstr ""
 
@@ -1903,6 +1972,10 @@ msgstr ""
 msgid "dna"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1031
+msgid "Do you offer customization?"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:290
 msgid "dochub"
 msgstr ""
@@ -1911,8 +1984,12 @@ msgstr ""
 msgid "docker"
 msgstr ""
 
-#: woocommerce-event-press.php:78 woocommerce-event-press.php:84
+#: woocommerce-event-press.php:64 woocommerce-event-press.php:71
 msgid "Docs"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:59
+msgid "Documentation"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:292
@@ -1929,6 +2006,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:295
 msgid "donate"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:156
+msgid "Done"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:296
@@ -1981,10 +2062,6 @@ msgstr ""
 msgid "drupal"
 msgstr ""
 
-#: inc/welcome.php:27
-msgid "Dummy Import"
-msgstr ""
-
 #: lib/classes/class-icon-library.php:1023
 msgid "dustbin"
 msgstr ""
@@ -2007,11 +2084,11 @@ msgstr ""
 msgid "edit"
 msgstr ""
 
-#: inc/mep_cpt.php:28
+#: Admin/mep_cpt.php:25
 msgid "Edit "
 msgstr ""
 
-#: inc/mep_cpt.php:77
+#: Admin/mep_cpt.php:70
 msgid "Edit Speaker"
 msgstr ""
 
@@ -2035,27 +2112,29 @@ msgstr ""
 msgid "ellipsis-v"
 msgstr ""
 
-#: inc/mep_extra_price.php:304
+#: inc/mep_functions.php:3614 inc/mep_extra_price.php:304
 msgid "Email"
 msgstr ""
 
-#: inc/admin_setting_panel.php:559 inc/admin_setting_panel.php:560
+#: Admin/settings/global/admin_setting_panel.php:649
+#: Admin/settings/global/admin_setting_panel.php:650
 msgid "Email From Name"
 msgstr ""
 
-#: inc/quick_setup.php:311
+#: Admin/MPWEM_Quick_Setup.php:262
 msgid "Email From Name:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:547
+#: Admin/settings/global/admin_setting_panel.php:637
 msgid "Email Sent on order status"
 msgstr ""
 
-#: inc/admin_setting_panel.php:57
+#: Admin/settings/global/admin_setting_panel.php:57
 msgid "Email Settings"
 msgstr ""
 
-#: inc/admin_setting_panel.php:573 inc/admin_setting_panel.php:574
+#: Admin/settings/global/admin_setting_panel.php:663
+#: Admin/settings/global/admin_setting_panel.php:664
 msgid "Email Subject"
 msgstr ""
 
@@ -2083,16 +2162,20 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: inc/admin_setting_panel.php:96
+#: Admin/settings/global/admin_setting_panel.php:112
 msgid "Enable/Disable gutenburg editor."
 msgstr ""
 
-#: inc/admin_setting_panel.php:415
+#: Admin/settings/global/admin_setting_panel.php:505
 msgid ""
 "Enabling this feature will allow you to assign a product category to the "
 "event edit page. If you have a product category-based coupon code that you "
 "want to use, you have to assign the event to the same product category. In "
 "order to enable this feature, please select 'Yes'."
+msgstr ""
+
+#: inc/mep_functions.php:2230
+msgid "End"
 msgstr ""
 
 #: inc/mep_event_meta.php:729
@@ -2116,7 +2199,7 @@ msgstr ""
 msgid "End Time"
 msgstr ""
 
-#: inc/admin_setting_panel.php:186
+#: Admin/settings/global/admin_setting_panel.php:213
 msgid ""
 "Enter Your Google Map API key. <a href=https://developers.google."
 "com/maps/documentation/javascript/get-api-key target=_blank>Get API Key</a>. "
@@ -2163,7 +2246,7 @@ msgstr ""
 msgid "euro-sign"
 msgstr ""
 
-#: inc/mep_event_meta.php:862
+#: inc/mep_functions.php:1613 inc/mep_event_meta.php:862
 msgid "Event"
 msgstr ""
 
@@ -2233,11 +2316,11 @@ msgstr ""
 msgid "Event Category"
 msgstr ""
 
-#: inc/admin_setting_panel.php:143
+#: Admin/settings/global/admin_setting_panel.php:170
 msgid "Event Category Label"
 msgstr ""
 
-#: inc/admin_setting_panel.php:150
+#: Admin/settings/global/admin_setting_panel.php:177
 msgid "Event Category Slug"
 msgstr ""
 
@@ -2283,8 +2366,9 @@ msgstr ""
 msgid "Event Date Typography"
 msgstr ""
 
-#: inc/admin_setting_panel.php:690 templates/themes/vanilla.php:34
-#: templates/themes/default-theme.php:35 templates/themes/royal.php:38
+#: templates/themes/vanilla.php:36 templates/themes/default-theme.php:37
+#: templates/themes/royal.php:38
+#: Admin/settings/global/admin_setting_panel.php:780
 msgid "Event Date:"
 msgstr ""
 
@@ -2295,10 +2379,6 @@ msgstr ""
 #: support/elementor/widget/event-list-recurring.php:457
 #: support/elementor/widget/expired-event-list.php:464
 msgid "Event Day Background Color"
-msgstr ""
-
-#: inc/mep_event_fw_meta.php:174
-msgid "Event Daywise Details"
 msgstr ""
 
 #: support/elementor/widget/event-list-recurring.php:565
@@ -2324,11 +2404,11 @@ msgstr ""
 msgid "Event Details Settings"
 msgstr ""
 
-#: inc/quick_setup.php:305
+#: Admin/MPWEM_Quick_Setup.php:253
 msgid "Event End Time"
 msgstr ""
 
-#: inc/admin_setting_panel.php:800
+#: Admin/settings/global/admin_setting_panel.php:890
 msgid "Event Expired"
 msgstr ""
 
@@ -2400,7 +2480,7 @@ msgstr ""
 msgid "Event Header Border Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:134
+#: Admin/settings/global/admin_setting_panel.php:161
 msgid "Event Icon"
 msgstr ""
 
@@ -2413,17 +2493,17 @@ msgstr ""
 msgid "Event Information List"
 msgstr ""
 
-#: inc/admin_setting_panel.php:118
+#: Admin/settings/global/admin_setting_panel.php:145
 msgid "Event Label"
-msgstr ""
-
-#: inc/quick_setup.php:284
-msgid "Event Label:"
 msgstr ""
 
 #: support/elementor/widget/event-list.php:24
 #: support/elementor/widget/event-list.php:40
 msgid "Event List"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:134
+msgid "Event List Order By"
 msgstr ""
 
 #: support/elementor/widget/event-list-recurring.php:21
@@ -2438,8 +2518,8 @@ msgstr ""
 msgid "Event List Recurring Style Settings"
 msgstr ""
 
-#: inc/admin_setting_panel.php:49
 #: support/elementor/widget/expired-event-list.php:37
+#: Admin/settings/global/admin_setting_panel.php:49
 msgid "Event List Settings"
 msgstr ""
 
@@ -2460,22 +2540,27 @@ msgstr ""
 msgid "Event Location Settings"
 msgstr ""
 
-#: inc/admin_setting_panel.php:683 templates/themes/theme-1.php:64
-#: templates/themes/vanilla.php:56 templates/themes/default-theme.php:57
-#: templates/themes/default-theme.php:81 templates/themes/royal.php:60
+#: templates/themes/theme-1.php:64 templates/themes/vanilla.php:58
+#: templates/themes/default-theme.php:60 templates/themes/default-theme.php:84
+#: templates/themes/royal.php:60
+#: Admin/settings/global/admin_setting_panel.php:773
 msgid "Event Location:"
 msgstr ""
 
-#: inc/quick_setup.php:238
+#: Admin/MPWEM_Quick_Setup.php:187
 msgid "Event Manager and Tickets Selling Plugin"
 msgstr ""
 
 #. Name of the plugin
-msgid "Event Manager and Tickets Selling Plugin for WooCommerce (DEV)"
+msgid "Event Manager and Tickets Selling Plugin for WooCommerce"
 msgstr ""
 
 #: support/elementor/elementor-support.php:26
 msgid "Event Manager For Woocommerce "
+msgstr ""
+
+#: inc/mep_functions.php:4429
+msgid "Event Manager For Woocommerce Sidebar"
 msgstr ""
 
 #: support/elementor/widget/event-map.php:37
@@ -2504,11 +2589,11 @@ msgstr ""
 msgid "Event Organizer"
 msgstr ""
 
-#: inc/admin_setting_panel.php:157
+#: Admin/settings/global/admin_setting_panel.php:184
 msgid "Event Organizer Label"
 msgstr ""
 
-#: inc/admin_setting_panel.php:164
+#: Admin/settings/global/admin_setting_panel.php:191
 msgid "Event Organizer Slug"
 msgstr ""
 
@@ -2549,7 +2634,8 @@ msgstr ""
 msgid "Event Schedule"
 msgstr ""
 
-#: inc/admin_setting_panel.php:747 templates/single/date_list_title.php:4
+#: templates/single/date_list_title.php:4
+#: Admin/settings/global/admin_setting_panel.php:837
 msgid "Event Schedule Details"
 msgstr ""
 
@@ -2581,12 +2667,8 @@ msgstr ""
 msgid "Event SKU No:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:126
+#: Admin/settings/global/admin_setting_panel.php:153
 msgid "Event Slug"
-msgstr ""
-
-#: inc/quick_setup.php:292
-msgid "Event Slug:"
 msgstr ""
 
 #: support/elementor/widget/event-speaker-list.php:21
@@ -2601,7 +2683,11 @@ msgstr ""
 msgid "Event Speaker Style Settings"
 msgstr ""
 
-#: inc/quick_setup.php:304
+#: inc/mep_functions.php:2052
+msgid "Event Start Date"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:250
 msgid "Event Start Time"
 msgstr ""
 
@@ -2630,13 +2716,18 @@ msgstr ""
 msgid "Event Table Title Typography"
 msgstr ""
 
-#: inc/admin_setting_panel.php:257
+#: Admin/settings/global/admin_setting_panel.php:285
 msgid "Event Ticket Expire before minutes"
 msgstr ""
 
-#: inc/admin_setting_panel.php:697 templates/themes/vanilla.php:45
-#: templates/themes/default-theme.php:46 templates/themes/royal.php:49
+#: templates/themes/vanilla.php:47 templates/themes/default-theme.php:49
+#: templates/themes/royal.php:49
+#: Admin/settings/global/admin_setting_panel.php:787
 msgid "Event Time:"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:174
+msgid "Event Timeline Details"
 msgstr ""
 
 #: templates/single/daywise_details.php:2
@@ -2661,8 +2752,16 @@ msgstr ""
 msgid "Event Title Typography"
 msgstr ""
 
-#: woocommerce-event-press.php:113
+#: Admin/MPWEM_Quick_Setup.php:31
 msgid "Events"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:228
+msgid "Events Label:"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:237
+msgid "Events Slug:"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:327
@@ -2697,7 +2796,7 @@ msgstr ""
 msgid "expeditedssl"
 msgstr ""
 
-#: support/elementor/widget/event-list.php:234
+#: inc/mep_functions.php:4577 support/elementor/widget/event-list.php:234
 msgid "Expired"
 msgstr ""
 
@@ -2713,7 +2812,7 @@ msgstr ""
 msgid "external-link-square-alt"
 msgstr ""
 
-#: inc/mep_shortcode.php:401
+#: inc/mep_shortcode.php:424
 msgid "Extra Service"
 msgstr ""
 
@@ -2743,9 +2842,10 @@ msgstr ""
 msgid "Extra Service Title"
 msgstr ""
 
-#: inc/admin_setting_panel.php:634 inc/template-prts/event_add_cart.php:26
+#: inc/template-prts/event_add_cart.php:27
 #: support/elementor/widget/event-add-cart-section.php:268
 #: support/elementor/widget/event-add-cart-section.php:490
+#: Admin/settings/global/admin_setting_panel.php:724
 msgid "Extra Service:"
 msgstr ""
 
@@ -2762,7 +2862,7 @@ msgstr ""
 msgid "eye-slash"
 msgstr ""
 
-#: inc/mep_event_fw_meta.php:155
+#: Admin/MPWEM_Welcome.php:31 inc/mep_event_fw_meta.php:155
 msgid "F.A.Q"
 msgstr ""
 
@@ -2786,11 +2886,11 @@ msgstr ""
 msgid "facebook-square"
 msgstr ""
 
-#: inc/admin_setting_panel.php:931
+#: Admin/settings/global/admin_setting_panel.php:1021
 msgid "FAQ Title Background Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:938
+#: Admin/settings/global/admin_setting_panel.php:1028
 msgid "FAQ Title Text Color"
 msgstr ""
 
@@ -2886,7 +2986,7 @@ msgstr ""
 msgid "filter"
 msgstr ""
 
-#: inc/mep_cpt.php:43
+#: Admin/mep_cpt.php:40
 msgid "Filter "
 msgstr ""
 
@@ -2900,15 +3000,15 @@ msgstr ""
 msgid "Filter Events by Organizer"
 msgstr ""
 
-#: inc/mep_cpt.php:92
+#: Admin/mep_cpt.php:85
 msgid "Filter Speaker list"
 msgstr ""
 
-#: inc/quick_setup.php:335
+#: Admin/MPWEM_Quick_Setup.php:286
 msgid "Finalize Setup"
 msgstr ""
 
-#: templates/themes/vanilla.php:75
+#: templates/themes/vanilla.php:77
 msgid "Find Location On Google Map:"
 msgstr ""
 
@@ -2916,7 +3016,7 @@ msgstr ""
 msgid "find-in-folder"
 msgstr ""
 
-#: inc/quick_setup.php:338
+#: Admin/MPWEM_Quick_Setup.php:289
 msgid "Finish & Save"
 msgstr ""
 
@@ -3032,6 +3132,14 @@ msgstr ""
 msgid "For Any Logged in user"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1024
+msgid ""
+"For virtual event we know there should not have any location or physical "
+"address so we recommend to use template virtual that we have during event "
+"adding time and also you can use location hide settings from list and "
+"details page."
+msgstr ""
+
 #: lib/classes/class-icon-library.php:399
 msgid "fort-awesome"
 msgstr ""
@@ -3052,7 +3160,7 @@ msgstr ""
 msgid "foursquare"
 msgstr ""
 
-#: inc/admin_setting_panel.php:619
+#: inc/mep_functions.php:4166 Admin/settings/global/admin_setting_panel.php:709
 msgid "Free"
 msgstr ""
 
@@ -3064,11 +3172,20 @@ msgstr ""
 msgid "freebsd"
 msgstr ""
 
-#: inc/admin_setting_panel.php:566 inc/admin_setting_panel.php:567
+#: Admin/MPWEM_Welcome.php:949
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: inc/global/MP_Global_Function.php:334
+msgid "Friday"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:656
+#: Admin/settings/global/admin_setting_panel.php:657
 msgid "From Email"
 msgstr ""
 
-#: inc/quick_setup.php:319
+#: Admin/MPWEM_Quick_Setup.php:271
 msgid "From Email Address:"
 msgstr ""
 
@@ -3103,7 +3220,7 @@ msgstr ""
 msgid "gem"
 msgstr ""
 
-#: inc/mep_extra_price.php:308
+#: inc/mep_functions.php:3622 inc/mep_extra_price.php:308
 msgid "Gender"
 msgstr ""
 
@@ -3111,12 +3228,27 @@ msgstr ""
 msgid "genderless"
 msgstr ""
 
-#: inc/admin_setting_panel.php:45
+#: Admin/MPWEM_Quick_Setup.php:149
+msgid "General"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:45
 msgid "General Settings"
 msgstr ""
 
-#: inc/quick_setup.php:280
+#: Admin/MPWEM_Quick_Setup.php:224
 msgid "General settings"
+msgstr ""
+
+#: inc/mep_functions.php:5047
+msgid ""
+"Get Individual Attendee  Information, PDF Ticketing and Email Function with "
+"<a href='https://mage-people.com/product/mage-woo-event-booking-manager-"
+"pro/' target='_blank'>Event Manager Pro</a>"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:980
+msgid "Get Pro and Others Available Addon to get all these exciting features"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:415
@@ -3208,11 +3340,11 @@ msgstr ""
 msgid "google"
 msgstr ""
 
-#: inc/admin_setting_panel.php:185
+#: Admin/settings/global/admin_setting_panel.php:212
 msgid "Google Map API Key"
 msgstr ""
 
-#: inc/admin_setting_panel.php:173
+#: Admin/settings/global/admin_setting_panel.php:200
 msgid "Google Map Type"
 msgstr ""
 
@@ -3240,11 +3372,11 @@ msgstr ""
 msgid "google-wallet"
 msgstr ""
 
-#: lib/classes/class-mep.php:178
+#: lib/classes/class-mep.php:178 inc/global/MP_Custom_Layout.php:71
 msgid "GoTO Next Page"
 msgstr ""
 
-#: lib/classes/class-mep.php:159
+#: lib/classes/class-mep.php:159 inc/global/MP_Custom_Layout.php:49
 msgid "GoTO Previous Page"
 msgstr ""
 
@@ -3427,71 +3559,80 @@ msgstr ""
 msgid "Here"
 msgstr ""
 
-#: inc/admin_setting_panel.php:488
+#: Admin/MPWEM_Welcome.php:950
+msgid "Here is list of question that may help."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:578
 msgid "Hide \"Org By\" Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:532
+#: Admin/settings/global/admin_setting_panel.php:622
 msgid "Hide Add Calendar Button from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:224
+#: Admin/settings/global/admin_setting_panel.php:241
 msgid "Hide Date From Order Details & Email Section"
 msgstr ""
 
-#: inc/admin_setting_panel.php:857 inc/template-prts/event_date.php:151
+#: inc/mep_functions.php:4738 inc/template-prts/event_date.php:152
+#: Admin/settings/global/admin_setting_panel.php:947
 msgid "Hide Date Lists"
 msgstr ""
 
-#: inc/admin_setting_panel.php:499
+#: Admin/settings/global/admin_setting_panel.php:589
 msgid "Hide Event Address Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:444
+#: Admin/settings/global/admin_setting_panel.php:534
 msgid "Hide Event Date Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:466
+#: Admin/settings/global/admin_setting_panel.php:556
 msgid "Hide Event Location Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:510
+#: Admin/settings/global/admin_setting_panel.php:600
 msgid "Hide Event Schedule Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:521
+#: Admin/settings/global/admin_setting_panel.php:611
 msgid "Hide Event Share this Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:455
+#: Admin/settings/global/admin_setting_panel.php:545
 msgid "Hide Event Time Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:477
+#: Admin/settings/global/admin_setting_panel.php:567
 msgid "Hide Event Total Seats Section from Single Event Details page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:367
+#: Admin/settings/global/admin_setting_panel.php:252
+msgid "Hide Expired Event from Calendar"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:457
 msgid "Hide Full Time Section from list"
 msgstr ""
 
-#: inc/admin_setting_panel.php:213
+#: Admin/settings/global/admin_setting_panel.php:230
 msgid "Hide Location From Order Details & Email Section"
 msgstr ""
 
-#: inc/admin_setting_panel.php:356
+#: Admin/settings/global/admin_setting_panel.php:446
 msgid "Hide Location Section from list"
 msgstr ""
 
-#: inc/admin_setting_panel.php:378
+#: Admin/settings/global/admin_setting_panel.php:468
 msgid "Hide Only End Time Section from list"
 msgstr ""
 
-#: inc/admin_setting_panel.php:345
+#: Admin/settings/global/admin_setting_panel.php:435
 msgid "Hide Organizer Section from list"
 msgstr ""
 
-#: inc/admin_setting_panel.php:389
+#: Admin/settings/global/admin_setting_panel.php:479
 msgid "Hide/Show Event Hover Book Now Button"
 msgstr ""
 
@@ -3577,6 +3718,18 @@ msgstr ""
 msgid "houzz"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1023
+msgid "How Can I configure Virtual Event?"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:999
+msgid "How can I Export attendee list as CSV?"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:995
+msgid "How can I see event wise registered attendee list?"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:505
 msgid "html5"
 msgstr ""
@@ -3593,8 +3746,20 @@ msgstr ""
 msgid "hubspot"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1015
+msgid "I have configured correctly but pdf email I am not getting."
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1027
+msgid "I installed event manager plugin but it does not work?"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:507
 msgid "i-cursor"
+msgstr ""
+
+#: inc/global/MP_Select_Icon_image.php:161
+msgid "Icon"
 msgstr ""
 
 #: support/elementor/widget/event-list.php:685
@@ -3613,12 +3778,16 @@ msgstr ""
 msgid "Icon Color"
 msgstr ""
 
-#: inc/class/mep_settings_api.php:441
+#: Admin/settings/global/MAGE_Setting_API.php:441
 msgid "Icon Library"
 msgstr ""
 
-#: inc/admin_setting_panel.php:69
+#: Admin/settings/global/admin_setting_panel.php:69
 msgid "Icon Settings"
+msgstr ""
+
+#: inc/global/MP_Select_Icon_image.php:45
+msgid "Icon/class name...."
 msgstr ""
 
 #: lib/classes/class-icon-library.php:508
@@ -3635,16 +3804,22 @@ msgstr ""
 msgid "id-card-alt"
 msgstr ""
 
-#: inc/admin_setting_panel.php:266
+#: Admin/settings/global/admin_setting_panel.php:294
 msgid ""
 "If the icons are not working and you want to disable Font Awesome loading "
 "from the plugin, select Yes."
 msgstr ""
 
-#: inc/admin_setting_panel.php:277
+#: Admin/settings/global/admin_setting_panel.php:305
 msgid ""
 "If the icons are not working, and you want to remove Flat Icon load from the "
 "plugin, select \"Yes.\""
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:394
+msgid ""
+"If you enable this then a Widget area will be registred and you can add any "
+"widgets from the Widget Menu. By default its disabled"
 msgstr ""
 
 #: inc/mep_event_meta.php:211
@@ -3662,19 +3837,52 @@ msgid ""
 "proceed."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1139
+#: Admin/MPWEM_Welcome.php:1000
+msgid ""
+"If you visit attendee list menu in event section then you will see all "
+"attendee list here. You can filter choosing event name and date if event is "
+"recurring event. After filtering right section there is 2 button to export "
+"attendee and extra service."
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1012
+msgid ""
+"If you visit Event settings page then You will see PDF email tab top right, "
+"you can configure pdf email here."
+msgstr ""
+
+#: inc/mep_functions.php:5015
+msgid ""
+"If you want to display the ticket type list with an add-to-cart button on "
+"any post or page of your website, simply copy the shortcode and paste it "
+"where desired."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:253
+msgid ""
+"If you want to hide the expired event from the calendar please select Yes. "
+"Its applicable for the Free Calendar"
+msgstr ""
+
+#: inc/mep_functions.php:5253
+msgid ""
+"If you want to show the date and time in your local timezone, please select "
+"Yes."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:1229
 msgid ""
 "If you want to show the time zone with the date and time, please select "
 "\"Yes\"."
 msgstr ""
 
-#: inc/admin_setting_panel.php:299
+#: Admin/settings/global/admin_setting_panel.php:327
 msgid ""
 "If you want your event to be removed from the list once it is fully booked, "
 "you can select \"Yes\" here."
 msgstr ""
 
-#: inc/admin_setting_panel.php:214
+#: Admin/settings/global/admin_setting_panel.php:231
 msgid ""
 "If you would like to hide the location details from the order details "
 "section on the thank you page and confirmation email body, please choose "
@@ -3682,18 +3890,39 @@ msgid ""
 "\"No\". The default setting is \"No\"."
 msgstr ""
 
-#: inc/admin_setting_panel.php:288
+#: inc/mep_functions.php:5267
+msgid ""
+"If you're looking for a recurring events function where customers can choose "
+"date and time, check out our website. We have a wide selection of options to "
+"choose from to make sure your event is perfect. <a href='https://mage-people."
+"com/product/recurring-events-addon-for-event-manager/' target='_blank'>"
+"Recurring Addon</a>"
+msgstr ""
+
+#: inc/mep_functions.php:4975
+msgid ""
+"If your event is online or virtual, please ensure that this option is "
+"enabled."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:316
 msgid ""
 "If your event list page is loading slowly, you can select this option to "
 "improve performance. Keep in mind that selecting this option will disable "
 "Waitlist and Seat count features. "
 msgstr ""
 
-#: inc/admin_setting_panel.php:1058
+#: Admin/settings/global/admin_setting_panel.php:1148
 msgid ""
 "If your theme is not loading the Owl Carousel Library, or if you\"re having "
 "issues with Owl Carousel, you can set this option to \"Yes\" to fix the "
 "issue."
+msgstr ""
+
+#: inc/global/MP_Select_Icon_image.php:106
+#: inc/global/MP_Select_Icon_image.php:132
+#: inc/global/MP_Select_Icon_image.php:159
+msgid "Image"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:513
@@ -3708,6 +3937,12 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:517
 msgid "imdb"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1008
+msgid ""
+"In Event Settings area we have slug changing option. You can change it and "
+"resave permalink to avoid 404 error."
 msgstr ""
 
 #: inc/mep_event_meta.php:1150
@@ -3728,7 +3963,7 @@ msgstr ""
 msgid "industry"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1080
+#: Admin/settings/global/admin_setting_panel.php:1170
 msgid "Infinite Loop"
 msgstr ""
 
@@ -3745,16 +3980,20 @@ msgstr ""
 msgid "Input Box"
 msgstr ""
 
-#: inc/mep_cpt.php:39
+#: Admin/mep_cpt.php:36
 msgid "Insert into "
 msgstr ""
 
-#: inc/mep_cpt.php:88
+#: Admin/mep_cpt.php:81
 msgid "Insert into Speaker"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:523
 msgid "instagram"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:206
+msgid "Install & Active Now"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:524
@@ -3765,33 +4004,40 @@ msgstr ""
 msgid "ioxhost"
 msgstr ""
 
-#: inc/admin_setting_panel.php:151
+#: Admin/MPWEM_Welcome.php:53
+msgid ""
+"It uses WooCommerce to take payment, which provides freedom for using "
+"popular payment getaway via WooCommerce. This plugin supports all WordPress "
+"version and can be used to create any types of any types of events."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:178
 msgid ""
 "It will change the category slug for the entire plugin. Remember that after "
 "you change this slug, you need to flush permalinks. To do this, just go to "
 "<strong>Settings->Permalinks</strong> hit the Save Settings button."
 msgstr ""
 
-#: inc/admin_setting_panel.php:119
+#: Admin/settings/global/admin_setting_panel.php:146
 msgid "It will change the event post type label for the entire plugin."
 msgstr ""
 
-#: inc/quick_setup.php:288
-msgid "It will change the event post type label on the entire plugin."
-msgstr ""
-
-#: inc/quick_setup.php:296
-msgid ""
-"It will change the event slug on the entire plugin. Remember after changing "
-"this slug you need to flush permalinks. Just go to Settings->Permalinks hit "
-"the Save Settings button"
-msgstr ""
-
-#: inc/admin_setting_panel.php:127
+#: Admin/settings/global/admin_setting_panel.php:154
 msgid ""
 "It will change the event slug throughout the entire plugin. Remember, after "
 "changing this slug you need to flush permalinks. Just go to <strong>Settings-"
 ">Permalinks</strong> hit the Save Settings button"
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:233
+msgid "It will change the Events post type label on the entire plugin."
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:242
+msgid ""
+"It will change the Events slug on the entire plugin. Remember after changing "
+"this slug you need to flush permalinks. Just go to Settings->Permalinks hit "
+"the Save Settings button"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:526
@@ -3868,7 +4114,7 @@ msgstr ""
 msgid "korvue"
 msgstr ""
 
-#: inc/admin_setting_panel.php:889
+#: Admin/settings/global/admin_setting_panel.php:979
 msgid "Label Background Color"
 msgstr ""
 
@@ -3879,7 +4125,7 @@ msgstr ""
 msgid "Label Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:896
+#: Admin/settings/global/admin_setting_panel.php:986
 msgid "Label Text Color"
 msgstr ""
 
@@ -3919,7 +4165,7 @@ msgstr ""
 msgid "lecture"
 msgstr ""
 
-#: inc/admin_setting_panel.php:815
+#: Admin/settings/global/admin_setting_panel.php:905
 msgid "Left"
 msgstr ""
 
@@ -3941,7 +4187,7 @@ msgstr ""
 msgid "less"
 msgstr ""
 
-#: lib/classes/class-mep.php:147
+#: lib/classes/class-mep.php:147 inc/global/MP_Custom_Layout.php:150
 msgid "Less More"
 msgstr ""
 
@@ -3951,6 +4197,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:554
 msgid "level-up-alt"
+msgstr ""
+
+#: inc/mep_functions.php:3420
+msgid "License"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:555
@@ -4023,23 +4273,25 @@ msgstr ""
 msgid "list-ul"
 msgstr ""
 
-#: inc/admin_setting_panel.php:276
+#: Admin/settings/global/admin_setting_panel.php:304
 msgid "Load Flat Icon From Theme?"
 msgstr ""
 
-#: inc/admin_setting_panel.php:265
+#: Admin/settings/global/admin_setting_panel.php:293
 msgid "Load Font Awesome From Theme?"
 msgstr ""
 
 #: lib/classes/class-mep.php:146 lib/classes/class-mep.php:149
+#: inc/global/MP_Custom_Layout.php:39 inc/global/MP_Custom_Layout.php:150
+#: inc/global/MP_Custom_Layout.php:151
 msgid "Load More"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1057
+#: Admin/settings/global/admin_setting_panel.php:1147
 msgid "Load Owl Carousel From Theme"
 msgstr ""
 
-#: inc/mep_extra_price.php:287
+#: inc/mep_functions.php:3388 inc/mep_extra_price.php:287
 msgid "Location"
 msgstr ""
 
@@ -4063,7 +4315,8 @@ msgstr ""
 msgid "Location/Venue:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:669 templates/list/default.php:96
+#: templates/list/default.php:96
+#: Admin/settings/global/admin_setting_panel.php:759
 msgid "Location:"
 msgstr ""
 
@@ -4310,6 +4563,10 @@ msgstr ""
 msgid "modx"
 msgstr ""
 
+#: inc/global/MP_Global_Function.php:330
+msgid "Monday"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:619
 msgid "monero"
 msgstr ""
@@ -4353,8 +4610,9 @@ msgstr ""
 msgid "movie-tickets"
 msgstr ""
 
-#: inc/admin_setting_panel.php:843 templates/list/spring.php:49
-#: templates/list/default.php:30 templates/list/winter.php:60
+#: templates/list/spring.php:49 templates/list/default.php:30
+#: templates/list/winter.php:60
+#: Admin/settings/global/admin_setting_panel.php:933
 msgid "Multi Date Event"
 msgstr ""
 
@@ -4371,6 +4629,11 @@ msgstr ""
 msgid "music-player"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1003
+msgid "My plugin page shows 404 error?"
+msgstr ""
+
+#: inc/mep_functions.php:1611 inc/mep_functions.php:3612
 #: inc/mep_extra_price.php:303 inc/mep_event_meta.php:641
 msgid "Name"
 msgstr ""
@@ -4379,7 +4642,7 @@ msgstr ""
 msgid "Name :"
 msgstr ""
 
-#: inc/admin_setting_panel.php:733
+#: Admin/settings/global/admin_setting_panel.php:823
 msgid "Name:"
 msgstr ""
 
@@ -4397,11 +4660,11 @@ msgstr ""
 msgid "neuter"
 msgstr ""
 
-#: inc/mep_cpt.php:27
+#: Admin/mep_cpt.php:24
 msgid "New "
 msgstr ""
 
-#: inc/mep_cpt.php:76
+#: Admin/mep_cpt.php:69
 msgid "New Speaker"
 msgstr ""
 
@@ -4410,13 +4673,12 @@ msgstr ""
 msgid "newspaper"
 msgstr ""
 
-#: lib/classes/class-icon-library.php:1067
-msgid "next"
+#: Admin/MPWEM_Quick_Setup.php:173
+msgid "Next"
 msgstr ""
 
-#: inc/quick_setup.php:223
-#, php-format
-msgid "Next %s"
+#: lib/classes/class-icon-library.php:1067
+msgid "next"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1164
@@ -4427,6 +4689,7 @@ msgstr ""
 msgid "nintendo-switch"
 msgstr ""
 
+#: inc/mep_functions.php:3682 inc/mep_functions.php:5250
 #: support/elementor/widget/event-add-cart-section.php:62
 #: support/elementor/widget/event-add-cart-section.php:104
 #: support/elementor/widget/event-add-cart-section.php:128
@@ -4476,7 +4739,7 @@ msgstr ""
 msgid "No of Item Show"
 msgstr ""
 
-#: inc/admin_setting_panel.php:784
+#: Admin/settings/global/admin_setting_panel.php:874
 msgid "No Seat Available"
 msgstr ""
 
@@ -4484,7 +4747,7 @@ msgstr ""
 msgid "No Seat Availables"
 msgstr ""
 
-#: inc/admin_setting_panel.php:776
+#: Admin/settings/global/admin_setting_panel.php:866
 msgid "No Ticket Selected!"
 msgstr ""
 
@@ -4507,7 +4770,8 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: inc/admin_setting_panel.php:792 templates/single/extra_service_list.php:50
+#: templates/single/extra_service_list.php:50
+#: Admin/settings/global/admin_setting_panel.php:882
 msgid "Not Available"
 msgstr ""
 
@@ -4584,7 +4848,7 @@ msgstr ""
 msgid "On"
 msgstr ""
 
-#: inc/admin_setting_panel.php:95
+#: Admin/settings/global/admin_setting_panel.php:111
 msgid "On/Off Block/Gutenberg Editor"
 msgstr ""
 
@@ -4598,24 +4862,28 @@ msgstr ""
 msgid "On/Off Carousel Navigation"
 msgstr ""
 
-#: inc/admin_setting_panel.php:323
+#: Admin/settings/global/admin_setting_panel.php:413
 msgid "On/Off Event Price in List"
 msgstr ""
 
-#: inc/admin_setting_panel.php:334
+#: Admin/settings/global/admin_setting_panel.php:424
 msgid "On/Off Multi Date List in Event listing Page"
 msgstr ""
 
-#: inc/admin_setting_panel.php:414
+#: Admin/settings/global/admin_setting_panel.php:504
 msgid "On/Off Product Category in Event"
 msgstr ""
 
-#: inc/admin_setting_panel.php:433
+#: Admin/settings/global/admin_setting_panel.php:523
 msgid "On/Off Shipping Method on event"
 msgstr ""
 
-#: inc/admin_setting_panel.php:403
+#: Admin/settings/global/admin_setting_panel.php:493
 msgid "On/Off Speaker List"
+msgstr ""
+
+#: inc/mep_functions.php:4969
+msgid "Online/Virtual "
 msgstr ""
 
 #: inc/mep_event_meta.php:895
@@ -4650,7 +4918,8 @@ msgstr ""
 msgid "order"
 msgstr ""
 
-#: inc/admin_setting_panel.php:662 templates/list/default.php:82
+#: templates/list/default.php:82 templates/themes/deora.php:21
+#: Admin/settings/global/admin_setting_panel.php:752
 msgid "Organized By:"
 msgstr ""
 
@@ -4747,6 +5016,18 @@ msgstr ""
 msgid "paypal"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1016
+msgid ""
+"PDF email with pdf send based on some configuration. If order status "
+"processing or complete then only pdf email will send as we considered these "
+"2 order status come after order payment done. If order status holds or "
+"pending, then email of pdf will not send."
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:91
+msgid "PDF Ticketing"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:667
 msgid "pen-square"
 msgstr ""
@@ -4759,7 +5040,8 @@ msgstr ""
 msgid "people-carry"
 msgstr ""
 
-#: inc/admin_setting_panel.php:768 inc/template-prts/event_ticket_type.php:34
+#: inc/template-prts/event_ticket_type.php:36
+#: Admin/settings/global/admin_setting_panel.php:858
 msgid "Per Ticket Price:"
 msgstr ""
 
@@ -4779,7 +5061,7 @@ msgstr ""
 msgid "phoenix-framework"
 msgstr ""
 
-#: inc/mep_extra_price.php:305
+#: inc/mep_functions.php:3616 inc/mep_extra_price.php:305
 msgid "Phone"
 msgstr ""
 
@@ -4897,227 +5179,238 @@ msgstr ""
 msgid "playstation"
 msgstr ""
 
-#: inc/admin_setting_panel.php:983
+#: Admin/settings/global/admin_setting_panel.php:1073
 msgid "Please choose event date icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:997
+#: Admin/settings/global/admin_setting_panel.php:1087
 msgid "Please choose event location icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1004
+#: Admin/settings/global/admin_setting_panel.php:1094
 msgid "Please choose event organizer icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1011
+#: Admin/settings/global/admin_setting_panel.php:1101
 msgid "Please choose event sidebar location list icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1046
+#: Admin/settings/global/admin_setting_panel.php:1136
 msgid "Please choose event social share icon for email."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1018
+#: Admin/settings/global/admin_setting_panel.php:1108
 msgid "Please choose event social share icon for facebook."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1032
+#: Admin/settings/global/admin_setting_panel.php:1122
 msgid "Please choose event social share icon for linkedin."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1025
+#: Admin/settings/global/admin_setting_panel.php:1115
 msgid "Please choose event social share icon for twitter."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1039
+#: Admin/settings/global/admin_setting_panel.php:1129
 msgid "Please choose event social share icon for whatsapp."
 msgstr ""
 
-#: inc/admin_setting_panel.php:990
+#: Admin/settings/global/admin_setting_panel.php:1080
 msgid "Please choose event time icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1092
+#: Admin/settings/global/admin_setting_panel.php:1182
 msgid "Please Enter Carousel Auto Play Speed. Default is 5000"
 msgstr ""
 
-#: inc/quick_setup.php:315 inc/quick_setup.php:324
+#: Admin/MPWEM_Quick_Setup.php:267 Admin/MPWEM_Quick_Setup.php:276
 msgid "Please enter the email from name"
 msgstr ""
 
-#: inc/admin_setting_panel.php:135
+#: Admin/settings/global/admin_setting_panel.php:162
 msgid ""
 "Please enter the icon class name for the event custom post type. You can "
 "find icons here: Example: dashicons-calendar-alt. Find Icons: <a "
 "href=\"https://developer.wordpress.org/resource/dashicons/\">Dashicons</a>"
 msgstr ""
 
-#: inc/admin_setting_panel.php:258
+#: Admin/settings/global/admin_setting_panel.php:286
 msgid ""
 "Please enter the number of minutes before the event that an attendee cannot "
 "book/register a ticket."
 msgstr ""
 
-#: inc/admin_setting_panel.php:649
+#: Admin/settings/global/admin_setting_panel.php:739
 msgid ""
 "Please enter the translated text of <strong>Add To Your Calender</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:823
+#: Admin/settings/global/admin_setting_panel.php:913
 msgid "Please enter the translated text of <strong>Attendee info:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:598
+#: Admin/settings/global/admin_setting_panel.php:688
 msgid "Please enter the translated text of <strong>Book Now.</strong>"
 msgstr ""
 
-#: inc/admin_setting_panel.php:706
+#: Admin/settings/global/admin_setting_panel.php:796
 msgid "Please enter the translated text of <strong>By:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:691
+#: Admin/settings/global/admin_setting_panel.php:781
 msgid "Please enter the translated text of <strong>Event Date:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:801
+#: Admin/settings/global/admin_setting_panel.php:891
 msgid "Please enter the translated text of <strong>Event Expired</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:684
+#: Admin/settings/global/admin_setting_panel.php:774
 msgid "Please enter the translated text of <strong>Event Location:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:748
+#: Admin/settings/global/admin_setting_panel.php:838
 msgid ""
 "Please enter the translated text of <strong>Event Schedule Details</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:698
+#: Admin/settings/global/admin_setting_panel.php:788
 msgid "Please enter the translated text of <strong>Event Time:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:635
+#: Admin/settings/global/admin_setting_panel.php:725
 msgid "Please enter the translated text of <strong>Extra Service:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:620
+#: Admin/settings/global/admin_setting_panel.php:710
 msgid "Please enter the translated text of <strong>Free</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:858
+#: Admin/settings/global/admin_setting_panel.php:948
 msgid "Please enter the translated text of <strong>Hide Date Lists</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:816
+#: Admin/settings/global/admin_setting_panel.php:906
 msgid "Please enter the translated text of <strong>Left</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:670
+#: Admin/settings/global/admin_setting_panel.php:760
 msgid "Please enter the translated text of <strong>Location:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:844
+#: Admin/settings/global/admin_setting_panel.php:934
 msgid "Please enter the translated text of <strong>Multi Date Event</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:734
+#: Admin/settings/global/admin_setting_panel.php:824
 msgid "Please enter the translated text of <strong>Name:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:785
+#: Admin/settings/global/admin_setting_panel.php:875
 msgid "Please enter the translated text of <strong>No Seat Available</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:777
+#: Admin/settings/global/admin_setting_panel.php:867
 msgid ""
 "Please enter the translated text of <strong>No Ticket Selected!</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:793
+#: Admin/settings/global/admin_setting_panel.php:883
 msgid "Please enter the translated text of <strong>Not Available</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:663
+#: Admin/settings/global/admin_setting_panel.php:753
 msgid "Please enter the translated text of <strong>Organized By:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:769
+#: Admin/settings/global/admin_setting_panel.php:859
 msgid "Please enter the translated text of <strong>Per Ticket Price:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:606
+#: Admin/settings/global/admin_setting_panel.php:696
 msgid "Please enter the translated text of <strong>Price Starts from:</strong>"
 msgstr ""
 
-#: inc/admin_setting_panel.php:613
+#: Admin/settings/global/admin_setting_panel.php:703
 msgid "Please enter the translated text of <strong>Price:</strong>"
 msgstr ""
 
-#: inc/admin_setting_panel.php:741
+#: Admin/settings/global/admin_setting_panel.php:831
 msgid "Please enter the translated text of <strong>Price:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:727
+#: Admin/settings/global/admin_setting_panel.php:817
 msgid "Please enter the translated text of <strong>Quantity:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:865
+#: Admin/settings/global/admin_setting_panel.php:955
 msgid "Please enter the translated text of <strong>Recurring Event</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:720
+#: Admin/settings/global/admin_setting_panel.php:810
 msgid "Please enter the translated text of <strong>Register Now:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:642
+#: Admin/settings/global/admin_setting_panel.php:732
 msgid ""
 "Please enter the translated text of <strong>Register This Event</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:830
+#: Admin/settings/global/admin_setting_panel.php:920
 msgid ""
 "Please enter the translated text of <strong>Select Ticket Error Message:"
 "</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:656
+#: Admin/settings/global/admin_setting_panel.php:746
 msgid "Please enter the translated text of <strong>Share This Event</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:872
+#: Admin/settings/global/admin_setting_panel.php:962
 msgid "Please enter the translated text of <strong>Sold Out</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:762
+#: Admin/settings/global/admin_setting_panel.php:852
 msgid "Please enter the translated text of <strong>Ticket Qty</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:628
+#: Admin/settings/global/admin_setting_panel.php:718
 msgid "Please enter the translated text of <strong>Ticket Type:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:809
+#: Admin/settings/global/admin_setting_panel.php:899
 msgid "Please enter the translated text of <strong>Ticket</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:677
+#: Admin/settings/global/admin_setting_panel.php:767
 msgid "Please enter the translated text of <strong>Time:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:713
+#: Admin/settings/global/admin_setting_panel.php:803
 msgid "Please enter the translated text of <strong>Total Seats:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:755
+#: Admin/settings/global/admin_setting_panel.php:845
 msgid "Please enter the translated text of <strong>Total:</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:851
+#: Admin/settings/global/admin_setting_panel.php:941
 msgid "Please enter the translated text of <strong>View More Date</strong>."
 msgstr ""
 
-#: inc/admin_setting_panel.php:837
+#: Admin/settings/global/admin_setting_panel.php:927
 msgid "Please enter the translated text of <strong>Virtual Event</strong>."
+msgstr ""
+
+#: inc/mep_functions.php:3434
+msgid ""
+"Please enter your custom CSS code below. Do not include the STYLE tag here."
+msgstr ""
+
+#: inc/mep_functions.php:4979
+msgid ""
+"Please enter your virtual event joining details in the form below. This "
+"information will be sent to the buyer along with a confirmation email."
 msgstr ""
 
 #: inc/mep_event_meta.php:1088
@@ -5126,47 +5419,73 @@ msgid ""
 "information will be sent to the buyer along with a confirmation email."
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1028
+msgid "Please install WooCommerce plugin first, before installing any plugin."
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1004
+msgid "Please re-save the permalink to solve the problem."
+msgstr ""
+
 #: inc/mep_event_meta.php:607
 msgid "Please Select"
 msgstr ""
 
-#: inc/admin_setting_panel.php:346 inc/admin_setting_panel.php:357
-#: inc/admin_setting_panel.php:368 inc/admin_setting_panel.php:379
-#: inc/admin_setting_panel.php:445 inc/admin_setting_panel.php:456
-#: inc/admin_setting_panel.php:467 inc/admin_setting_panel.php:478
-#: inc/admin_setting_panel.php:489 inc/admin_setting_panel.php:500
-#: inc/admin_setting_panel.php:511 inc/admin_setting_panel.php:522
-#: inc/admin_setting_panel.php:533
+#: Admin/settings/global/admin_setting_panel.php:436
+#: Admin/settings/global/admin_setting_panel.php:447
+#: Admin/settings/global/admin_setting_panel.php:458
+#: Admin/settings/global/admin_setting_panel.php:469
+#: Admin/settings/global/admin_setting_panel.php:535
+#: Admin/settings/global/admin_setting_panel.php:546
+#: Admin/settings/global/admin_setting_panel.php:557
+#: Admin/settings/global/admin_setting_panel.php:568
+#: Admin/settings/global/admin_setting_panel.php:579
+#: Admin/settings/global/admin_setting_panel.php:590
+#: Admin/settings/global/admin_setting_panel.php:601
+#: Admin/settings/global/admin_setting_panel.php:612
+#: Admin/settings/global/admin_setting_panel.php:623
 msgid "Please select \"Yes\" to hide or \"No\" to display."
 msgstr ""
 
-#: inc/admin_setting_panel.php:404
+#: Admin/settings/global/admin_setting_panel.php:494
 msgid ""
 "Please select 'Yes' to display the speaker list. By default, the speaker "
 "list is disabled."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1070
+#: Admin/settings/global/admin_setting_panel.php:1160
 msgid "Please select Carousel will auto play or not."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1081
+#: Admin/settings/global/admin_setting_panel.php:1171
 msgid "Please select Carousel will Infinite Loop or not."
 msgstr ""
 
-#: inc/admin_setting_panel.php:390
+#: Admin/settings/global/admin_setting_panel.php:480
 msgid "Please select either 'Yes' to hide or 'No' to display."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:135
+msgid ""
+"Please select Event list order by which value Event Title or Event Date. By "
+"Default is: Event Upcoming Date"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:97
+msgid ""
+"Please select in which order status seat will mark as reserved/booked. By "
+"Default is Processing & Completed."
 msgstr ""
 
 #: inc/mep_event_fw_meta.php:67
 msgid "Please select the icon that will be used for the speaker icon."
 msgstr ""
 
-#: inc/admin_setting_panel.php:107
+#: Admin/settings/global/admin_setting_panel.php:123
 msgid "Please select the name of your multilingual plugin from the list below."
 msgstr ""
 
-#: inc/admin_setting_panel.php:174
+#: Admin/settings/global/admin_setting_panel.php:201
 msgid ""
 "Please select the preferred map type you want to be displayed on the front "
 "page.<br><strong>Note:</strong> It\"s been known that Iframe does not always "
@@ -5175,7 +5494,14 @@ msgid ""
 "desired location."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1123
+#: inc/mep_functions.php:5229
+msgid ""
+"Please select the time format from the list. If you want to use a custom "
+"time format, select Custom and write your desired time format. This time "
+"format will only apply to events."
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:1213
 msgid ""
 "Please select the time format you want to use from the list. If you want to "
 "use a custom time format, select Custom and write your custom time format. "
@@ -5186,25 +5512,32 @@ msgstr ""
 msgid "Please Select Type"
 msgstr ""
 
-#: inc/admin_setting_panel.php:203
+#: Admin/settings/global/admin_setting_panel.php:220
 msgid "Please select when the event will end"
 msgstr ""
 
-#: inc/quick_setup.php:307
+#: Admin/MPWEM_Quick_Setup.php:258
 msgid "Please select when the event will expire"
 msgstr ""
 
-#: inc/admin_setting_panel.php:548
+#: Admin/settings/global/admin_setting_panel.php:638
 msgid ""
 "Please select when you would like the customer to receive an email "
 "confirming their order status event."
 msgstr ""
 
-#: inc/admin_setting_panel.php:1107
+#: Admin/settings/global/admin_setting_panel.php:1197
 msgid ""
 "Please select your desired date format from the list below. If you wish to "
 "use a custom date format, select the \"Custom\" option and write your format "
 "in the box provided. Note that this date format will apply to all events."
+msgstr ""
+
+#: inc/mep_functions.php:5204
+msgid ""
+"Please select your preferred date format from the options below. If you wish "
+"to use a custom date format, select the Custom option and enter your desired "
+"date format. Please note that this date format will only apply to events."
 msgstr ""
 
 #: inc/mep_event_fw_meta.php:244
@@ -5266,6 +5599,10 @@ msgstr ""
 msgid "prescription-bottle-alt"
 msgstr ""
 
+#: Admin/MPWEM_Quick_Setup.php:169
+msgid "Previous"
+msgstr ""
+
 #: inc/mep_event_meta.php:902
 msgid "Previous Start Date:"
 msgstr ""
@@ -5275,17 +5612,6 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
-#: inc/admin_setting_panel.php:605 inc/template-prts/event_loop_winter.php:19
-#: inc/template-prts/event_loop_spring.php:19
-#: inc/template-prts/event_loop_timeline.php:18
-#: inc/template-prts/event_loop_minimal.php:18
-#: inc/template-prts/event_loop_list.php:14
-#: inc/template-prts/event_loop_title.php:19
-#: inc/template-prts/event_loop_native.php:18
-msgid "Price Starts from:"
-msgstr ""
-
-#: inc/admin_setting_panel.php:612 inc/admin_setting_panel.php:740
 #: inc/template-prts/event_loop_winter.php:19
 #: inc/template-prts/event_loop_spring.php:19
 #: inc/template-prts/event_loop_timeline.php:18
@@ -5293,11 +5619,28 @@ msgstr ""
 #: inc/template-prts/event_loop_list.php:14
 #: inc/template-prts/event_loop_title.php:19
 #: inc/template-prts/event_loop_native.php:18
+#: Admin/settings/global/admin_setting_panel.php:695
+msgid "Price Starts from:"
+msgstr ""
+
+#: inc/template-prts/event_loop_winter.php:19
+#: inc/template-prts/event_loop_spring.php:19
+#: inc/template-prts/event_loop_timeline.php:18
+#: inc/template-prts/event_loop_minimal.php:18
+#: inc/template-prts/event_loop_list.php:14
+#: inc/template-prts/event_loop_title.php:19
+#: inc/template-prts/event_loop_native.php:18
+#: Admin/settings/global/admin_setting_panel.php:702
+#: Admin/settings/global/admin_setting_panel.php:830
 msgid "Price:"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:704
 msgid "print"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:72
+msgid "Pro Features You'll Love"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:705
@@ -5340,8 +5683,9 @@ msgstr ""
 msgid "Qty Box Type"
 msgstr ""
 
-#: inc/admin_setting_panel.php:726 inc/template-prts/event_add_cart.php:160
-#: inc/template-prts/event_add_cart.php:333
+#: inc/mep_functions.php:4399 inc/template-prts/event_add_cart.php:164
+#: inc/template-prts/event_add_cart.php:339
+#: Admin/settings/global/admin_setting_panel.php:816
 msgid "Quantity:"
 msgstr ""
 
@@ -5354,7 +5698,9 @@ msgstr ""
 msgid "question-circle"
 msgstr ""
 
-#: woocommerce-event-press.php:114 inc/welcome.php:26
+#: Admin/MPWEM_Quick_Setup.php:27 Admin/MPWEM_Quick_Setup.php:28
+#: Admin/MPWEM_Quick_Setup.php:28 Admin/MPWEM_Quick_Setup.php:32
+#: Admin/MPWEM_Quick_Setup.php:32
 msgid "Quick Setup"
 msgstr ""
 
@@ -5402,8 +5748,9 @@ msgstr ""
 msgid "rebel"
 msgstr ""
 
-#: inc/admin_setting_panel.php:864 templates/list/spring.php:54
-#: templates/list/default.php:36 templates/list/winter.php:64
+#: templates/list/spring.php:54 templates/list/default.php:36
+#: templates/list/winter.php:64
+#: Admin/settings/global/admin_setting_panel.php:954
 msgid "Recurring Event"
 msgstr ""
 
@@ -5431,7 +5778,7 @@ msgstr ""
 msgid "reddit-square"
 msgstr ""
 
-#: inc/admin_setting_panel.php:235
+#: Admin/settings/global/admin_setting_panel.php:263
 msgid "Redirect Checkout after Booking"
 msgstr ""
 
@@ -5443,24 +5790,29 @@ msgstr ""
 msgid "redo-alt"
 msgstr ""
 
-#: inc/mep_shortcode.php:399 inc/template-prts/event_add_cart.php:24
+#: inc/mep_shortcode.php:422 inc/template-prts/event_add_cart.php:25
 #: support/elementor/widget/event-add-cart-section.php:76
 #: support/elementor/widget/event-add-cart-section.php:489
 msgid "Register For This Event"
 msgstr ""
 
-#: inc/admin_setting_panel.php:719 inc/template-prts/event_add_cart.php:134
-#: inc/template-prts/event_add_cart.php:311
+#: inc/mep_functions.php:4379 inc/template-prts/event_add_cart.php:138
+#: inc/template-prts/event_add_cart.php:317
+#: Admin/settings/global/admin_setting_panel.php:809
 msgid "Register Now:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:641
+#: Admin/settings/global/admin_setting_panel.php:731
 msgid "Register This Event"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:732
 #: lib/classes/class-icon-library.php:733
 msgid "registered"
+msgstr ""
+
+#: inc/mep_functions.php:5017
+msgid "Registration Off/On:"
 msgstr ""
 
 #: inc/mep_event_meta.php:1006
@@ -5471,11 +5823,20 @@ msgstr ""
 msgid "reload"
 msgstr ""
 
-#: inc/mep_cpt.php:37
+#: Admin/mep_cpt.php:34
 msgid "Remove "
 msgstr ""
 
-#: inc/mep_cpt.php:86
+#: inc/global/MP_Select_Icon_image.php:30
+#: inc/global/MP_Select_Icon_image.php:150
+msgid "Remove Icon"
+msgstr ""
+
+#: inc/global/MP_Select_Icon_image.php:154
+msgid "Remove Image"
+msgstr ""
+
+#: Admin/mep_cpt.php:79
 msgid "Remove Speaker image"
 msgstr ""
 
@@ -5501,6 +5862,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:738
 msgid "replyd"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:115
+msgid "Report Overview"
 msgstr ""
 
 #: inc/mep_event_meta.php:482
@@ -5563,23 +5928,23 @@ msgstr ""
 msgid "rockrms"
 msgstr ""
 
-#: inc/admin_setting_panel.php:964
+#: Admin/settings/global/admin_setting_panel.php:1054
 msgid "Royal Template Border Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:957
+#: Admin/settings/global/admin_setting_panel.php:1047
 msgid "Royal Template Icons Background Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:945
+#: Admin/settings/global/admin_setting_panel.php:1035
 msgid "Royal Template Primary Background Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:951
+#: Admin/settings/global/admin_setting_panel.php:1041
 msgid "Royal Template Secondary Background Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:970
+#: Admin/settings/global/admin_setting_panel.php:1060
 msgid "Royal Template Text Color"
 msgstr ""
 
@@ -5619,6 +5984,10 @@ msgstr ""
 msgid "sass"
 msgstr ""
 
+#: inc/global/MP_Global_Function.php:335
+msgid "Saturday"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:752
 #: lib/classes/class-icon-library.php:753
 msgid "save"
@@ -5637,7 +6006,7 @@ msgstr ""
 msgid "search"
 msgstr ""
 
-#: inc/mep_cpt.php:32
+#: Admin/mep_cpt.php:29
 msgid "Search "
 msgstr ""
 
@@ -5645,8 +6014,12 @@ msgstr ""
 msgid "Search Icon..."
 msgstr ""
 
-#: inc/mep_cpt.php:81
+#: Admin/mep_cpt.php:74
 msgid "Search Speaker"
+msgstr ""
+
+#: templates/themes/deora.php:66
+msgid "Search ticket availability by date"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1158
@@ -5667,6 +6040,14 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:759
 msgid "searchengin"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:96
+msgid "Seat Reserved Order Status"
+msgstr ""
+
+#: inc/mep_functions.php:2543
+msgid "Seats [ Total - Sold = Available ]"
 msgstr ""
 
 #: support/elementor/widget/event-countdown.php:386
@@ -5707,15 +6088,23 @@ msgstr ""
 msgid "Select Event"
 msgstr ""
 
-#: inc/template-prts/event_add_cart.php:27
+#: inc/template-prts/event_add_cart.php:28
 msgid "Select Event Date:"
+msgstr ""
+
+#: inc/global/MP_Select_Icon_image.php:43
+msgid "Select Icon"
 msgstr ""
 
 #: lib/classes/class-mep.php:39
 msgid "Select Organizer"
 msgstr ""
 
-#: inc/admin_setting_panel.php:829
+#: Admin/settings/global/admin_setting_panel.php:363
+msgid "Select the Google Map zoom level. By default is 17"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:919
 msgid "Select Ticket Error Message:"
 msgstr ""
 
@@ -5736,19 +6125,30 @@ msgstr ""
 msgid "servicestack"
 msgstr ""
 
-#: inc/mep_cpt.php:36
+#: Admin/mep_cpt.php:33
 msgid "Set "
 msgstr ""
 
-#: inc/mep_cpt.php:85
+#: inc/mep_functions.php:5060
+msgid ""
+"Set maximum/minimum qty buying option with <a href='https://mage-people."
+"com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-"
+"manager' target='_blank'>Max/Min Qty Addon</a>"
+msgstr ""
+
+#: Admin/mep_cpt.php:78
 msgid "Set Speaker image"
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:362
+msgid "Set the Google Map Zoom Level"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1138
 msgid "setting"
 msgstr ""
 
-#: woocommerce-event-press.php:63 inc/mep_event_meta.php:42
+#: woocommerce-event-press.php:54 inc/mep_event_meta.php:42
 msgid "Settings"
 msgstr ""
 
@@ -5764,6 +6164,13 @@ msgstr ""
 msgid "settings-2"
 msgstr ""
 
+#: inc/mep_functions.php:5051
+msgid ""
+"Setup Event Common QTY of All Ticket Type get <a href='https://mage-people."
+"com/product/global-common-qty-addon-for-event-manager' target='_blank'>"
+"Global QTY Addon</a>"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:765
 #: lib/classes/class-icon-library.php:1083
 msgid "share"
@@ -5773,7 +6180,7 @@ msgstr ""
 msgid "Share This"
 msgstr ""
 
-#: inc/admin_setting_panel.php:655
+#: Admin/settings/global/admin_setting_panel.php:745
 msgid "Share This Event"
 msgstr ""
 
@@ -5843,7 +6250,7 @@ msgstr ""
 msgid "Short Desc."
 msgstr ""
 
-#: inc/admin_setting_panel.php:246
+#: Admin/settings/global/admin_setting_panel.php:274
 msgid "Show 0 Price as Free"
 msgstr ""
 
@@ -5869,8 +6276,16 @@ msgstr ""
 msgid "Show Event Info"
 msgstr ""
 
+#: Admin/settings/global/admin_setting_panel.php:393
+msgid "Show Event Sidebar Widgets?"
+msgstr ""
+
 #: inc/mep_event_meta.php:264
 msgid "Show Google Map "
+msgstr ""
+
+#: Admin/settings/global/admin_setting_panel.php:350
+msgid "Show Hidden Woocommerce Products?"
 msgstr ""
 
 #: support/elementor/widget/event-list.php:627
@@ -5889,7 +6304,7 @@ msgstr ""
 msgid "Show Ribbon"
 msgstr ""
 
-#: inc/admin_setting_panel.php:309
+#: Admin/settings/global/admin_setting_panel.php:337
 msgid "Show Sold out Ribon?"
 msgstr ""
 
@@ -5897,7 +6312,8 @@ msgstr ""
 msgid "Show Thumbnail"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1138
+#: inc/mep_functions.php:5246
+#: Admin/settings/global/admin_setting_panel.php:1228
 msgid "Show Timezone"
 msgstr ""
 
@@ -5945,11 +6361,11 @@ msgstr ""
 msgid "simplybuilt"
 msgstr ""
 
-#: inc/admin_setting_panel.php:425
+#: Admin/settings/global/admin_setting_panel.php:515
 msgid "Single Event Page Template"
 msgstr ""
 
-#: inc/admin_setting_panel.php:53
+#: Admin/settings/global/admin_setting_panel.php:53
 msgid "Single Event Settings"
 msgstr ""
 
@@ -6036,7 +6452,8 @@ msgstr ""
 msgid "snowflake"
 msgstr ""
 
-#: inc/admin_setting_panel.php:871 templates/list/default.php:47
+#: templates/list/default.php:47
+#: Admin/settings/global/admin_setting_panel.php:961
 msgid "Sold Out"
 msgstr ""
 
@@ -6045,7 +6462,7 @@ msgid "solution"
 msgstr ""
 
 #: inc/template-prts/event_labels.php:27
-#: inc/template-prts/event_ticket_type_extra_service.php:31
+#: inc/template-prts/event_ticket_type_extra_service.php:33
 msgid "Sorry, There Are No Seats Available"
 msgstr ""
 
@@ -6116,7 +6533,7 @@ msgstr ""
 msgid "speakap"
 msgstr ""
 
-#: inc/mep_cpt.php:67
+#: Admin/mep_cpt.php:60
 msgid "Speaker"
 msgstr ""
 
@@ -6128,7 +6545,7 @@ msgstr ""
 msgid "Speaker Icon"
 msgstr ""
 
-#: inc/mep_cpt.php:84
+#: Admin/mep_cpt.php:77
 msgid "Speaker Image"
 msgstr ""
 
@@ -6136,19 +6553,19 @@ msgstr ""
 msgid "Speaker Information"
 msgstr ""
 
-#: inc/mep_cpt.php:90
+#: Admin/mep_cpt.php:83
 msgid "Speaker list"
 msgstr ""
 
-#: inc/mep_cpt.php:91
+#: Admin/mep_cpt.php:84
 msgid "Speaker list navigation"
 msgstr ""
 
-#: inc/mep_cpt.php:82
+#: Admin/mep_cpt.php:75
 msgid "Speaker Not found"
 msgstr ""
 
-#: inc/mep_cpt.php:83
+#: Admin/mep_cpt.php:76
 msgid "Speaker Not found in Trash"
 msgstr ""
 
@@ -6156,8 +6573,8 @@ msgstr ""
 msgid "Speaker's"
 msgstr ""
 
-#: inc/mep_event_fw_meta.php:82 inc/mep_cpt.php:66 inc/mep_cpt.php:68
-#: inc/mep_cpt.php:69 inc/mep_cpt.php:73
+#: Admin/mep_cpt.php:59 Admin/mep_cpt.php:61 Admin/mep_cpt.php:62
+#: Admin/mep_cpt.php:66 inc/mep_event_fw_meta.php:82
 msgid "Speakers"
 msgstr ""
 
@@ -6165,11 +6582,11 @@ msgstr ""
 msgid "Speakers Additional Information"
 msgstr ""
 
-#: inc/mep_cpt.php:72
+#: Admin/mep_cpt.php:65
 msgid "Speakers Item:"
 msgstr ""
 
-#: inc/mep_cpt.php:70 inc/mep_cpt.php:71
+#: Admin/mep_cpt.php:63 Admin/mep_cpt.php:64
 msgid "Speakers List"
 msgstr ""
 
@@ -6177,11 +6594,18 @@ msgstr ""
 msgid "Speakers Meta Box"
 msgstr ""
 
+#: inc/mep_functions.php:5056
+msgid ""
+"Special Price Option for each user type or membership get <a href='https:"
+"//mage-people.com/product/membership-pricing-for-event-manager-plugin' "
+"target='_blank'>Membership Pricing Addon</a>"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:1027
 msgid "speech-bubble-and-three-dots"
 msgstr ""
 
-#: inc/admin_setting_panel.php:287
+#: Admin/settings/global/admin_setting_panel.php:315
 msgid "Speed up the Event List Page Loading?"
 msgstr ""
 
@@ -6278,7 +6702,8 @@ msgstr ""
 msgid "State: "
 msgstr ""
 
-#: inc/status.php:10 support/elementor/widget/event-list.php:229
+#: Admin/status.php:8 inc/mep_functions.php:2051
+#: support/elementor/widget/event-list.php:229
 msgid "Status"
 msgstr ""
 
@@ -6376,7 +6801,6 @@ msgstr ""
 msgid "stumbleupon-circle"
 msgstr ""
 
-#: inc/admin_setting_panel.php:65
 #: support/elementor/widget/event-location.php:101
 #: support/elementor/widget/event-details.php:59
 #: support/elementor/widget/event-total-seat.php:74
@@ -6387,6 +6811,7 @@ msgstr ""
 #: support/elementor/widget/event-title.php:59
 #: support/elementor/widget/event-org.php:76
 #: support/elementor/widget/event-date.php:117
+#: Admin/settings/global/admin_setting_panel.php:65
 msgid "Style Settings"
 msgstr ""
 
@@ -6411,6 +6836,10 @@ msgstr ""
 msgid "sun"
 msgstr ""
 
+#: inc/global/MP_Global_Function.php:336
+msgid "Sunday"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:851
 msgid "superpowers"
 msgstr ""
@@ -6423,12 +6852,16 @@ msgstr ""
 msgid "supple"
 msgstr ""
 
-#: woocommerce-event-press.php:79 woocommerce-event-press.php:85
+#: woocommerce-event-press.php:65 woocommerce-event-press.php:72
 msgid "Support"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1126
 msgid "support"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:28
+msgid "Support & Knowledge Base"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:854
@@ -6443,7 +6876,7 @@ msgstr ""
 msgid "syringe"
 msgstr ""
 
-#: inc/mep_extra_price.php:307
+#: inc/mep_functions.php:3620 inc/mep_extra_price.php:307
 msgid "T-Shirt Size"
 msgstr ""
 
@@ -6593,13 +7026,13 @@ msgstr ""
 msgid "th-list"
 msgstr ""
 
-#: inc/quick_setup.php:239
+#: Admin/MPWEM_Quick_Setup.php:188
 msgid ""
 "Thanks for choosing Event Manager and Tickets Selling Plugin for WooCommerce "
 "for your site, Please go step by step and choose some options to get started."
 msgstr ""
 
-#: inc/admin_setting_panel.php:434
+#: Admin/settings/global/admin_setting_panel.php:524
 msgid ""
 "The event product type in WooCommerce is set to virtual by default. If you "
 "change this type, you will need to save all of your events again."
@@ -6633,24 +7066,29 @@ msgstr ""
 msgid "thermometer-three-quarters"
 msgstr ""
 
-#: inc/admin_setting_panel.php:144
+#: Admin/settings/global/admin_setting_panel.php:171
 msgid "This change will apply the event category label to the whole plugin."
 msgstr ""
 
-#: inc/admin_setting_panel.php:426
+#: Admin/settings/global/admin_setting_panel.php:516
 msgid "This change will impact the template for the single event details page."
 msgstr ""
 
-#: inc/admin_setting_panel.php:324
+#: Admin/settings/global/admin_setting_panel.php:414
 msgid ""
 "This enables or disables the event price in the list. By default, it is "
 "enabled."
 msgstr ""
 
-#: inc/admin_setting_panel.php:335
+#: Admin/settings/global/admin_setting_panel.php:425
 msgid ""
 "This feature enables or disables the full date list for multi-date events in "
 "the event listing page. By default, this feature is enabled."
+msgstr ""
+
+#: inc/mep_functions.php:4431
+msgid ""
+"This is the Default sidebar of the Event manager for Woocommerce  template."
 msgstr ""
 
 #: inc/mep_event_fw_meta.php:75
@@ -6659,26 +7097,26 @@ msgid ""
 "frontend. The default heading is \"Speakers.\" "
 msgstr ""
 
-#: inc/admin_setting_panel.php:236
+#: Admin/settings/global/admin_setting_panel.php:264
 msgid ""
 "This setting controls whether or not the checkout page is redirected after "
 "booking an event."
 msgstr ""
 
-#: inc/admin_setting_panel.php:247
+#: Admin/settings/global/admin_setting_panel.php:275
 msgid ""
 "This setting enables you to a \"Free\" at a price of 0. By default, this "
 "setting is enabled."
 msgstr ""
 
-#: inc/admin_setting_panel.php:225
+#: Admin/settings/global/admin_setting_panel.php:242
 msgid ""
 "This toggle determines whether or not the date is shown in the order details "
 "section of the thank you page and confirmation email body. Choose \"Yes\" to "
 "hide the date or \"No\" to show it. The default is \"No\"."
 msgstr ""
 
-#: inc/admin_setting_panel.php:158
+#: Admin/settings/global/admin_setting_panel.php:185
 msgid "This will change the event organizer label throughout the plugin."
 msgstr ""
 
@@ -6704,6 +7142,10 @@ msgstr ""
 msgid "thumbtack"
 msgstr ""
 
+#: inc/global/MP_Global_Function.php:333
+msgid "Thursday"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:1148
 msgid "tick"
 msgstr ""
@@ -6712,7 +7154,8 @@ msgstr ""
 msgid "tick-inside-a-circle"
 msgstr ""
 
-#: inc/admin_setting_panel.php:808 inc/mep_event_meta.php:472
+#: inc/mep_functions.php:1612 inc/mep_event_meta.php:472
+#: Admin/settings/global/admin_setting_panel.php:898
 msgid "Ticket"
 msgstr ""
 
@@ -6720,24 +7163,24 @@ msgstr ""
 msgid "Ticket & Pricing"
 msgstr ""
 
+#: templates/themes/deora.php:65
+msgid "Ticket and Prices"
+msgstr ""
+
 #: inc/mep_event_meta.php:474
 msgid "Ticket Price"
 msgstr ""
 
-#: inc/admin_setting_panel.php:761
+#: Admin/settings/global/admin_setting_panel.php:851
 msgid "Ticket Qty"
 msgstr ""
 
-#: inc/template-prts/event_ticket_type.php:29
+#: inc/template-prts/event_ticket_type.php:31
 msgid "Ticket Qty:"
 msgstr ""
 
-#: inc/mep_shortcode.php:400
+#: inc/mep_shortcode.php:423 inc/mep_functions.php:3696
 msgid "Ticket Type"
-msgstr ""
-
-#: inc/template-prts/event_ticket_type.php:24
-msgid "Ticket type"
 msgstr ""
 
 #: inc/mep_event_meta.php:473
@@ -6760,10 +7203,15 @@ msgstr ""
 msgid "Ticket Type Title"
 msgstr ""
 
-#: inc/admin_setting_panel.php:627 inc/template-prts/event_add_cart.php:25
+#: inc/template-prts/event_add_cart.php:26
 #: support/elementor/widget/event-add-cart-section.php:117
 #: support/elementor/widget/event-add-cart-section.php:488
+#: Admin/settings/global/admin_setting_panel.php:717
 msgid "Ticket Type:"
+msgstr ""
+
+#: inc/template-prts/event_ticket_type.php:26
+msgid "Ticket type:"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:889
@@ -6789,7 +7237,8 @@ msgstr ""
 msgid "Time Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:1122
+#: inc/mep_functions.php:5220
+#: Admin/settings/global/admin_setting_panel.php:1212
 msgid "Time Format"
 msgstr ""
 
@@ -6801,7 +7250,7 @@ msgstr ""
 msgid "Time Text Color"
 msgstr ""
 
-#: inc/admin_setting_panel.php:676
+#: Admin/settings/global/admin_setting_panel.php:766
 msgid "Time:"
 msgstr ""
 
@@ -6809,6 +7258,10 @@ msgstr ""
 #: support/elementor/widget/expired-event-list.php:104
 #: support/elementor/widget/event-list.php:80
 msgid "Timeline"
+msgstr ""
+
+#: inc/mep_event_fw_meta.php:183 inc/mep_event_fw_meta.php:212
+msgid "Timeline Details"
 msgstr ""
 
 #: support/elementor/widget/event-list-recurring.php:121
@@ -6865,6 +7318,14 @@ msgstr ""
 msgid "Title Text Typography"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:992
+msgid ""
+"To enable attendee form you must first install a premium addon name “Form "
+"Builder”. Once you are done with installing – Click on “Events” -> Click on "
+"“All Events” -> Click on Edit of any existing event -> Scroll down below to "
+"find \"Attendee Registration Form\""
+msgstr ""
+
 #: lib/classes/class-icon-library.php:894
 msgid "toggle-off"
 msgstr ""
@@ -6873,16 +7334,17 @@ msgstr ""
 msgid "toggle-on"
 msgstr ""
 
-#: inc/template-prts/event_add_cart.php:165
-#: inc/template-prts/event_add_cart.php:338
+#: inc/mep_functions.php:4404 inc/template-prts/event_add_cart.php:169
+#: inc/template-prts/event_add_cart.php:344
 msgid "Total"
 msgstr ""
 
-#: inc/admin_setting_panel.php:712 templates/single/total_seat.php:3
+#: templates/single/total_seat.php:3
+#: Admin/settings/global/admin_setting_panel.php:802
 msgid "Total Seats:"
 msgstr ""
 
-#: inc/admin_setting_panel.php:754
+#: Admin/settings/global/admin_setting_panel.php:844
 msgid "Total:"
 msgstr ""
 
@@ -6902,7 +7364,7 @@ msgstr ""
 msgid "transgender-alt"
 msgstr ""
 
-#: inc/admin_setting_panel.php:73
+#: Admin/MPWEM_Welcome.php:127 Admin/settings/global/admin_setting_panel.php:73
 msgid "Translation Settings"
 msgstr ""
 
@@ -6953,6 +7415,10 @@ msgstr ""
 
 #: lib/classes/class-icon-library.php:910
 msgid "tty"
+msgstr ""
+
+#: inc/global/MP_Global_Function.php:331
+msgid "Tuesday"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:911
@@ -7066,15 +7532,15 @@ msgstr ""
 msgid "Upcoming Datetime"
 msgstr ""
 
-#: inc/mep_cpt.php:29
+#: Admin/mep_cpt.php:26
 msgid "Update "
 msgstr ""
 
-#: inc/mep_cpt.php:78
+#: Admin/mep_cpt.php:71
 msgid "Update Speaker"
 msgstr ""
 
-#: woocommerce-event-press.php:80
+#: woocommerce-event-press.php:66
 msgid "Upgrade to PRO Version"
 msgstr ""
 
@@ -7082,11 +7548,11 @@ msgstr ""
 msgid "upload"
 msgstr ""
 
-#: inc/mep_cpt.php:40
+#: Admin/mep_cpt.php:37
 msgid "Uploaded to this "
 msgstr ""
 
-#: inc/mep_cpt.php:89
+#: Admin/mep_cpt.php:82
 msgid "Uploaded to this Speaker"
 msgstr ""
 
@@ -7094,11 +7560,11 @@ msgstr ""
 msgid "usb"
 msgstr ""
 
-#: inc/mep_cpt.php:38
+#: Admin/mep_cpt.php:35
 msgid "Use as "
 msgstr ""
 
-#: inc/mep_cpt.php:87
+#: Admin/mep_cpt.php:80
 msgid "Use as Speaker image"
 msgstr ""
 
@@ -7148,7 +7614,7 @@ msgstr ""
 msgid "vaadin"
 msgstr ""
 
-#: inc/mep_extra_price.php:312
+#: inc/mep_functions.php:3630 inc/mep_extra_price.php:312
 msgid "Vegetarian"
 msgstr ""
 
@@ -7206,7 +7672,7 @@ msgstr ""
 msgid "video-slash"
 msgstr ""
 
-#: inc/mep_cpt.php:30 inc/mep_cpt.php:31
+#: Admin/mep_cpt.php:27 Admin/mep_cpt.php:28
 msgid "View "
 msgstr ""
 
@@ -7218,20 +7684,43 @@ msgstr ""
 msgid "View Button Text Color"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:58 Admin/MPWEM_Welcome.php:157
+#: Admin/MPWEM_Welcome.php:183 Admin/MPWEM_Welcome.php:210
+#: Admin/MPWEM_Welcome.php:248 Admin/MPWEM_Welcome.php:286
+#: Admin/MPWEM_Welcome.php:324 Admin/MPWEM_Welcome.php:362
+#: Admin/MPWEM_Welcome.php:408 Admin/MPWEM_Welcome.php:454
+#: Admin/MPWEM_Welcome.php:509 Admin/MPWEM_Welcome.php:541
+#: Admin/MPWEM_Welcome.php:607 Admin/MPWEM_Welcome.php:639
+#: Admin/MPWEM_Welcome.php:655 Admin/MPWEM_Welcome.php:674
+#: Admin/MPWEM_Welcome.php:684 Admin/MPWEM_Welcome.php:726
+#: Admin/MPWEM_Welcome.php:763 Admin/MPWEM_Welcome.php:803
+#: Admin/MPWEM_Welcome.php:819 Admin/MPWEM_Welcome.php:838
+#: Admin/MPWEM_Welcome.php:854 Admin/MPWEM_Welcome.php:870
+#: Admin/MPWEM_Welcome.php:880 Admin/MPWEM_Welcome.php:896
+#: Admin/MPWEM_Welcome.php:907
+msgid "View Demo"
+msgstr ""
+
 #: support/elementor/widget/event-schedule.php:157
 msgid "View More Button Display?"
 msgstr ""
 
-#: inc/admin_setting_panel.php:850 inc/template-prts/event_date.php:150
+#: inc/mep_functions.php:4737 inc/mep_functions.php:4740
+#: inc/template-prts/event_date.php:151
+#: Admin/settings/global/admin_setting_panel.php:940
 msgid "View More Date"
 msgstr ""
 
-#: inc/template-prts/event_add_cart.php:175
+#: inc/template-prts/event_add_cart.php:179
 msgid "View Seat Plan"
 msgstr ""
 
-#: inc/mep_cpt.php:79 inc/mep_cpt.php:80
+#: Admin/mep_cpt.php:72 Admin/mep_cpt.php:73
 msgid "View Speaker"
+msgstr ""
+
+#: inc/mep_functions.php:1650
+msgid "View Virtual Info"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:957
@@ -7254,9 +7743,14 @@ msgstr ""
 msgid "Virtual "
 msgstr ""
 
-#: inc/admin_setting_panel.php:836 templates/list/spring.php:60
-#: templates/list/default.php:42 templates/list/winter.php:69
+#: templates/list/spring.php:60 templates/list/default.php:42
+#: templates/list/winter.php:69
+#: Admin/settings/global/admin_setting_panel.php:926
 msgid "Virtual Event"
+msgstr ""
+
+#: inc/mep_functions.php:1662
+msgid "Virtual Event Information:"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:961
@@ -7291,8 +7785,12 @@ msgstr ""
 msgid "warehouse"
 msgstr ""
 
-#: inc/mep_extra_price.php:311
+#: inc/mep_functions.php:3628 inc/mep_extra_price.php:311
 msgid "Website"
+msgstr ""
+
+#: inc/global/MP_Global_Function.php:332
+msgid "Wednesday"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:969
@@ -7307,7 +7805,8 @@ msgstr ""
 msgid "weixin"
 msgstr ""
 
-#: inc/welcome.php:25
+#: Admin/MPWEM_Welcome.php:15 Admin/MPWEM_Welcome.php:25
+#: Admin/MPWEM_Quick_Setup.php:142
 msgid "Welcome"
 msgstr ""
 
@@ -7323,19 +7822,28 @@ msgstr ""
 msgid "wheelchair"
 msgstr ""
 
-#: inc/admin_setting_panel.php:202
+#: Admin/MPWEM_Quick_Setup.php:246
+#: Admin/settings/global/admin_setting_panel.php:219
 msgid "When will the event expire"
 msgstr ""
 
-#: inc/quick_setup.php:300
-msgid "When will the event expire:"
+#: Admin/MPWEM_Welcome.php:1007
+msgid "Where Can I change Event Slug Url?"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1011
+msgid "Where Can I configure Pdf Email?"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:991
+msgid "Where can I find the Attendee registration Form?"
 msgstr ""
 
 #: lib/classes/class-icon-library.php:975
 msgid "whmcs"
 msgstr ""
 
-#: inc/template-prts/event_add_cart.php:193
+#: inc/template-prts/event_add_cart.php:197
 msgid ""
 "Whoops, this event is for members only. Login to view the content. Not a "
 "member? That's easy to fix!"
@@ -7385,19 +7893,37 @@ msgstr ""
 msgid "Winter"
 msgstr ""
 
+#: Admin/settings/global/admin_setting_panel.php:351
+msgid ""
+"With every creation of an event there is a Woocommerce product is also "
+"created. By default its hidden in the Product list. If you want to show them "
+"in the list select Yes"
+msgstr ""
+
 #: lib/classes/class-icon-library.php:988
 msgid "won-sign"
 msgstr ""
 
-#: inc/quick_setup.php:249
+#: Admin/MPWEM_Quick_Setup.php:198
 msgid "Woocommerce already install , please activate it"
 msgstr ""
 
-#: inc/quick_setup.php:245
+#: Admin/MPWEM_Quick_Setup.php:192
 msgid "Woocommerce already installed and activated"
 msgstr ""
 
-#: inc/quick_setup.php:247
+#: Admin/MPWEM_Welcome.php:50
+msgid "WooCommerce Event Manager"
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:52
+msgid ""
+"WooCommerce Event Manager Plugin for WordPress is the complete event "
+"solution. All major functions are available in this plugin which is needed "
+"in an Event booking website."
+msgstr ""
+
+#: Admin/MPWEM_Quick_Setup.php:195
 msgid "Woocommerce need to install and active"
 msgstr ""
 
@@ -7489,6 +8015,7 @@ msgstr ""
 msgid "yen-sign"
 msgstr ""
 
+#: inc/mep_functions.php:3682 inc/mep_functions.php:5249
 #: support/elementor/widget/event-add-cart-section.php:61
 #: support/elementor/widget/event-add-cart-section.php:103
 #: support/elementor/widget/event-add-cart-section.php:127
@@ -7526,20 +8053,39 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+#: Admin/MPWEM_Welcome.php:1020
+msgid ""
+"Yes You can hide any section from event list and details page. If you go "
+"event settings area in general section, you will find lots of settings "
+"regarding all section."
+msgstr ""
+
+#: Admin/MPWEM_Welcome.php:1032
+msgid ""
+"Yes! we offer customization service for our client. If you want any new "
+"features don’t hesitate to contact us. Email: magepeopleteam@gmail.com."
+msgstr ""
+
 #: lib/classes/class-icon-library.php:1005
 msgid "yoast"
 msgstr ""
 
-#: inc/quick_setup.php:336
+#: Admin/MPWEM_Quick_Setup.php:287
 msgid ""
-"You are about to Finish & Save Event Manager and Tickets Selling Plugin "
+"You are about to Finish & Save Events Booking Manager For Woocommerce Plugin "
 "setup process"
 msgstr ""
 
-#: inc/admin_setting_panel.php:310
+#: Admin/settings/global/admin_setting_panel.php:338
 msgid ""
 "You can show a \"Sold Out\" Ribbon on the event list when it is fully booked "
 "by selecting \"Yes\" here."
+msgstr ""
+
+#: inc/template-prts/event_add_cart.php:183
+msgid ""
+"You have already added this item to your cart! View your cart to continue "
+"shopping or checkout now."
 msgstr ""
 
 #: lib/classes/class-mep-required-plugins.php:89
@@ -7552,12 +8098,6 @@ msgstr ""
 msgid ""
 "You must install the WooCommerce plugin before activating Event Manager For "
 "WooCommerce. Because it is dependent on the WooCommerce plugin."
-msgstr ""
-
-#: inc/template-prts/event_add_cart.php:179
-msgid ""
-"You\"ve already added this item to your cart! View your cart to continue "
-"shopping or checkout now."
 msgstr ""
 
 #: lib/classes/class-icon-library.php:1006

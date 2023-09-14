@@ -1,4 +1,4 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce -WpEvently ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently ===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
@@ -11,10 +11,10 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-WpEvently is an Event Manager Plugin and Tickets Selling Solution for WooCommerce is an Event Plugin for WordPress that is based on WooCommerce.
+WpEvently is a powerful WordPress event plugin based on WooCommerce that allows you to  create events and manage, sell tickets, showcase events calendars, handle event registrations, and more
 
 == Description ==
-Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress, because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
+Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
 
 ###  Free Version Plugin Features:
 
@@ -25,14 +25,14 @@ Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest eve
 ➡ Available Short Code for Customizing Events & For Showing Events In Any Web Page. 
 ➡ Event Name & Event Description
 ➡ Manage Event Ticket Type, Quantity, Prices, Category & Organizer. 
-➡ Event Extra Service with Price & Quantity Management.
+➡ Event Extra Service with Price and Quantity Management.
 ➡ Show Event Venue Using Google Maps.
 ➡ Option of Adding Event Start Date, End Date, and Multi Date & Time. 
 ➡ One Click Event Rest Option. 
 ➡ View Registered Attendee from WooCommerce Order Details.
 ➡ Multiple Event Templates (You can select a different template for each event) 
 ➡ Works with Any Standards Compliant WordPress Theme.
-➡ WooCommerce Support, You can Sell products and Event Separately. There is no mixing with Event with the WooCommerce Products.
+➡ WooCommerce Support, You can Sell products and events separately. There is no mixing with Event with the WooCommerce Products.
 ➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
 
 
@@ -292,8 +292,6 @@ https://www.youtube.com/watch?v=9ur9Mnq20mc
 https://www.youtube.com/watch?v=F9wnlUjXa6I
 
 
-**CHECKOUT OUR OTHER PRODUCTS**
-
 **CHECK OUT OUR OTHER PLUGINS** 
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
 [Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
@@ -336,35 +334,35 @@ You can check the demo of this plugin from here:
 = Q.Any Documentation? =
 A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
  
-= Q.I installed correctly but 404 error what can I do ?  =
-A. You need to Re-save permalink settings it will solve the 404. if still not work that means you permalink not working, you may have httaccess problem or you have server permission problem. 
+= Q.I installed correctly but 404 error what can I do?  =
+A. You need to Re-save permalink settings it will solve the 404. If still does not work that means your permalink not working, or you may have httaccess problem or you have a server permission problem. 
 
 = Q.How its work? =
-A. Woocommerce Events Manager one of the simple event plugin for WordPress which is based on Woocommerce. Its work as an individual event and its payment functionality handle with woocommerce so there are no worries about payment gateway you can use every payment gateway which is support woocommerce. The interesting part is the event post type is completely different there is no connection with woocommerce product so if you can sell anything from woocommerce product. 
+A. Woocommerce Events Manager is one of the simple event plugins for WordPress which is based on Woocommerce. It works as an individual event and its payment functionality is handled with woocommerce so there are no worries about the payment gateway you can use every payment gateway that supports woocommerce. The interesting part is the event post type is completely different there is no connection with woocommerce product so you can sell anything from the woocommerce product. 
 
-= Q.How can i get the attendee list? =
-A. After successfull booking user data will be saved under event attendee list, You can find the list from Events -> attendee list  or Go to event list and click on the attendee list on right side of event to get that particular event attendee list.
+= How can I get the attendee list? =
+A. After successful booking user data will be saved under the event attendee list, You can find the list from Events -> attendee list  or Go to event list and click on the attendee list on right side of event to get that particular event attendee list.
 
-= Q.How can i display event list? =
-A. You can display the event list on any page by using the ShortCode. Just use this shortcode to display all events list [event-list]. If you want to display any particular category events just use [event-list cat=ID] here ID will be the category id which will you find in the category section of the dashboard.
+= Q.How can I display the event list? =
+A. You can display the event list on any page by using the ShortCode. Just use this shortcode to display all events list [event-list]. If you want to display any particular category events just use [event-list cat=ID] Here ID will be the category ID which will you find in the category section of the dashboard.
 
 = Q.why my shortcode not displaying anything ?   =
-A. Please make sure that you added shortcode in Text mode. if you add shortcode in tag embeded it may not work 
+A. Please make sure that you added a shortcode in Text mode. if you add a shortcode in tag embedded it may not work 
 
 
-= Q.Where Can I see Attendee list ?   =
-A. Attendee list includes in our  [pro version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
+= Q.Where Can I see the Attendee list?   =
+A. Attendee list included in our  [pro version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
-= Q.What features are included in pro version that are not in Free version ?   =
-A. Event Pro Version has major two version. 
+= Q.What features are included in the pro version that are not in the Free version?   =
+A. Event Pro Version has major two versions. 
     ➡ Attendee form builder and attendee list with CSV export 
     ➡ PDF ticketing and Email Attachment
 
-= Q.I need More features what can I do ?   =
-A. you can create support ticket here with features details that you need, one of our support member will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
+= Q.I need More features what can I do?   =
+A. You can create a support ticket here with the features details that you need, One of our support members will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
 
-= Q.How can I get best support from plugin Company   =
-A. you can create support ticket here with problem details with possible screenshot that you have problem, one of our support member will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
+= Q.How can I get the best support from the plugin Company   =
+A. You can create a support ticket here with problem details with possible screenshots that you have a problem, One of our support members will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
 
 
 == Changelog ==
@@ -387,7 +385,7 @@ A. you can create support ticket here with problem details with possible screens
   26 July 2023*
 
 = 3.9.8 =
-* Header & Footer issue solved in Block Themes
+* Header and footer issue solved in Block Themes
 * Bug Fixed.
 25 July 2023*
 
@@ -413,7 +411,7 @@ A. you can create support ticket here with problem details with possible screens
 = 3.9.3 =
 * Update Release:
 * Email Text Formating issue fixed
-* Extra Service Calcualtion issue fixed for decimal value
+* Extra Service Calculation issue fixed for decimal value
 * Code Optimized
 * Bug Fixed
 16 May 2023*

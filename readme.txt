@@ -14,7 +14,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WpEvently is a powerful WordPress event plugin based on WooCommerce that allows you to  create events and manage, sell tickets, showcase events calendars, handle event registrations, and more
 
 == Description ==
-Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
+Event Manager Plugin for WooCommerce - WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
 
 ###  Free Version Plugin Features:
 
@@ -37,21 +37,31 @@ Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest eve
 
 
 ###  [Event Manager - WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
-**⭐ Download PDF tickets for event attendees: ** 
+
+
+
+**⭐ Download PDF tickets for event attendees:** 
 After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode also can enable so it will generate single ticket for a order instead of creating multiple ticket. 
-**⭐ Individual Custom Registration Form for each Attendee: **
+
+**⭐ Individual Custom Registration Form for each Attendee:**
 We have a Custom registration form for each attendee, It can be enabled for each event. and Condition can be applied for attendee form also Global Attendee form can be created so same form can assign to multiple event with creating every time.
-**⭐ Automatic Email Conformation with  Pdf Tickets: **
+
+**⭐ Automatic Email Conformation with  Pdf Tickets:**
 We have Automatic email function that can be setup based on payment status and pdf ticket will be sent with that email with company and event details information.
-**⭐ View Attendee List from Dashboard: **
+
+**⭐ View Attendee List from Dashboard:**
 Event Attendee list can be viewed from dashboard with attendee details information that is captured during event registration.
-**⭐ Attendee Information Edit option: **
+
+**⭐ Attendee Information Edit option:**
 WpEvently Pro version has Attendee edit option where admin can edit attendee each information and change any event date as bulk attendee edit feature.
-**⭐ Export Attendee List in CSV Format: **
+
+**⭐ Export Attendee List in CSV Format:**
 From admin dashboard event organizer can export attendee list in csv format with Extra service details. CSV file can be configured so that organizer can decide which field need to export.
-**⭐ Email Sending to event wise Attendee list: **
+
+**⭐ Email Sending to event wise Attendee list:**
 Any update notification email can be sent to each event attendee list from admin dashboard. for example if anything change in event then admin can send a email to all attendee about that update. 
-**⭐ Event Sales Report: **
+
+**⭐ Event Sales Report:**
 Every Event sales Report is important. That is also available in Pro version where admin can see details sells report of each event.
 
 

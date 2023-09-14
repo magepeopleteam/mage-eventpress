@@ -140,7 +140,7 @@ a.button.remove-faq-row {
 .post-type-mep_events .switch input {
 	display: none;
 }
-.post-type-mep_events .slider {
+.post-type-mep_events .mep_slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -151,7 +151,7 @@ a.button.remove-faq-row {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-.post-type-mep_events .slider:before {
+.post-type-mep_events .mep_slider:before {
 	position: absolute;
 	content: "";
 	height: 17px;
@@ -162,22 +162,22 @@ a.button.remove-faq-row {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-.post-type-mep_events input:checked + .slider {
+.post-type-mep_events input:checked + .mep_slider {
 	background-color: #2196F3;
 }
-.post-type-mep_events input:focus + .slider {
+.post-type-mep_events input:focus + .mep_slider {
 	box-shadow: 0 0 1px #2196F3;
 }
-.post-type-mep_events input:checked + .slider:before {
+.post-type-mep_events input:checked + .mep_slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
 /* Rounded sliders */
-.post-type-mep_events .slider.round {
+.post-type-mep_events .mep_slider.round {
 	border-radius: 34px;
 }
-.post-type-mep_events .slider.round:before {
+.post-type-mep_events .mep_slider.round:before {
 	border-radius: 50%;
 }
 div#mage-primary-button {
@@ -263,7 +263,7 @@ div#mep_event_list_thumbnail_meta_boxes table tbody {
 div#mep_event_list_thumbnail_meta_boxes table td input {
 	width: 93% !important;
 }
-div#mep_event_list_thumbnail_meta_boxes span.slider:before {
+div#mep_event_list_thumbnail_meta_boxes span.mep_slider:before {
 	display: none;
 }
 div#mep_event_list_thumbnail_meta_boxes table td input#enable_global_qty {

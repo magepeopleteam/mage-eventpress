@@ -3639,6 +3639,7 @@ function mep_get_reg_label($event_id, $name = '') {
 if (!function_exists('mep_cart_display_user_list')) {
     function mep_cart_display_user_list($user_info, $event_id) {
         $custom_forms_id = mep_get_user_custom_field_ids($event_id);
+        $form_id     = mep_fb_get_reg_form_id( $event_id );
         ob_start();
         $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
         $time_status = get_post_meta($event_id, 'mep_disable_ticket_time', true) ? get_post_meta($event_id, 'mep_disable_ticket_time', true) : 'no';
@@ -3665,7 +3666,7 @@ if (!function_exists('mep_cart_display_user_list')) {
                     <li class='mep_cart_user_gender'><?php echo esc_attr(mep_get_reg_label($event_id, 'Gender')) . ": ";
                         echo esc_attr($userinf['user_gender']); ?></li> <?php } ?>
                 <?php if (array_key_exists('user_tshirtsize',$userinf) && !empty($userinf['user_tshirtsize'])) { ?>
-                    <li class='mep_cart_user_tshirt'><?php echo esc_attr(mep_get_reg_label($event_id, 'T-Shirt Size')) . ": ";
+                    <li class='mep_cart_user_tshirt'><?php echo esc_attr(mep_get_reg_label($form_id, 'T-Shirt Size')) . ": ";
                         echo esc_attr($userinf['user_tshirtsize']); ?></li> <?php } ?>
                 <?php if (array_key_exists('user_company',$userinf) && !empty($userinf['user_company'])) { ?>
                     <li class='mep_cart_user_company'><?php echo esc_attr(mep_get_reg_label($event_id, 'Company')) . ": ";
@@ -4970,7 +4971,7 @@ function mep_event_tab_before_location_virtual_event($post_id){
 			
 				<label class="mp_event_virtual_type_des_switch">
 					<input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
-					<span class="slider round"></span>
+					<span class="mep_slider round"></span>
 				</label>
 				<p class="event_meta_help_txt"><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></p>
 				<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
@@ -5017,7 +5018,7 @@ function mep_event_shortcode_info($post_id){
         <li><span><?php esc_html_e('Registration Off/On:', 'mage-eventpress'); ?></span></li>
         <li>
             <label class='mp_event_ticket_type_des_switch'>
-                <input class="mp_opacity_zero" type="checkbox" name="mep_reg_status" <?php echo esc_attr($reg_checked); ?> /><span class="slider round"></span>
+                <input class="mp_opacity_zero" type="checkbox" name="mep_reg_status" <?php echo esc_attr($reg_checked); ?> /><span class="mep_slider round"></span>
             </label>
             </li>
     </ul>
@@ -5168,7 +5169,7 @@ function mep_event_recurring_purchase_notice(){
         <li><h3><?php esc_html_e('You can change the date and time format by going to the settings '.$event_label.' (Off/On):', 'mage-eventpress'); ?></h3><hr /></li>
         <li>
             <label class='mep_enable_custom_dt_format'>
-                <input class="mp_opacity_zero " type="checkbox" name="mep_enable_custom_dt_format" <?php echo esc_attr($mep_enable_custom_dt_format); ?> /><span class="slider round"></span>
+                <input class="mp_opacity_zero " type="checkbox" name="mep_enable_custom_dt_format" <?php echo esc_attr($mep_enable_custom_dt_format); ?> /><span class="mep_slider round"></span>
             </label>
             </li>
     </ul>

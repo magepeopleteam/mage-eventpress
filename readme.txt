@@ -2,11 +2,11 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 4.0.0
-Version: 4.0.0
+Stable tag: 4.0.5
+Version: 4.0.5
 Tested up to: 6.3
 WC requires at least: 3.0
-WC tested up to: 6.5
+WC tested up to: 8.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -369,6 +369,14 @@ A. you can create support ticket here with problem details with possible screens
 
 == Changelog ==
 
+
+= 4.0.5 =
+* Translation Issue Fixed.
+* Translation File Updated with new strings
+* Code Optimized & Speed up Process
+* Bug Fixed.
+  29 Aug 2023*
+  
 = 4.0.0 =
 * Bug Fixed.
   09 Aug 2023*

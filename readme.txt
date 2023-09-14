@@ -36,12 +36,29 @@ Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest eve
 ➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
 
 
-###  [Pro Version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
-➡   Download PDF tickets for event attendees.
-➡   Custom Registration Form for Event Attendees.
-➡   Automatic Email Conformation Message and Pdf Tickets Mailing Features
-➡   Export Attendee List in CSV Format. 
-➡   [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 
+###  [Event Manager - WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
+**⭐ Download PDF tickets for event attendees: ** 
+After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode also can enable so it will generate single ticket for a order instead of creating multiple ticket. 
+**⭐ Individual Custom Registration Form for each Attendee: **
+We have a Custom registration form for each attendee, It can be enabled for each event. and Condition can be applied for attendee form also Global Attendee form can be created so same form can assign to multiple event with creating every time.
+**⭐ Automatic Email Conformation with  Pdf Tickets: **
+We have Automatic email function that can be setup based on payment status and pdf ticket will be sent with that email with company and event details information.
+**⭐ View Attendee List from Dashboard: **
+Event Attendee list can be viewed from dashboard with attendee details information that is captured during event registration.
+**⭐ Attendee Information Edit option: **
+WpEvently Pro version has Attendee edit option where admin can edit attendee each information and change any event date as bulk attendee edit feature.
+**⭐ Export Attendee List in CSV Format: **
+From admin dashboard event organizer can export attendee list in csv format with Extra service details. CSV file can be configured so that organizer can decide which field need to export.
+**⭐ Email Sending to event wise Attendee list: **
+Any update notification email can be sent to each event attendee list from admin dashboard. for example if anything change in event then admin can send a email to all attendee about that update. 
+**⭐ Event Sales Report: **
+Every Event sales Report is important. That is also available in Pro version where admin can see details sells report of each event.
+
+
+
+
+
+➡   [Buy Event Manager and Tickets Selling Plugin for WooCommerce -WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 
 
 
 ###  Other Available Addons 
@@ -116,7 +133,7 @@ To Show the Event in Native Style. example 👉[Native Style Demo](https://event
 
 
 **Vertical Timeline style:**  
-To Show the Event in Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://event.mage-people.com/events-vertical-timeline-style/)👈:   
+To Show the Event in a Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://event.mage-people.com/events-vertical-timeline-style/)👈:   
 
 `
 [event-list style='timeline' timeline-mode='vertical']

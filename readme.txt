@@ -53,16 +53,16 @@ We have an Automatic email function that can be set up based on payment status a
 The event Attendee list can be viewed from the dashboard with attendee details information that is captured during event registration.
 
 **⭐ Attendee Information Edit option:**
-WpEvently Pro version has an Attendee edit option where admin can edit attendee information and change any event date as bulk attendee edit feature.
+WpEvently Pro version has an Attendee edit option where the admin can edit attendee information and change any event date as a bulk attendee edit feature.
 
 **⭐ Export Attendee List in CSV Format:**
-From admin dashboard event organizer can export attendee list in csv format with Extra service details. CSV file can be configured so that organizer can decide which field need to export.
+From the admin dashboard, event organizers can export the attendee list in CSV format with Extra service details. CSV file can be configured so that the organizer can decide which field needs to be exported.
 
-**⭐ Email Sending to event wise Attendee list:**
-Any update notification email can be sent to each event attendee list from admin dashboard. for example if anything change in event then admin can send a email to all attendee about that update. 
+**⭐ Email Sent to event-wise Attendee list:**
+Any update notification email can be sent to each event attendee list from the admin dashboard. for example, if anything changes in the event then the admin can send an email to all attendees about that update. 
 
 **⭐ Event Sales Report:**
-Every Event sales Report is important. That is also available in Pro version where admin can see details sells report of each event.
+Every Event sales Report is important. That is also available in the Pro version where the admin can see details of the sales report of each event.
 
 
 
@@ -282,7 +282,7 @@ Our shortcode allows you to easily display a list of speakers for any event on a
   This addon gives administrators the ability to choose whether the event Attendee/user form will be displayed on the event details page or on the checkout page. By default, this form is displayed on the event details page.
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
-  This is must needed addon if someone like to duplicate any event.
+  This is must much-needed addon if someone likes to duplicate any event.
 
 👉[Related Event Addon](https://mage-people.com/product/related-events-addon-for-event-manager/)👈
 
@@ -309,7 +309,7 @@ Our shortcode allows you to easily display a list of speakers for any event on a
 We have full confidence in our plugin and its ability to work well with any theme. If you have any questions or encounter any problems, please email us at support@mage-people.com and our support team will get back to you as soon as possible. Thank you for choosing our plugin!
 
 
-### How to Install & Create Event 10 minutes using Event Manager and Tickets Selling Plugin for WooCommerce Plugin
+### How to Install and create Event 10 minutes using Event Manager and Tickets Selling Plugin for WooCommerce Plugin
 https://www.youtube.com/watch?v=zP2ADxzUrYw
 
 ### Event Manager and Tickets Selling Plugin for WooCommerce Pro Addons Setup And Full Functionality Explained

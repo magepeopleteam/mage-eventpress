@@ -14,7 +14,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WpEvently is a powerful WordPress event plugin based on WooCommerce that allows you to  create events and manage, sell tickets, showcase events calendars, handle event registrations, and more
 
 == Description ==
-Event Manager Plugin for WooCommerce - WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
+Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
 
 ###  Free Version Plugin Features:
 
@@ -82,7 +82,7 @@ Every Event sales Report is important. That is also available in Pro version whe
 ➡ Related Events Addon - You can select a related event and display it to the event details page.
 
 
-➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
+➡ [View Live PRO Version Demo For Business Event](https://wpevently.com/)
 👉  [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 
 👉[Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
@@ -110,7 +110,7 @@ If you want to display a list of events for a specific organization, you can use
 `
 
 **Grid style:**  
-To Show the Events in Grid Style. example 👉[Grid Style Demo](https://event.mage-people.com/events-grid-style/)👈:  
+To Show the Events in Grid Style. example 👉[Grid Style Demo](https://wpevently.com/events-grid-style/)👈:  
 
 `
 [event-list style='grid']
@@ -118,7 +118,7 @@ To Show the Events in Grid Style. example 👉[Grid Style Demo](https://event.ma
 
 
 **List style:**  
-To Show the Events in List Style. example 👉[List Style Demo](https://event.mage-people.com/events-list-style/)👈:   
+To Show the Events in List Style. example 👉[List Style Demo](https://wpevently.com/events-list-style/)👈:   
 
 `
 [event-list style='list']
@@ -126,7 +126,7 @@ To Show the Events in List Style. example 👉[List Style Demo](https://event.ma
 
 
 **Minimal style:**  
-To Show the Events in a Minimal Style view. example 👉[Minimal Style Demo](https://event.mage-people.com/events-minimal-style/)👈:   
+To Show the Events in a Minimal Style view. example 👉[Minimal Style Demo](https://wpevently.com/events-minimal-style/)👈:   
 
 `
 [event-list style='minimal' show=10 pagination='yes']
@@ -134,7 +134,7 @@ To Show the Events in a Minimal Style view. example 👉[Minimal Style Demo](htt
 `
 
 **Native style:**  
-To Show the Event in Native Style. example 👉[Native Style Demo](https://event.mage-people.com/events-native-style/)👈:   
+To Show the Event in Native Style. example 👉[Native Style Demo](https://wpevently.com/events-native-style/)👈:   
 
 `
 [event-list style='native' show='8' pagination='yes']
@@ -143,7 +143,7 @@ To Show the Event in Native Style. example 👉[Native Style Demo](https://event
 
 
 **Vertical Timeline style:**  
-To Show the Event in a Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://event.mage-people.com/events-vertical-timeline-style/)👈:   
+To Show the Event in a Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://wpevently.com/events-vertical-timeline-style/)👈:   
 
 `
 [event-list style='timeline' timeline-mode='vertical']
@@ -151,7 +151,7 @@ To Show the Event in a Vertical Timeline Style. example 👉[Vertical Timeline S
 `
 
 **Horizontal Timeline style:**  
-To Show the Event in a Horizontal Timeline Style. example 👉[Horizontal Timeline Style Demo](https://event.mage-people.com/events-horizontal-timeline-style/)👈:   
+To Show the Event in a Horizontal Timeline Style. example 👉[Horizontal Timeline Style Demo](https://wpevently.com/events-horizontal-timeline-style/)👈:   
 
 `
 [event-list style='timeline' timeline-mode='horizontal']
@@ -159,7 +159,7 @@ To Show the Event in a Horizontal Timeline Style. example 👉[Horizontal Timeli
 `
 
 **Title Only style:**  
-To Show the Event Only Title Style. example 👉[Title Style Demo](https://event.mage-people.com/events-title-style/)👈:   
+To Show the Event Only Title Style. example 👉[Title Style Demo](https://wpevently.com/events-title-style/)👈:   
 
 `
 [event-list style='title']
@@ -167,7 +167,7 @@ To Show the Event Only Title Style. example 👉[Title Style Demo](https://event
 `
 
 **Event Carousal:**  
-To Show the Event Carousal. example 👉[Event Carousal Demo](https://event.mage-people.com/events-carousel-style/)👈:   
+To Show the Event Carousal. example 👉[Event Carousal Demo](https://wpevently.com/events-carousel-style/)👈:   
 
 `
 [event-list style='grid' pagination='carousal' carousal-dots='yes' carousal-nav='yes' column=3]
@@ -203,7 +203,7 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 
 **Filter By City:**  
-Filter Event by City. example 👉[Filter By City Demo](https://event.mage-people.com/events-by-city/)👈:   
+Filter Event by City. example 👉[Filter By City Demo](https://wpevently.com/events-by-city/)👈:   
 
 `
 [event-list style='grid' city='Dhaka' column=3 show=8]
@@ -211,7 +211,7 @@ Filter Event by City. example 👉[Filter By City Demo](https://event.mage-peopl
 `
 
 **Filter By Country:**  
-Filter Event by Country.example 👉[Filter By Country Demo](https://event.mage-people.com/events-by-country/)👈:   
+Filter Event by Country.example 👉[Filter By Country Demo](https://wpevently.com/events-by-country/)👈:   
 
 `
 [event-list style='grid' country='India' column=3 show=8]
@@ -244,14 +244,14 @@ To use the Event Cart Section shortcode, simply copy and paste the following cod
 `
 
 ### Event City List ShortCode:
-You can display the City List by using the shortcode below anywhere on your website. This will come in handy for events that are taking place in different cities. example 👉[City List Demo](https://event.mage-people.com/events-city-list/)👈:  
+You can display the City List by using the shortcode below anywhere on your website. This will come in handy for events that are taking place in different cities. example 👉[City List Demo](https://wpevently.com/events-city-list/)👈:  
 `
 [event-city-list]
 
 `
 
 ### Event Speaker List ShortCode:
-Our shortcode allows you to easily display a list of speakers for any event on any post or page. Simply use the below shortcode to display the list. example 👉[View Demo](https://event.mage-people.com/speakers/)👈:  
+Our shortcode allows you to easily display a list of speakers for any event on any post or page. Simply use the below shortcode to display the list. example 👉[View Demo](https://wpevently.com/speakers/)👈:  
 `
 [event-speaker-list event=EventID]
 
@@ -356,7 +356,7 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 A. Yes! Woocommerce Events Manager is free.
 
 You can check the demo of this plugin from here:
-[View Live PRO Version Demo For Business](https://event.mage-people.com/)
+[View Live PRO Version Demo For Business](https://wpevently.com/)
 
 = Q.Any Documentation? =
 A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
@@ -394,6 +394,21 @@ A. You can create a support ticket here with problem details with possible scree
 
 == Changelog ==
 
+= 4.0.9 =
+* Hidden WC Product showing issue fixed
+  19 Oct 2023*
+
+= 4.0.8 =
+* Bug Fixed
+  17 Oct 2023*
+
+= 4.0.7 =
+* Warning issue fixed
+  19 Sep 2023*
+
+= 4.0.6 =
+* Some Minor Bug fixed
+  18 Sep 2023*
 
 = 4.0.5 =
 * Translation Issue Fixed.

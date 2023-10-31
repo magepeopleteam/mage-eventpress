@@ -33,7 +33,7 @@ Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest eve
 ➡ Multiple Event Templates (You can select a different template for each event) 
 ➡ Works with Any Standards Compliant WordPress Theme.
 ➡ WooCommerce Support, You can Sell products and events separately. There is no mixing with Event with the WooCommerce Products.
-➡ [View Live PRO Version Demo For Business Event](https://event.mage-people.com/)
+➡ [View Live PRO Version Demo For Business Event](https://wpevently.com/)
 
 
 ###  [Event Manager - WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
@@ -41,19 +41,19 @@ Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest eve
 
 
 **⭐ Download PDF tickets for event attendees:** 
-After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode also can enable so it will generate single ticket for a order instead of creating multiple ticket. 
+After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode also can be enabled so it will generate a single ticket for an order instead of creating multiple tickets. 
 
 **⭐ Individual Custom Registration Form for each Attendee:**
-We have a Custom registration form for each attendee, It can be enabled for each event. and Condition can be applied for attendee form also Global Attendee form can be created so same form can assign to multiple event with creating every time.
+We have a Custom registration form for each attendee, It can be enabled for each event. and Conditions can be applied to the attendee form also Global Attendee form can be created so the same form can be assigned to multiple events created every time.
 
 **⭐ Automatic Email Conformation with  Pdf Tickets:**
-We have Automatic email function that can be setup based on payment status and pdf ticket will be sent with that email with company and event details information.
+We have an Automatic email function that can be set up based on payment status and a pdf ticket will be sent with that email with company and event details information.
 
 **⭐ View Attendee List from Dashboard:**
-Event Attendee list can be viewed from dashboard with attendee details information that is captured during event registration.
+The event Attendee list can be viewed from the dashboard with attendee details information that is captured during event registration.
 
 **⭐ Attendee Information Edit option:**
-WpEvently Pro version has Attendee edit option where admin can edit attendee each information and change any event date as bulk attendee edit feature.
+WpEvently Pro version has an Attendee edit option where admin can edit attendee information and change any event date as bulk attendee edit feature.
 
 **⭐ Export Attendee List in CSV Format:**
 From admin dashboard event organizer can export attendee list in csv format with Extra service details. CSV file can be configured so that organizer can decide which field need to export.
@@ -78,8 +78,8 @@ Every Event sales Report is important. That is also available in Pro version whe
 ➡ Event Duplicator Addon- This Addon will Allow You to Duplicate any Events for Re-using.
 ➡ Event Calendar Pro Addon- Nice Event Calendar Images Support.  Showcase Your Events in an Awesome Calendar.
 ➡ User Registration Form Position Addon– choose where you want to display attendee registration     form- 1. Event Details Page Or 2. Checkout Page.
-➡ Waitlist Addon -If the Event Ticket Quantity Is Finished, This Addon Will Automatically Activate, and Subscriber Can Join the Waitlist. Admin Can Send Email to The User for Next Free Slot.
-➡ Related Events Addon - You can select a related event and display it to the event details page.
+➡ Waitlist Addon -If the Event Ticket Quantity Is Finished, This Addon Will Automatically Activate, and Subscriber Can Join the Waitlist. Admin Can Send an Email to The User for the Next Free Slot.
+➡ Related Events Addon - You can select a related event and display it on the event details page.
 
 
 ➡ [View Live PRO Version Demo For Business Event](https://wpevently.com/)
@@ -237,7 +237,7 @@ You can sort your event list by event start date and time in ascending or descen
 ### Event Add To Cart Section ShortCode:
 The Event Cart Section shortcode allows you to display a list of tickets and extra services anywhere on your website. This is a great way to make sure your visitors can easily find the information they need when planning an event.
 
-To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website:. example 👉[See PRO Version Demo](https://event.vaincode.com/mage-event/event-add-to-cart-section/)👈:  
+To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website: example 👉[See PRO Version Demo](https://wpevently.com/event-add-to-cart-section/)👈:  
 `
 [event-add-cart-section event=EventID]
 

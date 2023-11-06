@@ -1,91 +1,170 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 4.0.5
-Version: 4.0.5
+Stable tag: 4.1.0
+Version: 4.1.0
 Tested up to: 6.3
 WC requires at least: 3.0
 WC tested up to: 8.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
- 
-WpEvently is a powerful WordPress event plugin based on WooCommerce that allows you to  create events and manage, sell tickets, showcase events calendars, handle event registrations, and more
+
+
+
+Simplify event registration process with Wp Evently – the easy, lightweight WordPress event management plugin
+
+
 
 == Description ==
-Event Manager Plugin for WooCommerce -WpEvently is one of the best, simplest event management plugins available in the WordPress directory. It's also the best event manager plugin for WordPress because it uses WooCommerce to take payments. This provides freedom to use popular payment getaways via WooCommerce. Event Manager and Tickets Selling Plugin for WooCommerce supports all WordPress versions and can be used to create any type of event.
-
-###  Free Version Plugin Features:
-
-➡ Support All Payment Methods available in WooCommerce.
-➡ Cross Browser Support – (Chrome, Firefox, Safari, Opera, Etc.)
-➡ Responsive and SEO Friendly.  
-➡ Multilingual Translation Support
-➡ Available Short Code for Customizing Events & For Showing Events In Any Web Page. 
-➡ Event Name & Event Description
-➡ Manage Event Ticket Type, Quantity, Prices, Category & Organizer. 
-➡ Event Extra Service with Price and Quantity Management.
-➡ Show Event Venue Using Google Maps.
-➡ Option of Adding Event Start Date, End Date, and Multi Date & Time. 
-➡ One Click Event Rest Option. 
-➡ View Registered Attendee from WooCommerce Order Details.
-➡ Multiple Event Templates (You can select a different template for each event) 
-➡ Works with Any Standards Compliant WordPress Theme.
-➡ WooCommerce Support, You can Sell products and events separately. There is no mixing with Event with the WooCommerce Products.
-➡ [View Live PRO Version Demo For Business Event](https://wpevently.com/)
 
 
-###  [Event Manager - WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) Plugin Features 
+Simplify your complicated event registration process with the Event Manager Plugin for WooCommerce. [Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is a complete & simplest event management plugin for WordPress.
+Registering an event to a data-analyzing dashboard everything is available connecting the plugin with woo-commerce. 
+Take advantage of compatibility with all WordPress versions and utilize all well-known payment gateways through WooCommerce. 
 
 
 
-**⭐ Download PDF tickets for event attendees:** 
-After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode also can be enabled so it will generate a single ticket for an order instead of creating multiple tickets. 
-
-**⭐ Individual Custom Registration Form for each Attendee:**
-We have a Custom registration form for each attendee, It can be enabled for each event. and Conditions can be applied to the attendee form also Global Attendee form can be created so the same form can be assigned to multiple events created every time.
-
-**⭐ Automatic Email Conformation with  Pdf Tickets:**
-We have an Automatic email function that can be set up based on payment status and a pdf ticket will be sent with that email with company and event details information.
-
-**⭐ View Attendee List from Dashboard:**
-The event Attendee list can be viewed from the dashboard with attendee details information that is captured during event registration.
-
-**⭐ Attendee Information Edit option:**
-WpEvently Pro version has an Attendee edit option where the admin can edit attendee information and change any event date as a bulk attendee edit feature.
-
-**⭐ Export Attendee List in CSV Format:**
-From the admin dashboard, event organizers can export the attendee list in CSV format with Extra service details. CSV file can be configured so that the organizer can decide which field needs to be exported.
-
-**⭐ Email Sent to event-wise Attendee list:**
-Any update notification email can be sent to each event attendee list from the admin dashboard. for example, if anything changes in the event then the admin can send an email to all attendees about that update. 
-
-**⭐ Event Sales Report:**
-Every Event sales Report is important. That is also available in the Pro version where the admin can see details of the sales report of each event.
+## Event Manager: #1 WooCommerce Event Management Plugin
+Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with Woocommerce event manager.
+Whether you are a small event organizer or large, we have thousands of trusted businesses.
 
 
+### Experience The Smooth Event Management Experience
+Creating an event and managing it in one place has never been easier, faster, organized and smooth. MultipleTicketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
+We are not limiting you here, the free version features most of the basic event management activity.
+With the Event Manager, you can implement these features and make your event done:
+
+
+### Features are Available With Free Version
+
+* **Different Payment Method**
+Use All Payment Methods available in WooCommerce.
+
+* **Cross Browser Support**
+Chrome, Firefox, Safari, and Opera are all popular web browsers that work well and there is no conflict with each other.
+
+* **Responsive and SEO-Friendly**
+Make your events responsive and SEO-friendly with the advanced event manager plugin.
+
+* **Multilingual Translation Support**
+Deliver your event content in multiple available options in the free version.
+
+* **Short Code**
+Available Short Code for Customizing Events & For Showing Events In Any Web Page.
+
+* **Event Name & Event Description**
+Event Name & Event Description for seamless user experience
+
+* **Multi management**
+Manage Event Ticket Type, Quantity, Prices, Category & Organizer.
+
+* **Google Map Integration**
+Show Event Venue Using Google Maps.
+
+* **Event Date Options**
+Option of Adding Event Start Date, End Date, and Multi Date & Time.
+
+* **Easy Event Reset**
+One Click Event Rest Option.
+
+* **Attendee Visibility**
+View Registered Attendee from WooCommerce Order Details.
+
+* **Custom Event Templates**
+Multiple Event Templates (You can select a different template for each event)
+
+* **WooCommerce Integration**
+ WooCommerce Support, You can Sell products and events separately. There is no mixing with Event with the WooCommerce Products.
+
+* **Theme Compatibility**
+Works with any standards-compliant WordPress Theme.
 
 
 
-➡   [Buy Event Manager and Tickets Selling Plugin for WooCommerce -WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 
+
+### Create Some Great Event Features With the Event Manager Pro Version
+Unlock your event design and management full features with the [Event Manager Pro Version.](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)  Offering something custom and managing bulk amounts of data becomes easier with the pro version of the plugin. Let's see what the pro version offers you to make something premium.
+
+* **Download Tickets:**
+After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode can also be enabled so it will generate a single ticket for an order instead of creating multiple tickets.
+
+* **Custom Registration Form For Individuals:**
+Offer custom fields for individual attendees with Custom registration, It can be enabled for each event. and Conditions can be applied for the attendee form also Global Attendee form can be created so the same form can be assigned to multiple events with creation every time.
+
+* **Automatic Email Conformation:**
+The Automatic email function can be set up based on payment status and a pdf ticket will be sent with that email with company and event details information.
 
 
-###  Other Available Addons 
-➡ QR Code Addon- PDF Event Tickets with Printed QR Code (For attendee check-in).
-➡ Backend Order Addon- Book Event from Dashboard/Backend
-➡ Coupon Code Addon- Event Coupon Code Adding Features 
-➡ Event Duplicator Addon- This Addon will Allow You to Duplicate any Events for Re-using.
-➡ Event Calendar Pro Addon- Nice Event Calendar Images Support.  Showcase Your Events in an Awesome Calendar.
-➡ User Registration Form Position Addon– choose where you want to display attendee registration     form- 1. Event Details Page Or 2. Checkout Page.
-➡ Waitlist Addon -If the Event Ticket Quantity Is Finished, This Addon Will Automatically Activate, and Subscriber Can Join the Waitlist. Admin Can Send an Email to The User for the Next Free Slot.
-➡ Related Events Addon - You can select a related event and display it on the event details page.
+* **Event Attendee Dashboard**
+The Event Attendee list can be viewed from the dashboard with attendee details information that is captured during event registration.
+
+* **Edit Attendee Information:**
+When you have admin access, you can edit each attendee's information and change any event date as a bulk attendee edit.
+
+* **Export Data CSV Format:**
+From the admin dashboard event organizers can export the attendee list in CSV format with Extra service details. A CSV file can be configured so that the organizer can decide which field needs to be exported.
+
+* **Sent Update Through Email:**
+Any update notification email can be sent to each event attendee list from the admin dashboard. For instance, if you change anything in an event then the admin can send an email to all attendees about that update.
+
+* **Event Sales Report:**
+Get all the sales reports with the event manager pro version where the admin can see the details of every event
 
 
-➡ [View Live PRO Version Demo For Business Event](https://wpevently.com/)
-👉  [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 
-👉[Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
+### Powerful Integration With Available Addons:	
+When you are just managing a simple event then the free version with basic features is enough to go, but when you are planning to do something great at that time addons will come to drive you to the solution.
+You will find the [Detailed Documentation](https://docs.mage-people.com/woocommerce-event-manager/) of each feature for the plugin to provide you a self completed knowledge.
+Below you will find details of each plugin that is available with the plugin and the live features that plugins offer.
+
+
+👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
+The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. You can also use it to sell tickets for one-time events with time selection options. This addon is perfect for selling tickets for any kind of event, including city tours, museum visits, and zoo visits. 
+
+👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
+The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history, so organizers can easily find details of participant information after filtering or CSV export.
+
+👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
+The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information. This will make it easier to see what events are coming up and get a better sense of what each event entails.
+
+
+👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
+The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty, which can help boost sales of event tickets.
+
+👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈 
+Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. Customers can register for the waitlist, and admins will get email notifications when seats become available.
+
+👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
+This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. This is for admin use only. When an admin needs to book a ticket for a customer, they can sell the ticket from the admin side. This can also be used to sell tickets on the spot or at an event location.
+
+👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
+This is must much-needed add-on if someone likes to duplicate any event.
+
+👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
+This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s tickets. Pricing will work depending on the member type that is logged in. Currently, it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
+
+👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
+This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. This can be ideal for selling tickets to popular events where you want to ensure that everyone who wants to attend can get a ticket.
+
+👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
+With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s Ticket QTY can manage a Common QTY or Global QTY. Default QTY works with Ticket type’s QTY but with this addon, you can easily manage a common quantity.
+
+👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
+This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event. Admin can also set up who can set up reviews for each event.
+
+👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
+This plugin allows you to sell tickets with different seat plans. You can map out the seats in a flexible way and set different prices for each seat plan.
+
+👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
+This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts. Organizers can also see a balance of tickets sold, as well as a list of attendees. This list can be downloaded by the organizer.
+
+
+
+👉 [View Live PRO Version Demo For Business Event](https://wpevently.com/)
+👉 [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
+👉 [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
 
 
 
@@ -256,53 +335,6 @@ Our shortcode allows you to easily display a list of speakers for any event on a
 [event-speaker-list event=EventID]
 
 `
-
-
-= Some Others Very Nice Addon Support Available =
-
-👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
-  The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. You can also use it to sell tickets for one-time events with time selection options. This addon is perfect for selling tickets for any kind of event, including city tours, museum visits, and zoo visits.
-  
-👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
-  The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history, so organizers can easily find details of participant information after filtering or CSV export.
-
-👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
-  The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information. This will make it easier to see what events are coming up and get a better sense of what each event entails.
-
-👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
-  Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty, which can help boost sales of event tickets.
-
-👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈
-  Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. Customers can register for the waitlist, and admins will get email notifications when seats become available.
-
-👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
-  This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. This is for admin use only. When an admin needs to book a ticket for a customer, they can sell the ticket from the admin side. This can also be used to sell tickets on the spot or at an event location.
-
-👉[Event User Registration Form Position](https://mage-people.com/product/woocommerce-event-user-registration-form-position/) 👈
-  This addon gives administrators the ability to choose whether the event Attendee/user form will be displayed on the event details page or on the checkout page. By default, this form is displayed on the event details page.
-
-👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
-  This is must much-needed addon if someone likes to duplicate any event.
-
-👉[Related Event Addon](https://mage-people.com/product/related-events-addon-for-event-manager/)👈
-
-👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
-  This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin's tickets. Pricing will work depending on the member type that is logged in. Currently, it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
- 
-👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
-  This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. This can be ideal for selling tickets to popular events where you want to ensure that everyone who wants to attend can get a ticket.
-👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
-  With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin's Ticket QTY can manage a Common QTY or Global QTY. Default QTY works with Ticket type's QTY but with this addon you can easily manage a common quantity.
-
-👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
-  This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event. Admin can also set up who can set up reviews for each event.
-
-👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
-  This plugin allows you to sell tickets with different seat plans. You can map out the seats in a flexible way and set different prices for each seat plan.
-
-👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
-  This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts. Organizers can also see a balance of tickets sold, as well as a list of attendees. This list can be downloaded by the organizer.
-
 
 
 ### Note:

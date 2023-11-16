@@ -24,6 +24,8 @@ Simplify your complicated event registration process with the Event Manager Plug
 Registering an event to a data-analyzing dashboard everything is available connecting the plugin with woo-commerce. 
 Take advantage of compatibility with all WordPress versions and utilize all well-known payment gateways through WooCommerce. 
 
+## LETS SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
+https://www.youtube.com/watch?v=zP2ADxzUrYw
 
 
 ## Event Manager: #1 WooCommerce Event Management Plugin
@@ -34,7 +36,16 @@ Whether you are a small event organizer or large, we have thousands of trusted b
 ### Experience The Smooth Event Management Experience
 Creating an event and managing it in one place has never been easier, faster, organized and smooth. MultipleTicketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
 We are not limiting you here, the free version features most of the basic event management activity.
+
+## LETS CREATE A PROFESSIONAL EVENT MANAGER ATTENDEE REGISTRATION FORM
+
+Creating an event might be offered by many, but when it comes to creating something professional and lucrative, we are here to get the job done for you.
+The continuous process of optimizing your event can be time-consuming. When you need to create something highly effective but have limited time available, [Evently-WordPress Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for.
+We have designed this user engagement data-driven process to be easy to implement on your page, keeping it in mind while creating the solution. Years of development by the MagePeople Team have brought you a game-changing product.
+https://www.youtube.com/watch?v=F9wnlUjXa6I
+
 With the Event Manager, you can implement these features and make your event done:
+
 
 
 ### Features are Available With Free Version
@@ -85,6 +96,9 @@ Works with any standards-compliant WordPress Theme.
 
 
 ### Create Some Great Event Features With the Event Manager Pro Version
+
+https://www.youtube.com/watch?v=9ur9Mnq20mc
+
 Unlock your event design and management full features with the [Event Manager Pro Version.](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)  Offering something custom and managing bulk amounts of data becomes easier with the pro version of the plugin. Let's see what the pro version offers you to make something premium.
 
 * **Download Tickets:**
@@ -341,15 +355,6 @@ Our shortcode allows you to easily display a list of speakers for any event on a
 We have full confidence in our plugin and its ability to work well with any theme. If you have any questions or encounter any problems, please email us at support@mage-people.com and our support team will get back to you as soon as possible. Thank you for choosing our plugin!
 
 
-### How to Install and create Event 10 minutes using Event Manager and Tickets Selling Plugin for WooCommerce Plugin
-https://www.youtube.com/watch?v=zP2ADxzUrYw
-
-### Event Manager and Tickets Selling Plugin for WooCommerce Pro Addons Setup And Full Functionality Explained
-https://www.youtube.com/watch?v=9ur9Mnq20mc
-
-### How to Configure Event Manager Attendee Registration Form 
-https://www.youtube.com/watch?v=F9wnlUjXa6I
-
 
 **CHECK OUT OUR OTHER PLUGINS** 
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
@@ -425,6 +430,12 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+
+= 4.1.0 =
+* Styling issue has been fixed
+* Event Ticket Expire before minutes not working for seat plan issue has been fixed
+* Zip code not showing in Address text issue has been fixed
+  06 Nov 2023*
 
 = 4.0.9 =
 * Hidden WC Product showing issue fixed

@@ -39,13 +39,6 @@ function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page'
 
 	return null;
 }
-	
-	
-	
-
-
-
-
 
 
 function mep_add_event_into_feed_request($qv) {
@@ -1021,6 +1014,9 @@ if (!function_exists('mep_attendee_status_update')) {
             if (get_post_type($event_id) == 'mep_events') {
                 $event_ticket_info_arr    = wc_get_order_item_meta($item_id,'_event_ticket_info',true);
 
+                $org        = get_the_terms($event_id, 'mep_org');
+                $term_id    = $org[0]->term_id;
+                $org_email  = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
 
                 if ($order->has_status('processing')) {
 
@@ -1032,6 +1028,11 @@ if (!function_exists('mep_attendee_status_update')) {
                     do_action('mep_wc_order_status_change', $order_status, $event_id, $order_id);
                     if (in_array('processing', $email_send_status)) {
                         mep_event_confirmation_email_sent($event_id, $email, $order_id);
+
+                        if(!empty($org_email)){
+                            mep_event_confirmation_email_sent($event_id, $org_email, $order_id);
+                        }
+
                     }
 
                 }
@@ -1057,6 +1058,12 @@ if (!function_exists('mep_attendee_status_update')) {
                     do_action('mep_wc_order_status_change', $order_status, $event_id, $order_id);
                     if (in_array('completed', $email_send_status)) {
                         mep_event_confirmation_email_sent($event_id, $email, $order_id);
+
+                        if(!empty($org_email)){
+                            mep_event_confirmation_email_sent($event_id, $org_email, $order_id);
+                        }
+
+
                     }
                 }
                 if ($order->has_status('cancelled')) {
@@ -3060,7 +3067,7 @@ if (!function_exists('mep_hide_date_from_order_page')) {
         $qr = new WP_Query($args);
         foreach ($qr->posts as $result) {
             $post_id = $result->ID;
-            $product_id[] = get_post_meta($post_id, 'link_wc_product', true) ? '.woocommerce-page .post-' . get_post_meta($post_id, 'link_wc_product', true) . '.type-product' : '';
+            $product_id[] = get_post_meta($post_id, 'link_wc_product', true) ? '.woocommerce-admin-page .post-' . get_post_meta($post_id, 'link_wc_product', true) . '.type-product' : '';
         }
         $product_id = array_filter($product_id);
         $parr = implode(', ', $product_id);
@@ -3607,7 +3614,12 @@ function mep_get_user_custom_field_ids($event_id) {
 
 
 if (!function_exists('mep_get_reg_label')) {
-function mep_get_reg_label($event_id, $name = '') {
+function mep_get_reg_label($_event_id, $name = '') {
+
+    $custom_forms_id = mep_get_user_custom_field_ids($_event_id);
+    $event_id     = mep_fb_get_reg_form_id( $_event_id );
+
+
     if ($name == 'Name') {
         return get_post_meta($event_id, 'mep_name_label', true) ? get_post_meta($event_id, 'mep_name_label', true) : esc_html__('Name', 'mage-eventpress');
     } elseif ($name == 'Email') {

@@ -9,7 +9,7 @@ if (!function_exists('mep_ev_org')) {
     {
         global $post, $author_terms;
         ob_start();
-        $org = get_the_terms($event_id, 'mep_org');
+        $org = get_the_terms($event_id, 'mep_org'); 
 		if(!empty($org)){
             require(mep_template_file_path('single/organizer.php'));
 		}

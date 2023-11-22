@@ -60,7 +60,7 @@ function mpwem_page_scroll_to(target) {
 					}
 				}
 				if (date_check && active > 0) {
-					active = date_search(parent, $(this));
+					active = date_search(parent, $(this));				
 				}
 				if (active > 1) {
 					result++;

@@ -118,11 +118,11 @@
 				//wp_enqueue_script('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.js', array('jquery'), time(), true);
 				//wp_enqueue_style('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.css', array(), time());
 				//timeline
-				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array('mep-event-style'));
+				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(''));
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
 				//calender
 				wp_enqueue_style('mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array());
-				wp_enqueue_script('mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array('jquery', 'mep-moment-js'), 1, false);
+				wp_enqueue_script('mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array('jquery', 'mep-moment-js'), 1, true);
 				//
 				wp_enqueue_script('mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true);
 				wp_enqueue_script('mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array(), 1, true);

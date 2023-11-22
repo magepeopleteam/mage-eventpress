@@ -967,13 +967,24 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 )),
 
                 'style_setting_sec' => apply_filters('mep_settings_styling_arr', array(
+
+                    // Base Background & Text Color
                         array(
                             'name' => 'mep_base_color',
-                            'label' => __('Base Color', 'mage-eventpress'),
+                            'label' => __('Base Background Color', 'mage-eventpress'),
                             'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
                             'type' => 'color',
                             'default' => ''
                         ),
+                        array(
+                            'name' => 'mep_base_text_color',
+                            'label' => __('Base Text Color', 'mage-eventpress'),
+                            'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
+                            'type' => 'color',
+                            'default' => ''
+                        ),
+
+                    // Label Background & Text Color
                         array(
                             'name' => 'mep_title_bg_color',
                             'label' => __('Label Background Color', 'mage-eventpress'),
@@ -988,6 +999,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'type' => 'color',
                             'default' => '#fff'
                         ),
+                        
                         array(
                             'name' => 'mep_cart_btn_bg_color',
                             'label' => __('Cart Button Background Color', 'mage-eventpress'),

@@ -76,7 +76,7 @@ function mep_user_custom_styles()
 		.vanilla_theme.mep-default-theme div.mep-default-feature-location,
 		.vanilla_theme h3.ex-sec-title,
 		.vanilla_theme div.df-dtl h3,
-		.vanilla_theme div.df-dtl p{
+		.vanilla_theme div.df-dtl p, .ex-sec-title, .mep_everyday_date_secs{
             background: <?php echo esc_attr($label_bg_color); ?>;
             color: <?php echo esc_attr($label_text_color); ?>;
         }
@@ -87,14 +87,14 @@ function mep_user_custom_styles()
             color: <?php echo esc_attr($faq_label_text_color); ?>;
         }
 
-        h3.ex-sec-title{
+        /* h3.ex-sec-title{
             background: <?php echo esc_attr($base_color); ?>;
         }
 
         .ex-sec-title{
             background: <?php echo esc_attr($base_color); ?>;
             color: <?php echo esc_attr($label_text_color); ?>;
-        }
+        } */
 
         /*Cart Button Style*/
 		button.mpwemasp_get_sp,

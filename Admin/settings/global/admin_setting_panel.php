@@ -88,6 +88,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
          * @return array settings fields
          */
         function get_settings_fields() {
+            $current_date = current_time('Y-m-d');
             $settings_fields = array(
                 'general_setting_sec' => apply_filters('mep_settings_general_arr', array(
 
@@ -115,6 +116,27 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'options' => array(
                                 'yes' => 'Yes',
                                 'no' => 'No'
+                            )
+                        ),
+                        array(
+                            'name' => 'date_format',
+                            'label' => esc_html__('Date Picker Format', 'mage-eventpress'),
+                            'desc' => esc_html__('If you want to change Date Picker Format, please select format. Default  is D d M , yy.', 'mage-eventpress'),
+                            'type' => 'select',
+                            'default' => 'D d M , yy',
+                            'options' => array(
+                                'yy-mm-dd' => $current_date,
+                                'yy/mm/dd' => date_i18n('Y/m/d', strtotime($current_date)),
+                                'yy-dd-mm' => date_i18n('Y-d-m', strtotime($current_date)),
+                                'yy/dd/mm' => date_i18n('Y/d/m', strtotime($current_date)),
+                                'dd-mm-yy' => date_i18n('d-m-Y', strtotime($current_date)),
+                                'dd/mm/yy' => date_i18n('d/m/Y', strtotime($current_date)),
+                                'mm-dd-yy' => date_i18n('m-d-Y', strtotime($current_date)),
+                                'mm/dd/yy' => date_i18n('m/d/Y', strtotime($current_date)),
+                                'd M , yy' => date_i18n('j M , Y', strtotime($current_date)),
+                                'D d M , yy' => date_i18n('D j M , Y', strtotime($current_date)),
+                                'M d , yy' => date_i18n('M  j, Y', strtotime($current_date)),
+                                'D M d , yy' => date_i18n('D M  j, Y', strtotime($current_date)),
                             )
                         ),
                         array(
@@ -967,13 +989,24 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                 )),
 
                 'style_setting_sec' => apply_filters('mep_settings_styling_arr', array(
+
+                    // Base Background & Text Color
                         array(
                             'name' => 'mep_base_color',
-                            'label' => __('Base Color', 'mage-eventpress'),
+                            'label' => __('Base Background Color', 'mage-eventpress'),
                             'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
                             'type' => 'color',
                             'default' => ''
                         ),
+                        array(
+                            'name' => 'mep_base_text_color',
+                            'label' => __('Base Text Color', 'mage-eventpress'),
+                            'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
+                            'type' => 'color',
+                            'default' => ''
+                        ),
+
+                    // Label Background & Text Color
                         array(
                             'name' => 'mep_title_bg_color',
                             'label' => __('Label Background Color', 'mage-eventpress'),
@@ -988,6 +1021,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'type' => 'color',
                             'default' => '#fff'
                         ),
+                        
                         array(
                             'name' => 'mep_cart_btn_bg_color',
                             'label' => __('Cart Button Background Color', 'mage-eventpress'),

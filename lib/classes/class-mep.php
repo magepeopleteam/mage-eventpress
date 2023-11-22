@@ -58,11 +58,13 @@ if (!class_exists('MPWEM_Helper')) {
                                 <?php } ?>
                                 <?php if ($params['date-filter'] == 'yes') { ?>
                                     <label>
-                                        <input type="text" class="formControl filter_datepicker search_with_start_date" placeholder="<?php esc_html_e('Start date', 'mage-eventpress'); ?>"/>
+                                        <input type="hidden" name="" class="search_with_start_date" value="" />
+                                        <input type="text" class="formControl  date_type" placeholder="<?php esc_html_e('Start date', 'mage-eventpress'); ?>"/>
                                         <span class="fas fa-calendar-alt filter_date_icon"></span>
                                     </label>
                                     <label>
-                                        <input type="text" class="formControl filter_datepicker search_with_end_date" placeholder="<?php esc_html_e('End date', 'mage-eventpress'); ?>"/>
+                                        <input type="hidden" name="" class="search_with_end_date" value="" />
+                                        <input type="text" class="formControl  date_type" placeholder="<?php esc_html_e('End date', 'mage-eventpress'); ?>"/>
                                         <span class="fas fa-calendar-alt filter_date_icon"></span>
                                     </label>
                                 <?php } ?>

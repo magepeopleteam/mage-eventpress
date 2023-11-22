@@ -1,3 +1,29 @@
+//====================================================Load Date picker==============//
+function mp_load_date_picker(parent = jQuery('.mpStyle')) {
+	parent.find(".date_type.hasDatepicker").each(function () {
+		jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
+	}).promise().done(function () {
+		parent.find(".date_type").datepicker({
+			dateFormat: mp_date_format,
+			autoSize: true,
+			changeMonth: true,
+			changeYear: true,
+			onSelect: function (dateString, data) {
+				let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + data.selectedDay;
+				jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+			}
+		});
+	});
+}
+
+(function ($) {
+	"use strict";
+	$(document).ready(function () {
+		mp_load_date_picker();
+		$('.mp_select2').select2({});
+	});
+}(jQuery));
+//======================================================================//
 function mpwem_add_loader(target) {
 	target.css('position', 'relative');
 	target.append('<div class="spinner_loading"><div class="icon_loader"><span class="fas fa-spinner fa-pulse"></span></div></div>');
@@ -18,7 +44,7 @@ function mpwem_page_scroll_to(target) {
 	"use strict";
 	let bg_image_load = false;
 	load_pagination_initial_item();
-	$(".filter_datepicker").datepicker({dateFormat: "mm/dd/yy"});
+	//$(".filter_datepicker").datepicker({dateFormat: "mm/dd/yy"});
 	$(document).ready(function () {
 		$(window).on('load', function () {
 			load_bg_img();

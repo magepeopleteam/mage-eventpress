@@ -152,7 +152,7 @@
 					let mp_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
 					let mp_num_of_decimal = "<?php echo get_option('woocommerce_price_num_decimals', 2); ?>";
 					let mp_empty_image_url = "<?php echo esc_attr(MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png'); ?>";
-					let mp_date_format = "'D d M , yy'";
+					let mp_date_format = "<?php echo esc_attr(MP_Global_Function::get_settings('general_setting_sec', 'date_format', 'D d M , yy')); ?>";
 				</script>
 				<?php
 			}

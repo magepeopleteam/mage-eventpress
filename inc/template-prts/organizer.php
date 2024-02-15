@@ -32,7 +32,7 @@ if (!function_exists('mep_ev_org_name')) {
                 $names[] = $value->name;
             }
             }
-            echo esc_html(join($names,', '));        
+            echo esc_html(implode(', ',$names));        
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_org_name', $content, $post->ID);
     }

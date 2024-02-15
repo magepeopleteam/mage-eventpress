@@ -3,13 +3,11 @@
 	 * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 4.0.5
+	 * Version: 4.1.3
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
 	 * Domain Path: /languages/
-	 * WC requires at least: 3.0.9
-	 * WC tested up to: 6.5
 	 */
 	if (!defined('ABSPATH')) {
 		die;

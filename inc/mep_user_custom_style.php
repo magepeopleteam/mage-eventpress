@@ -6,7 +6,10 @@ if (!defined('ABSPATH')) {
 add_action('wp_head', 'mep_user_custom_styles', 10, 999);
 function mep_user_custom_styles()
 {
+    // mep_base_text_color
     $base_color                 = mep_get_option('mep_base_color', 'style_setting_sec', '#ffbe30');
+    $base_text_color            = mep_get_option('mep_base_text_color', 'style_setting_sec', '#ffffff');
+
     $label_bg_color             = mep_get_option('mep_title_bg_color', 'style_setting_sec', '#ffbe30');
     $label_text_color           = mep_get_option('mep_title_text_color', 'style_setting_sec', '#ffffff');
     $cart_btn_bg_color          = mep_get_option('mep_cart_btn_bg_color', 'style_setting_sec', '#ffbe30');
@@ -14,8 +17,10 @@ function mep_user_custom_styles()
 
     $calender_btn_bg_color      = mep_get_option('mep_calender_btn_bg_color', 'style_setting_sec', '#ffbe30');
     $calender_btn_txt_color     = mep_get_option('mep_calender_btn_text_color', 'style_setting_sec', '#ffffff');
+   
     $faq_label_bg_color         = mep_get_option('mep_faq_title_bg_color', 'style_setting_sec', '#ffbe30');
     $faq_label_text_color       = mep_get_option('mep_faq_title_text_color', 'style_setting_sec', '#ffffff');
+   
     $royal_primary_bg_color     = mep_get_option('mep_royal_primary_bg_color', 'style_setting_sec', '');
     $royal_secondary_bg_color   = mep_get_option('mep_royal_secondary_bg_color', 'style_setting_sec', '');
     $royal_icons_bg_color       = mep_get_option('mep_royal_icons_bg_color', 'style_setting_sec', '');
@@ -24,6 +29,7 @@ function mep_user_custom_styles()
 
     ?>
     <style>
+        .mep-event-faq-part .ex-sec-title.faq-title-section{background: <?php echo esc_attr($faq_label_bg_color); ?>;color: <?php echo $faq_label_text_color; ?>;}
 		.pagination_area button[class*="defaultButton_xs"],
         .list_with_filter_section [class*="defaultButton"],
         div.item_hover_effect a{
@@ -35,8 +41,9 @@ function mep_user_custom_styles()
         ul.mp_event_more_date_list li:hover{
             background-color:<?php echo esc_attr($base_color); ?>;
         }
-        .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a {
+        .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
             background: <?php echo esc_attr($base_color); ?>;
+            color: <?php echo esc_attr($base_text_color); ?>
         }
         .mep-default-sidrbar-meta .fa-list-alt,.mep-list-footer ul li i {
             background: transparent;
@@ -80,7 +87,7 @@ function mep_user_custom_styles()
             background: <?php echo esc_attr($label_bg_color); ?>;
             color: <?php echo esc_attr($label_text_color); ?>;
         }
-
+        .mpwemasp_ticket_area .mep_everyday_date_secs{ background: <?php echo esc_attr($label_bg_color); ?>; color: <?php echo esc_attr($label_text_color); ?>; }
         /*FAQ Sec Style*/
         .mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 {
             background: <?php echo esc_attr($faq_label_bg_color); ?>;
@@ -112,7 +119,8 @@ function mep_user_custom_styles()
         }
         #mep_add_calender_button,
         ul#mep_add_calender_links li a{
-            background: <?php echo esc_attr($base_color); ?>;
+            background: <?php echo esc_attr($calender_btn_bg_color); ?>;
+            color: <?php echo esc_attr($calender_btn_txt_color); ?> !important;
         }
         /**/
         .mep_list_event_details p.read-more a{

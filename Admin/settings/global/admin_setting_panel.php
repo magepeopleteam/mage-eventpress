@@ -399,12 +399,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 'disable'    => 'Disable'
                             )
                         ),                          
-
-
-
-
-
-                        
+                        array(
+                            'name'      => 'mep_clear_cart_after_checkout',
+                            'label'     => __('Clear Cart after Checkout Order Placed?', 'mage-eventpress'),
+                            'desc'      => __('By default we clear the cart after order placed, But some payment gateway need cart data after order placed. If you get any warning after order placed please disabled this and try again. Unless please do not change this settings.', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'enable',
+                            'options'   => array(
+                                'enable'        => 'Enable',
+                                'disable'       => 'Disable'
+                            )
+                        )                      
                     )
                 ),
                 'event_list_setting_sec' => apply_filters('mep_settings_event_list_arr', array(
@@ -678,6 +683,17 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'type' => 'wysiwyg',
                             'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Thanks',
                         ),
+                        array(
+                            'name'      => 'mep_send_confirmation_to_billing_email',
+                            'label'     => __('Send Confirmation Email to Billing Email Address', 'mage-eventpress'),
+                            'desc'      => __('By default Plugin sent the Event Confirmation Email to the Billing Email Address. If you want to turn off this you can disbale this setting.', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'enable',
+                            'options'   => array(
+                                'enable'        => 'Enable',
+                                'disable'       => 'Disable'
+                            )
+                        )                         
                     )
                 ),
 

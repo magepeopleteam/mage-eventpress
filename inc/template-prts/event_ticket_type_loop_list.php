@@ -44,12 +44,12 @@ if (!function_exists('mep_event_ticket_type_loop_list_html')) {
             $ticket_type_qty        = array_key_exists('option_qty_t',$field) ? $field['option_qty_t'] : 0;
             $ticket_type_price      = array_key_exists('option_price_t',$field) ? $field['option_price_t'] : 0;
             $qty_t_type             = $ticket_type;
-            $total_quantity         = isset($field['option_qty_t']) ? $field['option_qty_t'] : 0;
-            $ticket_details         = isset($field['option_details_t']) ? $field['option_details_t'] : '';            
+            $total_quantity         = array_key_exists('option_qty_t',$field) ? $field['option_qty_t'] : 0;
+            $ticket_details         = array_key_exists('option_details_t',$field) ? esc_html($field['option_details_t']) : '';            
             $sale_start_datetime    = apply_filters('mep_sale_start_datetime',date('Y-m-d H:i',strtotime(get_the_date('Y-m-d H:i:s',$post_id))),$post_id, $field);            
-            $sale_end_datetime      = isset($field['option_sale_end_date_t']) && !empty($field['option_sale_end_date_t']) ? date('Y-m-d H:i',strtotime($field['option_sale_end_date_t'])) : date('Y-m-d H:i',strtotime($event_expire_date));
-            $default_qty            = isset($field['option_default_qty_t']) && $field['option_default_qty_t'] > 0 ? $field['option_default_qty_t'] : 0;
-            $total_resv_quantity    = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
+            $sale_end_datetime      = array_key_exists('option_sale_end_date_t',$field) && !empty($field['option_sale_end_date_t']) ? date('Y-m-d H:i',strtotime($field['option_sale_end_date_t'])) : date('Y-m-d H:i',strtotime($event_expire_date));
+            $default_qty            = array_key_exists('option_default_qty_t',$field) && $field['option_default_qty_t'] > 0 ? $field['option_default_qty_t'] : 0;
+            $total_resv_quantity    = array_key_exists('option_rsv_t',$field) ? $field['option_rsv_t'] : 0;
             $event_date             = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
             $event_start_date       = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
                                     

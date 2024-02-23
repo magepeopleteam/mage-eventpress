@@ -36,7 +36,9 @@ Whether you are a small event organizer or large, we have thousands of trusted b
 
 🌐 [Live Demo](https://wpevently.com/)
 📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
+❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 🛍️ [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
+
 
 
 ### Experience The Smooth Event Management Experience
@@ -176,13 +178,6 @@ This plugin allows you to sell tickets with different seat plans. You can map ou
 This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts. Organizers can also see a balance of tickets sold, as well as a list of attendees. This list can be downloaded by the organizer.
 
 
-
-👉 [View Live PRO Version Demo For Business Event](https://wpevently.com/)
-👉 [Plugin Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
-👉 [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) 👈
-
-
-
 ### Shortcodes included with Woocommerce Events Manager
 
 `
@@ -216,23 +211,6 @@ To Show the Events in List Style. example 👉[List Style Demo](https://wpeventl
 
 `
 [event-list style='list']
-`
-
-
-**Minimal style:**  
-To Show the Events in a Minimal Style view. example 👉[Minimal Style Demo](https://wpevently.com/events-minimal-style/)👈:   
-
-`
-[event-list style='minimal' show=10 pagination='yes']
-
-`
-
-**Native style:**  
-To Show the Event in Native Style. example 👉[Native Style Demo](https://wpevently.com/events-native-style/)👈:   
-
-`
-[event-list style='native' show='8' pagination='yes']
-
 `
 
 

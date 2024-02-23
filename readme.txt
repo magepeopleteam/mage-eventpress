@@ -133,12 +133,11 @@ Get all the sales reports with the event manager pro version where the admin can
 
 ### Powerful Integration With Available Addons:	
 When you are just managing a simple event then the free version with basic features is enough to go, but when you are planning to do something great at that time addons will come to drive you to the solution.
-You will find the [Detailed Documentation](https://docs.mage-people.com/woocommerce-event-manager/) of each feature for the plugin to provide you a self completed knowledge.
 Below you will find details of each plugin that is available with the plugin and the live features that plugins offer.
 
 
 👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
-The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. You can also use it to sell tickets for one-time events with time selection options. This addon is perfect for selling tickets for any kind of event, including city tours, museum visits, and zoo visits. 
+The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. 
 
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
 The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history.
@@ -150,8 +149,7 @@ The Event Calendar addon will improve the display of the event calendar feature 
 👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
 The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty
 👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈 
-Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. Customers can register for the waitlist, and admins will get email notifications when seats become available.
-
+Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. 
 👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
 This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. 
 

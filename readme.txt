@@ -212,7 +212,7 @@ If you want to show pagination with the event list, you can set the value to "ye
 [event-list pagination='yes']
 
 `
-
+More ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 
 
 ### Note:

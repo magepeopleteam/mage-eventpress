@@ -2,12 +2,12 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin, wp events
 Requires at least: 5.3
-Stable tag: 4.1.0
-Version: 4.1.0
-Tested up to: 6.3
+Stable tag: 4.1.4
+Version: 4.1.4
+Tested up to: 6.4.2
 WC requires at least: 3.0
-WC tested up to: 8.0
-Requires PHP: 7.0
+WC tested up to: 8.5.2
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,12 @@ https://www.youtube.com/watch?v=zP2ADxzUrYw
 Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with Woocommerce event manager.
 Whether you are a small event organizer or large, we have thousands of trusted businesses.
 
+###  Explore The Demo:
+
+🌐 [Live Demo](https://wpevently.com/)
+📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
+🛍️ [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
+
 
 ### Experience The Smooth Event Management Experience
 Creating an event and managing it in one place has never been easier, faster, organized and smooth. MultipleTicketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
@@ -42,7 +48,6 @@ We are not limiting you here, the free version features most of the basic event 
 Creating an event might be offered by many, but when it comes to creating something professional and lucrative, we are here to get the job done for you.
 The continuous process of optimizing your event can be time-consuming. When you need to create something highly effective but have limited time available, [Evently-WordPress Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for.
 We have designed this user engagement data-driven process to be easy to implement on your page, keeping it in mind while creating the solution. Years of development by the MagePeople Team have brought you a game-changing product.
-https://www.youtube.com/watch?v=F9wnlUjXa6I
 
 With the Event Manager, you can implement these features and make your event done:
 
@@ -79,9 +84,6 @@ Option of Adding Event Start Date, End Date, and Multi Date & Time.
 
 * **Easy Event Reset**
 One Click Event Rest Option.
-
-* **Attendee Visibility**
-View Registered Attendee from WooCommerce Order Details.
 
 * **Custom Event Templates**
 Multiple Event Templates (You can select a different template for each event)
@@ -138,20 +140,19 @@ Below you will find details of each plugin that is available with the plugin and
 The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. You can also use it to sell tickets for one-time events with time selection options. This addon is perfect for selling tickets for any kind of event, including city tours, museum visits, and zoo visits. 
 
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
-The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history, so organizers can easily find details of participant information after filtering or CSV export.
+The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history.
 
 👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
-The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information. This will make it easier to see what events are coming up and get a better sense of what each event entails.
+The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information.
 
 
 👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
-The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty, which can help boost sales of event tickets.
-
+The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty
 👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈 
 Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. Customers can register for the waitlist, and admins will get email notifications when seats become available.
 
 👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
-This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. This is for admin use only. When an admin needs to book a ticket for a customer, they can sell the ticket from the admin side. This can also be used to sell tickets on the spot or at an event location.
+This book event dashboard addon will add a feature to purchase tickets from the WordPress admin panel. 
 
 👉[Event Duplicator Addon](https://mage-people.com/product/woocommerce-event-duplicator-addon/) 👈
 This is must much-needed add-on if someone likes to duplicate any event.
@@ -160,10 +161,10 @@ This is must much-needed add-on if someone likes to duplicate any event.
 This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s tickets. Pricing will work depending on the member type that is logged in. Currently, it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
 
 👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
-This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. This can be ideal for selling tickets to popular events where you want to ensure that everyone who wants to attend can get a ticket.
+This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. 
 
 👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
-With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s Ticket QTY can manage a Common QTY or Global QTY. Default QTY works with Ticket type’s QTY but with this addon, you can easily manage a common quantity.
+With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s Ticket QTY can manage a Common QTY or Global QTY.
 
 👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
 This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event. Admin can also set up who can set up reviews for each event.
@@ -235,22 +236,6 @@ To Show the Event in Native Style. example 👉[Native Style Demo](https://wpeve
 `
 
 
-**Vertical Timeline style:**  
-To Show the Event in a Vertical Timeline Style. example 👉[Vertical Timeline Style Demo](https://wpevently.com/events-vertical-timeline-style/)👈:   
-
-`
-[event-list style='timeline' timeline-mode='vertical']
-
-`
-
-**Horizontal Timeline style:**  
-To Show the Event in a Horizontal Timeline Style. example 👉[Horizontal Timeline Style Demo](https://wpevently.com/events-horizontal-timeline-style/)👈:   
-
-`
-[event-list style='timeline' timeline-mode='horizontal']
-
-`
-
 **Title Only style:**  
 To Show the Event Only Title Style. example 👉[Title Style Demo](https://wpevently.com/events-title-style/)👈:   
 
@@ -268,7 +253,7 @@ To Show the Event Carousal. example 👉[Event Carousal Demo](https://wpevently.
 `
 
 **cat-filter:**  
-By default, events are shown without any filter options. If you want to change it to with category filter, use this example:  
+By default, events are shown without any filter options. If you want to change it to With category filter, use this example:  
 
 `
 [event-list cat-filter='yes']
@@ -295,24 +280,6 @@ If you want to show pagination with the event list, you can set the value to "ye
 
 `
 
-**Filter By City:**  
-Filter Event by City. example 👉[Filter By City Demo](https://wpevently.com/events-by-city/)👈:   
-
-`
-[event-list style='grid' city='Dhaka' column=3 show=8]
-
-`
-
-**Filter By Country:**  
-Filter Event by Country.example 👉[Filter By Country Demo](https://wpevently.com/events-by-country/)👈:   
-
-`
-[event-list style='grid' country='India' column=3 show=8]
-
-`
-
-
-
 **sort:**
 You can sort your event list by event start date and time in ascending or descending order. By default, the list is displayed in ascending order, but you can change the sorting format by using this attribute. For example: 
 
@@ -320,12 +287,6 @@ You can sort your event list by event start date and time in ascending or descen
 [event-list sort='ASC/DESC']
 `
 
-### Event Calender ShortCode:
-
-`
-[event-calendar]
-
-`
 
 ### Event Add To Cart Section ShortCode:
 The Event Cart Section shortcode allows you to display a list of tickets and extra services anywhere on your website. This is a great way to make sure your visitors can easily find the information they need when planning an event.
@@ -333,20 +294,6 @@ The Event Cart Section shortcode allows you to display a list of tickets and ext
 To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website: example 👉[See PRO Version Demo](https://wpevently.com/event-add-to-cart-section/)👈:  
 `
 [event-add-cart-section event=EventID]
-
-`
-
-### Event City List ShortCode:
-You can display the City List by using the shortcode below anywhere on your website. This will come in handy for events that are taking place in different cities. example 👉[City List Demo](https://wpevently.com/events-city-list/)👈:  
-`
-[event-city-list]
-
-`
-
-### Event Speaker List ShortCode:
-Our shortcode allows you to easily display a list of speakers for any event on any post or page. Simply use the below shortcode to display the list. example 👉[View Demo](https://wpevently.com/speakers/)👈:  
-`
-[event-speaker-list event=EventID]
 
 `
 
@@ -430,6 +377,23 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+
+= 4.1.4 =
+* PHP 8.1.12 Warning issue fixed. 
+  05 Jan 2024*
+
+= 4.1.2 =
+* Security Issue Fixed
+  05 Jan 2024*
+
+
+= 4.1.1 =
+* Custom Styling issue has been fixed
+* Event Org Elementor Widget issue fixed
+* Event List pagination issue fixed
+* Organizer Email Option added. 
+  27 Dec 2023*
+
 
 = 4.1.0 =
 * Styling issue has been fixed

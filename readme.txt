@@ -165,9 +165,6 @@ This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows a
 👉[Event Global Qty Addon](https://mage-people.com/product/global-common-qty-addon-for-event-manager/)👈
 With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s Ticket QTY can manage a Common QTY or Global QTY.
 
-👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
-This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event.
-
 👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
 This plugin allows you to sell tickets with different seat plans. You can map out the seats in a flexible way and set different prices for each seat plan.
 
@@ -236,12 +233,8 @@ We have full confidence in our plugin and its ability to work well with any them
 [Event Theme](https://mage-people.com/product/vaincode-wordpress-theme-for-event-manager-and-travel-booking-plugin/)
 
 ## Privacy Policy 
-Event Manager and Tickets Selling Plugin for WooCommerce uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
-
-Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. 
-
-Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
-
+This Plugin uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon the user's confirmation to troubleshoot problems faster & make product improvements.
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 

@@ -159,7 +159,7 @@ This book event dashboard addon will add a feature to purchase tickets from the 
 This is must much-needed add-on if someone likes to duplicate any event.
 
 👉[Event Membership Pricing Addon](https://mage-people.com/product/membership-pricing-for-event-manager-plugin/)👈
-This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s tickets. Pricing will work depending on the member type that is logged in. Currently, it is supported with WordPress Default Userrole and WooCommerce Membership Plugin.
+This addon allows you to set different member prices for Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s tickets.
 
 👉[Event Max-Min Quantity Limiting Addon](https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/)👈
 This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows admins to create events with limited quantities. 
@@ -168,13 +168,13 @@ This addon for Event Manager and Tickets Selling Plugin for WooCommerce allows a
 With this addon, Event Manager and Tickets Selling Plugin for WooCommerce Plugin’s Ticket QTY can manage a Common QTY or Global QTY.
 
 👉[Event Review And Rating Addon](https://mage-people.com/product/review-and-rating-addon-for-event-manager/)👈
-This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event. Admin can also set up who can set up reviews for each event.
+This is the Event Rating and Review Addon. With this addon, the admin can enable a review and rating section for each event.
 
 👉[Event Seat Plan Addon](https://mage-people.com/product/seat-plan-addon-for-event-manager/)👈
 This plugin allows you to sell tickets with different seat plans. You can map out the seats in a flexible way and set different prices for each seat plan.
 
 👉[Frontend Event Submit Addon](https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/)👈
-This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts. Organizers can also see a balance of tickets sold, as well as a list of attendees. This list can be downloaded by the organizer.
+This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts.
 
 
 ### Shortcodes included with Woocommerce Events Manager

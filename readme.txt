@@ -49,7 +49,6 @@ We are not limiting you here, the free version features most of the basic event 
 
 Creating an event might be offered by many, but when it comes to creating something professional and lucrative, we are here to get the job done for you.
 The continuous process of optimizing your event can be time-consuming. When you need to create something highly effective but have limited time available, [Evently-WordPress Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for.
-We have designed this user engagement data-driven process to be easy to implement on your page, keeping it in mind while creating the solution. Years of development by the MagePeople Team have brought you a game-changing product.
 
 With the Event Manager, you can implement these features and make your event done:
 
@@ -214,35 +213,6 @@ To Show the Events in List Style. example 👉[List Style Demo](https://wpeventl
 `
 
 
-**Title Only style:**  
-To Show the Event Only Title Style. example 👉[Title Style Demo](https://wpevently.com/events-title-style/)👈:   
-
-`
-[event-list style='title']
-
-`
-
-**Event Carousal:**  
-To Show the Event Carousal. example 👉[Event Carousal Demo](https://wpevently.com/events-carousel-style/)👈:   
-
-`
-[event-list style='grid' pagination='carousal' carousal-dots='yes' carousal-nav='yes' column=3]
-
-`
-
-**cat-filter:**  
-By default, events are shown without any filter options. If you want to change it to With category filter, use this example:  
-
-`
-[event-list cat-filter='yes']
-`
-**org-filter:**  
-This code will allow you to show events with an organizer filter option instead of without one. For example:
-
-`
-[event-list org-filter='yes']
-`
-
 **show:**  
 By default, all events are shown without any limit. If you want to change it and set a limit, input the limit number. For example: 
 
@@ -259,26 +229,16 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 
 **sort:**
-You can sort your event list by event start date and time in ascending or descending order. By default, the list is displayed in ascending order, but you can change the sorting format by using this attribute. For example: 
+You can sort your event list by event start date and time in ascending or descending order: 
 
 `
 [event-list sort='ASC/DESC']
 `
 
 
-### Event Add To Cart Section ShortCode:
-The Event Cart Section shortcode allows you to display a list of tickets and extra services anywhere on your website. This is a great way to make sure your visitors can easily find the information they need when planning an event.
-
-To use the Event Cart Section shortcode, simply copy and paste the following code into the desired location on your website: example 👉[See PRO Version Demo](https://wpevently.com/event-add-to-cart-section/)👈:  
-`
-[event-add-cart-section event=EventID]
-
-`
-
 
 ### Note:
 We have full confidence in our plugin and its ability to work well with any theme. If you have any questions or encounter any problems, please email us at support@mage-people.com and our support team will get back to you as soon as possible. Thank you for choosing our plugin!
-
 
 
 **CHECK OUT OUR OTHER PLUGINS** 

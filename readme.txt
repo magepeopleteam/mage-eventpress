@@ -181,19 +181,6 @@ This is a plugin that allows event managers and ticket sellers to submit events 
 [event-list cat='' org='' column='2' style='grid' cat-filter='no' org-filter='no' show='' pagination='no' sort='ASC']
 `
 
-**cat:**  
-This Shortcode allows you to show event lists for a specific category by using the category ID. For example:  
-
-`
-[event-list cat='ID']
-`
-
-**org:**  
-If you want to display a list of events for a specific organization, you can use this attribute by including the organizer's ID. For example:  
-
-`
-[event-list org='ID']
-`
 
 **Grid style:**  
 To Show the Events in Grid Style. example 👉[Grid Style Demo](https://wpevently.com/events-grid-style/)👈:  
@@ -224,13 +211,6 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 [event-list pagination='yes']
 
-`
-
-**sort:**
-You can sort your event list by event start date and time in ascending or descending order: 
-
-`
-[event-list sort='ASC/DESC']
 `
 
 

@@ -87,9 +87,9 @@ function mp_load_date_picker(parent = jQuery('.mpStyle')) {
 			changeMonth: true,
 			changeYear: true,
 			onSelect: function (dateString, data) {
-				let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + data.selectedDay;
+				let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
 				jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
-			}
+			},
 		});
 	});
 }

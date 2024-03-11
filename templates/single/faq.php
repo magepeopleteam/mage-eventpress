@@ -1,5 +1,5 @@
 <div class="mep-event-faq-part">
-<h3 class="ex-sec-title"><?php esc_html_e('Event FAQs', 'mage-eventpress'); ?></h3>
+<h3 class="ex-sec-title faq-title-section"><?php esc_html_e('Event FAQs', 'mage-eventpress'); ?></h3>
 <?php foreach ($mep_event_faq as $field): ?>  
   <div class="mep-event-faq-set">
     <a>

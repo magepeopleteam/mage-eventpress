@@ -46,7 +46,7 @@ if (!function_exists('mep_ev_location_cart')) {
 
         echo apply_filters('mage_event_location_in_cart', $content, $event_id, $event_meta, $address_arr);
     }
-}
+} 
 
 
 if (!function_exists('mep_ev_location_ticket')) {
@@ -154,6 +154,7 @@ if (!function_exists('mep_ev_venue')) {
         }
     }
 }
+
 
 /**
  * Event Location Get Functions
@@ -358,7 +359,9 @@ if (!function_exists('mep_event_address_list_sidebar_html')) {
         $street         = !empty($location_sts) ? get_term_meta($org_id, 'org_street', true) : get_post_meta($event_id, 'mep_street', true);
         $city           = !empty($location_sts) ? get_term_meta($org_id, 'org_city', true) : get_post_meta($event_id, 'mep_city', true);
         $state          = !empty($location_sts) ? get_term_meta($org_id, 'org_state', true) : get_post_meta($event_id, 'mep_state', true);
+        $zip            = !empty($location_sts) ? get_term_meta($org_id, 'org_postcode', true) : get_post_meta($event_id, 'mep_postcode', true);
         $country        = !empty($location_sts) ? get_term_meta($org_id, 'org_country', true) : get_post_meta($event_id, 'mep_country', true);
+
 
         ob_start();
         require(mep_template_file_path('single/location_list.php'));

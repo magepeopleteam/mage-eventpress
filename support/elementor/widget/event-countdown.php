@@ -77,14 +77,14 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'label' => __( 'Display?', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
+				'default' => 'inline-block',
 				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
+					'inline-block' => __( 'Yes', 'mage-eventpress' ),					
 					'none' => __( 'No', 'mage-eventpress' )
 				],			
                 'separator' => 'none',
                 'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days' => 'display: {{VALUE}} !important;',
                 ],                
 			]
 		);        
@@ -101,7 +101,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_day_border',
 				'label' => __( 'Border', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span',
 			]
 		);   
 		
@@ -114,7 +114,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Background Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .wrapper' => 'background: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span' => 'background: {{VALUE}};',
 					],
 				]
 	    );
@@ -124,7 +124,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Time Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .time' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -148,7 +148,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -159,7 +159,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -168,7 +168,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_day_box_shadow',
 				'label' => __( 'Box Shadow', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span',
 			]
 		);
 
@@ -189,9 +189,9 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'label' => __( 'Display?', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
+				'default' => 'inline-block',
 				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
+					'inline-block' => __( 'Yes', 'mage-eventpress' ),					
 					'none' => __( 'No', 'mage-eventpress' )
 				],			
                 'separator' => 'none',
@@ -213,7 +213,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_hours_border',
 				'label' => __( 'Border', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span',
 			]
 		);        
 		$this->add_control(
@@ -222,7 +222,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Background Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .wrapper' => 'background: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span' => 'background: {{VALUE}};',
 					],
 				]
 	    );
@@ -232,7 +232,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Time Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .time' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -253,7 +253,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -264,7 +264,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -273,7 +273,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_hours_box_shadow',
 				'label' => __( 'Box Shadow', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span',
 			]
 		);		
         $this->end_controls_section();
@@ -291,9 +291,9 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'label' => __( 'Display?', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
+				'default' => 'inline-block',
 				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
+					'inline-block' => __( 'Yes', 'mage-eventpress' ),					
 					'none' => __( 'No', 'mage-eventpress' )
 				],			
                 'separator' => 'none',
@@ -324,7 +324,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Background Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .wrapper' => 'background: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span' => 'background: {{VALUE}};',
 					],
 				]
 	    );
@@ -334,7 +334,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Time Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .time' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -355,7 +355,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -366,7 +366,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -375,7 +375,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_minutes_box_shadow',
 				'label' => __( 'Box Shadow', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span',
 			]
 		);			
         $this->end_controls_section();
@@ -392,9 +392,9 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'label' => __( 'Display?', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
+				'default' => 'inline-block',
 				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
+					'inline-block' => __( 'Yes', 'mage-eventpress' ),					
 					'none' => __( 'No', 'mage-eventpress' )
 				],			
                 'separator' => 'none',
@@ -416,7 +416,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_seconds_border',
 				'label' => __( 'Border', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span',
 			]
 		);        
 		$this->add_control(
@@ -425,7 +425,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Background Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .wrapper' => 'background: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span' => 'background: {{VALUE}};',
 					],
 				]
 	    );
@@ -435,7 +435,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 					'label' => __( 'Time Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .time' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -456,7 +456,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -467,7 +467,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -476,7 +476,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cd_seconds_box_shadow',
 				'label' => __( 'Box Shadow', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds .wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span',
 			]
 		);		
         $this->end_controls_section();
@@ -498,24 +498,48 @@ class MEPEventCountdownWidget extends Widget_Base {
         $minute             = get_mep_datetime($event_datetime,'minute');
         $second             = get_mep_datetime($event_datetime,'second');
         $timezone           = get_mep_datetime($event_datetime,'timezone');
+
+		$month_name 		= date('F',strtotime($event_datetime));
 	?>	
         <div class="mep-default-title mep-elementor-widget-countdown mep-event-countdown-sec">
-            <div id="countdown<?php echo esc_attr($event_id); ?>" class="mep-event-countdown-timer"></div>
+            <div id="countdown<?php echo esc_attr($event_id); ?>" class="mep-event-countdown-timer">
+				<div id="timer" class='wrapper'>
+					<div id="days"></div>
+					<div id="hours"></div>
+					<div id="minutes"></div>
+					<div id="seconds"></div>
+				</div>		
+			</div>
         </div>
         <script>
-		jQuery(document).ready(function($) {        
-			jQuery('#countdown<?php echo esc_attr($event_id); ?>').countdown({
-				year: <?php echo esc_attr($year); ?>,   // YYYY Format
-				month: <?php echo esc_attr($month); ?>,     // 1-12
-				day: <?php echo esc_attr($day); ?>,       // 1-31
-				hour: <?php echo esc_attr($hour); ?>,     // 24 hour format 0-23
-				minute: <?php echo esc_attr($minute); ?>,   // 0-59
-				second: <?php echo esc_attr($second); ?>,    // 0-59
-				timezone: <?php echo esc_attr($timezone); ?>, // http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-				labels: true, // Show/Hide label elements
-			});
+		jQuery(document).ready(function($) { 
+
+			function makeTimer() {	
+				var endTime = new Date("<?php echo esc_attr($day); ?> <?php echo $month_name ?> <?php echo esc_attr($year); ?> <?php echo esc_attr($hour); ?>:<?php echo esc_attr($minute); ?>:00 <?php //echo esc_attr($timezone); ?>");			
+					endTime = (Date.parse(endTime) / 1000);
+
+					var now = new Date();
+					now = (Date.parse(now) / 1000);
+					var timeLeft = endTime - now;
+
+					var days = Math.floor(timeLeft / 86400); 
+					var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+					var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+					var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+					if (hours < "10") { hours = "0" + hours; }
+					if (minutes < "10") { minutes = "0" + minutes; }
+					if (seconds < "10") { seconds = "0" + seconds; }
+
+					jQuery("#days").html("<span>" + days + "<span class='label'>Days</span></span>");
+					jQuery("#hours").html("<span>" + hours + "<span class='label'>Hours</span></span>");
+					jQuery("#minutes").html("<span>" + minutes + "<span class='label'>Minutes</span></span>");
+					jQuery("#seconds").html("<span>" + seconds + "<span class='label'>Seconds</span></span>");		
+
+			}
+			setInterval(function() { makeTimer(); }, 1000);
         });
-    </script>        
+    </script>       
 	<?php
 }
 

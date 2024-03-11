@@ -42,7 +42,6 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                         } ?>
                         </span>
                 <a href="<?php the_permalink(); ?>">
-
                     <span class="mep_winter_event_time"><i class="<?php echo esc_attr($event_time_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></span>
                     <span class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php mep_get_event_city($event_id); ?></span>
                     <span class="mep_winter_event_date"><i class="<?php echo esc_attr($event_date_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></span>

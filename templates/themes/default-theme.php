@@ -2,6 +2,7 @@
 // Template Name: Default Theme
 
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
+$event_id                   = empty($event_id) ? get_the_id() : $event_id;
 $hide_date_details          = mep_get_option('mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');
 $hide_time_details          = mep_get_option('mep_event_hide_time_from_details', 'single_event_setting_sec', 'no');
 $hide_location_details      = mep_get_option('mep_event_hide_location_from_details', 'single_event_setting_sec', 'no');

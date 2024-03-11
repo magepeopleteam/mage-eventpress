@@ -1437,9 +1437,18 @@ function mep_event_meta_save($post_id)
 		$mep_available_seat 	= isset($_POST['mep_available_seat']) ? sanitize_text_field($_POST['mep_available_seat']) : 'off';
 		$_tax_status 			= isset($_POST['_tax_status']) ? sanitize_text_field($_POST['_tax_status']) : 'none';
 		$_tax_class 			= isset($_POST['_tax_class']) ? sanitize_text_field($_POST['_tax_class']) : '';
-		$mep_member_only_user_role 			= isset($_POST['mep_member_only_user_role']) ? mage_array_strip(maybe_unserialize($_POST['mep_member_only_user_role'])) : maybe_unserialize(array('all'));
+		
+		$mep_member_only_user_role 	= isset($_POST['mep_member_only_user_role']) && is_array($_POST['mep_member_only_user_role']) ? array_map('sanitize_text_field',$_POST['mep_member_only_user_role']) : array_map('sanitize_text_field',['all']);
+
+
+		$off_days = isset($_POST['mptbm_off_days']) && is_array($_POST['mptbm_off_days']) ?  : [];
+
+
 		$sku 					= isset($_POST['mep_event_sku']) ? sanitize_text_field($_POST['mep_event_sku']) : $post_id;
 		$mep_rich_text_status 	= isset($_POST['mep_rich_text_status']) ? sanitize_text_field($_POST['mep_rich_text_status']) : 'enable';
+
+
+
 
 		if ($mep_reset_status == 'on') {
 			mep_reset_event_booking($post_id);

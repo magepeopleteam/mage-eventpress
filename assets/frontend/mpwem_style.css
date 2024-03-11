@@ -191,7 +191,13 @@ ul#mep_add_calender_links li a {
 .mep-events-wrapper.wrapper {
 	margin: 20px auto;
 }
-
+.mep-event-countdown-timer .wrapper div span {
+    display: block;
+    padding: 10px;
+}
+.mep-event-countdown-timer .wrapper div span span.label {
+    border: 0 !important;
+}
 /********title***********/
 .mep-default-title h2,
 .section-heading h2 {
@@ -2324,7 +2330,7 @@ div.mep-default-feature-content p {
 	font-size: 14px !important;
 }
 .mep_event_list .owl-dots button.active {
-	background: #FF5959 !important;
+	background: #FF5959;
 }
 .mep_event_list .owl-dots button {
 	width: 15px;
@@ -2378,31 +2384,41 @@ span.mep-more-time i {
 	width: max-content;
 }
 .mep-event-countdown-timer {
-	display: flex;
+	
 	width: 100%;
 	overflow: hidden;
 }
-.mep-event-countdown-timer > div {
-	width: 25%;
+.mep-event-countdown-timer .wrapper div {
+	width: 24%;
 	text-align: center;
-	display: block;
+	display: inline-block !important;
+	/* display: flex; */
 }
-.mep-event-countdown-timer div.wrapper {
+.mep-event-countdown-timer .wrapper {
 	min-height: 100px;
 	vertical-align: middle;
-	background: #00000014;
+	/* background: #00000014; */
 	margin: 0 10px;
-	border: 1px solid #CAC2C2;
+	/* border: 1px solid #CAC2C2; */
 	padding-top: 14px;
 }
-.mep-event-countdown-timer div.wrapper .time {
+.mep-event-countdown-timer .wrapper .time {
 	display: block;
 	font-weight: bold;
 	font-size: 24px;
 	margin: 0;
 	padding: 0;
 }
-.mep-event-countdown-timer div.wrapper .label {
+.mep-event-countdown-timer .wrapper div span.label {
+    display: block;
+    font-weight: bold !important;
+    margin-top:10px
+}
+
+.mep-event-countdown-timer .wrapper div {
+    font-size: 40px;
+}
+.mep-event-countdown-timer .wrapper .label {
 	font-size: 18px;
 	text-transform: capitalize;
 }
@@ -2419,6 +2435,7 @@ span.mep-more-time i {
 .mep-elementor-event-add-to-cart-section-widget h4.mep-cart-table-title {
 	display: none;
 }
+
 /*************************************************************
 New Spring list style css added by ariful
 **************************************************************/

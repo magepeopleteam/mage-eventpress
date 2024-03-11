@@ -89,17 +89,19 @@ class MEPEventFaqtWidget extends Widget_Base {
         $user_select_event  = $settings['mep_event_list'];    
 		$event_id           = $user_select_event > 0 ? $user_select_event : $post->ID;
 		if (get_post_type($event_id) == 'mep_events') {
-			$mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : '';
+			$mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : [];
 	?>	
         <div class="mep-default-title mep-elementor-widget-faq">			
 			<div class="mep-event-faq-part">
 				<div id='mep-event-accordion' class="">
 					<?php
-					foreach ($mep_event_faq as $field) {
-					?>
-						<h3><?php if ($field['mep_faq_title'] != '') echo esc_attr($field['mep_faq_title']); ?></h3>
-						<p><?php if ($field['mep_faq_content'] != '') echo mep_esc_html(strip_tags(html_entity_decode($field['mep_faq_content']))); ?></p>
-					<?php
+					if(is_array($mep_event_faq) && sizeof($mep_event_faq) > 0){
+						foreach ($mep_event_faq as $field) {
+						?>
+							<h3><?php if ($field['mep_faq_title'] != '') echo esc_attr($field['mep_faq_title']); ?></h3>
+							<p><?php if ($field['mep_faq_content'] != '') echo mep_esc_html(strip_tags(html_entity_decode($field['mep_faq_content']))); ?></p>
+						<?php
+						}
 					}
 					?>
 				</div>

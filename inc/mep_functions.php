@@ -662,8 +662,8 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
 
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
-  add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90);
-  // add_action('woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90);
+//   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
+  add_action('woocommerce_store_api_checkout_order_processed', 'mep_event_booking_management', 90);
   if (!function_exists('mep_event_booking_management')) {
   function mep_event_booking_management( $order_id) {
     global $woocommerce;
@@ -1004,7 +1004,7 @@ if (!function_exists('mep_attendee_status_update')) {
         // Getting an instance of the order object
         $order              = wc_get_order($order_id);
         $order_meta         = get_post_meta($order_id);
-        $email              = isset($order_meta['_billing_email'][0]) ? $order_meta['_billing_email'][0] : array();
+        $email              = isset($order_meta['_billing_email'][0]) ? $order_meta['_billing_email'][0] : $order->get_billing_email();
         $email_send_status  = mep_get_option('mep_email_sending_order_status', 'email_setting_sec', array('disable_email' => 'disable_email'));
         $email_send_status  = !empty($email_send_status) ? $email_send_status : array('disable_email' => 'disable_email');
         $enable_billing_email   = mep_get_option('mep_send_confirmation_to_billing_email', 'email_setting_sec','enable'); 
@@ -1066,6 +1066,7 @@ if (!function_exists('mep_attendee_status_update')) {
                     change_extra_service_status($order_id, 'publish', 'trash', 'completed');
                     change_extra_service_status($order_id, 'publish', 'publish', 'completed');
                     do_action('mep_wc_order_status_change', $order_status, $event_id, $order_id);
+
                     if (in_array('completed', $email_send_status)) {
                         mep_event_confirmation_email_sent($event_id, $email, $order_id);
 
@@ -1347,9 +1348,9 @@ if (!function_exists('mep_custom_event_column')) {
                 if ($recurring == 'yes') {
                     $event_more_dates = get_post_meta($post_id, 'mep_event_more_date', true) ? get_post_meta($post_id, 'mep_event_more_date', true) : [];
                     $seat_left = 10;
-                    $md = end($event_more_dates);
-                    $more_date = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
-                    $event_date = date('Y-m-d H:i:s', strtotime($more_date));
+                    $md = is_array($event_more_dates) ? end($event_more_dates) : [];
+                    $more_date = is_array($md) && array_key_exists('event_more_start_date', $md) && !empty($md['event_more_start_date']) ? $md['event_more_start_date'] . ' ' . $md['event_more_start_time'] : '';
+                    $event_date = !empty($more_date) ? date('Y-m-d H:i:s', strtotime($more_date)) : '';
                 } else {
                     $event_expire_on_old = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
                     $event_expire_on = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
@@ -3888,7 +3889,7 @@ if (!function_exists('mep_single_page_js_script')) {
 
                 if (strtotime(current_time('Y-m-d H:i:s')) < strtotime($start_date)) {
                 foreach ($mep_event_ticket_type as $field) {
-                    $ticket_type = array_key_exists('option_name_t',$field) ? mep_remove_apostopie($field['option_name_t']) : '';
+                $ticket_type = mep_remove_apostopie($field['option_name_t']);
                 ?>
                 var inputs = jQuery("#ttyttl").html() || 0;
                 var inputs = jQuery('#eventpxtp_<?php echo esc_attr($count); ?>').val() || 0;

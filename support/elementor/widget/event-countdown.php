@@ -515,7 +515,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		jQuery(document).ready(function($) { 
 
 			function makeTimer() {	
-				var endTime = new Date("<?php echo esc_attr($day); ?> <?php echo $month_name ?> <?php echo esc_attr($year); ?> <?php echo esc_attr($hour); ?>:<?php echo esc_attr($minute); ?>:00 GMT<?php echo esc_attr($timezone); ?>");			
+				var endTime = new Date("<?php echo esc_attr($day); ?> <?php echo $month_name ?> <?php echo esc_attr($year); ?> <?php echo esc_attr($hour); ?>:<?php echo esc_attr($minute); ?>:00 <?php //echo esc_attr($timezone); ?>");			
 					endTime = (Date.parse(endTime) / 1000);
 
 					var now = new Date();

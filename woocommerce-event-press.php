@@ -9,10 +9,12 @@
 	 * Text Domain: mage-eventpress
 	 * Domain Path: /languages/
 	 */
+	
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
-// Checking woo
+
+
 	include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 	if (!defined('MPWEM_PLUGIN_DIR')) {
 		define('MPWEM_PLUGIN_DIR', dirname(__FILE__));

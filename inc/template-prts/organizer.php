@@ -9,7 +9,7 @@ if (!function_exists('mep_ev_org')) {
     {
         global $post, $author_terms;
         ob_start();
-        $org = get_the_terms($event_id, 'mep_org');
+        $org = get_the_terms($event_id, 'mep_org'); 
 		if(!empty($org)){
             require(mep_template_file_path('single/organizer.php'));
 		}
@@ -32,7 +32,7 @@ if (!function_exists('mep_ev_org_name')) {
                 $names[] = $value->name;
             }
             }
-            echo esc_html(join($names,', '));        
+            echo esc_html(implode(', ',$names));        
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_org_name', $content, $post->ID);
     }

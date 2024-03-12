@@ -64,6 +64,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                             <?php do_action('mep_event_location_street', $event_id); ?> 
                             <?php do_action('mep_event_location_city', $event_id); ?>
                             <?php do_action('mep_event_location_state', $event_id); ?> 
+                            <?php do_action('mep_event_location_postcode'); ?>
                             <?php do_action('mep_event_location_country', $event_id); ?>    
                                
                         </p>

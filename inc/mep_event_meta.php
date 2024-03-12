@@ -80,7 +80,8 @@
                     </div>
 					<?php do_action('mep_admin_event_details_after_tab_details_ticket_type', $post_id); ?>
                     <div class="mp_tab_item" data-tab-item="#mp_event_time">
-                        <h3><?php echo esc_html($event_label).' ' .esc_html__(' Date & TIme :', 'mage-eventpress'); ?></h3>
+                        <h3><?php echo esc_html($event_label);
+								esc_html_e(' Date & TIme :', 'mage-eventpress'); ?></h3>
                         <hr/>
 						<?php $this->mep_event_date_meta_box_cb($post_id); ?>
 						<?php do_action('mp_event_recurring_every_day_setting', $post_id); ?>
@@ -650,8 +651,6 @@
 		}
 		public function mep_event_date_meta_box_cb($post_id) {
 			$values = get_post_custom($post_id);
-            $start_time=array_key_exists('event_start_date', $values)?$values['event_start_date'][0]:'';
-            //echo '<pre>';print_r($values);echo '</pre>';
 			?>
             <div class="sec">
                 <div class="mp_ticket_type_table">
@@ -693,6 +692,8 @@
 						<?php
 							$mep_event_multi_date = get_post_meta($post_id, 'mep_event_more_date', true);
 							if ($mep_event_multi_date) :
+								?>
+								<?php
 								foreach ($mep_event_multi_date as $field) {
 									?>
                                     <tr>
@@ -978,21 +979,6 @@
 			$checked = ($event_type == 'online') ? 'checked' : '';
 			$member_checked = ($event_member_type == 'member_only') ? 'checked' : '';
 			?>
-            <!-- <tr>
-			<th><span><?php esc_html_e('Virtual ', 'mage-eventpress');
-				echo esc_html($event_label . '?'); ?></span></th>
-			<td colspan="3">
-				<label class="mp_event_virtual_type_des_switch">
-					<input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
-					<span class="mep_slider round"></span>
-				</label>
-				<p></p>
-				<label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
-					<?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
-					<p class="event_meta_help_txt"><?php esc_html_e('Please enter your virtual event joining details information below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
-				</label>
-			</td>
-		</tr> -->
             <tr>
                 <th><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></th>
                 <td colspan="3">
@@ -1274,7 +1260,8 @@
 			$mep_available_seat = isset($_POST['mep_available_seat']) ? sanitize_text_field($_POST['mep_available_seat']) : 'off';
 			$_tax_status = isset($_POST['_tax_status']) ? sanitize_text_field($_POST['_tax_status']) : 'none';
 			$_tax_class = isset($_POST['_tax_class']) ? sanitize_text_field($_POST['_tax_class']) : '';
-			$mep_member_only_user_role = isset($_POST['mep_member_only_user_role']) ? mage_array_strip(maybe_unserialize($_POST['mep_member_only_user_role'])) : maybe_unserialize(array('all'));
+			$mep_member_only_user_role = isset($_POST['mep_member_only_user_role']) && is_array($_POST['mep_member_only_user_role']) ? array_map('sanitize_text_field', $_POST['mep_member_only_user_role']) : array_map('sanitize_text_field', ['all']);
+			$off_days = isset($_POST['mptbm_off_days']) && is_array($_POST['mptbm_off_days']) ?: [];
 			$sku = isset($_POST['mep_event_sku']) ? sanitize_text_field($_POST['mep_event_sku']) : $post_id;
 			$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? sanitize_text_field($_POST['mep_rich_text_status']) : 'enable';
 			if ($mep_reset_status == 'on') {

@@ -1,7 +1,7 @@
 <h3 class='ex-sec-title mep_extra_service_title'><?php echo esc_html($extra_service_label); ?></h3>
 <table id='mep_event_extra_service_table'>    
     <?php
-
+    $mep_available_seat         = get_post_meta($post_id, 'mep_available_seat', true) ? get_post_meta($post_id, 'mep_available_seat', true) : 'on';
     foreach ($mep_events_extra_prices as $field) {
 
         $service_name       = array_key_exists('option_name', $field) ? $field['option_name'] : '';

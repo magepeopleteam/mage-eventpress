@@ -71,7 +71,7 @@ if (!function_exists('mep_get_event_reg_btn')) {
         if ($recurring == 'yes') {
             $event_more_dates         = get_post_meta($post_id, 'mep_event_more_date', true) ? get_post_meta($post_id, 'mep_event_more_date', true) : array();
             $md                       = end($event_more_dates);
-            $more_date                = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
+            $more_date                = is_array($md) && array_key_exists('event_more_start_date', $md) && !empty($md['event_more_start_date']) ? $md['event_more_start_date'] . ' ' . $md['event_more_start_time'] : '';
             $newformat                = empty($event_more_dates) ?  $newformat : date('Y-m-d H:i:s', strtotime($more_date));
         }
 

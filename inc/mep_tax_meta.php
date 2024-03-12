@@ -32,6 +32,13 @@ function mep_org_tax_location_fileds($taxonomy)
     <input type="text" name="org_postcode" id='org_postcode' class="postform">
   </div>
 
+
+  <div class="form-field term-group">
+    <label for="org_email"><?php _e('Email:', 'mage-eventpress'); ?></label>
+    <input type="text" name="org_email" id='org_email' class="postform">
+  </div>
+
+
   <div class="form-field term-group">
     <label for="org_country"><?php _e('Country:', 'mage-eventpress'); ?></label>
     <input type="text" name="org_country" id='org_country' class="postform">
@@ -195,6 +202,14 @@ function mep_save_feature_meta($term_id, $tt_id)
     $longitude = sanitize_text_field($_POST['longitude']);
     add_term_meta($term_id, 'longitude', $longitude);
   }
+
+
+  if (isset($_POST['org_email'])) {
+    $org_email = sanitize_text_field($_POST['org_email']);
+    add_term_meta($term_id, 'org_email', $org_email);
+  }
+
+
 }
 
 
@@ -235,12 +250,26 @@ function mep_edit_feature_group_field($term, $taxonomy)
       <input type="text" name="org_postcode" id='org_postcode' class="postform" value='<?php echo get_term_meta($term->term_id, 'org_postcode', true); ?>'>
     </td>
   </tr>
+
+  <tr class="form-field term-group-wrap">
+    <th scope="row"><label for="org_email"><?php _e('Email:', 'mage-eventpress'); ?></label></th>
+    <td>
+      <input type="text" name="org_email" id='org_email' class="postform" value='<?php echo get_term_meta($term->term_id, 'org_email', true); ?>'>
+    </td>
+  </tr>
+
+
   <tr class="form-field term-group-wrap">
     <th scope="row"><label for="org_country"><?php _e('Country:', 'mage-eventpress'); ?></label></th>
     <td>
       <input type="text" name="org_country" id='org_country' class="postform" value='<?php echo get_term_meta($term->term_id, 'org_country', true); ?>'>
     </td>
   </tr>
+
+
+
+
+
   <tr class="form-field term-group-wrap">
     <th scope="row"><label for="org_country"><?php _e('Map:', 'mage-eventpress'); ?></label></th>
     <td>
@@ -418,4 +447,14 @@ function mep_update_feature_meta($term_id, $tt_id)
     $longitude = sanitize_text_field($_POST['longitude']);
     update_term_meta($term_id, 'longitude', $longitude);
   }
+
+
+  if (isset($_POST['org_email'])) {
+    $longitude = sanitize_text_field($_POST['org_email']);
+    update_term_meta($term_id, 'org_email', $longitude);
+  }
+
+
+
+
 }

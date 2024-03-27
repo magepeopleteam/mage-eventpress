@@ -14,6 +14,7 @@
 		public function mp_event_all_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			$post_id = get_the_id();
+			wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce');
 			?>
             <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                 <div class="mp_tab_menu">
@@ -79,13 +80,7 @@
 						<?php do_action('mep_event_tab_after_ticket_pricing'); ?>
                     </div>
 					<?php do_action('mep_admin_event_details_after_tab_details_ticket_type', $post_id); ?>
-                    <div class="mp_tab_item" data-tab-item="#mp_event_time">
-                        <h3><?php echo esc_html($event_label);
-								esc_html_e(' Date & TIme :', 'mage-eventpress'); ?></h3>
-                        <hr/>
-						<?php $this->mep_event_date_meta_box_cb($post_id); ?>
-						<?php do_action('mp_event_recurring_every_day_setting', $post_id); ?>
-                    </div>
+					<?php do_action('add_mep_date_time_tab', $post_id); ?>
 					<?php do_action('mep_admin_event_details_after_tab_details_date_time', $post_id); ?>
                     <div class="mp_tab_item" data-tab-item="#mp_event_rich_text">
                         <h3><?php echo esc_html($event_label);
@@ -448,48 +443,26 @@
 							$count = 0;
 							foreach ($mep_event_ticket_type as $field) {
 								$qty_t_type = array_key_exists('option_qty_t_type', $field) ? esc_attr($field['option_qty_t_type']) : 'inputbox';
+								$option_details = array_key_exists('option_details_t', $field) ? esc_attr($field['option_details_t']) : '';
+								$option_name = array_key_exists('option_name_t', $field) ? esc_attr($field['option_name_t']) : '';
+								$option_name_text = preg_replace("/[{}()<>+ ]/", '_', $option_name) . '_' . $post_id;
+								$option_price = array_key_exists('option_price_t', $field) ? esc_attr($field['option_price_t']) : '';
+								$option_qty = array_key_exists('option_qty_t', $field) ? esc_attr($field['option_qty_t']) : 0;
+								$option_default_qty = array_key_exists('option_default_qty_t', $field) ? esc_attr($field['option_default_qty_t']) : 0;
+								$option_rsv_qty = array_key_exists('option_rsv_t', $field) ? esc_attr($field['option_rsv_t']) : 0;
 								$count++;
 								?>
                                 <tr>
                                     <td>
-                                        <input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php if ($field['option_name_t'] != '') {
-											echo esc_attr($field['option_name_t']);
-										} ?>"/>
+                                        <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr($option_name_text); ?>"/>
+                                        <input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr($option_name); ?>"/>
                                     </td>
-                                    <td>
-                                        <input type="text" class="mp_formControl" name="option_details_t[]" placeholder="" value="<?php if (array_key_exists('option_details_t', $field) && $field['option_price_t'] != '') {
-											echo esc_attr($field['option_details_t']);
-										} ?>"/>
-                                    </td>
-                                    <td>
-                                        <input type="number" size="4" pattern="[0-9]*" step="0.001" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php if (array_key_exists('option_price_t', $field) && $field['option_price_t'] != '') {
-											echo esc_attr($field['option_price_t']);
-										} else {
-											echo '';
-										} ?>"/>
-                                    </td>
+                                    <td><input type="text" class="mp_formControl" name="option_details_t[]" placeholder="" value="<?php echo esc_attr($option_details); ?>"/></td>
+                                    <td><input type="number" size="4" pattern="[0-9]*" step="0.001" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php echo esc_attr($option_price); ?>"/></td>
 									<?php do_action('mep_pricing_table_data_after_price_col', $field, $post_id); ?>
-                                    <td>
-                                        <input type="number" size="4" pattern="[0-9]*" step="1" class="mp_formControl" name="option_qty_t[]" placeholder="Ex: 500" value="<?php if (isset($field['option_qty_t'])) {
-											echo esc_attr($field['option_qty_t']);
-										} else {
-											echo 0;
-										} ?>"/>
-                                    </td>
-                                    <td class='mep_hide_on_load'>
-                                        <input type="number" size="2" pattern="[0-9]*" step="1" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php if (isset($field['option_default_qty_t'])) {
-											echo esc_attr($field['option_default_qty_t']);
-										} else {
-											echo 0;
-										} ?>"/>
-                                    </td>
-                                    <td class='mep_hide_on_load'>
-                                        <input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php if (isset($field['option_rsv_t'])) {
-											echo esc_attr($field['option_rsv_t']);
-										} else {
-											echo 0;
-										} ?>"/>
-                                    </td>
+                                    <td><input type="number" size="4" pattern="[0-9]*" step="1" class="mp_formControl" name="option_qty_t[]" placeholder="Ex: 500" value="<?php echo esc_attr($option_qty) ?>"/></td>
+                                    <td class='mep_hide_on_load'><input type="number" size="2" pattern="[0-9]*" step="1" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php echo esc_attr($option_default_qty) ?>"/></td>
+                                    <td class='mep_hide_on_load'><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php echo esc_attr($option_rsv_qty); ?>"/></td>
 									<?php do_action('mep_add_extra_input_box', $field, $count) ?>
                                     <td class='mep_hide_on_load'>
                                         <div class="sell_expire_date">
@@ -648,113 +621,6 @@
                 <button id="add-row" class="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add Extra Price', 'mage-eventpress'); ?></button>
             </p>
 			<?php
-		}
-		public function mep_event_date_meta_box_cb($post_id) {
-			$values = get_post_custom($post_id);
-			?>
-            <div class="sec">
-                <div class="mp_ticket_type_table">
-                    <table id="repeatable-fieldset-one-d">
-                        <thead>
-                        <th style="min-width: 120px;"><?php esc_html_e('Start Date', 'mage-eventpress'); ?></th>
-                        <th style="min-width: 120px;"><?php esc_html_e('Start Time', 'mage-eventpress'); ?></th>
-                        <th style="min-width: 120px;"><?php esc_html_e('End Date', 'mage-eventpress'); ?></th>
-                        <th style="min-width: 120px;"><?php esc_html_e('End Time', 'mage-eventpress'); ?></th>
-						<?php do_action('mep_date_table_head', $post_id); ?>
-                        <th style="min-width: 60px;"><?php esc_html_e('Action', 'mage-eventpress'); ?></th>
-                        </thead>
-                        <tbody class="mp_event_type_sortable">
-                        <tr>
-                            <td>
-                                <input type="date" class="mp_formControl" name="event_start_date" placeholder="Start Date" value="<?php if (array_key_exists('event_start_date', $values)) {
-									echo esc_attr($values['event_start_date'][0]);
-								} ?>"/>
-                            </td>
-                            <td>
-                                <input type="time" class="mp_formControl" name="event_start_time" placeholder="Start Time" value="<?php if (array_key_exists('event_start_time', $values)) {
-									echo esc_attr($values['event_start_time'][0]);
-								} ?>"/>
-                            </td>
-                            <td>
-                                <input type="date" class="mp_formControl" name="event_end_date" placeholder="End Date" value="<?php if (array_key_exists('event_end_date', $values)) {
-									echo esc_attr($values['event_end_date'][0]);
-								} ?>"/>
-                            </td>
-                            <td>
-                                <input type="time" class="mp_formControl" name="event_end_time" placeholder="End Time" value="<?php if (array_key_exists('event_end_time', $values)) {
-									echo esc_attr(date('H:i', strtotime($values['event_end_time'][0])));
-								} ?>"/>
-                            </td>
-							<?php do_action('mep_date_table_body_default_date', $post_id); ?>
-                            <td>
-                            </td>
-                        </tr>
-						<?php
-							$mep_event_multi_date = get_post_meta($post_id, 'mep_event_more_date', true);
-							if ($mep_event_multi_date) :
-								?>
-								<?php
-								foreach ($mep_event_multi_date as $field) {
-									?>
-                                    <tr>
-                                        <td>
-                                            <input type="date" class="mp_formControl" name="event_more_start_date[]" placeholder="Start Date" value="<?php if ($field['event_more_start_date'] != '') {
-												echo esc_attr(date('Y-m-d', strtotime($field['event_more_start_date'])));
-											} ?>"/>
-                                        </td>
-                                        <td>
-                                            <input type="time" class="mp_formControl" name="event_more_start_time[]" placeholder="Start Time" value="<?php if ($field['event_more_start_time'] != '') {
-												echo esc_attr(date('H:i', strtotime($field['event_more_start_time'])));
-											} ?>"/>
-                                        </td>
-                                        <td>
-                                            <input type="date" class="mp_formControl" name="event_more_end_date[]" placeholder="End Date" value="<?php if ($field['event_more_end_date'] != '') {
-												echo esc_attr(date('Y-m-d', strtotime($field['event_more_end_date'])));
-											} ?>"/>
-                                        </td>
-                                        <td>
-                                            <input type="time" class="mp_formControl" name="event_more_end_time[]" placeholder="End Time" value="<?php if ($field['event_more_end_time'] != '') {
-												echo esc_attr(date('H:i', strtotime($field['event_more_end_time'])));
-											} ?>"/>
-                                        </td>
-										<?php do_action('mep_date_table_body_more_date', $post_id, $field); ?>
-                                        <td>
-                                            <div class="mp_event_remove_move">
-                                                <button class="button remove-row-d" type="button"><i class="fas fa-trash"></i></button>
-                                                <div class="mp_event_type_sortable_button"><i class="fas fa-grip-vertical"></i></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-									<?php
-								}
-							else :
-							endif;
-						?>
-                        <tr class="empty-row-d screen-reader-text">
-                            <td>
-                                <input type="date" class="mp_formControl" name="event_more_start_date[]" placeholder="Start Date" value=""/>
-                            </td>
-                            <td>
-                                <input type="time" class="mp_formControl" name="event_more_start_time[]" placeholder="Start Time" value=""/>
-                            </td>
-                            <td>
-                                <input type="date" class="mp_formControl" name="event_more_end_date[]" placeholder="End Date" value=""/>
-                            </td>
-                            <td>
-                                <input type="time" class="mp_formControl" name="event_more_end_time[]" placeholder="End Time" value=""/>
-                            </td>
-							<?php do_action('mep_date_table_empty', $post_id); ?>
-                            <td>
-                                <button class="button remove-row-d"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button id="add-new-date-row" class="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add More Dates', 'mage-eventpress'); ?></button>
-            </div>
-			<?php
-			do_action('mep_after_date_section', $post_id);
 		}
 		public function mp_event_rich_text($post_id) {
 			wp_nonce_field('mep_event_ricn_text_nonce', 'mep_event_ricn_text_nonce');

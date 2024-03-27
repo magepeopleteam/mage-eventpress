@@ -78,8 +78,6 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
     );
 
     $loop = new WP_Query($args);
-
-
     return $loop;
 }
 

@@ -659,7 +659,14 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     
 }
 
-
+// add_action('init','mme_dbg');
+function mme_dbg(){
+    $order              = wc_get_order(752);
+    echo '<pre>';
+    print_r($order->get_items());
+    echo '</pre>';
+    die();
+}
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
 //   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
@@ -678,6 +685,11 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
   $order              = wc_get_order( $order_id );
   $order_meta         = get_post_meta($order_id); 
   $order_status       = $order->get_status();
+
+
+
+
+
 
   if($order_status != 'failed'){
 
@@ -726,6 +738,7 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     foreach ( $order->get_items() as $item_id => $item_values ) {
       $item_id                    = $item_id;
       $event_id                   = wc_get_order_item_meta($item_id,'event_id',true);
+
         if (get_post_type($event_id) == 'mep_events') { 
           $event_name             = get_the_title($event_id);
           $user_info_arr          = wc_get_order_item_meta($item_id,'_event_user_info',true);
@@ -738,6 +751,8 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
 
           mep_delete_attandee_of_an_order($order_id, $event_id);
 
+    // print_r($order->get_items());
+    // die();
 
           foreach ( $event_ticket_info_arr as $field ) {
             if($field['ticket_qty']>0){

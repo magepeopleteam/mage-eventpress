@@ -97,13 +97,13 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc'          => __('Please select in which order status seat will mark as reserved/booked. By Default is Processing & Completed.', 'mage-eventpress'),
                         'type'          => 'multicheck',
                         'default'       => array('processing' => 'processing','completed' => 'completed'),
-                        'options' => array(
+                        'options'       => apply_filters('mep_event_seat_reduce_status_name_list',array(
                             'on-hold'       => 'On Hold',
                             'pending'       => 'Pending',
                             'processing'    => 'Processing',
                             'completed'     => 'Completed'
                             // 'cancelled'     => 'Cancelled'
-                        )
+                        ))
                     ),
 
                         array(

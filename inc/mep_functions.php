@@ -162,7 +162,7 @@ if (!function_exists('mep_displays_cart_products_feature_image')) {
 if (!function_exists('mep_get_attendee_info_query')) {
     function mep_get_attendee_info_query($event_id, $order_id) {
 
-        $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+        $_user_set_status   = apply_filters('mep_event_seat_reduce_status',mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed')));
         $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
         $order_status       = array_values($_order_status);
 
@@ -659,7 +659,14 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     
 }
 
-
+// add_action('init','mme_dbg');
+function mme_dbg(){
+    $order              = wc_get_order(752);
+    echo '<pre>';
+    print_r($order->get_items());
+    echo '</pre>';
+    die();
+}
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
 //   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
@@ -678,6 +685,11 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
   $order              = wc_get_order( $order_id );
   $order_meta         = get_post_meta($order_id); 
   $order_status       = $order->get_status();
+
+
+
+
+
 
   if($order_status != 'failed'){
 
@@ -726,6 +738,7 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     foreach ( $order->get_items() as $item_id => $item_values ) {
       $item_id                    = $item_id;
       $event_id                   = wc_get_order_item_meta($item_id,'event_id',true);
+
         if (get_post_type($event_id) == 'mep_events') { 
           $event_name             = get_the_title($event_id);
           $user_info_arr          = wc_get_order_item_meta($item_id,'_event_user_info',true);
@@ -738,6 +751,8 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
 
           mep_delete_attandee_of_an_order($order_id, $event_id);
 
+    // print_r($order->get_items());
+    // die();
 
           foreach ( $event_ticket_info_arr as $field ) {
             if($field['ticket_qty']>0){
@@ -1646,7 +1661,7 @@ if (!function_exists('mep_ticket_lits_users')) {
                     <?php do_action('mep_user_order_list_table_head'); ?>
                 </tr>
                 <?php
-                    $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+                    $_user_set_status   = apply_filters('mep_event_seat_reduce_status',mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed')));
                     $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
                     $order_status       = array_values($_order_status);
                 
@@ -2591,7 +2606,8 @@ if (!function_exists('mep_mep_events_column')) {
                         
                     echo apply_filters( 'mep_attendee_stat_recurring', mep_get_event_total_seat($post_id, $event_more_dates, 'multi'),$post_id);
                 } else {
-                    echo mep_get_event_total_seat($post_id);
+                    $event_upcoming_date = date('Y-m-d H:i',strtotime(mep_get_event_upcoming_date($post_id)));
+                    echo mep_get_event_total_seat($post_id,$event_upcoming_date);
                 }
 
                 break;
@@ -2616,15 +2632,20 @@ if (!function_exists('mep_get_term_as_class')) {
 }
 
 
-
-
+add_action('mep_event_seat_reduce_status_name_list','mep_add_partial_payment_name_to_event_seat_reduce');
+function mep_add_partial_payment_name_to_event_seat_reduce($name){
+    $new_name = array(
+        'partially-paid'  => esc_html__( 'Partially Paid', 'tour-booking-manager' ),
+    );
+    return array_merge($name, $new_name);
+}
 
 
 if (!function_exists('mep_ticket_type_sold')) {
     function mep_ticket_type_sold($event_id, $type = '', $date = '') {
         $type           = !empty($type) ? $type : '';
 
-        $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+        $_user_set_status   = apply_filters('mep_event_seat_reduce_status',mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed')));
         $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
         $order_status       = array_values($_order_status);
 
@@ -4210,7 +4231,7 @@ function mep_show_custom_text_for_zero_price($return, $price, $args, $unformatte
 if (!function_exists('mep_check_ticket_type_availaility_before_checkout')) {
 function mep_check_ticket_type_availaility_before_checkout($event_id, $type, $date) {
 
-    $_user_set_status   = mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed'));
+    $_user_set_status   = apply_filters('mep_event_seat_reduce_status',mep_get_option('seat_reserved_order_status', 'general_setting_sec', array('processing','completed')));
     $_order_status      = !empty($_user_set_status) ? $_user_set_status : array('processing','completed');
     $order_status       = array_values($_order_status);
 

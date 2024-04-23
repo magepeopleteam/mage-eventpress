@@ -287,6 +287,10 @@ A. You can create a support ticket here with problem details with possible scree
 
 == Changelog ==
 
+= 4.1.6 =
+* Checkout Page infinite loading issue fixed.
+  29 March 2024*
+
 = 4.1.4 =
 * PHP 8.1.12 Warning issue fixed. 
   05 Jan 2024*

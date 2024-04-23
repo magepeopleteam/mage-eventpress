@@ -2606,7 +2606,8 @@ if (!function_exists('mep_mep_events_column')) {
                         
                     echo apply_filters( 'mep_attendee_stat_recurring', mep_get_event_total_seat($post_id, $event_more_dates, 'multi'),$post_id);
                 } else {
-                    echo mep_get_event_total_seat($post_id);
+                    $event_upcoming_date = date('Y-m-d H:i',strtotime(mep_get_event_upcoming_date($post_id)));
+                    echo mep_get_event_total_seat($post_id,$event_upcoming_date);
                 }
 
                 break;

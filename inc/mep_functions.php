@@ -427,12 +427,38 @@ if (!function_exists('mep_attendee_create')) {
         $order_status       = $order->get_status();
 
 
-        $billing_intotal    = isset($order_meta['_billing_address_index'][0]) ? sanitize_text_field($order_meta['_billing_address_index'][0]) : '';
-        $payment_method     = isset($order_meta['_payment_method_title'][0]) ? sanitize_text_field($order_meta['_payment_method_title'][0]) : '';
-        $user_id            = isset($order_meta['_customer_user'][0]) ? sanitize_text_field($order_meta['_customer_user'][0]) : '';
 
-        $first_name         = isset($order_meta['_billing_first_name'][0]) ? sanitize_text_field($order_meta['_billing_first_name'][0]) : '';
-        $last_name          = isset($order_meta['_billing_last_name'][0]) ? sanitize_text_field($order_meta['_billing_last_name'][0]) : '';
+        // Customer billing information details
+        $billing_first_name = $order->get_billing_first_name();
+        $billing_last_name  = $order->get_billing_last_name();
+        $billing_company    = $order->get_billing_company();
+        $billing_address_1  = $order->get_billing_address_1();
+        $billing_address_2  = $order->get_billing_address_2();
+        $billing_city       = $order->get_billing_city();
+        $billing_state      = $order->get_billing_state();
+        $billing_postcode   = $order->get_billing_postcode();
+        $billing_country    = $order->get_billing_country();
+        $payment_method     = $order->get_payment_method_title();
+        $customer_id        = $order->get_customer_id();
+        // Get the WP_User Object instance
+        $user               = $order->get_user();
+
+        // Get the WP_User roles and capabilities
+        $user_roles         = $user->roles;
+
+        // Get the Customer billing email
+        $billing_email      = $order->get_billing_email();
+
+        // Get the Customer billing phone
+        $billing_phone      = $order->get_billing_phone();
+
+
+       
+        $payment_method     = !empty($payment_method) ? sanitize_text_field($payment_method) : '';
+        $user_id            = isset($customer_id) ? sanitize_text_field($customer_id) : '';
+
+        $first_name         = isset($billing_first_name) ? sanitize_text_field($billing_first_name) : '';
+        $last_name          = isset($billing_last_name) ? sanitize_text_field($billing_last_name) : '';
         $billing_full_name  = $first_name . ' ' . $last_name;
 
 
@@ -442,21 +468,21 @@ if (!function_exists('mep_attendee_create')) {
         if ($type == 'billing') {
             // Billing Information
 
-            $company            = isset($order_meta['_billing_company'][0]) ? sanitize_text_field($order_meta['_billing_company'][0]) : '';
-            $address_1          = isset($order_meta['_billing_address_1'][0]) ? sanitize_text_field($order_meta['_billing_address_1'][0]) : '';
-            $address_2          = isset($order_meta['_billing_address_2'][0]) ? sanitize_text_field($order_meta['_billing_address_2'][0]) : '';
+            $company            = isset($billing_company) ? sanitize_text_field($billing_company) : '';
+            $address_1          = isset($billing_address_1) ? sanitize_text_field($billing_address_1) : '';
+            $address_2          = isset($billing_address_2) ? sanitize_text_field($billing_address_2) : '';
             $address            = $address_1 . ' ' . $address_2;
             $gender             = '';
             $designation        = '';
             $website            = '';
             $vegetarian         = '';
             $tshirtsize         = '';
-            $city               = isset($order_meta['_billing_city'][0]) ? sanitize_text_field($order_meta['_billing_city'][0]) : '';
-            $state              = isset($order_meta['_billing_state'][0]) ? sanitize_text_field($order_meta['_billing_state'][0]) : '';
-            $postcode           = isset($order_meta['_billing_postcode'][0]) ? sanitize_text_field($order_meta['_billing_postcode'][0]) : '';
-            $country            = isset($order_meta['_billing_country'][0]) ? sanitize_text_field($order_meta['_billing_country'][0]) : '';
-            $email              = isset($order_meta['_billing_email'][0]) ? sanitize_text_field($order_meta['_billing_email'][0]) : '';
-            $phone              = isset($order_meta['_billing_phone'][0]) ? sanitize_text_field($order_meta['_billing_phone'][0]) : '';
+            $city               = isset($billing_city) ? sanitize_text_field($billing_city) : '';
+            $state              = isset($billing_state) ? sanitize_text_field($billing_state) : '';
+            $postcode           = isset($billing_postcode) ? sanitize_text_field($billing_postcode) : '';
+            $country            = isset($billing_country) ? sanitize_text_field($billing_country) : '';
+            $email              = isset($billing_email ) ? sanitize_text_field($billing_email ) : '';
+            $phone              = isset($billing_phone) ? sanitize_text_field($billing_phone) : '';
             $ticket_type        = stripslashes(sanitize_text_field($_user_info['ticket_name']));
             $event_date         = sanitize_text_field($_user_info['event_date']);
             $ticket_qty         = sanitize_text_field($_user_info['ticket_qty']);
@@ -660,13 +686,13 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
 }
 
 // add_action('init','mme_dbg');
-function mme_dbg(){
-    $order              = wc_get_order(752);
-    echo '<pre>';
-    print_r($order->get_items());
-    echo '</pre>';
-    die();
-}
+// function mme_dbg(){
+//     $order              = wc_get_order(752);
+//     echo '<pre>';
+//     print_r($order->get_items());
+//     echo '</pre>';
+//     die();
+// }
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
 //   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
@@ -3026,7 +3052,7 @@ if (!function_exists('mep_count_hidden_wc_product')) {
             )
         );
         $loop = new WP_Query($args);
-        print_r($loop->posts);
+        // print_r($loop->posts);
         return $loop->post_count;
     }
 }

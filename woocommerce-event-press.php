@@ -3,7 +3,7 @@
 	 * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 4.1.6
+	 * Version: 4.2.0
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
@@ -78,13 +78,28 @@
 		}
 	}
 	else {
+
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
 		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
-		function mep_no_woo_event_activation_redirect($plugin) {
-			if ($plugin == plugin_basename(__FILE__)) {
-				exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
+
+		// function mep_no_woo_event_activation_redirect($plugin) {
+		// 	if ($plugin == plugin_basename(__FILE__)) {
+		// 		// exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
+		// 	} 
+		// }
+
+		add_action('admin_init','mep_quick_setup_check');
+		function mep_quick_setup_check(){
+			$quick_setup_check = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'not-done';
+			if($quick_setup_check == 'not-done'){
+				if(isset($_REQUEST['page']) && $_REQUEST['page'] == 'mpwem_quick_setup'){
+					return null;
+				}else{
+					exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
+				}
 			}
+
 		}
-		add_action('activated_plugin', 'mep_no_woo_event_activation_redirect');
+		
 	}

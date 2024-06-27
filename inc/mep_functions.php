@@ -206,13 +206,13 @@ if (!function_exists('mep_email_dynamic_content')) {
         foreach ($attendee_q->posts as $_attendee_q) {
             $_attendee_id = $_attendee_q->ID;
         }
-        $attendee_id = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
-        $attendee_name = get_post_meta($attendee_id, 'ea_name', true) ? get_post_meta($attendee_id, 'ea_name', true) : '';
-        $email = get_post_meta($attendee_id, 'ea_email', true) ? get_post_meta($attendee_id, 'ea_email', true) : '';
-        $date_time = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-time-text') : '';
-        $date = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-text') : '';
-        $time = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'time') : '';
-        $ticket_type = get_post_meta($attendee_id, 'ea_ticket_type', true) ? get_post_meta($attendee_id, 'ea_ticket_type', true) : '';
+        $attendee_id        = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
+        $attendee_name      = get_post_meta($attendee_id, 'ea_name', true) ? get_post_meta($attendee_id, 'ea_name', true) : '';
+        $email              = get_post_meta($attendee_id, 'ea_email', true) ? get_post_meta($attendee_id, 'ea_email', true) : '';
+        $date_time          = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-time-text') : '';
+        $date               = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-text') : '';
+        $time               = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'time') : '';
+        $ticket_type        = get_post_meta($attendee_id, 'ea_ticket_type', true) ? get_post_meta($attendee_id, 'ea_ticket_type', true) : '';
 
         $email_body = str_replace("{name}", $attendee_name, $email_body);
         $email_body = str_replace("{email}", $email, $email_body);
@@ -427,12 +427,38 @@ if (!function_exists('mep_attendee_create')) {
         $order_status       = $order->get_status();
 
 
-        $billing_intotal    = isset($order_meta['_billing_address_index'][0]) ? sanitize_text_field($order_meta['_billing_address_index'][0]) : '';
-        $payment_method     = isset($order_meta['_payment_method_title'][0]) ? sanitize_text_field($order_meta['_payment_method_title'][0]) : '';
-        $user_id            = isset($order_meta['_customer_user'][0]) ? sanitize_text_field($order_meta['_customer_user'][0]) : '';
 
-        $first_name         = isset($order_meta['_billing_first_name'][0]) ? sanitize_text_field($order_meta['_billing_first_name'][0]) : '';
-        $last_name          = isset($order_meta['_billing_last_name'][0]) ? sanitize_text_field($order_meta['_billing_last_name'][0]) : '';
+        // Customer billing information details
+        $billing_first_name = $order->get_billing_first_name();
+        $billing_last_name  = $order->get_billing_last_name();
+        $billing_company    = $order->get_billing_company();
+        $billing_address_1  = $order->get_billing_address_1();
+        $billing_address_2  = $order->get_billing_address_2();
+        $billing_city       = $order->get_billing_city();
+        $billing_state      = $order->get_billing_state();
+        $billing_postcode   = $order->get_billing_postcode();
+        $billing_country    = $order->get_billing_country();
+        $payment_method     = $order->get_payment_method_title();
+        $customer_id        = $order->get_customer_id();
+        // Get the WP_User Object instance
+        $user               = $order->get_user();
+
+        // Get the WP_User roles and capabilities
+        $user_roles         = $user->roles;
+
+        // Get the Customer billing email
+        $billing_email      = $order->get_billing_email();
+
+        // Get the Customer billing phone
+        $billing_phone      = $order->get_billing_phone();
+
+
+       
+        $payment_method     = !empty($payment_method) ? sanitize_text_field($payment_method) : '';
+        $user_id            = isset($customer_id) ? sanitize_text_field($customer_id) : '';
+
+        $first_name         = isset($billing_first_name) ? sanitize_text_field($billing_first_name) : '';
+        $last_name          = isset($billing_last_name) ? sanitize_text_field($billing_last_name) : '';
         $billing_full_name  = $first_name . ' ' . $last_name;
 
 
@@ -442,21 +468,21 @@ if (!function_exists('mep_attendee_create')) {
         if ($type == 'billing') {
             // Billing Information
 
-            $company            = isset($order_meta['_billing_company'][0]) ? sanitize_text_field($order_meta['_billing_company'][0]) : '';
-            $address_1          = isset($order_meta['_billing_address_1'][0]) ? sanitize_text_field($order_meta['_billing_address_1'][0]) : '';
-            $address_2          = isset($order_meta['_billing_address_2'][0]) ? sanitize_text_field($order_meta['_billing_address_2'][0]) : '';
+            $company            = isset($billing_company) ? sanitize_text_field($billing_company) : '';
+            $address_1          = isset($billing_address_1) ? sanitize_text_field($billing_address_1) : '';
+            $address_2          = isset($billing_address_2) ? sanitize_text_field($billing_address_2) : '';
             $address            = $address_1 . ' ' . $address_2;
             $gender             = '';
             $designation        = '';
             $website            = '';
             $vegetarian         = '';
             $tshirtsize         = '';
-            $city               = isset($order_meta['_billing_city'][0]) ? sanitize_text_field($order_meta['_billing_city'][0]) : '';
-            $state              = isset($order_meta['_billing_state'][0]) ? sanitize_text_field($order_meta['_billing_state'][0]) : '';
-            $postcode           = isset($order_meta['_billing_postcode'][0]) ? sanitize_text_field($order_meta['_billing_postcode'][0]) : '';
-            $country            = isset($order_meta['_billing_country'][0]) ? sanitize_text_field($order_meta['_billing_country'][0]) : '';
-            $email              = isset($order_meta['_billing_email'][0]) ? sanitize_text_field($order_meta['_billing_email'][0]) : '';
-            $phone              = isset($order_meta['_billing_phone'][0]) ? sanitize_text_field($order_meta['_billing_phone'][0]) : '';
+            $city               = isset($billing_city) ? sanitize_text_field($billing_city) : '';
+            $state              = isset($billing_state) ? sanitize_text_field($billing_state) : '';
+            $postcode           = isset($billing_postcode) ? sanitize_text_field($billing_postcode) : '';
+            $country            = isset($billing_country) ? sanitize_text_field($billing_country) : '';
+            $email              = isset($billing_email ) ? sanitize_text_field($billing_email ) : '';
+            $phone              = isset($billing_phone) ? sanitize_text_field($billing_phone) : '';
             $ticket_type        = stripslashes(sanitize_text_field($_user_info['ticket_name']));
             $event_date         = sanitize_text_field($_user_info['event_date']);
             $ticket_qty         = sanitize_text_field($_user_info['ticket_qty']);
@@ -659,14 +685,47 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     
 }
 
-// add_action('init','mme_dbg');
-function mme_dbg(){
-    $order              = wc_get_order(752);
-    echo '<pre>';
-    print_r($order->get_items());
-    echo '</pre>';
-    die();
+
+// add_action('admin_init','mme_dbg');
+// function mme_dbg(){
+//     $order              = mep_get_event_datetime_from_order_id(752);
+//     echo '<pre>';
+//     print_r($order);
+//     echo '</pre>';
+//     die();
+// }
+
+
+// add_action('storeabill_woo_order_synced_invoice', 'mep_update_invoice_due_date', 10, 2);
+// function mep_update_invoice_due_date($invoice, $sab_order) {
+//     $wc_order = $sab_order->get_order();
+//     $order_id = $wc_order->get_id();
+//     $due_date = mep_get_event_datetime_from_order_id($order_id);
+//     $invoice->set_date_due( $due_date );
+// }
+
+
+function mep_get_event_datetime_from_order_id($order_id){
+    if ( ! $order_id )
+    {return;}
+
+    $order                              = wc_get_order( $order_id );
+    foreach ( $order->get_items() as $item_id => $item_values ) {
+      $item_id                    = $item_id;
+    }
+    $event_id                           = wc_get_order_item_meta($item_id,'event_id',true);
+    if (get_post_type($event_id)  == 'mep_events') {
+        $event_ticket_info_arr          = wc_get_order_item_meta($item_id,'_event_ticket_info',true);
+        $get_ticket_date                = $event_ticket_info_arr[0]['event_date'];
+        $get_due_date                   = date("Y-m-d H:i:s", strtotime("$get_ticket_date -10 days")); //for minus
+        return $get_due_date;
+
+    }else{
+        return null;
+    }
+
 }
+
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
 //   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
@@ -1454,12 +1513,15 @@ if (!function_exists('mep_include_template_parts')) {
 
 if (!function_exists('mep_template_file_path')) {
     function mep_template_file_path($file_name) {
-        $template_path = get_stylesheet_directory() . '/mage-events/';
-        $default_path = plugin_dir_path(__DIR__) . 'templates/';
+        $template_path      = get_stylesheet_directory() . '/mage-events/';
+        $default_path       = plugin_dir_path(__DIR__) . 'templates/';
         
-        $thedir = is_dir($template_path) ? $template_path : $default_path;
-        $themedir = $thedir . $file_name;
-        $the_file_path = locate_template(array('mage-events/' . $file_name)) ? $themedir : $default_path . $file_name;
+        $thedir             = is_dir($template_path) ? $template_path : $default_path;
+        $_themedir          = $thedir . $file_name;
+        $themedir           = file_exists($_themedir) ? $_themedir : $default_path.'themes/default-theme.php';
+        $the_file_path      = locate_template(array('mage-events/' . $file_name)) ? $themedir : $default_path . $file_name;
+        // $the_file_path = file_exists($_the_file_path) ? $_the_file_path : $default_path.'themes/default-theme.php';
+
         return $the_file_path;
     }
 }
@@ -3026,7 +3088,7 @@ if (!function_exists('mep_count_hidden_wc_product')) {
             )
         );
         $loop = new WP_Query($args);
-        print_r($loop->posts);
+        // print_r($loop->posts);
         return $loop->post_count;
     }
 }
@@ -4147,9 +4209,10 @@ function mep_get_price_including_tax($event, $price, $args = array()) {
 
     $line_price = (float) $price * (float) $qty;
     $return_price = $line_price;
-
-    if ($product->is_taxable()) {
-
+    $enable_wc_tax      = get_option( 'woocommerce_calc_taxes' );
+    $event_tax_status   = get_post_meta($event,'_tax_status',true) ? get_post_meta($event,'_tax_status',true) : 'none';
+    
+    if ($enable_wc_tax == 'yes' && $event_tax_status !='none' && $product->is_taxable()) {
 
         if (!wc_prices_include_tax()) {
             $tax_rates = WC_Tax::get_rates($product->get_tax_class());

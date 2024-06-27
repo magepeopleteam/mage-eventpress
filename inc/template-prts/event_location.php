@@ -257,6 +257,7 @@ if (!function_exists('mep_ev_street')) {
     function mep_ev_street()
     {
         global $post, $event_meta;
+		$event_id	=	$post->ID ? $post->ID : get_the_id();
         $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($post->ID, 'mep_org');
@@ -264,7 +265,7 @@ if (!function_exists('mep_ev_street')) {
             ?>
             <span><?php echo get_term_meta($org_id, 'org_street', true); ?></span>
             <?php } else { ?>
-            <span><?php echo esc_html($event_meta['mep_street'][0]); ?></span>
+            <span><?php echo esc_html(get_post_meta($event_id,'mep_street',true)); ?></span>
         <?php
         }
     }
@@ -276,6 +277,7 @@ if (!function_exists('mep_ev_city')) {
     function mep_ev_city()
     {
         global $post, $event_meta;
+		$event_id	=	$post->ID ? $post->ID : get_the_id();
         $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($post->ID, 'mep_org');
@@ -283,7 +285,7 @@ if (!function_exists('mep_ev_city')) {
             ?>
             <span><?php echo get_term_meta($org_id, 'org_city', true); ?></span>
        <?php } else {  ?>
-            <span><?php echo esc_html($event_meta['mep_city'][0]); ?></span>
+            <span><?php echo esc_html(get_post_meta($event_id,'mep_city',true)); ?></span>
         <?php
         }
     }
@@ -296,6 +298,7 @@ if (!function_exists('mep_ev_state')) {
     function mep_ev_state()
     {
         global $post, $event_meta;
+		$event_id	=	$post->ID ? $post->ID : get_the_id();
         $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($post->ID, 'mep_org');
@@ -303,7 +306,7 @@ if (!function_exists('mep_ev_state')) {
             ?>
             <span><?php echo get_term_meta($org_id, 'org_state', true); ?></span>
         <?php } else { ?>
-            <span><?php echo esc_html($event_meta['mep_state'][0]); ?></span>
+            <span><?php echo esc_html(get_post_meta($event_id,'mep_state',true)); ?></span>
         <?php
         }
     }
@@ -316,6 +319,7 @@ if (!function_exists('mep_ev_postcode')) {
     function mep_ev_postcode()
     {
         global $post, $event_meta;
+		$event_id	=	$post->ID ? $post->ID : get_the_id();
         $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
         if ($location_sts) {
             $org_arr = get_the_terms($post->ID, 'mep_org');
@@ -323,7 +327,7 @@ if (!function_exists('mep_ev_postcode')) {
             ?>
             <span><?php echo get_term_meta($org_id, 'org_postcode', true); ?></span>
         <?php } else { ?>
-            <span><?php echo esc_html($event_meta['mep_postcode'][0]); ?></span>
+            <span><?php echo esc_html(get_post_meta($event_id,'mep_postcode',true)); ?></span>
         <?php
         }
     }
@@ -336,13 +340,14 @@ if (!function_exists('mep_ev_country')) {
     {
         global $post, $event_meta;
         $location_sts = get_post_meta($post->ID, 'mep_org_address', true);
+		$event_id	=	$post->ID ? $post->ID : get_the_id();
         if ($location_sts) {
             $org_arr = get_the_terms($post->ID, 'mep_org');
             $org_id = $org_arr[0]->term_id;
             ?>
             <span><?php echo get_term_meta($org_id, 'org_country', true); ?></span>
         <?php } else { ?>
-            <span><?php echo esc_html($event_meta['mep_country'][0]); ?></span>
+            <span><?php echo esc_html(get_post_meta($event_id,'mep_country',true)); ?></span>
         <?php
         }
     }

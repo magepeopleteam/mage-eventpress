@@ -206,13 +206,13 @@ if (!function_exists('mep_email_dynamic_content')) {
         foreach ($attendee_q->posts as $_attendee_q) {
             $_attendee_id = $_attendee_q->ID;
         }
-        $attendee_id = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
-        $attendee_name = get_post_meta($attendee_id, 'ea_name', true) ? get_post_meta($attendee_id, 'ea_name', true) : '';
-        $email = get_post_meta($attendee_id, 'ea_email', true) ? get_post_meta($attendee_id, 'ea_email', true) : '';
-        $date_time = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-time-text') : '';
-        $date = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-text') : '';
-        $time = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'time') : '';
-        $ticket_type = get_post_meta($attendee_id, 'ea_ticket_type', true) ? get_post_meta($attendee_id, 'ea_ticket_type', true) : '';
+        $attendee_id        = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
+        $attendee_name      = get_post_meta($attendee_id, 'ea_name', true) ? get_post_meta($attendee_id, 'ea_name', true) : '';
+        $email              = get_post_meta($attendee_id, 'ea_email', true) ? get_post_meta($attendee_id, 'ea_email', true) : '';
+        $date_time          = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-time-text') : '';
+        $date               = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'date-text') : '';
+        $time               = get_post_meta($attendee_id, 'ea_event_date', true) ? get_mep_datetime(get_post_meta($attendee_id, 'ea_event_date', true), 'time') : '';
+        $ticket_type        = get_post_meta($attendee_id, 'ea_ticket_type', true) ? get_post_meta($attendee_id, 'ea_ticket_type', true) : '';
 
         $email_body = str_replace("{name}", $attendee_name, $email_body);
         $email_body = str_replace("{email}", $email, $email_body);
@@ -685,14 +685,47 @@ function mep_beta_disable_add_to_cart_if_product_is_in_cart($is_purchasable, $pr
     
 }
 
-// add_action('init','mme_dbg');
+
+// add_action('admin_init','mme_dbg');
 // function mme_dbg(){
-//     $order              = wc_get_order(752);
+//     $order              = mep_get_event_datetime_from_order_id(752);
 //     echo '<pre>';
-//     print_r($order->get_items());
+//     print_r($order);
 //     echo '</pre>';
 //     die();
 // }
+
+
+// add_action('storeabill_woo_order_synced_invoice', 'mep_update_invoice_due_date', 10, 2);
+// function mep_update_invoice_due_date($invoice, $sab_order) {
+//     $wc_order = $sab_order->get_order();
+//     $order_id = $wc_order->get_id();
+//     $due_date = mep_get_event_datetime_from_order_id($order_id);
+//     $invoice->set_date_due( $due_date );
+// }
+
+
+function mep_get_event_datetime_from_order_id($order_id){
+    if ( ! $order_id )
+    {return;}
+
+    $order                              = wc_get_order( $order_id );
+    foreach ( $order->get_items() as $item_id => $item_values ) {
+      $item_id                    = $item_id;
+    }
+    $event_id                           = wc_get_order_item_meta($item_id,'event_id',true);
+    if (get_post_type($event_id)  == 'mep_events') {
+        $event_ticket_info_arr          = wc_get_order_item_meta($item_id,'_event_ticket_info',true);
+        $get_ticket_date                = $event_ticket_info_arr[0]['event_date'];
+        $get_due_date                   = date("Y-m-d H:i:s", strtotime("$get_ticket_date -10 days")); //for minus
+        return $get_due_date;
+
+    }else{
+        return null;
+    }
+
+}
+
 
   add_action('woocommerce_checkout_order_processed', 'mep_event_booking_management', 90);
 //   add_action('__experimental_woocommerce_blocks_checkout_order_processed', 'mep_event_booking_management', 90); 
@@ -1480,12 +1513,15 @@ if (!function_exists('mep_include_template_parts')) {
 
 if (!function_exists('mep_template_file_path')) {
     function mep_template_file_path($file_name) {
-        $template_path = get_stylesheet_directory() . '/mage-events/';
-        $default_path = plugin_dir_path(__DIR__) . 'templates/';
+        $template_path      = get_stylesheet_directory() . '/mage-events/';
+        $default_path       = plugin_dir_path(__DIR__) . 'templates/';
         
-        $thedir = is_dir($template_path) ? $template_path : $default_path;
-        $themedir = $thedir . $file_name;
-        $the_file_path = locate_template(array('mage-events/' . $file_name)) ? $themedir : $default_path . $file_name;
+        $thedir             = is_dir($template_path) ? $template_path : $default_path;
+        $_themedir          = $thedir . $file_name;
+        $themedir           = file_exists($_themedir) ? $_themedir : $default_path.'themes/default-theme.php';
+        $the_file_path      = locate_template(array('mage-events/' . $file_name)) ? $themedir : $default_path . $file_name;
+        // $the_file_path = file_exists($_the_file_path) ? $_the_file_path : $default_path.'themes/default-theme.php';
+
         return $the_file_path;
     }
 }
@@ -4173,9 +4209,10 @@ function mep_get_price_including_tax($event, $price, $args = array()) {
 
     $line_price = (float) $price * (float) $qty;
     $return_price = $line_price;
-
-    if ($product->is_taxable()) {
-
+    $enable_wc_tax      = get_option( 'woocommerce_calc_taxes' );
+    $event_tax_status   = get_post_meta($event,'_tax_status',true) ? get_post_meta($event,'_tax_status',true) : 'none';
+    
+    if ($enable_wc_tax == 'yes' && $event_tax_status !='none' && $product->is_taxable()) {
 
         if (!wc_prices_include_tax()) {
             $tax_rates = WC_Tax::get_rates($product->get_tax_class());

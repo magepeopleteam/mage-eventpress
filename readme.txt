@@ -2,11 +2,10 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin
 Requires at least: 5.3
-Stable tag: 4.2.0
-Version: 4.2.0
-Tested up to: 6.4.2
+Stable tag: trunk
+Tested up to: 6.5.2
 WC requires at least: 3.0
-WC tested up to: 8.5.2
+WC tested up to: 8.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -286,6 +285,22 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+= 4.2.2 =
+* 
+  28 June 2024*
+
+
+= 4.2.1 =
+* Infinit spinning in checkout when Woocommerce product & event in the cart issue has been fixed.
+  28 June 2024*
+
+= 4.2.0 =
+* Colon showing in the Cart & checkout form WC Product issue fixed.
+  27 June 2024*
+
+= 4.1.9 =
+* Tax error issue has been fixed
+  12 June 2024*
 
 = 4.1.6 =
 * Checkout Page infinite loading issue fixed.

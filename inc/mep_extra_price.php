@@ -126,12 +126,13 @@ function mep_add_custom_price($cart_object)
 function mep_display_custom_fields_text_cart($item_data, $cart_item)
 {
 
-  ob_start();
+
   $mep_events_extra_prices = array_key_exists('event_extra_option', $cart_item) ? $cart_item['event_extra_option'] : array(); //$cart_item['event_extra_option'];
 
   $eid  = array_key_exists('event_id', $cart_item) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 
   if (get_post_type($eid) == 'mep_events') {
+    ob_start();
     $hide_location_status       = mep_get_option('mep_hide_location_from_order_page', 'general_setting_sec', 'no');
     $hide_date_status           = mep_get_option('mep_hide_date_from_order_page', 'general_setting_sec', 'no');
     $user_info                  = $cart_item['event_user_info'];
@@ -225,13 +226,15 @@ function mep_display_custom_fields_text_cart($item_data, $cart_item)
     }
     do_action('mep_after_cart_item_display_list', $cart_item);
     echo "</ul>";             
-
+  
   
 
   $value        = ob_get_clean();
+  
   $the_key      = $eid > 0 ?  __('Details Information','mage-eventpress') : ' ';
   $item_data[]  = array('key' => $the_key, 'value' => $value); 
   }
+  
   return $item_data;  
 }
 add_filter('woocommerce_get_item_data', 'mep_display_custom_fields_text_cart', 90, 2);

@@ -18,13 +18,23 @@ function mep_basic_before_cart_add_validation($passed)
   $event_id               = $product_id;
 
   if (get_post_type($event_id) == 'mep_events') {
-    $not_in_the_cart            = apply_filters('mep_check_product_into_cart', true, $wc_product_id);
+
+    $total_price            = get_post_meta($product_id, '_price', true);
+    $ticket_type_arr        = mep_cart_ticket_type('ticket_type', $total_price, $product_id);
+    $seat_count             = mep_get_event_seat_count($event_id, $ticket_type_arr[0]['event_date']);
+    if($seat_count > 0){
+
+    $not_in_the_cart        = apply_filters('mep_check_product_into_cart', true, $wc_product_id);
     if (!$not_in_the_cart) {
       wc_add_notice("This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error');
       $passed = false;
     }
+  }else{
+    wc_add_notice("Sorry, No Seat Available", 'error');
+    $passed = false;
   }
-
+    
+  }
 
   return $passed;
 }
@@ -69,7 +79,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     }
 
 
-// print_r($ticket_type_arr);
+// print_r($cart_item_data);
 // die();
 
 
@@ -89,6 +99,8 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     do_action('mep_event_cart_data_reg');
 
     $cart_item_data['event_id']                 = $product_id;
+    
+    mep_temp_attendee_create_for_cart($product_id, $ticket_type_arr[0]['ticket_name'], $ticket_type_arr[0]['ticket_qty'],$ticket_type_arr[0]['event_date']);
 
     return apply_filters('mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra);
   } else {
@@ -399,6 +411,10 @@ function mep_add_custom_fields_text_to_order_items($item, $cart_item_key, $value
     // $item->add_meta_data('_product_id', $eid);
     $item->add_meta_data('_event_extra_service', $event_extra_service);
     do_action('mep_event_cart_order_data_add', $values, $item);
+
+
+    mep_temp_attendee_delete_for_cart($event_id, $ticket_type_arr[0]['ticket_name'], $ticket_type_arr[0]['ticket_qty'],$ticket_type_arr[0]['event_date']);
+
   }
 }
 add_action('woocommerce_checkout_create_order_line_item', 'mep_add_custom_fields_text_to_order_items', 90, 4);

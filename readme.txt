@@ -286,8 +286,9 @@ A. You can create a support ticket here with problem details with possible scree
 
 == Changelog ==
 = 4.2.2 =
-* 
-  28 June 2024*
+* Security Issue solved
+* Seat Count now updated based on adding into cart. 
+  11 July 2024*
 
 
 = 4.2.1 =

@@ -285,6 +285,11 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+= 4.2.3 =
+* Conflict Between Woo Product bundle plugin issue fixed
+
+  -- -- 2024*
+
 = 4.2.2 =
 * Security Issue solved
 * Seat Count now updated based on adding into cart. 

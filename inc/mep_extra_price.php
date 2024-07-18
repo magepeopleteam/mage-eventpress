@@ -21,21 +21,26 @@ function mep_basic_before_cart_add_validation($passed)
 
     $total_price            = get_post_meta($product_id, '_price', true);
     $ticket_type_arr        = mep_cart_ticket_type('ticket_type', $total_price, $product_id);
-    $seat_count             = mep_get_event_seat_count($event_id, $ticket_type_arr[0]['event_date']);
-    if($seat_count > 0){
+   
+    foreach ($ticket_type_arr as $ticket) {
+      # code...
+        $ticket_name            = $ticket['ticket_name'];
+        $event_date             = $ticket['event_date'];
+        $seat_count             = mep_get_event_seat_count($event_id, $ticket_name, $event_date);
+        $event_date_text        = get_mep_datetime($event_date,'date-time');
 
-    $not_in_the_cart        = apply_filters('mep_check_product_into_cart', true, $wc_product_id);
-    if (!$not_in_the_cart) {
-      wc_add_notice("This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error');
-      $passed = false;
+        if($seat_count > 0){
+          $not_in_the_cart        = apply_filters('mep_check_product_into_cart', true, $wc_product_id);
+          if (!$not_in_the_cart) {
+            wc_add_notice("This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error');
+            $passed = false;
+          }
+        }else{
+          wc_add_notice("Sorry, $seat_count Seat Available for $ticket_name on $event_date_text", 'error');
+          $passed = false;
+        }
     }
-  }else{
-    wc_add_notice("Sorry, No Seat Available", 'error');
-    $passed = false;
   }
-    
-  }
-
   return $passed;
 }
 add_filter('woocommerce_add_to_cart_validation', 'mep_basic_before_cart_add_validation', 10, 90);
@@ -69,7 +74,6 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     $user                   = $form_position == 'details_page' ? mep_save_attendee_info_into_cart($product_id) : array();
     $validate               = mep_cart_ticket_type('validation_data', $total_price, $product_id);
 
-
     /**
      * Now Store the datas into Cart Session
      */
@@ -77,13 +81,8 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     if (!empty($time_slot_text)) {
       $cart_item_data['event_everyday_time_slot']  = $time_slot_text;
     }
-
-
-// print_r($cart_item_data);
+// print_r($ticket_type_arr);
 // die();
-
-
-
     $cart_item_data['event_ticket_info']        = $ticket_type_arr;
     $cart_item_data['event_validate_info']      = $validate;
     $cart_item_data['event_user_info']          = $user;
@@ -99,8 +98,7 @@ function mep_add_custom_fields_text_to_cart_item($cart_item_data, $product_id, $
     do_action('mep_event_cart_data_reg');
 
     $cart_item_data['event_id']                 = $product_id;
-    
-    mep_temp_attendee_create_for_cart($product_id, $ticket_type_arr[0]['ticket_name'], $ticket_type_arr[0]['ticket_qty'],$ticket_type_arr[0]['event_date']);
+    mep_temp_attendee_create_for_cart_ticket_array($product_id, $ticket_type_arr);
 
     return apply_filters('mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra);
   } else {

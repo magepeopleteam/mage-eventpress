@@ -452,10 +452,10 @@
 								$option_rsv_qty = array_key_exists('option_rsv_t', $field) ? esc_attr($field['option_rsv_t']) : 0;
 								$count++;
 								?>
-                                <tr>
+                                <tr class="data_required">
                                     <td>
                                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr($option_name_text); ?>"/>
-                                        <input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr($option_name); ?>"/>
+                                        <input data-required="" type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr($option_name); ?>"/>
                                     </td>
                                     <td><input type="text" class="mp_formControl" name="option_details_t[]" placeholder="" value="<?php echo esc_attr($option_details); ?>"/></td>
                                     <td><input type="number" size="4" pattern="[0-9]*" step="0.001" class="mp_formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php echo esc_attr($option_price); ?>"/></td>
@@ -502,8 +502,8 @@
 						endif;
 					?>
                     <!-- empty hidden one for jQuery -->
-                    <tr class="empty-row-t screen-reader-text">
-                        <td><input type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult"/></td>
+                    <tr class="empty-row-t screen-reader-text data_required">
+                        <td><input data-required="" type="text" class="mp_formControl" name="option_name_t[]" placeholder="Ex: Adult"/></td>
                         <td><input type="text" class="mp_formControl" name="option_details_t[]" placeholder=""/></td>
                         <td><input type="number" size="4" pattern="[0-9]*" class="mp_formControl" step="0.001" name="option_price_t[]" placeholder="Ex: 10" value=""/></td>
 						<?php do_action('mep_pricing_table_empty_after_price_col'); ?>

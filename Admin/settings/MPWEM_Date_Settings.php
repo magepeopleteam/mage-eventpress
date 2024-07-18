@@ -26,7 +26,6 @@
 				$active_time = $display_time == 'no' ? '' : 'mActive';
 				$checked_time = $display_time == 'no' ? '' : 'checked';
 				//echo '<pre>';print_r(MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays'));				echo '</pre>';
-				//echo '<pre>';print_r($ticket_types);echo '</pre>';
 				?>
                 <div class="mp_tab_item" data-tab-item="#mp_event_time">
                     <div class="mpStyle">
@@ -107,7 +106,7 @@
                                 <span class="min_200"><?php esc_html_e('Repeated After', 'mage-eventpress'); ?></span>
                                 <input type="number" class="formControl max_200 mp_number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/><?php _e(' Days', 'mage-eventpress'); ?>
                             </label>
-                            <div class="_dFlex">
+                            <d.iv class="_dFlex">
                                 <h6 class="min_200"><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></h6>
 								<?php
 									$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
@@ -123,13 +122,14 @@
                                         </label>
 									<?php } ?>
                                 </div>
-                            </div>
+                            </d.iv>
                             <div class="_dFlex">
                                 <h6 class="min_200"><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></h6>
                                 <div class="mp_settings_area max_400">
                                     <div class="mp_item_insert mp_sortable_area">
 										<?php
 											$off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
+											//echo '<pre>';	print_r($off_day_lists);echo '</pre>';
 											if (sizeof($off_day_lists)) {
 												foreach ($off_day_lists as $off_day) {
 													if ($off_day['mep_ticket_off_date']) {
@@ -216,7 +216,8 @@
 				//echo '<pre>';print_r($meta_values);echo'</pre>';
 			}
 			public function time_line($post_id, $key) {
-				$time_infos = MP_Global_Function::get_post_info($post_id, $key, [])
+				$time_infos = MP_Global_Function::get_post_info($post_id, $key, []);
+				//echo '<pre>';				print_r($time_infos);				echo '</pre>';
 				?>
                 <div class="mp_settings_area">
                     <table class="_layoutFixed mpwem_time_setting_table">
@@ -245,9 +246,9 @@
 				?>
                 <tr class="mp_remove_area">
                     <td>
-                        <label><input type="text" class="formControl" value="<?php echo esc_attr($label); ?>" name="<?php echo esc_attr($key . '[mep_ticket_time_name]'); ?>"/></label>
+                        <label><input type="text" class="formControl" value="<?php echo esc_attr($label); ?>" name="<?php echo esc_attr($key . '_label[]'); ?>"/></label>
                     </td>
-                    <td><?php self::time_item($key . '[mep_ticket_time]', $time); ?></td>
+                    <td><?php self::time_item($key . '_time[]', $time); ?></td>
                     <td class="_w_150"><?php MP_Custom_Layout::move_remove_button(); ?></td>
                 </tr>
 				<?php
@@ -275,11 +276,89 @@
 			public function settings_save($post_id) {
 				if (get_post_type($post_id) == 'mep_events') {
 					//************************************//
-					//$date_type = MP_Global_Function::get_submit_info('show_operational_on_day', 'no');
-					//update_post_meta($post_id, 'show_operational_on_day', $date_type);
+					$date_type = MP_Global_Function::get_submit_info('mep_enable_recurring', 'no');
+					update_post_meta($post_id, 'mep_enable_recurring', $date_type);
 					//**********************//
-
+					if ($date_type == 'no' || $date_type == 'yes') {
+						$start_date = MP_Global_Function::get_submit_info('event_start_date');
+						$start_time = MP_Global_Function::get_submit_info('event_start_time');
+						$end_date = MP_Global_Function::get_submit_info('event_end_date');
+						$end_time = MP_Global_Function::get_submit_info('event_end_time');
+						update_post_meta($post_id, 'event_start_date', $start_date);
+						update_post_meta($post_id, 'event_start_time', $start_time);
+						update_post_meta($post_id, 'event_end_date', $end_date);
+						update_post_meta($post_id, 'event_end_time', $end_time);
+						$start_date_more = MP_Global_Function::get_submit_info('event_more_start_date', []);
+						$start_time_more = MP_Global_Function::get_submit_info('event_more_start_time', []);
+						$end_date_more = MP_Global_Function::get_submit_info('event_more_end_date', []);
+						$end_time_more = MP_Global_Function::get_submit_info('event_more_end_time', []);
+						$more_dates = [];
+						if (sizeof($start_date_more) > 0 && sizeof($end_date_more)) {
+							foreach ($start_date_more as $key => $start_date) {
+								if ($start_date && $end_date_more[$key]) {
+									$more_dates[$key]['event_more_start_date'] = $start_date;
+									$more_dates[$key]['event_more_start_time'] = $start_time_more[$key];
+									$more_dates[$key]['event_more_end_date'] = $end_date_more[$key];
+									$more_dates[$key]['event_more_end_time'] = $end_time_more[$key];
+								}
+							}
+						}
+						update_post_meta($post_id, 'mep_event_more_date', $more_dates);
+					} else {
+						$start_date = MP_Global_Function::get_submit_info('event_start_date_everyday');
+						$start_time = MP_Global_Function::get_submit_info('event_start_time_everyday');
+						$end_date = MP_Global_Function::get_submit_info('event_end_date_everyday');
+						$end_time = MP_Global_Function::get_submit_info('event_end_time_everyday');
+						update_post_meta($post_id, 'event_start_date', $start_date);
+						update_post_meta($post_id, 'event_start_time', $start_time);
+						update_post_meta($post_id, 'event_end_date', $end_date);
+						update_post_meta($post_id, 'event_end_time', $end_time);
+						//*******************//
+						$periods = MP_Global_Function::get_submit_info('mep_repeated_periods', 1);
+						update_post_meta($post_id, 'mep_repeated_periods', $periods);
+						$offdays = MP_Global_Function::get_submit_info('mep_ticket_offdays');
+						$off_days = $offdays ? explode(',', $offdays) : '';
+						update_post_meta($post_id, 'mep_ticket_offdays', $off_days);
+						$all_off_dates = [];
+						$off_dates = MP_Global_Function::get_submit_info('mep_ticket_off_dates', []);
+						if (sizeof($off_dates) > 0) {
+							foreach ($off_dates as $key => $off_date) {
+								if ($off_date) {
+									$all_off_dates[$key]['mep_ticket_off_date'] = $off_date;
+								}
+							}
+						}
+						update_post_meta($post_id, 'mep_ticket_off_dates', $all_off_dates);
+						/******************************/
+						$display_time = MP_Global_Function::get_submit_info('mep_disable_ticket_time');
+						$display_time = $display_time ? 'yes' : 'no';
+						update_post_meta($post_id, 'mep_disable_ticket_time', $display_time);
+						/******************************/
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_global');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_sat');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_sun');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_mon');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_tue');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_wed');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_thu');
+						$this->day_wise_slot_save($post_id, 'mep_ticket_times_fri');
+					}
+					//**********************//
 				}
+			}
+			public function day_wise_slot_save($post_id, $name) {
+				$all_global = [];
+				$global_time = MP_Global_Function::get_submit_info($name . '_label', []);
+				$global_label = MP_Global_Function::get_submit_info($name . '_time', []);
+				if (sizeof($global_time) > 0 && sizeof($global_label)) {
+					foreach ($global_time as $key => $time) {
+						if ($time && $global_label[$key]) {
+							$all_global[$key]['mep_ticket_time_name'] = $global_label[$key];
+							$all_global[$key]['mep_ticket_time'] = $time;
+						}
+					}
+				}
+				update_post_meta($post_id, $name, $all_global);
 			}
 		}
 		new MPWEM_Date_Settings();

@@ -289,6 +289,14 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'placeholder' => '15'
                         ),   
                         array(
+                            'name' => 'mep_ticket_expire_time_on_cart',
+                            'label' => __('Event Cart Clear Time (minutes)', 'mage-eventpress'),
+                            'desc' => __('When a Event added into cart, by default its blocked for 10 Minute, If you want to change the time please enter the minute here.', 'mage-eventpress'),
+                            'type' => 'text',
+                            'default' => '10',
+                            'placeholder' => '10'
+                        ),                         
+                        array(
                             'name'      => 'mep_load_fontawesome_from_theme',
                             'label'     => __('Load Font Awesome From Theme?', 'mage-eventpress'),
                             'desc'      => __('If the icons are not working and you want to disable Font Awesome loading from the plugin, select Yes.', 'mage-eventpress'),

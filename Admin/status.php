@@ -83,10 +83,62 @@
 								echo '<span class="mep_error"> <span class="dashicons dashicons-no-alt"></span></span>';
 							} ?></td>
 					</tr>
+					<tr>
+						<td data-export-label="WC Version">Event on Cart (Temporary Booked):</td>
+						<td class="help">
+							<span class="woocommerce-help-tip"></span>
+						</td>
+						<td>
+						<span class="mep_success"> <?php echo mep_event_cart_temp_count(); ?></span>
+						<?php if(mep_event_cart_temp_count() > 0){ ?>
+							<div id="empty-cart-message"></div>
+								<?php wp_nonce_field( 'delete-event-temp-cart'); ?>
+								<input type="hidden" name='empty_event_cart_temp' value='yes'/>
+								<button id="empty-cart-btn" class="button button-primary"><?php _e('Empty Cart','mage-evetpress'); ?></button>								
+							<?php
+						} ?>
+						</td>
+					</tr>
 				<?php }
 					do_action('mep_event_status_table_item_sec'); ?>
 				</tbody>
 			</table>
 		</div>
+		<script>
+			jQuery(function($) {
+				$('#empty-cart-btn').on('click', function() {
+					// Perform AJAX request to empty the cart
+					$.ajax({
+						url: ajaxurl, // WordPress AJAX URL
+						type: 'POST',
+						data: {
+							'action': 'empty_woocommerce_cart'
+						},
+						success: function(response) {
+							$('#empty-cart-message').html('<div class="notice notice-success"><p>Cart emptied successfully.</p></div>');
+						},
+						error: function(error) {
+							$('#empty-cart-message').html('<div class="notice notice-error"><p>Error emptying cart.</p></div>');
+						}
+					});
+				});
+			});
+		</script>
 		<?php
 	}
+
+/**
+ * AJAX Callback Function to Empty WooCommerce Cart
+ */
+add_action( 'wp_ajax_empty_woocommerce_cart', 'mep_empty_woocommerce_cart_ajax' );
+function mep_empty_woocommerce_cart_ajax() {
+    // Check if WooCommerce is active
+    if ( class_exists( 'WooCommerce' ) ) {
+        // Empty the cart
+        WC()->cart->empty_cart();
+		mep_temp_event_cart_empty();
+        wp_send_json_success( 'Cart emptied successfully.' );
+    } else {
+        wp_send_json_error( 'WooCommerce is not active.' );
+    }
+}

@@ -68,7 +68,7 @@ if (post_password_required()) {
     <div class="mep-events-wrapper wrapper">
         <div class="mep-events-container">
             <?php
-             do_action('woocommerce_before_single_product');
+            //  do_action('woocommerce_before_single_product');
             if (!class_exists('WC_Bundles')) {
 				if (!class_exists('WEPOF_Extra_Product_Options')) {	
 					if (!class_exists('WC_Advanced_Country_Restrictions_Dist')) {						

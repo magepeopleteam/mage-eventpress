@@ -418,8 +418,16 @@ function mep_get_ticket_price_by_event($event, $type, $default_price = 0) {
 }
 }
 
-if (!function_exists('mep_temp_attendee_create_for_cart')) {
+if (!function_exists('mep_temp_attendee_create_for_cart_ticket_array')) {
+    function mep_temp_attendee_create_for_cart_ticket_array($event_id, $ticket_type){
+        foreach ($ticket_type as  $ticket) {
+            mep_temp_attendee_create_for_cart($event_id, $ticket['ticket_name'], $ticket['ticket_qty'],$ticket['event_date']);
+        }
+    }
+}
 
+
+if (!function_exists('mep_temp_attendee_create_for_cart')) {
 function mep_temp_attendee_create_for_cart($event_id, $ticket_type, $ticket_qty, $event_date){
 
     $new_post = array(
@@ -486,9 +494,11 @@ if (!function_exists('mep_temp_attendee_delete_for_cart')) {
 }
 
 if (!function_exists('mep_temp_attendee_auto_delete_for_cart')) {
-
     function mep_temp_attendee_auto_delete_for_cart(){
      global $woocommerce;
+     $cart_clear_time       = mep_get_option('mep_ticket_expire_time_on_cart','general_setting_sec',10);
+     $cart_clear_time_sec   = !empty($cart_clear_time) || $cart_clear_time > 0 ? $cart_clear_time * 60 : 600;
+
         $args = array(
             'post_type' => array('mep_temp_attendee'),
             'posts_per_page' => -1,            
@@ -499,7 +509,7 @@ if (!function_exists('mep_temp_attendee_auto_delete_for_cart')) {
             $post_id = $ticket->ID;
             $post_date = get_the_date('Y-m-d H:i:s',$post_id);
             $time_diff = mep_diff_two_datetime($post_date,current_time('Y-m-d H:i:s'));
-            if($time_diff > 900){
+            if($time_diff > $cart_clear_time_sec){
                 wp_delete_post($post_id, true);
                 $woocommerce->cart->empty_cart(); 	
             }
@@ -508,9 +518,40 @@ if (!function_exists('mep_temp_attendee_auto_delete_for_cart')) {
     }
 }
 
+if (!function_exists('mep_temp_event_cart_empty')) {
+    function mep_temp_event_cart_empty(){
+     global $woocommerce;
+
+        $args = array(
+            'post_type' => array('mep_temp_attendee'),
+            'posts_per_page' => -1,            
+        );
+        $loop = new WP_Query($args);
+        if($loop->post_count > 0){
+        foreach ($loop->posts as $ticket) {
+            $post_id = $ticket->ID;
+            $post_date = get_the_date('Y-m-d H:i:s',$post_id);
+            $time_diff = mep_diff_two_datetime($post_date,current_time('Y-m-d H:i:s'));
+                wp_delete_post($post_id, true);
+        }
+        }
+    }
+}
 add_action('init','mep_auto_load');
 function mep_auto_load(){
-    mep_temp_attendee_auto_delete_for_cart();
+    if(!is_admin()){
+        mep_temp_attendee_auto_delete_for_cart();
+    }
+}
+if (!function_exists('mep_event_cart_temp_count')) {
+    function mep_event_cart_temp_count(){
+        $args = array(
+            'post_type' => array('mep_temp_attendee'),
+            'posts_per_page' => -1
+        );
+        $loop = new WP_Query($args);
+        return $loop->post_count;
+    }
 }
 
 if (!function_exists('mep_temp_attendee_count')) {
@@ -590,9 +631,25 @@ if (!function_exists('mep_temp_attendee_count_of_event')) {
     }
 }
 
+if (!function_exists('mep_event_total_seat_by_name')) {
+    function mep_event_total_seat_by_name($event_id, $type_name) {
+        $mep_event_ticket_type = get_post_meta($event_id, 'mep_event_ticket_type', true);
+        $total = 0;
+        if (is_array($mep_event_ticket_type) && sizeof($mep_event_ticket_type) > 0) {
+            foreach ($mep_event_ticket_type as $ticket) {
+                if ($ticket['option_name_t'] == $type_name) {
+                    $total_seat         = array_key_exists('option_qty_t', $ticket) ? (int)$ticket['option_qty_t'] : 0;
+                    $total_resv_name    = array_key_exists('option_rsv_t', $ticket) ? (int)$ticket['option_rsv_t'] : 0;
+                } 
+                $total = $total_seat + $total_resv_name;
+            }
+        }
+        return $total;
+    }
+}
 
 if (!function_exists('mep_get_event_seat_count')) {
-    function mep_get_event_seat_count($event_id, $event_date){
+    function mep_get_event_seat_count($event_id, $ticket_name, $event_date){
 
         $event_id 		        = mep_get_default_lang_event_id($event_id);
         $event_meta 	        = get_post_custom($event_id);
@@ -605,10 +662,12 @@ if (!function_exists('mep_get_event_seat_count')) {
             if (is_array($mep_event_ticket_type) && sizeof($mep_event_ticket_type) > 0) {
                 // $upcoming_date 		= '';
 				$upcoming_date      = !empty(mep_get_event_upcoming_date($event_id)) ? mep_get_event_upcoming_date($event_id) : '';
-                $total_seat 		= apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
-                $total_resv 		= apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);
+                $total_seat 		= apply_filters('mep_event_total_seat_counts', mep_event_total_seat_by_name($event_id, $ticket_name), $event_id);
+                $total_resv 		= 0;
                 // $total_sold         = mep_ticket_type_sold($event_id);
                 $total_sold 		= mep_get_event_total_seat_left($event_id, $event_date);
+                // mep_get_ticket_type_seat_count($event_id,$name,$date,$total,$reserved)
+                $total_sold 		= mep_get_ticket_type_seat_count($event_id,$ticket_name, $event_date, 0, 0);
                 $total_left 		= (int) $total_seat - ((int) $total_sold + (int) $total_resv);
             }
             return $total_left;

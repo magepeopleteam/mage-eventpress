@@ -317,7 +317,18 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 'yes'   => 'Yes',
                                 'no'    => 'No'
                             )
-                        ),                                                                    
+                        ),    
+                        array(
+                            'name'      => 'mep_load_countdown_from_theme',
+                            'label'     => __('Load Countdown js From Theme?', 'mage-eventpress'),
+                            'desc'      => __('If the Countdown are not working, and you want to remove Countdown load from the plugin, select "Yes."', 'mage-eventpress'),
+                            'type'      => 'select',
+                            'default'   => 'no',
+                            'options'   => array(
+                                'yes'   => 'Yes',
+                                'no'    => 'No'
+                            )
+                        ),                                                                                         
                         array(
                             'name'      => 'mep_speed_up_list_page',
                             'label'     => __('Speed up the Event List Page Loading?', 'mage-eventpress'),

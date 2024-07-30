@@ -638,10 +638,10 @@ if (!function_exists('mep_event_total_seat_by_name')) {
         if (is_array($mep_event_ticket_type) && sizeof($mep_event_ticket_type) > 0) {
             foreach ($mep_event_ticket_type as $ticket) {
                 if ($ticket['option_name_t'] == $type_name) {
-                    $total_seat         = array_key_exists('option_qty_t', $ticket) ? (int)$ticket['option_qty_t'] : 0;
-                    $total_resv_name    = array_key_exists('option_rsv_t', $ticket) ? (int)$ticket['option_rsv_t'] : 0;
-                } 
-                $total = $total_seat + $total_resv_name;
+                    $total_seat         = array_key_exists('option_qty_t', $ticket) ? (int) $ticket['option_qty_t'] : 0;
+                    $total_resv_name    = array_key_exists('option_rsv_t', $ticket) ? (int) $ticket['option_rsv_t'] : 0;
+                    $total              = $total_seat + $total_resv_name;
+                }                 
             }
         }
         return $total;

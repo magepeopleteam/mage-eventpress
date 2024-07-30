@@ -1223,7 +1223,7 @@ h3.mep_virtual_sec_title {
 #epanel-mainmenu a {
     background: #7e3bd0;
 }
-
+.mpRequired{border-color:red !important;}
 /******************************************************************** Welcome page ************************************************/
 @media only screen and (min-width: 10px) {
 	div.mpwem_welcome_page table tbody th{text-align: left;vertical-align: top;}

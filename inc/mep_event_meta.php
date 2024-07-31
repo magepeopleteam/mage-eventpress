@@ -1113,7 +1113,8 @@
 			$mep_reg_gender = isset($_POST['mep_reg_gender']) ? sanitize_text_field($_POST['mep_reg_gender']) : "";
 			$mep_reg_tshirtsize = isset($_POST['mep_reg_tshirtsize']) ? sanitize_text_field($_POST['mep_reg_tshirtsize']) : "";
 			$mep_reg_tshirtsize_list = isset($_POST['mep_reg_tshirtsize_list']) ? sanitize_text_field($_POST['mep_reg_tshirtsize_list']) : "";
-			$mep_event_template = isset($_POST['mep_event_template']) ? sanitize_text_field($_POST['mep_event_template']) : "";
+			$mep_event_template_file_name = isset($_POST['mep_event_template']) ? sanitize_text_field($_POST['mep_event_template']) : "default-theme.php";
+			$mep_event_template = mep_template_file_validate($mep_event_template_file_name);
 			$event_start_datetime = date('Y-m-d H:i:s', strtotime($event_start_date . ' ' . $event_start_time));
 			$event_end_datetime = date('Y-m-d H:i:s', strtotime($event_end_date . ' ' . $event_end_time));
 			$md = sizeof($mdate) > 0 ? end($mdate) : array();
@@ -1180,12 +1181,6 @@
 			update_post_meta($pid, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list);
 			update_post_meta($pid, 'mep_event_template', $mep_event_template);
 			update_post_meta($pid, 'mep_org_address', $mep_org_address);
-			update_post_meta($pid, 'event_start_date', $event_start_date);
-			update_post_meta($pid, 'event_start_time', $event_start_time);
-			update_post_meta($pid, 'event_end_date', $event_end_date);
-			update_post_meta($pid, 'event_end_time', $event_end_time);
-			update_post_meta($post_id, 'event_start_datetime', $event_start_datetime);
-			update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
 			update_post_meta($post_id, 'event_expire_datetime', $event_expire_datetime);
 			update_post_meta($pid, '_stock', $seat);
 			update_post_meta($pid, '_stock_msg', 'new');

@@ -414,13 +414,7 @@ iframe#gmap_canvas {
 	font-size: 15px;
 	padding: 7px 15px;
 }
-#mp_event_all_info_in_tab table th,
-#mp_event_all_info_in_tab table td {
-	border: 1px solid #DDD;
-	width: inherit;
-	min-width: 80px;
-	vertical-align: middle;
-}
+
 #mp_event_all_info_in_tab table td {
 	padding: 5px;
 }
@@ -494,7 +488,6 @@ iframe#gmap_canvas {
 }
 #mp_event_all_info_in_tab label {
 	position: relative;
-	display: block;
 	margin-bottom: 10px;
 	width: auto;
 	line-height: 28px;
@@ -1230,7 +1223,7 @@ h3.mep_virtual_sec_title {
 #epanel-mainmenu a {
     background: #7e3bd0;
 }
-
+.mpRequired{border-color:red !important;}
 /******************************************************************** Welcome page ************************************************/
 @media only screen and (min-width: 10px) {
 	div.mpwem_welcome_page table tbody th{text-align: left;vertical-align: top;}
@@ -1239,4 +1232,12 @@ h3.mep_virtual_sec_title {
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
+	table.mpwem_time_setting_table,
+	table.mpwem_time_setting_table th,
+	table.mpwem_time_setting_table td{padding: 0 !important;border:0 !important;}
+}
+/******************************************************************** ************************************************/
+@media only screen and (min-width: 10px) {
+	div.mpStyle [name="event_start_time_everyday"],
+	div.mpStyle [name="event_end_time_everyday"]{height: 100%}
 }

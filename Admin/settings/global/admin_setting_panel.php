@@ -97,13 +97,13 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                         'desc'          => __('Please select in which order status seat will mark as reserved/booked. By Default is Processing & Completed.', 'mage-eventpress'),
                         'type'          => 'multicheck',
                         'default'       => array('processing' => 'processing','completed' => 'completed'),
-                        'options'       => apply_filters('mep_event_seat_reduce_status_name_list',array(
+                        'options' => array(
                             'on-hold'       => 'On Hold',
                             'pending'       => 'Pending',
                             'processing'    => 'Processing',
                             'completed'     => 'Completed'
                             // 'cancelled'     => 'Cancelled'
-                        ))
+                        )
                     ),
 
                         array(
@@ -289,14 +289,6 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'placeholder' => '15'
                         ),   
                         array(
-                            'name' => 'mep_ticket_expire_time_on_cart',
-                            'label' => __('Event Cart Clear Time (minutes)', 'mage-eventpress'),
-                            'desc' => __('When a Event added into cart, by default its blocked for 10 Minute, If you want to change the time please enter the minute here.', 'mage-eventpress'),
-                            'type' => 'text',
-                            'default' => '10',
-                            'placeholder' => '10'
-                        ),                         
-                        array(
                             'name'      => 'mep_load_fontawesome_from_theme',
                             'label'     => __('Load Font Awesome From Theme?', 'mage-eventpress'),
                             'desc'      => __('If the icons are not working and you want to disable Font Awesome loading from the plugin, select Yes.', 'mage-eventpress'),
@@ -317,18 +309,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                                 'yes'   => 'Yes',
                                 'no'    => 'No'
                             )
-                        ),    
-                        array(
-                            'name'      => 'mep_load_countdown_from_theme',
-                            'label'     => __('Load Countdown js From Theme?', 'mage-eventpress'),
-                            'desc'      => __('If the Countdown are not working, and you want to remove Countdown load from the plugin, select "Yes."', 'mage-eventpress'),
-                            'type'      => 'select',
-                            'default'   => 'no',
-                            'options'   => array(
-                                'yes'   => 'Yes',
-                                'no'    => 'No'
-                            )
-                        ),                                                                                         
+                        ),                                                                    
                         array(
                             'name'      => 'mep_speed_up_list_page',
                             'label'     => __('Speed up the Event List Page Loading?', 'mage-eventpress'),

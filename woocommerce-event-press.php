@@ -1,9 +1,9 @@
 <?php
 	/**
-	 * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin
+	 * Plugin Name: Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin SUMON
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 4.2.4
+	 * Version: 4.2.5
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
@@ -22,6 +22,11 @@
 	if (!defined('MPWEM_PLUGIN_URL')) {
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
+
+	if (is_plugin_active('woocommerce-event-manager-addon-recurring-event/recurring_events.php')) {
+		deactivate_plugins( '/woocommerce-event-manager-addon-recurring-event/recurring_events.php' );
+	}
+
 	if (is_plugin_active('woocommerce/woocommerce.php')) {
 		function appsero_init_tracker_mage_eventpress() {
 			if (!class_exists('Appsero\Client')) {
@@ -78,28 +83,16 @@
 		}
 	}
 	else {
-
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
 		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
-
-		// function mep_no_woo_event_activation_redirect($plugin) {
-		// 	if ($plugin == plugin_basename(__FILE__)) {
-		// 		// exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
-		// 	} 
-		// }
-
-		add_action('admin_init','mep_quick_setup_check');
-		function mep_quick_setup_check(){
-			$quick_setup_check = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'not-done';
-			if($quick_setup_check == 'not-done'){
-				if(isset($_REQUEST['page']) && $_REQUEST['page'] == 'mpwem_quick_setup'){
-					return null;
-				}else{
-					exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
-				}
+		function mep_no_woo_event_activation_redirect($plugin) {
+			if ($plugin == plugin_basename(__FILE__)) {
+				exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
 			}
-
 		}
-		
+		add_action('activated_plugin', 'mep_no_woo_event_activation_redirect');
 	}
+
+
+	remove_action( 'admin_init', 'mep_re_meta_boxs',200);

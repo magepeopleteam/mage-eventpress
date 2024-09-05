@@ -5125,12 +5125,9 @@ function mep_get_datetime_format($event_id=0,$type='date'){
    
     $saved_time_zone_display            = $custom_format == 'on' && get_post_meta($event_id,'mep_time_zone_display',true) ? get_post_meta($event_id,'mep_time_zone_display',true) : $current_global_timezone_display;
 
-
- 
-
-    $date_format            = $saved_date_format == 'custom' ? $saved_custom_date_format : $saved_date_format;
-    $time_format            = $saved_time_format == 'custom' ? $saved_custom_time_format : $saved_time_format;
-    $timezone               = $saved_time_zone_display == 'yes' ? ' T' : '';
+    $date_format                        = $saved_date_format == 'custom' ? $saved_custom_date_format : $saved_date_format;
+    $time_format                        = $saved_time_format == 'custom' ? $saved_custom_time_format : $saved_time_format;
+    $timezone                           = $saved_time_zone_display == 'yes' ? ' T' : '';
 
 
 
@@ -5296,15 +5293,6 @@ jQuery(document).ready(function() {
 </table>
                         </div>
 <?php
-
-
-
-
-    if(!mep_check_plugin_installed('woocommerce-event-manager-addon-recurring-event/recurring_events.php') ) {
-    ?>
-    <p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("If you're looking for a recurring events function where customers can choose date and time, check out our website. We have a wide selection of options to choose from to make sure your event is perfect. <a href='https://mage-people.com/product/recurring-events-addon-for-event-manager/' target='_blank'>Recurring Addon</a>", 'mage-eventpress'); ?></p>   
-    <?php
-    }
 }
 
 function mep_date_format_list(){
@@ -5316,7 +5304,7 @@ function mep_date_format_list(){
         'Y-m-d'     => date('Y-m-d'),
         'm/d/Y'     => date('m/d/Y'),
         'd/m/Y'     => date('d/m/Y'),
-        'custom'     => __('Custom Date Format','mage-eventpress'),
+        'custom'    => __('Custom Date Format','mage-eventpress'),
     ];
     return $format;
 }
@@ -5327,7 +5315,7 @@ function mep_time_format_list(){
         'g:i A'             => date('g:i A'),
         'H:i'               => date('H:i'),       
         'H\H i\m\i\n'       => date('H\H i\m\i\n'),     
-        'custom'     => __('Custom Time Format','mage-eventpress'),  
+        'custom'            => __('Custom Time Format','mage-eventpress'),  
     ];
     return $format;
 }

@@ -1,13 +1,13 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-add_action('admin_menu', 'mep_re_attendee_stat_menu');
-function mep_re_attendee_stat_menu()
+add_action('admin_menu', 'mep_recurring_attendee_stat_menu');
+function mep_recurring_attendee_stat_menu()
 {
-    add_submenu_page('edit.php?post_type=mep_events', __('Recurring Event Attendee Stat', 'mage-eventpress'), __('Recurring Event Attendee Stat', 'mage-eventpress'), 'manage_woocommerce', 'attendee_stat_list', 'mep_re_attendee_stat_dashboard');
+    add_submenu_page('edit.php?post_type=mep_events', __('Recurring Event Attendee Stat', 'mage-eventpress'), __('Recurring Event Attendee Stat', 'mage-eventpress'), 'manage_woocommerce', 'attendee_stat_list', 'mep_recurring_attendee_stat_dashboard');
 }
 
-function mep_re_attendee_stat_dashboard(){
+function mep_recurring_attendee_stat_dashboard(){
     $event_id =  0;
 ?>
 
@@ -78,7 +78,7 @@ function mep_re_attendee_stat_dashboard(){
                             type: 'POST',
                             url: ajaxurl,                            
                             data: {
-                                "action"            : "mep_re_ajax_attendee_stat_filter",
+                                "action"            : "mep_recurring_ajax_attendee_stat_filter",
                                 "filter_by"         : filter_by,
                                 "ev_filter_key"     : ev_filter_key,
                                 "event_date"        : event_date,
@@ -102,8 +102,8 @@ function mep_re_attendee_stat_dashboard(){
 
 
 
-add_action('wp_ajax_mep_re_ajax_attendee_stat_filter', 'mep_re_ajax_attendee_stat_filter');
-function mep_re_ajax_attendee_stat_filter()
+add_action('wp_ajax_mep_recurring_ajax_attendee_stat_filter', 'mep_recurring_ajax_attendee_stat_filter');
+function mep_recurring_ajax_attendee_stat_filter()
 {
     $event_id               = isset($_REQUEST['event_id']) ? $_REQUEST['event_id'] : '';
     $event_date             = isset($_REQUEST['event_date']) ? $_REQUEST['event_date'] : '';
@@ -113,11 +113,11 @@ function mep_re_ajax_attendee_stat_filter()
     <table class="wp-list-table widefat striped posts">
         <thead>
            <tr>
-                <th><?php _e('Ticket Type Name','mage-eventpress-re');  ?></th>
-                <th><?php _e('Total Seat','mage-eventpress-re');  ?></th>
-                <th><?php _e('Total Reserved','mage-eventpress-re');  ?></th>
-                <th><?php _e('Ticket Sold','mage-eventpress-re');  ?></th>
-                <th><?php _e('Available Seat','mage-eventpress-re');  ?></th>
+                <th><?php _e('Ticket Type Name','mage-eventpress');  ?></th>
+                <th><?php _e('Total Seat','mage-eventpress');  ?></th>
+                <th><?php _e('Total Reserved','mage-eventpress');  ?></th>
+                <th><?php _e('Ticket Sold','mage-eventpress');  ?></th>
+                <th><?php _e('Available Seat','mage-eventpress');  ?></th>
             </tr>
         </thead>
         <tbody>
@@ -143,12 +143,12 @@ function mep_re_ajax_attendee_stat_filter()
     die();
 }
 
-add_filter('mep_attendee_stat_recurring','mep_re_attendee_stat_recurring', 10, 2);
-function mep_re_attendee_stat_recurring($stat,$post_id){
+add_filter('mep_attendee_stat_recurring','mep_recurring_attendee_stat_recurring', 10, 2);
+function mep_recurring_attendee_stat_recurring($stat,$post_id){
    ?>
     <span style="background: #dc3232;color: #fff;padding: 5px 10px; display:block">
         <span class="mep_seat_stat_info_82">
-            <a href="<?php echo get_admin_url(); ?>edit.php?post_type=mep_events&page=attendee_stat_list&event_id=<?php echo $post_id; ?>" style='color:#fff'><?php _e('View Details','mage-eventpress-re'); ?></a>
+            <a href="<?php echo get_admin_url(); ?>edit.php?post_type=mep_events&page=attendee_stat_list&event_id=<?php echo $post_id; ?>" style='color:#fff'><?php _e('View Details','mage-eventpress'); ?></a>
         </span>
     </span>
    <?php

@@ -485,7 +485,7 @@ function mep_re_event_list_upcoming_date_li($event_id)
         $cn = 0;
         foreach ($event_std as $_event_std) {
            
-            $std = $_event_std['event_std'];
+            $std = sanitize_text_field($_event_std['event_std']);
             $start_date = date('Y-m-d', strtotime($_event_std['event_std']));
             $end_date   = date('Y-m-d', strtotime($_event_std['event_etd']));
             if (strtotime(current_time('Y-m-d H:i')) < strtotime($std) && $cn == 0) {

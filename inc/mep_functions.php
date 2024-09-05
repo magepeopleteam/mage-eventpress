@@ -2012,6 +2012,17 @@ if (!function_exists('mep_event_list_price')) {
     }
 }
 
+if (!function_exists('mep_template_file_validate')) {
+    function mep_template_file_validate($file_name) {
+        $template_path      = get_stylesheet_directory() . '/mage-events/';
+        $default_path       = plugin_dir_path(__DIR__) . 'templates/';
+        $thedir             = is_dir($template_path) ? $template_path : $default_path;
+        $_themedir          = $thedir."themes/" . $file_name;
+        $themedir           = file_exists($_themedir) ? $file_name : 'default-theme.php';
+        return $themedir;
+    }
+}
+
 if (!function_exists('mep_event_list_number_price')) {
     function mep_event_list_number_price($pid, $type='price') {
         global $post;

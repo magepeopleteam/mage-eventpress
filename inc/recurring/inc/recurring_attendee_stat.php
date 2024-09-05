@@ -43,7 +43,7 @@ function mep_recurring_attendee_stat_dashboard(){
                     </div>
                 </li>
                 <li id='filter_attitional_btn'>
-                    <input type="hidden" id='mep_everyday_ticket_time' name='mep_attendee_list_filter_event_date' value='<?php echo esc_attr($event_date); ?>'>
+                    <input type="hidden" id='mep_everyday_ticket_time' name='mep_attendee_list_filter_event_date' value='<?php //echo esc_attr($event_date); ?>'>
                 </li>
                 <?php do_action('mep_attendee_list_filter_form_before_btn'); ?>
                 <li>

@@ -275,6 +275,7 @@
 			/*************************************/
 			public function settings_save($post_id) {
 				if (get_post_type($post_id) == 'mep_events') {
+				
 					//************************************//
 					$date_type = MP_Global_Function::get_submit_info('mep_enable_recurring', 'no');
 					update_post_meta($post_id, 'mep_enable_recurring', $date_type);

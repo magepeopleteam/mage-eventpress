@@ -934,6 +934,7 @@
 	add_action('save_post', 'mep_events_ticket_type_save');
 	function mep_events_ticket_type_save($post_id) {
 		global $wpdb;
+	
 		if (
 			!isset($_POST['mep_event_ticket_type_nonce']) ||
 			!wp_verify_nonce($_POST['mep_event_ticket_type_nonce'], 'mep_event_ticket_type_nonce')

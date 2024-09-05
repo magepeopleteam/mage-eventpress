@@ -2091,7 +2091,7 @@ add_filter('manage_mep_events_posts_columns', 'mep_set_custom_edit_event_columns
 if (!function_exists('mep_set_custom_edit_event_columns')) {
     function mep_set_custom_edit_event_columns($columns) {
         unset($columns['date']);
-        $columns['mep_status'] = esc_html__('Status', 'mage-eventpress');
+        $columns['mep_status'] = esc_html__('Elapsed Time', 'mage-eventpress');
         $columns['mep_event_date'] = esc_html__('Event Start Date', 'mage-eventpress');
         return $columns;
     }
@@ -2548,19 +2548,19 @@ if (!function_exists('mep_get_event_total_seat')) {
             $sold           = $total - ($total_sold + $total_resv);
             $available      = $total - $sold;
             ?>
-            <span style="background: #dc3232;color: #fff;padding: 5px 10px; display:block">
-                <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
-                    <?php
-                    $seat_count_var = apply_filters('mep_event_total_seat_counts', $total, $event_id) . ' - ' . apply_filters('mep_event_total_seat_sold', $available, $event_id, $event_date) . ' = ' . apply_filters('mep_event_total_seat_left', $sold, $event_id, '', $event_date);         
-                    echo apply_filters('mep_event_seat_status_text', $seat_count_var, $total, $available, $sold);
-                    ?>
-                </span>
-                <?php //do_action('mep_after_seat_stat_info',$event_id); ?>
+
+            <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
+                <?php
+                $seat_count_var = apply_filters('mep_event_total_seat_counts', $total, $event_id) . ' - ' . apply_filters('mep_event_total_seat_sold', $available, $event_id, $event_date) . ' = ' . apply_filters('mep_event_total_seat_left', $sold, $event_id, '', $event_date);         
+                echo apply_filters('mep_event_seat_status_text', $seat_count_var, $total, $available, $sold);
+                ?>
             </span>
+            <?php //do_action('mep_after_seat_stat_info',$event_id); ?>
+
             <?php
         } else {
             ?>
-            <span style="background: #dc3232;color: #fff;padding: 5px 10px; display:block">
+            
                 <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
                     <?php
                     // $sold = ($total_seat - $total_left);
@@ -2569,7 +2569,7 @@ if (!function_exists('mep_get_event_total_seat')) {
                     ?>
                 </span>
                 <?php do_action('mep_after_seat_stat_info',$event_id); ?>
-            </span>
+            
             <?php
         }
         return ob_get_clean();

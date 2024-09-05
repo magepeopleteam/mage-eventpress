@@ -1,3 +1,15 @@
+:root{
+	--mpev-primary:#F12971;
+	--mpev-dark:#333333;
+	--mpev-grey:#d3d3d3;
+	--mpev-light:#f1f5f6;
+	--mpev-green:#32c1a4;
+	--mpev-red:#ed5a54;
+	--mpev-orange:#ffbe00;
+	--mpev-white:#ffffff;
+	--mpev-black:#000000;
+}
+
 .inside .sec {
 	display: block;
 	font-size: 15px;
@@ -8,25 +20,38 @@
 	font-size: 16px;
 	font-weight: bold;
 }
-.mep_status .active {
-	background: green none repeat scroll 0 0;
-	color: #FFF;
-	padding: 6px 10px;
+.mep_status span.active {
+	background-color: var(--mpev-green);
+	color: var(--mpev-white);
 	display: block;
-	font-size: 12px;
 	text-align: center;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 50px;
+	font-weight: bold;
+	width: 60%;
 }
 .mep_status .err {
-	background: red none repeat scroll 0 0;
+	background-color:var(--mpev-primary);
 	color: #FFF;
-	padding: 6px 10px;
 	display: block;
-	font-size: 12px;
 	text-align: center;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 50px;
+	font-weight: bold;
+	width: 80%;
 }
 td.mep_event_seat.column-mep_event_seat span {
-	display: inline-block;
+	background-color:var(--mpev-primary);
+	color: #FFF;
+	display: block;
 	text-align: center;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 50px;
+	font-weight: bold;
+	width: 60%;
 }
 #mep_uid {
 	width: 65px;
@@ -239,13 +264,15 @@ div#mage-primary-button {
 	display: block;
 }
 span.mep_event_date {
-	background: #B2833F;
-	font-size: 11px;
+	background-color: var(--mpev-orange);
+	color: #FFF;
 	display: block;
 	text-align: center;
-	height: auto;
-	padding: 7px 3px;
-	color: #FFF;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 50px;
+	font-weight: bold;
+	width: 80%;
 }
 div#mep_event_list_thumbnail_meta_boxes table th,
 div#mep_event_list_thumbnail_meta_boxes table td {

@@ -29,7 +29,7 @@
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 70%;
+	width: 75%;
 }
 .mep_status .err {
 	background-color:var(--mpev-primary);
@@ -40,7 +40,7 @@
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 70%;
+	width: 75%;
 }
 span.mep_event_date {
 	background-color: var(--mpev-orange);
@@ -51,7 +51,7 @@ span.mep_event_date {
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 70%;
+	width: 75%;
 }
 td.mep_event_seat.column-mep_event_seat span {
 	background-color:var(--mpev-primary);

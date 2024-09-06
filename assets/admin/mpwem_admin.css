@@ -29,29 +29,40 @@
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 60%;
+	width: 70%;
 }
 .mep_status .err {
 	background-color:var(--mpev-primary);
-	color: #FFF;
+	color: var(--mpev-white);
 	display: block;
 	text-align: center;
 	display: inline-block;
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 80%;
+	width: 70%;
+}
+span.mep_event_date {
+	background-color: var(--mpev-orange);
+	color: var(--mpev-white);
+	display: block;
+	text-align: center;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 50px;
+	font-weight: bold;
+	width: 70%;
 }
 td.mep_event_seat.column-mep_event_seat span {
 	background-color:var(--mpev-primary);
-	color: #FFF;
+	color: var(--mpev-white);
 	display: block;
 	text-align: center;
 	display: inline-block;
 	padding: 5px 0;
 	border-radius: 50px;
 	font-weight: bold;
-	width: 60%;
+	width:50%;
 }
 #mep_uid {
 	width: 65px;
@@ -91,7 +102,7 @@ table.atendee-info {
 	-moz-box-sizing: border-box;
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	background-color: #FFF;
+	background-color: var(--mpev-white);
 }
 #pac-container {
 	padding-bottom: 12px;
@@ -106,7 +117,7 @@ table.atendee-info {
 	font-weight: 300;
 }
 #pac-input {
-	background-color: #FFF;
+	background-color: var(--mpev-white);
 	font-size: 15px;
 	font-weight: 300;
 	margin-left: 12px;
@@ -219,7 +230,7 @@ div#mage-primary-button {
 	line-height: 25px;
 	font-weight: 600;
 	background: #0071A1;
-	color: #FFF;
+	color: var(--mpev-white);
 	text-decoration: none;
 	white-space: nowrap;
 	max-width: 100%;
@@ -263,17 +274,7 @@ div#mage-primary-button {
 #poststuff h3.hndle {
 	display: block;
 }
-span.mep_event_date {
-	background-color: var(--mpev-orange);
-	color: #FFF;
-	display: block;
-	text-align: center;
-	display: inline-block;
-	padding: 5px 0;
-	border-radius: 50px;
-	font-weight: bold;
-	width: 80%;
-}
+
 div#mep_event_list_thumbnail_meta_boxes table th,
 div#mep_event_list_thumbnail_meta_boxes table td {
 	width: 100%;
@@ -411,7 +412,7 @@ iframe#gmap_canvas {
 #mp_event_all_info_in_tab .postbox-header h2 {
 	font-size: 20px;
 	font-weight: 400;
-	color: #FFF !important;
+	color: var(--mpev-white) !important;
 	border: none !important;
 	padding: 0;
 }
@@ -421,7 +422,7 @@ iframe#gmap_canvas {
 	font-size: 28px;
 }
 #mp_event_all_info_in_tab .postbox-header button span {
-	color: #FFF;
+	color: var(--mpev-white);
 }
 #mp_event_all_info_in_tab .postbox-header button:hover span {
 	color: #999;
@@ -457,7 +458,7 @@ iframe#gmap_canvas {
 }
 #add-new-date-row,
 #mp_event_add_new_form {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	padding: .375rem .75rem;
@@ -476,7 +477,7 @@ iframe#gmap_canvas {
 }
 .mp_event_remove_this_row {
 	background-color: #EE1515;
-	color: #FFF;
+	color: var(--mpev-white);
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -527,20 +528,20 @@ iframe#gmap_canvas {
 .mp_tab_menu {
 	min-width: 220px;
 	background-color: #161B37;
-	color: #FFF;
+	color: var(--mpev-white);
 	font-size: 15px;
 	font-weight: 600;
 	max-width: 312px;
 }
 .mp_tab_menu ul {
-	border-top: 1px solid #FFF;
+	border-top: 1px solid var(--mpev-white);
 }
 .mp_tab_menu ul li {
 	padding: 10px;
 	margin: 0;
 	border-bottom: 1px solid #7D7D7D;
 	cursor: pointer;
-	color: #FFF;
+	color: var(--mpev-white);
 	position: relative;
 	font-size: 14px;
 	font-weight: 400;
@@ -561,11 +562,11 @@ iframe#gmap_canvas {
 }
 .mp_tab_menu ul li.active {
 	background-color: #0080F0;
-	color: #FFF;
+	color: var(--mpev-white);
 	font-size: 14px;
 }
 .mp_tab_menu ul li:hover {
-	color: #FFF;
+	color: var(--mpev-white);
 	background: #0080F0;
 }
 .mp_tab_menu ul li.active::after {
@@ -573,11 +574,11 @@ iframe#gmap_canvas {
 	right: 0;
 	content: '';
 	border: 10px solid transparent;
-	border-right-color: #FFF;
+	border-right-color: var(--mpev-white);
 }
 .mp_tab_details {
 	width: calc(100% - 250px);
-	background-color: #FFF;
+	background-color: var(--mpev-white);
 	padding: 15px;
 }
 .mp_tab_item {
@@ -686,7 +687,7 @@ label.mp_event_virtual_type_des textarea {
 }
 #mp_event_all_info_in_tab .mp_event_type_sortable_button {
 	cursor: move;
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	display: inline-block;
@@ -705,7 +706,7 @@ label.mp_event_virtual_type_des textarea {
 	margin-left: 5px;
 }
 .ppof-settings .collapsible .header span.button {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	display: inline-block;
@@ -724,7 +725,7 @@ label.mp_event_virtual_type_des textarea {
 	margin-left: 5px;
 }
 .ppof-settings .collapsible .header span.button.remove {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #EE1515;
 	border-color: #EE1515;
 }
@@ -825,7 +826,7 @@ ul.mep_ready_template_list li a.preview-btn.btn {
 	background: #607D8B;
 	border: 0;
 	padding: 5px 10px;
-	color: #FFF;
+	color: var(--mpev-white);
 	cursor: pointer;
 	font-size: 14px;
 	text-decoration: none;
@@ -873,7 +874,7 @@ p.mep-template-import-count {
 .mep_settings_panel_header {
 	background: #161B37;
 	padding: 30px 20px 30px 20px;
-	color: #FFF;
+	color: var(--mpev-white);
 	font-size: 20px;
 	border-bottom: 1px solid #7D7D7D;
 }
@@ -899,7 +900,7 @@ p.mep-template-import-count {
 	line-height: 25px;
 	font-weight: normal;
 	background: #161B37;
-	color: #FFF;
+	color: var(--mpev-white);
 	text-decoration: none;
 	white-space: nowrap;
 	max-width: 100%;
@@ -939,7 +940,7 @@ p.mep-template-import-count {
 	border-bottom: none;
 }
 .mage_settings_panel_wrap .metabox-holder {
-	background: #FFF;
+	background: var(--mpev-white);
 	padding: 0;
 	padding-top: 0px;
 }
@@ -949,13 +950,13 @@ p.mep-template-import-count {
 .wp-core-ui .mep_settings_wrapper .button-primary {
 	background: #0080F0;
 	border-color: #0080F0;
-	color: #FFF;
+	color: var(--mpev-white);
 	transition: 0.2s;
 }
 .wp-core-ui .mep_settings_wrapper .button-primary:hover {
 	background: #035FAF;
 	border-color: #035FAF;
-	color: #FFF;
+	color: var(--mpev-white);
 	transition: 0.2s;
 }
 .mep_settings_wrapper table.form-table tr:nth-child(2n+1) {
@@ -988,7 +989,7 @@ table.wc_status_table.widefat {
 	background: #161B37;
 }
 .wc_status_table thead h2 {
-	color: #FFF
+	color: var(--mpev-white)
 }
 .wc_status_table tbody tr {
 	border-bottom: 1px solid #F5F5F5;
@@ -1024,7 +1025,7 @@ table.wc_status_table.widefat {
 	display: block;
 }
 .mep_warning_btn {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	padding: .375rem .75rem;
@@ -1036,14 +1037,14 @@ table.wc_status_table.widefat {
 	font-weight: 400;
 }
 .mep_warning_btn:hover {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #0A5BB1;
 	border-color: #0A5BB1;
 	transition: 0.2s;
 }
 #add-row-t,
 #add-row {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	padding: .375rem .75rem;
@@ -1058,7 +1059,7 @@ table.wc_status_table.widefat {
 .wp-core-ui .button.remove-row-t,
 .wp-core-ui .button.remove-row,
 .wp-core-ui .button.remove-row-d {
-	color: #FFF;
+	color: var(--mpev-white);
 	background-color: #EE1515;
 	border-color: #EE1515;
 }
@@ -1089,7 +1090,7 @@ table.wc_status_table.widefat {
 }
 .mep_global_icon_lib_btn {
 	background-color: #119167;
-	color: #FFF;
+	color: var(--mpev-white);
 	border-color: #119167;
 	text-align: center;
 	transition: 0.2s;
@@ -1112,7 +1113,7 @@ table.wc_status_table.widefat {
 }
 .mep_global_icon_lib_btn:hover {
 	background-color: #1E1BBD;
-	color: #FFF;
+	color: var(--mpev-white);
 }
 /*Icon*/
 #mep_global_icon_list_wrapper.mage_modal {
@@ -1123,7 +1124,7 @@ table.wc_status_table.widefat {
 	background: #EA0C36;
 	transition: 0.2s;
 	padding: 5px 12px;
-	color: #FFF;
+	color: var(--mpev-white);
 	display: block;
 	margin-top: 5px;
 	line-height: 26px;
@@ -1136,7 +1137,7 @@ table.wc_status_table.widefat {
 .mep_global_icon_list_close_button:hover {
 	background: #C80A2E;
 	transition: 0.2s;
-	color: #FFF;
+	color: var(--mpev-white);
 }
 #mep_global_icon_list_wrapper label {
 	position: relative;
@@ -1155,7 +1156,7 @@ table.wc_status_table.widefat {
 }
 #mep_global_icon_list_wrapper label:hover {
 	background: #239108;
-	color: #FFF;
+	color: var(--mpev-white);
 }
 #mep_global_icon_list_wrapper input[type=radio] {
 	visibility: hidden;
@@ -1169,7 +1170,7 @@ table.wc_status_table.widefat {
 }
 #mep_global_icon_list_wrapper label.selected {
 	background: #239108;
-	color: #FFF;
+	color: var(--mpev-white);
 }
 .mep_global_icon_list_header {
 	display: -webkit-box;

@@ -135,7 +135,7 @@
 		);
 		$events_faq_meta_args = array(
 			'meta_box_id' => 'mep_event_faq_meta_boxes',
-			'meta_box_title' => '<i class="fas fa-question-circle"></i>' . __('F.A.Q', 'mage-eventpress'),
+			'meta_box_title' => '<i class="far fa-question-circle"></i>' . __('F.A.Q', 'mage-eventpress'),
 			'screen' => array('mep_events'),
 			'context' => 'normal',
 			'priority' => 'high',

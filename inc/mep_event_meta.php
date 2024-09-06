@@ -21,11 +21,11 @@
                     <ul>
 						<?php do_action('mep_admin_event_details_before_tab_name_location', $post_id); ?>
                         <li data-target-tabs="#mp_event_venue">
-                            <i class="fas fa-map-marked"></i><?php esc_html_e('Venue/Location', 'mage-eventpress'); ?>
+                            <i class="fas fa-map-marker-alt"></i><?php esc_html_e('Venue/Location', 'mage-eventpress'); ?>
                         </li>
 						<?php do_action('mep_admin_event_details_after_tab_name_location', $post_id); ?>
                         <li data-target-tabs="#mp_ticket_type_pricing">
-                            <i class="fas fa-dollar-sign"></i><?php esc_html_e('Ticket & Pricing', 'mage-eventpress'); ?>
+                            <i class="fas fa-file-invoice-dollar"></i><?php esc_html_e('Ticket & Pricing', 'mage-eventpress'); ?>
                         </li>
 						<?php do_action('mep_admin_event_details_before_tab_name_ticket_type', $post_id); ?>
                         <li data-target-tabs="#mp_event_time">
@@ -33,17 +33,17 @@
                         </li>
 						<?php do_action('mep_admin_event_details_before_tab_name_date_time', $post_id); ?>
                         <li data-target-tabs="#mp_event_settings">
-                            <i class="fas fa-users-cog"></i><?php esc_html_e('Settings', 'mage-eventpress'); ?>
+                            <i class="fas fa-cogs"></i><?php esc_html_e('Settings', 'mage-eventpress'); ?>
                         </li>
 						<?php do_action('mep_admin_event_details_before_tab_name_settings', $post_id); ?>
 						<?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
                             <li data-target-tabs="#mp_event_tax_settings">
-                                <span class="dashicons dashicons-admin-settings"></span>&nbsp;&nbsp;<?php esc_html_e('Tax', 'mage-eventpress'); ?>
+                                <i class="fas fa-hand-holding-usd"></i><?php esc_html_e('Tax', 'mage-eventpress'); ?>
                             </li>
 						<?php } ?>
 						<?php do_action('mep_admin_event_details_before_tab_name_tax', $post_id); ?>
                         <li data-target-tabs="#mp_event_rich_text">
-                            <i class="far fa-newspaper"></i><?php esc_html_e('Rich text', 'mage-eventpress'); ?>
+                            <i class="fas fa-search-location"></i><?php esc_html_e('SEO Content', 'mage-eventpress'); ?>
                         </li>
                         <li data-target-tabs="#mp_event_email_text">
                             <i class="far fa-envelope-open"></i><?php esc_html_e('Email Text', 'mage-eventpress'); ?>

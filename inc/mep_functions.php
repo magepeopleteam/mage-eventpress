@@ -5014,24 +5014,39 @@ function mep_event_tab_before_location_virtual_event($post_id){
     $description 		= html_entity_decode(get_post_meta($post_id, 'mp_event_virtual_type_des', true));
     $checked 			= ($event_type == 'online') ? 'checked' : '';     
     ?>
-<div>
-    <h3 class='mep_virtual_sec_title'><span><?php esc_html_e('Online/Virtual ', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h3>
-			
-				<label class="mp_event_virtual_type_des_switch">
-					<input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
-					<span class="mep_slider round"></span>
-				</label>
-				<p class="event_meta_help_txt"><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></p>
-				<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
-                <label class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>">
-					<?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
-					<p class="event_meta_help_txt"><?php esc_html_e('Please enter your virtual event joining details in the form below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
-				</label>
-                <?php do_action('mep_event_details_after_virtual_event_info_text_box',$post_id); ?>
-</div>
+<section>
+    <label class="label">
+        <div>
+            <h2 class='mep_virtual_sec_title'><span><?php esc_html_e('Online/Virtual ', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
+            <span class="event_meta_help_txt"><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></span>
+        </div>
+
+        <!-- <label class="mp_event_virtual_type_des_switch">
+            <input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
+            <span class="mep_slider round"></span>
+        </label> -->
+
+        <div class="mpev-switch">
+            <input type="checkbox" name="mep_event_type" value="<?php echo esc_attr($checked); ?>" <?php echo esc_attr(($checked=='online')?'checked':''); ?> data-collapse-target="#mpev-online-event">
+            <span class="slider"></span>
+        </div>
+
+    </label>
+</section>
+
+<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
+
+<section class="mp_event_virtual_type_des <?php echo ($event_type == 'online') ? esc_attr('active') : ''; ?>" id='mpev-online-event'>
+    <p><?php esc_html_e('Please enter your virtual event joining details in the form below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
+    <?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
+</section>
+
+<?php do_action('mep_event_details_after_virtual_event_info_text_box',$post_id); ?>
+
+
+
 <script type="text/javascript">
 jQuery(document).ready(function() {
-
     <?php if($checked == 'checked'){ ?>
             jQuery(".mep_event_tab_location_content").hide(200);
     <?php } ?>

@@ -57,6 +57,26 @@
                 <div class="mp_tab_details">
 					<?php do_action('mep_admin_event_details_before_tab_details_location', $post_id); ?>
                     <div class="mp_tab_item active" data-tab-item="#mp_event_venue">
+						
+						<h3><?php esc_html_e('Vanue/Location Settings','mage-eventpress') ?></h3>
+						<p><?php esc_html_e('Configure Your Venue/Location Settings Here','mage-eventpress') ?></p>
+						
+						<section class="bg-light">
+							<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
+							<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+						</section>
+
+						<!-- <section>
+							<label class="label">
+								<div>
+									<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
+									<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+								</div>
+								<input type="text">
+							</label>
+						</section> -->
+
+
 						<?php do_action('mep_event_tab_before_location', $post_id); ?>
                         <div class='mep_event_tab_location_content'>
                             <h3><?php echo esc_html($event_label);

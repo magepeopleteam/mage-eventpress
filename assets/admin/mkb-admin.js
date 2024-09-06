@@ -108,3 +108,22 @@
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 	});
 }(jQuery));
+
+//  ===============toggle switch==============
+jQuery(document).ready(function ($) {
+
+	mpevSwitch();
+
+	function mpevSwitch() {
+		$('.mpev-switch .slider').click(function() {
+			var checkbox = $(this).prev('input[type="checkbox"]');
+			if (checkbox.val() === 'online') {
+				checkbox.val('');
+			} else {
+				checkbox.val('online');
+			}
+			var target = checkbox.data('collapse-target');
+			$(target).slideToggle();
+		});
+	}
+});

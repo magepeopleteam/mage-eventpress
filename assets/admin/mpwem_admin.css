@@ -1,8 +1,8 @@
 :root{
 	--mpev-primary:#F12971;
-	--mpev-dark:#333333;
+	--mpev-dark:#303030;
 	--mpev-grey:#d3d3d3;
-	--mpev-light:#f1f5f6;
+	--mpev-light:#f2f2f2;
 	--mpev-green:#32c1a4;
 	--mpev-red:#ed5a54;
 	--mpev-orange:#ffbe00;
@@ -406,12 +406,12 @@ iframe#gmap_canvas {
 	padding: 0;
 }
 #mp_event_all_info_in_tab .postbox-header {
-	background-color: #161B37;
-	padding: 10px;
+	background-color: var(--mpev-primary);
+	padding: 8px 12px;
 }
 #mp_event_all_info_in_tab .postbox-header h2 {
-	font-size: 20px;
-	font-weight: 400;
+	font-size: 18px;
+	font-weight: 700;
 	color: var(--mpev-white) !important;
 	border: none !important;
 	padding: 0;
@@ -527,28 +527,39 @@ iframe#gmap_canvas {
 }
 .mp_tab_menu {
 	min-width: 220px;
-	background-color: #161B37;
 	color: var(--mpev-white);
 	font-size: 15px;
 	font-weight: 600;
 	max-width: 312px;
+	padding: 25px 0 25px 25px;
+	background-color: var(--mpev-light);
 }
-.mp_tab_menu ul {
-	border-top: 1px solid var(--mpev-white);
-}
+
 .mp_tab_menu ul li {
-	padding: 10px;
+	padding: 15px;
 	margin: 0;
-	border-bottom: 1px solid #7D7D7D;
 	cursor: pointer;
-	color: var(--mpev-white);
+	color: var(--mpev-dark);
 	position: relative;
-	font-size: 14px;
-	font-weight: 400;
+	font-size: 16px;
+	font-weight: normal;
+	border-left: 2px solid transparent;
+	transition: all 350ms ease-in-out;
 }
+
+.mp_tab_menu ul li::after{
+	width: 90%;
+    height: 100%;
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom: 1px solid var(--mpev-grey);
+}
+
 .field-icon-wrapper .icon-list li {
 	display: inline-block !important;
-	border: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
 	padding: 0;
 	margin: 2px 0;
 	cursor: pointer;
@@ -561,20 +572,24 @@ iframe#gmap_canvas {
 	display: inline-block !important;
 }
 .mp_tab_menu ul li.active {
-	background-color: #0080F0;
-	color: var(--mpev-white);
-	font-size: 14px;
+	background-color: var(--mpev-white);
+    color: var(--mpev-dark);
+    border-left: 2px solid var(--mpev-primary);
 }
+
+.mp_tab_menu ul li:hover::after {
+	width: 100%;
+}
+
 .mp_tab_menu ul li:hover {
-	color: var(--mpev-white);
-	background: #0080F0;
+	color: var(--mpev-dark);
+	background: var(--mpev-white);
+	border-left: 2px solid var(--mpev-primary);
 }
 .mp_tab_menu ul li.active::after {
 	position: absolute;
 	right: 0;
 	content: '';
-	border: 10px solid transparent;
-	border-right-color: var(--mpev-white);
 }
 .mp_tab_details {
 	width: calc(100% - 250px);
@@ -676,8 +691,7 @@ label.mp_event_virtual_type_des textarea {
 	min-width: auto;
 	width: 100%;
 }
-#mp_event_all_info_in_tab button,
-.mp_tab_menu ul li {
+#mp_event_all_info_in_tab button{
 	-webkit-transition: all .25s ease-in-out;
 	transition: all .25s ease-in-out;
 }
@@ -1066,6 +1080,7 @@ table.wc_status_table.widefat {
 .mp_tab_menu ul li i {
 	width: 15px;
 	margin-right: 10px;
+	color: var(--mpev-primary);
 }
 .field-repeatable-wrapper .item-wrap select {
 	margin-top: 10px

@@ -5003,55 +5003,6 @@ function mep_check_plugin_installed($path){
     }
 }
 
-
-
-
-//add_action('mep_event_tab_before_location','mep_event_tab_before_location_virtual_event');
-function mep_event_tab_before_location_virtual_event($post_id){
-    $event_label        = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-    $event_type 		= get_post_meta($post_id, 'mep_event_type', true);
-    $event_member_type 	= get_post_meta($post_id, 'mep_member_only_event', true);   
-    $description 		= html_entity_decode(get_post_meta($post_id, 'mp_event_virtual_type_des', true));
-    $checked 			= ($event_type == 'online') ? 'online' : '';
-    ?>
-<section>
-    <label class="label">
-        <div>
-            <h2><span><?php esc_html_e('Online/Virtual ', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
-            <span><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></span>
-        </div>
-
-        <label class="mp_event_virtual_type_des_switch">
-            <input class="mp_opacity_zero" type="checkbox" name="mep_event_type" <?php echo esc_attr($checked); ?> />
-            <span class="mep_slider round"></span>
-        </label>
-
-    </label>
-</section>
-
-<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
-
-<section class="mp_event_virtual_type_des" id='mpev-online-event'>
-    <p><?php esc_html_e('Please enter your virtual event joining details in the form below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress') ?></p>
-    <?php wp_editor(html_entity_decode(nl2br($description)), 'mp_event_virtual_type_des'); ?>
-</section>
-
-<?php do_action('mep_event_details_after_virtual_event_info_text_box',$post_id); ?>
-
-
-
-<script type="text/javascript">
-jQuery(document).ready(function() {
-    <?php if($checked == 'checked'){ ?>
-            jQuery(".mep_event_tab_location_content").hide(200);
-    <?php } ?>
-    
-});
-</script>
-<?php
-}
-
-
 add_action('mep_event_tab_before_ticket_pricing','mep_event_shortcode_info');
 function mep_event_shortcode_info($post_id){
     if($post_id){

@@ -1,4 +1,7 @@
 <?php
+
+use Sabberworm\CSS\Value\Value;
+
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
@@ -209,6 +212,10 @@
 			$map_visible = array_key_exists('mep_sgm', $values) ? $values['mep_sgm'][0] : 0;
 			$author_id = get_post_field('post_author', $post_id);
 			$event_type 		= get_post_meta($post_id, 'mep_event_type', true);
+			$organizer = [ 
+					$event_label.__(' Details'),
+					__('Organizer'),
+				];
 			if ($this->is_gutenberg_active()) { ?>
                 <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr($author_id); ?>">
 			<?php }
@@ -221,14 +228,13 @@
 							<span><?php esc_html_e('If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress'); ?></span>
 						</div>
 						<select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
-							<option value="0" <?php echo ($mep_org_address == 0) ? esc_attr('selected') : ''; ?>>
-								<?php echo esc_html($event_label); _e(' Details', 'mage-eventpress'); ?></option>
-							<option value="1" <?php echo ($mep_org_address == 1) ? esc_attr('selected') : ''; ?>>
-							<?php esc_html_e('Organizer', 'mage-eventpress'); ?></option>
+							<?php foreach( $organizer as $key => $value): ?>
+								<option value="<?php echo esc_attr($key); ?>" <?php echo ($mep_org_address == $key) ? esc_attr('selected') : ''; ?> > <?php esc_html_e($value); ?> </option>
+							<?php endforeach; ?>
 						</select>
 					</label>
 				</section>
-				<section class="mp_ticket_type_table">
+				<section class="mp_event_address">
 					<table>
 						<tr class="mp_event_address">
 							<th><?php esc_html_e('Location/Venue:', 'mage-eventpress'); ?></th>

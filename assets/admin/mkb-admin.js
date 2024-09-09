@@ -109,6 +109,10 @@
 	});
 }(jQuery));
 
+/**
+ * @author Shahadat Hossain <raselsha@gmail.com>
+ */
+
 //  ===============toggle switch==============
 jQuery(document).ready(function ($) {
 

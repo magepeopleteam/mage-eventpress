@@ -122,8 +122,17 @@ jQuery(document).ready(function ($) {
 			} else {
 				checkbox.val('online');
 			}
+
+			if (checkbox.val() === 1) {
+				checkbox.val('0');
+			} else {
+				checkbox.val('1');
+			}
+
 			var target = checkbox.data('collapse-target');
+			var close = checkbox.data('close-target');
 			$(target).slideToggle();
+			$(close).slideToggle();
 		});
 	}
 });

@@ -551,7 +551,7 @@ iframe#gmap_canvas {
 	position: relative;
 	margin-bottom: 10px;
 	width: auto;
-	line-height: 28px;
+	line-height: 18px;
 }
 .mp_event_all_meta_in_tab {
 	display: -webkit-flex;
@@ -775,9 +775,7 @@ label.mp_event_virtual_type_des textarea {
 	border-color: #EE1515;
 }
 #mp_event_all_info_in_tab .mp_ticket_type_table {
-	width: 100%;
-	overflow: auto;
-	padding: 0 0 15px 0;
+
 }
 /****************/
 #mp_event_all_info_in_tab table button#mep_event_cc_email_text-tmce,
@@ -1284,9 +1282,7 @@ input#mep_search_icon {
 select#mep_org_address_list {
 	min-width: 177px !important;
 }
-.mep_event_tab_location_content {
-	margin-top: 30px;
-}
+
 h3.mep_virtual_sec_title {
 	border-bottom: 1px solid #DDD;
 	padding-bottom: 10px;

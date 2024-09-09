@@ -60,8 +60,9 @@ use Sabberworm\CSS\Value\Value;
                     </ul>
                 </div>
                 <div class="mp_tab_details">
+					
+					<!-- =====================Tab event type online/offline=============  -->
 					<?php do_action('mep_admin_event_details_before_tab_details_location', $post_id); ?>
-					<!-- Tab event type online/offline  -->
                     <div class="mp_tab_item active" data-tab-item="#mp_event_venue">
 						<h3><?php esc_html_e('Vanue/Location Settings','mage-eventpress') ?></h3>
 						<p><?php esc_html_e('Configure Your Venue/Location Settings Here','mage-eventpress') ?></p>
@@ -78,8 +79,8 @@ use Sabberworm\CSS\Value\Value;
                         
 						<?php do_action('mep_event_tab_after_location'); ?>
                     </div>
-
 					<?php do_action('mep_admin_event_details_after_tab_details_location', $post_id); ?>
+					<!-- =====================Tab ticket and pricing=============  -->
                     <div class="mp_tab_item" data-tab-item="#mp_ticket_type_pricing">
 						<?php do_action('mep_event_tab_before_ticket_pricing', $post_id); ?>
                         <div class='mep_ticket_type_setting_sec'>
@@ -92,6 +93,7 @@ use Sabberworm\CSS\Value\Value;
                         </div>
 						<?php do_action('mep_event_tab_after_ticket_pricing'); ?>
                     </div>
+					<!-- =====================Tab ticket and pricing=============  -->
 					<?php do_action('mep_admin_event_details_after_tab_details_ticket_type', $post_id); ?>
 					<?php do_action('add_mep_date_time_tab', $post_id); ?>
 					<?php do_action('mep_admin_event_details_after_tab_details_date_time', $post_id); ?>

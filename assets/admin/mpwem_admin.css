@@ -1319,10 +1319,6 @@ h3.mep_virtual_sec_title {
 	background-color: var(--mpev-light);
 }
 
-input,select{
-	width: 250px;
-}
-
 #mp_event_all_info_in_tab .mp_tab_details .row{
 	display: flex;
 	justify-content: space-between;

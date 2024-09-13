@@ -1382,3 +1382,14 @@ h3.mep_virtual_sec_title {
 }
 
 /********************Round toggle switch****************/
+/********************ticketype table****************/
+
+
+.mp_ticket_type_table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}

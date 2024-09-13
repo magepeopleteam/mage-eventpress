@@ -122,17 +122,10 @@ jQuery(document).ready(function ($) {
 		$('.mpev-switch .slider').click(function() {
 			var checkbox = $(this).prev('input[type="checkbox"]');
 			if (checkbox.val() === 'online') {
-				checkbox.val('');
+				checkbox.val('offline');
 			} else {
 				checkbox.val('online');
 			}
-
-			if (checkbox.val() === 1) {
-				checkbox.val('0');
-			} else {
-				checkbox.val('1');
-			}
-
 			var target = checkbox.data('collapse-target');
 			var close = checkbox.data('close-target');
 			$(target).slideToggle();

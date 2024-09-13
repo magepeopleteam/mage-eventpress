@@ -121,11 +121,18 @@ jQuery(document).ready(function ($) {
 	function mpevSwitch() {
 		$('.mpev-switch .slider').click(function() {
 			var checkbox = $(this).prev('input[type="checkbox"]');
-			if (checkbox.val() === 'online') {
-				checkbox.val('offline');
+			var toggleValues = checkbox.data('toggle-values').split(',');
+			var currentValue = checkbox.val();
+			var nextValue = toggleValues[0];
+
+			if (currentValue === toggleValues[0]) {
+				nextValue = toggleValues[1];
 			} else {
-				checkbox.val('online');
+				nextValue = toggleValues[0];;
 			}
+			
+			checkbox.val(nextValue);
+
 			var target = checkbox.data('collapse-target');
 			var close = checkbox.data('close-target');
 			$(target).slideToggle();

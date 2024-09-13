@@ -165,7 +165,7 @@ use Sabberworm\CSS\Value\Value;
 						<span><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></span>
 					</div>
 					<label class="mpev-switch">
-						<input type="checkbox" name="mep_event_type" value="<?php echo esc_attr($checked); ?>" <?php echo esc_attr(($checked=='online')?'checked':''); ?> data-collapse-target="#mpev-online-event" data-close-target="#mpev-close-online-event">
+						<input type="checkbox" name="mep_event_type" value="<?php echo esc_attr($checked); ?>" <?php echo esc_attr(($checked=='online')?'checked':''); ?> data-collapse-target="#mpev-online-event" data-close-target="#mpev-close-online-event" data-toggle-values="online,offline">
 						<span class="slider"></span>
 					</label>
 				</label>
@@ -289,7 +289,7 @@ use Sabberworm\CSS\Value\Value;
 							<span><?php esc_html_e('Show an interactive Google Map on your website, letting users easily explore and find locations.','mage-eventpress'); ?></span>
 						</div>
 						<label class="mpev-switch">
-							<input type="checkbox" name="mep_sgm" value="<?php echo esc_attr($map_visible); ?>" <?php echo esc_attr(($map_visible==1)?'checked':''); ?> data-collapse-target="#mpev-show-map" data-close-target="#mpev-close-map">
+							<input type="checkbox" name="mep_sgm" value="<?php echo esc_attr($map_visible); ?>" <?php echo esc_attr(($map_visible==1)?'checked':''); ?> data-collapse-target="#mpev-show-map" data-close-target="#mpev-close-map" data-toggle-values="1,0">
 							<span class="slider"></span>
 						</label>
 					</label>

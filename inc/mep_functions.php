@@ -5103,7 +5103,7 @@ function mep_event_recurring_purchase_notice(){
 <section>
     <label class="label">
         <div>
-            <h2><span><?php esc_html_e('Date Time format Settings', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
+            <h2><span><?php esc_html_e('Date Time format Settings', 'mage-eventpress'); ?></span></h2>
             <span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
         </div>
         <label class="mpev-switch">

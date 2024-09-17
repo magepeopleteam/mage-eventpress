@@ -129,9 +129,10 @@ use Sabberworm\CSS\Value\Value;
                     </div>
 					<?php do_action('mep_admin_event_details_after_tab_details_rich_text', $post_id); ?>
                     <div class="mp_tab_item" data-tab-item="#mp_event_settings">
-                        <h3><?php echo esc_html($event_label);
-								esc_html_e(' Settings :', 'mage-eventpress'); ?></h3>
-                        <hr/>
+						
+						<h3><?php echo esc_html($event_label); esc_html_e(' Settings :', 'mage-eventpress'); ?></h3>
+						<p><?php esc_html_e('Configure Your Settings Here','mage-eventpress') ?></p>
+
 						<?php $this->mp_event_settings($post_id); ?>
 						<?php do_action('mep_event_tab_after_settings'); ?>
                     </div>
@@ -864,9 +865,13 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_settings($post_id) {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			?>
-            <table>
+			<section class="bg-light">
+				<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
+				<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+			</section>
+            <?php $this->mp_event_reg_status($post_id); ?>
+			<table>
 				<?php
-					$this->mp_event_reg_status($post_id);
 					$this->mp_event_enddatetime_status($post_id);
 					$this->mp_event_available_seat_status($post_id);
 					$this->mp_event_reset_booking_count($post_id);
@@ -888,46 +893,31 @@ use Sabberworm\CSS\Value\Value;
 				$mep_show_end_datetime = 'checked';
 			}
 			?>
-            <tr>
-                <th><span><?php _e('Display End Datetime:', 'mage-eventpress'); ?></span></th>
-                <td colspan="3">
-                    <label>
-                        <input class="mp_opacity_zero" type="checkbox" name="mep_show_end_datetime" value='yes' <?php echo esc_attr($mep_show_end_datetime); ?> />
-                        <span class="mep_slider round"></span>
-                    </label>
-                </td>
-            </tr>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Display End Datetime', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+					</div>
+					<label class="mpev-switch">
+						<input type="checkbox" name="mep_show_end_datetime" value="<?php echo esc_attr($mep_show_end_datetime); ?>" <?php echo esc_attr(($mep_show_end_datetime=='yes')?'checked':''); ?> data-toggle-values="yes,no">
+						<span class="slider"></span>
+					</label>
+				</label>
+			</section>
 			<?php
 		}
 		public function mp_event_reg_status($post_id) {
-			$values = get_post_custom($post_id);
-			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
-			$reg_checked = '';
-			if (array_key_exists('mep_reg_status', $values)) {
-				if ($values['mep_reg_status'][0] == 'on') {
-					$reg_checked = 'checked';
-				}
-			} else {
-				$reg_checked = 'checked';
-			}
 			?>
-            <tr>
-                <th title="<?php esc_html_e('Event SKU No:', 'mage-eventpress'); ?>"><span><?php esc_html_e('SKU No:', 'mage-eventpress'); ?></span></th>
-                <td colspan="3">
-                    <label>
-                        <input class="mep_input_text" type="text" name="mep_event_sku" value="<?php echo get_post_meta($post_id, '_sku', true); ?>"/>
-                    </label>
-                </td>
-            </tr>
-            <!--tr>
-			<th><span><?php esc_html_e('Registration On/Off:', 'mage-eventpress'); ?></span></th>
-			<td colspan="3">
-				<label>
-					<input class="mp_opacity_zero" type="checkbox" name="mep_reg_status" <?php echo esc_attr($reg_checked); ?> />
-					<span class="mep_slider round"></span>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Event SKU No', 'mage-eventpress');?></h2>
+						<span><?php _e('Event SKU No','mage-eventpress'); ?></span>
+					</div>
+					<input class="mep_input_text" type="text" name="mep_event_sku" value="<?php echo get_post_meta($post_id, '_sku', true); ?>"/>
 				</label>
-			</td>
-		</tr> -->
+			</section>
 			<?php
 		}
 		public function mp_event_available_seat_status($post_id) {
@@ -942,38 +932,46 @@ use Sabberworm\CSS\Value\Value;
 				$seat_checked = 'checked';
 			}
 			?>
-            <tr>
-                <th><span><?php esc_html_e('Show Available Seat?', 'mage-eventpress'); ?></span></th>
-                <td colspan="3">
-                    <label>
-                        <input class="mp_opacity_zero" type="checkbox" name="mep_available_seat" <?php echo esc_attr($seat_checked); ?> />
-                        <span class="mep_slider round"></span>
-                    </label>
-                </td>
-            </tr>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Show Available Seat?', 'mage-eventpress');  ?></h2>
+						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+					</div>
+					<label class="mpev-switch">
+						<input type="checkbox" name="mep_available_seat" value="<?php echo esc_attr($seat_checked); ?>" <?php echo esc_attr(($seat_checked=='on')?'checked':''); ?> data-toggle-values="on,off">
+						<span class="slider"></span>
+					</label>
+				</label>
+			</section>
 			<?php
 		}
 		public function mp_event_reset_booking_count($post_id) {
+			$reset_status = get_post_meta($post_id,'mep_reset_status',true);
 			wp_nonce_field('mep_event_reset_btn_nonce', 'mep_event_reset_btn_nonce');
 			?>
-            <tr>
-                <th><span><?php esc_html_e('Reset Booking Count :', 'mage-eventpress'); ?></span></th>
-                <td colspan="3">
-                    <label>
-                        <input class="mp_opacity_zero" type="checkbox" name="mep_reset_status" class="switch_checkbox"/>
-                        <span class="mep_slider round"></span>
-                        <span style="padding: 0 0 0 60px;"><?php esc_html_e('Current Booking Status :', 'mage-eventpress'); ?></span>
-                        <span><?php mep_get_event_total_seat($post_id); ?></span>
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <p class="event_meta_help_txt">
-						<?php esc_html_e('If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress'); ?>
-                    </p>
-                </td>
-            </tr>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Reset Booking Count', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.','mage-eventpress'); ?></span>
+					</div>
+					<label class="mpev-switch">
+						<input type="checkbox" name="mep_reset_status" value="<?php echo esc_attr($reset_status); ?>" <?php echo esc_attr(($reset_status=='on')?'checked':''); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
+						<span class="slider"></span>
+					</label>
+				</label>
+			</section>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Current Booking Status', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('Current Booking Status.','mage-eventpress'); ?></span>
+					</div>
+					<?php mep_get_event_total_seat($post_id); ?>
+				</label>
+			</section>
+            
 			<?php
 		}
 		public function mp_event_speaker_ticket_type($post_id) {
@@ -985,24 +983,26 @@ use Sabberworm\CSS\Value\Value;
 			$checked = ($event_type == 'online') ? 'checked' : '';
 			$member_checked = ($event_member_type == 'member_only') ? 'checked' : '';
 			?>
-            <tr>
-                <th><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></th>
-                <td colspan="3">
-                    <label class="mp_event_virtual_type_des_switch">
-                        <input class="mp_opacity_zero" type="checkbox" name="mep_member_only_event" <?php echo esc_attr($member_checked); ?> />
-                        <span class="mep_slider round"></span>
-                    </label>
-                    <p></p>
-                    <label class="mp_event_virtual_type_des <?php echo ($event_member_type == 'member_only') ? esc_attr('active') : ''; ?>">
-                        <select name='mep_member_only_user_role[]' multiple>
-                            <option value="all" <?php if (in_array('all', $saved_user_role)) {
-								echo esc_attr('Selected');
-							} ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
-							<?php echo mep_get_user_list($saved_user_role); ?>
-                        </select>
-                    </label>
-                </td>
-            </tr>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+					</div>
+					<label class="mpev-switch">
+						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($member_checked); ?>" <?php echo esc_attr(($member_checked=='on')?'checked':''); ?> data-collapse-target="#mp_event_virtual_type_des" data-toggle-values="on,off">
+						<span class="slider"></span>
+					</label>
+				</label>
+			</section>
+			<section id="mp_event_virtual_type_des <?php echo ($event_member_type == 'member_only') ? esc_attr('active') : ''; ?>">
+				<select name='mep_member_only_user_role[]' multiple>
+					<option value="all" <?php if (in_array('all', $saved_user_role)) {
+						echo esc_attr('Selected');
+					} ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
+					<?php echo mep_get_user_list($saved_user_role); ?>
+				</select>
+			</section>
 			<?php
 		}
 		public function mp_event_tax($post_id) {

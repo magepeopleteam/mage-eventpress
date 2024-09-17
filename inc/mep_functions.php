@@ -5084,7 +5084,7 @@ function mep_event_recurring_purchase_notice(){
 
     $saved_time_zone_display = get_post_meta($event_id,'mep_time_zone_display',true) ? get_post_meta($event_id,'mep_time_zone_display',true) : $current_global_timezone_display;
 
-
+    $date_format = get_post_meta($event_id,'mep_enable_custom_dt_format',true);
 	$values     = get_post_custom($event_id);
 		
 		$mep_enable_custom_dt_format = '';
@@ -5100,100 +5100,79 @@ function mep_event_recurring_purchase_notice(){
 
 ?>
 
+<section>
+    <label class="label">
+        <div>
+            <h2><span><?php esc_html_e('Date Time format Settings', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
+            <span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+        </div>
+        <label class="mpev-switch">
+            <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr($date_format); ?>" <?php echo esc_attr(($date_format=='on')?'checked':''); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
+            <span class="slider"></span>
+        </label>
+    </label>
+</section>
 
-<ul>
-        <li><h3><?php esc_html_e('You can change the date and time format by going to the settings '.$event_label.' (Off/On):', 'mage-eventpress'); ?></h3><hr /></li>
-        <li>
-            <label class='mep_enable_custom_dt_format'>
-                <input class="mp_opacity_zero " type="checkbox" name="mep_enable_custom_dt_format" <?php echo esc_attr($mep_enable_custom_dt_format); ?> /><span class="mep_slider round"></span>
-            </label>
-            </li>
-    </ul>
-
-<script type="text/javascript">
-jQuery(document).ready(function() {
-    <?php if($mep_enable_custom_dt_format != 'checked'){ ?>
-        jQuery(".mep_custom_timezone_setting").hide(200);
-    <?php } ?>
-});
-</script>
-
-
-
-<div class='mep_custom_timezone_setting'>
-<!-- <h3><?php esc_html_e(' Date & TIme Format For this '.$event_label.': ', 'mage-eventpress'); ?></h3> -->
-<table class="form-table">
-		<tbody>
-
-
-
-
-			<tr class='mep_global_date_format'>
-				<th scope="row"><?php _e('Date Format','mage-eventpress'); ?></th>
-				<td>
-                    <select class="regular mep_global_date_format" name="mep_event_date_format" id="datetime_setting_sec[mep_global_date_format]">
-                        <?php                                                 
-                        foreach($date_format_arr as $key => $date){ ?>                                            
-                                <option value='<?php echo $key;?>' <?php if($saved_date_format == $key){ echo 'Selected'; } ?>><?php echo $date;?></option>
-                        <?php } ?>
-                    </select>                    
-                    <p class='event_meta_help_txt'>
-                        <?php _e('Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events.','mage-eventpress'); ?>
-                    </p>
-                </td>
-            </tr>	
-            
-            <tr class="mep_global_custom_date_format" style="">
-                <th scope="row"><label for="datetime_setting_sec[mep_global_custom_date_format]"><?php _e('Custom Date Format','mage-eventpress'); ?></label></th>
-                <td>
-                    <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_date_format]" name="mep_event_custom_date_format" value="<?php echo $saved_custom_date_format; ?>">
-                    <p class="event_meta_help_txt">
-                        <a href="https://wordpress.org/support/article/formatting-date-and-time/">Documentation on date and time formatting</a>
-                    </p>
-                </td>
-            </tr>           
-
-            <tr class="mep_global_time_format">
-                <th scope="row"><label for="datetime_setting_sec[mep_global_time_format]"><?php _e('Time Format','mage-eventpress'); ?></label></th>
-                <td>
-                    <select class="regular mep_global_time_format" name="mep_event_time_format" id="datetime_setting_sec[mep_global_time_format]">
-                    <?php                                                 
-                        foreach($time_format_arr as $key => $date){ ?>                                            
-                                <option value='<?php echo $key;?>' <?php if($saved_time_format == $key){ echo 'Selected'; } ?>><?php echo $date;?></option>
-                        <?php } ?>                  
-                    </select>
-                    <p class="event_meta_help_txt">
-                        <?php _e('Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events.','mage-eventpress'); ?>
-                    </p>
-                </td>
-            </tr>
-
-            <tr class="mep_global_custom_time_format">
-                <th scope="row"><label for="datetime_setting_sec[mep_global_custom_time_format]"><?php _e('Custom Time Format','mage-eventpress'); ?></label></th>
-                <td>
-                    <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_time_format]" name="mep_custom_event_time_format" value="<?php echo $saved_custom_time_format; ?>">
-                    <p class="event_meta_help_txt">
-                        <a href="https://wordpress.org/support/article/formatting-date-and-time/">Documentation on date and time formatting</a>
-                    </p>
-                </td>
-            </tr>
-
-
-            <tr class="mep_global_timezone_display">
-                <th scope="row"><label for="datetime_setting_sec[mep_global_timezone_display]"><?php _e('Show Timezone','mage-eventpress'); ?></label></th>
-                <td>
-                    <select class="regular mep_global_timezone_display" name="mep_time_zone_display" id="datetime_setting_sec[mep_global_timezone_display]">
-                        <option value="yes" <?php if($saved_time_zone_display == 'yes'){ echo 'Selected'; } ?>><?php _e('Yes','mage-eventpress'); ?></option>
-                        <option value="no" <?php if($saved_time_zone_display == 'no'){ echo 'Selected'; } ?>><?php _e('No','mage-eventpress'); ?></option>
-                    </select>
-                    <p class="event_meta_help_txt">
-                        <?php _e('If you want to show the date and time in your local timezone, please select Yes.','mage-eventpress'); ?>
-                    </p>
-                </td>
-            </tr>
-         </tbody>
-</table>
-                        </div>
+<div id='mep_custom_timezone_setting' style="display:<?php echo ($date_format == 'on') ? esc_attr('block') : esc_attr('none'); ?>">
+    <section>
+        <label class="label">
+            <div>
+                <h2><?php esc_html_e('Date Format', 'mage-eventpress');?></h2>
+                <span><?php _e('Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events.','mage-eventpress'); ?></span>
+            </div>
+            <select class="regular mep_global_date_format" name="mep_event_date_format" id="datetime_setting_sec[mep_global_date_format]">
+                <?php                                                 
+                foreach($date_format_arr as $key => $date){ ?>                                            
+                        <option value='<?php echo $key;?>' <?php if($saved_date_format == $key){ echo 'Selected'; } ?>><?php echo $date;?></option>
+                <?php } ?>
+            </select> 
+        </label>
+    </section>
+    <section class="mep_global_custom_date_format">
+        <label class="label">
+            <div>
+                <h2><?php esc_html_e('Custom Date Format', 'mage-eventpress');?></h2>
+                <span><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e('Documentation on date and time formatting.','mage-eventpress'); ?></a></span>
+            </div>
+            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_date_format]" name="mep_event_custom_date_format" value="<?php echo $saved_custom_date_format; ?>">
+        </label>
+    </section>
+    <section class="mep_global_time_format">
+        <label class="label">
+            <div>
+                <h2><?php esc_html_e('Time Format', 'mage-eventpress');?></h2>
+                <span><?php _e('Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events. ','mage-eventpress'); ?></span>
+            </div>
+            <select class="regular mep_global_time_format" name="mep_event_time_format" id="datetime_setting_sec[mep_global_time_format]">
+                <?php                                                 
+                foreach($time_format_arr as $key => $date){ ?>                                            
+                        <option value='<?php echo $key;?>' <?php if($saved_time_format == $key){ echo 'Selected'; } ?>><?php echo $date;?></option>
+                <?php } ?>                  
+            </select>
+        </label>
+    </section>
+    <section class="mep_global_custom_time_format">
+        <label class="label">
+            <div>
+                <h2><?php esc_html_e('Custom Time Format', 'mage-eventpress');?></h2>
+                <span><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e('Documentation on date and time formatting.','mage-eventpress'); ?></a></span>
+            </div>
+            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_time_format]" name="mep_custom_event_time_format" value="<?php echo $saved_custom_time_format; ?>">
+        </label>
+    </section>
+    <section class="mep_global_timezone_display">
+        <label class="label">
+            <div>
+                <h2><?php esc_html_e('Show Timezone', 'mage-eventpress');?></h2>
+                <span><?php _e('If you want to show the date and time in your local timezone, please select Yes.','mage-eventpress'); ?></span>
+            </div>
+            <select class="regular mep_global_timezone_display" name="mep_time_zone_display" id="datetime_setting_sec[mep_global_timezone_display]">
+                <option value="yes" <?php if($saved_time_zone_display == 'yes'){ echo 'Selected'; } ?>><?php _e('Yes','mage-eventpress'); ?></option>
+                <option value="no" <?php if($saved_time_zone_display == 'no'){ echo 'Selected'; } ?>><?php _e('No','mage-eventpress'); ?></option>
+            </select>
+        </label>
+    </section>
+</div>
 <?php
 }
 

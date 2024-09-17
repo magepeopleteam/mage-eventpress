@@ -28,19 +28,31 @@
 				//echo '<pre>';print_r(MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays'));				echo '</pre>';
 				?>
                 <div class="mp_tab_item" data-tab-item="#mp_event_time">
-                    <div class="mpStyle">
-                        <h3><?php echo esc_html($event_label) . ' ' . esc_html__(' Date & TIme :', 'mage-eventpress'); ?></h3>
-                        <div class="_divider"></div>
-                        <label>
-                            <span class="min_200"><?php esc_html_e('Event Type', 'mage-eventpress'); ?></span>
-                            <select class="formControl max_300" name="mep_enable_recurring" data-collapse-target required>
+					<h3><?php esc_html_e('Date & Time','mage-eventpress') ?></h3>
+					<p><?php esc_html_e('Configure Your Date and Time Settings Here','mage-eventpress') ?></p>
+					
+					<section class="bg-light">
+						<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
+						<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+					</section>
+
+					<section>
+						<label class="label">
+							<div>
+								<h2><span><?php esc_html_e('Event Type', 'mage-eventpress'); ?></span></h2>
+								<span><?php _e('Select your event type','mage-eventpress'); ?></span>
+							</div>
+							<select class="formControl" name="mep_enable_recurring" data-collapse-target required>
                                 <option disabled selected><?php esc_html_e('Please select ...', 'mage-eventpress'); ?></option>
                                 <option value="no" data-option-target="#mep_normal_event" <?php echo esc_attr($event_type == 'no' ? 'selected' : ''); ?>><?php esc_html_e('Normal Event', 'mage-eventpress'); ?></option>
                                 <option value="yes" data-option-target="#mep_normal_event" <?php echo esc_attr($event_type == 'yes' ? 'selected' : ''); ?>><?php esc_html_e('Particular Event', 'mage-eventpress'); ?></option>
                                 <option value="everyday" data-option-target="#mep_everyday_event" <?php echo esc_attr($event_type == 'everyday' ? 'selected' : ''); ?>><?php esc_html_e('Repeated Event', 'mage-eventpress'); ?></option>
                             </select>
-                        </label>
-                        <div class="mp_settings_area <?php echo esc_attr($event_type == 'no' || $event_type == 'yes' ? 'mActive' : ''); ?>" data-collapse="#mep_normal_event">
+						</label>
+					</section>
+
+                    <div class="mpStyle">
+                        <section class="mp_settings_area <?php echo esc_attr($event_type == 'no' || $event_type == 'yes' ? 'mActive' : ''); ?>" data-collapse="#mep_normal_event">
                             <table>
                                 <thead>
                                 <tr>
@@ -90,7 +102,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </section>
                         <div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
                             <div class="dFlex">
                                 <h6 class="min_200"><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></h6>

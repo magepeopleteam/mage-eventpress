@@ -791,23 +791,23 @@ use Sabberworm\CSS\Value\Value;
 			<section id='mep_rich_text_table' <?php if ($rt_status == 'disable') { ?> style='display:none;' <?php } ?>>
 				<table>
 					<tr>
-						<th><span><?php esc_html_e('Type :', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Type :', 'mage-eventpress'); ?></span></td>
 						<td colspan="3"><?php esc_html_e('Event', 'mage-eventpress'); ?></td>
 					</tr>
 					<tr>
-						<th><span><?php esc_html_e('Name :', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Name :', 'mage-eventpress'); ?></span></td>
 						<td colspan="3"><?php echo get_the_title($post_id); ?></td>
 					</tr>
 					<tr>
-						<th><span><?php esc_html_e('Start Date :', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Start Date :', 'mage-eventpress'); ?></span></td>
 						<td colspan="3"><?php echo esc_attr($event_start_date) ? get_mep_datetime($event_start_date, 'date-time-text') : ''; ?></td>
 					</tr>
 					<tr>
-						<th><span><?php _e('End Date :', 'mage-eventpress'); ?></span></th>
+						<td><span><?php _e('End Date :', 'mage-eventpress'); ?></span></td>
 						<td colspan="3"><?php echo esc_attr($event_end_date) ? get_mep_datetime($event_end_date, 'date-time-text') : ''; ?></td>
 					</tr>
 					<tr>
-						<th><span><?php esc_html_e('Event Status:', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Event Status:', 'mage-eventpress'); ?></span></td>
 						<td colspan="3">
 							<label>
 								<select class="mp_formControl" name="mep_rt_event_status">
@@ -820,7 +820,7 @@ use Sabberworm\CSS\Value\Value;
 						</td>
 					</tr>
 					<tr>
-						<th><span><?php esc_html_e('Event Attendance Mode:', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Event Attendance Mode:', 'mage-eventpress'); ?></span></td>
 						<td colspan="3">
 							<label>
 								<select class="mp_formControl" name="mep_rt_event_attandence_mode">
@@ -832,7 +832,7 @@ use Sabberworm\CSS\Value\Value;
 						</td>
 					</tr>
 					<tr>
-						<th><span><?php esc_html_e('Previous Start Date:', 'mage-eventpress'); ?></span></th>
+						<td><span><?php esc_html_e('Previous Start Date:', 'mage-eventpress'); ?></span></td>
 						<td colspan="3">
 							<label>
 								<input type='text' class="mp_formControl" name="mep_rt_event_prvdate" value='<?php echo esc_attr($event_rt_prv_date); ?>'/>

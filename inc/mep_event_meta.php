@@ -139,9 +139,9 @@ use Sabberworm\CSS\Value\Value;
 					<?php do_action('mep_admin_event_details_after_tab_details_settings', $post_id); ?>
 					<?php if (get_option('woocommerce_calc_taxes') == 'yes') { ?>
                         <div class="mp_tab_item" data-tab-item="#mp_event_tax_settings">
-                            <h3><?php echo esc_html($event_label);
-									esc_html_e(' Tax Settings :', 'mage-eventpress'); ?></h3>
-                            <hr/>
+           					<h3><?php echo esc_html($event_label); esc_html_e('Tax Settings', 'mage-eventpress'); ?></h3>
+							<p><?php esc_html_e('Configure Your Settings Here','mage-eventpress') ?></p>
+
 							<?php $this->mp_event_tax($post_id); ?>
 							<?php do_action('mep_event_tab_after_tax_settings'); ?>
                         </div>
@@ -1019,34 +1019,35 @@ use Sabberworm\CSS\Value\Value;
 				$tx_class = '';
 			}
 			?>
-            <table>
-                <tr>
-                    <th><span><?php esc_html_e('Tax status:', 'mage-eventpress'); ?></span></th>
-                    <td colspan="3">
-                        <label>
-                            <select class="mp_formControl" name="_tax_status">
-                                <option value="taxable" <?php echo ($tx_status == 'taxable') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Taxable', 'mage-eventpress'); ?></option>
-                                <option value="shipping" <?php echo ($tx_status == 'shipping') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Shipping only', 'mage-eventpress'); ?></option>
-                                <option value="none" <?php echo ($tx_status == 'none') ? esc_attr('selected') : ''; ?>><?php esc_html_e('None', 'mage-eventpress'); ?></option>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th><span><?php esc_html_e('Tax class:', 'mage-eventpress'); ?></span></th>
-                    <td colspan="3">
-                        <label>
-                            <select class="mp_formControl" name="_tax_class">
-                                <option value="standard" <?php echo ($tx_class == 'standard') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Standard', 'mage-eventpress'); ?></option>
-								<?php mep_get_all_tax_list($tx_class); ?>
-                            </select>
-                        </label>
-                        <p class="event_meta_help_txt">
-							<?php esc_html_e('In order to add a new tax class, please go to WooCommerce -> Settings -> Tax Area', 'mage-eventpress'); ?>
-                        </p>
-                    </td>
-                </tr>
-            </table>
+			<section class="bg-light">
+				<h2><?php esc_html_e('Tax Settings','mage-eventpress') ?></h2>
+				<span><?php esc_html_e('Configure Event Tax','mage-eventpress') ?></span>
+			</section>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Tax status', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('Tax status','mage-eventpress'); ?></span>
+					</div>
+					<select class="" name="_tax_status">
+						<option value="taxable" <?php echo ($tx_status == 'taxable') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Taxable', 'mage-eventpress'); ?></option>
+						<option value="shipping" <?php echo ($tx_status == 'shipping') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Shipping only', 'mage-eventpress'); ?></option>
+						<option value="none" <?php echo ($tx_status == 'none') ? esc_attr('selected') : ''; ?>><?php esc_html_e('None', 'mage-eventpress'); ?></option>
+					</select>
+				</label>
+			</section>
+			<section>
+				<label class="label">
+					<div>
+						<h2><span><?php esc_html_e('Tax class', 'mage-eventpress'); ?></span></h2>
+						<span><?php _e('In order to add a new tax class, please go to WooCommerce -> Settings -> Tax Area','mage-eventpress'); ?></span>
+					</div>
+					<select class="" name="_tax_class">
+						<option value="standard" <?php echo ($tx_class == 'standard') ? esc_attr('selected') : ''; ?>><?php esc_html_e('Standard', 'mage-eventpress'); ?></option>
+						<?php mep_get_all_tax_list($tx_class); ?>
+					</select>
+				</label>
+			</section>
 			<?php
 		}
 		//side meta box

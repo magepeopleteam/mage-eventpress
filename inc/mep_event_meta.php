@@ -517,17 +517,12 @@ use Sabberworm\CSS\Value\Value;
 			<?php
 		}
 		public function mep_event_ticket_type($post_id) {
-			$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true);
-			wp_nonce_field('mep_event_ticket_type_nonce', 'mep_event_ticket_type_nonce');
-			$values = get_post_custom($post_id);
-			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
 			$col_display = get_post_meta($post_id, 'mep_show_advance_col_status', true);
+			$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true);
+			$values = get_post_custom($post_id);
+			wp_nonce_field('mep_event_ticket_type_nonce', 'mep_event_ticket_type_nonce');
+			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
 			?>
-            <style>
-				.mep_hide_on_load {
-					display:none;
-				}
-            </style>
 			<section>
 				<label class="label">
 					<div>
@@ -535,13 +530,13 @@ use Sabberworm\CSS\Value\Value;
 						<span><?php esc_html_e('Ticket Type List', 'mage-eventpress'); ?></span>
 					</div>
 					<label class="mpev-switch">
-						<input type="checkbox" name="mep_show_advance_col_status" value="<?php echo esc_attr($col_display); ?>" <?php echo esc_attr(($col_display=='on')?'checked':''); ?> data-collapse-target="#hide_column" data-close-target="#" data-toggle-values="on,off">
+						<input type="checkbox" name="mep_show_advance_col_status" value="<?php echo esc_attr($col_display); ?>" <?php echo esc_attr(($col_display=='on')?'checked':''); ?> data-collapse-target="#hide_column" data-toggle-values="on,off">
 						<span class="slider"></span>
 					</label>
 				</label>
 			</section>
             <section class="mp_ticket_type_table">
-                <div class="table-responsive">
+                <div style="overflow-x:auto;">
 					<table id="repeatable-fieldset-one-t">
 						<thead>
 						<tr>

@@ -1393,3 +1393,8 @@ h3.mep_virtual_sec_title {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
+
+div.mpStyle .formControl.date_type, div.mpStyle .formControl[type="date"], div.mpStyle .formControl {
+	font-size: 13px;
+	font-weight: 500;
+}

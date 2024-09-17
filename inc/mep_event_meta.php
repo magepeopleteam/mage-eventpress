@@ -535,26 +535,30 @@ use Sabberworm\CSS\Value\Value;
 					</label>
 				</label>
 			</section>
+			<style>
+				.mep_hide_on_load{
+					display:table-cell;
+				}
+			</style>
             <section class="mp_ticket_type_table">
-                <div style="overflow-x:auto;">
 					<table id="repeatable-fieldset-one-t">
 						<thead>
 						<tr>
-							<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Type Name', 'mage-eventpress'); ?>"><?php esc_html_e('Ticket', 'mage-eventpress'); ?></th>
-							<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Type Details', 'mage-eventpress'); ?>"><?php esc_html_e('Short Desc.', 'mage-eventpress'); ?></th>
-							<th style="min-width: 80px;" title="<?php esc_attr_e('Ticket Price', 'mage-eventpress'); ?>"><?php esc_html_e('Price', 'mage-eventpress'); ?></th>
+							<th style="min-width: 60px;" title="<?php esc_attr_e('Ticket Type Name', 'mage-eventpress'); ?>"><?php esc_html_e('Ticket', 'mage-eventpress'); ?></th>
+							<th style="min-width: 60px;" title="<?php esc_attr_e('Ticket Type Details', 'mage-eventpress'); ?>"><?php esc_html_e('Short Desc.', 'mage-eventpress'); ?></th>
+							<th style="min-width: 40px;" title="<?php esc_attr_e('Ticket Price', 'mage-eventpress'); ?>"><?php esc_html_e('Price', 'mage-eventpress'); ?></th>
 							<?php do_action('mep_pricing_table_head_after_price_col'); ?>
-							<th style="min-width: 80px;" title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Capacity', 'mage-eventpress'); ?>
+							<th style="min-width: 40px;" title="<?php esc_attr_e('Available Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Capacity', 'mage-eventpress'); ?>
 							</th>
-							<th class='mep_hide_on_load' style="min-width: 80px;" title="<?php esc_attr_e('Default Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Default Qty', 'mage-eventpress'); ?></th>
-							<th class='mep_hide_on_load' style="min-width: 80px;" title="<?php esc_attr_e('Reserve Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Reserve Qty', 'mage-eventpress'); ?>
+							<th class='mep_hide_on_load' style="min-width: 40px;" title="<?php esc_attr_e('Default Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Default Qty', 'mage-eventpress'); ?></th>
+							<th class='mep_hide_on_load' style="min-width: 40px;" title="<?php esc_attr_e('Reserve Qty', 'mage-eventpress'); ?>"><?php esc_html_e('Reserve Qty', 'mage-eventpress'); ?>
 								<?php do_action('add_extra_field_icon', $post_id); ?>
 							</th>
 							<?php do_action('mep_add_extra_column'); ?>
-							<th class='mep_hide_on_load' style="min-width: 150px;" title="<?php esc_attr_e('Sale End Date', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Date', 'mage-eventpress'); ?></th>
-							<th class='mep_hide_on_load' style="min-width: 120px;" title="<?php esc_attr_e('Sale End Time', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Time', 'mage-eventpress'); ?></th>
-							<th style="min-width: 140px;" title="<?php esc_attr_e('Qty Box Type', 'mage-eventpress'); ?>"><?php esc_html_e('Qty Box', 'mage-eventpress'); ?></th>
-							<th style="min-width: 80px;"><?php esc_html_e('Action', 'mage-eventpress'); ?>
+							<th class='mep_hide_on_load' style="min-width: 60px;" title="<?php esc_attr_e('Sale End Date', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Date', 'mage-eventpress'); ?></th>
+							<th class='mep_hide_on_load' style="min-width: 60px;" title="<?php esc_attr_e('Sale End Time', 'mage-eventpress'); ?>"><?php esc_html_e('Sale End Time', 'mage-eventpress'); ?></th>
+							<th style="min-width: 60px;" title="<?php esc_attr_e('Qty Box Type', 'mage-eventpress'); ?>"><?php esc_html_e('Qty Box', 'mage-eventpress'); ?></th>
+							<th style="min-width: 60px;"><?php esc_html_e('Action', 'mage-eventpress'); ?>
 							</th>
 						</tr>
 						</thead>
@@ -586,18 +590,18 @@ use Sabberworm\CSS\Value\Value;
 										<td class='mep_hide_on_load'><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php echo esc_attr($option_rsv_qty); ?>"/></td>
 										<?php do_action('mep_add_extra_input_box', $field, $count) ?>
 										<td class='mep_hide_on_load'>
-											<div class="sell_expire_date">
+											<span class="sell_expire_date">
 												<input type="date" id="ticket_sale_start_date" class="mp_formControl" value='<?php if (array_key_exists('option_sale_end_date_t', $field) && $field['option_sale_end_date_t'] != '') {
 													echo esc_attr(date('Y-m-d', strtotime($field['option_sale_end_date_t'])));
 												} ?>' name="option_sale_end_date[]"/>
-											</div>
+											</span>
 										</td>
 										<td class='mep_hide_on_load'>
-											<div class="sell_expire_date">
+											<span class="sell_expire_date">
 												<input type="time" id="ticket_sale_start_time" class="mp_formControl" value='<?php if (array_key_exists('option_sale_end_date_t', $field) && $field['option_sale_end_date_t'] != '') {
 													echo esc_attr(date('H:i', strtotime($field['option_sale_end_date_t'])));
 												} ?>' name="option_sale_end_time[]"/>
-											</div>
+											</span>
 										</td>
 										<td>
 											<select name="option_qty_t_type[]" class='mp_formControl'>
@@ -658,8 +662,6 @@ use Sabberworm\CSS\Value\Value;
 					</table>
 					<br>
 					<button id="add-row-t" class="button" type="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add New Ticket Type', 'mage-eventpress'); ?></button>
-
-				</div>
             </section>
 
 			<?php

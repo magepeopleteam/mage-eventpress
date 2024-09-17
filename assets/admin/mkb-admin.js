@@ -127,8 +127,10 @@ jQuery(document).ready(function ($) {
 
 			if (currentValue === toggleValues[0]) {
 				nextValue = toggleValues[1];
+				$(".mep_hide_on_load").slideUp(200);
 			} else {
-				nextValue = toggleValues[0];;
+				nextValue = toggleValues[0];
+				$(".mep_hide_on_load").slideDown(200);
 			}
 			
 			checkbox.val(nextValue);

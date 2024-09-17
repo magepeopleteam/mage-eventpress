@@ -103,41 +103,65 @@
                                 </table>
                             </div>
                         </section>
-                        <div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
-                            <div class="dFlex">
-                                <h6 class="min_200"><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></h6>
-								<?php self::date_item('event_start_date_everyday', $start_date); ?>
-								<?php self::time_item('event_start_time_everyday', $start_time); ?>
-                            </div>
-                            <div class="dFlex">
-                                <h6 class="min_200"><?php esc_html_e('End Date & Time', 'mage-eventpress'); ?></h6>
-								<?php self::date_item('event_end_date_everyday', $end_date); ?>
-								<?php self::time_item('event_end_time_everyday', $end_time); ?>
-                            </div>
-                            <label>
-                                <span class="min_200"><?php esc_html_e('Repeated After', 'mage-eventpress'); ?></span>
-                                <input type="number" class="formControl max_200 mp_number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/><?php _e(' Days', 'mage-eventpress'); ?>
-                            </label>
-                            <d.iv class="_dFlex">
-                                <h6 class="min_200"><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></h6>
-								<?php
-									$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
-									$off_days = $off_day_array ? implode(',', $off_day_array) : '';
-									$days = MP_Global_Function::week_day();
-								?>
-                                <div class="groupCheckBox flexWrap">
-                                    <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
-									<?php foreach ($days as $key => $day) { ?>
-                                        <label class="customCheckboxLabel min_200">
-                                            <input type="checkbox" <?php echo esc_attr(in_array($key, $off_day_array) ? 'checked' : ''); ?> data-checked="<?php echo esc_attr($key); ?>"/>
-                                            <span class="customCheckbox"><?php echo esc_html($day); ?></span>
-                                        </label>
-									<?php } ?>
-                                </div>
-                            </d.iv>
-                            <div class="_dFlex">
-                                <h6 class="min_200"><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></h6>
-                                <div class="mp_settings_area max_400">
+						<div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></span></h2>
+										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+									</div>
+									<?php self::date_item('event_start_date_everyday', $start_date); ?>
+									<?php self::time_item('event_start_time_everyday', $start_time); ?>
+								</label>
+							</section>
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('End Date & Time', 'mage-eventpress'); ?></span></h2>
+										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+									</div>
+									<?php self::date_item('event_end_date_everyday', $end_date); ?>
+									<?php self::time_item('event_end_time_everyday', $end_time); ?>
+								</label>
+							</section>
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('After Repeated Days', 'mage-eventpress'); ?></span></h2>
+										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+									</div>
+									<input type="number" class="formControl max_200 mp_number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/><?php _e(' Days', 'mage-eventpress'); ?>
+								</label>
+							</section>
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></span></h2>
+										<span><?php _e('Select Offdays','mage-eventpress'); ?></span>
+									</div>
+									<?php
+										$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
+										$off_days = $off_day_array ? implode(',', $off_day_array) : '';
+										$days = MP_Global_Function::week_day();
+									?>
+									<div class="d_Flex">
+										<input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
+										<?php foreach ($days as $key => $day) { ?>
+											<label class="customCheckboxLabel ">
+												<input type="checkbox" <?php echo esc_attr(in_array($key, $off_day_array) ? 'checked' : ''); ?> data-checked="<?php echo esc_attr($key); ?>"/>
+												<span class="customCheckbox"><?php echo esc_html($day); ?></span>
+											</label>
+										<?php } ?>
+									</div>
+								</label>
+							</section>
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></span></h2>
+										<span><?php _e('Ticket Off Dates List','mage-eventpress'); ?></span>
+									</div>
+									<div class="mp_settings_area ">
                                     <div class="mp_item_insert mp_sortable_area">
 										<?php
 											$off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
@@ -158,13 +182,21 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <label>
-                                <span class="min_200"><?php esc_html_e('Display Time?', 'mage-eventpress'); ?></span>
-								<?php MP_Custom_Layout::switch_button('mep_disable_ticket_time', $checked_time); ?>
-                            </label>
-                            <div class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
-                                <div class="_divider"></div>
+								</label>
+							</section>
+							<section>
+								<label class="label">
+									<div>
+										<h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
+										<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+									</div>
+									<label class="mpev-switch">
+										<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr($checked_time); ?>" <?php echo esc_attr(($checked_time=='yes')?'checked':''); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
+										<span class="slider"></span>
+									</label>
+								</label>
+							</section>
+                            <section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
                                 <div class="mpTabs topTabs tabBorder">
                                     <ul class="tabLists">
                                         <li data-tabs-target="#mep_ticket_times_global">
@@ -219,7 +251,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </section>
                         </div>
                     </div>
 					<?php do_action('mp_event_recurring_every_day_setting', $post_id); ?>

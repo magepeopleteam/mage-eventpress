@@ -522,6 +522,10 @@ use Sabberworm\CSS\Value\Value;
 			$values = get_post_custom($post_id);
 			wp_nonce_field('mep_event_ticket_type_nonce', 'mep_event_ticket_type_nonce');
 			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
+			$css_value = 'none';
+			if ($col_display == 'on') {
+				$css_value = 'table-cell';
+			}
 			?>
 			<section>
 				<label class="label">
@@ -537,7 +541,7 @@ use Sabberworm\CSS\Value\Value;
 			</section>
 			<style>
 				.mep_hide_on_load{
-					display:table-cell;
+					display:<?php echo $css_value; ?>;
 				}
 			</style>
             <section class="mp_ticket_type_table">

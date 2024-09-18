@@ -112,12 +112,10 @@
 /**
  * @author Shahadat Hossain <raselsha@gmail.com>
  */
-
-//  ===============toggle switch==============
 jQuery(document).ready(function ($) {
-
 	mpevSwitch();
-
+	resetBooking();
+	//  ===============Toggle radio switch==============
 	function mpevSwitch() {
 		$('.mpev-switch .slider').click(function() {
 			var checkbox = $(this).prev('input[type="checkbox"]');
@@ -139,6 +137,30 @@ jQuery(document).ready(function ($) {
 			var close = checkbox.data('close-target');
 			$(target).slideToggle();
 			$(close).slideToggle();
+		});
+	}
+/**
+ * @description Reset booking by ajax
+ **/
+	function resetBooking(){
+		$('#mep-reset-booking').click(function(e){
+			e.preventDefault();
+			var postID = $(this).data('post-id');
+			$.ajax({
+				url: mep_ajax.mep_ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'mep_reset_booking', 
+					nonce: mep_ajax.nonce,
+					post_id: postID
+				},
+				success: function(response) {
+					$('#mp-reset-status').html(response.data);
+				},
+				error: function(xhr, status, error) {
+					console.log('Error:', error);
+				}
+			});
 		});
 	}
 });

@@ -8,6 +8,16 @@ use Sabberworm\CSS\Value\Value;
 	class MP_Event_All_Info_In_One {
 		public function __construct() {
 			add_action('add_meta_boxes', array($this, 'mp_event_all_info_in_tab'));
+			add_action('wp_ajax_mep_reset_booking', [$this,'mep_reset_booking_callback']);
+			add_action('wp_ajax_nopriv_mep_reset_booking', [$this,'mep_reset_booking_callback']);
+		}
+		public function mep_reset_booking_callback() {
+			if(isset($_POST['post_id'])){
+				mep_reset_event_booking($_POST['post_id']);
+				wp_send_json_success(__("Successfully Booking Reset ", 'mage-eventpress'));
+				die;
+			}
+			
 		}
 		public function mp_event_all_info_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
@@ -891,14 +901,10 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_enddatetime_status($post_id) {
 			$values = get_post_custom($post_id);
 			// wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
-			$mep_show_end_datetime = '';
-			if (array_key_exists('mep_show_end_datetime', $values)) {
-				if ($values['mep_show_end_datetime'][0] == 'yes') {
-					$mep_show_end_datetime = 'checked';
-				}
-			} else {
-				$mep_show_end_datetime = 'checked';
-			}
+			
+			$mep_show_end_datetime = get_post_meta($post_id,'mep_show_end_datetime',true);
+			$mep_show_end_datetime = $mep_show_end_datetime?$mep_show_end_datetime:'no';
+
 			?>
 			<section>
 				<label class="label">
@@ -930,14 +936,8 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_available_seat_status($post_id) {
 			$values = get_post_custom($post_id);
 			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
-			$seat_checked = '';
-			if (array_key_exists('mep_available_seat', $values)) {
-				if ($values['mep_available_seat'][0] == 'on') {
-					$seat_checked = 'checked';
-				}
-			} else {
-				$seat_checked = 'checked';
-			}
+			$seat_checked = get_post_meta($post_id,'mep_available_seat',true);
+			$seat_checked = $seat_checked? $seat_checked:'no';
 			?>
 			<section>
 				<label class="label">
@@ -954,8 +954,6 @@ use Sabberworm\CSS\Value\Value;
 			<?php
 		}
 		public function mp_event_reset_booking_count($post_id) {
-			$reset_status = get_post_meta($post_id,'mep_reset_status',true);
-			wp_nonce_field('mep_event_reset_btn_nonce', 'mep_event_reset_btn_nonce');
 			?>
 			<section>
 				<label class="label">
@@ -963,22 +961,18 @@ use Sabberworm\CSS\Value\Value;
 						<h2><span><?php esc_html_e('Reset Booking Count', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.','mage-eventpress'); ?></span>
 					</div>
-					<label class="mpev-switch">
-						<input type="checkbox" name="mep_reset_status" value="<?php echo esc_attr($reset_status); ?>" <?php echo esc_attr(($reset_status=='on')?'checked':''); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
-						<span class="slider"></span>
-					</label>
-				</label>
-			</section>
-			<section>
-				<label class="label">
-					<div>
-						<h2><span><?php esc_html_e('Current Booking Status', 'mage-eventpress'); ?></span></h2>
-						<span><?php _e('Current Booking Status.','mage-eventpress'); ?></span>
+					<div class="mpStyle">
+						<div class="_dFlex_justifyEnd">
+							<button class="_themeButton_xs_mT_xs" type="button" id="mep-reset-booking" data-post-id='<?php echo esc_html($post_id); ?>'>
+								<span class="fas fa-refresh"></span>
+								<span class="mL_xs"><?php esc_html_e('Reset Booking', 'mage-eventpress'); ?></span>
+							</button>
+							
+						</div>
+						<div class="_dFlex_justifyEnd" id="mp-reset-status"></div>
 					</div>
-					<?php mep_get_event_total_seat($post_id); ?>
 				</label>
-			</section>
-            
+			</section>            
 			<?php
 		}
 		public function mp_event_speaker_ticket_type($post_id) {
@@ -997,19 +991,26 @@ use Sabberworm\CSS\Value\Value;
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
 					</div>
 					<label class="mpev-switch">
-						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($member_checked); ?>" <?php echo esc_attr(($member_checked=='on')?'checked':''); ?> data-collapse-target="#mp_event_virtual_type_des" data-toggle-values="on,off">
+						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($member_checked); ?>" <?php echo esc_attr(($member_checked=='on')?'checked':''); ?> data-collapse-target="#event_virtual_type" data-toggle-values="on,off">
 						<span class="slider"></span>
 					</label>
 				</label>
 			</section>
-			<section id="mp_event_virtual_type_des <?php echo ($event_member_type == 'member_only') ? esc_attr('active') : ''; ?>">
-				<select name='mep_member_only_user_role[]' multiple>
-					<option value="all" <?php if (in_array('all', $saved_user_role)) {
-						echo esc_attr('Selected');
-					} ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
-					<?php echo mep_get_user_list($saved_user_role); ?>
-				</select>
+			<section id="event_virtual_type" style="display: none;">
+				<label class="label">
+					<div>
+						<h2><?php _e('Select User Role','mage-eventpress'); ?></h2>
+						<span><?php _e('Select User Role','mage-eventpress'); ?></span>
+					</div>
+					<select name='mep_member_only_user_role[]' multiple>
+						<option value="all" <?php if (in_array('all', $saved_user_role)) {
+							echo esc_attr('Selected');
+						} ?>><?php esc_html_e('For Any Logged in user', 'mage-eventpress'); ?> </option>
+						<?php echo mep_get_user_list($saved_user_role); ?>
+					</select>
+				</label>
 			</section>
+
 			<?php
 		}
 		public function mp_event_tax($post_id) {
@@ -1280,6 +1281,7 @@ use Sabberworm\CSS\Value\Value;
 			$off_days = isset($_POST['mptbm_off_days']) && is_array($_POST['mptbm_off_days']) ?: [];
 			$sku = isset($_POST['mep_event_sku']) ? sanitize_text_field($_POST['mep_event_sku']) : $post_id;
 			$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? sanitize_text_field($_POST['mep_rich_text_status']) : 'enable';
+
 			if ($mep_reset_status == 'on') {
 				mep_reset_event_booking($post_id);
 			}

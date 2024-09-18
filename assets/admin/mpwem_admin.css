@@ -1442,3 +1442,26 @@ div.mpStyle label {
 	border-color: var(--mpev-gray);
     color: var(--mpev-dark);
 }
+
+#ui-datepicker-div{
+	border-color: var(--mpev-primary);
+}
+
+#ui-datepicker-div .ui-datepicker-header{
+	background-color: var(--mpev-primary);
+	border-color: var(--mpev-primary);
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active{
+	background-color: var(--mpev-primary);
+}
+#ui-datepicker-div .ui-state-default{
+	color: var(--mpev-primary);
+}
+#ui-datepicker-div a.ui-state-default:hover,#ui-datepicker-div .ui-state-active{
+    background-color: var(--mpev-primary);
+	color: var(--mpev-white);
+}
+#ui-datepicker-div .ui-datepicker-title{
+	background-color: var(--mpev-primary);
+}

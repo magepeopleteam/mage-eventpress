@@ -1053,8 +1053,8 @@ table.wc_status_table.widefat {
 #add-row-t,
 #add-row {
 	color: var(--mpev-white);
-	background-color: #007BFF;
-	border-color: #007BFF;
+	background-color: var(--mpev-primary);
+	border-color: var(--mpev-primary);
 	padding: .375rem .75rem;
 	font-size: 1rem;
 	border-radius: .25rem;
@@ -1402,9 +1402,20 @@ div.mpStyle .formControl.date_type{
 	padding: 5px 5px 5px 50px;
 	margin:0 5px;
 }
-/* ********************* */
+/* ***********mpStyle overright********** */
+
 div.mpStyle label {
     font-size: 13px;
 	line-height: 18px;
     font-weight: normal;
+  }
+
+#mp-reset-status{
+	color: var(--mpev-green);
+}
+
+.mpStyle .themeButton, .mpStyle [class*="_themeButton"], #mp_event_all_info_in_tab .button{
+    background-color: var(--mpev-primary);
+    color: var(--color_theme_alter);
+    border: 2px solid var(--mpev-primary);
   }

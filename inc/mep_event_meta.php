@@ -963,7 +963,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<div class="mpStyle">
 						<div class="_dFlex_justifyEnd">
-							<button class="_themeButton_xs_mT_xs" type="button" id="mep-reset-booking" data-post-id='<?php echo esc_html($post_id); ?>'>
+							<button class="button" type="button" id="mep-reset-booking" data-post-id='<?php echo esc_html($post_id); ?>'>
 								<span class="fas fa-refresh"></span>
 								<span class="mL_xs"><?php esc_html_e('Reset Booking', 'mage-eventpress'); ?></span>
 							</button>

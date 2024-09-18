@@ -230,28 +230,28 @@
 						<div class="mpTabs topTabs tabBorder">
 							<ul class="tabLists">
 								<li data-tabs-target="#mep_ticket_times_global">
-									<?php esc_html_e('Default Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Default', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_sat">
-									<?php esc_html_e('Saturday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Saturday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_sun">
-									<?php esc_html_e('Sunday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Sunday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_mon">
-									<?php esc_html_e('Monday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Monday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_tue">
-									<?php esc_html_e('Tuesday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Tuesday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_wed">
-									<?php esc_html_e('Wednesday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Wednesday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_thu">
-									<?php esc_html_e('Thursday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Thursday', 'mage-eventpress'); ?>
 								</li>
 								<li data-tabs-target="#mep_ticket_times_fri">
-									<?php esc_html_e('Friday Time', 'mage-eventpress'); ?>
+									<?php esc_html_e('Friday', 'mage-eventpress'); ?>
 								</li>
 							</ul>
 							<div class="tabsContent">

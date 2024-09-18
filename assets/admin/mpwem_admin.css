@@ -1398,3 +1398,13 @@ div.mpStyle .formControl.date_type, div.mpStyle .formControl[type="date"], div.m
 	font-size: 13px;
 	font-weight: 500;
 }
+div.mpStyle .formControl.date_type{
+	padding: 5px 5px 5px 50px;
+	margin:0 5px;
+}
+/* ********************* */
+div.mpStyle label {
+    font-size: 13px;
+	line-height: 18px;
+    font-weight: normal;
+  }

@@ -12,34 +12,14 @@
 				add_action('add_mep_date_time_tab', [$this, 'date_time_tab']);
 				add_action('mpwem_settings_save', [$this, 'settings_save']);
 			}
-			public function date_time_tab($post_id) {
-				//$meta_values = get_post_custom($post_id);
-				$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
-				$periods = MP_Global_Function::get_post_info($post_id, 'mep_repeated_periods', 1);
-				$start_date = MP_Global_Function::get_post_info($post_id, 'event_start_date');
-				$start_time = MP_Global_Function::get_post_info($post_id, 'event_start_time');
-				$end_date = MP_Global_Function::get_post_info($post_id, 'event_end_date');
-				$end_time = MP_Global_Function::get_post_info($post_id, 'event_end_time');
-				$more_dates = MP_Global_Function::get_post_info($post_id, 'mep_event_more_date', []);
-				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time');
-				$active_time = $display_time == 'no' ? '' : 'mActive';
-				$checked_time = $display_time == 'no' ? '' : 'checked';
-				//echo '<pre>';print_r(MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays'));				echo '</pre>';
-				?>
-                <div class="mp_tab_item" data-tab-item="#mp_event_time">
-					<h3><?php esc_html_e('Date & Time','mage-eventpress') ?></h3>
-					<p><?php esc_html_e('Configure Your Date and Time Settings Here','mage-eventpress') ?></p>
-					
-					<section class="bg-light">
-						<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
-						<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
-					</section>
 
-					<section>
+			public function event_type_section($post_id){
+				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
+				?>
+				<section>
 						<label class="label">
 							<div>
-								<h2><span><?php esc_html_e('Event Type', 'mage-eventpress'); ?></span></h2>
+								<h2><?php esc_html_e('Event Type', 'mage-eventpress'); ?></h2>
 								<span><?php _e('Select your event type','mage-eventpress'); ?></span>
 							</div>
 							<select class="formControl" name="mep_enable_recurring" data-collapse-target required>
@@ -50,209 +30,280 @@
                             </select>
 						</label>
 					</section>
-
-                    <div class="mpStyle">
-                        <section class="mp_settings_area <?php echo esc_attr($event_type == 'no' || $event_type == 'yes' ? 'mActive' : ''); ?>" data-collapse="#mep_normal_event">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th><?php esc_html_e('Start Date', 'mage-eventpress'); ?></th>
-                                    <th><?php esc_html_e('Start Time', 'mage-eventpress'); ?></th>
-                                    <th><?php esc_html_e('End Date', 'mage-eventpress'); ?></th>
-                                    <th><?php esc_html_e('End Time', 'mage-eventpress'); ?></th>
-                                    <th><?php esc_html_e('Action', 'mage-eventpress'); ?></th>
-                                </tr>
-                                </thead>
-                                <tbody class="mp_sortable_area mp_item_insert">
-                                <tr>
-                                    <td><?php self::date_item('event_start_date', $start_date); ?></td>
-                                    <td><?php self::time_item('event_start_time', $start_time); ?></td>
-                                    <td><?php self::date_item('event_end_date', $end_date); ?></td>
-                                    <td><?php self::time_item('event_end_time', $end_time); ?></td>
-                                    <td></td>
-                                </tr>
-								<?php if (sizeof($more_dates) > 0) { ?>
-									<?php foreach ($more_dates as $more_date) { ?>
-										<?php $more_start_date = array_key_exists('event_more_start_date', $more_date) ? $more_date['event_more_start_date'] : ''; ?>
-										<?php $more_start_time = array_key_exists('event_more_start_time', $more_date) ? $more_date['event_more_start_time'] : ''; ?>
-										<?php $more_end_date = array_key_exists('event_more_end_date', $more_date) ? $more_date['event_more_end_date'] : ''; ?>
-										<?php $more_end_time = array_key_exists('event_more_end_time', $more_date) ? $more_date['event_more_end_time'] : ''; ?>
-                                        <tr class="mp_remove_area">
-                                            <td><?php self::date_item('event_more_start_date[]', $more_start_date); ?></td>
-                                            <td><?php self::time_item('event_more_start_time[]', $more_start_time); ?></td>
-                                            <td><?php self::date_item('event_more_end_date[]', $more_end_date); ?></td>
-                                            <td><?php self::time_item('event_more_end_time[]', $more_end_time); ?></td>
-                                            <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
-                                        </tr>
-									<?php } ?>
+				<?php
+			}
+			
+			public function normal_particular_section($post_id){
+				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
+				$start_date = MP_Global_Function::get_post_info($post_id, 'event_start_date');
+				$start_time = MP_Global_Function::get_post_info($post_id, 'event_start_time');
+				$end_date = MP_Global_Function::get_post_info($post_id, 'event_end_date');
+				$end_time = MP_Global_Function::get_post_info($post_id, 'event_end_time');
+				$more_dates = MP_Global_Function::get_post_info($post_id, 'mep_event_more_date', []);
+				?>
+				<div class="mpStyle">
+					<section class="mp_settings_area <?php echo esc_attr($event_type == 'no' || $event_type == 'yes' ? 'mActive' : ''); ?>" data-collapse="#mep_normal_event">
+						<table>
+							<thead>
+							<tr>
+								<th><?php esc_html_e('Start Date', 'mage-eventpress'); ?></th>
+								<th><?php esc_html_e('Start Time', 'mage-eventpress'); ?></th>
+								<th><?php esc_html_e('End Date', 'mage-eventpress'); ?></th>
+								<th><?php esc_html_e('End Time', 'mage-eventpress'); ?></th>
+								<th><?php esc_html_e('Action', 'mage-eventpress'); ?></th>
+							</tr>
+							</thead>
+							<tbody class="mp_sortable_area mp_item_insert">
+							<tr>
+								<td><?php self::date_item('event_start_date', $start_date); ?></td>
+								<td><?php self::time_item('event_start_time', $start_time); ?></td>
+								<td><?php self::date_item('event_end_date', $end_date); ?></td>
+								<td><?php self::time_item('event_end_time', $end_time); ?></td>
+								<td></td>
+							</tr>
+							<?php if (sizeof($more_dates) > 0) { ?>
+								<?php foreach ($more_dates as $more_date) { ?>
+									<?php $more_start_date = array_key_exists('event_more_start_date', $more_date) ? $more_date['event_more_start_date'] : ''; ?>
+									<?php $more_start_time = array_key_exists('event_more_start_time', $more_date) ? $more_date['event_more_start_time'] : ''; ?>
+									<?php $more_end_date = array_key_exists('event_more_end_date', $more_date) ? $more_date['event_more_end_date'] : ''; ?>
+									<?php $more_end_time = array_key_exists('event_more_end_time', $more_date) ? $more_date['event_more_end_time'] : ''; ?>
+									<tr class="mp_remove_area">
+										<td><?php self::date_item('event_more_start_date[]', $more_start_date); ?></td>
+										<td><?php self::time_item('event_more_start_time[]', $more_start_time); ?></td>
+										<td><?php self::date_item('event_more_end_date[]', $more_end_date); ?></td>
+										<td><?php self::time_item('event_more_end_time[]', $more_end_time); ?></td>
+										<td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+									</tr>
 								<?php } ?>
-                                </tbody>
-                            </table>
-							<?php MP_Custom_Layout::add_new_button(esc_html__('Add More Dates', 'mage-eventpress')); ?>
-                            <div class="mp_hidden_content">
-                                <table>
-                                    <tbody class="mp_hidden_item">
-                                    <tr class="mp_remove_area">
-                                        <td><?php self::date_item('event_more_start_date[]', ''); ?></td>
-                                        <td><?php self::time_item('event_more_start_time[]', ''); ?></td>
-                                        <td><?php self::date_item('event_more_end_date[]', ''); ?></td>
-                                        <td><?php self::time_item('event_more_end_time[]', ''); ?></td>
-                                        <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-						<div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></span></h2>
-										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
-									</div>
-									<?php self::date_item('event_start_date_everyday', $start_date); ?>
-									<?php self::time_item('event_start_time_everyday', $start_time); ?>
-								</label>
-							</section>
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('End Date & Time', 'mage-eventpress'); ?></span></h2>
-										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
-									</div>
-									<?php self::date_item('event_end_date_everyday', $end_date); ?>
-									<?php self::time_item('event_end_time_everyday', $end_time); ?>
-								</label>
-							</section>
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('After Repeated Days', 'mage-eventpress'); ?></span></h2>
-										<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
-									</div>
-									<input type="number" class="formControl max_200 mp_number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/><?php _e(' Days', 'mage-eventpress'); ?>
-								</label>
-							</section>
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></span></h2>
-										<span><?php _e('Select Offdays','mage-eventpress'); ?></span>
-									</div>
-									<?php
-										$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
-										$off_days = $off_day_array ? implode(',', $off_day_array) : '';
-										$days = MP_Global_Function::week_day();
-									?>
-									<div class="d_Flex">
-										<input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
-										<?php foreach ($days as $key => $day) { ?>
-											<label class="customCheckboxLabel ">
-												<input type="checkbox" <?php echo esc_attr(in_array($key, $off_day_array) ? 'checked' : ''); ?> data-checked="<?php echo esc_attr($key); ?>"/>
-												<span class="customCheckbox"><?php echo esc_html($day); ?></span>
-											</label>
-										<?php } ?>
-									</div>
-								</label>
-							</section>
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></span></h2>
-										<span><?php _e('Ticket Off Dates List','mage-eventpress'); ?></span>
-									</div>
-									<div class="mp_settings_area ">
-                                    <div class="mp_item_insert mp_sortable_area">
-										<?php
-											$off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
-											//echo '<pre>';	print_r($off_day_lists);echo '</pre>';
-											if (sizeof($off_day_lists)) {
-												foreach ($off_day_lists as $off_day) {
-													if ($off_day['mep_ticket_off_date']) {
-														$this->date_item('mep_ticket_off_dates[]', $off_day['mep_ticket_off_date']);
-													}
-												}
-											}
-										?>
-                                    </div>
-									<?php MP_Custom_Layout::add_new_button(esc_html__('Add New Off date', 'mage-eventpress')); ?>
-                                    <div class="mp_hidden_content">
-                                        <div class="mp_hidden_item">
-											<?php $this->date_item('mep_ticket_off_dates[]'); ?>
-                                        </div>
-                                    </div>
-                                </div>
-								</label>
-							</section>
-							<section>
-								<label class="label">
-									<div>
-										<h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
-										<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
-									</div>
-									<label class="mpev-switch">
-										<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr($checked_time); ?>" <?php echo esc_attr(($checked_time=='yes')?'checked':''); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
-										<span class="slider"></span>
+							<?php } ?>
+							</tbody>
+						</table>
+						<?php MP_Custom_Layout::add_new_button(esc_html__('Add More Dates', 'mage-eventpress')); ?>
+						<div class="mp_hidden_content">
+							<table>
+								<tbody class="mp_hidden_item">
+								<tr class="mp_remove_area">
+									<td><?php self::date_item('event_more_start_date[]', ''); ?></td>
+									<td><?php self::time_item('event_more_start_time[]', ''); ?></td>
+									<td><?php self::date_item('event_more_end_date[]', ''); ?></td>
+									<td><?php self::time_item('event_more_end_time[]', ''); ?></td>
+									<td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</section>
+				</div>
+				<?php
+			}
+
+			public function date_time_section($post_id){
+				$start_date = MP_Global_Function::get_post_info($post_id, 'event_start_date');
+				$start_time = MP_Global_Function::get_post_info($post_id, 'event_start_time');
+				$end_date = MP_Global_Function::get_post_info($post_id, 'event_end_date');
+				$end_time = MP_Global_Function::get_post_info($post_id, 'event_end_time');
+				$periods = MP_Global_Function::get_post_info($post_id, 'mep_repeated_periods', 1);
+				?>
+				<div class="mpStyle">
+					<section>
+						<label class="label">
+							<div>
+								<h2><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></h2>
+								<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+							</div>
+							<div class="dFlex">
+								<?php self::date_item('event_start_date_everyday', $start_date); ?>
+								<?php self::time_item('event_start_time_everyday', $start_time); ?>
+							</div>
+						</label>
+					</section>
+					<section>
+						<label class="label">
+							<div>
+								<h2><span><?php esc_html_e('End Date & Time', 'mage-eventpress'); ?></span></h2>
+								<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+							</div>
+							<div class="dFlex">
+								<?php self::date_item('event_end_date_everyday', $end_date); ?>
+								<?php self::time_item('event_end_time_everyday', $end_time); ?>
+							</div>
+						</label>
+					</section>
+					<section>
+						<label class="label">
+							<div>
+								<h2><span><?php esc_html_e('After Repeated Days', 'mage-eventpress'); ?></span></h2>
+								<span><?php _e('Select Start Date & Time','mage-eventpress'); ?></span>
+							</div>
+							<input type="number" class="formControl max_100 mp_number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/>
+						</label>
+					</section>
+				</div>
+				<?php
+			}
+
+			public function off_days_section($post_id) {
+				?>
+				<section class="bg-light" style="margin-top: 20px;">
+					<h2><?php esc_html_e('Off Days Setting','mage-eventpress') ?></h2>
+					<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+				</section>
+				<div class="mpStyle">
+					<section>
+						<label class="label">
+							<div>
+								<h2><span><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></span></h2>
+								<span><?php _e('Select Offdays','mage-eventpress'); ?></span>
+							</div>
+							<?php
+								$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
+								$off_days = $off_day_array ? implode(',', $off_day_array) : '';
+								$days = MP_Global_Function::week_day();
+							?>
+							<div class="dFlex">
+								<input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
+								<?php foreach ($days as $key => $day) { ?>
+									<label class="customCheckboxLabel ">
+										<input type="checkbox" <?php echo esc_attr(in_array($key, $off_day_array) ? 'checked' : ''); ?> data-checked="<?php echo esc_attr($key); ?>"/>
+										<span class="customCheckbox"><?php echo esc_html($day); ?></span>
 									</label>
-								</label>
-							</section>
-                            <section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
-                                <div class="mpTabs topTabs tabBorder">
-                                    <ul class="tabLists">
-                                        <li data-tabs-target="#mep_ticket_times_global">
-											<?php esc_html_e('Default Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_sat">
-											<?php esc_html_e('Saturday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_sun">
-											<?php esc_html_e('Sunday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_mon">
-											<?php esc_html_e('Monday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_tue">
-											<?php esc_html_e('Tuesday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_wed">
-											<?php esc_html_e('Wednesday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_thu">
-											<?php esc_html_e('Thursday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                        <li data-tabs-target="#mep_ticket_times_fri">
-											<?php esc_html_e('Friday Time', 'mage-eventpress'); ?>
-                                        </li>
-                                    </ul>
-                                    <div class="tabsContent">
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_global">
-											<?php $this->time_line($post_id, 'mep_ticket_times_global'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_sat">
-											<?php $this->time_line($post_id, 'mep_ticket_times_sat'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_sun">
-											<?php $this->time_line($post_id, 'mep_ticket_times_sun'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_mon">
-											<?php $this->time_line($post_id, 'mep_ticket_times_mon'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_tue">
-											<?php $this->time_line($post_id, 'mep_ticket_times_tue'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_wed">
-											<?php $this->time_line($post_id, 'mep_ticket_times_wed'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_thu">
-											<?php $this->time_line($post_id, 'mep_ticket_times_thu'); ?>
-                                        </div>
-                                        <div class="tabsItem" data-tabs="#mep_ticket_times_fri">
-											<?php $this->time_line($post_id, 'mep_ticket_times_fri'); ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
+								<?php } ?>
+							</div>
+						</label>
+					</section>
+					<section>
+						<label class="label">
+							<div>
+								<h2><span><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></span></h2>
+								<span><?php _e('Ticket Off Dates List','mage-eventpress'); ?></span>
+							</div>
+							<div class="mp_settings_area ">
+							<div class="mp_item_insert mp_sortable_area">
+								<?php
+									$off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
+									//echo '<pre>';	print_r($off_day_lists);echo '</pre>';
+									if (sizeof($off_day_lists)) {
+										foreach ($off_day_lists as $off_day) {
+											if ($off_day['mep_ticket_off_date']) {
+												$this->date_item('mep_ticket_off_dates[]', $off_day['mep_ticket_off_date']);
+											}
+										}
+									}
+								?>
+							</div>
+							<?php MP_Custom_Layout::add_new_button(esc_html__('Add New Off date', 'mage-eventpress')); ?>
+							<div class="mp_hidden_content">
+								<div class="mp_hidden_item">
+									<?php $this->date_item('mep_ticket_off_dates[]'); ?>
+								</div>
+							</div>
+						</div>
+						</label>
+					</section>
+				</div>
+				<?php
+			}
+
+			public function time_settings_section($post_id) {
+				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time');
+				$active_time = $display_time == 'no' ? '' : 'mActive';
+				$checked_time = $display_time == 'no' ? '' : 'checked';
+			?>
+				<section class="bg-light" style="margin-top: 20px;">
+					<h2><?php esc_html_e('Time Settings','mage-eventpress') ?></h2>
+					<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+				</section>
+				<section>
+					<label class="label">
+						<div>
+							<h2><span><?php esc_html_e('Display Time?', 'mage-eventpress');  ?> </span></h2>
+							<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
+						</div>
+						<label class="mpev-switch">
+							<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr($checked_time); ?>" <?php echo esc_attr(($checked_time=='yes')?'checked':''); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
+							<span class="slider"></span>
+						</label>
+					</label>
+				</section>
+				<div class="mpStyle">
+					<section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
+						<div class="mpTabs topTabs tabBorder">
+							<ul class="tabLists">
+								<li data-tabs-target="#mep_ticket_times_global">
+									<?php esc_html_e('Default Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_sat">
+									<?php esc_html_e('Saturday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_sun">
+									<?php esc_html_e('Sunday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_mon">
+									<?php esc_html_e('Monday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_tue">
+									<?php esc_html_e('Tuesday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_wed">
+									<?php esc_html_e('Wednesday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_thu">
+									<?php esc_html_e('Thursday Time', 'mage-eventpress'); ?>
+								</li>
+								<li data-tabs-target="#mep_ticket_times_fri">
+									<?php esc_html_e('Friday Time', 'mage-eventpress'); ?>
+								</li>
+							</ul>
+							<div class="tabsContent">
+								<div class="tabsItem" data-tabs="#mep_ticket_times_global">
+									<?php $this->time_line($post_id, 'mep_ticket_times_global'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_sat">
+									<?php $this->time_line($post_id, 'mep_ticket_times_sat'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_sun">
+									<?php $this->time_line($post_id, 'mep_ticket_times_sun'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_mon">
+									<?php $this->time_line($post_id, 'mep_ticket_times_mon'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_tue">
+									<?php $this->time_line($post_id, 'mep_ticket_times_tue'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_wed">
+									<?php $this->time_line($post_id, 'mep_ticket_times_wed'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_thu">
+									<?php $this->time_line($post_id, 'mep_ticket_times_thu'); ?>
+								</div>
+								<div class="tabsItem" data-tabs="#mep_ticket_times_fri">
+									<?php $this->time_line($post_id, 'mep_ticket_times_fri'); ?>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			<?php
+			}
+			public function date_time_tab($post_id) {
+				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
+				?>
+                <div class="mp_tab_item" data-tab-item="#mp_event_time">
+					<h3><?php esc_html_e('Date & Time','mage-eventpress') ?></h3>
+					<p><?php esc_html_e('Configure Your Date and Time Settings Here','mage-eventpress') ?></p>
+					
+					<section class="bg-light">
+						<h2><?php esc_html_e('General Settings','mage-eventpress') ?></h2>
+						<span><?php esc_html_e('Configure Event Locations and Virtual Venues','mage-eventpress') ?></span>
+					</section>
+
+					<?php $this->event_type_section($post_id); ?>
+					<?php $this->normal_particular_section($post_id); ?>
+
+					<div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
+						<?php $this->date_time_section($post_id); ?>
+						<?php $this->off_days_section($post_id); ?>
+						<?php $this->time_settings_section($post_id); ?>
                     </div>
 					<?php do_action('mp_event_recurring_every_day_setting', $post_id); ?>
                 </div>

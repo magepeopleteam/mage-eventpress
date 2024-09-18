@@ -1431,3 +1431,14 @@ div.mpStyle label {
 .mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::before{
 	background-color: var(--mpev-primary);
 }
+
+.mpStyle [data-tabs-target].active{
+	background-color: var(--mpev-primary);
+	color: var(--mpev-white);
+	border: 0;
+}
+.mpStyle [data-tabs-target]:hover{
+	background-color: var(--mpev-gray);
+	border-color: var(--mpev-gray);
+    color: var(--mpev-dark);
+}

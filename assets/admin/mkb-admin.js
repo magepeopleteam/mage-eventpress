@@ -115,6 +115,7 @@
 jQuery(document).ready(function ($) {
 	mpevSwitch();
 	resetBooking();
+	richTextStatus();
 	//  ===============Toggle radio switch==============
 	function mpevSwitch() {
 		$('.mpev-switch .slider').click(function() {
@@ -163,4 +164,30 @@ jQuery(document).ready(function ($) {
 			});
 		});
 	}
+	/**
+ * @description Rich text status update
+ **/
+	function richTextStatus(){
+		$('#mep_rich_text_status').on('change', function() {
+			var status = $(this).val();
+			
+			if (status === 'enable') {
+				$('#mep_rich_text_table').slideDown(); // Show the section
+			} else {
+				$('#mep_rich_text_table').slideUp(); // Hide the section
+			}
+		});
+	
+		// Initialize visibility based on the current selection on page load
+		var initialStatus = $('#mep_rich_text_status').val();
+		if (initialStatus === 'enable') {
+			$('#mep_rich_text_table').slideDown();
+		} else {
+			$('#mep_rich_text_table').slideUp();
+		}
+	}
+	
 });
+
+
+

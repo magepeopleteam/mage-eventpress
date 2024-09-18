@@ -793,7 +793,7 @@ use Sabberworm\CSS\Value\Value;
 			$event_rt_status = get_post_meta($post_id, 'mep_rt_event_status', true) ? get_post_meta($post_id, 'mep_rt_event_status', true) : '';
 			$event_rt_atdnce_mode = get_post_meta($post_id, 'mep_rt_event_attandence_mode', true) ? get_post_meta($post_id, 'mep_rt_event_attandence_mode', true) : '';
 			$event_rt_prv_date = get_post_meta($post_id, 'mep_rt_event_prvdate', true) ? get_post_meta($post_id, 'mep_rt_event_prvdate', true) : $event_start_date;
-			$rt_status = get_post_meta($post_id, 'mep_rich_text_status', true) ? get_post_meta($post_id, 'mep_rich_text_status', true) : 'enable';
+			$rt_status = get_post_meta($post_id, 'mep_rich_text_status', true);
 			?>
 			<section class="bg-light">
 				<h2><?php esc_html_e('Tax Settings','mage-eventpress') ?></h2>
@@ -805,13 +805,13 @@ use Sabberworm\CSS\Value\Value;
 						<h2><span><?php esc_html_e('Rich Text Status', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
 					</div>
-					<label class="mpev-switch">
-						<input type="checkbox" name="mep_rich_text_status" value="<?php echo esc_attr($rt_status); ?>" <?php echo esc_attr(($rt_status=='enable')?'checked':''); ?> data-collapse-target="#mep_rich_text_table" data-toggle-values="enable,disable">
-						<span class="slider"></span>
-					</label>
+					<select id="mep_rich_text_status" name="mep_rich_text_status">
+						<option value="enable" <?php echo $rt_status=='eanble'?'selected':''; ?>> <?php echo esc_html__('Enable','mage-eventpress'); ?></option>
+						<option value="disable" <?php echo $rt_status=='disable'?'selected':''; ?>> <?php echo esc_html__('Disable','mage-eventpress'); ?></option>
+					</select>
 				</label>
 			</section>
-			<section id='mep_rich_text_table' <?php if ($rt_status == 'disable') { ?> style='display:none;' <?php } ?>>
+			<section id='mep_rich_text_table' style="display:<?php echo ($rt_status == 'enable')? 'block':'none'; ?>">
 				<table>
 					<tr>
 						<td><span><?php esc_html_e('Type :', 'mage-eventpress'); ?></span></td>
@@ -982,7 +982,7 @@ use Sabberworm\CSS\Value\Value;
 			$saved_user_role = get_post_meta($post_id, 'mep_member_only_user_role', true) ? get_post_meta($post_id, 'mep_member_only_user_role', true) : [];
 			$description = html_entity_decode(get_post_meta($post_id, 'mp_event_virtual_type_des', true));
 			$checked = ($event_type == 'online') ? 'checked' : '';
-			$member_checked = ($event_member_type == 'member_only') ? 'checked' : '';
+
 			?>
 			<section>
 				<label class="label">
@@ -991,12 +991,12 @@ use Sabberworm\CSS\Value\Value;
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
 					</div>
 					<label class="mpev-switch">
-						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($member_checked); ?>" <?php echo esc_attr(($member_checked=='on')?'checked':''); ?> data-collapse-target="#event_virtual_type" data-toggle-values="on,off">
+						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($event_member_type); ?>" <?php echo esc_attr(($event_member_type=='member_only')?'checked':''); ?> data-collapse-target="#event_virtual_type" data-toggle-values="member_only,for_all">
 						<span class="slider"></span>
 					</label>
 				</label>
 			</section>
-			<section id="event_virtual_type" style="display: none;">
+			<section id="event_virtual_type" style="display: <?php echo $event_member_type=='member_only'? 'block':'none'; ?>;">
 				<label class="label">
 					<div>
 						<h2><?php _e('Select User Role','mage-eventpress'); ?></h2>
@@ -1273,18 +1273,14 @@ use Sabberworm\CSS\Value\Value;
 			$mep_show_advance_col_status = isset($_POST['mep_show_advance_col_status']) ? sanitize_text_field($_POST['mep_show_advance_col_status']) : 'off';
 			$mep_enable_custom_dt_format = isset($_POST['mep_enable_custom_dt_format']) ? sanitize_text_field($_POST['mep_enable_custom_dt_format']) : 'off';
 			$mep_show_end_datetime = isset($_POST['mep_show_end_datetime']) ? sanitize_text_field($_POST['mep_show_end_datetime']) : 'no';
-			$mep_reset_status = isset($_POST['mep_reset_status']) ? sanitize_text_field($_POST['mep_reset_status']) : 'off';
+			
 			$mep_available_seat = isset($_POST['mep_available_seat']) ? sanitize_text_field($_POST['mep_available_seat']) : 'off';
 			$_tax_status = isset($_POST['_tax_status']) ? sanitize_text_field($_POST['_tax_status']) : 'none';
 			$_tax_class = isset($_POST['_tax_class']) ? sanitize_text_field($_POST['_tax_class']) : '';
 			$mep_member_only_user_role = isset($_POST['mep_member_only_user_role']) && is_array($_POST['mep_member_only_user_role']) ? array_map('sanitize_text_field', $_POST['mep_member_only_user_role']) : array_map('sanitize_text_field', ['all']);
 			$off_days = isset($_POST['mptbm_off_days']) && is_array($_POST['mptbm_off_days']) ?: [];
 			$sku = isset($_POST['mep_event_sku']) ? sanitize_text_field($_POST['mep_event_sku']) : $post_id;
-			$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? sanitize_text_field($_POST['mep_rich_text_status']) : 'enable';
-
-			if ($mep_reset_status == 'on') {
-				mep_reset_event_booking($post_id);
-			}
+			$mep_rich_text_status = isset($_POST['mep_rich_text_status']) ? sanitize_text_field($_POST['mep_rich_text_status']) : 'enable';			
 			$date_format = get_option('date_format');
 			$time_format = get_option('time_format');
 			$date_format_arr = mep_date_format_list();

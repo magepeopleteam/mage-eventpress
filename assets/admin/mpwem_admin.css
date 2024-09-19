@@ -1004,10 +1004,11 @@ table.wc_status_table.widefat {
 	border-collapse: collapse;
 }
 .wc_status_table thead {
-	background: #161B37;
+	background: var(--mpev-primary)
 }
 .wc_status_table thead h2 {
-	color: var(--mpev-white)
+	color: var(--mpev-white);
+	margin: 0;
 }
 .wc_status_table tbody tr {
 	border-bottom: 1px solid #F5F5F5;
@@ -1215,8 +1216,9 @@ input#mep_search_icon {
 		width: 79%;
 	}
 	.wc_status_table_wrapper {
-		margin-left: 15px;
-		margin-right: 15px;
+		width: 800px;
+		margin: auto;
+		margin-top: 50px;
 	}
 }
 @media only screen and (max-width: 600px) {

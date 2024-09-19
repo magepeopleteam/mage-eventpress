@@ -53,6 +53,9 @@ span.mep_event_date {
 	font-weight: bold;
 	width: 75%;
 }
+td.mep_event_seat.column-mep_event_seat {
+	display:flex;
+}
 td.mep_event_seat.column-mep_event_seat span {
 	background-color:var(--mpev-primary);
 	color: var(--mpev-white);
@@ -63,6 +66,13 @@ td.mep_event_seat.column-mep_event_seat span {
 	border-radius: 50px;
 	font-weight: bold;
 	width:50%;
+	margin:1px 5px;
+}
+td.mep_event_seat.column-mep_event_seat span:nth-child(3){
+	width:30px;
+	border-radius: 50px;
+	background-color:var(--mpev-gray);
+	color: var(--mpev-white);
 }
 #mep_uid {
 	width: 65px;

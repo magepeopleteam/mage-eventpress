@@ -117,11 +117,6 @@ use Sabberworm\CSS\Value\Value;
 								<span><?php esc_html_e('Configure Extra Service','mage-eventpress') ?></span>
 							</section>
 							<?php $this->mep_event_extra_price_option($post_id); ?>
-
-							<section class="bg-light" style="margin-top: 20px;">
-								<h2><?php esc_html_e('Documentaion Links','mage-eventpress') ?></h2>
-								<span><?php esc_html_e('Get Documentation','mage-eventpress') ?></span>
-							</section>
 							<?php $this->mep_event_pro_purchase_notice($post_id); ?>
                         </div>
 						<?php do_action('mep_event_tab_after_ticket_pricing'); ?>
@@ -682,25 +677,36 @@ use Sabberworm\CSS\Value\Value;
 		}
 
 		public function mep_event_pro_purchase_notice($post_id) {
-			if(!mep_check_plugin_installed('woocommerce-event-manager-addon-form-builder/addon-builder.php') ) { ?>
+			?>
+			<section class="bg-light" style="margin-top: 20px;">
+				<h2><?php esc_html_e('Documentaion Links','mage-eventpress') ?></h2>
+				<span><?php esc_html_e('Get Documentation','mage-eventpress') ?></span>
+			</section>
 			<section>
-				<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Get Individual Attendee  Information, PDF Ticketing and Email Function with <a href='https://mage-people.com/product/mage-woo-event-booking-manager-pro/' target='_blank'>Event Manager Pro</a>", 'mage-eventpress'); ?></p>
-			 	<?php } if(!mep_check_plugin_installed('woocommerce-event-manager-addon-global-quantity/global-quantity.php')){ ?>
-			
-				<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Setup Event Common QTY of All Ticket Type get <a href='https://mage-people.com/product/global-common-qty-addon-for-event-manager' target='_blank'>Global QTY Addon</a>", 'mage-eventpress'); ?></p>
-		 
-			 	<?php } if(!mep_check_plugin_installed('woocommerce-event-manager-addon-membership-price/membership-price.php')){ ?>
-		 
-		 
-			 	<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Special Price Option for each user type or membership get <a href='https://mage-people.com/product/membership-pricing-for-event-manager-plugin' target='_blank'>Membership Pricing Addon</a>", 'mage-eventpress'); ?></p>
-		 
-				<?php } if(!mep_check_plugin_installed('woocommerce-event-manager-min-max-quantity-addon/mep_min_max_qty.php')){ ?>
-		 
-			 	<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Set maximum/minimum qty buying option with <a href='https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager' target='_blank'>Max/Min Qty Addon</a>", 'mage-eventpress'); ?></p>
-		 	</section>
-			 <?php
-			 }
+				<?php if(!mep_check_plugin_installed('woocommerce-event-manager-addon-form-builder/addon-builder.php') ) : ?>
+					<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Get Individual Attendee  Information, PDF Ticketing and Email Function with <a href='https://mage-people.com/product/mage-woo-event-booking-manager-pro/' target='_blank'>Event Manager Pro</a>", 'mage-eventpress'); ?></p>
+				<?php endif; 
+				if(!mep_check_plugin_installed('woocommerce-event-manager-addon-global-quantity/global-quantity.php')): ?>
+					<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Setup Event Common QTY of All Ticket Type get <a href='https://mage-people.com/product/global-common-qty-addon-for-event-manager' target='_blank'>Global QTY Addon</a>", 'mage-eventpress'); ?></p>
+				<?php endif; 
+				if(!mep_check_plugin_installed('woocommerce-event-manager-addon-membership-price/membership-price.php')): ?>
+					<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Special Price Option for each user type or membership get <a href='https://mage-people.com/product/membership-pricing-for-event-manager-plugin' target='_blank'>Membership Pricing Addon</a>", 'mage-eventpress'); ?></p>
+				<?php endif;
+				if(!mep_check_plugin_installed('woocommerce-event-manager-min-max-quantity-addon/mep_min_max_qty.php')): ?>
+					<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Set maximum/minimum qty buying option with <a href='https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager' target='_blank'>Max/Min Qty Addon</a>", 'mage-eventpress'); ?></p>
+				<?php endif; ?>
+				<p class="event_meta_help_txtx"><span class="dashicons dashicons-info"></span> <?php _e("Read Documentation <a href='https://docs.mage-people.com/woocommerce-event-manager/' target='_blank'>Read Documentation</a>", 'mage-eventpress'); ?></p>
+
+			</section>
+			<?php
 		}
+
+		public function mep_event_pro_purchase_link(){
+			?>
+
+			<?php
+		}
+
 		public function mep_event_extra_price_option($post_id) {
 			
 			$mep_events_extra_prices = get_post_meta($post_id, 'mep_events_extra_prices', true);

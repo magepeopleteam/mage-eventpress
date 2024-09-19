@@ -916,7 +916,6 @@ function mep_re_get_everyday_event_date_sec($event_id)
 
                     <?php } else { ?>
                     <span class='mep_recurring_datepicker_section'>
-                    <span class='mep-cal-icon'><i class="far fa-calendar-alt"></i></span>
                     <span class='mep-datepicker-input-box'>
                         <input <?php if(!is_admin()){ echo 'readonly'; } ?> type="text" name='mep_everyday_dates' id='mep_everyday_datepicker' value="<?php echo $date_parameter ??date($date_format, strtotime(mep_re_get_the_upcomming_date_arr($event_id)[0])); ?>">
                     </span>

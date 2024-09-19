@@ -102,23 +102,42 @@
 		background-color: var(--mpev-white);
 		padding: 2% 5%;
 	}
-	.mp_settings_panel .metabox-holder h2 {border-bottom: 2px solid #0071A1;font-size: 20px; padding: 15px;margin: 0;background: #161B37; color: #FFF !important;}
+	.mp_settings_panel .metabox-holder .bg-light {
+		border: 1px solid var(--mpev-gray);
+		padding: 20px;
+		border-bottom: 0;
+		margin-top: 50px;
+	}
+	.mp_settings_panel .metabox-holder .bg-light h2 {
+		margin: 0;
+		color: var(--mpev-primary);
+	}
 	.mp_settings_panel select {min-width: 150px;}
 	.mp_settings_panel table {width: 100%;overflow: hidden; border: 1px solid #DDD;}
 	.mp_settings_panel table,
 	.mp_settings_panel table td,
 	.mp_settings_panel table th {border-collapse: collapse;}
-	.mp_settings_panel table th {width: 300px;padding: 5px 10px;font-size: 14px;text-align: left;font-weight: 600;vertical-align: middle;color: #000;}
+	.mp_settings_panel table th {width:80%;padding: 10px 10px;font-size: 16px;text-align: left;font-weight: normal;vertical-align: middle;color: var(--mpev-dark);}
 	.mp_settings_panel table td {padding: 5px 10px;font-size: 14px;}
 	.mp_settings_panel table tr:nth-child(even) {background-color: #F2F2F2;}
 	.mp_settings_panel p.submit {text-align: right; margin: 20px 0 0 0; padding: 0;}
 	div.mpStyle .description,
-	.mp_settings_panel .description {display: block;font-weight: normal;font-size: var(--fs_small) !important;color: #666;margin: var(--dMP_xs) 0 0 0;}
+	.mp_settings_panel .description {display: block;font-weight: normal;font-size: var(--fs_small) !important;color: #666;}
 	div.mpStyle .description span,
 	.mp_settings_panel .description span {margin: 0 var(--dMP_xs) 0 0;}
-	.mp_settings_panel .description strong {color: #000;}
-	.mp_settings_panel p.submit input {font-size: 16px;padding: 5px 30px;border-radius: 0;background: #49AC2F;border-color: #49AC2F;transition: 0.2s;}
-	.mp_settings_panel p.submit input:hover {background: #239108;border-color: #239108;transition: 0.2s;}
+	.mp_settings_panel .description strong {color: var(--mpev-primary);}
+	.mp_settings_panel p.submit input {
+		font-size: 16px;
+		padding: 5px 30px;
+		border-radius: 0;
+		background: var(--mpev-primary);
+		border-color: var(--mpev-primary);
+		transition: 0.2s;}
+	.mp_settings_panel p.submit input:hover {
+		background: var(--mpev-primary);
+		border-color: var(--mpev-primary);
+		opacity: .8;
+	}
 	.mp_settings_panel #setting-error-tgmpa {order: 0;width: 100%}
 	.mp_settings_panel .notice {display: none;}
 	div.mp_settings_panel .formControl {max-width: 320px;}
@@ -127,8 +146,8 @@
 	.mp_settings_panel .selection {width: 100%;}
 	.mp_settings_panel .metabox-holder table { border-collapse: collapse;}
 	.mp_settings_panel .metabox-holder table td,
-	.mp_settings_panel .metabox-holder table th { padding: 12px;}
-	.mp_settings_panel .metabox-holder table tr:nth-child(even) { background-color: #0CB32612;}
+	.mp_settings_panel .metabox-holder table th { padding: 10px;}
+	.mp_settings_panel .metabox-holder table tr:nth-child(even) { background-color: #f8f8f8;}
 	.mp_settings_panel .metabox-holder table tr:nth-child(odd) { background-color: #FFF;}
 }
 /******************************************************************** Meta tab settings ************************************************/

@@ -1,5 +1,5 @@
 .mep_everyday_date_secs input,
-.mep_everyday_date_secs select {width: 100%;}
+.mep_everyday_date_secs select {width: auto; margin: 0 5px;}
 #mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox .section-title{
       background-color: #d2afaf;
       padding: 7px 0 7px 40px;

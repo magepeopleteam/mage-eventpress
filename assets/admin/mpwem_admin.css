@@ -1020,11 +1020,7 @@ table.wc_status_table.widefat {
 	text-align: center;
 }
 .mep_warning {
-	background: #F8D7DA;
-	text-align: left;
-	font-size: 13px;
-	display: block;
-	color: #721C24;
+
 }
 .mep_warning p {
 	color: #721C24;
@@ -1033,10 +1029,7 @@ table.wc_status_table.widefat {
 	color: green;
 	font-weight: bold;
 }
-.mep_warning {
-	color: #721C24;
-	font-weight: bold;
-}
+
 .mep_error {
 	color: red;
 	font-weight: bold;

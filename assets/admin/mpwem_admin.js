@@ -30,4 +30,15 @@
             $(this).addClass('mpRequired');
         }
     });
+    //==========Special date==================//
+    $(document).on('click', '.ttbm_add_new_special_date', function () {
+        let parent = $(this).closest('.mp_settings_area');
+        let target_item = parent.find('>.mp_hidden_content').find('.mp_hidden_item');
+        let item = target_item.html();
+        load_sortable_datepicker(parent, item);
+        let unique_id = 'ttbm_hidden_name_' + Math.floor((Math.random() * 9999) + 999);
+        target_item.find('[name="mep_special_date_hidden_name[]"]').val(unique_id);
+        target_item.find('[name*="mep_special_time_label"]').attr('name', 'mep_special_time_label_' + unique_id + '[]');
+        target_item.find('[name*="mep_special_time_value"]').attr('name', 'mep_special_time_value_' + unique_id + '[]');
+    });
 }(jQuery));

@@ -1471,3 +1471,17 @@ div.mpStyle label {
 #ui-datepicker-div .ui-datepicker-title{
 	background-color: var(--mpev-primary);
 }
+/*********Special date settings**********************/
+div.mep_special_on_dates_setting table td {vertical-align: top;padding: 5px;}
+div.mep_special_on_dates_setting table label {max-width: 170px;}
+div.mep_special_on_dates_setting [type='time'] {max-width: 120px;}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table {border-collapse: inherit;}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table,
+div.mep_special_on_dates_setting table.mep_special_on_dates_table th,
+div.mep_special_on_dates_setting table.mep_special_on_dates_table td {border: 1px solid var(--color_border);}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table th {font-size: var(--fs);}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table tr:nth-child(even),
+div.mep_special_on_dates_setting table.mep_special_on_dates_table tr:nth-child(odd) {background-color: transparent;}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table thead th {background-color: var(--color_2);color: #333;}
+div.mep_special_on_dates_setting table.mep_special_on_dates_table tbody th {background-color: var(--color_light);padding: 5px;color: #333;}
+/*******************************/

@@ -24,7 +24,7 @@ if (!function_exists('mep_ev_seat')) {
 				$upcoming_date      = !empty(mep_get_event_upcoming_date($event_id)) ? mep_get_event_upcoming_date($event_id) : '';
                 $total_seat 		= apply_filters('mep_event_total_seat_counts', mep_event_total_seat($event_id, 'total'), $event_id);
                 $total_resv 		= apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($event_id, 'resv'), $event_id);
-                $total_sold         = mep_ticket_type_sold($event_id);
+             $total_sold = mep_ticket_type_sold($event_id);
                 $total_sold 		= mep_get_event_total_seat_left($event_id, $upcoming_date);
                 $total_left 		= (int) $total_seat - ((int) $total_sold + (int) $total_resv);
                 // $total_seat = apply_filters('mep_event_total_seat_count', $_total_left, $event_id,'',$event_date);

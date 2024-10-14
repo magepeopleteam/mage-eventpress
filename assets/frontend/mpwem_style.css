@@ -1,6 +1,4 @@
-/******************************************************************** ************************************************/
-@media only screen and (min-width: 10px) {
-}
+
 /******************************************************************** Responsive ************************************************/
 @media only screen and (max-width: 800px) {
 
@@ -8,6 +6,10 @@
 @media only screen and (max-width: 600px) {
 }
 /*****************************************************/
+.mep_events_speaker_wraper {
+    max-width: 1270px;
+    margin: 0 auto;
+}
 #mep_event_date_sch li a {
 	display: -webkit-flex;
 	display: flex;

@@ -122,16 +122,16 @@ function mep_event_list($atts, $content = null)
         "country"       => "",
         "carousal-nav"  => "no",
         "carousal-dots" => "yes",
-        "carousal-id" => "102448",
+        "carousal-id"   => "102448",
         "timeline-mode" => "vertical",
         'sort'          => 'ASC',
         'status'        => 'upcoming',
         'search-filter' => '',
-        'title-filter' => 'yes',
-        'category-filter' => 'yes',
-        'organizer-filter' => 'yes',
-        'city-filter' => 'yes',
-        'date-filter' => 'yes'
+        'title-filter'  => 'yes',
+        'category-filter'   => 'yes',
+        'organizer-filter'  => 'yes',
+        'city-filter'   => 'yes',
+        'date-filter'   => 'yes'
     );
     $params         = shortcode_atts($defaults, $atts);
     $cat            = $params['cat'];
@@ -142,13 +142,14 @@ function mep_event_list($atts, $content = null)
     $show           = $params['show'];
     $pagination     = $params['pagination'];
     $sort           = $params['sort'];
-    $column         = $style != 'grid' ? 1 : $params['column'];
+    $_column        = $style != 'grid' ? 1 : $params['column'];
+    $column         = is_numeric($_column) ? $_column : 3;
     $nav            = $params['carousal-nav'] == 'yes' ? 1 : 0;
     $dot            = $params['carousal-dots'] == 'yes' ? 1 : 0;
     $city           = $params['city'];
     $country        = $params['country'];
     $cid            = $params['carousal-id'];
-    $status            = $params['status'];
+    $status         = $params['status'];
 
     $filter = $params['search-filter'];
     $show = ($filter == 'yes' || $pagination == 'yes' && $style != 'timeline') ? -1 : $show;
@@ -158,10 +159,10 @@ function mep_event_list($atts, $content = null)
     $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
     $time_line_div_end      = $style == 'timeline' ? '</div></div></div>' : '';
 
-    $flex_column    = $column;
+    $flex_column    = esc_attr($column);
     $mage_div_count = 0;
     $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
-   $unq_id = 'abr'.uniqid();  
+    $unq_id = 'abr'.uniqid();  
     ob_start();
     /**
      * The Main Query function mep_event_query is locet in inc/mep_query.php File

@@ -40,11 +40,8 @@
 				require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
-				//require_once MPWEM_PLUGIN_DIR . '/inc/MPTBM_Function.php';
-				//require_once MPTBM_PLUGIN_DIR . '/inc/MPTBM_Query.php';
-				//require_once MPTBM_PLUGIN_DIR . '/inc/MPTBM_Layout.php';
-				//require_once MPTBM_PLUGIN_DIR . '/Admin/MPTBM_Admin.php';
-				//require_once MPTBM_PLUGIN_DIR . '/Frontend/MPTBM_Frontend.php';
+				require_once(dirname(__DIR__) . "/inc/recurring/inc/functions.php");	
+				require_once(dirname(__DIR__) . "/inc/recurring/inc/recurring_attendee_stat.php");			
 			}
 			public function global_enqueue() {
 				wp_enqueue_script('jquery');
@@ -54,13 +51,9 @@
 				wp_localize_script('jquery', 'mep_ajax', array('mep_ajaxurl' => admin_url('admin-ajax.php')));
 				wp_enqueue_style('mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2');
 				$fontAwesome = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_fontawesome_from_theme', 'no');
-
-				// mep_load_countdown_from_theme
 				if ($fontAwesome == 'no') {
-					wp_enqueue_style('mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0');
-					wp_enqueue_style('mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0');						
+					wp_enqueue_style('mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0');					
 					wp_enqueue_style('mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4');
-
 				}
 				$flatIcon = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_flaticon_from_theme', 'no');
 				if ($flatIcon == 'no') {
@@ -106,7 +99,11 @@
 				wp_enqueue_style('mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css');
 				wp_enqueue_script('magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array('jquery'));
 				wp_localize_script('PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array('PickpluginsOptionsFramework_ajaxurl' => admin_url('admin-ajax.php')));
-				wp_enqueue_script('form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array('jquery'), null, false);
+			
+				if(!function_exists('TTO_activated')){
+					wp_enqueue_script('form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array('jquery'), null, false);
+				}
+				
 				//loading modal
 				wp_enqueue_style('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.css', array(), 1.0);
 				wp_enqueue_script('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.js', array('jquery'), 1.0, true);
@@ -123,8 +120,6 @@
 				//wp_enqueue_script('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.js', array('jquery'), time(), true);
 				//wp_enqueue_style('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.css', array(), time());
 				//timeline
-				$CountDown = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_countdown_from_theme', 'no');
-
 				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(''));
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
 				//calender
@@ -132,9 +127,7 @@
 				wp_enqueue_script('mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array('jquery', 'mep-moment-js'), 1, true);
 				//
 				wp_enqueue_script('mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true);
-				if ($CountDown == 'no') {
 				wp_enqueue_script('mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array('jquery'), 1, true);
-				}
 				wp_enqueue_script('mep-moment-js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js', array(), 1, true);
 				//custom
 				wp_enqueue_style('filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.css', array(), time());
@@ -154,14 +147,17 @@
 			public function js_constant() {
 				?>
 				<script type="text/javascript">
-					let mp_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
-					let mp_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
-					let mp_currency_position = "<?php echo get_option('woocommerce_currency_pos'); ?>";
-					let mp_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
+
+					let mp_ajax_url 					= "<?php echo admin_url('admin-ajax.php'); ?>";
+					let mp_currency_symbol 				= "<?php echo get_woocommerce_currency_symbol(); ?>";
+					let mp_currency_position 			= "<?php echo get_option('woocommerce_currency_pos'); ?>";
+					let mp_currency_decimal 			= "<?php echo wc_get_price_decimal_separator(); ?>";
 					let mp_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
-					let mp_num_of_decimal = "<?php echo get_option('woocommerce_price_num_decimals', 2); ?>";
-					let mp_empty_image_url = "<?php echo esc_attr(MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png'); ?>";
-					let mp_date_format = "D d M , yy";
+					let mp_num_of_decimal 				= "<?php echo get_option('woocommerce_price_num_decimals', 2); ?>";
+					let mp_empty_image_url 				= "<?php echo esc_attr(MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png'); ?>";
+					let mp_date_format 					= "D d M , yy";
+					let mp_nonce 						= '<?php echo wp_create_nonce('mep-ajax-nonce'); ?>'
+
 				</script>
 				<?php
 			}

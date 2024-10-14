@@ -10,10 +10,10 @@
 		class MPWEM_Admin {
 			public function __construct() {
 				//if (is_admin()) {
-					$this->load_file();
-					add_action('init', [$this, 'add_dummy_data']);
-					add_filter('use_block_editor_for_post_type', [$this, 'disable_gutenberg'], 10, 2);
-					add_action('upgrader_process_complete', [$this, 'flush_rewrite'], 0);
+				$this->load_file();
+				add_action('init', [$this, 'add_dummy_data']);
+				add_filter('use_block_editor_for_post_type', [$this, 'disable_gutenberg'], 10, 2);
+				add_action('upgrader_process_complete', [$this, 'flush_rewrite'], 0);
 				//}
 			}
 			public function flush_rewrite() {
@@ -39,8 +39,9 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/status.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
-//				//****************Taxi settings************************//
-//				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_Settings.php';
+				//****************Taxi settings************************//
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Date_Settings.php';
 //				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_General_Settings.php';
 //				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_Price_Settings.php';
 //				require_once MPTBM_PLUGIN_DIR . '/Admin/settings/taxi/MPTBM_Extra_Service.php';

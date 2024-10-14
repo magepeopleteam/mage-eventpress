@@ -1,0 +1,66 @@
+h5.mep-warning {
+    color: #e2401c;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid red;
+    margin: 20px 0;
+    padding: 20px;
+    font-weight: bold;
+    background: #ffe6e6;
+}
+h5.mep-processing {
+    color: #0bc705;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid rgb(0, 156, 21);
+    margin: 20px 0;
+    padding: 65px 0 0 0;
+    font-weight: bold;
+    background: url(anim.gif) no-repeat center -96px;
+    min-height: 100px;
+}
+.mep_everyday_date_secs {
+    display: inline-block;
+    float: none;
+    margin: 10px 0;
+}
+
+.mep_everyday_date_secs ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+li.mep_re_datelist_label {
+    width: 41%;
+    font-size: 20px;
+    text-align: left!important;
+}
+.mep_everyday_date_secs ul li {
+    display: inline-block;
+    text-align: center;
+    min-width: 200px;
+}
+
+.mep_everyday_date_secs ul li input, .mep_everyday_date_secs ul li select {
+    height: 30px;
+    margin-top: -2px;
+    padding: 0 10px;
+    border: 1px solid #000;
+    background: #fff;
+}
+
+.mep_everyday_date_secs select {
+    height: 30px;
+    margin-top: -2px;
+    padding: 0 10px;
+    border: 1px solid #000;
+    background: #fff;
+}
+h3.ex-sec-title {
+    margin-top: 20px;
+}
+
+option.date-time-over {
+    display: none;
+}

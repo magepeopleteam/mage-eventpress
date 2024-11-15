@@ -25,17 +25,20 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Layout.php';
-				//require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
 			}
 			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 				require_once(dirname(__DIR__) . '/lib/classes/class-mep.php');
 				require_once(dirname(__DIR__) . "/inc/mep_functions.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax.php");
 				require_once(dirname(__DIR__) . "/inc/mep_event_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_event_fw_meta.php");
-				require_once(dirname(__DIR__) . "/inc/mep_extra_price.php");
 				require_once(dirname(__DIR__) . "/inc/mep_shortcode.php");
 				require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
@@ -66,10 +69,10 @@
 					wp_enqueue_style('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4');
 					wp_enqueue_script('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array(), '2.3.4');
 				}
-				if (is_admin()) {
+
 					wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
 					wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
-				}
+
 				do_action('add_mpwem_common_script');
 			}
 			public function admin_enqueue($hook) {
@@ -82,7 +85,6 @@
 				wp_enqueue_script('wp-color-picker');
 				wp_enqueue_style('wp-codemirror');
 				wp_enqueue_script('wp-codemirror');
-				//wp_enqueue_script('jquery-ui-accordion');
 				//********//
 				$user_api = mep_get_option('google-map-api', 'general_setting_sec', '');
 				// Load Only when the New Event Add Page Open.
@@ -113,8 +115,6 @@
 			public function frontend_enqueue() {
 				$this->global_enqueue();
 				//wp_enqueue_script('wc-checkout');
-				//wp_enqueue_script('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.js', array('jquery'), time(), true);
-				//wp_enqueue_style('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.css', array(), time());
 				//timeline
 				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(''));
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
@@ -151,7 +151,7 @@
 					let mp_num_of_decimal = "<?php echo get_option('woocommerce_price_num_decimals', 2); ?>";
 					let mp_empty_image_url = "<?php echo esc_attr(MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png'); ?>";
 					let mp_date_format = "D d M , yy";
-					let mp_nonce = wp_create_nonce('mep-ajax-nonce');
+					//let mp_nonce = wp_create_nonce('mep-ajax-nonce');
 				</script>
 				<?php
 			}

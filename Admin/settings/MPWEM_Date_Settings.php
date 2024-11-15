@@ -156,7 +156,7 @@
 								$off_days = $off_day_array ? implode(',', $off_day_array) : '';
 								$days = MP_Global_Function::week_day();
 							?>
-                            <div class="dFlex">
+                            <div class="dFlex groupCheckBox">
                                 <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
 								<?php foreach ($days as $key => $day) { ?>
                                     <label class="customCheckboxLabel ">
@@ -200,27 +200,24 @@
 				<?php
 			}
 			public function time_settings_section($post_id) {
-				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time');
+				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time', 'no');
 				$active_time = $display_time == 'no' ? '' : 'mActive';
 				$checked_time = $display_time == 'no' ? '' : 'checked';
 				?>
-                <section class="bg-light" style="margin-top: 20px;">
-                    <h2><?php esc_html_e('Time Settings', 'mage-eventpress') ?></h2>
-                    <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
-                </section>
-                <section>
-                    <label class="label">
-                        <div>
-                            <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
-                            <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
-                        </div>
-                        <label class="mpev-switch">
-                            <input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr($checked_time); ?>" <?php echo esc_attr(($checked_time == 'yes') ? 'checked' : ''); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
-                            <span class="slider"></span>
-                        </label>
-                    </label>
-                </section>
                 <div class="mpStyle">
+                    <section class="bg-light" style="margin-top: 20px;">
+                        <h2><?php esc_html_e('Time Settings', 'mage-eventpress') ?></h2>
+                        <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
+                    </section>
+                    <section>
+                        <label class="label">
+                            <div>
+                                <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
+                                <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
+                            </div>
+	                        <?php MP_Custom_Layout::switch_button('mep_disable_ticket_time', $checked_time); ?>
+                        </label>
+                    </section>
                     <section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
                         <div class="mpTabs topTabs tabBorder">
                             <ul class="tabLists">
@@ -283,7 +280,7 @@
 			public function date_time_tab($post_id) {
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				?>
-                <div class="mp_tab_item" data-tab-item="#mp_event_time">
+                <div class="mp_tab_item mpStyle" data-tab-item="#mp_event_time">
                     <h3><?php esc_html_e('Date & Time', 'mage-eventpress') ?></h3>
                     <p><?php esc_html_e('Configure Your Date and Time Settings Here', 'mage-eventpress') ?></p>
                     <section class="bg-light">
@@ -334,7 +331,7 @@
 				?>
                 <tr class="mp_remove_area">
                     <td>
-                        <label><input type="text" class="formControl" value="<?php echo esc_attr($label); ?>" name="<?php echo esc_attr($key . '_label[]'); ?>" placeholder="<?php esc_attr_e('Time Slot Label', 'mage-eventpress'); ?>" /></label>
+                        <label><input type="text" class="formControl" value="<?php echo esc_attr($label); ?>" name="<?php echo esc_attr($key . '_label[]'); ?>" placeholder="<?php esc_attr_e('Time Slot Label', 'mage-eventpress'); ?>"/></label>
                     </td>
                     <td><?php self::time_item($key . '_time[]', $time); ?></td>
                     <td class="_w_150"><?php MP_Custom_Layout::move_remove_button(); ?></td>
@@ -585,38 +582,38 @@
 						$this->day_wise_slot_save($post_id, 'mep_ticket_times_fri');
 						//***************//
 						$special_dates = array();
-						$hidden_name   = MP_Global_Function::get_submit_info( 'mep_special_date_hidden_name', array() );
-						$date_labels   = MP_Global_Function::get_submit_info( 'mep_special_date_name', array() );
-						$start_date    = MP_Global_Function::get_submit_info( 'mep_special_start_date', array() );
-						$end_date      = MP_Global_Function::get_submit_info( 'mep_special_end_date', array() );
-						if ( count( $start_date ) > 0 ) {
-							for ( $i = 0; $i < count( $start_date ); $i ++ ) {
-								$time_labels = MP_Global_Function::get_submit_info( 'mep_special_time_label_' . $hidden_name[ $i ], array() );
-								$times       = MP_Global_Function::get_submit_info( 'mep_special_time_value_' . $hidden_name[ $i ], array() );
-								if ( $start_date[ $i ] != '' && $end_date[ $i ] != '' && sizeof( $time_labels ) > 0 && sizeof( $times ) > 0 ) {
-									$special_dates[ $i ]['date_label'] = $date_labels[ $i ];
-									$special_dates[ $i ]['start_date'] = date( 'Y-m-d', strtotime( $start_date[ $i ] ) );
-									$special_dates[ $i ]['end_date']   = date( 'Y-m-d', strtotime( $end_date[ $i ] ) );
-									$time_slot                         = array();
-									for ( $j = 0; $j < count( $time_labels ); $j ++ ) {
-										if ( $time_labels[ $j ] && $times[ $j ] != '' ) {
-											$time_slot[ $j ]['mep_ticket_time_name'] = $time_labels[ $j ];
-											$time_slot[ $j ]['mep_ticket_time']      = $times[ $j ];
+						$hidden_name = MP_Global_Function::get_submit_info('mep_special_date_hidden_name', array());
+						$date_labels = MP_Global_Function::get_submit_info('mep_special_date_name', array());
+						$start_date = MP_Global_Function::get_submit_info('mep_special_start_date', array());
+						$end_date = MP_Global_Function::get_submit_info('mep_special_end_date', array());
+						if (count($start_date) > 0) {
+							for ($i = 0; $i < count($start_date); $i++) {
+								$time_labels = MP_Global_Function::get_submit_info('mep_special_time_label_' . $hidden_name[$i], array());
+								$times = MP_Global_Function::get_submit_info('mep_special_time_value_' . $hidden_name[$i], array());
+								if ($start_date[$i] != '' && $end_date[$i] != '' && sizeof($time_labels) > 0 && sizeof($times) > 0) {
+									$special_dates[$i]['date_label'] = $date_labels[$i];
+									$special_dates[$i]['start_date'] = date('Y-m-d', strtotime($start_date[$i]));
+									$special_dates[$i]['end_date'] = date('Y-m-d', strtotime($end_date[$i]));
+									$time_slot = array();
+									for ($j = 0; $j < count($time_labels); $j++) {
+										if ($time_labels[$j] && $times[$j] != '') {
+											$time_slot[$j]['mep_ticket_time_name'] = $time_labels[$j];
+											$time_slot[$j]['mep_ticket_time'] = $times[$j];
 										}
 									}
-									$special_dates[ $i ]['time'] = $time_slot;
+									$special_dates[$i]['time'] = $time_slot;
 								}
 							}
 						}
-						update_post_meta( $post_id, 'mep_special_date_info', $special_dates );
+						update_post_meta($post_id, 'mep_special_date_info', $special_dates);
 					}
 					//**********************//
 				}
 			}
 			public function day_wise_slot_save($post_id, $name) {
 				$all_global = [];
-				$global_time = MP_Global_Function::get_submit_info($name . '_label', []);
-				$global_label = MP_Global_Function::get_submit_info($name . '_time', []);
+				$global_label = MP_Global_Function::get_submit_info($name . '_label', []);
+				$global_time = MP_Global_Function::get_submit_info($name . '_time', []);
 				if (sizeof($global_time) > 0 && sizeof($global_label)) {
 					foreach ($global_time as $key => $time) {
 						if ($time && $global_label[$key]) {

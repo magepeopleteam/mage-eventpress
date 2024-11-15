@@ -1,7 +1,17 @@
-
-/******************************************************************** Responsive ************************************************/
-@media only screen and (max-width: 800px) {
-
+/******************************************************************** Smart Theme ************************************************/
+@media only screen and (min-width: 10px) {
+	div.mpwem_organizer {display: -webkit-flex;display: flex;}
+	div.mpwem_ex_service,
+	div.mep_attendee_info,
+	div.mep_attendee_info_hidden,
+	div.mpwem_form_submit_area{display: none;}
+	div.mep_file_item img{height: 100%;width: auto;cursor: pointer;display: none;max-height: 100px;}
+	div.mep_file_item iframe{height: 100%;width: auto;cursor: pointer;display: none;max-height: 300px;}
+	.mep_attendee_info .mp_form_item{padding: 7px;}
+	.mep_attendee_info .mp_form_item.mep_checkbox_item>span,
+	.mep_attendee_info .mp_form_item.mep_radio_item>span,
+	.mep_attendee_info .mp_form_item.mep_file_item>span,
+	.mep_attendee_info .mp_form_item>label>span{min-width:200px;}
 }
 @media only screen and (max-width: 600px) {
 }
@@ -190,11 +200,11 @@ ul#mep_add_calender_links li a {
 	margin: 20px auto;
 }
 .mep-event-countdown-timer .wrapper div span {
-    display: block;
-    padding: 10px;
+	display: block;
+	padding: 10px;
 }
 .mep-event-countdown-timer .wrapper div span span.label {
-    border: 0 !important;
+	border: 0 !important;
 }
 /********title***********/
 .mep-default-title h2,
@@ -2382,7 +2392,6 @@ span.mep-more-time i {
 	width: max-content;
 }
 .mep-event-countdown-timer {
-	
 	width: 100%;
 	overflow: hidden;
 }
@@ -2408,13 +2417,12 @@ span.mep-more-time i {
 	padding: 0;
 }
 .mep-event-countdown-timer .wrapper div span.label {
-    display: block;
-    font-weight: bold !important;
-    margin-top:10px
+	display: block;
+	font-weight: bold !important;
+	margin-top: 10px
 }
-
 .mep-event-countdown-timer .wrapper div {
-    font-size: 40px;
+	font-size: 40px;
 }
 .mep-event-countdown-timer .wrapper .label {
 	font-size: 18px;
@@ -2433,7 +2441,6 @@ span.mep-more-time i {
 .mep-elementor-event-add-to-cart-section-widget h4.mep-cart-table-title {
 	display: none;
 }
-
 /*************************************************************
 New Spring list style css added by ariful
 **************************************************************/
@@ -3309,7 +3316,7 @@ tr.mep_virtual_event_info_sec {
 	position: absolute;
 	left: 0;
 	top: 0;
-	content: '';
+	content: "";
 	margin-left: 25px;
 	z-index: 0;
 }
@@ -3327,7 +3334,7 @@ tr.mep_virtual_event_info_sec {
 }
 /* New Theme Deora CSS */
 .mpe-new-event h1 {
-	font-family: 'Outfit', sans-serif;
+	font-family: "Outfit", sans-serif;
 	font-style: normal;
 	font-weight: 500;
 	font-size: 56px;
@@ -3364,7 +3371,7 @@ tr.mep_virtual_event_info_sec {
 	border-radius: 5px;
 }
 .mpe-new-event-meta .mpe-new-text-holder p {
-	font-family: 'Poppins';
+	font-family: "Poppins";
 	font-style: normal;
 	font-weight: 500;
 	font-size: 18px;
@@ -3405,7 +3412,7 @@ tr.mep_virtual_event_info_sec {
 	margin-top: 30px;
 }
 .mpe-new-description-Section h2 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 32px;
@@ -3417,7 +3424,7 @@ tr.mep_virtual_event_info_sec {
 	margin-right: 30px;
 }
 .mpe-new-event-desctiption p {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 300;
 	font-size: 16px;
@@ -3433,7 +3440,7 @@ tr.mep_virtual_event_info_sec {
 	margin-bottom: 10px;
 	padding: 15px;
 	background-color: white;
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 500;
 	font-size: 20px;
@@ -3471,7 +3478,7 @@ tr.mep_virtual_event_info_sec {
 	width: 75%;
 }
 .mpe-new-ticket-info h3 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 500;
 	font-size: 22.81px;
@@ -3588,7 +3595,7 @@ input.mpe-new-input-group-field {
 	display: flex;
 	align-items: center;
 	text-decoration: none;
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 500;
 	font-size: 16px;
@@ -3666,7 +3673,7 @@ input.mpe-new-input-group-field {
 	color: #6046FF;
 }
 .mpe-new-schedule-details .mpe-new-detailed-text {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
@@ -3699,7 +3706,7 @@ input.mpe-new-input-group-field {
 }
 /*----------- Map Location --------------*/
 .mpe-new-map-location h2 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 32px;
@@ -3724,7 +3731,7 @@ input.mpe-new-input-group-field {
 	margin: auto;
 }
 .mpe-new-faq-section h2 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 32px;
@@ -3733,7 +3740,7 @@ input.mpe-new-input-group-field {
 	margin-bottom: 20px;
 }
 .mpe-new-faq-section .mpe-new-faqHeader p {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 20px;
@@ -3751,7 +3758,7 @@ input.mpe-new-input-group-field {
 	margin: 5px;
 }
 .mpe-new-panel p {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
@@ -3769,7 +3776,7 @@ input.mpe-new-input-group-field {
 	text-align: left;
 	outline: none;
 	transition: 0.4s;
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 24px;
@@ -3793,7 +3800,7 @@ input.mpe-new-input-group-field {
 	margin-bottom: 50px;
 }
 .mpe-new-attendee h2 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 32px;
@@ -3825,7 +3832,7 @@ input.mpe-new-input-group-field {
 	width: auto;
 }
 .mpe-new-attende-details p {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16.7778px;
@@ -3840,7 +3847,7 @@ input.mpe-new-input-group-field {
 	position: relative;
 }
 .mpe-new-related-events h2 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 32px;
@@ -3895,7 +3902,7 @@ input.mpe-new-input-group-field {
 	padding: 20px;
 }
 .mpe-new-related-content h3 {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 22px;
@@ -3904,7 +3911,7 @@ input.mpe-new-input-group-field {
 	color: #0F0F0F;
 }
 .mpe-new-related-content .mpe-new-events-place {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
@@ -3918,7 +3925,7 @@ input.mpe-new-input-group-field {
 	justify-content: end;
 }
 .mpe-new-related-item-price p {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 600;
 	font-size: 28px;
@@ -3927,7 +3934,7 @@ input.mpe-new-input-group-field {
 	margin: 0;
 }
 .mpe-new-related-item-price .mpe-new-price-category {
-	font-family: 'Outfit';
+	font-family: "Outfit";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 12px;

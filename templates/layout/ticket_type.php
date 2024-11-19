@@ -56,7 +56,7 @@
 									<?php MP_Custom_Layout::qty_input($input_data); ?>
                                 </div>
                             </div>
-							<?php do_action('mpwem_multi_attendee', $event_id); ?>
+							<?php //do_action('mpwem_multi_attendee', $event_id); ?>
                         </div>
 						<?php
 					}

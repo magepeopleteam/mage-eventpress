@@ -73,8 +73,8 @@
 				}
 				if (sizeof($ticket_type) > 0) {
 					$ticket_qty = array_key_exists('option_qty', $ticket_type) ? $ticket_type['option_qty'] : 0;
-					$total_sold = (int) mep_extra_service_sold($event_id, $ticket_name, $date);
-					$available_ticket =$ticket_qty- $total_sold;
+					$total_sold = (int)mep_extra_service_sold($event_id, $ticket_name, $date);
+					$available_ticket = $ticket_qty - $total_sold;
 				}
 				return $available_ticket;
 			}
@@ -226,17 +226,29 @@
 								}
 							}
 							$disable_time = MP_Global_Function::get_post_info($event_id, 'mep_disable_ticket_time', 'no');
-							if (sizeof($times) == 0 && $disable_time == 'yes') {
-								$global_times = MP_Global_Function::get_post_info($event_id, 'mep_ticket_times_global', []);
-								$day_key = strtolower(date('D', strtotime($date)));
-								$day_times = MP_Global_Function::get_post_info($event_id, 'mep_ticket_times_' . $day_key, []);
-								$time_lists = sizeof($day_times) > 0 ? $day_times : $global_times;
-								if (sizeof($time_lists) > 0) {
-									foreach ($time_lists as $time_list) {
-										$times[$count]['start']['label'] = array_key_exists('mep_ticket_time_name', $time_list) ? $time_list['mep_ticket_time_name'] : '';
-										$times[$count]['start']['time'] = array_key_exists('mep_ticket_time', $time_list) ? $time_list['mep_ticket_time'] : '';
-										$count++;
+							if (sizeof($times) == 0) {
+								if ($disable_time == 'yes') {
+									$global_times = MP_Global_Function::get_post_info($event_id, 'mep_ticket_times_global', []);
+									$day_key = strtolower(date('D', strtotime($date)));
+									$day_times = MP_Global_Function::get_post_info($event_id, 'mep_ticket_times_' . $day_key, []);
+									$time_lists = sizeof($day_times) > 0 ? $day_times : $global_times;
+									if (sizeof($time_lists) > 0) {
+										foreach ($time_lists as $time_list) {
+											$times[$count]['start']['label'] = array_key_exists('mep_ticket_time_name', $time_list) ? $time_list['mep_ticket_time_name'] : '';
+											$times[$count]['start']['time'] = array_key_exists('mep_ticket_time', $time_list) ? $time_list['mep_ticket_time'] : '';
+											$count++;
+										}
 									}
+								}
+							}
+							if (sizeof($times) == 0) {
+								$start_time = MP_Global_Function::get_post_info($event_id, 'event_start_time');
+								$end_time = MP_Global_Function::get_post_info($event_id, 'event_end_time');
+								if ($start_time) {
+									$times[0]['start']['time'] = date('H:i', strtotime($start_time));
+								}
+								if ($end_time) {
+									$times[0]['end']['time'] = date('H:i', strtotime($end_time));
 								}
 							}
 						}
@@ -290,7 +302,6 @@
 				return 'mep_events';
 			}
 			//==========================//
-
 		}
 		new MPWEM_Functions();
 	}

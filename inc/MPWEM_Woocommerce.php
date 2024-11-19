@@ -25,7 +25,7 @@
 					$total_price = get_post_meta($product_id, '_price', true);
 					$form_position = mep_get_option('mep_user_form_position', 'general_attendee_sec', 'details_page');
 					$mep_event_start_date = isset($_POST['mep_event_start_date']) ? mage_array_strip($_POST['mep_event_start_date']) : array();
-					$event_cart_location = isset($_POST['mep_event_location_cart']) ? sanitize_text_field($_POST['mep_event_location_cart']) : array();
+					$event_cart_location = isset($_POST['mep_event_location_cart']) ? sanitize_text_field($_POST['mep_event_location_cart']) : '';
 					$recurring_event_date = $recurring == 'yes' && isset($_POST['recurring_event_date']) ? mage_array_strip($_POST['recurring_event_date']) : array();
 					$ticket_type_arr = mep_cart_ticket_type('ticket_type', $total_price, $product_id);
 					$total_price = mep_cart_ticket_type('ticket_price', $total_price, $product_id);

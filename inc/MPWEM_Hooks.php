@@ -14,14 +14,45 @@
 				add_action('mpwem_location', [$this, 'location'],10,2);
 				add_action('mpwem_time', [$this, 'time'],10,5);
 				add_action('mpwem_registration', [$this, 'registration'],10,4);
+				add_action('mpwem_registration_content', [$this, 'registration_content'],10,4);
 				add_action('mpwem_date_select', [$this, 'date_select'],10,4);
+				/**************************/
+				add_action( 'wp_ajax_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
+				add_action( 'wp_ajax_nopriv_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
+				add_action( 'wp_ajax_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
+				add_action( 'wp_ajax_nopriv_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
 			}
 			public function title($event_id,$only=''): void { require MPWEM_Functions::template_path('layout/title.php'); }
 			public function organizer($event_id,$only=''): void { require MPWEM_Functions::template_path('layout/organizer.php'); }
 			public function location($event_id,$type=''): void { require MPWEM_Functions::template_path('layout/location.php'); }
 			public function time($event_id,$all_dates=[],$all_times=[],$date='',$single=true): void { require MPWEM_Functions::template_path('layout/time.php'); }
 			public function registration($event_id,$all_dates=[],$all_times=[],$date=''): void { require MPWEM_Functions::template_path('layout/registration.php'); }
+			public function registration_content($event_id,$all_dates=[],$all_times=[],$date=''): void { require MPWEM_Functions::template_path('layout/registration_content.php'); }
 			public function date_select($event_id,$all_dates=[],$all_times=[],$date=''): void { require MPWEM_Functions::template_path('layout/date_select.php'); }
+			public function get_mpwem_ticket() {
+				$post_id     = $_REQUEST['post_id'] ?? '';
+				$dates        = $_REQUEST['dates'] ?? '';
+				do_action('mpwem_registration_content', $post_id,[],[],$dates);
+				die();
+			}
+			public function get_mpwem_time() {
+				$event_id     = $_REQUEST['post_id'] ?? '';
+				$date        = $_REQUEST['dates'] ?? '';
+				$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
+				$all_dates = MPWEM_Functions::get_dates($event_id);
+				$all_times    = MPWEM_Functions::get_times( $event_id, $all_dates, $hidden_date );
+				?>
+				<label>
+					<span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
+					<select class="formControl" name="mpwem_time" id="mpwem_time">
+						<?php foreach ( $all_times as $times ) { ?>
+							<option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ); ?></option>
+						<?php } ?>
+					</select>
+				</label>
+				<?php
+				die();
+			}
 		}
 		new MPWEM_Hooks();
 	}

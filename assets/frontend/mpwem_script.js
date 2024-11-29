@@ -1,6 +1,69 @@
 
 (function ($) {
 	"use strict";
+	$(document).ready(function () {
+		$('body').find('.mpwem_registration_area').each(function (){
+			mpwem_price_calculation($(this));
+		});
+	});
+	$(document).on('change', '.mpwem_registration_area [name="mpwem_date_time"]', function () {
+		let parent = $(this).closest('.mpwem_registration_area');
+		let time_slot = parent.find('#mpwem_time');
+		//parent.find('.ttbm_booking_panel').html('');
+		if (time_slot.length > 0) {
+			let post_id = parent.find('[name="mpwem_post_id"]').val();
+			let dates = parent.find('[name="mpwem_date_time"]').val();
+			let target = parent.find('.mpwem_time_area');
+			jQuery.ajax({
+				type: 'POST',
+				url: mp_ajax_url,
+				data: {
+					"action": "get_mpwem_time",
+					"post_id": post_id,
+					"dates": dates,
+				},
+				beforeSend: function () {
+					dLoader_xs(target);
+				},
+				success: function (data) {
+					target.html(data).slideDown('fast').promise().done(function () {
+						let date=parent.find('[name="mpwem_time"]').val();
+						get_mpwem_ticket(target,date);
+					});
+				}
+			});
+		} else {
+			get_mpwem_ticket($(this));
+		}
+	});
+	$(document).on('change', '.mpwem_registration_area [name="mpwem_time"]', function () {
+		let parent = $(this).closest('.mpwem_registration_area');
+		let date=parent.find('[name="mpwem_time"]').val();
+		get_mpwem_ticket($(this),date);
+	});
+	function get_mpwem_ticket(current, date = '') {
+		let parent = current.closest('.mpwem_registration_area');
+		let post_id = parent.find('[name="mpwem_post_id"]').val();
+		let dates = date ? date : parent.find('[name="mpwem_date_time"]').val();
+		let target = parent.find('.mpwem_booking_panel');
+		jQuery.ajax({
+			type: 'POST',
+			url: mp_ajax_url,
+			data: {
+				"action": "get_mpwem_ticket",
+				"post_id": post_id,
+				"dates": dates,
+			},
+			beforeSend: function () {
+				dLoader_xs(target);
+			},
+			success: function (data) {
+				target.html(data).slideDown('fast').promise().done(function () {
+					mpwem_price_calculation(parent);
+				});
+			}
+		});
+	}
 	$(document).on('change', '.mpwem_registration_area [name="option_qty[]"]', function () {
 		let parent = $(this).closest('.mpwem_registration_area');
 		mpwem_price_calculation(parent);

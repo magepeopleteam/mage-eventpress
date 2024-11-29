@@ -41,6 +41,7 @@
                             <div class="justifyBetween">
                                 <div class="">
                                     <h6><?php echo esc_html($ticket_name); ?></h6>
+                                    <input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
                                 </div>
                                 <div class="">
                                     <h6 class="_textCenter"><?php echo wc_price($ticket_price); ?></h6>

@@ -77,7 +77,7 @@
 			}
 			public function admin_enqueue($hook) {
 				global $post;
-				$this->global_enqueue();
+
 				wp_enqueue_editor();
 				//admin script
 				wp_enqueue_script('jquery-ui-sortable');
@@ -85,6 +85,8 @@
 				wp_enqueue_script('wp-color-picker');
 				wp_enqueue_style('wp-codemirror');
 				wp_enqueue_script('wp-codemirror');
+				//********//
+				$this->global_enqueue();
 				//********//
 				$user_api = mep_get_option('google-map-api', 'general_setting_sec', '');
 				// Load Only when the New Event Add Page Open.

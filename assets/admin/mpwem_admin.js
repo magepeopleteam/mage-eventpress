@@ -1,7 +1,6 @@
 (function ($) {
     "use strict";
     $(document).on('click', '#publish,#save-post', function (e) {
-        e.preventDefault();
         let exit = 1;
         let parent = $('#mp_event_all_info_in_tab');
         if (parent.length > 0 && parent.find('.data_required').length > 0) {
@@ -17,8 +16,8 @@
                     });
                 }
             }).promise().done(function () {
-                if (exit > 0) {
-                    $(this).closest('form').submit();
+                if (exit === 0) {
+                    e.preventDefault();
                 }
             });
         }

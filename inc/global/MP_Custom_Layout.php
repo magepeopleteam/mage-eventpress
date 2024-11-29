@@ -190,9 +190,10 @@
 				$available_seat = array_key_exists('available', $data) ? $data['available'] : 1;
 				$default_qty = array_key_exists('d_qty', $data) ? $data['d_qty'] : 0;
 				$min_qty = array_key_exists('min_qty', $data) ? $data['min_qty'] : 0;
+				$min_qty=max($min_qty, 0);
 				$max_qty = array_key_exists('max_qty', $data) ? $data['max_qty'] : '';
 				$input_type = array_key_exists('type', $data) ? $data['type'] : '';
-				$min_qty = max($default_qty, $min_qty);
+				//$min_qty = max($default_qty, $min_qty);
 				$max_qty = $max_qty > 0 ? $max_qty : $available_seat;
 				$max_qty = min($available_seat, $max_qty);
 				if ($max_qty > $min_qty) {
@@ -202,7 +203,7 @@
                         <label>
                             <select class="formControl" name="<?php echo esc_attr($input_name); ?>" data-price="<?php echo esc_attr($price); ?>">
 								<?php for ($i = $min_qty; $i <= $max_qty; $i++) { ?>
-                                    <option value="<?php echo esc_attr($i); ?>" <?php echo esc_attr($i == $min_qty ? 'selected' : ''); ?>><?php echo esc_html($i . ' ' . $text) ?></option>
+                                    <option value="<?php echo esc_attr($i); ?>" <?php echo esc_attr($i == $default_qty ? 'selected' : ''); ?>><?php echo esc_html($i . ' ' . $text) ?></option>
 								<?php } ?>
                             </select>
                         </label>

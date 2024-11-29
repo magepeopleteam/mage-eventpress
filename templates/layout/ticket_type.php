@@ -20,6 +20,7 @@
 		if (sizeof($ticket_types) > 0) { ?>
             <div class="mpwem_ticket_type _dLayout">
 				<?php foreach ($ticket_types as $ticket_type) {
+                   // echo '<pre>';print_r($ticket_type);echo '</pre>';
 					$ticket_name = array_key_exists('option_name_t', $ticket_type) ? $ticket_type['option_name_t'] : '';
 					$ticket_details = array_key_exists('option_details_t', $ticket_type) ? $ticket_type['option_details_t'] : '';
 					$ticket_price = array_key_exists('option_price_t', $ticket_type) ? $ticket_type['option_price_t'] : 0;

@@ -428,10 +428,6 @@
 					'sun' => esc_html__('Sunday', 'bus-ticket-booking-with-seat-reservation'),
 				];
 			}
-			public static function get_plugin_data($data) {
-				$plugin_data = get_plugin_data(__FILE__);
-				return $plugin_data[$data];
-			}
 			public static function array_to_string($array) {
 				$ids = '';
 				if (sizeof($array) > 0) {

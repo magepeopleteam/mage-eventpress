@@ -35,23 +35,10 @@
 			$client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
 			$client->insights()->init();
 		}
-		function mep_event_activation_redirect($plugin) {
-			$check_quick_setup = get_option('mep_quick_setup') ? get_option('mep_quick_setup') : 'no-done';
-			$slug = $check_quick_setup == 'done' ? 'edit.php?post_type=mep_events&page=mep_event_welcome_page' : 'edit.php?post_type=mep_events&page=mpwem_quick_setup';
-			if ($plugin == plugin_basename(__FILE__)) {
-				exit(wp_redirect(admin_url($slug)));
-			}
-		}
+
 		// add_action('activated_plugin', 'mep_event_activation_redirect');
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Dependencies.php';
-		// Get Plugin Data
-		if (!function_exists('mep_get_plugin_data')) {
-			function mep_get_plugin_data($data) {
-				$get_mep_plugin_data = get_plugin_data(__FILE__);
-				$mep_data = $get_mep_plugin_data[$data];
-				return $mep_data;
-			}
-		}
+
 		// Added Settings link to plugin action links
 		add_filter('plugin_action_links', 'mep_plugin_action_link', 10, 2);
 		function mep_plugin_action_link($links_array, $plugin_file_name) {

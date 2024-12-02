@@ -1316,7 +1316,7 @@
 				return apply_filters('mep_settings_sec_fields', $settings_fields);
 			}
 			function plugin_page() {
-				$label = mep_get_plugin_data('Name');
+				$label = get_plugin_data(__FILE__)['Name'];
 				?>
                 <div class="wrap">
                     <div class="mp_settings_panel_header">

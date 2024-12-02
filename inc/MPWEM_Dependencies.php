@@ -10,17 +10,20 @@
 		class MPWEM_Dependencies {
 			public function __construct() {
 				add_action('init', array($this, 'language_load'));
+
 				$this->load_global_file();
 				$this->load_file();
 				add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'), 90);
 				add_action('wp_enqueue_scripts', array($this, 'frontend_enqueue'), 90);
 				add_action('admin_head', array($this, 'add_admin_head'), 5);
 				add_action('wp_head', array($this, 'add_frontend_head'), 5);
+
 			}
 			public function language_load(): void {
 				$plugin_dir = basename(dirname(__DIR__)) . "/languages/";
 				load_plugin_textdomain('mage-eventpress', false, $plugin_dir);
 			}
+
 			public function load_global_file() {
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';

@@ -23,7 +23,7 @@
 					$full_location = MPWEM_Functions::get_location( $event_id );
 					?>
                     <div class="mpwem_registration_area">
-                        <h4><?php esc_html_e( 'Tickets and prices', 'mage-eventpress' ); ?></h4>
+                        <h2 class="_mTB"><?php esc_html_e( 'Tickets and prices', 'mage-eventpress' ); ?></h2>
 						<?php do_action( 'mpwem_date_select', $event_id, $all_dates, $all_times, $date ); ?>
                         <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
 							<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>

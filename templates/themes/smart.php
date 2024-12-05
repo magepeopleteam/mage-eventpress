@@ -6,8 +6,6 @@
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$hide_share_details = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
-	// echo $event_id;
-	//echo '<pre>';print_r($upcoming_date);echo '</pre>';
 	//echo '<pre>';print_r($all_dates);echo '</pre>';
 ?>
 <div class="mpStyle mep_smart_theme">
@@ -17,18 +15,20 @@
 		<?php do_action( 'mpwem_location', $event_id ); ?>
 		<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
     </div>
-	<?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
-    <div class="_dFlex _mT_40">
-        <div class="mainSection">
+    <div class="_mT mpwem_slider_area">
+		<?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+    </div>
+    <div class="mpwem_content_area">
+        <div class="mpwem_left_content">
 			<?php if ( get_the_content( $event_id ) ) { ?>
                 <div class="mpwem_details">
-                    <h4><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h4>
-					<?php the_content(); ?>
+                    <h2 class="_mB"><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h2>
+                    <div class="mpwem_details_content"><?php the_content(); ?></div>
                 </div>
 			<?php } ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
         </div>
-        <div class="rightSidebar">
+        <div class="mpwem_right_content">
             <h4><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h4>
 			<?php
 				if ( $hide_share_details == 'no' ) {

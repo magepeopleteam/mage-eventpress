@@ -9,8 +9,7 @@
 /*****************************/
 	div.mpwem_ex_service,
 	div.mep_attendee_info,
-	div.mep_attendee_info_hidden,
-	div.mpwem_form_submit_area{display: none;}
+	div.mep_attendee_info_hidden{display: none;}
 	div.mep_file_item img{height: 100%;width: auto;cursor: pointer;display: none;max-height: 100px;}
 	div.mep_file_item iframe{height: 100%;width: auto;cursor: pointer;display: none;max-height: 300px;}
 	.mep_attendee_info .mp_form_item{padding: 7px;}

@@ -18,7 +18,7 @@
 			} else {
 				?>
                 <div class="mpwem_location">
-                    <span class="fas fa-map-marker-alt"></span>&nbsp;&nbsp;<?php echo esc_html(implode(', ', $location)); ?>
+                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo esc_html(implode(', ', $location)); ?>
                 </div>
 				<?php
 			}

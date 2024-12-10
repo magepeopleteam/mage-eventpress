@@ -11,7 +11,7 @@
 <div class="mpStyle mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
 	<?php do_action( 'mpwem_organizer', $event_id ); ?>
-    <div class="_dFlex">
+    <div class="mpwem_location_time">
 		<?php do_action( 'mpwem_location', $event_id ); ?>
 		<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
     </div>

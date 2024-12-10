@@ -1,0 +1,59 @@
+
+@media only screen and (min-width: 10px) {
+	.mep_smart_theme{
+		.mpwem_tile{
+			color: #000;
+			font-size: 40px;
+		}
+		.mpwem_organizer{
+			margin: 20px 0;
+		}
+		.mpwem_location_time{
+			display: flex;
+			justify-content: start;
+			.mpwem_location, .mpwem_time {
+				i{
+					width: 55px;
+					height: 55px;
+					background-color: #F1F5FF;
+					color:#6046FF;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 25px;
+					border-radius: 5px;
+				}
+			}
+		}
+		.mpwem_slider_area{}
+		
+		
+		.mpwem_content_area{display: -webkit-flex;display: flex;margin: 40px 0 0 0;}
+		.mpwem_left_content{max-width: 73%;width: 100%;margin:0 2% 0 0;}
+		.mpwem_right_content{max-width: 25%;width: 100%;}
+	}
+/*****************************/
+	div.mpwem_details_content,
+	div.mpwem_details_content p{line-height: 1.7 !important;color:#8D8D8D;font-size:16px !important;}
+/*****************************/
+	div.mpwem_ex_service,
+	div.mep_attendee_info,
+	div.mep_attendee_info_hidden{display: none;}
+	div.mep_file_item img{height: 100%;width: auto;cursor: pointer;display: none;max-height: 100px;}
+	div.mep_file_item iframe{height: 100%;width: auto;cursor: pointer;display: none;max-height: 300px;}
+	.mep_attendee_info .mp_form_item{padding: 7px;}
+	.mep_attendee_info .mp_form_item.mep_checkbox_item>span,
+	.mep_attendee_info .mp_form_item.mep_radio_item>span,
+	.mep_attendee_info .mp_form_item.mep_file_item>span,
+	.mep_attendee_info .mp_form_item>label>span{min-width:200px;}
+	/***************************************************/
+	div.mpwem_organizer {display: -webkit-flex;display: flex;}
+	div.mpwem_organizer,
+	div.mpwem_organizer a{font-size: 24px;margin: var(--dMP_xs) 0 0 0;color:#878787 !important;font-weight: 400;}
+	div.mpwem_location,
+	div.mpwem_time{color: #393332;font-size: 18px;margin: var(--dMP_xs) var(--dMP)  0 0;	display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;}
+	div.mpwem_location span,
+	div.mpwem_time span{width: 55px;height: 55px;background-color: #F1F5FF;color:#6046FF;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;font-size: 25px;}
+}
+@media only screen and (max-width: 600px) {
+}

@@ -1475,20 +1475,6 @@ function mep_re_style_strings_reg($default_translation)
     return array_merge($default_translation, $recurring_translation);
 }
 
-add_action('mep_event_user_custom_styling', 'mep_re_custom_styling');
-function mep_re_custom_styling()
-{
-?>
-    .mep_everyday_date_secs {
-        background: <?php echo mep_get_option('mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30') ?>;
-        color: <?php echo mep_get_option('mep_re_datepicker_text_color', 'style_setting_sec', '#fff') ?>;
-        padding: 10px;
-    }
-    <?php
-}
-
-
-
 add_action('wp_ajax_mep_fb_ajax_attendee_filter_date', 'mep_fb_ajax_attendee_filter_date');
 function mep_fb_ajax_attendee_filter_date()
 {

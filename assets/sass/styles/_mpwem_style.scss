@@ -1,4 +1,131 @@
+:root{
+	--mpev-base: #ffbe30;
+	--mpev-base-txt:#ffffff;
+	--mpev-title-bg:#ffbe30;
+	--mpev-title-txt:#ffffff;
+	--mpev-calender-btn-bg:#ffbe30;
+	--mpev-calender-btn-txt:#ffffff;
+	--mpev-cart-btn-bg:#ffbe30;
+	--mpev-cart-btn-txt:#ffffff;
+	--mpev-faq-bg:#ffbe30;
+	--mpev-faq-text:#ffffff;
+	--mpev-royal-primary-bg:#ffbe30;
+	--mpev-royal-secondary-bg:#ffffff;
+	--mpev-royal-icons-bg:#ffbe30;
+	--mpev-royal-border:#ffbe30;
+	--mpev-royal-txt:#ffffff;
+	--mpev-recring-dpkr-bg:#ffbe30;
+	--mpev-recring-dpkr-txt:#ffffff;
+}
 
+.mep-event-faq-part .ex-sec-title.faq-title-section{
+	background: var(--mpev-faq-bg);
+	color: var(--mpev-faq-text);
+}
+.pagination_area button[class*='defaultButton_xs'],
+.list_with_filter_section [class*='defaultButton'],
+div.item_hover_effect a{
+	background-color:var(--mpev-base);
+}
+div.item_hover_effect a:hover{
+	color:var(--mpev-base);
+	background-color:#fff;
+	border:1px solid var(--mpev-base);
+}
+ul.mp_event_more_date_list li:hover{
+	background-color:var(--mpev-base);
+}
+.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
+	background: var(--mpev-base);
+	color: var(--mpev-base-txt);
+}
+.mep-default-sidrbar-meta .fa-list-alt,.mep-list-footer ul li i {
+	background: transparent;
+	color: var(--mpev-base);
+}
+.mep_more_date_btn{
+	border: 1px solid var(--mpev-base);
+	background: transparent;
+	color: var(--mpev-base);
+}
+.mep-default-sidrbar-meta p a{
+	color: var(--mpev-base);
+}
+.mep_more_date_btn:before{
+	background: var(--mpev-base);
+	border-color: var(--mpev-base);
+}
+.mep-default-sidrbar-events-schedule h3 i, .mep_event_list .mep_list_date, .mep-event-theme-1 .mep-social-share li a, .mep-template-2-hamza .mep-social-share li a {
+	color: var(--mpev-base);
+}
+
+.mep_event_list_item:hover {
+	border-color: var(--mpev-base);
+}
+
+.mep_event_list_item .mep-list-header:before, .mep_event_grid_item .mep-list-header:before {
+	border-color: var(--mpev-base);
+}
+
+
+/*Cart sec Label Style*/
+.mep-default-feature-cart-sec h3, .mep-event-theme-1 h3.ex-sec-title, .mep-tem3-mid-sec h3.ex-sec-title, .mep-tem3-title-sec, 
+.royal_theme h3.ex-sec-title,
+.mep-events-wrapper .royal_theme table.mep_event_add_cart_table,
+.vanilla_theme.mep-default-theme div.mep-default-feature-date, 
+.vanilla_theme.mep-default-theme div.mep-default-feature-time, 
+.vanilla_theme.mep-default-theme div.mep-default-feature-location,
+.vanilla_theme h3.ex-sec-title,
+.vanilla_theme div.df-dtl h3,
+.vanilla_theme div.df-dtl p, .ex-sec-title, .mep_everyday_date_secs{
+	background: var(--mpev-title-bg); 
+	color: var(--mpev-title-txt);
+}
+.mpwemasp_ticket_area .mep_everyday_date_secs{ background: var(--mpev-title-bg); color: var(--mpev-title-txt); }
+/*FAQ Sec Style*/
+.mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 {
+	background: var(--mpev-faq-bg);
+	color: var(--mpev-faq-txt);
+}
+
+/* h3.ex-sec-title{
+	background: var(--mpev-base);
+}
+
+.ex-sec-title{
+	background: var(--mpev-base);
+	color: var(--mpev-title-txt);
+} */
+
+/*Cart Button Style*/
+button.mpwemasp_get_sp,
+.mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart, .mep-event-theme-1 .btn-mep-event-cart, .mep-template-2-hamza .btn-mep-event-cart, .mep-tem3-mid-sec .btn-mep-event-cart, .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
+	background: var(--mpev-cart-btn-bg);
+	color: var(--mpev-cart-btn-txt) !important;
+	border-color: var(--mpev-cart-btn-bg);
+}
+
+/*Calender Button Style*/
+.mep-default-sidrbar-calender-btn a, .mep-event-theme-1 .mep-add-calender, .mep-template-2-hamza .mep-add-calender, .mep-tem3-mid-sec .mep-add-calender, #mep_add_calender_button, .royal_theme #mep_add_calender_button, .royal_theme ul#mep_add_calender_links li a {
+	background: var(--mpev-calender-btn-bg);
+	color: var(--mpev-calender-btn-txt) !important;
+	border-color: var(--mpev-calender-btn-bg);
+}
+#mep_add_calender_button,
+ul#mep_add_calender_links li a{
+	background: var(--mpev-calender-btn-bg);
+	color: var(--mpev-calender-btn-txt) !important;
+}
+/**/
+.mep_list_event_details p.read-more a{
+	color: var(--mpev-base);
+}
+
+.mep_everyday_date_secs {
+	background: var(--mpev-recring-dpkr-bg);
+	color: var(--mpev-recring-dpkr-txt);
+	padding: 10px;
+}
 /*****************************************************/
 #mep_event_date_sch li a {
 	display: -webkit-flex;
@@ -609,132 +736,7 @@ ul#mep_add_calender_links li a {
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;
 }
-/********Spring Field Theme(theme - 1)**********************/
-.spring_field_banner {
-	width: 60%;
-}
-.spring_field_banner_right {
-	width: 40%;
-	padding: 0 0 20px 20px;
-}
-.spring_field .mep-default-sidrbar-meta {
-	padding: 0;
-}
-.spring_field .mep-default-sidrbar-price-seat {
-	text-align: left;
-	padding: 15px 0;
-}
-.spring_field ul#mep_add_calender_links {
-	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	background-color: #F2F2F2;
-}
-.spring_field ul#mep_add_calender_links li {
-	margin: 0;
-}
-.spring_field ul#mep_add_calender_links li a {
-	background-color: #777;
-	color: #FFF;
-	margin: 2px 0 0 0;
-	font-size: 15px;
-	font-weight: 500;
-}
-.spring_field ul#mep_add_calender_links li a.mep-add-calender:hover {
-	color: #888;
-}
-.spring_field .mep-default-sidrbar-map {
-	margin: 20px 0;
-}
-.spring_field .mep-event-meta {
-	padding: 10px;
-	font-size: 16px;
-}
-.spring_field .mep-event-meta ul.mep-social-share {
-	padding: 10px 0 0 0;
-}
-.mep_spring_date {
-	border-top: 1px solid #DDD;
-	border-bottom: 1px solid #DDD;
-	background-color: #F2F2F2;
-}
-.mep_spring_date .mep-default-sidrbar-social {
-	border: none;
-}
-.mep-default-theme .mep_spring_date div.mep-default-feature-date,
-.mep-default-theme .mep_spring_date div.mep-default-feature-location {
-	background-color: transparent;
-}
-.spring_field .mep-default-feature-content {
-	margin: 20px 0;
-}
-/********FrankLin Theme(theme - 2)**********************/
-.franklin_divided_left {
-	width: 70%;
-}
-.franklin_divided_sidebar {
-	width: 30%;
-}
-.franklin_divided_sidebar_bac {
-	margin: 0 0 0 30px;
-	background-color: #F2F2F2;
-	overflow: hidden;
-}
-.franklin .mep-default-feature-content {
-	margin: 0 0 20px 0;
-}
-.franklin .mep-default-sidrbar-price-seat {
-	border-bottom: 1px solid #DDD;
-}
-/********Bristol Theme(theme - 3)**********************/
-.bristol .mep-default-title h2 {
-	margin: 15px 0;
-}
-.bristol .mep-event-meta {
-	padding: 10px;
-	font-size: 16px;
-}
-.bristol .mep-event-meta ul.mep-social-share {
-	padding: 10px 0 0 0;
-}
-.bristol_divided {
-	border-top: 1px solid #DDD;
-	border-bottom: 1px solid #DDD;
-	background-color: #F2F2F2;
-}
-.bristol .mep-default-sidrbar-social {
-	border: none;
-}
-.bristol div.mep-default-feature-date,
-.bristol div.mep-default-feature-location {
-	background-color: transparent;
-}
-.bristol_center_box {
-	margin: 20px 0;
-	background-color: #F2F2F2;
-}
-.bristol_center_box #mep_add_calender_button.mep-add-calender {
-	width: 300px;
-}
-.bristol ul#mep_add_calender_links {
-	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	background-color: #F2F2F2;
-}
-.bristol ul#mep_add_calender_links li {
-	margin: 0;
-}
-.bristol ul#mep_add_calender_links li a {
-	background-color: #777;
-	color: #FFF;
-	margin: 2px 0 0 0;
-	font-size: 15px;
-	font-weight: 500;
-}
-.bristol ul#mep_add_calender_links li a.mep-add-calender:hover {
-	color: #888;
-}
+
 /*********Related Event*****************/
 .mep-related-events-sec .mep_event_grid_item:last-child {
 	margin: 0;
@@ -2820,335 +2822,7 @@ Elementor grid style pagination css by ariful
 	margin-bottom: 20px;
 	text-align: center;
 }
-/*************************************************************
-Vanilla theme css by ariful
-**************************************************************/
-.vanilla_theme .mep-default-title {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	border-bottom: 1px solid #F5F5F5;
-}
-.vanilla_theme .mep-default-content {
-	width: 100%
-}
-.vanilla_theme .mep-default-feature-content {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-.vanilla_theme .mep-default-sidrbar-map h3,
-.vanilla_theme .mep-default-sidrbar-events-schedule h3,
-.vanilla_theme h4.mep-cart-table-title {
-	margin: 00px 0 20px 0;
-	font-size: 14px;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-.vanilla_theme .mep-default-feature-cart-sec {
-	border: 1px solid #F5F5F5;
-	padding: 20px;
-	border-radius: 5px;
-}
-.vanilla_theme .mep_everyday_date_secs {
-	background: #FBD03B;
-	color: #17113A;
-}
-.vanilla_theme .mep_everyday_date_secs ul li {
-	font-size: 14px;
-	text-transform: uppercase;
-	padding: 5px;
-}
-.vanilla_theme h3.ex-sec-title {
-	font-size: 14px;
-	background: #FBD03B;
-	color: #17113A;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-.vanilla_theme table td,
-.vanilla_theme table td.total-col {
-	font-size: 14px;
-}
-/* .vanilla_theme tr:nth-child(odd) {
-    background-color: #F8F2F2;
-} */
-.vanilla_theme tr:nth-child(even) {
-	background-color: #F2F2F2;
-}
-.vanilla_theme.mep-default-theme div.mep-default-feature-date,
-.vanilla_theme.mep-default-theme div.mep-default-feature-time,
-.vanilla_theme.mep-default-theme div.mep-default-feature-location {
-	background: #FBD03B;
-}
-.vanilla_theme div.df-dtl p {
-	color: #17113A;
-}
-.vanilla_theme div.df-dtl h3 {
-	font-weight: 500;
-	text-transform: uppercase;
-	margin-bottom: 5px;
-	border-bottom: 1px dashed;
-	padding-bottom: 5px;
-}
-.vanilla_theme .mep-default-col-1 {
-	width: 70%;
-	float: left;
-	background-color: #FBFBFB;
-	padding: 20px;
-}
-.vanilla_theme .mep-default-col-2 {
-	width: 30%;
-	display: inline-block !important;
-	background-color: #F5F5F5;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-.vanilla_theme .mep-default-col-wrapper {
-	background-color: #FBFBFB;
-	display: flex;
-}
-.vanilla_theme .mep-default-sidrbar-meta p,
-.vanilla_theme .mep-default-sidrbar-meta p a,
-.vanilla_theme .mep-default-sidrbar-events-schedule h3 {
-	font-weight: 500;
-	color: #000000;
-	text-transform: uppercase;
-	font-size: 14px;
-}
-.vanilla_theme .mep-default-sidrbar-meta .fa-list-alt {
-	font-size: 14px;
-}
-.vanilla_theme .mep-default-sidrbar-calender-btn {
-	float: left;
-}
-.vanilla_theme .mep-default-sidrbar-events-schedule {
-	border-bottom: none;
-}
-.vanilla_theme ul.mep-social-share {
-	display: inline-block;
-	padding: 0;
-}
-.vanilla_theme ul.mep-social-share li {
-	display: inline-block
-}
-.vanilla_theme .mep-share-btn-title {
-	display: inline-block;
-	margin-right: 15px;
-	font-weight: 500;
-}
-.vanilla_theme .mep-default-sidrbar-social .mep-event-meta {
-	text-align: left;
-}
-.vanilla_theme .mep-event-meta {
-	padding: 0;
-}
-.vanilla_theme .mep-default-sidrbar-social {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	border-top: 1px solid #F5F5F5;
-	margin-top: 20px;
-	border-bottom: 1px solid #F5F5F5;
-}
-.vanilla_theme ul.mep-social-share a {
-	font-size: 14px;
-	width: 30px;
-	height: 30px;
-	border-radius: 0;
-}
-.vanilla_theme .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart {
-	line-height: inherit;
-}
-.vanilla_theme .mep-tem3-title-sec.mep_single_date_btn {
-	text-transform: uppercase;
-}
-@media only screen and (max-width: 768px) {
-	.vanilla_theme .mep-default-col-wrapper {
-		display: block;
-		width: 100%;
-	}
-	.vanilla_theme .mep-default-col-1 {
-		width: 100%;
-		float: none;
-	}
-	.vanilla_theme .mep-default-col-2 {
-		width: 100%;
-	}
-}
-/*************************************************************
-Royal theme css by ariful | Date: 19-10-2021
-**************************************************************/
-.royal_theme .mep-default-title {
-	margin-bottom: 20px;
-}
-.royal_theme .mep-default-content {
-	width: 100%
-}
-.royal_theme .mep-default-feature-content {
-	margin-top: 0;
-	margin-bottom: 20px;
-	padding: 15px;
-}
-.royal_theme .mep-default-sidrbar-map h3,
-.royal_theme .mep-default-sidrbar-events-schedule h3,
-.royal_theme h4.mep-cart-table-title {
-	margin: 20px 0 20px 0;
-	font-size: 14px;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-.royal_theme .mep_everyday_date_secs {
-	background: #FBD03B;
-	color: #17113A;
-}
-.royal_theme .mep_everyday_date_secs ul li {
-	font-size: 14px;
-	text-transform: uppercase;
-	padding: 5px;
-}
-.royal_theme h3.ex-sec-title {
-	font-size: 14px;
-	color: #17113A;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-.royal_theme table td,
-.royal_theme table td.total-col {
-	font-size: 14px;
-}
-.royal_theme.mep-default-theme div.mep-default-feature-date,
-.royal_theme.mep-default-theme div.mep-default-feature-time,
-.royal_theme.mep-default-theme div.mep-default-feature-location {
-	background: transparent;
-}
-.royal_theme div.df-dtl p {
-	color: #17113A;
-}
-.royal_theme div.df-dtl h3 {
-	font-weight: 500;
-	text-transform: uppercase;
-	margin-bottom: 5px;
-	padding-bottom: 5px;
-}
-.royal_theme .mep-default-col-1 {
-	width: 70%;
-	float: left;
-	padding: 20px;
-}
-.royal_theme .mep-default-col-2 {
-	width: 30%;
-	display: inline-block !important;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-.royal_theme .mep-default-col-wrapper {
-	background-color: #FBFBFB;
-	display: flex;
-}
-.royal_theme .mep-default-sidrbar-meta p,
-.royal_theme .mep-default-sidrbar-meta p a,
-.royal_theme .mep-default-sidrbar-events-schedule h3 {
-	font-weight: 500;
-	color: #000000;
-	text-transform: uppercase;
-	font-size: 14px;
-}
-.royal_theme .mep-default-sidrbar-meta .fa-list-alt {
-	background: #FFBE30;
-	color: #FFF;
-	width: 25px;
-	height: 25px;
-	font-size: 14px;
-}
-.royal_theme .mep-default-sidrbar-calender-btn {
-	float: left;
-}
-.royal_theme .mep-default-sidrbar-events-schedule {
-	border-bottom: none;
-}
-.royal_theme ul.mep-social-share {
-	display: inline-block;
-	padding: 0;
-}
-.royal_theme ul.mep-social-share li {
-	display: inline-block
-}
-.royal_theme .mep-share-btn-title {
-	display: inline-block;
-	margin-right: 15px;
-	font-weight: 500;
-}
-.royal_theme .mep-default-sidrbar-social .mep-event-meta {
-	text-align: left;
-}
-.royal_theme .mep-event-meta {
-	padding: 0;
-}
-.royal_theme .mep-default-sidrbar-social {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	border-top: 1px solid #F5F5F5;
-	margin-top: 20px;
-	border-bottom: 1px solid #F5F5F5;
-}
-.royal_theme ul.mep-social-share a {
-	font-size: 14px;
-	width: 30px;
-	height: 30px;
-	border-radius: 0;
-}
-.royal_theme .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart {
-	line-height: inherit;
-}
-.royal_theme .mep-tem3-title-sec.mep_single_date_btn {
-	text-transform: uppercase;
-}
-@media only screen and (max-width: 768px) {
-	.royal_theme .mep-royal-header {
-		display: block;
-	}
-	.royal_theme .mep-default-col-wrapper {
-		display: block;
-		width: 100%;
-	}
-	.royal_theme .mep-default-col-1 {
-		width: 100%;
-		float: none;
-	}
-	.royal_theme .mep-default-col-2 {
-		width: 100%;
-	}
-	.mep-royal-header-col-1,
-	.mep-royal-header-col-2 {
-		width: 100%;
-	}
-}
-.royal_theme .mep-royal-header {
-	display: flex;
-}
-.royal_theme .mep-default-content div.mep-default-feature-date-location {
-	display: block;
-}
-.mep-royal-header-col-1,
-.mep-royal-header-col-2 {
-	padding: 15px;
-	width: 50%;
-}
-.royal_theme .mep-default-sidrbar-meta .fa-list-alt {
-	color: #FFF;
-}
-.royal_theme .mep-default-sidrbar-events-schedule h3 i {
-	background: #FFBE30;
-	color: #FFF;
-	width: 25px;
-	height: 25px;
-	font-size: 14px;
-	display: grid;
-	text-align: center;
-	padding: 0;
-	margin-right: 7px;
-}
-.mep-events-wrapper .royal_theme table.mep_event_add_cart_table {
-	border: 0;
-}
+
 /*************************************************************
 Mobile View css update by ariful | date: 19.10.2021
 **************************************************************/

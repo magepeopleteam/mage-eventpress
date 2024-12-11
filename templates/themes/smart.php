@@ -29,13 +29,41 @@
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
         </div>
         <div class="mpwem_right_content">
-            <h4><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h4>
-			<?php
-				if ( $hide_share_details == 'no' ) {
-					do_action( 'mep_event_add_calender', $event_id );
-					do_action( 'mep_event_social_share', $event_id );
-				}
-			?>
+			<h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
+			
+			<div class="mpwem_sidebar_content">
+				<div class="date_widgets">
+					<i class="fa fa-calendar"></i>
+					<div>
+						<h2>Date & Time</h2>
+						<p>Sunday, March 12, 2023</p>
+						<p>7:45 PM – 9:15 PM EDT</p>
+						<button>
+							<i class="fa fa-calendar"></i>
+							Add To Calender
+						</button>
+					</div>
+				</div>
+				<div class="location_widgets">
+					<i class="fa fa-map-marker"></i>
+					<div>
+						<h2>Location</h2>
+						<p>110 Delancey Street, New York, NY 10002, United States. </p>
+						<button>
+							<i class="fa fa-map-marker"></i>
+							Find In Map
+						</button>
+					</div>
+				</div>
+				<div class="share_widgets">
+					<h2>Share This Event</h2>
+					<?php
+						if ( $hide_share_details == 'no' ) {
+							do_action( 'mep_event_social_share', $event_id );
+						}
+					?>
+				</div>
+			</div>
         </div>
     </div>
 </div>

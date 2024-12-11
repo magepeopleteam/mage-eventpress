@@ -4996,13 +4996,22 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
     height: 55px;
-    background-color: #F1F5FF;
-    color: #6046FF;
+    background-color: var(--mpev-base);
+    color: var(--mpev-base-txt);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 25px;
     border-radius: 5px;
+  }
+  .mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem {
+    border-radius: 15px;
+  }
+  .mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcaseItem {
+    border-radius: 15px;
+  }
+  .mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator {
+    color: var(--mpev-base);
   }
   .mep_smart_theme .mpwem_content_area {
     display: -webkit-flex;
@@ -5010,13 +5019,60 @@ Vanilla theme css by ariful
     margin: 40px 0 0 0;
   }
   .mep_smart_theme .mpwem_left_content {
-    max-width: 73%;
+    max-width: 70%;
     width: 100%;
-    margin: 0 2% 0 0;
+    margin-right: 2%;
   }
   .mep_smart_theme .mpwem_right_content {
-    max-width: 25%;
+    max-width: 30%;
     width: 100%;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 5px #ddd;
+    padding: 30px 0;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+    padding: 30px;
+    border-bottom: 1px solid #ddd;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets i {
+    font-size: 30px;
+    padding: 20px;
+    background-color: var(--mpev-base);
+    color: var(--mpev-base-txt);
+    border-radius: 10px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets h2, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets h2 {
+    font-size: 19px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets p, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets p {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button {
+    background-color: #fff;
+    padding: 5px 10px;
+    border: 1px solid var(--mpev-base-txt);
+    margin-top: 20px;
+    color: var(--mpev-base-txt);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin: 10px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
+    text-align: center;
+    padding: 30px;
   }
   /*****************************/
   div.mpwem_details_content,

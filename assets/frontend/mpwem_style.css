@@ -2978,7 +2978,7 @@ td.user-innnf {
 }
 
 table.table.table-bordered.mep_event_add_cart_table {
-  background: #F7F7F7;
+  background: var(--mpev-royal-primary-bg);
 }
 
 /*************************************************************

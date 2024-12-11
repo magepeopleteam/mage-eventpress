@@ -332,12 +332,9 @@ h4.mep-cart-table-title {
 }
 h3.ex-sec-title {
 	font-size: 14px;
-	color: rgba(255, 255, 255, 0.8);
+	color: var(--mpev-base-txt);
 	padding: 10px 15px;
-	background: -webkit-gradient(linear, left top, right bottom, from(#FF3E00), to(#FFBE30));
-	background: -webkit-linear-gradient(top left, #FF3E00, #FFBE30);
-	background: -o-linear-gradient(top left, #FF3E00, #FFBE30);
-	background: linear-gradient(to bottom right, #FF3E00, #FFBE30);
+	background: var(--mpev-base);
 }
 .mep-default-sidrbar-map h3,
 .mep-default-sidrbar-events-schedule h3 {
@@ -417,15 +414,15 @@ span.mep_warning {
 	height: 300px;
 }
 .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
-	background: #FF5959;
-	border: 1px solid #FF5959;
+	background: var(--mpev-cart-btn-bg);
+	border: 1px solid var(--mpev-cart-btn-bg);
 	line-height: 1.2;
 	font-weight: bold;
 	height: auto;
 	min-width: auto;
 	outline: 0;
 	padding: 15px;
-	color: #FFF6F6;
+	color: var(--mpev-cart-btn-txt);
 	margin: 10px auto;
 	display: block;
 	text-align: center;
@@ -2241,7 +2238,7 @@ div.three_column {
 	font-size: 16px;
 }
 .mep-default-sidrbar-meta p a {
-	color: #FF5959;
+	color: var(--mpev-base);
 }
 .mep-default-feature-image .mep-event-thumbnail img {
 	border-radius: 0;

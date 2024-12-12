@@ -121,6 +121,115 @@
 			}
 			
 		}
+		.map_location{
+			margin: 50px 0;
+			iframe{
+				margin-top: 20px;
+				border-radius: 15px;
+			}
+		}
+		.faq_area{
+			background-color: #fff;
+			text-align: center;
+			margin: 80px auto;
+			padding: 20px;
+			h2{
+				margin-bottom: 20px;
+			}
+			.faq_items{
+				margin-top: 80px;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				gap:10px;
+				.item{
+					width: 48%;
+					background-color: var(--mpev-base);
+					padding: 10px;
+					.title{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						padding:10px 20px;
+						h2{
+							font-size: 16px;
+						}
+					}
+					.content{
+						display: none;
+					}
+				}
+			}
+		}
+		.attendee_area{
+			padding: 10px;
+			.attendee_lists{
+				display: flex;
+				justify-content: start;
+				flex-wrap: wrap;
+				margin: 20px 0;
+				gap:14px;
+				.attendee{
+					width: 150px;
+					background-color: var(--mpev-base);
+					padding: 20px;
+					border-radius: 10px;
+					text-align: center;
+					img{
+						width: 100px;
+						height: 100px;
+						object-fit: cover;
+						border-radius: 50px;
+					}
+					h2{
+						font-size: 12px;
+						color: #999;
+					}
+				}
+			}
+		}
+		.related_events{
+			margin: 20px 0;
+			.related_items{
+				margin-top: 20px;
+				display: flex;
+				justify-content: start;
+				align-items: start;
+				gap: 66px;
+				flex-wrap: wrap;
+				.item{
+					width: 30%;
+					background-color: #f8f8f8;
+					padding: 20PX;
+					border-radius: 10px;
+					box-shadow: 0 0 5px #ddd;
+					img{
+						width: 100%;
+						height: 300px;
+						object-fit: cover;
+					}
+					.item-info{
+						display: flex;
+						justify-content: space-between;
+						margin-top: 20px;
+						.title{
+							text-align: left;
+							h2{
+								font-size: 16px;
+							}
+						}
+						.price{
+							text-align: right;
+							h2{
+								font-size: 16px;
+								color: var(--mpev-base-txt);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 /*****************************/
 	div.mpwem_details_content,

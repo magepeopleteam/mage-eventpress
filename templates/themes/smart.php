@@ -27,7 +27,8 @@
                 </div>
 			<?php } ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
-        </div>
+			
+		</div>
         <div class="mpwem_right_content">
 			<h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
 			
@@ -65,5 +66,159 @@
 				</div>
 			</div>
         </div>
+		
     </div>
+	<div class="map_location">
+		<h2>Map Location</h2>
+		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2764.5913622150506!2d90.3364008660006!3d23.734160797560076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf01ff8f38b3%3A0x6fb57a2fb59bb549!2sMagePeople%2C%20Inc!5e1!3m2!1sen!2sbd!4v1733985702768!5m2!1sen!2sbd" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+	</div>
+	<div class="faq_area">
+		<h2>Frequently asked questions</h2>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis odio quisquam assumenda deleniti illum eius cum? Autem in laboriosam quisquam deserunt esse. Expedita omnis consectetur repudiandae ipsa saepe? Eligendi, officiis.</p>
+		<div class="faq_items">
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+			<div class="item">
+				<div class="title">
+					<h2>How can I Attend the event in just time?</h2>
+					<i class="fa fa-chevron-right"></i>
+				</div>
+				<div class="content">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem necessitatibus veniam illum adipisci officiis obcaecati accusantium qui nulla optio sequi corrupti deleniti sed eius commodi labore, ipsa perspiciatis quam minus.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="attendee_area">
+			<h2>Attendee (14)</h2>
+			<div class="attendee_lists">
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+				<div class="attendee">
+					<img src="https://dummyimage.com/100.png" alt="">
+					<h2>Maria Biyonce</h2>
+				</div>
+			</div>
+	</div>
+	<div class="related_events">
+		<h2>Related Events</h2>
+		<div class="related_items">
+			<div class="item">
+				<img src="https://dummyimage.com/300.png" alt="">
+				<div class="item-info">
+					<div class="title">
+						<h2>Lorem ipsum</h2>
+						<p>Lorem ipsum dolor sit.</p>
+					</div>
+					<div class="price">
+						<h2>$11.22</h2>
+						<p>Per Ticket</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="https://dummyimage.com/300.png" alt="">
+				<div class="item-info">
+					<div class="title">
+						<h2>Lorem ipsum</h2>
+						<p>Lorem ipsum dolor sit.</p>
+					</div>
+					<div class="price">
+						<h2>$11.22</h2>
+						<p>Per Ticket</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="https://dummyimage.com/300.png" alt="">
+				<div class="item-info">
+					<div class="title">
+						<h2>Lorem ipsum</h2>
+						<p>Lorem ipsum dolor sit.</p>
+					</div>
+					<div class="price">
+						<h2>$11.22</h2>
+						<p>Per Ticket</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

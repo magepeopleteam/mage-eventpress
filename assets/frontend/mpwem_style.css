@@ -5030,6 +5030,16 @@ Vanilla theme css by ariful
     font-size: 24px;
     margin-bottom: 10px;
   }
+  .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area ._mpBtn {
+    color: var(--mpev-base-txt);
+    border: 1px solid var(--mpev-base-txt);
+    border-radius: 5px;
+    padding: 13px 25px;
+  }
+  .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area button[type=submit] {
+    background-color: var(--mpev-base-txt);
+    border: 1px solid var(--mpev-base-txt);
+  }
   .mep_smart_theme .mpwem_right_content {
     max-width: 30%;
     width: 100%;

@@ -56,6 +56,18 @@
 					}
 				}
 			}
+			.mpwem_form_submit_area{
+				._mpBtn{
+					color:var(--mpev-base-txt);
+					border: 1px solid var(--mpev-base-txt);
+					border-radius: 5px;
+					padding:13px 25px;
+				}
+				button[type=submit]{
+					background-color: var(--mpev-base-txt);
+					border: 1px solid var(--mpev-base-txt);
+				}
+			}
 		}
 		.mpwem_right_content{
 			max-width: 30%;

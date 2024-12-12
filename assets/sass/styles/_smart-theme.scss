@@ -45,6 +45,17 @@
 			max-width: 70%;
 			width: 100%;
 			margin-right:2%;
+			.mpwem_booking_panel{
+				.mpwem_ticket_type{
+					border: 2px solid var(--mpev-base-txt);
+					.mep_ticket_item{
+						h6{
+							font-size: 24px;
+							margin-bottom: 10px;
+						}
+					}
+				}
+			}
 		}
 		.mpwem_right_content{
 			max-width: 30%;

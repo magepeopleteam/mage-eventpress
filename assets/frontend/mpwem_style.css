@@ -5230,7 +5230,7 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .related_events .related_items .item {
     width: 30%;
-    background-color: var(--mpev-base);
+    background-color: #fff;
     padding: 20PX;
     border-radius: 10px;
     box-shadow: 0 0 5px #ddd;

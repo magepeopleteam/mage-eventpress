@@ -253,7 +253,9 @@
 		}
 		.related_events{
 			margin: 20px 0;
+			
 			.related_items{
+				
 				margin-top: 20px;
 				display: flex;
 				justify-content: start;
@@ -262,7 +264,7 @@
 				flex-wrap: wrap;
 				.item{
 					width: 30%;
-					background-color: var(--mpev-base);
+					background-color: #fff;
 					padding: 20PX;
 					border-radius: 10px;
 					box-shadow: 0 0 5px #ddd;

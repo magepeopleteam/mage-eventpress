@@ -38,13 +38,22 @@
 				}
 			}
 		}
-		
-		
-		.mpwem_content_area{display: -webkit-flex;display: flex;margin: 40px 0 0 0;}
+		.mpwem_content_area{
+			display: flex;
+			margin: 40px 0 0 0;
+			flex-direction: column;
+			@media (min-width:540px) {
+				margin: 40px 0 0 0;
+				flex-direction: row;
+			}
+		}
 		.mpwem_left_content{
-			max-width: 70%;
+			max-width: 100%;
 			width: 100%;
-			margin-right:2%;
+			@media (min-width:540px) {
+				max-width: 70%;
+				margin-right:2%;
+			}
 			.mpwem_booking_panel{
 				.mpwem_ticket_type{
 					border: 2px solid var(--mpev-base-txt);
@@ -95,8 +104,12 @@
 			}
 		}
 		.mpwem_right_content{
-			max-width: 30%;
+			max-width: 100%;
 			width: 100%;
+			@media (min-width:540px) {
+				max-width: 30%;
+				width: 100%;
+			}
 			.mpwem_sidebar_content{
 				background-color: #fff;
 				border-radius: 20px;
@@ -179,29 +192,43 @@
 		.faq_area{
 			background-color: #f8fafc;
 			text-align: center;
-			margin: 80px auto;
-			padding:40px 40px 80px 40px;
+			margin: 40px auto;
+			padding:10px;
+			@media (min-width:540px) {
+				padding:40px 40px 80px 40px;
+				margin: 80px auto;
+			}
 			h2{
 				margin: 40px;
 			}
 			.desc{
-				width: 36vw;
-				margin: auto;
+				width: auto;
 				color: #666;
 				font-size: 18px;
 				line-height: 30px;
+				@media (min-width:540px) {
+					width: 36vw;
+					margin: auto;
+				}
 			}
 			.faq_items{
-				margin-top: 80px;
+				margin-top: 20px;
 				display: flex;
-				flex-direction: row;
+				flex-direction: column;
 				justify-content: space-between;
 				flex-wrap: wrap;
 				gap:10px;
+				@media (min-width:540px) {
+					margin-top: 80px;
+					flex-direction: row;
+				}
 				.item{
-					width: 49%;
+					width:100%;
 					background-color: #fff;
 					padding: 10px;
+					@media (min-width:540px) {
+						width: 49%;
+					}
 					.title{
 						display: flex;
 						justify-content: space-between;
@@ -219,24 +246,33 @@
 			}
 		}
 		.attendee_area{
-			padding: 10px;
-			
+			margin: 10px 0;
+			@media (min-width:540px) {
+				margin: 150px 0;
+			}
 			.attendee_lists{
 				display: flex;
 				justify-content: start;
+				flex-direction: row;
 				flex-wrap: wrap;
 				margin: 20px 0;
-				gap:21px;
+				gap:10px;
 				background-color: #fff;
 				border-radius: 10px;
 				box-shadow: 0 0 5px #f1f1f1;
 				padding: 25px;
+				@media (min-width:540px) {
+					gap:21px;
+				}
 				.attendee{
-					width: 160px;
+					width: 156px;
 					background-color: #f9f9f9;
 					padding: 20px;
 					border-radius: 10px;
 					text-align: center;
+					@media (min-width:540px) {
+						width: 160px;
+					}
 					img{
 						width: 100px;
 						height: 100px;
@@ -260,14 +296,20 @@
 				display: flex;
 				justify-content: start;
 				align-items: start;
-				gap: 66px;
+				gap: 20px;
 				flex-wrap: wrap;
+				@media (min-width:540px) {
+					gap: 66px;
+				}
 				.item{
-					width: 30%;
+					width: 100%;
 					background-color: #fff;
 					padding: 20PX;
 					border-radius: 10px;
 					box-shadow: 0 0 5px #ddd;
+					@media (min-width:540px) {
+						width: 30%;
+					}
 					img{
 						width: 100%;
 						height: 300px;

@@ -75,7 +75,7 @@
 	</div>
 	<div class="faq_area">
 		<h2>Frequently asked questions</h2>
-		<p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis odio quisquam assumenda deleniti illum eius cum? Autem in laboriosam quisquam deserunt esse. Expedita omnis consectetur repudiandae ipsa saepe? Eligendi, officiis.</p>
+		<div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis odio quisquam assumenda deleniti illum eius cum? Autem in laboriosam quisquam deserunt esse. Expedita omnis consectetur repudiandae ipsa saepe? Eligendi, officiis.</div>
 		<div class="faq_items">
 			<div class="item">
 				<div class="title">

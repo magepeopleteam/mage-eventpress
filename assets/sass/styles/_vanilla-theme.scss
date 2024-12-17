@@ -1,0 +1,154 @@
+
+/*************************************************************
+Vanilla theme css by ariful
+**************************************************************/
+.vanilla_theme .mep-default-title {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #F5F5F5;
+}
+.vanilla_theme .mep-default-content {
+	width: 100%
+}
+.vanilla_theme .mep-default-feature-content {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.vanilla_theme .mep-default-sidrbar-map h3,
+.vanilla_theme .mep-default-sidrbar-events-schedule h3,
+.vanilla_theme h4.mep-cart-table-title {
+	margin: 00px 0 20px 0;
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+.vanilla_theme .mep-default-feature-cart-sec {
+	border: 1px solid #F5F5F5;
+	padding: 20px;
+	border-radius: 5px;
+}
+.vanilla_theme .mep_everyday_date_secs {
+	background: #FBD03B;
+	color: #17113A;
+}
+.vanilla_theme .mep_everyday_date_secs ul li {
+	font-size: 14px;
+	text-transform: uppercase;
+	padding: 5px;
+}
+.vanilla_theme h3.ex-sec-title {
+	font-size: 14px;
+	background: #FBD03B;
+	color: #17113A;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+.vanilla_theme table td,
+.vanilla_theme table td.total-col {
+	font-size: 14px;
+}
+/* .vanilla_theme tr:nth-child(odd) {
+    background-color: #F8F2F2;
+} */
+.vanilla_theme tr:nth-child(even) {
+	background-color: #F2F2F2;
+}
+.vanilla_theme.mep-default-theme div.mep-default-feature-date,
+.vanilla_theme.mep-default-theme div.mep-default-feature-time,
+.vanilla_theme.mep-default-theme div.mep-default-feature-location {
+	background: #FBD03B;
+}
+.vanilla_theme div.df-dtl p {
+	color: #17113A;
+}
+.vanilla_theme div.df-dtl h3 {
+	font-weight: 500;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+	border-bottom: 1px dashed;
+	padding-bottom: 5px;
+}
+.vanilla_theme .mep-default-col-1 {
+	width: 70%;
+	float: left;
+	background-color: #FBFBFB;
+	padding: 20px;
+}
+.vanilla_theme .mep-default-col-2 {
+	width: 30%;
+	display: inline-block !important;
+	background-color: #F5F5F5;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.vanilla_theme .mep-default-col-wrapper {
+	background-color: #FBFBFB;
+	display: flex;
+}
+.vanilla_theme .mep-default-sidrbar-meta p,
+.vanilla_theme .mep-default-sidrbar-meta p a,
+.vanilla_theme .mep-default-sidrbar-events-schedule h3 {
+	font-weight: 500;
+	color: #000000;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+.vanilla_theme .mep-default-sidrbar-meta .fa-list-alt {
+	font-size: 14px;
+}
+.vanilla_theme .mep-default-sidrbar-calender-btn {
+	float: left;
+}
+.vanilla_theme .mep-default-sidrbar-events-schedule {
+	border-bottom: none;
+}
+.vanilla_theme ul.mep-social-share {
+	display: inline-block;
+	padding: 0;
+}
+.vanilla_theme ul.mep-social-share li {
+	display: inline-block
+}
+.vanilla_theme .mep-share-btn-title {
+	display: inline-block;
+	margin-right: 15px;
+	font-weight: 500;
+}
+.vanilla_theme .mep-default-sidrbar-social .mep-event-meta {
+	text-align: left;
+}
+.vanilla_theme .mep-event-meta {
+	padding: 0;
+}
+.vanilla_theme .mep-default-sidrbar-social {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	border-top: 1px solid #F5F5F5;
+	margin-top: 20px;
+	border-bottom: 1px solid #F5F5F5;
+}
+.vanilla_theme ul.mep-social-share a {
+	font-size: 14px;
+	width: 30px;
+	height: 30px;
+	border-radius: 0;
+}
+.vanilla_theme .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart {
+	line-height: inherit;
+}
+.vanilla_theme .mep-tem3-title-sec.mep_single_date_btn {
+	text-transform: uppercase;
+}
+@media only screen and (max-width: 768px) {
+	.vanilla_theme .mep-default-col-wrapper {
+		display: block;
+		width: 100%;
+	}
+	.vanilla_theme .mep-default-col-1 {
+		width: 100%;
+		float: none;
+	}
+	.vanilla_theme .mep-default-col-2 {
+		width: 100%;
+	}
+}

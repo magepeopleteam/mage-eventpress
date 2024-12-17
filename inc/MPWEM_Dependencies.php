@@ -43,7 +43,6 @@
 				require_once(dirname(__DIR__) . "/inc/mep_event_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_event_fw_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_shortcode.php");
-				require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
 				require_once(dirname(__DIR__) . "/inc/recurring/inc/functions.php");	
@@ -136,7 +135,58 @@
 				wp_enqueue_style('mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time());
 				wp_enqueue_script('mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array('jquery'), time(), true);
 				do_action('add_mpwem_frontend_script');
+				$this->add_inline_styles();
 			}
+
+			public function add_inline_styles(){
+				// mep_base_text_color
+				$base_color                 = mep_get_option('mep_base_color', 'style_setting_sec', '#ffbe30');
+				$base_text_color            = mep_get_option('mep_base_text_color', 'style_setting_sec', '#ffffff');
+			
+				$title_bg_color             = mep_get_option('mep_title_bg_color', 'style_setting_sec', '#ffbe30');
+				$title_text_color           = mep_get_option('mep_title_text_color', 'style_setting_sec', '#ffffff');
+				$cart_btn_bg_color          = mep_get_option('mep_cart_btn_bg_color', 'style_setting_sec', '#ffbe30');
+				$cart_btn_txt_color         = mep_get_option('mep_cart_btn_text_color', 'style_setting_sec', '#ffffff');
+			
+				$calender_btn_bg_color      = mep_get_option('mep_calender_btn_bg_color', 'style_setting_sec', '#ffbe30');
+				$calender_btn_txt_color     = mep_get_option('mep_calender_btn_text_color', 'style_setting_sec', '#ffffff');
+			   
+				$faq_label_bg_color         = mep_get_option('mep_faq_title_bg_color', 'style_setting_sec', '#ffbe30');
+				$faq_label_text_color       = mep_get_option('mep_faq_title_text_color', 'style_setting_sec', '#ffffff');
+			   
+				$royal_primary_bg_color     = mep_get_option('mep_royal_primary_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_secondary_bg_color   = mep_get_option('mep_royal_secondary_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_icons_bg_color       = mep_get_option('mep_royal_icons_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_border_color         = mep_get_option('mep_royal_border_color', 'style_setting_sec', '#ffbe30');
+				$royal_text_color           = mep_get_option('mep_royal_text_color', 'style_setting_sec', '#ffffff');
+				
+				$recurring_datepicker_bg_color = mep_get_option('mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30');
+				$recurring_datepicker_text_color = mep_get_option('mep_re_datepicker_text_color', 'style_setting_sec', '#fff');
+				
+				$inline_css = "
+					:root{
+						--mpev-base: {$base_color};
+						--mpev-base-txt:{$base_text_color};
+						--mpev-title-bg:{$title_bg_color};
+						--mpev-title-txt:{$title_text_color};
+						--mpev-calender-btn-bg:{$calender_btn_bg_color};
+						--mpev-calender-btn-txt:{$calender_btn_txt_color};
+						--mpev-cart-btn-bg:{$cart_btn_bg_color};
+						--mpev-cart-btn-txt:{$cart_btn_txt_color};
+						--mpev-faq-bg:{$faq_label_bg_color};
+						--mpev-faq-text:{$faq_label_text_color};
+						--mpev-royal-primary-bg:{$royal_primary_bg_color};
+						--mpev-royal-secondary-bg:{$royal_secondary_bg_color};
+						--mpev-royal-icons-bg:{$royal_icons_bg_color};
+						--mpev-royal-border:{$royal_border_color};
+						--mpev-royal-txt:{$royal_text_color};
+						--mpev-recring-dpkr-bg:{$recurring_datepicker_bg_color};
+						--mpev-recring-dpkr-txt:{$recurring_datepicker_text_color};
+					}
+				";
+				wp_add_inline_style( 'mpwem_style', $inline_css );
+			}
+
 			public function add_admin_head() {
 				$this->js_constant();
 			}

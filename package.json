@@ -1,0 +1,25 @@
+{
+  "name": "mage-eventpress",
+  "version": "1.0.0",
+  "description": "=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin === Contributors: magepeopleteam, aamahin Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin Requires at least: 5.3 Stable tag: 4.1.4 Version: 4.1.4 Tested up to: 6.4.2 WC requires at least: 3.0 WC tested up to: 8.5.2 Requires PHP: 7.4 License: GPLv2 or later License URI: http://www.gnu.org/licenses/gpl-2.0.html",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+"scripts": {
+    "start": "sass --watch assets/sass/backend.scss assets/admin/mpwem_admin.css",
+    "frontend": "sass --watch assets/sass/frontend.scss assets/frontend/mpwem_style.css",
+    "browsersync": "browser-sync start --config bs-config.js"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magepeopleteam/mage-eventpress.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/magepeopleteam/mage-eventpress/issues"
+  },
+  "homepage": "https://github.com/magepeopleteam/mage-eventpress#readme"
+}

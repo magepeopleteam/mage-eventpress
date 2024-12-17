@@ -1,0 +1,367 @@
+
+@media only screen and (min-width: 10px) {
+	.mep_smart_theme{
+		.mpwem_tile{
+			color: #000;
+			font-size: 40px;
+		}
+		.mpwem_organizer{
+			margin: 20px 0;
+		}
+		.mpwem_location_time{
+			display: flex;
+			justify-content: start;
+			.mpwem_location, .mpwem_time {
+				i{
+					width: 55px;
+					height: 55px;
+					background-color: var(--mpev-base);
+					color:var(--mpev-base-txt);
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 25px;
+					border-radius: 5px;
+				}
+			}
+		}
+		.mpwem_slider_area{
+			div.superSlider{
+				.sliderAllItem{
+					border-radius: 15px;
+				}
+				.sliderShowcaseItem{
+					border-radius: 15px;
+				}
+				.iconIndicator{
+					color: var(--mpev-base);
+				}
+			}
+		}
+		.mpwem_content_area{
+			display: flex;
+			margin: 40px 0 0 0;
+			flex-direction: column;
+			@media (min-width:540px) {
+				margin: 40px 0 0 0;
+				flex-direction: row;
+			}
+		}
+		.mpwem_left_content{
+			max-width: 100%;
+			width: 100%;
+			@media (min-width:540px) {
+				max-width: 70%;
+				margin-right:2%;
+			}
+			.mpwem_booking_panel{
+				.mpwem_ticket_type{
+					border: 2px solid var(--mpev-base-txt);
+					.mep_ticket_item{
+						h6{
+							font-size: 24px;
+							margin-bottom: 10px;
+						}
+						.groupContent{
+							border: 0;
+						}
+						.incQty{
+							background-color: var(--mpev-base-txt);
+							color: var(--mpev-base);
+							border-radius: 5px;
+							
+						}
+						.inputIncDec{
+							border-radius: 5px;
+							background-color:var(--mpev-base);
+						}
+						.decQty{
+							background-color: red;
+							color: var(--mpev-base);
+							border-radius: 5px;
+						}
+					}
+					._divider{
+						margin: 25px 0;
+					}
+				}
+			}
+			.mpwem_form_submit_area{
+				._mpBtn{
+					color:var(--mpev-base-txt);
+					border: 1px solid var(--mpev-base-txt);
+					border-radius: 5px;
+					padding:13px 25px;
+					font-weight: bold;
+					.mpwem_total{
+						color:var(--mpev-base-txt);
+					}
+				}
+				button[type=submit]{
+					background-color: var(--mpev-base-txt);
+					border: 1px solid var(--mpev-base-txt);
+				}
+			}
+		}
+		.mpwem_right_content{
+			max-width: 100%;
+			width: 100%;
+			@media (min-width:540px) {
+				max-width: 30%;
+				width: 100%;
+			}
+			.mpwem_sidebar_content{
+				background-color: #fff;
+				border-radius: 20px;
+				box-shadow: 0 0 5px #ddd;
+				padding:30px 0;
+				.date_widgets,.location_widgets{
+					display: flex;
+					justify-content: start;
+					align-items: start;
+					gap: 20px;
+					padding: 30px;
+					border-bottom: 1px solid #ddd;
+					i{
+						font-size: 30px;
+						padding: 20px;
+						background-color: var(--mpev-base);
+						color: var(--mpev-base-txt);
+						border-radius: 10px;
+					}
+					h2{
+						font-size: 19px;
+						letter-spacing: 2px;
+						margin-bottom: 15px;
+					}
+					p{
+						font-size: 16px;
+						margin-bottom: 5px;
+					}
+					button{
+						background-color: #fff;
+						padding:5px 10px;
+						border: 1px solid var(--mpev-base-txt);
+						margin-top: 20px;
+						color: var(--mpev-base-txt);
+						i{
+							font-size: 16px;
+							padding: 0;
+							background: none;
+							margin: 10px;
+						}
+					}
+				}
+				.share_widgets{
+					text-align: center;
+					padding: 30px;
+					
+					.icons{
+						margin-top: 20px;
+						i{
+							padding: 10px;
+							background-color: var(--mpev-base-txt);
+							width: 46px;
+							height: 46px;
+							border-radius: 50%;
+							color: #fff;
+							margin: 5px;
+							font-size: 24px;
+							cursor: pointer;
+							border: 1px solid var(--mpev-base-txt);
+							transition: all .4s;
+							&:hover{
+								background-color: var(--mpev-base);
+								color: var(--mpev-base-txt);
+								border: 1px solid var(--mpev-base-txt);
+							}
+						}
+					}
+					
+				}
+			}
+			
+		}
+		.map_location{
+			margin: 50px 0;
+			iframe{
+				margin-top: 20px;
+				border-radius: 15px;
+			}
+		}
+		.faq_area{
+			background-color: #f8fafc;
+			text-align: center;
+			margin: 40px auto;
+			padding:10px;
+			@media (min-width:540px) {
+				padding:40px 40px 80px 40px;
+				margin: 80px auto;
+			}
+			h2{
+				margin: 40px;
+			}
+			.desc{
+				width: auto;
+				color: #666;
+				font-size: 18px;
+				line-height: 30px;
+				@media (min-width:540px) {
+					width: 36vw;
+					margin: auto;
+				}
+			}
+			.faq_items{
+				margin-top: 20px;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				gap:10px;
+				@media (min-width:540px) {
+					margin-top: 80px;
+					flex-direction: row;
+				}
+				.item{
+					width:100%;
+					background-color: #fff;
+					padding: 10px;
+					@media (min-width:540px) {
+						width: 49%;
+					}
+					.title{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						padding:20px;
+						h2{
+							font-size: 16px;
+							margin: 0;
+						}
+					}
+					.content{
+						display: none;
+					}
+				}
+			}
+		}
+		.attendee_area{
+			margin: 10px 0;
+			@media (min-width:540px) {
+				margin: 150px 0;
+			}
+			.attendee_lists{
+				display: flex;
+				justify-content: start;
+				flex-direction: row;
+				flex-wrap: wrap;
+				margin: 20px 0;
+				gap:10px;
+				background-color: #fff;
+				border-radius: 10px;
+				box-shadow: 0 0 5px #f1f1f1;
+				padding: 25px;
+				@media (min-width:540px) {
+					gap:21px;
+				}
+				.attendee{
+					width: 156px;
+					background-color: #f9f9f9;
+					padding: 20px;
+					border-radius: 10px;
+					text-align: center;
+					@media (min-width:540px) {
+						width: 160px;
+					}
+					img{
+						width: 100px;
+						height: 100px;
+						object-fit: cover;
+						border-radius: 50px;
+					}
+					h2{
+						font-size: 16px;
+						color: #333;
+						margin: 10px 0
+					}
+				}
+			}
+		}
+		.related_events{
+			margin: 20px 0;
+			
+			.related_items{
+				
+				margin-top: 20px;
+				display: flex;
+				justify-content: start;
+				align-items: start;
+				gap: 20px;
+				flex-wrap: wrap;
+				@media (min-width:540px) {
+					gap: 66px;
+				}
+				.item{
+					width: 100%;
+					background-color: #fff;
+					padding: 20PX;
+					border-radius: 10px;
+					box-shadow: 0 0 5px #ddd;
+					@media (min-width:540px) {
+						width: 30%;
+					}
+					img{
+						width: 100%;
+						height: 300px;
+						object-fit: cover;
+					}
+					.item-info{
+						display: flex;
+						justify-content: space-between;
+						margin-top: 20px;
+						.title{
+							text-align: left;
+							color: #999;
+							h2{
+								font-size: 25px;
+								color: #333;
+							}
+						}
+						.price{
+							text-align: right;
+							color: #999;
+							h2{
+								font-size: 30px;
+								color: var(--mpev-base-txt);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+/*****************************/
+	div.mpwem_details_content,
+	div.mpwem_details_content p{line-height: 1.7 !important;color:#8D8D8D;font-size:16px !important;}
+/*****************************/
+	div.mpwem_ex_service,
+	div.mep_attendee_info,
+	div.mep_attendee_info_hidden{display: none;}
+	div.mep_file_item img{height: 100%;width: auto;cursor: pointer;display: none;max-height: 100px;}
+	div.mep_file_item iframe{height: 100%;width: auto;cursor: pointer;display: none;max-height: 300px;}
+	.mep_attendee_info .mp_form_item{padding: 7px;}
+	.mep_attendee_info .mp_form_item.mep_checkbox_item>span,
+	.mep_attendee_info .mp_form_item.mep_radio_item>span,
+	.mep_attendee_info .mp_form_item.mep_file_item>span,
+	.mep_attendee_info .mp_form_item>label>span{min-width:200px;}
+	/***************************************************/
+	div.mpwem_organizer {display: -webkit-flex;display: flex;}
+	div.mpwem_organizer,
+	div.mpwem_organizer a{font-size: 24px;margin: var(--dMP_xs) 0 0 0;color:#878787 !important;font-weight: 400;}
+	div.mpwem_location,
+	div.mpwem_time{color: #393332;font-size: 18px;margin: var(--dMP_xs) var(--dMP)  0 0;	display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;}
+	div.mpwem_location span,
+	div.mpwem_time span{width: 55px;height: 55px;background-color: #F1F5FF;color:#6046FF;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;font-size: 25px;}
+}
+@media only screen and (max-width: 600px) {
+}

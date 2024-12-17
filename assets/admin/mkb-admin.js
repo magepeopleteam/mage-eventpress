@@ -186,7 +186,152 @@
 			$('#mep_rich_text_table').slideUp(); // Hide the section
 		}
 	});
+// ================ F.A.Q. ===================================
+	$(document).on('click', '.mpwpb-faq-item-new', function (e) {
+		$('#mpwpb-faq-msg').html('');
+		$('.mpwpb_faq_save_buttons').show();
+		$('.mpwpb_faq_update_buttons').hide();
+		empty_faq_form();
+	});
 
+	
+
+	function close_sidebar_modal(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.mpwpb-modal-container').removeClass('open');
+	}
+
+	$(document).on('click', '.mpwpb-faq-item-edit', function (e) {
+		$('#mpwpb-faq-msg').html('');
+		$('.mpwpb_faq_save_buttons').hide();
+		$('.mpwpb_faq_update_buttons').show();
+		var itemId = $(this).closest('.mpwpb-faq-item').data('id');
+		var parent = $(this).closest('.mpwpb-faq-item');
+		var headerText = parent.find('.faq-header p').text().trim();
+		var faqContentId = parent.find('.faq-content').text().trim();
+		var editorId = 'mpwpb_faq_content';
+		$('input[name="mpwpb_faq_title"]').val(headerText);
+		$('input[name="mpwpb_faq_item_id"]').val(itemId);
+		if (tinymce.get(editorId)) {
+			tinymce.get(editorId).setContent(faqContentId);
+		} else {
+			$('#' + editorId).val(faqContentId);
+		}
+	});
+
+	$(document).on('click', '.mpwpb-faq-item-delete', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var itemId = $(this).closest('.mpwpb-faq-item').data('id');
+
+		var isConfirmed = confirm('Are you sure you want to delete this row?');
+		if (isConfirmed) {
+			delete_faq_item(itemId);
+		} else {
+			console.log('Deletion canceled.'+itemId);
+		}
+	});
+	
+
+	function empty_faq_form(){
+		$('input[name="mpwpb_faq_title"]').val('');
+		tinyMCE.get('mpwpb_faq_content').setContent('');
+		$('input[name="mpwpb_faq_item_id"]').val('');
+	}
+	
+
+	$(document).on('click', '#mpwpb_faq_update', function (e) {
+		e.preventDefault();
+		update_faq();
+	});
+
+	$(document).on('click', '#mpwpb_faq_save', function (e) {
+		e.preventDefault();
+		save_faq();
+	});
+
+	$(document).on('click', '#mpwpb_faq_save_close', function (e) {
+		e.preventDefault();
+		save_faq();
+		close_sidebar_modal(e);
+	});
+
+	function update_faq(){
+		var title   = $('input[name="mpwpb_faq_title"]');
+		var content = tinyMCE.get('mpwpb_faq_content').getContent();
+		var postID  = $('input[name="mpwpb_post_id"]');
+		var itemId = $('input[name="mpwpb_faq_item_id"]');
+		$.ajax({
+			url: mp_ajax_url,
+			type: 'POST',
+			data: {
+				action: 'mpwpb_faq_data_update',
+				mpwpb_faq_title:title.val(),
+				mpwpb_faq_content:content,
+				mpwpb_faq_postID:postID.val(),
+				mpwpb_faq_itemID:itemId.val(),
+			},
+			success: function(response) {
+				$('#mpwpb-faq-msg').html(response.data.message);
+				$('.mpwpb-faq-items').html('');
+				$('.mpwpb-faq-items').append(response.data.html);
+				setTimeout(function(){
+					$('.mpwpb-modal-container').removeClass('open');
+					empty_faq_form();
+				},1000);
+				
+			},
+			error: function(error) {
+				console.log('Error:', error);
+			}
+		});
+	}
+
+	function save_faq(){
+		var title   = $('input[name="mpwpb_faq_title"]');
+		var content = tinyMCE.get('mpwpb_faq_content').getContent();
+		var postID  = $('input[name="mpwpb_post_id"]');
+		$.ajax({
+			url: mp_ajax_url,
+			type: 'POST',
+			data: {
+				action: 'mpwpb_faq_data_save',
+				mpwpb_faq_title:title.val(),
+				mpwpb_faq_content:content,
+				mpwpb_faq_postID:postID.val(),
+			},
+			success: function(response) {
+				$('#mpwpb-faq-msg').html(response.data.message);
+				$('.mpwpb-faq-items').html('');
+				$('.mpwpb-faq-items').append(response.data.html);
+				empty_faq_form();
+			},
+			error: function(error) {
+				console.log('Error:', error);
+			}
+		});
+	}
+
+	function delete_faq_item(itemId){
+		var postID  = $('input[name="mpwpb_post_id"]');
+		$.ajax({
+			url: mp_ajax_url,
+			type: 'POST',
+			data: {
+				action: 'mpwpb_faq_delete_item',
+				mpwpb_faq_postID:postID.val(),
+				itemId:itemId,
+			},
+			success: function(response) {
+				$('.mpwpb-faq-items').html('');
+				$('.mpwpb-faq-items').append(response.data.html);
+			},
+			error: function(error) {
+				console.log('Error:', error);
+			}
+		});
+	}
 })(jQuery);
 
 

@@ -124,14 +124,15 @@ if( ! class_exists('MPWPB_Faq_Settings')){
         }
 
         public function show_faq_data($post_id){
-            $mpwpb_faq = get_post_meta($post_id,'mpwpb_faq',true);
+            $mpwpb_faq = get_post_meta($post_id,'mep_event_faq',true);
+            $mpwpb_faq = unserialize($mpwpb_faq);
             if( ! empty($mpwpb_faq)):
                 foreach ($mpwpb_faq as $key => $value) : 
                     ?>
                         <div class="mpwpb-faq-item" data-id="<?php echo esc_attr($key); ?>">
                             <section class="faq-header" data-collapse-target="#faq-content-<?php echo esc_attr($key); ?>">
                                 <label class="label">
-                                    <p><?php echo esc_html($value['title']); ?></p>
+                                    <p><?php echo esc_html($value['mep_faq_title']); ?></p>
                                     <div class="faq-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
                                         <span class="mpwpb-faq-item-edit" data-modal="mpwpb-faq-item-new" ><i class="fas fa-edit"></i></span>
@@ -140,7 +141,7 @@ if( ! class_exists('MPWPB_Faq_Settings')){
                                 </label>
                             </section>
                             <section class="faq-content mB" data-collapse="#faq-content-<?php echo esc_attr($key); ?>">
-                                <?php echo wpautop(wp_kses_post($value['content'])); ?>
+                                <?php echo wpautop(wp_kses_post($value['mep_faq_content'])); ?>
                             </section>
                         </div>
                     <?php
@@ -150,22 +151,22 @@ if( ! class_exists('MPWPB_Faq_Settings')){
 
         public function save_faq_settings($post_id) {
             if (get_post_type($post_id) == MPWPB_Function::get_cpt()) {
-                $mpwpb_faq_active = MP_Global_Function::get_submit_info('mpwpb_faq_active');
-                update_post_meta($post_id, 'mpwpb_faq_active', $mpwpb_faq_active);
+                $mpwpb_faq_active = MP_Global_Function::get_submit_info('mep_event_faq');
+                update_post_meta($post_id, 'mep_event_faq', $mpwpb_faq_active);
             }
         }
 
         public function faq_data_update() {
             $post_id = $_POST['mpwpb_faq_postID'];
-            $mpwpb_faq = get_post_meta($post_id,'mpwpb_faq',true);
+            $mpwpb_faq = get_post_meta($post_id,'mep_event_faq',true);
             $mpwpb_faq =!empty($mpwpb_faq)?$mpwpb_faq:[];
-            $new_data = [ 'title'=> sanitize_text_field($_POST['mpwpb_faq_title']), 'content'=> wp_kses_post($_POST['mpwpb_faq_content'])];
+            $new_data = [ 'title'=> sanitize_text_field($_POST['mep_faq_title']), 'content'=> wp_kses_post($_POST['mep_faq_content'])];
             if( ! empty($mpwpb_faq)){
                 if(isset($_POST['mpwpb_faq_itemID'])){
                     $mpwpb_faq[$_POST['mpwpb_faq_itemID']]=$new_data;
                 }
             }
-            update_post_meta($post_id, 'mpwpb_faq', $mpwpb_faq);
+            update_post_meta($post_id, 'mep_event_faq', $mpwpb_faq);
             ob_start();
             $resultMessage = __('Data Updated Successfully', 'mptbm_plugin_pro');
             $this->show_faq_data($post_id);
@@ -180,13 +181,13 @@ if( ! class_exists('MPWPB_Faq_Settings')){
         public function save_faq_data_settings() {
             update_post_meta($_POST['mpwpb_faq_postID'], 'mpwpb_faq_active', 'on');
             $post_id = $_POST['mpwpb_faq_postID'];
-            $mpwpb_faq = get_post_meta($post_id,'mpwpb_faq',true);
+            $mpwpb_faq = get_post_meta($post_id,'mep_event_faq',true);
             $mpwpb_faq =!empty($mpwpb_faq)?$mpwpb_faq:[];
-            $new_data = [ 'title'=> sanitize_text_field($_POST['mpwpb_faq_title']), 'content'=> wp_kses_post($_POST['mpwpb_faq_content'])];
+            $new_data = [ 'title'=> sanitize_text_field($_POST['mep_faq_title']), 'content'=> wp_kses_post($_POST['mep_faq_content'])];
             if( isset($post_id)){
                 array_push($mpwpb_faq,$new_data);
             }
-            $result = update_post_meta($post_id, 'mpwpb_faq', $mpwpb_faq);
+            $result = update_post_meta($post_id, 'mep_event_faq', $mpwpb_faq);
             if($result){
                 ob_start();
                 $resultMessage = __('Data Added Successfully', 'mptbm_plugin_pro');

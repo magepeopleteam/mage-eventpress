@@ -1,4 +1,4 @@
-.mpwpb-modal-container{
+.mep-modal-container{
     position: fixed;
     right: -100%; /* Initially hidden off-screen */
     top: 0;
@@ -10,7 +10,7 @@
     &.open {
         right: 0; /* Slide in */
     }
-    .mpwpb-modal-content{
+    .mep-modal-content{
         background-color: #fff;
         width: 800px;
         height: 100%;
@@ -21,7 +21,7 @@
         .title{
             padding-left: 40px;
         }
-        .mpwpb-modal-close{
+        .mep-modal-close{
             position:absolute;
             top: 40px;
             right: 15px;

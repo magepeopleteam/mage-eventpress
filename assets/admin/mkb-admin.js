@@ -115,38 +115,6 @@
  */
 
 (function($){
-
-	// =====================sidebar modal open close=============
-	$(document).on('click', '[data-modal]', function (e) {
-		const modalTarget = $(this).data('modal');
-		$(`[data-modal-target="${modalTarget}"]`).addClass('open');
-	});
-
-	$(document).on('click', '[data-modal-target] .mpwpb-modal-close', function (e) {
-		$(this).closest('[data-modal-target]').removeClass('open');
-	});
-
-	// ==============toggle switch radio button=================
-	$(document).on('click','.mpev-switch .slider',function(){
-		var checkbox = $(this).prev('input[type="checkbox"]');
-		var toggleValues = checkbox.data('toggle-values').split(',');
-		var currentValue = checkbox.val();
-		var nextValue = toggleValues[0];
-
-		if (currentValue === toggleValues[0]) {
-			nextValue = toggleValues[1];
-			$(".mep_hide_on_load").slideUp(200);
-		} else {
-			nextValue = toggleValues[0];
-			$(".mep_hide_on_load").slideDown(200);
-		}
-		checkbox.val(nextValue);
-		var target = checkbox.data('collapse-target');
-		var close = checkbox.data('close-target');
-		$(target).slideToggle();
-		$(close).slideToggle();
-	});
-
 	//========================reset booking==================
 	$(document).on('click','#mep-reset-booking',function(){
 		$('#mep-reset-booking').click(function(e){
@@ -186,11 +154,20 @@
 			$('#mep_rich_text_table').slideUp(); // Hide the section
 		}
 	});
+// =====================sidebar modal open close=============
+	$(document).on('click', '[data-modal]', function (e) {
+		const modalTarget = $(this).data('modal');
+		$(`[data-modal-target="${modalTarget}"]`).addClass('open');
+	});
+
+	$(document).on('click', '[data-modal-target] .mep-modal-close', function (e) {
+		$(this).closest('[data-modal-target]').removeClass('open');
+	});
 // ================ F.A.Q. ===================================
-	$(document).on('click', '.mpwpb-faq-item-new', function (e) {
-		$('#mpwpb-faq-msg').html('');
-		$('.mpwpb_faq_save_buttons').show();
-		$('.mpwpb_faq_update_buttons').hide();
+	$(document).on('click', '.mep-faq-item-new', function (e) {
+		$('#mep-faq-msg').html('');
+		$('.mep_faq_save_buttons').show();
+		$('.mep_faq_update_buttons').hide();
 		empty_faq_form();
 	});
 
@@ -199,20 +176,20 @@
 	function close_sidebar_modal(e){
 		e.preventDefault();
 		e.stopPropagation();
-		$('.mpwpb-modal-container').removeClass('open');
+		$('.mep-modal-container').removeClass('open');
 	}
 
-	$(document).on('click', '.mpwpb-faq-item-edit', function (e) {
-		$('#mpwpb-faq-msg').html('');
-		$('.mpwpb_faq_save_buttons').hide();
-		$('.mpwpb_faq_update_buttons').show();
-		var itemId = $(this).closest('.mpwpb-faq-item').data('id');
-		var parent = $(this).closest('.mpwpb-faq-item');
+	$(document).on('click', '.mep-faq-item-edit', function (e) {
+		$('#mep-faq-msg').html('');
+		$('.mep_faq_save_buttons').hide();
+		$('.mep_faq_update_buttons').show();
+		var itemId = $(this).closest('.mep-faq-item').data('id');
+		var parent = $(this).closest('.mep-faq-item');
 		var headerText = parent.find('.faq-header p').text().trim();
 		var faqContentId = parent.find('.faq-content').text().trim();
-		var editorId = 'mpwpb_faq_content';
-		$('input[name="mpwpb_faq_title"]').val(headerText);
-		$('input[name="mpwpb_faq_item_id"]').val(itemId);
+		var editorId = 'mep_faq_content';
+		$('input[name="mep_faq_title"]').val(headerText);
+		$('input[name="mep_faq_item_id"]').val(itemId);
 		if (tinymce.get(editorId)) {
 			tinymce.get(editorId).setContent(faqContentId);
 		} else {
@@ -220,10 +197,10 @@
 		}
 	});
 
-	$(document).on('click', '.mpwpb-faq-item-delete', function (e) {
+	$(document).on('click', '.mep-faq-item-delete', function (e) {
 		e.preventDefault();
 		e.stopPropagation();
-		var itemId = $(this).closest('.mpwpb-faq-item').data('id');
+		var itemId = $(this).closest('.mep-faq-item').data('id');
 
 		var isConfirmed = confirm('Are you sure you want to delete this row?');
 		if (isConfirmed) {
@@ -235,49 +212,49 @@
 	
 
 	function empty_faq_form(){
-		$('input[name="mpwpb_faq_title"]').val('');
-		tinyMCE.get('mpwpb_faq_content').setContent('');
-		$('input[name="mpwpb_faq_item_id"]').val('');
+		$('input[name="mep_faq_title"]').val('');
+		tinyMCE.get('mep_faq_content').setContent('');
+		$('input[name="mep_faq_item_id"]').val('');
 	}
 	
 
-	$(document).on('click', '#mpwpb_faq_update', function (e) {
+	$(document).on('click', '#mep_faq_update', function (e) {
 		e.preventDefault();
 		update_faq();
 	});
 
-	$(document).on('click', '#mpwpb_faq_save', function (e) {
+	$(document).on('click', '#mep_faq_save', function (e) {
 		e.preventDefault();
 		save_faq();
 	});
 
-	$(document).on('click', '#mpwpb_faq_save_close', function (e) {
+	$(document).on('click', '#mep_faq_save_close', function (e) {
 		e.preventDefault();
 		save_faq();
 		close_sidebar_modal(e);
 	});
 
 	function update_faq(){
-		var title   = $('input[name="mpwpb_faq_title"]');
-		var content = tinyMCE.get('mpwpb_faq_content').getContent();
-		var postID  = $('input[name="mpwpb_post_id"]');
-		var itemId = $('input[name="mpwpb_faq_item_id"]');
+		var title   = $('input[name="mep_faq_title"]');
+		var content = tinyMCE.get('mep_faq_content').getContent();
+		var postID  = $('input[name="mep_post_id"]');
+		var itemId = $('input[name="mep_faq_item_id"]');
 		$.ajax({
 			url: mp_ajax_url,
 			type: 'POST',
 			data: {
-				action: 'mpwpb_faq_data_update',
-				mpwpb_faq_title:title.val(),
-				mpwpb_faq_content:content,
-				mpwpb_faq_postID:postID.val(),
-				mpwpb_faq_itemID:itemId.val(),
+				action: 'mep_faq_data_update',
+				mep_faq_title:title.val(),
+				mep_faq_content:content,
+				mep_faq_postID:postID.val(),
+				mep_faq_itemID:itemId.val(),
 			},
 			success: function(response) {
-				$('#mpwpb-faq-msg').html(response.data.message);
-				$('.mpwpb-faq-items').html('');
-				$('.mpwpb-faq-items').append(response.data.html);
+				$('#mep-faq-msg').html(response.data.message);
+				$('.mep-faq-items').html('');
+				$('.mep-faq-items').append(response.data.html);
 				setTimeout(function(){
-					$('.mpwpb-modal-container').removeClass('open');
+					$('.mep-modal-container').removeClass('open');
 					empty_faq_form();
 				},1000);
 				
@@ -289,22 +266,22 @@
 	}
 
 	function save_faq(){
-		var title   = $('input[name="mpwpb_faq_title"]');
-		var content = tinyMCE.get('mpwpb_faq_content').getContent();
-		var postID  = $('input[name="mpwpb_post_id"]');
+		var title   = $('input[name="mep_faq_title"]');
+		var content = tinyMCE.get('mep_faq_content').getContent();
+		var postID  = $('input[name="mep_post_id"]');
 		$.ajax({
 			url: mp_ajax_url,
 			type: 'POST',
 			data: {
-				action: 'mpwpb_faq_data_save',
-				mpwpb_faq_title:title.val(),
-				mpwpb_faq_content:content,
-				mpwpb_faq_postID:postID.val(),
+				action: 'mep_faq_data_save',
+				mep_faq_title:title.val(),
+				mep_faq_content:content,
+				mep_faq_postID:postID.val(),
 			},
 			success: function(response) {
-				$('#mpwpb-faq-msg').html(response.data.message);
-				$('.mpwpb-faq-items').html('');
-				$('.mpwpb-faq-items').append(response.data.html);
+				$('#mep-faq-msg').html(response.data.message);
+				$('.mep-faq-items').html('');
+				$('.mep-faq-items').append(response.data.html);
 				empty_faq_form();
 			},
 			error: function(error) {
@@ -314,18 +291,18 @@
 	}
 
 	function delete_faq_item(itemId){
-		var postID  = $('input[name="mpwpb_post_id"]');
+		var postID  = $('input[name="mep_post_id"]');
 		$.ajax({
 			url: mp_ajax_url,
 			type: 'POST',
 			data: {
-				action: 'mpwpb_faq_delete_item',
-				mpwpb_faq_postID:postID.val(),
+				action: 'mep_faq_delete_item',
+				mep_faq_postID:postID.val(),
 				itemId:itemId,
 			},
 			success: function(response) {
-				$('.mpwpb-faq-items').html('');
-				$('.mpwpb-faq-items').append(response.data.html);
+				$('.mep-faq-items').html('');
+				$('.mep-faq-items').append(response.data.html);
 			},
 			error: function(error) {
 				console.log('Error:', error);

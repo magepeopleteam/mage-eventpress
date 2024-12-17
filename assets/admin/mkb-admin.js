@@ -107,6 +107,17 @@
 		let n = $(this).val();
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 	});
+
+	// =====================sidebar modal open close=============
+	$(document).on('click', '[data-modal]', function (e) {
+		const modalTarget = $(this).data('modal');
+		$(`[data-modal-target="${modalTarget}"]`).addClass('open');
+	});
+
+	$(document).on('click', '[data-modal-target] .mpwpb-modal-close', function (e) {
+		$(this).closest('[data-modal-target]').removeClass('open');
+	});
+	
 }(jQuery));
 
 /**

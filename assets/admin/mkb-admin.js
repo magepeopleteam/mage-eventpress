@@ -108,6 +108,14 @@
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 	});
 
+}(jQuery));
+
+/**
+ * @author Shahadat Hossain <raselsha@gmail.com>
+ */
+
+(function($){
+
 	// =====================sidebar modal open close=============
 	$(document).on('click', '[data-modal]', function (e) {
 		const modalTarget = $(this).data('modal');
@@ -117,44 +125,30 @@
 	$(document).on('click', '[data-modal-target] .mpwpb-modal-close', function (e) {
 		$(this).closest('[data-modal-target]').removeClass('open');
 	});
-	
-}(jQuery));
 
-/**
- * @author Shahadat Hossain <raselsha@gmail.com>
- */
-jQuery(document).ready(function ($) {
-	mpevSwitch();
-	resetBooking();
-	richTextStatus();
-	//  ===============Toggle radio switch==============
-	function mpevSwitch() {
-		$('.mpev-switch .slider').click(function() {
-			var checkbox = $(this).prev('input[type="checkbox"]');
-			var toggleValues = checkbox.data('toggle-values').split(',');
-			var currentValue = checkbox.val();
-			var nextValue = toggleValues[0];
+	// ==============toggle switch radio button=================
+	$(document).on('click','.mpev-switch .slider',function(){
+		var checkbox = $(this).prev('input[type="checkbox"]');
+		var toggleValues = checkbox.data('toggle-values').split(',');
+		var currentValue = checkbox.val();
+		var nextValue = toggleValues[0];
 
-			if (currentValue === toggleValues[0]) {
-				nextValue = toggleValues[1];
-				$(".mep_hide_on_load").slideUp(200);
-			} else {
-				nextValue = toggleValues[0];
-				$(".mep_hide_on_load").slideDown(200);
-			}
-			
-			checkbox.val(nextValue);
+		if (currentValue === toggleValues[0]) {
+			nextValue = toggleValues[1];
+			$(".mep_hide_on_load").slideUp(200);
+		} else {
+			nextValue = toggleValues[0];
+			$(".mep_hide_on_load").slideDown(200);
+		}
+		checkbox.val(nextValue);
+		var target = checkbox.data('collapse-target');
+		var close = checkbox.data('close-target');
+		$(target).slideToggle();
+		$(close).slideToggle();
+	});
 
-			var target = checkbox.data('collapse-target');
-			var close = checkbox.data('close-target');
-			$(target).slideToggle();
-			$(close).slideToggle();
-		});
-	}
-/**
- * @description Reset booking by ajax
- **/
-	function resetBooking(){
+	//========================reset booking==================
+	$(document).on('click','#mep-reset-booking',function(){
 		$('#mep-reset-booking').click(function(e){
 			e.preventDefault();
 			var postID = $(this).data('post-id');
@@ -174,31 +168,26 @@ jQuery(document).ready(function ($) {
 				}
 			});
 		});
+	});
+
+	// ========Initialize visibility based on the current selection ===========
+	var initialStatus = $('#mep_rich_text_status').val();
+	if (initialStatus === 'enable') {
+		$('#mep_rich_text_table').slideDown();
+	} else {
+		$('#mep_rich_text_table').slideUp();
 	}
-	/**
- * @description Rich text status update
- **/
-	function richTextStatus(){
-		$('#mep_rich_text_status').on('change', function() {
-			var status = $(this).val();
-			
-			if (status === 'enable') {
-				$('#mep_rich_text_table').slideDown(); // Show the section
-			} else {
-				$('#mep_rich_text_table').slideUp(); // Hide the section
-			}
-		});
-	
-		// Initialize visibility based on the current selection on page load
-		var initialStatus = $('#mep_rich_text_status').val();
-		if (initialStatus === 'enable') {
-			$('#mep_rich_text_table').slideDown();
+
+	$(document).on('change','#mep_rich_text_status',function(){
+		var status = $(this).val();
+		if (status === 'enable') {
+			$('#mep_rich_text_table').slideDown(); // Show the section
 		} else {
-			$('#mep_rich_text_table').slideUp();
+			$('#mep_rich_text_table').slideUp(); // Hide the section
 		}
-	}
-	
-});
+	});
+
+})(jQuery);
 
 
 

@@ -133,10 +133,13 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function faq_data_update() {
-            $post_id = $_POST['mep_faq_postID'];
-            $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
-            $mep_faq =!empty($mep_faq)?$mep_faq:[];
-            $new_data = [ 'title'=> sanitize_text_field($_POST['mep_faq_title']), 'content'=> wp_kses_post($_POST['mep_faq_content'])];
+            $post_id = intval($_POST['mep_faq_postID']);
+            $mep_faq = get_post_meta($post_id, 'mep_event_faq', true);
+            $mep_faq = is_array($mep_faq) ? $mep_faq : [];
+            $new_data = [
+                'mep_faq_title' => sanitize_text_field($_POST['mep_faq_title']),
+                'mep_faq_content' => wp_kses_post($_POST['mep_faq_content'])
+            ];
             if( ! empty($mep_faq)){
                 if(isset($_POST['mep_faq_itemID'])){
                     $mep_faq[$_POST['mep_faq_itemID']]=$new_data;
@@ -155,20 +158,15 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function save_faq_data_settings() {
-            $post_id = $_POST['mep_faq_postID'];
-            $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
-            $mep_faq =unserialize($mep_faq);
-            $mep_faq =!empty($mep_faq)?$mep_faq:[];
-
-            $new_data = [ 'mep_faq_title'=> sanitize_text_field($_POST['mep_faq_title']), 'mep_faq_content'=> wp_kses_post($_POST['mep_faq_content'])];
-            if( isset($post_id)){
-                array_push($mep_faq,$new_data);
-            }
+            $post_id = intval($_POST['mep_faq_postID']);
+            $mep_faq = get_post_meta($post_id, 'mep_event_faq', true);
+            $mep_faq = is_array($mep_faq) ? $mep_faq : [];
+            $new_data = [
+                'mep_faq_title' => sanitize_text_field($_POST['mep_faq_title']),
+                'mep_faq_content' => wp_kses_post($_POST['mep_faq_content'])
+            ];
+            array_push($mep_faq,$new_data);
             $result = update_post_meta($post_id, 'mep_event_faq', $mep_faq);
-            $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
-            print_r($mep_faq);
-                exit;
-
             if($result){
                 ob_start();
                 $resultMessage = __('Data Added Successfully', 'mptbm_plugin_pro');
@@ -189,16 +187,16 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function faq_delete_item(){
-            $post_id = $_POST['mep_faq_postID'];
-            $mep_faq = get_post_meta($post_id,'mep_faq',true);
-            $mep_faq =!empty($mep_faq)?$mep_faq:[];
+            $post_id = intval($_POST['mep_faq_postID']);
+            $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
+            $mep_faq =  is_array($mep_faq) ? $mep_faq : [];
             if( ! empty($mep_faq)){
                 if(isset($_POST['itemId'])){
                     unset($mep_faq[$_POST['itemId']]);
                     $mep_faq = array_values($mep_faq);
                 }
             }
-            $result = update_post_meta($post_id, 'mep_faq', $mep_faq);
+            $result = update_post_meta($post_id, 'mep_event_faq', $mep_faq);
             if($result){
                 ob_start();
                 $resultMessage = __('Data Deleted Successfully', 'mptbm_plugin_pro');

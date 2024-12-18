@@ -97,57 +97,7 @@
 		if ($speaker_status == 'yes') {
 			new AddMetaBox($events_speaker_list_meta_args);
 		}
-		$events_faq_boxs = array(
-			'page_nav' => __('Event FAQ', 'mage-eventpress'),
-			'priority' => 10,
-			'sections' => array(
-				'section_2' => array(
-					'title' => __('', 'mage-eventpress'),
-					'description' => __('', 'mage-eventpress'),
-					'options' => array(
-						array(
-							'id' => 'mep_event_faq',
-							'title' => __('F.A.Q Details', 'mage-eventpress'),
-							'details' => __('', 'mage-eventpress'),
-							'collapsible' => true,
-							'type' => 'repeatable',
-							'btn_text' => __('Add New F.A.Q', 'mage-eventpress'),
-							'title_field' => 'mep_faq_title',
-							'args' => '',
-							'fields' => array(
-								array(
-									'type' => 'text',
-									'default' => '',
-									'item_id' => 'mep_faq_title',
-									'name' => __('Title', 'mage-eventpress')
-								),
-								array(
-									'type' => 'textarea',
-									'default' => '',
-									'item_id' => 'mep_faq_content',
-									'name' => __('Content', 'mage-eventpress')
-								)
-							),
-						),
-					)
-				),
-			),
-		);
-		$events_faq_meta_args = array(
-			'meta_box_id' => 'mep_event_faq_meta_boxes',
-			'meta_box_title' => '<i class="far fa-question-circle"></i>' . __('F.A.Q', 'mage-eventpress'),
-			'screen' => array('mep_events'),
-			'context' => 'normal',
-			'priority' => 'high',
-			'callback_args' => array(),
-			'nav_position' => 'none',
-			'item_name' => "MagePeople",
-			'item_version' => "2.0",
-			'panels' => array(
-				'events_faq_meta_boxs' => $events_faq_boxs
-			)
-		);
-		new AddMetaBox($events_faq_meta_args);
+		
 		$events_dd_boxs = array(
 			'page_nav' => __('Event Timeline Details', 'mage-eventpress'),
 			'priority' => 10,

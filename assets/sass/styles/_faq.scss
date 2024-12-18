@@ -5,6 +5,9 @@
             .faq-header{
                 position: relative;
                 z-index: 0;
+                &.active{
+                    background-color: var(--mpev-light);
+                }
                 .faq-action{
                     position:absolute;
                     top: 50%;

@@ -102,6 +102,9 @@
   position: relative;
   z-index: 0;
 }
+#mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .faq-header.active {
+  background-color: var(--mpev-light);
+}
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .faq-header .faq-action {
   position: absolute;
   top: 50%;
@@ -125,6 +128,9 @@
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header {
   position: relative;
   z-index: 0;
+}
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header.active {
+  background-color: var(--mpev-light);
 }
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header .timeline-action {
   position: absolute;

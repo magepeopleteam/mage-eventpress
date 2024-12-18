@@ -5,6 +5,9 @@
             .timeline-header{
                 position: relative;
                 z-index: 0;
+                &.active{
+                    background-color: var(--mpev-light);
+                }
                 .timeline-action{
                     position:absolute;
                     top: 50%;

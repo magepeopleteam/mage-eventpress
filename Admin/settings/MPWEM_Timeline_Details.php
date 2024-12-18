@@ -40,7 +40,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         public function timeline_tab(){
             ?>
             <li data-target-tabs="#mep_event_timeline_meta">
-                <i class="far fa-question-circle"></i><?php esc_html_e('Timeline Details', 'mage-eventpress'); ?>
+                <i class="fas fa-newspaper"></i><?php esc_html_e('Timeline Details', 'mage-eventpress'); ?>
             </li>
             <?php
         }
@@ -123,7 +123,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                                     </div>
                                 </label>
                             </section>
-                            <section class="timeline-content mB" data-collapse="#timeline-content-<?php echo esc_attr($key); ?>">
+                            <section class="timeline-content" data-collapse="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <?php echo wpautop(wp_kses_post($value['mep_day_content'])); ?>
                             </section>
                         </div>

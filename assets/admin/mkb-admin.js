@@ -163,6 +163,10 @@
 	$(document).on('click', '[data-modal-target] .mep-modal-close', function (e) {
 		$(this).closest('[data-modal-target]').removeClass('open');
 	});
+	// ==========================collapse item============
+	$(document).on('click','[data-collapse-target]',function(){
+		$(this).toggleClass('active');
+	});
 // ================ F.A.Q. ===================================
 	$(document).on('click', '.mep-faq-item-new', function (e) {
 		$('#mep-faq-msg').html('');
@@ -180,6 +184,8 @@
 	}
 
 	$(document).on('click', '.mep-faq-item-edit', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 		$('#mep-faq-msg').html('');
 		$('.mep_faq_save_buttons').hide();
 		$('.mep_faq_update_buttons').show();

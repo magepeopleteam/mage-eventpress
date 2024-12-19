@@ -98,56 +98,6 @@
 			new AddMetaBox($events_speaker_list_meta_args);
 		}
 		
-		$events_dd_boxs = array(
-			'page_nav' => __('Event Timeline Details', 'mage-eventpress'),
-			'priority' => 10,
-			'sections' => array(
-				'section_2' => array(
-					'title' => __('', 'mage-eventpress'),
-					'description' => __('', 'mage-eventpress'),
-					'options' => array(
-						array(
-							'id' => 'mep_event_day',
-							'title' => __('Timeline Details', 'mage-eventpress'),
-							'details' => __('', 'mage-eventpress'),
-							'collapsible' => true,
-							'type' => 'repeatable',
-							'btn_text' => __('Add New Timeline', 'mage-eventpress'),
-							'title_field' => 'mep_day_title',
-							'fields' => array(
-								array(
-									'type' => 'text',
-									'default' => '',
-									'item_id' => 'mep_day_title',
-									'name' => __('Title', 'mage-eventpress')
-								),
-								array(
-									'type' => 'textarea',
-									'default' => '',
-									'item_id' => 'mep_day_content',
-									'name' => __('Content', 'mage-eventpress')
-								),
-							),
-						),
-					)
-				),
-			),
-		);
-		$events_dd_meta_args = array(
-			'meta_box_id' => 'mep_event_dd_meta_boxes',
-			'meta_box_title' => '<i class="fas fa-newspaper"></i>' . __('Timeline Details', 'mage-eventpress'),
-			'screen' => array('mep_events'),
-			'context' => 'normal',
-			'priority' => 'high',
-			'callback_args' => array(),
-			'nav_position' => 'none',
-			'item_name' => "MagePeople",
-			'item_version' => "2.0",
-			'panels' => array(
-				'events_dd_meta_boxs' => $events_dd_boxs
-			)
-		);
-		new AddMetaBox($events_dd_meta_args);
 		$list_thumb_meta_boxs = array(
 			'page_nav' => __('Event List Thumbnail', 'mage-eventpress-gq'),
 			'priority' => 10,

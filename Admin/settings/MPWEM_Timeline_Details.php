@@ -40,7 +40,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         public function timeline_tab(){
             ?>
             <li data-target-tabs="#mep_event_timeline_meta">
-                <i class="fas fa-newspaper"></i><?php esc_html_e('Timeline Details', 'mage-eventpress'); ?>
+                <i class="far fa-newspaper"></i><?php esc_html_e('Timeline Details', 'mage-eventpress'); ?>
             </li>
             <?php
         }
@@ -49,12 +49,12 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_timeline_meta">
                 
-                <h3><?php esc_html_e('timeline Settings', 'mage-eventpress'); ?></h3>
-                <p><?php esc_html_e('timeline Settings will be here.', 'mage-eventpress'); ?></p>
+                <h3><?php esc_html_e('Timeline Settings', 'mage-eventpress'); ?></h3>
+                <p><?php esc_html_e('Timeline Settings is an activity display system, designed to showcase event activities in a structured timeline format in event details page.', 'mage-eventpress'); ?></p>
                 
                 <section class="bg-light">
-                    <h2><?php esc_html_e('timeline Settings', 'mage-eventpress'); ?></h2>
-                    <span><?php esc_html_e('timeline Settings', 'mage-eventpress'); ?></span>
+                    <h2><?php esc_html_e('Timeline Settings', 'mage-eventpress'); ?></h2>
+                    <span><?php esc_html_e('Easily create and manage a timeline of activities.', 'mage-eventpress'); ?></span>
                 </section>
 
                 <section class="mep-timeline-section">
@@ -63,14 +63,14 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             $this->show_timeline_data($post_id);
                         ?>
                     </div>
-                    <button class="button mep-timeline-item-new" data-modal="mep-timeline-item-new" type="button"><?php _e('Add timeline','mage-eventpress'); ?></button>
+                    <button class="button mep-timeline-item-new" data-modal="mep-timeline-item-new" type="button"><?php _e('Add New','mage-eventpress'); ?></button>
                 </section>
                 <!-- sidebar collapse open -->
                 <div class="mep-modal-container" data-modal-target="mep-timeline-item-new">
                     <div class="mep-modal-content">
                         <span class="mep-modal-close"><i class="fas fa-times"></i></span>
                         <div class="title">
-                            <h3><?php _e('Add F.A.Q.','mage-eventpress'); ?></h3>
+                            <h3><?php _e('Add Timeline Info','mage-eventpress'); ?></h3>
                             <div id="mep-timeline-msg"></div>
                         </div>
                         <div class="content">

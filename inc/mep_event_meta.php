@@ -1334,6 +1334,8 @@ use Sabberworm\CSS\Value\Value;
 			update_post_meta($pid, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list);
 			update_post_meta($pid, 'mep_event_template', $mep_event_template);
 			update_post_meta($pid, 'mep_org_address', $mep_org_address);
+			update_post_meta($post_id, 'event_start_datetime', $event_start_datetime);
+			update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
 			update_post_meta($post_id, 'event_expire_datetime', $event_expire_datetime);
 			update_post_meta($pid, '_stock', $seat);
 			update_post_meta($pid, '_stock_msg', 'new');

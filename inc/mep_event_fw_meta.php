@@ -98,41 +98,6 @@
 			new AddMetaBox($events_speaker_list_meta_args);
 		}
 		
-		$list_thumb_meta_boxs = array(
-			'page_nav' => __('Event List Thumbnail', 'mage-eventpress-gq'),
-			'priority' => 10,
-			'sections' => array(
-				'section_2' => array(
-					'title' => __('', 'mage-eventpress'),
-					'description' => __('', 'mage-eventpress'),
-					'options' => array(
-						array(
-							'id' => 'mep_list_thumbnail',
-							'title' => __('Thumbmnail ', 'mage-eventpress'),
-							'details' => __('Please upload image for event list', 'mage-eventpress'),
-							'placeholder' => 'https://via.placeholder.com/1000x500',
-							'type' => 'media',
-						)
-					)
-				),
-			),
-		);
-		$list_thumb_meta_args = array(
-			'meta_box_id' => 'mep_event_list_thumbnail_meta_boxes',
-			'meta_box_title' => __('Event List Thumbnail', 'mage-eventpress'),
-			//'callback'       => '_meta_box_callback',
-			'screen' => array('mep_events'),
-			'context' => 'side', // 'normal', 'side', and 'advanced'
-			'priority' => 'low', // 'high', 'low'
-			'callback_args' => array(),
-			'nav_position' => 'none', // right, top, left, none
-			'item_name' => "MagePeople",
-			'item_version' => "2.0",
-			'panels' => array(
-				'speakers_meta_boxs' => $list_thumb_meta_boxs
-			),
-		);
-		new AddMetaBox($list_thumb_meta_args);
 		$email_body_meta_boxs = array(
 			'page_nav' => __('Event List Thumbnail', 'mage-eventpress-gq'),
 			'priority' => 10,

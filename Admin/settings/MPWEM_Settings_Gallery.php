@@ -25,13 +25,13 @@
 				?>
 				
 				<div class="mp_tab_item mpStyle" data-tab-item="#ttbm_settings_gallery">
-					<h2 ><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></h2>
+					<h3><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></h3>
 					<p ><?php MPWEM_Settings::des_p('gallery_settings_description'); ?></p>
 					<section class="bg-light">
 						<label class="label">
 							<div>
-								<p><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></p>
-								<span class="text"><?php esc_html_e('Here you can add images for tour.', 'mage-eventpress'); ?></span>
+								<h2><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></h2>
+								<span class="text"><?php esc_html_e('Here you can add images for event.', 'mage-eventpress'); ?></span>
 							</div>
 						</label>
                     </section>
@@ -57,6 +57,25 @@
 						</section>
 						
 					</div>
+					<section class="bg-light " style="margin-top: 20px;">
+						<label class="label">
+							<div>
+								<h2><?php esc_html_e('Event List Thumbnail', 'mage-eventpress'); ?></h2>
+								<span class="text"><?php esc_html_e('Here you can add thumbnail for event.', 'mage-eventpress'); ?></span>
+							</div>
+						</label>
+                    </section>
+					<section class="mpStyle">
+					
+							<h2><span><?php esc_html_e('Thumbnail', 'mage-eventpress'); ?></span></h2>
+							<?php echo esc_html__('Add thumbnail for your event','mage-eventpress'); ?>
+							<?php 
+							
+							$image_id = get_post_meta($tour_id,'mep_list_thumbnail',true);
+							do_action('mp_add_single_image','mep_list_thumbnail',$image_id);
+							?>
+						
+					</section>
 				</div>
 				<?php
 			}

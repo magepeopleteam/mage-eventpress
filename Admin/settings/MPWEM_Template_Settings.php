@@ -19,7 +19,19 @@ if(!class_exists('MPWEM_Template_Settings')){
             </li>
             <?php
         }
-        public function template_tab_content(){
+        public function template_tab_content($post_id){
+            $values = get_post_custom($post_id);
+			$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'theme-2');
+			if (array_key_exists('mep_event_template', $values)) {
+				$current_template = $values['mep_event_template'][0];
+			} else {
+				$current_template = '';
+			}
+			if ($current_template) {
+				$_current_template = $current_template;
+			} else {
+				$_current_template = $global_template;
+			}
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_template">
                 
@@ -30,7 +42,6 @@ if(!class_exists('MPWEM_Template_Settings')){
                     <h2><?php esc_html_e('Template Settings', 'mage-eventpress'); ?></h2>
                     <span><?php esc_html_e('Easily create and manage a timeline of activities.', 'mage-eventpress'); ?></span>
                 </section>
-
                 
                 <section>
                     <label class="label">
@@ -38,10 +49,9 @@ if(!class_exists('MPWEM_Template_Settings')){
                             <h2><span><?php esc_html_e('Template', 'mage-eventpress'); ?></span></h2>
                             <span><?php esc_html_e('Select a template to show your event', 'mage-eventpress'); ?></span>
                         </div>
-                        <select name="mep_rich_text_status">
-                            <option value="enable"> Template</option>
-                            <option value="disable"> Template</option>
-                        </select>
+                        <div class='sec'>
+                            <span><?php event_single_template_list($_current_template); ?></span>
+                        </div>
                     </label>
                 </section>
             </div>

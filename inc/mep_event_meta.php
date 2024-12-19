@@ -22,7 +22,7 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_all_info_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			add_meta_box('mp_event_all_info_in_tab', __('<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress') . get_the_title(get_the_id()), array($this, 'mp_event_all_in_tab'), 'mep_events', 'normal', 'high');
-			add_meta_box('mep-event-template', __('Template', 'mage-eventpress'), array($this, 'mep_event_template_meta_box_cb'), 'mep_events', 'side', 'low');
+			//add_meta_box('mep-event-template', __('Template bv', 'mage-eventpress'), array($this, 'mep_event_template_meta_box_cb'), 'mep_events', 'side', 'low');
 		}
 		public function mp_event_all_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');

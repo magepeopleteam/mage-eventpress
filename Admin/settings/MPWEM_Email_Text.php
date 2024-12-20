@@ -54,12 +54,12 @@ if(!class_exists('MPWEM_Email_Text')){
         public function email_text_tab_content($post_id){
             ?>
             <div class="mp_tab_item" data-tab-item="#mp_event_email_text">
-                <h3><?php echo esc_html_e('Email text settings', 'mage-eventpress'); ?></h3>
+                <h3><?php echo esc_html_e('Email Text settings', 'mage-eventpress'); ?></h3>
                 <p><?php esc_html_e('Email text settings','mage-eventpress') ?></p>
 
                 <section class="bg-light">
-                    <h2><?php esc_html_e('Email text template text','mage-eventpress') ?></h2>
-                    <span><?php esc_html_e('Configure email text','mage-eventpress') ?></span>
+                    <h2><?php esc_html_e('Email Template Preview','mage-eventpress') ?></h2>
+                    <span><?php esc_html_e('Configure email template text','mage-eventpress') ?></span>
                 </section>
                 <section>
                     <div class="mep-email-text">
@@ -95,7 +95,7 @@ if(!class_exists('MPWEM_Email_Text')){
                                 $settings = array(
                                     'textarea_name' => 'mep_event_cc_email_text',
                                     'media_buttons' => true,
-                                    'textarea_rows' => 10,
+                                    'textarea_rows' => 20,
                                 );
                                 wp_editor( $content, $editor_id, $settings );
                             ?>

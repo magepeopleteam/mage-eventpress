@@ -505,7 +505,6 @@ function save_email_text(){
 			mep_email_text_postID:postID.val(),
 		},
 		success: function(response) {
-			console.log(response);
 			$('#mep-email-text-msg').html(response.data.message);
 			$('.mep-email-text').html('');
 			$('.mep-email-text').append(response.data.html);

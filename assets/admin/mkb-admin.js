@@ -464,6 +464,59 @@ function delete_timeline_item(itemId){
 	});
 }	
 
+// ================ Email Text Settings ===================================
+$(document).on('click', '.mep-email-text-new', function (e) {
+	$('#mep-email-text-msg').html('');
+	var email_text = $(this).siblings('.mep-email-text').html().trim();
+	var editorId = 'mep_event_cc_email_text';
+	if (tinymce.get(editorId)) {
+		tinymce.get(editorId).setContent(email_text);
+	} else {
+		$('#' + editorId).val(email_text);
+	}
+});
+
+function close_sidebar_modal(e){
+	e.preventDefault();
+	e.stopPropagation();
+	$('.mep-modal-container').removeClass('open');
+}
+
+$(document).on('click', '#mep_email_text_save', function (e) {
+	e.preventDefault();
+	save_email_text();
+});
+
+$(document).on('click', '#mep_email_text_save_close', function (e) {
+	e.preventDefault();
+	save_email_text();
+	close_sidebar_modal(e);
+});
+
+function save_email_text(){
+	var content = tinyMCE.get('mep_event_cc_email_text').getContent();
+	var postID  = $('input[name="mep_post_id"]');	
+	$.ajax({
+		url: mp_ajax_url,
+		type: 'POST',
+		data: {
+			action: 'mep_email_text_save',
+			mep_email_text_content:content,
+			mep_email_text_postID:postID.val(),
+		},
+		success: function(response) {
+			console.log(response);
+			$('#mep-email-text-msg').html(response.data.message);
+			$('.mep-email-text').html('');
+			$('.mep-email-text').append(response.data.html);
+			
+		},
+		error: function(error) {
+			console.log('Error:', error);
+		}
+	});
+}
+
 })(jQuery);
 
 

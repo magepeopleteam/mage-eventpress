@@ -39,9 +39,13 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/status.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
-				//****************Taxi settings************************//
+				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Date_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Email_Text.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Faq_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Timeline_Details.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Template_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings_Gallery.php';
 			}
 			public function add_dummy_data() {

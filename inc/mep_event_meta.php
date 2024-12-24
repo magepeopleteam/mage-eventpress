@@ -22,7 +22,7 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_all_info_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			add_meta_box('mp_event_all_info_in_tab', __('<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress') . get_the_title(get_the_id()), array($this, 'mp_event_all_in_tab'), 'mep_events', 'normal', 'high');
-			add_meta_box('mep-event-template', __('Template', 'mage-eventpress'), array($this, 'mep_event_template_meta_box_cb'), 'mep_events', 'side', 'low');
+			//add_meta_box('mep-event-template', __('Template bv', 'mage-eventpress'), array($this, 'mep_event_template_meta_box_cb'), 'mep_events', 'side', 'low');
 		}
 		public function mp_event_all_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
@@ -60,9 +60,7 @@ use Sabberworm\CSS\Value\Value;
                         <li data-target-tabs="#mp_event_rich_text">
                             <i class="fas fa-search-location"></i><?php esc_html_e('SEO Content', 'mage-eventpress'); ?>
                         </li>
-                        <li data-target-tabs="#mp_event_email_text">
-                            <i class="far fa-envelope-open"></i><?php esc_html_e('Email Text', 'mage-eventpress'); ?>
-                        </li>
+                        
 						<?php do_action('mep_admin_event_details_before_tab_name_rich_text', $post_id); ?>
 						<?php do_action('mp_event_all_in_tab_menu'); ?>
 
@@ -151,31 +149,7 @@ use Sabberworm\CSS\Value\Value;
 							<?php do_action('mep_event_tab_after_tax_settings'); ?>
                         </div>
 					<?php } ?>
-                    <div class="mp_tab_item" data-tab-item="#mp_event_email_text">
-
-						<h3><?php echo esc_html($event_label); esc_html_e('Email text settings', 'mage-eventpress'); ?></h3>
-						<p><?php esc_html_e('Email text settings','mage-eventpress') ?></p>
-
-						<section class="bg-light">
-							<h2><?php esc_html_e('Email text template text','mage-eventpress') ?></h2>
-							<span><?php esc_html_e('Configure email text','mage-eventpress') ?></span>
-						</section>
-						<section>
-							<?php
-								$text = get_post_meta($post_id, 'mep_event_cc_email_text', true);
-								wp_editor(htmlspecialchars_decode($text), 'mep_event_cc_email_text', $settings = array('textarea_name' => 'mep_event_cc_email_text', 'editor_height' => 625,));
-							?>
-						</section>
-						<section>
-							<h2><?php _e('Usable Dynamic tags','mage-eventpress') ?></h2>
-							<p><?php _e('Attendee Name','mage-eventpress') ?><code>{name}</code></p>
-							<p><?php _e('Event Name','mage-eventpress') ?><code>{event}</code></p>
-							<p><?php _e('Ticket Type','mage-eventpress') ?><code>{ticket_type}</code></p>
-							<p><?php _e('Event Date','mage-eventpress') ?><code>{event_date}</code></p>
-							<p><?php _e('Start Time','mage-eventpress') ?><code>{event_time}</code></p>
-							<p><?php _e('Full DateTime','mage-eventpress') ?><code>{event_datetime}</code></p>
-						</section>
-                    </div>
+                   
 					<?php do_action('mp_event_all_in_tab_item', $post_id); ?>
 					<?php
 						do_action('mep_admin_event_details_end_of_tab_details', $post_id); ?>
@@ -1334,6 +1308,8 @@ use Sabberworm\CSS\Value\Value;
 			update_post_meta($pid, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list);
 			update_post_meta($pid, 'mep_event_template', $mep_event_template);
 			update_post_meta($pid, 'mep_org_address', $mep_org_address);
+			update_post_meta($post_id, 'event_start_datetime', $event_start_datetime);
+			update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
 			update_post_meta($post_id, 'event_expire_datetime', $event_expire_datetime);
 			update_post_meta($pid, '_stock', $seat);
 			update_post_meta($pid, '_stock_msg', 'new');

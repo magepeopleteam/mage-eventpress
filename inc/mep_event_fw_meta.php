@@ -82,7 +82,7 @@
 		);
 		$events_speaker_list_meta_args = array(
 			'meta_box_id' => 'mep_event_speakers_list_meta_boxes',
-			'meta_box_title' => '<span class="dashicons dashicons-businessman"></span>&nbsp;&nbsp;' . __('Speaker Information', 'mage-eventpress'),
+			'meta_box_title' => '<i class="dashicons dashicons-businessman"></i>&nbsp;&nbsp;' . __('Speaker Information', 'mage-eventpress'),
 			'screen' => array('mep_events'),
 			'context' => 'normal',
 			'priority' => 'high',

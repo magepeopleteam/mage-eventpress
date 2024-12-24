@@ -44,6 +44,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Date_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Email_Text.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Faq_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Speaker_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Timeline_Details.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Template_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings_Gallery.php';

@@ -520,6 +520,8 @@ function save_email_text(){
 $(document).on('click','.fa-icon-lists [data-icon]',function(e){
 	e.preventDefault();
 	var icon = $(this).data('icon');
+	$('.fa-icon-lists [data-icon]').removeClass('active');
+	$(this).addClass('active');
 	$("input[name='mep_event_speaker_icon']").val(icon);
 	$('.mep-icon-wrapper i').removeClass();
 	$('.mep-icon-wrapper i').addClass(icon);

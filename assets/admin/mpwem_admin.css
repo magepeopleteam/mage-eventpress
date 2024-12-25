@@ -162,19 +162,29 @@
 .fa-icon-lists {
   display: flex;
   justify-content: space-evenly;
-  gap: 10px;
+  gap: 0px;
   flex-wrap: wrap;
   border: 1px solid #ddd;
   padding: 10px;
   height: 75vh;
   overflow: auto;
+  background-color: var(--mpev-light);
 }
 .fa-icon-lists .icon {
   font-size: 20px;
+  border: 1px solid transparent;
+  padding: 10px;
 }
 .fa-icon-lists .icon:hover {
   cursor: pointer;
   color: var(--mpev-primary);
+  border: 1px solid var(--mpev-primary);
+  background-color: var(--mpev-white);
+}
+.fa-icon-lists .icon.active {
+  color: var(--mpev-primary);
+  border: 1px solid var(--mpev-primary);
+  background-color: var(--mpev-white);
 }
 
 .mep-speaker-wrapper {
@@ -187,6 +197,7 @@
 .mep-icon-preview {
   font-size: 30px;
   border: 1px solid #333;
+  color: var(--mpev-primary);
   width: 40px;
   text-align: center;
   margin: 10px 0;

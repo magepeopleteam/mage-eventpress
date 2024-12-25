@@ -3,22 +3,33 @@
 	* @Author 		engr.sumonazma@gmail.com
 	* Copyright: 	mage-people.com
 	*/
-	if (!defined('ABSPATH')) {
+	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-	$event_id = $event_id ?? 0;
-	$type = $type ?? '';
-	$hide_location = MP_Global_Function::get_settings('single_event_setting_sec', 'mep_event_hide_location_from_details', 'no');
-	if ($event_id > 0 && $hide_location == 'no') {
-		$location = MPWEM_Functions::get_location($event_id);
-		if (sizeof($location) > 0) {
+	$event_id      = $event_id ?? 0;
+	$type          = $type ?? '';
+	$hide_location = MP_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_location_from_details', 'no' );
+	if ( $event_id > 0 && $hide_location == 'no' ) {
+		$location = MPWEM_Functions::get_location( $event_id );
+		if ( sizeof( $location ) > 0 ) {
 			ob_start();
-			if ($type) {
-				echo esc_html($location[$type]);
+			if ( $type && $type == 'sidebar' ) {
+				?>
+                <div class="location_widgets">
+                    <i class="fa fa-map-marker"></i>
+                    <div>
+                        <h2><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></h2>
+                        <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
+                        <button><i class="fa fa-map-marker"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
+                    </div>
+                </div>
+				<?php
+			} elseif ( $type ) {
+				echo esc_html( $location[ $type ] );
 			} else {
 				?>
                 <div class="mpwem_location">
-                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo esc_html(implode(', ', $location)); ?>
+                    <i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo esc_html( implode( ', ', $location ) ); ?>
                 </div>
 				<?php
 			}

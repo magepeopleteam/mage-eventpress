@@ -88,9 +88,7 @@ if (post_password_required()) {
             }
             ?>
         </div>
-        <div class="mep-related-events-sec">
-            <?php do_action('after-single-events'); ?>
-        </div>
+	    <?php do_action('after-single-events'); ?>
     </div>
 <?php
 // 	echo $_the_event_id;

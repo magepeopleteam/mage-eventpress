@@ -121,4 +121,5 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <?php do_action('mep_event_faq', $event_id); ?>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

@@ -154,6 +154,22 @@
   font-size: 16px;
 }
 
+.fa-icon-lists {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  flex-wrap: wrap;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+.fa-icon-lists .icon {
+  font-size: 20px;
+}
+.fa-icon-lists .icon:hover {
+  cursor: pointer;
+  color: var(--mpev-primary);
+}
+
 .inside .sec {
   display: block;
   font-size: 15px;

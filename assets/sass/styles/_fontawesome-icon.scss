@@ -1,0 +1,15 @@
+.fa-icon-lists{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    padding: 10px;
+    .icon{
+        font-size:20px;
+        &:hover{
+            cursor: pointer;
+            color: var(--mpev-primary);
+        }
+    }
+}

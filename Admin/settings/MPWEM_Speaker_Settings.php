@@ -9,8 +9,12 @@ if( ! defined('ABSPATH') ) die;
 if( ! class_exists('MPWEM_Speaker_Settings')){
     class MPWEM_Speaker_Settings{
         public function __construct() {
-            add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'speaker_tab']);
-            add_action('mp_event_all_in_tab_item', [$this, 'speaker_tab_content']);
+            $speaker_status = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+            if( $speaker_status == 'yes'){
+                add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'speaker_tab']);
+                add_action('mp_event_all_in_tab_item', [$this, 'speaker_tab_content']);
+            }
+            
             //ajax icon loader
             add_action('wp_ajax_mep_pick_icon',[$this,'pick_icon']);
             add_action('wp_ajax_nopriv_mep_pick_icon',[$this,'pick_icon']);
@@ -25,9 +29,9 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         public function speaker_tab_content($post_id) {
             $speakers = get_post_meta($post_id, 'mep_speaker_title', true);
             $speaker_icon = get_post_meta($post_id, 'mep_event_speaker_icon', true);
-            $speakers = $speakers??'';
-            $speaker_icon = $speaker_icon??'';
-            $speaker_status = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+            $speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
+            $speaker_lists = unserialize($speaker_lists);
+            
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_speakers_list_meta_boxes">
                 
@@ -42,7 +46,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     <label class="label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
-                            <span><?php echo esc_html__('Give a title for speaker section','mage-eventpress'); ?></span>
+                            <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
                         </div>
                         <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speaker\'s'); ?>" value="<?php echo esc_attr($speakers); ?>">
                     </label>
@@ -51,57 +55,76 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     <label class="label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
-                            <span><?php echo esc_html__('Set an icon for speaker section','mage-eventpress'); ?></span>
+                            <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
                         </div>
                         <div class="mep-icon-wrapper">
                             <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
                             <input type="hidden" name="mep_event_speaker_icon"  value="<?php echo esc_attr($speaker_icon); ?>">
-                            <button class="button mep-pick-icon" type="button"><?php _e('Choose Icon','mage-eventpress') ?></button>
+                            <button class="button mep-pick-icon" data-modal="mep-pick-icon-new"  type="button"><?php _e('Choose Icon','mage-eventpress') ?></button>
                         </div>
                     </label>
                 </section>
-                <section class="mep-icon-display" style="display: none;">
-                    <?php 
-                        $FormFieldsGenerator = new FormFieldsGenerator();
-                        $icons = $FormFieldsGenerator->get_font_aws_array();
-                        if(!empty($icons)):
-                            foreach ($icons as $iconindex=>$iconTitle):
+                <!-- sidebar collapse open -->
+                <div class="mep-modal-container" data-modal-target="mep-pick-icon-new">
+                    <div class="mep-modal-content">
+                        <span class="mep-modal-close"><i class="fas fa-times"></i></span>
+                        <div class="title">
+                            <h3><?php _e('Add Icon','mage-eventpress'); ?></h3>
+                            <div id="mep-faq-msg"></div>
+                        </div>
+                        <div class="content">
+                            <div class="fa-icon-lists">
+                                <?php 
+                                    $FormFieldsGenerator = new FormFieldsGenerator();
+                                    $icons = $FormFieldsGenerator->get_font_aws_array();
+                                    if(!empty($icons)):
+                                        foreach ($icons as $iconindex=>$iconTitle):
+                                            ?>
+                                            <div class="icon" title="<?php echo esc_attr($iconTitle); ?>" data-icon="<?php echo esc_attr($iconindex); ?>"><i class="<?php echo esc_attr($iconindex); ?>"></i></div>
+                                            <?php
+                                        endforeach;
+                                    endif;
                                 ?>
-                                <li title="<?php echo esc_attr($iconTitle); ?>" iconData="<?php echo esc_attr($iconindex); ?>"><i class="<?php echo esc_attr($iconindex); ?>"></i></li>
-                                <?php
-                            endforeach;
-                        endif;
-                    ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section>
+                    <?php 
+                    $speaker_lists = [54,53,50];
+                    $speaker = [
+                            [
+                                'id'=>54,
+                                'title'=>'Title 1',
+                            ],
+                            [
+                                'id'=>53,
+                                'title'=>'Title 2',
+                            ],
+                            [
+                                'id'=>50,
+                                'title'=>'Title 3',
+                            ]
+                        ]; ?>
+                    <label class="label">
+                        <div>
+                            <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
+                            <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
+                        </div>
+                        <div class="mep-icon-wrapper">
+                            <select name="mep_event_speakers_list" id="" multiple>
+                                <?php foreach($speaker as  $value): ?>
+                                        <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </label>
                 </section>
-                <script>
-                    (function($){
-                        $(document).on('click','.mep-pick-icon',function(e){
-                            e.preventDefault();
-                            $('.mep-icon-display').slideToggle();
-                            $.ajax({
-                                url: mep_ajax.mep_ajaxurl,
-                                type: 'POST',
-                                data: {
-                                    action: 'mep_pick_icon',
-                                },
-                                success: function(response) {
-                                    // $('.mep-icon-display').html('');
-                                    // $('.mep-icon-display').html(response);
-                                    console.log('Success:', response);
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error:', error);
-                                }
-                            });
-                        });
-                    })(jQuery);
-                </script>
             </div>
             <?php
         }
-        public function pick_icon(){
-            
-        }
+
     }
     new MPWEM_Speaker_Settings();
 }

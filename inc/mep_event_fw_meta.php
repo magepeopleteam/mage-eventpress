@@ -95,7 +95,7 @@
 			)
 		);
 		if ($speaker_status == 'yes') {
-			new AddMetaBox($events_speaker_list_meta_args);
+			//new AddMetaBox($events_speaker_list_meta_args);
 		}
 		
 		$email_body_meta_boxs = array(

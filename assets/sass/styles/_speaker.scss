@@ -11,7 +11,7 @@
     flex-wrap: wrap;
     border: 1px solid #ddd;
     padding: 10px;
-    height: 75vh;
+    height: 70vh;
     overflow: auto;
     background-color: var(--mpev-light);
     .icon{
@@ -37,12 +37,20 @@
         width: 99%;
     }
 }
-
-.mep-icon-preview{
-    font-size: 30px;
-    border: 1px solid #333;
-    color: var(--mpev-primary);
-    width: 40px;
-    text-align: center;
-    margin:10px 0;
+.mep-icon-search-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mep-icon-preview{
+        font-size: 36px;
+        border: 1px solid #333;
+        color: var(--mpev-primary);
+        width: 60px;
+        text-align: center;
+        margin:10px 0;
+    }
+    .search-box{
+        margin-left: 50px;
+        padding: 10px;
+    }
 }

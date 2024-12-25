@@ -71,22 +71,17 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                         <span class="mep-modal-close"><i class="fas fa-times"></i></span>
                         <div class="title">
                             <h3><?php _e('Select Icon','mage-eventpress'); ?></h3>
-                            <div class="mep-icon-preview">
-                                <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
+                            <div class="mep-icon-search-box">
+                                <div class="mep-icon-preview">
+                                    <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
+                                </div>
+                                <input class="search-box" type="text" name="mep_icon_search_box" placeholder="search">
                             </div>
                         </div>
                         <div class="content">
                             <div class="fa-icon-lists">
                                 <?php 
-                                    $FormFieldsGenerator = new FormFieldsGenerator();
-                                    $icons = $FormFieldsGenerator->get_font_aws_array();
-                                    if(!empty($icons)):
-                                        foreach ($icons as $iconindex=>$iconTitle):
-                                            ?>
-                                            <div class="icon" title="<?php echo esc_attr($iconTitle); ?>" data-icon="<?php echo esc_attr($iconindex); ?>"><i class="<?php echo esc_attr($iconindex); ?>"></i></div>
-                                            <?php
-                                        endforeach;
-                                    endif;
+                                    $this->show_all_icons();
                                 ?>
                             </div>
                         </div>
@@ -134,6 +129,31 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 $speakers=[];
             }
             return $speakers;
+        }
+        public function get_icons(){
+            $FormFieldsGenerator = new FormFieldsGenerator();
+            $icons = $FormFieldsGenerator->get_font_aws_array();
+            return $icons;
+        }
+        public function show_all_icons() {
+            $icons = $this->get_icons();
+            if(!empty($icons)):
+                foreach ($icons as $iconindex=>$iconTitle):
+                    ?>
+                    <div class="icon" title="<?php echo esc_attr($iconTitle); ?>" data-icon="<?php echo esc_attr($iconindex); ?>"><i class="<?php echo esc_attr($iconindex); ?>"></i></div>
+                    <?php
+                endforeach;
+            endif;
+        }
+        public function pick_icon() {
+            $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
+            $all_icons = $this->get_icons();
+
+            $filtered_icons = array_filter($all_icons, function ($name, $class) use ($query) {
+                return stripos($name, $query) !== false; // Case-insensitive search
+            }, ARRAY_FILTER_USE_BOTH);
+            wp_send_json($filtered_icons);
+            die;
         }
         public function save_settings($post_id) {
             if (get_post_type($post_id) == 'mep_events') {

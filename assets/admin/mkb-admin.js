@@ -530,6 +530,30 @@ $(document).on('click','.fa-icon-lists [data-icon]',function(e){
 	$('.mep-icon-preview i').addClass(icon);
 });
 
+$(document).on('input',"input[name='mep_icon_search_box']",function(){
+	var searchQuery=$(this).val();
+	$.ajax({
+		url: ajaxurl, // WordPress's AJAX URL (for admin-ajax.php)
+		method: 'POST',
+		data: {
+			action: 'mep_pick_icon', // The action name to hook into
+			query: searchQuery, // The search query
+		},
+		success: function (response) {
+			// Clear the icon list container
+			$('.fa-icon-lists').html('');
+			console.log(response);
+			$.each(response, function (className, title) {
+				$('.fa-icon-lists').append(`
+					<div class="icon" title="${title}">
+						<i class="${className}"></i>
+					</div>
+				`);
+			});
+		},
+	});
+});
+
 })(jQuery);
 
 

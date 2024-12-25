@@ -91,4 +91,5 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
     <div class="mep-default-feature-cart-sec">
         <?php do_action('mep_add_to_cart', $event_id) ?>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

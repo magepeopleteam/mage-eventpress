@@ -43,6 +43,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Date_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings_Gallery.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Related_Settings.php';
 			}
 			public function add_dummy_data() {
 				//new MPTBM_Dummy_Import();

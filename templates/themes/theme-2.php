@@ -87,4 +87,5 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
             </div>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

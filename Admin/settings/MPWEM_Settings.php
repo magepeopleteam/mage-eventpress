@@ -23,7 +23,7 @@
 					'mep_gallery_images' => esc_html__('Please upload images for gallery', 'mage-eventpress'),
 					'gallery_settings_description' => esc_html__('Here gallery image can be added  to event so that guest can understand about this event.', 'mage-eventpress'),
 				);
-				$des = apply_filters('ttbm_filter_description_array', $des);
+				$des = apply_filters('mpwem_filter_description_array', $des);
 				return $des[$key];
 			}
 			public static function des_p($key) {

@@ -154,6 +154,11 @@
   font-size: 16px;
 }
 
+.mep-icon-wrapper i {
+  font-size: 30px;
+  margin: 0 10px;
+}
+
 .fa-icon-lists {
   display: flex;
   justify-content: space-evenly;
@@ -161,6 +166,8 @@
   flex-wrap: wrap;
   border: 1px solid #ddd;
   padding: 10px;
+  height: 75vh;
+  overflow: auto;
 }
 .fa-icon-lists .icon {
   font-size: 20px;
@@ -168,6 +175,21 @@
 .fa-icon-lists .icon:hover {
   cursor: pointer;
   color: var(--mpev-primary);
+}
+
+.mep-speaker-wrapper {
+  width: 200px;
+}
+.mep-speaker-wrapper select {
+  width: 99%;
+}
+
+.mep-icon-preview {
+  font-size: 30px;
+  border: 1px solid #333;
+  width: 40px;
+  text-align: center;
+  margin: 10px 0;
 }
 
 .inside .sec {

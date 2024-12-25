@@ -70,8 +70,10 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     <div class="mep-modal-content">
                         <span class="mep-modal-close"><i class="fas fa-times"></i></span>
                         <div class="title">
-                            <h3><?php _e('Add Icon','mage-eventpress'); ?></h3>
-                            <div id="mep-faq-msg"></div>
+                            <h3><?php _e('Select Icon','mage-eventpress'); ?></h3>
+                            <div class="mep-icon-preview">
+                                <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
+                            </div>
                         </div>
                         <div class="content">
                             <div class="fa-icon-lists">
@@ -97,7 +99,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
                         </div>
-                        <div class="mep-icon-wrapper">
+                        <div class="mep-speaker-wrapper">
                             <select name="mep_event_speakers_list[]" id="" multiple>
                                 <?php foreach($speakers as  $value): ?>
                                         <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>

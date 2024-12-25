@@ -1,0 +1,37 @@
+.mep-icon-wrapper{
+    i{
+        font-size:30px ;
+        margin:0 10px;
+    }
+}
+.fa-icon-lists{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 75vh;
+    overflow: auto;
+    .icon{
+        font-size:20px;
+        &:hover{
+            cursor: pointer;
+            color: var(--mpev-primary);
+        }
+    }
+}
+.mep-speaker-wrapper{
+    width: 200px;
+    select{
+        width: 99%;
+    }
+}
+
+.mep-icon-preview{
+    font-size: 30px;
+    border: 1px solid #333;
+    width: 40px;
+    text-align: center;
+    margin:10px 0;
+}

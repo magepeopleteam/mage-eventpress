@@ -523,6 +523,9 @@ $(document).on('click','.fa-icon-lists [data-icon]',function(e){
 	$("input[name='mep_event_speaker_icon']").val(icon);
 	$('.mep-icon-wrapper i').removeClass();
 	$('.mep-icon-wrapper i').addClass(icon);
+	
+	$('.mep-icon-preview i').removeClass();
+	$('.mep-icon-preview i').addClass(icon);
 });
 
 })(jQuery);

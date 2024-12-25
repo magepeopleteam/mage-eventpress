@@ -18,6 +18,8 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             //ajax icon loader
             add_action('wp_ajax_mep_pick_icon',[$this,'pick_icon']);
             add_action('wp_ajax_nopriv_mep_pick_icon',[$this,'pick_icon']);
+
+            add_action('mpwem_settings_save', array($this, 'save_settings'));
         }
         public function speaker_tab(){
             ?>
@@ -27,11 +29,10 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             <?php
         }
         public function speaker_tab_content($post_id) {
-            $speakers = get_post_meta($post_id, 'mep_speaker_title', true);
+            $speakers_label = get_post_meta($post_id, 'mep_speaker_title', true);
             $speaker_icon = get_post_meta($post_id, 'mep_event_speaker_icon', true);
             $speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
-            $speaker_lists = unserialize($speaker_lists);
-            
+            $speakers = $this->get_speakers();
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_speakers_list_meta_boxes">
                 
@@ -48,7 +49,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                             <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
                         </div>
-                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speaker\'s'); ?>" value="<?php echo esc_attr($speakers); ?>">
+                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speaker\'s'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
                     </label>
                 </section>
                 <section>
@@ -91,30 +92,14 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 </div>
 
                 <section>
-                    <?php 
-                    $speaker_lists = [54,53,50];
-                    $speaker = [
-                            [
-                                'id'=>54,
-                                'title'=>'Title 1',
-                            ],
-                            [
-                                'id'=>53,
-                                'title'=>'Title 2',
-                            ],
-                            [
-                                'id'=>50,
-                                'title'=>'Title 3',
-                            ]
-                        ]; ?>
                     <label class="label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
                         </div>
                         <div class="mep-icon-wrapper">
-                            <select name="mep_event_speakers_list" id="" multiple>
-                                <?php foreach($speaker as  $value): ?>
+                            <select name="mep_event_speakers_list[]" id="" multiple>
+                                <?php foreach($speakers as  $value): ?>
                                         <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -124,7 +109,41 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             </div>
             <?php
         }
-
+        public function get_speakers() {
+            $args = array(
+                'post_type'      => 'mep_event_speaker',
+                'posts_per_page' => -1,       
+                'post_status'    => 'publish',
+            );
+            $speakers = [];
+            $query = new WP_Query($args);
+            
+            if ($query->have_posts()) {
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    
+                    $speakers[] = [
+                        'id'    => get_the_ID(),    
+                        'title' => get_the_title(),
+                    ];
+                }
+                wp_reset_postdata();
+            } else {
+                $speakers=[];
+            }
+            return $speakers;
+        }
+        public function save_settings($post_id) {
+            if (get_post_type($post_id) == 'mep_events') {
+                $speaker_title = MP_Global_Function::get_submit_info('mep_speaker_title') ? $_POST['mep_speaker_title'] : 'faka';
+                $speaker_icon = MP_Global_Function::get_submit_info('mep_event_speaker_icon') ? $_POST['mep_event_speaker_icon'] : '';
+                $speakers = MP_Global_Function::get_submit_info('mep_event_speakers_list') ? $_POST['mep_event_speakers_list'] : [];
+                
+                update_post_meta($post_id, 'mep_speaker_title', $speaker_title);
+                update_post_meta($post_id, 'mep_event_speaker_icon', $speaker_icon);
+                update_post_meta($post_id, 'mep_event_speakers_list', $speakers);
+            }
+        }
     }
     new MPWEM_Speaker_Settings();
 }

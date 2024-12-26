@@ -190,6 +190,8 @@
 }
 .mep-speaker-wrapper select {
   width: 99%;
+  height: 80px;
+  overflow-y: scroll;
 }
 
 .mep-icon-search-box {

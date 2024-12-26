@@ -545,7 +545,7 @@ $(document).on('input',"input[name='mep_icon_search_box']",function(){
 			console.log(response);
 			$.each(response, function (className, title) {
 				$('.fa-icon-lists').append(`
-					<div class="icon" title="${title}">
+					<div class="icon" title="${title}" data-icon="${className}">
 						<i class="${className}"></i>
 					</div>
 				`);

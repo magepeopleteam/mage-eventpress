@@ -44,8 +44,6 @@
   cursor: pointer;
 }
 .mep-modal-container .mep-modal-content .content {
-  height: 100%;
-  overflow-y: scroll;
   padding: 0 40px;
   padding-bottom: 40px;
 }
@@ -160,20 +158,20 @@
 }
 
 .fa-icon-lists {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 0px;
-  flex-wrap: wrap;
   border: 1px solid #ddd;
-  padding: 10px;
-  height: 70vh;
-  overflow: auto;
+  padding: 5px;
+  height: 68vh;
+  overflow-y: scroll;
   background-color: var(--mpev-light);
 }
 .fa-icon-lists .icon {
+  float: left;
   font-size: 20px;
+  width: 32px;
+  height: 32px;
+  text-align: center;
   border: 1px solid transparent;
-  padding: 10px;
+  padding: 5px;
 }
 .fa-icon-lists .icon:hover {
   cursor: pointer;

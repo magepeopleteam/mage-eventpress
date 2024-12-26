@@ -148,12 +148,18 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         public function pick_icon() {
             $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
             $all_icons = $this->get_icons();
-
-            $filtered_icons = array_filter($all_icons, function ($name, $class) use ($query) {
-                return stripos($name, $query) !== false; // Case-insensitive search
-            }, ARRAY_FILTER_USE_BOTH);
-            wp_send_json($filtered_icons);
-            die;
+            if($query!=''){
+                $filtered_icons = array_filter($all_icons, function ($name, $class) use ($query) {
+                    return stripos($name, $query) !== false; // Case-insensitive search
+                }, ARRAY_FILTER_USE_BOTH);
+                wp_send_json($filtered_icons);
+                die;
+            }
+            else{
+                wp_send_json($all_icons);
+                die;
+            }
+            
         }
         public function save_settings($post_id) {
             if (get_post_type($post_id) == 'mep_events') {

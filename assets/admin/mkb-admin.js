@@ -115,6 +115,31 @@
  */
 
 (function($){
+	// ==============toggle switch radio button=================
+	$(document).on('click','.mpev-switch .slider',function(){
+		var checkbox = $(this).prev('input[type="checkbox"]');
+		var toggleValues = checkbox.data('toggle-values').split(',');
+		var currentValue = checkbox.val();
+		var nextValue = toggleValues[0];
+
+		if (currentValue === toggleValues[0]) {
+			nextValue = toggleValues[1];
+			$(".mep_hide_on_load").slideUp(200);
+		} else {
+			nextValue = toggleValues[0];
+			$(".mep_hide_on_load").slideDown(200);
+		}
+		checkbox.val(nextValue);
+		var target = checkbox.data('collapse-target');
+		var close = checkbox.data('close-target');
+		$(target).slideToggle();
+		$(close).slideToggle();
+	});
+	// ==========================collapse item============
+	$(document).on('click','[data-collapse-target]',function(){
+		$(this).toggleClass('active');
+	});
+	
 	//========================reset booking==================
 	$(document).on('click','#mep-reset-booking',function(){
 		$('#mep-reset-booking').click(function(e){
@@ -163,10 +188,7 @@
 	$(document).on('click', '[data-modal-target] .mep-modal-close', function (e) {
 		$(this).closest('[data-modal-target]').removeClass('open');
 	});
-	// ==========================collapse item============
-	$(document).on('click','[data-collapse-target]',function(){
-		$(this).toggleClass('active');
-	});
+	
 // ================ F.A.Q. ===================================
 	$(document).on('click', '.mep-faq-item-new', function (e) {
 		$('#mep-faq-msg').html('');

@@ -166,12 +166,10 @@ ul#mep_add_calender_links li a{
 	font-size: 14px;
 	letter-spacing: inherit;
 }
-.mep-events-wrapper a,
-.mep-related-events-sec a {
+.mep-events-wrapper a {
 	text-decoration: none;
 }
-.mep-events-wrapper ul,
-.mep-related-events-sec ul {
+.mep-events-wrapper ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -208,8 +206,6 @@ tr.ex-sec-title.mep_ticket_type_title th {
 span.tkt-qty,
 span.tkt-pric,
 label.mep-show,
-.mep-related-events-sec,
-.mep-related-events-sec div,
 .mep-events-wrapper table span.the-total {
 	display: block;
 }
@@ -233,7 +229,6 @@ div.bristol_center_box,
 div.bristol_center_box .mep-default-sidrbar-price-seat,
 .mep_spring_date .mep-default-sidrbar-social,
 .bristol .mep-default-sidrbar-social,
-div.mep-related-events-sec div.mep_event_list_sec,
 .mep-list-footer ul li,
 .mep-list-footer ul li i,
 .mep_event_list .mep_event_list_sec div.mep_event_list_item,
@@ -734,13 +729,6 @@ ul#mep_add_calender_links li a {
 	margin: 20px 0 0 0;
 }
 
-/*********Related Event*****************/
-.mep-related-events-sec .mep_event_grid_item:last-child {
-	margin: 0;
-}
-.mep-related-events-sec .mep_list_thumb img {
-	height: 186px;
-}
 .mep-ev-start-date {
 	position: absolute;
 	top: 10px;
@@ -1683,13 +1671,6 @@ div.item_hover_effect a:hover {
 		width: 100%;
 		margin: 0;
 		padding: 0;
-	}
-	div.mep-related-events-sec div.mep_event_list_sec {
-		display: block;
-	}
-	.mep_related_product_area .mep_event_list_sec .mep_event_grid_item {
-		margin: 0 0 15px 0;
-		width: 100%;
 	}
 	.mep_event_grid_item .mep_list_thumb img {
 		height: auto;

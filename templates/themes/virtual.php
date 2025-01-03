@@ -68,4 +68,5 @@ $_the_event_id = $event_id;
             <?php } ?>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

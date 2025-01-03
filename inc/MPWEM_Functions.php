@@ -83,6 +83,19 @@
 				$ticket_price = apply_filters('mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type);
 				return MP_Global_Function::get_wc_raw_price($event_id, $ticket_price);
 			}
+			public static function get_min_price($post_id) {
+				$price=0;
+				$ticket_types = MP_Global_Function::get_post_info($post_id, 'mep_event_ticket_type', []);
+				if (sizeof($ticket_types) > 0) {
+					foreach ($ticket_types as $ticket_type) {
+						$ticket_price = array_key_exists('option_price_t', $ticket_type) ? $ticket_type['option_price_t'] : 0;
+						$ticket_name = array_key_exists('option_name_t', $ticket_type) ? $ticket_type['option_name_t'] : '';
+						$ticket_price = MPWEM_Functions::get_ticket_price($post_id, $ticket_price, $ticket_name, $ticket_type);
+						$price=$price>0?min($price, $ticket_price):$ticket_price;
+					}
+				}
+				return $price;
+			}
 			//==========================//
 			public static function get_upcoming_date_time($event_id, $all_dates = [], $all_times = []) {
 				$date_time = '';

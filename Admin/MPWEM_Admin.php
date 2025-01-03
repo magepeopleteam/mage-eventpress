@@ -48,6 +48,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Timeline_Details.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Template_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings_Gallery.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Related_Settings.php';
 			}
 			public function add_dummy_data() {
 				//new MPTBM_Dummy_Import();

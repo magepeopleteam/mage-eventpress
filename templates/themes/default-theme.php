@@ -132,4 +132,5 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             ?>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

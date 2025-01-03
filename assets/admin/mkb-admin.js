@@ -115,6 +115,31 @@
  */
 
 (function($){
+	// ==============toggle switch radio button=================
+	$(document).on('click','.mpev-switch .slider',function(){
+		var checkbox = $(this).prev('input[type="checkbox"]');
+		var toggleValues = checkbox.data('toggle-values').split(',');
+		var currentValue = checkbox.val();
+		var nextValue = toggleValues[0];
+
+		if (currentValue === toggleValues[0]) {
+			nextValue = toggleValues[1];
+			$(".mep_hide_on_load").slideUp(200);
+		} else {
+			nextValue = toggleValues[0];
+			$(".mep_hide_on_load").slideDown(200);
+		}
+		checkbox.val(nextValue);
+		var target = checkbox.data('collapse-target');
+		var close = checkbox.data('close-target');
+		$(target).slideToggle();
+		$(close).slideToggle();
+	});
+	// ==========================collapse item============
+	$(document).on('click','[data-collapse-target]',function(){
+		$(this).toggleClass('active');
+	});
+	
 	//========================reset booking==================
 	$(document).on('click','#mep-reset-booking',function(){
 		$('#mep-reset-booking').click(function(e){
@@ -163,10 +188,7 @@
 	$(document).on('click', '[data-modal-target] .mep-modal-close', function (e) {
 		$(this).closest('[data-modal-target]').removeClass('open');
 	});
-	// ==========================collapse item============
-	$(document).on('click','[data-collapse-target]',function(){
-		$(this).toggleClass('active');
-	});
+	
 // ================ F.A.Q. ===================================
 	$(document).on('click', '.mep-faq-item-new', function (e) {
 		$('#mep-faq-msg').html('');
@@ -515,6 +537,44 @@ function save_email_text(){
 		}
 	});
 }
+
+// ================ Icon Select Settings ===============
+$(document).on('click','.fa-icon-lists [data-icon]',function(e){
+	e.preventDefault();
+	var icon = $(this).data('icon');
+	$('.fa-icon-lists [data-icon]').removeClass('active');
+	$(this).addClass('active');
+	$("input[name='mep_event_speaker_icon']").val(icon);
+	$('.mep-icon-wrapper i').removeClass();
+	$('.mep-icon-wrapper i').addClass(icon);
+	
+	$('.mep-icon-preview i').removeClass();
+	$('.mep-icon-preview i').addClass(icon);
+});
+
+$(document).on('input',"input[name='mep_icon_search_box']",function(){
+	var searchQuery=$(this).val();
+	$.ajax({
+		url: ajaxurl, // WordPress's AJAX URL (for admin-ajax.php)
+		method: 'POST',
+		data: {
+			action: 'mep_pick_icon', // The action name to hook into
+			query: searchQuery, // The search query
+		},
+		success: function (response) {
+			// Clear the icon list container
+			$('.fa-icon-lists').html('');
+			console.log(response);
+			$.each(response, function (className, title) {
+				$('.fa-icon-lists').append(`
+					<div class="icon" title="${title}" data-icon="${className}">
+						<i class="${className}"></i>
+					</div>
+				`);
+			});
+		},
+	});
+});
 
 })(jQuery);
 

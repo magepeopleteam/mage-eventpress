@@ -41,63 +41,7 @@
 		//new AddMetaBox( $speaker_meta_args );
 		/**
 		 * This Will create Meta Boxes For Events Custom Post Type.
-		 */
-		$events_speaker_list_meta_boxs = array(
-			'page_nav' => __('Event Additional Meta Boxes', 'mage-eventpress'),
-			'priority' => 10,
-			'sections' => array(
-				'section_2' => array(
-					'title' => __('', 'mage-eventpress'),
-					'description' => __('', 'mage-eventpress'),
-					'options' => array(
-						// Meta Boxes Will Here as Array
-						array(
-							'id' => 'mep_event_speaker_icon',
-							'title' => __('Speaker Icon', 'mage-eventpress'),
-							'details' => __('Please select the icon that will be used for the speaker icon.', 'mage-eventpress'),
-							'default' => 'fas fa-microphone',
-							'type' => 'icon',
-							'args' => 'FONTAWESOME_ARRAY',
-						),
-						array(
-							'id' => 'mep_speaker_title',
-							'title' => __('Section Label', 'mage-eventpress'),
-							'details' => __('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers." ', 'mage-eventpress'),
-							'type' => 'text',
-							'default' => "Speaker's",
-							'placeholder' => __("Speaker's", 'mage-eventpress'),
-						),
-						array(
-							'id' => 'mep_event_speakers_list',
-							'title' => __('Speakers', 'mage-eventpress'),
-							'details' => __('Please select Speakers, You can <a href="' . get_admin_url() . 'post-new.php?post_type=mep_event_speaker' . '">Add New Speakers From Here</a>', 'mage-eventpress'),
-							'multiple' => true,
-							'limit' => '3',
-							'type' => 'select2',
-							'args' => 'CPT_%mep_event_speaker%',
-						),
-					)
-				),
-			),
-		);
-		$events_speaker_list_meta_args = array(
-			'meta_box_id' => 'mep_event_speakers_list_meta_boxes',
-			'meta_box_title' => '<span class="dashicons dashicons-businessman"></span>&nbsp;&nbsp;' . __('Speaker Information', 'mage-eventpress'),
-			'screen' => array('mep_events'),
-			'context' => 'normal',
-			'priority' => 'high',
-			'callback_args' => array(),
-			'nav_position' => 'none',
-			'item_name' => "MagePeople",
-			'item_version' => "2.0",
-			'panels' => array(
-				'events_speaker_list_meta_boxs' => $events_speaker_list_meta_boxs
-			)
-		);
-		if ($speaker_status == 'yes') {
-			new AddMetaBox($events_speaker_list_meta_args);
-		}
-		
+		 */		
 		$email_body_meta_boxs = array(
 			'page_nav' => __('Event List Thumbnail', 'mage-eventpress-gq'),
 			'priority' => 10,

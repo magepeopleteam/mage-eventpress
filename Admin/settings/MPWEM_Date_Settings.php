@@ -280,7 +280,7 @@
 			public function date_time_tab($post_id) {
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				?>
-                <div class="mp_tab_item mpStyle" data-tab-item="#mp_event_time">
+                <div class="mp_tab_item" data-tab-item="#mp_event_time">
                     <h3><?php esc_html_e('Date & Time', 'mage-eventpress') ?></h3>
                     <p><?php esc_html_e('Configure Your Date and Time Settings Here', 'mage-eventpress') ?></p>
                     <section class="bg-light">
@@ -289,7 +289,7 @@
                     </section>
 					<?php $this->event_type_section($post_id); ?>
 					<?php $this->normal_particular_section($post_id); ?>
-                    <div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
+                    <div class="mpStyle <?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
 						<?php $this->date_time_section($post_id); ?>
 						<?php $this->off_days_section($post_id); ?>
 						<?php $this->time_settings_section($post_id); ?>

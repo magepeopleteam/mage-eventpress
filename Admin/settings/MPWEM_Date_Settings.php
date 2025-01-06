@@ -201,10 +201,8 @@
 			}
 			public function time_settings_section($post_id) {
 				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time', 'no');
-				$active_time = $display_time == 'no' ? '' : 'mActive';
-				$checked_time = $display_time == 'no' ? '' : 'checked';
 				?>
-                <div class="mpStyle">
+                
                     <section class="bg-light" style="margin-top: 20px;">
                         <h2><?php esc_html_e('Time Settings', 'mage-eventpress') ?></h2>
                         <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
@@ -215,10 +213,14 @@
                                 <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
                                 <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
                             </div>
-	                        <?php MP_Custom_Layout::switch_button('mep_disable_ticket_time', $checked_time); ?>
-                        </label>
+							<label class="mpev-switch">
+								<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
+								<span class="slider"></span>
+							</label>
+						</label>
                     </section>
-                    <section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
+				<div class="mpStyle">
+                    <section style="display:<?php echo esc_attr($display_time == 'yes' ? 'block' : 'none'); ?>" id="mep_disable_ticket_time">
                         <div class="mpTabs topTabs tabBorder">
                             <ul class="tabLists">
                                 <li data-tabs-target="#mep_ticket_times_global">
@@ -289,7 +291,7 @@
                     </section>
 					<?php $this->event_type_section($post_id); ?>
 					<?php $this->normal_particular_section($post_id); ?>
-                    <div class="mpStyle <?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
+                    <div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
 						<?php $this->date_time_section($post_id); ?>
 						<?php $this->off_days_section($post_id); ?>
 						<?php $this->time_settings_section($post_id); ?>

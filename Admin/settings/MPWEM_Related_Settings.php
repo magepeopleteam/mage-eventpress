@@ -8,7 +8,7 @@
 				add_action( 'woocommerce_product_options_related', [$this,'woocom_linked_products_data_custom_field'] );
 				add_action( 'woocommerce_process_product_meta', [$this,'woocom_linked_products_data_custom_field_save'] );
 				add_action( 'woocommerce_after_single_product', [$this,'related_single_products'] );
-				add_action( 'after-single-events', [$this,'related_events_after_single'] );
+				add_action( 'mpwem_related', [$this,'related_events_after_single'] );
 
 				add_action('mep_admin_event_details_before_tab_name_rich_text',[$this,'event_related_tab']);
 				add_action('mp_event_all_in_tab_item',[$this,'event_related_content']);
@@ -173,10 +173,8 @@
 				}
 		
 				$style = 'grid'; ?>
-				<div class="section-heading">
+				<div class="mep_event_list related-event-products">
 					<h2><?php echo $section_label; ?></h2>
-				</div>
-				<div class="mep_event_list">
 					<div class="mep_event_list_sec">
 						<?php
 							$event_expire_on 			= mep_get_option( 'mep_event_expire_on_datetime', 'general_setting_sec', 'event_start_datetime');

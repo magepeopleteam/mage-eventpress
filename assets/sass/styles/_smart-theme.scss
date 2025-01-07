@@ -106,6 +106,9 @@
 						border-radius: 5px;
 						
 					}
+					.groupContent{
+						border: 0;
+					}
 					.inputIncDec,.formControl{
 						border-radius: 0;
 						background-color:var(--mpev-base);
@@ -332,53 +335,95 @@
 				}
 			}
 		}
+		
 		.related_events{
-			margin: 20px 0;
-			
 			.related_items{
-				
-				margin-top: 20px;
-				display: flex;
-				justify-content: start;
-				align-items: start;
-				gap: 20px;
-				flex-wrap: wrap;
-				@media (min-width:540px) {
-					gap: 66px;
-				}
 				.item{
-					width: 100%;
-					background-color: #fff;
-					padding: 20PX;
-					border-radius: 10px;
-					box-shadow: 0 0 5px #ddd;
-					@media (min-width:540px) {
-						width: 30%;
-					}
-					img{
-						width: 100%;
-						height: 300px;
-						object-fit: cover;
-					}
 					.item-info{
-						display: flex;
-						justify-content: space-between;
-						margin-top: 20px;
-						.title{
-							text-align: left;
-							color: #999;
-							h2{
-								font-size: 25px;
-								color: #333;
-							}
-						}
 						.price{
 							text-align: right;
 							color: #999;
 							h2{
 								font-size: 30px;
 								color: var(--mpev-base-txt);
+								margin: 0;
 							}
+						}
+					}
+				}
+			}
+		}
+		
+	}
+	.related_events{
+		margin: 20px 0;
+		
+		.related_items{
+			
+			margin-top: 20px;
+			display: flex;
+			justify-content: start;
+			align-items: start;
+			gap: 20px;
+			flex-wrap: wrap;
+			@media (min-width:540px) {
+				gap: 50px;
+			}
+			.item{
+				width: 100%;
+				background-color: #fff;
+				padding: 20PX;
+				border-radius: 10px;
+				box-shadow: 0 0 5px #ddd;
+				@media (min-width:540px) {
+					width: 30%;
+				}
+				a{
+					position: relative;
+					display: block;
+				}
+				img{
+					width: 100%;
+					height: 300px;
+					object-fit: cover;
+				}
+				.mep-ev-start-date {
+					position: absolute;
+					top: 10px;
+					left: 10px;
+					line-height: 1.8;
+					background: var(--mpev-base);
+					text-align: center;
+					width: 50px;
+					color: var(--mpev-base-txt);
+					font-size: 18px;
+					box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
+					.mep-month {
+						background: var(--mpev-base-txt);
+						color: var(--mpev-base);
+						text-transform: uppercase;
+					  }
+				}
+				.item-info{
+					display: flex;
+					justify-content: space-between;
+					margin-top: 20px;
+					.title{
+						text-align: left;
+						color: #999;
+						h2{
+							font-size: 15px;
+							font-weight: bold;
+							color: #333;
+						}
+					}
+					.price{
+						text-align: right;
+						color: #999;
+						h2{
+							font-size: 30px;
+							color: var(--mpev-base);
+							margin: 0;
 						}
 					}
 				}

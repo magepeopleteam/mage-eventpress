@@ -1,0 +1,31 @@
+#mp_event_all_info_in_tab{
+    .mep-timeline-section{
+        .mep-timeline-items{
+            margin-bottom: 20px;
+            .timeline-header{
+                position: relative;
+                z-index: 0;
+                &.active{
+                    background-color: var(--mpev-light);
+                }
+                .timeline-action{
+                    position:absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                    z-index:1;
+                    span{
+                        padding: 5px 10px;
+                        background-color: var(--mpev-light);
+                        color: var(--mpev-primary);
+                        border-radius: 2px;
+                    }
+                }
+            }
+            .timeline-content{
+                display: none;
+            }
+        }
+        
+    }
+}

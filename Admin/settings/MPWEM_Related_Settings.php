@@ -63,7 +63,7 @@
 						<span><?php esc_html_e('Related Event', 'mage-eventpress'); ?></span>
 					</section>
 		
-					<section>
+					<!-- <section>
 						<label class="label">
 							<div>
 								<h2><span><?php esc_html_e('Column Number', 'mage-eventpress'); ?></span></h2>
@@ -72,13 +72,13 @@
 							<input type="number" max="4" min="2" name="event_list_column" class="event_list_column"
 								id="event_list_column" value="<?php echo $column_num; ?>" placeholder="ex: 3 ">
 						</label>
-					</section>
+					</section> -->
 		
 					<section>
 						<label class="label">
 							<div>
-								<h2><span><?php esc_html_e('Products Label', 'mage-eventpress'); ?></span></h2>
-								<span><?php esc_html_e('Products Label', 'mage-eventpress'); ?></span>
+								<h2><span><?php esc_html_e('Related Events Section Label', 'mage-eventpress'); ?></span></h2>
+								<span><?php esc_html_e('Add a title above the releated events', 'mage-eventpress'); ?></span>
 							</div>
 							<input type="text" max="4" min="2" name="related_section_label" class="related_section_label"
 								id="related_section_label" value="<?php echo $section_label; ?>" placeholder="Label text">
@@ -322,7 +322,7 @@
 								$now                        = current_time('Y-m-d H:i:s');
 								$args_search_qqq = array (
 										'post_type'            => array( 'mep_events' ),
-										'posts_per_page'       => $column_num,
+										'posts_per_page'       => -1,
 										'post__in'             => $product_ids,
 										'order'                => 'ASC',
 										'orderby'              => 'meta_value',
@@ -367,7 +367,10 @@
 													<?php echo mb_substr(get_the_title(), 0, 35) . '...'; ?>
 												</h2>
 											</a>
-											<?php echo mb_substr(get_the_title(), 0, 100) . '...'; ?>
+											<?php 
+											$locations = MPWEM_Functions::get_location( $values ); 
+											echo $locations['location'].','.$locations['city'].','.$locations['country'];
+											?>
 										</div>
 										<div class="price">
 											<p><?php echo $show_price_label   ?></p>

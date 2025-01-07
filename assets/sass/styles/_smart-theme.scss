@@ -36,6 +36,13 @@
 				.iconIndicator{
 					color: var(--mpev-base);
 				}
+				.sliderShowcase.right{
+					justify-content: start;
+					gap:10px;
+				}
+				.iconIndicator{
+					color: var(--mpev-base);
+				}
 			}
 		}
 		.mpwem_content_area{
@@ -72,8 +79,9 @@
 							
 						}
 						.inputIncDec{
-							border-radius: 5px;
+							border-radius: 0;
 							background-color:var(--mpev-base);
+							box-shadow: 0 0 0;
 						}
 						.decQty{
 							background-color: red;
@@ -83,6 +91,30 @@
 					}
 					._divider{
 						margin: 25px 0;
+					}
+				}
+				.mpwem_ex_service {
+					h4{
+						margin-bottom: var(--dMP);
+					}
+					[class*="_dLayout"]{
+						border: 2px solid var(--mpev-base-txt);
+					}
+					.incQty{
+						background-color: var(--mpev-base-txt);
+						color: var(--mpev-base);
+						border-radius: 5px;
+						
+					}
+					.inputIncDec,.formControl{
+						border-radius: 0;
+						background-color:var(--mpev-base);
+						box-shadow: 0 0 0;
+					}
+					.decQty{
+						background-color: red;
+						color: var(--mpev-base);
+						border-radius: 5px;
 					}
 				}
 			}
@@ -120,11 +152,11 @@
 					justify-content: start;
 					align-items: start;
 					gap: 20px;
-					padding: 30px;
+					padding: 15px;
 					border-bottom: 1px solid #ddd;
 					i{
 						font-size: 30px;
-						padding: 20px;
+						padding: 15px;
 						background-color: var(--mpev-base);
 						color: var(--mpev-base-txt);
 						border-radius: 10px;
@@ -137,10 +169,11 @@
 					p{
 						font-size: 16px;
 						margin-bottom: 5px;
+						letter-spacing: .1em;
 					}
 					button{
 						background-color: #fff;
-						padding:5px 10px;
+						padding:15px;
 						border: 1px solid var(--mpev-base-txt);
 						margin-top: 20px;
 						color: var(--mpev-base-txt);
@@ -148,14 +181,23 @@
 							font-size: 16px;
 							padding: 0;
 							background: none;
-							margin: 10px;
+							margin-right:15px;
 						}
 					}
 				}
 				.share_widgets{
 					text-align: center;
 					padding: 30px;
-					
+					.mep-social-share{
+						margin-top: 25px;
+						li{
+							margin: 7px;
+							a{
+								background-color: var(--mpev-base-txt);
+								color: #fff;
+							}
+						}
+					}
 					.icons{
 						margin-top: 20px;
 						i{
@@ -216,6 +258,7 @@
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
+				align-items: start;
 				flex-wrap: wrap;
 				gap:10px;
 				@media (min-width:540px) {
@@ -241,6 +284,8 @@
 					}
 					.content{
 						display: none;
+						text-align: left;
+						padding: 20px;
 					}
 				}
 			}

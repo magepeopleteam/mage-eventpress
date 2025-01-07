@@ -16,11 +16,11 @@
 			if ( $type && $type == 'sidebar' ) {
 				?>
                 <div class="location_widgets">
-                    <i class="fa fa-map-marker"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                     <div>
                         <h2><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></h2>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
-                        <button><i class="fa fa-map-marker"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
+                        <button><i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
                     </div>
                 </div>
 				<?php

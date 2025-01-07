@@ -17,6 +17,16 @@
             <div>
                 <h2><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?></h2>
 				<?php if ( $date_type == 'no' || $date_type == 'yes' ) {
+                    foreach ( $all_dates as $key => $dates ) {
+                        $start_date = $dates['time'];
+                        $start_date_format=MP_Global_Function::check_time_exit_date( $start_date )?'full':'date';
+                        $end_date = $dates['end'];
+	                    $end_date_format=MP_Global_Function::check_time_exit_date( $end_date )?'full':'date';
+	                    if ( $key > 0 ) { ?>
+                            <div class="_divider_xs"></div>
+	                    <?php } ?>
+                        <p><?php echo esc_html( MP_Global_Function::date_format( $start_date, $start_date_format).' - '.MP_Global_Function::date_format( $end_date, $end_date_format) ); ?></p><?php
+                    }
 				} else {
 					foreach ( $all_dates as $key => $dates ) {
 						$all_times = MPWEM_Functions::get_times( $event_id, $all_dates, $dates );

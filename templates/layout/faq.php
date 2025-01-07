@@ -15,13 +15,13 @@
             <h2><?php esc_html_e( 'Frequently asked questions', 'mage-eventpress' ); ?></h2>
 
             <div class="faq_items">
-	            <?php foreach ($faqs as $faq){ ?>
+	            <?php foreach ($faqs as $key => $faq){ ?>
                 <div class="item">
-                    <div class="title">
+                    <div class="title" data-collapse-target="faq-content-<?php echo esc_attr($key); ?>">
                         <h2><?php echo esc_html($faq['mep_faq_title']); ?></h2>
                         <i class="fa fa-chevron-right"></i>
                     </div>
-                    <div class="content">
+                    <div class="content" data-collapse="faq-content-<?php echo esc_attr($key); ?>">
 	                    <?php echo mep_esc_html(html_entity_decode(nl2br($faq['mep_faq_content']))); ?>
                     </div>
                 </div>

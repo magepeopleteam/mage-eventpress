@@ -163,6 +163,13 @@
 				$recurring_datepicker_bg_color = mep_get_option('mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30');
 				$recurring_datepicker_text_color = mep_get_option('mep_re_datepicker_text_color', 'style_setting_sec', '#fff');
 				
+				// smart theme color settings.
+				$event_template = get_post_meta(get_the_ID(),'mep_event_template',true);
+				if($event_template=='smart.php'){
+					$base_color = mep_get_option('mep_base_color', 'style_setting_sec', '#F1F5FF');
+					$base_text_color = mep_get_option('mep_base_text_color', 'style_setting_sec', '#6046FF');
+				}
+
 				$inline_css = "
 					:root{
 						--mpev-base: {$base_color};

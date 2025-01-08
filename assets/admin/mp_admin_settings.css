@@ -113,12 +113,13 @@
 		margin: 0;
 		color: var(--mpev-primary);
 	}
+	.mep_settings_icon{display: flex;justify-content: start;align-items: center;gap:10px;}
 	.mp_settings_panel select {min-width: 150px;}
 	.mp_settings_panel table {width: 100%;overflow: hidden; border: 1px solid #DDD;}
 	.mp_settings_panel table,
 	.mp_settings_panel table td,
 	.mp_settings_panel table th {border-collapse: collapse;}
-	.mp_settings_panel table th {width:80%;padding: 10px 10px;font-size: 16px;text-align: left;font-weight: normal;vertical-align: middle;color: var(--mpev-dark);}
+	.mp_settings_panel table th {width:55%;padding: 10px 10px;font-size: 16px;text-align: left;font-weight: normal;vertical-align: middle;color: var(--mpev-dark);}
 	.mp_settings_panel table td {padding: 5px 10px;font-size: 14px;}
 	.mp_settings_panel table tr:nth-child(even) {background-color: #F2F2F2;}
 	.mp_settings_panel p.submit {text-align: right; margin: 20px 0 0 0; padding: 0;}

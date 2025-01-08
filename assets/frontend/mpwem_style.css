@@ -5198,18 +5198,16 @@ Vanilla theme css by ariful
     text-align: center;
     margin: 40px auto;
     padding: 10px;
+    border-radius: 10px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .mep_smart_theme .faq_area {
-    padding: 40px 40px 80px 40px;
-    margin: 80px auto;
+    padding: 40px;
+    margin: 40px auto;
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .faq_area h2 {
-    margin: 40px;
-  }
   .mep_smart_theme .faq_area .desc {
     width: auto;
     color: #666;
@@ -5236,7 +5234,7 @@ Vanilla theme css by ariful
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .mep_smart_theme .faq_area .faq_items {
-    margin-top: 80px;
+    margin-top: 40px;
     flex-direction: row;
   }
 }

@@ -9,10 +9,17 @@
 				add_action( 'woocommerce_process_product_meta', [$this,'woocom_linked_products_data_custom_field_save'] );
 				add_action( 'woocommerce_after_single_product', [$this,'related_single_products'] );
 				add_action( 'after-single-events', [$this,'related_events'] );
+				add_action('wp_enqueue_scripts', [$this,'enqueue_slick_carousel']);
 
 				add_action('mep_admin_event_details_before_tab_name_rich_text',[$this,'event_related_tab']);
 				add_action('mp_event_all_in_tab_item',[$this,'event_related_content']);
 				add_action( 'save_post', [$this,'mep_event_related_products_data_save'] );
+			}
+
+			public function enqueue_slick_carousel() {
+				wp_enqueue_style('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css', array(), '1.8.1');
+				wp_enqueue_style('slick-carousel-theme', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css', array('slick-carousel'), '1.8.1'); 
+				wp_enqueue_script('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array('jquery'), '1.8.1', false);
 			}
 
 			public function event_related_tab() {
@@ -314,9 +321,15 @@
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
 				?>
 				<div class="<?php echo $smart_theme=='smart.php'?'mep_smart_theme':''; ?>">
-					<div class="related_events">
-						<h2><?php echo $section_label; ?></h2>
-						<div class="related_items">
+					<div class="related-events">
+						<div class="related-events-header mpStyle">
+							<h2><?php echo $section_label; ?></h2>
+							<div class="related-events-navigation">
+								<button class="mep-ev-prev"><i class="fas fa-chevron-left"></i></button>
+								<button class="mep-ev-next"><i class="fas fa-chevron-right"></i></button>
+							</div>
+						</div>
+						<div class="related-events-items">
 							<?php
 								$event_expire_on 			= mep_get_option( 'mep_event_expire_on_datetime', 'general_setting_sec', 'event_start_datetime');
 								$now                        = current_time('Y-m-d H:i:s');
@@ -368,8 +381,15 @@
 												</h2>
 											</a>
 											<?php 
-											$locations = MPWEM_Functions::get_location( $values ); 
-											echo $locations['location'].','.$locations['city'].','.$locations['country'];
+											$locations = MPWEM_Functions::get_location($values);
+											$data=[];
+											if (!empty($locations)) {
+												foreach ($locations as $location) {
+													$data[] = $location;
+												}
+												echo implode(', ', $data);
+											}
+											
 											?>
 										</div>
 										<div class="price">
@@ -389,6 +409,46 @@
 						</div>
 					</div>
 				</div>
+				
+				<script>
+					
+					(function($) {
+						$(document).ready(function() {
+							$('.related-events-items').slick({
+								dots: true,
+								arrows: true,
+								prevArrow:'.mep-ev-prev',
+								nextArrow:'.mep-ev-next',
+								infinite: true,
+								autoplay: true,
+								autoplaySpeed: 2000,
+								centerMode: true,
+								centerPadding: '10px',
+								slidesToShow: 3,
+								slidesToScroll: 1,
+								responsive: [
+									{
+									breakpoint: 1024,
+									settings: {
+										slidesToShow:2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									}
+									},
+									{
+									breakpoint: 480,
+									settings: {
+										slidesToShow: 1,
+										slidesToScroll: 1
+									}
+									}
+								]
+							});
+						});
+					})(jQuery);
+
+				</script>
 				<?php
 			}
 			public function related_single_products() {

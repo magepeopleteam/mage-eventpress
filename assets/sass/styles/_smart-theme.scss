@@ -336,8 +336,8 @@
 			}
 		}
 		
-		.related_events{
-			.related_items{
+		.related-events{
+			.related-events-items{
 				.item{
 					.item-info{
 						.price{
@@ -355,17 +355,36 @@
 		}
 		
 	}
-	.related_events{
+	.related-events{
 		margin: 20px 0;
-		
-		.related_items{
-			
+		position: relative;
+		.related-events-header{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			h2{
+				margin: 0;
+				color: var(--mpev-base-txt);
+			}
+			.related-events-navigation{
+				display: flex;
+				flex-direction: row;
+				gap: 5px;
+				button{
+					border-radius: 5px;
+					background-color: var(--mpev-base);
+					color: var(--mpev-base-txt);
+				}
+			}
+		}
+		.related-events-items{
 			margin-top: 20px;
 			display: flex;
 			justify-content: start;
-			align-items: start;
+			align-items: stretch;
 			gap: 20px;
 			flex-wrap: wrap;
+			
 			@media (min-width:540px) {
 				gap: 50px;
 			}
@@ -430,6 +449,21 @@
 			}
 		}
 	}
+	.slick-slide {
+		margin: 10px 10px; /* Adjust this value for your desired gap */
+		padding: 0 10px;
+		box-sizing: border-box; 
+		display: flex;
+		align-items: stretch;
+	}
+	.slick-slide > div {
+		flex: 1;
+		min-height: 100px; /* Set a minimum height */
+		display: flex;
+		justify-content: center; /* Optional: Center content vertically */
+		align-items: center; /* Optional: Center content vertically */
+	}
+
 /*****************************/
 	div.mpwem_details_content,
 	div.mpwem_details_content p{line-height: 1.7 !important;color:#8D8D8D;font-size:16px !important;}

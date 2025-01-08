@@ -5322,34 +5322,49 @@ Vanilla theme css by ariful
     color: #333;
     margin: 10px 0;
   }
-  .mep_smart_theme .related_events .related_items .item .item-info .price {
+  .mep_smart_theme .related-events .related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
   }
-  .mep_smart_theme .related_events .related_items .item .item-info .price h2 {
+  .mep_smart_theme .related-events .related-events-items .item .item-info .price h2 {
     font-size: 30px;
     color: var(--mpev-base-txt);
     margin: 0;
   }
-  .related_events {
+  .related-events {
     margin: 20px 0;
+    position: relative;
   }
-  .related_events .related_items {
+  .related-events .related-events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .related-events .related-events-header h2 {
+    margin: 0;
+    color: var(--mpev-base-txt);
+  }
+  .related-events .related-events-header .related-events-navigation button {
+    border-radius: 5px;
+    background-color: var(--mpev-base);
+    color: var(--mpev-base-txt);
+  }
+  .related-events .related-events-items {
     margin-top: 20px;
     display: flex;
     justify-content: start;
-    align-items: start;
+    align-items: stretch;
     gap: 20px;
     flex-wrap: wrap;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .related_events .related_items {
+  .related-events .related-events-items {
     gap: 50px;
   }
 }
 @media only screen and (min-width: 10px) {
-  .related_events .related_items .item {
+  .related-events .related-events-items .item {
     width: 100%;
     background-color: #fff;
     padding: 20PX;
@@ -5358,21 +5373,21 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .related_events .related_items .item {
+  .related-events .related-events-items .item {
     width: 30%;
   }
 }
 @media only screen and (min-width: 10px) {
-  .related_events .related_items .item a {
+  .related-events .related-events-items .item a {
     position: relative;
     display: block;
   }
-  .related_events .related_items .item img {
+  .related-events .related-events-items .item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
   }
-  .related_events .related_items .item .mep-ev-start-date {
+  .related-events .related-events-items .item .mep-ev-start-date {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -5384,33 +5399,47 @@ Vanilla theme css by ariful
     font-size: 18px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
   }
-  .related_events .related_items .item .mep-ev-start-date .mep-month {
+  .related-events .related-events-items .item .mep-ev-start-date .mep-month {
     background: var(--mpev-base-txt);
     color: var(--mpev-base);
     text-transform: uppercase;
   }
-  .related_events .related_items .item .item-info {
+  .related-events .related-events-items .item .item-info {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
   }
-  .related_events .related_items .item .item-info .title {
+  .related-events .related-events-items .item .item-info .title {
     text-align: left;
     color: #999;
   }
-  .related_events .related_items .item .item-info .title h2 {
+  .related-events .related-events-items .item .item-info .title h2 {
     font-size: 15px;
     font-weight: bold;
     color: #333;
   }
-  .related_events .related_items .item .item-info .price {
+  .related-events .related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
   }
-  .related_events .related_items .item .item-info .price h2 {
+  .related-events .related-events-items .item .item-info .price h2 {
     font-size: 30px;
     color: var(--mpev-base);
     margin: 0;
+  }
+  .slick-slide {
+    margin: 10px 10px; /* Adjust this value for your desired gap */
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: stretch;
+  }
+  .slick-slide > div {
+    flex: 1;
+    min-height: 100px; /* Set a minimum height */
+    display: flex;
+    justify-content: center; /* Optional: Center content vertically */
+    align-items: center; /* Optional: Center content vertically */
   }
   div.mpwem_details_content,
   div.mpwem_details_content p {

@@ -322,7 +322,7 @@
 				?>
 				<div class="<?php echo $smart_theme=='smart.php'?'mep_smart_theme':''; ?>">
 					<div class="related-events">
-						<div class="related-events-header">
+						<div class="related-events-header mpStyle">
 							<h2><?php echo $section_label; ?></h2>
 							<div class="related-events-navigation">
 								<button class="mep-ev-prev"><i class="fas fa-chevron-left"></i></button>
@@ -382,15 +382,14 @@
 											</a>
 											<?php 
 											$locations = MPWEM_Functions::get_location($values);
-
+											$data=[];
 											if (!empty($locations)) {
 												foreach ($locations as $location) {
-													if (is_array($location)) {
-														echo implode(', ', $location); // Add a line break for better display
-													}
+													$data[] = $location;
 												}
+												echo implode(', ', $data);
 											}
-											//echo $locations['location'].','.$locations['city'].','.$locations['country'];
+											
 											?>
 										</div>
 										<div class="price">

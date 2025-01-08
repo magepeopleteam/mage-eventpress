@@ -367,6 +367,9 @@
 				color: var(--mpev-base-txt);
 			}
 			.related-events-navigation{
+				display: flex;
+				flex-direction: row;
+				gap: 5px;
 				button{
 					border-radius: 5px;
 					background-color: var(--mpev-base);

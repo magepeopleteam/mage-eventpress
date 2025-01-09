@@ -604,7 +604,7 @@ button.single_add_to_cart_button[disabled]:hover {
 .mep-default-sidrbar-meta i,
 .df-ico i,
 ul.mep-social-share a {
-	color: #FFF;
+	color: var(--mpev-base-txt);
 	font-size: 20px;
 	width: 40px;
 	height: 40px;
@@ -612,7 +612,7 @@ ul.mep-social-share a {
 .mep-default-sidrbar-address ul li i,
 .mep-default-sidrbar-events-schedule ul li i,
 .mep-list-footer ul li i {
-	color: #FFF;
+	color:  var(--mpev-base-txt);
 	width: 25px;
 	height: 25px;
 	font-size: 14px;
@@ -623,7 +623,7 @@ ul.mep-social-share a {
 .df-ico i,
 .mep-default-sidrbar-events-schedule ul li i,
 .mep-social-share a {
-	background: #FFBE30;
+	background: var(--mpev-base);
 }
 /********schedule ***********/
 .mep-default-sidrbar-events-schedule {
@@ -2558,6 +2558,10 @@ td.user-innnf {
 }
 table.table.table-bordered.mep_event_add_cart_table {
 	background: var(--mpev-royal-primary-bg);
+}
+
+.mep_events-template-default table.table.table-bordered.mep_event_add_cart_table {
+	background: hsla(0,0%,50.2%,.0705882353);;
 }
 /*************************************************************
 New Winter list style css added by ariful

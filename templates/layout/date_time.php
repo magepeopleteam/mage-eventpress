@@ -13,7 +13,7 @@
 		$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		?>
         <div class="date_widgets">
-            <i class="fa fa-calendar"></i>
+            <i class="far fa-calendar"></i>
             <div>
                 <h2><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?></h2>
 				<?php if ( $date_type == 'no' || $date_type == 'yes' ) {
@@ -53,7 +53,9 @@
                         </div>
 					<?php } ?>
 				<?php } ?>
+
 				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
+
             </div>
         </div>
 		<?php

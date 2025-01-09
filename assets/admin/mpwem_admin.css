@@ -821,6 +821,7 @@ iframe#gmap_canvas {
   margin-bottom: 10px;
   width: auto;
   line-height: 18px;
+  margin: 10px;
 }
 
 .mp_event_all_meta_in_tab {
@@ -1467,8 +1468,8 @@ table.wc_status_table.widefat {
 
 .mep_global_settings_icon_preview i {
   border: 1px solid #D3D3D3;
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   border-radius: 5px;
   text-align: center;
   display: grid;
@@ -1717,6 +1718,23 @@ h3.mep_virtual_sec_title {
   border: 1px solid var(--mpev-gray);
   padding: 20px;
   margin-top: -1px;
+}
+
+#mep_rich_text_table tr td:first-child {
+  width: 50%;
+  font-size: 16px;
+}
+
+#mep_rich_text_table tr td:last-child {
+  width: 60%;
+  font-size: 16px;
+}
+
+#mep_rich_text_table tr td select.mp_formControl {
+  width: 300px;
+}
+#mep_rich_text_table tr td input.mp_formControl {
+  width: 300px;
 }
 
 #mp_event_all_info_in_tab .mp_tab_details section h2 {

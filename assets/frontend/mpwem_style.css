@@ -134,6 +134,8 @@ ul#mep_add_calender_links li a {
 	border-radius: 6px !important;
 }
 /*****************************************************/
+div.location_widgets #gmap_canvas{min-height:80vh !important;}
+/*****************************************************/
 #mep_event_date_sch li a {
 	display: -webkit-flex;
 	display: flex;

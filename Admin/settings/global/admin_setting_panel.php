@@ -954,19 +954,33 @@
 					'style_setting_sec' => apply_filters('mep_settings_styling_arr', array(
 							// Base Background & Text Color
 							array(
-								'name' => 'mep_base_color',
+								'name' => 'mpev_primary_color',
 								'label' => __('Primary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
 								'type' => 'color',
-								'default' => ''
+								'default' => '#ffbe30'
 							),
 							array(
-								'name' => 'mep_base_text_color',
+								'name' => 'mpev_secondary_color',
 								'label' => __('Secondary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
 								'type' => 'color',
-								'default' => ''
+								'default' => '#ffffff'
 							),
+							// array(
+							// 	'name' => 'mep_base_color',
+							// 	'label' => __('Base Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffbe30'
+							// ),
+							// array(
+							// 	'name' => 'mep_base_text_color',
+							// 	'label' => __('Base Text Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffffff'
+							// ),
 							// Label Background & Text Color
 							// array(
 							// 	'name' => 'mep_title_bg_color',

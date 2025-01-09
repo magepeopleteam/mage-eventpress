@@ -74,7 +74,7 @@
 						}
 						.incQty{
 							background-color: var(--mpev-primary);
-							color: var(--mpev-secondary);
+							color: #fff;
 							border-radius: 5px;
 							
 						}
@@ -85,8 +85,8 @@
 							border: 1px solid #dddddd;
 						}
 						.decQty{
-							background-color: red;
-							color: var(--mpev-secondary);
+							background-color: #ff4242;
+							color: #fff;
 							border-radius: 5px;
 						}
 					}
@@ -103,7 +103,7 @@
 					}
 					.incQty{
 						background-color: var(--mpev-primary);
-						color: var(--mpev-secondary);
+						color: #fff;
 						border-radius: 5px;
 						
 						
@@ -118,8 +118,8 @@
 						border: 1px solid #dddddd;
 					}
 					.decQty{
-						background-color: red;
-						color: var(--mpev-secondary);
+						background-color: #ff4242;
+						color: #fff;
 						border-radius: 5px;
 					}
 				}

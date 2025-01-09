@@ -31,7 +31,8 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         public function speaker_tab_content($post_id) {
             $speakers_label = get_post_meta($post_id, 'mep_speaker_title', true);
             $speaker_icon = get_post_meta($post_id, 'mep_event_speaker_icon', true);
-            $speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
+            //$speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
+            $speaker_lists =MP_Global_Function::get_post_info($post_id,'mep_event_speakers_list',[]);
             $speakers = $this->get_speakers();
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_speakers_list_meta_boxes">
@@ -98,7 +99,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                         <div class="mep-speaker-wrapper">
                             <select name="mep_event_speakers_list[]" id="" multiple>
                                 <?php foreach($speakers as  $value): ?>
-                                        <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>
+                                        <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'],$speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

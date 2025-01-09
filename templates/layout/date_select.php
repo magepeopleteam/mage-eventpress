@@ -17,9 +17,6 @@
 			if ( sizeof( $all_dates ) == 1 ) {
 				?>
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
-                <div class="_dLayout_xs">
-                    <h5 class="_textCenter"><?php echo esc_html( MP_Global_Function::date_format( $date, $date_format ) ); ?></h5>
-                </div>
 			<?php } else { ?>
                 <div class="_dLayout_xs">
                     <label>

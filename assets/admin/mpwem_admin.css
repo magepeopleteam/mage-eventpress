@@ -1720,6 +1720,23 @@ h3.mep_virtual_sec_title {
   margin-top: -1px;
 }
 
+#mep_rich_text_table tr td:first-child {
+  width: 50%;
+  font-size: 16px;
+}
+
+#mep_rich_text_table tr td:last-child {
+  width: 60%;
+  font-size: 16px;
+}
+
+#mep_rich_text_table tr td select.mp_formControl {
+  width: 300px;
+}
+#mep_rich_text_table tr td input.mp_formControl {
+  width: 300px;
+}
+
 #mp_event_all_info_in_tab .mp_tab_details section h2 {
   margin: 0;
   padding: 0;

@@ -139,21 +139,24 @@
 			}
 
 			public function add_inline_styles(){
+				$primary 	= mep_get_option('mpev_primary_color', 'style_setting_sec', '#6046FF');
+				$secondary 	= mep_get_option('mpev_secondary_color', 'style_setting_sec', '#F1F5FF');
+
 				// mep_base_text_color
-				$base_color                 = mep_get_option('mep_base_color', 'style_setting_sec', '#ffbe30');
-				$base_text_color            = mep_get_option('mep_base_text_color', 'style_setting_sec', '#ffffff');
+				$base_color                 = mep_get_option('mep_base_color', 'style_setting_sec', $primary);
+				$base_text_color            = mep_get_option('mep_base_text_color', 'style_setting_sec', $secondary);
 			
-				$title_bg_color             = mep_get_option('mep_title_bg_color', 'style_setting_sec', '#ffbe30');
-				$title_text_color           = mep_get_option('mep_title_text_color', 'style_setting_sec', '#ffffff');
-				$cart_btn_bg_color          = mep_get_option('mep_cart_btn_bg_color', 'style_setting_sec', '#ffbe30');
-				$cart_btn_txt_color         = mep_get_option('mep_cart_btn_text_color', 'style_setting_sec', '#ffffff');
+				$title_bg_color             = mep_get_option('mep_title_bg_color', 'style_setting_sec', $primary);
+				$title_text_color           = mep_get_option('mep_title_text_color', 'style_setting_sec', $secondary);
+				$cart_btn_bg_color          = mep_get_option('mep_cart_btn_bg_color', 'style_setting_sec', $primary);
+				$cart_btn_txt_color         = mep_get_option('mep_cart_btn_text_color', 'style_setting_sec', $secondary);
 			
-				$calender_btn_bg_color      = mep_get_option('mep_calender_btn_bg_color', 'style_setting_sec', '#ffbe30');
-				$calender_btn_txt_color     = mep_get_option('mep_calender_btn_text_color', 'style_setting_sec', '#ffffff');
-			   
-				$faq_label_bg_color         = mep_get_option('mep_faq_title_bg_color', 'style_setting_sec', '#ffbe30');
-				$faq_label_text_color       = mep_get_option('mep_faq_title_text_color', 'style_setting_sec', '#ffffff');
-			   
+				$calender_btn_bg_color      = mep_get_option('mep_calender_btn_bg_color', 'style_setting_sec', $primary);
+				$calender_btn_txt_color     = mep_get_option('mep_calender_btn_text_color', 'style_setting_sec', $secondary);
+			
+				$faq_label_bg_color         = mep_get_option('mep_faq_title_bg_color', 'style_setting_sec', $primary);
+				$faq_label_text_color       = mep_get_option('mep_faq_title_text_color', 'style_setting_sec', $secondary);
+			
 				$royal_primary_bg_color     = mep_get_option('mep_royal_primary_bg_color', 'style_setting_sec', '#ffbe30');
 				$royal_secondary_bg_color   = mep_get_option('mep_royal_secondary_bg_color', 'style_setting_sec', '#ffbe30');
 				$royal_icons_bg_color       = mep_get_option('mep_royal_icons_bg_color', 'style_setting_sec', '#ffbe30');
@@ -163,23 +166,19 @@
 				$recurring_datepicker_bg_color = mep_get_option('mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30');
 				$recurring_datepicker_text_color = mep_get_option('mep_re_datepicker_text_color', 'style_setting_sec', '#fff');
 				
-				// smart theme color settings.
-				$event_template = get_post_meta(get_the_ID(),'mep_event_template',true);
-				if($event_template=='smart.php'){
-					$base_color = mep_get_option('mep_base_color', 'style_setting_sec', '#F1F5FF');
-					$base_text_color = mep_get_option('mep_base_text_color', 'style_setting_sec', '#6046FF');
-				}
-
 				$inline_css = "
 					:root{
+						--mpev-primary: {$primary};
+						--mpev-secondary:{$secondary};
+
 						--mpev-base: {$base_color};
 						--mpev-base-txt:{$base_text_color};
 						--mpev-title-bg:{$title_bg_color};
 						--mpev-title-txt:{$title_text_color};
-						--mpev-calender-btn-bg:{$calender_btn_bg_color};
-						--mpev-calender-btn-txt:{$calender_btn_txt_color};
 						--mpev-cart-btn-bg:{$cart_btn_bg_color};
 						--mpev-cart-btn-txt:{$cart_btn_txt_color};
+						--mpev-calender-btn-bg:{$calender_btn_bg_color};
+						--mpev-calender-btn-txt:{$calender_btn_txt_color};
 						--mpev-faq-bg:{$faq_label_bg_color};
 						--mpev-faq-text:{$faq_label_text_color};
 						--mpev-royal-primary-bg:{$royal_primary_bg_color};

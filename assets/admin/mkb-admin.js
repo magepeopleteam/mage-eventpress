@@ -135,11 +135,6 @@
 		$(target).slideToggle();
 		$(close).slideToggle();
 	});
-	// ==========================collapse item============
-	$(document).on('click','[data-collapse-target]',function(){
-		$(this).toggleClass('active');
-	});
-	
 	//========================reset booking==================
 	$(document).on('click','#mep-reset-booking',function(){
 		$('#mep-reset-booking').click(function(e){

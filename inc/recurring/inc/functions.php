@@ -12,7 +12,7 @@ function mep_re_enqueue_scripts(){
 add_action('admin_enqueue_scripts', 'mep_re_admin_enqueue_scripts', 90);
 function mep_re_admin_enqueue_scripts(){
     wp_enqueue_style('mep-re-admin-style', plugin_dir_url(__DIR__) . 'css/mep_re_admin_style.css', array(),time());
-	wp_enqueue_script('Mp_recurring_admin_script', plugin_dir_url(__DIR__) . 'js/admin_recurring.js', array('jquery'),time(), true);
+	wp_enqueue_script('mp_recurring_admin_script', plugin_dir_url(__DIR__) . 'js/admin_recurring.js', array('jquery'),time(), true);
 }
 
 

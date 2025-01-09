@@ -494,7 +494,7 @@
 	div.superSlider .sliderItem.prevSlider { transform: translateX(-100%); z-index: 0; }
 	div.superSlider .sliderItem.nextSlider { transform: translateX(100%); z-index: 0; }
 	/*************Image Showcase***************/
-	div.superSlider .sliderShowcase { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; }
+	div.superSlider .sliderShowcase { display: -webkit-flex; display: flex;}
 	div.superSlider .sliderShowcase.right,
 	div.superSlider .sliderShowcase.left { width: 18.65%; min-width: 18.65%; -webkit-flex-direction: column; flex-direction: column; }
 	div.superSlider .sliderShowcase.style_2,
@@ -507,7 +507,7 @@
 	div.superSlider .area_column .sliderShowcase { width: 100%; min-width: 100%; }
 	div.superSlider .sliderShowcase.top { margin: 0 0 var(--dMP_xs) 0; }
 	div.superSlider .sliderShowcase.bottom { margin: var(--dMP_xs) 0 0 0; }
-	div.superSlider .sliderShowcaseItem { position: relative; overflow: hidden;max-height:117px; }
+	div.superSlider .sliderShowcaseItem { position: relative; overflow: hidden;max-height:117px;margin: 0 0 var(--dMP_xs) 0; }
 	div.superSlider .area_column .sliderShowcaseItem { width: calc(25% - var(--dMP_xs)); }
 	div.superSlider .sliderShowcase div.superSlider .area_column { margin: 0 0 var(--dMP_xs) 0; position: relative; cursor: pointer; overflow: hidden; }
 	div.superSlider .sliderShowcaseItem img { height: 100%; }

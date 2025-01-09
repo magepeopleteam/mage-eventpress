@@ -955,75 +955,75 @@
 							// Base Background & Text Color
 							array(
 								'name' => 'mep_base_color',
-								'label' => __('Base Background Color', 'mage-eventpress'),
+								'label' => __('Primary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
 								'type' => 'color',
 								'default' => ''
 							),
 							array(
 								'name' => 'mep_base_text_color',
-								'label' => __('Base Text Color', 'mage-eventpress'),
+								'label' => __('Secondary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
 								'type' => 'color',
 								'default' => ''
 							),
 							// Label Background & Text Color
-							array(
-								'name' => 'mep_title_bg_color',
-								'label' => __('Label Background Color', 'mage-eventpress'),
-								'desc' => __('Choose label background color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#ffbe30'
-							),
-							array(
-								'name' => 'mep_title_text_color',
-								'label' => __('Label Text Color', 'mage-eventpress'),
-								'desc' => __('Choose label text color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#fff'
-							),
-							array(
-								'name' => 'mep_cart_btn_bg_color',
-								'label' => __('Cart Button Background Color', 'mage-eventpress'),
-								'desc' => __('Choose cart button background color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#ffbe30'
-							),
-							array(
-								'name' => 'mep_cart_btn_text_color',
-								'label' => __('Cart Button Text Color', 'mage-eventpress'),
-								'desc' => __('Choose cart button text color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#fff'
-							),
-							array(
-								'name' => 'mep_calender_btn_bg_color',
-								'label' => __('Calender Button Background Color', 'mage-eventpress'),
-								'desc' => __('Choose calender button background color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#ffbe30'
-							),
-							array(
-								'name' => 'mep_calender_btn_text_color',
-								'label' => __('Calender Button Text Color', 'mage-eventpress'),
-								'desc' => __('Choose calender button text color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#fff'
-							),
-							array(
-								'name' => 'mep_faq_title_bg_color',
-								'label' => __('FAQ Title Background Color', 'mage-eventpress'),
-								'desc' => __('Choose FAQ title background color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#ffbe30'
-							),
-							array(
-								'name' => 'mep_faq_title_text_color',
-								'label' => __('FAQ Title Text Color', 'mage-eventpress'),
-								'desc' => __('Choose FAQ title text color', 'mage-eventpress'),
-								'type' => 'color',
-								'default' => '#fff'
-							),
+							// array(
+							// 	'name' => 'mep_title_bg_color',
+							// 	'label' => __('Label Background Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose label background color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffbe30'
+							// ),
+							// array(
+							// 	'name' => 'mep_title_text_color',
+							// 	'label' => __('Label Text Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose label text color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#fff'
+							// ),
+							// array(
+							// 	'name' => 'mep_cart_btn_bg_color',
+							// 	'label' => __('Cart Button Background Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose cart button background color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffbe30'
+							// ),
+							// array(
+							// 	'name' => 'mep_cart_btn_text_color',
+							// 	'label' => __('Cart Button Text Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose cart button text color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#fff'
+							// ),
+							// array(
+							// 	'name' => 'mep_calender_btn_bg_color',
+							// 	'label' => __('Calender Button Background Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose calender button background color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffbe30'
+							// ),
+							// array(
+							// 	'name' => 'mep_calender_btn_text_color',
+							// 	'label' => __('Calender Button Text Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose calender button text color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#fff'
+							// ),
+							// array(
+							// 	'name' => 'mep_faq_title_bg_color',
+							// 	'label' => __('FAQ Title Background Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose FAQ title background color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#ffbe30'
+							// ),
+							// array(
+							// 	'name' => 'mep_faq_title_text_color',
+							// 	'label' => __('FAQ Title Text Color', 'mage-eventpress'),
+							// 	'desc' => __('Choose FAQ title text color', 'mage-eventpress'),
+							// 	'type' => 'color',
+							// 	'default' => '#fff'
+							// ),
 							array(
 								'name' => 'mep_royal_primary_bg_color',
 								'label' => __('Royal Template Primary Background Color', 'mage-eventpress'),

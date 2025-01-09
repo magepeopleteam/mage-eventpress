@@ -4981,8 +4981,8 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
     height: 55px;
-    background-color: var(--mpev-base);
-    color: var(--mpev-base-txt);
+    background-color: var(--mpev-secondary);
+    color: var(--mpev-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4996,14 +4996,14 @@ Vanilla theme css by ariful
     border-radius: 15px;
   }
   .mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator {
-    color: var(--mpev-base);
+    color: var(--mpev-secondary);
   }
   .mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcase.right {
     justify-content: start;
     gap: 10px;
   }
   .mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator {
-    color: var(--mpev-base);
+    color: var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_content_area {
     display: flex;
@@ -5034,7 +5034,7 @@ Vanilla theme css by ariful
 }
 @media only screen and (min-width: 10px) {
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type {
-    border: 2px solid var(--mpev-base-txt);
+    border: 2px solid var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type .mep_ticket_item h6 {
     font-size: 24px;
@@ -5044,18 +5044,19 @@ Vanilla theme css by ariful
     border: 0;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type .mep_ticket_item .incQty {
-    background-color: var(--mpev-base-txt);
-    color: var(--mpev-base);
+    background-color: var(--mpev-primary);
+    color: var(--mpev-secondary);
     border-radius: 5px;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type .mep_ticket_item .inputIncDec {
     border-radius: 0;
-    background-color: var(--mpev-base);
+    background-color: var(--mpev-secondary);
     box-shadow: 0 0 0;
+    border: 1px solid #dddddd;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type .mep_ticket_item .decQty {
     background-color: red;
-    color: var(--mpev-base);
+    color: var(--mpev-secondary);
     border-radius: 5px;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type ._divider {
@@ -5065,11 +5066,11 @@ Vanilla theme css by ariful
     margin-bottom: var(--dMP);
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service [class*=_dLayout] {
-    border: 2px solid var(--mpev-base-txt);
+    border: 2px solid var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service .incQty {
-    background-color: var(--mpev-base-txt);
-    color: var(--mpev-base);
+    background-color: var(--mpev-primary);
+    color: var(--mpev-secondary);
     border-radius: 5px;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service .groupContent {
@@ -5077,27 +5078,28 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service .inputIncDec, .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service .formControl {
     border-radius: 0;
-    background-color: var(--mpev-base);
+    background-color: var(--mpev-secondary);
     box-shadow: 0 0 0;
+    border: 1px solid #dddddd;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ex_service .decQty {
     background-color: red;
-    color: var(--mpev-base);
+    color: var(--mpev-secondary);
     border-radius: 5px;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area ._mpBtn {
-    color: var(--mpev-base-txt);
-    border: 1px solid var(--mpev-base-txt);
+    color: var(--mpev-primary);
+    border: 1px solid var(--mpev-primary);
     border-radius: 5px;
     padding: 13px 25px;
     font-weight: bold;
   }
   .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area ._mpBtn .mpwem_total {
-    color: var(--mpev-base-txt);
+    color: var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area button[type=submit] {
-    background-color: var(--mpev-base-txt);
-    border: 1px solid var(--mpev-base-txt);
+    background-color: var(--mpev-primary);
+    border: 1px solid var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_right_content {
     max-width: 100%;
@@ -5128,8 +5130,8 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets i {
     font-size: 30px;
     padding: 15px;
-    background-color: var(--mpev-base);
-    color: var(--mpev-base-txt);
+    background-color: var(--mpev-secondary);
+    color: var(--mpev-primary);
     border-radius: 10px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets h2, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets h2 {
@@ -5145,9 +5147,12 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button {
     background-color: #fff;
     padding: 15px;
-    border: 1px solid var(--mpev-base-txt);
+    border: 1px solid var(--mpev-primary);
     margin-top: 20px;
-    color: var(--mpev-base-txt);
+    color: var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button:hover, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button:hover {
+    background-color: var(--mpev-secondary);
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button i {
     font-size: 16px;
@@ -5166,7 +5171,7 @@ Vanilla theme css by ariful
     margin: 7px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li a {
-    background-color: var(--mpev-base-txt);
+    background-color: var(--mpev-primary);
     color: #fff;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons {
@@ -5174,7 +5179,7 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons i {
     padding: 10px;
-    background-color: var(--mpev-base-txt);
+    background-color: var(--mpev-primary);
     width: 46px;
     height: 46px;
     border-radius: 50%;
@@ -5182,13 +5187,13 @@ Vanilla theme css by ariful
     margin: 5px;
     font-size: 24px;
     cursor: pointer;
-    border: 1px solid var(--mpev-base-txt);
+    border: 1px solid var(--mpev-primary);
     transition: all 0.4s;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons i:hover {
-    background-color: var(--mpev-base);
-    color: var(--mpev-base-txt);
-    border: 1px solid var(--mpev-base-txt);
+    background-color: var(--mpev-secondary);
+    color: var(--mpev-primary);
+    border: 1px solid var(--mpev-primary);
   }
   .mep_smart_theme .map_location {
     margin: 50px 0;
@@ -5265,6 +5270,9 @@ Vanilla theme css by ariful
     font-size: 16px;
     margin: 0;
   }
+  .mep_smart_theme .faq_area .faq_items .item .title i {
+    color: var(--mpev-primary);
+  }
   .mep_smart_theme .faq_area .faq_items .item .content {
     display: none;
     text-align: left;
@@ -5330,7 +5338,7 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .related-events .related-events-items .item .item-info .price h2 {
     font-size: 30px;
-    color: var(--mpev-base-txt);
+    color: var(--mpev-primary);
     margin: 0;
   }
   .related-events {
@@ -5344,7 +5352,7 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-header h2 {
     margin: 0;
-    color: var(--mpev-base-txt);
+    color: var(--mpev-primary);
   }
   .related-events .related-events-header .related-events-navigation {
     display: flex;
@@ -5353,8 +5361,8 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-header .related-events-navigation button {
     border-radius: 5px;
-    background-color: var(--mpev-base);
-    color: var(--mpev-base-txt);
+    background-color: var(--mpev-secondary);
+    color: var(--mpev-primary);
   }
   .related-events .related-events-items {
     margin-top: 20px;
@@ -5399,16 +5407,16 @@ Vanilla theme css by ariful
     top: 10px;
     left: 10px;
     line-height: 1.8;
-    background: var(--mpev-base);
+    background: var(--mpev-secondary);
     text-align: center;
     width: 50px;
-    color: var(--mpev-base-txt);
+    color: var(--mpev-primary);
     font-size: 18px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
   }
   .related-events .related-events-items .item .mep-ev-start-date .mep-month {
-    background: var(--mpev-base-txt);
-    color: var(--mpev-base);
+    background: var(--mpev-primary);
+    color: var(--mpev-secondary);
     text-transform: uppercase;
   }
   .related-events .related-events-items .item .item-info {
@@ -5431,7 +5439,7 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-items .item .item-info .price h2 {
     font-size: 30px;
-    color: var(--mpev-base);
+    color: var(--mpev-secondary);
     margin: 0;
   }
   .slick-slide {

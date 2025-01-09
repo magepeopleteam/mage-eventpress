@@ -5352,7 +5352,6 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-header h2 {
     margin: 0;
-    color: var(--mpev-primary);
   }
   .related-events .related-events-header .related-events-navigation {
     display: flex;
@@ -5361,8 +5360,8 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-header .related-events-navigation button {
     border-radius: 5px;
-    background-color: var(--mpev-secondary);
-    color: var(--mpev-primary);
+    background-color: var(--mpev-primary);
+    color: var(--mpev-secondary);
   }
   .related-events .related-events-items {
     margin-top: 20px;

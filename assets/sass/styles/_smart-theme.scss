@@ -372,7 +372,6 @@
 			align-items: center;
 			h2{
 				margin: 0;
-				color: var(--mpev-primary);
 			}
 			.related-events-navigation{
 				display: flex;
@@ -380,8 +379,8 @@
 				gap: 5px;
 				button{
 					border-radius: 5px;
-					background-color: var(--mpev-secondary);
-					color: var(--mpev-primary);
+					background-color: var(--mpev-primary);
+					color: var(--mpev-secondary);
 				}
 			}
 		}

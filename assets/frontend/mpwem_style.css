@@ -2959,6 +2959,10 @@ table.table.table-bordered.mep_event_add_cart_table {
   background: var(--mpev-royal-primary-bg);
 }
 
+.mep_events-template-default table.table.table-bordered.mep_event_add_cart_table {
+  background: none;
+}
+
 /*************************************************************
 New Winter list style css added by ariful
 **************************************************************/
@@ -4968,7 +4972,7 @@ Vanilla theme css by ariful
     font-size: 40px;
   }
   .mep_smart_theme .mpwem_organizer {
-    margin: 20px 0;
+    margin: 5px 0;
   }
   .mep_smart_theme .mpwem_location_time {
     display: flex;

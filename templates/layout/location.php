@@ -16,10 +16,11 @@
 			if ( $type && $type == 'sidebar' ) {
 				?>
                 <div class="location_widgets">
-                    <i class="fa fa-map-marker"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                     <div>
                         <h2><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></h2>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
+
                         <button type="button" data-target-popup="mpwem_popup_map" ><i class="fa fa-map-marker"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
                     </div>
                     <div class="mpPopup" data-popup="mpwem_popup_map">
@@ -34,6 +35,7 @@
 				                <?php do_action('mep_event_map', $event_id); ?>
                             </div>
                         </div>
+
                     </div>
                 </div>
 

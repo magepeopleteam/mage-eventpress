@@ -201,10 +201,8 @@
 			}
 			public function time_settings_section($post_id) {
 				$display_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time', 'no');
-				$active_time = $display_time == 'no' ? '' : 'mActive';
-				$checked_time = $display_time == 'no' ? '' : 'checked';
 				?>
-                <div class="mpStyle">
+                
                     <section class="bg-light" style="margin-top: 20px;">
                         <h2><?php esc_html_e('Time Settings', 'mage-eventpress') ?></h2>
                         <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
@@ -215,10 +213,14 @@
                                 <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
                                 <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
                             </div>
-	                        <?php MP_Custom_Layout::switch_button('mep_disable_ticket_time', $checked_time); ?>
-                        </label>
+							<label class="mpev-switch">
+								<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
+								<span class="slider"></span>
+							</label>
+						</label>
                     </section>
-                    <section class="<?php echo esc_attr($active_time == 'no' ? '' : 'mActive'); ?>" data-collapse="#mep_disable_ticket_time">
+				<div class="mpStyle">
+                    <section style="display:<?php echo esc_attr($display_time == 'yes' ? 'block' : 'none'); ?>" id="mep_disable_ticket_time">
                         <div class="mpTabs topTabs tabBorder">
                             <ul class="tabLists">
                                 <li data-tabs-target="#mep_ticket_times_global">
@@ -280,7 +282,7 @@
 			public function date_time_tab($post_id) {
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				?>
-                <div class="mp_tab_item mpStyle" data-tab-item="#mp_event_time">
+                <div class="mp_tab_item" data-tab-item="#mp_event_time">
                     <h3><?php esc_html_e('Date & Time', 'mage-eventpress') ?></h3>
                     <p><?php esc_html_e('Configure Your Date and Time Settings Here', 'mage-eventpress') ?></p>
                     <section class="bg-light">

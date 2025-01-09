@@ -95,7 +95,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             <?php } ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>
                 <div class="mep-default-sidrbar-meta">
-                    <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer', $event_id); ?>
+                    <?php do_action('mep_event_organizer', $event_id); ?>
                 </div>
             <?php }
 

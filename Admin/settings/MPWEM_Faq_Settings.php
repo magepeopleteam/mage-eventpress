@@ -26,6 +26,8 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             // mep_delete_faq_data
             add_action('wp_ajax_mep_faq_delete_item', [$this, 'faq_delete_item']);
             add_action('wp_ajax_nopriv_mep_faq_delete_item', [$this, 'faq_delete_item']);
+
+            add_action( 'save_post', [$this,'data_save'] );
         }
 
         public function custom_editor_enqueue() {
@@ -46,6 +48,8 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
         
         public function faq_tab_content($post_id) {
+            $faq_description = get_post_meta($post_id,'mep_faq_description',true);
+            $faq_description = $faq_description?$faq_description:'';
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_faq_meta">
                 
@@ -55,6 +59,16 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                 <section class="bg-light">
                     <h2><?php esc_html_e('FAQ Settings', 'mage-eventpress'); ?></h2>
                     <span><?php esc_html_e('FAQ Settings', 'mage-eventpress'); ?></span>
+                </section>
+
+                <section>
+                    <label class="label">
+                        <div>
+                            <h2><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></h2>
+                            <span><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></span>
+                        </div>
+                        <textarea name="mep_faq_description" cols="80" placeholder="Explore essential details and clear up any doubts about the event."><?php echo esc_textarea($faq_description); ?></textarea>
+                    </label>
                 </section>
 
                 <section class="mep-faq-section">
@@ -214,6 +228,14 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                 ]);
             }
             die;
+        }
+
+        public function data_save( $post_id ) {
+            global $wpdb;
+            if ( get_post_type( $post_id ) == 'mep_events' ) {
+                $faq_description    = isset( $_POST['mep_faq_description'] ) ? sanitize_text_field($_POST['mep_faq_description']) : '';
+                update_post_meta( $post_id, 'mep_faq_description', $faq_description );
+            }
         }
     }
     new MPWEM_Faq_Settings();

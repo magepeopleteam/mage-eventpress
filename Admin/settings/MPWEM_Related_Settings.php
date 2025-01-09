@@ -56,9 +56,9 @@
 					unset($post_title_array[get_the_ID()]);
 				}
 				$product_ids   = get_post_meta( $post_id, '_event_list', true );
-				$column_num    = get_post_meta( $post_id, '_list_column', true );
+				// $column_num    = get_post_meta( $post_id, '_list_column', true );
 				$section_label = get_post_meta( $post_id, '_related_section_label', true );
-				$column_num = $column_num[0];
+				// $column_num = $column_num[0];
 
 				?>
 				<div class="mp_tab_item related-products" data-tab-item="#mep_related_event_meta">

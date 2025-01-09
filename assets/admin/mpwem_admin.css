@@ -821,6 +821,7 @@ iframe#gmap_canvas {
   margin-bottom: 10px;
   width: auto;
   line-height: 18px;
+  margin: 10px;
 }
 
 .mp_event_all_meta_in_tab {
@@ -1467,8 +1468,8 @@ table.wc_status_table.widefat {
 
 .mep_global_settings_icon_preview i {
   border: 1px solid #D3D3D3;
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   border-radius: 5px;
   text-align: center;
   display: grid;

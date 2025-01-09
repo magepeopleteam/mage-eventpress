@@ -434,11 +434,11 @@
 				$type   = 'hidden';
 				$class  = 'mep_global_settings_icon';
 				if(! empty($value)){
-					$output .= '<div class="mep_global_settings_icon_preview" data-key="'.$id.'">';
+					$output .= '<div class="mep_settings_icon"><div class="mep_global_settings_icon_preview" data-key="'.$id.'">';
 					$output .= '<i class="'.$value.'"></i>';
 					$output .= '</div>';
 				}
-				$output .= '<a class="mep_global_icon_lib_btn" data-key="'.$id.'">'.esc_html__('Icon Library','mage-eventpress').'</a>';
+				$output .= '<a class="mep_global_icon_lib_btn" data-key="'.$id.'">'.esc_html__('Icon Library','mage-eventpress').'</a></div>';
 				
 				$output .= sprintf( '<input type="%1$s" class="%2$s" id="%4$s" name="%3$s[%4$s]" value="%5$s" data-key="'.$id.'"/>', $type, $class, $args['section'], $args['id'], $value);
 				

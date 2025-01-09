@@ -8,12 +8,15 @@
 	} // Cannot access pages directly.
 	$event_id = $event_id ?? 0;
 	$faqs     = MP_Global_Function::get_post_info( $event_id, 'mep_event_faq', [] );
+	$faq_description = get_post_meta($event_id,'mep_faq_description',true);
+	$faq_description = $faq_description? $faq_description : '';
+
 	if ( $faqs && sizeof( $faqs ) > 0 ) {
 		//echo '<pre>';print_r( $faqs );echo '</pre>';
 		?>
         <div class="faq_area">
             <h2><?php esc_html_e( 'Frequently asked questions', 'mage-eventpress' ); ?></h2>
-
+			<p><?php echo esc_html($faq_description); ?></p>
             <div class="faq_items">
 	            <?php foreach ($faqs as $key => $faq){ ?>
                 <div class="item">

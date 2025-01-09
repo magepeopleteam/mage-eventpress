@@ -239,13 +239,12 @@
 			text-align: center;
 			margin: 40px auto;
 			padding:10px;
+			border-radius: 10px;
 			@media (min-width:540px) {
-				padding:40px 40px 80px 40px;
-				margin: 80px auto;
+				padding:40px;
+				margin: 40px auto;
 			}
-			h2{
-				margin: 40px;
-			}
+
 			.desc{
 				width: auto;
 				color: #666;
@@ -265,7 +264,7 @@
 				flex-wrap: wrap;
 				gap:10px;
 				@media (min-width:540px) {
-					margin-top: 80px;
+					margin-top: 40px;
 					flex-direction: row;
 				}
 				.item{

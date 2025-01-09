@@ -159,7 +159,7 @@
 						?>
                     </div>
                     <div class="">
-						<?php MP_Custom_Layout::add_new_button(esc_html__('Add Image', 'mage-eventpress'), 'add_multi_image', 'btn'); ?>
+						<?php MP_Custom_Layout::add_new_button(esc_html__('Add Image', 'mage-eventpress'), 'add_multi_image', '_dButton_xs_bgColor_1'); ?>
                     </div>
                 </div>
 				<?php

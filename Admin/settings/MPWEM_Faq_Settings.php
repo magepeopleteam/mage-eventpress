@@ -49,7 +49,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         
         public function faq_tab_content($post_id) {
             $faq_description = get_post_meta($post_id,'mep_faq_description',true);
-            $faq_description = $faq_description?$faq_description:'data';
+            $faq_description = $faq_description?$faq_description:'';
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_faq_meta">
                 
@@ -67,7 +67,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                             <h2><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></h2>
                             <span><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></span>
                         </div>
-                        <textarea name="mep_faq_description" id=""><?php echo esc_textarea($faq_description); ?></textarea>
+                        <textarea name="mep_faq_description" cols="80" placeholder="Explore essential details and clear up any doubts about the event."><?php echo esc_textarea($faq_description); ?></textarea>
                     </label>
                 </section>
 
@@ -233,7 +233,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         public function data_save( $post_id ) {
             global $wpdb;
             if ( get_post_type( $post_id ) == 'mep_events' ) {
-                $faq_description    = isset( $_POST['mep_faq_description'] ) ? $_POST['mep_faq_description'] : '';
+                $faq_description    = isset( $_POST['mep_faq_description'] ) ? sanitize_text_field($_POST['mep_faq_description']) : '';
                 update_post_meta( $post_id, 'mep_faq_description', $faq_description );
             }
         }

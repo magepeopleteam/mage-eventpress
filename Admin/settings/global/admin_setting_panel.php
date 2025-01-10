@@ -958,14 +958,14 @@
 								'label' => __('Primary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
 								'type' => 'color',
-								'default' => '#ffbe30'
+								'default' => ''
 							),
 							array(
 								'name' => 'mpev_secondary_color',
 								'label' => __('Secondary Color', 'mage-eventpress'),
 								'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
 								'type' => 'color',
-								'default' => '#ffffff'
+								'default' => ''
 							),
 							// array(
 							// 	'name' => 'mep_base_color',

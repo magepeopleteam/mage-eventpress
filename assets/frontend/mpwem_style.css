@@ -5160,6 +5160,10 @@ Vanilla theme css by ariful
     background: none;
     margin-right: 15px;
   }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date_time_box .date_time {
+    height: 30vh;
+    overflow-y: scroll;
+  }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
     padding: 30px;

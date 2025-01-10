@@ -21,7 +21,7 @@
                         <h2><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></h2>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
 
-                        <button type="button" data-target-popup="mpwem_popup_map" ><i class="fa fa-map-marker"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
+                        <button type="button" data-target-popup="mpwem_popup_map" ><i class="fa fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?></button>
                     </div>
                     <div class="mpPopup" data-popup="mpwem_popup_map">
                         <div class="popupMainArea fullWidth">

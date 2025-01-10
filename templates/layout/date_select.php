@@ -41,6 +41,7 @@
             <div class="date-time-area">
                 <label>
                     <span><?php esc_html_e( 'Select date', 'mage-eventpress' ); ?></span>
+					<i class="far fa-calendar"></i>
                     <input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
                     <input id="mpwem_date_time" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
                 </label>
@@ -48,7 +49,8 @@
                     <div class="mpwem_time_area">
                         <label>
                             <span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
-                            <select class="formControl" name="mpwem_time" id="mpwem_time">
+                            <i class="far fa-clock"></i>
+							<select class="formControl" name="mpwem_time" id="mpwem_time">
 								<?php foreach ( $all_times as $times ) { ?>
                                     <option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ); ?></option>
 								<?php } ?>

@@ -2563,6 +2563,31 @@ table.table.table-bordered.mep_event_add_cart_table {
 .mep_events-template-default table.table.table-bordered.mep_event_add_cart_table {
 	background: hsla(0,0%,50.2%,.0705882353);;
 }
+// =================calendar color ==============
+.mep_events-template-default {
+	#ui-datepicker-div {
+		border-color: var(--mpev-primary);
+		&.ui-datepicker td{
+			// background-color: var(--mpev-secondary);
+		}
+		.ui-datepicker-header{
+			background-color: var(--mpev-primary);
+			background-image: none;
+			border-color: var(--mpev-primary);
+		}
+		.ui-state-default{
+			color: var(--mpev-primary);
+		}
+		.ui-state-active,.ui-state-hover{
+			background-color: var(--mpev-primary);
+			color: var(--mpev-secondary);
+		}
+		a.ui-state-default:hover{
+			background-color: var(--mpev-primary);
+			color: var(--mpev-secondary);
+		}
+	}
+}
 /*************************************************************
 New Winter list style css added by ariful
 **************************************************************/

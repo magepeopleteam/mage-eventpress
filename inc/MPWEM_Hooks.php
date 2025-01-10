@@ -55,6 +55,7 @@
 				?>
 				<label>
 					<span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
+					<i class="far fa-clock"></i>
 					<select class="formControl" name="mpwem_time" id="mpwem_time">
 						<?php foreach ( $all_times as $times ) { ?>
 							<option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ); ?></option>

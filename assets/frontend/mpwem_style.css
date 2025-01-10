@@ -2963,6 +2963,26 @@ table.table.table-bordered.mep_event_add_cart_table {
   background: hsla(0, 0%, 50.2%, 0.0705882353);
 }
 
+.mep_events-template-default #ui-datepicker-div {
+  border-color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-datepicker-header {
+  background-color: var(--mpev-primary);
+  background-image: none;
+  border-color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-state-default {
+  color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-state-active, .mep_events-template-default #ui-datepicker-div .ui-state-hover {
+  background-color: var(--mpev-primary);
+  color: var(--mpev-secondary);
+}
+.mep_events-template-default #ui-datepicker-div a.ui-state-default:hover {
+  background-color: var(--mpev-primary);
+  color: var(--mpev-secondary);
+}
+
 /*************************************************************
 New Winter list style css added by ariful
 **************************************************************/
@@ -5044,16 +5064,43 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_left_content .date-time-area label, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area {
     width: 100%;
+    position: relative;
   }
   .mep_smart_theme .mpwem_left_content .date-time-area label input, .mep_smart_theme .mpwem_left_content .date-time-area label select, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select {
     border: 1px solid var(--mpev-primary);
+    padding: 15px;
+    padding-left: 30px;
   }
   .mep_smart_theme .mpwem_left_content .date-time-area label input:focus, .mep_smart_theme .mpwem_left_content .date-time-area label select:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select:focus {
-    background-color: var(--mpev-primary);
-    color: #fff;
+    background-color: #fff;
+    box-shadow: 0 0 5px var(--mpev-primary);
+    color: var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label select.formControl, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select.formControl {
+    background: none;
   }
   .mep_smart_theme .mpwem_left_content .date-time-area label span, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area span {
     display: none;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label i, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area i {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 10px;
+    color: var(--mpev-primary);
+    transform: translateY(-50%);
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label {
+    position: relative;
+    font-family: "Font Awesome 5 Free";
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label::after {
+    content: "\f078";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type {
     border: 2px solid var(--mpev-primary);
@@ -5181,6 +5228,9 @@ Vanilla theme css by ariful
     padding: 0;
     background: none;
     margin-right: 15px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets [data-read] {
+    color: var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender {
     background-color: #fff;

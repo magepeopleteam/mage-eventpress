@@ -1,4 +1,4 @@
-<?php $event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar'); ?>
+<?php $event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar'); ?>
 <div id="mep_add_calender_button" class='mep-add-calender'>
     <i class="<?php echo $event_date_icon; ?>"></i><?php echo esc_html(mep_get_label($pid,'mep_calender_btn_text',esc_html__('Add Calendar','mage-eventpress'))); ?>
 </div>  

@@ -71,15 +71,43 @@
 				gap: 20px;
 				label,.mpwem_time_area{
 					width: 100%;
+					position: relative;
 					input,select{
 						border: 1px solid var(--mpev-primary);
+						padding: 15px;
+						padding-left: 30px;
 						&:focus{
-							background-color: var(--mpev-primary);
-							color: #fff;
+							background-color: #fff;
+							box-shadow: 0 0 5px var(--mpev-primary);
+							color: var(--mpev-primary);
 						}
+					}
+					select.formControl{
+						background:none;
 					}
 					span{
 						display: none;
+					}
+					i{
+						position: absolute;
+						z-index: 1;
+						top: 50%;
+						left:10px;
+						color: var(--mpev-primary);
+						transform: translateY(-50%);
+					}
+				}
+				label{
+					position: relative;
+					font-family: "Font Awesome 5 Free";
+					&::after{
+						
+						content: "\f078";
+						position: absolute;
+						top:50%;
+						right:10px;
+						transform: translateY(-50%);
+						color: var(--mpev-primary);
 					}
 				}
 			}
@@ -217,6 +245,9 @@
 					}
 				}
 				.date_widgets{
+					[data-read]{
+						color: var(--mpev-primary);
+					}
 					#mep_add_calender_button.mep-add-calender{
 						background-color: #fff;
 						color: var(--mpev-primary) !important;

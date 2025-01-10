@@ -38,7 +38,7 @@
 			$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
 			$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
 			?>
-            <div class="_dLayout_xs">
+            <div class="date-time-area">
                 <label>
                     <span><?php esc_html_e( 'Select date', 'mage-eventpress' ); ?></span>
                     <input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>

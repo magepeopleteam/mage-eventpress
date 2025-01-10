@@ -5033,6 +5033,28 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_left_content .date-time-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px 0;
+    padding: 10px 0;
+    gap: 20px;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area {
+    width: 100%;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label input, .mep_smart_theme .mpwem_left_content .date-time-area label select, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select {
+    border: 1px solid var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label input:focus, .mep_smart_theme .mpwem_left_content .date-time-area label select:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select:focus {
+    background-color: var(--mpev-primary);
+    color: #fff;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label span, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area span {
+    display: none;
+  }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type {
     border: 2px solid var(--mpev-primary);
   }
@@ -5155,6 +5177,28 @@ Vanilla theme css by ariful
     background-color: var(--mpev-secondary);
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin-right: 15px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender {
+    background-color: #fff;
+    color: var(--mpev-primary) !important;
+    height: auto !important;
+    padding: 15px !important;
+    border-radius: var(--dBR) !important;
+    border: 1px solid var(--mpev-primary);
+    margin-top: 20px;
+    color: var(--mpev-primary);
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender:hover {
+    background-color: var(--mpev-secondary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender i {
     font-size: 16px;
     padding: 0;
     background: none;

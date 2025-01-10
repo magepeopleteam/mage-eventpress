@@ -61,6 +61,28 @@
 				max-width: 70%;
 				margin-right:2%;
 			}
+			.date-time-area{
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				flex-direction: column;
+				margin: 20px 0;
+				padding: 10px 0;
+				gap: 20px;
+				label,.mpwem_time_area{
+					width: 100%;
+					input,select{
+						border: 1px solid var(--mpev-primary);
+						&:focus{
+							background-color: var(--mpev-primary);
+							color: #fff;
+						}
+					}
+					span{
+						display: none;
+					}
+				}
+			}
 			.mpwem_booking_panel{
 				.mpwem_ticket_type{
 					border: 2px solid var(--mpev-primary);
@@ -183,6 +205,30 @@
 						border: 1px solid var(--mpev-primary);
 						margin-top: 20px;
 						color: var(--mpev-primary);
+						&:hover{
+							background-color: var(--mpev-secondary);
+						}
+						i{
+							font-size: 16px;
+							padding: 0;
+							background: none;
+							margin-right:15px;
+						}
+					}
+				}
+				.date_widgets{
+					#mep_add_calender_button.mep-add-calender{
+						background-color: #fff;
+						color: var(--mpev-primary) !important;
+						height: auto !important;
+						padding:15px !important;
+						border-radius: var(--dBR) !important;
+						border: 1px solid var(--mpev-primary);
+						margin-top: 20px;
+						color: var(--mpev-primary);
+						font-size: var(--button_fs);
+    					font-weight: var(--fw-medium);
+						line-height: inherit;
 						&:hover{
 							background-color: var(--mpev-secondary);
 						}

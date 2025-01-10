@@ -12,7 +12,7 @@
 	if ($event_id > 0 && $hide_organizer == 'no') {
 		$org = get_the_terms($event_id, 'mep_org');
 		$names = [];
-		if (sizeof($org) > 0) {
+		if ($org && is_array($org) && sizeof($org) > 0) {
 			foreach ($org as $value) {
 				$names[] = $value->name;
 			}

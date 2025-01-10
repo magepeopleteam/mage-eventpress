@@ -3,7 +3,6 @@
 		die;
 	}
 	appsero_init_tracker_mage_eventpress();
-
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
 	function mep_get_page_by_slug( $page_slug, $output = OBJECT, $post_type = 'page' ) {
@@ -2118,57 +2117,59 @@
 			} else {
 				$count_user = 0;
 			}
-			for ( $iu = 0; $iu < $count_user; $iu ++ ) {
-				if ( isset( $mep_user_name[ $iu ] ) ):
-					$user[ $iu ]['user_name'] = stripslashes( strip_tags( $mep_user_name[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_email[ $iu ] ) ) :
-					$user[ $iu ]['user_email'] = stripslashes( strip_tags( $mep_user_email[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_phone[ $iu ] ) ) :
-					$user[ $iu ]['user_phone'] = stripslashes( strip_tags( $mep_user_phone[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_address[ $iu ] ) ) :
-					$user[ $iu ]['user_address'] = stripslashes( strip_tags( $mep_user_address[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_gender[ $iu ] ) ) :
-					$user[ $iu ]['user_gender'] = stripslashes( strip_tags( $mep_user_gender[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_tshirtsize[ $iu ] ) ) :
-					$user[ $iu ]['user_tshirtsize'] = stripslashes( strip_tags( $mep_user_tshirtsize[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_company[ $iu ] ) ) :
-					$user[ $iu ]['user_company'] = stripslashes( strip_tags( $mep_user_company[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_desg[ $iu ] ) ) :
-					$user[ $iu ]['user_designation'] = stripslashes( strip_tags( $mep_user_desg[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_website[ $iu ] ) ) :
-					$user[ $iu ]['user_website'] = stripslashes( strip_tags( $mep_user_website[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_vegetarian[ $iu ] ) ) :
-					$user[ $iu ]['user_vegetarian'] = stripslashes( strip_tags( $mep_user_vegetarian[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_ticket_type[ $iu ] ) ) :
-					$user[ $iu ]['user_ticket_type'] = strip_tags( $mep_user_ticket_type[ $iu ] );
-				endif;
-				if ( isset( $event_date[ $iu ] ) ) :
-					$user[ $iu ]['user_event_date'] = stripslashes( strip_tags( $event_date[ $iu ] ) );
-				endif;
-				if ( isset( $mep_event_id[ $iu ] ) ) :
-					$user[ $iu ]['user_event_id'] = stripslashes( strip_tags( $mep_event_id[ $iu ] ) );
-				endif;
-				if ( isset( $mep_user_option_qty[ $iu ] ) ) :
-					$user[ $iu ]['user_ticket_qty'] = stripslashes( strip_tags( $mep_user_option_qty[ $iu ] ) );
-				endif;
-				$reg_form_id           = mep_fb_get_reg_form_id( $product_id );
-				$mep_form_builder_data = get_post_meta( $reg_form_id, 'mep_form_builder_data', true );
-				if ( $mep_form_builder_data ) {
-					foreach ( $mep_form_builder_data as $_field ) {
-						$user[ $iu ][ $_field['mep_fbc_id'] ] = isset( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ? stripslashes( mage_array_strip( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ) : "";
-						//mep_attendee_upload_file_system($user,$iu,$_field);
-						$user = apply_filters( 'mep_attendee_upload_file', $user, $iu, $_field );
-					}
+			if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
+				for ( $iu = 0; $iu < $count_user; $iu ++ ) {
+					if ( isset( $mep_user_name[ $iu ] ) ):
+						$user[ $iu ]['user_name'] = stripslashes( strip_tags( $mep_user_name[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_email[ $iu ] ) ) :
+						$user[ $iu ]['user_email'] = stripslashes( strip_tags( $mep_user_email[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_phone[ $iu ] ) ) :
+						$user[ $iu ]['user_phone'] = stripslashes( strip_tags( $mep_user_phone[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_address[ $iu ] ) ) :
+						$user[ $iu ]['user_address'] = stripslashes( strip_tags( $mep_user_address[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_gender[ $iu ] ) ) :
+						$user[ $iu ]['user_gender'] = stripslashes( strip_tags( $mep_user_gender[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_tshirtsize[ $iu ] ) ) :
+						$user[ $iu ]['user_tshirtsize'] = stripslashes( strip_tags( $mep_user_tshirtsize[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_company[ $iu ] ) ) :
+						$user[ $iu ]['user_company'] = stripslashes( strip_tags( $mep_user_company[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_desg[ $iu ] ) ) :
+						$user[ $iu ]['user_designation'] = stripslashes( strip_tags( $mep_user_desg[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_website[ $iu ] ) ) :
+						$user[ $iu ]['user_website'] = stripslashes( strip_tags( $mep_user_website[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_vegetarian[ $iu ] ) ) :
+						$user[ $iu ]['user_vegetarian'] = stripslashes( strip_tags( $mep_user_vegetarian[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_ticket_type[ $iu ] ) ) :
+						$user[ $iu ]['user_ticket_type'] = strip_tags( $mep_user_ticket_type[ $iu ] );
+					endif;
+					if ( isset( $event_date[ $iu ] ) ) :
+						$user[ $iu ]['user_event_date'] = stripslashes( strip_tags( $event_date[ $iu ] ) );
+					endif;
+					if ( isset( $mep_event_id[ $iu ] ) ) :
+						$user[ $iu ]['user_event_id'] = stripslashes( strip_tags( $mep_event_id[ $iu ] ) );
+					endif;
+					if ( isset( $mep_user_option_qty[ $iu ] ) ) :
+						$user[ $iu ]['user_ticket_qty'] = stripslashes( strip_tags( $mep_user_option_qty[ $iu ] ) );
+					endif;
+				}
+			}
+			$reg_form_id           = mep_fb_get_reg_form_id( $product_id );
+			$mep_form_builder_data = get_post_meta( $reg_form_id, 'mep_form_builder_data', true );
+			if ( $mep_form_builder_data ) {
+				foreach ( $mep_form_builder_data as $_field ) {
+					$user[ $iu ][ $_field['mep_fbc_id'] ] = isset( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ? stripslashes( mage_array_strip( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ) : "";
+					//mep_attendee_upload_file_system($user,$iu,$_field);
+					$user = apply_filters( 'mep_attendee_upload_file', $user, $iu, $_field );
 				}
 			}
 

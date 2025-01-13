@@ -5351,6 +5351,34 @@ Vanilla theme css by ariful
     color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
   }
+  .mep_smart_theme .mpwem_right_content .speaker-widget {
+    margin-top: 50px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 5px #ddd;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items:last-child {
+    border-bottom: 0;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items img {
+    width: 70px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items h2 {
+    font-size: 19px;
+    letter-spacing: 0.04em;
+    color: #333;
+  }
   .mep_smart_theme .map_location {
     margin: 50px 0;
   }

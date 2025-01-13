@@ -13,6 +13,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             if( $speaker_status == 'yes'){
                 add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'speaker_tab']);
                 add_action('mp_event_all_in_tab_item', [$this, 'speaker_tab_content']);
+                add_action('mep_event_speaker', [$this, 'event_speaker_frontend']);
             }
             
             //ajax icon loader
@@ -50,7 +51,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                             <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
                         </div>
-                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speaker\'s'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
+                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speakers'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
                     </label>
                 </section>
                 <section>
@@ -137,6 +138,30 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             $icons = $FormFieldsGenerator->get_font_aws_array();
             return $icons;
         }
+        public function event_speaker_frontend($event_id){
+        $speakers_id = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
+        $speaker_icon    = get_post_meta($event_id, 'mep_event_speaker_icon', true) ? get_post_meta($event_id, 'mep_event_speaker_icon', true) : 'fa fa-microphone';
+        $speaker_label   = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker", "mage-eventpress");
+        ?>
+        <div class="speaker-widget">
+            <h2 class="_mB"><i class="<?php echo esc_html($speaker_icon); ?>"></i> <?php echo esc_html($speaker_label); ?></h2>
+            <div class="speaker-lists">
+                <?php
+                foreach ($speakers_id as $speakers) {
+                    $default = MPWEM_PLUGIN_URL . '/assets/helper/images/no-photo.jpg';
+                    $thumbnail = has_post_thumbnail($speakers)? get_the_post_thumbnail_url():$default;
+                ?>
+                    <a href="<?php echo get_the_permalink($speakers); ?>" class="items">
+                        <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo get_the_title($speakers); ?>"/>
+                        <h2><?php echo get_the_title($speakers); ?></h2>
+                    </a>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
+        <?php
+        }
         public function show_all_icons() {
             $icons = $this->get_icons();
             if(!empty($icons)):
@@ -165,9 +190,9 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         }
         public function save_settings($post_id) {
             if (get_post_type($post_id) == 'mep_events') {
-                $speaker_title = MP_Global_Function::get_submit_info('mep_speaker_title') ? $_POST['mep_speaker_title'] : 'faka';
-                $speaker_icon = MP_Global_Function::get_submit_info('mep_event_speaker_icon') ? $_POST['mep_event_speaker_icon'] : '';
-                $speakers = MP_Global_Function::get_submit_info('mep_event_speakers_list') ? $_POST['mep_event_speakers_list'] : [];
+                $speaker_title = MP_Global_Function::get_submit_info('mep_speaker_title');
+                $speaker_icon = MP_Global_Function::get_submit_info('mep_event_speaker_icon');
+                $speakers = MP_Global_Function::get_submit_info('mep_event_speakers_list');
                 
                 update_post_meta($post_id, 'mep_speaker_title', $speaker_title);
                 update_post_meta($post_id, 'mep_event_speaker_icon', $speaker_icon);

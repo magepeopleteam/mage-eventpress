@@ -61,6 +61,67 @@
 				max-width: 70%;
 				margin-right:2%;
 			}
+			.mep-timeline {
+				position: relative;
+				padding: 20px 0;
+				list-style: none;
+				.item {
+					display: flex;
+					align-items: flex-start;
+					margin-bottom: 40px;
+					position: relative;
+					padding-left: 40px;
+					&:last-child {
+						margin-bottom: 0;
+						.icon::after {
+							display: none;
+						}
+					} 
+					.icon {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 40px;
+						height: 40px;
+						border-radius: 50%;
+						background-color: var(--mpev-secondary); 
+						border: 1px solid var(--mpev-primary);
+						color: var(--mpev-primary);
+						font-weight: bold;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						font-size: 14px;
+						z-index: 1;
+						&::after {
+							content: '';
+							position: absolute;
+							left: 50%;
+							top: 100%;
+							width: 1px;
+							height: calc(100% + 20px); // Extend the line to connect items
+							background-color: var(--mpev-primary); // Grey timeline line
+							z-index: -1;
+							transform: translateX(-50%);
+						}
+					}
+					.content {
+						padding-left: 10px;
+						position: relative;
+						.title {
+							font-size: 16px;
+							font-weight: bold;
+							margin-bottom: 5px;
+							color: #333; // Dark text color for titles
+						}
+
+						.details {
+							font-size: 14px;
+							color: #666; // Light grey for details text
+						}
+					}
+				}
+			}
 			.date-time-area{
 				display: flex;
 				justify-content: space-around;

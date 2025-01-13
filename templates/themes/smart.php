@@ -27,9 +27,8 @@
                     <div class="mpwem_details_content"><?php the_content(); ?></div>
                 </div>
 			<?php } ?>
-            <div class="mep-default-feature-content">
-		        <?php do_action('mep_event_details', $event_id); ?>
-            </div>
+			<!-- timeline data display -->
+		    <?php do_action('mpwem_timeline'); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
         </div>
         <div class="mpwem_right_content">

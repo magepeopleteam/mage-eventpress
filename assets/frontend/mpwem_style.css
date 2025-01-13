@@ -3398,6 +3398,7 @@ tr.mep_virtual_event_info_sec {
   min-width: 50px;
   position: relative;
   z-index: 1;
+  border: 1px solid var(--mpev-primary);
 }
 
 .mep-default-theme .mep-day-details-item {
@@ -3410,7 +3411,7 @@ tr.mep_virtual_event_info_sec {
 }
 
 .mep-default-theme .mep-day-content:before {
-  border-left: 1px solid #DDD;
+  border-left: 1px solid var(--mpev-primary);
   height: 100%;
   position: absolute;
   left: 0;
@@ -3418,6 +3419,11 @@ tr.mep_virtual_event_info_sec {
   content: "";
   margin-left: 25px;
   z-index: 0;
+}
+
+.mep-default-theme .mep-day-details-item:last-child .mep-day-content::before {
+  display: none;
+  height: 0%;
 }
 
 .default_theme .event-expire-btn,

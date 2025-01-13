@@ -5078,14 +5078,15 @@ Vanilla theme css by ariful
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--mpev-secondary);
+    background-color: #fff;
     border: 1px solid var(--mpev-primary);
     color: var(--mpev-primary);
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
     z-index: 1;
   }
   .mep_smart_theme .mpwem_left_content .mep-timeline .item .icon::after {
@@ -5102,6 +5103,7 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_left_content .mep-timeline .item .content {
     padding-left: 10px;
     position: relative;
+    margin-top: 3px;
   }
   .mep_smart_theme .mpwem_left_content .mep-timeline .item .content .title {
     font-size: 16px;

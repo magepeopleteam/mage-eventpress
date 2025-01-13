@@ -15,4 +15,5 @@
 			<?php do_action('mep_after_social_share_list',$event_id); ?>
 		</ul>
 	</div>
+	<?php echo mep_add_to_google_calender_link( $event_id ); ?>
 <?php

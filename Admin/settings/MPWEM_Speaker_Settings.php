@@ -144,7 +144,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         $speaker_label   = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker", "mage-eventpress");
         ?>
         <div class="speaker-widget">
-            <h2 class="_mB"><i class="<?php echo esc_html($speaker_icon); ?>"></i> <?php echo esc_html($speaker_label); ?></h2>
+            <h2 class="_mB"><?php echo esc_html($speaker_label); ?></h2>
             <div class="speaker-lists">
                 <?php
                 foreach ($speakers_id as $speakers) {

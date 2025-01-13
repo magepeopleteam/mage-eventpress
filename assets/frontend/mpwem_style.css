@@ -5327,9 +5327,27 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
     background-color: #fff;
-    color: var(--mpev-primary);
+    color: var(--mpev-primary) !important;
+    height: auto !important;
+    padding: 10px !important;
+    border-radius: var(--dBR) !important;
+    border: 1px solid var(--mpev-primary);
     margin: 0 !important;
-    padding: 0 !important;
+    margin-top: 20px;
+    color: var(--mpev-primary);
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn:hover {
+    background-color: var(--mpev-secondary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin-right: 15px;
+    display: inline-block;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
@@ -5373,7 +5391,6 @@ Vanilla theme css by ariful
     padding: 15px !important;
     border-radius: var(--dBR) !important;
     border: 1px solid var(--mpev-primary);
-    margin: 0;
     margin-top: 20px;
     color: var(--mpev-primary);
     font-size: var(--button_fs);
@@ -5391,6 +5408,9 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .speaker-widget {
     margin-top: 50px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget h2 {
+    text-transform: capitalize;
   }
   .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists {
     background-color: #fff;

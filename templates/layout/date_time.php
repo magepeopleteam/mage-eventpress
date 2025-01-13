@@ -18,7 +18,7 @@
             <div class="date-lists">
                 <h2><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?></h2>
 				<?php do_action('mep_event_date_default_theme',$event_id,''); ?>
-				<?php  echo mep_add_to_google_calender_link( $event_id ); ?>
+				
             </div>
 			
 		</div>

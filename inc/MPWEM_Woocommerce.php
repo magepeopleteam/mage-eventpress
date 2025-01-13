@@ -34,7 +34,7 @@
 					$total_price          = mep_cart_event_extra_service( 'ticket_price', $total_price, $product_id );
 					$user                 = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();
                     $same_attendee=isset( $_POST['mep_same_attendee'] ) ? sanitize_text_field( $_POST['mep_same_attendee'] ) :'no';
-                    if($same_attendee=='yes'){
+                    if($same_attendee=='yes' && sizeof($user)>0){
 	                    $user_info=[];
 	                    $quantity  = isset( $_POST['option_qty'] ) ? mage_array_strip( $_POST['option_qty'] ) : [];
                         if(sizeof($quantity)>0){
@@ -66,7 +66,7 @@
 					$cart_item_data['event_cart_display_date']  = $mep_event_start_date[0];
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
-//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
+//echo '<pre>';print_r( $user );echo '</pre>';die();
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );
 				} else {
 					return $cart_item_data;

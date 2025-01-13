@@ -154,19 +154,6 @@ ul#mep_add_calender_links li a {
   padding: 10px;
 }
 
-.mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button{
-	background-color: #FFF;
-	padding: 0 15px 0 0 !important;
-	border: 1px solid var(--mpev-base-txt);
-	margin: 20px 0 0 0;
-	color: var(--mpev-base-txt) !important;
-	line-height: 1;
-	height: auto;
-	border-radius: 6px !important;
-}
-/*****************************************************/
-div.location_widgets #gmap_canvas{min-height:80vh !important;}
-
 /*****************************************************/
 #mep_event_date_sch li a {
   display: -webkit-flex;
@@ -2976,6 +2963,26 @@ table.table.table-bordered.mep_event_add_cart_table {
   background: hsla(0, 0%, 50.2%, 0.0705882353);
 }
 
+.mep_events-template-default #ui-datepicker-div {
+  border-color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-datepicker-header {
+  background-color: var(--mpev-primary);
+  background-image: none;
+  border-color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-state-default {
+  color: var(--mpev-primary);
+}
+.mep_events-template-default #ui-datepicker-div .ui-state-active, .mep_events-template-default #ui-datepicker-div .ui-state-hover {
+  background-color: var(--mpev-primary);
+  color: var(--mpev-secondary);
+}
+.mep_events-template-default #ui-datepicker-div a.ui-state-default:hover {
+  background-color: var(--mpev-primary);
+  color: var(--mpev-secondary);
+}
+
 /*************************************************************
 New Winter list style css added by ariful
 **************************************************************/
@@ -3391,6 +3398,7 @@ tr.mep_virtual_event_info_sec {
   min-width: 50px;
   position: relative;
   z-index: 1;
+  border: 1px solid var(--mpev-primary);
 }
 
 .mep-default-theme .mep-day-details-item {
@@ -3403,7 +3411,7 @@ tr.mep_virtual_event_info_sec {
 }
 
 .mep-default-theme .mep-day-content:before {
-  border-left: 1px solid #DDD;
+  border-left: 1px solid var(--mpev-primary);
   height: 100%;
   position: absolute;
   left: 0;
@@ -3411,6 +3419,11 @@ tr.mep_virtual_event_info_sec {
   content: "";
   margin-left: 25px;
   z-index: 0;
+}
+
+.mep-default-theme .mep-day-details-item:last-child .mep-day-content::before {
+  display: none;
+  height: 0%;
 }
 
 .default_theme .event-expire-btn,
@@ -5046,6 +5059,117 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_left_content .mep-timeline {
+    position: relative;
+    padding: 20px 0;
+    list-style: none;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    position: relative;
+    padding-left: 40px;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item:last-child {
+    margin-bottom: 0;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item:last-child .icon::after {
+    display: none;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item .icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1px solid var(--mpev-primary);
+    color: var(--mpev-primary);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    z-index: 1;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item .icon::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 1px;
+    height: calc(100% + 20px);
+    background-color: var(--mpev-primary);
+    z-index: -1;
+    transform: translateX(-50%);
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item .content {
+    padding-left: 10px;
+    position: relative;
+    margin-top: 3px;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item .content .title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .mep_smart_theme .mpwem_left_content .mep-timeline .item .content .details {
+    font-size: 14px;
+    color: #666;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px 0;
+    padding: 10px 0;
+    gap: 20px;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area {
+    width: 100%;
+    position: relative;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label input, .mep_smart_theme .mpwem_left_content .date-time-area label select, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select {
+    border: 1px solid var(--mpev-primary);
+    padding: 15px;
+    padding-left: 30px;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label input:focus, .mep_smart_theme .mpwem_left_content .date-time-area label select:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area input:focus, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select:focus {
+    background-color: #fff;
+    box-shadow: 0 0 5px var(--mpev-primary);
+    color: var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label select.formControl, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area select.formControl {
+    background: none;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label span, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area span {
+    display: none;
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label i, .mep_smart_theme .mpwem_left_content .date-time-area .mpwem_time_area i {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 10px;
+    color: var(--mpev-primary);
+    transform: translateY(-50%);
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label {
+    position: relative;
+    font-family: "Font Awesome 5 Free";
+  }
+  .mep_smart_theme .mpwem_left_content .date-time-area label::after {
+    content: "\f078";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--mpev-primary);
+  }
   .mep_smart_theme .mpwem_left_content .mpwem_booking_panel .mpwem_ticket_type {
     border: 2px solid var(--mpev-primary);
   }
@@ -5173,9 +5297,57 @@ Vanilla theme css by ariful
     background: none;
     margin-right: 15px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date_time_box .date_time {
-    height: 30vh;
-    overflow-y: scroll;
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets [data-read] {
+    color: var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul {
+    list-style-type: disc;
+    padding-left: 18px;
+    margin-bottom: 20px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li {
+    margin-bottom: 20px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li::marker {
+    color: var(--mpev-primary);
+    font-size: 1.5em;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span {
+    display: block;
+    margin: 0;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
+    margin: 0;
+    font-size: 16px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists i {
+    display: none;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
+    background-color: #fff;
+    color: var(--mpev-primary) !important;
+    height: auto !important;
+    padding: 10px !important;
+    border-radius: var(--dBR) !important;
+    border: 1px solid var(--mpev-primary);
+    margin: 0 !important;
+    margin-top: 20px;
+    color: var(--mpev-primary);
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn:hover {
+    background-color: var(--mpev-secondary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin-right: 15px;
+    display: inline-block;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
@@ -5211,6 +5383,59 @@ Vanilla theme css by ariful
     background-color: var(--mpev-secondary);
     color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender {
+    background-color: #fff;
+    color: var(--mpev-primary) !important;
+    height: auto !important;
+    padding: 15px !important;
+    border-radius: var(--dBR) !important;
+    border: 1px solid var(--mpev-primary);
+    margin-top: 20px;
+    color: var(--mpev-primary);
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender:hover {
+    background-color: var(--mpev-secondary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin-right: 15px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget {
+    margin-top: 50px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget h2 {
+    text-transform: capitalize;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 5px #ddd;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items:last-child {
+    border-bottom: 0;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items img {
+    width: 70px;
+  }
+  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items h2 {
+    font-size: 19px;
+    letter-spacing: 0.04em;
+    color: #333;
   }
   .mep_smart_theme .map_location {
     margin: 50px 0;

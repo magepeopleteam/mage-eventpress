@@ -61,6 +61,119 @@
 				max-width: 70%;
 				margin-right:2%;
 			}
+			.mep-timeline {
+				position: relative;
+				padding: 20px 0;
+				list-style: none;
+				.item {
+					display: flex;
+					align-items: flex-start;
+					margin-bottom: 40px;
+					position: relative;
+					padding-left: 40px;
+					&:last-child {
+						margin-bottom: 0;
+						.icon::after {
+							display: none;
+						}
+					} 
+					.icon {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 40px;
+						height: 40px;
+						border-radius: 50%;
+						background-color: #fff; 
+						border: 1px solid var(--mpev-primary);
+						color: var(--mpev-primary);
+						font-weight: bold;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						font-size: var(--button_fs);
+    					font-weight: var(--fw-medium);
+						z-index: 1;
+						&::after {
+							content: '';
+							position: absolute;
+							left: 50%;
+							top: 100%;
+							width: 1px;
+							height: calc(100% + 20px); // Extend the line to connect items
+							background-color: var(--mpev-primary); // Grey timeline line
+							z-index: -1;
+							transform: translateX(-50%);
+						}
+					}
+					.content {
+						padding-left: 10px;
+						position: relative;
+						margin-top: 3px;
+						.title {
+							font-size: 16px;
+							font-weight: bold;
+							margin-bottom: 5px;
+							color: #333; // Dark text color for titles
+						}
+
+						.details {
+							font-size: 14px;
+							color: #666; // Light grey for details text
+						}
+					}
+				}
+			}
+			.date-time-area{
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				flex-direction: column;
+				margin: 20px 0;
+				padding: 10px 0;
+				gap: 20px;
+				label,.mpwem_time_area{
+					width: 100%;
+					position: relative;
+					input,select{
+						border: 1px solid var(--mpev-primary);
+						padding: 15px;
+						padding-left: 30px;
+						&:focus{
+							background-color: #fff;
+							box-shadow: 0 0 5px var(--mpev-primary);
+							color: var(--mpev-primary);
+						}
+					}
+					select.formControl{
+						background:none;
+					}
+					span{
+						display: none;
+					}
+					i{
+						position: absolute;
+						z-index: 1;
+						top: 50%;
+						left:10px;
+						color: var(--mpev-primary);
+						transform: translateY(-50%);
+					}
+				}
+				label{
+					position: relative;
+					font-family: "Font Awesome 5 Free";
+					&::after{
+						
+						content: "\f078";
+						position: absolute;
+						top:50%;
+						right:10px;
+						transform: translateY(-50%);
+						color: var(--mpev-primary);
+					}
+				}
+			}
 			.mpwem_booking_panel{
 				.mpwem_ticket_type{
 					border: 2px solid var(--mpev-primary);
@@ -195,14 +308,64 @@
 					}
 				}
 				.date_widgets{
-					.date_time_box{
-						.date_time{
-							height:30vh;
-							overflow-y: scroll;
+					[data-read]{
+						color: var(--mpev-primary);
+					}
+					.date-lists{
+						ul{
+							list-style-type:disc;
+							padding-left: 18px;
+							margin-bottom: 20px;
+							li{
+								margin-bottom: 20px;
+								&::marker {
+									color: var(--mpev-primary); 
+									font-size: 1.5em; 
+								}
+								span{
+									display: block;
+									margin: 0;
+									font-size: 16px;
+									letter-spacing: 0.1em;
+								}
+							}
+							&#mep_event_date_sch {
+								
+								li span{
+									margin: 0;
+									font-size: 16px;
+								}
+							}
+						}
+						i{
+							display: none;
+						}
+						.mep_single_date_btn{
+							background-color: #fff;
+							color: var(--mpev-primary) !important;
+							height: auto !important;
+							padding:10px !important;
+							border-radius: var(--dBR) !important;
+							border: 1px solid var(--mpev-primary);
+							margin: 0 !important;
+							margin-top: 20px;
+							color: var(--mpev-primary);
+							font-size: var(--button_fs);
+							font-weight: var(--fw-medium);
+							line-height: inherit;
+							&:hover{
+								background-color: var(--mpev-secondary);
+							}
+							i{
+								font-size: 16px;
+								padding: 0;
+								background: none;
+								margin-right:15px;
+								display: inline-block;
+							}
 						}
 					}
 				}
-
 				.share_widgets{
 					text-align: center;
 					padding: 30px;
@@ -239,8 +402,60 @@
 					}
 					
 				}
+				#mep_add_calender_button.mep-add-calender{
+					background-color: #fff;
+					color: var(--mpev-primary) !important;
+					height: auto !important;
+					padding:15px !important;
+					border-radius: var(--dBR) !important;
+					border: 1px solid var(--mpev-primary);
+					margin-top: 20px;
+					color: var(--mpev-primary);
+					font-size: var(--button_fs);
+					font-weight: var(--fw-medium);
+					line-height: inherit;
+					&:hover{
+						background-color: var(--mpev-secondary);
+					}
+					i{
+						font-size: 16px;
+						padding: 0;
+						background: none;
+						margin-right:15px;
+					}
+				}
 			}
-			
+			.speaker-widget{
+				margin-top: 50px;
+				h2{
+					text-transform: capitalize;
+				}
+				.speaker-lists{
+					background-color: #fff;
+					border-radius: 20px;
+					box-shadow: 0 0 5px #ddd;
+					.items{
+						display: flex;
+						flex-direction: row;
+						justify-content: start;
+						align-items: center;
+						gap: 20px;
+						padding: 20px;
+						border-bottom: 1px solid #ddd;
+						&:last-child{
+							border-bottom: 0;
+						}
+						img{
+							width: 70px;
+						}
+						h2{
+							font-size: 19px;
+							letter-spacing: .04em;
+							color: #333;
+						}
+					}
+				}
+			}
 		}
 		.map_location{
 			margin: 50px 0;

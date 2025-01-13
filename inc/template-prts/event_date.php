@@ -148,8 +148,8 @@ if (!function_exists('mep_date_in_default_theme')) {
         echo '</ul>';
         if (sizeof($more_date) > 2) { 
             ?>
-            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?></p>
-            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress')); ?></p>
+            <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><i class="fa fa-plus"></i><?php echo mep_get_option('mep_event_view_more_date_btn_text', 'label_setting_sec', __('View More Date', 'mage-eventpress')); ?></p>
+            <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><i class="fa fa-minus"></i><?php echo mep_get_option('mep_event_hide_date_list_btn_text', 'label_setting_sec', __('Hide Date Lists', 'mage-eventpress')); ?></p>
             <?php
         }
     }

@@ -13,6 +13,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         public function __construct() {
             add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'timeline_tab']);
             add_action('mp_event_all_in_tab_item', [$this, 'timeline_tab_content']);
+            add_action('mpwem_timeline', [$this, 'frontend_timeline_data']);
 
             add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save timeline data
@@ -129,6 +130,35 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                         </div>
                     <?php
                 endforeach;
+            endif;
+        }
+
+        public function frontend_timeline_data(){
+            $post_id = get_the_ID();
+            $mep_timeline = get_post_meta($post_id,'mep_event_day',true);
+            if( ! empty($mep_timeline)):
+                ?>
+                <div class="mep-timeline">
+                    <h2 class="_mB"><?php esc_html_e('Event Timelines','mage-eventpress'); ?></h2>  
+                    <?php
+                    $counter = 1;
+                    foreach ($mep_timeline as $value) : 
+                        ?>
+                        <div class="item">
+                            <div class="icon"><?php echo esc_html($counter); ?></div>
+                            <div class="content">
+                                <div class="title"><?php echo esc_html($value['mep_day_title']); ?></div>
+                                <div class="details">
+                                    <?php echo wp_kses_post($value['mep_day_content']); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        $counter++;
+                    endforeach;
+                    ?>
+                </div>
+                <?php
             endif;
         }
 

@@ -311,26 +311,40 @@
 					[data-read]{
 						color: var(--mpev-primary);
 					}
-					#mep_add_calender_button.mep-add-calender{
-						background-color: #fff;
-						color: var(--mpev-primary) !important;
-						height: auto !important;
-						padding:15px !important;
-						border-radius: var(--dBR) !important;
-						border: 1px solid var(--mpev-primary);
-						margin-top: 20px;
-						color: var(--mpev-primary);
-						font-size: var(--button_fs);
-    					font-weight: var(--fw-medium);
-						line-height: inherit;
-						&:hover{
-							background-color: var(--mpev-secondary);
+					.date-lists{
+						ul{
+							list-style-type:disc;
+							padding-left: 18px;
+							margin-bottom: 20px;
+							li{
+								margin-bottom: 20px;
+								&::marker {
+									color: var(--mpev-primary); 
+									font-size: 1.5em; 
+								}
+								span{
+									display: block;
+									margin: 0;
+									font-size: 16px;
+									letter-spacing: 0.1em;
+								}
+							}
+							&#mep_event_date_sch {
+								
+								li span{
+									margin: 0;
+									font-size: 16px;
+								}
+							}
 						}
 						i{
-							font-size: 16px;
-							padding: 0;
-							background: none;
-							margin-right:15px;
+							display: none;
+						}
+						.mep_single_date_btn{
+							background-color: #fff;
+							color: var(--mpev-primary);
+							margin: 0 !important;
+							padding: 0 !important;
 						}
 					}
 				}
@@ -369,6 +383,29 @@
 						}
 					}
 					
+				}
+				#mep_add_calender_button.mep-add-calender{
+					background-color: #fff;
+					color: var(--mpev-primary) !important;
+					height: auto !important;
+					padding:15px !important;
+					border-radius: var(--dBR) !important;
+					border: 1px solid var(--mpev-primary);
+					margin: 0;
+					margin-top: 20px;
+					color: var(--mpev-primary);
+					font-size: var(--button_fs);
+					font-weight: var(--fw-medium);
+					line-height: inherit;
+					&:hover{
+						background-color: var(--mpev-secondary);
+					}
+					i{
+						font-size: 16px;
+						padding: 0;
+						background: none;
+						margin-right:15px;
+					}
 				}
 			}
 			.speaker-widget{

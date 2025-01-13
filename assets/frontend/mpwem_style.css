@@ -5300,27 +5300,36 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets [data-read] {
     color: var(--mpev-primary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender {
-    background-color: #fff;
-    color: var(--mpev-primary) !important;
-    height: auto !important;
-    padding: 15px !important;
-    border-radius: var(--dBR) !important;
-    border: 1px solid var(--mpev-primary);
-    margin-top: 20px;
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul {
+    list-style-type: disc;
+    padding-left: 18px;
+    margin-bottom: 20px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li {
+    margin-bottom: 20px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li::marker {
     color: var(--mpev-primary);
-    font-size: var(--button_fs);
-    font-weight: var(--fw-medium);
-    line-height: inherit;
+    font-size: 1.5em;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender:hover {
-    background-color: var(--mpev-secondary);
-  }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets #mep_add_calender_button.mep-add-calender i {
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span {
+    display: block;
+    margin: 0;
     font-size: 16px;
-    padding: 0;
-    background: none;
-    margin-right: 15px;
+    letter-spacing: 0.1em;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
+    margin: 0;
+    font-size: 16px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists i {
+    display: none;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
+    background-color: #fff;
+    color: var(--mpev-primary);
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
@@ -5356,6 +5365,29 @@ Vanilla theme css by ariful
     background-color: var(--mpev-secondary);
     color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender {
+    background-color: #fff;
+    color: var(--mpev-primary) !important;
+    height: auto !important;
+    padding: 15px !important;
+    border-radius: var(--dBR) !important;
+    border: 1px solid var(--mpev-primary);
+    margin: 0;
+    margin-top: 20px;
+    color: var(--mpev-primary);
+    font-size: var(--button_fs);
+    font-weight: var(--fw-medium);
+    line-height: inherit;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender:hover {
+    background-color: var(--mpev-secondary);
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender i {
+    font-size: 16px;
+    padding: 0;
+    background: none;
+    margin-right: 15px;
   }
   .mep_smart_theme .mpwem_right_content .speaker-widget {
     margin-top: 50px;

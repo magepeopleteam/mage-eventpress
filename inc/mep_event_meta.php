@@ -29,6 +29,7 @@ use Sabberworm\CSS\Value\Value;
 			$post_id = get_the_id();
 			$event_type 		= get_post_meta($post_id, 'mep_event_type', true);
 			$mep_reg_status = get_post_meta($post_id, 'mep_reg_status', true);
+			$mep_reg_status = $mep_reg_status?$mep_reg_status:'on';
 			wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce');
 			?>
             <div class="mp_event_all_meta_in_tab mp_event_tab_area">
@@ -169,6 +170,7 @@ use Sabberworm\CSS\Value\Value;
 		public function registration_on_off($post_id){
 			wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
 			$mep_reg_status = get_post_meta($post_id, 'mep_reg_status', true);
+			$mep_reg_status= $mep_reg_status?$mep_reg_status:'on';
 			?>
 			<section>
 				<label class="label">
@@ -886,7 +888,7 @@ use Sabberworm\CSS\Value\Value;
 			// wp_nonce_field('mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce');
 			
 			$mep_show_end_datetime = get_post_meta($post_id,'mep_show_end_datetime',true);
-			$mep_show_end_datetime = $mep_show_end_datetime?$mep_show_end_datetime:'no';
+			$mep_show_end_datetime = $mep_show_end_datetime?$mep_show_end_datetime:'yes';
 
 			?>
 			<section>

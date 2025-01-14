@@ -21,9 +21,9 @@ $_the_event_id = $event_id;
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $_the_event_id); ?>
         </div>
-        <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail', $_the_event_id); ?>
-        </div>        
+        <div class="mpStyle">
+            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+        </div>      
         <div class="mep-default-feature-content">
             <?php do_action('mep_event_details', $_the_event_id); ?>
         </div>

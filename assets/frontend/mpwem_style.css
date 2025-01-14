@@ -5494,6 +5494,7 @@ Vanilla theme css by ariful
     width: 100%;
     background-color: #fff;
     padding: 10px;
+    box-shadow: 0 0 5px #dddddd;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
@@ -5604,14 +5605,10 @@ Vanilla theme css by ariful
     border-radius: 5px;
     background-color: var(--mpev-primary);
     color: var(--mpev-secondary);
+    padding: 14px;
   }
   .related-events .related-events-items {
     margin-top: 20px;
-    display: flex;
-    justify-content: start;
-    align-items: stretch;
-    gap: 20px;
-    flex-wrap: wrap;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
@@ -5684,7 +5681,7 @@ Vanilla theme css by ariful
     margin: 0;
   }
   .slick-slide {
-    margin: 10px 10px; /* Adjust this value for your desired gap */
+    margin: 10px 10px;
     padding: 0 10px;
     box-sizing: border-box;
     display: flex;
@@ -5692,10 +5689,13 @@ Vanilla theme css by ariful
   }
   .slick-slide > div {
     flex: 1;
-    min-height: 100px; /* Set a minimum height */
+    min-height: 100px;
     display: flex;
-    justify-content: center; /* Optional: Center content vertically */
-    align-items: center; /* Optional: Center content vertically */
+    justify-content: center;
+    align-items: center;
+  }
+  .slick-dots li.slick-active button::before {
+    color: var(--mpev-primary);
   }
   div.mpwem_details_content,
   div.mpwem_details_content p {

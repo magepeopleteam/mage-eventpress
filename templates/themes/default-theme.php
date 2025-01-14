@@ -25,8 +25,8 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>
         </div>
-        <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail', $event_id); ?>
+        <div class="mpStyle">
+            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>

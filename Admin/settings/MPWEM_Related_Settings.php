@@ -37,9 +37,11 @@
 					$event_list    = isset( $_POST['event_list'] ) ? $_POST['event_list'] : array();
 					$column_number = isset( $_POST['event_list_column'] ) ? $_POST['event_list_column'] : '';
 					$section_label = isset( $_POST['related_section_label'] ) ? $_POST['related_section_label'] : '';
+					$event_status = isset( $_POST['mep_related_event_status'] ) ? $_POST['mep_related_event_status'] : 'off';
 					update_post_meta( $post_id, '_list_column', $column_number );
 					update_post_meta( $post_id, '_event_list', $event_list );
 					update_post_meta( $post_id, '_related_section_label', $section_label );
+					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
 				}
 			}
 		
@@ -59,7 +61,8 @@
 				// $column_num    = get_post_meta( $post_id, '_list_column', true );
 				$section_label = get_post_meta( $post_id, '_related_section_label', true );
 				// $column_num = $column_num[0];
-
+				$related_event_status = get_post_meta($post_id,'mep_related_event_status',true);
+				$related_event_status = $related_event_status?$related_event_status:'off';
 				?>
 				<div class="mp_tab_item related-products" data-tab-item="#mep_related_event_meta">
 					<h3><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h3>
@@ -69,53 +72,56 @@
 						<h2><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h2>
 						<span><?php esc_html_e('Related Event', 'mage-eventpress'); ?></span>
 					</section>
-		
-					<!-- <section>
-						<label class="label">
-							<div>
-								<h2><span><?php esc_html_e('Column Number', 'mage-eventpress'); ?></span></h2>
-								<span><?php esc_html_e('Enter the column number of this event', 'mage-eventpress'); ?></span>
-							</div>
-							<input type="number" max="4" min="2" name="event_list_column" class="event_list_column"
-								id="event_list_column" value="<?php echo $column_num; ?>" placeholder="ex: 3 ">
-						</label>
-					</section> -->
-		
+
 					<section>
 						<label class="label">
 							<div>
-								<h2><span><?php esc_html_e('Related Events Section Label', 'mage-eventpress'); ?></span></h2>
-								<span><?php esc_html_e('Add a title above the releated events', 'mage-eventpress'); ?></span>
+								<h2><span><?php esc_html_e('Show Related Events', 'mage-eventpress'); ?></span></h2>
+								<span><?php esc_html_e('Show/hide releated events in frontend template', 'mage-eventpress'); ?></span>
 							</div>
-							<input type="text" max="4" min="2" name="related_section_label" class="related_section_label"
-								id="related_section_label" value="<?php echo $section_label; ?>" placeholder="Label text">
+							<label class="mpev-switch">
+								<input type="checkbox" name="mep_related_event_status" value="<?php echo esc_attr($related_event_status); ?>" <?php echo esc_attr($related_event_status=='on'?'checked':''); ?> data-collapse-target="#mpev-related-event-display" data-toggle-values="on,off">
+								<span class="slider"></span>
+							</label>
 						</label>
 					</section>
-		
-					<section>
-						<label class="label">
-							<div>
-								<h2><span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span></h2>
-								<span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span>
-							</div>
-							
-							<div>
-								<select class="chosen-select" multiple="multiple" id="upsizing_products"
-										name="event_list[]"
-										data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>"
-										data-action="woocommerce_json_search_products_and_variations"
-										data-exclude="<?php echo intval( $post->ID ); ?>">
-										
-									<?php
+					<div id="mpev-related-event-display" style="display: <?php echo esc_html($related_event_status=='on'?'block':'none'); ?>;">
+						<section>
+							<label class="label">
+								<div>
+									<h2><span><?php esc_html_e('Related Events Section Label', 'mage-eventpress'); ?></span></h2>
+									<span><?php esc_html_e('Add a title above the releated events', 'mage-eventpress'); ?></span>
+								</div>
+								<input type="text" max="4" min="2" name="related_section_label" class="related_section_label"
+									id="related_section_label" value="<?php echo $section_label; ?>" placeholder="Label text">
+							</label>
+						</section>
 			
-									foreach ( $post_title_array as $product_id => $value ) : ?>
-										<option value="<?php echo $product_id; ?>" <?php echo in_array($product_id, $product_ids)?'selected':''; ?> ><?php echo $value; ?></option>
-									<?php endforeach; ?>
-								</select> 
-								<?php echo wc_help_tip( __( 'Select Products Here.', 'woocommerce' ) ); ?>
-							</div>
-						</label>
-					</section>
+						<section>
+							<label class="label">
+								<div>
+									<h2><span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span></h2>
+									<span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span>
+								</div>
+								
+								<div>
+									<select class="chosen-select" multiple="multiple" id="upsizing_products"
+											name="event_list[]"
+											data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>"
+											data-action="woocommerce_json_search_products_and_variations"
+											data-exclude="<?php echo intval( $post->ID ); ?>">
+											
+										<?php
+				
+										foreach ( $post_title_array as $product_id => $value ) : ?>
+											<option value="<?php echo $product_id; ?>" <?php echo in_array($product_id, $product_ids)?'selected':''; ?> ><?php echo $value; ?></option>
+										<?php endforeach; ?>
+									</select> 
+									<?php echo wc_help_tip( __( 'Select Products Here.', 'woocommerce' ) ); ?>
+								</div>
+							</label>
+						</section>
+					</div>
 				</div>
 		
 				<?php
@@ -124,7 +130,7 @@
 			public function woocom_linked_products_data_custom_field() {
 				global $woocommerce, $post;
 				?>
-				<p class="form-field">
+				<!-- <p class="form-field">
 					<label for="upsizing_products"><?php _e( 'Event List', 'woocommerce' ); ?></label>
 					<select class="chosen-select" multiple="multiple" style="width: 50%;" id="upsizing_products"
 							name="upsizing_products[]"
@@ -155,7 +161,7 @@
 						}
 						?>
 					</select> <?php echo wc_help_tip( __( 'Select Products Here.', 'woocommerce' ) ); ?>
-				</p>
+				</p> -->
 		
 				<?php
 			}
@@ -226,10 +232,12 @@
 							} ?>'>
 								<div class="mep_list_thumb">
 									<a href="<?php echo get_the_permalink( $values ); ?>"><?php echo get_the_post_thumbnail( $values ); ?></a>
+									<?php if(isset($event_meta['mep_event_start_date'][0])): ?>
 									<div class="mep-ev-start-date">
 										<div class="mep-day"><?php echo date_i18n( 'd', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>
 										<div class="mep-month"><?php echo date_i18n( 'M', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>
 									</div>
+									<?php endif; ?>
 								</div>
 								<div class="mep_list_event_details"><a
 											href="<?php echo get_the_permalink( $values ); ?>">
@@ -319,7 +327,10 @@
 				$section_label = get_post_meta( $post->ID, '_related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
+				$related_event_status = get_post_meta( $post->ID, 'mep_related_event_status', true );
+				$related_event_status= $related_event_status ? $related_event_status:'off';
 				?>
+				<?php if($related_event_status=='on'): ?>
 				<div class="<?php echo $smart_theme=='smart.php'?'mep_smart_theme':''; ?>">
 					<div class="related-events">
 						<div class="related-events-header mpStyle">
@@ -368,10 +379,12 @@
 								<div class="item">
 									<a href="<?php echo get_the_permalink( $values ); ?>">
 										<img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="">
+										<?php if(isset($event_meta['mep_event_start_date'][0])): ?>
 										<div class="mep-ev-start-date">
 											<div class="mep-day"><?php echo date_i18n( 'd', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>
 											<div class="mep-month"><?php echo date_i18n( 'M', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>
 										</div>
+										<?php endif; ?>
 									</a>
 									<div class="item-info">
 										<div class="title">
@@ -420,9 +433,9 @@
 								prevArrow:'.mep-ev-prev',
 								nextArrow:'.mep-ev-next',
 								infinite: true,
-								autoplay: true,
-								autoplaySpeed: 2000,
 								centerMode: true,
+								autoplay: false,
+								autoplaySpeed: 2000,
 								centerPadding: '10px',
 								slidesToShow: 3,
 								slidesToScroll: 1,
@@ -449,6 +462,7 @@
 					})(jQuery);
 
 				</script>
+				<?php endif; ?>
 				<?php
 			}
 			public function related_single_products() {

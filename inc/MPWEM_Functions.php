@@ -251,6 +251,7 @@
 											$times[$count]['start']['time'] = array_key_exists('mep_ticket_time', $time_list) ? $time_list['mep_ticket_time'] : '';
 											$count++;
 										}
+										
 									}
 								}
 							}
@@ -258,9 +259,11 @@
 								$start_time = MP_Global_Function::get_post_info($event_id, 'event_start_time');
 								$end_time = MP_Global_Function::get_post_info($event_id, 'event_end_time');
 								if ($start_time) {
+									$times[0]['start']['label'] = date('H:i', strtotime($start_time));
 									$times[0]['start']['time'] = date('H:i', strtotime($start_time));
 								}
 								if ($end_time) {
+									$times[0]['end']['label'] = date('H:i', strtotime($end_time));
 									$times[0]['end']['time'] = date('H:i', strtotime($end_time));
 								}
 							}

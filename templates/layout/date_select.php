@@ -18,10 +18,11 @@
 				?>
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 			<?php } else { ?>
-                <div class="_dLayout_xs">
+                <div class="date-time-area">
                     <label>
                         <span><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></span>
-                        <select class="formControl" name="mpwem_date_time" id="mpwem_date_time">
+                        <i class="far fa-calendar"></i>
+						<select class="formControl" name="mpwem_date_time" id="mpwem_date_time">
 							<?php foreach ( $all_dates as $dates ) { ?>
                                 <option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>><?php echo esc_html( MP_Global_Function::date_format( $dates['time'], $date_format ) ); ?></option>
 							<?php } ?>

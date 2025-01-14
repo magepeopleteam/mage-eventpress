@@ -28,7 +28,7 @@ use Sabberworm\CSS\Value\Value;
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			$post_id = get_the_id();
 			$event_type 		= get_post_meta($post_id, 'mep_event_type', true);
-			
+			$mep_reg_status = get_post_meta($post_id, 'mep_reg_status', true);
 			wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce');
 			?>
             <div class="mp_event_all_meta_in_tab mp_event_tab_area">
@@ -103,7 +103,7 @@ use Sabberworm\CSS\Value\Value;
 						<?php $this->event_view_shortcode($post_id); ?>
 						<?php $this->registration_on_off($post_id); ?>
 
-                        <div id='mep_ticket_type_setting_sec'>
+                        <div id='mep_ticket_type_setting_sec' style="display:<?php echo esc_attr($mep_reg_status == 'on' ? 'block' : 'none'); ?>">
 							<section class="bg-light" style="margin-top: 20px;">
 								<h2><?php esc_html_e('Ticket Type List','mage-eventpress') ?></h2>
 								<span><?php esc_html_e('Configure Ticket Type','mage-eventpress') ?></span>

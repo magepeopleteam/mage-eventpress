@@ -612,11 +612,7 @@
 		}
 		.related-events-items{
 			margin-top: 20px;
-			display: flex;
-			justify-content: start;
-			align-items: stretch;
-			gap: 20px;
-			flex-wrap: wrap;
+			
 			
 			@media (min-width:540px) {
 				gap: 50px;

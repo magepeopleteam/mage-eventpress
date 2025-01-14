@@ -5609,11 +5609,6 @@ Vanilla theme css by ariful
   }
   .related-events .related-events-items {
     margin-top: 20px;
-    display: flex;
-    justify-content: start;
-    align-items: stretch;
-    gap: 20px;
-    flex-wrap: wrap;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {

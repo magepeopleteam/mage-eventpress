@@ -291,7 +291,7 @@
                     </section>
 					<?php $this->event_type_section($post_id); ?>
 					<?php $this->normal_particular_section($post_id); ?>
-                    <div class="<?php echo esc_attr($event_type == 'everyday' ? 'mActive' : ''); ?>" data-collapse="#mep_everyday_event">
+                    <div style="display:<?php echo esc_attr($event_type == 'everyday' ? 'block' : 'none'); ?>" data-collapse="#mep_everyday_event">
 						<?php $this->date_time_section($post_id); ?>
 						<?php $this->off_days_section($post_id); ?>
 						<?php $this->time_settings_section($post_id); ?>

@@ -5024,10 +5024,6 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator {
     color: var(--mpev-secondary);
   }
-  .mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcase.right {
-    justify-content: start;
-    gap: 10px;
-  }
   .mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator {
     color: var(--mpev-primary);
   }

@@ -19,8 +19,8 @@ $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_settin
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class="mep-default-theme bristol">
-    <div class="mep-default-feature-image">
-        <?php do_action('mep_event_thumbnail', $event_id); ?>
+    <div class="mpStyle">
+        <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>
     <div class="mep-default-title">
         <?php do_action('mep_event_title', $event_id); ?>

@@ -420,7 +420,7 @@
 								prevArrow:'.mep-ev-prev',
 								nextArrow:'.mep-ev-next',
 								infinite: true,
-								autoplay: true,
+								autoplay: false,
 								autoplaySpeed: 2000,
 								centerMode: true,
 								centerPadding: '10px',

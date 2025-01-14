@@ -7,7 +7,7 @@
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$hide_share_details = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
 
-	$speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+	$speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 ?>
 <div class="mpStyle mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>

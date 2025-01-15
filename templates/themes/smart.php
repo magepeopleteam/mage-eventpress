@@ -34,7 +34,7 @@
         <div class="mpwem_right_content">
             <h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
             <div class="mpwem_sidebar_content">
-				<?php do_action( 'mpwem_date_time', $event_id, $all_dates, $all_times ); ?>
+				<?php do_action( 'mpwem_date_lists', $event_id, $all_dates, $all_times ); ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
 				<?php do_action( 'mpwem_social', $event_id ); ?>
             </div>

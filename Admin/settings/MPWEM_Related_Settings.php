@@ -25,7 +25,7 @@
 			public function event_related_tab() {
 				?>
 					<li data-target-tabs="#mep_related_event_meta">
-						<i class="fas fa-plug"></i><?php esc_html_e('Related Event Products', 'mage-eventpress'); ?>
+						<i class="fas fa-plug"></i><?php esc_html_e('Related Events', 'mage-eventpress'); ?>
 					</li>
 				<?php
 			}
@@ -65,8 +65,8 @@
 				$related_event_status = $related_event_status?$related_event_status:'off';
 				?>
 				<div class="mp_tab_item related-products" data-tab-item="#mep_related_event_meta">
-					<h3><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h3>
-					<p><?php esc_html_e('Related Event will be here.', 'mage-eventpress'); ?></p>
+					<h3><?php esc_html_e('Related Event Settings', 'mage-eventpress'); ?></h3>
+					<p><?php esc_html_e('Related Event setup.', 'mage-eventpress'); ?></p>
 					
 					<section class="bg-light">
 						<h2><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h2>

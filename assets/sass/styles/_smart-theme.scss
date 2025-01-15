@@ -458,6 +458,7 @@
 			iframe{
 				margin-top: 20px;
 				border-radius: 15px;
+				height: 450px;
 			}
 		}
 		.faq_area{
@@ -498,6 +499,7 @@
 					background-color: #fff;
 					padding: 10px;
 					box-shadow: 0 0 5px #dddddd;
+					border-radius: 10px;
 					@media (min-width:540px) {
 						width: 49%;
 					}

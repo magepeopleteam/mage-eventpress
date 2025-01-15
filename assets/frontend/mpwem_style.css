@@ -5439,6 +5439,7 @@ Vanilla theme css by ariful
   .mep_smart_theme .map_location iframe {
     margin-top: 20px;
     border-radius: 15px;
+    height: 450px;
   }
   .mep_smart_theme .faq_area {
     background-color: #f8fafc;
@@ -5491,6 +5492,7 @@ Vanilla theme css by ariful
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 0 5px #dddddd;
+    border-radius: 10px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {

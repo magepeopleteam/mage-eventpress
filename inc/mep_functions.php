@@ -4234,18 +4234,18 @@
 									?>
                                     <li>
                                         <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'] ) ); ?>">
-                     <span class='mep-more-date'>
-                        <i class="fa fa-calendar"></i>
-                        <?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
-                      </span>
+											<span class='mep-more-date'>
+												<i class="fa fa-calendar"></i>
+												<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
+											</span>
                                             <span class='mep-more-time'>
-                         <i class="fa fa-clock-o"></i>
-                        <?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
-													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
-												}
-													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
-												?>
-                      </span>
+											<i class="fa fa-clock-o"></i>
+											<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
+												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
+											}
+												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
+											?>
+										</span>
                                         </a>
                                     </li>
 									<?php
@@ -4442,7 +4442,7 @@
 		}
 		?>
         <section>
-            <label class="label">
+            <div class="label">
                 <div>
                     <h2><span><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></span></h2>
                     <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
@@ -4451,7 +4451,7 @@
                     <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr( $date_format ); ?>" <?php echo esc_attr( ( $date_format == 'on' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
                     <span class="slider"></span>
                 </label>
-            </label>
+            </div>
         </section>
         <div id='mep_custom_timezone_setting' style="display:<?php echo ( $date_format == 'on' ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
             <section>

@@ -1556,6 +1556,7 @@ button.mep-cat-control.mixitup-control-active {
 #mep_event_date_sch {
   height: 300px;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .mep_view_all_date {
@@ -1573,6 +1574,10 @@ span.mep_single_date_btn {
   color: #FFF;
   padding: 5px;
   cursor: pointer;
+}
+
+.mep-tem3-title-sec.mep_single_date_btn i {
+  display: none;
 }
 
 .mep-default-feature-content ul {
@@ -5439,6 +5444,7 @@ Vanilla theme css by ariful
   .mep_smart_theme .map_location iframe {
     margin-top: 20px;
     border-radius: 15px;
+    height: 450px;
   }
   .mep_smart_theme .faq_area {
     background-color: #f8fafc;
@@ -5491,6 +5497,7 @@ Vanilla theme css by ariful
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 0 5px #dddddd;
+    border-radius: 10px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {

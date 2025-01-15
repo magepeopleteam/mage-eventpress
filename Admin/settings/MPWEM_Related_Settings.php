@@ -25,7 +25,7 @@
 			public function event_related_tab() {
 				?>
 					<li data-target-tabs="#mep_related_event_meta">
-						<i class="fas fa-plug"></i><?php esc_html_e('Related Event Products', 'mage-eventpress'); ?>
+						<i class="fas fa-plug"></i><?php esc_html_e('Related Events', 'mage-eventpress'); ?>
 					</li>
 				<?php
 			}
@@ -65,8 +65,8 @@
 				$related_event_status = $related_event_status?$related_event_status:'off';
 				?>
 				<div class="mp_tab_item related-products" data-tab-item="#mep_related_event_meta">
-					<h3><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h3>
-					<p><?php esc_html_e('Related Event will be here.', 'mage-eventpress'); ?></p>
+					<h3><?php esc_html_e('Related Event Settings', 'mage-eventpress'); ?></h3>
+					<p><?php esc_html_e('Related Event setup.', 'mage-eventpress'); ?></p>
 					
 					<section class="bg-light">
 						<h2><?php esc_html_e('Related Event', 'mage-eventpress'); ?></h2>
@@ -74,7 +74,7 @@
 					</section>
 
 					<section>
-						<label class="label">
+						<div class="label">
 							<div>
 								<h2><span><?php esc_html_e('Show Related Events', 'mage-eventpress'); ?></span></h2>
 								<span><?php esc_html_e('Show/hide releated events in frontend template', 'mage-eventpress'); ?></span>
@@ -83,7 +83,7 @@
 								<input type="checkbox" name="mep_related_event_status" value="<?php echo esc_attr($related_event_status); ?>" <?php echo esc_attr($related_event_status=='on'?'checked':''); ?> data-collapse-target="#mpev-related-event-display" data-toggle-values="on,off">
 								<span class="slider"></span>
 							</label>
-						</label>
+						</div>
 					</section>
 					<div id="mpev-related-event-display" style="display: <?php echo esc_html($related_event_status=='on'?'block':'none'); ?>;">
 						<section>

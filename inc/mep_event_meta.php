@@ -173,7 +173,7 @@ use Sabberworm\CSS\Value\Value;
 			$mep_reg_status= $mep_reg_status?$mep_reg_status:'on';
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><?php esc_html_e('Registration Off/On:', 'mage-eventpress'); ?></h2>
 						<span><?php esc_html_e('Registration Off/On:', 'mage-eventpress'); ?></span>
@@ -182,7 +182,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_reg_status" value="<?php echo esc_attr($mep_reg_status); ?>" <?php echo esc_attr(($mep_reg_status=='on')?'checked':''); ?> data-collapse-target="#mep_ticket_type_setting_sec" data-close-target="#" data-toggle-values="on,off">
 						<span class="slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 			<?php
 		}
@@ -207,7 +207,7 @@ use Sabberworm\CSS\Value\Value;
 			$checked 			= ($event_type == 'online') ? 'online' : '';
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><span><?php esc_html_e('Online/Virtual ', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
 						<span><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></span>
@@ -216,7 +216,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_event_type" value="<?php echo esc_attr($checked); ?>" <?php echo esc_attr(($checked=='online')?'checked':''); ?> data-collapse-target="#mpev-online-event" data-close-target="#mpev-close-online-event" data-toggle-values="online,offline">
 						<span class="slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 
 			<?php do_action('mep_event_details_before_virtual_event_info_text_box',$post_id); ?>
@@ -331,7 +331,7 @@ use Sabberworm\CSS\Value\Value;
 					</table>
 				</section>
 				<section>
-					<label class="label">
+					<div class="label">
 						<div>
 							<h2><?php esc_html_e('Show Google Map', 'mage-eventpress'); ?></h2>
 							<span><?php esc_html_e('Show an interactive Google Map on your website, letting users easily explore and find locations.','mage-eventpress'); ?></span>
@@ -340,7 +340,7 @@ use Sabberworm\CSS\Value\Value;
 							<input type="checkbox" name="mep_sgm" value="<?php echo esc_attr($map_visible); ?>" <?php echo esc_attr(($map_visible==1)?'checked':''); ?> data-collapse-target="#mpev-show-map" data-close-target="#mpev-close-map" data-toggle-values="1,0">
 							<span class="slider"></span>
 						</label>
-					</label>
+					</div>
 				</section>
 				<section class="mp_form_area" id="mpev-show-map" style="display:<?php echo ($map_visible == 1) ? esc_attr('block') : esc_attr('none'); ?>">
 					<div class="mp_form_item">
@@ -512,7 +512,7 @@ use Sabberworm\CSS\Value\Value;
 			}
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><?php esc_html_e('Show Advanced Column:', 'mage-eventpress'); ?></h2>
 						<span><?php esc_html_e('Ticket Type List', 'mage-eventpress'); ?></span>
@@ -521,7 +521,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_show_advance_col_status" value="<?php echo esc_attr($col_display); ?>" <?php echo esc_attr(($col_display=='on')?'checked':''); ?> data-collapse-target="#hide_column" data-toggle-values="on,off">
 						<span class="slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 			<style>
 				.mep_hide_on_load{
@@ -892,7 +892,7 @@ use Sabberworm\CSS\Value\Value;
 
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><span><?php esc_html_e('Display End Datetime', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -901,7 +901,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_show_end_datetime" value="<?php echo esc_attr($mep_show_end_datetime); ?>" <?php echo esc_attr(($mep_show_end_datetime=='yes')?'checked':''); ?> data-toggle-values="yes,no">
 						<span class="slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 			<?php
 		}
@@ -925,7 +925,7 @@ use Sabberworm\CSS\Value\Value;
 			$seat_checked = $seat_checked? $seat_checked:'no';
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><span><?php esc_html_e('Show Available Seat?', 'mage-eventpress');  ?></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -970,7 +970,7 @@ use Sabberworm\CSS\Value\Value;
 
 			?>
 			<section>
-				<label class="label">
+				<div class="label">
 					<div>
 						<h2><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -979,7 +979,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($event_member_type); ?>" <?php echo esc_attr(($event_member_type=='member_only')?'checked':''); ?> data-collapse-target="#event_virtual_type" data-toggle-values="member_only,for_all">
 						<span class="slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 			<section id="event_virtual_type" style="display: <?php echo $event_member_type=='member_only'? 'block':'none'; ?>;">
 				<label class="label">

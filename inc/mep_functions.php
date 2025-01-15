@@ -4442,7 +4442,7 @@
 		}
 		?>
         <section>
-            <label class="label">
+            <div class="label">
                 <div>
                     <h2><span><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></span></h2>
                     <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
@@ -4451,7 +4451,7 @@
                     <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr( $date_format ); ?>" <?php echo esc_attr( ( $date_format == 'on' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
                     <span class="slider"></span>
                 </label>
-            </label>
+            </div>
         </section>
         <div id='mep_custom_timezone_setting' style="display:<?php echo ( $date_format == 'on' ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
             <section>

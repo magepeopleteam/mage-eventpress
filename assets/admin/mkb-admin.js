@@ -124,10 +124,14 @@
 
 		if (currentValue === toggleValues[0]) {
 			nextValue = toggleValues[1];
-			$(".mep_hide_on_load").slideUp(200);
+			if (checkbox.attr('name') === 'mep_show_advance_col_status') {
+				$(".mep_hide_on_load").slideUp(200);
+			}
 		} else {
 			nextValue = toggleValues[0];
-			$(".mep_hide_on_load").slideDown(200);
+			if (checkbox.attr('name') === 'mep_show_advance_col_status') {
+				$(".mep_hide_on_load").slideDown(200);
+			}
 		}
 		checkbox.val(nextValue);
 		var target = checkbox.data('collapse-target');

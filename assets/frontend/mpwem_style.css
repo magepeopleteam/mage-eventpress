@@ -1556,6 +1556,7 @@ button.mep-cat-control.mixitup-control-active {
 #mep_event_date_sch {
   height: 300px;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .mep_view_all_date {
@@ -1573,6 +1574,10 @@ span.mep_single_date_btn {
   color: #FFF;
   padding: 5px;
   cursor: pointer;
+}
+
+.mep-tem3-title-sec.mep_single_date_btn i {
+  display: none;
 }
 
 .mep-default-feature-content ul {

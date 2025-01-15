@@ -39,6 +39,7 @@ ul.mp_event_more_date_list li:hover{
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
 }
+
 .mep-default-sidrbar-meta .fa-list-alt,.mep-list-footer ul li i {
 	background: transparent;
 	color: var(--mpev-base);
@@ -1310,6 +1311,7 @@ button.mep-cat-control.mixitup-control-active {
 #mep_event_date_sch {
 	height: 300px;
 	overflow: hidden;
+	margin-bottom: 20px;
 }
 .mep_view_all_date {
 	overflow: scroll !important;;
@@ -1324,6 +1326,11 @@ span.mep_single_date_btn {
 	color: #FFF;
 	padding: 5px;
 	cursor: pointer;
+}
+.mep-tem3-title-sec.mep_single_date_btn{
+	i{
+		display: none;
+	}
 }
 .mep-default-feature-content ul {
 	margin-left: 15px !important;

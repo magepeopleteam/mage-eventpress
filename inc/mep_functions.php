@@ -4234,18 +4234,18 @@
 									?>
                                     <li>
                                         <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'] ) ); ?>">
-                     <span class='mep-more-date'>
-                        <i class="fa fa-calendar"></i>
-                        <?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
-                      </span>
+											<span class='mep-more-date'>
+												<i class="fa fa-calendar"></i>
+												<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
+											</span>
                                             <span class='mep-more-time'>
-                         <i class="fa fa-clock-o"></i>
-                        <?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
-													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
-												}
-													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
-												?>
-                      </span>
+											<i class="fa fa-clock-o"></i>
+											<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
+												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
+											}
+												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
+											?>
+										</span>
                                         </a>
                                     </li>
 									<?php

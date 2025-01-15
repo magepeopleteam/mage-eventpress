@@ -128,6 +128,8 @@
 				$all_dates = [];
 				$date_type = MP_Global_Function::get_post_info($event_id, 'mep_enable_recurring', 'no');
 				$now = strtotime(current_time('Y-m-d H:i:s'));
+				$expire_on=MP_Global_Function::get_settings('general_setting_sec','mep_event_expire_on_datetimes','event_start_datetime');
+
 				if ($date_type == 'no' || $date_type == 'yes') {
 					$start_date = MP_Global_Function::get_post_info($event_id, 'event_start_date');
 					$start_time = MP_Global_Function::get_post_info($event_id, 'event_start_time');
@@ -136,7 +138,8 @@
 					$end_time = MP_Global_Function::get_post_info($event_id, 'event_end_time');
 					$end_date_time = $end_time ? $end_date . ' ' . $end_time : $end_date;
 					$count = 0;
-					if ($start_date_time && $end_date_time && strtotime($start_date_time) > $now && strtotime($start_date_time) < strtotime($end_date_time)) {
+					$expire_check=$expire_on=='event_start_datetime'?$start_date_time:$end_date_time;
+					if ($start_date_time && $end_date_time && strtotime($expire_check) > $now && strtotime($start_date_time) < strtotime($end_date_time)) {
 						$all_dates[$count]['time'] = $start_date_time;
 						$all_dates[$count]['end'] = $end_date_time;
 					}
@@ -150,7 +153,8 @@
 								$more_end_date = array_key_exists('event_more_end_date', $more_date) ? $more_date['event_more_end_date'] : '';
 								$more_end_time = array_key_exists('event_more_end_time', $more_date) ? $more_date['event_more_end_time'] : '';
 								$more_end_date_time = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
-								if ($more_start_date_time && $more_end_date_time && strtotime($more_start_date_time) > $now && strtotime($more_start_date_time) < strtotime($more_end_date_time)) {
+								$expire_check=$expire_on=='event_start_datetime'?$more_start_date_time:$more_end_date_time;
+								if ($more_start_date_time && $more_end_date_time && strtotime($expire_check) > $now && strtotime($more_start_date_time) < strtotime($more_end_date_time)) {
 									$count++;
 									$all_dates[$count]['time'] = $more_start_date_time;
 									$all_dates[$count]['end'] = $more_end_date_time;

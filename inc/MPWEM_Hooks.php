@@ -17,7 +17,6 @@
 				add_action('mpwem_registration_content', [$this, 'registration_content'],10,4);
 				add_action('mpwem_date_select', [$this, 'date_select'],10,4);
 				add_action('mpwem_date_time', [$this, 'date_time'],10,4);
-				add_action('mpwem_date_lists', [$this, 'smart_date_lists'],10,4);
 				add_action('mpwem_faq', [$this, 'faq'],10,4);
 				add_action('mpwem_map', [$this, 'map'],10,4);
 				add_action('mpwem_related', [$this, 'related'],10,4);
@@ -41,27 +40,7 @@
 			public function related($event_id): void { require MPWEM_Functions::template_path('layout/related_event.php'); }
 			public function social($event_id): void { require MPWEM_Functions::template_path('layout/social.php'); }
 			/**************************/
-			public function smart_date_lists($event_id,$all_dates=[],$all_times=[]){
-				$event_id  = $event_id ?? 0;
-				$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-				//echo '<pre>';	print_r( $all_dates );	echo '</pre>';
-				if ( sizeof( $all_dates ) > 0 ) {
-					$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					
-					?>
-					<div class="date_widgets">
-						<i class="far fa-calendar"></i>
-						<div class="date-lists">
-							<h2><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?></h2>
-							<?php do_action('mep_event_date_smart_theme',$event_id,''); ?>
-							
-						</div>
-						
-					</div>
-					
-					<?php
-				}
-			}
+
 			public function get_mpwem_ticket() {
 				$post_id     = $_REQUEST['post_id'] ?? '';
 				$dates        = $_REQUEST['dates'] ?? '';

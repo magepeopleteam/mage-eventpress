@@ -5578,49 +5578,49 @@ Vanilla theme css by ariful
     color: #333;
     margin: 10px 0;
   }
-  .mep_smart_theme .related-events .related-events-items .item .item-info .price {
+  .mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
   }
-  .mep_smart_theme .related-events .related-events-items .item .item-info .price h2 {
+  .mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price h2 {
     font-size: 30px;
     color: var(--mpev-primary);
     margin: 0;
   }
-  .related-events {
+  .mep-related-events {
     margin: 20px 0;
     position: relative;
   }
-  .related-events .related-events-header {
+  .mep-related-events .related-events-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .related-events .related-events-header h2 {
+  .mep-related-events .related-events-header h2 {
     margin: 0;
   }
-  .related-events .related-events-header .related-events-navigation {
+  .mep-related-events .related-events-header .related-events-navigation {
     display: flex;
     flex-direction: row;
     gap: 5px;
   }
-  .related-events .related-events-header .related-events-navigation button {
+  .mep-related-events .related-events-header .related-events-navigation button {
     border-radius: 5px;
     background-color: var(--mpev-primary);
     color: var(--mpev-secondary);
     padding: 14px;
   }
-  .related-events .related-events-items {
+  .mep-related-events .mep-related-events-items {
     margin-top: 20px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .related-events .related-events-items {
+  .mep-related-events .mep-related-events-items {
     gap: 50px;
   }
 }
 @media only screen and (min-width: 10px) {
-  .related-events .related-events-items .item {
+  .mep-related-events .mep-related-events-items .item {
     width: 100%;
     background-color: #fff;
     padding: 20PX;
@@ -5629,21 +5629,21 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .related-events .related-events-items .item {
+  .mep-related-events .mep-related-events-items .item {
     width: 30%;
   }
 }
 @media only screen and (min-width: 10px) {
-  .related-events .related-events-items .item a {
+  .mep-related-events .mep-related-events-items .item a {
     position: relative;
     display: block;
   }
-  .related-events .related-events-items .item img {
+  .mep-related-events .mep-related-events-items .item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
   }
-  .related-events .related-events-items .item .mep-ev-start-date {
+  .mep-related-events .mep-related-events-items .item .mep-ev-start-date {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -5655,32 +5655,32 @@ Vanilla theme css by ariful
     font-size: 18px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05);
   }
-  .related-events .related-events-items .item .mep-ev-start-date .mep-month {
+  .mep-related-events .mep-related-events-items .item .mep-ev-start-date .mep-month {
     background: var(--mpev-primary);
     color: var(--mpev-secondary);
     text-transform: uppercase;
   }
-  .related-events .related-events-items .item .item-info {
+  .mep-related-events .mep-related-events-items .item .item-info {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
   }
-  .related-events .related-events-items .item .item-info .title {
+  .mep-related-events .mep-related-events-items .item .item-info .title {
     text-align: left;
     color: #999;
   }
-  .related-events .related-events-items .item .item-info .title h2 {
+  .mep-related-events .mep-related-events-items .item .item-info .title h2 {
     font-size: 15px;
     font-weight: bold;
     color: #333;
   }
-  .related-events .related-events-items .item .item-info .price {
+  .mep-related-events .mep-related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
   }
-  .related-events .related-events-items .item .item-info .price h2 {
+  .mep-related-events .mep-related-events-items .item .item-info .price h2 {
     font-size: 30px;
-    color: var(--mpev-secondary);
+    color: var(--mpev-primary);
     margin: 0;
   }
   .slick-slide {

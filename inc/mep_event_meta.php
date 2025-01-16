@@ -1254,10 +1254,10 @@ use Sabberworm\CSS\Value\Value;
 			$event_end_datetime = date('Y-m-d H:i:s', strtotime($event_end_date . ' ' . $event_end_time));
 			$md = sizeof($mdate) > 0 ? end($mdate) : array();
 			$event_expire_datetime = sizeof($md) > 0 ? date('Y-m-d H:i:s', strtotime($md['event_more_end_date'] . ' ' . $md['event_more_end_time'])) : $event_end_datetime;
-			$mep_reg_status = isset($_POST['mep_reg_status']) ? sanitize_text_field($_POST['mep_reg_status']) : 'on';
+			$mep_reg_status = isset($_POST['mep_reg_status']) ? sanitize_text_field($_POST['mep_reg_status']) : 'off';
 			$mep_show_advance_col_status = isset($_POST['mep_show_advance_col_status']) ? sanitize_text_field($_POST['mep_show_advance_col_status']) : 'off';
 			$mep_enable_custom_dt_format = isset($_POST['mep_enable_custom_dt_format']) ? sanitize_text_field($_POST['mep_enable_custom_dt_format']) : 'off';
-			$mep_show_end_datetime = isset($_POST['mep_show_end_datetime']) ? sanitize_text_field($_POST['mep_show_end_datetime']) : 'yes';
+			$mep_show_end_datetime = isset($_POST['mep_show_end_datetime']) ? sanitize_text_field($_POST['mep_show_end_datetime']) : 'no';
 			
 			$mep_available_seat = isset($_POST['mep_available_seat']) ? sanitize_text_field($_POST['mep_available_seat']) : 'off';
 			$_tax_status = isset($_POST['_tax_status']) ? sanitize_text_field($_POST['_tax_status']) : 'none';
@@ -1292,6 +1292,7 @@ use Sabberworm\CSS\Value\Value;
 			update_post_meta($post_id, 'mep_show_end_datetime', $mep_show_end_datetime);
 			update_post_meta($post_id, 'mep_rich_text_status', $mep_rich_text_status);
 			update_post_meta($post_id, 'mep_available_seat', $mep_available_seat);
+			
 			update_post_meta($post_id, 'mep_reg_status', $mep_reg_status);
 			update_post_meta($post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status);
 			update_post_meta($post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format);

@@ -371,7 +371,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+										'mep_day_title' => '9:30 AM',
+										'mep_day_content' => 'Morning keynote session',
+										],
+										[
+										'mep_day_title' => '11:00 AM',
+										'mep_day_content' => 'Workshops and interactive discussions',
+										],
+										[
+										'mep_day_title' => '1:00 PM',
+										'mep_day_content' => 'Lunch break and networking',
+										],
+										[
+										'mep_day_title' => '3:00 PM',
+										'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -523,7 +541,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -671,7 +707,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -819,7 +873,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -978,7 +1050,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1127,7 +1217,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1288,7 +1396,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1449,8 +1575,27 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+										'mep_day_title' => '9:30 AM',
+										'mep_day_content' => 'Morning keynote session',
+										],
+										[
+										'mep_day_title' => '11:00 AM',
+										'mep_day_content' => 'Workshops and interactive discussions',
+										],
+										[
+										'mep_day_title' => '1:00 PM',
+										'mep_day_content' => 'Lunch break and networking',
+										],
+										[
+										'mep_day_title' => '3:00 PM',
+										'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
+									
 									'mep_total_seat_left' => '0',
 								],
 							],

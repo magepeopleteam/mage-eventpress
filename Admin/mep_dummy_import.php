@@ -62,6 +62,7 @@
 				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
+				$gallery_images = [];
 				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
@@ -113,6 +114,7 @@
 													$url = $data;
 													$desc = "The Demo Dummy Image of the event";
 													$image = media_sideload_image($url, $post_id, $desc, 'id');
+													$gallery_images[] = $image;
 													set_post_thumbnail($post_id, $image);
 												}
 												else {
@@ -126,9 +128,31 @@
 						}
 					}
 					$this->craete_pages();
+					$this->add_gallery_images($custom_post,$gallery_images);
 					update_option('mep_dummy_already_inserted', 'yes');
 				}
 			}
+
+			public function add_gallery_images($custom_post,$images){
+				$args = array(
+					'post_type'      => $custom_post, // Replace with your custom post type
+					'posts_per_page' => -1,           // Retrieve all posts
+					'post_status'    => 'publish',    // Optional: Filter only published posts
+				);
+				$query = new WP_Query($args);
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$post_id = get_the_ID();
+						update_post_meta($post_id, 'mep_gallery_images', $images);
+					}
+					wp_reset_postdata();
+				} else {
+					echo "No posts found for the post type: $custom_post";
+				}
+				
+			}
+
 			public function dummy_data(): array {
 				return [
 					'taxonomy' => [
@@ -342,16 +366,31 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+												',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -512,16 +551,27 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -678,16 +728,26 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -844,16 +904,26 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1021,16 +1091,26 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1188,16 +1268,26 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1367,16 +1457,26 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1546,16 +1646,27 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',

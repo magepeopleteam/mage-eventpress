@@ -39,8 +39,8 @@
 					$section_label = isset( $_POST['related_section_label'] ) ? $_POST['related_section_label'] : '';
 					$event_status = isset( $_POST['mep_related_event_status'] ) ? $_POST['mep_related_event_status'] : 'off';
 					update_post_meta( $post_id, '_list_column', $column_number );
-					update_post_meta( $post_id, '_event_list', $event_list );
-					update_post_meta( $post_id, '_related_section_label', $section_label );
+					update_post_meta( $post_id, 'event_list', $event_list );
+					update_post_meta( $post_id, 'related_section_label', $section_label );
 					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
 				}
 			}
@@ -57,14 +57,14 @@
 				if (isset($post_title_array[get_the_ID()])){
 					unset($post_title_array[get_the_ID()]);
 				}
-				$product_ids   = get_post_meta( $post_id, '_event_list', true );
+				$product_ids   = get_post_meta( $post_id, 'event_list', true );
 				// $column_num    = get_post_meta( $post_id, '_list_column', true );
-				$section_label = get_post_meta( $post_id, '_related_section_label', true );
+				$section_label = get_post_meta( $post_id, 'related_section_label', true );
 				// $column_num = $column_num[0];
 				$related_event_status = get_post_meta($post_id,'mep_related_event_status',true);
 				$related_event_status = $related_event_status?$related_event_status:'off';
 				?>
-				<div class="mp_tab_item related-products" data-tab-item="#mep_related_event_meta">
+				<div class="mp_tab_item mep-related-events" data-tab-item="#mep_related_event_meta">
 					<h3><?php esc_html_e('Related Event Settings', 'mage-eventpress'); ?></h3>
 					<p><?php esc_html_e('Related Event setup.', 'mage-eventpress'); ?></p>
 					
@@ -174,8 +174,8 @@
 			public function related_events_after_single() {
 		
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, '_event_list', true );
-				$section_label = get_post_meta( $post->ID, '_related_section_label', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				if ( $column_num == 3 ) {
 					$columnNumber = 'three_column';
@@ -323,8 +323,8 @@
 			}
 			public function related_events(){
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, '_event_list', true );
-				$section_label = get_post_meta( $post->ID, '_related_section_label', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
 				$related_event_status = get_post_meta( $post->ID, 'mep_related_event_status', true );
@@ -332,7 +332,7 @@
 				?>
 				<?php if($related_event_status=='on'): ?>
 				<div class="<?php echo $smart_theme=='smart.php'?'mep_smart_theme':''; ?>">
-					<div class="related-events">
+					<div class="mep-related-events">
 						<div class="related-events-header mpStyle">
 							<h2><?php echo $section_label; ?></h2>
 							<div class="related-events-navigation">
@@ -340,7 +340,7 @@
 								<button class="mep-ev-next"><i class="fas fa-chevron-right"></i></button>
 							</div>
 						</div>
-						<div class="related-events-items">
+						<div class="mep-related-events-items">
 							<?php
 								$event_expire_on 			= mep_get_option( 'mep_event_expire_on_datetime', 'general_setting_sec', 'event_start_datetime');
 								$now                        = current_time('Y-m-d H:i:s');
@@ -427,7 +427,7 @@
 					
 					(function($) {
 						$(document).ready(function() {
-							$('.related-events-items').slick({
+							$('.mep-related-events-items').slick({
 								dots: true,
 								arrows: true,
 								prevArrow:'.mep-ev-prev',

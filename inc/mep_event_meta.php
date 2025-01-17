@@ -499,6 +499,7 @@ use Sabberworm\CSS\Value\Value;
 		}
 		public function mep_event_ticket_type($post_id) {
 			$col_display = get_post_meta($post_id, 'mep_show_advance_col_status', true);
+			$col_display = $col_display?$col_display:'off';
 			$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true);
 			$values = get_post_custom($post_id);
 			wp_nonce_field('mep_event_ticket_type_nonce', 'mep_event_ticket_type_nonce');

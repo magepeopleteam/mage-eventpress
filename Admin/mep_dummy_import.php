@@ -330,7 +330,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Chair with Umbrella",
@@ -415,6 +415,9 @@
 									'mep_related_event_status'=>'on',
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'smart.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -503,7 +506,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Normal",
@@ -596,6 +599,8 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -680,7 +685,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Adult",
@@ -773,6 +778,9 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
@@ -856,7 +864,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
@@ -949,6 +957,9 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
@@ -1031,7 +1042,7 @@
 									'mep_sgm' => '',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Early Bird ticket",
@@ -1136,6 +1147,9 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
@@ -1220,7 +1234,7 @@
 									'mep_sgm' => '',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
@@ -1313,6 +1327,9 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
+									
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
@@ -1397,7 +1414,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "General",
@@ -1502,6 +1519,9 @@
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
 
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
@@ -1586,7 +1606,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
@@ -1691,6 +1711,9 @@
 									'mep_related_event_status'=>'on',
 									'related_section_label'=>'Releted Events',
 									'event_list'=>array(),
+									
+									// default theme
+									'mep_event_template'=>'smart.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',

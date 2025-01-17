@@ -63,6 +63,7 @@
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
 				$gallery_images = [];
+				$related_events = [];
 				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
@@ -103,6 +104,7 @@
 											'post_status' => 'publish',
 											'post_type' => $custom_post,
 										]);
+										$related_events[] = $post_id;
 										if (array_key_exists('taxonomy_terms', $dummy_data) && count($dummy_data['taxonomy_terms'])) {
 											foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
 												wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
@@ -129,15 +131,16 @@
 					}
 					$this->craete_pages();
 					$this->add_gallery_images($custom_post,$gallery_images);
+					$this->add_related_events($custom_post,$related_events);
 					update_option('mep_dummy_already_inserted', 'yes');
 				}
 			}
 
 			public function add_gallery_images($custom_post,$images){
 				$args = array(
-					'post_type'      => $custom_post, // Replace with your custom post type
-					'posts_per_page' => -1,           // Retrieve all posts
-					'post_status'    => 'publish',    // Optional: Filter only published posts
+					'post_type'      => $custom_post, 
+					'posts_per_page' => -1,           
+					'post_status'    => 'publish',    
 				);
 				$query = new WP_Query($args);
 				if ($query->have_posts()) {
@@ -145,6 +148,30 @@
 						$query->the_post();
 						$post_id = get_the_ID();
 						update_post_meta($post_id, 'mep_gallery_images', $images);
+					}
+					wp_reset_postdata();
+				} else {
+					echo "No posts found for the post type: $custom_post";
+				}
+				
+			}
+
+			public function add_related_events($custom_post,$related_events){
+				$args = array(
+					'post_type'      => $custom_post, 
+					'posts_per_page' => -1,           
+					'post_status'    => 'publish',    
+				);
+				$query = new WP_Query($args);
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$post_id = get_the_ID();
+						foreach ($related_events as $related_id) {
+							if ($related_id != $post_id) {
+								update_post_meta($related_id, 'event_list', $related_events);
+							}
+						}
 					}
 					wp_reset_postdata();
 				} else {

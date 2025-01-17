@@ -39,8 +39,8 @@
 					$section_label = isset( $_POST['related_section_label'] ) ? $_POST['related_section_label'] : '';
 					$event_status = isset( $_POST['mep_related_event_status'] ) ? $_POST['mep_related_event_status'] : 'off';
 					update_post_meta( $post_id, '_list_column', $column_number );
-					update_post_meta( $post_id, '_event_list', $event_list );
-					update_post_meta( $post_id, '_related_section_label', $section_label );
+					update_post_meta( $post_id, 'event_list', $event_list );
+					update_post_meta( $post_id, 'related_section_label', $section_label );
 					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
 				}
 			}
@@ -57,9 +57,9 @@
 				if (isset($post_title_array[get_the_ID()])){
 					unset($post_title_array[get_the_ID()]);
 				}
-				$product_ids   = get_post_meta( $post_id, '_event_list', true );
+				$product_ids   = get_post_meta( $post_id, 'event_list', true );
 				// $column_num    = get_post_meta( $post_id, '_list_column', true );
-				$section_label = get_post_meta( $post_id, '_related_section_label', true );
+				$section_label = get_post_meta( $post_id, 'related_section_label', true );
 				// $column_num = $column_num[0];
 				$related_event_status = get_post_meta($post_id,'mep_related_event_status',true);
 				$related_event_status = $related_event_status?$related_event_status:'off';
@@ -174,8 +174,8 @@
 			public function related_events_after_single() {
 		
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, '_event_list', true );
-				$section_label = get_post_meta( $post->ID, '_related_section_label', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				if ( $column_num == 3 ) {
 					$columnNumber = 'three_column';
@@ -323,8 +323,8 @@
 			}
 			public function related_events(){
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, '_event_list', true );
-				$section_label = get_post_meta( $post->ID, '_related_section_label', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
 				$related_event_status = get_post_meta( $post->ID, 'mep_related_event_status', true );

@@ -62,6 +62,8 @@
 				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
+				$gallery_images = [];
+				$related_events = [];
 				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
@@ -102,6 +104,7 @@
 											'post_status' => 'publish',
 											'post_type' => $custom_post,
 										]);
+										$related_events[] = $post_id;
 										if (array_key_exists('taxonomy_terms', $dummy_data) && count($dummy_data['taxonomy_terms'])) {
 											foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
 												wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
@@ -113,6 +116,7 @@
 													$url = $data;
 													$desc = "The Demo Dummy Image of the event";
 													$image = media_sideload_image($url, $post_id, $desc, 'id');
+													$gallery_images[] = $image;
 													set_post_thumbnail($post_id, $image);
 												}
 												else {
@@ -126,9 +130,56 @@
 						}
 					}
 					$this->craete_pages();
+					$this->add_gallery_images($custom_post,$gallery_images);
+					$this->add_related_events($custom_post,$related_events);
 					update_option('mep_dummy_already_inserted', 'yes');
 				}
 			}
+
+			public function add_gallery_images($custom_post,$images){
+				$args = array(
+					'post_type'      => $custom_post, 
+					'posts_per_page' => -1,           
+					'post_status'    => 'publish',    
+				);
+				$query = new WP_Query($args);
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$post_id = get_the_ID();
+						update_post_meta($post_id, 'mep_gallery_images', $images);
+					}
+					wp_reset_postdata();
+				} else {
+					echo "No posts found for the post type: $custom_post";
+				}
+				
+			}
+
+			public function add_related_events($custom_post,$related_events){
+				$args = array(
+					'post_type'      => $custom_post, 
+					'posts_per_page' => -1,           
+					'post_status'    => 'publish',    
+				);
+				$query = new WP_Query($args);
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$post_id = get_the_ID();
+						foreach ($related_events as $related_id) {
+							if ($related_id != $post_id) {
+								update_post_meta($related_id, 'event_list', $related_events);
+							}
+						}
+					}
+					wp_reset_postdata();
+				} else {
+					echo "No posts found for the post type: $custom_post";
+				}
+				
+			}
+
 			public function dummy_data(): array {
 				return [
 					'taxonomy' => [
@@ -270,7 +321,7 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Coxsbazar',
+									'mep_location_venue' => 'Hotel Ramada, Coxsbazar',
 									'mep_street' => '',
 									'mep_city' => '',
 									'mep_state' => '',
@@ -279,7 +330,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Chair with Umbrella",
@@ -306,7 +357,7 @@
 											'option_name' => 'Water',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -342,16 +393,34 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+												',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -371,7 +440,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+										'mep_day_title' => '9:30 AM',
+										'mep_day_content' => 'Morning keynote session',
+										],
+										[
+										'mep_day_title' => '11:00 AM',
+										'mep_day_content' => 'Workshops and interactive discussions',
+										],
+										[
+										'mep_day_title' => '1:00 PM',
+										'mep_day_content' => 'Lunch break and networking',
+										],
+										[
+										'mep_day_title' => '3:00 PM',
+										'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -410,16 +497,16 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Gaylord Texan Resort',
-									'mep_street' => '',
-									'mep_city' => '',
+									'mep_location_venue' => 'Gaylord Texan Resort & Convention Center',
+									'mep_street' => '1501 Gaylord Trail',
+									'mep_city' => 'Grapevine',
 									'mep_state' => '',
-									'mep_postcode' => '',
+									'mep_postcode' => 'TX 76051',
 									'mep_country' => 'USA',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Normal",
@@ -458,7 +545,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -494,16 +581,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'default-theme.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -523,7 +623,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -567,7 +685,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Adult",
@@ -606,7 +724,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -642,16 +760,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -671,7 +802,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -715,7 +864,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
@@ -754,7 +903,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -790,16 +939,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'default-theme.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -819,7 +981,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -851,7 +1031,7 @@
 									//venue/location
 									'feature_image' => 'https://img.freepik.com/free-photo/group-young-people-are-looking-map-where-they-are-while-walking-autumn-forest_613910-15159.jpg',
 									'mep_event_type' => 'online',
-									'mp_event_virtual_type_des' => 'Test event virtual type',
+									'mp_event_virtual_type_des' => 'Virtual Event',
 									'mep_org_address' => '',
 									'mep_location_venue' => '',
 									'mep_street' => '',
@@ -862,11 +1042,11 @@
 									'mep_sgm' => '',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Early Bird ticket",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities.",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -878,7 +1058,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Regular/Standards ticket",
-											'option_details_t' => "",
+											'option_details_t' => "For children aged 3 to 12, offering access to designated areas and activities suitable for young visitors",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -890,7 +1070,7 @@
 										),
 										2 => array(
 											'option_name_t' => "VIP",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -913,7 +1093,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -949,16 +1129,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -978,7 +1171,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1014,20 +1225,20 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Gaylord Resort',
-									'mep_street' => '',
-									'mep_city' => 'Washington DC',
-									'mep_state' => 'NY',
-									'mep_postcode' => '32165',
-									'mep_country' => 'USA',
+									'mep_location_venue' => 'Gaylord Texan Resort & Convention Center',
+									'mep_street' => '1501 Gaylord Trail',
+									'mep_city' => 'Grapevine',
+									'mep_state' => '',
+									'mep_postcode' => 'TX 76051',
+									'mep_country' => 'United States',
 									'mep_sgm' => '',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1039,7 +1250,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Normal",
-											'option_details_t' => "",
+											'option_details_t' => "Standard entry ticket providing access to the event and all general areas included in the admission",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1062,7 +1273,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1098,16 +1309,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'default-theme.php',
+									
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1127,7 +1351,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1163,20 +1405,20 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Kolkata wordPress Community',
-									'mep_street' => 'Park Street',
-									'mep_city' => 'Kolkata',
-									'mep_state' => 'West Bengal',
-									'mep_postcode' => '1209',
-									'mep_country' => 'India',
+									'mep_location_venue' => 'Radisson Collection Hotel',
+									'mep_street' => 'Karl-Liebknecht-Str. 3',
+									'mep_city' => 'Berlin',
+									'mep_state' => 'Berlin',
+									'mep_postcode' => '10178',
+									'mep_country' => 'Germany',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "General",
-											'option_details_t' => "Ticket without Lunch Party",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1188,7 +1430,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Sponsored",
-											'option_details_t' => "Dinner Party Ticket Included with this Ticket",
+											'option_details_t' => "For children aged 3 to 12, offering access to designated areas and activities suitable for young visitors",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1200,7 +1442,7 @@
 										),
 										2 => array(
 											'option_name_t' => "Free",
-											'option_details_t' => "This ticket is valid for those under the age of 12 years old.",
+											'option_details_t' => "Standard entry ticket providing access to the event and all general areas included in the admission.",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1223,7 +1465,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1259,16 +1501,29 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+
+									// default theme
+									'mep_event_template'=>'smart.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1288,7 +1543,25 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+											'mep_day_title' => '9:30 AM',
+											'mep_day_content' => 'Morning keynote session',
+											],
+											[
+											'mep_day_title' => '11:00 AM',
+											'mep_day_content' => 'Workshops and interactive discussions',
+											],
+											[
+											'mep_day_title' => '1:00 PM',
+											'mep_day_content' => 'Lunch break and networking',
+											],
+											[
+											'mep_day_title' => '3:00 PM',
+											'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
 									'mep_total_seat_left' => '0',
 								],
@@ -1329,11 +1602,11 @@
 									'mep_city' => 'Sheffield',
 									'mep_state' => 'S1 2PP',
 									'mep_postcode' => '',
-									'mep_country' => '',
+									'mep_country' => 'United Kingdom',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
-									'mep_show_advance_col_status' => 'on',
+									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
@@ -1384,7 +1657,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1420,16 +1693,30 @@
 									//Rich text
 									'mep_rich_text_status' => 'enable',
 									//email
-									'mep_event_cc_email_text' => "
-												Usable Dynamic tags:
-												Attendee Name:{name}
-												Event Name: {event}
-												Ticket Type: {ticket_type}
-												Event Date: {event_date}
-												Start Time: {event_time}
-												Full DateTime: {event_datetime}
-												",
+									'mep_event_cc_email_text' => '
+												<h2>Your Ticket for {event}</h2>
+												<p>Hi <strong>{name}</strong>,</p>
+												<p>Thank you for registering for <strong>{event}</strong>!</p>
+												<p><strong>Details of Your Ticket:</strong></p>
+												<ul>
+													<li>Ticket Type:<strong>{ticket_type}</strong></li>
+													<li>Event Date:<strong>{event_date}</strong></li>
+													<li>Start Time:<strong>{event_time}</strong></li>
+												</ul>
+												<p>We look forward to seeing you there!</p>
+												<p>Best regards,<br>[Your Event Team]</p>
+											',
+
+									// related events settings
+									'mep_related_event_status'=>'on',
+									'related_section_label'=>'Releted Events',
+									'event_list'=>array(),
+									
+									// default theme
+									'mep_event_template'=>'default-theme.php',
+
 									//faq settings
+									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
 									'mep_event_faq' => array(
 										0 => array(
 											'mep_faq_title' => 'Who can attend this event?',
@@ -1449,8 +1736,27 @@
 										),
 									),
 									//Daywise Details
-									'mep_event_day' => array(),
+									'mep_event_day' => array(
+										[
+										'mep_day_title' => '9:30 AM',
+										'mep_day_content' => 'Morning keynote session',
+										],
+										[
+										'mep_day_title' => '11:00 AM',
+										'mep_day_content' => 'Workshops and interactive discussions',
+										],
+										[
+										'mep_day_title' => '1:00 PM',
+										'mep_day_content' => 'Lunch break and networking',
+										],
+										[
+										'mep_day_title' => '3:00 PM',
+										'mep_day_content' => 'Panel discussion with industry leaders',
+										],
+									),
+									'mep_gallery_images' => Array (),
 									'mep_list_thumbnail' => '',
+									
 									'mep_total_seat_left' => '0',
 								],
 							],

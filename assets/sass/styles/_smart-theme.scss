@@ -567,8 +567,8 @@
 			}
 		}
 		
-		.related-events{
-			.related-events-items{
+		.mep-related-events{
+			.mep-related-events-items{
 				.item{
 					.item-info{
 						.price{
@@ -586,7 +586,7 @@
 		}
 		
 	}
-	.related-events{
+	.mep-related-events{
 		margin: 20px 0;
 		position: relative;
 		.related-events-header{
@@ -608,7 +608,7 @@
 				}
 			}
 		}
-		.related-events-items{
+		.mep-related-events-items{
 			margin-top: 20px;
 			
 			
@@ -668,7 +668,7 @@
 						color: #999;
 						h2{
 							font-size: 30px;
-							color: var(--mpev-secondary);
+							color: var(--mpev-primary);
 							margin: 0;
 						}
 					}

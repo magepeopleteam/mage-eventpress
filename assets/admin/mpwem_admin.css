@@ -148,7 +148,9 @@
 }
 
 #mp_event_all_info_in_tab .mp_tab_details .mep-email-text p {
-  margin: 10px;
+  margin: 10px 0;
+}
+#mp_event_all_info_in_tab .mp_tab_details .mep-email-text * {
   font-size: 16px;
 }
 

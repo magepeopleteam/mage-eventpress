@@ -1,20 +1,20 @@
 :root{
-	--mpev-base: #ffbe30;
+	--mpev-base: var(--mpev-base);
 	--mpev-base-txt:#ffffff;
-	--mpev-title-bg:#ffbe30;
+	--mpev-title-bg:var(--mpev-base);
 	--mpev-title-txt:#ffffff;
-	--mpev-calender-btn-bg:#ffbe30;
+	--mpev-calender-btn-bg:var(--mpev-base);
 	--mpev-calender-btn-txt:#ffffff;
-	--mpev-cart-btn-bg:#ffbe30;
+	--mpev-cart-btn-bg:var(--mpev-base);
 	--mpev-cart-btn-txt:#ffffff;
-	--mpev-faq-bg:#ffbe30;
+	--mpev-faq-bg:var(--mpev-base);
 	--mpev-faq-text:#ffffff;
-	--mpev-royal-primary-bg:#ffbe30;
+	--mpev-royal-primary-bg:var(--mpev-base);
 	--mpev-royal-secondary-bg:#ffffff;
-	--mpev-royal-icons-bg:#ffbe30;
-	--mpev-royal-border:#ffbe30;
+	--mpev-royal-icons-bg:var(--mpev-base);
+	--mpev-royal-border:var(--mpev-base);
 	--mpev-royal-txt:#ffffff;
-	--mpev-recring-dpkr-bg:#ffbe30;
+	--mpev-recring-dpkr-bg:var(--mpev-base);
 	--mpev-recring-dpkr-txt:#ffffff;
 }
 
@@ -542,7 +542,7 @@ label.mep-show {
 /******Button*******/
 button.single_add_to_cart_button {
 	padding: 0 15px;
-	background: #FFBE30;
+	background: var(--mpev-base);
 	color: #FFFFFF;
 	font-size: 15px;
 	line-height: 1;
@@ -736,10 +736,10 @@ ul#mep_add_calender_links li a {
 	left: 10px;
 	line-height: 1.8;
 	border-radius: 6px;
-	background: #FFBE30;
+	background: var(--mpev-base);
 	text-align: center;
 	width: 50px;
-	color: #FFF;
+	color: var(--mpev-base-txt);
 	font-size: 18px;
 }
 .mep-day {
@@ -762,7 +762,7 @@ div.mep_event_list a {
 	margin: 10px 0;
 }
 .mep_event_list_item:hover {
-	border-color: #FFBE30;
+	border-color: var(--mpev-base);
 }
 .mep_list_thumb {
 	width: 40%;
@@ -794,7 +794,7 @@ div.mep_event_list a {
 }
 .mep-list-header:before {
 	position: absolute;
-	border-left: 5px solid #FFBE30;
+	border-left: 5px solid var(--mpev-base);
 	top: 0;
 	left: 0;
 	content: "";
@@ -812,7 +812,7 @@ h3.mep_list_date {
 	font-size: 16px;
 	font-style: italic;
 	font-weight: bold;
-	color: #FFBE30;
+	color: var(--mpev-base);
 	margin: 5px 0 0 0;
 }
 .mep-list-footer {
@@ -830,7 +830,7 @@ h3.mep_list_date {
 	margin: 7px 0 0 0;
 }
 .mep-list-footer ul li i {
-	background: #FFBE30;
+	background: var(--mpev-base);
 	color: #FFF;
 }
 .mep-list-footer ul li h5,
@@ -1902,7 +1902,7 @@ CSS by Ariful
 	font-size: 15px;
 }
 .mep-list-footer ul li i {
-	color: #FF5959;
+	color: var(--mpev-base);
 	background: transparent !important;
 	font-size: 15px
 }
@@ -1938,15 +1938,16 @@ h3.mep_list_date {
 	border-radius: 0;
 }
 .mep-month {
-	background: #C32020;
+	background: var(--mpev-base-txt);
 	text-transform: uppercase;
+	color:var(--mpev-base)
 }
 .mep_more_date_btn {
 	margin-top: 20px;
 	width: max-content;
-	border: 1px solid #FF5959;
+	border: 1px solid var(--mpev-base);
 	background: #FFF;
-	color: #FF5959;
+	color: var(--mpev-base);
 	font-weight: 400;
 	border-radius: 20px;
 	line-height: 35px;
@@ -1970,7 +1971,7 @@ h3.mep_list_date {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: #FF5959;
+	background: var(--mpev-base);
 	-webkit-transform: scaleX(0);
 	transform: scaleX(0);
 	-webkit-transform-origin: 0 50%;
@@ -1982,7 +1983,7 @@ h3.mep_list_date {
 	-webkit-transition-timing-function: ease-out;
 	transition-timing-function: ease-out;
 	border-radius: 20px;
-	border: 2px solid #FF5959;
+	border: 2px solid var(--mpev-base);
 }
 .mep_more_date_btn:hover,
 .mep_more_date_btn:focus,
@@ -2031,7 +2032,7 @@ div.df-dtl p {
 	min-width: auto !important;
 }
 .mep_everyday_date_secs {
-	background: #FF5959;
+	background: var(--mpev-base);
 }
 h3.ex-sec-title {
 	color: #FFFFFF;
@@ -2131,8 +2132,8 @@ span.mep-datepicker-input-box {
 .mep-event-theme-1 .btn-mep-event-cart,
 .mep-template-2-hamza .btn-mep-event-cart,
 .mep-tem3-mid-sec .btn-mep-event-cart {
-	background: #FF5959;
-	border: 1px solid #FF5959;
+	background: var(--mpev-base);
+	border: 1px solid var(--mpev-base);
 	line-height: 35px;
 	font-weight: 500;
 	height: 35px;
@@ -2168,7 +2169,7 @@ span.mep-datepicker-input-box {
 	height: 35px;
 	padding: 0 15px 0 15px;
 	cursor: pointer;
-	background: #FF5959;
+	background: var(--mpev-base);
 }
 div.three_column {
 	-webkit-justify-content: inherit;
@@ -2215,7 +2216,7 @@ div.three_column {
 }
 .mep-default-sidrbar-meta i {
 	background: transparent;
-	color: #FF5959;
+	color: var(--mpev-base);
 	font-size: 18px;
 	width: auto;
 	height: auto;
@@ -2246,7 +2247,7 @@ h3.mep_list_date {
 	line-height: 25px;
 }
 h3.mep_list_date i {
-	color: #FF5959;
+	color: var(--mpev-base);
 }
 .mep_event_native_list .mep_list_thumb img,
 .owl-carousel .owl-item .mep_event_native_list .mep_list_thumb img {
@@ -2303,7 +2304,7 @@ div.mep-default-feature-content p {
 	outline: 0;
 }
 .mep_event_list .owl-nav > button:hover {
-	background: #FF5959 !important;
+	background: var(--mpev-base) !important;
 }
 .mep_event_list .owl-nav i,
 .mep_event_list button.owl-next,
@@ -2311,7 +2312,7 @@ div.mep-default-feature-content p {
 	font-size: 14px !important;
 }
 .mep_event_list .owl-dots button.active {
-	background: #FF5959;
+	background: var(--mpev-base);
 }
 .mep_event_list .owl-dots button {
 	width: 15px;
@@ -2326,7 +2327,7 @@ div.mep-default-feature-content p {
 	outline: 0;
 }
 .mep_event_list .owl-dots button.active::before {
-	border-bottom-color: #FF5959;
+	border-bottom-color: var(--mpev-base);
 }
 .mep_event_list .owl-dots button::before {
 	position: absolute;
@@ -2446,7 +2447,7 @@ New Spring list style css added by ariful
 	align-content: center;
 	justify-content: center;
 	align-items: center;
-	background-image: linear-gradient(#FF5959, #FE7541);
+	background-image: linear-gradient(var(--mpev-base), #FE7541);
 }
 .mep_event_spring_list .mep_list_date_wrapper .mep_list_date {
 	color: #FFF;
@@ -2555,7 +2556,7 @@ New Spring list style css added by ariful
 	position: inherit;
 	margin-top: 20px;
 	width: max-content;
-	background: #FF5959;
+	background: var(--mpev-base);
 }
 .mep_event_spring_list .mep_spring_list_date {
 	color: #FFF;
@@ -2628,7 +2629,7 @@ New Winter list style css added by ariful
 	align-content: center;
 	justify-content: center;
 	align-items: center;
-	background-image: linear-gradient(#FF5959, #FE7541);
+	background-image: linear-gradient(var(--mpev-base), #FE7541);
 }
 .mep_event_winter_list .mep_list_date_wrapper .mep_list_date {
 	color: #FFF;
@@ -2663,7 +2664,7 @@ New Winter list style css added by ariful
 	.mep_event_winter_list .mep_list_date_wrapper i {
 		position: absolute;
 		right: -12px;
-		color: #FF5959;
+		color: var(--mpev-base);
 		font-size: 40px;
 	}
 	.mep_event_winter_list .mep_list_details_col_one,
@@ -2772,7 +2773,7 @@ New Winter list style css added by ariful
 	padding: 5px;
 }
 .mep_event_winter_list .mep_more_date_btn {
-	background-color: #FF5959;
+	background-color: var(--mpev-base);
 	color: #FFF;
 }
 .mep_event_winter_list .mep_list_details_col_one i {
@@ -2784,7 +2785,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep-eventtype-ribbon {
 	position: inherit;
 	width: max-content;
-	background: #FF5959;
+	background: var(--mpev-base);
 	color: #FFF;
 }
 .mep_event_winter_list a,
@@ -2811,7 +2812,7 @@ New Winter list style css added by ariful
 	width: 90px;
 }
 .mep_event_winter_list .mep-multidate-ribbon {
-	background: #FF5959;
+	background: var(--mpev-base);
 }
 .mep_same_attendee input {
 	min-width: 40px;

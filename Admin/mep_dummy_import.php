@@ -321,7 +321,7 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Coxsbazar',
+									'mep_location_venue' => 'Hotel Ramada, Coxsbazar',
 									'mep_street' => '',
 									'mep_city' => '',
 									'mep_state' => '',
@@ -357,7 +357,7 @@
 											'option_name' => 'Water',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -497,11 +497,11 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Gaylord Texan Resort',
-									'mep_street' => '',
-									'mep_city' => '',
+									'mep_location_venue' => 'Gaylord Texan Resort & Convention Center',
+									'mep_street' => '1501 Gaylord Trail',
+									'mep_city' => 'Grapevine',
 									'mep_state' => '',
-									'mep_postcode' => '',
+									'mep_postcode' => 'TX 76051',
 									'mep_country' => 'USA',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
@@ -545,7 +545,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -600,7 +600,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -724,7 +724,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -903,7 +903,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -958,7 +958,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -1031,7 +1031,7 @@
 									//venue/location
 									'feature_image' => 'https://img.freepik.com/free-photo/group-young-people-are-looking-map-where-they-are-while-walking-autumn-forest_613910-15159.jpg',
 									'mep_event_type' => 'online',
-									'mp_event_virtual_type_des' => 'Test event virtual type',
+									'mp_event_virtual_type_des' => 'Virtual Event',
 									'mep_org_address' => '',
 									'mep_location_venue' => '',
 									'mep_street' => '',
@@ -1046,7 +1046,7 @@
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "Early Bird ticket",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities.",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1058,7 +1058,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Regular/Standards ticket",
-											'option_details_t' => "",
+											'option_details_t' => "For children aged 3 to 12, offering access to designated areas and activities suitable for young visitors",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1070,7 +1070,7 @@
 										),
 										2 => array(
 											'option_name_t' => "VIP",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1093,7 +1093,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1225,12 +1225,12 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Gaylord Resort',
-									'mep_street' => '',
-									'mep_city' => 'Washington DC',
-									'mep_state' => 'NY',
-									'mep_postcode' => '32165',
-									'mep_country' => 'USA',
+									'mep_location_venue' => 'Gaylord Texan Resort & Convention Center',
+									'mep_street' => '1501 Gaylord Trail',
+									'mep_city' => 'Grapevine',
+									'mep_state' => '',
+									'mep_postcode' => 'TX 76051',
+									'mep_country' => 'United States',
 									'mep_sgm' => '',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
@@ -1238,7 +1238,7 @@
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "VIP",
-											'option_details_t' => "",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1250,7 +1250,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Normal",
-											'option_details_t' => "",
+											'option_details_t' => "Standard entry ticket providing access to the event and all general areas included in the admission",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1273,7 +1273,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1328,7 +1328,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 									
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -1405,12 +1405,12 @@
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
-									'mep_location_venue' => 'Kolkata wordPress Community',
-									'mep_street' => 'Park Street',
-									'mep_city' => 'Kolkata',
-									'mep_state' => 'West Bengal',
-									'mep_postcode' => '1209',
-									'mep_country' => 'India',
+									'mep_location_venue' => 'Radisson Collection Hotel',
+									'mep_street' => 'Karl-Liebknecht-Str. 3',
+									'mep_city' => 'Berlin',
+									'mep_state' => 'Berlin',
+									'mep_postcode' => '10178',
+									'mep_country' => 'Germany',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
@@ -1418,7 +1418,7 @@
 									'mep_event_ticket_type' => array(
 										0 => array(
 											'option_name_t' => "General",
-											'option_details_t' => "Ticket without Lunch Party",
+											'option_details_t' => "Valid for individuals aged 18 and above, providing full access to all designated areas and activities",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1430,7 +1430,7 @@
 										),
 										1 => array(
 											'option_name_t' => "Sponsored",
-											'option_details_t' => "Dinner Party Ticket Included with this Ticket",
+											'option_details_t' => "For children aged 3 to 12, offering access to designated areas and activities suitable for young visitors",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1442,7 +1442,7 @@
 										),
 										2 => array(
 											'option_name_t' => "Free",
-											'option_details_t' => "This ticket is valid for those under the age of 12 years old.",
+											'option_details_t' => "Standard entry ticket providing access to the event and all general areas included in the admission.",
 											'option_price_t' => "100",
 											'option_qty_t' => "200",
 											'option_rsv_t' => "0",
@@ -1465,7 +1465,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1602,7 +1602,7 @@
 									'mep_city' => 'Sheffield',
 									'mep_state' => 'S1 2PP',
 									'mep_postcode' => '',
-									'mep_country' => '',
+									'mep_country' => 'United Kingdom',
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
@@ -1657,7 +1657,7 @@
 											'option_name' => 'Logo Printed Mug',
 											'option_price' => '150',
 											'option_qty' => '100',
-											'option_qty_type' => 'dropdown',
+											'option_qty_type' => 'inputbox',
 										),
 										2 => array(
 											'option_name' => 'Welcome Drink',
@@ -1713,7 +1713,7 @@
 									'event_list'=>array(),
 									
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',

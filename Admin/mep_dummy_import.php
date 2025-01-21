@@ -59,14 +59,16 @@
 				}
 			}
 			public function dummy_import() {
-				$dummy_post_inserted = get_option('mep_dummy_already_inserted') ? get_option('mep_dummy_already_inserted') : 'no';
-				$dummy_post_data_inserted = get_option('mep_dummy_post_data_inserted') ? get_option('mep_dummy_post_data_inserted') : 'no';
 
+				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
+				if ($dummy_post_inserted) {
+					return;
+				}
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
 				$gallery_images = [];
 				$related_events = [];
-				if ($count_existing_event == 0 && $dummy_post_inserted == 'no') {
+				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
 						if ($type == 'taxonomy') {
@@ -75,7 +77,6 @@
 									$check_terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false));
 									if (is_string($check_terms) || sizeof($check_terms) == 0) {
 										foreach ($dummy_taxonomy as $taxonomy_data) {
-											unset($term);
 											$term = wp_insert_term($taxonomy_data['name'], $taxonomy);
 											if (array_key_exists('tax_data', $taxonomy_data)) {
 												foreach ($taxonomy_data['tax_data'] as $meta_key => $data) {
@@ -87,45 +88,37 @@
 								}
 							}
 						}
-						if ($type == 'custom_post') {
-							foreach ($dummy as $custom_post => $dummy_post) {
-								unset($args);
-								$args = array(
-									'post_type' => $custom_post,
-									'posts_per_page' => -1,
-								);
-								unset($post);
-								$post = new WP_Query($args);
-								if ($post->post_count == 0) {
-									foreach ($dummy_post as $dummy_data) {
-										$title = $dummy_data['name'];
-										$content = $dummy_data['content'];
-										$post_id = wp_insert_post([
-											'post_title' => $title,
-											'post_content' => $content,
-											'post_status' => 'publish',
-											'post_type' => $custom_post,
-										]);
-										$related_events[] = $post_id;
-										if (array_key_exists('taxonomy_terms', $dummy_data) && count($dummy_data['taxonomy_terms'])) {
-											foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
-												wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
-											}
+					}
+					if ($type == 'custom_post') {
+						foreach ($dummy as $custom_post => $dummy_post) {
+							$args = array(
+								'post_type' => $custom_post,
+								'posts_per_page' => -1,
+							);
+							$post = new WP_Query($args);
+							if ($post->post_count == 0) {
+								foreach ($dummy_post as $dummy_data) {
+									$post_id = wp_insert_post([
+										'post_title' => $dummy_data['name'],
+										'post_content' => $dummy_data['content'],
+										'post_status' => 'publish',
+										'post_type' => $custom_post,
+									]);
+									if (array_key_exists('taxonomy_terms', $dummy_data)) {
+										foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
+											wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
 										}
-										if (array_key_exists('post_data', $dummy_data) && $dummy_post_data_inserted == 'no') {
 
+									}
+									if (array_key_exists('post_data', $dummy_data)) {
+										foreach ($dummy_data['post_data'] as $meta_key => $data) {
+											if ($meta_key == 'feature_image') {
+												$url = $data;
+												$image = media_sideload_image($url, $post_id, null, 'id');
+												set_post_thumbnail($post_id, $image);
+											} else {
+												update_post_meta($post_id, $meta_key, $data);
 
-											foreach ($dummy_data['post_data'] as $meta_key => $data) {
-												if ($meta_key == 'feature_image') {
-													$url = $data;
-													$desc = "The Demo Dummy Image of the event";
-													$image = media_sideload_image($url, $post_id, $desc, 'id');
-													$gallery_images[] = $image;
-													set_post_thumbnail($post_id, $image);
-												}
-												else {
-													update_post_meta($post_id, $meta_key, $data);
-												}
 											}
 											update_option('mep_dummy_post_data_inserted', 'yes');
 
@@ -1489,12 +1482,17 @@
 									'mep_time_zone_display' => 'no',
 									'event_start_date' => $start_date = date('Y-m-d', strtotime('+25 days', time())),
 									'event_start_time' => $start_time = "09:00",
-									'event_end_date' => $end_date = date('Y-m-d', strtotime('+40 days', strtotime($start_date))),
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
 									'event_start_datetime' => $start_datetime = $start_date . ' ' . $start_time . ':00',
 									'event_end_datetime' => $end_datetime = $end_date . ' ' . $end_time . ':00',
 									'event_expire_datetime' => $expire_datetime = $end_date . ' ' . $end_time . ':00',
-									//'mep_enable_recurring' => 'no',
+									'event_start_date_everyday' => $start_date,
+									'event_start_time_everyday' => $start_time,
+									'event_end_date_everyday' => $end_date,
+									'event_end_time_everyday' => $end_time,
+									
+									'mep_enable_recurring' => 'everyday',
 									//Event Settings
 									'_sku' => '',
 									'mep_show_end_datetime' => 'yes',
@@ -1679,14 +1677,40 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
 									'event_start_time' => $start_time = "09:00",
-									'event_end_date' => $end_date = date('Y-m-d', strtotime('+70 days', strtotime($start_date))),
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
 									'event_start_datetime' => $start_datetime = $start_date . ' ' . $start_time . ':00',
 									'event_end_datetime' => $end_datetime = $end_date . ' ' . $end_time . ':00',
 									'event_expire_datetime' => $expire_datetime = $end_date . ' ' . $end_time . ':00',
-									//'mep_enable_recurring' => 'no',
+									'mep_event_more_date' =>[
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+50 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+70 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+									],
+									'mep_enable_recurring' => 'yes',
 									//Event Settings
 									'_sku' => '',
 									'mep_show_end_datetime' => 'yes',
@@ -1719,7 +1743,7 @@
 									'event_list'=>array(),
 									
 									// default theme
-									'mep_event_template'=>'default-theme.php',
+									'mep_event_template'=>'smart.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',

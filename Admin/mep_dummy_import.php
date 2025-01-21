@@ -59,6 +59,7 @@
 				}
 			}
 			public function dummy_import() {
+
 				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
 				if ($dummy_post_inserted) {
 					return;
@@ -107,6 +108,7 @@
 										foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
 											wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
 										}
+
 									}
 									if (array_key_exists('post_data', $dummy_data)) {
 										foreach ($dummy_data['post_data'] as $meta_key => $data) {
@@ -116,7 +118,10 @@
 												set_post_thumbnail($post_id, $image);
 											} else {
 												update_post_meta($post_id, $meta_key, $data);
+
 											}
+											update_option('mep_dummy_post_data_inserted', 'yes');
+
 										}
 									}
 								}

@@ -3520,10 +3520,10 @@
 							<?php
 						}
 					} ?>
-					<?php if ( $userinf['user_ticket_type'] ) { ?>
+					<?php if ( array_key_exists( 'user_ticket_type', $userinf ) &&$userinf['user_ticket_type'] ) { ?>
                         <li class='mep_cart_user_ticket_type'><?php esc_html_e( 'Ticket Type', 'mage-eventpress' );
 								echo ": " . esc_attr( $userinf['user_ticket_type'] ); ?></li> <?php } ?>
-
+				<?php if ( array_key_exists( 'user_event_date', $userinf ) &&$userinf['user_event_date'] ) { ?>
 					<?php if ( $recurring == 'everyday' && $time_status == 'no' ) { ?>
                         <li class='mep_cart_user_date'><?php
 								esc_html_e( ' Date', 'mage-eventpress' );
@@ -3533,6 +3533,7 @@
 								esc_html_e( ' Date', 'mage-eventpress' );
 								echo ": "; ?><?php echo esc_attr( get_mep_datetime( $userinf['user_event_date'], 'date-time-text' ) ); ?></li>
 					<?php } ?>
+				<?php } ?>
                 </ul>
 				<?php
 			}

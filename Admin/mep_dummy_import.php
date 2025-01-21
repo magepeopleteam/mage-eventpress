@@ -59,12 +59,12 @@
 				}
 			}
 			public function dummy_import() {
-				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
+				$dummy_post_inserted = get_option('mep_dummy_already_inserted') ? get_option('mep_dummy_already_inserted') : 'no';
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
 				$gallery_images = [];
 				$related_events = [];
-				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
+				if ($count_existing_event == 0 && $dummy_post_inserted == 'no') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
 						if ($type == 'taxonomy') {

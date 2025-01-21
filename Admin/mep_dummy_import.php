@@ -60,6 +60,8 @@
 			}
 			public function dummy_import() {
 				$dummy_post_inserted = get_option('mep_dummy_already_inserted') ? get_option('mep_dummy_already_inserted') : 'no';
+				$dummy_post_data_inserted = get_option('mep_dummy_post_data_inserted') ? get_option('mep_dummy_post_data_inserted') : 'no';
+
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
 				$gallery_images = [];
@@ -110,7 +112,9 @@
 												wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
 											}
 										}
-										if (array_key_exists('post_data', $dummy_data)) {
+										if (array_key_exists('post_data', $dummy_data) && $dummy_post_data_inserted == 'no') {
+
+
 											foreach ($dummy_data['post_data'] as $meta_key => $data) {
 												if ($meta_key == 'feature_image') {
 													$url = $data;
@@ -123,6 +127,8 @@
 													update_post_meta($post_id, $meta_key, $data);
 												}
 											}
+											update_option('mep_dummy_post_data_inserted', 'yes');
+
 										}
 									}
 								}

@@ -59,12 +59,12 @@
 				}
 			}
 			public function dummy_import() {
-				$dummy_post_inserted = get_option('mep_dummy_already_inserted') ? get_option('mep_dummy_already_inserted') : 'no';
+				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
 				$count_existing_event = wp_count_posts('mep_events')->publish;
 				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
 				$gallery_images = [];
 				$related_events = [];
-				if ($count_existing_event == 0 && $dummy_post_inserted == 'no') {
+				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
 					$dummy_data = $this->dummy_data();
 					foreach ($dummy_data as $type => $dummy) {
 						if ($type == 'taxonomy') {
@@ -1673,14 +1673,40 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
 									'event_start_time' => $start_time = "09:00",
-									'event_end_date' => $end_date = date('Y-m-d', strtotime('+70 days', strtotime($start_date))),
+									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
 									'event_start_datetime' => $start_datetime = $start_date . ' ' . $start_time . ':00',
 									'event_end_datetime' => $end_datetime = $end_date . ' ' . $end_time . ':00',
 									'event_expire_datetime' => $expire_datetime = $end_date . ' ' . $end_time . ':00',
-									//'mep_enable_recurring' => 'no',
+									'mep_event_more_date' =>[
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+50 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+										[
+											'event_more_start_date' => $start_date = date('Y-m-d', strtotime('+70 days', time())),
+											'event_more_start_time' => $start_time = "09:00",
+											'event_more_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
+											'event_more_end_time' => $end_time = "19:00",
+										],
+									],
+									'mep_enable_recurring' => 'yes',
 									//Event Settings
 									'_sku' => '',
 									'mep_show_end_datetime' => 'yes',
@@ -1713,7 +1739,7 @@
 									'event_list'=>array(),
 									
 									// default theme
-									'mep_event_template'=>'default-theme.php',
+									'mep_event_template'=>'smart.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',

@@ -8,7 +8,12 @@
 
 
 
-
+	add_action( 'admin_init',  'mep_flush_rules_event_list_page');
+	function mep_flush_rules_event_list_page() {
+		if ( isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash($_GET['post_type']) ) == 'mep_events' ) {
+			flush_rewrite_rules();
+		}
+	}
 
 
 	if (!function_exists('mep_temp_attendee_create_for_cart_ticket_array')) {
@@ -32,10 +37,8 @@
 			'post_type' => 'mep_temp_attendee'  //'post',page' or use a custom post type if you want to
 		);
 	
-		//SAVE THE POST
-	
+		//SAVE THE POST	
 		$pid = wp_insert_post($new_post);
-	
 		$current_time = current_time('Y-m-d H:i:s');
 		update_post_meta($pid, 'event_id', $event_id);
 		update_post_meta($pid, 'ticket_type', $ticket_type);
@@ -85,6 +88,7 @@
 			}
 		}
 	}
+	
 	
 	if (!function_exists('mep_temp_attendee_auto_delete_for_cart')) {
 		function mep_temp_attendee_auto_delete_for_cart(){
@@ -1213,7 +1217,9 @@
 		$availabe_seat         = ! empty( get_post_meta( $event_id, $ticket_type_meta_name, true ) ) ? get_post_meta( $event_id, $ticket_type_meta_name, true ) : mep_update_ticket_type_seat( $event_id, $name, $date, $total, $reserved );
 
 		// $availabe_seat          = mep_update_ticket_type_seat($event_id,$name,$date,$total,$reserved);
-		return $availabe_seat;
+		// return $availabe_seat;
+		$temp_count = mep_temp_attendee_count($event_id, $name, $date);
+		return $availabe_seat + $temp_count;
 	}
 	if ( ! function_exists( 'mep_get_count_total_available_seat' ) ) {
 		function mep_get_count_total_available_seat( $event_id, $date = '' ) {

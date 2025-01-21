@@ -57,7 +57,7 @@
 				if (isset($post_title_array[get_the_ID()])){
 					unset($post_title_array[get_the_ID()]);
 				}
-				$product_ids   = get_post_meta( $post_id, 'event_list', true );
+				$product_ids   = get_post_meta( $post_id, 'event_list', true ) ? get_post_meta( $post_id, 'event_list', true ) : [];
 				// $column_num    = get_post_meta( $post_id, '_list_column', true );
 				$section_label = get_post_meta( $post_id, 'related_section_label', true );
 				// $column_num = $column_num[0];
@@ -146,7 +146,7 @@
 						$posts_array      = $loop->posts;
 						$post_title_array = wp_list_pluck( $posts_array, 'post_title', 'ID' );
 		
-						$product_ids = get_post_meta( $post->ID, '_upsizing_products_ids', true );
+						$product_ids = get_post_meta( $post->ID, '_upsizing_products_ids', true ) ? get_post_meta( $post->ID, '_upsizing_products_ids', true ) : [];
 		
 		
 						foreach ( $post_title_array as $product_id => $value ) {
@@ -174,7 +174,7 @@
 			public function related_events_after_single() {
 		
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true ) ? get_post_meta( $post->ID, 'event_list', true ) : [];
 				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				if ( $column_num == 3 ) {
@@ -323,7 +323,7 @@
 			}
 			public function related_events(){
 				global $woocommerce, $post;
-				$product_ids   = get_post_meta( $post->ID, 'event_list', true );
+				$product_ids   = get_post_meta( $post->ID, 'event_list', true ) ? get_post_meta( $post->ID, 'event_list', true ) : [];
 				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
 				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
@@ -467,7 +467,7 @@
 			}
 			public function related_single_products() {
 				global $woocommerce, $post;
-				$product_ids = get_post_meta( $post->ID, '_upsizing_products_ids', true );
+				$product_ids = get_post_meta( $post->ID, '_upsizing_products_ids', true ) ? get_post_meta( $post->ID, '_upsizing_products_ids', true ) : [];
 				//print_r($product_ids);
 				$style = 'grid'; ?>
 				<div class="mep_event_list">

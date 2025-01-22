@@ -104,17 +104,18 @@
 										'post_status' => 'publish',
 										'post_type' => $custom_post,
 									]);
+									$related_events[] = $post_id;
 									if (array_key_exists('taxonomy_terms', $dummy_data)) {
 										foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
 											wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
 										}
-
 									}
 									if (array_key_exists('post_data', $dummy_data)) {
 										foreach ($dummy_data['post_data'] as $meta_key => $data) {
 											if ($meta_key == 'feature_image') {
 												$url = $data;
 												$image = media_sideload_image($url, $post_id, null, 'id');
+												$gallery_images[] = $image;
 												set_post_thumbnail($post_id, $image);
 											} else {
 												update_post_meta($post_id, $meta_key, $data);

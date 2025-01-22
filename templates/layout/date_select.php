@@ -39,6 +39,7 @@
 			$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
 			$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
 			$display_time = get_post_meta($event_id,'mep_disable_ticket_time',true);
+			$display_time = $display_time?$display_time:'no';
 			?>
             <div class="date-time-area">
                 <label>

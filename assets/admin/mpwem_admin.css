@@ -992,7 +992,55 @@ p.event_meta_help_txt {
   padding: 5px;
   border: 1px solid #B8DAFF;
   border-radius: 0.25rem;
-  display: none;
+}
+
+.mep-tooltips {
+  margin: 5px;
+  color: #999;
+}
+.mep-tooltips:hover {
+  color: var(--mpev-dark);
+}
+
+.mep-tooltips {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.mep-tooltips .tooltip-text {
+  visibility: hidden;
+  width: 150px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.mep-tooltips:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.mep-tooltips .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
 }
 
 p.event_meta_help_txt:before {

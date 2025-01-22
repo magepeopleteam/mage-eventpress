@@ -826,6 +826,10 @@ iframe#gmap_canvas {
   margin: 10px;
 }
 
+#mp_event_all_info_in_tab .mp_form_builder_table label {
+  margin: 0;
+}
+
 .mp_event_all_meta_in_tab {
   display: -webkit-flex;
   display: flex;
@@ -988,6 +992,7 @@ p.event_meta_help_txt {
   padding: 5px;
   border: 1px solid #B8DAFF;
   border-radius: 0.25rem;
+  display: none;
 }
 
 p.event_meta_help_txt:before {

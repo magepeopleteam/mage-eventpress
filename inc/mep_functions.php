@@ -2345,71 +2345,85 @@
 			$mep_user_desg        = isset( $_POST['user_designation'] ) ? mage_array_strip( $_POST['user_designation'] ) : [];
 			$mep_user_website     = isset( $_POST['user_website'] ) ? mage_array_strip( $_POST['user_website'] ) : [];
 			$mep_user_vegetarian  = isset( $_POST['vegetarian'] ) ? mage_array_strip( $_POST['vegetarian'] ) : [];
-			$mep_user_ticket_type = isset( $_POST['ticket_type'] ) ? mage_array_strip( $_POST['ticket_type'] ) : [];
-			$event_date           = isset( $_POST['event_date'] ) ? mage_array_strip( $_POST['event_date'] ) : [];
-			$mep_event_id         = isset( $_POST['mep_event_id'] ) ? mage_array_strip( $_POST['mep_event_id'] ) : [];
-			$mep_user_option_qty  = isset( $_POST['option_qty'] ) ? mage_array_strip( $_POST['option_qty'] ) : [];
-			$mep_user_cfd         = isset( $_POST['mep_ucf'] ) ? mage_array_strip( $_POST['mep_ucf'] ) : [];
-			if ( $mep_user_name ) {
-				$count_user = count( $mep_user_name );
-			} else {
-				$count_user = 0;
-			}
-			if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
-				for ( $iu = 0; $iu < $count_user; $iu ++ ) {
-					if ( isset( $mep_user_name[ $iu ] ) ):
-						$user[ $iu ]['user_name'] = stripslashes( strip_tags( $mep_user_name[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_email[ $iu ] ) ) :
-						$user[ $iu ]['user_email'] = stripslashes( strip_tags( $mep_user_email[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_phone[ $iu ] ) ) :
-						$user[ $iu ]['user_phone'] = stripslashes( strip_tags( $mep_user_phone[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_address[ $iu ] ) ) :
-						$user[ $iu ]['user_address'] = stripslashes( strip_tags( $mep_user_address[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_gender[ $iu ] ) ) :
-						$user[ $iu ]['user_gender'] = stripslashes( strip_tags( $mep_user_gender[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_tshirtsize[ $iu ] ) ) :
-						$user[ $iu ]['user_tshirtsize'] = stripslashes( strip_tags( $mep_user_tshirtsize[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_company[ $iu ] ) ) :
-						$user[ $iu ]['user_company'] = stripslashes( strip_tags( $mep_user_company[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_desg[ $iu ] ) ) :
-						$user[ $iu ]['user_designation'] = stripslashes( strip_tags( $mep_user_desg[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_website[ $iu ] ) ) :
-						$user[ $iu ]['user_website'] = stripslashes( strip_tags( $mep_user_website[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_vegetarian[ $iu ] ) ) :
-						$user[ $iu ]['user_vegetarian'] = stripslashes( strip_tags( $mep_user_vegetarian[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_ticket_type[ $iu ] ) ) :
-						$user[ $iu ]['user_ticket_type'] = strip_tags( $mep_user_ticket_type[ $iu ] );
-					endif;
-					if ( isset( $event_date[ $iu ] ) ) :
-						$user[ $iu ]['user_event_date'] = stripslashes( strip_tags( $event_date[ $iu ] ) );
-					endif;
-					if ( isset( $mep_event_id[ $iu ] ) ) :
-						$user[ $iu ]['user_event_id'] = stripslashes( strip_tags( $mep_event_id[ $iu ] ) );
-					endif;
-					if ( isset( $mep_user_option_qty[ $iu ] ) ) :
-						$user[ $iu ]['user_ticket_qty'] = stripslashes( strip_tags( $mep_user_option_qty[ $iu ] ) );
-					endif;
-				}
-			}
+
+			$mep_event_start_date = isset( $_POST['mep_event_start_date'] ) ? mage_array_strip( $_POST['mep_event_start_date'] ) : array();
+
+			$names = isset( $_POST['option_name'] ) ? mage_array_strip( $_POST['option_name'] ) : array();
+			$qty   = isset( $_POST['option_qty'] ) ? mage_array_strip( $_POST['option_qty'] ) : array();
 			$reg_form_id           = mep_fb_get_reg_form_id( $product_id );
 			$mep_form_builder_data = get_post_meta( $reg_form_id, 'mep_form_builder_data', true );
-			if ( $mep_form_builder_data ) {
-				foreach ( $mep_form_builder_data as $_field ) {
-					$user[ $iu ][ $_field['mep_fbc_id'] ] = isset( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ? stripslashes( mage_array_strip( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ) : "";
-					//mep_attendee_upload_file_system($user,$iu,$_field);
-					$user = apply_filters( 'mep_attendee_upload_file', $user, $iu, $_field );
+            $iu=0;
+			if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
+				if ( sizeof( $names ) > 0 ) {
+					$same_attendee = MP_Global_Function::get_settings('general_setting_sec', 'mep_enable_same_attendee', 'no');
+					$current_template         =MP_Global_Function::get_post_info($product_id,'mep_event_template');
+					$global_template       = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme.php');
+					$_current_template     = $current_template ?: $global_template;
+                    foreach ($names as $key=>$name){
+	                    if ( $qty[ $key ] > 0 && $name) {
+		                    for ($j=0;$j<$qty[ $key ];$j++){
+			                    if (($same_attendee == 'yes' || $same_attendee == 'must') && $iu>0 && $_current_template=='smart.php') {
+				                    $user[ $iu ]=current($user);
+				                    $user[ $iu ]['user_ticket_type'] = strip_tags( $name );
+				                    if ( isset($qty[ $key ] ) ) :
+					                    $user[ $iu ]['user_ticket_qty'] = stripslashes($qty[ $key ] );
+				                    endif;
+                                }else {
+				                    if ( isset( $mep_user_name[ $iu ] ) ):
+					                    $user[ $iu ]['user_name'] = stripslashes( strip_tags( $mep_user_name[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_email[ $iu ] ) ) :
+					                    $user[ $iu ]['user_email'] = stripslashes( strip_tags( $mep_user_email[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_phone[ $iu ] ) ) :
+					                    $user[ $iu ]['user_phone'] = stripslashes( strip_tags( $mep_user_phone[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_address[ $iu ] ) ) :
+					                    $user[ $iu ]['user_address'] = stripslashes( strip_tags( $mep_user_address[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_gender[ $iu ] ) ) :
+					                    $user[ $iu ]['user_gender'] = stripslashes( strip_tags( $mep_user_gender[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_tshirtsize[ $iu ] ) ) :
+					                    $user[ $iu ]['user_tshirtsize'] = stripslashes( strip_tags( $mep_user_tshirtsize[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_company[ $iu ] ) ) :
+					                    $user[ $iu ]['user_company'] = stripslashes( strip_tags( $mep_user_company[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_desg[ $iu ] ) ) :
+					                    $user[ $iu ]['user_designation'] = stripslashes( strip_tags( $mep_user_desg[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_website[ $iu ] ) ) :
+					                    $user[ $iu ]['user_website'] = stripslashes( strip_tags( $mep_user_website[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $mep_user_vegetarian[ $iu ] ) ) :
+					                    $user[ $iu ]['user_vegetarian'] = stripslashes( strip_tags( $mep_user_vegetarian[ $iu ] ) );
+				                    endif;
+				                    $user[ $iu ]['user_ticket_type'] = strip_tags( $name );
+				                    if ( isset( $mep_event_start_date[0] ) ) :
+					                    $user[ $iu ]['user_event_date'] = stripslashes( strip_tags( $mep_event_start_date[0] ) );
+				                    endif;
+				                    if ( $product_id ) :
+					                    $user[ $iu ]['user_event_id'] = $product_id;
+				                    endif;
+				                    if ( isset( $qty[ $key ] ) ) :
+					                    $user[ $iu ]['user_ticket_qty'] = stripslashes( $qty[ $key ] );
+				                    endif;
+				                    if ( $mep_form_builder_data ) {
+					                    foreach ( $mep_form_builder_data as $_field ) {
+						                    $user[ $iu ][ $_field['mep_fbc_id'] ] = isset( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ? stripslashes( mage_array_strip( $_POST[ $_field['mep_fbc_id'] ][ $iu ] ) ) : "";
+						                    $user                                 = apply_filters( 'mep_attendee_upload_file', $user, $iu, $_field );
+					                    }
+				                    }
+			                    }
+			                    $iu++;
+		                    }
+                        }
+                    }
 				}
 			}
+
+
 
 			return apply_filters( 'mep_cart_user_data_prepare', $user, $product_id );
 		}
@@ -3520,20 +3534,20 @@
 							<?php
 						}
 					} ?>
-					<?php if ( array_key_exists( 'user_ticket_type', $userinf ) &&$userinf['user_ticket_type'] ) { ?>
+					<?php if ( array_key_exists( 'user_ticket_type', $userinf ) && $userinf['user_ticket_type'] ) { ?>
                         <li class='mep_cart_user_ticket_type'><?php esc_html_e( 'Ticket Type', 'mage-eventpress' );
 								echo ": " . esc_attr( $userinf['user_ticket_type'] ); ?></li> <?php } ?>
-				<?php if ( array_key_exists( 'user_event_date', $userinf ) &&$userinf['user_event_date'] ) { ?>
-					<?php if ( $recurring == 'everyday' && $time_status == 'no' ) { ?>
-                        <li class='mep_cart_user_date'><?php
-								esc_html_e( ' Date', 'mage-eventpress' );
-								echo ": "; ?><?php echo esc_attr( get_mep_datetime( $userinf['user_event_date'], 'date-text' ) ); ?></li>
-					<?php } else { ?>
-                        <li class='mep_cart_user_date'><?php
-								esc_html_e( ' Date', 'mage-eventpress' );
-								echo ": "; ?><?php echo esc_attr( get_mep_datetime( $userinf['user_event_date'], 'date-time-text' ) ); ?></li>
+					<?php if ( array_key_exists( 'user_event_date', $userinf ) && $userinf['user_event_date'] ) { ?>
+						<?php if ( $recurring == 'everyday' && $time_status == 'no' ) { ?>
+                            <li class='mep_cart_user_date'><?php
+									esc_html_e( ' Date', 'mage-eventpress' );
+									echo ": "; ?><?php echo esc_attr( get_mep_datetime( $userinf['user_event_date'], 'date-text' ) ); ?></li>
+						<?php } else { ?>
+                            <li class='mep_cart_user_date'><?php
+									esc_html_e( ' Date', 'mage-eventpress' );
+									echo ": "; ?><?php echo esc_attr( get_mep_datetime( $userinf['user_event_date'], 'date-time-text' ) ); ?></li>
+						<?php } ?>
 					<?php } ?>
-				<?php } ?>
                 </ul>
 				<?php
 			}

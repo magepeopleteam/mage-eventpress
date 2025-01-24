@@ -102,5 +102,28 @@
 		if ($speaker_status == 'yes') {
 			register_post_type('mep_event_speaker', $args);
 		}
+
+
+		$argsl = array(
+			'public'          => true,
+			'label'           => __( 'Event Temp Attendee', 'mage-eventpress' ),
+			'menu_icon'       => 'dashicons-id',
+			'supports'        => array( 'title' ),
+			// 'show_in_menu' => 'edit.php?post_type=mep_events',
+			'exclude_from_search'   => true,
+			'show_in_menu'    => false,
+			'capability_type' => 'post',
+			'capabilities'    => array(
+				'create_posts' => 'do_not_allow',
+			),
+			'map_meta_cap'    => true,
+			'show_in_rest'    => false,
+			'rest_base'       => 'mep_temp_attendee'
+		);
+		register_post_type( 'mep_temp_attendee', $argsl );
+
+
+
+
 	}
 	add_action('init', 'mep_cpt');

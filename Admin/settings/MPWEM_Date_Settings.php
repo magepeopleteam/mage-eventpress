@@ -208,7 +208,7 @@
                         <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
                     </section>
                     <section>
-                        <label class="label">
+                        <div class="label">
                             <div>
                                 <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
                                 <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
@@ -217,7 +217,7 @@
 								<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
 								<span class="slider"></span>
 							</label>
-						</label>
+						</div>
                     </section>
 				<div class="mpStyle">
                     <section style="display:<?php echo esc_attr($display_time == 'yes' ? 'block' : 'none'); ?>" id="mep_disable_ticket_time">

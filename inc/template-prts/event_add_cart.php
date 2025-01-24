@@ -84,7 +84,9 @@
 			/**
 			 * First Checking If the registration status enable or disable
 			 */
+			
 			if ($reg_status != 'off') {
+				
 				/**
 				 * Then Checking If the event date already gone or not
 				 */
@@ -108,6 +110,7 @@
 					/**
 					 * If everything is fine then its go on ....
 					 */
+					
 					if ($event_member_type == 'for_all' || ($event_member_type != 'for_all' && is_user_logged_in() && (in_array(wp_get_current_user()->roles[0], $saved_user_role) || in_array('all', $saved_user_role)))) {
 						?>
                         <input type='hidden' value="<?php echo esc_attr($extra_service_label); ?>" id='mep_extra_service_label'/>

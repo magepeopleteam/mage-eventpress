@@ -40,6 +40,7 @@
 			public function related($event_id): void { require MPWEM_Functions::template_path('layout/related_event.php'); }
 			public function social($event_id): void { require MPWEM_Functions::template_path('layout/social.php'); }
 			/**************************/
+
 			public function get_mpwem_ticket() {
 				$post_id     = $_REQUEST['post_id'] ?? '';
 				$dates        = $_REQUEST['dates'] ?? '';

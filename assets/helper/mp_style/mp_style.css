@@ -507,7 +507,7 @@
 	div.superSlider .area_column .sliderShowcase { width: 100%; min-width: 100%; }
 	div.superSlider .sliderShowcase.top { margin: 0 0 var(--dMP_xs) 0; }
 	div.superSlider .sliderShowcase.bottom { margin: var(--dMP_xs) 0 0 0; }
-	div.superSlider .sliderShowcaseItem { position: relative; overflow: hidden;max-height:117px;margin: 0 0 var(--dMP_xs) 0; }
+	div.superSlider .sliderShowcaseItem { position: relative; overflow: hidden;max-height:119px;margin: 0 0 var(--dMP_xs) 0; }
 	div.superSlider .sliderShowcase.right .sliderShowcaseItem:last-child { margin: 0; }
 	div.superSlider .area_column .sliderShowcaseItem { width: calc(25% - var(--dMP_xs)); }
 	div.superSlider .sliderShowcase div.superSlider .area_column { margin: 0 0 var(--dMP_xs) 0; position: relative; cursor: pointer; overflow: hidden; }

@@ -62,6 +62,7 @@ if (post_password_required()) {
 	$current_template         = array_key_exists('mep_event_template',$event_meta) && $event_meta['mep_event_template'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_event_template'][0]):'';
     $global_template       = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme.php');
     $_current_template     = $current_template ?: $global_template;
+    echo $_current_template;
     $currency_pos           = get_option('woocommerce_currency_pos');
     do_action('mep_event_single_page_after_header',$_the_event_id);
 ?>

@@ -64,7 +64,7 @@
 				.item {
 					display: flex;
 					align-items: flex-start;
-					margin-bottom: 40px;
+					margin-bottom: 20px;
 					position: relative;
 					padding-left: 40px;
 					&:last-child {
@@ -96,7 +96,7 @@
 							left: 50%;
 							top: 100%;
 							width: 1px;
-							height: calc(100% + 20px); // Extend the line to connect items
+							height: calc(100% + 50px); // Extend the line to connect items
 							background-color: var(--mpev-primary); // Grey timeline line
 							z-index: -1;
 							transform: translateX(-50%);
@@ -115,7 +115,7 @@
 
 						.details {
 							font-size: 14px;
-							color: #666; // Light grey for details text
+							color: #666;
 						}
 					}
 				}
@@ -310,7 +310,7 @@
 					.date-lists{
 						ul{
 							list-style-type:disc;
-							padding-left: 18px;
+							padding-left: 22px;
 							margin-bottom: 20px;
 							li{
 								margin-bottom: 20px;
@@ -458,6 +458,7 @@
 			iframe{
 				margin-top: 20px;
 				border-radius: 15px;
+				height: 450px;
 			}
 		}
 		.faq_area{
@@ -498,6 +499,7 @@
 					background-color: #fff;
 					padding: 10px;
 					box-shadow: 0 0 5px #dddddd;
+					border-radius: 10px;
 					@media (min-width:540px) {
 						width: 49%;
 					}
@@ -565,8 +567,8 @@
 			}
 		}
 		
-		.related-events{
-			.related-events-items{
+		.mep-related-events{
+			.mep-related-events-items{
 				.item{
 					.item-info{
 						.price{
@@ -584,7 +586,7 @@
 		}
 		
 	}
-	.related-events{
+	.mep-related-events{
 		margin: 20px 0;
 		position: relative;
 		.related-events-header{
@@ -606,7 +608,7 @@
 				}
 			}
 		}
-		.related-events-items{
+		.mep-related-events-items{
 			margin-top: 20px;
 			
 			
@@ -666,7 +668,7 @@
 						color: #999;
 						h2{
 							font-size: 30px;
-							color: var(--mpev-secondary);
+							color: var(--mpev-primary);
 							margin: 0;
 						}
 					}

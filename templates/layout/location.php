@@ -12,6 +12,7 @@
 	$isVirtual = get_post_meta($event_id,'mep_event_type',true);
 	$show_map   	   = get_post_meta($event_id, 'mep_sgm', true);
 	$show_map   	   = $show_map? $show_map : 0;
+	$event_template   	   = get_post_meta($event_id, 'mep_event_template', true);
 	if($isVirtual!='online'){
 		if ( $event_id > 0 && $hide_location == 'no' ) {
 			$location = MPWEM_Functions::get_location( $event_id );
@@ -25,9 +26,15 @@
 							<h2><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></h2>
 							<p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
 							<?php if($show_map): ?>
-							<button type="button" data-target-popup="mpwem_popup_map" >
-								<i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
-							</button>
+								<?php if($event_template=='smart.php'): ?>
+									<button type="button" onclick="window.location.href = '#mep-map-location'">
+										<i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+									</button>
+								<?php else: ?>
+									<button type="button" data-target-popup="mpwem_popup_map" >
+										<i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+									</button>
+								<?php endif; ?>
 							<?php endif; ?>
 						</div>
 						<div class="mpPopup" data-popup="mpwem_popup_map">
@@ -52,7 +59,8 @@
 				} else {
 					?>
 					<div class="mpwem_location">
-						<i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo esc_html( implode( ', ', $location ) ); ?>
+						<i class="fas fa-map-marker-alt"></i>
+						<div><?php echo esc_html( implode( ', ', $location ) ); ?></div>
 					</div>
 					<?php
 				}

@@ -5008,7 +5008,21 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_location_time {
     display: flex;
+    flex-direction: column;
     justify-content: start;
+  }
+  /*****************************/
+  /*****************************/
+  /***************************************************/
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time {
+    flex-direction: row;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location, .mep_smart_theme .mpwem_location_time .mpwem_time {
+    flex-wrap: wrap;
   }
   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
@@ -5021,6 +5035,27 @@ Vanilla theme css by ariful
     font-size: 25px;
     border-radius: 5px;
   }
+  .mep_smart_theme .mpwem_location_time .mpwem_location {
+    align-items: start;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location {
+    align-items: center;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location div {
+    width: 80%;
+    margin-left: 5px;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location div {
+    width: auto;
+  }
+}
+@media only screen and (min-width: 10px) {
   .mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem {
     border-radius: 15px;
   }
@@ -5038,9 +5073,6 @@ Vanilla theme css by ariful
     margin: 40px 0 0 0;
     flex-direction: column;
   }
-  /*****************************/
-  /*****************************/
-  /***************************************************/
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .mep_smart_theme .mpwem_content_area {

@@ -10,8 +10,13 @@
 		}
 		.mpwem_location_time{
 			display: flex;
+			flex-direction: column;
 			justify-content: start;
+			@media (min-width:1024px) {
+				flex-direction: row;
+			}
 			.mpwem_location, .mpwem_time {
+				flex-wrap: wrap;
 				i{
 					width: 55px;
 					height: 55px;
@@ -22,6 +27,19 @@
 					justify-content: center;
 					font-size: 25px;
 					border-radius: 5px;
+				}
+			}
+			.mpwem_location{
+				align-items: start;
+				@media (min-width:1024px) {
+					align-items: center;
+				}
+				div{
+					width: 80%;
+					margin-left: 5px;
+					@media (min-width:1024px) {
+						width: auto;
+					}
 				}
 			}
 		}

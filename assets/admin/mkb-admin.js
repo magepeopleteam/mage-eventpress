@@ -127,10 +127,16 @@
 			if (checkbox.attr('name') === 'mep_show_advance_col_status') {
 				$(".mep_hide_on_load").slideUp(200);
 			}
+			if(checkbox.attr('name') ==='mep_disable_ticket_time'){
+				$(".mep-special-datetime").slideUp(200);
+			}
 		} else {
 			nextValue = toggleValues[0];
 			if (checkbox.attr('name') === 'mep_show_advance_col_status') {
 				$(".mep_hide_on_load").slideDown(200);
+			}
+			if(checkbox.attr('name') ==='mep_disable_ticket_time'){
+				$(".mep-special-datetime").slideDown(200);
 			}
 		}
 		checkbox.val(nextValue);

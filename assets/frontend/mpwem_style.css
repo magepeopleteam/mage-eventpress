@@ -5272,6 +5272,9 @@ Vanilla theme css by ariful
     background-color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
   }
+  .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area .mpStyle [class*=_themeButton] {
+    padding: 10px;
+  }
   .mep_smart_theme .mpwem_right_content {
     max-width: 100%;
     width: 100%;

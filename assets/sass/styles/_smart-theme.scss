@@ -266,6 +266,9 @@
 					background-color: var(--mpev-primary);
 					border: 1px solid var(--mpev-primary);
 				}
+				.mpStyle [class*="_themeButton"]{
+					padding: 10px;
+				}
 			}
 		}
 		.mpwem_right_content{

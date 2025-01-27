@@ -30,7 +30,8 @@
   --mpev-recring-dpkr-bg:var(--mpev-base);
   --mpev-recring-dpkr-txt:#ffffff;
 }
-
+div.mep-default-theme div.superSlider .sliderShowcaseItem{margin: 0 0 14px 0;}
+div.mep-default-theme div.superSlider .sliderShowcase.right{max-height: 500px;}
 .mep-event-faq-part .ex-sec-title.faq-title-section {
   background: var(--mpev-faq-bg);
   color: var(--mpev-faq-text);

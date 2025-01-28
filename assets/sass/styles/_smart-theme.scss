@@ -550,39 +550,44 @@
 			@media (min-width:540px) {
 				margin: 150px 0;
 			}
-			.attendee_lists{
+			.attendees{
 				display: flex;
-				justify-content: start;
-				flex-direction: row;
+				gap: 10px;
 				flex-wrap: wrap;
-				margin: 20px 0;
-				gap:10px;
-				background-color: #fff;
-				border-radius: 10px;
-				box-shadow: 0 0 5px #f1f1f1;
-				padding: 25px;
-				@media (min-width:540px) {
-					gap:21px;
-				}
-				.attendee{
-					width: 156px;
-					background-color: #f9f9f9;
-					padding: 20px;
+				margin-top: 20px;
+				.attendee_lists{
+					display: flex;
+					justify-content: start;
+					flex-direction: row;
+					flex-wrap: wrap;
+					background-color: #fff;
 					border-radius: 10px;
-					text-align: center;
+					box-shadow: 0 0 5px #f1f1f1;
+					padding: 10px;
 					@media (min-width:540px) {
-						width: 160px;
+						gap:21px;
+						padding: 25px;
 					}
-					img{
-						width: 100px;
-						height: 100px;
-						object-fit: cover;
-						border-radius: 50px;
-					}
-					h2{
-						font-size: 16px;
-						color: #333;
-						margin: 10px 0
+					.attendee{
+						width: 154px;
+						background-color: #f9f9f9;
+						padding: 20px;
+						border-radius: 10px;
+						text-align: center;
+						@media (min-width:540px) {
+							width: 160px;
+						}
+						img{
+							width: 100px;
+							height: 100px;
+							object-fit: cover;
+							border-radius: 50px;
+						}
+						h2{
+							font-size: 16px;
+							color: #333;
+							margin: 10px 0
+						}
 					}
 				}
 			}

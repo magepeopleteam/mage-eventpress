@@ -5570,27 +5570,32 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists {
+  .mep_smart_theme .attendee_area .attendees {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .mep_smart_theme .attendee_area .attendees .attendee_lists {
     display: flex;
     justify-content: start;
     flex-direction: row;
     flex-wrap: wrap;
-    margin: 20px 0;
-    gap: 10px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 5px #f1f1f1;
-    padding: 25px;
+    padding: 10px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .mep_smart_theme .attendee_area .attendee_lists {
+  .mep_smart_theme .attendee_area .attendees .attendee_lists {
     gap: 21px;
+    padding: 25px;
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee {
-    width: 156px;
+  .mep_smart_theme .attendee_area .attendees .attendee_lists .attendee {
+    width: 154px;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
@@ -5598,18 +5603,18 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee {
+  .mep_smart_theme .attendee_area .attendees .attendee_lists .attendee {
     width: 160px;
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee img {
+  .mep_smart_theme .attendee_area .attendees .attendee_lists .attendee img {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 50px;
   }
-  .mep_smart_theme .attendee_area .attendee_lists .attendee h2 {
+  .mep_smart_theme .attendee_area .attendees .attendee_lists .attendee h2 {
     font-size: 16px;
     color: #333;
     margin: 10px 0;

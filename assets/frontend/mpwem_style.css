@@ -5567,54 +5567,10 @@ Vanilla theme css by ariful
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .mep_smart_theme .attendee_area {
-    margin: 150px 0;
+    margin: 50px 0;
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists {
-    display: flex;
-    justify-content: start;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 20px 0;
-    gap: 10px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 5px #f1f1f1;
-    padding: 25px;
-  }
-}
-@media only screen and (min-width: 10px) and (min-width: 540px) {
-  .mep_smart_theme .attendee_area .attendee_lists {
-    gap: 21px;
-  }
-}
-@media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee {
-    width: 156px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-}
-@media only screen and (min-width: 10px) and (min-width: 540px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee {
-    width: 160px;
-  }
-}
-@media only screen and (min-width: 10px) {
-  .mep_smart_theme .attendee_area .attendee_lists .attendee img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50px;
-  }
-  .mep_smart_theme .attendee_area .attendee_lists .attendee h2 {
-    font-size: 16px;
-    color: #333;
-    margin: 10px 0;
-  }
   .mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
@@ -5623,6 +5579,58 @@ Vanilla theme css by ariful
     font-size: 30px;
     color: var(--mpev-primary);
     margin: 0;
+  }
+  .attendee_area {
+    margin: 10px 0;
+  }
+  .attendee_area .attendees {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .attendee_area .attendees .attendee_lists {
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #f1f1f1;
+    padding: 10px;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 540px) {
+  .attendee_area .attendees .attendee_lists {
+    gap: 21px;
+    padding: 25px;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .attendee_area .attendees .attendee_lists .attendee {
+    width: 154px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 540px) {
+  .attendee_area .attendees .attendee_lists .attendee {
+    width: 160px;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .attendee_area .attendees .attendee_lists .attendee img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50px;
+  }
+  .attendee_area .attendees .attendee_lists .attendee h2 {
+    font-size: 16px;
+    color: #333;
+    margin: 10px 0;
   }
   .mep-related-events {
     margin: 20px 0;

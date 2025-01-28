@@ -17,7 +17,7 @@ $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_settin
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 
-<div class="mep-default-theme mep_flex royal_theme">
+<div class="mep-default-theme royal_theme">
     <div class="mep-default-content">
     <?php if ($hide_location_details == 'no') { ?>
         <div class="mep-default-sidrbar-map">

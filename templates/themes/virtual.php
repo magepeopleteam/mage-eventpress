@@ -33,6 +33,7 @@ $_the_event_id = $event_id;
         <div class="mep-default-feature-faq-sec">
             <?php do_action('mep_event_faq',$_the_event_id); ?>
         </div>
+        <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
     <div class="mep-default-sidebar">
         <div class="df-sidebar-part">
@@ -68,5 +69,5 @@ $_the_event_id = $event_id;
             <?php } ?>
         </div>
     </div>
-	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
+	
 </div>

@@ -76,7 +76,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
         <div class="mep-default-feature-faq-sec">
             <?php do_action('mep_event_faq',$event_id); ?>
         </div>
-
+        <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
     <div class="mep-default-sidebar">
     <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
@@ -132,5 +132,5 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             ?>
         </div>
     </div>
-	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
+	
 </div>

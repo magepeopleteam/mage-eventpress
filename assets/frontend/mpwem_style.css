@@ -30,7 +30,8 @@
   --mpev-recring-dpkr-bg:var(--mpev-base);
   --mpev-recring-dpkr-txt:#ffffff;
 }
-
+div.mep-default-theme div.superSlider .sliderShowcaseItem{margin: 0 0 14px 0;}
+div.mep-default-theme div.superSlider .sliderShowcase.right{max-height: 500px;}
 .mep-event-faq-part .ex-sec-title.faq-title-section {
   background: var(--mpev-faq-bg);
   color: var(--mpev-faq-text);
@@ -5008,7 +5009,21 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_location_time {
     display: flex;
+    flex-direction: column;
     justify-content: start;
+  }
+  /*****************************/
+  /*****************************/
+  /***************************************************/
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time {
+    flex-direction: row;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location, .mep_smart_theme .mpwem_location_time .mpwem_time {
+    flex-wrap: wrap;
   }
   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
@@ -5021,6 +5036,27 @@ Vanilla theme css by ariful
     font-size: 25px;
     border-radius: 5px;
   }
+  .mep_smart_theme .mpwem_location_time .mpwem_location {
+    align-items: start;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location {
+    align-items: center;
+  }
+}
+@media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location div {
+    width: 80%;
+    margin-left: 5px;
+  }
+}
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
+  .mep_smart_theme .mpwem_location_time .mpwem_location div {
+    width: auto;
+  }
+}
+@media only screen and (min-width: 10px) {
   .mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem {
     border-radius: 15px;
   }
@@ -5038,9 +5074,6 @@ Vanilla theme css by ariful
     margin: 40px 0 0 0;
     flex-direction: column;
   }
-  /*****************************/
-  /*****************************/
-  /***************************************************/
 }
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .mep_smart_theme .mpwem_content_area {
@@ -5069,7 +5102,7 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_left_content .mep-timeline .item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     position: relative;
     padding-left: 40px;
   }
@@ -5103,7 +5136,7 @@ Vanilla theme css by ariful
     left: 50%;
     top: 100%;
     width: 1px;
-    height: calc(100% + 20px);
+    height: calc(100% + 50px);
     background-color: var(--mpev-primary);
     z-index: -1;
     transform: translateX(-50%);
@@ -5240,6 +5273,9 @@ Vanilla theme css by ariful
     background-color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
   }
+  .mep_smart_theme .mpwem_left_content .mpwem_form_submit_area .mpStyle [class*=_themeButton] {
+    padding: 10px;
+  }
   .mep_smart_theme .mpwem_right_content {
     max-width: 100%;
     width: 100%;
@@ -5304,7 +5340,7 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul {
     list-style-type: disc;
-    padding-left: 18px;
+    padding-left: 22px;
     margin-bottom: 20px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li {

@@ -13,7 +13,7 @@
 		if ($map_status) {
 			//echo '<pre>';print_r( $faqs );echo '</pre>';
 			?>
-			<div class="map_location">
+			<div class="map_location" id="mep-map-location">
 				<h2><?php esc_html_e( 'Map Location', 'mage-eventpress' ); ?></h2>
 				<?php do_action('mep_event_map', $event_id); ?>
 			</div>

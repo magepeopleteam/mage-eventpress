@@ -54,10 +54,11 @@
                                 <div class="">
                                     <h6 class="_textCenter"><?php echo wc_price($ticket_price); ?></h6>
                                     <input type="hidden" name='option_name[]' value='<?php echo esc_attr($ticket_name); ?>'/>
+                                    <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr($ticket_name); ?>'/>
 									<?php MP_Custom_Layout::qty_input($input_data); ?>
                                 </div>
                             </div>
-							<?php //do_action('mpwem_multi_attendee', $event_id); ?>
+							<?php do_action('mpwem_multi_attendee', $event_id); ?>
                         </div>
 						<?php
 					}

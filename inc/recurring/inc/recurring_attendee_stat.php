@@ -146,10 +146,10 @@ function mep_recurring_ajax_attendee_stat_filter()
 add_filter('mep_attendee_stat_recurring','mep_recurring_attendee_stat_recurring', 10, 2);
 function mep_recurring_attendee_stat_recurring($stat,$post_id){
    ?>
-    <span style="background: #dc3232;color: #fff;padding: 5px 10px; display:block">
-        <span class="mep_seat_stat_info_82">
+    <span>
+        <b class="mep_seat_stat_info_82">
             <a href="<?php echo get_admin_url(); ?>edit.php?post_type=mep_events&page=attendee_stat_list&event_id=<?php echo $post_id; ?>" style='color:#fff'><?php _e('View Details','mage-eventpress'); ?></a>
-        </span>
+        </b>
     </span>
    <?php
 }

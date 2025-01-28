@@ -362,11 +362,12 @@
 			/*************************************/
 			public function special_on_dates_setting($post_id) {
 				$special_dates = MP_Global_Function::get_post_info($post_id, 'mep_special_date_info', array());
+				$display_ticket_time = MP_Global_Function::get_post_info($post_id, 'mep_disable_ticket_time', 'off');
 				?>
-                <div class="mpStyle">
+                <div class="mpStyle mep-special-datetime" style="display:<?php echo esc_attr($display_ticket_time=='off'?'none':'block'); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
                         <div>
-                            <p><?php _e('Special  Dates Time Settings', 'mage-eventpress'); ?></p>
+                            <h2><?php _e('Special  Dates Time Settings', 'mage-eventpress'); ?></h2>
                             <span class="text"><?php _e('Here you can set special date and time for event.', 'mage-eventpress'); ?></span>
                         </div>
                     </section>

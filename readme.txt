@@ -2,10 +2,11 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin
 Requires at least: 5.3
-Stable tag: trunk
-Tested up to: 6.5.2
+Stable tag: 4.1.4
+Version: 4.1.4
+Tested up to: 6.4.2
 WC requires at least: 3.0
-WC tested up to: 8.7
+WC tested up to: 8.5.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -217,8 +218,8 @@ We have full confidence in our plugin and its ability to work well with any them
 
 **CHECK OUT OUR OTHER PLUGINS** 
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
-[Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
-[Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/tour-booking-manager/)
+[Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/mage-eventpress/)
+[Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/mage-eventpress/)
 [Advanced – Deposit & Partial Payment for WooCommerce
 ](https://wordpress.org/plugins/advanced-partial-payment-or-deposit-for-woocommerce/)
 [Booking and Rental Manager Pro for WordPress
@@ -285,32 +286,6 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
-= 4.2.3 =
-* Conflict Between Woo Product bundle plugin issue fixed
-* PHP Warning issue fixed
-  18 July 2024*
-
-= 4.2.2 =
-* Security Issue solved
-* Seat Count now updated based on adding into cart. 
-  11 July 2024*
-
-
-= 4.2.1 =
-* Infinit spinning in checkout when Woocommerce product & event in the cart issue has been fixed.
-  28 June 2024*
-
-= 4.2.0 =
-* Colon showing in the Cart & checkout form WC Product issue fixed.
-  27 June 2024*
-
-= 4.1.9 =
-* Tax error issue has been fixed
-  12 June 2024*
-
-= 4.1.6 =
-* Checkout Page infinite loading issue fixed.
-  29 March 2024*
 
 = 4.1.4 =
 * PHP 8.1.12 Warning issue fixed. 

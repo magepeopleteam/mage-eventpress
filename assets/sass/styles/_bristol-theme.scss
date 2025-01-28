@@ -1,0 +1,50 @@
+
+/********Bristol Theme(theme - 3)**********************/
+.bristol .mep-default-title h2 {
+	margin: 15px 0;
+}
+.bristol .mep-event-meta {
+	padding: 10px;
+	font-size: 16px;
+}
+.bristol .mep-event-meta ul.mep-social-share {
+	padding: 10px 0 0 0;
+}
+.bristol_divided {
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	background-color: #F2F2F2;
+}
+.bristol .mep-default-sidrbar-social {
+	border: none;
+}
+.bristol div.mep-default-feature-date,
+.bristol div.mep-default-feature-location {
+	background-color: transparent;
+}
+.bristol_center_box {
+	margin: 20px 0;
+	background-color: #F2F2F2;
+}
+.bristol_center_box #mep_add_calender_button.mep-add-calender {
+	width: 300px;
+}
+.bristol ul#mep_add_calender_links {
+	position: absolute;
+	width: 100%;
+	max-width: 100%;
+	background-color: #F2F2F2;
+}
+.bristol ul#mep_add_calender_links li {
+	margin: 0;
+}
+.bristol ul#mep_add_calender_links li a {
+	background-color: #777;
+	color: #FFF;
+	margin: 2px 0 0 0;
+	font-size: 15px;
+	font-weight: 500;
+}
+.bristol ul#mep_add_calender_links li a.mep-add-calender:hover {
+	color: #888;
+}

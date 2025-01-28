@@ -17,7 +17,7 @@ $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_settin
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 
-<div class="mep-default-theme mep_flex royal_theme">
+<div class="mep-default-theme royal_theme">
     <div class="mep-default-content">
     <?php if ($hide_location_details == 'no') { ?>
         <div class="mep-default-sidrbar-map">
@@ -74,8 +74,8 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
         </div>    
 </div>
 <div class="mep-royal-header-col-2">
-     <div class="mep-default-feature-image">
-        <?php do_action('mep_event_thumbnail', $event_id); ?>
+    <div class="mpStyle">
+        <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>   
 </div>
 </div>       
@@ -123,4 +123,5 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <?php do_action('mep_event_faq',$event_id); ?>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

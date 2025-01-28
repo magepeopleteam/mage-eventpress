@@ -10,41 +10,43 @@
 		class MPWEM_Dependencies {
 			public function __construct() {
 				add_action('init', array($this, 'language_load'));
+
 				$this->load_global_file();
 				$this->load_file();
 				add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'), 90);
 				add_action('wp_enqueue_scripts', array($this, 'frontend_enqueue'), 90);
 				add_action('admin_head', array($this, 'add_admin_head'), 5);
 				add_action('wp_head', array($this, 'add_frontend_head'), 5);
+
 			}
 			public function language_load(): void {
 				$plugin_dir = basename(dirname(__DIR__)) . "/languages/";
 				load_plugin_textdomain('mage-eventpress', false, $plugin_dir);
 			}
+
 			public function load_global_file() {
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Layout.php';
-				//require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
 			}
 			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 				require_once(dirname(__DIR__) . '/lib/classes/class-mep.php');
 				require_once(dirname(__DIR__) . "/inc/mep_functions.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax.php");
 				require_once(dirname(__DIR__) . "/inc/mep_event_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_event_fw_meta.php");
-				require_once(dirname(__DIR__) . "/inc/mep_extra_price.php");
 				require_once(dirname(__DIR__) . "/inc/mep_shortcode.php");
-				require_once(dirname(__DIR__) . "/inc/mep_user_custom_style.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
-				//require_once MPWEM_PLUGIN_DIR . '/inc/MPTBM_Function.php';
-				//require_once MPTBM_PLUGIN_DIR . '/inc/MPTBM_Query.php';
-				//require_once MPTBM_PLUGIN_DIR . '/inc/MPTBM_Layout.php';
-				//require_once MPTBM_PLUGIN_DIR . '/Admin/MPTBM_Admin.php';
-				//require_once MPTBM_PLUGIN_DIR . '/Frontend/MPTBM_Frontend.php';
+				require_once(dirname(__DIR__) . "/inc/recurring/inc/functions.php");	
+				require_once(dirname(__DIR__) . "/inc/recurring/inc/recurring_attendee_stat.php");			
 			}
 			public function global_enqueue() {
 				wp_enqueue_script('jquery');
@@ -69,15 +71,15 @@
 					wp_enqueue_style('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4');
 					wp_enqueue_script('mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array(), '2.3.4');
 				}
-				if (is_admin()) {
+
 					wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
 					wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
-				}
+
 				do_action('add_mpwem_common_script');
 			}
 			public function admin_enqueue($hook) {
 				global $post;
-				$this->global_enqueue();
+
 				wp_enqueue_editor();
 				//admin script
 				wp_enqueue_script('jquery-ui-sortable');
@@ -85,7 +87,8 @@
 				wp_enqueue_script('wp-color-picker');
 				wp_enqueue_style('wp-codemirror');
 				wp_enqueue_script('wp-codemirror');
-				//wp_enqueue_script('jquery-ui-accordion');
+				//********//
+				$this->global_enqueue();
 				//********//
 				$user_api = mep_get_option('google-map-api', 'general_setting_sec', '');
 				// Load Only when the New Event Add Page Open.
@@ -116,8 +119,6 @@
 			public function frontend_enqueue() {
 				$this->global_enqueue();
 				//wp_enqueue_script('wc-checkout');
-				//wp_enqueue_script('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.js', array('jquery'), time(), true);
-				//wp_enqueue_style('mptbm_registration', MPWEM_PLUGIN_URL . '/assets/frontend/mptbm_registration.css', array(), time());
 				//timeline
 				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(''));
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
@@ -134,7 +135,64 @@
 				wp_enqueue_style('mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time());
 				wp_enqueue_script('mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array('jquery'), time(), true);
 				do_action('add_mpwem_frontend_script');
+				$this->add_inline_styles();
 			}
+
+			public function add_inline_styles(){
+				$primary 	= mep_get_option('mpev_primary_color', 'style_setting_sec', '#6046FF');
+				$secondary 	= mep_get_option('mpev_secondary_color', 'style_setting_sec', '#F1F5FF');
+
+				// mep_base_text_color
+				$base_color                 = mep_get_option('mep_base_color', 'style_setting_sec', $primary);
+				$base_text_color            = mep_get_option('mep_base_text_color', 'style_setting_sec', $secondary);
+			
+				$title_bg_color             = mep_get_option('mep_title_bg_color', 'style_setting_sec', $primary);
+				$title_text_color           = mep_get_option('mep_title_text_color', 'style_setting_sec', $secondary);
+				$cart_btn_bg_color          = mep_get_option('mep_cart_btn_bg_color', 'style_setting_sec', $primary);
+				$cart_btn_txt_color         = mep_get_option('mep_cart_btn_text_color', 'style_setting_sec', $secondary);
+			
+				$calender_btn_bg_color      = mep_get_option('mep_calender_btn_bg_color', 'style_setting_sec', $primary);
+				$calender_btn_txt_color     = mep_get_option('mep_calender_btn_text_color', 'style_setting_sec', $secondary);
+			
+				$faq_label_bg_color         = mep_get_option('mep_faq_title_bg_color', 'style_setting_sec', $primary);
+				$faq_label_text_color       = mep_get_option('mep_faq_title_text_color', 'style_setting_sec', $secondary);
+			
+				$royal_primary_bg_color     = mep_get_option('mep_royal_primary_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_secondary_bg_color   = mep_get_option('mep_royal_secondary_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_icons_bg_color       = mep_get_option('mep_royal_icons_bg_color', 'style_setting_sec', '#ffbe30');
+				$royal_border_color         = mep_get_option('mep_royal_border_color', 'style_setting_sec', '#ffbe30');
+				$royal_text_color           = mep_get_option('mep_royal_text_color', 'style_setting_sec', '#ffffff');
+				
+				$recurring_datepicker_bg_color = mep_get_option('mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30');
+				$recurring_datepicker_text_color = mep_get_option('mep_re_datepicker_text_color', 'style_setting_sec', '#fff');
+				
+				$inline_css = "
+					:root{
+						--mpev-primary: {$primary};
+						--mpev-secondary:{$secondary};
+
+						--mpev-base: {$base_color};
+						--mpev-base-txt:{$base_text_color};
+						--mpev-title-bg:{$title_bg_color};
+						--mpev-title-txt:{$title_text_color};
+						--mpev-cart-btn-bg:{$cart_btn_bg_color};
+						--mpev-cart-btn-txt:{$cart_btn_txt_color};
+						--mpev-calender-btn-bg:{$calender_btn_bg_color};
+						--mpev-calender-btn-txt:{$calender_btn_txt_color};
+						--mpev-faq-bg:{$faq_label_bg_color};
+						--mpev-faq-text:{$faq_label_text_color};
+						--mpev-royal-primary-bg:{$royal_primary_bg_color};
+						--mpev-royal-secondary-bg:{$royal_secondary_bg_color};
+						--mpev-royal-icons-bg:{$royal_icons_bg_color};
+						--mpev-royal-border:{$royal_border_color};
+						--mpev-royal-txt:{$royal_text_color};
+						--mpev-recring-dpkr-bg:{$recurring_datepicker_bg_color};
+						--mpev-recring-dpkr-txt:{$recurring_datepicker_text_color};
+					}
+				";
+				wp_add_inline_style( 'mpwem_style', $inline_css );
+			}
+
 			public function add_admin_head() {
 				$this->js_constant();
 			}
@@ -154,6 +212,7 @@
 					let mp_num_of_decimal = "<?php echo get_option('woocommerce_price_num_decimals', 2); ?>";
 					let mp_empty_image_url = "<?php echo esc_attr(MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png'); ?>";
 					let mp_date_format = "D d M , yy";
+					//let mp_nonce = wp_create_nonce('mep-ajax-nonce');
 				</script>
 				<?php
 			}

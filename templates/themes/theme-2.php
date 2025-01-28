@@ -18,8 +18,8 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
     <div class="mep-default-title">
         <?php do_action('mep_event_title', $event_id); ?>
     </div>
-    <div class="mep-default-feature-image">
-        <?php do_action('mep_event_thumbnail', $event_id); ?>
+    <div class="mpStyle">
+        <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e('Description', 'mage-eventpress'); ?></h4>
@@ -87,4 +87,5 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
             </div>
         </div>
     </div>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

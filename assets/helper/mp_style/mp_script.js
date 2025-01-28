@@ -1,5 +1,8 @@
 //======================================================Price Format==============//
 function mp_price_format(price) {
+	if (typeof price === 'string') {
+		price = Number(price);
+	}
 	price = price.toFixed(mp_num_of_decimal);
 	let total_part = price.toString().split(".");
 	total_part[0] = total_part[0].replace(/\B(?=(\d{3})+(?!\d))/g, mp_currency_thousands_separator);
@@ -83,6 +86,7 @@ function mp_load_date_picker(parent = jQuery('.mpStyle')) {
 	}).promise().done(function () {
 		parent.find(".date_type").datepicker({
 			dateFormat: mp_date_format,
+			//showButtonPanel: true,
 			autoSize: true,
 			changeMonth: true,
 			changeYear: true,
@@ -124,6 +128,51 @@ function loadBgImage() {
 	});
 	return true;
 }
+// function loadBgImage() {
+// 	jQuery('body').find('[data-bg-image]:visible').each(function () {
+// 		let target = jQuery(this);
+// 		let width = target.outerWidth();
+// 		let height = target.outerHeight();
+// 		if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+// 			let bg_url = target.data('bg-image');
+// 			if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+// 				bg_url = mp_empty_image_url;
+// 			}
+// 			mp_resize_bg_image_area(target, bg_url);
+// 			target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+// 				dLoaderRemove(jQuery(this));
+// 			});
+// 		}
+// 	}).promise().done(function (){
+// 		jQuery('.superSlider').each(function () {
+// 			let current=jQuery(this).find('.sliderAllItem:not(.sliderPopup .sliderAllItem)');
+// 			let height=0;
+// 			let count=1;
+// 			//sliderItemActive($(this), 1);
+// 			current.find('.sliderItem').each(function (){
+// 				//console.log(height);
+// 				height=height+jQuery(this).innerHeight();
+// 				//count=2;
+// 				console.log(height);
+// 			}).promise().done(function (){
+// 				let length=current.find('.sliderItem').length;
+// 				height=height/length;
+// 				console.log(length);
+// 				console.log(height);
+// 				if(height>0){
+// 					//alert(height);
+// 					current.find('.sliderItem').each(function (){
+// 						//alert(height);
+// 						//jQuery(this).find('[data-bg-image]').css({"min-height": 0});
+// 						jQuery(this).css({"max-height": 500 });
+// 					});
+// 				}
+// 			});
+//
+// 		});
+// 	});
+// 	return true;
+// }
 function mp_resize_bg_image_area(target, bg_url) {
 	let tmpImg = new Image();
 	tmpImg.src = bg_url;
@@ -292,40 +341,72 @@ function mp_all_content_change($this) {
 //==============================================================================Input use as select================//
 (function ($) {
 	"use strict";
-	$(document).on("click", "div.mpStyle .mp_input_select input.formControl", function () {
-		$(this).closest('.mp_input_select').find('.mp_input_select_list').slideDown(250);
-	});
-	$(document).on("click", "div.mpStyle .mp_input_select .mp_input_select_list li", function () {
+	$(document).on("click", "div.mpStyle .mp_input_select .mp_input_select_list li", function (e) {
+		e.preventDefault();
 		let current = $(this);
 		let parent = $(this).closest('.mp_input_select');
 		let value = current.data('value');
 		let text = current.html();
-		parent.find('input.formControl').val(text);
 		parent.find('.mp_input_select_list').slideUp(250);
-		parent.find('input[type="hidden"]').val(value).trigger('change')
+		if (parent.find('input[type="hidden"]').length > 0) {
+			parent.find('input.formControl').val(text);
+			parent.find('input[type="hidden"]').val(value).trigger('mp_change');
+		} else {
+			parent.find('input.formControl').val(value).trigger('mp_change');
+		}
 	});
+	$(document).on({
+		keyup: function () {
+			let input = $(this).val().toLowerCase();
+			$(this).closest('.mp_input_select').find('.mp_input_select_list li').each(function () {
+				let input_length = input.length;
+				$(this).toggle($(this).attr('data-value').toLowerCase().substring(0, input_length) === input);
+			});
+			$(this).closest('.mp_input_select').find('.mp_input_select_list').slideDown(200);
+		},
+		click: function () {
+			$('body').find('.mp_input_select .mp_input_select_list').slideUp(250);
+			let input = $(this).val().toLowerCase();
+			$(this).closest('.mp_input_select').find('.mp_input_select_list li').each(function () {
+				let data = $(this).attr('data-value').toLowerCase();
+				if (!input || input === data) {
+					$(this).slideDown('fast');
+				}
+			});
+			$(this).closest('.mp_input_select').find('.mp_input_select_list').slideDown(250);
+		}
+	}, 'div.mpStyle .mp_input_select input.formControl');
 }(jQuery));
 //============================================================================Sticky================//
 function mp_sticky_management() {
 	if (jQuery('.mpStyle .mp_sticky_area').length > 0) {
 		window.onscroll = function () {
 			jQuery('.mpStyle .mp_sticky_area').each(function () {
-				let body_width = jQuery('body').outerWidth();
-				let scroll_top = jQuery(window).scrollTop();
 				let current = jQuery(this);
-				let target_scroll = current.find('.mp_sticky_on_scroll');
-				let content_top = current.parent().offset().top;
+				let target_scroll = current.find('.mp_sticky_area');
 				let parent = current.closest('.mp_sticky_section');
-				let depend_height = parent.find('.mp_sticky_depend_area').innerHeight();
-				let content_height = depend_height - Math.max(scroll_top - content_top, 0) - (target_scroll.offset().top - current.offset().top) - 100;
-				if (body_width > 800 && scroll_top + 100 >= content_top) {
-					target_scroll.css('max-height', content_height);
-					if (!current.hasClass('mpSticky')) {
-						current.addClass('mpSticky').css('top', 100);
+				let target_content = parent.find('.mp_sticky_depend_area');
+				let scroll_top = jQuery(window).scrollTop();
+				let content_top = target_content.offset().top;
+				let scroll_height = target_content.innerHeight() - current.innerHeight();
+				if (jQuery('body').outerWidth() > 800) {
+					console.log(target_content.innerHeight() + ' - ' + current.innerHeight() + ' = ' + scroll_height);
+					console.log(scroll_top + ' + ' + scroll_height + ' = ' + scroll_top+scroll_height);
+					//console.log(content_top);
+					//console.log(scroll_top+scroll_height);
+					if (scroll_top > content_top + scroll_height - 100) {
+						if (!current.hasClass('stickyFixed')) {
+							current.removeClass('mpSticky').addClass('stickyFixed');
+						}
+					} else if (scroll_top > content_top - 100) {
+						if (!current.hasClass('mpSticky')) {
+							current.addClass('mpSticky').removeClass('stickyFixed');
+						}
+					} else {
+						current.removeClass('mpSticky').removeClass('stickyFixed');
 					}
 				} else {
-					target_scroll.css('max-height', content_height + 100);
-					current.removeClass('mpSticky');
+					current.removeClass('mpSticky').removeClass('stickyFixed');
 				}
 			});
 		};
@@ -377,7 +458,6 @@ function mp_sticky_management() {
 					mp_sticky_management();
 					dLoaderRemove(parent);
 				});
-
 			});
 		});
 	}
@@ -460,9 +540,18 @@ function mp_sticky_management() {
 		let currentTarget = $(this);
 		let value = currentTarget.val();
 		currentTarget.find('option').each(function () {
-			let target_id = $(this).data('option-target');
-			let target = $('[data-collapse="' + target_id + '"]');
-			target.slideUp('fast').removeClass('mActive');
+			if ($(this).attr('data-option-target-multi')) {
+				let target_ids = $(this).data('option-target-multi');
+				target_ids = target_ids.toString().split(" ");
+				target_ids.forEach(function (target_id) {
+					let target = $('[data-collapse="' + target_id + '"]');
+					target.slideUp(350).removeClass('mActive');
+				});
+			} else {
+				let target_id = $(this).data('option-target');
+				let target = $('[data-collapse="' + target_id + '"]');
+				target.slideUp('fast').removeClass('mActive');
+			}
 		}).promise().done(function () {
 			currentTarget.find('option').each(function () {
 				let current_value = $(this).val();
@@ -573,6 +662,15 @@ function mp_sticky_management() {
 	});
 }(jQuery));
 //=======================================================validation ==============//
+function mp_check_required(input) {
+	if (input.val() !== '') {
+		input.removeClass('mpRequired');
+		return true;
+	} else {
+		input.addClass('mpRequired');
+		return false;
+	}
+}
 (function ($) {
 	"use strict";
 	$(document).on('keyup change', '.mpStyle .mp_number_validation', function () {
@@ -585,18 +683,18 @@ function mp_sticky_management() {
 		$(this).val(n.replace(/[^\d.]/g, ''));
 		return true;
 	});
+	$(document).on('keyup change', '.mpStyle .mp_id_validation', function () {
+		let n = $(this).val();
+		$(this).val(n.replace(/[^\d_a-zA-Z]/g, ''));
+		return true;
+	});
 	$(document).on('keyup change', '.mpStyle .mp_name_validation', function () {
 		let n = $(this).val();
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 		return true;
 	});
 	$(document).on('keyup change', '.mpStyle [required]', function () {
-		if ($(this).val() !== '') {
-			$(this).removeClass('mpRequired');
-		} else {
-			$(this).addClass('mpRequired');
-		}
-		return true;
+		mp_check_required($(this));
 	});
 }(jQuery));
 //==========================================================pagination==========//
@@ -653,6 +751,39 @@ function mp_pagination_page_management(parent, pagination_page, total_item) {
 		let page_no = parseInt(parent.find('.active_pagination').data('pagination')) + 1;
 		parent.find('[data-pagination="' + page_no + '"]').trigger('click');
 	});
+	//*************** Pagination Load More ***************//
+	$(document).on('click', 'div.mp_pagination_main_area  .pagination_load_more', function () {
+		let pagination_page = parseInt($(this).attr('data-load-more')) + 1;
+		let parent = $(this).closest('div.mp_pagination_main_area');
+		let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
+		let count = 0;
+		let end_item = per_page_item * pagination_page + per_page_item;
+		$(this).attr('data-load-more', pagination_page).promise().done(function () {
+			parent.find('.mp_pagination_item').each(function () {
+				if (count < end_item) {
+					$(this).slideDown(250);
+				}
+				count++;
+			});
+		}).promise().done(function () {
+			lode_more_init(parent);
+		}).promise().done(function () {
+			loadBgImage();
+		});
+	});
+	function lode_more_init(parent) {
+		if (parent.find('.mp_pagination_item:hidden').length === 0) {
+			parent.find('[data-load-more]').attr('disabled', 'disabled');
+		} else {
+			parent.find('[data-load-more]').removeAttr('disabled');
+		}
+	}
+	function load_more_scroll(parent, pagination_page) {
+		let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
+		let start_item = pagination_page > 0 ? pagination_page * per_page_item : 0;
+		let target = parent.find('.mp_pagination_item:nth-child(' + (start_item + 1) + ')');
+		pageScrollTo(target);
+	}
 }(jQuery));
 //==============================================================Modal / Popup==========//
 (function ($) {

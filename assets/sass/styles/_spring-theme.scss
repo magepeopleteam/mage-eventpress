@@ -1,0 +1,59 @@
+/********Spring Field Theme(theme - 1)**********************/
+.spring_field_banner {
+	width: 60%;
+}
+.spring_field_banner_right {
+	width: 40%;
+	padding: 0 0 20px 20px;
+}
+.spring_field .mep-default-sidrbar-meta {
+	padding: 0;
+}
+.spring_field .mep-default-sidrbar-price-seat {
+	text-align: left;
+	padding: 15px 0;
+}
+.spring_field ul#mep_add_calender_links {
+	position: absolute;
+	width: 100%;
+	max-width: 100%;
+	background-color: #F2F2F2;
+}
+.spring_field ul#mep_add_calender_links li {
+	margin: 0;
+}
+.spring_field ul#mep_add_calender_links li a {
+	background-color: #777;
+	color: #FFF;
+	margin: 2px 0 0 0;
+	font-size: 15px;
+	font-weight: 500;
+}
+.spring_field ul#mep_add_calender_links li a.mep-add-calender:hover {
+	color: #888;
+}
+.spring_field .mep-default-sidrbar-map {
+	margin: 20px 0;
+}
+.spring_field .mep-event-meta {
+	padding: 10px;
+	font-size: 16px;
+}
+.spring_field .mep-event-meta ul.mep-social-share {
+	padding: 10px 0 0 0;
+}
+.mep_spring_date {
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	background-color: #F2F2F2;
+}
+.mep_spring_date .mep-default-sidrbar-social {
+	border: none;
+}
+.mep-default-theme .mep_spring_date div.mep-default-feature-date,
+.mep-default-theme .mep_spring_date div.mep-default-feature-location {
+	background-color: transparent;
+}
+.spring_field .mep-default-feature-content {
+	margin: 20px 0;
+}

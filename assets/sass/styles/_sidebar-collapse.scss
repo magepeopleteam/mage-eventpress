@@ -1,0 +1,83 @@
+.mep-modal-container{
+    position: fixed;
+    right: -100%; /* Initially hidden off-screen */
+    top: 0;
+    width: 100%; /* Width of the sidebar */
+    height: 100%; /* Full height */
+    background-color: #0000002c; /* Background color */
+    transition: right 0.3s ease; /* Animation effect */
+    z-index: 1000; /* Ensure it's above other content */
+    &.open {
+        right: 0; /* Slide in */
+    }
+    .mep-modal-content{
+        background-color: #fff;
+        width: 800px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 70px 0px;
+        .title{
+            padding:0 40px;
+        }
+        .mep-modal-close{
+            position:absolute;
+            top: 40px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .content{
+            
+            padding:0 40px;
+            padding-bottom:40px;
+        }
+        p{
+            margin: 15px 0;
+        }
+        h3{
+            font-size: 18px;
+            padding: 0;
+            margin: 5px 0;
+            margin-bottom: 30px;
+        }
+        input[type='text'],input[type='number'],textarea,select{
+            width: 100%;
+            display: block;
+            font-weight: normal;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #dfdfdf;
+        }
+        label{
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            flex-direction: column;
+            font-weight: normal;
+            font-size: 18px;
+            gap: 7px;
+            margin: 15px 0;
+        }
+        .mp_add_icon_image_area{
+            position: relative;
+            max-width: 202px;
+            margin: 10px 0;
+            .mp_add_icon_image_button_area{
+                display: flex;
+                flex-direction: row;
+                justify-content: start;
+                border: 1px solid #8c8f94;
+                width: 100%;
+                border-radius: 3px;
+                .mp_image_add,.mp_icon_add{
+                    padding:10px 26px;
+                    border-radius: 0;
+                    margin: 1px;
+                }
+            }
+        }
+    }
+    
+}

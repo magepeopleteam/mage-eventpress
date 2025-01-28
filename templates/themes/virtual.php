@@ -21,9 +21,9 @@ $_the_event_id = $event_id;
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $_the_event_id); ?>
         </div>
-        <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail', $_the_event_id); ?>
-        </div>        
+        <div class="mpStyle">
+            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+        </div>      
         <div class="mep-default-feature-content">
             <?php do_action('mep_event_details', $_the_event_id); ?>
         </div>
@@ -33,6 +33,7 @@ $_the_event_id = $event_id;
         <div class="mep-default-feature-faq-sec">
             <?php do_action('mep_event_faq',$_the_event_id); ?>
         </div>
+        <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
     <div class="mep-default-sidebar">
         <div class="df-sidebar-part">
@@ -68,4 +69,5 @@ $_the_event_id = $event_id;
             <?php } ?>
         </div>
     </div>
+	
 </div>

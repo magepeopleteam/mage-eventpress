@@ -59,16 +59,15 @@ if (post_password_required()) {
 	$mep_reg_gender         = array_key_exists('mep_reg_gender',$event_meta) && $event_meta['mep_reg_gender'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_gender'][0]):'';
 	$mep_reg_tshirtsize         = array_key_exists('mep_reg_tshirtsize',$event_meta) && $event_meta['mep_reg_tshirtsize'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_tshirtsize'][0]):'';
 	//==========
-    $current_template      = array_key_exists('mep_event_template',$event_meta) && $event_meta['mep_event_template'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_event_template'][0]):'';
+	$current_template         = array_key_exists('mep_event_template',$event_meta) && $event_meta['mep_event_template'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_event_template'][0]):'';
     $global_template       = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme.php');
-    $_current_template     = sanitize_file_name($current_template ?: $global_template);
-    $currency_pos          = get_option('woocommerce_currency_pos');
+    $_current_template     = $current_template ?: $global_template;
+    $currency_pos           = get_option('woocommerce_currency_pos');
     do_action('mep_event_single_page_after_header',$_the_event_id);
 ?>
     <div class="mep-events-wrapper wrapper">
         <div class="mep-events-container">
             <?php
-            //  do_action('woocommerce_before_single_product');
             if (!class_exists('WC_Bundles')) {
 				if (!class_exists('WEPOF_Extra_Product_Options')) {	
 					if (!class_exists('WC_Advanced_Country_Restrictions_Dist')) {						
@@ -89,9 +88,7 @@ if (post_password_required()) {
             }
             ?>
         </div>
-        <div class="mep-related-events-sec">
-            <?php do_action('after-single-events'); ?>
-        </div>
+	    <?php do_action('after-single-events'); ?>
     </div>
 <?php
 // 	echo $_the_event_id;

@@ -1,0 +1,59 @@
+.mep-icon-wrapper{
+    i{
+        font-size:30px ;
+        margin:0 10px;
+    }
+}
+.fa-icon-lists{
+    border: 1px solid #ddd;
+    padding: 5px;
+    height: 68vh;
+    overflow-y: scroll;
+    background-color: var(--mpev-light);
+    .icon{
+        float: left;
+        font-size:20px;
+        width:32px;
+        height:32px;
+        text-align: center;
+        border: 1px solid transparent;
+        padding: 5px;
+        &:hover{
+            cursor: pointer;
+            color: var(--mpev-primary);
+            border: 1px solid var(--mpev-primary);
+            background-color: var(--mpev-white);
+        }
+        &.active{
+            color: var(--mpev-primary);
+            border: 1px solid var(--mpev-primary);
+            background-color: var(--mpev-white);
+        }
+    }
+}
+
+.mep-speaker-wrapper{
+    width: 200px;
+    select{
+        width: 99%;
+        height: 80px;
+        overflow-y: scroll;
+    }
+}
+.mep-icon-search-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mep-icon-preview{
+        font-size: 36px;
+        border: 1px solid #333;
+        color: var(--mpev-primary);
+        width: 60px;
+        text-align: center;
+        margin:10px 0;
+    }
+    .search-box{
+        margin-left: 50px;
+        padding: 10px;
+    }
+}

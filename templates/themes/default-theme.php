@@ -25,8 +25,8 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>
         </div>
-        <div class="mep-default-feature-image">
-            <?php do_action('mep_event_thumbnail', $event_id); ?>
+        <div class="mpStyle">
+            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
@@ -76,7 +76,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
         <div class="mep-default-feature-faq-sec">
             <?php do_action('mep_event_faq',$event_id); ?>
         </div>
-
+        <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
     <div class="mep-default-sidebar">
     <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
@@ -95,7 +95,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             <?php } ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>
                 <div class="mep-default-sidrbar-meta">
-                    <i class="<?php echo $event_organizer_icon; ?>"></i> <?php do_action('mep_event_organizer', $event_id); ?>
+                    <?php do_action('mep_event_organizer', $event_id); ?>
                 </div>
             <?php }
 
@@ -132,4 +132,5 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             ?>
         </div>
     </div>
+	
 </div>

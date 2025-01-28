@@ -1,0 +1,29 @@
+.mep_everyday_date_secs input,
+.mep_everyday_date_secs select {width: auto; margin: 0 5px;}
+#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox .section-title{
+      background-color: #d2afaf;
+      padding: 7px 0 7px 40px;
+      display: block !important;
+      margin: 10px 0 0 0;
+      cursor: pointer;
+      position: relative;
+      font-size: 18px;
+      -webkit-transition: 200ms ease-in-out;
+      transition: 200ms ease-in-out;
+}
+#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox .section-title.close_settings{
+      background-color: #929B9F;
+}
+#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox .section-title::after{
+      content: '-';
+      font-size: 30px;
+      position: absolute;
+      left: 10px;
+      top: -3px;
+      color: #fff;
+      font-weight: bold;
+      
+}
+#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox .section-title.close_settings::after{
+      content: '+';
+}

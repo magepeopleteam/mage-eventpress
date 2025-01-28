@@ -6,16 +6,6 @@
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
-	add_action('admin_init','mep_quick_setup_exit',99);
-	function mep_quick_setup_exit(){
-		if(isset($_REQUEST['mep_skip_quick_setup'])){
-			update_option('mep_quick_setup', 'exit');
-			exit(wp_redirect(admin_url('index.php')));
-		}
-		
-		
-	}
-
 	if (!class_exists('MPWEM_Quick_Setup')) {
 		class MPWEM_Quick_Setup {
 			public function __construct() {
@@ -44,10 +34,6 @@
 			}
 			public function quick_setup() {
 				$status = MP_Global_Function::check_woocommerce();
-
-
-
-
 				if (isset($_POST['active_woo_btn'])) {
 					?>
 					<script>
@@ -142,7 +128,6 @@
 					update_option('mep_quick_setup', 'done');
 					wp_redirect(admin_url('edit.php?post_type=mep_events'));
 				}
-
 				?>
 				<div class="mpStyle">
 					<div class=_dShadow_6_adminLayout">
@@ -189,8 +174,6 @@
 										</button>
 									</div>
 								<?php } ?>
-
-								
 							</div>
 						</form>
 					</div>
@@ -225,11 +208,6 @@
 							<button class="themeButton" type="submit" name="active_woo_btn"><?php esc_html_e('Active Now', 'mage-eventpress'); ?></button>
 						<?php } ?>
 					</div>
-					<?php if ($status != 1) { ?>
-					<div class='mep_seup_exit_sec'>
-						<button style='margin:0 auto;' class="themeButton" type="submit" name="mep_skip_quick_setup"><?php _e('Skip, Go to Dashboard') ?></button>
-					</div>
-					<?php } ?>
 				</div>
 				<?php
 			}

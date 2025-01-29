@@ -2367,7 +2367,7 @@ h3.ex-sec-title {
 #mep-event-review-form--title {
   display: block;
   padding: 0 15px 0 38px;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.5;
   color: #495057;
   background-color: #F9F9F9;
@@ -2425,7 +2425,7 @@ span#mep_everyday_event_time_list select {
   border: 0;
   height: 30px;
   padding: 0 7px;
-  font-size: 18px;
+  font-size: 14px;
   color: #495057;
 }
 

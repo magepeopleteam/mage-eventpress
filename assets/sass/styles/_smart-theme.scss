@@ -551,6 +551,10 @@
 			@media (min-width:540px) {
 				margin: 50px 0;
 			}
+			h2{
+				font-size: var(--fs_h2);
+    			font-weight: var(--fw-bold);
+			}
 		}
 		
 		.mep-related-events{
@@ -576,7 +580,7 @@
 		margin: 10px 0;
 		.attendees{
 			display: flex;
-			gap: 10px;
+			gap: 20px;
 			flex-wrap: wrap;
 			margin-top: 20px;
 			.attendee_lists{
@@ -590,7 +594,7 @@
 				padding: 10px;
 				@media (min-width:540px) {
 					gap:21px;
-					padding: 25px;
+					padding: 20px;
 				}
 				.attendee{
 					width: 154px;

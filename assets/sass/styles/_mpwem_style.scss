@@ -751,6 +751,9 @@ ul#mep_add_calender_links li a {
 .mep_event_list a {
 	display: block;
 }
+.search_sort_code .search_result_empty,.search_sort_code_counts{
+	display: none;
+}
 div.mep_event_list a {
 	border: none;
 	text-decoration: none !important;
@@ -2052,7 +2055,7 @@ h3.ex-sec-title {
 #mep-event-review-form--title {
 	display: block;
 	padding: 0 15px 0 38px;
-	font-size: 18px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #495057;
 	background-color: #F9F9F9;
@@ -2103,7 +2106,7 @@ span#mep_everyday_event_time_list select {
 	border: 0;
 	height: 30px;
 	padding: 0 7px;
-	font-size: 18px;
+	font-size: 14px;
 	color: #495057;
 }
 .mep_everyday_date_secs ul li {

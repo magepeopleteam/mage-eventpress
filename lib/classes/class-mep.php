@@ -78,7 +78,7 @@ if (!class_exists('MPWEM_Helper')) {
                         <div class="search_result_empty"><?php esc_html_e('No Match Result Found!', 'mage-eventpress'); ?></div>
                     </div>
                 </div>
-                <p class="textGray textCenter">
+                <p class="textGray textCenter search_sort_code_counts">
                     <?php esc_html_e('Showing', 'mage-eventpress'); ?>
                     <strong class="qty_count"><?php echo esc_html($params['show']); ?></strong>
                     <?php esc_html_e('of', 'mage-eventpress'); ?>

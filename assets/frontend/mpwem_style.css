@@ -884,6 +884,10 @@ ul#mep_add_calender_links li a {
   display: block;
 }
 
+.search_sort_code .search_result_empty, .search_sort_code_counts {
+  display: none;
+}
+
 div.mep_event_list a {
   border: none;
   text-decoration: none !important;

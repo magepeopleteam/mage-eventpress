@@ -4,7 +4,7 @@ namespace MEPPlugin\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Core\Schemes\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -85,7 +85,7 @@ class MEPEventScheduleWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_title_typo',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// // 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-schedule',
 			]
         ); 
@@ -170,7 +170,7 @@ class MEPEventScheduleWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_btn_typo',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-schedule #mep_single_view_all_date, {{WRAPPER}} .mep-elementor-widget-schedule #mep_single_hide_all_date',
 			]
         );  

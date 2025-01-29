@@ -1226,7 +1226,7 @@
 			$total_sold = mep_ticket_type_sold( $event_id, '', $date );
 			// $total_left = $total_seat - ($total_sold + $total_resv);
 			$total_left = $total_sold;
-
+ 
 			return esc_html( $total_left );
 		}
 	}

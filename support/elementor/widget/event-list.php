@@ -7,7 +7,7 @@ use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Scheme_Typography as Typography;
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
@@ -432,7 +432,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_date_typo',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date,{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_spring_list .mep_list_date_wrapper .mep_spring_list_date,{{WRAPPER}} .mep-elementor-event-list-widget .mep-ev-start-date,{{WRAPPER}} .mep-elementor-event-list-widget .mep_event_winter_list .mep_list_date_wrapper .mep_winter_list_date',
 			]
         );
@@ -481,7 +481,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_title_style_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_title',
 			]
         );    
@@ -554,7 +554,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_price_style_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_date',
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep_price',
 			]
@@ -663,7 +663,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_info_style_typo',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-list-footer,{{WRAPPER}} .mep-elementor-event-list-widget .mep_list_details_col_one',
 			]
 		);    
@@ -773,7 +773,7 @@ class MEPEventListWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_btn_style_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-list-widget .mep-tem3-title-sec, {{WRAPPER}} .mep-elementor-event-list-widget .pagination-sec a',
 			]
         );    

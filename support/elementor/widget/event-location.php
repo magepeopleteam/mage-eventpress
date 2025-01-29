@@ -4,7 +4,7 @@ namespace MEPPlugin\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Core\Schemes\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -106,7 +106,7 @@ class MEPEventLocationWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_date_typo',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-location span',
 			]
         ); 

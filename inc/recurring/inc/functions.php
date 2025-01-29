@@ -802,17 +802,16 @@ function mep_re_event_everyday_date_list_display($event_id, $type = 'display')
                     <li>
                         <a href="<?php echo get_the_permalink($event_id).esc_attr('?date=' . strtotime($every_day)); ?>">
                         <span class="mep-more-date"><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($every_day, 'date-text'); ?></span>
-                        <span class='mep-more-time'><i class="fa fa-clock-o"></i>
+                        <span class='mep-more-time'>
                             <?php
                             $calender_day = strtolower(date('D', strtotime($every_day)));
                             $day_name = 'mep_ticket_times_' . $calender_day;
                             $time = get_post_meta($event_id, $day_name, true) ?  maybe_unserialize(get_post_meta($event_id, $day_name, true)) : maybe_unserialize($global_time_slots);
                             $time_list = [];
-                            foreach ($time as $_time) {
-                                $time_list[] = $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')';
-                            }
-                            echo implode(', ', $time_list);
-                            ?></span>
+                            foreach ($time as $_time) {?>
+                                <span class="time"><?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')'; ?></span>
+                            <?php } ?>
+                        </span>
                         </a>
                     </li>
         <?php

@@ -1407,14 +1407,38 @@ ul.mp_event_more_date_list li {
 	border-bottom: 1px solid #0009;
 }
 ul.mp_event_more_date_list li span,
-span.mep-more-date,
-span.mep-more-time {
+span.mep-more-date{
 	display: -webkit-flex;
 	display: flex;
 	-webkit-align-items: center;
 	align-items: center;
 	margin: 5px 0;
 	padding: 0;
+}
+
+.mep-default-theme .mep-more-time{
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+	margin-left:25px;
+	span{
+		margin:2px 5px;
+		position: relative;
+		padding-left: 14px;
+		&::before{
+			content: '';
+			width: 5px;
+			height: 5px;
+			border-radius: 50px;
+			margin-right: 5px;
+			background-color: var(--mpev-base);
+			position: absolute;
+			left: 0;
+			top:50%;
+			transform: translateY(-50%);
+		}
+	}
 }
 ul.mp_event_more_date_list li span i,
 span.mep-more-date i,
@@ -2874,6 +2898,7 @@ Mobile View css update by ariful | date: 19.10.2021
 	span.mep-more-time i {
 		min-width: 20px;
 	}
+	
 	.mep_everyday_date_secs ul li {
 		margin-bottom: 10px;
 	}

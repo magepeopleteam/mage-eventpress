@@ -5570,6 +5570,10 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
+  .mep_smart_theme .attendee_area h2 {
+    font-size: var(--fs_h2);
+    font-weight: var(--fw-bold);
+  }
   .mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price {
     text-align: right;
     color: #999;
@@ -5584,7 +5588,7 @@ Vanilla theme css by ariful
   }
   .attendee_area .attendees {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     flex-wrap: wrap;
     margin-top: 20px;
   }
@@ -5602,7 +5606,7 @@ Vanilla theme css by ariful
 @media only screen and (min-width: 10px) and (min-width: 540px) {
   .attendee_area .attendees .attendee_lists {
     gap: 21px;
-    padding: 25px;
+    padding: 20px;
   }
 }
 @media only screen and (min-width: 10px) {

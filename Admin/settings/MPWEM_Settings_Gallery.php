@@ -84,8 +84,10 @@
 					$slider = MP_Global_Function::get_submit_info('mep_display_slider') ? 'on' : 'off';
 					update_post_meta($post_id, 'mep_display_slider', $slider);
 					$images = MP_Global_Function::get_submit_info('mep_gallery_images', array());
+					$single_image = MP_Global_Function::get_submit_info('mep_list_thumbnail', '');
 					$all_images = explode(',', $images);
 					update_post_meta($post_id, 'mep_gallery_images', $all_images);
+					update_post_meta($post_id, 'mep_list_thumbnail', $single_image);
 
 				}
 			}

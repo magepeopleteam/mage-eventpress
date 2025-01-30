@@ -2440,6 +2440,10 @@ span.mep_date_scdl_start_datetime, span.mep_date_scdl_end_datetime {
   font-size: 13px;
 }
 
+span.mep_date_scdl_end_datetime {
+  margin-left: 32px;
+}
+
 span.mep-cal-icon {
   position: absolute;
   left: -100px;
@@ -5359,7 +5363,6 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets p, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets p {
     font-size: 16px;
     margin-bottom: 5px;
-    letter-spacing: 0.1em;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button {
     background-color: #fff;

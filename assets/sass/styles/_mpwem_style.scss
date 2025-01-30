@@ -2122,6 +2122,9 @@ span.mep_date_scdl_start_datetime, span.mep_date_scdl_end_datetime {
 	display: inline-flex;
 	font-size: 13px;
 }
+span.mep_date_scdl_end_datetime{
+	margin-left: 32px;
+}
 span.mep-cal-icon {
 	position: absolute;
 	left: -100px;

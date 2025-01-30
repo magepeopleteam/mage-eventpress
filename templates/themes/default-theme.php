@@ -96,9 +96,7 @@ $event_type                 = $event_type ? $event_type : 'offline';
         <div class="df-sidebar-part">
             <?php if($mep_enable_recurring=='no'): ?>
                 <?php if ($hide_total_seat_details == 'no') { ?>
-                    <div class="mep-default-sidrbar-price-seat">
-                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
-                    </div>
+                        <?php do_action('mep_event_seat', $event_id); ?>
                 <?php } ?>
             <?php endif; ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>

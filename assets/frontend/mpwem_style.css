@@ -845,8 +845,11 @@ ul#mep_add_calender_links li a {
 .mep-default-sidebar .df-sidebar-part {
   background: #F7F7F7;
   padding: 0;
-  margin: 20px 0;
   overflow: hidden;
+}
+
+.mep-default-sidebar.margin {
+  margin-top: 42px;
 }
 
 .default_theme .mep-default-sidrbar-price-seat,
@@ -854,6 +857,18 @@ ul#mep_add_calender_links li a {
 .mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
   border-bottom: 1px solid #DDD;
+}
+
+.default_theme .mep-default-sidrbar-price-seat .df-seat {
+  border: 1px solid var(--mpev-primary);
+  color: var(--mpev-primary);
+  border-radius: 50px;
+  font-weight: 500;
+  height: 35px;
+  height: 35px;
+  line-height: 33px;
+  margin: auto;
+  width: 70%;
 }
 
 .mep-theme1-faq-sec {

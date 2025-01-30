@@ -18,6 +18,10 @@ $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_settin
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post_meta($event_id,'mep_sgm',true) : 'no';
+$mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
+$mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
+$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
+$event_type                 = $event_type ? $event_type : 'offline';
 // echo $event_id;
 ?>
 <div class="mep-default-theme mep_flex default_theme">
@@ -55,7 +59,7 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
             <?php }
             if ($hide_location_details == 'no' ) { ?>
                 <div class="mep-default-feature-location">
-                <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
+                    <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
                             <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
@@ -78,21 +82,25 @@ $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post
         </div>
         <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
-    <div class="mep-default-sidebar">
-    <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
-        <div class="mep-default-sidrbar-map">
-            <h3>
-                <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
-            </h3>
-            <?php do_action('mep_event_map',$event_id); ?>
-        </div>
-    <?php } ?> 
-        <div class="df-sidebar-part">
-            <?php if ($hide_total_seat_details == 'no') { ?>
-                <div class="mep-default-sidrbar-price-seat">
-                    <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
+    <div class="mep-default-sidebar <?php echo esc_attr($event_type =='online'?'margin':''); ?>">
+        <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
+            <?php if($event_type !='online'): ?>
+                <div class="mep-default-sidrbar-map">
+                    <h3>
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
+                    </h3>
+                    <?php do_action('mep_event_map',$event_id); ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?> 
+        <?php } ?> 
+        <div class="df-sidebar-part">
+            <?php if($mep_enable_recurring=='no'): ?>
+                <?php if ($hide_total_seat_details == 'no') { ?>
+                    <div class="mep-default-sidrbar-price-seat">
+                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
+                    </div>
+                <?php } ?>
+            <?php endif; ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>
                 <div class="mep-default-sidrbar-meta">
                     <?php do_action('mep_event_organizer', $event_id); ?>

@@ -12,6 +12,7 @@ if (!function_exists('mep_event_google_map')) {
 		$map_zoom       = mep_get_option('mep_google_map_zoom_level', 'general_setting_sec', '17');
 		$location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : '';
 		$status   		= get_post_meta($event_id, 'mep_sgm', true) ? get_post_meta($event_id, 'mep_sgm', true) : '';
+		
 		ob_start();
 		do_action('mep_event_before_google_map');
 		if ($location_sts) {

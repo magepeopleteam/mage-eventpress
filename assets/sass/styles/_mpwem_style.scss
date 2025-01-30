@@ -330,7 +330,8 @@ h3.ex-sec-title {
 	font-size: 14px;
 	color: var(--mpev-base-txt);
 	padding: 10px 15px;
-	background: var(--mpev-base);
+	background: var(--mpev-primary);
+	padding: 15px;
 }
 .mep-default-sidrbar-map h3,
 .mep-default-sidrbar-events-schedule h3 {
@@ -717,14 +718,27 @@ ul#mep_add_calender_links li a {
 .mep-default-sidebar .df-sidebar-part {
 	background: #F7F7F7;
 	padding: 0;
-	margin: 20px 0;
 	overflow: hidden;
+}
+.mep-default-sidebar.margin{
+	margin-top: 42px;
 }
 .default_theme .mep-default-sidrbar-price-seat,
 .mep-default-sidrbar-address,
 .mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #DDD;
+}
+.default_theme .mep-default-sidrbar-price-seat .df-seat{
+	border:1px solid var(--mpev-primary);
+	color: var(--mpev-primary);
+	border-radius: 50px;
+	font-weight: 500;
+	height: 35px;
+	height: 35px;
+	line-height: 33px;
+	margin: auto;
+	width: 70%;
 }
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;
@@ -1839,6 +1853,7 @@ div.item_hover_effect a:hover {
 		border-top: 1px solid #DDD;
 		border-bottom: 1px solid #DDD;
 	}
+	
 	.mep_spring_date .mep-default-sidrbar-social,
 	.bristol .mep-default-sidrbar-calender-btn {
 		display: -webkit-flex;
@@ -2109,6 +2124,9 @@ span.mep_date_scdl_start_datetime, span.mep_date_scdl_end_datetime {
 	display: inline-flex;
 	font-size: 13px;
 }
+span.mep_date_scdl_end_datetime{
+	margin-left: 32px;
+}
 span.mep-cal-icon {
 	position: absolute;
 	left: -100px;
@@ -2152,9 +2170,23 @@ span.mep-datepicker-input-box {
 .mep_everyday_date_secs {
 	padding: 5px 10px !important;
 }
-.mep_everyday_date_secs ul {
+.mep_everyday_date_secs .mep-date-time-select-area {
 	overflow: hidden;
+	padding: 8px 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	h3{
+		margin: 0;
+	}
+	.mep-date-time{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
 }
+
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart,
 .mep-event-theme-1 .btn-mep-event-cart,
 .mep-template-2-hamza .btn-mep-event-cart,
@@ -3899,5 +3931,14 @@ input.mpe-new-input-group-field {
 	}
 	input.mpe-new-input-group-field {
 		width: 20px;
+	}
+}
+
+.mep-default-theme div.mep-default-feature-item{
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	h3{
+		margin: 10px 0;
 	}
 }

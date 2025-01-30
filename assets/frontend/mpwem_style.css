@@ -1670,14 +1670,38 @@ ul.mp_event_more_date_list li {
 }
 
 ul.mp_event_more_date_list li span,
-span.mep-more-date,
-span.mep-more-time {
+span.mep-more-date {
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: center;
   align-items: center;
   margin: 5px 0;
   padding: 0;
+}
+
+.mep-default-theme .mep-more-time {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  margin-left: 25px;
+}
+.mep-default-theme .mep-more-time span {
+  margin: 2px 5px;
+  position: relative;
+  padding-left: 14px;
+}
+.mep-default-theme .mep-more-time span::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50px;
+  margin-right: 5px;
+  background-color: var(--mpev-base);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 ul.mp_event_more_date_list li span i,
@@ -5359,6 +5383,31 @@ Vanilla theme css by ariful
     margin: 0;
     font-size: 16px;
     letter-spacing: 0.1em;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    margin-left: 25px;
+    margin-top: 10px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span {
+    margin: 5px 5px;
+    position: relative;
+    padding-left: 14px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50px;
+    margin-right: 5px;
+    background-color: #aaa;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
     margin: 0;

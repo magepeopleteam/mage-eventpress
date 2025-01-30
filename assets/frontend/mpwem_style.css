@@ -2507,6 +2507,8 @@ span.mep-datepicker-input-box {
 }
 .mep_everyday_date_secs .mep-date-time-select-area h3 {
   margin: 0;
+  font-size: 20px;
+  font-weight: 600;
 }
 .mep_everyday_date_secs .mep-date-time-select-area .mep-date-time {
   display: flex;

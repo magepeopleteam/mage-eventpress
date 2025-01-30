@@ -385,7 +385,8 @@ h3.ex-sec-title {
   font-size: 14px;
   color: var(--mpev-base-txt);
   padding: 10px 15px;
-  background: var(--mpev-base);
+  background: var(--mpev-primary);
+  padding: 15px;
 }
 
 .mep-default-sidrbar-map h3,
@@ -2497,8 +2498,21 @@ span.mep-datepicker-input-box {
   padding: 5px 10px !important;
 }
 
-.mep_everyday_date_secs ul {
+.mep_everyday_date_secs .mep-date-time-select-area {
   overflow: hidden;
+  padding: 8px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mep_everyday_date_secs .mep-date-time-select-area h3 {
+  margin: 0;
+}
+.mep_everyday_date_secs .mep-date-time-select-area .mep-date-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart,
@@ -5408,7 +5422,6 @@ Vanilla theme css by ariful
     display: block;
     margin: 0;
     font-size: 16px;
-    letter-spacing: 0.1em;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time {
     display: flex;

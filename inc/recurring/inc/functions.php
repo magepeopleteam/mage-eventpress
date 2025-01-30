@@ -66,11 +66,11 @@ function get_mep_re_recurring_date($event_id, $event_multi_date, $mep_show_upcom
     $mep_show_upcoming_event = get_post_meta($event_id, 'mep_show_upcoming_event', true) && !is_admin() ? get_post_meta($event_id, 'mep_show_upcoming_event', true) : 'no';
 ?>
     <div class="mep_everyday_date_secs">
-        <ul> 
-            <li class='mep_re_datelist_label'>
+        <div class="mep-date-time-select-area ">
+            <h3 class='mep_re_datelist_label'>  
                 <?php echo mep_esc_html($select_dateLabel); ?>
-            </li>
-            <li>
+            </h3>
+            <div>
                 <?php
 
                 $cn = 1;
@@ -141,8 +141,8 @@ function get_mep_re_recurring_date($event_id, $event_multi_date, $mep_show_upcom
                     echo '</select>';
                 }
                 ?>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
     <?php
     return ob_get_clean();
@@ -902,11 +902,11 @@ function mep_re_get_everyday_event_date_sec($event_id)
         ob_start();
         ?>
         <div class='mep_everyday_date_secs'>
-            <ul>
-                <li class='mep_re_datelist_label'>
+            <div class="mep-date-time-select-area ">
+                <h3 class='mep_re_datelist_label'>
                     <?php echo mep_get_option('mep_event_rec_select_event_date_text', 'label_setting_sec', __('Select Event Date:', 'mage-eventpress')); ?>
-                </li>
-                <li>
+                </h3>
+                <div class="mep-date-time">
                     <?php if (sizeof($global_on_days_arr) == 1) { ?>
 
                         <span style='font-size: 20px;'><?php if ($time_status == 'yes') { echo mep_esc_html($date_parameter)
@@ -920,21 +920,22 @@ function mep_re_get_everyday_event_date_sec($event_id)
                     </span>
                     </span>
                     <?php } ?>
-
-                </li>
-                <li>
-                    <span id="mep_everyday_event_time_list">
-                        <?php
-                        if ($time_status == 'yes') {
-                        ?>
-                            <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
-                        <?php
-                            mep_re_default_load_ticket_time_list($event_id, $global_on_days_arr[0]);
-                        }
-                        ?>
-                    </span>
-                </li>
-            </ul>
+                    <!-- time -->
+                    <div>
+                        <span id="mep_everyday_event_time_list">
+                            <?php
+                            if ($time_status == 'yes') {
+                            ?>
+                                <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
+                            <?php
+                                mep_re_default_load_ticket_time_list($event_id, $global_on_days_arr[0]);
+                            }
+                            ?>
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
         </div>
         
         <?php
@@ -1340,15 +1341,14 @@ function mep_rq_show_everyday_datepicker($event_id)
     ob_start();
     ?>
     <div class='mep_everyday_date_secs'>
-        <ul>
-            <li>
-            
+        <div class="mep-date-time-select-area ">
+            <div>
                 <input type="text" name='<?php echo esc_attr($input_name); ?>' id='mep_everyday_datepicker_<?php echo esc_attr($event_id); ?>' value="<?php echo current_time('Y-m-d'); ?>">
-            </li>
-            <li>
+            </div>
+            <div>
                 <span id="mep_everyday_event_time_list_<?php echo esc_attr($event_id); ?>"></span>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 <?php
     require(dirname(__DIR__) . "/js/before_attendee_list_btn.php");
@@ -1368,15 +1368,15 @@ function mep_rq_show_everyday_datepicker_csv_btn($event_id)
 
 ?>
     <div class='mep_everyday_date_secs'>
-        <ul>
-            <li>
-            <i class = "fa fa-calendar icon"></i>
+        <div class="mep-date-time-select-area ">
+            <div>
+                <i class = "fa fa-calendar icon"></i>
                 <input type="text" name='<?php echo esc_attr($input_name); ?>' id='mep_everyday_datepicker_csv_<?php echo esc_attr($event_id); ?>' value="<?php echo current_time('Y-m-d'); ?>">
-            </li>
-            <li>
+            </div>
+            <div>
                 <span id="mep_everyday_event_time_list_csv_<?php echo mep_esc_html($event_id); ?>"></span>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 <?php
     require(dirname(__DIR__) . "/js/before_csv_export_btn.php");

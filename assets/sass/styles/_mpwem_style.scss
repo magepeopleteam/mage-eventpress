@@ -330,7 +330,8 @@ h3.ex-sec-title {
 	font-size: 14px;
 	color: var(--mpev-base-txt);
 	padding: 10px 15px;
-	background: var(--mpev-base);
+	background: var(--mpev-primary);
+	padding: 15px;
 }
 .mep-default-sidrbar-map h3,
 .mep-default-sidrbar-events-schedule h3 {
@@ -2169,9 +2170,23 @@ span.mep-datepicker-input-box {
 .mep_everyday_date_secs {
 	padding: 5px 10px !important;
 }
-.mep_everyday_date_secs ul {
+.mep_everyday_date_secs .mep-date-time-select-area {
 	overflow: hidden;
+	padding: 8px 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	h3{
+		margin: 0;
+	}
+	.mep-date-time{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
 }
+
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart,
 .mep-event-theme-1 .btn-mep-event-cart,
 .mep-template-2-hamza .btn-mep-event-cart,

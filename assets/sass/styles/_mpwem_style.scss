@@ -1852,6 +1852,7 @@ div.item_hover_effect a:hover {
 		border-top: 1px solid #DDD;
 		border-bottom: 1px solid #DDD;
 	}
+	
 	.mep_spring_date .mep-default-sidrbar-social,
 	.bristol .mep-default-sidrbar-calender-btn {
 		display: -webkit-flex;
@@ -3915,5 +3916,14 @@ input.mpe-new-input-group-field {
 	}
 	input.mpe-new-input-group-field {
 		width: 20px;
+	}
+}
+
+.mep-default-theme div.mep-default-feature-item{
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	h3{
+		margin: 10px 0;
 	}
 }

@@ -34,8 +34,10 @@ $event_type                 = $event_type ? $event_type : 'offline';
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
-                <div class="mep-default-feature-date">
-                    <div class="df-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
+                <div class="mep-default-feature-date mep-default-feature-item">
+                    <div class="df-ico">
+                        <i class="<?php echo $event_date_icon; ?>"></i>
+                    </div>
                     <div class='df-dtl'>
                         <h3>
                             <?php 
@@ -47,7 +49,7 @@ $event_type                 = $event_type ? $event_type : 'offline';
                 </div>
             <?php }
             if ($hide_time_details == 'no') { ?>
-                <div class="mep-default-feature-time">
+                <div class="mep-default-feature-time mep-default-feature-item">
                     <div class="df-ico"><i class="<?php echo $event_time_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
@@ -58,7 +60,7 @@ $event_type                 = $event_type ? $event_type : 'offline';
                 </div>
             <?php }
             if ($hide_location_details == 'no' ) { ?>
-                <div class="mep-default-feature-location">
+                <div class="mep-default-feature-location mep-default-feature-item">
                     <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>

@@ -49,7 +49,7 @@ $_the_event_id = $event_id;
             <?php endif; ?>
             <?php if ($hide_org_by_details == 'no') { ?>
                 <div class="mep-default-sidrbar-meta">
-                <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $_the_event_id); ?>
+                    <?php do_action('mep_event_organizer', $_the_event_id); ?>
                 </div>
             <?php } if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-sidebar-speaker-list">               

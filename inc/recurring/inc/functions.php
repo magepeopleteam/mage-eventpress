@@ -2003,12 +2003,15 @@ function mep_recurring_events_meta_save($post_id) {
 
 add_filter('mage_event_extra_service_list', 'mep_rq_extra_service_list', 10, 4);
 function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date){
-  $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+ $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 
   if($recurring == 'everyday'){
     $count =1;
     $start_date = wp_date('Y-m-d');
- 
+ ?>
+  <input type="hidden" name='mepre_event_id' id='mep_event_id' value='<?php echo $event_id; ?>'>      
+  <div id='mep_recurring_extra_service_list'></div>
+ <?php
   }elseif($recurring == 'yes'){
 
     $event_more_date[0]['event_more_start_date']    = date('Y-m-d',strtotime(get_post_meta($event_id,'event_start_date',true)));
@@ -2024,7 +2027,6 @@ function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date)
         <?php
     }else{
       return apply_filters('mage_event_extra_service_list_recurring', $content, $event_id, $event_meta,$start_date);
-      // return $content;
     }
 }
 

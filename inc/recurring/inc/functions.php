@@ -323,7 +323,7 @@ function mep_re_ajax_load_extra_service_list()
     $event_date = isset($_REQUEST['event_date']) ? sanitize_text_field($_REQUEST['event_date']) : '';
     $event_id   = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
     $post_id    = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
-    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : 'Ex';
+    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : __('Extra Services','mage-eventpress');
     $count                      = 1;
     $mep_events_extra_prices    = get_post_meta($post_id, 'mep_events_extra_prices', true) ? get_post_meta($post_id, 'mep_events_extra_prices', true) : array();
     if (sizeof($mep_events_extra_prices) > 0) {

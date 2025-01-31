@@ -15,7 +15,7 @@
 			@media (min-width:1024px) {
 				flex-direction: row;
 			}
-			.mpwem_location, .mpwem_time {
+			.mpwem_location, .mpwem_time, .mpwem_seats{
 				flex-wrap: wrap;
 				i{
 					width: 55px;
@@ -40,6 +40,15 @@
 					@media (min-width:1024px) {
 						width: auto;
 					}
+				}
+			}
+			.mpwem_seats{
+				display: flex;
+				align-items: center;
+				margin: var(--dMP_xs) var(--dMP) 0 0;
+				gap:10px;
+				strong{
+					font-weight: normal;
 				}
 			}
 		}
@@ -349,9 +358,8 @@
 									align-items: start;
 									justify-content: start;
 									margin-left:25px;
-									margin-top: 10px;
-									span{
-										margin:5px 5px;
+									span.time{
+										padding:5px 0;
 										position: relative;
 										padding-left: 14px;
 										&::before{

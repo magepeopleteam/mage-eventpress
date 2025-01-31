@@ -15,17 +15,23 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
+$mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
+$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
+$event_type                 = $event_type ? $event_type : 'offline';
 ?>
 
 <div class="mep-default-theme royal_theme">
     <div class="mep-default-content">
-    <?php if ($hide_location_details == 'no') { ?>
-        <div class="mep-default-sidrbar-map">
-            <?php do_action('mep_event_map',$event_id); ?>
-        </div>       
-    <?php } ?>        
-<div class="mep-royal-header">
-<div class="mep-royal-header-col-1">
+    <?php if($event_type !='online'): ?>
+        <?php if ($hide_location_details == 'no') { ?>
+            <div class="mep-default-sidrbar-map">
+                <?php do_action('mep_event_map',$event_id); ?>
+            </div>       
+        <?php } ?> 
+    <?php endif; ?>       
+    <div class="mep-royal-header">
+    <div class="mep-royal-header-col-1">
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>
         </div>        
@@ -99,11 +105,13 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <?php do_action('mep_event_date_default_theme',$event_id); ?>
             </div>
         <?php } ?>
-        <?php if ($hide_total_seat_details == 'no') { ?>
-            <div class="mep-default-sidrbar-price-seat">
-                <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
-            </div>
-        <?php } ?>
+        <?php if($mep_enable_recurring=='no'): ?>
+            <?php if ($hide_total_seat_details == 'no') { ?>
+                <div class="mep-default-sidrbar-price-seat">
+                    <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
+                </div>
+            <?php } ?>
+        <?php endif; ?>
         <?php if ($hide_calendar_details == 'no') { ?>
                 <div class="mep-default-sidrbar-calender-btn">
                     <?php do_action('mep_event_add_calender',$event_id); ?>

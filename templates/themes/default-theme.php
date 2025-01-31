@@ -20,6 +20,8 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post_meta($event_id,'mep_sgm',true) : 'no';
 $mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
 $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
+$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
+$event_type                 = $event_type ? $event_type : 'offline';
 // echo $event_id;
 ?>
 <div class="mep-default-theme mep_flex default_theme">
@@ -32,10 +34,8 @@ $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
         </div>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
-                <div class="mep-default-feature-date mep-default-feature-item">
-                    <div class="df-ico">
-                        <i class="<?php echo $event_date_icon; ?>"></i>
-                    </div>
+                <div class="mep-default-feature-date">
+                    <div class="df-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
                             <?php 
@@ -47,7 +47,7 @@ $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
                 </div>
             <?php }
             if ($hide_time_details == 'no') { ?>
-                <div class="mep-default-feature-time mep-default-feature-item">
+                <div class="mep-default-feature-time">
                     <div class="df-ico"><i class="<?php echo $event_time_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
@@ -58,7 +58,7 @@ $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
                 </div>
             <?php }
             if ($hide_location_details == 'no' ) { ?>
-                <div class="mep-default-feature-location mep-default-feature-item">
+                <div class="mep-default-feature-location">
                     <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
                     <div class='df-dtl'>
                         <h3>
@@ -83,16 +83,16 @@ $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
         <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
     <div class="mep-default-sidebar">
-        <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
-            <?php if($event_type !='online'): ?>
+        <?php if($event_type !='online'): ?>
+            <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
                 <div class="mep-default-sidrbar-map">
                     <h3>
                         <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                     </h3>
                     <?php do_action('mep_event_map',$event_id); ?>
                 </div>
-            <?php endif; ?> 
-        <?php } ?> 
+            <?php } ?> 
+        <?php endif; ?> 
         <div class="df-sidebar-part">
             <?php if($mep_enable_recurring=='no'): ?>
                 <?php if ($hide_total_seat_details == 'no') { ?>

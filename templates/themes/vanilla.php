@@ -17,6 +17,8 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
+$event_type                 = $event_type ? $event_type : 'offline';
 ?>
 
 <div class="mep-default-theme vanilla_theme">
@@ -70,22 +72,25 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <?php } ?>
         </div>
         <div class="mep-default-col-wrapper">
-            <?php if ($hide_location_details == 'no') { ?>
+            
                 <div class="mep-default-col-1">
-                    <div class="mep-default-sidrbar-map">
-                        <h3>
-                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Find Location On Google Map:', 'mage-eventpress')); ?>
-                        </h3>
-                        <?php do_action('mep_event_map', $event_id); ?>
-                    </div>
-
+                    <?php if($event_type !='online'): ?>
+                        <?php if ($hide_location_details == 'no') { ?>
+                        <div class="mep-default-sidrbar-map">
+                            <h3>
+                                <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Find Location On Google Map:', 'mage-eventpress')); ?>
+                            </h3>
+                            <?php do_action('mep_event_map', $event_id); ?>
+                        </div>
+                        <?php } ?>
+                    <?php endif; ?>
                     <?php if ($hide_calendar_details == 'no') { ?>
                         <div class="mep-default-sidrbar-calender-btn">
                             <?php do_action('mep_event_add_calender', $event_id); ?>
                         </div>
                     <?php } ?>
                 </div>
-            <?php } ?>
+            
             <div class="mep-default-col-2">
                 <?php if ($hide_org_by_details == 'no') { ?>
                     <div class="mep-default-sidrbar-meta">

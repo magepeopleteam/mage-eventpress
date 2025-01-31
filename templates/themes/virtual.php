@@ -42,7 +42,9 @@ $_the_event_id = $event_id;
         <div class="df-sidebar-part">
             <?php if($mep_enable_recurring=='no'): ?>
                 <?php if ($hide_total_seat_details == 'no') { ?>
-                        <?php do_action('mep_event_seat', $event_id); ?>
+                    <div class="mep-default-sidrbar-price-seat">
+                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
+                    </div>
                 <?php } ?>
             <?php endif; ?>
             <?php if ($hide_org_by_details == 'no') { ?>

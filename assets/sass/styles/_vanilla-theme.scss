@@ -27,10 +27,7 @@ Vanilla theme css by ariful
 	padding: 20px;
 	border-radius: 5px;
 }
-.vanilla_theme .mep_everyday_date_secs {
-	background: #FBD03B;
-	color: #17113A;
-}
+
 .vanilla_theme .mep_everyday_date_secs ul li {
 	font-size: 14px;
 	text-transform: uppercase;
@@ -38,8 +35,7 @@ Vanilla theme css by ariful
 }
 .vanilla_theme h3.ex-sec-title {
 	font-size: 14px;
-	background: #FBD03B;
-	color: #17113A;
+	color: #fff;
 	font-weight: 500;
 	text-transform: uppercase;
 }
@@ -53,11 +49,7 @@ Vanilla theme css by ariful
 .vanilla_theme tr:nth-child(even) {
 	background-color: #F2F2F2;
 }
-.vanilla_theme.mep-default-theme div.mep-default-feature-date,
-.vanilla_theme.mep-default-theme div.mep-default-feature-time,
-.vanilla_theme.mep-default-theme div.mep-default-feature-location {
-	background: #FBD03B;
-}
+
 .vanilla_theme div.df-dtl p {
 	color: #17113A;
 }

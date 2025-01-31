@@ -12,7 +12,10 @@ $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_deta
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
-
+$mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
+$mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
+$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
+$event_type                 = $event_type ? $event_type : 'offline';
 $_the_event_id = $event_id;
 
 ?>
@@ -35,13 +38,13 @@ $_the_event_id = $event_id;
         </div>
         <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
-    <div class="mep-default-sidebar">
+    <div class="mep-default-sidebar <?php echo esc_attr($event_type =='online'?'margin':''); ?>">
         <div class="df-sidebar-part">
-            <?php if ($hide_total_seat_details == 'no') { ?>
-                <div class="mep-default-sidrbar-price-seat">
-                    <div class="df-seat"><?php do_action('mep_event_seat', $_the_event_id); ?></div>
-                </div>
-            <?php } ?>
+            <?php if($mep_enable_recurring=='no'): ?>
+                <?php if ($hide_total_seat_details == 'no') { ?>
+                        <?php do_action('mep_event_seat', $event_id); ?>
+                <?php } ?>
+            <?php endif; ?>
             <?php if ($hide_org_by_details == 'no') { ?>
                 <div class="mep-default-sidrbar-meta">
                 <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $_the_event_id); ?>

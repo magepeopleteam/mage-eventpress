@@ -20,8 +20,6 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 $show_google_map_location   = get_post_meta($event_id,'mep_sgm',true) ? get_post_meta($event_id,'mep_sgm',true) : 'no';
 $mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
 $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
-$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
-$event_type                 = $event_type ? $event_type : 'offline';
 // echo $event_id;
 ?>
 <div class="mep-default-theme mep_flex default_theme">
@@ -84,7 +82,7 @@ $event_type                 = $event_type ? $event_type : 'offline';
         </div>
         <?php do_action( 'mpwem_template_footer', $event_id ); ?>
     </div>
-    <div class="mep-default-sidebar <?php echo esc_attr($event_type =='online'?'margin':''); ?>">
+    <div class="mep-default-sidebar">
         <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
             <?php if($event_type !='online'): ?>
                 <div class="mep-default-sidrbar-map">
@@ -98,7 +96,9 @@ $event_type                 = $event_type ? $event_type : 'offline';
         <div class="df-sidebar-part">
             <?php if($mep_enable_recurring=='no'): ?>
                 <?php if ($hide_total_seat_details == 'no') { ?>
-                        <?php do_action('mep_event_seat', $event_id); ?>
+                    <div class="mep-default-sidrbar-price-seat">
+                        <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
+                    </div>
                 <?php } ?>
             <?php endif; ?>
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) { ?>

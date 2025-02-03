@@ -2,25 +2,20 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin
 Requires at least: 5.3
-Stable tag: 4.1.4
-Version: 4.1.4
-Tested up to: 6.4.2
+Stable tag: trunk
+Tested up to: 6.7.1
 WC requires at least: 3.0
-WC tested up to: 8.5.2
+WC tested up to: 8.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-
-
-Simplify event registration process with Wp Evently – the easy, lightweight WordPress event management plugin
-
+WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for creating events, managing registrations, and selling tickets easily.
 
 
 == Description ==
 
-
-Simplify your complicated event registration process with the Event Manager Plugin for WooCommerce. [Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is a complete & simplest event management plugin for WordPress.
+The Event Manager plugin for WooCommerce simplifies the complicated event registration process. [Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the complete and simplest event management plugin for WordPress.
 Registering an event to a data-analyzing dashboard everything is available connecting the plugin with woo-commerce. 
 Take advantage of compatibility with all WordPress versions and utilize all well-known payment gateways through WooCommerce. 
 
@@ -42,10 +37,16 @@ Whether you are a small event organizer or large, we have thousands of trusted b
 
 
 ### Experience The Smooth Event Management Experience
-Creating an event and managing it in one place has never been easier, faster, organized and smooth. MultipleTicketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
+Creating an event and managing it in one place has never been easier, faster, organized and smooth. Multiple Ticketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
 We are not limiting you here, the free version features most of the basic event management activity.
 
-## LETS CREATE A PROFESSIONAL EVENT MANAGER ATTENDEE REGISTRATION FORM
+### Create Recurring Events as repeated dates now Easier
+The Repeating Event feature is now available in Event Manager Plugin which makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. 
+
+### Sell Tickets on different dates (Particular dates) froma  single event 
+Sell tickets for events on different fixed dates with ease. Add multiple event dates in the backend and allow customers to choose their preferred date and time before purchasing tickets on the front end.
+
+## LET'S CREATE A PROFESSIONAL EVENT MANAGER ATTENDEE REGISTRATION FORM
 
 Creating an event might be offered by many, but when it comes to creating something professional and lucrative, we are here to get the job done for you.
 The continuous process of optimizing your event can be time-consuming. When you need to create something highly effective but have limited time available, [Evently-WordPress Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for.
@@ -136,15 +137,12 @@ When you are just managing a simple event then the free version with basic featu
 Below you will find details of each plugin that is available with the plugin and the live features that plugins offer.
 
 
-👉[Recurring Event Addon](https://mage-people.com/product/recurring-events-addon-for-event-manager/)👈
-The Repeating Event feature in the Event Manager addon makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. 
 
 👉[Event QR Code Addon](https://mage-people.com/product/woocommerce-event-qr-code-addon/)👈
 The QR code addon prints QR codes on PDF tickets that can be used for ticket validation using mobile apps. Check-in and check-out records are saved to a database as history.
 
 👉[Event Calendar Addon](https://mage-people.com/product/woocommerce-event-calendar-addon/) 👈
 The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information.
-
 
 👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
 The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty
@@ -218,8 +216,8 @@ We have full confidence in our plugin and its ability to work well with any them
 
 **CHECK OUT OUR OTHER PLUGINS** 
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
-[Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/mage-eventpress/)
-[Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/mage-eventpress/)
+[Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
+[Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/tour-booking-manager/)
 [Advanced – Deposit & Partial Payment for WooCommerce
 ](https://wordpress.org/plugins/advanced-partial-payment-or-deposit-for-woocommerce/)
 [Booking and Rental Manager Pro for WordPress
@@ -286,6 +284,53 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+
+= 4.2.8 =
+* Quick Release with the fixing of Elementor Typography error issue.
+  22 Nov 2024*
+
+= 4.2.7 =
+* Quick Release for _load_textdomain_just_in_time warning issue fixed.
+  22 Nov 2024*
+
+= 4.2.6 =
+* Security Issue fixed.
+  01 Oct 2024*
+
+= 4.2.5 =
+* Responsive issue fixed.
+  20 Sept 2024*
+
+= 4.2.4 =
+* Security Updated
+  13 Sept 2024*
+
+= 4.2.3 =
+* Conflict Between Woo Product bundle plugin issue fixed
+* PHP Warning issue fixed
+  18 July 2024*
+
+= 4.2.2 =
+* Security Issue solved
+* Seat Count now updated based on adding into cart. 
+  11 July 2024*
+
+
+= 4.2.1 =
+* Infinit spinning in checkout when Woocommerce product & event in the cart issue has been fixed.
+  28 June 2024*
+
+= 4.2.0 =
+* Colon showing in the Cart & checkout form WC Product issue fixed.
+  27 June 2024*
+
+= 4.1.9 =
+* Tax error issue has been fixed
+  12 June 2024*
+
+= 4.1.6 =
+* Checkout Page infinite loading issue fixed.
+  29 March 2024*
 
 = 4.1.4 =
 * PHP 8.1.12 Warning issue fixed. 

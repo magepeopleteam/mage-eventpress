@@ -17,8 +17,6 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
-$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
-$event_type                 = $event_type ? $event_type : 'offline';
 ?>
 <div class="mep-default-theme bristol">
     <div class="mpStyle">
@@ -37,19 +35,18 @@ $event_type                 = $event_type ? $event_type : 'offline';
                 </div>
             </div>
         <?php }?>
-        <?php if($event_type !='online'): ?>
-            <?php if ($hide_location_details == 'no') { ?>
-                <div class="mep-default-feature-location">
-                    <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
-                    <div class='df-dtl'>
-                        <h3>
-                            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
-                        </h3>
-                        <p><?php do_action('mep_event_location',$event_id); ?></p>
-                    </div>
+        <?php if ($hide_location_details == 'no') { ?>
+            <div class="mep-default-feature-location">
+            <div class="df-ico"><i class="<?php echo $event_location_icon; ?>"></i></div>
+                <div class='df-dtl'>
+                    <h3>
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
+                    </h3>
+                    <p><?php do_action('mep_event_location',$event_id); ?></p>
                 </div>
-            <?php } ?>
-        <?php endif; ?>
+            </div>
+        <?php } ?>
+
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
                 <?php do_action('mep_event_social_share', $event_id); ?>
@@ -90,15 +87,11 @@ $event_type                 = $event_type ? $event_type : 'offline';
         <h4 class="mep-cart-table-title"><?php esc_html_e("About The ", 'mage-eventpress'); echo esc_html($event_label); ?></h4>
         <?php do_action('mep_event_details', $event_id); ?>
     </div>
-    <?php if($event_type !='online'): ?>
-        <?php if ($hide_location_details == 'no') { ?>
-            <div class="mep-default-sidrbar-map">
-                <h4 class="mep-cart-table-title">
-                    <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
-                </h4>
-                <?php do_action('mep_event_map',$event_id); ?>
-            </div>
-        <?php } ?> 
-    <?php endif; ?>
+    <div class="mep-default-sidrbar-map">
+        <h4 class="mep-cart-table-title">
+            <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __("$event_label Location:", 'mage-eventpress')); ?>
+        </h4>
+        <?php do_action('mep_event_map',$event_id); ?>
+    </div>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

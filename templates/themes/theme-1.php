@@ -14,8 +14,6 @@ $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
-$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
-$event_type                 = $event_type ? $event_type : 'offline';
 ?>
 <div class="mep-default-theme spring_field">
     <div class="mep_flex">
@@ -45,13 +43,9 @@ $event_type                 = $event_type ? $event_type : 'offline';
             <?php } ?>
         </div>
     </div>
-    <?php if($event_type !='online'): ?>
-        <?php if ($hide_location_details == 'no') { ?>
-            <div class="mep-default-sidrbar-map">
-                <?php do_action('mep_event_map', $event_id); ?>
-            </div>
-        <?php } ?> 
-    <?php endif; ?>
+    <div class="mep-default-sidrbar-map">
+        <?php do_action('mep_event_map', $event_id); ?>
+    </div>
     <div class="mep_spring_date">
         <?php if ($hide_schedule_details == 'no') { ?>
             <div class="mep-default-feature-date">

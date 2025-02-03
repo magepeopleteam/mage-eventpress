@@ -13,8 +13,6 @@ $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_deta
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
-$event_type                 = get_post_meta($event_id, 'mep_event_type', true);
-$event_type                 = $event_type ? $event_type : 'offline';
 ?>
 <div class="mep-default-theme franklin">
     <div class="mep-default-title">
@@ -32,13 +30,9 @@ $event_type                 = $event_type ? $event_type : 'offline';
     </div>
     <div class="franklin_divided">
         <div class="franklin_divided_left">
-                <?php if($event_type !='online'): ?>
-                    <?php if ($hide_location_details == 'no') { ?>
-                    <div class="mep-default-sidrbar-map">
-                        <?php do_action('mep_event_map',$event_id); ?>
-                    </div>
-                <?php } ?> 
-            <?php endif; ?>
+            <div class="mep-default-sidrbar-map">
+                <?php do_action('mep_event_map',$event_id); ?>
+            </div>
             <?php
             if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-feature-content mep_theme_franklin_sidebar_speaker_list mep-default-sidebar-speaker-list">              

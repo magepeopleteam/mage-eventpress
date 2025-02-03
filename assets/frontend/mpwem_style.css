@@ -30,7 +30,8 @@
   --mpev-recring-dpkr-bg:var(--mpev-base);
   --mpev-recring-dpkr-txt:#ffffff;
 }
-
+div.mep-default-theme div.superSlider .sliderShowcaseItem{margin: 0 0 14px 0;}
+div.mep-default-theme div.superSlider .sliderShowcase.right{max-height: 500px;}
 .mep-event-faq-part .ex-sec-title.faq-title-section {
   background: var(--mpev-faq-bg);
   color: var(--mpev-faq-text);
@@ -99,8 +100,8 @@ ul.mp_event_more_date_list li:hover {
 .vanilla_theme h3.ex-sec-title,
 .vanilla_theme div.df-dtl h3,
 .vanilla_theme div.df-dtl p, .ex-sec-title, .mep_everyday_date_secs {
-  background: var(--mpev-primary);
-  color: var(--mpev-secondary);
+  background: var(--mpev-title-bg);
+  color: var(--mpev-title-txt);
 }
 
 .mpwemasp_ticket_area .mep_everyday_date_secs {
@@ -860,11 +861,16 @@ ul#mep_add_calender_links li a {
   border-bottom: 1px solid #DDD;
 }
 
-.default_theme .mep-default-sidrbar-price-seat .df-seat strong {
+.default_theme .mep-default-sidrbar-price-seat .df-seat {
   border: 1px solid var(--mpev-primary);
   color: var(--mpev-primary);
   border-radius: 50px;
-  padding: 5px 10px;
+  font-weight: 500;
+  height: 35px;
+  height: 35px;
+  line-height: 33px;
+  margin: auto;
+  width: 70%;
 }
 
 .mep-theme1-faq-sec {
@@ -4916,6 +4922,11 @@ Vanilla theme css by ariful
   border-radius: 5px;
 }
 
+.vanilla_theme .mep_everyday_date_secs {
+  background: #FBD03B;
+  color: #17113A;
+}
+
 .vanilla_theme .mep_everyday_date_secs ul li {
   font-size: 14px;
   text-transform: uppercase;
@@ -4924,7 +4935,8 @@ Vanilla theme css by ariful
 
 .vanilla_theme h3.ex-sec-title {
   font-size: 14px;
-  color: #fff;
+  background: #FBD03B;
+  color: #17113A;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -4939,6 +4951,12 @@ Vanilla theme css by ariful
 } */
 .vanilla_theme tr:nth-child(even) {
   background-color: #F2F2F2;
+}
+
+.vanilla_theme.mep-default-theme div.mep-default-feature-date,
+.vanilla_theme.mep-default-theme div.mep-default-feature-time,
+.vanilla_theme.mep-default-theme div.mep-default-feature-location {
+  background: #FBD03B;
 }
 
 .vanilla_theme div.df-dtl p {
@@ -5076,10 +5094,10 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .mpwem_location_time .mpwem_location, .mep_smart_theme .mpwem_location_time .mpwem_time, .mep_smart_theme .mpwem_location_time .mpwem_seats {
+  .mep_smart_theme .mpwem_location_time .mpwem_location, .mep_smart_theme .mpwem_location_time .mpwem_time {
     flex-wrap: wrap;
   }
-  .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i, .mep_smart_theme .mpwem_location_time .mpwem_seats i {
+  .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
     height: 55px;
     background-color: var(--mpev-secondary);
@@ -5111,15 +5129,6 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
-  .mep_smart_theme .mpwem_location_time .mpwem_seats {
-    display: flex;
-    align-items: center;
-    margin: var(--dMP_xs) var(--dMP) 0 0;
-    gap: 10px;
-  }
-  .mep_smart_theme .mpwem_location_time .mpwem_seats strong {
-    font-weight: normal;
-  }
   .mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem {
     border-radius: 15px;
   }
@@ -5423,13 +5432,14 @@ Vanilla theme css by ariful
     align-items: start;
     justify-content: start;
     margin-left: 25px;
+    margin-top: 10px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span.time {
-    padding: 5px 0;
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span {
+    margin: 5px 5px;
     position: relative;
     padding-left: 14px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span.time::before {
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span::before {
     content: "";
     width: 5px;
     height: 5px;

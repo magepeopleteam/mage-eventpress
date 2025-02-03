@@ -13,7 +13,6 @@
 				add_action('mpwem_organizer', [$this, 'organizer'],10,2);
 				add_action('mpwem_location', [$this, 'location'],10,2);
 				add_action('mpwem_time', [$this, 'time'],10,5);
-				add_action('mpwem_seat_available', [$this, 'seat_available'],10,5);
 				add_action('mpwem_registration', [$this, 'registration'],10,4);
 				add_action('mpwem_registration_content', [$this, 'registration_content'],10,4);
 				add_action('mpwem_date_select', [$this, 'date_select'],10,4);
@@ -41,21 +40,7 @@
 			public function related($event_id): void { require MPWEM_Functions::template_path('layout/related_event.php'); }
 			public function social($event_id): void { require MPWEM_Functions::template_path('layout/social.php'); }
 			/**************************/
-			public function seat_available($event_id){
-				$mep_enable_recurring       = get_post_meta($event_id,'mep_enable_recurring',true);
-				$mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';			
-				$hide_total_seat_details    = mep_get_option('mep_event_hide_total_seat_from_details', 'single_event_setting_sec', 'no');
-				if($mep_enable_recurring=='no'){ 
-					if ($hide_total_seat_details == 'no') {
-						?>
-						<div class="mpwem_seats">
-							<i class="far fa-user"></i>
-							<?php do_action('mep_event_seat', $event_id);?>
-						</div>
-						<?php
-					}
-				}
-			}
+
 			public function get_mpwem_ticket() {
 				$post_id     = $_REQUEST['post_id'] ?? '';
 				$dates        = $_REQUEST['dates'] ?? '';

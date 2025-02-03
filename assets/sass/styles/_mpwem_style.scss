@@ -79,8 +79,8 @@ ul.mp_event_more_date_list li:hover{
 .vanilla_theme h3.ex-sec-title,
 .vanilla_theme div.df-dtl h3,
 .vanilla_theme div.df-dtl p, .ex-sec-title, .mep_everyday_date_secs{
-	background: var(--mpev-primary);
-  	color: var(--mpev-secondary);
+	background: var(--mpev-title-bg); 
+	color: var(--mpev-title-txt);
 }
 .mpwemasp_ticket_area .mep_everyday_date_secs{ background: var(--mpev-title-bg); color: var(--mpev-title-txt); }
 /*FAQ Sec Style*/
@@ -729,11 +729,16 @@ ul#mep_add_calender_links li a {
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #DDD;
 }
-.default_theme .mep-default-sidrbar-price-seat .df-seat strong{
+.default_theme .mep-default-sidrbar-price-seat .df-seat{
 	border:1px solid var(--mpev-primary);
 	color: var(--mpev-primary);
 	border-radius: 50px;
-	padding:5px 10px;
+	font-weight: 500;
+	height: 35px;
+	height: 35px;
+	line-height: 33px;
+	margin: auto;
+	width: 70%;
 }
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;

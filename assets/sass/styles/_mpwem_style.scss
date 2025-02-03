@@ -880,13 +880,15 @@ h3.mep_list_date {
 .mage_grid_box .blank_div:last-child {
 	margin: 0 0 15px 0;
 }
-.mep_event_grid_item .mep_list_event_details,
+
 .mep_event_grid_item .mep_list_thumb {
-	width: 100%;
-	min-height: 160px;
+	width: auto;
+	height: 200px;
 }
 .mep_event_grid_item .mep_list_event_details {
 	margin: 0;
+	height: auto;
+	width: auto;
 }
 .mep_event_grid_item .mep-list-header {
 	padding: 0 0 0 10px;
@@ -1391,7 +1393,10 @@ div.mep_event_native_list .mep_list_event_details {
 div.column_style {
 	display: -webkit-flex;
 	display: flex;
-	-webkit-flex-wrap: wrap;flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: start;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 div.column_style .mep_list_thumb img {
 	height: 160px;
@@ -2044,7 +2049,7 @@ h3.mep_list_date {
 .mep_bg_thumb {
 	background-size: cover;
 	background-position: center center;
-	height: 250px;
+	height: 230px;
 	position: relative;
 	-webkit-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;

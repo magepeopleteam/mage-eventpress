@@ -32,19 +32,19 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
 
         <?php } elseif ($recurring != 'no') {  ?>
 
-            <div class='mep-multidate-ribbon mep-tem3-title-sec'>
+            <div class='mep-multidate-ribbon'>
                 <span><i class="fas fa-history"></i> <?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring', 'mage-eventpress')); ?></span>
             </div>
 
         <?php  }  if ($event_type == 'online') { ?>
 
-            <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual Event', 'mage-eventpress')); ?></span>
+            <div class='mep-eventtype-ribbon'>
+                <span><i class="fas fa-vr-cardboard"></i> <?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual', 'mage-eventpress')); ?></span>
             </div>
 
         <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
 
-            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?></div>
+            <div class="mep-eventtype-ribbon sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?></div>
         
         <?php } ?>        
     </div>

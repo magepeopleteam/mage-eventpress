@@ -323,7 +323,7 @@ function mep_re_ajax_load_extra_service_list()
     $event_date = isset($_REQUEST['event_date']) ? sanitize_text_field($_REQUEST['event_date']) : '';
     $event_id   = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
     $post_id    = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
-    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : 'Ex';
+    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : __('Extra Services','mage-eventpress');
     $count                      = 1;
     $mep_events_extra_prices    = get_post_meta($post_id, 'mep_events_extra_prices', true) ? get_post_meta($post_id, 'mep_events_extra_prices', true) : array();
     if (sizeof($mep_events_extra_prices) > 0) {
@@ -2003,12 +2003,15 @@ function mep_recurring_events_meta_save($post_id) {
 
 add_filter('mage_event_extra_service_list', 'mep_rq_extra_service_list', 10, 4);
 function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date){
-  $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+ $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 
   if($recurring == 'everyday'){
     $count =1;
     $start_date = wp_date('Y-m-d');
- 
+ ?>
+  <input type="hidden" name='mepre_event_id' id='mep_event_id' value='<?php echo $event_id; ?>'>      
+  <div id='mep_recurring_extra_service_list'></div>
+ <?php
   }elseif($recurring == 'yes'){
 
     $event_more_date[0]['event_more_start_date']    = date('Y-m-d',strtotime(get_post_meta($event_id,'event_start_date',true)));
@@ -2024,7 +2027,6 @@ function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date)
         <?php
     }else{
       return apply_filters('mage_event_extra_service_list_recurring', $content, $event_id, $event_meta,$start_date);
-      // return $content;
     }
 }
 

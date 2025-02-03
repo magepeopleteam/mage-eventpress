@@ -6,8 +6,6 @@
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
 
-
-
 	add_action( 'admin_init',  'mep_flush_rules_event_list_page');
 	function mep_flush_rules_event_list_page() {
 		if ( isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash($_GET['post_type']) ) == 'mep_events' ) {
@@ -1228,7 +1226,7 @@
 			$total_sold = mep_ticket_type_sold( $event_id, '', $date );
 			// $total_left = $total_seat - ($total_sold + $total_resv);
 			$total_left = $total_sold;
-
+ 
 			return esc_html( $total_left );
 		}
 	}

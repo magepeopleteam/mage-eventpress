@@ -4,7 +4,7 @@ namespace MEPPlugin\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Core\Schemes\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -92,7 +92,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_cd_day_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// // 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span',
 			]
         ); 
@@ -204,7 +204,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_cd_hours_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// // 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span',
 			]
         ); 
@@ -306,7 +306,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_cd_minutes_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span',
 			]
         ); 
@@ -407,7 +407,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'mep_event_cd_seconds_type',
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span',
 			]
         ); 

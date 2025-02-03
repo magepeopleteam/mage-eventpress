@@ -4,7 +4,7 @@ namespace MEPPlugin\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Core\Schemes\Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -517,7 +517,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_date_text_typography',
 				'label' => __( 'Event Date Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep-ev-start-date',
 			]
         );
@@ -553,7 +553,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_title_typography',
 				'label' => __( 'Event Title Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep_list_title',
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep_event_title_list_item a',
 			]
@@ -589,7 +589,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_desc_typography',
 				'label' => __( 'Event Description Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep-event-excerpt',
 			]
         );
@@ -624,7 +624,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_price_typography',
 				'label' => __( 'Event Price Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep_list_date',
 			]
         );
@@ -720,7 +720,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_footer_text_typography',
 				'label' => __( 'Event Footer Text Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep-list-footer ul li h5, {{WRAPPER}} .mep-elementor-expired-event-widget .mep-list-footer ul li h6, {{WRAPPER}} .mep-elementor-expired-event-widget .mep_minimal_list_location,  {{WRAPPER}} .mep-elementor-expired-event-widget .mep_minimal_list_date',			
 			]
         );
@@ -756,7 +756,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_button_typography',
 				'label' => __( 'Event Button Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-expired-event-widget .mep_more_date_btn',			
 			]
         );

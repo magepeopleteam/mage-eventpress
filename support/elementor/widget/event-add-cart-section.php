@@ -4,7 +4,7 @@ namespace MEPPlugin\Widgets;
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography;
+// use Elementor\Scheme_Typography as Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -192,7 +192,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cart_ttt_typo',
 				'label' => __( 'Title Text Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title',			
 			]
         );
@@ -291,7 +291,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_cart_exst_typo',
 				'label' => __( 'Title Text Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title',			
 			]
         );
@@ -348,7 +348,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_title_typography',
 				'label' => __( 'Event Table Title Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				// 'scheme' => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h4.mep-cart-table-title',			
 			]
         );
@@ -381,8 +381,8 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 					'label' => __( 'Cart Button Text Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button' => 'color: {{VALUE}};',
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button:hover' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text:hover' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -393,8 +393,8 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			[
 				'name' => 'mep_event_button_typography',
 				'label' => __( 'Cart Button Text Typography', 'mage-eventpress' ),
-				'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button',			
+				// 'scheme' => Typography::TYPOGRAPHY_3,
+				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text',			
 			]
         );
 
@@ -405,7 +405,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 					'label' => __('Cart Button Background Color', 'mage-eventpress'),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button' => 'background-color: {{VALUE}} !important;border-color:{{VALUE}} !important',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'background-color: {{VALUE}} !important;border-color:{{VALUE}} !important',
 					],
 				]
 	    );
@@ -417,7 +417,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
 				],
 			]
 		);
@@ -429,7 +429,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .single_add_to_cart_button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);

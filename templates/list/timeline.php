@@ -3,7 +3,7 @@ $day = get_mep_datetime(get_post_meta($event_id, 'event_upcoming_datetime', true
 $month = get_mep_datetime(get_post_meta($event_id, 'event_upcoming_datetime', true), 'month-name');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
-$event_date_icon  = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_date_icon  = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class="timeline__item">

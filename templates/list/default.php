@@ -33,7 +33,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
         <?php } elseif ($recurring != 'no') {  ?>
 
             <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring Event', 'mage-eventpress')); ?></span>
+                <span><i class="fas fa-history"></i> <?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring', 'mage-eventpress')); ?></span>
             </div>
 
         <?php  }  if ($event_type == 'online') { ?>

@@ -957,7 +957,6 @@ div.mep_event_list a {
 
 .mep-list-header:before {
   position: absolute;
-  border-left: 5px solid var(--mpev-base);
   top: 0;
   left: 0;
   content: "";
@@ -1049,16 +1048,16 @@ h3.mep_list_date {
 
 .mep_event_grid_item .mep_list_event_details {
   margin: 0;
-  height: a;
+  height: auto;
   width: auto;
 }
 
 .mep_event_grid_item .mep-list-header {
-  padding: 0 0 0 10px;
+  padding: 0;
 }
 
 .mep_event_grid_item .mep-list-footer {
-  padding: 10px 0 10px 10px;
+  padding: 0;
 }
 
 .mep_event_grid_item .mep_list_event_details {
@@ -1351,15 +1350,19 @@ ul.event-custom-price li ul {
 }
 
 .mep-multidate-ribbon {
-  background: #61A232;
-  color: #FFF;
-  width: auto;
+  padding: 5px 10px;
+  margin: 10px;
+  line-height: auto;
+  border: 1px solid var(--mpev-primary);
+  color: var(--mpev-primary);
+  background: rgba(255, 255, 255, 0.9058823529);
   text-align: center;
-  padding: 0 10px;
   position: absolute;
   top: 0;
-  bottom: auto;
   right: 0;
+  bottom: auto;
+  border-radius: 50px;
+  font-size: 14px;
 }
 
 .my_account_orders.account-orders-table .wbtm-download {
@@ -2193,34 +2196,12 @@ div.item_hover_effect a:hover {
 /****************************************
 CSS by Ariful
 ****************************************/
-.mep-multidate-ribbon {
-  line-height: 30px;
-}
-
 .mep_list_thumb img {
   border-radius: 0;
 }
 
 .mep_list_thumb {
   overflow: hidden;
-}
-
-.mep-multidate-ribbon {
-  transform: rotate(45deg);
-  margin-top: 15px;
-  margin-right: -50px;
-  word-break: break-word;
-  width: 173px;
-  line-height: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 600;
-  display: grid !important;
-}
-
-.mep-multidate-ribbon span {
-  width: 90px;
-  margin: auto;
 }
 
 .mep-eventtype-ribbon {

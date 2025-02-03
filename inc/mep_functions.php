@@ -2199,15 +2199,15 @@
             <ul>
 				<?php if ( $user_set_format == 12 ) { ?>
 					<?php $timeformatassettings = 'h:i A'; ?>
-                    <li><i class="fa fa-calendar"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( 'h:i A', strtotime( $start_datetime ) ); ?></li>
+                    <li><i class="far fa-calendar-alt"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( 'h:i A', strtotime( $start_datetime ) ); ?></li>
 				<?php } ?>
 				<?php if ( $user_set_format == 24 ) { ?>
 					<?php $timeformatassettings = 'H:i'; ?>
-                    <li><i class="fa fa-calendar"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( 'H:i', strtotime( $start_datetime ) ); ?></li>
+                    <li><i class="far fa-calendar-alt"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( 'H:i', strtotime( $start_datetime ) ); ?></li>
 				<?php } ?>
 				<?php if ( $user_set_format == 'wtss' ){ ?>
 			<?php $timeformatassettings = get_option( 'time_format' ); ?>
-                <li><i class="fa fa-calendar"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( $time_format, strtotime( $start_datetime ) );
+                <li><i class="far fa-calendar-alt"></i> <?php echo date_i18n( $date_format, strtotime( $start_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( $time_format, strtotime( $start_datetime ) );
 						} ?></li>
                 }
                 }
@@ -2215,7 +2215,7 @@
 				<?php
 					foreach ( $more_datetime as $_more_datetime ) {
 						?>
-                        <li><i class="fa fa-calendar"></i> <?php echo date_i18n( $date_format, strtotime( $_more_datetime['event_more_date'] ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( $timeformatassettings, strtotime( $_more_datetime['event_more_date'] ) ) ?></li>
+                        <li><i class="far fa-calendar-alt"></i> <?php echo date_i18n( $date_format, strtotime( $_more_datetime['event_more_date'] ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date_i18n( $timeformatassettings, strtotime( $_more_datetime['event_more_date'] ) ) ?></li>
 						<?php
 					}
 				?>
@@ -2231,7 +2231,7 @@
 						$timeformatassettings = get_option( 'time_format' );
 					}
 				?>
-                <li><i class="fa fa-calendar"></i> <?php echo date_i18n( $date_format, strtotime( $end_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date( $timeformatassettings, strtotime( $end_datetime ) ); ?> <span style='font-size: 12px;font-weight: bold;'>(<?php esc_html_e( 'End', 'mage-eventpress' ); ?>)</span></li>
+                <li><i class="far fa-calendar-alt"></i> <?php echo date_i18n( $date_format, strtotime( $end_datetime ) ); ?> <i class="fa fa-clock-o"></i> <?php echo date( $timeformatassettings, strtotime( $end_datetime ) ); ?> <span style='font-size: 12px;font-weight: bold;'>(<?php esc_html_e( 'End', 'mage-eventpress' ); ?>)</span></li>
             </ul>
 			<?php
 			echo ob_get_clean();
@@ -4014,7 +4014,7 @@
 	add_action( 'mep_event_list_date_li', 'mep_event_list_upcoming_date_li', 10, 2 );
 	if ( ! function_exists( 'mep_event_list_upcoming_date_li' ) ) {
 		function mep_event_list_upcoming_date_li( $event_id, $type = 'grid' ) {
-			$event_date_icon         = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar' );
+			$event_date_icon         = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt' );
 			$hide_only_end_time_list = mep_get_option( 'mep_event_hide_end_time_list', 'event_list_setting_sec', 'no' );
 			$event_start_datetime    = get_post_meta( $event_id, 'event_start_datetime', true );
 			$event_end_datetime      = get_post_meta( $event_id, 'event_end_datetime', true );
@@ -4486,7 +4486,7 @@
                                     <li>
                                         <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'] ) ); ?>">
 											<span class='mep-more-date'>
-												<i class="fa fa-calendar"></i>
+												<i class="far fa-calendar-alt"></i>
 												<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
 											</span>
                                             <span class='mep-more-time'>

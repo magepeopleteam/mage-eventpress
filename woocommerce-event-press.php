@@ -81,5 +81,5 @@
 		add_action('activated_plugin', 'mep_no_woo_event_activation_redirect');
 	}
 
-
+// remove old recurring action on load.
 	remove_action( 'admin_init', 'mep_re_meta_boxs',200);

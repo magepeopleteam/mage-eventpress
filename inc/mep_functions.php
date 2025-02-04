@@ -4449,7 +4449,7 @@
 			if ( is_array( $more_date ) && sizeof( $more_date ) > 0 ) {
 				?>
 				<?php if ( $show_multidate == 'yes' ) { ?>
-                    <span class='mep_more_date_btn mep-tem3-title-sec mp_event_visible_event_time'
+                    <span class='mep_more_date_btn mp_event_visible_event_time'
                         data-event-id="<?php echo esc_attr( $event_id ); ?>"
                         data-active-text="<?php echo esc_attr( mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__( 'View More Date', 'mage-eventpress' ) ) ); ?>"
                         data-hide-text="<?php echo esc_attr( mep_get_option( 'mep_event_hide_date_list_btn_text', 'label_setting_sec', __( 'Hide Date Lists', 'mage-eventpress' ) ) ); ?>">
@@ -4489,13 +4489,13 @@
 												<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'date-text' ); ?>
 											</span>
                                             <span class='mep-more-time'>
-											<i class="fa fa-clock-o"></i>
-											<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
-												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
-											}
-												echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
-											?>
-										</span>
+												<i class="fa fa-clock-o"></i>
+												<?php echo get_mep_datetime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
+													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'date-text' ) . ' - ';
+												}
+													echo get_mep_datetime( $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'], 'time' );
+												?>
+											</span>
                                         </a>
                                     </li>
 									<?php

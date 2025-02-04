@@ -101,10 +101,8 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                     } elseif ($hide_time_list == 'no' && $recurring != 'no') {
                         do_action('mep_event_list_upcoming_date_li', $event_id);
                     } ?>
-
                 </ul>
         </a>
-        <?php do_action('mep_event_list_loop_footer', $event_id); ?>
     </div>
     <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
         <div class="item_hover_effect">

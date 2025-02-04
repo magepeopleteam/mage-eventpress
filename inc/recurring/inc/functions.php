@@ -440,31 +440,7 @@ function mep_re_event_list_upcoming_date_li($event_id)
                 <h5>
                     <?php echo is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? get_mep_datetime($event_date_display_list[0], 'date-text') : '';  ?>
                 </h5>
-                
-                <ul class="mepev-time-lists">
-                    <?php
-                    if ($time_status == 'no') {
-                        $start_date = $every_day;
-                        $end_date   = $every_day;
-                        $start_time = get_post_meta($event_id, 'event_start_time', true);
-                        $end_time   = get_post_meta($event_id, 'event_end_time', true);
-                        $start_datetime = $every_day . ' ' . $start_time;
-                        $end_datetime = $every_day . ' ' . $end_time;
-                    } elseif ($time_status == 'yes') {
-
-                        $calender_day = strtolower(date('D', strtotime($every_day)));
-                        $day_name = 'mep_ticket_times_' . $calender_day;
-                        $time = get_post_meta($event_id, $day_name, true) ?  maybe_unserialize(get_post_meta($event_id, $day_name, true)) : maybe_unserialize($global_time_slots);
-                        $time_list = [];
-                        foreach ($time as $_time) {
-                            ?>
-                            <li>
-                            <?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')'; ?> 
-                            </li>
-                            <?php
-                        }
-                    } ?>
-                </ul>
+                <?php do_action('mep_event_list_loop_footer', $event_id); ?>
             </div>
         </li>
         <?php

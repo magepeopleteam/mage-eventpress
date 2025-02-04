@@ -914,6 +914,10 @@ div.mep_event_list a {
   position: relative;
 }
 
+.mep_list_thumb .dLoader {
+  display: none;
+}
+
 .mep-event-excerpt {
   margin: 5px 0;
 }

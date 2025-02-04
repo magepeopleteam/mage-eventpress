@@ -2818,7 +2818,7 @@
 			$start_date     = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_datetime', true ) ) );
 			$end_date       = get_post_meta( $event_id, 'event_end_date', true );
 			$end_datetime   = get_post_meta( $event_id, 'event_end_datetime', true );
-			$show_multidate = mep_get_option( 'mep_date_list_in_event_listing', 'event_list_setting_sec', 'no' );
+			$show_multidate = mep_get_option( 'mep_date_list_in_event_listing', 'event_list_setting_sec', 'yes' );
 			//     if (strtotime(current_time('Y-m-d H:i')) < strtotime($start_datetime)) {
 			$all_datetime = array( $start_date );
 			if ( sizeof( $more_date ) > 0 ) {
@@ -4445,7 +4445,7 @@
 		function mep_event_recurring_date_list_in_event_list_loop( $event_id ) {
 			$_more_dates    = get_post_meta( $event_id, 'mep_event_more_date', true );
 			$more_date      = apply_filters( 'mep_event_date_more_date_array_event_list', $_more_dates, $event_id );
-			$show_multidate = mep_get_option( 'mep_date_list_in_event_listing', 'event_list_setting_sec', 'no' );
+			$show_multidate = mep_get_option( 'mep_date_list_in_event_listing', 'event_list_setting_sec', 'yes' );
 			if ( is_array( $more_date ) && sizeof( $more_date ) > 0 ) {
 				?>
 				<?php if ( $show_multidate == 'yes' ) { ?>

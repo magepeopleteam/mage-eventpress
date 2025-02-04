@@ -139,17 +139,17 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             return $icons;
         }
         public function event_speaker_frontend($event_id){
-        $speakers_id = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
+        $speakers_id     = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
         $speaker_icon    = get_post_meta($event_id, 'mep_event_speaker_icon', true) ? get_post_meta($event_id, 'mep_event_speaker_icon', true) : 'fa fa-microphone';
         $speaker_label   = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker", "mage-eventpress");
         ?>
         <div class="speaker-widget">
-            <h2 class="_mB"><?php echo esc_html($speaker_label); ?></h2>
+            <h2 class="_mB"><i class="<?php echo esc_attr($speaker_icon); ?>"></i> <?php echo esc_html($speaker_label); ?></h2>
             <div class="speaker-lists">
                 <?php
                 foreach ($speakers_id as $speakers) {
                     $default = MPWEM_PLUGIN_URL . '/assets/helper/images/no-photo.jpg';
-                    $thumbnail = has_post_thumbnail($speakers)? get_the_post_thumbnail_url():$default;
+                    $thumbnail = has_post_thumbnail($speakers)? get_the_post_thumbnail_url($speakers):$default;
                 ?>
                     <a href="<?php echo get_the_permalink($speakers); ?>" class="items">
                         <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo get_the_title($speakers); ?>"/>

@@ -32,9 +32,7 @@ div.item_hover_effect a:hover{
 	background-color:#fff;
 	border:1px solid var(--mpev-base);
 }
-ul.mp_event_more_date_list li:hover{
-	background-color:var(--mpev-base);
-}
+
 .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
@@ -44,11 +42,7 @@ ul.mp_event_more_date_list li:hover{
 	background: transparent;
 	color: var(--mpev-base);
 }
-.mep_more_date_btn{
-	border: 1px solid var(--mpev-base);
-	background: transparent;
-	color: var(--mpev-base);
-}
+
 .mep-default-sidrbar-meta p a{
 	color: var(--mpev-base);
 }
@@ -784,6 +778,9 @@ div.mep_event_list a {
 	width: 40%;
 	position: relative;
 }
+.mep_list_thumb .dLoader{
+	display: none;
+}
 .mep-event-excerpt {
 	margin: 5px 0;
 }
@@ -1125,6 +1122,7 @@ div.mep_event_native_list {
 	color: #333;
 	padding: 5px 0;
 }
+
 /* Code By Mahin */
 ul.event-custom-price li ul {
 	padding: 10px;
@@ -1133,20 +1131,79 @@ ul.event-custom-price li ul {
 	border: 1px solid #DDD;
 	background: #FBFBFB;
 }
-.mep-multidate-ribbon {
-	padding:5px 10px;
-	margin: 10px;
-	color: var(--mpev-secondary);
-	background: #000;
-	text-align: center;
+
+.mep_event_list .mepev-ribbon{
 	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: auto;
-	border-radius: 50px;
-	border: 1px solid #fff;
-	font-size: 14px;
+	top:10px;
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	.ribbon {
+		padding:5px 10px;
+		color: var(--mpev-secondary);
+		background: #000000aa;
+		text-align: center;
+		border-radius: 50px;
+		border: 1px solid #fff;
+		font-size: 14px;
+		font-weight: 500;
+		&:nth-child(2){
+			background: #6046ffaa;
+		}
+		&.sold-out{
+			background: #ff4646aa;
+		}
+	}
 }
+
+.mp_event_more_date_list{
+	list-style: none;
+	padding: 5px;
+	&:hover{
+		background-color: #fff;
+	}
+	li{
+		font-size:12px;
+		position: relative;
+		padding-left: 10px;
+		margin: 0;
+		.mep-more-date{
+			
+			&:hover{
+				color: var(--mpev-base);
+			}
+			p{
+				margin: 5px;
+				font-size: 12px;
+			}
+		}
+		.mep-more-time{
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+			align-items: start;
+			padding-left: 30px;
+			.time{
+				position: relative;
+				padding-left: 10px;
+				&::before{
+					content: "";
+					width: 5px;
+					height: 5px;
+					border-radius: 50px;
+					margin-right: 5px;
+					background-color: #aaa;
+					position: absolute;
+					left: 0;
+					top: 50%;
+					transform: translateY(-50%);
+				}
+			}
+		}
+	}
+}
+
 .my_account_orders.account-orders-table .wbtm-download {
 	display: none;
 }
@@ -1206,19 +1263,7 @@ ul.mep-more-date-lists li {
 	padding: 15px 20px;
 	background: #DDD;
 }
-.mep_more_date_btn {
-	display: block;
-	cursor: pointer;
-	background: #81D742;
-	color: #FFF;
-	padding: 0 10px;
-	position: absolute;
-	bottom: 0;
-	left: auto;
-	text-align: center;
-	right: 0;
-	z-index: 1111;
-}
+
 span#hide_event_schdule {
 	position: relative;
 	left: 0;
@@ -1300,21 +1345,7 @@ button.mep-cat-control.mixitup-control-active {
 	display: block;
 	text-align: center;
 }
-.mep-eventtype-ribbon {
-	position: absolute;
-	top: 40px;
-	padding: 7px 18px;
-	border-radius: 50px;
-	background-color: var(--mpev-base);
-	border: 1px solid #fff;
-	color: #FFF;
-	left: auto;
-	margin: 10px;
-	right: 0;
-	text-align: center;
-	font-size: 14px;
-	line-height: 14px;
-}
+
 .mep_speaker_thumbnail img {
 	display: inline-block;
 	border-radius: 100%;
@@ -1409,18 +1440,16 @@ div.column_style .mep_list_thumb img {
 }
 ul.mp_event_more_date_list {
 	position: absolute;
-	top: 100%;
+	top: 99%;
 	left: 0;
 	right: 0;
 	z-index: 111111;
 	background-color: #FFF;
 	padding: 10px;
-	border-top: 5px solid #000B;
-	border-bottom: 10px solid #000B;
-	max-height: 350px;
+	border-radius: 0 0 10px 10px;
+	max-height: 250px;
 	overflow: auto;
-	-webkit-box-shadow: 10px 10px 5px grey;
-	box-shadow: 10px 10px 5px grey;
+	box-shadow: 0px 4px 5px #aaa;
 }
 ul.mp_event_more_date_list li {
 	display: -webkit-flex;
@@ -1430,6 +1459,11 @@ ul.mp_event_more_date_list li {
 	-webkit-align-items: flex-start;
 	align-items: flex-start;
 	border-bottom: 1px solid #0009;
+	&:hover{
+		i{
+			color: var(--mpev-base);
+		}
+	}
 }
 ul.mp_event_more_date_list li span,
 span.mep-more-date{
@@ -1555,11 +1589,7 @@ div.item_hover_effect a:hover {
 	color: #FFF;
 	font-size: 18px;
 }
-.mep-eventtype-ribbon.mep-tem3-title-sec.sold-out-ribbon {
-	width: 100px;
-	bottom: 40%;
-	right: 38%;
-}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -1941,7 +1971,7 @@ CSS by Ariful
 }
 ul.mp_event_more_date_list li:hover,
 ul.mp_event_more_date_list li:hover i {
-	color: #FFF;
+	// color: #FFF;
 }
 ul.mp_event_more_date_list li {
 	border-bottom-color: #D3D3D3;
@@ -1976,58 +2006,13 @@ h3.mep_list_date {
 	color:var(--mpev-base)
 }
 .mep_more_date_btn {
-	margin-top: 20px;
-	width: max-content;
 	border: 1px solid var(--mpev-base);
-	background: #FFF;
 	color: var(--mpev-base);
-	font-weight: 400;
 	border-radius: 20px;
-	line-height: 35px;
-	margin-left: 5px;
-	padding: 0 15px;
-	overflow: hidden;
-	-webkit-transform: perspective(1px) translateZ(0);
+	padding: 2px 5px;
 	transform: perspective(1px) translateZ(0);
 	position: relative;
-	-webkit-transition-property: color;
-	transition-property: color;
-	-webkit-transition-duration: 0.3s;
-	transition-duration: 0.3s;
-	min-width: 150px;
-}
-.mep_more_date_btn:before {
-	content: "";
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: var(--mpev-base);
-	-webkit-transform: scaleX(0);
-	transform: scaleX(0);
-	-webkit-transform-origin: 0 50%;
-	transform-origin: 0 50%;
-	-webkit-transition-property: transform;
-	transition-property: transform;
-	-webkit-transition-duration: 0.3s;
-	transition-duration: 0.3s;
-	-webkit-transition-timing-function: ease-out;
-	transition-timing-function: ease-out;
-	border-radius: 20px;
-	border: 2px solid var(--mpev-base);
-}
-.mep_more_date_btn:hover,
-.mep_more_date_btn:focus,
-.mep_more_date_btn:active {
-	color: #FFFFFF !important;
-}
-.mep_more_date_btn:hover:before,
-.mep_more_date_btn:focus:before,
-.mep_more_date_btn:active:before {
-	-webkit-transform: scaleX(1);
-	transform: scaleX(1);
+	font-size: 14px;
 }
 .mep_list_thumb {
 	overflow: hidden;
@@ -2604,12 +2589,7 @@ New Spring list style css added by ariful
 .mep_event_spring_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_spring_list .mep-eventtype-ribbon {
-	position: inherit;
-	margin-top: 20px;
-	width: max-content;
-	background: var(--mpev-base);
-}
+
 .mep_event_spring_list .mep_spring_list_date {
 	color: #FFF;
 }
@@ -2834,12 +2814,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_winter_list .mep-eventtype-ribbon {
-	position: inherit;
-	width: max-content;
-	background: var(--mpev-base);
-	color: #FFF;
-}
+
 .mep_event_winter_list a,
 .mep_event_winter_list .mep_price {
 	color: #FFF;
@@ -2860,12 +2835,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn {
 	margin-top: 0;
 }
-.mep_event_winter_list .mep-multidate-ribbon span {
-	width: 90px;
-}
-.mep_event_winter_list .mep-multidate-ribbon {
-	background: var(--mpev-base);
-}
+
 .mep_same_attendee input {
 	min-width: 40px;
 	height: 20px;

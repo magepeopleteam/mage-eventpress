@@ -435,7 +435,7 @@ function mep_re_event_list_upcoming_date_li($event_id)
         $every_day = is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? $event_date_display_list[0] : '';
         ?>
         <li class="mep_list_event_date">
-            <div class="evl-ico"><i class="fa fa-calendar"></i></div>
+            <div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
             <div class="evl-cc">
                 <h5>
                     <?php echo is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? get_mep_datetime($event_date_display_list[0], 'date-text') : '';  ?>
@@ -491,7 +491,7 @@ function mep_re_event_list_upcoming_date_li($event_id)
             if (strtotime(current_time('Y-m-d H:i')) < strtotime($std) && $cn == 0) {
         ?>
                 <li class="mep_list_event_date">
-                    <div class="evl-ico"><i class="fa fa-calendar"></i></div>
+                    <div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
                     <div class="evl-cc">
                         <h5>
                             <?php echo get_mep_datetime($std, 'date-text');  ?>
@@ -801,7 +801,7 @@ function mep_re_event_everyday_date_list_display($event_id, $type = 'display')
                 ?>
                     <li>
                         <a href="<?php echo get_the_permalink($event_id).esc_attr('?date=' . strtotime($every_day)); ?>">
-                        <span class="mep-more-date"><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($every_day, 'date-text'); ?></span>
+                        <span class="mep-more-date"><i class="far fa-calendar-alt"></i> <?php echo get_mep_datetime($every_day, 'date-text'); ?></span>
                         <span class='mep-more-time'>
                             <?php
                             $calender_day = strtolower(date('D', strtotime($every_day)));
@@ -1370,7 +1370,7 @@ function mep_rq_show_everyday_datepicker_csv_btn($event_id)
     <div class='mep_everyday_date_secs'>
         <div class="mep-date-time-select-area ">
             <div>
-                <i class = "fa fa-calendar icon"></i>
+                <i class = "far fa-calendar-alt icon"></i>
                 <input type="text" name='<?php echo esc_attr($input_name); ?>' id='mep_everyday_datepicker_csv_<?php echo esc_attr($event_id); ?>' value="<?php echo current_time('Y-m-d'); ?>">
             </div>
             <div>

@@ -248,7 +248,7 @@
 											} ?>
 											<h3 class='mep_list_date'> <?php if ( $show_price == 'yes' ) {
 													echo $show_price_label . " " . mep_event_list_price( $values );
-												} ?><!-- <i class="fa fa-calendar"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
+												} ?><!-- <i class="far fa-calendar-alt"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
 										</div>
 										<?php
 										if ( $style == 'grid' ) {
@@ -295,7 +295,7 @@
 												<?php } ?>
 												<?php if ( $mep_hide_time_list != 'yes' ) { ?>
 													<li>
-														<div class="evl-ico"><i class="fa fa-calendar"></i></div>
+														<div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
 														<div class="evl-cc">
 															<h5>
 																<?php echo mep_get_option( 'mep_time_text', 'label_setting_sec' ) ? mep_get_option( 'mep_time_text', 'label_setting_sec' ) : _e( 'Time:', 'mage-eventpress' ); ?>
@@ -528,7 +528,7 @@
 												} ?>
 												<h3 class='mep_list_date'> <?php if ( $show_price == 'yes' ) {
 														echo $show_price_label . " " . mep_event_list_price( $values );
-													} ?><!-- <i class="fa fa-calendar"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
+													} ?><!-- <i class="far fa-calendar-alt"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
 											</div>
 											<?php
 											if ( $style == 'grid' ) {
@@ -575,7 +575,7 @@
 													<?php } ?>
 													<?php if ( $mep_hide_time_list != 'yes' ) { ?>
 														<li>
-															<div class="evl-ico"><i class="fa fa-calendar"></i></div>
+															<div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
 															<div class="evl-cc">
 																<h5>
 																	<?php echo mep_get_option( 'mep_time_text', 'label_setting_sec' ) ? mep_get_option( 'mep_time_text', 'label_setting_sec' ) : _e( 'Time:', 'mage-eventpress' ); ?>

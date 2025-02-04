@@ -1,7 +1,7 @@
 <?php 
 $theme = get_post_meta($event_id,'mep_event_template',true);
 if($theme!='smart.php'):
-$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar'); ?>
+$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt'); ?>
 <li>
     <?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>    
     <span class="mep-more-date">

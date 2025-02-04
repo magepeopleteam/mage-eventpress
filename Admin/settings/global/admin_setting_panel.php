@@ -1078,7 +1078,7 @@
 								'label' => __('Choose Event Date Icon', 'mage-eventpress'),
 								'desc' => __('Please choose event date icon.', 'mage-eventpress'),
 								'type' => 'iconlib',
-								'default' => 'fa fa-calendar',
+								'default' => 'far fa-calendar-alt',
 							),
 							array(
 								'name' => 'mep_event_time_icon',

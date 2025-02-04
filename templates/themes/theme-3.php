@@ -15,7 +15,7 @@ $hide_share_details 		= mep_get_option( 'mep_event_hide_share_this_details', 'si
 $hide_calendar_details 		= mep_get_option( 'mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
-$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class="mep-default-theme bristol">

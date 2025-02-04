@@ -1125,6 +1125,7 @@ div.mep_event_native_list {
 	color: #333;
 	padding: 5px 0;
 }
+
 /* Code By Mahin */
 ul.event-custom-price li ul {
 	padding: 10px;
@@ -1133,20 +1134,33 @@ ul.event-custom-price li ul {
 	border: 1px solid #DDD;
 	background: #FBFBFB;
 }
-.mep-multidate-ribbon {
-	padding:5px 10px;
-	margin: 10px;
-	color: var(--mpev-secondary);
-	background: #000;
-	text-align: center;
+
+.mep_event_list .mepev-ribbon{
 	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: auto;
-	border-radius: 50px;
-	border: 1px solid #fff;
-	font-size: 14px;
+	top:10px;
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	.ribbon {
+		padding:5px 10px;
+		color: var(--mpev-secondary);
+		background: #000000aa;
+		text-align: center;
+		border-radius: 50px;
+		border: 1px solid #fff;
+		font-size: 14px;
+		font-weight: 500;
+		&:nth-child(2){
+			background: #6046ffaa;
+		}
+		&.sold-out{
+			background: #ff4646aa;
+		}
+	}
 }
+
+
 .my_account_orders.account-orders-table .wbtm-download {
 	display: none;
 }
@@ -1300,21 +1314,7 @@ button.mep-cat-control.mixitup-control-active {
 	display: block;
 	text-align: center;
 }
-.mep-eventtype-ribbon {
-	position: absolute;
-	top: 40px;
-	padding: 7px 18px;
-	border-radius: 50px;
-	background-color: var(--mpev-base);
-	border: 1px solid #fff;
-	color: #FFF;
-	left: auto;
-	margin: 10px;
-	right: 0;
-	text-align: center;
-	font-size: 14px;
-	line-height: 14px;
-}
+
 .mep_speaker_thumbnail img {
 	display: inline-block;
 	border-radius: 100%;
@@ -1555,11 +1555,7 @@ div.item_hover_effect a:hover {
 	color: #FFF;
 	font-size: 18px;
 }
-.mep-eventtype-ribbon.mep-tem3-title-sec.sold-out-ribbon {
-	width: 100px;
-	bottom: 40%;
-	right: 38%;
-}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -2604,12 +2600,7 @@ New Spring list style css added by ariful
 .mep_event_spring_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_spring_list .mep-eventtype-ribbon {
-	position: inherit;
-	margin-top: 20px;
-	width: max-content;
-	background: var(--mpev-base);
-}
+
 .mep_event_spring_list .mep_spring_list_date {
 	color: #FFF;
 }
@@ -2834,12 +2825,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_winter_list .mep-eventtype-ribbon {
-	position: inherit;
-	width: max-content;
-	background: var(--mpev-base);
-	color: #FFF;
-}
+
 .mep_event_winter_list a,
 .mep_event_winter_list .mep_price {
 	color: #FFF;
@@ -2860,12 +2846,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn {
 	margin-top: 0;
 }
-.mep_event_winter_list .mep-multidate-ribbon span {
-	width: 90px;
-}
-.mep_event_winter_list .mep-multidate-ribbon {
-	background: var(--mpev-base);
-}
+
 .mep_same_attendee input {
 	min-width: 40px;
 	height: 20px;

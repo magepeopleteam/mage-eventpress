@@ -1348,19 +1348,29 @@ ul.event-custom-price li ul {
   background: #FBFBFB;
 }
 
-.mep-multidate-ribbon {
-  padding: 5px 10px;
-  margin: 10px;
-  color: var(--mpev-secondary);
-  background: #000;
-  text-align: center;
+.mep_event_list .mepev-ribbon {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: auto;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mep_event_list .mepev-ribbon .ribbon {
+  padding: 5px 10px;
+  color: var(--mpev-secondary);
+  background: rgba(0, 0, 0, 0.6666666667);
+  text-align: center;
   border-radius: 50px;
   border: 1px solid #fff;
   font-size: 14px;
+  font-weight: 500;
+}
+.mep_event_list .mepev-ribbon .ribbon:nth-child(2) {
+  background: rgba(96, 70, 255, 0.6666666667);
+}
+.mep_event_list .mepev-ribbon .ribbon.sold-out {
+  background: rgba(255, 70, 70, 0.6666666667);
 }
 
 .my_account_orders.account-orders-table .wbtm-download {
@@ -1540,22 +1550,6 @@ button.mep-cat-control.mixitup-control-active {
 .mep_speaker_thumbnail {
   display: block;
   text-align: center;
-}
-
-.mep-eventtype-ribbon {
-  position: absolute;
-  top: 40px;
-  padding: 7px 18px;
-  border-radius: 50px;
-  background-color: var(--mpev-base);
-  border: 1px solid #fff;
-  color: #FFF;
-  left: auto;
-  margin: 10px;
-  right: 0;
-  text-align: center;
-  font-size: 14px;
-  line-height: 14px;
 }
 
 .mep_speaker_thumbnail img {
@@ -1828,12 +1822,6 @@ div.item_hover_effect a:hover {
   background-color: #1D4A68;
   color: #FFF;
   font-size: 18px;
-}
-
-.mep-eventtype-ribbon.mep-tem3-title-sec.sold-out-ribbon {
-  width: 100px;
-  bottom: 40%;
-  right: 38%;
 }
 
 /******Responsive*******/
@@ -2992,13 +2980,6 @@ New Spring list style css added by ariful
   display: block !important;
 }
 
-.mep_event_spring_list .mep-eventtype-ribbon {
-  position: inherit;
-  margin-top: 20px;
-  width: max-content;
-  background: var(--mpev-base);
-}
-
 .mep_event_spring_list .mep_spring_list_date {
   color: #FFF;
 }
@@ -3237,13 +3218,6 @@ New Winter list style css added by ariful
   display: block !important;
 }
 
-.mep_event_winter_list .mep-eventtype-ribbon {
-  position: inherit;
-  width: max-content;
-  background: var(--mpev-base);
-  color: #FFF;
-}
-
 .mep_event_winter_list a,
 .mep_event_winter_list .mep_price {
   color: #FFF;
@@ -3267,14 +3241,6 @@ New Winter list style css added by ariful
 
 .mep_event_winter_list .mep_more_date_btn {
   margin-top: 0;
-}
-
-.mep_event_winter_list .mep-multidate-ribbon span {
-  width: 90px;
-}
-
-.mep_event_winter_list .mep-multidate-ribbon {
-  background: var(--mpev-base);
 }
 
 .mep_same_attendee input {

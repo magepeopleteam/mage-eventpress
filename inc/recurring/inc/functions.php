@@ -439,9 +439,10 @@ function mep_re_event_list_upcoming_date_li($event_id)
             <div class="evl-cc">
                 <h5>
                     <?php echo is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? get_mep_datetime($event_date_display_list[0], 'date-text') : '';  ?>
-                    <?php echo mep_get_option('mep_time_text', 'label_setting_sec') ? mep_get_option('mep_time_text', 'label_setting_sec') : _e('Time:', 'mage-eventpress'); ?>
                 </h5>
-                <h6><?php
+                
+                <ul class="mepev-time-lists">
+                    <?php
                     if ($time_status == 'no') {
                         $start_date = $every_day;
                         $end_date   = $every_day;
@@ -456,10 +457,14 @@ function mep_re_event_list_upcoming_date_li($event_id)
                         $time = get_post_meta($event_id, $day_name, true) ?  maybe_unserialize(get_post_meta($event_id, $day_name, true)) : maybe_unserialize($global_time_slots);
                         $time_list = [];
                         foreach ($time as $_time) {
-                            $time_list[] = $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')';
+                            ?>
+                            <li>
+                            <?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')'; ?> 
+                            </li>
+                            <?php
                         }
-                        echo mep_esc_html(implode(', ', $time_list));
-                    } ?></h6>
+                    } ?>
+                </ul>
             </div>
         </li>
         <?php
@@ -498,11 +503,11 @@ function mep_re_event_list_upcoming_date_li($event_id)
                         </h5>
                         <h5><?php echo get_mep_datetime($_event_std['event_std'], 'time');
                             if ($hide_only_end_time_list == 'no' && $end_date_display_status == 'yes') { ?> - <?php if ($start_date == $end_date) {
-                                                                                        echo get_mep_datetime($_event_std['event_etd'], 'time');
-                                                                                    } else {
-                                                                                        echo get_mep_datetime($_event_std['event_etd'], 'date-time-text');
-                                                                                    }
-                                                                                } ?></h5>
+                                echo get_mep_datetime($_event_std['event_etd'], 'time');
+                            } else {
+                                echo get_mep_datetime($_event_std['event_etd'], 'date-time-text');
+                            }
+                        } ?></h5>
                     </div>
                 </li>
                 <?php

@@ -1373,6 +1373,27 @@ ul.event-custom-price li ul {
   background: rgba(255, 70, 70, 0.6666666667);
 }
 
+.mep_list_event_date .evl-cc ul.mepev-time-lists {
+  list-style: none;
+}
+.mep_list_event_date .evl-cc ul.mepev-time-lists li {
+  font-size: 12px;
+  position: relative;
+  padding-left: 10px;
+}
+.mep_list_event_date .evl-cc ul.mepev-time-lists li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50px;
+  margin-right: 5px;
+  background-color: #aaa;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .my_account_orders.account-orders-table .wbtm-download {
   display: none;
 }

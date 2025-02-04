@@ -40,7 +40,7 @@
 				if (empty(mep_get_page_by_slug('events-grid-style'))) {
 					$post_details = array(
 						'post_title' => 'Events – Grid Style',
-						'post_content' => "[event-list show='10' style='grid' pagination='yes']",
+						'post_content' => "[event-list show='6' style='grid' pagination='yes']",
 						'post_status' => 'publish',
 						'post_author' => 1,
 						'post_type' => 'page'

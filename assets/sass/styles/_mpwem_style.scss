@@ -829,6 +829,9 @@ h3.mep_list_date {
 }
 .mep-list-footer {
 	padding: 10px 0 0 0;
+	h5,h6{
+		text-transform: capitalize;
+	}
 }
 .list_with_filter_section.mep_event_list {
 	max-width: 1270px;

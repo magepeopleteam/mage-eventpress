@@ -190,53 +190,74 @@
 			}
 			.mpwem_booking_panel{
 				.mpwem_ticket_type{
-					border: 2px solid var(--mpev-primary);
+					border: 1px solid var(--mpev-primary);
+					padding: 15px;
+					._divider{
+						margin: 5px;
+					}
 					.mep_ticket_item{
 						h6{
-							font-size: 24px;
+							font-size: 20px;
+							font-weight: 700px;
 							margin-bottom: 10px;
 						}
 						.groupContent{
 							border: 0;
+							background-color: transparent;
+							max-width: 120px;
 						}
 						.incQty{
 							background-color: var(--mpev-primary);
 							color: #fff;
 							border-radius: 5px;
-							
+							margin-left: 2px;
+							min-width: 36px;
 						}
 						.inputIncDec{
 							border-radius: 0;
 							background-color:var(--mpev-secondary);
 							box-shadow: 0 0 0;
 							border: 1px solid #dddddd;
+							padding: 0;
 						}
 						.decQty{
 							background-color: #ff4242;
 							color: #fff;
 							border-radius: 5px;
+							margin-right: 2px;
+							min-width: 36px;
 						}
 					}
 					._divider{
-						margin: 25px 0;
+						margin: 15px 0;
 					}
 				}
 				.mpwem_ex_service {
+					h6{
+						margin-bottom:10px;
+						font-size: 20px;
+					}
 					h4{
-						margin-bottom: var(--dMP);
+						margin-bottom: 10px;
+						font-size: var(--fs_h2);
+    					font-weight: var(--fw-bold);
 					}
 					[class*="_dLayout"]{
-						border: 2px solid var(--mpev-primary);
+						border: 1px solid var(--mpev-primary);
+						padding: 15px;
 					}
 					.incQty{
 						background-color: var(--mpev-primary);
 						color: #fff;
 						border-radius: 5px;
-						
-						
+						padding: 0;
+						margin-left: 2px;
+						min-width: 36px;
 					}
 					.groupContent{
 						border: 0;
+						background-color: transparent;
+						max-width: 120px;
 					}
 					.inputIncDec,.formControl{
 						border-radius: 0;
@@ -248,6 +269,8 @@
 						background-color: #ff4242;
 						color: #fff;
 						border-radius: 5px;
+						margin-right: 2px;
+						min-width: 36px;
 					}
 				}
 			}
@@ -305,7 +328,6 @@
 					p{
 						font-size: 16px;
 						margin-bottom: 5px;
-						letter-spacing: .1em;
 					}
 					button{
 						background-color: #fff;
@@ -343,7 +365,31 @@
 									display: block;
 									margin: 0;
 									font-size: 16px;
-									letter-spacing: 0.1em;
+								}
+								span.mep-more-time{
+									display: flex;
+									flex-direction: column;
+									align-items: start;
+									justify-content: start;
+									margin-left:25px;
+									margin-top: 10px;
+									span{
+										margin:5px 5px;
+										position: relative;
+										padding-left: 14px;
+										&::before{
+											content: '';
+											width: 5px;
+											height: 5px;
+											border-radius: 50px;
+											margin-right: 5px;
+											background-color: #aaa;
+											position: absolute;
+											left: 0;
+											top:50%;
+											transform: translateY(-50%);
+										}
+									}
 								}
 							}
 							&#mep_event_date_sch {
@@ -551,6 +597,10 @@
 			@media (min-width:540px) {
 				margin: 50px 0;
 			}
+			h2{
+				font-size: var(--fs_h2);
+    			font-weight: var(--fw-bold);
+			}
 		}
 		
 		.mep-related-events{
@@ -576,7 +626,7 @@
 		margin: 10px 0;
 		.attendees{
 			display: flex;
-			gap: 10px;
+			gap: 20px;
 			flex-wrap: wrap;
 			margin-top: 20px;
 			.attendee_lists{
@@ -590,7 +640,7 @@
 				padding: 10px;
 				@media (min-width:540px) {
 					gap:21px;
-					padding: 25px;
+					padding: 20px;
 				}
 				.attendee{
 					width: 154px;

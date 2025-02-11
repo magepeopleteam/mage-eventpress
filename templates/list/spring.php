@@ -5,7 +5,7 @@ $taxonomy_category = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
 $taxonomy_organizer = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
-$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>

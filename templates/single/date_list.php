@@ -1,7 +1,7 @@
 <?php 
 $theme = get_post_meta($event_id,'mep_event_template',true);
 if($theme!='smart.php'):
-$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar'); ?>
+$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt'); ?>
 <li>
     <?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>    
     <span class="mep-more-date">
@@ -12,12 +12,11 @@ $event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa
         </span>
         <?php if ($end_date_display_status == 'yes') { ?>
             <span class='mep_date_scdl_end_datetime'>
-                <span class="mep_date_scdl_separator"> - </span>
                 <?php
                 if ($start_date != $end_date) {
                     echo esc_html(get_mep_datetime($end_datetime, 'date-text'));
                 }
-                echo esc_html(get_mep_datetime($end_datetime, 'time'));
+                    echo esc_html(get_mep_datetime($end_datetime, 'time'));
                 ?>
             </span>
         <?php } ?>

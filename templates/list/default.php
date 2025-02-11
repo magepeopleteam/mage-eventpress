@@ -10,7 +10,8 @@ $taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text($event_id, 
 $date                           = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_location_icon            = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
-
+$reg_status                     = get_post_meta($event_id, 'mep_reg_status', true);
+$reg_status                     = $reg_status? $reg_status:'on';
 ?>
 <div class='filter_item mep-event-list-loop <?php echo esc_attr($columnNumber); echo ' '.esc_attr($class_name); ?> mep_event_<?php echo esc_attr($style); ?>_item mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>' data-title="<?php echo esc_attr(get_the_title($event_id)); ?>" data-city-name="<?php echo esc_attr(get_post_meta($event_id, 'mep_city', true)); ?>" data-category="<?php echo esc_attr($taxonomy_category); ?>" data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>" data-date="<?php echo esc_attr(date('m/d/Y',strtotime($date))); ?>" style="width:calc(<?php echo esc_attr($width); ?>% - 14px);">
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
@@ -18,35 +19,35 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
         <a href="<?php echo esc_url(get_the_permalink()); ?>">
             <div class="mep_bg_thumb" data-bg-image="<?php mep_get_list_thumbnail_src($event_id, 'large'); ?>"></div>
         </a>
-            <div class="mep-ev-start-date">
-                <div class="mep-day"><?php echo esc_html(apply_filters('mep_event_list_only_day_number', $day, $event_id)); ?></div>
-                <div class="mep-month"><?php echo esc_html(apply_filters('mep_event_list_only_month_name', $month, $event_id)); ?></div>
-            </div>
-
-        <?php
-        if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
-
-            <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', __('Multi Date Event', 'mage-eventpress')); ?></span>
-            </div>
-
-        <?php } elseif ($recurring != 'no') {  ?>
-
-            <div class='mep-multidate-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring Event', 'mage-eventpress')); ?></span>
-            </div>
-
-        <?php  }  if ($event_type == 'online') { ?>
-
-            <div class='mep-eventtype-ribbon mep-tem3-title-sec'>
-                <span><?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual Event', 'mage-eventpress')); ?></span>
-            </div>
-
-        <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
-
-            <div class="mep-eventtype-ribbon mep-tem3-title-sec sold-out-ribbon"><?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?></div>
-        
-        <?php } ?>        
+        <div class="mep-ev-start-date">
+            <div class="mep-day"><?php echo esc_html(apply_filters('mep_event_list_only_day_number', $day, $event_id)); ?></div>
+            <div class="mep-month"><?php echo esc_html(apply_filters('mep_event_list_only_month_name', $month, $event_id)); ?></div>
+        </div>
+        <div class="mepev-ribbon">
+            <?php
+            if (is_array($event_multidate) && sizeof($event_multidate) > 0 && $recurring == 'no') { ?>
+                <div class='ribbon multidate'>
+                    <i class="far fa-calendar-alt"></i> <?php echo mep_get_option('mep_event_multidate_ribon_text', 'label_setting_sec', __('Multi Date', 'mage-eventpress')); ?>
+                </div>
+            <?php } elseif ($recurring != 'no') {  ?>
+                <div class='ribbon recurring'>
+                    <i class="fas fa-history"></i> <?php echo mep_get_option('mep_event_recurring_ribon_text', 'label_setting_sec', __('Recurring', 'mage-eventpress')); ?>
+                </div>
+            <?php  }  if ($event_type == 'online') { ?>
+                <div class='ribbon online'>
+                    <i class="fas fa-vr-cardboard"></i> <?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual', 'mage-eventpress')); ?>
+                </div>
+            <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
+                <div class="ribbon sold-out">
+                    <?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?>
+                </div>
+            <?php } ?> 
+            <?php if($reg_status == 'off'){?>
+                <div class="ribbon canceled">
+                    <i class="fas fa-ban"></i> <?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Registration Off', 'mage-eventpress')); ?>
+                </div>
+            <?php } ?> 
+        </div>    
     </div>
     <div class="mep_list_event_details">
         <a href="<?php the_permalink(); ?>">
@@ -106,10 +107,8 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                     } elseif ($hide_time_list == 'no' && $recurring != 'no') {
                         do_action('mep_event_list_upcoming_date_li', $event_id);
                     } ?>
-
                 </ul>
         </a>
-        <?php do_action('mep_event_list_loop_footer', $event_id); ?>
     </div>
     <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
         <div class="item_hover_effect">

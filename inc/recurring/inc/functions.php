@@ -66,11 +66,11 @@ function get_mep_re_recurring_date($event_id, $event_multi_date, $mep_show_upcom
     $mep_show_upcoming_event = get_post_meta($event_id, 'mep_show_upcoming_event', true) && !is_admin() ? get_post_meta($event_id, 'mep_show_upcoming_event', true) : 'no';
 ?>
     <div class="mep_everyday_date_secs">
-        <ul> 
-            <li class='mep_re_datelist_label'>
+        <div class="mep-date-time-select-area ">
+            <h3 class='mep_re_datelist_label'>  
                 <?php echo mep_esc_html($select_dateLabel); ?>
-            </li>
-            <li>
+            </h3>
+            <div>
                 <?php
 
                 $cn = 1;
@@ -141,8 +141,8 @@ function get_mep_re_recurring_date($event_id, $event_multi_date, $mep_show_upcom
                     echo '</select>';
                 }
                 ?>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
     <?php
     return ob_get_clean();
@@ -323,7 +323,7 @@ function mep_re_ajax_load_extra_service_list()
     $event_date = isset($_REQUEST['event_date']) ? sanitize_text_field($_REQUEST['event_date']) : '';
     $event_id   = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
     $post_id    = isset($_REQUEST['event_id']) ? sanitize_text_field($_POST['event_id']) : '';
-    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : 'Ex';
+    $extra_service_label    = isset($_REQUEST['mep_extra_service_label']) ? sanitize_text_field($_POST['mep_extra_service_label']) : __('Extra Services','mage-eventpress');
     $count                      = 1;
     $mep_events_extra_prices    = get_post_meta($post_id, 'mep_events_extra_prices', true) ? get_post_meta($post_id, 'mep_events_extra_prices', true) : array();
     if (sizeof($mep_events_extra_prices) > 0) {
@@ -435,31 +435,12 @@ function mep_re_event_list_upcoming_date_li($event_id)
         $every_day = is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? $event_date_display_list[0] : '';
         ?>
         <li class="mep_list_event_date">
-            <div class="evl-ico"><i class="fa fa-calendar"></i></div>
+            <div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
             <div class="evl-cc">
                 <h5>
                     <?php echo is_array($event_date_display_list) && sizeof($event_date_display_list) > 0 ? get_mep_datetime($event_date_display_list[0], 'date-text') : '';  ?>
-                    <?php echo mep_get_option('mep_time_text', 'label_setting_sec') ? mep_get_option('mep_time_text', 'label_setting_sec') : _e('Time:', 'mage-eventpress'); ?>
                 </h5>
-                <h6><?php
-                    if ($time_status == 'no') {
-                        $start_date = $every_day;
-                        $end_date   = $every_day;
-                        $start_time = get_post_meta($event_id, 'event_start_time', true);
-                        $end_time   = get_post_meta($event_id, 'event_end_time', true);
-                        $start_datetime = $every_day . ' ' . $start_time;
-                        $end_datetime = $every_day . ' ' . $end_time;
-                    } elseif ($time_status == 'yes') {
-
-                        $calender_day = strtolower(date('D', strtotime($every_day)));
-                        $day_name = 'mep_ticket_times_' . $calender_day;
-                        $time = get_post_meta($event_id, $day_name, true) ?  maybe_unserialize(get_post_meta($event_id, $day_name, true)) : maybe_unserialize($global_time_slots);
-                        $time_list = [];
-                        foreach ($time as $_time) {
-                            $time_list[] = $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')';
-                        }
-                        echo mep_esc_html(implode(', ', $time_list));
-                    } ?></h6>
+                <?php do_action('mep_event_list_loop_footer', $event_id); ?>
             </div>
         </li>
         <?php
@@ -491,18 +472,18 @@ function mep_re_event_list_upcoming_date_li($event_id)
             if (strtotime(current_time('Y-m-d H:i')) < strtotime($std) && $cn == 0) {
         ?>
                 <li class="mep_list_event_date">
-                    <div class="evl-ico"><i class="fa fa-calendar"></i></div>
+                    <div class="evl-ico"><i class="far fa-calendar-alt"></i></div>
                     <div class="evl-cc">
                         <h5>
                             <?php echo get_mep_datetime($std, 'date-text');  ?>
                         </h5>
                         <h5><?php echo get_mep_datetime($_event_std['event_std'], 'time');
                             if ($hide_only_end_time_list == 'no' && $end_date_display_status == 'yes') { ?> - <?php if ($start_date == $end_date) {
-                                                                                        echo get_mep_datetime($_event_std['event_etd'], 'time');
-                                                                                    } else {
-                                                                                        echo get_mep_datetime($_event_std['event_etd'], 'date-time-text');
-                                                                                    }
-                                                                                } ?></h5>
+                                echo get_mep_datetime($_event_std['event_etd'], 'time');
+                            } else {
+                                echo get_mep_datetime($_event_std['event_etd'], 'date-time-text');
+                            }
+                        } ?></h5>
                     </div>
                 </li>
                 <?php
@@ -801,18 +782,17 @@ function mep_re_event_everyday_date_list_display($event_id, $type = 'display')
                 ?>
                     <li>
                         <a href="<?php echo get_the_permalink($event_id).esc_attr('?date=' . strtotime($every_day)); ?>">
-                        <span class="mep-more-date"><i class="fa fa-calendar"></i> <?php echo get_mep_datetime($every_day, 'date-text'); ?></span>
-                        <span class='mep-more-time'><i class="fa fa-clock-o"></i>
+                        <span class="mep-more-date"><i class="far fa-calendar-alt"></i> <?php echo get_mep_datetime($every_day, 'date-text'); ?></span>
+                        <span class='mep-more-time'>
                             <?php
                             $calender_day = strtolower(date('D', strtotime($every_day)));
                             $day_name = 'mep_ticket_times_' . $calender_day;
                             $time = get_post_meta($event_id, $day_name, true) ?  maybe_unserialize(get_post_meta($event_id, $day_name, true)) : maybe_unserialize($global_time_slots);
                             $time_list = [];
-                            foreach ($time as $_time) {
-                                $time_list[] = $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')';
-                            }
-                            echo implode(', ', $time_list);
-                            ?></span>
+                            foreach ($time as $_time) {?>
+                                <span class="time"><?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime($_time['mep_ticket_time'], 'time') . ')'; ?></span>
+                            <?php } ?>
+                        </span>
                         </a>
                     </li>
         <?php
@@ -903,11 +883,11 @@ function mep_re_get_everyday_event_date_sec($event_id)
         ob_start();
         ?>
         <div class='mep_everyday_date_secs'>
-            <ul>
-                <li class='mep_re_datelist_label'>
+            <div class="mep-date-time-select-area ">
+                <h3 class='mep_re_datelist_label'>
                     <?php echo mep_get_option('mep_event_rec_select_event_date_text', 'label_setting_sec', __('Select Event Date:', 'mage-eventpress')); ?>
-                </li>
-                <li>
+                </h3>
+                <div class="mep-date-time">
                     <?php if (sizeof($global_on_days_arr) == 1) { ?>
 
                         <span style='font-size: 20px;'><?php if ($time_status == 'yes') { echo mep_esc_html($date_parameter)
@@ -921,21 +901,22 @@ function mep_re_get_everyday_event_date_sec($event_id)
                     </span>
                     </span>
                     <?php } ?>
-
-                </li>
-                <li>
-                    <span id="mep_everyday_event_time_list">
-                        <?php
-                        if ($time_status == 'yes') {
-                        ?>
-                            <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
-                        <?php
-                            mep_re_default_load_ticket_time_list($event_id, $global_on_days_arr[0]);
-                        }
-                        ?>
-                    </span>
-                </li>
-            </ul>
+                    <!-- time -->
+                    <div>
+                        <span id="mep_everyday_event_time_list">
+                            <?php
+                            if ($time_status == 'yes') {
+                            ?>
+                                <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
+                            <?php
+                                mep_re_default_load_ticket_time_list($event_id, $global_on_days_arr[0]);
+                            }
+                            ?>
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
         </div>
         
         <?php
@@ -1341,15 +1322,14 @@ function mep_rq_show_everyday_datepicker($event_id)
     ob_start();
     ?>
     <div class='mep_everyday_date_secs'>
-        <ul>
-            <li>
-            
+        <div class="mep-date-time-select-area ">
+            <div>
                 <input type="text" name='<?php echo esc_attr($input_name); ?>' id='mep_everyday_datepicker_<?php echo esc_attr($event_id); ?>' value="<?php echo current_time('Y-m-d'); ?>">
-            </li>
-            <li>
+            </div>
+            <div>
                 <span id="mep_everyday_event_time_list_<?php echo esc_attr($event_id); ?>"></span>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 <?php
     require(dirname(__DIR__) . "/js/before_attendee_list_btn.php");
@@ -1369,15 +1349,15 @@ function mep_rq_show_everyday_datepicker_csv_btn($event_id)
 
 ?>
     <div class='mep_everyday_date_secs'>
-        <ul>
-            <li>
-            <i class = "fa fa-calendar icon"></i>
+        <div class="mep-date-time-select-area ">
+            <div>
+                <i class = "far fa-calendar-alt icon"></i>
                 <input type="text" name='<?php echo esc_attr($input_name); ?>' id='mep_everyday_datepicker_csv_<?php echo esc_attr($event_id); ?>' value="<?php echo current_time('Y-m-d'); ?>">
-            </li>
-            <li>
+            </div>
+            <div>
                 <span id="mep_everyday_event_time_list_csv_<?php echo mep_esc_html($event_id); ?>"></span>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 <?php
     require(dirname(__DIR__) . "/js/before_csv_export_btn.php");
@@ -2004,12 +1984,15 @@ function mep_recurring_events_meta_save($post_id) {
 
 add_filter('mage_event_extra_service_list', 'mep_rq_extra_service_list', 10, 4);
 function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date){
-  $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
+ $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 
   if($recurring == 'everyday'){
     $count =1;
     $start_date = wp_date('Y-m-d');
- 
+ ?>
+  <input type="hidden" name='mepre_event_id' id='mep_event_id' value='<?php echo $event_id; ?>'>      
+  <div id='mep_recurring_extra_service_list'></div>
+ <?php
   }elseif($recurring == 'yes'){
 
     $event_more_date[0]['event_more_start_date']    = date('Y-m-d',strtotime(get_post_meta($event_id,'event_start_date',true)));
@@ -2025,7 +2008,6 @@ function mep_rq_extra_service_list($content, $event_id, $event_meta,$start_date)
         <?php
     }else{
       return apply_filters('mage_event_extra_service_list_recurring', $content, $event_id, $event_meta,$start_date);
-      // return $content;
     }
 }
 

@@ -32,9 +32,7 @@ div.item_hover_effect a:hover{
 	background-color:#fff;
 	border:1px solid var(--mpev-base);
 }
-ul.mp_event_more_date_list li:hover{
-	background-color:var(--mpev-base);
-}
+
 .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
@@ -44,11 +42,7 @@ ul.mp_event_more_date_list li:hover{
 	background: transparent;
 	color: var(--mpev-base);
 }
-.mep_more_date_btn{
-	border: 1px solid var(--mpev-base);
-	background: transparent;
-	color: var(--mpev-base);
-}
+
 .mep-default-sidrbar-meta p a{
 	color: var(--mpev-base);
 }
@@ -330,7 +324,8 @@ h3.ex-sec-title {
 	font-size: 14px;
 	color: var(--mpev-base-txt);
 	padding: 10px 15px;
-	background: var(--mpev-base);
+	background: var(--mpev-primary);
+	padding: 15px;
 }
 .mep-default-sidrbar-map h3,
 .mep-default-sidrbar-events-schedule h3 {
@@ -717,14 +712,26 @@ ul#mep_add_calender_links li a {
 .mep-default-sidebar .df-sidebar-part {
 	background: #F7F7F7;
 	padding: 0;
-	margin: 20px 0;
 	overflow: hidden;
+}
+.mep-default-sidebar.margin{
+	margin-top: 42px;
 }
 .default_theme .mep-default-sidrbar-price-seat,
 .mep-default-sidrbar-address,
 .mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #DDD;
+}
+.default_theme .mep-default-sidrbar-price-seat .df-seat{
+	border:1px solid var(--mpev-primary);
+	color: var(--mpev-primary);
+	border-radius: 50px;
+	font-weight: 500;
+	height: 35px;
+	line-height: 33px;
+	margin: auto;
+	width: auto;
 }
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;
@@ -751,6 +758,9 @@ ul#mep_add_calender_links li a {
 .mep_event_list a {
 	display: block;
 }
+.search_sort_code .search_result_empty,.search_sort_code_counts{
+	display: none;
+}
 div.mep_event_list a {
 	border: none;
 	text-decoration: none !important;
@@ -767,6 +777,9 @@ div.mep_event_list a {
 .mep_list_thumb {
 	width: 40%;
 	position: relative;
+}
+.mep_list_thumb .dLoader{
+	display: none;
 }
 .mep-event-excerpt {
 	margin: 5px 0;
@@ -794,7 +807,6 @@ div.mep_event_list a {
 }
 .mep-list-header:before {
 	position: absolute;
-	border-left: 5px solid var(--mpev-base);
 	top: 0;
 	left: 0;
 	content: "";
@@ -817,6 +829,9 @@ h3.mep_list_date {
 }
 .mep-list-footer {
 	padding: 10px 0 0 0;
+	h5,h6{
+		text-transform: capitalize;
+	}
 }
 .list_with_filter_section.mep_event_list {
 	max-width: 1270px;
@@ -863,19 +878,21 @@ h3.mep_list_date {
 .mage_grid_box .blank_div:last-child {
 	margin: 0 0 15px 0;
 }
-.mep_event_grid_item .mep_list_event_details,
+
 .mep_event_grid_item .mep_list_thumb {
-	width: 100%;
-	min-height: 160px;
+	width: auto;
+	height: 200px;
 }
 .mep_event_grid_item .mep_list_event_details {
 	margin: 0;
+	height: auto;
+	width: auto;
 }
 .mep_event_grid_item .mep-list-header {
-	padding: 0 0 0 10px;
+	padding:0;
 }
 .mep_event_grid_item .mep-list-footer {
-	padding: 10px 0 10px 10px
+	padding:0;
 }
 .mep_event_grid_item .mep_list_event_details {
 	padding: 15px;
@@ -1108,6 +1125,7 @@ div.mep_event_native_list {
 	color: #333;
 	padding: 5px 0;
 }
+
 /* Code By Mahin */
 ul.event-custom-price li ul {
 	padding: 10px;
@@ -1116,17 +1134,79 @@ ul.event-custom-price li ul {
 	border: 1px solid #DDD;
 	background: #FBFBFB;
 }
-.mep-multidate-ribbon {
-	background: #61A232;
-	color: #FFF;
-	width: auto;
-	text-align: center;
-	padding: 0 10px;
+
+.mep_event_list .mepev-ribbon{
 	position: absolute;
-	top: 0;
-	bottom: auto;
-	right: 0;
+	top:10px;
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	.ribbon {
+		padding:5px 10px;
+		color: var(--mpev-secondary);
+		background: #000000aa;
+		text-align: center;
+		border-radius: 50px;
+		border: 1px solid #fff;
+		font-size: 14px;
+		font-weight: 500;
+		&:nth-child(2){
+			background: #6046ffaa;
+		}
+		&.sold-out{
+			background: #ff4646aa;
+		}
+	}
 }
+
+.mp_event_more_date_list{
+	list-style: none;
+	padding: 5px;
+	&:hover{
+		background-color: #fff;
+	}
+	li{
+		font-size:12px;
+		position: relative;
+		padding-left: 10px;
+		margin: 0;
+		.mep-more-date{
+			
+			&:hover{
+				color: var(--mpev-base);
+			}
+			p{
+				margin: 5px;
+				font-size: 12px;
+			}
+		}
+		.mep-more-time{
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+			align-items: start;
+			padding-left: 30px;
+			.time{
+				position: relative;
+				padding-left: 10px;
+				&::before{
+					content: "";
+					width: 5px;
+					height: 5px;
+					border-radius: 50px;
+					margin-right: 5px;
+					background-color: #aaa;
+					position: absolute;
+					left: 0;
+					top: 50%;
+					transform: translateY(-50%);
+				}
+			}
+		}
+	}
+}
+
 .my_account_orders.account-orders-table .wbtm-download {
 	display: none;
 }
@@ -1186,19 +1266,7 @@ ul.mep-more-date-lists li {
 	padding: 15px 20px;
 	background: #DDD;
 }
-.mep_more_date_btn {
-	display: block;
-	cursor: pointer;
-	background: #81D742;
-	color: #FFF;
-	padding: 0 10px;
-	position: absolute;
-	bottom: 0;
-	left: auto;
-	text-align: center;
-	right: 0;
-	z-index: 1111;
-}
+
 span#hide_event_schdule {
 	position: relative;
 	left: 0;
@@ -1280,16 +1348,7 @@ button.mep-cat-control.mixitup-control-active {
 	display: block;
 	text-align: center;
 }
-.mep-eventtype-ribbon {
-	position: absolute;
-	bottom: 0;
-	padding: 2px 21px;
-	color: #FFF;
-	left: auto;
-	right: 0;
-	width: 100%;
-	text-align: center;
-}
+
 .mep_speaker_thumbnail img {
 	display: inline-block;
 	border-radius: 100%;
@@ -1374,25 +1433,26 @@ div.mep_event_native_list .mep_list_event_details {
 div.column_style {
 	display: -webkit-flex;
 	display: flex;
-	-webkit-flex-wrap: wrap;flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: start;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 div.column_style .mep_list_thumb img {
 	height: 160px;
 }
 ul.mp_event_more_date_list {
 	position: absolute;
-	top: 100%;
+	top: 99%;
 	left: 0;
 	right: 0;
 	z-index: 111111;
 	background-color: #FFF;
 	padding: 10px;
-	border-top: 5px solid #000B;
-	border-bottom: 10px solid #000B;
-	max-height: 350px;
+	border-radius: 0 0 10px 10px;
+	max-height: 250px;
 	overflow: auto;
-	-webkit-box-shadow: 10px 10px 5px grey;
-	box-shadow: 10px 10px 5px grey;
+	box-shadow: 0px 4px 5px #aaa;
 }
 ul.mp_event_more_date_list li {
 	display: -webkit-flex;
@@ -1402,16 +1462,45 @@ ul.mp_event_more_date_list li {
 	-webkit-align-items: flex-start;
 	align-items: flex-start;
 	border-bottom: 1px solid #0009;
+	&:hover{
+		i{
+			color: var(--mpev-base);
+		}
+	}
 }
 ul.mp_event_more_date_list li span,
-span.mep-more-date,
-span.mep-more-time {
+span.mep-more-date{
 	display: -webkit-flex;
 	display: flex;
 	-webkit-align-items: center;
 	align-items: center;
 	margin: 5px 0;
 	padding: 0;
+}
+
+.mep-default-theme .mep-more-time{
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+	margin-left:25px;
+	span{
+		margin:2px 5px;
+		position: relative;
+		padding-left: 14px;
+		&::before{
+			content: '';
+			width: 5px;
+			height: 5px;
+			border-radius: 50px;
+			margin-right: 5px;
+			background-color: var(--mpev-base);
+			position: absolute;
+			left: 0;
+			top:50%;
+			transform: translateY(-50%);
+		}
+	}
 }
 ul.mp_event_more_date_list li span i,
 span.mep-more-date i,
@@ -1503,11 +1592,7 @@ div.item_hover_effect a:hover {
 	color: #FFF;
 	font-size: 18px;
 }
-.mep-eventtype-ribbon.mep-tem3-title-sec.sold-out-ribbon {
-	width: 100px;
-	bottom: 40%;
-	right: 38%;
-}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -1812,6 +1897,7 @@ div.item_hover_effect a:hover {
 		border-top: 1px solid #DDD;
 		border-bottom: 1px solid #DDD;
 	}
+	
 	.mep_spring_date .mep-default-sidrbar-social,
 	.bristol .mep-default-sidrbar-calender-btn {
 		display: -webkit-flex;
@@ -1870,34 +1956,14 @@ div.item_hover_effect a:hover {
 /****************************************
 CSS by Ariful
 ****************************************/
-.mep-multidate-ribbon {
-	line-height: 30px;
-}
+
 .mep_list_thumb img {
 	border-radius: 0;
 }
 .mep_list_thumb {
 	overflow: hidden;
 }
-.mep-multidate-ribbon {
-	transform: rotate(45deg);
-	margin-top: 15px;
-	margin-right: -50px;
-	word-break: break-word;
-	width: 173px;
-	line-height: 15px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-weight: 600;
-	display: grid !important;
-}
-.mep-multidate-ribbon span {
-	width: 90px;
-	margin: auto;
-}
-.mep-eventtype-ribbon {
-	line-height: 30px;
-}
+
 .mep-ev-start-date {
 	font-size: 15px;
 }
@@ -1908,7 +1974,7 @@ CSS by Ariful
 }
 ul.mp_event_more_date_list li:hover,
 ul.mp_event_more_date_list li:hover i {
-	color: #FFF;
+	// color: #FFF;
 }
 ul.mp_event_more_date_list li {
 	border-bottom-color: #D3D3D3;
@@ -1943,58 +2009,13 @@ h3.mep_list_date {
 	color:var(--mpev-base)
 }
 .mep_more_date_btn {
-	margin-top: 20px;
-	width: max-content;
 	border: 1px solid var(--mpev-base);
-	background: #FFF;
 	color: var(--mpev-base);
-	font-weight: 400;
 	border-radius: 20px;
-	line-height: 35px;
-	margin-left: 5px;
-	padding: 0 15px;
-	overflow: hidden;
-	-webkit-transform: perspective(1px) translateZ(0);
+	padding: 2px 5px;
 	transform: perspective(1px) translateZ(0);
 	position: relative;
-	-webkit-transition-property: color;
-	transition-property: color;
-	-webkit-transition-duration: 0.3s;
-	transition-duration: 0.3s;
-	min-width: 150px;
-}
-.mep_more_date_btn:before {
-	content: "";
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: var(--mpev-base);
-	-webkit-transform: scaleX(0);
-	transform: scaleX(0);
-	-webkit-transform-origin: 0 50%;
-	transform-origin: 0 50%;
-	-webkit-transition-property: transform;
-	transition-property: transform;
-	-webkit-transition-duration: 0.3s;
-	transition-duration: 0.3s;
-	-webkit-transition-timing-function: ease-out;
-	transition-timing-function: ease-out;
-	border-radius: 20px;
-	border: 2px solid var(--mpev-base);
-}
-.mep_more_date_btn:hover,
-.mep_more_date_btn:focus,
-.mep_more_date_btn:active {
-	color: #FFFFFF !important;
-}
-.mep_more_date_btn:hover:before,
-.mep_more_date_btn:focus:before,
-.mep_more_date_btn:active:before {
-	-webkit-transform: scaleX(1);
-	transform: scaleX(1);
+	font-size: 14px;
 }
 .mep_list_thumb {
 	overflow: hidden;
@@ -2002,7 +2023,7 @@ h3.mep_list_date {
 .mep_bg_thumb {
 	background-size: cover;
 	background-position: center center;
-	height: 250px;
+	height: 230px;
 	position: relative;
 	-webkit-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;
@@ -2052,7 +2073,7 @@ h3.ex-sec-title {
 #mep-event-review-form--title {
 	display: block;
 	padding: 0 15px 0 38px;
-	font-size: 18px;
+	font-size: 14px;
 	line-height: 1.5;
 	color: #495057;
 	background-color: #F9F9F9;
@@ -2082,6 +2103,9 @@ span.mep_date_scdl_start_datetime, span.mep_date_scdl_end_datetime {
 	display: inline-flex;
 	font-size: 13px;
 }
+span.mep_date_scdl_end_datetime{
+	margin-left: 32px;
+}
 span.mep-cal-icon {
 	position: absolute;
 	left: -100px;
@@ -2103,7 +2127,7 @@ span#mep_everyday_event_time_list select {
 	border: 0;
 	height: 30px;
 	padding: 0 7px;
-	font-size: 18px;
+	font-size: 14px;
 	color: #495057;
 }
 .mep_everyday_date_secs ul li {
@@ -2125,9 +2149,25 @@ span.mep-datepicker-input-box {
 .mep_everyday_date_secs {
 	padding: 5px 10px !important;
 }
-.mep_everyday_date_secs ul {
+.mep_everyday_date_secs .mep-date-time-select-area {
 	overflow: hidden;
+	padding: 8px 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	h3{
+		margin: 0;
+		font-size: 20px;
+		font-weight: 600;
+	}
+	.mep-date-time{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
 }
+
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart,
 .mep-event-theme-1 .btn-mep-event-cart,
 .mep-template-2-hamza .btn-mep-event-cart,
@@ -2552,12 +2592,7 @@ New Spring list style css added by ariful
 .mep_event_spring_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_spring_list .mep-eventtype-ribbon {
-	position: inherit;
-	margin-top: 20px;
-	width: max-content;
-	background: var(--mpev-base);
-}
+
 .mep_event_spring_list .mep_spring_list_date {
 	color: #FFF;
 }
@@ -2782,12 +2817,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn.mp_event_visible_event_time {
 	display: block !important;
 }
-.mep_event_winter_list .mep-eventtype-ribbon {
-	position: inherit;
-	width: max-content;
-	background: var(--mpev-base);
-	color: #FFF;
-}
+
 .mep_event_winter_list a,
 .mep_event_winter_list .mep_price {
 	color: #FFF;
@@ -2808,12 +2838,7 @@ New Winter list style css added by ariful
 .mep_event_winter_list .mep_more_date_btn {
 	margin-top: 0;
 }
-.mep_event_winter_list .mep-multidate-ribbon span {
-	width: 90px;
-}
-.mep_event_winter_list .mep-multidate-ribbon {
-	background: var(--mpev-base);
-}
+
 .mep_same_attendee input {
 	min-width: 40px;
 	height: 20px;
@@ -2871,6 +2896,7 @@ Mobile View css update by ariful | date: 19.10.2021
 	span.mep-more-time i {
 		min-width: 20px;
 	}
+	
 	.mep_everyday_date_secs ul li {
 		margin-bottom: 10px;
 	}
@@ -3871,5 +3897,14 @@ input.mpe-new-input-group-field {
 	}
 	input.mpe-new-input-group-field {
 		width: 20px;
+	}
+}
+
+.mep-default-theme div.mep-default-feature-item{
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	h3{
+		margin: 10px 0;
 	}
 }

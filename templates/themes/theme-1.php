@@ -12,7 +12,7 @@ $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_deta
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
 $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
-$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'fa fa-calendar');
+$event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
 <div class="mep-default-theme spring_field">

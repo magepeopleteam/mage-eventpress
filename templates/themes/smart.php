@@ -5,8 +5,6 @@
 	$all_dates          = MPWEM_Functions::get_dates( $event_id );
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-	$hide_share_details = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
-
 	$speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 ?>
 <div class="mpStyle mep_smart_theme">
@@ -37,6 +35,7 @@
 				<?php do_action( 'mpwem_date_time', $event_id, $all_dates, $all_times ); ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
 				<?php do_action( 'mpwem_social', $event_id ); ?>
+				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
             </div>
 			<!-- show speaker lists -->
 			<?php do_action( 'mep_event_speaker', $event_id ); ?>

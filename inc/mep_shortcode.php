@@ -209,8 +209,6 @@ function mep_event_list($atts, $content = null)
                     $columnNumber = 'one_column';
                     $width=100;
                 }
-              
-
                 /**
                  * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                  */

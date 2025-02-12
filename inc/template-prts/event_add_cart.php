@@ -112,6 +112,13 @@
 					 */
 					
 					if ($event_member_type == 'for_all' || ($event_member_type != 'for_all' && is_user_logged_in() && (in_array(wp_get_current_user()->roles[0], $saved_user_role) || in_array('all', $saved_user_role)))) {
+						$seat_plan_visible = MPWEMASP_Helper::get_post_info( $post_id, 'mp_event_seat_plan_visible', 1 );
+						$seat_plan         = MPWEMASP_Helper::get_post_info( $post_id, 'mepsp_event_seat_plan_info', array() );
+						$system_sp         = MPWEMASP_Helper::get_post_info( $post_id, 'mpwemasp_seat_plan_system', 'off' );
+						$seat_class='';
+						if ( sizeof( $seat_plan ) > 0 && $seat_plan_visible == 2 && $system_sp == 'off' ) {
+							$seat_class='mep_seat_reg';
+						}
 						?>
                         <input type='hidden' value="<?php echo esc_attr($extra_service_label); ?>" id='mep_extra_service_label'/>
                         <input type='hidden' value="<?php echo esc_attr($select_date_label); ?>" id='mep_select_date_label'/>
@@ -122,7 +129,7 @@
                         <!--The event add to cart main form start here-->
                         <form action="" method='post' id="mage_event_submit" enctype="multipart/form-data">
                             <input type="hidden" name='' id='mep_event_id' value='<?php echo $event_id; ?>'>
-                            <div class="mpwemasp_ticket_area">
+                            <div class="mpwemasp_ticket_area <?php echo esc_attr($seat_class); ?>">
 								<?php
 									/**
 									 * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/event_ticket_type_extra_service.php

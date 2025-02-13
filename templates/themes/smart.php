@@ -6,6 +6,8 @@
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+
+	
 ?>
 <div class="mpStyle mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
@@ -19,12 +21,12 @@
     </div>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">
-			<?php if ( get_the_content( $event_id ) ) { ?>
+			<?php //if ( get_the_content( $event_id ) ) { ?>
                 <div class="mpwem_details">
                     <h2 class="_mB"><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h2>
                     <div class="mpwem_details_content"><?php the_content(); ?></div>
                 </div>
-			<?php } ?>
+			<?php //} ?>
 			<!-- timeline data display -->
 		    <?php do_action('mpwem_timeline'); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>

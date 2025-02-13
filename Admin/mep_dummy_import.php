@@ -417,7 +417,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -779,7 +779,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -1148,7 +1148,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -1525,7 +1525,7 @@
 									'event_list'=>array(),
 
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',
@@ -1744,7 +1744,7 @@
 									'event_list'=>array(),
 									
 									// default theme
-									'mep_event_template'=>'smart.php',
+									'mep_event_template'=>'default-theme.php',
 
 									//faq settings
 									'mep_faq_description'=>'Explore essential details and clear up any doubts about the event.',

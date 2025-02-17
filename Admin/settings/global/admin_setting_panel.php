@@ -613,6 +613,39 @@
 									'no' => 'No'
 								)
 							),
+							array(
+								'name' => 'mep_event_hide_description_title',
+								'label' => __('Hide Description Title', 'mage-eventpress'),
+								'desc' => __('Please select "Yes" to hide or "No" to display.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => mep_change_global_option_section('mep_event_hide_description_title', 'general_setting_sec', 'single_event_setting_sec', 'no'),
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_event_hide_left_sidebar_title',
+								'label' => __('Hide Left Sidebar Title', 'mage-eventpress'),
+								'desc' => __('Please select "Yes" to hide or "No" to display.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => mep_change_global_option_section('mep_event_hide_left_sidebar_title', 'general_setting_sec', 'single_event_setting_sec', 'no'),
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_event_hide_time',
+								'label' => __('Hide Display Event Time Below Title', 'mage-eventpress'),
+								'desc' => __('Please select "Yes" to hide or "No" to display.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => mep_change_global_option_section('mep_event_hide_time', 'general_setting_sec', 'single_event_setting_sec', 'no'),
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
 						)
 					),
 					'email_setting_sec' => apply_filters('mep_settings_email_arr', array(

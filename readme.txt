@@ -10,7 +10,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for creating events, managing registrations, and selling tickets easily.
+WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for Event Registration and selling tickets easily.
 
 
 == Description ==

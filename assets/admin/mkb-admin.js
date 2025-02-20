@@ -299,7 +299,9 @@
 	}
 
 	function save_faq(){
+		// mep_faq_nonce
 		var title   = $('input[name="mep_faq_title"]');
+		var nonce   = $('input[name="mep_faq_nonce"]');
 		var content = tinyMCE.get('mep_faq_content').getContent();
 		var postID  = $('input[name="mep_post_id"]');
 		$.ajax({
@@ -308,6 +310,7 @@
 			data: {
 				action: 'mep_faq_data_save',
 				mep_faq_title:title.val(),
+				mep_faq_nonce:nonce.val(),
 				mep_faq_content:content,
 				mep_faq_postID:postID.val(),
 			},

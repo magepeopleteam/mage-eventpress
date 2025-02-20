@@ -93,6 +93,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                                 <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>"> 
                                 <input type="text"   name="mep_faq_title"> 
                                 <input type="hidden" name="mep_faq_item_id">
+                                <input type="hidden" name="mep_faq_nonce" value='<?php echo wp_create_nonce('faq_mep_nonce') ?>'/>
                             </label>
                             <label>
                                 <?php _e('Add Content','mage-eventpress'); ?>
@@ -172,7 +173,11 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function save_faq_data_settings() {
-            $post_id = intval($_POST['mep_faq_postID']);
+            $post_id        = intval($_POST['mep_faq_postID']);
+            $mep_faq_nonce  = sanitize_text_field($_POST['mep_faq_nonce']);
+
+            if (isset($_POST['mep_faq_nonce']) && wp_verify_nonce($_POST['mep_faq_nonce'], 'faq_mep_nonce')) {
+            if(is_admin()){
             $mep_faq = get_post_meta($post_id, 'mep_event_faq', true);
             $mep_faq = is_array($mep_faq) ? $mep_faq : [];
             $new_data = [
@@ -197,6 +202,8 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                     'html' => 'error',
                 ]);
             }
+        }
+        }
             die;
         }
 

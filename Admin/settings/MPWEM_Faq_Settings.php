@@ -17,7 +17,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save faq data
             add_action('wp_ajax_mep_faq_data_save', [$this, 'save_faq_data_settings']);
-            add_action('wp_ajax_nopriv_mep_faq_data_save', [$this, 'save_faq_data_settings']);
+            // add_action('wp_ajax_nopriv_mep_faq_data_save', [$this, 'save_faq_data_settings']);
             
             // update faq data
             add_action('wp_ajax_mep_faq_data_update', [$this, 'faq_data_update']);
@@ -161,7 +161,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             }
             update_post_meta($post_id, 'mep_event_faq', $mep_faq);
             ob_start();
-            $resultMessage = __('Data Updated Successfully', 'mptbm_plugin_pro');
+            $resultMessage = __('Data Updated Successfully', 'mage-eventpress');
             $this->show_faq_data($post_id);
             $html_output = ob_get_clean();
             wp_send_json_success([
@@ -183,7 +183,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             $result = update_post_meta($post_id, 'mep_event_faq', $mep_faq);
             if($result){
                 ob_start();
-                $resultMessage = __('Data Added Successfully', 'mptbm_plugin_pro');
+                $resultMessage = __('Data Added Successfully', 'mage-eventpress');
                 $this->show_faq_data($post_id);
                 $html_output = ob_get_clean();
                 wp_send_json_success([
@@ -213,7 +213,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             $result = update_post_meta($post_id, 'mep_event_faq', $mep_faq);
             if($result){
                 ob_start();
-                $resultMessage = __('Data Deleted Successfully', 'mptbm_plugin_pro');
+                $resultMessage = __('Data Deleted Successfully', 'mage-eventpress');
                 $this->show_faq_data($post_id);
                 $html_output = ob_get_clean();
                 wp_send_json_success([

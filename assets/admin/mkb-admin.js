@@ -310,6 +310,7 @@
 				mep_faq_title:title.val(),
 				mep_faq_content:content,
 				mep_faq_postID:postID.val(),
+				nonce: mep_ajax.nonce
 			},
 			success: function(response) {
 				$('#mep-faq-msg').html(response.data.message);

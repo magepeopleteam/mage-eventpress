@@ -533,6 +533,7 @@ function save_email_text(){
 			action: 'mep_email_text_save',
 			mep_email_text_content:content,
 			mep_email_text_postID:postID.val(),
+			nonce: mep_ajax.nonce
 		},
 		success: function(response) {
 			$('#mep-email-text-msg').html(response.data.message);

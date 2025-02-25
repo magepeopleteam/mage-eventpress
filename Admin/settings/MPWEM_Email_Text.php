@@ -19,6 +19,16 @@ if(!class_exists('MPWEM_Email_Text')){
         }
 
         public function email_text_save() {
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_email_text_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+
             $post_id = intval($_POST['mep_email_text_postID']);
             $email_text = wp_kses_post($_POST['mep_email_text_content']);
             

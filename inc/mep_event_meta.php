@@ -9,7 +9,7 @@ use Sabberworm\CSS\Value\Value;
 		public function __construct() {
 			add_action('add_meta_boxes', array($this, 'mp_event_all_info_in_tab'));
 			add_action('wp_ajax_mep_reset_booking', [$this,'mep_reset_booking_callback']);
-			add_action('wp_ajax_nopriv_mep_reset_booking', [$this,'mep_reset_booking_callback']);
+			// add_action('wp_ajax_nopriv_mep_reset_booking', [$this,'mep_reset_booking_callback']);
 		}
 		public function mep_reset_booking_callback() {
 			if(isset($_POST['post_id'])){

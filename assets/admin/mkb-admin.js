@@ -432,6 +432,7 @@ function update_timeline(){
 			mep_timeline_content:content,
 			mep_timeline_postID:postID.val(),
 			mep_timeline_itemID:itemId.val(),
+			nonce: mep_ajax.nonce
 		},
 		success: function(response) {
 			$('#mep-timeline-msg').html(response.data.message);
@@ -461,6 +462,7 @@ function save_timeline(){
 			mep_timeline_title:title.val(),
 			mep_timeline_content:content,
 			mep_timeline_postID:postID.val(),
+			nonce: mep_ajax.nonce
 		},
 		success: function(response) {
 			$('#mep-timeline-msg').html(response.data.message);
@@ -483,6 +485,7 @@ function delete_timeline_item(itemId){
 			action: 'mep_timeline_delete_item',
 			mep_timeline_postID:postID.val(),
 			itemId:itemId,
+			nonce: mep_ajax.nonce
 		},
 		success: function(response) {
 			$('.mep-timeline-items').html('');

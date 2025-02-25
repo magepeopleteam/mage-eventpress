@@ -163,6 +163,16 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         }
 
         public function timeline_data_update() {
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_timeline_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+
             $post_id = intval($_POST['mep_timeline_postID']);
             $mep_timeline = get_post_meta($post_id, 'mep_event_day', true);
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
@@ -188,6 +198,16 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         }
 
         public function save_timeline_data_settings() {
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_timeline_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+
             $post_id = intval($_POST['mep_timeline_postID']);
             $mep_timeline = get_post_meta($post_id, 'mep_event_day', true);
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
@@ -217,6 +237,16 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         }
 
         public function timeline_delete_item(){
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_timeline_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+
             $post_id = intval($_POST['mep_timeline_postID']);
             $mep_timeline = get_post_meta($post_id,'mep_event_day',true);
             $mep_timeline =  is_array($mep_timeline) ? $mep_timeline : [];

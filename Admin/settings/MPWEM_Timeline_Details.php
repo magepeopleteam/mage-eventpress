@@ -18,15 +18,15 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save timeline data
             add_action('wp_ajax_mep_timeline_data_save', [$this, 'save_timeline_data_settings']);
-            add_action('wp_ajax_nopriv_mep_timeline_data_save', [$this, 'save_timeline_data_settings']);
+            // add_action('wp_ajax_nopriv_mep_timeline_data_save', [$this, 'save_timeline_data_settings']);
             
             // update timeline data
             add_action('wp_ajax_mep_timeline_data_update', [$this, 'timeline_data_update']);
-            add_action('wp_ajax_nopriv_mep_timeline_data_update', [$this, 'timeline_data_update']);
+            // add_action('wp_ajax_nopriv_mep_timeline_data_update', [$this, 'timeline_data_update']);
             
             // mep_delete_timeline_data
             add_action('wp_ajax_mep_timeline_delete_item', [$this, 'timeline_delete_item']);
-            add_action('wp_ajax_nopriv_mep_timeline_delete_item', [$this, 'timeline_delete_item']);
+            // add_action('wp_ajax_nopriv_mep_timeline_delete_item', [$this, 'timeline_delete_item']);
         }
 
         public function custom_editor_enqueue() {

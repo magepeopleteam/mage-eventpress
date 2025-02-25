@@ -281,6 +281,7 @@
 				mep_faq_content:content,
 				mep_faq_postID:postID.val(),
 				mep_faq_itemID:itemId.val(),
+				nonce: mep_ajax.nonce
 			},
 			success: function(response) {
 				$('#mep-faq-msg').html(response.data.message);
@@ -333,6 +334,7 @@
 				action: 'mep_faq_delete_item',
 				mep_faq_postID:postID.val(),
 				itemId:itemId,
+				nonce: mep_ajax.nonce
 			},
 			success: function(response) {
 				$('.mep-faq-items').html('');

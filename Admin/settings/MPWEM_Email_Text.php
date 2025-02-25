@@ -14,7 +14,7 @@ if(!class_exists('MPWEM_Email_Text')){
 
             // save faq data
             add_action('wp_ajax_mep_email_text_save', [$this, 'email_text_save']);
-            add_action('wp_ajax_nopriv_mep_email_text_save', [$this, 'email_text_save']);
+            // add_action('wp_ajax_nopriv_mep_email_text_save', [$this, 'email_text_save']);
             
         }
 

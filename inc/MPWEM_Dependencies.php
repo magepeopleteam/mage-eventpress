@@ -53,7 +53,7 @@
 				wp_enqueue_script('jquery-ui-core');
 				wp_enqueue_script('jquery-ui-datepicker');
 				wp_enqueue_script('jquery-ui-accordion');
-				wp_localize_script('jquery', 'mep_ajax', array('mep_ajaxurl' => admin_url('admin-ajax.php')));
+				wp_localize_script('jquery', 'mep_ajax', array('url' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('mep-ajax-nonce')));
 				wp_enqueue_style('mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2');
 				$fontAwesome = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_fontawesome_from_theme', 'no');
 				if ($fontAwesome == 'no') {

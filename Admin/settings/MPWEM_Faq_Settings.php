@@ -147,6 +147,16 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function faq_data_update() {
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_faq_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+            
             $post_id = intval($_POST['mep_faq_postID']);
             $mep_faq = get_post_meta($post_id, 'mep_event_faq', true);
             $mep_faq = is_array($mep_faq) ? $mep_faq : [];
@@ -172,6 +182,14 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function save_faq_data_settings() {
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_faq_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
             $post_id = intval($_POST['mep_faq_postID']);
             $mep_faq = get_post_meta($post_id, 'mep_event_faq', true);
             $mep_faq = is_array($mep_faq) ? $mep_faq : [];
@@ -201,6 +219,16 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function faq_delete_item(){
+
+            if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
+                wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
+                die;
+            }
+            if ( ! current_user_can( 'edit_post', $_POST['mep_faq_postID'] ) ) {
+                wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+                die;
+            }
+
             $post_id = intval($_POST['mep_faq_postID']);
             $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
             $mep_faq =  is_array($mep_faq) ? $mep_faq : [];

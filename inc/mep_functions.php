@@ -3651,20 +3651,37 @@
                         jQuery('#rowtotal').val(total);
                     }
                     //Bind the change event
-                    jQuery(".extra-qty-box").on('change', function () {
-                        var sum = 0;
-                        var total = 0;
-                        jQuery('.price_jq').each(function () {
-                            var price = jQuery(this);
-                            var count = price.closest('tr').find('.extra-qty-box');
-                            sum = (parseFloat(price.html().match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)) * count.val());
-                            total = total + sum;
-                            // price.closest('tr').find('.cart_total_price').html(sum + "â‚´");
-                        });
-                        //Fix 27.10.2020 Tony
-                        jQuery('#rowtotal').val(total);
-                        jQuery('#usertotal').html(mp_event_wo_commerce_price_format(total));
-                    }).change(); //trigger change event on page load
+                    // jQuery(".extra-qty-box").on('change', function () {
+                    //     var sum = 0;
+                    //     var total = 0;						
+                    //     jQuery('.price_jq').each(function () {
+                    //         var price = jQuery(this);
+                    //         var count = price.closest('tr').find('.extra-qty-box');						
+                    //         sum = (parseFloat(price.html().match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)) * count.val());
+                    //         total = total + sum;
+                    //         // price.closest('tr').find('.cart_total_price').html(sum + "â‚´");
+                    //     });
+                    //     //Fix 27.10.2020 Tony
+                    //     jQuery('#rowtotal').val(total);
+                    //     jQuery('#usertotal').html(mp_event_wo_commerce_price_format(total));
+                    // }).change(); //trigger change event on page load
+
+					jQuery(".extra-qty-box").on('change', function () {
+						var total = 0;
+						jQuery('.price_jq').each(function () {
+							var priceElement = jQuery(this);
+							var countElement = priceElement.closest('tr').find('.extra-qty-box');
+							var priceText = priceElement.html().match(/-?(?:\d+(?:\.\d*)?|\.\d+)/);
+							var price = priceText ? parseFloat(priceText[0]) : 0; // Ensure a valid number
+							var count = parseFloat(countElement.val()) || 0; // Ensure a valid number
+							var sum = price * count;
+							total += sum;
+						});
+
+						jQuery('#rowtotal').val(total);
+						jQuery('#usertotal').html(mp_event_wo_commerce_price_format(total));
+					}).change(); // Trigger change event on page load
+					
 					<?php
 					$mep_event_ticket_type = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : array();
 					//This is if no ticket type

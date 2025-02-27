@@ -1250,7 +1250,7 @@ use Sabberworm\CSS\Value\Value;
 			$mep_reg_tshirtsize = isset($_POST['mep_reg_tshirtsize']) ? sanitize_text_field($_POST['mep_reg_tshirtsize']) : "";
 			$mep_reg_tshirtsize_list = isset($_POST['mep_reg_tshirtsize_list']) ? sanitize_text_field($_POST['mep_reg_tshirtsize_list']) : "";
 
-			$mep_event_template_file_name = isset($_POST['mep_event_template']) && mep_isValidFilename($_POST['mep_event_template']) ? sanitize_text_field($_POST['mep_event_template']) : "default-theme.php";
+			$mep_event_template_file_name = isset($_POST['mep_event_template']) && mep_isValidFilename($_POST['mep_event_template']) ? sanitize_file_name($_POST['mep_event_template']) : "default-theme.php";
 
 			$mep_event_template = mep_template_file_validate($mep_event_template_file_name);
 			$event_start_datetime = date('Y-m-d H:i:s', strtotime($event_start_date . ' ' . $event_start_time));

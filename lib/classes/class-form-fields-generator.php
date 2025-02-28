@@ -327,7 +327,7 @@ if( ! class_exists( 'FormFieldsGenerator' ) ) {
                     <input type="checkbox" id="<?php echo esc_attr($id); ?>" value="<?php echo esc_attr($value); ?>"
                            name="<?php echo esc_attr($field_name); ?>" <?php echo esc_attr($checked); ?>>
                     <span class="layer"></span>
-                    <span class="slider"></span>
+                    <span class="mpev-slider"></span>
                     <?php
                     if(!empty($args))
                     foreach ($args as $index=>$arg):

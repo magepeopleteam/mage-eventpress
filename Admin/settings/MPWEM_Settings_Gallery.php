@@ -26,7 +26,7 @@
 					<h3><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></h3>
 					<p ><?php MPWEM_Settings::des_p('gallery_settings_description'); ?></p>
 					<section class="bg-light">
-						<div class="label">
+						<div class="mpev-label">
 							<div>
 								<h2><?php esc_html_e('Gallery Settings', 'mage-eventpress'); ?></h2>
 								<span class="text"><?php esc_html_e('Here you can add images for event.', 'mage-eventpress'); ?></span>
@@ -34,20 +34,20 @@
 						</div>
                     </section>
 					<section>
-                        <div class="label">
+                        <div class="mpev-label">
                             <div>
 								<h2><?php esc_html_e('On/Off Slider', 'mage-eventpress'); ?></h2>
 								<span class="text"><?php MPWEM_Settings::des_p('mep_display_slider'); ?></span>
 							</div>
 							<label class="mpev-switch">
 								<input type="checkbox" name="mep_display_slider" value="<?php echo esc_attr($display_gallary);?>" <?php echo $display_gallary=='on'?'checked':'';?> data-collapse-target="#mep_display_slider" data-toggle-values="on,off">
-								<span class="slider"></span>
+								<span class="mpev-slider"></span>
 							</label>
                         </div>
                     </section>
 					<div id="mep_display_slider" class="mpStyle" style="display: <?php echo esc_attr($display_gallary=='on'?'block':'none'); ?>;">
 						<section>
-							<div class="label">
+							<div class="mpev-label">
 								<h2><?php esc_html_e('Gallery Images ', 'mage-eventpress'); ?></h2>
 							</div>
 							<span><?php echo esc_html__('Please upload gallary images size in ratio 4:3. Ex: Image size width=1200px and height=900px. gallery and feature image should be in same size.','mage-eventpress'); ?></span>
@@ -57,7 +57,7 @@
 						</section>
 					</div>
 					<section class="bg-light " style="margin-top: 20px;">
-						<div class="label">
+						<div class="mpev-label">
 							<div>
 								<h2><?php esc_html_e('Event List Thumbnail', 'mage-eventpress'); ?></h2>
 								<span class="text"><?php esc_html_e('Here you can add thumbnail for event.', 'mage-eventpress'); ?></span>

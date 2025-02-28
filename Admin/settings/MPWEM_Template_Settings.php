@@ -44,7 +44,7 @@ if(!class_exists('MPWEM_Template_Settings')){
                 </section>
                 
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><span><?php esc_html_e('Template', 'mage-eventpress'); ?></span></h2>
                             <span><?php esc_html_e('Select a template to show your event', 'mage-eventpress'); ?></span>

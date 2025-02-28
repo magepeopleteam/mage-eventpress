@@ -1366,7 +1366,7 @@ h3.mep_virtual_sec_title {
 #mp_event_all_info_in_tab .mp_tab_details section p{
 	margin: 0;
 }
-#mp_event_all_info_in_tab .mp_tab_details .label{
+#mp_event_all_info_in_tab .mp_tab_details .mpev-label{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -1406,7 +1406,7 @@ h3.mep_virtual_sec_title {
 	width: 0;
 	height: 0;
 }
-#mp_event_all_info_in_tab label.mpev-switch .slider {
+#mp_event_all_info_in_tab label.mpev-switch .mpev-slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -1418,7 +1418,7 @@ h3.mep_virtual_sec_title {
 	border: 1px solid var(--mpev-gray);
 	transition: 0.5s;
 }
-#mp_event_all_info_in_tab label.mpev-switch .slider:before {
+#mp_event_all_info_in_tab label.mpev-switch .mpev-slider:before {
 	position: absolute;
 	content: "";
 	height: 16px;
@@ -1430,13 +1430,13 @@ h3.mep_virtual_sec_title {
 	background-color: var(--mpev-white);
 	transition: 0.4s;
 }
-#mp_event_all_info_in_tab label.mpev-switch input:checked + .slider {
+#mp_event_all_info_in_tab label.mpev-switch input:checked + .mpev-slider {
 	background-color: var(--mpev-primary);
 }
-#mp_event_all_info_in_tab label.mpev-switch input:checked + .slider:before {
+#mp_event_all_info_in_tab label.mpev-switch input:checked + .mpev-slider:before {
 	transform: translateX(26px);
 }
-#mp_event_all_info_in_tab label.mpev-switch input:focus + .slider {
+#mp_event_all_info_in_tab label.mpev-switch input:focus + .mpev-slider {
 	box-shadow: inset 0 0 1px var(--mpev-dark);
 }
 

@@ -4719,20 +4719,20 @@
 		}
 		?>
         <section>
-            <div class="label">
+            <div class="mpev-label">
                 <div>
                     <h2><span><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></span></h2>
                     <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
                 <label class="mpev-switch">
                     <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr( $date_format ); ?>" <?php echo esc_attr( ( $date_format == 'on' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
-                    <span class="slider"></span>
+                    <span class="mpev-slider"></span>
                 </label>
             </div>
         </section>
         <div id='mep_custom_timezone_setting' style="display:<?php echo ( $date_format == 'on' ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
             <section>
-                <label class="label">
+                <label class="mpev-label">
                     <div>
                         <h2><?php esc_html_e( 'Date Format', 'mage-eventpress' ); ?></h2>
                         <span><?php _e( 'Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events.', 'mage-eventpress' ); ?></span>
@@ -4748,7 +4748,7 @@
                 </label>
             </section>
             <section class="mep_global_custom_date_format">
-                <label class="label">
+                <label class="mpev-label">
                     <div>
                         <h2><?php esc_html_e( 'Custom Date Format', 'mage-eventpress' ); ?></h2>
                         <span><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
@@ -4757,7 +4757,7 @@
                 </label>
             </section>
             <section class="mep_global_time_format">
-                <label class="label">
+                <label class="mpev-label">
                     <div>
                         <h2><?php esc_html_e( 'Time Format', 'mage-eventpress' ); ?></h2>
                         <span><?php _e( 'Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events. ', 'mage-eventpress' ); ?></span>
@@ -4773,7 +4773,7 @@
                 </label>
             </section>
             <section class="mep_global_custom_time_format">
-                <label class="label">
+                <label class="mpev-label">
                     <div>
                         <h2><?php esc_html_e( 'Custom Time Format', 'mage-eventpress' ); ?></h2>
                         <span><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
@@ -4782,7 +4782,7 @@
                 </label>
             </section>
             <section class="mep_global_timezone_display">
-                <label class="label">
+                <label class="mpev-label">
                     <div>
                         <h2><?php esc_html_e( 'Show Timezone', 'mage-eventpress' ); ?></h2>
                         <span><?php _e( 'If you want to show the date and time in your local timezone, please select Yes.', 'mage-eventpress' ); ?></span>

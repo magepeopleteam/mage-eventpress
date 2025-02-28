@@ -46,7 +46,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     <span><?php esc_html_e('Speaker Settings', 'mage-eventpress'); ?></span>
                 </section>
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
@@ -55,7 +55,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     </label>
                 </section>
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
                             <span><?php echo __('Please select Speakers, You can Add New Speakers From <a href="' . get_admin_url() . 'post-new.php?post_type=mep_event_speaker' . '">Here</a>', 'mage-eventpress'); ?></span>
@@ -92,7 +92,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 </div>
 
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>

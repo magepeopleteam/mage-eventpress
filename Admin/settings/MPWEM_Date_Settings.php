@@ -16,7 +16,7 @@
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				?>
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><?php esc_html_e('Event Type', 'mage-eventpress'); ?></h2>
                             <span><?php _e('Select your event type', 'mage-eventpress'); ?></span>
@@ -103,7 +103,7 @@
 				?>
                 <div class="mpStyle">
                     <section>
-                        <label class="label">
+                        <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e('Start Date & Time', 'mage-eventpress'); ?></h2>
                                 <span><?php _e('Select Start Date & Time', 'mage-eventpress'); ?></span>
@@ -115,7 +115,7 @@
                         </label>
                     </section>
                     <section>
-                        <label class="label">
+                        <label class="mpev-label">
                             <div>
                                 <h2><span><?php esc_html_e('End Date & Time', 'mage-eventpress'); ?></span></h2>
                                 <span><?php _e('Select Start Date & Time', 'mage-eventpress'); ?></span>
@@ -127,7 +127,7 @@
                         </label>
                     </section>
                     <section>
-                        <label class="label">
+                        <label class="mpev-label">
                             <div>
                                 <h2><span><?php esc_html_e('After Repeated Days', 'mage-eventpress'); ?></span></h2>
                                 <span><?php _e('Select Start Date & Time', 'mage-eventpress'); ?></span>
@@ -146,7 +146,7 @@
                 </section>
                 <div class="mpStyle">
                     <section>
-                        <label class="label">
+                        <label class="mpev-label">
                             <div>
                                 <h2><span><?php esc_html_e('Ticket Offdays', 'mage-eventpress'); ?></span></h2>
                                 <span><?php _e('Select Offdays', 'mage-eventpress'); ?></span>
@@ -168,7 +168,7 @@
                         </label>
                     </section>
                     <section>
-                        <label class="label">
+                        <label class="mpev-label">
                             <div>
                                 <h2><span><?php esc_html_e('Ticket Off Dates List', 'mage-eventpress'); ?></span></h2>
                                 <span><?php _e('Ticket Off Dates List', 'mage-eventpress'); ?></span>
@@ -208,14 +208,14 @@
                         <span><?php esc_html_e('Configure Event Locations and Virtual Venues', 'mage-eventpress') ?></span>
                     </section>
                     <section>
-                        <div class="label">
+                        <div class="mpev-label">
                             <div>
                                 <h2><span><?php esc_html_e('Display Time?', 'mage-eventpress'); ?> </span></h2>
                                 <span><?php _e('You can change the date and time format by going to the settings', 'mage-eventpress'); ?></span>
                             </div>
 							<label class="mpev-switch">
 								<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
-								<span class="slider"></span>
+								<span class="mpev-slider"></span>
 							</label>
 						</div>
                     </section>

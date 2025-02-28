@@ -116,7 +116,7 @@
 
 (function($){
 	// ==============toggle switch radio button=================
-	$(document).on('click','.mpev-switch .slider',function(){
+	$(document).on('click','.mpev-switch .mpev-slider',function(){
 		var checkbox = $(this).prev('input[type="checkbox"]');
 		var toggleValues = checkbox.data('toggle-values').split(',');
 		var currentValue = checkbox.val();

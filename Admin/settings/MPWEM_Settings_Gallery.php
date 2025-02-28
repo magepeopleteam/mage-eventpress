@@ -41,7 +41,7 @@
 							</div>
 							<label class="mpev-switch">
 								<input type="checkbox" name="mep_display_slider" value="<?php echo esc_attr($display_gallary);?>" <?php echo $display_gallary=='on'?'checked':'';?> data-collapse-target="#mep_display_slider" data-toggle-values="on,off">
-								<span class="slider"></span>
+								<span class="mpev-slider"></span>
 							</label>
                         </div>
                     </section>

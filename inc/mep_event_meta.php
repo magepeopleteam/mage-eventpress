@@ -180,7 +180,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_reg_status" value="<?php echo esc_attr($mep_reg_status); ?>" <?php echo esc_attr(($mep_reg_status=='on')?'checked':''); ?> data-collapse-target="#mep_ticket_type_setting_sec" data-close-target="#" data-toggle-values="on,off">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</div>
 			</section>
@@ -214,7 +214,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_event_type" value="<?php echo esc_attr($checked); ?>" <?php echo esc_attr(($checked=='online')?'checked':''); ?> data-collapse-target="#mpev-online-event" data-close-target="#mpev-close-online-event" data-toggle-values="online,offline">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</div>
 			</section>
@@ -338,7 +338,7 @@ use Sabberworm\CSS\Value\Value;
 						</div>
 						<label class="mpev-switch">
 							<input type="checkbox" name="mep_sgm" value="<?php echo esc_attr($map_visible); ?>" <?php echo esc_attr(($map_visible==1)?'checked':''); ?> data-collapse-target="#mpev-show-map" data-close-target="#mpev-close-map" data-toggle-values="1,0">
-							<span class="slider"></span>
+							<span class="mpev-slider"></span>
 						</label>
 					</div>
 				</section>
@@ -520,7 +520,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_show_advance_col_status" value="<?php echo esc_attr($col_display); ?>" <?php echo esc_attr(($col_display=='on')?'checked':''); ?> data-collapse-target="#hide_column" data-toggle-values="on,off">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</div>
 			</section>
@@ -900,7 +900,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_show_end_datetime" value="<?php echo esc_attr($mep_show_end_datetime); ?>" <?php echo esc_attr(($mep_show_end_datetime=='yes')?'checked':''); ?> data-toggle-values="yes,no">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</div>
 			</section>
@@ -933,7 +933,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_available_seat" value="<?php echo esc_attr($seat_checked); ?>" <?php echo esc_attr(($seat_checked=='on')?'checked':''); ?> data-toggle-values="on,off">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</label>
 			</section>
@@ -978,7 +978,7 @@ use Sabberworm\CSS\Value\Value;
 					</div>
 					<label class="mpev-switch">
 						<input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr($event_member_type); ?>" <?php echo esc_attr(($event_member_type=='member_only')?'checked':''); ?> data-collapse-target="#event_virtual_type" data-toggle-values="member_only,for_all">
-						<span class="slider"></span>
+						<span class="mpev-slider"></span>
 					</label>
 				</div>
 			</section>

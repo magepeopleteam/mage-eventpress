@@ -4726,7 +4726,7 @@
                 </div>
                 <label class="mpev-switch">
                     <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr( $date_format ); ?>" <?php echo esc_attr( ( $date_format == 'on' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
-                    <span class="slider"></span>
+                    <span class="mpev-slider"></span>
                 </label>
             </div>
         </section>

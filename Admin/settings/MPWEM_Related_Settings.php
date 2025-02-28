@@ -81,7 +81,7 @@
 							</div>
 							<label class="mpev-switch">
 								<input type="checkbox" name="mep_related_event_status" value="<?php echo esc_attr($related_event_status); ?>" <?php echo esc_attr($related_event_status=='on'?'checked':''); ?> data-collapse-target="#mpev-related-event-display" data-toggle-values="on,off">
-								<span class="slider"></span>
+								<span class="mpev-slider"></span>
 							</label>
 						</div>
 					</section>

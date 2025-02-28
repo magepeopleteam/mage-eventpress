@@ -215,7 +215,7 @@
                             </div>
 							<label class="mpev-switch">
 								<input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
-								<span class="slider"></span>
+								<span class="mpev-slider"></span>
 							</label>
 						</div>
                     </section>

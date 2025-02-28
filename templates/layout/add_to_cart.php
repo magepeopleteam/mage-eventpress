@@ -19,9 +19,8 @@
 				</button>
 			<?php } else { ?>
 				<button type="submit" class="_themeButton" name="add-to-cart" value="<?php echo esc_attr($link_wc_product); ?>">
-					<?php esc_html_e('Register Event ', 'mage-eventpress'); ?>
+					<?php do_action('mep_before_add_cart_button', $post_id); esc_html_e(mep_get_label($post_id, 'mep_cart_btn_text', __('Register For This Event', 'mage-eventpress')), 'mage-eventpress'); do_action('mep_after_add_cart_button', $post_id); ?>
 				</button>
 			<?php } ?>
 		</div>
 	</div>
-<?php

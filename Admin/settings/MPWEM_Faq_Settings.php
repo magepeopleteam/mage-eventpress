@@ -60,7 +60,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                 </section>
 
                 <section>
-                    <label class="label">
+                    <label class="mpev-label">
                         <div>
                             <h2><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></h2>
                             <span><?php esc_html_e('FAQ Description', 'mage-eventpress'); ?></span>
@@ -126,7 +126,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                     ?>
                         <div class="mep-faq-item" data-id="<?php echo esc_attr($key); ?>">
                             <section class="faq-header" data-collapse-target="#faq-content-<?php echo esc_attr($key); ?>">
-                                <label class="label">
+                                <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_faq_title']); ?></p>
                                     <div class="faq-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>

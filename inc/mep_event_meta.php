@@ -173,7 +173,7 @@ use Sabberworm\CSS\Value\Value;
 			$mep_reg_status= $mep_reg_status?$mep_reg_status:'on';
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><?php esc_html_e('Registration Off/On:', 'mage-eventpress'); ?></h2>
 						<span><?php esc_html_e('Registration Off/On:', 'mage-eventpress'); ?></span>
@@ -189,7 +189,7 @@ use Sabberworm\CSS\Value\Value;
 		public function event_view_shortcode($post_id){
 			?>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div style="width: 50%;">
 						<h2><?php _e('Add To Cart Form Shortcode','mage-eventpress'); ?></h2>
 						<span><?php _e('If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.','mage-eventpress'); ?></span>
@@ -207,7 +207,7 @@ use Sabberworm\CSS\Value\Value;
 			$checked 			= ($event_type == 'online') ? 'online' : '';
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Online/Virtual ', 'mage-eventpress'); echo esc_html($event_label . '?');  ?> (No/Yes)</span></h2>
 						<span><?php _e('If your event is online or virtual, please ensure that this option is enabled.','mage-eventpress'); ?></span>
@@ -272,7 +272,7 @@ use Sabberworm\CSS\Value\Value;
 			?>
 			<div class='mep_event_tab_location_content' id='mpev-close-online-event' style="display:<?php echo ($event_type == 'online') ? esc_attr('none') : esc_attr('block'); ?>">
 				<section>
-					<label class="label">
+					<label class="mpev-label">
 						<div>
 							<h2><?php esc_html_e(" Location Source:", "mage-eventpress"); ?></h2>
 							<span><?php esc_html_e('If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress'); ?></span>
@@ -331,7 +331,7 @@ use Sabberworm\CSS\Value\Value;
 					</table>
 				</section>
 				<section>
-					<div class="label">
+					<div class="mpev-label">
 						<div>
 							<h2><?php esc_html_e('Show Google Map', 'mage-eventpress'); ?></h2>
 							<span><?php esc_html_e('Show an interactive Google Map on your website, letting users easily explore and find locations.','mage-eventpress'); ?></span>
@@ -513,7 +513,7 @@ use Sabberworm\CSS\Value\Value;
 			}
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><?php esc_html_e('Show Advanced Column:', 'mage-eventpress'); ?></h2>
 						<span><?php esc_html_e('Ticket Type List', 'mage-eventpress'); ?></span>
@@ -786,7 +786,7 @@ use Sabberworm\CSS\Value\Value;
 				<span><?php esc_html_e('Configure Event Tax','mage-eventpress') ?></span>
 			</section>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Rich Text Status', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -893,7 +893,7 @@ use Sabberworm\CSS\Value\Value;
 
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Display End Datetime', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -909,7 +909,7 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_reg_status($post_id) {
 			?>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Event SKU No', 'mage-eventpress');?></h2>
 						<span><?php _e('Event SKU No','mage-eventpress'); ?></span>
@@ -926,7 +926,7 @@ use Sabberworm\CSS\Value\Value;
 			$seat_checked = $seat_checked? $seat_checked:'no';
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Show Available Seat?', 'mage-eventpress');  ?></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -942,7 +942,7 @@ use Sabberworm\CSS\Value\Value;
 		public function mp_event_reset_booking_count($post_id) {
 			?>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Reset Booking Count', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.','mage-eventpress'); ?></span>
@@ -971,7 +971,7 @@ use Sabberworm\CSS\Value\Value;
 
 			?>
 			<section>
-				<div class="label">
+				<div class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Member Only Event?', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('You can change the date and time format by going to the settings','mage-eventpress'); ?></span>
@@ -983,7 +983,7 @@ use Sabberworm\CSS\Value\Value;
 				</div>
 			</section>
 			<section id="event_virtual_type" style="display: <?php echo $event_member_type=='member_only'? 'block':'none'; ?>;">
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><?php _e('Select User Role','mage-eventpress'); ?></h2>
 						<span><?php _e('Select User Role','mage-eventpress'); ?></span>
@@ -1018,7 +1018,7 @@ use Sabberworm\CSS\Value\Value;
 				<span><?php esc_html_e('Configure Event Tax','mage-eventpress') ?></span>
 			</section>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Tax status', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('Tax status','mage-eventpress'); ?></span>
@@ -1031,7 +1031,7 @@ use Sabberworm\CSS\Value\Value;
 				</label>
 			</section>
 			<section>
-				<label class="label">
+				<label class="mpev-label">
 					<div>
 						<h2><span><?php esc_html_e('Tax class', 'mage-eventpress'); ?></span></h2>
 						<span><?php _e('In order to add a new tax class, please go to WooCommerce -> Settings -> Tax Area','mage-eventpress'); ?></span>

@@ -74,7 +74,7 @@
 					</section>
 
 					<section>
-						<div class="label">
+						<div class="mpev-label">
 							<div>
 								<h2><span><?php esc_html_e('Show Related Events', 'mage-eventpress'); ?></span></h2>
 								<span><?php esc_html_e('Show/hide releated events in frontend template', 'mage-eventpress'); ?></span>
@@ -87,7 +87,7 @@
 					</section>
 					<div id="mpev-related-event-display" style="display: <?php echo esc_html($related_event_status=='on'?'block':'none'); ?>;">
 						<section>
-							<label class="label">
+							<label class="mpev-label">
 								<div>
 									<h2><span><?php esc_html_e('Related Events Section Label', 'mage-eventpress'); ?></span></h2>
 									<span><?php esc_html_e('Add a title above the releated events', 'mage-eventpress'); ?></span>
@@ -98,7 +98,7 @@
 						</section>
 			
 						<section>
-							<label class="label">
+							<label class="mpev-label">
 								<div>
 									<h2><span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span></h2>
 									<span><?php esc_html_e('Event List', 'mage-eventpress'); ?></span>

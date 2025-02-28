@@ -115,7 +115,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                     ?>
                         <div class="mep-timeline-item" data-id="<?php echo esc_attr($key); ?>">
                             <section class="timeline-header" data-collapse-target="#timeline-content-<?php echo esc_attr($key); ?>">
-                                <label class="label">
+                                <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_day_title']); ?></p>
                                     <div class="timeline-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>

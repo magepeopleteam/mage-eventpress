@@ -284,6 +284,13 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+= 4.2.8 =
+* New Backend Design
+* New Theme (Smart) added
+* Multi Type Event feature added
+* New Hook Added
+* Code Optimized
+  26 Feb 2025*
 
 = 4.2.8 =
 * Quick Release with the fixing of Elementor Typography error issue.

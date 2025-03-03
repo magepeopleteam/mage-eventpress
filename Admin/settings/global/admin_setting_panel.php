@@ -389,7 +389,18 @@
 									'enable' => 'Enable',
 									'disable' => 'Disable'
 								)
-							)
+								),
+								array(
+									'name' => 'mep_manual_seat_Left_fix',
+									'label' => __('Manual Seat Left Fixing?', 'mage-eventpress'),
+									'desc' => __('If you encounter the message "Sorry, There Are No Seats Available" after updating to version 4.3.0 or later, you may enable this setting. Otherwise, please keep it unchanged.', 'mage-eventpress'),
+									'type' => 'select',
+									'default' => 'disable',
+									'options' => array(
+										'enable' => 'Enable',
+										'disable' => 'Disable'
+									)
+								)								
 						)
 					),
 					'event_list_setting_sec' => apply_filters('mep_settings_event_list_arr', array(

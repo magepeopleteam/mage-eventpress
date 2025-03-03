@@ -15,11 +15,11 @@
 
 	if (!function_exists('mep_isValidFilename')) {
 	function mep_isValidFilename($filename) {
-		// Define the allowed pattern: lowercase letters, numbers, and must end with .php
-		$pattern = '/^[a-z0-9]+\.php$/';
-		
-		// Check if the filename matches the pattern
-		return preg_match($pattern, $filename) === 1;
+    // Define the allowed pattern: lowercase letters, numbers, hyphens, and must end with .php
+    $pattern = '/^[a-z0-9-]+\.php$/';
+    
+    // Check if the filename matches the pattern
+    return preg_match($pattern, $filename) === 1;
 	}
 	}
 	if (!function_exists('mep_temp_attendee_create_for_cart_ticket_array')) {

@@ -49,8 +49,9 @@
 			$total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($post_id, 'resv'), $post_id);
 			$recurring = get_post_meta($post_id, 'mep_enable_recurring', true) ? get_post_meta($post_id, 'mep_enable_recurring', true) : 'no';
 			$_upcoming_date = !empty(mep_get_event_upcoming_date($post_id)) ? mep_get_event_upcoming_date($post_id) : '';
-			$upcoming_date = $recurring == 'no' ? '' : $_upcoming_date;
-			$total_sold = mep_get_event_total_seat_left($post_id, $upcoming_date);
+			$mep_manual_seat_Left_fix = mep_get_option( 'mep_manual_seat_Left_fix', 'general_setting_sec', 'disable' );
+			$upcoming_date 		= ($recurring == 'no' && $mep_manual_seat_Left_fix == 'disable') ? '' : $_upcoming_date;
+			$total_sold 		= mep_get_event_total_seat_left($post_id, $upcoming_date);
 			$total_left = $total_seat - ($total_sold + $total_resv);
 			$total_left = $recurring == 'no' ? $total_left : 1;
 			$reg_status = get_post_meta($event_id, 'mep_reg_status', true) ? get_post_meta($event_id, 'mep_reg_status', true) : '';

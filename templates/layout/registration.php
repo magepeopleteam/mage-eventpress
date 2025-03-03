@@ -37,7 +37,7 @@
 				MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );
 			}
 		} else {
-			MPWEM_Layout::msg( esc_html__( 'Sorry, this event is  no longer available', 'mage-eventpress' ) );
+			// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is  no longer available', 'mage-eventpress' ) );
 		}
 	}
 	echo ob_get_clean();

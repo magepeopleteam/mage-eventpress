@@ -28,6 +28,8 @@ $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_s
         <a href="<?php the_permalink(); ?>">
             <div class="mep-list-header">
                 <h2 class='mep_list_title'><?php the_title(); ?></h2>
+
+                <?php do_action('mep_event_minimal_list_after_title', $event_id); ?>
                 <?php mep_get_event_upcomming_date($event_id, 1); ?>
                 <?php
                 if ($available_seat == 0) {
@@ -40,7 +42,7 @@ $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_s
                         <?php mep_get_event_city($event_id); ?>
                     </span>
                 </h3>
-
+                <?php do_action('mep_event_minimal_list_after', $event_id); ?>
         </a>
         <?php do_action('mep_event_list_loop_footer', $event_id); ?>
     </div>

@@ -52,7 +52,11 @@
 				$date        = $_REQUEST['dates'] ?? '';
 				$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 				$all_dates = MPWEM_Functions::get_dates($event_id);
+                //echo '<pre>';print_r(MP_Global_Function::get_post_info($event_id, 'mep_special_date_info', []));echo '</pre>';
+                //echo '<pre>';print_r($date);echo '</pre>';
+                //echo '<pre>';print_r($all_dates);echo '</pre>';
 				$all_times    = MPWEM_Functions::get_times( $event_id, $all_dates, $hidden_date );
+				//echo '<pre>';print_r($all_times);echo '</pre>';
 				?>
 				<label>
 					<span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>

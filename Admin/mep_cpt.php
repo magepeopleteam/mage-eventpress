@@ -46,15 +46,16 @@
 			'feeds' => true,
 		);
 		$args = array(
-			'public' => true,
-			'has_archive' => false,
-			'labels' => $labels,
-			'menu_icon' => $event_icon,
-			'supports' => apply_filters('mep_events_post_type_support', array('title', 'editor', 'thumbnail', 'excerpt')),
-			'rewrite' => $rewrite,
-			'show_in_rest' => apply_filters('mep_events_post_type_show_in_rest', true)
+			'public' 			=> true,
+			'has_archive' 		=> false,
+			'labels' 			=> $labels,
+			'menu_icon' 		=> $event_icon,
+			'supports' 			=> apply_filters('mep_events_post_type_support', array('title', 'editor', 'thumbnail', 'excerpt')),
+			'rewrite' 			=> $rewrite,
+			'show_in_rest' 		=> apply_filters('mep_events_post_type_show_in_rest', true)
 		);
 		register_post_type('mep_events', $args);
+
 		$labels = array(
 			'name' => __('Speakers', 'mage-eventpress'),
 			'singular_name' => __('Speaker', 'mage-eventpress'),

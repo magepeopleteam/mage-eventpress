@@ -399,8 +399,19 @@
 									'options' => array(
 										'enable' => 'Enable',
 										'disable' => 'Disable'
+									)									
+								),
+								array(
+									'name' => 'mep_rest_api_status',
+									'label' => __('Enable Rest API?', 'mage-eventpress'),
+									'desc' => __('If you want to enable event data available in the Rest API Please enable this.', 'mage-eventpress'),
+									'type' => 'select',
+									'default' => 'disable',
+									'options' => array(
+										'enable' => 'Enable',
+										'disable' => 'Disable'
 									)
-								)								
+								)									 							
 						)
 					),
 					'event_list_setting_sec' => apply_filters('mep_settings_event_list_arr', array(

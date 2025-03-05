@@ -38,6 +38,7 @@
 			$mep_reg_company = array_key_exists('mep_reg_company', $event_meta) && $event_meta['mep_reg_company'][0] ? MP_Global_Function::data_sanitize($event_meta['mep_reg_company'][0]) : '';
 			$mep_reg_gender = array_key_exists('mep_reg_gender', $event_meta) && $event_meta['mep_reg_gender'][0] ? MP_Global_Function::data_sanitize($event_meta['mep_reg_gender'][0]) : '';
 			$mep_reg_tshirtsize = array_key_exists('mep_reg_tshirtsize', $event_meta) && $event_meta['mep_reg_tshirtsize'][0] ? MP_Global_Function::data_sanitize($event_meta['mep_reg_tshirtsize'][0]) : '';
+			
 			//==========
 			$time = strtotime($event_expire_date);
 			$newformat = date('Y-m-d H:i:s', $time);

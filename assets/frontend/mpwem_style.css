@@ -1500,19 +1500,20 @@ span#hide_event_schdule {
 }
 
 button.mep-cat-control {
-  background: #FA6630;
+  border: 1px solid var(--mpev-base);
+  background-color: var(--mpev-base-txt);
   padding: 10px 20px;
   font-size: 16px;
   margin-right: 5px;
   margin-bottom: 10px;
-  border: 0;
   cursor: pointer;
-  color: #FFF;
+  color: var(--mpev-base);
+  outline-width: 0;
 }
 
 button.mep-cat-control.mixitup-control-active {
-  background: #DDD;
-  color: #000;
+  background: var(--mpev-base);
+  color: var(--mpev-base-txt);
 }
 
 /* Speaker Lists */

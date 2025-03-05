@@ -1283,7 +1283,7 @@ use Sabberworm\CSS\Value\Value;
 			$mep_event_custom_date_format = isset($_POST['mep_event_custom_date_format']) ? sanitize_text_field($_POST['mep_event_custom_date_format']) : $current_global_custom_date_format;
 			$mep_custom_event_time_format = isset($_POST['mep_custom_event_time_format']) ? sanitize_text_field($_POST['mep_custom_event_time_format']) : $current_global_custom_time_format;
 			$mep_time_zone_display = isset($_POST['mep_time_zone_display']) ? sanitize_text_field($_POST['mep_time_zone_display']) : $current_global_timezone_display;
-			$mep_event_cc_email_text = isset($_POST['mep_event_cc_email_text']) ? wp_kses_post($_POST['mep_event_cc_email_text']) : '';
+			
 			if ($mep_reg_status == 'on') {
 				update_post_meta($post_id, 'mep_event_date_format', $mep_event_date_format);
 				update_post_meta($post_id, 'mep_event_time_format', $mep_event_time_format);
@@ -1291,7 +1291,7 @@ use Sabberworm\CSS\Value\Value;
 				update_post_meta($post_id, 'mep_custom_event_time_format', $mep_custom_event_time_format);
 				update_post_meta($post_id, 'mep_time_zone_display', $mep_time_zone_display);
 			}
-			update_post_meta($post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text);
+			
 			update_post_meta($post_id, 'mep_show_end_datetime', $mep_show_end_datetime);
 			update_post_meta($post_id, 'mep_rich_text_status', $mep_rich_text_status);
 			update_post_meta($post_id, 'mep_available_seat', $mep_available_seat);

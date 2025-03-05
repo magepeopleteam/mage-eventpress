@@ -12,9 +12,8 @@ if(!class_exists('MPWEM_Email_Text')){
             add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'email_text_tab']);
             add_action('mp_event_all_in_tab_item', [$this, 'email_text_tab_content']);
 
-            // save faq data
+
             add_action('wp_ajax_mep_email_text_save', [$this, 'email_text_save']);
-            // add_action('wp_ajax_nopriv_mep_email_text_save', [$this, 'email_text_save']);
             
         }
 

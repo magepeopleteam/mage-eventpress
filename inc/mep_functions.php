@@ -3706,7 +3706,8 @@
 
 					if (strtotime( current_time( 'Y-m-d H:i:s' ) ) < strtotime( $start_date )) {
 					foreach ($mep_event_ticket_type as $field) {
-					$ticket_type = mep_remove_apostopie( $field['option_name_t'] );
+					$ticket_type = array_key_exists('option_name_t', $field) ? mep_remove_apostopie($field['option_name_t']) : '';	
+					// $ticket_type = mep_remove_apostopie( $field['option_name_t'] );
 					?>
                     var inputs = jQuery("#ttyttl").html() || 0;
                     var inputs = jQuery('#eventpxtp_<?php echo esc_attr( $count ); ?>').val() || 0;

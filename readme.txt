@@ -1,4 +1,4 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently ===
+=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin ===
 Contributors: magepeopleteam, aamahin
 Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin
 Requires at least: 5.3
@@ -10,7 +10,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for Event Registration and selling tickets easily.
+WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for creating events, managing registrations, and selling tickets easily.
 
 
 == Description ==
@@ -284,7 +284,29 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
-= 4.2.8 =
+
+= 4.3.3 =
+* Email text format issue solved
+* Email Text Desapear after update issue fixed.
+* Event date Schedule list spcae between end time issue fixed.
+* In Repeated recurring event speaicl time list not showing issue fixed.
+* Rest API Settings added, Now user can enable Rest API support from the Event Settings page.
+  05 March 2025*
+
+= 4.3.2 =
+* Notice removed for Reg Off events.
+* New Settings added to fix Seat Not Available Events after update.
+* Bristor, SpringField, Frnaklin Template Not saving issue fixed.
+* Hook Added in Minimal List Template
+  03 March 2025*
+
+= 4.3.1 =
+* Toggle Button Not shoing issue fixed.
+* Register Button Translation issue fixed in smart theme
+* Registeration off ribbon removed from event list
+  28 Feb 2025*
+
+= 4.3.0 =
 * New Backend Design
 * New Theme (Smart) added
 * Multi Type Event feature added

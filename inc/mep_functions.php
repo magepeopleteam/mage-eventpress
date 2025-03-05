@@ -6,6 +6,16 @@
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
 
+
+	add_filter('mep_events_post_type_show_in_rest','mep_rest_api_status_check');
+	add_filter('mep_event_attendees_type_show_in_rest','mep_rest_api_status_check');
+	add_filter('mep_speaker_post_type_show_in_rest','mep_rest_api_status_check');
+	function mep_rest_api_status_check($status){
+		$user_settings_status = mep_get_option('mep_rest_api_status','general_setting_sec','disbale');
+		$status = $user_settings_status == 'enable' ? true : false;
+		return $status;
+	}
+
 	add_action( 'admin_init',  'mep_flush_rules_event_list_page');
 	function mep_flush_rules_event_list_page() {
 		if ( isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash($_GET['post_type']) ) == 'mep_events' ) {
@@ -3840,7 +3850,9 @@
 			$post_id                          = $object['id'];
 			$post_meta                        = get_post_meta( $post_id );
 			$post_image                       = get_post_thumbnail_id( $post_id );
-			$post_meta["event_feature_image"] = wp_get_attachment_image_src( $post_image, 'full' )[0];
+			$image_src = wp_get_attachment_image_src( $post_image, 'full' );
+
+			$post_meta["event_feature_image"] = is_array($image_src) ? $image_src[0] : '';
 
 			return $post_meta;
 		}

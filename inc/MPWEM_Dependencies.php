@@ -57,7 +57,8 @@
 				wp_enqueue_style('mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2');
 				$fontAwesome = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_fontawesome_from_theme', 'no');
 				if ($fontAwesome == 'no') {
-					wp_enqueue_style('mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0');					
+					wp_enqueue_style('mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0');
+					wp_enqueue_style('mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0');	 					
 					wp_enqueue_style('mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4');
 				}
 				$flatIcon = MP_Global_Function::get_settings('general_setting_sec', 'mep_load_flaticon_from_theme', 'no');

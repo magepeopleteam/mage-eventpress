@@ -54,7 +54,7 @@
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
 
-//echo '<pre>';print_r( $user );echo '</pre>';die();
+                    //echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );
 				} else {

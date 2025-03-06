@@ -3387,7 +3387,7 @@
 						$ticket_type_arr[ $i ]['ticket_price']   = ! empty( $price[ $i ] ) ? stripslashes( strip_tags( $price[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['ticket_qty']     = ! empty( $qty[ $i ] ) ? stripslashes( strip_tags( $qty[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['max_qty']        = ! empty( $max_qty[ $i ] ) ? stripslashes( strip_tags( $max_qty[ $i ] ) ) : '';
-						$ticket_type_arr[ $i ]['event_date']     = ! empty( $mep_event_start_date[ $i ] ) ? stripslashes( strip_tags( $mep_event_start_date[ $i ] ) ) : '';
+						$ticket_type_arr[ $i ]['event_date']     = $mep_event_start_date[0];
 						$opttprice                               = ( (float) $price[ $i ] * (float) $qty[ $i ] );
 						$total_price                             = ( (float) $total_price + (float) $opttprice );
 						$validate[ $i ]['validation_ticket_qty'] = $vald + stripslashes( strip_tags( $qty[ $i ] ) );

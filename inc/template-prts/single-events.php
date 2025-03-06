@@ -42,27 +42,28 @@ if (post_password_required()) {
     // echo $event_id;
     $event_meta            = get_post_custom($event_id);
 
-// print_r($event_meta);
+// print_r($event_meta); 
 
-    $author_terms          = get_the_terms($event_id, 'mep_org');
-    $book_count            = get_post_meta($event_id, 'total_booking', true);
-    $user_api              = mep_get_option('google-map-api', 'general_setting_sec', '');
+    $author_terms               = get_the_terms($event_id, 'mep_org');
+    $book_count                 = get_post_meta($event_id, 'total_booking', true);
+    $user_api                   = mep_get_option('google-map-api', 'general_setting_sec', '');
 	//==========
-    $mep_full_name         = array_key_exists('mep_full_name',$event_meta) && $event_meta['mep_full_name'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_full_name'][0]):'';
-	$mep_reg_email         = array_key_exists('mep_reg_email',$event_meta) && $event_meta['mep_reg_email'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_email'][0]):'';
-	$mep_reg_phone         = array_key_exists('mep_reg_phone',$event_meta) && $event_meta['mep_reg_phone'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_phone'][0]):'';
-	$mep_reg_address         = array_key_exists('mep_reg_address',$event_meta) && $event_meta['mep_reg_address'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_address'][0]):'';
-	$mep_reg_designation         = array_key_exists('mep_reg_designation',$event_meta) && $event_meta['mep_reg_designation'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_designation'][0]):'';
-	$mep_reg_website         = array_key_exists('mep_reg_website',$event_meta) && $event_meta['mep_reg_website'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_website'][0]):'';
-	$mep_reg_veg         = array_key_exists('mep_reg_veg',$event_meta) && $event_meta['mep_reg_veg'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_veg'][0]):'';
-	$mep_reg_company         = array_key_exists('mep_reg_company',$event_meta) && $event_meta['mep_reg_company'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_company'][0]):'';
-	$mep_reg_gender         = array_key_exists('mep_reg_gender',$event_meta) && $event_meta['mep_reg_gender'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_gender'][0]):'';
+    $mep_full_name              = array_key_exists('mep_full_name',$event_meta) && $event_meta['mep_full_name'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_full_name'][0]):'';
+	$mep_reg_email              = array_key_exists('mep_reg_email',$event_meta) && $event_meta['mep_reg_email'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_email'][0]):'';
+	$mep_reg_phone              = array_key_exists('mep_reg_phone',$event_meta) && $event_meta['mep_reg_phone'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_phone'][0]):'';
+	$mep_reg_address            = array_key_exists('mep_reg_address',$event_meta) && $event_meta['mep_reg_address'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_address'][0]):'';
+	$mep_reg_designation        = array_key_exists('mep_reg_designation',$event_meta) && $event_meta['mep_reg_designation'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_designation'][0]):'';
+	$mep_reg_website            = array_key_exists('mep_reg_website',$event_meta) && $event_meta['mep_reg_website'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_website'][0]):'';
+	$mep_reg_veg                = array_key_exists('mep_reg_veg',$event_meta) && $event_meta['mep_reg_veg'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_veg'][0]):'';
+	$mep_reg_company            = array_key_exists('mep_reg_company',$event_meta) && $event_meta['mep_reg_company'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_company'][0]):'';
+	$mep_reg_gender             = array_key_exists('mep_reg_gender',$event_meta) && $event_meta['mep_reg_gender'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_gender'][0]):'';
 	$mep_reg_tshirtsize         = array_key_exists('mep_reg_tshirtsize',$event_meta) && $event_meta['mep_reg_tshirtsize'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_reg_tshirtsize'][0]):'';
 	//==========
-	$current_template         = array_key_exists('mep_event_template',$event_meta) && $event_meta['mep_event_template'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_event_template'][0]):'';
-    $global_template       = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme.php');
-    $_current_template     = $current_template ?: $global_template;
-    $currency_pos           = get_option('woocommerce_currency_pos');
+	$current_template           = array_key_exists('mep_event_template',$event_meta) && $event_meta['mep_event_template'][0] ?MP_Global_Function::data_sanitize($event_meta['mep_event_template'][0]):'';
+    $global_template            = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme.php');
+    $fatal_error_fix            = mep_get_option('mep_fix_details_page_fatal_error','general_setting_sec','disable');
+    $_current_template          = $current_template ?: $global_template;
+    $currency_pos               = get_option('woocommerce_currency_pos');
     do_action('mep_event_single_page_after_header',$_the_event_id);
 ?>
     <div class="mep-events-wrapper wrapper">
@@ -74,7 +75,9 @@ if (post_password_required()) {
 						if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {							
 							if ( ! class_exists( 'Xoo_Wl_Core' ) ) {
                                 if ( ! class_exists( 'Ultimate_Woocommerce_Gift_Card_Public' ) ) {
-               		 		        do_action('woocommerce_before_single_product');
+                                    if($fatal_error_fix == 'disable'){
+               		 		            do_action('woocommerce_before_single_product');
+                                    }
                             }
 						}
 					  }

@@ -11,7 +11,7 @@
 	add_filter('mep_event_attendees_type_show_in_rest','mep_rest_api_status_check');
 	add_filter('mep_speaker_post_type_show_in_rest','mep_rest_api_status_check');
 	function mep_rest_api_status_check($status){
-		$user_settings_status = mep_get_option('mep_rest_api_status','general_setting_sec','disbale');
+		$user_settings_status = mep_get_option('mep_rest_api_status','general_setting_sec','disable');
 		$status = $user_settings_status == 'enable' ? true : false;
 		return $status;
 	}

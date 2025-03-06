@@ -1,6 +1,6 @@
 <?php
 $event_ss_fb_icon       = mep_get_option('mep_event_ss_fb_icon', 'icon_setting_sec', 'fab fa-facebook-f');
-$event_ss_twitter_icon  = mep_get_option('mep_event_ss_twitter_icon', 'icon_setting_sec', 'fab fa-twitter');
+$event_ss_twitter_icon  = mep_get_option('mep_event_ss_twitter_icon', 'icon_setting_sec', 'fab fa-x-twitter'); 
 ?>
 <div class="mep-event-meta">
    <span class='mep-share-btn-title'> <?php echo esc_html(mep_get_label($post_id, 'mep_share_text', esc_html__('Share This','mage-eventpress').' '.$event_label.':')); ?></span>

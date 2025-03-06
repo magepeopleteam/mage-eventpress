@@ -163,7 +163,7 @@
                                     </td>
                                     <td align="right">
 										<?php do_action('mep_before_add_cart_btn', $post_id, false); ?>
-                                        <input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta)); ?>">
+                                        <input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta) ?? ''); ?>">
                                         <input type="hidden" name="mep_event_date_cart" value="<?php //do_action('mep_event_date');
 										?>">
 										<?php if ($not_in_the_cart && class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible == 2 && $new_registration_system_sp == 'on') { ?>

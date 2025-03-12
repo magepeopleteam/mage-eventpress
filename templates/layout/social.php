@@ -4,7 +4,7 @@
 	}
 	$event_id           = $event_id ?? get_the_id();
 	$event_ss_fb_icon       = mep_get_option('mep_event_ss_fb_icon', 'icon_setting_sec', 'fab fa-facebook-f');
-	$event_ss_twitter_icon  = mep_get_option('mep_event_ss_twitter_icon', 'icon_setting_sec', 'fab fa-twitter');
+	$event_ss_twitter_icon  = mep_get_option('mep_event_ss_twitter_icon', 'icon_setting_sec', 'fab fa-x-twitter');
 	$hide_share_details = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
 	?>
 	<?php if($hide_share_details=='no'): ?>
@@ -17,5 +17,5 @@
 				<?php do_action('mep_after_social_share_list',$event_id); ?>
 			</ul>
 		</div>
-	<?php endif; ?>
+	<?php endif; ?> 
 

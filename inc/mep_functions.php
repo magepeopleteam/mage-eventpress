@@ -6,6 +6,24 @@
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
 
+if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
+	function mep_add_show_sku_post_id_in_event_list_dashboard($actions, $post) {
+		if ($post->post_type === 'mep_events') {
+			$custom_meta_value = get_post_meta($post->ID, '_sku', true) ? 'SKU: '.get_post_meta($post->ID, '_sku', true) : 'ID: '.$post->ID;	
+			if (!empty($custom_meta_value)) {
+				$custom_action = [
+					'custom_meta' => '<span style="color:rgb(117, 111, 111); font-weight: bold;">' . esc_html($custom_meta_value) . '</span>'
+				];
+				$actions = array_merge($custom_action, $actions);
+			}
+		}
+		return $actions;
+	}
+}
+	add_filter('post_row_actions', 'mep_add_show_sku_post_id_in_event_list_dashboard', 10, 2);
+
+
+
 
 	add_filter('mep_events_post_type_show_in_rest','mep_rest_api_status_check');
 	add_filter('mep_event_attendees_type_show_in_rest','mep_rest_api_status_check');
@@ -620,11 +638,11 @@
 		}
 	}
 	if ( ! function_exists( 'mep_attendee_create' ) ) {
-		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array() ) {
+		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array(),$force_order_status = 'no' ) {
 			// Getting an instance of the order object
 			$order             = wc_get_order( $order_id );
 			$order_meta        = get_post_meta( $order_id );
-			$order_status      = $order->get_status();
+			$order_status      = $order instanceof WC_Order ? $order->get_status() : '';
 			$billing_intotal   = isset( $order_meta['_billing_address_index'][0] ) ? sanitize_text_field( $order_meta['_billing_address_index'][0] ) : '';
 			$payment_method    = isset( $order_meta['_payment_method_title'][0] ) ? sanitize_text_field( $order_meta['_payment_method_title'][0] ) : '';
 			$user_id           = isset( $order_meta['_customer_user'][0] ) ? sanitize_text_field( $order_meta['_customer_user'][0] ) : '';
@@ -708,7 +726,9 @@
 			update_post_meta( $order_id, 'order_type_name', 'mep_events' );
 			update_post_meta( $pid, 'ea_ticket_no', $pin );
 			update_post_meta( $pid, 'ea_event_date', $event_date );
-			// update_post_meta($pid, 'ea_order_status', $order_status);
+			if($force_order_status == 'yes'){
+				update_post_meta($pid, 'ea_order_status', $order_status);
+			}
 			update_post_meta( $pid, 'ea_flag', 'checkout_processed' );
 			update_post_meta( $order_id, 'ea_order_status', $order_status );
 			$hooking_data = apply_filters( 'mep_event_attendee_dynamic_data', array(), $pid, $type, $order_id, $event_id, $_user_info );
@@ -864,14 +884,14 @@
 						if ( is_array( $user_info_arr ) & sizeof( $user_info_arr ) > 0 ) {
 							foreach ( $user_info_arr as $_user_info ) {
 								//   if($check_before_create < count($user_info_arr)){
-								mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info );
+								mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'no' );
 								//   }
 							}
 						} else {
 							foreach ( $event_ticket_info_arr as $tinfo ) {
 								for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
 									//   if($check_before_create < count($event_ticket_info_arr)){
-									mep_attendee_create( 'billing', $order_id, $event_id, $tinfo );
+									mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'no' );
 									//   }
 								}
 							}
@@ -900,11 +920,11 @@
 								foreach ( $user_info_arr as $_user_info ) {
 									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_user_info['user_event_date'] );
 									if ( function_exists( 'mep_re_language_load' ) ) {
-										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info );
+													mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'no' );
 									} else {
 										if ( $check_before_create < count( $user_info_arr ) ) {
 											if ( $check_before_create_date == 0 ) {
-												mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info );
+													mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'no' );
 											}
 										}
 									}
@@ -914,11 +934,11 @@
 									for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
 										$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $tinfo['event_date'] );
 										if ( function_exists( 'mep_re_language_load' ) ) {
-											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo );
+													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'no' );
 										} else {
 											if ( $check_before_create < count( $event_ticket_info_arr ) ) {
 												if ( $check_before_create_date == 0 ) {
-													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo );
+													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'no' );
 												}
 											}
 										}

@@ -7,6 +7,7 @@ add_action('mep_shortcode_add_cart_section', 'mep_shortcode_add_cart_section_htm
 if (!function_exists('mep_shortcode_add_cart_section_html')) {
     function mep_shortcode_add_cart_section_html($event,$params)
     {
+        // echo $event;
 
         // print_r($params);
 ?>

@@ -23,15 +23,25 @@ $mep_enable_recurring       = $mep_enable_recurring?$mep_enable_recurring:'no';
 $event_type                 = get_post_meta($event_id, 'mep_event_type', true);
 $event_type                 = $event_type ? $event_type : 'offline';
 // echo $event_id;
+$gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_post_meta($event_id,'mep_gallery_images',true) : [];
 ?>
 <div class="mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>
         </div>
-        <div class="mpStyle">
-            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
-        </div>
+            <?php if(is_array($gallery_image_arr) && count($gallery_image_arr) > 1){ ?>
+            <div class="mpStyle">
+                    <?php            
+                        do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' );             
+                    ?>
+                </div>
+            <?php }else{ ?>
+            <div class="mep-default-feature-image">
+                    <?php 
+                        do_action('mep_event_thumbnail', $event_id); ?>
+                </div>
+            <?php } ?>
         <div class="mep-default-feature-date-location">
             <?php if ($hide_date_details == 'no') { ?>
                 <div class="mep-default-feature-date mep-default-feature-item">

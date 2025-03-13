@@ -14,13 +14,23 @@ $hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_post_meta($event_id,'mep_gallery_images',true) : [];
 ?>
 <div class="mep-default-theme spring_field">
     <div class="mep_flex">
         <div class="spring_field_banner">
+        <?php if(is_array($gallery_image_arr) && count($gallery_image_arr) > 1){ ?>
             <div class="mpStyle">
-                <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
-            </div>
+                    <?php            
+                        do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' );             
+                    ?>
+                </div>
+            <?php }else{ ?>
+            <div class="mep-default-feature-image">
+                    <?php 
+                        do_action('mep_event_thumbnail', $event_id); ?>
+                </div>
+            <?php } ?>
         </div>
         <div class="spring_field_banner_right">
             <div class="mep-default-title">

@@ -128,51 +128,7 @@ function loadBgImage() {
 	});
 	return true;
 }
-// function loadBgImage() {
-// 	jQuery('body').find('[data-bg-image]:visible').each(function () {
-// 		let target = jQuery(this);
-// 		let width = target.outerWidth();
-// 		let height = target.outerHeight();
-// 		if (target.css('background-image') === 'none' || width === 0 || height === 0) {
-// 			let bg_url = target.data('bg-image');
-// 			if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
-// 				bg_url = mp_empty_image_url;
-// 			}
-// 			mp_resize_bg_image_area(target, bg_url);
-// 			target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
-// 				dLoaderRemove(jQuery(this));
-// 			});
-// 		}
-// 	}).promise().done(function (){
-// 		jQuery('.superSlider').each(function () {
-// 			let current=jQuery(this).find('.sliderAllItem:not(.sliderPopup .sliderAllItem)');
-// 			let height=0;
-// 			let count=1;
-// 			//sliderItemActive($(this), 1);
-// 			current.find('.sliderItem').each(function (){
-// 				//console.log(height);
-// 				height=height+jQuery(this).innerHeight();
-// 				//count=2;
-// 				console.log(height);
-// 			}).promise().done(function (){
-// 				let length=current.find('.sliderItem').length;
-// 				height=height/length;
-// 				console.log(length);
-// 				console.log(height);
-// 				if(height>0){
-// 					//alert(height);
-// 					current.find('.sliderItem').each(function (){
-// 						//alert(height);
-// 						//jQuery(this).find('[data-bg-image]').css({"min-height": 0});
-// 						jQuery(this).css({"max-height": 500 });
-// 					});
-// 				}
-// 			});
-//
-// 		});
-// 	});
-// 	return true;
-// }
+
 function mp_resize_bg_image_area(target, bg_url) {
 	let tmpImg = new Image();
 	tmpImg.src = bg_url;

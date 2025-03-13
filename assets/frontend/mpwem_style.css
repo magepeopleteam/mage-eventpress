@@ -395,7 +395,7 @@ h3.ex-sec-title {
 .mep_event_list .mep_list_thumb img,
 .mep_list_thumb img {
   height: auto;
-  width: 100%;
+  width: auto;
   max-width: 100%;
 }
 

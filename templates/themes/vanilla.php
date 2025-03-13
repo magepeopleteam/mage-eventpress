@@ -17,13 +17,23 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_post_meta($event_id,'mep_gallery_images',true) : [];
 ?>
 
 <div class="mep-default-theme vanilla_theme">
     <div class="mep-default-content">
-        <div class="mpStyle">
-            <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
-        </div>
+            <?php if(is_array($gallery_image_arr) && count($gallery_image_arr) > 1){ ?>
+            <div class="mpStyle">
+                    <?php            
+                        do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' );             
+                    ?>
+                </div>
+            <?php }else{ ?>
+            <div class="mep-default-feature-image">
+                    <?php 
+                        do_action('mep_event_thumbnail', $event_id); ?>
+                </div>
+            <?php } ?>
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>
         </div>

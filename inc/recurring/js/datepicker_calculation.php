@@ -116,7 +116,7 @@
         return [true];
     }
 
-<?php if($recurring == 'yes'){ ?>
+<?php // if($recurring == 'yes'){ ?>
 
 jQuery('#mep_recurring_date').on('change', function () {
             var event_date = jQuery(this).val();          
@@ -222,5 +222,5 @@ jQuery(document).ready(function ($) {
 });    
             
             
-            <?php } } } ?>
+            <?php } } ?>
 </script>

@@ -284,6 +284,18 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+= 4.3.5 =
+* Thumbnail Showing issue fixed
+* Reset Booking Not working issue fixed.
+* Missing Translation are added to POT file
+  18 March 2025*
+
+
+= 4.3.4 =
+* X icon issue sloved in smart theme
+* Gutenberg Enable/Disbale issue fixed.
+*Add to Calender Outlook button not working issue solved
+  12 March 2025*
 
 = 4.3.3 =
 * Email text format issue solved

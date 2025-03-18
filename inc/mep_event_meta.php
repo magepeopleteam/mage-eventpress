@@ -5,20 +5,28 @@ use Sabberworm\CSS\Value\Value;
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
+
+
+
+
+
+
 	class MP_Event_All_Info_In_One {
 		public function __construct() {
 			add_action('add_meta_boxes', array($this, 'mp_event_all_info_in_tab'));
-			add_action('wp_ajax_mep_reset_booking', [$this,'mep_reset_booking_callback']);
+			// add_action('wp_ajax_mep_reset_booking', [$this,'mep_reset_booking_callback']);
 			// add_action('wp_ajax_nopriv_mep_reset_booking', [$this,'mep_reset_booking_callback']);
 		}
-		public function mep_reset_booking_callback() {
-			if(isset($_POST['post_id'])){
-				mep_reset_event_booking($_POST['post_id']);
-				wp_send_json_success(__("Successfully Booking Reset ", 'mage-eventpress'));
-				die;
-			}
+		// public function mep_reset_booking_callback() {
+		// 	echo $_POST['post_id'];
+		// 	if(isset($_POST['post_id'])){
+
+		// 		mep_reset_event_booking($_POST['post_id']);
+		// 		wp_send_json_success(__("Successfully Booking Reset ", 'mage-eventpress'));
+		// 		die;
+		// 	}
 			
-		}
+		// }
 		public function mp_event_all_info_in_tab() {
 			$event_label = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 			add_meta_box('mp_event_all_info_in_tab', __('<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress') . get_the_title(get_the_id()), array($this, 'mp_event_all_in_tab'), 'mep_events', 'normal', 'high');
@@ -950,7 +958,8 @@ use Sabberworm\CSS\Value\Value;
 					<div class="mpStyle">
 						<div class="_dFlex_justifyEnd">
 							<button class="button" type="button" id="mep-reset-booking" data-post-id='<?php echo esc_html($post_id); ?>'>
-								<span class="fas fa-refresh"></span>
+							<input type="hidden" class="hidden" id='mep-reset-booking-nonce' name='reset-booking-nonce' value="<?php echo wp_create_nonce('mep-ajax-reset-booking-nonce'); ?>">	
+							<span class="fas fa-refresh"></span>
 								<span class="mL_xs"><?php esc_html_e('Reset Booking', 'mage-eventpress'); ?></span>
 							</button>
 							

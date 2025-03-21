@@ -120,7 +120,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         }
 
         public function show_faq_data($post_id){
-            $mep_faq = get_post_meta($post_id,'mep_event_faq',true);
+            $mep_faq = get_post_meta($post_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($post_id, 'mep_event_faq', true)) : '';
             if( ! empty($mep_faq)):
                 foreach ($mep_faq as $key => $value) : 
                     ?>
@@ -136,7 +136,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                                 </label>
                             </section>
                             <section class="faq-content mB" data-collapse="#faq-content-<?php echo esc_attr($key); ?>">
-                                <?php echo wpautop(wp_kses_post($value['mep_faq_content'])); ?>
+                                <?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_faq_content']))); ?>
                             </section>
                         </div>
                     <?php

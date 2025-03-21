@@ -48,6 +48,7 @@
                                 <th><?php esc_html_e('Start Time', 'mage-eventpress'); ?></th>
                                 <th><?php esc_html_e('End Date', 'mage-eventpress'); ?></th>
                                 <th><?php esc_html_e('End Time', 'mage-eventpress'); ?></th>
+								<?php do_action('mep_date_table_head', $post_id); ?>
                                 <th><?php esc_html_e('Action', 'mage-eventpress'); ?></th>
                             </tr>
                             </thead>
@@ -57,6 +58,7 @@
                                 <td><?php self::time_item('event_start_time', $start_time); ?></td>
                                 <td><?php self::date_item('event_end_date', $end_date); ?></td>
                                 <td><?php self::time_item('event_end_time', $end_time); ?></td>
+								<?php do_action('mep_date_table_body_default_date', $post_id); ?>
                                 <td></td>
                             </tr>
 							<?php if (sizeof($more_dates) > 0) { ?>
@@ -70,6 +72,7 @@
                                         <td><?php self::time_item('event_more_start_time[]', $more_start_time); ?></td>
                                         <td><?php self::date_item('event_more_end_date[]', $more_end_date); ?></td>
                                         <td><?php self::time_item('event_more_end_time[]', $more_end_time); ?></td>
+										<?php do_action('mep_date_table_body_more_date', $post_id, $more_date); ?>
                                         <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
                                     </tr>
 								<?php } ?>
@@ -85,6 +88,7 @@
                                     <td><?php self::time_item('event_more_start_time[]', ''); ?></td>
                                     <td><?php self::date_item('event_more_end_date[]', ''); ?></td>
                                     <td><?php self::time_item('event_more_end_time[]', ''); ?></td>
+									<?php do_action('mep_date_table_empty', $post_id); ?>
                                     <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
                                 </tr>
                                 </tbody>

@@ -109,7 +109,8 @@ if( ! class_exists('MPWEM_Timeline_Details')){
         }
 
         public function show_timeline_data($post_id){
-            $mep_timeline = get_post_meta($post_id,'mep_event_day',true);
+            // $mep_timeline = get_post_meta($post_id,'mep_event_day',true);
+            $mep_timeline = get_post_meta($post_id, 'mep_event_day', true) ? maybe_unserialize(get_post_meta($post_id, 'mep_event_day', true)) : '';
             if( ! empty($mep_timeline)):
                 foreach ($mep_timeline as $key => $value) : 
                     ?>
@@ -125,7 +126,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                                 </label>
                             </section>
                             <section class="timeline-content" data-collapse="#timeline-content-<?php echo esc_attr($key); ?>">
-                                <?php echo wpautop(wp_kses_post($value['mep_day_content'])); ?>
+                                <?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_day_content']))); ?>
                             </section>
                         </div>
                     <?php

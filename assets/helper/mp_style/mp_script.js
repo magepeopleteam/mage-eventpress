@@ -111,7 +111,7 @@ function mp_alert($this, attr = 'alert') {
 }(jQuery));
 //====================================================================Load Bg Image=================//
 function loadBgImage() {
-	jQuery('body').find('[data-bg-image]:visible').each(function () {
+	jQuery('body').find('div.mpStyle [data-bg-image]:visible').each(function () {
 		let target = jQuery(this);
 		let width = target.outerWidth();
 		let height = target.outerHeight();
@@ -142,7 +142,7 @@ function mp_resize_bg_image_area(target, bg_url) {
 (function ($) {
 	let bg_image_load = false;
 	$(document).ready(function () {
-		$('body').find('[data-bg-image]').each(function () {
+		$('body').find('div.mpStyle [data-bg-image]').each(function () {
 			dLoader($(this));
 		});
 		$(window).on('load', function () {
@@ -155,14 +155,14 @@ function mp_resize_bg_image_area(target, bg_url) {
 			});
 		}
 	});
-	$(document).on('click', '[data-href]', function () {
+	$(document).on('click', 'div.mpStyle [data-href]', function () {
 		let href = $(this).data('href');
 		if (href) {
 			window.location.href = href;
 		}
 	});
 	$(window).on('load , resize', function () {
-		$('body').find('[data-bg-image]:visible').each(function () {
+		$('body').find('div.mpStyle [data-bg-image]:visible').each(function () {
 			let target = $(this);
 			let bg_url = target.data('bg-image');
 			if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
@@ -483,7 +483,7 @@ function mp_sticky_management() {
 //======================================================================Collapse=================//
 (function ($) {
 	"use strict";
-	$(document).on('click', '[data-collapse-target]', function () {
+	$(document).on('click', 'div.mpStyle [data-collapse-target]', function () {
 		let currentTarget = $(this);
 		let target_id = currentTarget.data('collapse-target');
 		let close_id = currentTarget.data('close-target');
@@ -492,7 +492,7 @@ function mp_sticky_management() {
 			mp_all_content_change(currentTarget);
 		}
 	});
-	$(document).on('change', 'select[data-collapse-target]', function () {
+	$(document).on('change', 'div.mpStyle select[data-collapse-target]', function () {
 		let currentTarget = $(this);
 		let value = currentTarget.val();
 		currentTarget.find('option').each(function () {

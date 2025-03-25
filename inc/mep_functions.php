@@ -22,7 +22,26 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 }
 	add_filter('post_row_actions', 'mep_add_show_sku_post_id_in_event_list_dashboard', 10, 2);
 
-
+	add_action('wp_ajax_mep_reset_booking_func', 'mep_reset_booking_func');
+	function mep_reset_booking_func() {
+		if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mep-ajax-reset-booking-nonce')) {
+			_e('Nonce verification failed.','mage-eventpress');
+			die();
+		}
+		if (!isset($_POST['post_id']) || empty($_POST['post_id'])) {			
+			_e("Post ID is missing ", 'mage-eventpress');
+			die();
+		} 
+		// nonce
+		$post_id 	= sanitize_text_field(intval($_POST['post_id']));
+		$reset 		= mep_reset_event_booking($post_id);
+		if($reset){
+			_e("Successfully Booking Reset ", 'mage-eventpress');
+		}else{
+			_e("Booking Reset unsuccessful", 'mage-eventpress');
+		}
+		die();
+	}
 
 
 	add_filter('mep_events_post_type_show_in_rest','mep_rest_api_status_check');
@@ -1301,6 +1320,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				}
 			}
 			mep_update_event_total_seat( $event_id, $date );
+			return true;
 		}
 	}
 	function mep_update_event_seat_inventory( $event_id, $ticket_array, $type = 'order' ) {

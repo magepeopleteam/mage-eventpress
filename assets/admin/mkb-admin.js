@@ -146,26 +146,30 @@
 		$(close).slideToggle();
 	});
 	//========================reset booking==================
-	$(document).on('click','#mep-reset-booking',function(){
-		$('#mep-reset-booking').click(function(e){
-			e.preventDefault();
-			var postID = $(this).data('post-id');
-			$.ajax({
-				url: mep_ajax.mep_ajaxurl,
-				type: 'POST',
-				data: {
-					action: 'mep_reset_booking', 
-					nonce: mep_ajax.nonce,
+	$(document).on('click', '#mep-reset-booking', function(e) {
+
+        // mep-reset-booking-nonce
+		var postID = $(this).data('post-id'); 
+		var resetNonce = $('#mep-reset-booking-nonce').val(); 
+            jQuery.ajax({
+                type: 'POST',
+                // url:mep_ajax.mep_ajaxurl,
+                url: ajaxurl,
+                data: {
+					action: 'mep_reset_booking_func', 
+					nonce: resetNonce,
 					post_id: postID
-				},
-				success: function(response) {
-					$('#mp-reset-status').html(response.data);
-				},
-				error: function(xhr, status, error) {
-					console.log('Error:', error);
-				}
-			});
-		});
+                },
+                    beforeSend: function(){
+                        jQuery('#mp-reset-status').html('');                       
+                    },
+                    success: function(data){                       
+                           jQuery('#mp-reset-status').html(data);    
+                                                    
+                    }
+                });
+               return false;
+
 	});
 
 	// ========Initialize visibility based on the current selection ===========

@@ -18,6 +18,12 @@ if (!class_exists('MPWEM_Helper')) {
                         <div class="sort_code_search_box defaultLayout_xs">
                             <div class="flexEqual filter_input_area">
                                 <?php
+                                if ($params['title-filter'] == 'yes') { ?>
+                                    <label>
+                                        <input type="text" name="filter_with_title" class="formControl" placeholder="<?php esc_html_e('Search by Title', 'mage-eventpress'); ?>">
+                                    </label>
+                                <?php }
+
                                 $category_lists = MPWEM_Helper::get_all_taxonomy('mep_cat');
                                 if ($params['category-filter'] == 'yes' && $category_lists && sizeof($category_lists) > 0) {
                                     ?>
@@ -29,8 +35,8 @@ if (!class_exists('MPWEM_Helper')) {
                                             <?php } ?>
                                         </select>
                                     </label>
-                                <?php } ?>
-                                <?php
+                                <?php }
+
                                 $organizer_lists = MPWEM_Helper::get_all_taxonomy('mep_org');
                                 if ($params['organizer-filter'] == 'yes' && $organizer_lists && sizeof($organizer_lists) > 0) {
                                     ?>
@@ -42,40 +48,80 @@ if (!class_exists('MPWEM_Helper')) {
                                             <?php } ?>
                                         </select>
                                     </label>
-                                <?php } ?>
-                                <?php
-                                $city_lists = self::get_all_city();
-                                if ($params['city-filter'] == 'yes' && sizeof($city_lists) > 0) {
-                                    ?>
+                                <?php }
+
+                                if ($params['state-filter'] == 'yes') {
+                                    $states = array();
+                                    while ($loop->have_posts()) {
+                                        $loop->the_post();
+                                        $state = get_post_meta(get_the_ID(), 'mep_state', true);
+                                        if (!empty($state)) {
+                                            $states[] = $state;
+                                        }
+                                    }
+                                    $states = array_unique($states);
+                                    sort($states);
+                                    if (!empty($states)) {
+                                        ?>
+                                        <label>
+                                            <select class="formControl" name="filter_with_state">
+                                                <option selected value=""><?php esc_html_e('Select State', 'mage-eventpress'); ?></option>
+                                                <?php foreach ($states as $state) { ?>
+                                                    <option value="<?php echo esc_attr($state); ?>"><?php echo esc_html($state); ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </label>
+                                        <?php
+                                    }
+                                    wp_reset_postdata();
+                                }
+
+                                if ($params['city-filter'] == 'yes') {
+                                    $cities = array();
+                                    while ($loop->have_posts()) {
+                                        $loop->the_post();
+                                        $city = get_post_meta(get_the_ID(), 'mep_city', true);
+                                        $state = get_post_meta(get_the_ID(), 'mep_state', true);
+                                        if (!empty($city)) {
+                                            $cities[] = array(
+                                                'city' => $city,
+                                                'state' => $state,
+                                                'display' => !empty($state) ? $city . ', ' . $state : $city,
+                                                'sort_key' => strtolower($city) // Add a lowercase version for sorting
+                                            );
+                                        }
+                                    }
+
+                                    // Remove duplicates based on city and state combination
+                                    $cities = array_map("unserialize", array_unique(array_map("serialize", $cities)));
+                                    
+                                    // Sort cities alphabetically by the lowercase city name
+                                    usort($cities, function($a, $b) {
+                                        return strcmp($a['sort_key'], $b['sort_key']);
+                                    });
+
+                                    if (!empty($cities)) {
+                                        ?>
+                                        <label>
+                                            <select class="formControl" name="filter_with_city">
+                                                <option selected value=""><?php esc_html_e('Select City', 'mage-eventpress'); ?></option>
+                                                <?php foreach ($cities as $city_data) { ?>
+                                                    <option value="<?php echo esc_attr($city_data['city']); ?>"><?php echo esc_html($city_data['display']); ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </label>
+                                        <?php
+                                    }
+                                    wp_reset_postdata();
+                                }
+
+                                if ($params['date-filter'] == 'yes') { ?>
                                     <label>
-                                        <select class="formControl" name="filter_with_city">
-                                            <option selected value=""><?php esc_html_e('Select City', 'mage-eventpress'); ?></option>
-                                            <?php foreach ($city_lists as $city_list) { ?>
-                                                <option value="<?php echo esc_attr($city_list); ?>"><?php echo esc_html($city_list); ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </label>
-                                <?php } ?>
-                                <?php if ($params['date-filter'] == 'yes') { ?>
-                                    <label>
-                                        <input type="text" class="formControl filter_datepicker search_with_start_date" placeholder="<?php esc_html_e('Start date', 'mage-eventpress'); ?>"/>
-                                        <span class="fas fa-calendar-alt filter_date_icon"></span>
-                                    </label>
-                                    <label>
-                                        <input type="text" class="formControl filter_datepicker search_with_end_date" placeholder="<?php esc_html_e('End date', 'mage-eventpress'); ?>"/>
-                                        <span class="fas fa-calendar-alt filter_date_icon"></span>
+                                        <input type="date" name="filter_with_date" class="formControl">
                                     </label>
                                 <?php } ?>
                             </div>
-                            <?php if ($params['title-filter'] == 'yes') { ?>
-                                <div class="filter_input_area">
-                                    <label>
-                                        <input type="text" name="title_filter" placeholder="<?php esc_html_e('Type Name here ....', 'mage-eventpress'); ?>" class="formControl"/>
-                                    </label>
-                                </div>
-                            <?php } ?>
                         </div>
-                        <div class="search_result_empty"><?php esc_html_e('No Match Result Found!', 'mage-eventpress'); ?></div>
                     </div>
                 </div>
                 <p class="textGray textCenter search_sort_code_counts">

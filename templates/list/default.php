@@ -12,7 +12,7 @@ $event_location_icon            = mep_get_option('mep_event_location_icon', 'ico
 $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 
 ?>
-<div class='filter_item mep-event-list-loop <?php echo esc_attr($columnNumber); echo ' '.esc_attr($class_name); ?> mep_event_<?php echo esc_attr($style); ?>_item mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>' data-title="<?php echo esc_attr(get_the_title($event_id)); ?>" data-city-name="<?php echo esc_attr(get_post_meta($event_id, 'mep_city', true)); ?>" data-category="<?php echo esc_attr($taxonomy_category); ?>" data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>" data-date="<?php echo esc_attr(date('m/d/Y',strtotime($date))); ?>" style="width:calc(<?php echo esc_attr($width); ?>% - 14px);">
+<div class='filter_item mep-event-list-loop <?php echo esc_attr($columnNumber); echo ' '.esc_attr($class_name); ?> mep_event_<?php echo esc_attr($style); ?>_item mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>' data-title="<?php echo esc_attr(get_the_title($event_id)); ?>" data-city-name="<?php echo esc_attr(get_post_meta($event_id, 'mep_city', true)); ?>" data-state="<?php echo esc_attr(get_post_meta($event_id, 'mep_state', true)); ?>" data-category="<?php echo esc_attr($taxonomy_category); ?>" data-organizer="<?php echo esc_attr($taxonomy_organizer); ?>" data-date="<?php echo esc_attr(date('Y-m-d', strtotime($date))); ?>" style="width:calc(<?php echo esc_attr($width); ?>% - 14px);">
     <?php do_action('mep_event_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo esc_url(get_the_permalink()); ?>">

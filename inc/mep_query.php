@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 /**
  * This is the Main Query Function For Query the Event List, Just Pass the Required values It will return the Query As Object.
  */
-function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming')
+function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '')
 {
     $event_expire_on_old    = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
     $event_order_by         = mep_get_option('mep_event_list_order_by', 'general_setting_sec', 'meta_value');    
@@ -45,6 +45,13 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'value'     => $city,
         'compare'   => 'LIKE'
     ) : '';
+
+    $state_filter = !empty($state) ? array(
+        'key'       => 'mep_state',
+        'value'     => $state,
+        'compare'   => 'LIKE'
+    ) : '';
+
     $country_filter = !empty($country) ? array(
         'key'       => 'mep_country',
         'value'     => $country,
@@ -54,33 +61,35 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
     $expire_filter = !empty($event_expire_on) ? array(
         'key'       => $event_expire_on,
         'value'     => $now,
-        'compare'   => $etype
+        'compare'   => $etype,
+        'type'      => 'DATETIME'
     ) : '';
 
-    
+    $meta_query = array(
+        'relation' => 'AND',
+        $expire_filter,
+        $city_filter,
+        $state_filter,
+        $country_filter
+    );
+
+    $tax_query = array(
+        'relation' => 'AND',
+        $cat_filter,
+        $org_filter
+    );
+
     $args = array(
         'post_type'         => array('mep_events'),
         'paged'             => $paged,
         'posts_per_page'    => $show,
         'order'             => $sort,
         'orderby'           => $event_order_by,
-        // 'meta_key'          => 'event_start_datetime',
-        'meta_key'          => 'event_upcoming_datetime',
-        'meta_query' => array(
-            $expire_filter,
-            $city_filter,
-            $country_filter
-        ),
-        'tax_query' => array(
-            $cat_filter,
-            $org_filter
-        )
+        'meta_key'          => 'event_start_datetime',
+        'meta_query'        => array_filter($meta_query),
+        'tax_query'         => array_filter($tax_query)
     );
-
-    $loop = new WP_Query($args);
-
-
-    return $loop;
+    return new WP_Query($args);
 }
 
 /**

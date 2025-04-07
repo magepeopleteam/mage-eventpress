@@ -178,24 +178,35 @@
                                 <span><?php _e('Ticket Off Dates List', 'mage-eventpress'); ?></span>
                             </div>
                             <div class="mp_settings_area ">
-                                <div class="mp_item_insert mp_sortable_area">
-									<?php
-										$off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
-										//echo '<pre>';	print_r($off_day_lists);echo '</pre>';
-										if (sizeof($off_day_lists)) {
-											foreach ($off_day_lists as $off_day) {
-												if ($off_day['mep_ticket_off_date']) {
-													$this->date_item('mep_ticket_off_dates[]', $off_day['mep_ticket_off_date']);
-												}
-											}
-										}
-									?>
-                                </div>
-								<?php MP_Custom_Layout::add_new_button(esc_html__('Add New Off date', 'mage-eventpress')); ?>
+                                <table>
+                                    <tbody class="mp_item_insert mp_sortable_area">
+                                        <?php
+                                            $off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
+                                            if (sizeof($off_day_lists)) {
+                                                foreach ($off_day_lists as $off_day) {
+                                                    if ($off_day['mep_ticket_off_date']) {
+                                                        ?>
+                                                        <tr class="mp_remove_area">
+                                                            <td><?php $this->date_item('mep_ticket_off_dates[]', $off_day['mep_ticket_off_date']); ?></td>
+                                                            <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+                                <?php MP_Custom_Layout::add_new_button(esc_html__('Add New Off date', 'mage-eventpress')); ?>
                                 <div class="mp_hidden_content">
-                                    <div class="mp_hidden_item">
-										<?php $this->date_item('mep_ticket_off_dates[]'); ?>
-                                    </div>
+                                    <table>
+                                        <tbody class="mp_hidden_item">
+                                            <tr class="mp_remove_area">
+                                                <td><?php $this->date_item('mep_ticket_off_dates[]'); ?></td>
+                                                <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </label>

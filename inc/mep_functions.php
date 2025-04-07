@@ -4456,17 +4456,22 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	 **************************/
 	if ( ! function_exists( 'mep_elementor_get_events' ) ) {
 		function mep_elementor_get_events( $default ) {
-			$args      = array( 'post_type' => 'mep_events', );
-			$list      = array( '0' => $default );
+			$args = array(
+				'post_type'      => 'mep_events',
+				'posts_per_page' => -1, // Fetch all posts
+			);
+		
+			$list = array( '0' => $default );
 			$the_query = new WP_Query( $args );
+		
 			if ( $the_query->have_posts() ) {
 				while ( $the_query->have_posts() ) {
 					$the_query->the_post();
-					$list[ get_the_id() ] = get_the_title();
+					$list[ get_the_ID() ] = get_the_title();
 				}
 			}
 			wp_reset_postdata();
-
+		
 			return $list;
 		}
 	}

@@ -3871,7 +3871,51 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 					$i ++;
 				}
 			}
-			$event_dates = array_merge( $date_arr, $m_date_arr );
+			
+			// Add special dates to the event dates array
+			$special_dates = get_post_meta( $event_id, 'mep_special_date_info', true ) ? get_post_meta( $event_id, 'mep_special_date_info', true ) : [];
+			$s_date_arr = [];
+			
+			if ( is_array($special_dates) && sizeof( $special_dates ) > 0 ) {
+				$j = 0;
+				foreach ( $special_dates as $sdate ) {
+					if ( isset($sdate['start_date']) && !empty($sdate['start_date']) ) {
+						$start_date = $sdate['start_date'];
+						$end_date = isset($sdate['end_date']) ? $sdate['end_date'] : $start_date;
+						
+						// Get time slots for this special date
+						$time_slots = isset($sdate['time']) && is_array($sdate['time']) ? $sdate['time'] : [];
+						
+						if ( !empty($time_slots) ) {
+							// If there are time slots, create entry for each time slot
+							foreach ( $time_slots as $slot ) {
+								if ( isset($slot['mep_ticket_time']) && !empty($slot['mep_ticket_time']) ) {
+									$start_time = $slot['mep_ticket_time'];
+									// Add 1 hour as approximate duration if no end time specified
+									$end_time = date('H:i', strtotime($start_time . ' +1 hour'));
+									
+									$sstart = $start_date . ' ' . $start_time;
+									$send = $end_date . ' ' . $end_time;
+									
+									$s_date_arr[ $j ]['start'] = $sstart;
+									$s_date_arr[ $j ]['end'] = $send;
+									$j++;
+								}
+							}
+						} else {
+							// If no time slots, add the date with default times
+							$sstart = $start_date . ' 00:00:00';
+							$send = $end_date . ' 23:59:59';
+							
+							$s_date_arr[ $j ]['start'] = $sstart;
+							$s_date_arr[ $j ]['end'] = $send;
+							$j++;
+						}
+					}
+				}
+			}
+			
+			$event_dates = array_merge( $date_arr, $m_date_arr, $s_date_arr );
 
 			return apply_filters( 'mep_event_dates_in_calender_free', $event_dates, $event_id );
 		}
@@ -4456,22 +4500,17 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	 **************************/
 	if ( ! function_exists( 'mep_elementor_get_events' ) ) {
 		function mep_elementor_get_events( $default ) {
-			$args = array(
-				'post_type'      => 'mep_events',
-				'posts_per_page' => -1, // Fetch all posts
-			);
-		
-			$list = array( '0' => $default );
+			$args      = array( 'post_type' => 'mep_events', );
+			$list      = array( '0' => $default );
 			$the_query = new WP_Query( $args );
-		
 			if ( $the_query->have_posts() ) {
 				while ( $the_query->have_posts() ) {
 					$the_query->the_post();
-					$list[ get_the_ID() ] = get_the_title();
+					$list[ get_the_id() ] = get_the_title();
 				}
 			}
 			wp_reset_postdata();
-		
+
 			return $list;
 		}
 	}

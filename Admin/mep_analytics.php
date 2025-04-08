@@ -247,20 +247,8 @@ function mep_get_analytics_data() {
         $event_args['p'] = $event_id; // Use 'p' instead of 'include' for direct ID query
     }
 
-    // Get all events
-    $all_events_count = wp_count_posts('mep_events');
-    $debug_info['all_events_count'] = array(
-        'publish' => isset($all_events_count->publish) ? $all_events_count->publish : 0,
-        'draft' => isset($all_events_count->draft) ? $all_events_count->draft : 0,
-        'pending' => isset($all_events_count->pending) ? $all_events_count->pending : 0,
-        'private' => isset($all_events_count->private) ? $all_events_count->private : 0,
-        'future' => isset($all_events_count->future) ? $all_events_count->future : 0,
-        'total' => array_sum((array)$all_events_count)
-    );
-
     $events = get_posts($event_args);
     $summary_data['total_events'] = count($events);
-    $debug_info['events_count'] = count($events);
 
     // Process each event
     foreach ($events as $event) {
@@ -268,56 +256,17 @@ function mep_get_analytics_data() {
         $event_title = $event->post_title;
 
         // Get attendees for this event
-
-        // For debugging, let's include all order statuses
-        $include_all_statuses = true;
-
-        if ($include_all_statuses) {
-            // Just check for event ID without filtering by order status
-            $attendee_args = array(
-                'post_type' => 'mep_events_attendees',
-                'posts_per_page' => -1,
-                'meta_query' => array(
-                    array(
-                        'key' => 'ea_event_id',
-                        'value' => $event_id,
-                        'compare' => '=',
-                    )
-                ),
-            );
-        } else {
-            // Build order status filter
-            $order_status_filter = array();
-            if (count($order_status) > 1) {
-                $order_status_filter['relation'] = 'OR';
-                foreach ($order_status as $status) {
-                    $order_status_filter[] = array(
-                        'key' => 'ea_order_status',
-                        'value' => $status,
-                        'compare' => '='
-                    );
-                }
-            } else {
-                $order_status_filter = array(
-                    'key' => 'ea_order_status',
-                    'value' => $order_status[0],
-                    'compare' => '='
-                );
-            }
-
-            $attendee_args = array(
-                'post_type' => 'mep_events_attendees',
-                'posts_per_page' => -1,
-                'meta_query' => array(
-                    array(
-                        'key' => 'ea_event_id',
-                        'value' => $event_id,
-                        'compare' => '=',
-                    ),
-                    $order_status_filter
-                ),
-            );
-        }
+        $attendee_args = array(
+            'post_type' => 'mep_events_attendees',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => 'ea_event_id',
+                    'value' => $event_id,
+                    'compare' => '=',
+                )
+            ),
+        );
 
         $attendees = get_posts($attendee_args);
 
@@ -428,85 +377,6 @@ function mep_get_analytics_data() {
         );
     }
 
-    // Initialize debug information
-    $debug_info = array(
-        'events_count' => 0, // Will be updated after we get the events
-        'order_statuses' => $_order_status,
-        'date_range' => array('start' => $start_date, 'end' => $end_date),
-        'attendees_found' => false,
-        'attendee_count' => 0,
-        'include_all_statuses' => true,
-        'all_events_count' => array(),
-        'all_attendees_count' => array(),
-        'event_ids' => array(),
-        'attendee_queries' => array(),
-        'total_attendees_in_db' => 0
-    );
-
-    // Check if we found any attendees
-
-    // Check if there are any attendees in the database
-    $all_attendees_count = wp_count_posts('mep_events_attendees');
-    $debug_info['all_attendees_count'] = array(
-        'publish' => isset($all_attendees_count->publish) ? $all_attendees_count->publish : 0,
-        'draft' => isset($all_attendees_count->draft) ? $all_attendees_count->draft : 0,
-        'pending' => isset($all_attendees_count->pending) ? $all_attendees_count->pending : 0,
-        'private' => isset($all_attendees_count->private) ? $all_attendees_count->private : 0,
-        'total' => array_sum((array)$all_attendees_count)
-    );
-
-    // Get all attendees without any filters
-    $all_attendees_query = array(
-        'post_type' => 'mep_events_attendees',
-        'posts_per_page' => -1,
-    );
-    $all_attendees_results = get_posts($all_attendees_query);
-    $debug_info['total_attendees_in_db'] = count($all_attendees_results);
-
-    if (!empty($all_attendees_results)) {
-        $debug_info['sample_attendee_from_db'] = array(
-            'id' => $all_attendees_results[0]->ID,
-            'order_status' => get_post_meta($all_attendees_results[0]->ID, 'ea_order_status', true),
-            'event_id' => get_post_meta($all_attendees_results[0]->ID, 'ea_event_id', true),
-            'order_id' => get_post_meta($all_attendees_results[0]->ID, 'ea_order_id', true),
-        );
-    }
-
-    foreach ($events as $event) {
-        $event_id = $event->ID;
-        $debug_info['event_ids'][] = $event_id;
-
-        $attendee_args = array(
-            'post_type' => 'mep_events_attendees',
-            'posts_per_page' => -1,
-            'meta_query' => array(
-                array(
-                    'key' => 'ea_event_id',
-                    'value' => $event_id,
-                    'compare' => '=',
-                )
-            ),
-        );
-
-        $debug_info['attendee_queries'][] = array(
-            'event_id' => $event_id,
-            'query' => $attendee_args
-        );
-
-        $all_attendees = get_posts($attendee_args);
-        if (!empty($all_attendees)) {
-            $debug_info['attendees_found'] = true;
-            $debug_info['attendee_count'] += count($all_attendees);
-            $debug_info['sample_attendee'] = array(
-                'id' => $all_attendees[0]->ID,
-                'order_status' => get_post_meta($all_attendees[0]->ID, 'ea_order_status', true),
-                'event_id' => get_post_meta($all_attendees[0]->ID, 'ea_event_id', true),
-                'order_id' => get_post_meta($all_attendees[0]->ID, 'ea_order_id', true),
-            );
-            break;
-        }
-    }
-
     // Prepare response
     $response = array(
         'summary' => $summary_data,
@@ -523,8 +393,7 @@ function mep_get_analytics_data() {
             'labels' => array_keys($sales_by_weekday),
             'data' => array_values($sales_by_weekday),
         ),
-        'detailed_data' => $detailed_data,
-        'debug' => $debug_info
+        'detailed_data' => $detailed_data
     );
 
     wp_send_json_success($response);
@@ -580,56 +449,17 @@ function mep_export_analytics_csv() {
         $event_title = $event->post_title;
 
         // Get attendees for this event
-
-        // For debugging, let's include all order statuses
-        $include_all_statuses = true;
-
-        if ($include_all_statuses) {
-            // Just check for event ID without filtering by order status
-            $attendee_args = array(
-                'post_type' => 'mep_events_attendees',
-                'posts_per_page' => -1,
-                'meta_query' => array(
-                    array(
-                        'key' => 'ea_event_id',
-                        'value' => $event_id,
-                        'compare' => '=',
-                    )
-                ),
-            );
-        } else {
-            // Build order status filter
-            $order_status_filter = array();
-            if (count($order_status) > 1) {
-                $order_status_filter['relation'] = 'OR';
-                foreach ($order_status as $status) {
-                    $order_status_filter[] = array(
-                        'key' => 'ea_order_status',
-                        'value' => $status,
-                        'compare' => '='
-                    );
-                }
-            } else {
-                $order_status_filter = array(
-                    'key' => 'ea_order_status',
-                    'value' => $order_status[0],
-                    'compare' => '='
-                );
-            }
-
-            $attendee_args = array(
-                'post_type' => 'mep_events_attendees',
-                'posts_per_page' => -1,
-                'meta_query' => array(
-                    array(
-                        'key' => 'ea_event_id',
-                        'value' => $event_id,
-                        'compare' => '=',
-                    ),
-                    $order_status_filter
-                ),
-            );
-        }
+        $attendee_args = array(
+            'post_type' => 'mep_events_attendees',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => 'ea_event_id',
+                    'value' => $event_id,
+                    'compare' => '=',
+                )
+            ),
+        );
 
         $attendees = get_posts($attendee_args);
 

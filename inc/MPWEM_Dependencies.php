@@ -201,6 +201,7 @@
 				$this->js_constant();
 				$this->custom_css();
 				$this->event_rich_text_data();
+				$this->add_open_graph_tags();
 			}
 			public function js_constant() {
 				?>
@@ -296,6 +297,44 @@
 							</script>
 							<?php
 							echo ob_get_clean();
+						}
+					}
+				}
+			}
+			
+			// Add Open Graph meta tags for better social sharing
+			public function add_open_graph_tags() {
+				global $post;
+				if (is_single()) {
+					$event_id = $post->ID;
+					if ($event_id && get_post_type($event_id) == 'mep_events') {
+						$event_name = get_the_title($event_id);
+						$event_description = strip_tags(mep_string_sanitize(get_the_excerpt($event_id)));
+						$event_url = get_the_permalink($event_id);
+						$event_image = get_the_post_thumbnail_url($event_id, 'full');
+						
+						// Output Open Graph meta tags
+						echo '<meta property="og:type" content="website" />';
+						echo '<meta property="og:title" content="' . esc_attr($event_name) . '" />';
+						echo '<meta property="og:description" content="' . esc_attr($event_description) . '" />';
+						echo '<meta property="og:url" content="' . esc_url($event_url) . '" />';
+						
+						if ($event_image) {
+							echo '<meta property="og:image" content="' . esc_url($event_image) . '" />';
+							echo '<meta property="og:image:width" content="1200" />';
+							echo '<meta property="og:image:height" content="630" />';
+						}
+						
+						// Facebook specific
+						echo '<meta property="fb:app_id" content="' . esc_attr(apply_filters('mep_fb_app_id', '')) . '" />';
+						
+						// Twitter Card
+						echo '<meta name="twitter:card" content="summary_large_image" />';
+						echo '<meta name="twitter:title" content="' . esc_attr($event_name) . '" />';
+						echo '<meta name="twitter:description" content="' . esc_attr($event_description) . '" />';
+						
+						if ($event_image) {
+							echo '<meta name="twitter:image" content="' . esc_url($event_image) . '" />';
 						}
 					}
 				}

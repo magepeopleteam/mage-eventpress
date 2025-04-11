@@ -113,7 +113,7 @@
 					 * If everything is fine then its go on ....
 					 */
 					
-					if ($event_member_type == 'for_all' || ($event_member_type != 'for_all' && is_user_logged_in() && (in_array(wp_get_current_user()->roles[0], $saved_user_role) || in_array('all', $saved_user_role)))) {
+					if ($event_member_type == 'for_all' || ($event_member_type != 'for_all' && is_user_logged_in() && (array_intersect(wp_get_current_user()->roles, $saved_user_role) || in_array('all', $saved_user_role)))) {
 						$seat_plan_visible = MP_Global_Function::get_post_info( $post_id, 'mp_event_seat_plan_visible', 1 );
 						$seat_plan         = MP_Global_Function::get_post_info( $post_id, 'mepsp_event_seat_plan_info', array() );
 						$system_sp         = MP_Global_Function::get_post_info( $post_id, 'mpwemasp_seat_plan_system', 'off' );

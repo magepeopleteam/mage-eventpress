@@ -3,7 +3,7 @@
   if(is_single() || is_admin() || is_page()){  
     global $post;
     $event_id                = !empty($event_id) ? $event_id : 0;
-    $p_id                    = $event_id > 0 ? $event_id : $post->ID;
+    $p_id                    = $event_id > 0 ? $event_id : (isset($post) && $post ? $post->ID : 0);
     $post_id                 = !empty($eid) ? $eid : $p_id;
     $datepicker_format       = is_admin() ? 'yy-mm-dd' : mep_get_option('mep_datepicker_format', 'general_setting_sec', 'yy-mm-dd');
     $post_id                 = mep_get_default_lang_event_id($post_id);

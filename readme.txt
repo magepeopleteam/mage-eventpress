@@ -284,6 +284,22 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+
+= 4.3.7 =
+* Security Added
+* Missing Translation are added to POT file
+* New Hook Added
+* Code Optimized
+  16 April 2025*
+
+= 4.3.6 =
+* Event Analytics Dashboard Page Added
+* State Filter added in event list shortcode
+* Multiple user role unable to book for a member only event issue fixed
+* facebook share feature image not showing issue fixed
+* Elementor widget not all event showing in the list issue fixed. 
+  11 April 2025*
+
 = 4.3.5 =
 * Thumbnail Showing issue fixed
 * Reset Booking Not working issue fixed.

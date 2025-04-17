@@ -1530,10 +1530,10 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ){
 			return;
 		}
 		if ( get_post_type( $post_id ) == 'mep_events' ) {
-			$recurring_status        = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( $_POST['mep_enable_recurring'] ) : '';
+			// $recurring_status        = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( $_POST['mep_enable_recurring'] ) : 'no';
 			$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( $_POST['mep_show_upcoming_event'] ) : '';
 			$mep_repeated_periods    = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( $_POST['mep_repeated_periods'] ) : '';
-			update_post_meta( $post_id, 'mep_enable_recurring', $recurring_status );
+			// update_post_meta( $post_id, 'mep_enable_recurring', $recurring_status );
 			update_post_meta( $post_id, 'mep_show_upcoming_event', $mep_show_upcoming_event );
 			update_post_meta( $post_id, 'mep_repeated_periods', $mep_repeated_periods );
 		}

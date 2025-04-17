@@ -35,8 +35,8 @@
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				$start_date = MP_Global_Function::get_post_info($post_id, 'event_start_date');
 				$start_time = MP_Global_Function::get_post_info($post_id, 'event_start_time');
-				$end_date = MP_Global_Function::get_post_info($post_id, 'event_end_date');
-				$end_time = MP_Global_Function::get_post_info($post_id, 'event_end_time');
+				$end_date 	= MP_Global_Function::get_post_info($post_id, 'event_end_date');
+				$end_time 	= MP_Global_Function::get_post_info($post_id, 'event_end_time');
 				$more_dates = MP_Global_Function::get_post_info($post_id, 'mep_event_more_date', []);
 				?>
                 <div class="mpStyle">
@@ -101,9 +101,9 @@
 			public function date_time_section($post_id) {
 				$start_date = MP_Global_Function::get_post_info($post_id, 'event_start_date');
 				$start_time = MP_Global_Function::get_post_info($post_id, 'event_start_time');
-				$end_date = MP_Global_Function::get_post_info($post_id, 'event_end_date');
-				$end_time = MP_Global_Function::get_post_info($post_id, 'event_end_time');
-				$periods = MP_Global_Function::get_post_info($post_id, 'mep_repeated_periods', 1);
+				$end_date 	= MP_Global_Function::get_post_info($post_id, 'event_end_date');
+				$end_time 	= MP_Global_Function::get_post_info($post_id, 'event_end_time');
+				$periods 	= MP_Global_Function::get_post_info($post_id, 'mep_repeated_periods', 1);
 				?>
                 <div class="mpStyle">
                     <section>
@@ -417,20 +417,20 @@
 				<?php
 			}
 			public function special_on_day_item($special_date = array()) {
-				$date_format = MP_Global_Function::date_picker_format();
-				$now = date_i18n($date_format, time());
-				$special_date = $special_date && is_array($special_date) ? $special_date : array();
-				$date_name = array_key_exists('date_label', $special_date) ? $special_date['date_label'] : '';
-				$start_date = array_key_exists('start_date', $special_date) ? $special_date['start_date'] : '';
-				$hidden_start_date = $start_date ? date('Y-m-d', strtotime($start_date)) : '';
+				$date_format 		= MP_Global_Function::date_picker_format();
+				$now 				= date_i18n($date_format, time());
+				$special_date 		= $special_date && is_array($special_date) ? $special_date : array();
+				$date_name 			= array_key_exists('date_label', $special_date) ? $special_date['date_label'] : '';
+				$start_date 		= array_key_exists('start_date', $special_date) ? $special_date['start_date'] : '';
+				$hidden_start_date 	= $start_date ? date('Y-m-d', strtotime($start_date)) : '';
 				$visible_start_date = $start_date ? date_i18n($date_format, strtotime($start_date)) : '';
-				$end_date = array_key_exists('end_date', $special_date) ? $special_date['end_date'] : '';
-				$hidden_end_date = $end_date ? date('Y-m-d', strtotime($end_date)) : '';
-				$visible_end_date = $end_date ? date_i18n($date_format, strtotime($end_date)) : '';
-				$time = array_key_exists('time', $special_date) ? maybe_unserialize($special_date['time']) : array();
-				$unique_name = uniqid();
-				$slot_name = 'mep_special_time_label_' . $unique_name . '[]';
-				$time_name = 'mep_special_time_value_' . $unique_name . '[]';
+				$end_date 			= array_key_exists('end_date', $special_date) ? $special_date['end_date'] : '';
+				$hidden_end_date 	= $end_date ? date('Y-m-d', strtotime($end_date)) : '';
+				$visible_end_date 	= $end_date ? date_i18n($date_format, strtotime($end_date)) : '';
+				$time 				= array_key_exists('time', $special_date) ? maybe_unserialize($special_date['time']) : array();
+				$unique_name 		= uniqid();
+				$slot_name 			= 'mep_special_time_label_' . $unique_name . '[]';
+				$time_name 			= 'mep_special_time_value_' . $unique_name . '[]';
 				?>
                 <tr class="mp_remove_area">
                     <td>
@@ -536,18 +536,18 @@
 					update_post_meta($post_id, 'mep_enable_recurring', $date_type);
 					//**********************//
 					if ($date_type == 'no' || $date_type == 'yes') {
-						$start_date = MP_Global_Function::get_submit_info('event_start_date');
-						$start_time = MP_Global_Function::get_submit_info('event_start_time');
-						$end_date = MP_Global_Function::get_submit_info('event_end_date');
-						$end_time = MP_Global_Function::get_submit_info('event_end_time');
+						$start_date 	= MP_Global_Function::get_submit_info('event_start_date');
+						$start_time 	= MP_Global_Function::get_submit_info('event_start_time');
+						$end_date 		= MP_Global_Function::get_submit_info('event_end_date');
+						$end_time 		= MP_Global_Function::get_submit_info('event_end_time');
 						update_post_meta($post_id, 'event_start_date', $start_date);
 						update_post_meta($post_id, 'event_start_time', $start_time);
 						update_post_meta($post_id, 'event_end_date', $end_date);
 						update_post_meta($post_id, 'event_end_time', $end_time);
-						$start_date_more = MP_Global_Function::get_submit_info('event_more_start_date', []);
-						$start_time_more = MP_Global_Function::get_submit_info('event_more_start_time', []);
-						$end_date_more = MP_Global_Function::get_submit_info('event_more_end_date', []);
-						$end_time_more = MP_Global_Function::get_submit_info('event_more_end_time', []);
+						$start_date_more 	= MP_Global_Function::get_submit_info('event_more_start_date', []);
+						$start_time_more 	= MP_Global_Function::get_submit_info('event_more_start_time', []);
+						$end_date_more 		= MP_Global_Function::get_submit_info('event_more_end_date', []);
+						$end_time_more 		= MP_Global_Function::get_submit_info('event_more_end_time', []);
 						$more_dates = [];
 						if (sizeof($start_date_more) > 0 && sizeof($end_date_more)) {
 							foreach ($start_date_more as $key => $start_date) {
@@ -561,10 +561,10 @@
 						}
 						update_post_meta($post_id, 'mep_event_more_date', $more_dates);
 					} else {
-						$start_date = MP_Global_Function::get_submit_info('event_start_date_everyday');
-						$start_time = MP_Global_Function::get_submit_info('event_start_time_everyday');
-						$end_date = MP_Global_Function::get_submit_info('event_end_date_everyday');
-						$end_time = MP_Global_Function::get_submit_info('event_end_time_everyday');
+						$start_date 	= MP_Global_Function::get_submit_info('event_start_date_everyday');
+						$start_time 	= MP_Global_Function::get_submit_info('event_start_time_everyday');
+						$end_date 		= MP_Global_Function::get_submit_info('event_end_date_everyday');
+						$end_time 		= MP_Global_Function::get_submit_info('event_end_time_everyday');
 						update_post_meta($post_id, 'event_start_date', $start_date);
 						update_post_meta($post_id, 'event_start_time', $start_time);
 						update_post_meta($post_id, 'event_end_date', $end_date);
@@ -600,10 +600,10 @@
 						$this->day_wise_slot_save($post_id, 'mep_ticket_times_fri');
 						//***************//
 						$special_dates = array();
-						$hidden_name = MP_Global_Function::get_submit_info('mep_special_date_hidden_name', array());
-						$date_labels = MP_Global_Function::get_submit_info('mep_special_date_name', array());
-						$start_date = MP_Global_Function::get_submit_info('mep_special_start_date', array());
-						$end_date = MP_Global_Function::get_submit_info('mep_special_end_date', array());
+						$hidden_name 	= MP_Global_Function::get_submit_info('mep_special_date_hidden_name', array());
+						$date_labels 	= MP_Global_Function::get_submit_info('mep_special_date_name', array());
+						$start_date 	= MP_Global_Function::get_submit_info('mep_special_start_date', array());
+						$end_date 		= MP_Global_Function::get_submit_info('mep_special_end_date', array());
 						if (count($start_date) > 0) {
 							for ($i = 0; $i < count($start_date); $i++) {
 								$time_labels = MP_Global_Function::get_submit_info('mep_special_time_label_' . $hidden_name[$i], array());

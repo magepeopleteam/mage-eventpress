@@ -19,7 +19,7 @@
 			if ( sizeof( $all_dates ) > 0 ) {
 				$event_member_type = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_event', 'for_all' );
 				$saved_user_role   = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_user_role', [] );
-				if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( in_array( wp_get_current_user()->roles[0], $saved_user_role ) || in_array( 'all', $saved_user_role ) ) ) ) {
+				if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) || in_array( 'all', $saved_user_role ) ) ) ) {
 					$full_location = MPWEM_Functions::get_location( $event_id );
 					?>
                     <div class="mpwem_registration_area">

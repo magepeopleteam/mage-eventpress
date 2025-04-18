@@ -15,6 +15,7 @@
 	$total_reserve = MPWEM_Functions::get_reserve_ticket($event_id);
 	$total_available = $total_ticket - ($total_sold + $total_reserve);
 	if ($total_available > 0) {
+		do_action('mepgq_max_qty_hook', $event_id, max($total_available, 0));
 		$ticket_types = MP_Global_Function::get_post_info($event_id, 'mep_event_ticket_type', []);
 		$count = 0;
 		if (sizeof($ticket_types) > 0) { ?>

@@ -65,7 +65,20 @@
     }
     $(document).on('change', '.mpwem_registration_area [name="option_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
-        mpwem_price_calculation(parent);
+        if (parent.find('[name="mepgq_max_qty"]').length > 0) {
+            let qty = $(this).val();
+            let total_qty = mpwem_qty(parent);
+            let max_qty_gq = parseInt(parent.find('[name="mepgq_max_qty"]').val());
+            if (total_qty > max_qty_gq) {
+                qty = qty-total_qty+max_qty_gq;
+                $(this).val(qty);
+                mpwem_price_calculation(parent);
+            } else {
+                mpwem_price_calculation(parent);
+            }
+        } else {
+            mpwem_price_calculation(parent);
+        }
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');

@@ -59,6 +59,7 @@
 			public static function get_submit_info_get_method($key, $default = '') {
 				return self::data_sanitize($_GET[$key] ?? $default);
 			}
+
 			public static function data_sanitize($data) {
 				$data = maybe_unserialize($data);
 				if (is_string($data)) {
@@ -82,6 +83,29 @@
 				}
 				return $data;
 			}
+
+
+			// public static function data_sanitize($data) {
+			// 	if (is_string($data)) {
+			// 		// Sanitize string: remove tags, slashes, and unsafe characters
+			// 		$data = sanitize_text_field(stripslashes(strip_tags($data)));
+			// 	}
+			// 	elseif (is_array($data)) {
+			// 		// Recursively sanitize each value
+			// 		foreach ($data as $key => $value) {
+			// 			$data[$key] = self::data_sanitize($value);
+			// 		}
+			// 	}
+			// 	elseif (is_object($data)) {
+			// 		// If object — convert to array and sanitize
+			// 		$data = (array) $data;
+			// 		$data = self::data_sanitize($data);
+			// 	}
+			// 	// Other types (int, float, bool) — leave as is
+			// 	return $data;
+			// }
+
+
 			//**************Date related*********************//
 			public static function date_picker_format_without_year($key = 'date_format'): string {
 				$format = MP_Global_Function::get_settings('mp_global_settings', $key, 'D d M , yy');

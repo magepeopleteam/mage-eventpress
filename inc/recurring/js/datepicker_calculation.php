@@ -59,8 +59,35 @@
 
                 $global_on_days_arr[] = '"'.date('j-n-Y',strtotime($value->format('Y-m-d'))).'"';
             }
-
-
+            // code by user
+			$special_dates = MP_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
+			if ( is_array( $special_dates ) ) {
+				$now = strtotime(current_time( 'Y-m-d' ));
+				foreach ( $special_dates as $special_date ) {
+					if (empty($special_date['start_date']) || $now > strtotime( $special_date['start_date'] ) ) {
+						continue;
+					}
+					// Not today
+					if ($now < strtotime( $special_date['start_date'] )) {
+						$global_on_days_arr[] = '"'.date('j-n-Y',strtotime($special_date['start_date'])).'"';
+						continue;
+					}
+					// Today, check time
+					if ( isset( $special_date['time'] ) && is_array( $special_date['time'] ) ) {
+						foreach ( $special_date['time'] as $sd_time ) {
+							if (empty($sd_time['mep_ticket_time'])) {
+								continue;
+							}
+							$time_str = $special_date['start_date'] . ' ' . $sd_time['mep_ticket_time'] . ' ' . wp_timezone_string();
+							$event_php_time = strtotime( $time_str );
+							if ( time() < $event_php_time ) {
+								$global_on_days_arr[] = '"'.date('j-n-Y',strtotime($special_date['start_date'])).'"';
+							}
+						}
+					}
+				}
+			}
+		
             $last_date = end($global_on_days_arr);
             $last_date = str_replace('"','',$last_date);
             $add_one_date = '"'.date('j-n-Y', strtotime($last_date . ' +1 day')).'"';

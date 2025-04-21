@@ -546,16 +546,9 @@
 				if (get_post_type($post_id) == 'mep_events') {
 
 					//************************************//
-					// $date_type = MP_Global_Function::get_submit_info('mep_enable_recurring', 'no');
 
-                    // $date_type = isset($_POST['mep_enable_recurring']) ? sanitize_text_field($_POST['mep_enable_recurring']) : 'no';
-					// update_post_meta($post_id, 'mep_enable_recurring', $date_type);
-
-                    if ( isset( $_POST['mep_enable_recurring'] ) ) {
-                        $date_type = sanitize_text_field( $_POST['mep_enable_recurring'] );
-
+                        $date_type = isset( $_POST['mep_enable_recurring']) ? sanitize_text_field( $_POST['mep_enable_recurring'] ) : 'no';
                         $allowed_values = array( 'no', 'yes', 'everyday' );
-
                         // Optionally validate as boolean '0' or '1'
                         if ( in_array( $date_type, $allowed_values, true ) ) {
                             update_post_meta( $post_id, 'mep_enable_recurring', $date_type );
@@ -563,7 +556,7 @@
                             // Invalid value — maybe set a default or reject
                             update_post_meta( $post_id, 'mep_enable_recurring', 'no' );
                         }
-                    }
+
 
 					//**********************//
 					if ($date_type == 'no' || $date_type == 'yes') {

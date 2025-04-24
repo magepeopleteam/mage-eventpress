@@ -1604,12 +1604,12 @@ button.mep-cat-control.mixitup-control-active {
 
 #mep_event_date_sch {
   height: 300px;
-  overflow: hidden;
+  overflow: auto;
   margin-bottom: 20px;
 }
 
 .mep_view_all_date {
-  overflow: scroll !important;
+  overflow: auto !important;
 }
 
 span.mep_single_date_btn {

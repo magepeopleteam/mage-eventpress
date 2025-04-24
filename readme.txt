@@ -285,6 +285,12 @@ A. You can create a support ticket here with problem details with possible scree
 
 == Changelog ==
 
+= 4.3.8 =
+* Special Date no showing in Datepicker issue fixed.
+* Special Date no showing in Event List sidebar issue fixed.
+* Recurring event Stat not updateting after order status issue fixed
+  24 April 2025*
+
 = 4.3.7 =
 * Security Added
 * Missing Translation are added to POT file

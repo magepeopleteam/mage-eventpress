@@ -3607,7 +3607,6 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
                 </ul>
 				<?php
 			}
-
 			return apply_filters( 'mep_display_user_info_in_cart_list', ob_get_clean(), $user_info );
 		}
 	}

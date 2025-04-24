@@ -339,6 +339,33 @@
 								)
 							),
 							array(
+								'name' => 'mep_show_low_stock_warning',
+								'label' => __('Show Low Stock Warning?', 'mage-eventpress'),
+								'desc' => __('Enable this to show a warning message when event seats are running low.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_low_stock_threshold',
+								'label' => __('Low Stock Threshold', 'mage-eventpress'),
+								'desc' => __('Show low stock warning when available seats are less than or equal to this number.', 'mage-eventpress'),
+								'type' => 'number',
+								'default' => '3',
+								'placeholder' => '3'
+							),
+							array(
+								'name' => 'mep_low_stock_text',
+								'label' => __('Low Stock Warning Text', 'mage-eventpress'),
+								'desc' => __('The text to display when seats are running low.', 'mage-eventpress'),
+								'type' => 'text',
+								'default' => 'Hurry! Only %s seats left',
+								'placeholder' => 'Hurry! Only %s seats left'
+							),
+							array(
 								'name' => 'mep_show_hidden_wc_product',
 								'label' => __('Show Hidden Woocommerce Products?', 'mage-eventpress'),
 								'desc' => __('With every creation of an event there is a Woocommerce product is also created. By default its hidden in the Product list. If you want to show them in the list select Yes', 'mage-eventpress'),

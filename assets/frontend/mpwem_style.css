@@ -47,6 +47,19 @@ div.item_hover_effect a:hover {
   background-color: #fff;
   border: 1px solid var(--mpev-base);
 }
+.mep-low-stock-warning {
+  background-color: var(--mpev-primary) !important;
+  color: var(--mpev-white) !important;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 5px 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  font-size: 13px;
+}
+.mep-low-stock-warning-text {
+  font-weight: 500;
+}
 
 .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
   background: var(--mpev-base);
@@ -1604,12 +1617,12 @@ button.mep-cat-control.mixitup-control-active {
 
 #mep_event_date_sch {
   height: 300px;
-  overflow: auto;
+  overflow: hidden;
   margin-bottom: 20px;
 }
 
 .mep_view_all_date {
-  overflow: auto !important;
+  overflow: scroll !important;
 }
 
 span.mep_single_date_btn {
@@ -5866,3 +5879,45 @@ Vanilla theme css by ariful
 }
 
 /*# sourceMappingURL=mpwem_style.css.map */
+
+.event-expire-btn {
+  background-color: #6046ff38;
+  color: rgba(0, 0, 0, 0.88);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 20px 0;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-left: 5px solid var(--mpev-red);
+}
+
+.event-expire-btn::before {
+  content: "\f06a";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 20px;
+  margin-right: 10px;
+  opacity: 0.9;
+}
+
+.event-expire-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0) 60%);
+  z-index: 1;
+  pointer-events: none;
+}

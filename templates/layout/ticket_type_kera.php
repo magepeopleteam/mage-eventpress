@@ -104,6 +104,7 @@
                                                                         if($exit_avail<1) {
 	                                                                        MP_Custom_Layout::qty_input( $input_data );
                                                                         }else{
+                                                                            ?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr($ticket_price); ?>"/><?php
 	                                                                        esc_html_e('Upcoming', 'mage-eventpress');
                                                                         }
                                                                         $exit_avail=$available;

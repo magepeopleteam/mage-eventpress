@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --mpev-primary:#f12971;
   --mpev-dark:#303030;
@@ -5862,6 +5863,250 @@ Vanilla theme css by ariful
     -webkit-justify-content: center;
     justify-content: center;
     font-size: 25px;
+  }
+}
+.mep-kera-theme {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 20px;
+}
+.mep-kera-theme .pricing-card {
+  background-color: #8e24aa; /* Purple background */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  color: white;
+  width: calc(33.33% - 20px);
+}
+.mep-kera-theme .pricing-card [data-tabs-target].active {
+  font-weight: var(--fw-medium);
+  background-color: #ff4081;
+  color: var(--color_theme_alter);
+}
+.mep-kera-theme .pricing-card .menu-list {
+  list-style-type: none;
+  text-align: left;
+  margin: 10px;
+  width: fit-content;
+  margin-bottom: 15px;
+}
+.mep-kera-theme .pricing-card .menu-list li {
+  margin-bottom: 5px;
+  position: relative;
+  padding-left: 20px;
+}
+.mep-kera-theme .pricing-card .menu-list li:before {
+  content: "•";
+  position: absolute;
+  left: 0px;
+  color: #ff4081; /* Pink bullet points */
+}
+
+.event-header {
+  padding: 20px;
+  text-align: center;
+}
+
+.event-date {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #ff4081; /* Pink color */
+}
+
+.event-logo {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+
+.event-location {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.ticket-type {
+  background-color: #fff; /* Pink button */
+  color: #ff4081;
+  text-align: center;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 30px;
+  margin: 0 20px 15px 20px;
+}
+
+.show-time {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.food-optional {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.food-service-header {
+  background-color: #ff4081; /* Pink button */
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 30px;
+  margin: 20px 20px 15px 20px;
+}
+
+.food-details {
+  padding: 0 20px 20px 20px;
+  text-align: center;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.catered-by {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.buffet-style {
+  font-size: 14px;
+  color: #ff4081; /* Pink color */
+  margin-bottom: 10px;
+}
+
+.food-service-time {
+  font-size: 14px;
+  color: #ff4081; /* Pink color */
+}
+
+.pricing-footer {
+  background-color: #6a1b9a; /* Darker purple */
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-type-label {
+  font-size: 18px;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+.ticket-qty-column {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+}
+
+.ticket-price-column {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+}
+
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: white;
+  color: #333;
+}
+
+.ticket-label {
+  flex: 2;
+  font-size: 14px;
+}
+
+.ticket-quantity {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.quantity-input {
+  width: 30px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+.ticket-price {
+  flex: 1;
+  text-align: right;
+  font-weight: bold;
+}
+
+.sale-label {
+  color: #ff4081;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.register-button {
+  display: block;
+  width: 100%;
+  background-color: #ff4081;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  background-color: #e03370;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .pricing-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .pricing-card {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
   }
 }
 

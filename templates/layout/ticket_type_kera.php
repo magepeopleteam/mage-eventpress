@@ -40,16 +40,49 @@
 
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
-                <div class="mpTabs mep-kera-theme">
-                    <div class="tabLists topTabs">
+                <div class="mpTabs">
+                    <div class="tabLists mep-kera-theme">
 	                    <?php $tab_count = 0;
 		                    foreach ( $new_tickets as $tickets ) { ?>
-                                <div data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
-                                    <?php
-                                        echo esc_html( $tickets['group'] );
-					                    $tab_count ++;
+								<div class="pricing-card">
+									<div class="event-header">
+										<div class="event-date">SATURDAY MAY 10</div>
+										<div class="event-logo">stock BAR</div>
+										<div class="event-location">MONTREAL</div>
+									</div>
+									<div class="ticket-type" data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
+										<?php
+											echo esc_html( $tickets['group'] );
+											$tab_count ++;
                                         ?>
-                                </div>
+									</div>
+									<div class="show-time">Show 2:00pm to 4:00pm</div>
+									<div class="food-optional">Food service optional</div>									
+									<div class="food-details">
+										<div class="price">$25 PER PERSON</div>
+										<div class="catered-by">CATERED BY SALOON</div>
+										<div class="buffet-style">Served Buffet Style:</div>
+										<ul class="menu-list">
+											<li>Sushi</li>
+											<li>Beef Tartare</li>
+											<li>Shrimp Cocktail</li>
+											<li>Chicken Skewers</li>
+											<li>Flatbread Pizza</li>
+											<li>Vegetarian Spring Rolls</li>
+											<li>Samosas</li>
+											<li>Mixed Sandwiches</li>
+											<li>Sausage Puff Pastry</li>
+										</ul>
+										<div class="food-service-time">Food Service: 1:00pm to 2:00pm</div>
+									</div>
+									
+									<div class="pricing-footer">
+										<div class="ticket-type-label">GROUP</div>
+										<div class="ticket-qty-column">Ticket Qty:</div>
+										<div class="ticket-price-column">Per Ticket Price:</div>
+									</div>
+									
+								</div>
 		                    <?php } ?>
                     </div>
                     <div class="tabsContent dLayout">

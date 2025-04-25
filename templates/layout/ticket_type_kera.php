@@ -40,7 +40,7 @@
 
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
-                <div class="mpTabs">
+                <div class="mpTabs mep-kera-theme">
                     <div class="tabLists topTabs">
 	                    <?php $tab_count = 0;
 		                    foreach ( $new_tickets as $tickets ) { ?>

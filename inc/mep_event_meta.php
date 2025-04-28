@@ -943,7 +943,7 @@ use Sabberworm\CSS\Value\Value;
 						<input type="checkbox" name="mep_available_seat" value="<?php echo esc_attr($seat_checked); ?>" <?php echo esc_attr(($seat_checked=='on')?'checked':''); ?> data-toggle-values="on,off">
 						<span class="mpev-slider"></span>
 					</label>
-				</label>
+				</div>
 			</section>
 			<?php
 		}

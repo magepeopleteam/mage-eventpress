@@ -229,6 +229,7 @@
 						<?php
 					}
 				}else{
+					?> <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0"  data-price="<?php echo esc_attr($price); ?>"/><?php
 					esc_html_e('Sorry, not available', 'mage-eventpress');
                 }
 			}

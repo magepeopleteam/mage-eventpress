@@ -90,7 +90,8 @@
 												<p><?php echo esc_html($tickets['group']);?></p>
 												<p><?php echo esc_html__('Price','mage-eventpress');?></p>
 											</div>
-                                            <div class="mpwem_ticket_type">
+
+                      <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {
 													// echo '<pre>';print_r($ticket_type);echo '</pre>';
 													$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
@@ -132,6 +133,8 @@
                                                                         if($exit_avail<1) {
 	                                                                        MP_Custom_Layout::qty_input( $input_data );
                                                                         }else{
+
+
 	                                                                        esc_html_e('Upcoming', 'mage-eventpress');
                                                                         }
                                                                         $exit_avail=$available;

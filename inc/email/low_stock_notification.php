@@ -43,6 +43,10 @@ if (!function_exists('mep_notify_admin_low_ticket_stock')) {
         $admin_name = $admin_user ? $admin_user->display_name : 'Admin';
         $site_name = get_bloginfo('name');
         
+        // Get email settings from admin_setting_panel.php
+        $from_name = mep_get_option('mep_email_form_name', 'email_setting_sec', $site_name);
+        $from_email = mep_get_option('mep_email_form_email', 'email_setting_sec', $admin_email);
+        
         // Email subject
         $subject = sprintf(
             __('[%s] Low Ticket Stock Alert - %s', 'mage-eventpress'),
@@ -96,7 +100,7 @@ Best regards,
         // Email headers
         $headers = array(
             'Content-Type: text/html; charset=UTF-8',
-            'From: ' . get_bloginfo('name') . ' <' . $admin_email . '>'
+            'From: ' . $from_name . ' <' . $from_email . '>'
         );
         
         // Apply filters to allow customization of email parameters
@@ -121,7 +125,7 @@ Best regards,
                 $admin_email,
                 $subject,
                 strip_tags($message), // Plain text version
-                'From: ' . get_bloginfo('name') . ' <' . $admin_email . '>'
+                'From: ' . $from_name . ' <' . $from_email . '>'
             );
             
             if ($mail_sent) {

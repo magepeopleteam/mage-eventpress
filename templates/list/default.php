@@ -5,6 +5,8 @@ $recurring                      = get_post_meta($event_id, 'mep_enable_recurring
 $mep_hide_event_hover_btn       = mep_get_option('mep_hide_event_hover_btn', 'event_list_setting_sec', 'no');
 $mep_hide_event_hover_btn_text  = mep_get_option('mep_hide_event_hover_btn_text', 'general_setting_sec', __('Book Now','mage-eventpress'));
 $sold_out_ribbon                = mep_get_option('mep_show_sold_out_ribbon_list_page', 'general_setting_sec', 'no');
+$limited_availability_ribbon    = mep_get_option('mep_show_limited_availability_ribbon', 'general_setting_sec', 'no');
+$limited_availability_threshold = (int)mep_get_option('mep_limited_availability_threshold', 'general_setting_sec', '5');
 $taxonomy_category              = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
 $taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
 $date                           = get_post_meta($event_id, 'event_upcoming_datetime', true);
@@ -39,6 +41,10 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
             <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
                 <div class="ribbon sold-out">
                     <?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?>
+                </div>
+            <?php } elseif($limited_availability_ribbon == 'yes' && $total_left > 0 && $total_left <= $limited_availability_threshold) { ?>
+                <div class="ribbon limited-availability">
+                    <?php echo mep_get_option('mep_event_limited_availability_label', 'label_setting_sec', __('Limited Availability', 'mage-eventpress')); ?>
                 </div>
             <?php } ?> 
         </div>    

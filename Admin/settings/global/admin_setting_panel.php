@@ -339,6 +339,25 @@
 								)
 							),
 							array(
+								'name' => 'mep_show_limited_availability_ribbon',
+								'label' => __('Show Limited Availability Ribbon?', 'mage-eventpress'),
+								'desc' => __('Display a "Limited Availability" ribbon when tickets are running low but not sold out yet.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_limited_availability_threshold',
+								'label' => __('Limited Availability Threshold', 'mage-eventpress'),
+								'desc' => __('Show "Limited Availability" ribbon when available seats are less than or equal to this number.', 'mage-eventpress'),
+								'type' => 'number',
+								'default' => '5',
+								'placeholder' => '5'
+							),
+							array(
 								'name' => 'mep_show_low_stock_warning',
 								'label' => __('Show Low Stock Warning?', 'mage-eventpress'),
 								'desc' => __('Enable this to show a warning message when event seats are running low.', 'mage-eventpress'),
@@ -1055,6 +1074,13 @@
 							'desc' => __('Please enter the translated text of <strong>Sold Out</strong>.', 'mage-eventpress'),
 							'type' => 'text',
 							'default' => 'Sold Out'
+						),
+						array(
+							'name' => 'mep_event_limited_availability_label',
+							'label' => __('Limited Availability', 'mage-eventpress'),
+							'desc' => __('Please enter the translated text of <strong>Limited Availability</strong>.', 'mage-eventpress'),
+							'type' => 'text',
+							'default' => 'Limited Availability'
 						)
 					)),
 					'style_setting_sec' => apply_filters('mep_settings_styling_arr', array(

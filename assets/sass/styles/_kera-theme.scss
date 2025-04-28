@@ -1,89 +1,123 @@
 
 .mep-kera-theme{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px auto;
-    gap: 20px;
-    
-    .mep-pricing-card{
+    .tabLists{
         display: flex;
-        flex-direction: column;
-        border-radius: 10px;
-        overflow: hidden;
-        width: 32%;
-        &[data-tabs-target]{
-            display: block;
-            position: relative;
-            cursor: pointer;
-            padding: 20px;
-            background-color: #650c7a;
-            color: #fff;
-            font-weight: var(--fw-medium);
-            transition: .5ms ease-in-out;
-            &.active{
-                border:2px solid #ed2a92;
-            }
-        }
-        .mep-pricing-header{
-            text-align: center;
-            h2{
-                color: #fff;
-                font-size: 35px;
-            }
-            h3{
-                color: #ed2a92;
-            }
-        }
-        .mep-ticket-type{
-            background-color: #4f0b5e;
-            padding:20px 10px;
-            margin:30px auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 20px auto;
+        gap: 20px;
+        
+        .mep-pricing-card{
+            display: flex;
+            flex-direction: column;
             border-radius: 10px;
-            &:last-child{
-                margin-bottom: 0;
-            }
-            h2{
-                background-color: #ed2a92;
+            overflow: hidden;
+            width: 32%;
+            &[data-tabs-target]{
+                display: block;
+                position: relative;
+                cursor: pointer;
+                padding: 20px;
+                background-color: #650c7a;
                 color: #fff;
-                text-align: center;
-                padding: 12px;
-                font-size: 18px;
-                font-weight: bold;
-                border-radius: 30px;
-                margin:20px;
-            }
-            .label{
-                color: #ed2a92;
-                margin-bottom: 10px ;
-            }
-            h3{
-                margin:20px;
-                text-align: center;
-                font-size: 16px;
-                color: #fff;
-            }
-            p{
-                text-align: center;
-                font-size: 14px;
-                margin: 15px 0;
-                color: #fff;
-            }
-            ul {
-                list-style-position: inside; /* Move bullets inside */
-                text-align: center;           /* Center text and bullet together */
-                padding: 0;                   /* Remove left padding */
-                margin: 0;                    /* Remove default margin */
-            }
-            ul li {
-                margin: 10px 0; 
-                &::before{
-                    content: "•"; 
-                    margin-right: 5px;
+                font-weight: var(--fw-medium);
+                transition: .5ms ease-in-out;
+                &.active{
+                    background-color: #ed2a92;
                 }
+            }
+            .mep-pricing-header{
+                text-align: center;
+                h2{
+                    color: #fff;
+                    font-size: 35px;
+                }
+                h3{
+                    color: #fff;
+                }
+            }
+            .mep-ticket-type{
+                background-color: #4f0b5e;
+                padding:20px 10px;
+                margin:30px auto;
+                border-radius: 10px;
+                &:last-child{
+                    margin-bottom: 0;
+                }
+                h2{
+                    background-color: #ed2a92;
+                    color: #fff;
+                    text-align: center;
+                    padding: 12px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    border-radius: 30px;
+                    margin:20px;
+                }
+                .label{
+                    color: #ed2a92;
+                    margin-bottom: 10px ;
+                }
+                h3{
+                    margin:20px;
+                    text-align: center;
+                    font-size: 16px;
+                    color: #fff;
+                }
+                p{
+                    text-align: center;
+                    font-size: 14px;
+                    margin: 15px 0;
+                    color: #fff;
+                }
+                ul {
+                    list-style-position: inside; /* Move bullets inside */
+                    text-align: center;           /* Center text and bullet together */
+                    padding: 0;                   /* Remove left padding */
+                    margin: 0;                    /* Remove default margin */
+                }
+                ul li {
+                    margin: 10px 0; 
+                    &::before{
+                        content: "•"; 
+                        margin-right: 5px;
+                    }
+                }
+                
             }
             
         }
-        
+    }
+    .tabsContent{
+        margin: 20px auto;
+        padding: 0px;
+        background-color: #660c7a;
+        border: 2px solid #ed2a92;
+        h2{
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .data-label{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ed2a92;
+            padding:10px 20px;
+            border-bottom: 1px solid #ed2a92;
+            h6{
+                color: #fff;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+        .mpwem_ticket_type{
+            background-color: #fff;
+            padding: 20px;
+            h6{
+                font-weight: bold;
+                margin-bottom:10px;
+            }
+            
+        }
     }
 }

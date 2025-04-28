@@ -40,10 +40,10 @@
 
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
-                <div class="mpTabs">
-                    <div class="tabLists mep-kera-theme">
+                <div class="mpTabs mep-kera-theme">
+                    <div class="tabLists ">
 	                    <?php $tab_count = 0;
-						foreach ( $new_tickets as $tickets ) { ?>
+						foreach ( $new_tickets as $tickets ) {?>
 							<div class="mep-pricing-card" data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
 								<div class="mep-pricing-header">
 									<h3 class="event-date">SATURDAY MAY 10</h3>
@@ -86,6 +86,10 @@
 										$ticket_types = $tickets['info'];
 										$count        = 0;
 										if ( sizeof( $ticket_types ) > 0 ) { ?>
+											<div class="data-label">
+												<h6><?php echo $tickets['group'] ;?></h6>
+												<h6>Price</h6>
+											</div>
                                             <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {
 													// echo '<pre>';print_r($ticket_type);echo '</pre>';

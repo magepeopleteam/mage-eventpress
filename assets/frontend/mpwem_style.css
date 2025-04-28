@@ -5865,21 +5865,21 @@ Vanilla theme css by ariful
     font-size: 25px;
   }
 }
-.mep-kera-theme {
+.mep-kera-theme .tabLists {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: 20px auto;
   gap: 20px;
 }
-.mep-kera-theme .mep-pricing-card {
+.mep-kera-theme .tabLists .mep-pricing-card {
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   overflow: hidden;
   width: 32%;
 }
-.mep-kera-theme .mep-pricing-card[data-tabs-target] {
+.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target] {
   display: block;
   position: relative;
   cursor: pointer;
@@ -5889,29 +5889,29 @@ Vanilla theme css by ariful
   font-weight: var(--fw-medium);
   transition: 0.5ms ease-in-out;
 }
-.mep-kera-theme .mep-pricing-card[data-tabs-target].active {
-  border: 2px solid #ed2a92;
+.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target].active {
+  background-color: #ed2a92;
 }
-.mep-kera-theme .mep-pricing-card .mep-pricing-header {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header {
   text-align: center;
 }
-.mep-kera-theme .mep-pricing-card .mep-pricing-header h2 {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h2 {
   color: #fff;
   font-size: 35px;
 }
-.mep-kera-theme .mep-pricing-card .mep-pricing-header h3 {
-  color: #ed2a92;
+.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h3 {
+  color: #fff;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type {
   background-color: #4f0b5e;
   padding: 20px 10px;
   margin: 30px auto;
   border-radius: 10px;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type:last-child {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type:last-child {
   margin-bottom: 0;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type h2 {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h2 {
   background-color: #ed2a92;
   color: #fff;
   text-align: center;
@@ -5921,34 +5921,65 @@ Vanilla theme css by ariful
   border-radius: 30px;
   margin: 20px;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type .label {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type .label {
   color: #ed2a92;
   margin-bottom: 10px;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type h3 {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h3 {
   margin: 20px;
   text-align: center;
   font-size: 16px;
   color: #fff;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type p {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type p {
   text-align: center;
   font-size: 14px;
   margin: 15px 0;
   color: #fff;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type ul {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul {
   list-style-position: inside; /* Move bullets inside */
   text-align: center; /* Center text and bullet together */
   padding: 0; /* Remove left padding */
   margin: 0; /* Remove default margin */
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type ul li {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li {
   margin: 10px 0;
 }
-.mep-kera-theme .mep-pricing-card .mep-ticket-type ul li::before {
+.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li::before {
   content: "•";
   margin-right: 5px;
+}
+.mep-kera-theme .tabsContent {
+  margin: 20px auto;
+  padding: 0px;
+  background-color: #660c7a;
+  border: 2px solid #ed2a92;
+}
+.mep-kera-theme .tabsContent h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.mep-kera-theme .tabsContent .data-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ed2a92;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ed2a92;
+}
+.mep-kera-theme .tabsContent .data-label h6 {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+.mep-kera-theme .tabsContent .mpwem_ticket_type {
+  background-color: #fff;
+  padding: 20px;
+}
+.mep-kera-theme .tabsContent .mpwem_ticket_type h6 {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=mpwem_style.css.map */

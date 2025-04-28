@@ -11,7 +11,6 @@
             display: flex;
             flex-direction: column;
             border-radius: 10px;
-            overflow: hidden;
             width: 32%;
             &[data-tabs-target]{
                 display: block;
@@ -24,6 +23,7 @@
                 transition: .5ms ease-in-out;
                 &.active{
                     background-color: #ed2a92;
+                    
                 }
             }
             .mep-pricing-header{
@@ -87,6 +87,19 @@
             }
             
         }
+        .mep-pricing-card.active::after {
+            font-family: "Font Awesome 6 Free"; /* important */
+            content: "\f0d7";
+            font-size: 60px;
+            position: absolute;
+            bottom:-38px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-left: 8px;
+            color: #ed2a92;
+            transition: transform 0.3s ease;
+        }
+        
     }
     .tabsContent{
         margin: 20px auto;
@@ -104,9 +117,9 @@
             background-color: #ed2a92;
             padding:10px 20px;
             border-bottom: 1px solid #ed2a92;
-            h6{
+            p{
                 color: #fff;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: bold;
             }
         }

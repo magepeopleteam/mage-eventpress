@@ -87,8 +87,8 @@
 										$count        = 0;
 										if ( sizeof( $ticket_types ) > 0 ) { ?>
 											<div class="data-label">
-												<h6><?php echo $tickets['group'] ;?></h6>
-												<h6>Price</h6>
+												<p><?php echo esc_html($tickets['group']);?></p>
+												<p><?php echo esc_html__('Price','mage-eventpress');?></p>
 											</div>
                                             <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {

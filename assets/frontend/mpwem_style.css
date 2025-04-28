@@ -5876,7 +5876,6 @@ Vanilla theme css by ariful
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  overflow: hidden;
   width: 32%;
 }
 .mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target] {
@@ -5950,6 +5949,18 @@ Vanilla theme css by ariful
   content: "•";
   margin-right: 5px;
 }
+.mep-kera-theme .tabLists .mep-pricing-card.active::after {
+  font-family: "Font Awesome 6 Free"; /* important */
+  content: "\f0d7";
+  font-size: 60px;
+  position: absolute;
+  bottom: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 8px;
+  color: #ed2a92;
+  transition: transform 0.3s ease;
+}
 .mep-kera-theme .tabsContent {
   margin: 20px auto;
   padding: 0px;
@@ -5968,9 +5979,9 @@ Vanilla theme css by ariful
   padding: 10px 20px;
   border-bottom: 1px solid #ed2a92;
 }
-.mep-kera-theme .tabsContent .data-label h6 {
+.mep-kera-theme .tabsContent .data-label p {
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 .mep-kera-theme .tabsContent .mpwem_ticket_type {

@@ -3,15 +3,21 @@
     .tabLists{
         display: flex;
         flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
         margin: 20px auto;
         gap: 20px;
-        
+        @media (min-width: 768px){
+            flex-direction: row;
+        }
         .mep-pricing-card{
             display: flex;
             flex-direction: column;
             border-radius: 10px;
-            width: 32%;
+            width: 100%;
+            @media (min-width: 768px){
+                width: 32%;
+            }
             &[data-tabs-target]{
                 display: block;
                 position: relative;
@@ -87,18 +93,21 @@
             }
             
         }
-        .mep-pricing-card.active::after {
-            font-family: "Font Awesome 6 Free"; /* important */
-            content: "\f0d7";
-            font-size: 60px;
-            position: absolute;
-            bottom:-38px;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-left: 8px;
-            color: #ed2a92;
-            transition: transform 0.3s ease;
+        @media (min-width: 768px){
+            .mep-pricing-card.active::after {
+                font-family: "Font Awesome 6 Free"; /* important */
+                content: "\f0d7";
+                font-size: 60px;
+                position: absolute;
+                bottom:-38px;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-left: 8px;
+                color: #ed2a92;
+                transition: transform 0.3s ease;
+            }
         }
+        
         
     }
     .tabsContent{

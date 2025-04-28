@@ -69,6 +69,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
     return preg_match($pattern, $filename) === 1;
 	}
 	}
+
 	if (!function_exists('mep_temp_attendee_create_for_cart_ticket_array')) {
 		function mep_temp_attendee_create_for_cart_ticket_array($event_id, $ticket_type){
 			foreach ($ticket_type as  $ticket) {
@@ -200,9 +201,22 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				'posts_per_page' => -1
 			);
 			$loop = new WP_Query($args);
-			return $loop->post_count;
+			// return $loop->post_count;
+
+			// $loop = new WP_Query($args);
+			$qty = 0;
+			if($loop->post_count > 0){
+			foreach ($loop->posts as $ticket) {
+					$post_id = $ticket->ID;
+					$_qty = get_post_meta($post_id,'ticket_qty',true) ? get_post_meta($post_id,'ticket_qty',true) : 0;
+					$qty = $qty + $_qty;
+				
+			}
 		}
+		
+		return $qty;
 	}
+}
 	
 	if (!function_exists('mep_temp_attendee_count')) {
 	

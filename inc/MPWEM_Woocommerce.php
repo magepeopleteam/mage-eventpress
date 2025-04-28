@@ -53,7 +53,7 @@
 					$cart_item_data['event_cart_display_date']  = $mep_event_start_date[0];
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
-
+					mep_temp_attendee_create_for_cart_ticket_array($product_id, $ticket_type_arr); 
                     //echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );

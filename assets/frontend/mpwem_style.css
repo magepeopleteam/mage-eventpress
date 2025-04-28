@@ -1383,6 +1383,17 @@ ul.event-custom-price li ul {
   background: rgba(255, 70, 70, 0.6666666667);
 }
 
+.mep_event_list .mepev-ribbon .ribbon.limited-availability {
+  background: rgba(255, 153, 0, 0.6666666667);
+}
+
+.mep_event_list .mepev-ribbon .ribbon.limited-availability:before {
+  content: '\f017';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 5px;
+}
+
 .mp_event_more_date_list {
   list-style: none;
   padding: 5px;

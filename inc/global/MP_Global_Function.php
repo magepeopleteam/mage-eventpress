@@ -60,50 +60,67 @@
 				return self::data_sanitize($_GET[$key] ?? $default);
 			}
 
-			public static function data_sanitize($data) {
-				$data = maybe_unserialize($data);
-				if (is_string($data)) {
-					$data = maybe_unserialize($data);
-					if (is_array($data)) {
-						$data = self::data_sanitize($data);
-					}
-					else {
-						$data = sanitize_text_field(stripslashes(strip_tags($data)));
-					}
-				}
-                elseif (is_array($data)) {
-					foreach ($data as &$value) {
-						if (is_array($value)) {
-							$value = self::data_sanitize($value);
-						}
-						else {
-							$value = sanitize_text_field(stripslashes(strip_tags($value)));
-						}
-					}
-				}
-				return $data;
-			}
-
+			// public static function data_sanitize($data) {
+			// 	$data = maybe_unserialize($data);
+			// 	if (is_string($data)) {
+			// 		$data = maybe_unserialize($data);
+			// 		if (is_array($data)) {
+			// 			$data = self::data_sanitize($data);
+			// 		}
+			// 		else {
+			// 			$data = sanitize_text_field(stripslashes(strip_tags($data)));
+			// 		}
+			// 	}
+            //     elseif (is_array($data)) {
+			// 		foreach ($data as &$value) {
+			// 			if (is_array($value)) {
+			// 				$value = self::data_sanitize($value);
+			// 			}
+			// 			else {
+			// 				$value = sanitize_text_field(stripslashes(strip_tags($value)));
+			// 			}
+			// 		}
+			// 	}
+			// 	return $data;
+			// }
 
 			// public static function data_sanitize($data) {
+			// 	// Only handle arrays and strings
 			// 	if (is_string($data)) {
-			// 		// Sanitize string: remove tags, slashes, and unsafe characters
-			// 		$data = sanitize_text_field(stripslashes(strip_tags($data)));
+			// 		// Don't unserialize arbitrary strings - this is the vulnerability
+			// 		// Instead, directly sanitize the string
+			// 		return sanitize_text_field(stripslashes(strip_tags($data)));
 			// 	}
 			// 	elseif (is_array($data)) {
-			// 		// Recursively sanitize each value
+			// 		// Process each element of the array
 			// 		foreach ($data as $key => $value) {
 			// 			$data[$key] = self::data_sanitize($value);
 			// 		}
+			// 		return $data;
 			// 	}
-			// 	elseif (is_object($data)) {
-			// 		// If object — convert to array and sanitize
-			// 		$data = (array) $data;
-			// 		$data = self::data_sanitize($data);
-			// 	}
-			// 	// Other types (int, float, bool) — leave as is
+			// 	// Return other data types as is
 			// 	return $data;
 			// }
+
+			public static function data_sanitize($data) {
+				if (is_string($data)) {
+					// Sanitize string: remove tags, slashes, and unsafe characters
+					$data = sanitize_text_field(stripslashes(strip_tags($data)));
+				}
+				elseif (is_array($data)) {
+					// Recursively sanitize each value
+					foreach ($data as $key => $value) {
+						$data[$key] = self::data_sanitize($value);
+					}
+				}
+				elseif (is_object($data)) {
+					// If object — convert to array and sanitize
+					$data = (array) $data;
+					$data = self::data_sanitize($data);
+				}
+				// Other types (int, float, bool) — leave as is
+				return $data;
+			}
 
 
 			//**************Date related*********************//

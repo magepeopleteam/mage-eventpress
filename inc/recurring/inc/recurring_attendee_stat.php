@@ -126,8 +126,10 @@ function mep_recurring_ajax_attendee_stat_filter()
                 $ticket_type_name       = array_key_exists('option_name_t',$field)  ? mep_remove_apostopie($field['option_name_t']) : '';
                 $total_quantity         = isset($field['option_qty_t']) ? $field['option_qty_t'] : 0;
                 $total_resv_quantity    = isset($field['option_rsv_t']) ? $field['option_rsv_t'] : 0;
-                $total_sold             = mep_get_ticket_type_seat_count($event_id,$ticket_type_name,$event_date,$total_quantity,$total_resv_quantity);
-                $total_available_tickets          = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);                            
+				//$total_sold             = mep_get_ticket_type_seat_count($event_id,$ticket_type_name,$event_date,$total_quantity,$total_resv_quantity);
+				$total_sold             = mep_get_count_total_available_seat( $event_id, $event_date );
+                $total_available_tickets   = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);   				
+				//echo ;
             ?>
            <tr>
                 <td><?php echo $ticket_type_name;  ?></td>

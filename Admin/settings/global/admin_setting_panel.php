@@ -366,6 +366,17 @@
 								'placeholder' => 'Hurry! Only %s seats left'
 							),
 							array(
+								'name' => 'mep_enable_low_stock_email',
+								'label' => __('Send Low Stock Email Notifications?', 'mage-eventpress'),
+								'desc' => __('Enable this to send email notifications to admin when event seats are running low.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
 								'name' => 'mep_show_hidden_wc_product',
 								'label' => __('Show Hidden Woocommerce Products?', 'mage-eventpress'),
 								'desc' => __('With every creation of an event there is a Woocommerce product is also created. By default its hidden in the Product list. If you want to show them in the list select Yes', 'mage-eventpress'),

@@ -48,19 +48,6 @@ div.item_hover_effect a:hover {
   background-color: #fff;
   border: 1px solid var(--mpev-base);
 }
-.mep-low-stock-warning {
-  background-color: var(--mpev-primary) !important;
-  color: var(--mpev-white) !important;
-  padding: 5px 10px;
-  border-radius: 4px;
-  margin: 5px 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: inline-block;
-  font-size: 13px;
-}
-.mep-low-stock-warning-text {
-  font-weight: 500;
-}
 
 .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
   background: var(--mpev-base);
@@ -1382,17 +1369,6 @@ ul.event-custom-price li ul {
 }
 .mep_event_list .mepev-ribbon .ribbon.sold-out {
   background: rgba(255, 70, 70, 0.6666666667);
-}
-
-.mep_event_list .mepev-ribbon .ribbon.limited-availability {
-  background: rgba(255, 153, 0, 0.6666666667);
-}
-
-.mep_event_list .mepev-ribbon .ribbon.limited-availability:before {
-  content: '\f017';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 5px;
 }
 
 .mp_event_more_date_list {
@@ -4427,6 +4403,97 @@ input.mpe-new-input-group-field {
   margin: 10px 0;
 }
 
+.mep-default-theme .mep-event-ticket-type {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.mep-default-theme .mep-event-ticket-type-header {
+  background: linear-gradient(135deg, #4169e1, #3b5fe2);
+  color: white;
+  padding: 20px 25px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.mep-default-theme .mep-event-ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 25px;
+  border-bottom: 1px solid #eaeaea;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info {
+  flex: 1;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-name .badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  background-color: #e6f0ff;
+  color: #4169e1;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-description {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-remaining {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .remaining-high {
+  background-color: #e6f4ea;
+  color: #137333;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control {
+  display: flex;
+  align-items: center;
+  margin: 0 30px;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control .qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f0f2f5;
+  color: #4169e1;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control .qty-input {
+  width: 50px;
+  height: 36px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 10px;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2b3a55;
+  width: 100px;
+  text-align: right;
+}
+
 /*************************************************************
 Royal theme css by ariful | Date: 19-10-2021
 **************************************************************/
@@ -6031,45 +6098,3 @@ Vanilla theme css by ariful
 }
 
 /*# sourceMappingURL=mpwem_style.css.map */
-
-.event-expire-btn {
-  background-color: #6046ff38;
-  color: rgba(0, 0, 0, 0.88);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  margin: 20px 0;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border-left: 5px solid var(--mpev-red);
-}
-
-.event-expire-btn::before {
-  content: "\f06a";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  font-size: 20px;
-  margin-right: 10px;
-  opacity: 0.9;
-}
-
-.event-expire-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0) 60%);
-  z-index: 1;
-  pointer-events: none;
-}

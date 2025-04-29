@@ -7,7 +7,7 @@
         <i class="fa fa-plus"></i>
     </a>
     <div class="mep-event-faq-content">
-        <?php if ($field['mep_faq_content'] != '') echo mep_esc_html(html_entity_decode(nl2br($field['mep_faq_content']))); ?>
+        <?php if ($field['mep_faq_content'] != '') echo wp_kses_post(html_entity_decode(nl2br($field['mep_faq_content']))); ?>
     </div>
   </div>
 <?php endforeach; ?>

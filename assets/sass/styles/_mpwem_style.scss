@@ -509,9 +509,10 @@ span.mep-more-date i {
 }
 .mep-user-info-sec {
 	border: 1px solid #DDD;
-	margin: 10px 0;
+	margin: 18px 25px;
 	padding: 0 10px;
 	background: #DEDEDE61;
+	border-bottom: 1px solid #DEDEDE;
 }
 .user-info-sec h5 {
 	padding: 10px 5px;
@@ -1658,6 +1659,7 @@ div.item_hover_effect a:hover {
 		font-size: 14px;
 		padding: 5px;
 	}
+
 	.mep-events-wrapper table td.total-col,
 	.user-info-sec h5 {
 		font-size: 16px;
@@ -2443,9 +2445,7 @@ span.mep-more-time i {
 	font-size: 18px;
 	text-transform: capitalize;
 }
-.mep-elementor-event-add-to-cart-section-widget td.user-innnf {
-	padding: 0 !important;
-}
+
 .mep-elementor-event-add-to-cart-section-widget table td {
 	border: none;
 }
@@ -2597,9 +2597,7 @@ New Spring list style css added by ariful
 .mep_event_spring_list .mep_spring_list_date {
 	color: #FFF;
 }
-td.user-innnf {
-	padding: 0 !important;
-}
+
 table.table.table-bordered.mep_event_add_cart_table {
 	background: var(--mpev-royal-primary-bg);
 }
@@ -4004,5 +4002,8 @@ input.mpe-new-input-group-field {
 			text-align: right;
 		}
 		
+	}
+	.user-info-sec{
+
 	}
 }

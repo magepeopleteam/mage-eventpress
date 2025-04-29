@@ -594,9 +594,10 @@ span.mep-more-date i {
 
 .mep-user-info-sec {
   border: 1px solid #DDD;
-  margin: 10px 0;
+  margin: 18px 25px;
   padding: 0 10px;
   background: rgba(222, 222, 222, 0.3803921569);
+  border-bottom: 1px solid #DEDEDE;
 }
 
 .user-info-sec h5 {
@@ -2787,10 +2788,6 @@ span.mep-more-time i {
   text-transform: capitalize;
 }
 
-.mep-elementor-event-add-to-cart-section-widget td.user-innnf {
-  padding: 0 !important;
-}
-
 .mep-elementor-event-add-to-cart-section-widget table td {
   border: none;
 }
@@ -2959,10 +2956,6 @@ New Spring list style css added by ariful
 
 .mep_event_spring_list .mep_spring_list_date {
   color: #FFF;
-}
-
-td.user-innnf {
-  padding: 0 !important;
 }
 
 table.table.table-bordered.mep_event_add_cart_table {
@@ -4493,7 +4486,6 @@ input.mpe-new-input-group-field {
   width: 100px;
   text-align: right;
 }
-
 /*************************************************************
 Royal theme css by ariful | Date: 19-10-2021
 **************************************************************/

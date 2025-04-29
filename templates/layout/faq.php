@@ -16,7 +16,7 @@
 		?>
         <div class="faq_area">
             <h2><?php esc_html_e( 'Frequently asked questions', 'mage-eventpress' ); ?></h2>
-			<p><?php echo esc_html($faq_description); ?></p>
+			<p><?php echo wp_kses_post($faq_description); ?></p>
             <div class="faq_items">
 	            <?php foreach ($faqs as $key => $faq){ ?>
                 <div class="item">
@@ -25,7 +25,7 @@
                         <i class="fa fa-chevron-right"></i>
                     </div>
                     <div class="content" data-collapse="faq-content-<?php echo esc_attr($key); ?>">
-	                    <?php echo mep_esc_html(html_entity_decode(nl2br($faq['mep_faq_content']))); ?>
+	                    <?php echo wp_kses_post(html_entity_decode(nl2br($faq['mep_faq_content']))); ?>
                     </div>
                 </div>
 			<?php } ?>

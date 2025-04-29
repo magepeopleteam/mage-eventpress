@@ -35,6 +35,36 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             wp_enqueue_script('media-upload');
             wp_enqueue_script('thickbox');
             wp_enqueue_style('thickbox');
+            
+            // Add custom JavaScript to handle FAQ editing
+            add_action('admin_footer', function() {
+                ?>
+                <script>
+                jQuery(document).ready(function($) {
+                    $(document).on('click', '.mep-faq-item-edit', function() {
+                        var faqID = $(this).data('faq-id');
+                        var faqTitle = $(this).data('faq-title');
+                        var faqContent = $(this).data('faq-content');
+                        
+                        // Set the values in the form
+                        $('input[name="mep_faq_title"]').val(faqTitle);
+                        $('input[name="mep_faq_item_id"]').val(faqID);
+                        
+                        // Set content in TinyMCE editor
+                        if (typeof tinymce !== 'undefined' && tinymce.get('mep_faq_content')) {
+                            tinymce.get('mep_faq_content').setContent(faqContent);
+                        } else {
+                            $('#mep_faq_content').val(faqContent);
+                        }
+                        
+                        // Show update buttons, hide save buttons
+                        $('.mep_faq_save_buttons').hide();
+                        $('.mep_faq_update_buttons').show();
+                    });
+                });
+                </script>
+                <?php
+            });
         }
         
         public function faq_tab(){
@@ -130,13 +160,13 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                                     <p><?php echo esc_html($value['mep_faq_title']); ?></p>
                                     <div class="faq-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
-                                        <span class="mep-faq-item-edit" data-modal="mep-faq-item-new" ><i class="fas fa-edit"></i></span>
+                                        <span class="mep-faq-item-edit" data-modal="mep-faq-item-new" data-faq-id="<?php echo esc_attr($key); ?>" data-faq-title="<?php echo esc_attr($value['mep_faq_title']); ?>" data-faq-content="<?php echo esc_attr(htmlspecialchars_decode($value['mep_faq_content'])); ?>"><i class="fas fa-edit"></i></span>
                                         <span class="mep-faq-item-delete"><i class="fas fa-trash"></i></span>
                                     </div>
                                 </label>
                             </section>
                             <section class="faq-content mB" data-collapse="#faq-content-<?php echo esc_attr($key); ?>">
-                                <?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_faq_content']))); ?>
+                                <?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?>
                             </section>
                         </div>
                     <?php

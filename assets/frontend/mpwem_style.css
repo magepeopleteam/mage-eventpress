@@ -4486,6 +4486,23 @@ input.mpe-new-input-group-field {
   width: 100px;
   text-align: right;
 }
+.mep-default-theme #mep_event_extra_service_table {
+  margin-bottom: 0;
+  border-radius: 12px 12px 0 0;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type {
+  border-radius: 0 0 12px 12px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eaeaea;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type .mep-event-ticket-item {
+  border-bottom: 0;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type .mep-event-ticket-item .total {
+  font-size: 18px;
+  font-weight: 600;
+}
+
 /*************************************************************
 Royal theme css by ariful | Date: 19-10-2021
 **************************************************************/

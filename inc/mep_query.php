@@ -13,6 +13,7 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
     $event_expire_on        = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
     $now                    = current_time('Y-m-d H:i:s');
 
+
     if ( get_query_var('paged') ) {
         $paged = get_query_var('paged');    
     } elseif ( get_query_var('page') ) {    
@@ -85,7 +86,7 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'posts_per_page'    => $show,
         'order'             => $sort,
         'orderby'           => $event_order_by,
-        'meta_key'          => 'event_start_datetime',
+        'meta_key'          => 'event_upcoming_datetime',
         'meta_query'        => array_filter($meta_query),
         'tax_query'         => array_filter($tax_query)
     );

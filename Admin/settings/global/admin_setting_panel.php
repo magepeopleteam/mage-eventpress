@@ -339,6 +339,63 @@
 								)
 							),
 							array(
+								'name' => 'mep_show_limited_availability_ribbon',
+								'label' => __('Show Limited Availability Ribbon?', 'mage-eventpress'),
+								'desc' => __('Display a "Limited Availability" ribbon when tickets are running low but not sold out yet.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_limited_availability_threshold',
+								'label' => __('Limited Availability Threshold', 'mage-eventpress'),
+								'desc' => __('Show "Limited Availability" ribbon when available seats are less than or equal to this number.', 'mage-eventpress'),
+								'type' => 'number',
+								'default' => '5',
+								'placeholder' => '5'
+							),
+							array(
+								'name' => 'mep_show_low_stock_warning',
+								'label' => __('Show Low Stock Warning?', 'mage-eventpress'),
+								'desc' => __('Enable this to show a warning message when event seats are running low.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
+								'name' => 'mep_low_stock_threshold',
+								'label' => __('Low Stock Threshold', 'mage-eventpress'),
+								'desc' => __('Show low stock warning when available seats are less than or equal to this number.', 'mage-eventpress'),
+								'type' => 'number',
+								'default' => '3',
+								'placeholder' => '3'
+							),
+							array(
+								'name' => 'mep_low_stock_text',
+								'label' => __('Low Stock Warning Text', 'mage-eventpress'),
+								'desc' => __('The text to display when seats are running low.', 'mage-eventpress'),
+								'type' => 'text',
+								'default' => 'Hurry! Only %s seats left',
+								'placeholder' => 'Hurry! Only %s seats left'
+							),
+							array(
+								'name' => 'mep_enable_low_stock_email',
+								'label' => __('Send Low Stock Email Notifications?', 'mage-eventpress'),
+								'desc' => __('Enable this to send email notifications to admin when event seats are running low.', 'mage-eventpress'),
+								'type' => 'select',
+								'default' => 'yes',
+								'options' => array(
+									'yes' => 'Yes',
+									'no' => 'No'
+								)
+							),
+							array(
 								'name' => 'mep_show_hidden_wc_product',
 								'label' => __('Show Hidden Woocommerce Products?', 'mage-eventpress'),
 								'desc' => __('With every creation of an event there is a Woocommerce product is also created. By default its hidden in the Product list. If you want to show them in the list select Yes', 'mage-eventpress'),
@@ -1017,6 +1074,13 @@
 							'desc' => __('Please enter the translated text of <strong>Sold Out</strong>.', 'mage-eventpress'),
 							'type' => 'text',
 							'default' => 'Sold Out'
+						),
+						array(
+							'name' => 'mep_event_limited_availability_label',
+							'label' => __('Limited Availability', 'mage-eventpress'),
+							'desc' => __('Please enter the translated text of <strong>Limited Availability</strong>.', 'mage-eventpress'),
+							'type' => 'text',
+							'default' => 'Limited Availability'
 						)
 					)),
 					'style_setting_sec' => apply_filters('mep_settings_styling_arr', array(

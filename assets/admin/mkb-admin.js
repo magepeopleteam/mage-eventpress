@@ -130,6 +130,9 @@
 			if(checkbox.attr('name') ==='mep_disable_ticket_time'){
 				$(".mep-special-datetime").slideUp(200);
 			}
+			if(checkbox.attr('name') ==='mep_show_category'){
+				$(".mep_hide_on_load_cat").slideUp(200);
+			}
 		} else {
 			nextValue = toggleValues[0];
 			if (checkbox.attr('name') === 'mep_show_advance_col_status') {
@@ -137,6 +140,9 @@
 			}
 			if(checkbox.attr('name') ==='mep_disable_ticket_time'){
 				$(".mep-special-datetime").slideDown(200);
+			}
+			if(checkbox.attr('name') ==='mep_show_category'){
+				$(".mep_hide_on_load_cat").slideDown(200);
 			}
 		}
 		checkbox.val(nextValue);

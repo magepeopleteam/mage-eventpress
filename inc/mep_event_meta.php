@@ -532,6 +532,7 @@ use Sabberworm\CSS\Value\Value;
 					</label>
 				</div>
 			</section>
+            <?php do_action('mep_add_category_display',$post_id); ?>
 			<style>
 				.mep_hide_on_load{
 					display:<?php echo $css_value; ?>;

@@ -3618,6 +3618,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	if ( ! function_exists( 'mep_cart_display_ticket_type_list' ) ) {
 		function mep_cart_display_ticket_type_list( $ticket_type_arr, $eid ) {
 			ob_start();
+			//echo '<pre>';print_r( $ticket_type_arr );echo '</pre>';
 			foreach ( $ticket_type_arr as $ticket ) {
 				do_action('mep_cart_after_ticket_type',$ticket);
 				echo '<li>' . esc_attr( $ticket['ticket_name'] ) . " - " . wc_price( esc_attr( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) ) . ' x ' . esc_attr( $ticket['ticket_qty'] ) . ' = ' . wc_price( esc_attr( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) ) ) . '</li>';
@@ -3632,6 +3633,10 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				$ticket_type_name = $ticket['ticket_name'] . " - " . wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) . ' x ' . $ticket['ticket_qty'] . ' = ';
 				$ticket_type_val  = wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) );
 				$ticket_name_meta = apply_filters( 'mep_event_order_meta_ticket_name_filter', $ticket_type_name, $ticket );
+                $category=array_key_exists('category',$ticket)?$ticket['category']:'';
+                if($category){
+	                $item->add_meta_data( esc_html__( " Category", 'mage-eventpress' ), $category );
+                }
 				$item->add_meta_data( $ticket_name_meta, $ticket_type_val );
 				do_action( 'mep_event_cart_order_data_add_ef', $item, $eid, $ticket['ticket_name'] );
 			}

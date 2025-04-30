@@ -41,10 +41,11 @@
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
                 <div class="mpTabs mep-kera-theme">
-                    <div class="tabLists ">
+                    <div class="tabLists mpStyle">
 	                    <?php $tab_count = 0;
 						foreach ( $new_tickets as $tickets ) {?>
-							<div class="mep-pricing-card" data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
+						<div data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
+							<div class="mep-pricing-card">
 								<div class="mep-pricing-header">
 									<h3 class="event-date">SATURDAY MAY 10</h3>
 									<h2 class="event-logo">stock BAR</h2>
@@ -74,6 +75,7 @@
 									<p class="label">Food Service: 1:00pm to 2:00pm</p>	
 								</div>
 							</div>
+						</div>
 						<?php } ?>
                     </div>
                     <div class="tabsContent dLayout">

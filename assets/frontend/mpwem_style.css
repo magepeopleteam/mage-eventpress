@@ -5964,7 +5964,7 @@ Vanilla theme css by ariful
     font-size: 25px;
   }
 }
-.mep-kera-theme .tabLists {
+.mep-kera-theme .tabLists.mpStyle {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -5973,54 +5973,50 @@ Vanilla theme css by ariful
   gap: 20px;
 }
 @media (min-width: 768px) {
-  .mep-kera-theme .tabLists {
+  .mep-kera-theme .tabLists.mpStyle {
     flex-direction: row;
   }
 }
-.mep-kera-theme .tabLists .mep-pricing-card {
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  width: 100%;
-}
-@media (min-width: 768px) {
-  .mep-kera-theme .tabLists .mep-pricing-card {
-    width: 32%;
-  }
-}
-.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target] {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] {
   display: block;
   position: relative;
   cursor: pointer;
+  border-radius: 10px;
   padding: 20px;
   background-color: #650c7a;
   color: #fff;
   font-weight: var(--fw-medium);
   transition: 0.5ms ease-in-out;
+  width: 100%;
 }
-.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target].active {
+@media (min-width: 768px) {
+  .mep-kera-theme .tabLists.mpStyle [data-tabs-target] {
+    width: 32%;
+  }
+}
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target].active {
   background-color: #ed2a92;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header {
   text-align: center;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h2 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header h2 {
   color: #fff;
   font-size: 35px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h3 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header h3 {
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type {
   background-color: #4f0b5e;
   padding: 20px 10px;
   margin: 30px auto;
   border-radius: 10px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type:last-child {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type:last-child {
   margin-bottom: 0;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h2 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type h2 {
   background-color: #ed2a92;
   color: #fff;
   text-align: center;
@@ -6030,42 +6026,42 @@ Vanilla theme css by ariful
   border-radius: 30px;
   margin: 20px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type .label {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type .label {
   color: #ed2a92;
   margin-bottom: 10px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h3 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type h3 {
   margin: 20px;
   text-align: center;
   font-size: 16px;
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type p {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type p {
   text-align: center;
   font-size: 14px;
   margin: 15px 0;
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul {
   list-style-position: inside; /* Move bullets inside */
   text-align: center; /* Center text and bullet together */
   padding: 0; /* Remove left padding */
   margin: 0; /* Remove default margin */
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul li {
   margin: 10px 0;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li::before {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul li::before {
   content: "•";
   margin-right: 5px;
 }
 @media (min-width: 768px) {
-  .mep-kera-theme .tabLists .mep-pricing-card.active::after {
+  .mep-kera-theme .tabLists.mpStyle [data-tabs-target].active::after {
     font-family: "Font Awesome 6 Free"; /* important */
     content: "\f0d7";
     font-size: 60px;
     position: absolute;
-    bottom: -38px;
+    bottom: -45px;
     left: 50%;
     transform: translateX(-50%);
     margin-left: 8px;

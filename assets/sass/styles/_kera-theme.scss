@@ -22,7 +22,7 @@
             transition: .5ms ease-in-out;
             width: 100%;
             @media (min-width: 768px){
-                width: 32%;
+                flex:1;
             }
             &.active{
                 background-color: #ed2a92;

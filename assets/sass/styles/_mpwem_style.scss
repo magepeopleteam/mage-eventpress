@@ -18,10 +18,8 @@
 	--mpev-recring-dpkr-txt:#ffffff;
 }
 
-.mep-event-faq-part .ex-sec-title.faq-title-section{
-	background: var(--mpev-faq-bg);
-	color: var(--mpev-faq-text);
-}
+
+
 .pagination_area button[class*='defaultButton_xs'],
 .list_with_filter_section [class*='defaultButton'],
 div.item_hover_effect a{
@@ -76,9 +74,14 @@ div.item_hover_effect a:hover{
 	background: var(--mpev-title-bg); 
 	color: var(--mpev-title-txt);
 }
-.mpwemasp_ticket_area .mep_everyday_date_secs{ background: var(--mpev-title-bg); color: var(--mpev-title-txt); }
+.mpwemasp_ticket_area .mep_everyday_date_secs{
+	background: var(--mpev-title-bg); 
+	color: var(--mpev-title-txt); 
+	margin:0;
+  	border-radius:12px 12px 0 0;
+}
 /*FAQ Sec Style*/
-.mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 {
+.mep-default-feature-faq-sec h4{
 	background: var(--mpev-faq-bg);
 	color: var(--mpev-faq-txt);
 }
@@ -2942,48 +2945,57 @@ Single Speaker Page Mobile CSS update by ariful | date: 09.11.2021
 tr.mep_virtual_event_info_sec {
 	display: none;
 }
-/*css added by ariful*/
-.mep-event-faq-part .ex-sec-title {
+
+// mep-event-faq-part
+
+.mep-event-faq-set{
 	margin-bottom: 10px;
+	border-radius:8px;
+	overflow:hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-.mep-event-faq-part .mep-event-faq-set {
-	position: relative;
-	width: 100%;
-	height: auto;
-	background-color: #F5F5F5;
-}
-.mep-event-faq-part .mep-event-faq-set > a {
-	display: block;
-	padding: 10px 15px;
-	text-decoration: none;
-	color: #000;
+.mep_faq_title{
+	padding: 18px 25px;
+	background-color: white;
 	font-weight: 600;
-	border-bottom: 1px solid #DDD;
-	-webkit-transition: all 0.2s linear;
-	-moz-transition: all 0.2s linear;
-	transition: all 0.2s linear;
 	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition: all 0.3s ease;
+	font-size: 16px;
 }
-.mep-event-faq-part .mep-event-faq-set > a i {
+.mep-event-faq-content{
+	padding:0 25px;
+	max-height: 0;
+  	overflow:hidden;
+  	transition:all 0.5s ease;
+  	background-color: white;
+	display: none;
+}
+
+
+.mep_faq_title i {
 	float: right;
 	margin-top: 2px;
 }
-.mep-event-faq-part .mep-event-faq-set > a.active {
+.mep_faq_title.active {
 	background-color: #F5F5F5;
 	color: #000;
 }
+.mep-event-faq-content.active {
+	padding:15px 25px 20px;
+  	max-height: 300px;
+}
+
+// day details
 .mep-day-details-section .mep-day-title {
 	font-size: 20px;
 	font-weight: 600;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-.mep-event-faq-part .mep-event-faq-content {
-	background-color: #FFF;
-	border: 1px solid #F5F5F5;
-	padding: 10px;
-	display: none;
-}
+
 .mep-default-theme .mep-day-details-item .mep-day-icon {
 	width: 50px;
 	height: 50px;

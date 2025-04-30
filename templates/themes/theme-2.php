@@ -52,7 +52,17 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
             }
     ?>            
             <div class="mep-default-feature-cart-sec">
-                <?php do_action('mep_add_to_cart',$event_id) ?>
+	            <?php
+		            $mep_show_category   = get_post_meta($event_id,'mep_show_category',true) ? get_post_meta($event_id,'mep_show_category',true) : 'off';
+		            if($mep_show_category=='on' && class_exists('MPWEMAGT_Helper')){
+			            $all_dates          = MPWEM_Functions::get_dates( $event_id );
+			            $all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
+			            $upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+			            do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
+		            }else {
+			            do_action( 'mep_add_to_cart', $event_id );
+		            }
+	            ?>
             </div>
         </div>
         <div class="franklin_divided_sidebar">

@@ -531,10 +531,7 @@ span.mep-more-date i {
 label.mep-show {
 	line-height: 1.4;
 }
-[name="option_qty[]"].mage_error {
-	background-color: red;
-	color: #FFF;
-}
+
 /******Button*******/
 button.single_add_to_cart_button {
 	padding: 0 15px;
@@ -3992,6 +3989,10 @@ input.mpe-new-input-group-field {
 				text-align: center;
 				font-size: 16px;
 				margin:0 10px;
+				&.mage_error {
+					border:1px solid red;
+					color: red;
+				}
 			}
 		}
 		.ticket-price{

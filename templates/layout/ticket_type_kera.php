@@ -18,16 +18,20 @@
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		if ( sizeof( $ticket_types ) > 0 ) {
+			$categories = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
 			$group_name  = '';
 			foreach ( $ticket_types as $ticket_type ) {
-				$ticket_name        = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-				$ticket_group       = array_key_exists( 'group_category', $ticket_type ) ? $ticket_type['group_category'] : '';
-				$ticket_group_order = intval( array_key_exists( 'group_order', $ticket_type ) ? $ticket_type['group_order'] : 0 );
-				$available          = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
-				if ( $ticket_group ) {
-					$new_tickets[ $ticket_group_order ]['group']  = $ticket_group;
-					$new_tickets[ $ticket_group_order ]['info'][] = $ticket_type;
+				$ticket_name  = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+				$ticket_group = array_key_exists( 'group_category', $ticket_type ) ? $ticket_type['group_category'] : '';
+				$available = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
+				if ( $ticket_group && in_array( $ticket_group, $categories ) ) {
+					$meta_id            = MP_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
+					$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+					//echo '<pre>';print_r();echo '</pre>';
+					$new_tickets[ $ticket_group_order ]['group']   = $ticket_group;
+					$new_tickets[ $ticket_group_order ]['term_id'] = $meta_id;
+					$new_tickets[ $ticket_group_order ]['info'][]  = $ticket_type;
 					if ( array_key_exists( $ticket_group_order, $new_tickets ) && array_key_exists( 'available', $new_tickets[ $ticket_group_order ] ) ) {
 						$new_tickets[ $ticket_group_order ]['available'] = $new_tickets[ $ticket_group_order ]['available'] + $available;
 					} else {
@@ -37,31 +41,41 @@
 				//echo '<pre>';print_r($ticket_type);echo '</pre>';
 			}
 			ksort( $new_tickets );
-
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
-                <div class="mpTabs">
-                    <div class="tabLists topTabs">
-	                    <?php $tab_count = 0;
-		                    foreach ( $new_tickets as $tickets ) { ?>
+                <div class="mpTabs mep-kera-theme">
+                    <div class="tabLists mpStyle">
+						<?php $tab_count = 0;
+							foreach ( $new_tickets as $tickets ) {
+								$meta_id = array_key_exists( 'term_id', $tickets ) ? $tickets['term_id'] : '';
+								$des     = get_term_meta($meta_id, 'custom_description', true);
+								?>
                                 <div data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
-                                    <?php
-                                        echo esc_html( $tickets['group'] );
-					                    $tab_count ++;
-                                        ?>
+									<?php
+										if ( $des ) {
+											echo  wp_kses_post($des) ;
+										} else {
+											echo esc_html( $tickets['group'] );
+										}
+										$tab_count ++;
+									?>
                                 </div>
-		                    <?php } ?>
+							<?php } ?>
                     </div>
                     <div class="tabsContent dLayout">
 						<?php $tab_count = 0;
 							foreach ( $new_tickets as $tickets ) { ?>
-                                <div class="tabsItem" data-tabs="#category_name_<?php echo esc_attr( $tab_count );?>">
+                                <div class="tabsItem" data-tabs="#category_name_<?php echo esc_attr( $tab_count ); ?>">
 									<?php
 										$tab_count ++;
-										$exit_avail = 0;
+										$exit_avail   = 0;
 										$ticket_types = $tickets['info'];
 										$count        = 0;
 										if ( sizeof( $ticket_types ) > 0 ) { ?>
+                                            <div class="data-label">
+                                                <p><?php echo esc_html( $tickets['group'] ); ?></p>
+                                                <p><?php echo esc_html__( 'Price', 'mage-eventpress' ); ?></p>
+                                            </div>
                                             <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {
 													// echo '<pre>';print_r($ticket_type);echo '</pre>';
@@ -99,16 +113,15 @@
                                                                     <h6 class="_textCenter"><?php echo wc_price( $ticket_price ); ?></h6>
                                                                     <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                     <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
-                                                                    <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr(  $tickets['group'] ); ?>'/>
+                                                                    <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>
 																	<?php
-                                                                        if($exit_avail<1) {
-	                                                                        MP_Custom_Layout::qty_input( $input_data );
-                                                                        }else{
-                                                                            ?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr($ticket_price); ?>"/><?php
-	                                                                        esc_html_e('Upcoming', 'mage-eventpress');
-                                                                        }
-                                                                        $exit_avail=$available;
-                                                                        ?>
+																		if ( $exit_avail < 1 ) {
+																			MP_Custom_Layout::qty_input( $input_data );
+																		} else {
+																			esc_html_e( 'Upcoming', 'mage-eventpress' );
+																		}
+																		$exit_avail = $available;
+																	?>
                                                                 </div>
                                                             </div>
 															<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

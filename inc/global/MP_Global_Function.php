@@ -42,6 +42,14 @@
 				$data = get_term_meta($meta_id, $meta_key, true) ?: $default;
 				return self::data_sanitize($data);
 			}
+            public static function get_meta_id_by_name($taxonomy,$meta_key,$meta_value) {
+	            $term = get_term_by( $meta_key, $meta_value, $taxonomy);
+	            $term_id=false;
+	            if ( $term && ! is_wp_error( $term ) ) {
+		            $term_id = $term->term_id;
+	            }
+                return $term_id;
+            }
 			public static function get_all_term_data($term_name, $value = 'name') {
 				$all_data = [];
 				$taxonomies = self::get_taxonomy($term_name);

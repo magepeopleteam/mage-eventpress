@@ -27,8 +27,27 @@
 				$available = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 				if ( $ticket_group && in_array( $ticket_group, $categories ) ) {
 					$meta_id            = MP_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
-					$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+					$ticket_group_order='';
+                    if(sizeof($new_tickets)>0){
+                        $exit=0;
+                        foreach ($new_tickets as $key=>$new_ticket){
+                            if($new_ticket['group']==$ticket_group){
+	                            $ticket_group_order=$key;
+	                            $exit=1;
+                            }
+                        }
+                        if($exit==0){
+	                        $ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+                            if(empty($ticket_group_order) || $ticket_group_order==0){
+	                            $ticket_group_order=$meta_id;
+                            }
+                        }
+                    }else{
+	                    $ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+                    }
+
 					//echo '<pre>';print_r();echo '</pre>';
+
 					$new_tickets[ $ticket_group_order ]['group']   = $ticket_group;
 					$new_tickets[ $ticket_group_order ]['term_id'] = $meta_id;
 					$new_tickets[ $ticket_group_order ]['info'][]  = $ticket_type;

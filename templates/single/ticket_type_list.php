@@ -1,15 +1,23 @@
-<tr>
-
-	<?php do_action('mep_ticket_type_list_row_start', $field, $post_id); ?>
-    <td align="Left">
-        <span class='mep_ticket_type_name'> <?php echo array_key_exists('option_name_t', $field) ? esc_html($field['option_name_t']) : ""; ?></span>
+<?php do_action('mep_ticket_type_list_row_start', $field, $post_id); ?>
+<div class="mep-event-ticket-item">
+	<div class="ticket-info">
+		<div class="ticket-name"><?php echo array_key_exists('option_name_t', $field) ? esc_html($field['option_name_t']) : ""; ?> <span class="badge">Basic</span></div>
 		<?php if (!empty($ticket_details)) { ?>
-            <div class="mep_ticket_details">
-                <p><?php echo esc_html($ticket_details); ?></p>
-            </div>
+			<div class="ticket-description"><?php echo esc_html($ticket_details); ?></div>
 		<?php } ?>
-    </td>
-    <td class="ticket-qty">
+		<!-- // Check if low stock warning was displayed through the hook -->
+		<div class="ticket-remaining remaining-high">
+			<?php 
+				$low_stock_displayed = isset($GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)]) ? 
+				$GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)] : false;
+				if ($mep_available_seat == 'on' && !$low_stock_displayed) { 
+					echo esc_html(max($total_ticket_left, 0));
+					echo mep_get_option('mep_left_text', 'label_setting_sec', __(' Remaining', 'mage-eventpress'));
+				} 
+			?>
+		</div>
+	</div>
+	<div class="quantity-control">
 		<?php
 			$tic_price = mep_get_price_including_tax($post_id, $ticket_price);
 			$actual_price = mage_array_strip(wc_price(mep_get_price_including_tax($post_id, $ticket_price)));
@@ -55,15 +63,13 @@
 							<?php } ?>
                     </select>
 				<?php } else { ?>
-                    <div class="mage_input_group">
-                        <span class="fa fa-minus qty_dec"></span>
-                        <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo esc_attr($data_price); ?>' value='<?php echo esc_attr($default_qty); ?>' min="<?php echo esc_attr($total_min_seat); ?>" max="<?php echo esc_attr(max($total_left, 0)); ?>">
-                        <span class="fa fa-plus qty_inc"></span>
-                    </div>
+					<span class="qty-btn qty_dec">-</span>
+					<input id="eventpxtp_<?php echo esc_attr($count); ?>" type="text" class='extra-qty-box etp qty-input' name='option_qty[]' data-price='<?php echo esc_attr($data_price); ?>' value='<?php echo esc_attr($default_qty); ?>' min="<?php echo esc_attr($total_min_seat); ?>" max="<?php echo esc_attr(max($total_left, 0)); ?>">
+					<span class="qty-btn qty_inc">+</span>
 				<?php }
 			} else {
 				?>
-                <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="hidden" class='extra-qty-box etp' name='option_qty[]' data-price='0' value='0' min="0" max="0">
+                <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="hidden" class='extra-qty-box etp qty-input' name='option_qty[]' data-price='0' value='0' min="0" max="0">
 				<?php echo mep_get_option('mep_no_seat_available_text', 'label_setting_sec', __('No Seat Availables', 'mage-eventpress'));
 			}
 
@@ -71,38 +77,23 @@
 			do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity, $start_date);
 			do_action('mepgq_max_qty_hook', $post_id, max($total_ticket_left, 0));
 		?>
-		<?php 
-            // Check if low stock warning was displayed through the hook
-            $low_stock_displayed = isset($GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)]) ? 
-                $GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)] : false;
-                
-            if ($mep_available_seat == 'on' && !$low_stock_displayed) { 
-        ?>
-            <div class="xtra-item-left"><?php echo esc_html(max($total_ticket_left, 0)); ?>
-				<?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress')); ?>
-            </div>
-		<?php } ?>
-    </td>
-    <td class="ticket-price"><strong><?php echo wc_price(esc_html(mep_get_price_including_tax($post_id, $ticket_price))); ?></strong>
+	</div>
+	<div class="ticket-price">
+		<?php echo wc_price(esc_html(mep_get_price_including_tax($post_id, $ticket_price))); ?>
 		<?php if ($total_seats > 0) { ?>
             <p style="display: none;" class="price_jq"><?php echo esc_html($tic_price) > 0 ? esc_html($tic_price) : 0; ?></p>
 		<?php } ?>
-    </td>
-	<?php do_action('mep_ticket_type_list_row_end', $field, $post_id); ?>
-</tr>
-<tr>
-    <td colspan="<?php echo apply_filters('mep_hidden_row_colspan_no', 3); ?>" class='user-innnf'>
-        <input type="hidden" name='mep_event_start_date[]' value="<?php echo esc_attr($start_date); ?>">
-        <input type="hidden" name='mep_event_end_date[]' value="<?php echo isset($end_date) && !empty($end_date) ? esc_attr($end_date) : ''; ?>">
-        <input type="hidden" name='option_name[]' value='<?php echo esc_attr($ticket_name); ?>'>
-        <input type="hidden" name='option_price[]' value='<?php echo esc_attr($ticket_price); ?>'>
-        <input type="hidden" name='max_qty[]' value='<?php if (array_key_exists('option_max_qty', $field)) {
-			echo esc_attr($field['option_max_qty']);
-		} else {
-			echo '';
-		} ?>'>
-        <div class="user-info-sec">
-            <div id="dadainfo_<?php echo esc_attr($count); ?>" class="dada-info"></div>
-        </div>
-    </td>
-</tr>
+	</div>
+</div>
+<?php do_action('mep_ticket_type_list_row_end', $field, $post_id); ?>
+<!-- this filterhook was used as a colspan in previouse structure in <tr>. -->
+<?php //echo apply_filters('mep_hidden_row_colspan_no', 3); ?>
+
+<div class="user-info-sec">
+	<input type="hidden" name='mep_event_start_date[]' value="<?php echo esc_attr($start_date); ?>">
+	<input type="hidden" name='mep_event_end_date[]' value="<?php echo isset($end_date) && !empty($end_date) ? esc_attr($end_date) : ''; ?>">
+	<input type="hidden" name='option_name[]' value='<?php echo esc_attr($ticket_name); ?>'>
+	<input type="hidden" name='option_price[]' value='<?php echo esc_attr($ticket_price); ?>'>
+	<input type="hidden" name='max_qty[]' value='<?php echo array_key_exists('option_max_qty', $field) ? esc_attr($field['option_max_qty']) : '' ;?>'>
+		<div id="dadainfo_<?php echo esc_attr($count); ?>" class="dada-info"></div>
+</div>

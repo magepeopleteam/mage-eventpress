@@ -145,41 +145,46 @@
                                 <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
                                 <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
 								<?php do_action('mep_add_term_condition', $post_id); ?>
+								<!--The Add to cart button table start Here-->
+								<div class='mep_event_add_cart_table mep-event-ticket-type'>
+									<div class="mep-event-ticket-item">
+										<div class='total-col total'>
+											<?php do_action('mep_before_price_calculation', $post_id); ?>
+											<div>
+												<?php echo mep_get_option('mep_quantity_text', 'label_setting_sec', __('Quantity:', 'mage-eventpress'));
+												if ($mep_event_ticket_type) { ?>
+													<input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo esc_attr($leftt); ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
+													<span id="ttyttl"></span>
+												<?php } ?>
+											</div>
+											<div>
+												<span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec', __('Total', 'mage-eventpress')); ?>
+													<span id="usertotal"></span>
+												</span>
+											</div>
+											<?php do_action('mep_after_price_calculation', $post_id); ?>
+										</div>
+										<div>
+											<?php do_action('mep_before_add_cart_btn', $post_id, false); ?>
+											<input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta) ?? ''); ?>">
+											<input type="hidden" name="mep_event_date_cart" value="<?php //do_action('mep_event_date');
+											?>">
+											<?php if ($not_in_the_cart && class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible == 2 && $new_registration_system_sp == 'on') { ?>
+												<button type="submit" class="mpwemasp_get_sp"><?php esc_html_e("View Seat Plan", "mage-eventpress"); ?></button>
+											<?php }
+												if ($not_in_the_cart) { ?>
+													<button type="submit" name="add-to-cart" value="<?php echo esc_attr($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php do_action('mep_before_add_cart_button', $post_id);
+															echo "<span class='mep-cart-btn-text'>" . esc_html($cart_btn_label) . "</span>";
+															do_action('mep_after_add_cart_button', $post_id); ?></button>
+												<?php } else { ?>
+													<a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('You have already added this item to your cart! View your cart to continue shopping or checkout now.', 'mage-eventpress'); ?> </a>
+												<?php } ?>
+											<?php do_action('mep_after_add_cart_btn', $post_id); ?>
+										</div>
+									</div>
+								</div>
                             </div>
-                            <!--The Add to cart button table start Here-->
-                            <table class='table table-bordered mep_event_add_cart_table'>
-                                <tr>
-                                    <td align="left" class='total-col'>
-										<?php do_action('mep_before_price_calculation', $post_id); ?>
-										<?php echo mep_get_option('mep_quantity_text', 'label_setting_sec', __('Quantity:', 'mage-eventpress'));
-											if ($mep_event_ticket_type) { ?>
-                                                <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" max="<?php echo esc_attr($leftt); ?>" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
-                                                <span id="ttyttl"></span>
-											<?php } ?>
-                                        <span class='the-total'> <?php echo mep_get_option('mep_total_text', 'label_setting_sec', __('Total', 'mage-eventpress')); ?>
-                                    <span id="usertotal"></span>
-                                </span>
-										<?php do_action('mep_after_price_calculation', $post_id); ?>
-                                    </td>
-                                    <td align="right">
-										<?php do_action('mep_before_add_cart_btn', $post_id, false); ?>
-                                        <input type="hidden" name="mep_event_location_cart" value="<?php trim(mep_ev_location_ticket($post_id, $event_meta) ?? ''); ?>">
-                                        <input type="hidden" name="mep_event_date_cart" value="<?php //do_action('mep_event_date');
-										?>">
-										<?php if ($not_in_the_cart && class_exists('MP_ESP_Frontend') && sizeof($seat_plan) > 0 && $seat_plan_visible == 2 && $new_registration_system_sp == 'on') { ?>
-                                            <button type="submit" class="mpwemasp_get_sp"><?php esc_html_e("View Seat Plan", "mage-eventpress"); ?></button>
-										<?php }
-											if ($not_in_the_cart) { ?>
-                                                <button type="submit" name="add-to-cart" value="<?php echo esc_attr($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php do_action('mep_before_add_cart_button', $post_id);
-														echo "<span class='mep-cart-btn-text'>" . esc_html($cart_btn_label) . "</span>";
-														do_action('mep_after_add_cart_button', $post_id); ?></button>
-											<?php } else { ?>
-                                                <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('You have already added this item to your cart! View your cart to continue shopping or checkout now.', 'mage-eventpress'); ?> </a>
-											<?php } ?>
-										<?php do_action('mep_after_add_cart_btn', $post_id); ?>
-                                    </td>
-                                </tr>
-                            </table>
+                            
                             <!--The Add to cart button table start Here-->
                         </form>
                         <!--The event add to cart main form end here-->

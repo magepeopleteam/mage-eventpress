@@ -10,7 +10,6 @@
   --mpev-black:#000000;
   --mpev-purple:#9013fe;
 }
-
 .mep-modal-container {
   position: fixed;
   right: -100%; /* Initially hidden off-screen */

@@ -69,6 +69,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
     return preg_match($pattern, $filename) === 1;
 	}
 	}
+
 	if (!function_exists('mep_temp_attendee_create_for_cart_ticket_array')) {
 		function mep_temp_attendee_create_for_cart_ticket_array($event_id, $ticket_type){
 			foreach ($ticket_type as  $ticket) {
@@ -200,9 +201,22 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				'posts_per_page' => -1
 			);
 			$loop = new WP_Query($args);
-			return $loop->post_count;
+			// return $loop->post_count;
+
+			// $loop = new WP_Query($args);
+			$qty = 0;
+			if($loop->post_count > 0){
+			foreach ($loop->posts as $ticket) {
+					$post_id = $ticket->ID;
+					$_qty = get_post_meta($post_id,'ticket_qty',true) ? get_post_meta($post_id,'ticket_qty',true) : 0;
+					$qty = $qty + $_qty;
+				
+			}
 		}
+		
+		return $qty;
 	}
+}
 	
 	if (!function_exists('mep_temp_attendee_count')) {
 	
@@ -1900,122 +1914,9 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	}
 	if ( ! function_exists( 'mep_esc_html' ) ) {
 		function mep_esc_html( $string ) {
-			$allow_attr = array(
-				'input'    => array(
-					'br'                 => [],
-					'type'               => [],
-					'class'              => [],
-					'id'                 => [],
-					'name'               => [],
-					'value'              => [],
-					'size'               => [],
-					'placeholder'        => [],
-					'min'                => [],
-					'max'                => [],
-					'checked'            => [],
-					'required'           => [],
-					'disabled'           => [],
-					'readonly'           => [],
-					'step'               => [],
-					'data-default-color' => [],
-				),
-				'p'        => [
-					'class' => []
-				],
-				'img'      => [
-					'class' => [],
-					'id'    => [],
-					'src'   => [],
-					'alt'   => [],
-				],
-				'fieldset' => [
-					'class' => []
-				],
-				'label'    => [
-					'for'   => [],
-					'class' => []
-				],
-				'select'   => [
-					'class' => [],
-					'name'  => [],
-					'id'    => [],
-				],
-				'option'   => [
-					'class'    => [],
-					'value'    => [],
-					'id'       => [],
-					'selected' => [],
-				],
-				'textarea' => [
-					'class' => [],
-					'rows'  => [],
-					'id'    => [],
-					'cols'  => [],
-					'name'  => [],
-				],
-				'h2'       => [ 'class' => [], 'id' => [], ],
-				'a'        => [ 'class' => [], 'id' => [], 'href' => [], ],
-				'div'      => [ 'class' => [], 'id' => [], 'data' => [], ],
-				'span'     => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'i'        => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'table'    => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'tr'       => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'td'       => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'thead'    => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'tbody'    => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'th'       => [
-					'class' => [],
-					'id'    => [],
-					'data'  => [],
-				],
-				'svg'      => [
-					'class'   => [],
-					'id'      => [],
-					'width'   => [],
-					'height'  => [],
-					'viewBox' => [],
-					'xmlns'   => [],
-				],
-				'g'        => [
-					'fill' => [],
-				],
-				'path'     => [
-					'd' => [],
-				],
-				'br'       => array(),
-				'em'       => array(),
-				'strong'   => array(),
-			);
-
-			return wp_kses( $string, $allow_attr );
+			// Use WordPress built-in wp_kses_post instead
+			// This allows all HTML tags allowed for post content
+			return wp_kses_post($string);
 		}
 	}
 	if ( ! function_exists( 'mep_title_cutoff_words' ) ) {
@@ -2566,6 +2467,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 			return ob_get_clean();
 		}
 	}
+
 	add_filter( 'manage_mep_events_posts_columns', 'mep_set_custom_mep_events_columns' );
 	if ( ! function_exists( 'mep_set_custom_mep_events_columns' ) ) {
 		function mep_set_custom_mep_events_columns( $columns ) {

@@ -37,6 +37,53 @@
 
 		// add_action('activated_plugin', 'mep_event_activation_redirect');
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Dependencies.php';
+		require_once MPWEM_PLUGIN_DIR . '/inc/blocks.php';
+
+		// Register block editor assets
+		add_action('init', 'mep_register_block_assets');
+		function mep_register_block_assets() {
+			if (!function_exists('register_block_type')) {
+				return;
+			}
+
+			// Register block editor script
+			wp_register_script(
+				'mep-blocks-editor',
+				plugins_url('assets/blocks/event-list-block.js', __FILE__),
+				array(
+					'wp-blocks',
+					'wp-i18n',
+					'wp-element',
+					'wp-editor',
+					'wp-components',
+					'wp-block-editor'
+				),
+				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/event-list-block.js'),
+				array('in_footer' => true)
+			);
+
+			// Register editor styles
+			wp_register_style(
+				'mep-blocks-editor',
+				plugins_url('assets/blocks/editor.css', __FILE__),
+				array('wp-edit-blocks'),
+				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/editor.css')
+			);
+
+			// Register front-end styles
+			wp_register_style(
+				'mep-blocks-style',
+				plugins_url('assets/blocks/style.css', __FILE__),
+				array(),
+				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/style.css')
+			);
+
+			// Enqueue block editor assets
+			if (is_admin()) {
+				wp_enqueue_script('mep-blocks-editor');
+				wp_enqueue_style('mep-blocks-editor');
+			}
+		}
 
 		// Added Settings link to plugin action links
 		add_filter('plugin_action_links', 'mep_plugin_action_link', 10, 2);

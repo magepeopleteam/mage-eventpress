@@ -594,9 +594,10 @@ span.mep-more-date i {
 
 .mep-user-info-sec {
   border: 1px solid #DDD;
-  margin: 10px 0;
+  margin: 18px 25px;
   padding: 0 10px;
   background: rgba(222, 222, 222, 0.3803921569);
+  border-bottom: 1px solid #DEDEDE;
 }
 
 .user-info-sec h5 {
@@ -617,11 +618,6 @@ span.mep-more-date i {
 
 label.mep-show {
   line-height: 1.4;
-}
-
-[name="option_qty[]"].mage_error {
-  background-color: red;
-  color: #FFF;
 }
 
 /******Button*******/
@@ -2787,10 +2783,6 @@ span.mep-more-time i {
   text-transform: capitalize;
 }
 
-.mep-elementor-event-add-to-cart-section-widget td.user-innnf {
-  padding: 0 !important;
-}
-
 .mep-elementor-event-add-to-cart-section-widget table td {
   border: none;
 }
@@ -2959,10 +2951,6 @@ New Spring list style css added by ariful
 
 .mep_event_spring_list .mep_spring_list_date {
   color: #FFF;
-}
-
-td.user-innnf {
-  padding: 0 !important;
 }
 
 table.table.table-bordered.mep_event_add_cart_table {
@@ -4401,6 +4389,117 @@ input.mpe-new-input-group-field {
 }
 .mep-default-theme div.mep-default-feature-item h3 {
   margin: 10px 0;
+}
+
+.mep-default-theme .mep-event-ticket-type {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.mep-default-theme .mep-event-ticket-type-header {
+  background: linear-gradient(135deg, #4169e1, #3b5fe2);
+  color: white;
+  padding: 20px 25px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.mep-default-theme .mep-event-ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 25px;
+  border-bottom: 1px solid #eaeaea;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info {
+  flex: 1;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-name .badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  background-color: #e6f0ff;
+  color: #4169e1;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-description {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .ticket-remaining {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-info .remaining-high {
+  background-color: #e6f4ea;
+  color: #137333;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control {
+  display: flex;
+  align-items: center;
+  margin: 0 30px;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control .qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f0f2f5;
+  color: #4169e1;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control .qty-input {
+  width: 50px;
+  height: 36px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 10px;
+}
+.mep-default-theme .mep-event-ticket-item .quantity-control .qty-input.mage_error {
+  border: 1px solid red;
+  color: red;
+}
+.mep-default-theme .mep-event-ticket-item .ticket-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2b3a55;
+  width: 100px;
+  text-align: right;
+}
+.mep-default-theme #mep_event_extra_service_table {
+  margin-bottom: 0;
+  border-radius: 12px 12px 0 0;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type {
+  border-radius: 0 0 12px 12px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eaeaea;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type .mep-event-ticket-item {
+  border-bottom: 0;
+}
+.mep-default-theme .mep_event_add_cart_table.mep-event-ticket-type .mep-event-ticket-item .total {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 /*************************************************************
@@ -5865,7 +5964,7 @@ Vanilla theme css by ariful
     font-size: 25px;
   }
 }
-.mep-kera-theme .tabLists {
+.mep-kera-theme .tabLists.mpStyle {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -5874,54 +5973,50 @@ Vanilla theme css by ariful
   gap: 20px;
 }
 @media (min-width: 768px) {
-  .mep-kera-theme .tabLists {
+  .mep-kera-theme .tabLists.mpStyle {
     flex-direction: row;
   }
 }
-.mep-kera-theme .tabLists .mep-pricing-card {
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  width: 100%;
-}
-@media (min-width: 768px) {
-  .mep-kera-theme .tabLists .mep-pricing-card {
-    width: 32%;
-  }
-}
-.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target] {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] {
   display: block;
   position: relative;
   cursor: pointer;
+  border-radius: 10px;
   padding: 20px;
   background-color: #650c7a;
   color: #fff;
   font-weight: var(--fw-medium);
   transition: 0.5ms ease-in-out;
+  width: 100%;
 }
-.mep-kera-theme .tabLists .mep-pricing-card[data-tabs-target].active {
+@media (min-width: 768px) {
+  .mep-kera-theme .tabLists.mpStyle [data-tabs-target] {
+    width: 32%;
+  }
+}
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target].active {
   background-color: #ed2a92;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header {
   text-align: center;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h2 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header h2 {
   color: #fff;
   font-size: 35px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-pricing-header h3 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-pricing-header h3 {
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type {
   background-color: #4f0b5e;
   padding: 20px 10px;
   margin: 30px auto;
   border-radius: 10px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type:last-child {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type:last-child {
   margin-bottom: 0;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h2 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type h2 {
   background-color: #ed2a92;
   color: #fff;
   text-align: center;
@@ -5931,42 +6026,42 @@ Vanilla theme css by ariful
   border-radius: 30px;
   margin: 20px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type .label {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type .label {
   color: #ed2a92;
   margin-bottom: 10px;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type h3 {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type h3 {
   margin: 20px;
   text-align: center;
   font-size: 16px;
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type p {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type p {
   text-align: center;
   font-size: 14px;
   margin: 15px 0;
   color: #fff;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul {
   list-style-position: inside; /* Move bullets inside */
   text-align: center; /* Center text and bullet together */
   padding: 0; /* Remove left padding */
   margin: 0; /* Remove default margin */
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul li {
   margin: 10px 0;
 }
-.mep-kera-theme .tabLists .mep-pricing-card .mep-ticket-type ul li::before {
+.mep-kera-theme .tabLists.mpStyle [data-tabs-target] .mep-pricing-card .mep-ticket-type ul li::before {
   content: "•";
   margin-right: 5px;
 }
 @media (min-width: 768px) {
-  .mep-kera-theme .tabLists .mep-pricing-card.active::after {
+  .mep-kera-theme .tabLists.mpStyle [data-tabs-target].active::after {
     font-family: "Font Awesome 6 Free"; /* important */
     content: "\f0d7";
     font-size: 60px;
     position: absolute;
-    bottom: -38px;
+    bottom: -45px;
     left: 50%;
     transform: translateX(-50%);
     margin-left: 8px;

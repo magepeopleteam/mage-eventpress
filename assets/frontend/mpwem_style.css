@@ -92,6 +92,8 @@ div.item_hover_effect a:hover {
 .mpwemasp_ticket_area .mep_everyday_date_secs {
   background: var(--mpev-title-bg);
   color: var(--mpev-title-txt);
+  margin: 0;
+  border-radius: 12px 12px 0 0;
 }
 
 /*FAQ Sec Style*/
@@ -5987,7 +5989,7 @@ Vanilla theme css by ariful
 }
 @media (min-width: 768px) {
   .mep-kera-theme .tabLists.mpStyle [data-tabs-target] {
-    width: 32%;
+    flex: 1;
   }
 }
 .mep-kera-theme .tabLists.mpStyle [data-tabs-target].active {

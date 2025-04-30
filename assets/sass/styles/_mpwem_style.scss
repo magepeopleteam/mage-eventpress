@@ -74,7 +74,12 @@ div.item_hover_effect a:hover{
 	background: var(--mpev-title-bg); 
 	color: var(--mpev-title-txt);
 }
-.mpwemasp_ticket_area .mep_everyday_date_secs{ background: var(--mpev-title-bg); color: var(--mpev-title-txt); }
+.mpwemasp_ticket_area .mep_everyday_date_secs{
+	background: var(--mpev-title-bg); 
+	color: var(--mpev-title-txt); 
+	margin:0;
+  	border-radius:12px 12px 0 0;
+}
 /*FAQ Sec Style*/
 .mep-default-feature-faq-sec h4{
 	background: var(--mpev-faq-bg);

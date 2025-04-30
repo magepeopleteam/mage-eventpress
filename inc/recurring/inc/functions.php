@@ -176,26 +176,8 @@
                     <script>
                         jQuery('.mep_event_add_cart_table').show();
                     </script>
-                    <table id='mep_event_ticket_type_table'>
-                        <thead>
-                        <tr class='ex-sec-title mep_ticket_type_title'>
-                            <th>
-                        <span class="tkt-qty" style="text-align: left;">
-                            <?php echo _e( 'Ticket type', 'mage-eventpress' ); ?>
-                        </span>
-                            </th>
-                            <th>
-                        <span class="tkt-qty" style="text-align: center;">
-                            <?php echo mep_get_option( 'mep_ticket_qty_text', 'label_setting_sec' ) ? mep_get_option( 'mep_ticket_qty_text', 'label_setting_sec' ) : mep_esc_html( 'Ticket Qty:', 'mage-eventpress' ); ?>
-                        </span>
-                            </th>
-                            <th>
-                        <span class="tkt-pric" style="text-align: center;">
-                            <?php echo mep_get_option( 'mep_per_ticket_price_text', 'label_setting_sec' ) ? mep_get_option( 'mep_per_ticket_price_text', 'label_setting_sec' ) : mep_esc_html( 'Per Ticket Price:', 'mage-eventpress' ); ?>
-                        </span>
-                            </th>
-                        </tr>
-                        </thead>
+                    <div id='mep_event_ticket_type_table'>
+                        
 						<?php
 							$current_date        = apply_filters( 'mep_ticket_current_time', current_time( 'Y-m-d H:i' ), $start_date, $event_id );
 							$is_admin            = 0;
@@ -233,17 +215,16 @@
 									?>
 									<?php $count ++;
 								}
+								
 							} else {
 								?>
-                                <tr>
-                                    <td colspan=3>
-										<?php _e( 'Sorry, Event Date & Time is already over. Select another time.', 'mage-eventpress' ); ?>
-                                    </td>
-                                </tr>
+                                <div class="mep-event-ticket-item">
+									<?php _e( 'Sorry, Event Date & Time is already over. Select another time.', 'mage-eventpress' ); ?>
+                                </div>
 								<?php
 							}
 						?>
-                    </table>
+                    </div>
 					<?php
 					do_action( 'mep_re_after_ajax_ticket_type', $event_id, $start_date );
 				}
@@ -1643,7 +1624,7 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ){
 			?>
             <input type="hidden" name='mepre_event_id' id='mep_event_id' value='<?php echo esc_attr( $event_id ); ?>'>
 			<?php mep_re_get_everyday_event_date_sec( $event_id ); ?>
-            <div id='mep_recutting_ticket_type_list'></div>
+            <div id='mep_recutting_ticket_type_list' class="mep-event-ticket-type"></div>
 			<?php
 		} elseif ( $recurring == 'yes' ) {
 			$event_more_date[0]['event_more_start_date'] = date( 'Y-m-d', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
@@ -1662,7 +1643,7 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ){
             <input type="hidden" name='mepre_event_id' id='mep_event_id' value='<?php echo esc_attr( $event_id ); ?>'>
             <!-- <h3 class='ex-sec-title'> <?php echo mep_get_label( $event_id, 'mep_event_ticket_type_text', 'Ticket Type For
           ' ); ?></h3> -->
-            <div id='mep_recutting_ticket_type_list'></div>
+            <div id='mep_recutting_ticket_type_list' class="mep-event-ticket-type"></div>
 			<?php
 		} else {
 			return $content;

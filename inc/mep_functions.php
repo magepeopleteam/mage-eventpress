@@ -2414,7 +2414,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 			$mep_user_desg        = isset( $_POST['user_designation'] ) ? mage_array_strip( $_POST['user_designation'] ) : [];
 			$mep_user_website     = isset( $_POST['user_website'] ) ? mage_array_strip( $_POST['user_website'] ) : [];
 			$mep_user_vegetarian  = isset( $_POST['vegetarian'] ) ? mage_array_strip( $_POST['vegetarian'] ) : [];
-
+			$ticket_category = isset( $_POST['ticket_category'] ) ? mage_array_strip( $_POST['ticket_category'] ) : array();
 			$mep_event_start_date = isset( $_POST['mep_event_start_date'] ) ? mage_array_strip( $_POST['mep_event_start_date'] ) : array();
 
 			$names = isset( $_POST['option_name'] ) ? mage_array_strip( $_POST['option_name'] ) : array();
@@ -2467,6 +2467,9 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				                    endif;
 				                    if ( isset( $mep_user_vegetarian[ $iu ] ) ) :
 					                    $user[ $iu ]['user_vegetarian'] = stripslashes( strip_tags( $mep_user_vegetarian[ $iu ] ) );
+				                    endif;
+				                    if ( isset( $ticket_category[ $iu ] ) ) :
+					                    $user[ $iu ]['category'] = stripslashes( strip_tags( $ticket_category[ $iu ] ) );
 				                    endif;
 				                    $user[ $iu ]['user_ticket_type'] = strip_tags( $name );
 				                    if ( isset( $mep_event_start_date[0] ) ) :
@@ -3604,7 +3607,9 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 							<?php
 						}
 					} ?>
-					<?php if ( array_key_exists( 'user_ticket_type', $userinf ) && $userinf['user_ticket_type'] ) { ?>
+					<?php if ( array_key_exists( 'user_ticket_type', $userinf ) && $userinf['user_ticket_type'] ) {
+						do_action('mep_cart_after_ticket_type',$userinf);
+                        ?>
                         <li class='mep_cart_user_ticket_type'><?php esc_html_e( 'Ticket Type', 'mage-eventpress' );
 								echo ": " . esc_attr( $userinf['user_ticket_type'] ); ?></li> <?php } ?>
 					<?php if ( array_key_exists( 'user_event_date', $userinf ) && $userinf['user_event_date'] ) { ?>
@@ -3627,7 +3632,9 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	if ( ! function_exists( 'mep_cart_display_ticket_type_list' ) ) {
 		function mep_cart_display_ticket_type_list( $ticket_type_arr, $eid ) {
 			ob_start();
+			//echo '<pre>';print_r( $ticket_type_arr );echo '</pre>';
 			foreach ( $ticket_type_arr as $ticket ) {
+				do_action('mep_cart_after_ticket_type',$ticket);
 				echo '<li>' . esc_attr( $ticket['ticket_name'] ) . " - " . wc_price( esc_attr( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) ) . ' x ' . esc_attr( $ticket['ticket_qty'] ) . ' = ' . wc_price( esc_attr( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) ) ) . '</li>';
 			}
 
@@ -3640,6 +3647,10 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 				$ticket_type_name = $ticket['ticket_name'] . " - " . wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) . ' x ' . $ticket['ticket_qty'] . ' = ';
 				$ticket_type_val  = wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) );
 				$ticket_name_meta = apply_filters( 'mep_event_order_meta_ticket_name_filter', $ticket_type_name, $ticket );
+                $category=array_key_exists('category',$ticket)?$ticket['category']:'';
+                if($category){
+	                $item->add_meta_data( esc_html__( " Category", 'mage-eventpress' ), $category );
+                }
 				$item->add_meta_data( $ticket_name_meta, $ticket_type_val );
 				do_action( 'mep_event_cart_order_data_add_ef', $item, $eid, $ticket['ticket_name'] );
 			}

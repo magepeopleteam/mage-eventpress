@@ -122,8 +122,16 @@ ul#mep_add_calender_links li a{
 .mep_everyday_date_secs {
 	background: var(--mpev-recring-dpkr-bg);
 	color: var(--mpev-recring-dpkr-txt);
-	padding: 10px;
+	padding: 20px 25px;
 }
+
+.mep_everyday_date_secs select,.mep_everyday_date_secs input{
+	border-radius: 20px;
+	border: 0;
+	margin: 0;
+	padding:5px 10px;
+}
+
 /*****************************************************/
 #mep_event_date_sch li a {
 	display: -webkit-flex;
@@ -2075,7 +2083,7 @@ h3.ex-sec-title {
 .mep-user-info-sec input,
 #mep-event-review-form--title {
 	display: block;
-	padding: 0 15px 0 38px;
+	padding: 10px 15px 10px 38px;
 	font-size: 14px;
 	line-height: 1.5;
 	color: #495057;
@@ -2089,6 +2097,14 @@ h3.ex-sec-title {
 	min-height: 100%;
 	height: 30px;
 	margin: 5px 0;
+	border-radius: 50px;
+}
+.mep-datepicker-input-box  i{
+	position: absolute;
+	color: #495057;
+	z-index: 2;
+	top: 13px;
+	left: 13px;
 }
 .mep-user-info-sec input {
 	background: #FFF;
@@ -2121,6 +2137,15 @@ thead.ex-sec-title.mep_ticket_type_title tr th {
 span.mep-cal-icon i {
 	color: #000;
 }
+#ui-datepicker-div .ui-datepicker-title{
+	background: none;
+}
+h5.mep-warning{
+	border: 0;
+	background: none;
+	font-size: 16px;
+	color: #e2401c;
+}
 span#mep_everyday_event_time_list select {
 	border-color: #FFF;
 	margin-top: 0px;
@@ -2129,9 +2154,10 @@ span#mep_everyday_event_time_list select {
 	vertical-align: top;
 	border: 0;
 	height: 30px;
-	padding: 0 7px;
+	padding: 0 15px;
 	font-size: 14px;
 	color: #495057;
+	border-radius: 50px;
 }
 .mep_everyday_date_secs ul li {
 	vertical-align: middle;
@@ -2144,23 +2170,24 @@ span.mep_recurring_datepicker_section {
 }
 span.mep-datepicker-input-box {
 	position: relative;
+	margin: 0;
+	padding: 0;
 }
+
 .user-info-sec h5 {
 	font-weight: bold;
 	font-size: 16px;
 }
-.mep_everyday_date_secs {
-	padding: 5px 10px !important;
-}
+
 .mep_everyday_date_secs .mep-date-time-select-area {
 	overflow: hidden;
-	padding: 8px 5px;
+	
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	h3{
 		margin: 0;
-		font-size: 20px;
+		font-size: 18px;
 		font-weight: 600;
 	}
 	.mep-date-time{

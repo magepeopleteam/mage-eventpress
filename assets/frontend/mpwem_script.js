@@ -247,21 +247,25 @@
 (function ($) {
     "use strict";
     //*****************************Faq***********************************//
-    $(document).on('click', '.mep-event-faq-set > a', function () {
+    $(document).on('click', '.mep_faq_title', function () {
         let current = $(this);
-        if (current.hasClass("active")) {
-            current.removeClass("active");
-            current.siblings(".mep-event-faq-content").slideUp(200);
-            $(".mep-event-faq-set > a i").removeClass("fa-minus").addClass("fa-plus");
+        let parent = current.closest('.mep-event-faq-set');
+        let content = parent.find('.mep-event-faq-content');
+        let icon = current.find('i');
+    
+        if (content.hasClass('active')) {
+            content.stop(true, true).removeClass('active');
+            icon.removeClass('fa-minus').addClass('fa-plus');
         } else {
-            $(".mep-event-faq-set > a i").removeClass("fa-minus").addClass("fa-plus");
-            current.find("i").removeClass("fa-plus").addClass("fa-minus");
-            $(".mep-event-faq-set > a").removeClass("active");
-            current.addClass("active");
-            $(".mep-event-faq-content").slideUp(200);
-            current.siblings(".mep-event-faq-content").slideDown(200);
+            content.stop(true, true).addClass('active');
+            icon.removeClass('fa-plus').addClass('fa-minus');
         }
     });
+    
+    
+    
+    
+
     //****************************************************************//
     //****************************************************************//
     //****************************************************************//

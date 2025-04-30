@@ -22,7 +22,7 @@
 				if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) || in_array( 'all', $saved_user_role ) ) ) ) {
 					$full_location = MPWEM_Functions::get_location( $event_id );
 					?>
-                    <div class="mpwem_registration_area">
+                    <div class="mpStyle mpwem_registration_area">
                         <h2 class="_mTB"><?php esc_html_e( 'Tickets and prices', 'mage-eventpress' ); ?></h2>
 						<?php do_action( 'mpwem_date_select', $event_id, $all_dates, $all_times, $date ); ?>
                         <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">

@@ -15,8 +15,8 @@
 			public function event_type_section($post_id) {
 				$event_type = MP_Global_Function::get_post_info($post_id, 'mep_enable_recurring', 'no');
 				?>
-                <section class="mpStyle">
-                    <label class="mpev-label">
+                <section>
+                    <label class="mpev-label mpStyle">
                         <div>
                             <h2><?php esc_html_e('Event Type', 'mage-eventpress'); ?></h2>
                             <span><?php _e('Select your event type', 'mage-eventpress'); ?></span>

@@ -78,7 +78,8 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             <label>
                                 <?php _e('Add Title','mage-eventpress'); ?>
                                 <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>"> 
-                                <input type="text"   name="mep_timeline_title"> 
+                                <input type="text"   name="mep_timeline_title" placeholder="Ex: Morning Session"> 
+                                <input type="text"   name="mep_day_time" placeholder="8:00 AM - 9:00 AM"> 
                                 <input type="hidden" name="mep_timeline_item_id">
                             </label>
                             <label>
@@ -179,6 +180,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
             $new_data = [
                 'mep_day_title' => sanitize_text_field($_POST['mep_timeline_title']),
+                'mep_day_time' => sanitize_text_field($_POST['mep_timeline_time']),
                 'mep_day_content' => wp_kses_post($_POST['mep_timeline_content'])
             ];
             if( ! empty($mep_timeline)){
@@ -214,6 +216,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
             $new_data = [
                 'mep_day_title' => sanitize_text_field($_POST['mep_timeline_title']),
+                'mep_day_time' => sanitize_text_field($_POST['mep_timeline_time']),
                 'mep_day_content' => wp_kses_post($_POST['mep_timeline_content'])
             ];
             array_push($mep_timeline,$new_data);

@@ -79,7 +79,7 @@ div.item_hover_effect a:hover{
 	color: var(--mpev-title-txt); 
 	margin:0;
   	border-radius:12px 12px 0 0;
-	padding: 15px 25px;
+	padding: 17px 25px;
 }
 /*FAQ Sec Style*/
 .mep-default-feature-faq-sec h4{
@@ -1578,20 +1578,8 @@ div.item_hover_effect a:hover {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
-/************************/
-.mep-day-details-section h4 {
-	font-size: 22px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-/*
-.mep-day-details-section .mep-day-details {
-    font-size: 16px;
-    margin: 0 0 0 30px;
-    padding: 0 0 0 5px;
-    border-left: 2px solid #DDD;
-}
-*/
+
+
 .ui-accordion .ui-accordion-header {
 	background-image: none;
 	margin: 10px 0 0 0;
@@ -2151,7 +2139,7 @@ span#mep_everyday_event_time_list select {
 	border: 0;
 	height: 30px;
 	padding: 0 15px;
-	font-size: 14px;
+	font-size: 17px;
 	color: #495057;
 	border-radius: 50px;
 }
@@ -3016,52 +3004,6 @@ tr.mep_virtual_event_info_sec {
   	max-height: 300px;
 }
 
-// day details
-.mep-day-details-section .mep-day-title {
-	font-size: 20px;
-	font-weight: 600;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-.mep-default-theme .mep-day-details-item .mep-day-icon {
-	width: 50px;
-	height: 50px;
-	background: #F5F5F5;
-	color: #000;
-	text-align: center;
-	display: grid;
-	align-items: center;
-	border-radius: 50%;
-	margin-right: 30px;
-	font-weight: bold;
-	min-width: 50px;
-	position: relative;
-	z-index: 1;
-	border: 1px solid var(--mpev-primary);
-}
-.mep-default-theme .mep-day-details-item {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	position: relative;
-	padding-bottom: 10px;
-}
-.mep-default-theme .mep-day-content:before {
-	border-left: 1px solid var(--mpev-primary);
-	height: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-	content: "";
-	margin-left: 25px;
-	z-index: 0;
-}
-.mep-default-theme .mep-day-details-item:last-child .mep-day-content::before{
-	display: none;
-	height: 0%;
-}
 .default_theme .event-expire-btn,
 .royal_theme .event-expire-btn,
 .spring_field .event-expire-btn,
@@ -3944,6 +3886,92 @@ input.mpe-new-input-group-field {
 		margin: 10px 0;
 	}
 }
+
+/*********** day-details-section *************/
+.mep-default-theme{
+	.mep-day-details-section{
+		h4{
+			font-size: 24px;
+			font-weight: 700;
+			margin-bottom: 30px;
+			color: #212121;
+			position: relative;
+			padding-left: 20px;
+			&::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 4px;
+				background-color: #4285f4;
+				border-radius: 4px;
+			}
+		}
+	}
+	.timeline{
+		position: relative;
+		padding-left: 50px;
+		&::before{
+			content: '';
+			position: absolute;
+			left: 21px;
+			top: 0;
+			height: 100%;
+			width: 2px;
+			background-color: #e0e0e0;
+		}
+		.mep-day-details-item{
+			position: relative;
+			padding-bottom: 50px;
+			.mep-day-icon{
+				position: absolute;
+				left: -50px;
+				top: 0;
+				width: 42px;
+				height: 42px;
+				background-color: #ffffff;
+				border: 2px solid #4285f4;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 600;
+				color: #4285f4;
+				font-size: 16px;
+				z-index: 2;
+			}
+			.mep-day-content{
+				background-color: #ffffff;
+				border-radius: 12px;
+				padding: 25px 30px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+				transition: transform 0.3s ease;
+				&:hover{
+					transform: translateY(-5px);
+				}
+				.mep-day-title{
+					font-size: 18px;
+					font-weight: 600;
+					margin-bottom: 15px;
+					color: #212121;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					.mep-day-time{
+						font-size: 14px;
+						color: #4285f4;
+						font-weight: 500;
+						padding: 6px 12px;
+						background-color: rgba(66, 133, 244, 0.1);
+						border-radius: 20px;
+					}
+				}
+			}
+		}
+	}
+}
+
 // ============ticket type css=================
 .mep-default-theme {
 	.mep-event-ticket-type {

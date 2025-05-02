@@ -9,16 +9,35 @@ h5.mep-warning {
     background: #ffe6e6;
 }
 h5.mep-processing {
-    color: #0bc705;
     font-size: 20px;
     text-align: center;
-    border: 1px solid rgb(0, 156, 21);
     margin: 20px 0;
-    padding: 65px 0 0 0;
+    padding: 65px;
     font-weight: bold;
-    background: url(anim.gif) no-repeat center -96px;
+    position: relative;
+    /* background: url(anim.gif) no-repeat center -96px; */
     min-height: 100px;
 }
+h5.mep-processing::before{
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ddd;           /* Light gray border */
+    border-top: 4px solid var(--mpev-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 50px auto; 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .mep_everyday_date_secs {
     display: inline-block;
     float: none;

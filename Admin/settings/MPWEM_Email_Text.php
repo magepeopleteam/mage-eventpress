@@ -28,8 +28,8 @@ if(!class_exists('MPWEM_Email_Text')){
                 die;
             }
 
-            $post_id = intval($_POST['mep_email_text_postID']);
-            $email_text = wp_kses_post($_POST['mep_email_text_content']);
+            $post_id            = intval($_POST['mep_email_text_postID']);
+            $email_text         = wp_kses_post($_POST['mep_email_text_content']);
             
             update_post_meta($post_id, 'mep_event_cc_email_text', $email_text);
             

@@ -279,17 +279,24 @@ div.mp_ticket_type_table_auto #repeatable-fieldset-one-t th {
     font-size: 12px;
     padding: 7px 5px;
     border-right: 1px solid #d9d4d4;
+    text-align: center;
 }
 
 div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {
     padding: 5px;
     border-right: 1px solid #d7d0d0;
 }
+div.mp_ticket_type_table #repeatable-fieldset-one th {
+    background-color: #F1F1F1;
+    text-align: left;
+    font-size: 12px;
+    padding: 7px 5px;
+}
 
 #mp_event_all_info_in_tab .mp_formControl {
-    font-size: 12px;
+    font-size: 12px !important;
     background: #f5f8ff;
-    font-weight: 400;
+    font-weight: 400 !important;
 }
 
 div.mpStyle .formControl.date_type {

@@ -305,3 +305,7 @@ div.mpStyle .formControl.date_type {
 div.mpStyle .formControl.date_type, div.mpStyle .formControl[type=date], div.mpStyle .formControl{
 background: #f5f8ff;	
 }
+#mp_event_all_info_in_tab .mp_formControl {
+    font-size: 12px !important;
+    width: 96% !important;
+}

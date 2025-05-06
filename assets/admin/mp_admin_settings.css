@@ -274,7 +274,7 @@
 }
 div.mp_ticket_type_table_auto{overflow-x: auto;}
 
-div.mp_ticket_type_table_auto table th {
+#mp_event_all_info_in_tab table th {
     background-color: #F1F1F1;
     font-size: 12px;
     padding: 7px 5px;

@@ -114,7 +114,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             if( ! empty($mep_timeline)):
                 foreach ($mep_timeline as $key => $value) : 
                     ?>
-                        <div class="mep-timeline-item" data-id="<?php echo esc_attr($key); ?>">
+                        <div class="mep-timeline-item mpStyle" data-id="<?php echo esc_attr($key); ?>">
                             <section class="timeline-header" data-collapse-target="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_day_title']); ?></p>

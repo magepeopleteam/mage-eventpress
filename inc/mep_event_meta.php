@@ -532,13 +532,14 @@ use Sabberworm\CSS\Value\Value;
 					</label>
 				</div>
 			</section>
-            <?php do_action('mep_add_category_display',$post_id); ?>
 			<style>
 				.mep_hide_on_load{
 					display:<?php echo $css_value; ?>;
 				}
 			</style>
+			<?php do_action('mep_add_category_display',$post_id); ?>
             <section class="mp_ticket_type_table">
+                <div class="mp_ticket_type_table_auto">
 					<table id="repeatable-fieldset-one-t">
 						<thead>
 						<tr>
@@ -658,6 +659,7 @@ use Sabberworm\CSS\Value\Value;
 						</tr>
 						</tbody>
 					</table>
+                </div>
 					<br>
 					<button id="add-row-t" class="button" type="button"><i class="fas fa-plus-circle"></i> <?php esc_html_e('Add New Ticket Type', 'mage-eventpress'); ?></button>
             </section>

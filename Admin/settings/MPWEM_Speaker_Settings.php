@@ -99,8 +99,12 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                         </div>
                         <div class="mep-speaker-wrapper">
                             <select name="mep_event_speakers_list[]" id="" multiple>
-                                <?php foreach($speakers as  $value): ?>
-                                        <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'],$speaker_lists)?'selected':''; ?>><?php echo $value['title']; ?></option>
+                                <?php
+                                $speaker_lists = is_array($speaker_lists) ? $speaker_lists : explode(',', $speaker_lists);
+                                foreach($speakers as $value): ?>
+                                    <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists) ? 'selected' : ''; ?>>
+                                        <?php echo $value['title']; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

@@ -10,6 +10,84 @@ function mep_recurring_attendee_stat_menu()
 function mep_recurring_attendee_stat_dashboard(){
     $event_id =  0;
 ?>
+<style>
+    .attendee_filter_section ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .attendee_filter_section li {
+        margin: 0;
+    }
+
+    .attendee_filter_section select,
+    .attendee_filter_section input[type="text"] {
+        padding: 6px 10px;
+        border: 1px solid #ccd0d4;
+        border-radius: 4px;
+        min-width: 220px;
+        font-size: 14px;
+    }
+
+    #event_attendee_filter_btn {
+        background-color: #2271b1;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    #event_attendee_filter_btn:hover {
+        background-color: #135e96;
+    }
+
+    .mep-processing {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 20px 0;
+    }
+    .mep_everyday_date_secs h3 {
+        display: none;
+    }
+    .wrap h2 {
+        margin-bottom: 20px;
+    }
+
+    .wp-list-table th,
+    .wp-list-table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .wp-list-table {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .attendee_filter_section ul {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .attendee_filter_section select,
+        .attendee_filter_section input[type="text"] {
+            width: 100%;
+        }
+
+        #event_attendee_filter_btn {
+            width: 100%;
+        }
+    }
+</style>
 
 <div class="wrap">
         <h2><?php _e('Recurring Event Attendee Stat. List', 'mage-eventpress'); ?></h2>
@@ -52,6 +130,24 @@ function mep_recurring_attendee_stat_dashboard(){
             </ul>
         </div>        
         <div id='event_attendee_list_table_item'>
+        <table class="wp-list-table widefat striped posts">
+            <thead>
+            <tr>
+                    <th><?php _e('Ticket Type Name','mage-eventpress');  ?></th>
+                    <th><?php _e('Total Seat','mage-eventpress');  ?></th>
+                    <th><?php _e('Total Reserved','mage-eventpress');  ?></th>
+                    <th><?php _e('Ticket Sold','mage-eventpress');  ?></th>
+                    <th><?php _e('Available Seat','mage-eventpress');  ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" align='center'>
+                        <?php _e('Select an event and click the Filter button to view the statistics.','mage-eventpress') ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         </div>
     </div>
     <script>

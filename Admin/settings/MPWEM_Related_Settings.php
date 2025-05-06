@@ -107,7 +107,7 @@
 								<div>
 									<select class="chosen-select" multiple="multiple" id="upsizing_products"
 											name="event_list[]"
-											data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>"
+											data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'mage-eventpress' ); ?>"
 											data-action="woocommerce_json_search_products_and_variations"
 											data-exclude="<?php echo intval( $post->ID ); ?>">
 											
@@ -117,7 +117,7 @@
 											<option value="<?php echo $product_id; ?>" <?php echo in_array($product_id, $product_ids)?'selected':''; ?> ><?php echo $value; ?></option>
 										<?php endforeach; ?>
 									</select> 
-									<?php echo wc_help_tip( __( 'Select Products Here.', 'woocommerce' ) ); ?>
+									<?php echo wc_help_tip( __( 'Select Products Here.', 'mage-eventpress' ) ); ?>
 								</div>
 							</label>
 						</section>
@@ -131,10 +131,10 @@
 				global $woocommerce, $post;
 				?>
 				<!-- <p class="form-field">
-					<label for="upsizing_products"><?php _e( 'Event List', 'woocommerce' ); ?></label>
+					<label for="upsizing_products"><?php _e( 'Event List', 'mage-eventpress' ); ?></label>
 					<select class="chosen-select" multiple="multiple" style="width: 50%;" id="upsizing_products"
 							name="upsizing_products[]"
-							data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>"
+							data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'mage-eventpress' ); ?>"
 							data-action="woocommerce_json_search_products_and_variations"
 							data-exclude="<?php echo intval( $post->ID ); ?>">
 						<?php
@@ -160,7 +160,7 @@
 								 . '</option>';
 						}
 						?>
-					</select> <?php echo wc_help_tip( __( 'Select Products Here.', 'woocommerce' ) ); ?>
+					</select> <?php echo wc_help_tip( __( 'Select Products Here.', 'mage-eventpress' ) ); ?>
 				</p> -->
 		
 				<?php

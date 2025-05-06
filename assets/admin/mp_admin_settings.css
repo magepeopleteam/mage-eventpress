@@ -280,3 +280,7 @@ div.mp_ticket_type_table_auto #repeatable-fieldset-one-t th {
     padding: 7px 5px;
 }
 
+div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {
+    padding: 5px;
+    border-right: 1px solid #eee;
+}

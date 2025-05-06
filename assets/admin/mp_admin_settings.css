@@ -291,3 +291,10 @@ div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {
     background: #f5f8ff;
     font-weight: 400;
 }
+
+div.mpStyle .formControl.date_type {
+    background: #f5f8ff;
+}
+.mpStyle .formControl{
+background: #f5f8ff;	
+}

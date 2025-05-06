@@ -286,7 +286,7 @@ div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {
     border-right: 1px solid #d7d0d0;
 }
 
-div.mp_ticket_type_table_auto #repeatable-fieldset-one-t .mp_formControl {
+#mp_event_all_info_in_tab .mp_formControl {
     font-size: 12px;
     background: #f5f8ff;
     font-weight: 400;

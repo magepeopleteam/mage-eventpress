@@ -278,6 +278,7 @@ div.mp_ticket_type_table_auto #repeatable-fieldset-one-t th {
     background-color: #F1F1F1;
     font-size: 12px;
     padding: 7px 5px;
+    border-right: 1px solid #eee;
 }
 
 div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {

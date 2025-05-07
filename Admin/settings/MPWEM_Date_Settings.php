@@ -156,9 +156,17 @@
                                 <span><?php _e('Select Offdays', 'mage-eventpress'); ?></span>
                             </div>
 							<?php
-								$off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
-								$off_days = $off_day_array ? implode(',', $off_day_array) : '';
-								$days = MP_Global_Function::week_day();
+                                $off_day_array = MP_Global_Function::get_post_info($post_id, 'mep_ticket_offdays', []);
+                                if (!is_array($off_day_array)) {
+                                    // Try to unserialize if it's serialized
+                                    $maybe_unserialized = @unserialize($off_day_array);
+                                    if (is_array($maybe_unserialized)) {
+                                        $off_day_array = $maybe_unserialized;
+                                    } else {
+                                        $off_day_array = explode(',', (string)$off_day_array);
+                                    }
+                                }
+                                $off_days = $off_day_array ? implode(',', $off_day_array) : '';
 							?>
                             <div class="dFlex groupCheckBox">
                                 <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
@@ -182,9 +190,18 @@
                                     <tbody class="mp_item_insert mp_sortable_area">
                                         <?php
                                             $off_day_lists = MP_Global_Function::get_post_info($post_id, 'mep_ticket_off_dates', array());
-                                            if (sizeof($off_day_lists)) {
+                                            // If it's not an array, try unserializing or fallback
+                                            if (!is_array($off_day_lists)) {
+                                                $maybe_unserialized = @unserialize($off_day_lists);
+                                                if (is_array($maybe_unserialized)) {
+                                                    $off_day_lists = $maybe_unserialized;
+                                                } else {
+                                                    $off_day_lists = []; // fallback to empty array
+                                                }
+                                            }
+                                            if (!empty($off_day_lists)) {
                                                 foreach ($off_day_lists as $off_day) {
-                                                    if ($off_day['mep_ticket_off_date']) {
+                                                    if (is_array($off_day) && !empty($off_day['mep_ticket_off_date'])) {
                                                         ?>
                                                         <tr class="mp_remove_area">
                                                             <td><?php $this->date_item('mep_ticket_off_dates[]', $off_day['mep_ticket_off_date']); ?></td>
@@ -319,12 +336,11 @@
 			}
 			public function time_line($post_id, $key) {
 				$time_infos = MP_Global_Function::get_post_info($post_id, $key, []);
-				//echo '<pre>';				print_r($time_infos);				echo '</pre>';
 				?>
                 <div class="mp_settings_area">
                     <table class="_layoutFixed mpwem_time_setting_table">
                         <tbody class="mp_sortable_area mp_item_insert">
-						<?php if (sizeof($time_infos) > 0) {
+						<?php if (is_array($time_infos) && sizeof($time_infos) > 0) {
 							foreach ($time_infos as $time_info) {
 								$this->time_line_item($key, $time_info);
 							}

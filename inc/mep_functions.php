@@ -382,7 +382,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 					public function read( &$product ) {
 						$product->set_defaults();
 						if ( ! $product->get_id() || ! ( $post_object = get_post( $product->get_id() ) ) || ! in_array( $post_object->post_type, array( 'mep_events', 'product' ) ) ) { // change birds with your post type
-							throw new Exception( __( 'Invalid product.', 'woocommerce' ) );
+							throw new Exception( __( 'Invalid product.', 'mage-eventpress' ) );
 						}
 						$id = $product->get_id();
 						$product->set_props( array(
@@ -534,38 +534,51 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	if ( ! function_exists( 'mep_event_get_order_meta' ) ) {
 		function mep_event_get_order_meta( $item_id, $key ) {
 			global $wpdb;
+		
 			$table_name = $wpdb->prefix . "woocommerce_order_itemmeta";
-			$results    = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE order_item_id = %d AND meta_key = %s", $item_id, $key ) );
-			foreach ( $results as $result ) {
-				$value = $result->meta_value;
-			}
-			$val = isset( $value ) ? $value : '';
-
-			return $val;
+		
+			$value = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM $table_name WHERE order_item_id = %d AND meta_key = %s LIMIT 1",
+					$item_id,
+					$key
+				)
+			);
+		
+			return $value !== null ? $value : '';
 		}
 	}
 	if ( ! function_exists( 'mep_event_get_event_city_list' ) ) {
 		function mep_event_get_event_city_list() {
-			global $wpdb;
+			global $wpdb;		
 			$table_name = $wpdb->prefix . "postmeta";
-			$sql        = "SELECT meta_value FROM $table_name WHERE meta_key ='mep_city' GROUP BY meta_value";
-			$results    = $wpdb->get_results( $sql ); //or die(mysql_error());
+			$sql        = $wpdb->prepare(
+				"SELECT DISTINCT meta_value FROM $table_name WHERE meta_key = %s AND meta_value != ''",
+				'mep_city'
+			);
+			$results = $wpdb->get_col( $sql );
+		
+			if ( empty( $results ) ) {
+				return '<p>' . esc_html__( 'No cities found.', 'mage-eventpress' ) . '</p>';
+			}
+		
 			ob_start();
 			?>
-            <div class='mep-city-list'>
-                <ul>
-					<?php
-						foreach ( $results as $result ) {
-							?>
-                            <li><a href='<?php echo get_site_url(); ?>/event-by-city-name/<?php echo esc_attr( $result->meta_value ); ?>/'><?php echo esc_html( $result->meta_value ); ?></a></li>
-							<?php
-						}
-					?>
-                </ul>
-            </div>
+			<div class='mep-city-list'>
+				<ul>
+					<?php foreach ( $results as $city ) : ?>
+						<li>
+							<a href="<?php echo esc_url( get_site_url() . '/event-by-city-name/' . rawurlencode( $city ) . '/' ); ?>">
+								<?php echo esc_html( $city ); ?>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 			<?php
 			return ob_get_clean();
 		}
+		
 	}
 // Function to get page slug
 	if ( ! function_exists( 'mep_get_page_by_slug' ) ) {

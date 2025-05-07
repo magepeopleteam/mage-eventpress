@@ -18,7 +18,7 @@ class MAGE_Product_Data_Store_CPT extends WC_Product_Data_Store_CPT {
         $product->set_defaults();
 
         if ( ! $product->get_id() || ! ( $post_object = get_post( $product->get_id() ) ) || ! in_array( $post_object->post_type, $this->cpt_product() ) ) { // change birds with your post type
-            throw new Exception( __( 'Invalid product.', 'woocommerce' ) );
+            throw new Exception( __( 'Invalid product.', 'mage-eventpress' ) );
         }
 
         $id = $product->get_id();

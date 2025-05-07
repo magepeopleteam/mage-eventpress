@@ -479,16 +479,20 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0 ) {
 			$event_name = get_the_title( $event_id );
 			$attendee_q = mep_get_attendee_info_query( $event_id, $order_id );
+			$_attendee_id = 0; // Initialize to avoid undefined variable warning
+		
 			foreach ( $attendee_q->posts as $_attendee_q ) {
 				$_attendee_id = $_attendee_q->ID;
 			}
+		
 			$attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
-			$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ? get_post_meta( $attendee_id, 'ea_name', true ) : '';
-			$email         = get_post_meta( $attendee_id, 'ea_email', true ) ? get_post_meta( $attendee_id, 'ea_email', true ) : '';
+			$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
+			$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
 			$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : '';
 			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : '';
 			$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : '';
-			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ? get_post_meta( $attendee_id, 'ea_ticket_type', true ) : '';
+			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
+			
 			$email_body    = str_replace( "{name}", $attendee_name, $email_body );
 			$email_body    = str_replace( "{email}", $email, $email_body );
 			$email_body    = str_replace( "{event}", $event_name, $email_body );
@@ -496,9 +500,10 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 			$email_body    = str_replace( "{event_time}", $time, $email_body );
 			$email_body    = str_replace( "{event_datetime}", $date_time, $email_body );
 			$email_body    = str_replace( "{ticket_type}", $ticket_type, $email_body );
-
+		
 			return $email_body;
 		}
+		
 	}
 
 

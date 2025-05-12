@@ -21,7 +21,7 @@
 		if (sizeof($ticket_types) > 0) { ?>
             <div class="mpwem_ticket_type _dLayout">
 				<?php foreach ($ticket_types as $ticket_type) {
-                   // echo '<pre>';print_r($ticket_type);echo '</pre>';
+                    //echo '<pre>';print_r($ticket_type);echo '</pre>';
 					$ticket_name = array_key_exists('option_name_t', $ticket_type) ? $ticket_type['option_name_t'] : '';
 					$ticket_details = array_key_exists('option_details_t', $ticket_type) ? $ticket_type['option_details_t'] : '';
 					$ticket_price = array_key_exists('option_price_t', $ticket_type) ? $ticket_type['option_price_t'] : 0;
@@ -56,7 +56,20 @@
                                     <h6 class="_textCenter"><?php echo wc_price($ticket_price); ?></h6>
                                     <input type="hidden" name='option_name[]' value='<?php echo esc_attr($ticket_name); ?>'/>
                                     <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr($ticket_name); ?>'/>
-									<?php MP_Custom_Layout::qty_input($input_data); ?>
+									<?php
+										$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
+										if ( $early_date ) {
+											MP_Custom_Layout::qty_input( $input_data );
+										} else {
+											$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+											?>
+                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
+													echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+                                            <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+											<?php
+										}
+
+                                        ?>
                                 </div>
                             </div>
 							<?php do_action('mpwem_multi_attendee', $event_id); ?>

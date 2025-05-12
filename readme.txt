@@ -284,6 +284,15 @@ A. You can create a support ticket here with problem details with possible scree
 
 
 == Changelog ==
+= 4.3.9 =
+* Event Edit Not working issue fixed.
+* Virtual Event Info not sending to confirmation email issue fixed.
+* Gutenberg Blocks now supported
+* Seat low notification feature added.
+* Sorting issue fixed in event list page. 
+* Recurring Stat page design optimized.
+  07 May 2025*
+
 
 = 4.3.8 =
 * Special Date no showing in Datepicker issue fixed.

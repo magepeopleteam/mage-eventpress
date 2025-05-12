@@ -265,3 +265,47 @@
 	div.mpStyle .info_text {display: block;font-weight: normal;font-size: var(--fs_small);color: #666;}
 	div.mpStyle .info_text span {margin: 0 5px 0 0;}
 }
+.mp_tab_item,
+#mp_event_all_info_in_tab{overflow: inherit !important;}
+.mp_tab_details {
+	width: calc(100% - 275px) !important;
+	padding: 20px 50px !important;
+	overflow: hidden !important;
+}
+div.mp_ticket_type_table_auto{overflow-x: auto;}
+
+div.mp_ticket_type_table_auto #repeatable-fieldset-one-t th {
+    background-color: #F1F1F1;
+    font-size: 12px;
+    padding: 7px 5px;
+    border-right: 1px solid #d9d4d4;
+    text-align: center;
+}
+
+div.mp_ticket_type_table_auto #repeatable-fieldset-one-t td {
+    padding: 5px;
+    border-right: 1px solid #d7d0d0;
+}
+div.mp_ticket_type_table #repeatable-fieldset-one th {
+    background-color: #F1F1F1;
+    text-align: left;
+    font-size: 12px;
+    padding: 7px 5px;
+}
+
+#mp_event_all_info_in_tab .mp_formControl {
+    font-size: 12px !important;
+    background: #f5f8ff;
+    font-weight: 400 !important;
+}
+
+div.mpStyle .formControl.date_type {
+    background: #f5f8ff;
+}
+div.mpStyle .formControl.date_type, div.mpStyle .formControl[type=date], div.mpStyle .formControl{
+background: #f5f8ff;	
+}
+#mp_event_all_info_in_tab .mp_formControl {
+    font-size: 12px !important;
+    width: 96% !important;
+}

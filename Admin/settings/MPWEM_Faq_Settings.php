@@ -154,7 +154,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             if( ! empty($mep_faq)):
                 foreach ($mep_faq as $key => $value) : 
                     ?>
-                        <div class="mep-faq-item" data-id="<?php echo esc_attr($key); ?>">
+                        <div class="mep-faq-item mpStyle" data-id="<?php echo esc_attr($key); ?>">
                             <section class="faq-header" data-collapse-target="#faq-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_faq_title']); ?></p>

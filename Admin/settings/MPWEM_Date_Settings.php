@@ -170,7 +170,17 @@
 							?>
                             <div class="dFlex groupCheckBox">
                                 <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr($off_days); ?>"/>
-								<?php foreach ($days as $key => $day) { ?>
+								<?php 
+                                $days = array(
+                                    'sun' => esc_html__('Sunday', 'mage-eventpress'),
+                                    'mon' => esc_html__('Monday', 'mage-eventpress'),
+                                    'tue' => esc_html__('Tuesday', 'mage-eventpress'),
+                                    'wed' => esc_html__('Wednesday', 'mage-eventpress'),
+                                    'thu' => esc_html__('Thursday', 'mage-eventpress'),
+                                    'fri' => esc_html__('Friday', 'mage-eventpress'),
+                                    'sat' => esc_html__('Saturday', 'mage-eventpress')
+                                );
+                                foreach ($days as $key => $day) { ?>
                                     <label class="customCheckboxLabel ">
                                         <input type="checkbox" <?php echo esc_attr(in_array($key, $off_day_array) ? 'checked' : ''); ?> data-checked="<?php echo esc_attr($key); ?>"/>
                                         <span class="customCheckbox"><?php echo esc_html($day); ?></span>

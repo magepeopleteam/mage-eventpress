@@ -18,7 +18,6 @@ function mpwem_page_scroll_to(target) {
 	"use strict";
 	let bg_image_load = false;
 	load_pagination_initial_item();
-	$(".filter_datepicker").datepicker({dateFormat: "mm/dd/yy"});
 	$(document).ready(function () {
 		$(window).on('load', function () {
 			load_bg_img();
@@ -32,6 +31,26 @@ function mpwem_page_scroll_to(target) {
 			});
 		}
 	});
+	
+	// Initialize datepicker with error handling for nonWorkingDates
+	try {
+		$(".filter_datepicker").datepicker({
+			dateFormat: "mm/dd/yy",
+			beforeShowDay: function(date) {
+				// Check if nonWorkingDates exists and is valid
+				if (typeof nonWorkingDates !== 'undefined' && Array.isArray(nonWorkingDates)) {
+					var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+					return [nonWorkingDates.indexOf(string) == -1];
+				}
+				return [true];
+			}
+		});
+	} catch(e) {
+		console.error("Datepicker initialization error:", e);
+		// Fallback to simple datepicker without nonWorkingDates
+		$(".filter_datepicker").datepicker({dateFormat: "mm/dd/yy"});
+	}
+	
 	let filter_input_list = {
 		title_filter: 'data-title',
 		filter_with_city: 'data-city-name',

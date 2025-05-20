@@ -1287,7 +1287,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 		// $availabe_seat          = mep_update_ticket_type_seat($event_id,$name,$date,$total,$reserved);
 		// return $availabe_seat;
 		$temp_count = mep_temp_attendee_count($event_id, $name, $date);
-		return $availabe_seat + $temp_count;
+		return (int)$availabe_seat + (int)$temp_count;
 	}
 	if ( ! function_exists( 'mep_get_count_total_available_seat' ) ) {
 		function mep_get_count_total_available_seat( $event_id, $date = '' ) {

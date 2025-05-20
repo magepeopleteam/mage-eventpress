@@ -1,3 +1,105 @@
+function mpwem_price_calculation(parent) {
+    let total_qty = mpwem_qty(parent);
+    //wbtm_seat_calculation(parent, total_qty);
+    mpwem_attendee_management(parent, total_qty);
+    let target_summary = parent.find('.mpwem_total');
+    //let target_sub_total = parent.find('.wbtm_sub_total');
+    let total = mpwem_price(parent);
+    //target_sub_total.html(mp_price_format(total));
+    if (total_qty > 0) {
+        parent.find('.mpwem_ex_service').slideDown('fast');
+        parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
+        total = total + mpwem_ex_price(parent);
+        target_summary.html(mpwem_price_format(total));
+    } else {
+        parent.find('.mpwem_ex_service').slideUp('fast');
+        parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');
+        target_summary.html(mpwem_price_format(total));
+    }
+}
+function mpwem_qty(parent) {
+    let total_qty = 0;
+    if (parent.find('.mpwem_seat_plan_area').length > 0) {
+        parent.find('.mpwem_seat_available.mage_seat_selected').each(function () {
+            total_qty++;
+        });
+    } else {
+        parent.find('[name="option_qty[]"]').each(function () {
+            total_qty = total_qty + parseInt($(this).val());
+        });
+    }
+    return total_qty;
+}
+function mpwem_price(parent) {
+    let total = 0;
+    if (parent.find('.mpwem_seat_plan_area').length > 0) {
+        parent.find('.mpwem_seat_available.mage_seat_selected').each(function () {
+            total = total + parseFloat(jQuery(this).attr('data-seat_price'));
+        });
+    } else {
+        parent.find('[name="option_qty[]"]').each(function () {
+            let qty = parseInt(jQuery(this).val());
+            let price = parseFloat(jQuery(this).attr('data-price'));
+            price = price && price >= 0 ? price : 0;
+            total = total + price * qty;
+        });
+    }
+    return total;
+}
+function mpwem_ex_price(parent) {
+    let total = 0
+    parent.find('[name="event_extra_service_qty[]"]').each(function () {
+        let ex_qty = parseInt(jQuery(this).val());
+        let ex_price = jQuery(this).attr('data-price');
+        ex_price = ex_price && ex_price >= 0 ? ex_price : 0;
+        total = total + parseFloat(ex_price) * ex_qty;
+    });
+    return total;
+}
+function mpwem_attendee_management(parent, total_qty) {
+    let form_target = parent.find('.mep_attendee_info');
+    let same_attendee = parent.find('[name="mep_same_attendee"]').val();
+    if (form_target.length > 0 && total_qty > 0) {
+        if (same_attendee === 'yes' || same_attendee === 'must') {
+            form_target.slideDown('fast');
+        } else {
+            if (parent.find('.mpwem_seat_plan_area').length > 0) {
+                alert('kaj baki ace');
+            } else {
+                let hidden_target = parent.find('.mep_attendee_info_hidden');
+                parent.find('[name="option_qty[]"]').each(function () {
+                    let current_parent = $(this).closest('.mep_ticket_item');
+                    let qty = parseInt($(this).val());
+                    let form_length = current_parent.find('.mep_form_item').length;
+                    form_target = current_parent.find('.mep_attendee_info');
+                    form_target.slideDown('fast');
+                    if (form_length !== qty) {
+                        if (form_length > qty) {
+                            for (let i = form_length; i > qty; i--) {
+                                form_target.find('.mep_form_item:last-child').slideUp(250).remove();
+                            }
+                        } else {
+                            for (let i = form_length; i < qty; i++) {
+                                hidden_target.find('.mpwem_ticket_name').html(current_parent.find('[name="option_name[]"]').val());
+                                hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
+                                    form_target.append(hidden_target.html());
+                                }).promise().done(function () {
+                                    mp_load_date_picker(parent);
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    } else {
+        if (same_attendee === 'yes' || same_attendee === 'must') {
+            form_target.slideUp(250);
+        } else {
+            form_target.html('').slideUp(250);
+        }
+    }
+}
 (function ($) {
     "use strict";
     $(document).ready(function () {
@@ -84,108 +186,7 @@
         let parent = $(this).closest('.mpwem_registration_area');
         mpwem_price_calculation(parent);
     });
-    function mpwem_price_calculation(parent) {
-        let total_qty = mpwem_qty(parent);
-        //wbtm_seat_calculation(parent, total_qty);
-        mpwem_attendee_management(parent, total_qty);
-        let target_summary = parent.find('.mpwem_total');
-        //let target_sub_total = parent.find('.wbtm_sub_total');
-        let total = mpwem_price(parent);
-        //target_sub_total.html(mp_price_format(total));
-        if (total_qty > 0) {
-            parent.find('.mpwem_ex_service').slideDown('fast');
-            parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
-            total = total + mpwem_ex_price(parent);
-            target_summary.html(mp_price_format(total));
-        } else {
-            parent.find('.mpwem_ex_service').slideUp('fast');
-            parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');
-            target_summary.html(mp_price_format(total));
-        }
-    }
-    function mpwem_qty(parent) {
-        let total_qty = 0;
-        if (parent.find('.mpwem_seat_plan_area').length > 0) {
-            parent.find('.seat_available.seat_selected').each(function () {
-                total_qty++;
-            });
-        } else {
-            parent.find('[name="option_qty[]"]').each(function () {
-                total_qty = total_qty + parseInt($(this).val());
-            });
-        }
-        return total_qty;
-    }
-    function mpwem_price(parent) {
-        let total = 0;
-        if (parent.find('.wbtm_seat_plan_area').length > 0) {
-            parent.find('.seat_available.seat_selected').each(function () {
-                total = total + parseFloat($(this).attr('data-seat_price'));
-            });
-        } else {
-            parent.find('[name="option_qty[]"]').each(function () {
-                let qty = parseInt($(this).val());
-                let price = parseFloat($(this).attr('data-price'));
-                price = price && price >= 0 ? price : 0;
-                total = total + price * qty;
-            });
-        }
-        return total;
-    }
-    function mpwem_ex_price(parent) {
-        let total = 0
-        parent.find('[name="event_extra_service_qty[]"]').each(function () {
-            let ex_qty = parseInt($(this).val());
-            let ex_price = $(this).attr('data-price');
-            ex_price = ex_price && ex_price >= 0 ? ex_price : 0;
-            total = total + parseFloat(ex_price) * ex_qty;
-        });
-        return total;
-    }
-    function mpwem_attendee_management(parent, total_qty) {
-        let form_target = parent.find('.mep_attendee_info');
-        let same_attendee = parent.find('[name="mep_same_attendee"]').val();
-        if (form_target.length > 0 && total_qty > 0) {
-            if (same_attendee === 'yes' || same_attendee === 'must') {
-                form_target.slideDown('fast');
-            } else {
-                if (parent.find('.mpwem_seat_plan_area').length > 0) {
-                    alert('kaj baki ace');
-                } else {
-                    let hidden_target = parent.find('.mep_attendee_info_hidden');
-                    parent.find('[name="option_qty[]"]').each(function () {
-                        let current_parent = $(this).closest('.mep_ticket_item');
-                        let qty = parseInt($(this).val());
-                        let form_length = current_parent.find('.mep_form_item').length;
-                        form_target = current_parent.find('.mep_attendee_info');
-                        form_target.slideDown('fast');
-                        if (form_length !== qty) {
-                            if (form_length > qty) {
-                                for (let i = form_length; i > qty; i--) {
-                                    form_target.find('.mep_form_item:last-child').slideUp(250).remove();
-                                }
-                            } else {
-                                for (let i = form_length; i < qty; i++) {
-                                    hidden_target.find('.mpwem_ticket_name').html(current_parent.find('[name="option_name[]"]').val());
-                                    hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
-                                        form_target.append(hidden_target.html());
-                                    }).promise().done(function () {
-                                        mp_load_date_picker(parent);
-                                    });
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        } else {
-            if (same_attendee === 'yes' || same_attendee === 'must') {
-                form_target.slideUp(250);
-            } else {
-                form_target.html('').slideUp(250);
-            }
-        }
-    }
+
     /************File Upload*************/
     $(document).on('change', '.mep_form_item .mep_file_item input[type="file"]', function (e) {
         let parent = $(this).closest('.mep_file_item');

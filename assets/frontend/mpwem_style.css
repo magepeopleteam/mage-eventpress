@@ -6073,4 +6073,7 @@ Vanilla theme css by ariful
   z-index: 1;
   pointer-events: none;
 }
-.mep-kera-theme .tabLists .mep-pricing-card{width: inherit !important;}
+.mep-default-theme .date-time-area label i,
+.mep-default-theme .date-time-area .mpwem_time_area i {
+display:none;
+}

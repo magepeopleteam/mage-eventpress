@@ -17,7 +17,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $_the_event_id = $event_id;
 
 ?>
-<div class="mep-default-theme mep_flex default_theme">
+<div class="mpStyle mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $_the_event_id); ?>

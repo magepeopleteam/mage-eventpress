@@ -1,11 +1,8 @@
 function mpwem_price_calculation(parent) {
     let total_qty = mpwem_qty(parent);
-    //wbtm_seat_calculation(parent, total_qty);
     mpwem_attendee_management(parent, total_qty);
     let target_summary = parent.find('.mpwem_total');
-    //let target_sub_total = parent.find('.wbtm_sub_total');
     let total = mpwem_price(parent);
-    //target_sub_total.html(mp_price_format(total));
     if (total_qty > 0) {
         parent.find('.mpwem_ex_service').slideDown('fast');
         parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
@@ -25,7 +22,7 @@ function mpwem_qty(parent) {
         });
     } else {
         parent.find('[name="option_qty[]"]').each(function () {
-            total_qty = total_qty + parseInt($(this).val());
+            total_qty = total_qty + parseInt(jQuery(this).val());
         });
     }
     return total_qty;
@@ -68,8 +65,8 @@ function mpwem_attendee_management(parent, total_qty) {
             } else {
                 let hidden_target = parent.find('.mep_attendee_info_hidden');
                 parent.find('[name="option_qty[]"]').each(function () {
-                    let current_parent = $(this).closest('.mep_ticket_item');
-                    let qty = parseInt($(this).val());
+                    let current_parent = jQuery(this).closest('.mep_ticket_item');
+                    let qty = parseInt(jQuery(this).val());
                     let form_length = current_parent.find('.mep_form_item').length;
                     form_target = current_parent.find('.mep_attendee_info');
                     form_target.slideDown('fast');

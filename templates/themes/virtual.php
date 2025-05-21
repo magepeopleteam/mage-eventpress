@@ -44,9 +44,7 @@ $_the_event_id = $event_id;
     <div class="mep-default-sidebar">
         <div class="df-sidebar-part">
             <?php if ($hide_total_seat_details == 'no') { ?>
-                <div class="mep-default-sidrbar-price-seat">
-                    <div class="df-seat"><?php do_action('mep_event_seat', $_the_event_id); ?></div>
-                </div>
+	            <?php do_action('mep_event_seat', $_the_event_id); ?>
             <?php } ?>
             <?php if ($hide_org_by_details == 'no') { ?>
                 <div class="mep-default-sidrbar-meta">

@@ -11,7 +11,30 @@
 ?>
 <div class="mpStyle mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
-	<?php do_action( 'mpwem_organizer', $event_id ); ?>
+	
+	<?php 
+	// Get organizer terms to identify primary organizer
+	$org_terms = get_the_terms($event_id, 'mep_org');
+	if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+		echo '<div class="mpwem_organizer">';
+		echo mep_get_option('mep_by_text', 'label_setting_sec', __('By:', 'mage-eventpress')) . ' <strong class="mep-primary-organizer">' . esc_html($org_terms[0]->name) . '</strong>';
+		
+		// Display other organizers if there are more than one
+		if (count($org_terms) > 1) {
+			echo ' ' . __('and', 'mage-eventpress') . ' ';
+			$other_orgs = array();
+			for ($i = 1; $i < count($org_terms); $i++) {
+				$other_orgs[] = '<a href="' . get_term_link($org_terms[$i]->term_id, 'mep_org') . '">' . esc_html($org_terms[$i]->name) . '</a>';
+			}
+			echo implode(', ', $other_orgs);
+		}
+		echo '</div>';
+	} else {
+		// If no custom organizer display is needed, use the default
+		do_action( 'mpwem_organizer', $event_id );
+	}
+	?>
+	
     <div class="mpwem_location_time">
 		<?php do_action( 'mpwem_location', $event_id ); ?>
 		<?php $hide_time = mep_get_option('mep_event_hide_time', 'single_event_setting_sec', 'no');

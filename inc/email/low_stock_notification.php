@@ -25,8 +25,12 @@ if (!function_exists('mep_notify_admin_low_ticket_stock')) {
             return;
         }
         
-        // Get the transient name for this notification
-        $transient_name = 'mep_low_stock_notified_' . $event_id . '_' . sanitize_title($ticket_type_name);
+        // Get the current selected date
+        $event_default_date = get_post_meta($event_id, 'event_start_date', true) . ' ' . get_post_meta($event_id, 'event_start_time', true);
+        $selected_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : $event_default_date;
+        
+        // Get the transient name for this notification with date-specific key
+        $transient_name = 'mep_low_stock_notified_' . $event_id . '_' . sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date);
         
         // Check if we've already sent a notification recently (within 24 hours)
         if (get_transient($transient_name)) {
@@ -47,22 +51,27 @@ if (!function_exists('mep_notify_admin_low_ticket_stock')) {
         $from_name = mep_get_option('mep_email_form_name', 'email_setting_sec', $site_name);
         $from_email = mep_get_option('mep_email_form_email', 'email_setting_sec', $admin_email);
         
+        // Format the date for display
+        $formatted_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($selected_date));
+        
         // Email subject
         $subject = sprintf(
-            __('[%s] Low Ticket Stock Alert - %s', 'mage-eventpress'),
+            __('[%s] Low Ticket Stock Alert - %s - %s', 'mage-eventpress'),
             $site_name,
-            $event_name
+            $event_name,
+            $formatted_date
         );
         
         // Email message
         $message = sprintf(
-            /* translators: 1: Ticket type name 2: Event name 3: Available seats 4: Edit event link 5: Admin name 6: Site name */
+            /* translators: 1: Ticket type name 2: Event name 3: Available seats 4: Edit event link 5: Admin name 6: Site name 7: Event date */
             __(
                 'Hello %5$s,
 
 This is an automated notification to inform you about low ticket stock:
 
 Event: %2$s
+Date: %7$s
 Ticket Type: %1$s
 Available Seats: %3$d
 
@@ -79,7 +88,8 @@ Best regards,
             $available_seats,
             $event_edit_link,
             $admin_name,
-            $site_name
+            $site_name,
+            $formatted_date
         );
         
         // Convert message to HTML
@@ -89,6 +99,7 @@ Best regards,
         $html_message .= '<p>This is an automated notification to inform you about low ticket stock:</p>';
         $html_message .= '<div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #e63946; margin: 20px 0;">';
         $html_message .= '<p><strong>Event:</strong> ' . esc_html($event_name) . '</p>';
+        $html_message .= '<p><strong>Date:</strong> ' . esc_html($formatted_date) . '</p>';
         $html_message .= '<p><strong>Ticket Type:</strong> ' . esc_html($ticket_type_name) . '</p>';
         $html_message .= '<p><strong>Available Seats:</strong> ' . esc_html($available_seats) . '</p>';
         $html_message .= '</div>';
@@ -152,13 +163,21 @@ if (!function_exists('mep_check_and_notify_low_ticket_stock')) {
         $show_warning = mep_get_option('mep_show_low_stock_warning', 'general_setting_sec', 'yes');
         $threshold = (int)mep_get_option('mep_low_stock_threshold', 'general_setting_sec', '3');
         
+        // Get the current selected date
+        $event_default_date = get_post_meta($event_id, 'event_start_date', true) . ' ' . get_post_meta($event_id, 'event_start_time', true);
+        $selected_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : $event_default_date;
+        
+        // Create a unique key for this ticket type on this date for cache/transient usage
+        $date_specific_key = sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date);
+        
         // Allow filtering of the decision to notify
         $should_notify = apply_filters('mep_should_notify_low_stock', 
             ($show_warning === 'yes' && $available_seats > 0 && $available_seats <= $threshold),
             $event_id, 
             $ticket_type_name, 
             $available_seats,
-            $threshold
+            $threshold,
+            $selected_date
         );
         
         // If warning is enabled and seats are low
@@ -215,6 +234,12 @@ if (!function_exists('mep_display_low_stock_warning')) {
                 </span>
             </div>
             <?php
+            
+            // Get the current selected date
+            $selected_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : get_post_meta($event_id, 'event_start_date', true) . ' ' . get_post_meta($event_id, 'event_start_time', true);
+            
+            // Set global variable with date-specific key to indicate low stock warning was shown
+            $GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date)] = true;
         }
         
         // Return the value for use in conditional statements
@@ -237,20 +262,19 @@ if (!function_exists('mep_hook_display_low_stock_warning')) {
      * @return void
      */
     function mep_hook_display_low_stock_warning($post_id, $ticket_name, $field, $default_quantity, $start_date) {
+        // Get the current selected date
+        $event_default_date = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
+        $selected_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : $event_default_date;
+        
         // Calculate available seats - this should match the calculation in ticket_type_list.php
         $total_quantity = array_key_exists('option_qty_t', $field) ? $field['option_qty_t'] : 0;
         $total_resv_quantity = array_key_exists('option_rsv_t', $field) ? $field['option_rsv_t'] : 0;
-        $event_date = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
-        $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_name, $event_date, $total_quantity, $total_resv_quantity);
+        
+        // Use the selected date for calculating availability
+        $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_name, $selected_date, $total_quantity, $total_resv_quantity);
         $available_seats = (int)$total_quantity - ((int)$total_sold + (int)$total_resv_quantity);
         
         // Display low stock warning
         $show_low_stock = mep_display_low_stock_warning($post_id, $ticket_name, $available_seats);
-        
-        // Store the result in a global variable or transient if needed for later use
-        // For example, to conditionally show/hide the "X Left" text in the template
-        if ($show_low_stock) {
-            $GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)] = true;
-        }
     }
 } 

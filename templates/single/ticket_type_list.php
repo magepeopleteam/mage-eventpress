@@ -22,9 +22,17 @@
             $total_quantity = array_key_exists('option_qty_t', $field) ? $field['option_qty_t'] : 0;
             $total_resv_quantity = array_key_exists('option_rsv_t', $field) ? $field['option_rsv_t'] : 0;
             $event_date = get_post_meta($post_id, 'event_start_date', true) . ' ' . get_post_meta($post_id, 'event_start_time', true);
-            $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_type_name, $event_date, $total_quantity, $total_resv_quantity);
+            
+            // Get the current selected date from GET parameters if available
+            $selected_date = isset($_GET['event_date']) ? sanitize_text_field($_GET['event_date']) : $event_date;
+            
+            // Use the selected date for calculating availability
+            $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_type_name, $selected_date, $total_quantity, $total_resv_quantity);
             $available_seats = (int)$total_quantity - ((int)$total_sold + (int)$total_resv_quantity);
 
+            // Create a unique key for this ticket type on this date
+            $date_specific_key = 'mep_low_stock_' . $post_id . '_' . sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date);
+            
             // Check and send notification if stock is low - allow filtering
             do_action('mep_before_check_low_stock', $post_id, $ticket_type_name, $available_seats);
             $notify_result = apply_filters('mep_check_low_stock', true, $post_id, $ticket_type_name, $available_seats);
@@ -72,9 +80,10 @@
 			do_action('mepgq_max_qty_hook', $post_id, max($total_ticket_left, 0));
 		?>
 		<?php 
-            // Check if low stock warning was displayed through the hook
-            $low_stock_displayed = isset($GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)]) ? 
-                $GLOBALS['mep_showed_low_stock_' . sanitize_title($ticket_name)] : false;
+            // Use the date-specific key for low stock tracking
+            $date_specific_low_stock_key = 'mep_showed_low_stock_' . sanitize_title($ticket_name) . '_' . sanitize_title($selected_date);
+            $low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? 
+                $GLOBALS[$date_specific_low_stock_key] : false;
                 
             if ($mep_available_seat == 'on' && !$low_stock_displayed) { 
         ?>

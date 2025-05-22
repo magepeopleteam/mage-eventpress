@@ -8,6 +8,7 @@ $taxonomy_organizer = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$event_organizer_icon = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 ?>
 <div class='filter_item mep-event-list-loop  mep_event_list_item mep_event_minimal_list mix <?php echo esc_attr($org_class) . ' ' . esc_attr($cat_class); ?>'
      data-title="<?php echo esc_attr(get_the_title($event_id)); ?>"
@@ -41,6 +42,16 @@ $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_s
                         <i class="<?php echo $event_location_icon; ?>"></i>
                         <?php mep_get_event_city($event_id); ?>
                     </span>
+                    <?php 
+                    // Display the first organizer (primary organizer)
+                    $org_terms = get_the_terms($event_id, 'mep_org');
+                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+                    ?>
+                    <span class='mep_minimal_list_organizer'>
+                        <i class="<?php echo $event_organizer_icon; ?>"></i>
+                        <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a>
+                    </span>
+                    <?php } ?>
                 </h3>
                 <?php do_action('mep_event_minimal_list_after', $event_id); ?>
         </a>

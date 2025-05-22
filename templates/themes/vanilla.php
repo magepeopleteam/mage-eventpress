@@ -91,7 +91,27 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <div class="mep-default-col-2">
                 <?php if ($hide_org_by_details == 'no') { ?>
                     <div class="mep-default-sidrbar-meta">
-                        <i class="far fa-list-alt"></i> <?php do_action('mep_event_organizer', $event_id); ?>
+                        <i class="far fa-list-alt"></i> 
+                        <?php 
+                        // Get organizer terms to identify primary organizer
+                        $org_terms = get_the_terms($event_id, 'mep_org');
+                        if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+                            echo mep_get_option('mep_by_text', 'label_setting_sec', __('By:', 'mage-eventpress')) . ' <strong class="mep-primary-organizer">' . esc_html($org_terms[0]->name) . '</strong>';
+                            
+                            // Display other organizers if there are more than one
+                            if (count($org_terms) > 1) {
+                                echo ' ' . __('and', 'mage-eventpress') . ' ';
+                                $other_orgs = array();
+                                for ($i = 1; $i < count($org_terms); $i++) {
+                                    $other_orgs[] = '<a href="' . get_term_link($org_terms[$i]->term_id, 'mep_org') . '">' . esc_html($org_terms[$i]->name) . '</a>';
+                                }
+                                echo implode(', ', $other_orgs);
+                            }
+                        } else {
+                            // If no custom organizer display is needed, use the default
+                            do_action('mep_event_organizer', $event_id);
+                        }
+                        ?>
                     </div>
                 <?php }
 

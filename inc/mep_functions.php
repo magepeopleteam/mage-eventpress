@@ -374,7 +374,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 		}
 	}
 // Class for Linking with Woocommerce with Event Pricing
-	add_action( 'plugins_loaded', 'mep_load_wc_class' );
+	add_action( 'init', 'mep_load_wc_class' );
 	if ( ! function_exists( 'mep_load_wc_class' ) ) {
 		function mep_load_wc_class() {
 			if ( class_exists( 'WC_Product_Data_Store_CPT' ) ) {
@@ -382,7 +382,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 					public function read( &$product ) {
 						$product->set_defaults();
 						if ( ! $product->get_id() || ! ( $post_object = get_post( $product->get_id() ) ) || ! in_array( $post_object->post_type, array( 'mep_events', 'product' ) ) ) { // change birds with your post type
-							throw new Exception( __( 'Invalid product.', 'woocommerce' ) );
+							throw new Exception( __( 'Invalid product.', 'mage-eventpress' ) );
 						}
 						$id = $product->get_id();
 						$product->set_props( array(
@@ -672,11 +672,18 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 			$order             = wc_get_order( $order_id );
 			$order_meta        = get_post_meta( $order_id );
 			$order_status      = $order instanceof WC_Order ? $order->get_status() : '';
-			$billing_intotal   = isset( $order_meta['_billing_address_index'][0] ) ? sanitize_text_field( $order_meta['_billing_address_index'][0] ) : '';
-			$payment_method    = isset( $order_meta['_payment_method_title'][0] ) ? sanitize_text_field( $order_meta['_payment_method_title'][0] ) : '';
-			$user_id           = isset( $order_meta['_customer_user'][0] ) ? sanitize_text_field( $order_meta['_customer_user'][0] ) : '';
-			$first_name        = isset( $order_meta['_billing_first_name'][0] ) ? sanitize_text_field( $order_meta['_billing_first_name'][0] ) : '';
-			$last_name         = isset( $order_meta['_billing_last_name'][0] ) ? sanitize_text_field( $order_meta['_billing_last_name'][0] ) : '';
+
+			// $billing_intotal   = isset( $order_meta['_billing_address_index'][0] ) ? sanitize_text_field( $order_meta['_billing_address_index'][0] ) : '';
+			// $payment_method    = isset( $order_meta['_payment_method_title'][0] ) ? sanitize_text_field( $order_meta['_payment_method_title'][0] ) : '';
+			// $user_id           = isset( $order_meta['_customer_user'][0] ) ? sanitize_text_field( $order_meta['_customer_user'][0] ) : '';
+			// $first_name        = isset( $order_meta['_billing_first_name'][0] ) ? sanitize_text_field( $order_meta['_billing_first_name'][0] ) : '';
+			// $last_name         = isset( $order_meta['_billing_last_name'][0] ) ? sanitize_text_field( $order_meta['_billing_last_name'][0] ) : '';
+			$billing_intotal   = $order->get_meta( '_billing_address_index' );
+			$payment_method    = $order->get_payment_method_title();
+			$user_id           = $order->get_customer_id();
+			$first_name        = $order->get_billing_first_name();
+			$last_name         = $order->get_billing_last_name();
+
 			$billing_full_name = $first_name . ' ' . $last_name;
 			if ( $type == 'billing' ) {
 				// Billing Information
@@ -2536,30 +2543,32 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 	}
 	if ( ! function_exists( 'mep_get_event_total_seat' ) ) {
 		function mep_get_event_total_seat( $event_id, $m = null, $t = null ) {
+
 			$upcoming_date = ! empty( $m ) && ! empty( mep_get_event_upcoming_date( $event_id ) ) ? mep_get_event_upcoming_date( $event_id ) : '';
-			$total_seat    = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
+			$event_date = date( 'Y-m-d H:i', strtotime( mep_get_event_upcoming_date( $event_id ) ) );
+			$total_seat    = apply_filters( 'mep_event_total_seat_countsQ', mep_event_total_seat( $event_id, 'total' ), $event_id );
 			$total_resv    = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
 			$total_sold    = mep_get_event_total_seat_left( $event_id, $upcoming_date );
-			//$total_sold = mep_ticket_type_sold($event_id);
+			$total_sold = mep_ticket_type_sold($event_id,'',$event_date);
 			$recurring  = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 			$total_left = (int) $total_seat - ( (int) $total_sold + (int) $total_resv );
-			$event_date = date( 'Y-m-d H:i', strtotime( mep_get_event_upcoming_date( $event_id ) ) );
+			
 			ob_start();
-			if ( $recurring != 'no' ) {
-				$total_sold = $recurring == 'everyday' ? mep_get_event_total_seat_left( $event_id, $event_date ) : mep_get_event_total_seat_left( $event_id, $upcoming_date );
-				$total      = $m != null ? (int) $total_seat * (int) $m : $total_seat;
-				$sold       = $total - ( $total_sold + $total_resv );
-				$available  = $total - $sold;
+			// if ( $recurring != 'no' ) {
+				// $total_sold = $recurring == 'everyday' ? mep_get_event_total_seat_left( $event_id, $event_date ) : mep_get_event_total_seat_left( $event_id, $upcoming_date );
+				// $total      = $m != null ? (int) $total_seat * (int) $m : $total_seat;
+				// $sold       = $total - ( $total_sold + $total_resv );
+				// $available  = $total - $sold;
 				?>
-                <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
+                <!-- <span class="mep_seat_stat_info_<?php //echo $event_id; ?>">
                 <?php
-	                $seat_count_var = apply_filters( 'mep_event_total_seat_counts', $total, $event_id ) . ' - ' . apply_filters( 'mep_event_total_seat_sold', $available, $event_id, $event_date ) . ' = ' . apply_filters( 'mep_event_total_seat_left', $sold, $event_id, '', $event_date );
-	                echo apply_filters( 'mep_event_seat_status_text', $seat_count_var, $total, $available, $sold );
+	                //$seat_count_var = apply_filters( 'mep_event_total_seat_counts', $total, $event_id ) . ' - ' . apply_filters( 'mep_event_total_seat_sold', $available, $event_id, $event_date ) . ' = ' . apply_filters( 'mep_event_total_seat_left', $sold, $event_id, '', $event_date );
+	                //echo apply_filters( 'mep_event_seat_status_text', $seat_count_var, $total, $available, $sold );
                 ?>
-            </span>
+            </span> -->
 				<?php //do_action('mep_after_seat_stat_info',$event_id); ?>
 				<?php
-			} else {
+			// } else {
 				?>
                 <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
                     <?php
@@ -2570,7 +2579,7 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
                 </span>
 				<?php do_action( 'mep_after_seat_stat_info', $event_id ); ?>
 				<?php
-			}
+			// }
 
 			return ob_get_clean();
 		}
@@ -2596,8 +2605,14 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 						$more_date        = get_post_meta( $post_id, 'mep_event_more_date', true ) ? get_post_meta( $post_id, 'mep_event_more_date', true ) : array();
 						$event_more_dates = is_array( $more_date ) && sizeof( $more_date ) > 0 ? count( $more_date ) + 1 : '';
 						echo apply_filters( 'mep_attendee_stat_recurring', mep_get_event_total_seat( $post_id, $event_more_dates, 'multi' ), $post_id );
+					
 					} else {
+
+
+
 						echo mep_get_event_total_seat( $post_id );
+
+
 					}
 					break;
 			}

@@ -11,11 +11,33 @@ if(!class_exists('MPWEM_Email_Text')){
         public function __construct() {
             add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'email_text_tab']);
             add_action('mp_event_all_in_tab_item', [$this, 'email_text_tab_content']);
-
-
             add_action('wp_ajax_mep_email_text_save', [$this, 'email_text_save']);
+            add_action('save_post', [$this, 'mep_events_email_text_save'],90);
             
         }
+
+        function mep_events_email_text_save($post_id) {
+            if (
+                !isset($_POST['mep_event_ticket_type_nonce']) ||
+                !wp_verify_nonce($_POST['mep_event_ticket_type_nonce'], 'mep_event_ticket_type_nonce')
+            ) {
+                return;
+            }
+
+            if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+                return;
+            }
+
+            if (!current_user_can('edit_post', $post_id)) {
+                return;
+            }
+
+            if (isset($_POST['mep_event_cc_email_text'])) {
+                $mep_event_cc_email_text_raw = wp_kses_post($_POST['mep_event_cc_email_text']);
+                update_post_meta($post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text_raw);
+            }
+        }
+
 
         public function email_text_save() {
 
@@ -48,6 +70,7 @@ if(!class_exists('MPWEM_Email_Text')){
         public function show_email_text($post_id){
             $text = get_post_meta($post_id, 'mep_event_cc_email_text', true);
             ?>
+
                 <?php echo wp_kses_post($text); ?>
             <?php
         }

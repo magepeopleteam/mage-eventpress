@@ -133,7 +133,8 @@ function mep_event_list($atts, $content = null)
         'organizer-filter' => 'yes',
         'city-filter' => 'yes',
         'state-filter' => 'yes',
-        'date-filter' => 'yes'
+        'date-filter' => 'yes',
+        'year' => '',
     );
     $params         = shortcode_atts($defaults, $atts);
     $cat            = $params['cat'];
@@ -152,6 +153,7 @@ function mep_event_list($atts, $content = null)
     $country        = $params['country'];
     $cid            = $params['carousal-id'];
     $status         = $params['status'];
+    $year           = $params['year'];
 
     $filter = $params['search-filter'];
     $show = ($filter == 'yes' || $pagination == 'yes' && $style != 'timeline') ? -1 : $show;
@@ -169,7 +171,7 @@ function mep_event_list($atts, $content = null)
     /**
      * The Main Query function mep_event_query is locet in inc/mep_query.php File
      */
-    $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
+    $loop =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status, '', $year);
 ?>
     <div class='list_with_filter_section mep_event_list'>
         <?php if ($cat_f == 'yes') {

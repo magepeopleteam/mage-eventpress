@@ -31,6 +31,8 @@ class EDD_SL_Plugin_Updater {
 	 * @param string  $_plugin_file Path to the plugin file.
 	 * @param array   $_api_data    Optional data to send with API calls.
 	 */
+	private $beta = true;
+
 	public function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
 
 		global $edd_plugin_data;

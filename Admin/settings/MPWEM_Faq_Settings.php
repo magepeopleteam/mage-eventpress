@@ -158,6 +158,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                             <section class="faq-header" data-collapse-target="#faq-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_faq_title']); ?></p>
+                                    <input type="hidden" name='mep_faq_title_raw[]' value='<?php echo esc_html($value['mep_faq_title']); ?>' class="hidden">
                                     <div class="faq-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
                                         <span class="mep-faq-item-edit" data-modal="mep-faq-item-new" data-faq-id="<?php echo esc_attr($key); ?>" data-faq-title="<?php echo esc_attr($value['mep_faq_title']); ?>" data-faq-content="<?php echo esc_attr(htmlspecialchars_decode($value['mep_faq_content'])); ?>"><i class="fas fa-edit"></i></span>
@@ -167,6 +168,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                             </section>
                             <section class="faq-content mB" data-collapse="#faq-content-<?php echo esc_attr($key); ?>">
                                 <?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?>
+                                <textarea style='display:none;' name="mep_faq_details_raw[]" id=""><?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?></textarea>
                             </section>
                         </div>
                     <?php
@@ -289,6 +291,22 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         public function data_save( $post_id ) {
             global $wpdb;
             if ( get_post_type( $post_id ) == 'mep_events' ) {
+
+                $title   = isset($_POST['mep_faq_title_raw']) ? (array) $_POST['mep_faq_title_raw'] : array();
+                $details = isset($_POST['mep_faq_details_raw']) ? (array) $_POST['mep_faq_details_raw'] : array();
+
+                $combined = array();
+
+                foreach ($title as $index => $value) {
+                    if (isset($details[$index]) && trim($value) !== '') {
+                        $combined[] = array(
+                            'mep_faq_title'   => sanitize_text_field($value),
+                            'mep_faq_content' => sanitize_textarea_field($details[$index])
+                        );
+                    }
+                }
+
+                update_post_meta($post_id, 'mep_event_faq', $combined);
                 $faq_description    = isset( $_POST['mep_faq_description'] ) ? sanitize_text_field($_POST['mep_faq_description']) : '';
                 update_post_meta( $post_id, 'mep_faq_description', $faq_description );
             }

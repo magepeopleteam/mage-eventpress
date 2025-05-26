@@ -83,84 +83,90 @@
 				do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
 			?>
         </div>
-
         <div class="mep-default-feature-faq-sec">
 			<?php do_action( 'mep_event_faq', $event_id ); ?>
         </div>
-		<?php do_action( 'mpwem_template_footer', $event_id ); ?>
-    </div>
-    <div class="mep-default-sidebar <?php echo esc_attr( $event_type == 'online' ? 'margin' : '' ); ?>">
-		<?php if ( $hide_location_details == 'no' && $show_google_map_location != 'no' ) { ?>
-			<?php if ( $event_type != 'online' ): ?>
-                <div class="mep-default-sidrbar-map">
-                    <h3>
-						<?php echo mep_get_option( 'mep_event_location_text', 'label_setting_sec', __( 'Event Location:', 'mage-eventpress' ) ); ?>
+        <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
+            <?php if($event_type !='online'): ?>
+                <div class="mep-default-sidrbar-map" id="mep-map-location">
+                    <h3 class="ex-sec-title">
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                     </h3>
 					<?php do_action( 'mep_event_map', $event_id ); ?>
                 </div>
-			<?php endif; ?>
-		<?php } ?>
+            <?php endif; ?> 
+        <?php } ?> 
+        <?php do_action( 'mpwem_template_footer', $event_id ); ?>
+    </div>
+    <div class="mep-default-sidebar <?php echo esc_attr($event_type =='online'?'margin':''); ?>">
+        
         <div class="df-sidebar-part">
-			<?php if ( $mep_enable_recurring == 'no' ): ?>
-				<?php if ( $hide_total_seat_details == 'no' ) { ?>
-					<?php do_action( 'mep_event_seat', $event_id ); ?>
-				<?php } ?>
-			<?php endif; ?>
-			<?php if ( $hide_org_by_details == 'no' && has_term( '', 'mep_org', $event_id ) ) { ?>
+            <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) : ?>
                 <div class="mep-default-sidrbar-meta">
-                    <?php
+                    <?php 
                     // Get organizer terms to identify primary organizer
                     $org_terms = get_the_terms($event_id, 'mep_org');
-                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
-                        echo '<div class="mep-default-sidrbar-meta-icon"><i class="' . esc_attr($event_organizer_icon) . '"></i></div>';
-                        echo '<div class="mep-org-details">';
-                        echo mep_get_option('mep_by_text', 'label_setting_sec', __('By:', 'mage-eventpress')) . ' <strong class="mep-primary-organizer">' . esc_html($org_terms[0]->name) . '</strong>';
-
-                        // Display other organizers if there are more than one
-                        if (count($org_terms) > 1) {
-                            echo ' ' . __('and', 'mage-eventpress') . ' ';
-                            $other_orgs = array();
-                            for ($i = 1; $i < count($org_terms); $i++) {
-                                $other_orgs[] = '<a href="' . get_term_link($org_terms[$i]->term_id, 'mep_org') . '">' . esc_html($org_terms[$i]->name) . '</a>';
-                            }
-                            echo implode(', ', $other_orgs);
-                        }
-                        echo '</div>';
-                    } else {
-                        // If no custom organizer display is needed, use the default
-                        do_action('mep_event_organizer', $event_id);
-                    }
+                    $links = array();
+                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
+                            <div class="mep-org-details">
+                                <div class="org-icon"><i class="fas fa-building"></i></div>
+                                <div>
+                                    <?php foreach ($org_terms as $index => $org): ?>
+                                        <a href="<?php echo get_term_link($org->term_id); ?>">
+                                            <?php echo esc_html($org->name); ?>
+                                        </a><?php if ($index < count($org_terms) - 1): ?>,&nbsp;<?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php else :
+                            // If no custom organizer display is needed, use the default
+                            do_action('mep_event_organizer', $event_id);
+                    endif;
                     ?>
                 </div>
-			<?php }
-				if ( $hide_address_details == 'no' ) { ?>
-                    <div class="mep-default-sidrbar-address">
-						<?php do_action( 'mep_event_address_list_sidebar', $event_id ); ?>
-                    </div>
-				<?php }
-				if ( $hide_schedule_details == 'no' ) { ?>
-                    <div class="mep-default-sidrbar-events-schedule">
-						<?php do_action( 'mep_event_date_default_theme', $event_id ); ?>
-                    </div>
-				<?php }
-				if ( $hide_share_details == 'no' ) { ?>
-                    <div class="mep-default-sidrbar-social">
-						<?php do_action( 'mep_event_social_share', $event_id ); ?>
-                    </div>
-				<?php }
-				if ( $speaker_status == 'yes' ) { ?>
-                    <div class="mep-default-sidebar-speaker-list">
-						<?php do_action( 'mep_event_speakers_list', $event_id ); ?>
-                    </div>
-					<?php
-				}
-				if ( $hide_calendar_details == 'no' ) { ?>
-                    <div class="mep-default-sidrbar-calender-btn">
-						<?php do_action( 'mep_event_add_calender', $event_id ); ?>
-                    </div>
-				<?php }
-				dynamic_sidebar( 'mep_default_sidebar' );
-			?>
+            <?php endif; ?>
+
+            <?php if($mep_enable_recurring=='no'): ?>
+                <?php if ($hide_total_seat_details == 'no') { ?>
+                        <?php do_action('mep_event_seat', $event_id); ?>
+                <?php } ?>
+            <?php endif; ?>
+
+            <?php
+            if ($hide_schedule_details == 'no') { ?>
+                <div class="mep-default-sidrbar-events-schedule">
+                    <?php do_action('mep_event_date_default_theme',$event_id); ?>
+                </div>
+            <?php } ?>
+
+            <?php if ($hide_address_details == 'no'): ?>
+                <div class="mep-default-sidebar-address">
+                    <?php do_action('mep_event_address_list_sidebar',$event_id); ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php
+            if ($hide_share_details == 'no') { ?>
+                <div class="mep-default-sidrbar-social">
+                    <?php do_action('mep_event_social_share', $event_id); ?>
+                </div>
+            <?php }
+            if($speaker_status == 'yes'){ ?>
+                <div class="mep-default-sidebar-speaker-list">
+               
+                    <?php do_action('mep_event_speakers_list',$event_id); ?>
+                </div>
+            <?php 
+            }
+            if ($hide_calendar_details == 'no') { ?>
+                <div class="mep-default-sidrbar-calender-btn">
+                    <?php do_action('mep_event_add_calender',$event_id); ?>
+                </div>
+            <?php }    
+
+            dynamic_sidebar('mep_default_sidebar');
+            
+            ?>
         </div>
     </div>
 </div>

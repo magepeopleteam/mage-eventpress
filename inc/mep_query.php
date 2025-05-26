@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 /**
  * This is the Main Query Function For Query the Event List, Just Pass the Required values It will return the Query As Object.
  */
-function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '')
+function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '')
 {
     $event_expire_on_old    = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
     $event_order_by         = mep_get_option('mep_event_list_order_by', 'general_setting_sec', 'meta_value');    
@@ -59,6 +59,16 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         'compare'   => 'LIKE'
     ) : '';
 
+    $year_filter = '';
+    if (!empty($year) && preg_match('/^\\d{4}$/', $year)) {
+        $year_filter = array(
+            'key' => 'event_start_datetime',
+            'value' => array($year . '-01-01 00:00:00', $year . '-12-31 23:59:59'),
+            'compare' => 'BETWEEN',
+            'type' => 'DATETIME',
+        );
+    }
+
     $expire_filter = !empty($event_expire_on) ? array(
         'key'       => $event_expire_on,
         'value'     => $now,
@@ -71,7 +81,8 @@ function mep_event_query($show, $sort = '', $cat = '', $org = '', $city = '', $c
         $expire_filter,
         $city_filter,
         $state_filter,
-        $country_filter
+        $country_filter,
+        $year_filter
     );
 
     $tax_query = array(

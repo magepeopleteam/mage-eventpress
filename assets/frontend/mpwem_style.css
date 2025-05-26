@@ -490,8 +490,6 @@ span.mep_warning {
 
 ul#mep_event_date_sch li span {
   display: -webkit-flex;
-  display: flex;
-  font-size: 13px;
 }
 
 span.mep-more-date {
@@ -687,11 +685,11 @@ ul.mep-social-share a {
   height: 40px;
 }
 
-.mep-default-sidrbar-events-schedule ul li i,
 .mep-list-footer ul li i {
-  color: var(--mpev-base-txt);
-  width: 25px;
-  height: 25px;
+  background: var(--mpev-base-txt);
+  color: var(--mpev-base);
+  width: 36px;
+  height: 36px;
   font-size: 14px;
 }
 
@@ -708,6 +706,14 @@ ul.mep-social-share a {
   padding: 20px 10px;
 }
 
+.mep-default-sidrbar-events-schedule ul li i {
+  background: var(--mpev-base-txt);
+  color: var(--mpev-base);
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+}
+
 .mep-default-sidrbar-events-schedule h3 {
   text-transform: capitalize;
   color: #6D7982;
@@ -719,15 +725,10 @@ ul.mep-social-share a {
 
 .mep-default-sidrbar-events-schedule ul li {
   border-top: 1px dashed #DDD;
-  padding: 10px 0 10px 20px;
 }
 
 .mep-default-sidrbar-events-schedule ul li:first-child {
   border: none;
-}
-
-.mep-default-sidrbar-events-schedule ul li:last-child {
-  padding: 10px 0 0 20px;
 }
 
 .mep-default-sidrbar-events-schedule ul li i {
@@ -1960,6 +1961,11 @@ div.item_hover_effect a:hover {
   cursor: pointer;
 }
 
+.mep-default-sidrbar-events-schedule .sidrbar-events-schedule-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
   /********Default Theme***********/
@@ -2483,8 +2489,16 @@ span.mep_date_scdl_start_datetime, span.mep_date_scdl_end_datetime {
   font-size: 13px;
 }
 
+span.mep_date_scdl_start_datetime {
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 span.mep_date_scdl_end_datetime {
-  margin-left: 32px;
+  margin-left: 44px;
+  color: #707070;
+  font-size: 14px;
 }
 
 span.mep-cal-icon {

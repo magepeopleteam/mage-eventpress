@@ -48,19 +48,6 @@ div.item_hover_effect a:hover {
   background-color: #fff;
   border: 1px solid var(--mpev-base);
 }
-.mep-low-stock-warning {
-  background-color: var(--mpev-primary) !important;
-  color: var(--mpev-white) !important;
-  padding: 5px 10px;
-  border-radius: 4px;
-  margin: 5px 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: inline-block;
-  font-size: 13px;
-}
-.mep-low-stock-warning-text {
-  font-weight: 500;
-}
 
 .mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
   background: var(--mpev-base);
@@ -848,9 +835,31 @@ ul#mep_add_calender_links li a {
 }
 
 .mep-default-sidebar .df-sidebar-part {
-  background: #F7F7F7;
+  background: #fff;
   padding: 0;
   overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mep-default-theme .mep-org-details {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.mep-default-theme .mep-org-details .org-icon {
+  background-color: var(--mpev-base);
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+}
+.mep-default-theme .mep-org-details .org-icon i {
+  color: var(--mpev-base-txt);
+  margin: 0;
 }
 
 .mep-default-sidebar.margin {
@@ -1382,17 +1391,6 @@ ul.event-custom-price li ul {
 }
 .mep_event_list .mepev-ribbon .ribbon.sold-out {
   background: rgba(255, 70, 70, 0.6666666667);
-}
-
-.mep_event_list .mepev-ribbon .ribbon.limited-availability {
-  background: rgba(255, 153, 0, 0.6666666667);
-}
-
-.mep_event_list .mepev-ribbon .ribbon.limited-availability:before {
-  content: '\f017';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 5px;
 }
 
 .mp_event_more_date_list {
@@ -6031,46 +6029,3 @@ Vanilla theme css by ariful
 }
 
 /*# sourceMappingURL=mpwem_style.css.map */
-
-.event-expire-btn {
-  background-color: #6046ff38;
-  color: rgba(0, 0, 0, 0.88);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  margin: 20px 0;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border-left: 5px solid var(--mpev-red);
-}
-
-.event-expire-btn::before {
-  content: "\f06a";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  font-size: 20px;
-  margin-right: 10px;
-  opacity: 0.9;
-}
-
-.event-expire-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0) 60%);
-  z-index: 1;
-  pointer-events: none;
-}
-.mep-kera-theme .tabLists .mep-pricing-card{width: inherit !important;}

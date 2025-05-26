@@ -710,9 +710,30 @@ ul#mep_add_calender_links li a {
 	width: 300px;
 }
 .mep-default-sidebar .df-sidebar-part {
-	background: #F7F7F7;
+	background: #fff;
 	padding: 0;
 	overflow: hidden;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.mep-default-theme .mep-org-details{
+	font-size: 18px;
+	font-weight: bold;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	.org-icon{
+		background-color: var(--mpev-base);
+		width: 18px;
+		height: 18px;
+		border-radius:10px;
+		padding: 10px;
+		margin-right: 10px;
+		i{
+			color: var(--mpev-base-txt);
+			margin: 0;
+		}
+	}
 }
 .mep-default-sidebar.margin{
 	margin-top: 42px;

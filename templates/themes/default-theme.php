@@ -124,7 +124,6 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
                                         </a><?php if ($index < count($org_terms) - 1): ?>,&nbsp;<?php endif; ?>
                                     <?php endforeach; ?>
                                 </div>
-
                             </div>
                         <?php else :
                             // If no custom organizer display is needed, use the default
@@ -139,12 +138,14 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
                         <?php do_action('mep_event_seat', $event_id); ?>
                 <?php } ?>
             <?php endif; ?>
-            <?php
-            if ($hide_address_details == 'no') { ?>
+
+            <?php if ($hide_address_details == 'no'): ?>
                 <div class="mep-default-sidrbar-address">
                     <?php do_action('mep_event_address_list_sidebar',$event_id); ?>
                 </div>
-            <?php }
+            <?php endif; ?>
+
+            <?php
             if ($hide_schedule_details == 'no') { ?>
                 <div class="mep-default-sidrbar-events-schedule">
                     <?php do_action('mep_event_date_default_theme',$event_id); ?>

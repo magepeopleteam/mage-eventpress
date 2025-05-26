@@ -870,18 +870,19 @@ ul#mep_add_calender_links li a {
 .mep-default-sidrbar-address,
 .mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #f0f2f5;
 }
 
-.default_theme .mep-default-sidrbar-price-seat .df-seat {
-  border: 1px solid var(--mpev-primary);
-  color: var(--mpev-primary);
-  border-radius: 50px;
-  font-weight: 500;
-  height: 35px;
-  line-height: 33px;
-  margin: auto;
-  width: auto;
+.default_theme .mep-default-sidrbar-price-seat .setas-info {
+  padding: 14px;
+  background-color: #f8faff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.default_theme .mep-default-sidrbar-price-seat .setas-info .total-seats, .default_theme .mep-default-sidrbar-price-seat .setas-info .available-seats {
+  display: flex;
+  flex-direction: column;
 }
 
 .mep-theme1-faq-sec {

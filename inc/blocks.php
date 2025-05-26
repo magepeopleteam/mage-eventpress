@@ -18,7 +18,18 @@ function mep_register_block_category($categories) {
         )
     );
 }
-add_filter('block_categories_all', 'mep_register_block_category', 10, 1);
+
+/**
+ * Initialize blocks
+ */
+function mep_init_blocks() {
+    // Register block category first
+    add_filter('block_categories_all', 'mep_register_block_category', 10, 1);
+    
+    // Then register blocks
+    mep_register_event_list_block();
+}
+add_action('init', 'mep_init_blocks', 5);  // Priority 5 to run early
 
 /**
  * Register Event List Block
@@ -135,9 +146,8 @@ function mep_register_event_list_block() {
                 'default' => 'no'
             )
         )
-    ));
+     ));
 }
-add_action('init', 'mep_register_event_list_block');
 
 /**
  * Render callback for the event list block

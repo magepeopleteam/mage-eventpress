@@ -29,23 +29,20 @@
         $global_off_days_arr = [];
         $off_days = '';        
         if(sizeof($event_off_days) > 0){
-            foreach ($event_off_days as $off_days) { 
-                if($off_days == 'sat'){
-                    $off_days = 'satur';
-                } 
+            foreach ($event_off_days as $off_day) { 
+                $day_num = 0;
                 
-                if($off_days == 'tue'){
-                    $off_days = 'tues';
-                } 
-
-                if($off_days == 'wed'){
-                    $off_days = 'wednes';
-                } 
-
-                if($off_days == 'thu'){
-                    $off_days = 'thurs';
-                }                 
-                $global_off_days_arr[] = '['.ucwords($off_days.'day').']';
+                // Convert day abbreviation to day number
+                if($off_day == 'sun') $day_num = 0;
+                if($off_day == 'mon') $day_num = 1; 
+                if($off_day == 'tue') $day_num = 2;
+                if($off_day == 'wed') $day_num = 3;
+                if($off_day == 'thu') $day_num = 4;
+                if($off_day == 'fri') $day_num = 5;
+                if($off_day == 'sat') $day_num = 6;
+                
+                // Add to array as a number, not a string with day name
+                $global_off_days_arr[] = $day_num;
             }
 
             $off_days = implode(',',$global_off_days_arr);
@@ -117,9 +114,19 @@
 
         var day = date.getDay(), Sunday = 0, Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6;
         var closedDates = [[7, 29, 2009], [8, 25, 2010]];
-        var closedDays = [<?php echo $off_days; ?>];
+        
+        // Fix the syntax error by using simple numbers for days
+        var closedDays = [];
+        <?php if(!empty($off_days)): ?>
+        try {
+            closedDays = [<?php echo $off_days; ?>];
+        } catch(e) {
+            console.error("Error parsing off days:", e);
+        }
+        <?php endif; ?>
+        
         for (var i = 0; i < closedDays.length; i++) {
-            if (day == closedDays[i][0]) {
+            if (day == closedDays[i]) {
                 return [false];
             }
         }
@@ -143,7 +150,7 @@
         return [true];
     }
 
-<?php if($recurring == 'yes'){ ?>
+        <?php if($recurring == 'yes'){ ?>
 
 jQuery('#mep_recurring_date').on('change', function () {
             var event_date = jQuery(this).val();          

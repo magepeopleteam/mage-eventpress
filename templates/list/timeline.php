@@ -5,6 +5,7 @@ $month = get_mep_datetime(get_post_meta($event_id, 'event_upcoming_datetime', tr
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_date_icon  = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$event_organizer_icon = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 ?>
 <div class="timeline__item">
     <div class="timeline__content">
@@ -33,7 +34,15 @@ $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_s
                                     echo esc_html(get_mep_datetime($event_meta['event_end_datetime'][0], 'date-time-text'));
                                 } ?>
                             </span>
-                            <span class='mep_minimal_list_location'><i class="<?php echo $event_location_icon; ?>"></i> <?php mep_get_event_city($event_id); ?></span></h3>
+                            <span class='mep_minimal_list_location'><i class="<?php echo $event_location_icon; ?>"></i> <?php mep_get_event_city($event_id); ?></span>
+                            <?php 
+                            // Display the first organizer (primary organizer)
+                            $org_terms = get_the_terms($event_id, 'mep_org');
+                            if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+                            ?>
+                            <span class='mep_minimal_list_organizer'><i class="<?php echo $event_organizer_icon; ?>"></i> <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a></span>
+                            <?php } ?>
+                        </h3>
                 </a>
                 <?php do_action('mep_event_list_loop_footer', $event_id); ?>
             </div>

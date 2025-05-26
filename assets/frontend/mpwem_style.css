@@ -1856,7 +1856,6 @@ div.item_hover_effect a:hover {
 
 .mep-default-sidebar-address {
   padding: 20px 15px;
-  padding-bottom: 0;
 }
 .mep-default-sidebar-address .location-widgets {
   display: flex;
@@ -1882,10 +1881,11 @@ div.item_hover_effect a:hover {
   font-size: 15px;
   padding: 0 15px;
   margin: 10px auto;
+  margin-bottom: 5px;
   border-radius: 50px;
   max-width: max-content;
   background: var(--mpev-calender-btn-bg);
-  color: #fff;
+  color: var(--mpev-base-txt);
   display: flex;
   gap: 10px;
   font-weight: 500;

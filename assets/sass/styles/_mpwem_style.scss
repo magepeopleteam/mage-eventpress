@@ -766,8 +766,8 @@ ul#mep_add_calender_links li a {
 	justify-content: start;
 	.org-icon{
 		background-color: var(--mpev-base);
-		width: 18px;
-		height: 18px;
+		width: 40px;
+		height: 40px;
 		border-radius:10px;
 		padding: 10px;
 		margin-right: 10px;
@@ -775,6 +775,9 @@ ul#mep_add_calender_links li a {
 			color: var(--mpev-base-txt);
 			margin: 0;
 		}
+	}
+	.org-name{
+		color:#000;
 	}
 }
 .mep-default-sidebar.margin{

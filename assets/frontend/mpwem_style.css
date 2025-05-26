@@ -49,7 +49,7 @@ div.item_hover_effect a:hover {
   border: 1px solid var(--mpev-base);
 }
 
-.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
+.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
   background: var(--mpev-base);
   color: var(--mpev-base-txt);
 }
@@ -750,6 +750,74 @@ ul.mep-social-share {
 
 ul.mep-social-share li {
   margin: 0 8px 0 0;
+}
+
+ul.mep-social-share li a {
+  background-color: var(--mpev-base-txt);
+}
+
+ul.mep-social-share li a.facebook i {
+  color: #3b5998;
+}
+
+ul.mep-social-share li a.facebook:hover {
+  background-color: #3b5998;
+}
+
+ul.mep-social-share li a.facebook:hover i {
+  color: #fff;
+}
+
+/* Twitter */
+ul.mep-social-share li a.twitter i {
+  color: #1da1f2;
+}
+
+ul.mep-social-share li a.twitter:hover {
+  background-color: #1da1f2;
+}
+
+ul.mep-social-share li a.twitter:hover i {
+  color: #fff;
+}
+
+/* LinkedIn */
+ul.mep-social-share li a.linkedin i {
+  color: #0077b5;
+}
+
+ul.mep-social-share li a.linkedin:hover {
+  background-color: #0077b5;
+}
+
+ul.mep-social-share li a.linkedin:hover i {
+  color: #fff;
+}
+
+/* WhatsApp */
+ul.mep-social-share li a.whatsapp i {
+  color: #25D366;
+}
+
+ul.mep-social-share li a.whatsapp:hover {
+  background-color: #25D366;
+}
+
+ul.mep-social-share li a.whatsapp:hover i {
+  color: #fff;
+}
+
+/* Email */
+ul.mep-social-share li a.email i {
+  color: #dd4b39;
+}
+
+ul.mep-social-share li a.email:hover {
+  background-color: #dd4b39;
+}
+
+ul.mep-social-share li a.email:hover i {
+  color: #fff;
 }
 
 /********Add to calender ***********/

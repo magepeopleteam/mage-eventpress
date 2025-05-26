@@ -4368,17 +4368,17 @@ if (!function_exists('mep_add_show_sku_post_id_in_event_list_dashboard')) {
 			$event_ss_email_icon    = mep_get_option( 'mep_event_ss_email_icon', 'icon_setting_sec', 'fa fa-envelope' );
 			?>
             <li>
-                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo get_the_permalink( $event_id ); ?>&title=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?>&summary=<?php echo esc_html( get_the_excerpt( $event_id ) ); ?>&source=web" target="_blank">
+                <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo get_the_permalink( $event_id ); ?>&title=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?>&summary=<?php echo esc_html( get_the_excerpt( $event_id ) ); ?>&source=web" target="_blank">
                     <i class="<?php echo $event_ss_linkedin_icon; ?>"></i>
                 </a>
             </li>
             <li>
-                <a href="https://api.whatsapp.com/send?text=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" target="_blank">
+                <a class="whatsapp" href="https://api.whatsapp.com/send?text=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" target="_blank">
                     <i class="<?php echo $event_ss_whatsapp_icon; ?>"></i>
                 </a>
             </li>
             <li>
-                <a href="mailto:?subject=I wanted you to see this site&amp;body=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" title="Share by Email">
+                <a class="email" href="mailto:?subject=I wanted you to see this site&amp;body=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" title="Share by Email">
                     <i class="<?php echo $event_ss_email_icon; ?>"></i>
                 </a>
             </li>

@@ -108,7 +108,6 @@
 			<?php endif; ?>
 			<?php if ( $hide_org_by_details == 'no' && has_term( '', 'mep_org', $event_id ) ) { ?>
                 <div class="mep-default-sidrbar-meta">
-					<?php do_action( 'mep_event_organizer', $event_id ); ?>
                     <?php
                     // Get organizer terms to identify primary organizer
                     $org_terms = get_the_terms($event_id, 'mep_org');

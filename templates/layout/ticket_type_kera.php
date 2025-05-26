@@ -55,9 +55,10 @@
 						$new_tickets[ $ticket_group_order ]['available'] = $available;
 					}
 				}
-				//echo '<pre>';print_r($ticket_type);echo '</pre>';
+
 			}
 			ksort( $new_tickets );
+			//echo '<pre>';print_r($new_tickets);echo '</pre>';
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
                 <div class="mpTabs mep-kera-theme">
@@ -136,7 +137,21 @@
 																			if ( $exit_avail < 1 ) {
 																				$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
 																				if ( $early_date ) {
-																					MP_Custom_Layout::qty_input( $input_data );
+																					$sale_end_datetime   = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+																					if($sale_end_datetime){
+																						$current_time=current_time( 'Y-m-d H:i' );
+																						if ( strtotime( $current_time ) < strtotime( $sale_end_datetime )) {
+																							MP_Custom_Layout::qty_input( $input_data );
+																						}else{
+																							?>
+                                                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
+																									echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
+                                                                                            <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+																							<?php
+																						}
+																					}else {
+																						MP_Custom_Layout::qty_input( $input_data );
+																					}
 																				} else {
 																					$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
 																					?>

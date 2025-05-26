@@ -14,7 +14,7 @@ if (!function_exists('mep_ev_seat')) {
         $recurring 		= get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 
         ob_start();
-        if ($recurring == 'no') {
+       // if ($recurring == 'no') {
             $mep_event_ticket_type 	= get_post_meta($event_id, 'mep_event_ticket_type', true) ? get_post_meta($event_id, 'mep_event_ticket_type', true) : array();
             $event_date 			= get_post_meta($event_id, 'event_start_date', true) ? get_post_meta($event_id, 'event_start_date', true) : '';
             $mep_available_seat 	= get_post_meta($event_id, 'mep_available_seat', true) ? get_post_meta($event_id, 'mep_available_seat', true) : 'on';
@@ -30,7 +30,7 @@ if (!function_exists('mep_ev_seat')) {
                 // $total_seat = apply_filters('mep_event_total_seat_count', $_total_left, $event_id,'',$event_date);
                 require mep_template_file_path('single/total_seat.php');
             }
-        }
+       // }
         $content = ob_get_clean();
         echo apply_filters('mage_event_single_total_seat', $content, $event_id);
     }

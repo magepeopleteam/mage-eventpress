@@ -27,6 +27,9 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             // mep_delete_timeline_data
             add_action('wp_ajax_mep_timeline_delete_item', [$this, 'timeline_delete_item']);
             // add_action('wp_ajax_nopriv_mep_timeline_delete_item', [$this, 'timeline_delete_item']);
+
+            add_action( 'save_post', [$this,'data_save'] );
+
         }
 
         public function custom_editor_enqueue() {
@@ -118,6 +121,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             <section class="timeline-header" data-collapse-target="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
                                     <p><?php echo esc_html($value['mep_day_title']); ?></p>
+                                    <input type="hidden" name='mep_timeline_title_raw[]' value='<?php echo esc_html($value['mep_day_title']); ?>'/>
                                     <div class="timeline-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
                                         <span class="mep-timeline-item-edit" data-modal="mep-timeline-item-new" ><i class="fas fa-edit"></i></span>
@@ -127,6 +131,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             </section>
                             <section class="timeline-content" data-collapse="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_day_content']))); ?>
+                                <textarea style='display:none;' name="mep_timeline_details_raw[]" id=""><?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_day_content']))); ?></textarea>
                             </section>
                         </div>
                     <?php
@@ -276,6 +281,36 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             }
             die;
         }
+
+
+        public function data_save( $post_id ) {
+            global $wpdb;
+            if ( get_post_type( $post_id ) == 'mep_events' ) {
+
+                $title   = isset($_POST['mep_timeline_title_raw']) ? (array) $_POST['mep_timeline_title_raw'] : array();
+                $details = isset($_POST['mep_timeline_details_raw']) ? (array) $_POST['mep_timeline_details_raw'] : array();
+
+                $combined = array();
+
+                foreach ($title as $index => $value) {
+                    if (isset($details[$index]) && trim($value) !== '') {
+                        $combined[] = array(
+                            'mep_day_title'   => sanitize_text_field($value),
+                            'mep_day_content' => sanitize_textarea_field($details[$index])
+                        );
+                    }
+                }
+                update_post_meta($post_id, 'mep_event_day', $combined);
+                
+            }
+        }
+
+
+
+
+
+
+
     }
     new MPWEM_Timeline_Details();
 }

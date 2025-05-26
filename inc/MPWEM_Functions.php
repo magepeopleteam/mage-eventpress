@@ -228,7 +228,6 @@
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : self::get_dates( $event_id );
 				$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$times     = [];
-				
 				if ( sizeof( $all_dates ) > 0 ) {
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
 						$date = $date ?: date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
@@ -242,11 +241,9 @@
 							}
 						}
 					} else {
-						
 						$count = 0;
 						$date  = $date ?: date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 						if ( in_array( $date, $all_dates ) ) {
-							echo 123;
 							$special_dates = MP_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
 							if ( sizeof( $special_dates ) > 0 ) {
 								foreach ( $special_dates as $special_date ) {
@@ -264,7 +261,7 @@
 									}
 								}
 							}
-							echo $disable_time = MP_Global_Function::get_post_info( $event_id, 'mep_disable_ticket_time', 'no' );
+							$disable_time = MP_Global_Function::get_post_info( $event_id, 'mep_disable_ticket_time', 'no' );
 							if ( sizeof( $times ) == 0 ) {
 								if ( $disable_time == 'yes' ) {
 									$global_times = MP_Global_Function::get_post_info( $event_id, 'mep_ticket_times_global', [] );

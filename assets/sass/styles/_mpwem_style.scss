@@ -33,7 +33,7 @@ div.item_hover_effect a:hover{
 	border:1px solid var(--mpev-base);
 }
 
-.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-address ul li i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
+.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, .mep-default-sidrbar-social ul li a, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
 }
@@ -211,7 +211,6 @@ div.mep_flex,
 .mep-default-theme div.mep-default-feature-location,
 .mep-default-theme i,
 div.mep-default-sidrbar-meta,
-.mep-default-sidrbar-address ul li,
 .mep-default-sidrbar-events-schedule h3,
 ul.mep-social-share,
 ul.mep-social-share a,
@@ -244,7 +243,6 @@ button.single_add_to_cart_button,
 .mep-default-theme div.mep-default-feature-location,
 .mep-default-theme i,
 .mep-default-sidrbar-meta,
-.mep-default-sidrbar-address ul li,
 .mep-default-sidrbar-events-schedule h3,
 ul.mep-social-share a,
 #mep_add_calender_button.mep-add-calender,
@@ -581,21 +579,7 @@ button.single_add_to_cart_button[disabled]:hover {
 	color: #6D7982;
 }
 /********venue place ***********/
-.mep-default-sidrbar-address {
-	padding: 20px 10px;
-}
-.mep-default-sidrbar-address ul {
-	font-size: 15px;
-	padding: 0 0 0 20px;
-}
-.mep-default-sidrbar-address ul li {
-	margin: 0 0 10px 0;
-}
-.mep-default-sidrbar-address ul li span {
-	width: calc(100% - 25px);
-	padding: 0 0 0 10px;
-	font-size: 14px;
-}
+
 /********circle icon box ***********/
 .mep-default-sidrbar-meta i,
 .df-ico i,
@@ -605,7 +589,7 @@ ul.mep-social-share a {
 	width: 40px;
 	height: 40px;
 }
-.mep-default-sidrbar-address ul li i,
+
 .mep-default-sidrbar-events-schedule ul li i,
 .mep-list-footer ul li i {
 	color:  var(--mpev-base-txt);
@@ -614,7 +598,6 @@ ul.mep-social-share a {
 	font-size: 14px;
 }
 /********default background ***********/
-.mep-default-sidrbar-address ul li i,
 .mep-default-sidrbar-meta i,
 .df-ico i,
 .mep-default-sidrbar-events-schedule ul li i,
@@ -739,7 +722,7 @@ ul#mep_add_calender_links li a {
 	margin-top: 42px;
 }
 .default_theme .mep-default-sidrbar-price-seat,
-.mep-default-sidrbar-address,
+.mep-default-sidebar-address,
 .mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #f0f2f5;
@@ -1616,7 +1599,44 @@ div.item_hover_effect a:hover {
 	color: #FFF;
 	font-size: 18px;
 }
-
+.mep-default-sidebar-address{
+	padding: 20px 15px;
+	padding-bottom: 0;
+	.location-widgets{
+		display: flex;
+		flex-direction: row;
+		.location-icon i{
+			background-color: var(--mpev-base);
+			width: 18px;
+			height: 18px;
+			border-radius: 10px;
+			padding: 10px;
+			margin-right: 10px;
+			color: #fff;
+		}
+		.location-title{
+			font-size: 18px;
+			font-weight: bold;
+		}
+		
+	}
+	.mep-location-btn{
+		height: 35px;
+		line-height: 35px;
+		border: 0;
+		font-size: 15px;
+		padding: 0 15px;
+		margin:10px auto;
+		border-radius: 50px;
+		max-width: max-content;
+		background: var(--mpev-calender-btn-bg);
+		color: #fff;
+		display: flex;
+		gap:10px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+}
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -1650,17 +1670,11 @@ div.item_hover_effect a:hover {
 		height: 40px;
 		font-size: 20px;
 	}
-	.mep-default-sidrbar-address ul li i,
 	.mep-default-sidrbar-events-schedule ul li i,
 	.mep-list-footer ul li i {
 		width: 20px;
 		height: 20px;
 		font-size: 11px;
-	}
-	.mep-default-sidrbar-address ul li span {
-		width: calc(100% - 20px);
-		padding: 0 0 0 5px;
-		font-size: 13px;
 	}
 	div.df-dtl {
 		width: calc(100% - 40px);
@@ -1722,12 +1736,8 @@ div.item_hover_effect a:hover {
 	.mep-default-sidrbar-meta {
 		padding: 10px 10px 0 10px;
 	}
-	.mep-default-sidrbar-address {
-		padding: 10px 5px;
-	}
-	.mep-default-sidrbar-address ul li {
-		margin: 0 0 5px 0;
-	}
+	
+
 	.mep-default-sidrbar-events-schedule {
 		padding: 10px;
 	}
@@ -2924,12 +2934,8 @@ Mobile View css update by ariful | date: 19.10.2021
 	.mep_everyday_date_secs ul li {
 		margin-bottom: 10px;
 	}
-	.mep-default-sidrbar-address ul {
-		padding: 0 0 0 15px;
-	}
-	.mep-default-sidrbar-address ul li {
-		line-height: 22px;
-	}
+
+
 	.mep-event-review-list-wrapper {
 		margin: 0;
 	}

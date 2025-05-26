@@ -94,7 +94,7 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
         </div>
         <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
             <?php if($event_type !='online'): ?>
-                <div class="mep-default-sidrbar-map">
+                <div class="mep-default-sidrbar-map" id="mep-map-location">
                     <h3 class="ex-sec-title">
                         <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
                     </h3>
@@ -114,7 +114,6 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
                     $org_terms = get_the_terms($event_id, 'mep_org');
                     $links = array();
                     if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
-                        <div class="mep-default-sidrbar-meta-icon"><i class="' . esc_attr($event_organizer_icon) . '"></i></div>
                             <div class="mep-org-details">
                                 <div class="org-icon"><i class="fas fa-building"></i></div>
                                 <div>
@@ -139,18 +138,20 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
                 <?php } ?>
             <?php endif; ?>
 
-            <?php if ($hide_address_details == 'no'): ?>
-                <div class="mep-default-sidrbar-address">
-                    <?php do_action('mep_event_address_list_sidebar',$event_id); ?>
-                </div>
-            <?php endif; ?>
-
             <?php
             if ($hide_schedule_details == 'no') { ?>
                 <div class="mep-default-sidrbar-events-schedule">
                     <?php do_action('mep_event_date_default_theme',$event_id); ?>
                 </div>
-            <?php }
+            <?php } ?>
+
+            <?php if ($hide_address_details == 'no'): ?>
+                <div class="mep-default-sidebar-address">
+                    <?php do_action('mep_event_address_list_sidebar',$event_id); ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php
             if ($hide_share_details == 'no') { ?>
                 <div class="mep-default-sidrbar-social">
                     <?php do_action('mep_event_social_share', $event_id); ?>

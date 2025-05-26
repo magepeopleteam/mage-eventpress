@@ -1,5 +1,5 @@
 //======================================================Price Format==============//
-function mp_price_format(price) {
+function mpwem_price_format(price) {
 	if (typeof price === 'string') {
 		price = Number(price);
 	}

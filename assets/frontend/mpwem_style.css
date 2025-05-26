@@ -1942,6 +1942,7 @@ div.item_hover_effect a:hover {
 .mep-default-sidebar-address .location-widgets .location-title {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 .mep-default-sidebar-address .mep-location-btn {
   height: 35px;

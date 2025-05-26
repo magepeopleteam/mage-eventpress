@@ -5,9 +5,8 @@ $show_map   	   = $show_map? $show_map : 0;
 $event_template   	   = get_post_meta($event_id, 'mep_event_template', true);
 ?>
 <div class="location-widgets">
-    <div class="location-icon"><i class="fas fa-map-marker-alt"></i></div>
     <div>
-        <div class="location-title"><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></div>
+        <div class="location-title"><?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?></div>
         <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
     </div>
 </div>

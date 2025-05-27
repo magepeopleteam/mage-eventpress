@@ -25,6 +25,7 @@
 				<div class="card-header"><?php esc_html_e('Ticket Options', 'mage-eventpress'); ?></div>
 				<div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
+						// ===============remaining items===================
 						$event_expire_on_old        = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
 						$event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
 						$current_time = apply_filters(
@@ -48,7 +49,7 @@
 							$event_id,
 							$ticket_type
 						);
-
+						$event_expire_date   = get_post_meta($event_id, 'event_expire_datetime', true) ? get_post_meta($event_id, 'event_expire_datetime', true) : '';
 						$sale_end_datetime = array_key_exists('option_sale_end_date_t', $ticket_type) && !empty($ticket_type['option_sale_end_date_t'])
 							? date('Y-m-d H:i', strtotime($ticket_type['option_sale_end_date_t']))
 							: date('Y-m-d H:i', strtotime($event_expire_date));
@@ -77,7 +78,7 @@
 						$mep_available_seat = get_post_meta($event_id, 'mep_available_seat', true);
 						$mep_available_seat = isset($mep_available_seat) ? $mep_available_seat : 'on';
 						$low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? $GLOBALS[$date_specific_low_stock_key] : false;
-						
+						// ===============remaining items===================
 						$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 						if ( $ticket_permission ) {
 							//echo '<pre>';print_r($ticket_type);echo '</pre>';

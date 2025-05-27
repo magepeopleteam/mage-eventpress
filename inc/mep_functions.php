@@ -1178,9 +1178,8 @@
 		$availabe_seat         = ! empty( get_post_meta( $event_id, $ticket_type_meta_name, true ) ) ? get_post_meta( $event_id, $ticket_type_meta_name, true ) : mep_update_ticket_type_seat( $event_id, $name, $date, $total, $reserved );
 		// $availabe_seat          = mep_update_ticket_type_seat($event_id,$name,$date,$total,$reserved);
 		// return $availabe_seat;
-		$temp_count = mep_temp_attendee_count( $event_id, $name, $date );
-
-		return $availabe_seat + $temp_count;
+		$temp_count = mep_temp_attendee_count($event_id, $name, $date);
+		return (int)$availabe_seat + (int)$temp_count;
 	}
 	if ( ! function_exists( 'mep_get_count_total_available_seat' ) ) {
 		function mep_get_count_total_available_seat( $event_id, $date = '' ) {

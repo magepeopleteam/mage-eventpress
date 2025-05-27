@@ -17,13 +17,13 @@ if( ! class_exists('MPWEM_Faq_Settings')){
             add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save faq data
             add_action('wp_ajax_mep_faq_data_save', [$this, 'save_faq_data_settings']);
-            
+	        add_action('wp_ajax_nopriv_mep_faq_data_save', [$this, 'save_faq_data_settings']);
             // update faq data
             add_action('wp_ajax_mep_faq_data_update', [$this, 'faq_data_update']);
-            
+	        add_action('wp_ajax_nopriv_mep_faq_data_update', [$this, 'faq_data_update']);
             // mep_delete_faq_data
             add_action('wp_ajax_mep_faq_delete_item', [$this, 'faq_delete_item']);
-            // add_action('wp_ajax_nopriv_mep_faq_delete_item', [$this, 'faq_delete_item']);
+             add_action('wp_ajax_nopriv_mep_faq_delete_item', [$this, 'faq_delete_item']);
 
             add_action( 'save_post', [$this,'data_save'] );
         }

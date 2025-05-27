@@ -873,7 +873,7 @@
 	.mpStyle .formControl:focus { outline: 0; background-color: #FFF; border-color: #80BDFF; }
 	div.mpStyle select.formControl {
 		background-image: url("../images/arrow_down.png");background-repeat: no-repeat;background-position: calc(100% - var(--dMP_xs));background-size: auto;
-		-webkit-appearance: none; padding: var(--dMP_xs) 35px var(--dMP_xs) var(--dMP_xs);
+		-webkit-appearance: none; padding: var(--dMP_xs) 35px var(--dMP_xs) var(--dMP_xs);max-width: 200px;
 	}
 	div.mpStyle select.formControl:focus { background-color: var(--color_theme_aa); }
 	div.mpStyle .formControl.date_type_without_year,

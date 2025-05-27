@@ -14,6 +14,8 @@
 	$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id );
 	$total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id );
 	$total_available = $total_ticket - ( $total_sold + $total_reserve );
+	//echo '<pre>';print_r(current_time( 'Y-m-d H:i:s' ) );echo '</pre>';
+	//echo '<pre>';print_r($date);echo '</pre>';
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -21,6 +23,7 @@
 		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type _dLayout">
 				<?php foreach ( $ticket_types as $ticket_type ) {
+					$input_data=[];
 					$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 					if ( $ticket_permission ) {
 						//echo '<pre>';print_r($ticket_type);echo '</pre>';
@@ -61,7 +64,21 @@
 										<?php
 											$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
 											if ( $early_date ) {
-												MP_Custom_Layout::qty_input( $input_data );
+												$sale_end_datetime   = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+												if($sale_end_datetime){
+													$current_time=current_time( 'Y-m-d H:i' );
+													if ( strtotime( $current_time ) < strtotime( $sale_end_datetime )) {
+														MP_Custom_Layout::qty_input( $input_data );
+													}else{
+														?>
+                                                        <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
+																echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
+                                                        <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+														<?php
+													}
+												}else {
+													MP_Custom_Layout::qty_input( $input_data );
+												}
 											} else {
 												$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
 												?>

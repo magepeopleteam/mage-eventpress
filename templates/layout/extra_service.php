@@ -23,6 +23,7 @@
                 <h4><?php esc_html_e('Extra Service', 'mage-eventpress'); ?></h4>
                 <div class="_dLayout">
 					<?php foreach ($ex_services as $ticket_type) {
+						$input_data=[];
 						$ticket_name = array_key_exists('option_name', $ticket_type) ? $ticket_type['option_name'] : '';
 						$ticket_price = array_key_exists('option_price', $ticket_type) ? $ticket_type['option_price'] : 0;
 						$ticket_price = MP_Global_Function::get_wc_raw_price($event_id, $ticket_price);
@@ -35,6 +36,7 @@
 							$input_data['available'] = $available;
 							$input_data['type'] = $ticket_input_type;
 							$count++;
+							//echo '<pre>'; print_r($input_data); echo '</pre>';
 							if ($count > 1) { ?>
                                 <div class="_divider"></div>
 							<?php } ?>

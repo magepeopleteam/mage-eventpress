@@ -23,6 +23,7 @@
 		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type _dLayout">
 				<?php foreach ( $ticket_types as $ticket_type ) {
+					$input_data=[];
 					$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 					if ( $ticket_permission ) {
 						//echo '<pre>';print_r($ticket_type);echo '</pre>';

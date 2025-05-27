@@ -185,6 +185,7 @@
 			}
 			/*****************************/
 			public static function qty_input($data = []) {
+				//echo '<pre>';print_r($data);echo '</pre>';
 				$input_name = array_key_exists('name', $data) ? $data['name'] : '';
 				$price = array_key_exists('price', $data) ? $data['price'] : 0;
 				$available_seat = array_key_exists('available', $data) ? $data['available'] : 1;

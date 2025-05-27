@@ -65,6 +65,15 @@
   margin: 0 10px;
 }
 
+@mixin summary{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaeaea;
+}
+
 .mpwem_booking_panel{
     .mpwem_ticket_type,.mpwem_ex_service{
         @include card;
@@ -124,6 +133,12 @@
             }
         }
     }
-
+}
+.mpwem_form_submit_area{
+    @include summary;
+    .total {
+        font-size: 18px;
+        font-weight: 600;
+    }
 }
 

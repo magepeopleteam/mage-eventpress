@@ -6030,4 +6030,17 @@ Vanilla theme css by ariful
   flex: 0 0 10%;
 }
 
+.mpwem_form_submit_area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eaeaea;
+}
+.mpwem_form_submit_area .total {
+  font-size: 18px;
+  font-weight: 600;
+}
+
 /*# sourceMappingURL=mpwem_style.css.map */

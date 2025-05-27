@@ -44,3 +44,20 @@
         }
     }
 }
+.mep-default-map{
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 20px;
+    .map-title{
+        background: linear-gradient(135deg, #4169e1, #3b5fe2);
+        color: white;
+        padding: 20px 25px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .display-map{
+        padding: 20px 25px;
+    }
+}

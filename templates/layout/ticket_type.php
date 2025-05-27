@@ -25,6 +25,59 @@
 				<div class="card-header"><?php esc_html_e('Ticket Options', 'mage-eventpress'); ?></div>
 				<div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
+						$event_expire_on_old        = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
+						$event_expire_on            = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
+						$current_time = apply_filters(
+							'mep_ticket_current_time',
+							current_time('Y-m-d H:i'),
+							get_post_meta($event_id, $event_expire_on, true),
+							$event_id
+						);
+
+						$ticket_type_name    = array_key_exists('option_name_t', $ticket_type) ? mep_remove_apostopie($ticket_type['option_name_t']) : '';
+						$ticket_type_mode    = array_key_exists('option_qty_t_type', $ticket_type) ? $ticket_type['option_qty_t_type'] : 'input';
+						$ticket_type_qty     = array_key_exists('option_qty_t', $ticket_type) ? $ticket_type['option_qty_t'] : 0;
+						$ticket_type_price   = array_key_exists('option_price_t', $ticket_type) ? $ticket_type['option_price_t'] : 0;
+						$qty_t_type          = $ticket_type_mode;
+						$total_quantity      = array_key_exists('option_qty_t', $ticket_type) ? $ticket_type['option_qty_t'] : 0;
+						$ticket_details      = array_key_exists('option_details_t', $ticket_type) ? esc_html($ticket_type['option_details_t']) : '';
+
+						$sale_start_datetime = apply_filters(
+							'mep_sale_start_datetime',
+							date('Y-m-d H:i', strtotime(get_the_date('Y-m-d H:i:s', $event_id))),
+							$event_id,
+							$ticket_type
+						);
+
+						$sale_end_datetime = array_key_exists('option_sale_end_date_t', $ticket_type) && !empty($ticket_type['option_sale_end_date_t'])
+							? date('Y-m-d H:i', strtotime($ticket_type['option_sale_end_date_t']))
+							: date('Y-m-d H:i', strtotime($event_expire_date));
+
+						$default_qty         = array_key_exists('option_default_qty_t', $ticket_type) && $ticket_type['option_default_qty_t'] > 0 ? $ticket_type['option_default_qty_t'] : 0;
+						$total_resv_quantity = array_key_exists('option_rsv_t', $ticket_type) ? $ticket_type['option_rsv_t'] : 0;
+
+						$event_date = get_post_meta($event_id, 'event_start_date', true) . ' ' . get_post_meta($event_id, 'event_start_time', true);
+						$event_start_date = $event_date;
+
+						$total_sold = mep_get_ticket_type_seat_count($event_id, $ticket_type_name, $event_date, $total_quantity, $total_resv_quantity);
+						$total_tickets = (int) $total_quantity - ((int) $total_sold + (int) $total_resv_quantity);
+
+						$total_seats = apply_filters('mep_total_ticket_of_type', $total_tickets, $event_id, $ticket_type, $event_date);
+						$total_min_seat = apply_filters('mep_ticket_min_qty', 0, $event_id, $ticket_type);
+						$default_quantity = apply_filters('mep_ticket_default_qty', $default_qty, $event_id, $ticket_type);
+						$total_left = apply_filters('mep_total_ticket_of_type', $total_tickets, $event_id, $ticket_type, $event_date);
+						$total_ticket_left = apply_filters('mep_total_ticket_left_of_type', $total_tickets, $event_id, $ticket_type, $event_date);
+
+						$ticket_price = apply_filters('mep_ticket_type_price', $ticket_type_price, $ticket_type_name, $event_id, $ticket_type);
+						$passed = apply_filters('mep_ticket_type_validation', true);
+
+						$start_date = get_post_meta($event_id, 'event_start_datetime', true);
+						$end_date = get_post_meta($event_id, 'event_end_datetime', true);
+
+						$mep_available_seat = get_post_meta($event_id, 'mep_available_seat', true);
+						$mep_available_seat = isset($mep_available_seat) ? $mep_available_seat : 'on';
+						$low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? $GLOBALS[$date_specific_low_stock_key] : false;
+						
 						$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 						if ( $ticket_permission ) {
 							//echo '<pre>';print_r($ticket_type);echo '</pre>';
@@ -55,13 +108,11 @@
 											<div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 										<?php } ?>
 										<?php 
-										$total_ticket_left = 0;
-										$mep_available_seat = get_post_meta($event_id, 'mep_available_seat', true);
-										$mep_available_seat = isset($mep_available_seat) ? $mep_available_seat : 'on';
-										$low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? $GLOBALS[$date_specific_low_stock_key] : false;
-										if ($mep_available_seat == 'on' && !$low_stock_displayed):?>
-											<div class="ticket-remaining remaining-high xtra-item-left">
-												<?php echo esc_html(max($total_ticket_left, 0)).__(' tickets remaining'); ?>
+											if ($mep_available_seat == 'on' && !$low_stock_displayed):
+												$ticket_left = max($total_ticket_left, 0);
+											?>
+											<div class="ticket-remaining xtra-item-left <?php echo $ticket_left <= 10 ?'remaining-low':'remaining-high'; ?>">
+												<?php echo esc_html($ticket_left).__(' Tickets remaining'); ?>
 											</div>
 										<?php endif; ?>
 										

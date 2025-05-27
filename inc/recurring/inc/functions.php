@@ -771,13 +771,61 @@
 				$off_dates[] = $value['mep_ticket_off_date'];
 			}
 		}
-		$event_date_display_list = array_diff( $event_date_display_list, $off_dates );
-		foreach ( $event_date_display_list as $every_day ) {
-			$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
-			if ( ! in_array( $event_day, $global_off_days ) ) {
-				$the_recurring_dates[] = $every_day;
+
+		$priority = get_post_meta( $event_id, 'mep_ticket_off_priority', true );
+		if ( ! $priority ) {
+			$priority = 'offdate';
+		}
+
+		if ( is_array( $global_off_dates ) && sizeof( $global_off_dates ) > 0 ) {
+			foreach ( $global_off_dates as $key => $value ) {
+				$off_dates[] = $value['mep_ticket_off_date'];
 			}
 		}
+
+		if ( $priority === 'offday' ) {
+			// Remove off days first
+			$filtered = [];
+			foreach ( $event_date_display_list as $every_day ) {
+				$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
+				if ( ! in_array( $event_day, $global_off_days ) ) {
+					$filtered[] = $every_day;
+				}
+			}
+			// Then remove off dates
+			$filtered = array_diff( $filtered, $off_dates );
+			$the_recurring_dates = array_values( $filtered );
+		} else {
+			// Default: Remove off dates first
+			$filtered = array_diff( $event_date_display_list, $off_dates );
+			$final = [];
+			foreach ( $filtered as $every_day ) {
+				$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
+				if ( ! in_array( $event_day, $global_off_days ) ) {
+					$final[] = $every_day;
+				}
+			}
+			$the_recurring_dates = array_values( $final );
+		}
+
+		$block_offdays = get_post_meta( $event_id, 'mep_ticket_block_offdays', true );
+		$block_offdates = get_post_meta( $event_id, 'mep_ticket_block_offdates', true );
+
+		$filtered = $event_date_display_list;
+		if ( $block_offdates === 'yes' && is_array( $off_dates ) && count( $off_dates ) > 0 ) {
+			$filtered = array_diff( $filtered, $off_dates );
+		}
+		if ( $block_offdays === 'yes' && is_array( $global_off_days ) && count( $global_off_days ) > 0 ) {
+			$final = [];
+			foreach ( $filtered as $every_day ) {
+				$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
+				if ( ! in_array( $event_day, $global_off_days ) ) {
+					$final[] = $every_day;
+				}
+			}
+			$filtered = $final;
+		}
+		$the_recurring_dates = array_values( $filtered );
 
 		return $the_recurring_dates;
 	}

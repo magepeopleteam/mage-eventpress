@@ -576,6 +576,7 @@
 			// $user_id           = isset( $order_meta['_customer_user'][0] ) ? sanitize_text_field( $order_meta['_customer_user'][0] ) : '';
 			// $first_name        = isset( $order_meta['_billing_first_name'][0] ) ? sanitize_text_field( $order_meta['_billing_first_name'][0] ) : '';
 			// $last_name         = isset( $order_meta['_billing_last_name'][0] ) ? sanitize_text_field( $order_meta['_billing_last_name'][0] ) : '';
+			
 			$billing_intotal   = $order->get_meta( '_billing_address_index' );
 			$payment_method    = $order->get_payment_method_title();
 			$user_id           = $order->get_customer_id();
@@ -1077,7 +1078,7 @@
 					$org                   = get_the_terms( $event_id, 'mep_org' );
 					$term_id               = isset( $org[0]->term_id ) ? $org[0]->term_id : '';
 					$org_email             = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
-					mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+
 					if ( $order->has_status( 'processing' ) ) {
 						change_attandee_order_status( $order_id, 'publish', 'trash', 'processing' );
 						change_attandee_order_status( $order_id, 'publish', 'publish', 'processing' );
@@ -1177,9 +1178,8 @@
 		$availabe_seat         = ! empty( get_post_meta( $event_id, $ticket_type_meta_name, true ) ) ? get_post_meta( $event_id, $ticket_type_meta_name, true ) : mep_update_ticket_type_seat( $event_id, $name, $date, $total, $reserved );
 		// $availabe_seat          = mep_update_ticket_type_seat($event_id,$name,$date,$total,$reserved);
 		// return $availabe_seat;
-		$temp_count = mep_temp_attendee_count( $event_id, $name, $date );
-
-		return $availabe_seat + $temp_count;
+		$temp_count = mep_temp_attendee_count($event_id, $name, $date);
+		return (int)$availabe_seat + (int)$temp_count;
 	}
 	if ( ! function_exists( 'mep_get_count_total_available_seat' ) ) {
 		function mep_get_count_total_available_seat( $event_id, $date = '' ) {

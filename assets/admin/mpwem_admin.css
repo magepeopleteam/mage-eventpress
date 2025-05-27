@@ -1844,7 +1844,7 @@ h3.mep_virtual_sec_title {
   width: 0;
   height: 0;
 }
-
+.post-type-mep_events .switch span.slider,
 #mp_event_all_info_in_tab label.mpev-switch .mpev-slider {
   position: absolute;
   cursor: pointer;
@@ -1857,7 +1857,7 @@ h3.mep_virtual_sec_title {
   border: 1px solid var(--mpev-gray);
   transition: 0.5s;
 }
-
+.post-type-mep_events .switch span.slider:before,
 #mp_event_all_info_in_tab label.mpev-switch .mpev-slider:before {
   position: absolute;
   content: "";

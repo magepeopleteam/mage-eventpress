@@ -185,6 +185,7 @@
 			}
 			/*****************************/
 			public static function qty_input($data = []) {
+				//echo '<pre>';print_r($data);echo '</pre>';
 				$input_name = array_key_exists('name', $data) ? $data['name'] : '';
 				$price = array_key_exists('price', $data) ? $data['price'] : 0;
 				$available_seat = array_key_exists('available', $data) ? $data['available'] : 1;
@@ -217,8 +218,8 @@
                                        class="formControl inputIncDec mp_number_validation"
                                        data-price="<?php echo esc_attr($price); ?>"
                                        name="<?php echo esc_attr($input_name); ?>"
-                                       value="<?php echo esc_attr(max(0, $default_qty)); ?>"
-                                       min="<?php echo esc_attr($min_qty); ?>"
+                                       value="<?php echo esc_attr(max(0, $default_qty,$min_qty)); ?>"
+                                       min="<?php echo esc_attr(max(0, $default_qty,$min_qty)); ?>"
                                        max="<?php echo esc_attr($max_qty); ?>"
                                 />
                             </label>

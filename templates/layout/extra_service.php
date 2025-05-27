@@ -23,6 +23,7 @@
 				<div class="card-header"><?php esc_html_e('Extra Service', 'mage-eventpress'); ?></div>
                 <div class="card-body">
 					<?php foreach ($ex_services as $ticket_type) {
+						$input_data=[];
 						$ticket_name = array_key_exists('option_name', $ticket_type) ? $ticket_type['option_name'] : '';
 						$ticket_price = array_key_exists('option_price', $ticket_type) ? $ticket_type['option_price'] : 0;
 						$ticket_price = MP_Global_Function::get_wc_raw_price($event_id, $ticket_price);
@@ -38,6 +39,7 @@
                             <div class="mep_ticket_item">
                                 <div class="ticket-info">
                                     <div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
+
                                     <input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
 									<div class="ticket-remaining remaining-high"><?php echo esc_html( '2000 tickets remaining' ); ?></div>
 								</div>

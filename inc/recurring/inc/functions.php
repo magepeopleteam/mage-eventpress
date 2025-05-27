@@ -808,8 +808,8 @@
 			$the_recurring_dates = array_values( $final );
 		}
 
-		$block_offdays = get_post_meta( $event_id, 'mep_ticket_block_offdays', true );
-		$block_offdates = get_post_meta( $event_id, 'mep_ticket_block_offdates', true );
+		$block_offdays = get_post_meta( $event_id, 'mep_ticket_block_offdays__', true );
+		$block_offdates = get_post_meta( $event_id, 'mep_ticket_block_offdates__', true );
 
 		$filtered = $event_date_display_list;
 		if ( $block_offdates === 'yes' && is_array( $off_dates ) && count( $off_dates ) > 0 ) {

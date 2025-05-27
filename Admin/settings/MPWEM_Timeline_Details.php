@@ -285,6 +285,20 @@ if( ! class_exists('MPWEM_Timeline_Details')){
 
         public function data_save( $post_id ) {
             global $wpdb;
+            if (
+                !isset($_POST['mep_event_ticket_type_nonce']) ||
+                !wp_verify_nonce($_POST['mep_event_ticket_type_nonce'], 'mep_event_ticket_type_nonce')
+            ) {
+                return;
+            }
+
+            if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+                return;
+            }
+
+            if (!current_user_can('edit_post', $post_id)) {
+                return;
+            }            
             if ( get_post_type( $post_id ) == 'mep_events' ) {
 
                 $title   = isset($_POST['mep_timeline_title_raw']) ? (array) $_POST['mep_timeline_title_raw'] : array();

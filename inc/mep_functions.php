@@ -576,6 +576,7 @@
 			// $user_id           = isset( $order_meta['_customer_user'][0] ) ? sanitize_text_field( $order_meta['_customer_user'][0] ) : '';
 			// $first_name        = isset( $order_meta['_billing_first_name'][0] ) ? sanitize_text_field( $order_meta['_billing_first_name'][0] ) : '';
 			// $last_name         = isset( $order_meta['_billing_last_name'][0] ) ? sanitize_text_field( $order_meta['_billing_last_name'][0] ) : '';
+			
 			$billing_intotal   = $order->get_meta( '_billing_address_index' );
 			$payment_method    = $order->get_payment_method_title();
 			$user_id           = $order->get_customer_id();
@@ -1077,7 +1078,7 @@
 					$org                   = get_the_terms( $event_id, 'mep_org' );
 					$term_id               = isset( $org[0]->term_id ) ? $org[0]->term_id : '';
 					$org_email             = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
-					mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+
 					if ( $order->has_status( 'processing' ) ) {
 						change_attandee_order_status( $order_id, 'publish', 'trash', 'processing' );
 						change_attandee_order_status( $order_id, 'publish', 'publish', 'processing' );

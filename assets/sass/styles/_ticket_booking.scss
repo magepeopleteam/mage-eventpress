@@ -1,7 +1,7 @@
 @mixin card{
   background: white;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 @mixin card-header {
@@ -72,8 +72,9 @@
     background-color: #f8f9fa;
     border-top: 1px solid #eaeaea;
     margin-top: -20px;
+    margin-bottom: 50px;
     border-radius:0 0 12px 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .mpwem_booking_panel{

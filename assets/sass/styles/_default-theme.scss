@@ -1,12 +1,12 @@
 .mep-event-faq-part{
     background: white;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     margin-bottom: 20px;
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.08);
     .faq-title-section{
-        background: linear-gradient(135deg, #4169e1, #3b5fe2);
-        color: white;
+        background: linear-gradient(135deg, #f7f7f7, #f7f7f7);
+        color: #333;
         padding: 20px 25px;
         font-size: 18px;
         font-weight: 600;
@@ -16,11 +16,9 @@
             margin-bottom: 10px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border-bottom: 1px solid #eaeaea;
             &:last-child{
                 border-bottom: 0;
-                box-shadow: none;
             }
 
             .faq-question {
@@ -47,12 +45,12 @@
 .mep-default-map{
     background: white;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     margin-bottom: 20px;
     .map-title{
-        background: linear-gradient(135deg, #4169e1, #3b5fe2);
-        color: white;
+        background: linear-gradient(135deg, #f7f7f7, #f7f7f7);
+        color: #333;
         padding: 20px 25px;
         font-size: 18px;
         font-weight: 600;

@@ -238,6 +238,24 @@
                             </div>
                         </label>
                     </section>
+                    <section>
+                        <label class="mpev-label">
+                            <div>
+                                <h2><span><?php esc_html_e('Offday/Offdate Blocking', 'mage-eventpress'); ?></span></h2>
+                                <span><?php _e('Check which to block: Off Days, Off Dates, or both. If both are checked, any matching date will be blocked.', 'mage-eventpress'); ?></span>
+                            </div>
+                            <?php 
+                                $block_offdays = MP_Global_Function::get_post_info($post_id, 'mep_ticket_block_offdays', 'yes');
+                                $block_offdates = MP_Global_Function::get_post_info($post_id, 'mep_ticket_block_offdates', 'yes');
+                            ?>
+                            <label style="margin-right:20px;         gap: 10px;">
+                                <input type="checkbox" name="mep_ticket_block_offdays" value="yes" <?php checked($block_offdays, 'yes'); ?> /> <?php esc_html_e('Block Off Days', 'mage-eventpress'); ?>
+                            </label>
+                            <label style="gap: 10px;">
+                                <input type="checkbox" name="mep_ticket_block_offdates" value="yes" <?php checked($block_offdates, 'yes'); ?> /> <?php esc_html_e('Block Off Dates', 'mage-eventpress'); ?>
+                            </label>
+                        </label>
+                    </section>
                 </div>
 				<?php
 			}
@@ -674,6 +692,11 @@
 							}
 						}
 						update_post_meta($post_id, 'mep_special_date_info', $special_dates);
+						// Save offday/offdate blocking checkboxes
+						$block_offdays = isset($_POST['mep_ticket_block_offdays']) && $_POST['mep_ticket_block_offdays'] === 'yes' ? 'yes' : 'no';
+						$block_offdates = isset($_POST['mep_ticket_block_offdates']) && $_POST['mep_ticket_block_offdates'] === 'yes' ? 'yes' : 'no';
+						update_post_meta($post_id, 'mep_ticket_block_offdays', $block_offdays);
+						update_post_meta($post_id, 'mep_ticket_block_offdates', $block_offdates);
 					}
 					//**********************//
 				}

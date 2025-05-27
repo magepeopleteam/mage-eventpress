@@ -10,7 +10,7 @@
     blocks.registerBlockType('mage/event-list', {
         title: __('WpEvently - By Magepeople', 'mage-eventpress'),
         icon: 'calendar',
-        category: 'magepeople',
+        category: 'magepeople',  // Make sure category matches the registered slug
         description: __('Display a list of events with customizable settings.', 'mage-eventpress'),
         keywords: [ __('event', 'mage-eventpress'), __('list', 'mage-eventpress'), __('wpevently', 'mage-eventpress') ],
         

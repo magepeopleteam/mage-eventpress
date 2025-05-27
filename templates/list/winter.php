@@ -8,6 +8,7 @@ $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_time_icon            = mep_get_option('mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+$event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 
 // mep_get_event_upcomming_date($event_id, 'day');
 
@@ -45,7 +46,13 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <span class="mep_winter_event_time"><i class="<?php echo esc_attr($event_time_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></span>
                     <span class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php mep_get_event_city($event_id); ?></span>
                     <span class="mep_winter_event_date"><i class="<?php echo esc_attr($event_date_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></span>
-
+                    <?php 
+                    // Display the first organizer (primary organizer)
+                    $org_terms = get_the_terms($event_id, 'mep_org');
+                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+                    ?>
+                    <span class='mep_winter_event_organizer'><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i> <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a></span>
+                    <?php } ?>
                 </a>
             </div>
 

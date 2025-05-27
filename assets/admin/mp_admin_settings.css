@@ -308,4 +308,5 @@ background: #f5f8ff;
 #mp_event_all_info_in_tab .mp_formControl {
     font-size: 12px !important;
     width: 96% !important;
+	min-width: 100px !important;
 }

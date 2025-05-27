@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-add_action('plugins_loaded', 'mep_wc_load_wc_class');
+add_action('init', 'mep_wc_load_wc_class');
 function mep_wc_load_wc_class() {
 
 if ( class_exists('WC_Product_Data_Store_CPT') && !class_exists('MAGE_Product_Data_Store_CPT')) {
@@ -18,7 +18,7 @@ class MAGE_Product_Data_Store_CPT extends WC_Product_Data_Store_CPT {
         $product->set_defaults();
 
         if ( ! $product->get_id() || ! ( $post_object = get_post( $product->get_id() ) ) || ! in_array( $post_object->post_type, $this->cpt_product() ) ) { // change birds with your post type
-            throw new Exception( __( 'Invalid product.', 'woocommerce' ) );
+            throw new Exception( __( 'Invalid product.', 'mage-eventpress' ) );
         }
 
         $id = $product->get_id();

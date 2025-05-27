@@ -5924,12 +5924,14 @@ Vanilla theme css by ariful
     font-size: 25px;
   }
 }
+.mpwem_booking_panel {
+  margin-bottom: 20px;
+}
 .mpwem_booking_panel .mpwem_ticket_type, .mpwem_booking_panel .mpwem_ex_service {
   background: white;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  margin-bottom: 30px;
 }
 .mpwem_booking_panel .mpwem_ticket_type .card-header, .mpwem_booking_panel .mpwem_ex_service .card-header {
   background: linear-gradient(135deg, #4169e1, #3b5fe2);
@@ -5947,6 +5949,9 @@ Vanilla theme css by ariful
   align-items: center;
   padding: 18px 0;
   border-bottom: 1px solid #eaeaea;
+}
+.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
+  border-bottom: none;
 }
 .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info {
   flex: 0 0 50%;
@@ -6029,16 +6034,21 @@ Vanilla theme css by ariful
   text-align: right;
   flex: 0 0 10%;
 }
-
-.mpwem_form_submit_area {
+.mpwem_booking_panel .mpwem_ex_service {
+  margin-top: 30px;
+}
+.mpwem_booking_panel .mpwem_form_submit_area {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px;
   background-color: #f8f9fa;
   border-top: 1px solid #eaeaea;
+  margin-top: -20px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
-.mpwem_form_submit_area .total {
+.mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
   font-weight: 600;
 }

@@ -3,7 +3,6 @@
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  margin-bottom: 30px;
 }
 @mixin card-header {
   background: linear-gradient(135deg, #4169e1, #3b5fe2);
@@ -72,9 +71,13 @@
     padding: 25px;
     background-color: #f8f9fa;
     border-top: 1px solid #eaeaea;
+    margin-top: -20px;
+    border-radius:0 0 12px 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .mpwem_booking_panel{
+    margin-bottom: 20px;
     .mpwem_ticket_type,.mpwem_ex_service{
         @include card;
         .card-header{
@@ -84,6 +87,9 @@
             @include card-body;
             .mep_ticket_item{
                 @include ticket-item;
+                &:last-child    {
+                    border-bottom: none;
+                }       
                 .ticket-info{
                     @include ticket-info;
                     .ticket-name {
@@ -133,12 +139,16 @@
             }
         }
     }
-}
-.mpwem_form_submit_area{
-    @include summary;
-    .total {
-        font-size: 18px;
-        font-weight: 600;
+    .mpwem_ex_service{
+          margin-top: 30px;
+    }
+    .mpwem_form_submit_area{
+        @include summary;
+        .total {
+            font-size: 18px;
+            font-weight: 600;
+        }
     }
 }
+
 

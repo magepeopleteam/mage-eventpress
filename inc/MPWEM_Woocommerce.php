@@ -26,6 +26,7 @@
 					$total_price          = get_post_meta( $product_id, '_price', true );
 					$form_position        = mep_get_option( 'mep_user_form_position', 'general_attendee_sec', 'details_page' );
 					$mep_event_start_date = isset( $_POST['mep_event_start_date'] ) ? mage_array_strip( $_POST['mep_event_start_date'] ) : array();
+					//echo '<pre>';print_r( $mep_event_start_date );echo '</pre>';
 					$event_cart_location  = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( $_POST['mep_event_location_cart'] ) : '';
 					$recurring_event_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? mage_array_strip( $_POST['recurring_event_date'] ) : array();
 					$ticket_type_arr      = mep_cart_ticket_type( 'ticket_type', $total_price, $product_id );
@@ -47,14 +48,14 @@
 					$cart_item_data['line_subtotal']            = $total_price;
 					$cart_item_data['event_extra_service']      = $event_extra;
 					$cart_item_data['event_cart_location']      = $event_cart_location;
-					$cart_item_data['event_cart_date']          = $mep_event_start_date[0];
+					$cart_item_data['event_cart_date']          = current($mep_event_start_date);
 					$cart_item_data['event_recurring_date']     = array_unique( $recurring_event_date );
 					$cart_item_data['event_recurring_date_arr'] = $recurring_event_date;
-					$cart_item_data['event_cart_display_date']  = $mep_event_start_date[0];
+					$cart_item_data['event_cart_display_date']  = current($mep_event_start_date);
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
 					mep_temp_attendee_create_for_cart_ticket_array($product_id, $ticket_type_arr); 
-                    //echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
+                   //echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );
 				} else {

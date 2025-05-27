@@ -18,36 +18,34 @@
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		if ( sizeof( $ticket_types ) > 0 ) {
-			$categories = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );
+			$categories  = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
 			$group_name  = '';
 			foreach ( $ticket_types as $ticket_type ) {
 				$ticket_name  = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 				$ticket_group = array_key_exists( 'group_category', $ticket_type ) ? $ticket_type['group_category'] : '';
-				$available = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
+				$available    = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 				if ( $ticket_group && in_array( $ticket_group, $categories ) ) {
 					$meta_id            = MP_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
-					$ticket_group_order='';
-					if(sizeof($new_tickets)>0){
-						$exit=0;
-						foreach ($new_tickets as $key=>$new_ticket){
-							if($new_ticket['group']==$ticket_group){
-								$ticket_group_order=$key;
-								$exit=1;
+					$ticket_group_order = '';
+					if ( sizeof( $new_tickets ) > 0 ) {
+						$exit = 0;
+						foreach ( $new_tickets as $key => $new_ticket ) {
+							if ( $new_ticket['group'] == $ticket_group ) {
+								$ticket_group_order = $key;
+								$exit               = 1;
 							}
 						}
-						if($exit==0){
+						if ( $exit == 0 ) {
 							$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
-							if(empty($ticket_group_order) || $ticket_group_order==0){
-								$ticket_group_order=$meta_id;
+							if ( empty( $ticket_group_order ) || $ticket_group_order == 0 ) {
+								$ticket_group_order = $meta_id;
 							}
 						}
-					}else{
+					} else {
 						$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
 					}
-
 					//echo '<pre>';print_r();echo '</pre>';
-
 					$new_tickets[ $ticket_group_order ]['group']   = $ticket_group;
 					$new_tickets[ $ticket_group_order ]['term_id'] = $meta_id;
 					$new_tickets[ $ticket_group_order ]['info'][]  = $ticket_type;
@@ -67,12 +65,12 @@
 						<?php $tab_count = 0;
 							foreach ( $new_tickets as $tickets ) {
 								$meta_id = array_key_exists( 'term_id', $tickets ) ? $tickets['term_id'] : '';
-								$des     = get_term_meta($meta_id, 'custom_description', true);
+								$des     = get_term_meta( $meta_id, 'custom_description', true );
 								?>
                                 <div data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
 									<?php
 										if ( $des ) {
-											echo  wp_kses_post($des) ;
+											echo wp_kses_post( $des );
 										} else {
 											echo esc_html( $tickets['group'] );
 										}
@@ -97,57 +95,71 @@
                                             </div>
                                             <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {
-													// echo '<pre>';print_r($ticket_type);echo '</pre>';
-													$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-													$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
-													$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
-													$ticket_price      = MPWEM_Functions::get_ticket_price( $event_id, $ticket_price, $ticket_name, $ticket_type );
-													$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
-													$ticket_d_qty      = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
-													$ticket_min_qty    = array_key_exists( 'option_min_qty', $ticket_type ) ? $ticket_type['option_min_qty'] : 0;
-													$ticket_max_qty    = array_key_exists( 'option_max_qty', $ticket_type ) ? $ticket_type['option_max_qty'] : '';
-													$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
-													$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
-													if ( $ticket_name && $ticket_qty > 0 ) {
-														$input_data['name']      = 'option_qty[]';
-														$input_data['price']     = $ticket_price;
-														$input_data['available'] = $available;
-														$input_data['d_qty']     = $ticket_d_qty;
-														$input_data['min_qty']   = $ticket_min_qty;
-														$input_data['max_qty']   = $ticket_max_qty;
-														$input_data['type']      = $ticket_input_type;
-														$count ++;
-														if ( $count > 1 ) { ?>
-                                                            <div class="_divider"></div>
-														<?php } ?>
-                                                        <div class="mep_ticket_item">
-                                                            <div class="justifyBetween">
-                                                                <div class="">
-                                                                    <h6><?php echo esc_html( $ticket_name ); ?></h6>
-																	<?php if ( $ticket_details ) { ?>
-                                                                        <p><?php echo esc_html( $ticket_details ); ?></p>
-																	<?php } ?>
+													$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
+													if ( $ticket_permission ) {
+														$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+														$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
+														$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
+														$ticket_price      = MPWEM_Functions::get_ticket_price( $event_id, $ticket_price, $ticket_name, $ticket_type );
+														$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+														$ticket_d_qty      = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
+														$ticket_min_qty    = array_key_exists( 'option_min_qty', $ticket_type ) ? $ticket_type['option_min_qty'] : 0;
+														$ticket_max_qty    = array_key_exists( 'option_max_qty', $ticket_type ) ? $ticket_type['option_max_qty'] : '';
+														$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
+														$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
+														if ( $ticket_name && $ticket_qty > 0 ) {
+															$input_data['name']      = 'option_qty[]';
+															$input_data['price']     = $ticket_price;
+															$input_data['available'] = $available;
+															$input_data['d_qty']     = $ticket_d_qty;
+															$input_data['min_qty']   = $ticket_min_qty;
+															$input_data['max_qty']   = $ticket_max_qty;
+															$input_data['type']      = $ticket_input_type;
+															$count ++;
+															if ( $count > 1 ) { ?>
+                                                                <div class="_divider"></div>
+															<?php } ?>
+                                                            <div class="mep_ticket_item">
+                                                                <div class="justifyBetween">
+                                                                    <div class="">
+                                                                        <h6><?php echo esc_html( $ticket_name ); ?></h6>
+																		<?php if ( $ticket_details ) { ?>
+                                                                            <p><?php echo esc_html( $ticket_details ); ?></p>
+																		<?php } ?>
+                                                                    </div>
+                                                                    <div class="">
+                                                                        <h6 class="_textCenter"><?php echo wc_price( $ticket_price ); ?></h6>
+                                                                        <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
+                                                                        <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
+                                                                        <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>
+																		<?php
+																			if ( $exit_avail < 1 ) {
+																				$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
+																				if ( $early_date ) {
+																					MP_Custom_Layout::qty_input( $input_data );
+																				} else {
+																					$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+																					?>
+                                                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
+																							echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+                                                                                    <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+																					<?php
+																				}
+																			} else {
+																				?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr( $ticket_price ); ?>"/><?php
+																				esc_html_e( 'Upcoming', 'mage-eventpress' );
+																			}
+																			$exit_avail = $available;
+																		?>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="">
-                                                                    <h6 class="_textCenter"><?php echo wc_price( $ticket_price ); ?></h6>
-                                                                    <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
-                                                                    <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
-                                                                    <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>
-																	<?php
-																		if ( $exit_avail < 1 ) {
-																			MP_Custom_Layout::qty_input( $input_data );
-																		} else {
-																			esc_html_e( 'Upcoming', 'mage-eventpress' );
-																		}
-																		$exit_avail = $available;
-																	?>
-                                                                </div>
+																<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
                                                             </div>
-															<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
-                                                        </div>
-														<?php
+															<?php
+														}
 													}
-												} ?>
+												}
+												?>
                                             </div>
 										<?php } ?>
                                 </div>

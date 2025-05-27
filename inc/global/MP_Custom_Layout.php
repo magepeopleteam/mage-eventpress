@@ -208,9 +208,9 @@
                             </select>
                         </label>
 					<?php } else { ?>
-                        <div class="groupContent qtyIncDec">
-                            <div class="decQty addonGroupContent">
-                                <span class="fas fa-minus"></span>
+                        <div class=" qtyIncDec">
+                            <div class="decQty">
+                                <i class="fas fa-minus"></i>
                             </div>
                             <label>
                                 <input type="text"
@@ -222,8 +222,8 @@
                                        max="<?php echo esc_attr($max_qty); ?>"
                                 />
                             </label>
-                            <div class="incQty addonGroupContent">
-                                <span class="fas fa-plus"></span>
+                            <div class="incQty">
+                                <i class="fas fa-plus"></i>
                             </div>
                         </div>
 						<?php

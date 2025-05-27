@@ -650,6 +650,7 @@ button.single_add_to_cart_button[disabled]:hover {
 .mep-default-sidrbar-price-seat {
   text-align: center;
   padding: 20px 15px;
+  padding-top: 0;
 }
 
 .mep-default-sidrbar-price-seat h5 {
@@ -659,7 +660,7 @@ button.single_add_to_cart_button[disabled]:hover {
 
 /********Organizer ***********/
 .mep-default-sidrbar-meta {
-  padding: 20px 10px 0 10px;
+  padding: 20px 15px;
 }
 
 .mep-default-sidrbar-meta p {
@@ -703,7 +704,7 @@ ul.mep-social-share a {
 
 /********schedule ***********/
 .mep-default-sidrbar-events-schedule {
-  padding: 20px 10px;
+  padding: 20px 15px;
 }
 
 .mep-default-sidrbar-events-schedule ul li i {
@@ -1678,7 +1679,6 @@ button.mep-cat-control.mixitup-control-active {
 #mep_event_date_sch {
   height: 300px;
   overflow: hidden;
-  margin-bottom: 20px;
 }
 
 .mep_view_all_date {
@@ -1900,7 +1900,11 @@ div.item_hover_effect a:hover {
 }
 
 /************************/
-.mep-day-details-section h4 {
+.mep-day-details-section {
+  margin-top: 20px;
+}
+
+div.mep-day-details-section h4 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -1968,6 +1972,37 @@ div.item_hover_effect a:hover {
 .mep-default-sidrbar-events-schedule .sidrbar-events-schedule-title {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.mep-default-sidrbar-events-schedule #mep_event_date_sch {
+  margin-left: 10px;
+}
+.mep-default-sidrbar-events-schedule #mep_event_date_sch .mep_date_scdl_start_datetime {
+  margin-bottom: 10px;
+}
+
+.mep-default-sidrbar-events-schedule ul li {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  position: relative;
+  padding-left: 15px;
+}
+.mep-default-sidrbar-events-schedule ul li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50px;
+  position: absolute;
+  top: 14px;
+  left: 0;
+  background-color: var(--mpev-base);
+}
+.mep-default-sidrbar-events-schedule ul li .mep_date_scdl_start_datetime {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /******Responsive*******/

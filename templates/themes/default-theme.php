@@ -88,11 +88,14 @@
         </div>
         <?php if ($hide_location_details == 'no' && $show_google_map_location != 'no') { ?>
             <?php if($event_type !='online'): ?>
-                <div class="mep-default-sidrbar-map" id="mep-map-location">
-                    <h3 class="ex-sec-title">
-                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location:', 'mage-eventpress')); ?>
-                    </h3>
-					<?php do_action( 'mep_event_map', $event_id ); ?>
+                <div class="mep-default-map" id="mep-map-location">
+                    <div class="map-title">
+                        <?php echo mep_get_option('mep_event_location_text', 'label_setting_sec', __('Event Location', 'mage-eventpress')); ?>
+                    </div>
+                    <div class="display-map">
+                        <?php do_action( 'mep_event_map', $event_id ); ?>
+                    </div>
+					
                 </div>
             <?php endif; ?> 
         <?php } ?> 

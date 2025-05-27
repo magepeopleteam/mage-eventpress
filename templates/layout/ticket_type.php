@@ -20,7 +20,7 @@
 		$count        = 0;
 		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
-				<div class="card-header">Ticket Options</div>
+				<div class="card-header"><?php esc_html_e('Ticket Options', 'mage-eventpress'); ?></div>
 				<div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
@@ -52,6 +52,7 @@
 										<?php if ( $ticket_details ) { ?>
 											<div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 										<?php } ?>
+										<div class="ticket-remaining remaining-high"><?php echo esc_html( '2000 tickets remaining' ); ?></div>
 									</div>
 									<div class="quantity-control">
 										<input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>

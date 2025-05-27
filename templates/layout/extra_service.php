@@ -37,9 +37,10 @@
 							$count++;?>
                             <div class="mep_ticket_item">
                                 <div class="ticket-info">
-                                    <h6><?php echo esc_html($ticket_name); ?></h6>
+                                    <div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
                                     <input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
-                                </div>
+									<div class="ticket-remaining remaining-high"><?php echo esc_html( '2000 tickets remaining' ); ?></div>
+								</div>
                                 <div class="quantity-control">
 									<?php MP_Custom_Layout::qty_input($input_data); ?>
                                 </div>

@@ -88,6 +88,21 @@
                         margin-bottom: 6px;
                         line-height: 1.4;
                     }
+                    .ticket-remaining {
+                        font-size: 14px;
+                        font-weight: 600;
+                        padding: 3px 8px;
+                        border-radius: 4px;
+                        display: inline-block;
+                        &.remaining-high{
+                            background-color: #e6f4ea;
+                            color: #137333;
+                        }
+                        &.remaining-low{
+                            background-color: #fce8e6;
+                            color: #c5221f;
+                        }
+                    }
                 }
                 .quantity-control{
                     .qtyIncDec{

@@ -54,7 +54,17 @@
 										<?php if ( $ticket_details ) { ?>
 											<div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 										<?php } ?>
-										<div class="ticket-remaining remaining-high"><?php echo esc_html( '2000 tickets remaining' ); ?></div>
+										<?php 
+										$total_ticket_left = 0;
+										$mep_available_seat = get_post_meta($event_id, 'mep_available_seat', true);
+										$mep_available_seat = isset($mep_available_seat) ? $mep_available_seat : 'on';
+										$low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? $GLOBALS[$date_specific_low_stock_key] : false;
+										if ($mep_available_seat == 'on' && !$low_stock_displayed):?>
+											<div class="ticket-remaining remaining-high xtra-item-left">
+												<?php echo esc_html(max($total_ticket_left, 0)).__(' tickets remaining'); ?>
+											</div>
+										<?php endif; ?>
+										
 									</div>
 									<div class="quantity-control">
 										<input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>

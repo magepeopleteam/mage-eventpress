@@ -28,7 +28,6 @@
 						<?php do_action( 'mpwem_date_select', $event_id, $all_dates, $all_times, $date ); ?>
                         <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
 							<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>
-							<?php require MPWEM_Functions::template_path( 'layout/add_to_cart.php' ); ?>
                         </form>
 						<?php do_action( 'mpwem_hidden_content', $event_id ); ?>
                     </div>

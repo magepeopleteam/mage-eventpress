@@ -3484,11 +3484,9 @@ tr.mep_virtual_event_info_sec {
 
 .mep-event-faq-part .mep-event-faq-set > a {
   display: block;
-  padding: 10px 15px;
   text-decoration: none;
   color: #000;
   font-weight: 600;
-  border-bottom: 1px solid #DDD;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   transition: all 0.2s linear;
@@ -6051,6 +6049,49 @@ Vanilla theme css by ariful
 .mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
   font-weight: 600;
+}
+
+.mep-event-faq-part {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.mep-event-faq-part .faq-title-section {
+  background: linear-gradient(135deg, #4169e1, #3b5fe2);
+  color: white;
+  padding: 20px 25px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.mep-event-faq-part .faq-body .mep-event-faq-set {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid #eaeaea;
+}
+.mep-event-faq-part .faq-body .mep-event-faq-set:last-child {
+  border-bottom: 0;
+  box-shadow: none;
+}
+.mep-event-faq-part .faq-body .mep-event-faq-set .faq-question {
+  padding: 18px 25px;
+  background-color: white;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  color: #333;
+}
+.mep-event-faq-part .faq-body .mep-event-faq-set .faq-question i {
+  color: #3b5fe2;
+}
+.mep-event-faq-part .faq-body .mep-event-faq-set .mep-event-faq-content {
+  padding: 18px 25px;
 }
 
 /*# sourceMappingURL=mpwem_style.css.map */

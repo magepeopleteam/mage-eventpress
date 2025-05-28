@@ -7,11 +7,24 @@
 	padding: 0 0 20px 20px;
 }
 .spring_field .mep-default-sidrbar-meta {
-	padding: 0;
+	padding: 20px;
 }
 .spring_field .mep-default-sidrbar-price-seat {
 	text-align: left;
-	padding: 15px 0;
+	padding: 15px;
+	background-color: #f2f2f2;
+}
+.spring_field .mep-default-sidrbar-price-seat .setas-info{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 100px;
+	text-align: center;
+}
+
+.spring_field .mep-default-sidrbar-calender-btn{
+	width: 100%;
+	margin-top: 20px;
 }
 .spring_field ul#mep_add_calender_links {
 	position: absolute;

@@ -160,6 +160,7 @@ ul#mep_add_calender_links li a{
 	padding: 20px;
 	font-size: 14px;
 	letter-spacing: inherit;
+	width: 100%;
 }
 .mep-events-wrapper a {
 	text-decoration: none;
@@ -557,8 +558,7 @@ button.single_add_to_cart_button[disabled]:hover {
 /********Total seat ***********/
 .mep-default-sidrbar-price-seat {
 	text-align: center;
-	padding: 20px 15px;
-	padding-top: 0;
+	padding: 15px;
 }
 .mep-default-sidrbar-price-seat h5 {
 	font-size: 16px;
@@ -641,6 +641,11 @@ ul.mep-social-share a {
 	padding: 20px;
 	line-height: 1;
 }
+
+.mep-share-btn-title{
+	margin-bottom: 20px;
+}
+
 ul.mep-social-share {
 	padding: 15px 0 0 0;
 }
@@ -648,7 +653,7 @@ ul.mep-social-share li {
 	margin: 0 8px 0 0;
 }
 ul.mep-social-share li a{
-	background-color: var(--mpev-base-txt);
+	background-color: #f7f7f7;
 }
 ul.mep-social-share li a.facebook i {
   color: #3b5998;
@@ -754,9 +759,14 @@ ul#mep_add_calender_links li a {
 }
 .mep-default-sidebar .df-sidebar-part {
 	background: #fff;
-	padding: 0;
 	overflow: hidden;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	border-radius: 12px;
+}
+.mep-default-sidrbar-meta {
+	padding: 15px;
+	background:var(--mpev-base);
+	border-radius: 12px 12px 0 0;
 }
 .mep-default-theme .mep-org-details{
 	font-size: 18px;
@@ -765,6 +775,7 @@ ul#mep_add_calender_links li a {
 	flex-direction: row;
 	align-items: center;
 	justify-content: start;
+	
 	.org-icon{
 		background-color: var(--mpev-base);
 		width: 40px;
@@ -778,7 +789,12 @@ ul#mep_add_calender_links li a {
 		}
 	}
 	.org-name{
-		color:#000;
+		color: var(--mpev-base-txt);
+		font-weight: normal;
+		a{
+			color: var(--mpev-base-txt);
+			font-weight: bold;
+		}
 	}
 }
 .mep-default-sidebar.margin{
@@ -792,7 +808,7 @@ ul#mep_add_calender_links li a {
 }
 .default_theme .mep-default-sidrbar-price-seat .setas-info{
 	padding: 14px;
-	background-color: #f8faff;
+	background-color: #f7f7f7;
 	border-radius: 10px;
 	display: flex;
 	justify-content: space-between;
@@ -1438,8 +1454,9 @@ button.mep-cat-control.mixitup-control-active {
 	display: none;
 }
 #mep_event_date_sch {
-	height: 300px;
+	height: 315px;
 	overflow: hidden;
+	margin-bottom: 20px;
 }
 .mep_view_all_date {
 	overflow: scroll !important;;
@@ -1451,7 +1468,6 @@ span.mep_single_date_btn {
 }
 .mep-tem3-title-sec.mep_single_date_btn {
 	text-align: center;
-	color: #FFF;
 	padding: 5px;
 	cursor: pointer;
 }
@@ -1701,6 +1717,10 @@ div.mep-day-details-section h4 {
 		gap:10px;
 		font-weight: 500;
 		cursor: pointer;
+		&:hover{
+			background: var(--mpev-calender-btn-bg);
+			color: var(--mpev-base-txt);
+		}
 	}
 }
 
@@ -1835,9 +1855,7 @@ div.mep-day-details-section h4 {
 	.mep-default-theme div.mep-default-feature-location {
 		padding: 5px;
 	}
-	.mep-default-sidrbar-meta {
-		padding: 10px 10px 0 10px;
-	}
+	
 	
 
 	.mep-default-sidrbar-events-schedule {
@@ -2446,10 +2464,7 @@ h3.mep_list_date i {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
-.mep-default-theme.spring_field .mep-default-sidrbar-calender-btn {
-	margin: auto;
-	display: inline-block;
-}
+
 div.mep-default-feature-content p {
 	/*     margin-top: 0 !important;
     margin-bottom: 10px !important; */
@@ -4042,6 +4057,7 @@ input.mpe-new-input-group-field {
 	display: flex;
 	align-items: start;
 	justify-content: space-between;
+	border-radius: 12px;
 	h3{
 		margin: 10px 0;
 	}

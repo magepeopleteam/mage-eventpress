@@ -32,7 +32,7 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
     </div>
     <div class="franklin_divided">
         <div class="franklin_divided_left">
-            <div class="mep-default-sidrbar-map">
+            <div class="mep-default-sidrbar-map" id="mep-map-location">
                 <?php do_action('mep_event_map',$event_id); ?>
             </div>
             <?php
@@ -85,17 +85,11 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
                     </div>
                 <?php } 
                 if ($hide_address_details == 'no') { ?>
-                    <div class="mep-default-sidrbar-address">
-                        <ul>
-                           <?php if(mep_location_existis('mep_location_venue',$event_id)){ ?> <li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_venue', $event_id); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_street',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_street', $event_id); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_city',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_city', $event_id); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_state',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_state', $event_id); ?></li><?php } ?>
-                           <?php if(mep_location_existis('mep_country',$event_id)){ ?><li><i class="fa fa-arrow-circle-right"></i> <?php do_action('mep_event_location_country', $event_id); ?><?php } ?>
-                            </li>
-                        </ul>
+                    <div class="mep-default-sidebar-address">
+                        <?php do_action('mep_event_address_list_sidebar',$event_id); ?>
                     </div>
                 <?php }
+
                 if ($hide_schedule_details == 'no') { ?>
                     <div class="mep-default-sidrbar-events-schedule">
                         <?php do_action('mep_event_date_default_theme',$event_id); ?>

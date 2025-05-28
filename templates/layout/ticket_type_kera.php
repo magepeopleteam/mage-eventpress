@@ -14,6 +14,7 @@
 	$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id );
 	$total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id );
 	$total_available = $total_ticket - ( $total_sold + $total_reserve );
+	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -110,6 +111,7 @@
 														$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 														$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 														if ( $ticket_name && $ticket_qty > 0 ) {
+															$input_data=[];
 															$input_data['name']      = 'option_qty[]';
 															$input_data['price']     = $ticket_price;
 															$input_data['available'] = $available;
@@ -128,6 +130,11 @@
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
+	                                                                    <?php if ( $mep_available_seat == 'on' ) { ?>
+                                                                            <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+			                                                                    <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+                                                                            </div>
+	                                                                    <?php } ?>
                                                                     </div>
                                                                     <div class="">
                                                                         <h6 class="_textCenter"><?php echo wc_price( $ticket_price ); ?></h6>

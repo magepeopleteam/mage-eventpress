@@ -25,7 +25,7 @@
                             </div>
                             <select class="formControl" name="mep_enable_recurring" data-collapse-target required>
                                 <option disabled selected><?php esc_html_e( 'Please select ...', 'mage-eventpress' ); ?></option>
-                                <option value="no" data-option-target="#mep_normal_event" <?php echo esc_attr( $event_type == 'no' ? 'selected' : '' ); ?>><?php esc_html_e( 'Normal Event', 'mage-eventpress' ); ?></option>
+                                <option value="no" data-option-target="#mep_normal_event" <?php echo esc_attr( $event_type == 'no' ? 'selected' : '' ); ?>><?php esc_html_e( 'Single Event', 'mage-eventpress' ); ?></option>
                                 <option value="yes" data-option-target="#mep_normal_event" <?php echo esc_attr( $event_type == 'yes' ? 'selected' : '' ); ?>><?php esc_html_e( 'Particular Event', 'mage-eventpress' ); ?></option>
                                 <option value="everyday" data-option-target="#mep_everyday_event" <?php echo esc_attr( $event_type == 'everyday' ? 'selected' : '' ); ?>><?php esc_html_e( 'Repeated Event', 'mage-eventpress' ); ?></option>
                             </select>

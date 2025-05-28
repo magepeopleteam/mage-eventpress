@@ -34,7 +34,6 @@
 					$event_extra          = mep_cart_event_extra_service( 'event_extra_service', $total_price, $product_id );
 					$total_price          = mep_cart_event_extra_service( 'ticket_price', $total_price, $product_id );
 					$user                 = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();
-
 					$validate       = mep_cart_ticket_type( 'validation_data', $total_price, $product_id );
 					$time_slot_text = isset( $_REQUEST['time_slot_name'] ) ? sanitize_text_field( $_REQUEST['time_slot_name'] ) : '';
 					if ( ! empty( $time_slot_text ) ) {
@@ -48,15 +47,15 @@
 					$cart_item_data['line_subtotal']            = $total_price;
 					$cart_item_data['event_extra_service']      = $event_extra;
 					$cart_item_data['event_cart_location']      = $event_cart_location;
-					$cart_item_data['event_cart_date']          = current($mep_event_start_date);
+					$cart_item_data['event_cart_date']          = current( $mep_event_start_date );
 					$cart_item_data['event_recurring_date']     = array_unique( $recurring_event_date );
 					$cart_item_data['event_recurring_date_arr'] = $recurring_event_date;
-					$cart_item_data['event_cart_display_date']  = current($mep_event_start_date);
+					$cart_item_data['event_cart_display_date']  = current( $mep_event_start_date );
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
-					mep_temp_attendee_create_for_cart_ticket_array($product_id, $ticket_type_arr); 
-                   //echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
+					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_type_arr );
 
+					//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );
 				} else {
 					return $cart_item_data;
@@ -88,61 +87,36 @@
 					$event_extra_service  = $cart_item['event_extra_service'];
 					$recurring            = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status          = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
+					$event_date           = get_post_meta( $eid, 'event_cart_date', true ) ? get_post_meta( $eid, 'event_cart_date', true ) : '';
 					echo "<ul class='event-custom-price'>";
+					if ( $hide_date_status == 'no' ) {
+						?>
+                        <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $event_date, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) ); ?></li>
+						<?php
+					}
+					if ( $hide_location_status == 'no' ) {
+						?>
+                        <li><?php esc_html_e( " Location", 'mage-eventpress' ); ?>: <?php echo esc_html( $cart_item['event_cart_location'] ); ?></li>
+						<?php
+					}
 					if ( $recurring == 'everyday' && $time_status == 'no' ) {
-						if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 && sizeof( $user_info ) == 0 ) {
-							foreach ( $ticket_type_arr as $_event_recurring_date ) {
-								if ( $hide_date_status == 'no' ) {
-									?>
-                                    <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) ); ?></li>
-									<?php
-								}
-							}
-						}
 						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 							echo '<li>';
 							echo mep_cart_display_user_list( $user_info, $eid );
 							echo '</li>';
 						}
 					} elseif ( $recurring == 'everyday' && $time_status == 'yes' ) {
-						if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 && sizeof( $user_info ) == 0 ) {
-							foreach ( $ticket_type_arr as $_event_recurring_date ) {
-								if ( $hide_date_status == 'no' ) {
-									?>
-                                    <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) ); ?></li>
-									<?php
-								}
-							}
-						}
 						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
 						}
 					} elseif ( $recurring == 'yes' ) {
-						if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 && sizeof( $user_info ) == 0 && $hide_date_status == 'no' ) {
-							foreach ( $ticket_type_arr as $_event_recurring_date ) {
-								?>
-                                <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-text' ) ) ); ?></li>
-								<?php
-							}
-						}
 						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
 						}
 					} else {
 						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
-						} else {
-							if ( $hide_date_status == 'no' ) {
-								?>
-                                <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $cart_item['event_cart_display_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) ); ?></li>
-								<?php
-							}
 						}
-					}
-					if ( $hide_location_status == 'no' ) {
-						?>
-                        <li><?php esc_html_e( " Location", 'mage-eventpress' ); ?>: <?php echo esc_html( $cart_item['event_cart_location'] ); ?></li>
-						<?php
 					}
 					if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
 						echo mep_cart_display_ticket_type_list( $ticket_type_arr, $eid );

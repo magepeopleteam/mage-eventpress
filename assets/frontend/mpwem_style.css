@@ -2793,6 +2793,36 @@ div.mep-default-feature-content p {
   font-size: 16px;
 }
 
+.mep-default-theme .date-time-area {
+  padding: 15px 25px;
+  background: var(--mpev-base);
+  border-radius: 12px 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  border: 1px solid var(--mpev-base);
+}
+
+.date-time-area label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.date-time-area label span {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mpev-base-txt);
+}
+
+.date-time-area label i {
+  color: var(--mpev-base-txt);
+}
+
 /***********************
 * Event List Caraousel Nav CSS
 * Dev: Ari

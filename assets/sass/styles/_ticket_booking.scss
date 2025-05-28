@@ -1,11 +1,11 @@
 @mixin card{
   background: white;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 @mixin card-header {
-  background: linear-gradient(135deg, #4169e1, #3b5fe2);
+  background: linear-gradient(135deg, var(--mpev-primary), var(--mpev-primary));
   color: white;
   padding: 20px 25px;
   font-size: 18px;
@@ -72,8 +72,9 @@
     background-color: #f8f9fa;
     border-top: 1px solid #eaeaea;
     margin-top: -20px;
+    margin-bottom: 50px;
     border-radius:0 0 12px 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .mpwem_booking_panel{
@@ -147,6 +148,10 @@
         .total {
             font-size: 18px;
             font-weight: 600;
+        }
+        button[type="submit"]{
+            background-color: var(--mpev-primary);
+            border: 1px solid var(--mpev-primary);
         }
     }
 }

@@ -882,7 +882,7 @@ ul#mep_add_calender_links li a {
 
 .mep-default-sidebar .df-sidebar-part {
   background: #fff;
-  padding: 0;
+  padding: 10px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }

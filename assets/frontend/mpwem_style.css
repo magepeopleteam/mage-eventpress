@@ -1813,19 +1813,18 @@ span.mep-more-date {
   padding: 0;
 }
 
-.mep-default-theme .mep-more-time {
+.mep-default-theme .mep-more-date {
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  margin-left: 25px;
 }
-.mep-default-theme .mep-more-time span {
+.mep-default-theme .mep-more-date .mep-more-date {
   margin: 2px 5px;
   position: relative;
   padding-left: 14px;
 }
-.mep-default-theme .mep-more-time span::before {
+.mep-default-theme .mep-more-date .mep-more-date::before {
   content: "";
   width: 5px;
   height: 5px;

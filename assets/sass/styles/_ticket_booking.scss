@@ -6,7 +6,7 @@
 }
 @mixin card-header {
   background: linear-gradient(135deg, var(--mpev-primary), var(--mpev-primary));
-  color: white;
+  color: var(--mpev-base-txt);
   padding: 20px 25px;
   font-size: 18px;
   font-weight: 600;

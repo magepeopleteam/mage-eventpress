@@ -112,12 +112,12 @@
                     $links = array();
                     if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
                             <div class="mep-org-details">
-                                <div class="org-icon"><i class="fas fa-building"></i></div>
                                 <div class="org-name">
+                                    <div><?php echo _e('Organized By:'); ?></div>
                                     <?php foreach ($org_terms as $index => $org): ?>
                                         <a href="<?php echo get_term_link($org->term_id); ?>">
                                             <?php echo esc_html($org->name); ?>
-                                        </a><?php if ($index < count($org_terms) - 1): ?>,&nbsp;<?php endif; ?>
+                                        </a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

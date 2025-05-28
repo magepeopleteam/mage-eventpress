@@ -888,7 +888,7 @@ ul#mep_add_calender_links li a {
   background: #fff;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  border-radius: 12px 12px 0 0;
+  border-radius: 12px;
 }
 
 .mep-default-sidrbar-meta {
@@ -6016,7 +6016,7 @@ Vanilla theme css by ariful
   border-radius: 50%;
   border: none;
   background-color: #f0f2f5;
-  color: #4169e1;
+  color: var(--mpev-base);
   font-size: 18px;
   cursor: pointer;
   display: flex;
@@ -6039,7 +6039,7 @@ Vanilla theme css by ariful
   border-radius: 50%;
   border: none;
   background-color: #f0f2f5;
-  color: #4169e1;
+  color: var(--mpev-base);
   font-size: 18px;
   cursor: pointer;
   display: flex;
@@ -6076,8 +6076,9 @@ Vanilla theme css by ariful
   font-weight: 600;
 }
 .mpwem_booking_panel .mpwem_form_submit_area button[type=submit] {
-  background-color: var(--mpev-primary);
-  border: 1px solid var(--mpev-primary);
+  background-color: var(--mpev-base);
+  border: 1px solid var(--mpev-base);
+  padding: 20px;
 }
 
 .mep-event-faq-part {

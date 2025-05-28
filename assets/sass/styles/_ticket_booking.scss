@@ -44,7 +44,7 @@
   border-radius: 50%;
   border: none;
   background-color: #f0f2f5;
-  color: #4169e1;
+  color: var(--mpev-base);
   font-size: 18px;
   cursor: pointer;
   display: flex;
@@ -155,8 +155,9 @@
             font-weight: 600;
         }
         button[type="submit"]{
-            background-color: var(--mpev-primary);
-            border: 1px solid var(--mpev-primary);
+            background-color: var(--mpev-base);
+            border: 1px solid var(--mpev-base);
+            padding: 20px;
         }
     }
 }

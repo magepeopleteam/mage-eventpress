@@ -1078,6 +1078,7 @@
 					$org                   = get_the_terms( $event_id, 'mep_org' );
 					$term_id               = isset( $org[0]->term_id ) ? $org[0]->term_id : '';
 					$org_email             = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
+					
 
 					if ( $order->has_status( 'processing' ) ) {
 						change_attandee_order_status( $order_id, 'publish', 'trash', 'processing' );
@@ -1128,7 +1129,7 @@
 						change_attandee_order_status( $order_id, 'trash', 'publish', 'refunded' );
 						change_extra_service_status( $order_id, 'trash', 'publish', 'refunded' );
 						do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
-					}
+					} 
 					if ( $order->has_status( 'failed' ) ) {
 						change_attandee_order_status( $order_id, 'trash', 'publish', 'failed' );
 						change_extra_service_status( $order_id, 'trash', 'publish', 'failed' );
@@ -1250,6 +1251,7 @@
 			// Update Total Event By Date Seat Count
 			update_post_meta( $event_id, $event_name, $seat_left_date );
 			// mep_update_ticket_type_seat($event_id,$name,$date,$total_quantity,$total_resv_quantity);
+			mep_temp_attendee_delete_for_cart($event_id, $ticket['ticket_name'], $ticket['ticket_qty'],$ticket['event_date']);
 		}
 	}
 	function mep_get_ticket_type_info_by_name( $name, $event_id, $type = 'option_qty_t' ) {

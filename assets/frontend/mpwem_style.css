@@ -2784,11 +2784,6 @@ h3.mep_list_date i {
   margin-bottom: 10px;
 }
 
-.mep-default-theme.spring_field .mep-default-sidrbar-calender-btn {
-  margin: auto;
-  display: inline-block;
-}
-
 div.mep-default-feature-content p {
   /*     margin-top: 0 !important;
      margin-bottom: 10px !important; */
@@ -4822,12 +4817,26 @@ Royal theme css by ariful | Date: 19-10-2021
 }
 
 .spring_field .mep-default-sidrbar-meta {
-  padding: 0;
+  padding: 20px;
 }
 
 .spring_field .mep-default-sidrbar-price-seat {
   text-align: left;
-  padding: 15px 0;
+  padding: 15px;
+  background-color: #f2f2f2;
+}
+
+.spring_field .mep-default-sidrbar-price-seat .setas-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  text-align: center;
+}
+
+.spring_field .mep-default-sidrbar-calender-btn {
+  width: 100%;
+  margin-top: 20px;
 }
 
 .spring_field ul#mep_add_calender_links {

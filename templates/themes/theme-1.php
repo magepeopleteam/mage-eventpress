@@ -27,30 +27,31 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             <div class="mep-default-title">
                 <?php do_action('mep_event_title', $event_id); ?>
             </div>
-            <?php if ($hide_org_by_details == 'no') { ?>
+            <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) : ?>
                 <div class="mep-default-sidrbar-meta">
                     <?php 
                     // Get organizer terms to identify primary organizer
                     $org_terms = get_the_terms($event_id, 'mep_org');
-                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
-                        echo mep_get_option('mep_by_text', 'label_setting_sec', __('By:', 'mage-eventpress')) . ' <strong class="mep-primary-organizer">' . esc_html($org_terms[0]->name) . '</strong>';
-                        
-                        // Display other organizers if there are more than one
-                        if (count($org_terms) > 1) {
-                            echo ' ' . __('and', 'mage-eventpress') . ' ';
-                            $other_orgs = array();
-                            for ($i = 1; $i < count($org_terms); $i++) {
-                                $other_orgs[] = '<a href="' . get_term_link($org_terms[$i]->term_id, 'mep_org') . '">' . esc_html($org_terms[$i]->name) . '</a>';
-                            }
-                            echo implode(', ', $other_orgs);
-                        }
-                    } else {
-                        // If no custom organizer display is needed, use the default
-                        do_action('mep_event_organizer', $event_id);
-                    }
+                    $links = array();
+                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
+                            <div class="mep-org-details">
+                                <div class="org-name">
+                                    <div><?php echo _e('Organized By:'); ?></div>
+                                    <?php foreach ($org_terms as $index => $org): ?>
+                                        <a href="<?php echo get_term_link($org->term_id); ?>">
+                                            <?php echo esc_html($org->name); ?>
+                                        </a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php else :
+                            // If no custom organizer display is needed, use the default
+                            do_action('mep_event_organizer', $event_id);
+                    endif;
                     ?>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
+            
             <?php if ($hide_total_seat_details == 'no') { ?>
                 <div class="mep-default-sidrbar-price-seat">
                     <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>

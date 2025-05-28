@@ -4552,6 +4552,7 @@ input.mpe-new-input-group-field {
   display: flex;
   align-items: start;
   justify-content: space-between;
+  border-radius: 12px;
 }
 .mep-default-theme div.mep-default-feature-item h3 {
   margin: 10px 0;

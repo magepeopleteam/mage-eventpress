@@ -28,7 +28,6 @@
   display: flex;
   align-items: center;
   margin: 0 30px;
-  flex: 0 0 20%;
 }
 @mixin ticket-price {
   font-size: 18px;
@@ -88,6 +87,11 @@
             @include card-body;
             .mep_ticket_item{
                 @include ticket-item;
+                @media (max-width: 600px) {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                }
                 &:last-child    {
                     border-bottom: none;
                 }       
@@ -123,6 +127,7 @@
                 .quantity-control{
                     .qtyIncDec{
                         @include quantity-control;
+                        max-width: 200px;
                         .decQty{
                             @include qty-btn;
                         }

@@ -5948,6 +5948,13 @@ Vanilla theme css by ariful
   padding: 18px 0;
   border-bottom: 1px solid #eaeaea;
 }
+@media (max-width: 600px) {
+  .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
 .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
   border-bottom: none;
 }
@@ -5984,7 +5991,7 @@ Vanilla theme css by ariful
   display: flex;
   align-items: center;
   margin: 0 30px;
-  flex: 0 0 20%;
+  max-width: 200px;
 }
 .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty {
   width: 36px;

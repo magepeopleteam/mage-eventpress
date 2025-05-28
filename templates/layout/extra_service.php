@@ -14,6 +14,7 @@
 	$total_ticket = MPWEM_Functions::get_total_ticket($event_id);
 	$total_reserve = MPWEM_Functions::get_reserve_ticket($event_id);
 	$total_available = $total_ticket - ($total_sold + $total_reserve);
+	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ($total_available > 0) {
 		$ex_services = MP_Global_Function::get_post_info($event_id, 'mep_events_extra_prices', []);
 		//echo '<pre>'; print_r($ex_services); echo '</pre>';
@@ -29,12 +30,8 @@
 						$ticket_qty = array_key_exists('option_qty', $ticket_type) ? $ticket_type['option_qty'] : 0;
 						$ticket_input_type = array_key_exists('option_qty_type', $ticket_type) ? $ticket_type['option_qty_type'] : 'inputbox';
 						$available = MPWEM_Functions::get_available_ex_service($event_id, $ticket_name, $date, $ticket_type);
-						
-						$total_extra_service    = (int) $ticket_qty;
-						$total_sold             = (int) mep_extra_service_sold($event_id, $ticket_name, $date);
-						$ext_left  = ($total_extra_service - $total_sold);
-						
 						if ($ticket_name && $ticket_qty > 0) {
+							$input_data=[];
 							$input_data['name'] = 'event_extra_service_qty[]';
 							$input_data['price'] = $ticket_price;
 							$input_data['available'] = $available;
@@ -44,13 +41,11 @@
                                 <div class="ticket-info">
                                     <div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
                                     <input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
-									<?php 
-											if ($mep_available_seat == 'on'):
-											?>
-											<div class="ticket-remaining xtra-item-left <?php echo $ext_left <= 10 ?'remaining-low':'remaining-high'; ?>">
-												<?php echo esc_html($ext_left).__(' Tickets remaining'); ?>
-											</div>
-										<?php endif; ?>
+	                                <?php if ( $mep_available_seat == 'on' ) { ?>
+                                        <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+			                                <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+                                        </div>
+	                                <?php } ?>
 								</div>
                                 <div class="quantity-control">
 									<?php MP_Custom_Layout::qty_input($input_data); ?>

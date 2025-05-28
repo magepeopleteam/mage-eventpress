@@ -2795,13 +2795,15 @@ div.mep-default-feature-content p {
 .mep-default-theme .date-time-area {
   padding: 15px 25px;
   background: var(--mpev-base);
-  border-radius: 12px 12px;
-  margin-bottom: 20px;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: -10px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: center;
   gap: 20px;
   border: 1px solid var(--mpev-base);
+  position: relative;
+  z-index: 1;
 }
 
 .date-time-area label {

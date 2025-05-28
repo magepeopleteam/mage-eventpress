@@ -197,7 +197,7 @@
 				//$min_qty = max($default_qty, $min_qty);
 				$max_qty = $max_qty > 0 ? $max_qty : $available_seat;
 				$max_qty = min($available_seat, $max_qty);
-				if ($max_qty > $min_qty) {
+				if ($max_qty >= $min_qty && $max_qty>0) {
 					if ($input_type == 'dropdown') {
 						$text = array_key_exists('text', $data) ? $data['text'] : '';
 						?>

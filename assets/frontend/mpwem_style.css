@@ -4499,6 +4499,15 @@ input.mpe-new-input-group-field {
   font-size: 11px;
 }
 
+.mep-timeline {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+.mep-timeline .section-title {
+  font-size: 25px;
+  font-weight: bold;
+  margin: 30px 0;
+}
 .mep-timeline .timeline {
   position: relative;
   padding-left: 50px;
@@ -4519,6 +4528,9 @@ input.mpe-new-input-group-field {
 }
 .mep-timeline .timeline .timeline-item:hover {
   transform: translateY(-5px);
+}
+.mep-timeline .timeline .timeline-item:last-child {
+  padding-bottom: 0;
 }
 .mep-timeline .timeline .timeline-item .timeline-point {
   position: absolute;
@@ -4567,7 +4579,7 @@ input.mpe-new-input-group-field {
 }
 
 .mpwem_registration_area .section-title {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
   margin: 10px 0;
 }

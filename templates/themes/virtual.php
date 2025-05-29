@@ -26,7 +26,8 @@ $_the_event_id = $event_id;
 		    <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-content">
-            <?php do_action('mep_event_details', $_the_event_id); ?>
+            <div class="mpwem_details_content"><?php the_content(); ?></div>
+            <?php do_action('mpwem_timeline'); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
 	        <?php

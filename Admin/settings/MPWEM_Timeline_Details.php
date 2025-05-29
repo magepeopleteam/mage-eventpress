@@ -146,23 +146,25 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                 ?>
                 <div class="mep-timeline">
                     <h2 class="_mB"><?php esc_html_e('Event Timelines','mage-eventpress'); ?></h2>  
-                    <?php
-                    $counter = 1;
-                    foreach ($mep_timeline as $value) : 
-                        ?>
-                        <div class="item">
-                            <div class="icon"><?php echo esc_html($counter); ?></div>
-                            <div class="content">
-                                <div class="title"><?php echo esc_html($value['mep_day_title']); ?></div>
-                                <div class="details">
-                                    <?php echo wp_kses_post($value['mep_day_content']); ?>
+                    <div class="timeline">
+                        <?php
+                        $counter = 1;
+                        foreach ($mep_timeline as $value) : 
+                            ?>
+                            <div class="timeline-item">
+                                <div class="timeline-point"><?php echo esc_html($counter); ?></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title"><?php echo esc_html($value['mep_day_title']); ?><span class="timeline-time"><?php echo esc_html('8:00 AM - 9:00 AM'); ?></span></div>
+                                    <div class="timeline-details">
+                                        <?php echo wp_kses_post($value['mep_day_content']); ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php
-                        $counter++;
-                    endforeach;
-                    ?>
+                            <?php
+                            $counter++;
+                        endforeach;
+                        ?>
+                    </div>
                 </div>
                 <?php
             endif;

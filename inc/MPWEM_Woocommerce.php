@@ -85,9 +85,10 @@
 					$user_info            = $cart_item['event_user_info'];
 					$ticket_type_arr      = $cart_item['event_ticket_info'];
 					$event_extra_service  = $cart_item['event_extra_service'];
+					$event_date  = $cart_item['event_cart_date'];
 					$recurring            = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status          = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
-					$event_date           = get_post_meta( $eid, 'event_cart_date', true ) ? get_post_meta( $eid, 'event_cart_date', true ) : '';
+					//echo '<pre>';print_r($cart_item);echo '</pre>';
 					echo "<ul class='event-custom-price'>";
 					if ( $hide_date_status == 'no' ) {
 						?>

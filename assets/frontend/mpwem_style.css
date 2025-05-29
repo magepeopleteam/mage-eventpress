@@ -5524,7 +5524,7 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button {
     background-color: #fff;
-    padding: 15px;
+    padding: 13px 15px !important;
     border: 1px solid var(--mpev-primary);
     margin-top: 20px;
     color: var(--mpev-primary);
@@ -5596,7 +5596,7 @@ Vanilla theme css by ariful
     background-color: #fff;
     color: var(--mpev-primary) !important;
     height: auto !important;
-    padding: 10px !important;
+    padding: 5px 10px !important;
     border-radius: var(--dBR) !important;
     border: 1px solid var(--mpev-primary);
     margin: 0 !important;
@@ -5618,10 +5618,10 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
-    padding: 30px;
+    padding: 15px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share {
-    margin-top: 25px;
+    margin-top: 10px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li {
     margin: 7px;
@@ -5654,10 +5654,10 @@ Vanilla theme css by ariful
     background-color: #fff;
     color: var(--mpev-primary) !important;
     height: auto !important;
-    padding: 15px !important;
+    padding: 13px 15px !important;
     border-radius: var(--dBR) !important;
     border: 1px solid var(--mpev-primary);
-    margin-top: 20px;
+    margin-top: 0;
     color: var(--mpev-primary);
     font-size: var(--button_fs);
     font-weight: var(--fw-medium);

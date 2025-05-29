@@ -177,5 +177,6 @@ div.buttonGroup > *,
 .list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
 
 @media only screen and (min-width: 10px) {
-   .mep_smart_theme div.mpwem_organizer, .mep_smart_theme div.mpwem_organizer a{ font-size: 18px;}
+   .mep_smart_theme div.mpwem_organizer, .mep_smart_theme div.mpwem_organizer a{ font-size: 18px !important;}
+   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i{width:30px !important; height:30px !important;}
 }

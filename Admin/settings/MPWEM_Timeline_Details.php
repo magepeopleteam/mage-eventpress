@@ -157,7 +157,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             <div class="timeline-item">
                                 <div class="timeline-point"><?php echo esc_html($counter); ?></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title"><?php echo esc_html($value['mep_day_title']); ?><span class="timeline-time"><?php echo esc_html(isset($value['mep_day_time'])?$value['mep_day_time']:''); ?></span></div>
+                                    <div class="timeline-title"><?php echo esc_html($value['mep_day_title']); ?><?php if(!empty($value['mep_day_time']) ): ?><span class="timeline-time"><?php echo esc_html($value['mep_day_time']); ?></span><?php endif; ?></div>
                                     <div class="timeline-details">
                                         <?php echo wp_kses_post($value['mep_day_content']); ?>
                                     </div>

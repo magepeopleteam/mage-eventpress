@@ -106,26 +106,7 @@
         <div class="df-sidebar-part">
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) : ?>
                 <div class="mep-default-sidrbar-meta">
-                    <?php 
-                    // Get organizer terms to identify primary organizer
-                    $org_terms = get_the_terms($event_id, 'mep_org');
-                    $links = array();
-                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
-                            <div class="mep-org-details">
-                                <div class="org-name">
-                                    <div><?php echo _e('Organized By:'); ?></div>
-                                    <?php foreach ($org_terms as $index => $org): ?>
-                                        <a href="<?php echo get_term_link($org->term_id); ?>">
-                                            <?php echo esc_html($org->name); ?>
-                                        </a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        <?php else :
-                            // If no custom organizer display is needed, use the default
-                            do_action('mep_event_organizer', $event_id);
-                    endif;
-                    ?>
+                    <?php  do_action('mep_event_organized_by', $event_id); ?>
                 </div>
             <?php endif; ?>
 

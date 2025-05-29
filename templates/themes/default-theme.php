@@ -24,12 +24,12 @@
 	// echo $event_id;
 	$gallery_image_arr = get_post_meta( $event_id, 'mep_gallery_images', true ) ? get_post_meta( $event_id, 'mep_gallery_images', true ) : [];
 ?>
+<div class="mep-default-title">
+    <?php do_action( 'mep_event_title', $event_id ); ?>
+</div>
 <div class="mpStyle mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
-        <div class="mep-default-title">
-			<?php do_action( 'mep_event_title', $event_id ); ?>
-        </div>
-        <div class="_mT mpwem_slider_area">
+        <div class="mpwem_slider_area">
 		    <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-date-location">

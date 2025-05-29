@@ -75,91 +75,141 @@
     border-radius:0 0 12px 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
-
-.mpwem_booking_panel{
-    margin-bottom: 20px;
-    .mpwem_ticket_type,.mpwem_ex_service{
-        @include card;
-        .card-header{
-            @include card-header;
+.mpwem_registration_area{
+    .section-title{
+        font-size: 25px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .date-time-header{
+        padding: 10px 25px;
+        background: var(--mpev-base);
+        border-radius:12px 12px 0 0;
+        margin-bottom: -10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid var(--mpev-base);
+        position: relative;
+        z-index: 1;
+        .ticket-title{
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--mpev-base-txt);
         }
-        .card-body{
-            @include card-body;
-            .mep_ticket_item{
-                @include ticket-item;
-                @media (max-width: 600px) {
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 10px;
+    }
+    .date-time-area{
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 20px;
+        label{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            span{
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--mpev-base-txt);
+            }
+            i{
+                color: var(--mpev-base-txt);
+            }
+        }
+        .formControl{
+            border-radius: 5px;
+            padding:10px 15px;
+        }
+    }
+    .mpwem_booking_panel{
+        margin-bottom: 20px;
+        .mpwem_ticket_type,.mpwem_ex_service{
+            @include card;
+            .card-header{
+                @include card-header;
+            }
+            .card-body{
+                @include card-body;
+                .mep_ticket_item{
+                    @include ticket-item;
+                    @media (max-width: 600px) {
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                    &:last-child    {
+                        border-bottom: none;
+                    }       
+                    .ticket-info{
+                        @include ticket-info;
+                        .ticket-name {
+                            font-size: 16px;
+                            font-weight: 600;
+                            margin-bottom: 6px;
+                        }
+                        .ticket-description {
+                            font-size: 14px;
+                            color: #6c757d;
+                            margin-bottom: 6px;
+                            line-height: 1.4;
+                        }
+                        .ticket-remaining {
+                            font-size: 14px;
+                            font-weight: 600;
+                            padding: 3px 8px;
+                            border-radius: 4px;
+                            display: inline-block;
+                            &.remaining-high{
+                                background-color: #e6f4ea;
+                                color: #137333;
+                            }
+                            &.remaining-low{
+                                background-color: #fce8e6;
+                                color: #c5221f;
+                            }
+                        }
+                    }
+                    .quantity-control{
+                        .qtyIncDec{
+                            @include quantity-control;
+                            max-width: 200px;
+                            .decQty{
+                                @include qty-btn;
+                            }
+                            .inputIncDec{
+                                @include qty-input;
+                            }
+                            .incQty{
+                                @include qty-btn;
+                            }
+                        }
+                    }
+                    .ticket-price{
+                        @include ticket-price;
+                    }   
                 }
-                &:last-child    {
-                    border-bottom: none;
-                }       
-                .ticket-info{
-                    @include ticket-info;
-                    .ticket-name {
-                        font-size: 16px;
-                        font-weight: 600;
-                        margin-bottom: 6px;
-                    }
-                    .ticket-description {
-                        font-size: 14px;
-                        color: #6c757d;
-                        margin-bottom: 6px;
-                        line-height: 1.4;
-                    }
-                    .ticket-remaining {
-                        font-size: 14px;
-                        font-weight: 600;
-                        padding: 3px 8px;
-                        border-radius: 4px;
-                        display: inline-block;
-                        &.remaining-high{
-                            background-color: #e6f4ea;
-                            color: #137333;
-                        }
-                        &.remaining-low{
-                            background-color: #fce8e6;
-                            color: #c5221f;
-                        }
-                    }
-                }
-                .quantity-control{
-                    .qtyIncDec{
-                        @include quantity-control;
-                        max-width: 200px;
-                        .decQty{
-                            @include qty-btn;
-                        }
-                        .inputIncDec{
-                            @include qty-input;
-                        }
-                        .incQty{
-                            @include qty-btn;
-                        }
-                    }
-                }
-                .ticket-price{
-                    @include ticket-price;
-                }   
+            }
+        }
+        .mpwem_ex_service{
+            margin-top: 30px;
+        }
+        .mpwem_form_submit_area{
+            @include summary;
+            .total {
+                font-size: 18px;
+                font-weight: 600;
+            }
+            button[type="submit"]{
+                background-color: var(--mpev-base);
+                border: 1px solid var(--mpev-base);
+                padding: 20px;
             }
         }
     }
-    .mpwem_ex_service{
-          margin-top: 30px;
-    }
-    .mpwem_form_submit_area{
-        @include summary;
-        .total {
-            font-size: 18px;
-            font-weight: 600;
-        }
-        button[type="submit"]{
-            background-color: var(--mpev-base);
-            border: 1px solid var(--mpev-base);
-            padding: 20px;
-        }
-    }
 }
-
-

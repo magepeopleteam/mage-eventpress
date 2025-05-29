@@ -49,7 +49,11 @@
 				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
             </div>
 			<!-- show speaker lists -->
-			<?php do_action( 'mep_event_speaker', $event_id ); ?>
+			<?php  if($speaker_status == 'yes'): ?>
+                <div class="mep-default-sidebar-speaker-list">
+					<?php do_action( 'mep_event_speaker', $event_id ); ?>
+				</div>
+			<?php endif; ?>
         </div>
     </div>
 	<?php do_action( 'mpwem_map', $event_id ); ?>

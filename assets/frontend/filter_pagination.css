@@ -180,4 +180,5 @@ div.buttonGroup > *,
    .mep_smart_theme div.mpwem_organizer, .mep_smart_theme div.mpwem_organizer a{ font-size: 18px !important;}
    .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i{width:30px !important; height:30px !important;}
    .mep_smart_theme div.mpwem_location, div.mpwem_time{margin:0px !important;}
+   .mpwem_registration_area div.mpStyle .formControl{border-radius:5px !important;}
 }

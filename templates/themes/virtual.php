@@ -43,34 +43,17 @@ $_the_event_id = $event_id;
     </div>
     <div class="mep-default-sidebar">
         <div class="df-sidebar-part">
+            <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) : ?>
+                <div class="mep-default-sidrbar-meta">
+                    <?php  do_action('mep_event_organized_by', $event_id); ?>
+                </div>
+            <?php endif; ?>
+
             <?php if ($hide_total_seat_details == 'no') { ?>
 	            <?php do_action('mep_event_seat', $_the_event_id); ?>
             <?php } ?>
-            <?php if ($hide_org_by_details == 'no') { ?>
-                <div class="mep-default-sidrbar-meta">
-                <i class="far fa-list-alt"></i> 
-                <?php 
-                // Get organizer terms to identify primary organizer
-                $org_terms = get_the_terms($_the_event_id, 'mep_org');
-                if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
-                    echo mep_get_option('mep_by_text', 'label_setting_sec', __('By:', 'mage-eventpress')) . ' <strong class="mep-primary-organizer">' . esc_html($org_terms[0]->name) . '</strong>';
-                    
-                    // Display other organizers if there are more than one
-                    if (count($org_terms) > 1) {
-                        echo ' ' . __('and', 'mage-eventpress') . ' ';
-                        $other_orgs = array();
-                        for ($i = 1; $i < count($org_terms); $i++) {
-                            $other_orgs[] = '<a href="' . get_term_link($org_terms[$i]->term_id, 'mep_org') . '">' . esc_html($org_terms[$i]->name) . '</a>';
-                        }
-                        echo implode(', ', $other_orgs);
-                    }
-                } else {
-                    // If no custom organizer display is needed, use the default
-                    do_action('mep_event_organizer', $_the_event_id);
-                }
-                ?>
-                </div>
-            <?php } if($speaker_status == 'yes'){ ?>
+
+            <?php if($speaker_status == 'yes'){ ?>
                 <div class="mep-default-sidebar-speaker-list">               
                     <?php do_action('mep_event_speakers_list',$_the_event_id); ?>
                 </div>

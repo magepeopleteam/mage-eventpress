@@ -4304,6 +4304,7 @@ function event_single_template_list( $current_theme ) {
 			}
 		}
 	}
+	
 	/***************************
 	 * Functions Dev by @Ariful
 	 **************************/

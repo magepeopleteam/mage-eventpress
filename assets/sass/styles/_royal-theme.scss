@@ -69,11 +69,10 @@ Royal theme css by ariful | Date: 19-10-2021
 	background-color: #FBFBFB;
 	display: flex;
 }
-.royal_theme .mep-default-sidrbar-meta p,
-.royal_theme .mep-default-sidrbar-meta p a,
-.royal_theme .mep-default-sidrbar-events-schedule h3 {
+.royal_theme .mep-default-sidrbar-meta,
+.royal_theme .mep-default-sidrbar-meta a{
 	font-weight: 500;
-	color: #000000;
+	color: #fff;
 	text-transform: uppercase;
 	font-size: 14px;
 }
@@ -179,7 +178,7 @@ Royal theme css by ariful | Date: 19-10-2021
 
 .royal_theme .mep-royal-header,
 .royal_theme .mep-default-feature-content{
-	background: var(--mpev-royal-primary-bg);;
+	background: var(--mpev-royal-primary-bg);
 }
 .royal_theme .mep-default-col-1,
 .royal_theme .mep-default-col-2{
@@ -215,4 +214,13 @@ Royal theme css by ariful | Date: 19-10-2021
 .royal_theme .mep-default-sidrbar-events-schedule,
 .royal_theme .mep-default-sidrbar-price-seat h5{
 	color: var(--mpev-royal-txt);
+	
+}
+
+.royal_theme .mep-default-sidrbar-events-schedule{
+	background: #fff;
+}
+.royal_theme .mep-default-sidrbar-price-seat{
+	
+	background: #fff;
 }

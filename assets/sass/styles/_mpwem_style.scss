@@ -33,7 +33,7 @@ div.item_hover_effect a:hover{
 	border:1px solid var(--mpev-base);
 }
 
-.mep-default-sidrbar-events-schedule ul li i, .mep-ev-start-date, h3.mep_list_date i, .df-ico i, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
+.mep-ev-start-date, h3.mep_list_date i, .df-ico i, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
 }
@@ -50,7 +50,7 @@ div.item_hover_effect a:hover{
 	background: var(--mpev-base);
 	border-color: var(--mpev-base);
 }
-.mep-default-sidrbar-events-schedule h3 i, .mep_event_list .mep_list_date, .mep-event-theme-1 .mep-social-share li a, .mep-template-2-hamza .mep-social-share li a {
+.mep_event_list .mep_list_date, .mep-event-theme-1 .mep-social-share li a, .mep-template-2-hamza .mep-social-share li a {
 	color: var(--mpev-base);
 }
 
@@ -122,13 +122,7 @@ ul#mep_add_calender_links li a{
 	padding: 10px;
 }
 /*****************************************************/
-#mep_event_date_sch li a {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-direction: column;
-	flex-direction: column;
-	color: inherit;
-}
+
 .mep-hidden {
 	display: none !important;
 }
@@ -212,7 +206,6 @@ div.mep_flex,
 .mep-default-theme div.mep-default-feature-location,
 .mep-default-theme i,
 div.mep-default-sidrbar-meta,
-.mep-default-sidrbar-events-schedule h3,
 ul.mep-social-share,
 ul.mep-social-share a,
 #mep_add_calender_button.mep-add-calender,
@@ -244,7 +237,6 @@ button.single_add_to_cart_button,
 .mep-default-theme div.mep-default-feature-location,
 .mep-default-theme i,
 .mep-default-sidrbar-meta,
-.mep-default-sidrbar-events-schedule h3,
 ul.mep-social-share a,
 #mep_add_calender_button.mep-add-calender,
 .bristol_center_box .mep-default-sidrbar-price-seat,
@@ -327,14 +319,7 @@ h3.ex-sec-title {
 	padding: 15px;
 }
 .mep-default-sidrbar-map h3,
-.mep-default-sidrbar-events-schedule h3 {
-	margin: 12px 0 10px 0;
-	font-size: 18px;
-	font-weight: bold;
-}
-.mep-default-sidrbar-events-schedule h3 {
-	margin: 0 0 10px 0;
-}
+
 /********Banner Image***********/
 .mep-default-feature-image img,
 .mep_event_list .mep_list_thumb img,
@@ -421,17 +406,8 @@ span.mep_warning {
 	max-width: 100%;
 	border-radius: 10px;
 }
-ul#mep_event_date_sch li span {
-	display: -webkit-flex;
-	
-}
-span.mep-more-date {
-	-webkit-flex-wrap: wrap;
-	flex-wrap: wrap;
-}
-span.mep-more-date i {
-	margin: 0;
-}
+
+
 /******table*******/
 .mep-events-wrapper table {
 	width: 100%;
@@ -600,39 +576,12 @@ ul.mep-social-share a {
 /********default background ***********/
 .mep-default-sidrbar-meta i,
 .df-ico i,
-.mep-default-sidrbar-events-schedule ul li i,
+
 .mep-social-share a {
 	background: var(--mpev-base);
 }
 /********schedule ***********/
-.mep-default-sidrbar-events-schedule {
-	padding: 20px 15px;
-}
-.mep-default-sidrbar-events-schedule ul li i{
-	background:  var(--mpev-base-txt);
-	color:  var(--mpev-base);
-	width: 36px;
-	height: 36px;
-	font-size: 14px;
-}
-.mep-default-sidrbar-events-schedule h3 {
-	text-transform: capitalize;
-	color: #6D7982;
-}
-.mep-default-sidrbar-events-schedule h3 i {
-	padding: 0 10px 0 0;
-}
-.mep-default-sidrbar-events-schedule ul li {
-	border-top: 1px dashed #DDD;
-}
-.mep-default-sidrbar-events-schedule ul li:first-child {
-	border: none;
-}
 
-.mep-default-sidrbar-events-schedule ul li i {
-	display: -webkit-inline-flex;
-	display: inline-flex;
-}
 /********social share ***********/
 .mep-event-meta {
 	font-size: 20px;
@@ -802,7 +751,6 @@ ul#mep_add_calender_links li a {
 }
 .default_theme .mep-default-sidrbar-price-seat,
 .mep-default-sidebar-address,
-.mep-default-sidrbar-events-schedule,
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #f0f2f5;
 }
@@ -1453,11 +1401,7 @@ button.mep-cat-control.mixitup-control-active {
 #mep_single_hide_all_date {
 	display: none;
 }
-#mep_event_date_sch {
-	height: 315px;
-	overflow: hidden;
-	margin-bottom: 20px;
-}
+
 .mep_view_all_date {
 	overflow: scroll !important;;
 }
@@ -1723,41 +1667,6 @@ div.mep-day-details-section h4 {
 	}
 }
 
-.mep-default-sidrbar-events-schedule .sidrbar-events-schedule-title{
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom:10px;
-}
-.mep-default-sidrbar-events-schedule {
-	#mep_event_date_sch{
-		margin-left: 10px;
-		.mep_date_scdl_start_datetime{
-			margin-bottom: 10px;
-		}
-	}
-}
-.mep-default-sidrbar-events-schedule ul li {
-	padding: 10px 0;
-	display: flex;
-	flex-direction: row;
-	align-items: start;
-	position: relative;	
-	padding-left: 15px;
-	&::before{
-		content: "";
-		width: 8px;
-		height: 8px;
-		border-radius: 50px;
-		position: absolute;
-		top:14px;
-		left:0;
-		background-color: var(--mpev-base);
-	}
-	.mep_date_scdl_start_datetime{
-		font-weight: bold;
-		margin-bottom: 10px;
-	}
-}
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -1791,7 +1700,6 @@ div.mep-day-details-section h4 {
 		height: 40px;
 		font-size: 20px;
 	}
-	.mep-default-sidrbar-events-schedule ul li i,
 	.mep-list-footer ul li i {
 		width: 20px;
 		height: 20px;
@@ -1854,20 +1762,6 @@ div.mep-day-details-section h4 {
 	.mep-default-theme div.mep-default-feature-location {
 		padding: 5px;
 	}
-	
-	
-
-	.mep-default-sidrbar-events-schedule {
-		padding: 10px;
-	}
-
-	.mep-default-sidrbar-events-schedule ul li {
-		padding: 5px 0 5px 10px;
-		line-height: 22px;
-	}
-	.mep-default-sidrbar-events-schedule ul li:last-child {
-		padding: 5px 0 0 10px;
-	}
 	/*********springfield*****************/
 	.spring_field div.mep_flex {
 		display: block;
@@ -1883,9 +1777,7 @@ div.mep-day-details-section h4 {
 		margin: 15px 0;
 	}
 	/********frinklin*********/
-	.mep-default-sidrbar-events-schedule h3 {
-		font-size: 15px;
-	}
+	
 	/************Related***********/
 	h2.mep_list_title {
 		font-size: 15px !important;
@@ -2423,8 +2315,7 @@ div.three_column {
 	height: auto;
 }
 .mep-default-sidrbar-meta p,
-.mep-default-sidrbar-meta p a,
-.mep-default-sidrbar-events-schedule h3 {
+.mep-default-sidrbar-meta p a{
 	font-weight: 600;
 	color: #444444;
 	font-size: 16px;

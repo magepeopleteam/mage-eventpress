@@ -1,0 +1,73 @@
+.mep-default-sidrbar-events-schedule {
+    padding: 15px;
+    .sidrbar-events-schedule-title{
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom:10px;
+    }
+    ul#mep_event_date_sch{
+        margin-left: 10px;
+        height: 315px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        li{
+            border-top: 1px dashed #DDD;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            position: relative;	
+            padding-left: 15px;
+            &::before{
+                content: "";
+                width: 8px;
+                height: 8px;
+                border-radius: 50px;
+                position: absolute;
+                top:14px;
+                left:0;
+                background-color: var(--mpev-base);
+            }
+            a {
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-direction: column;
+                flex-direction: column;
+                color: inherit;
+            }
+            span{
+                display:flex;
+                &.mep-more-date{
+                    margin: 0;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                &.mep-more-time{
+                    display: flex;
+                    flex-direction: column;
+                    gap:5px;
+                }
+            }
+            .mep_date_scdl_start_datetime{
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            &:first-child {
+                border: none;
+            }
+            i{
+                background: var(--mpev-base);
+                color: var(--mpev-base-txt);
+                background:  var(--mpev-base-txt);
+                color:  var(--mpev-base);
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+                display: inline-flex;
+                width: 20px;
+                height: 20px;
+                font-size: 11px;
+            }
+        }
+    }
+}

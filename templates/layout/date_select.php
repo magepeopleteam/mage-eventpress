@@ -18,16 +18,19 @@
 				?>
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 			<?php } else { ?>
-                <div class="date-time-area">
-                    <label>
-                        <span><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></span>
-                        <i class="far fa-calendar"></i>
-						<select class="formControl" name="mpwem_date_time" id="mpwem_date_time">
-							<?php foreach ( $all_dates as $dates ) { ?>
-                                <option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>><?php echo esc_html( MP_Global_Function::date_format( $dates['time'], $date_format ) ); ?></option>
-							<?php } ?>
-                        </select>
-                    </label>
+				<div class="date-time-header">
+					<div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
+					<div class="date-time-area">
+						<label>
+							<span><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></span>
+							<i class="far fa-calendar"></i>
+							<select class="formControl" name="mpwem_date_time" id="mpwem_date_time">
+								<?php foreach ( $all_dates as $dates ) { ?>
+									<option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>><?php echo esc_html( MP_Global_Function::date_format( $dates['time'], $date_format ) ); ?></option>
+								<?php } ?>
+							</select>
+						</label>
+					</div>
                 </div>
 				<?php
 			}
@@ -41,28 +44,32 @@
 			$display_time = get_post_meta($event_id,'mep_disable_ticket_time',true);
 			$display_time = $display_time?$display_time:'no';
 			?>
-            <div class="date-time-area">
-                <label>
-                    <span><?php esc_html_e( 'Select date', 'mage-eventpress' ); ?></span>
-					<i class="far fa-calendar"></i>
-                    <input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
-                    <input id="mpwem_date_time" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
-                </label>
-				<?php 
-				if ($display_time!='no') { ?>
-                    <div class="mpwem_time_area">
-                        <label>
-                            <span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
-                            <i class="far fa-clock"></i>
-							<select class="formControl" name="mpwem_time" id="mpwem_time">
-								<?php foreach ( $all_times as $times ) { ?>
-                                    <option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ? $times['start']['label'] : $times['start']['time'] ); ?></option>
-								<?php } ?>
-                            </select>
-                        </label>
-                    </div>
-				<?php } ?>
-            </div>
+			<div class="date-time-header">
+				<div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
+				<div class="date-time-area">
+					<label>
+						<span><?php esc_html_e( 'Select date', 'mage-eventpress' ); ?></span>
+						<i class="far fa-calendar"></i>
+						<input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
+						<input id="mpwem_date_time" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
+					</label>
+					<?php 
+					if ($display_time!='no') { ?>
+						<div class="mpwem_time_area">
+							<label>
+								<span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
+								<i class="far fa-clock"></i>
+								<select class="formControl" name="mpwem_time" id="mpwem_time">
+									<?php foreach ( $all_times as $times ) { ?>
+										<option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ? $times['start']['label'] : $times['start']['time'] ); ?></option>
+									<?php } ?>
+								</select>
+							</label>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+            
 			<?php
 			do_action( 'mp_load_date_picker_js', '#mpwem_date_time', $all_dates );
 			//echo '<pre>';			print_r($all_times);			echo '</pre>';

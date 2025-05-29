@@ -4546,6 +4546,73 @@ input.mpe-new-input-group-field {
   font-size: 11px;
 }
 
+.mep-timeline .timeline {
+  position: relative;
+  padding-left: 50px;
+}
+.mep-timeline .timeline::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background-color: #e0e0e0;
+}
+.mep-timeline .timeline .timeline-item {
+  position: relative;
+  padding-bottom: 50px;
+  transition: transform 0.3s ease;
+}
+.mep-timeline .timeline .timeline-item:hover {
+  transform: translateY(-5px);
+}
+.mep-timeline .timeline .timeline-item .timeline-point {
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 42px;
+  height: 42px;
+  background-color: #ffffff;
+  border: 2px solid var(--mpev-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--mpev-primary);
+  font-size: 16px;
+  z-index: 2;
+}
+.mep-timeline .timeline .timeline-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+.mep-timeline .timeline .timeline-content .timeline-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #212121;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mep-timeline .timeline .timeline-content .timeline-title .timeline-time {
+  font-size: 14px;
+  color: var(--mpev-primary);
+  font-weight: 500;
+  padding: 6px 12px;
+  background-color: var(--mpev-secondary);
+  border-radius: 20px;
+}
+.mep-timeline .timeline .timeline-content .timeline-details {
+  font-size: 14px;
+  color: #616161;
+}
+
 /*************************************************************
 Royal theme css by ariful | Date: 19-10-2021
 **************************************************************/

@@ -379,10 +379,12 @@ $(document).on('click', '.mep-timeline-item-edit', function (e) {
 	$('.mep_timeline_update_buttons').show();
 	var itemId = $(this).closest('.mep-timeline-item').data('id');
 	var parent = $(this).closest('.mep-timeline-item');
-	var headerText = parent.find('.timeline-header p').text().trim();
+	var headerText = parent.find('.timeline-header .title').text().trim();
+	var headerTime = parent.find('.timeline-header .time').text().trim();
 	var timelineContentId = parent.find('.timeline-content').text().trim();
 	var editorId = 'mep_timeline_content';
 	$('input[name="mep_timeline_title"]').val(headerText);
+	$('input[name="mep_timeline_time"]').val(headerTime);
 	$('input[name="mep_timeline_item_id"]').val(itemId);
 	if (tinymce.get(editorId)) {
 		tinymce.get(editorId).setContent(timelineContentId);
@@ -430,6 +432,8 @@ $(document).on('click', '#mep_timeline_save_close', function (e) {
 
 function update_timeline(){
 	var title   = $('input[name="mep_timeline_title"]');
+	var time   = $('input[name="mep_timeline_time"]');
+	
 	var content = tinyMCE.get('mep_timeline_content').getContent();
 	var postID  = $('input[name="mep_post_id"]');
 	var itemId = $('input[name="mep_timeline_item_id"]');
@@ -439,6 +443,7 @@ function update_timeline(){
 		data: {
 			action: 'mep_timeline_data_update',
 			mep_timeline_title:title.val(),
+			mep_timeline_time:time.val(),
 			mep_timeline_content:content,
 			mep_timeline_postID:postID.val(),
 			mep_timeline_itemID:itemId.val(),
@@ -462,6 +467,7 @@ function update_timeline(){
 
 function save_timeline(){
 	var title   = $('input[name="mep_timeline_title"]');
+	var time   = $('input[name="mep_timeline_time"]');
 	var content = tinyMCE.get('mep_timeline_content').getContent();
 	var postID  = $('input[name="mep_post_id"]');
 	$.ajax({
@@ -470,6 +476,7 @@ function save_timeline(){
 		data: {
 			action: 'mep_timeline_data_save',
 			mep_timeline_title:title.val(),
+			mep_timeline_time:time.val(),
 			mep_timeline_content:content,
 			mep_timeline_postID:postID.val(),
 			nonce: mep_ajax.nonce

@@ -694,7 +694,7 @@
 						?>
                         <li>
                             <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $every_day ) ); ?>">
-                                <span class="mep-more-date"><i class="far fa-calendar-alt"></i> <?php echo get_mep_datetime( $every_day, 'date-text' ); ?></span>
+                                <span class="mep-more-date"><?php echo get_mep_datetime( $every_day, 'date-text' ); ?></span>
                                 <span class='mep-more-time'>
                             <?php
 	                            $calender_day = strtolower( date( 'D', strtotime( $every_day ) ) );

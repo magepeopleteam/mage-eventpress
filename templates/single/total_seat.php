@@ -7,7 +7,7 @@
         <div class="available-seats">
             <?php if ($mep_available_seat == 'on') : ?>
                 <div><?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Available', 'mage-eventpress')); ?></div>
-                <strong><?php echo esc_html($total_seat); ?></strong>
+                <strong><?php echo esc_html($total_left); ?></strong>
             <?php endif; ?>
         </div>
     </div>

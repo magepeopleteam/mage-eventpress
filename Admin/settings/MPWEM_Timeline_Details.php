@@ -80,9 +80,13 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                         <div class="content">
                             <label>
                                 <?php _e('Add Title','mage-eventpress'); ?>
-                                <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>"> 
-                                <input type="text"   name="mep_timeline_title"> 
+                                <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>" > 
+                                <input type="text"   name="mep_timeline_title" placeholder="<?php esc_html_e('Pre-Event Setup', 'mage-eventpress'); ?>"> 
                                 <input type="hidden" name="mep_timeline_item_id">
+                            </label>
+                            <label>
+                                <?php _e('Time','mage-eventpress'); ?>
+                                <input type="text"   name="mep_timeline_time" placeholder="<?php esc_html_e('8:00 AM - 9:00 AM', 'mage-eventpress'); ?>"> 
                             </label>
                             <label>
                                 <?php _e('Add Content','mage-eventpress'); ?>
@@ -120,7 +124,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                         <div class="mep-timeline-item mpStyle" data-id="<?php echo esc_attr($key); ?>">
                             <section class="timeline-header" data-collapse-target="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
-                                    <p><?php echo esc_html($value['mep_day_title']); ?></p>
+                                    <p><span class="title"><?php echo esc_html($value['mep_day_title']); ?></span> <span class="time"><?php echo esc_html(isset($value['mep_day_time'])?$value['mep_day_time']:''); ?></span></p>
                                     <input type="hidden" name='mep_timeline_title_raw[]' value='<?php echo esc_html($value['mep_day_title']); ?>'/>
                                     <div class="timeline-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
@@ -131,7 +135,6 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             </section>
                             <section class="timeline-content" data-collapse="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_day_content']))); ?>
-                                <textarea style='display:none;' name="mep_timeline_details_raw[]" id=""><?php echo htmlspecialchars_decode(wpautop(wp_kses_post($value['mep_day_content']))); ?></textarea>
                             </section>
                         </div>
                     <?php
@@ -154,7 +157,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                             <div class="timeline-item">
                                 <div class="timeline-point"><?php echo esc_html($counter); ?></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title"><?php echo esc_html($value['mep_day_title']); ?><span class="timeline-time"><?php echo esc_html('8:00 AM - 9:00 AM'); ?></span></div>
+                                    <div class="timeline-title"><?php echo esc_html($value['mep_day_title']); ?><span class="timeline-time"><?php echo esc_html(isset($value['mep_day_time'])?$value['mep_day_time']:''); ?></span></div>
                                     <div class="timeline-details">
                                         <?php echo wp_kses_post($value['mep_day_content']); ?>
                                     </div>
@@ -186,6 +189,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
             $new_data = [
                 'mep_day_title' => sanitize_text_field($_POST['mep_timeline_title']),
+                'mep_day_time' => sanitize_text_field($_POST['mep_timeline_time']),
                 'mep_day_content' => wp_kses_post($_POST['mep_timeline_content'])
             ];
             if( ! empty($mep_timeline)){
@@ -221,6 +225,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             $mep_timeline = is_array($mep_timeline) ? $mep_timeline : [];
             $new_data = [
                 'mep_day_title' => sanitize_text_field($_POST['mep_timeline_title']),
+                'mep_day_time' => sanitize_text_field($_POST['mep_timeline_time']),
                 'mep_day_content' => wp_kses_post($_POST['mep_timeline_content'])
             ];
             array_push($mep_timeline,$new_data);

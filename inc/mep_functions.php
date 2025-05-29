@@ -1689,7 +1689,7 @@
 			foreach ( $thedir as $filename ) {
 				if ( is_file( $filename ) ) {
 					$file  = basename( $filename );
-					$naame = str_replace( "?>", "", strip_tags( file_get_contents( $filename, false, null, 24, 14 ) ) );
+					$naame = str_replace( "?>", "", strip_tags( file_get_contents( $filename, false, null, 25, 15 ) ) );
 				}
 				$theme[ $file ] = $naame;
 			}
@@ -1698,21 +1698,26 @@
 		}
 	}
 	if ( ! function_exists( 'event_single_template_list' ) ) {
-		function event_single_template_list( $current_theme ) {
-			$themes = mep_event_template_name();
-			$buffer = '<select name="mep_event_template">';
-			foreach ( $themes as $num => $desc ) {
-				if ( $current_theme == $num ) {
-					$cc = 'selected';
-				} else {
-					$cc = '';
+			function event_single_template_list( $current_theme ) {
+				$themes = mep_event_template_name();
+				$deprecated_themes = ['royal.php', 'theme-1.php', 'theme-2.php', 'theme-3.php', 'vanilla.php'];
+				$buffer = '<select name="mep_event_template">';
+				foreach ( $themes as $theme_file => $theme_name ) {
+					$selected = ($current_theme === $theme_file) ? 'selected' : '';
+
+					// Only allow deprecated themes if they're currently selected
+					if ( in_array( $theme_file, $deprecated_themes ) && $current_theme !== $theme_file ) {
+						continue;
+					}
+
+					$buffer .= "<option value=\"$theme_file\" $selected>$theme_name</option>";
 				}
-				$name   = preg_replace( "/[^a-zA-Z0-9]+/", " ", $desc );
-				$buffer .= "<option value=$num $cc>$name</option>";
-			}//end foreach
-			$buffer .= '</select>';
-			echo wp_kses( $buffer, [ 'select' => array( 'name' => [] ), 'option' => array( 'value' => [], 'selected' => [] ) ] );
-		}
+				$buffer .= '</select>';
+				echo wp_kses( $buffer, [
+					'select' => [ 'name' => [] ],
+					'option' => [ 'value' => [], 'selected' => [] ]
+				] );
+			}
 	}
 	if ( ! function_exists( 'mep_field_generator' ) ) {
 		function mep_field_generator( $type, $option ) {

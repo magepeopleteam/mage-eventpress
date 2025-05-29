@@ -2665,53 +2665,6 @@ div.mep-default-feature-content p {
   font-size: 16px;
 }
 
-.mpwem_registration_area .date-time-header {
-  padding: 10px 25px;
-  background: var(--mpev-base);
-  border-radius: 12px 12px 0 0;
-  margin-bottom: -10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  border: 1px solid var(--mpev-base);
-  position: relative;
-  z-index: 1;
-}
-.mpwem_registration_area .date-time-header .ticket-title {
-  margin: 0;
-  padding: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--mpev-base-txt);
-}
-
-.mpwem_registration_area .date-time-area {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 20px;
-}
-
-.date-time-area label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-.date-time-area label span {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--mpev-base-txt);
-}
-
-.date-time-area label i {
-  color: var(--mpev-base-txt);
-}
-
 /***********************
 * Event List Caraousel Nav CSS
 * Dev: Ari
@@ -4482,7 +4435,7 @@ input.mpe-new-input-group-field {
 }
 .mep-default-sidrbar-events-schedule ul#mep_event_date_sch {
   margin-left: 10px;
-  height: 315px;
+  max-height: 315px;
   overflow: hidden;
   margin-bottom: 20px;
 }
@@ -4613,26 +4566,77 @@ input.mpe-new-input-group-field {
   color: #616161;
 }
 
-.mpwem_booking_panel {
+.mpwem_registration_area .section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.mpwem_registration_area .date-time-header {
+  padding: 10px 25px;
+  background: var(--mpev-base);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: -10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid var(--mpev-base);
+  position: relative;
+  z-index: 1;
+}
+.mpwem_registration_area .date-time-header .ticket-title {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mpev-base-txt);
+}
+.mpwem_registration_area .date-time-area {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 20px;
+}
+.mpwem_registration_area .date-time-area label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.mpwem_registration_area .date-time-area label span {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mpev-base-txt);
+}
+.mpwem_registration_area .date-time-area label i {
+  color: var(--mpev-base-txt);
+}
+.mpwem_registration_area .date-time-area .formControl {
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+.mpwem_registration_area .mpwem_booking_panel {
   margin-bottom: 20px;
 }
-.mpwem_booking_panel .mpwem_ticket_type, .mpwem_booking_panel .mpwem_ex_service {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-header, .mpwem_booking_panel .mpwem_ex_service .card-header {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header {
   background: linear-gradient(135deg, var(--mpev-base), var(--mpev-base));
   color: var(--mpev-base-txt);
   padding: 20px 25px;
   font-size: 18px;
   font-weight: 600;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body, .mpwem_booking_panel .mpwem_ex_service .card-body {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body {
   padding: 20px 25px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4640,51 +4644,51 @@ input.mpe-new-input-group-field {
   border-bottom: 1px solid #eaeaea;
 }
 @media (max-width: 600px) {
-  .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
   border-bottom: none;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info {
   flex: 0 0 50%;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-name, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-name {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-name, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-name {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 6px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-description, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-description {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-description, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-description {
   font-size: 14px;
   color: #6c757d;
   margin-bottom: 6px;
   line-height: 1.4;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining {
   font-size: 14px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
   display: inline-block;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high {
   background-color: #e6f4ea;
   color: #137333;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low {
   background-color: #fce8e6;
   color: #c5221f;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec {
   display: flex;
   align-items: center;
   margin: 0 30px;
   max-width: 200px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -4699,7 +4703,7 @@ input.mpe-new-input-group-field {
   transition: all 0.2s ease;
   padding: 10px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec {
   width: 50px;
   height: 36px;
   border: none;
@@ -4707,7 +4711,7 @@ input.mpe-new-input-group-field {
   font-size: 16px;
   margin: 0 10px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -4722,7 +4726,7 @@ input.mpe-new-input-group-field {
   transition: all 0.2s ease;
   padding: 10px;
 }
-.mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-price, .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-price {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-price {
   font-size: 18px;
   font-weight: 600;
   color: #2b3a55;
@@ -4730,10 +4734,10 @@ input.mpe-new-input-group-field {
   text-align: right;
   flex: 0 0 10%;
 }
-.mpwem_booking_panel .mpwem_ex_service {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service {
   margin-top: 30px;
 }
-.mpwem_booking_panel .mpwem_form_submit_area {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4745,11 +4749,11 @@ input.mpe-new-input-group-field {
   border-radius: 0 0 12px 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
-.mpwem_booking_panel .mpwem_form_submit_area .total {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
   font-weight: 600;
 }
-.mpwem_booking_panel .mpwem_form_submit_area button[type=submit] {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit] {
   background-color: var(--mpev-base);
   border: 1px solid var(--mpev-base);
   padding: 20px;
@@ -5529,7 +5533,7 @@ Vanilla theme css by ariful
     list-style-type: disc;
     padding-left: 22px;
     margin-bottom: 20px;
-    height: 315px;
+    max-height: 315px;
     overflow: hidden;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li {

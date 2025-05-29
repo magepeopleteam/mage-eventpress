@@ -2362,49 +2362,7 @@ div.mep-default-feature-content p {
 .mep-event-meta {
 	font-size: 16px;
 }
-.mpwem_registration_area .date-time-header{
-	padding: 10px 25px;
-	background: var(--mpev-base);
-	border-radius:12px 12px 0 0;
-	margin-bottom: -10px;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 20px;
-	border: 1px solid var(--mpev-base);
-	position: relative;
-	z-index: 1;
-	.ticket-title{
-		margin: 0;
-		padding: 0;
-		font-size: 18px;
-		font-weight: 600;
-		color: var(--mpev-base-txt);
-	}
-}
-.mpwem_registration_area .date-time-area{
-	display: flex;
-	justify-content: end;
-	align-items: center;
-	gap: 20px;
-	
-}
-.date-time-area label{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 15px;
-}
-.date-time-area label span{
-	font-size: 18px;
-  	font-weight: 600;
-	color: var(--mpev-base-txt);
-}
-.date-time-area label i{
-	color: var(--mpev-base-txt);
-}
+
 /***********************
 * Event List Caraousel Nav CSS
 * Dev: Ari

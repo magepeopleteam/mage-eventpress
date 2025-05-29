@@ -6047,6 +6047,10 @@ Vanilla theme css by ariful
     font-size: 25px;
   }
 }
+.mpwem_slider_area {
+  margin-top: 0;
+}
+
 .mep-event-faq-part {
   background: white;
   border-radius: 12px;

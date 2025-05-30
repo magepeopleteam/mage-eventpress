@@ -4668,7 +4668,7 @@ input.mpe-new-input-group-field {
   padding: 18px 0;
   border-bottom: 1px solid #eaeaea;
 }
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
   .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data {
     flex-direction: row;
     align-items: start;
@@ -4677,7 +4677,7 @@ input.mpe-new-input-group-field {
   }
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info {
-  flex: 0 0 50%;
+  flex: 0 0 49%;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name {
   font-size: 16px;
@@ -4754,9 +4754,9 @@ input.mpe-new-input-group-field {
   font-weight: 600;
   color: #2b3a55;
   text-align: right;
-  flex: 0 0 25%;
+  flex: 0 0 20%;
 }
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
   .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
     text-align: left;
     flex: 0 0 100%;

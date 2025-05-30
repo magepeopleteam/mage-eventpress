@@ -154,7 +154,10 @@ ul#mep_add_calender_links li a{
 	padding: 20px;
 	font-size: 14px;
 	letter-spacing: inherit;
-	width: 100%;
+	width:auto;
+	@media (min-width:1320px) {
+		width: 100%;
+	}
 }
 .mep-events-wrapper a {
 	text-decoration: none;

@@ -180,7 +180,13 @@ ul#mep_add_calender_links li a {
   padding: 20px;
   font-size: 14px;
   letter-spacing: inherit;
-  width: 100%;
+  width: auto;
+}
+@media (min-width: 1320px) {
+  .mep-events-wrapper,
+  .mep_related_product_area {
+    width: 100%;
+  }
 }
 
 .mep-events-wrapper a {
@@ -5461,7 +5467,7 @@ Vanilla theme css by ariful
     flex-direction: column;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .mpwem_content_area {
     margin: 40px 0 0 0;
     flex-direction: row;
@@ -5473,7 +5479,7 @@ Vanilla theme css by ariful
     width: 100%;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .mpwem_left_content {
     max-width: 70%;
     margin-right: 2%;
@@ -5485,7 +5491,7 @@ Vanilla theme css by ariful
     width: 100%;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .mpwem_right_content {
     max-width: 30%;
     width: 100%;
@@ -5719,7 +5725,7 @@ Vanilla theme css by ariful
     border-radius: 10px;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .faq_area {
     padding: 40px;
     margin: 40px auto;
@@ -5733,7 +5739,7 @@ Vanilla theme css by ariful
     line-height: 30px;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .faq_area .desc {
     width: 36vw;
     margin: auto;
@@ -5750,7 +5756,7 @@ Vanilla theme css by ariful
     gap: 10px;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .faq_area .faq_items {
     margin-top: 40px;
     flex-direction: row;
@@ -5765,7 +5771,7 @@ Vanilla theme css by ariful
     border-radius: 10px;
   }
 }
-@media only screen and (min-width: 10px) and (min-width: 540px) {
+@media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .faq_area .faq_items .item {
     width: 49%;
   }

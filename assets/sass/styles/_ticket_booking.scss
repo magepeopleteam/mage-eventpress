@@ -33,9 +33,8 @@
   font-size: 18px;
   font-weight: 600;
   color: #2b3a55;
-  width: 100px;
   text-align: right;
-  flex: 0 0 10%;
+  flex: 0 0 25%;
 }
 
 @mixin qty-btn {
@@ -196,6 +195,10 @@
                         }
                         .ticket-price{
                             @include ticket-price;
+                            @media (max-width: 600px){
+                                text-align: left;
+                                flex: 0 0 100%;
+                            }
                         }  
                     }
                     .mep_attendee_info{

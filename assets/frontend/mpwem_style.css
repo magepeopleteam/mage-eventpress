@@ -4753,9 +4753,14 @@ input.mpe-new-input-group-field {
   font-size: 18px;
   font-weight: 600;
   color: #2b3a55;
-  width: 100px;
   text-align: right;
-  flex: 0 0 10%;
+  flex: 0 0 25%;
+}
+@media (max-width: 600px) {
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
+    text-align: left;
+    flex: 0 0 100%;
+  }
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info {
   background-color: #ececec;

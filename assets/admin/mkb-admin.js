@@ -409,6 +409,7 @@ $(document).on('click', '.mep-timeline-item-delete', function (e) {
 
 function empty_timeline_form(){
 	$('input[name="mep_timeline_title"]').val('');
+	$('input[name="mep_timeline_time"]').val('');
 	tinyMCE.get('mep_timeline_content').setContent('');
 	$('input[name="mep_timeline_item_id"]').val('');
 }

@@ -60,11 +60,12 @@
   width: 100%;
   display: block;
   font-weight: normal;
-  padding: 10px;
+  padding: 5px 10px;
   font-size: 18px;
   border: 1px solid #dfdfdf;
 }
 .mep-modal-container .mep-modal-content label {
+  color: #000;
   display: flex;
   justify-content: start;
   align-items: start;
@@ -818,7 +819,7 @@ iframe#gmap_canvas {
   margin: 15px 0;
 }
 
-#mp_event_all_info_in_tab label {
+.mp_event_all_meta_in_tab label {
   position: relative;
   margin-bottom: 10px;
   width: auto;
@@ -1844,7 +1845,7 @@ h3.mep_virtual_sec_title {
   width: 0;
   height: 0;
 }
-.post-type-mep_events .switch span.slider,
+
 #mp_event_all_info_in_tab label.mpev-switch .mpev-slider {
   position: absolute;
   cursor: pointer;
@@ -1857,7 +1858,7 @@ h3.mep_virtual_sec_title {
   border: 1px solid var(--mpev-gray);
   transition: 0.5s;
 }
-.post-type-mep_events .switch span.slider:before,
+
 #mp_event_all_info_in_tab label.mpev-switch .mpev-slider:before {
   position: absolute;
   content: "";

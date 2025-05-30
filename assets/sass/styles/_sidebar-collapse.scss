@@ -32,6 +32,7 @@
             
             padding:0 40px;
             padding-bottom:40px;
+            
         }
         p{
             margin: 15px 0;
@@ -46,11 +47,12 @@
             width: 100%;
             display: block;
             font-weight: normal;
-            padding: 10px;
+            padding:5px 10px;
             font-size: 18px;
             border: 1px solid #dfdfdf;
         }
         label{
+            color: #000;
             display: flex;
             justify-content: start;
             align-items: start;

@@ -282,6 +282,12 @@ A. You can create a support ticket here with the features details that you need,
 = Q.How can I get the best support from the plugin Company   =
 A. You can create a support ticket here with problem details with possible screenshots that you have a problem, One of our support members will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
 
+= Q.How can I report security bugs? =
+A. You can report security bugs through the Patchstack Vulnerability Disclosure
+Program. The Patchstack team helps validate, triage, and handle any security
+vulnerabilities.
+[Report a security vulnerability.](https://patchstack.com/database/vdp/mage-eventpress)
+
 
 == Changelog ==
 = 4.3.9 =

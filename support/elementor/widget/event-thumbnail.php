@@ -90,7 +90,7 @@ class MEPEventThumbnailtWidget extends Widget_Base {
 		if (get_post_type($event_id) == 'mep_events') {
 	?>	
         <div class="mep-event-thumbnail mep-elementor-widget-thumb">
-            <h2><?php echo get_the_post_thumbnail( $event_id, 'full'); ?></h2>        
+            <div class="mep-event-thumb-img"><?php echo get_the_post_thumbnail( $event_id, 'full'); ?></div>        
         </div>
 	<?php
 }

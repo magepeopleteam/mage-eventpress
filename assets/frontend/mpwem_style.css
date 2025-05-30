@@ -688,10 +688,17 @@ ul.mep-social-share a {
 
 ul.mep-social-share {
   padding: 15px 0 0 0;
+  list-style: none;
+  list-style-type: none;
 }
 
 ul.mep-social-share li {
   margin: 0 8px 0 0;
+}
+
+ul.mep-social-share li::marker {
+  display: none;
+  content: '';
 }
 
 ul.mep-social-share li a {
@@ -6133,4 +6140,8 @@ Vanilla theme css by ariful
   padding: 20px 25px;
 }
 
-/*# sourceMappingURL=mpwem_style.css.map */
+.mep-faq-item { margin-bottom: 10px; }
+.mep-faq-question { width: 100%; text-align: left; background: #f7f7f7; border: none; padding: 10px; cursor: pointer; font-size: 16px; font-weight: 600; }
+.mep-faq-answer { padding: 10px; background: #fff; border: 1px solid #eee; display: none; }
+.mep-event-thumb-img img { max-width: 100%; height: auto; display: block; }
+.mep-default-share-btn { margin-top: 20px; }

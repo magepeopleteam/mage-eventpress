@@ -91,22 +91,40 @@ class MEPEventFaqtWidget extends Widget_Base {
 		if (get_post_type($event_id) == 'mep_events') {
 			$mep_event_faq = get_post_meta($event_id, 'mep_event_faq', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_faq', true)) : [];
 	?>	
-        <div class="mep-default-title mep-elementor-widget-faq">			
-			<div class="mep-event-faq-part">
-				<div id='mep-event-accordion' class="">
-					<?php
-					if(is_array($mep_event_faq) && sizeof($mep_event_faq) > 0){
-						foreach ($mep_event_faq as $field) {
-						?>
-							<h3><?php if ($field['mep_faq_title'] != '') echo esc_attr($field['mep_faq_title']); ?></h3>
-							<p><?php if ($field['mep_faq_content'] != '') echo wp_kses_post(html_entity_decode($field['mep_faq_content'])); ?></p>
-						<?php
-						}
-					}
-					?>
-				</div>
-			</div>
+        <div class="mep-default-title mep-elementor-widget-faq">         
+            <div class="mep-event-faq-part">
+                <div id='mep-event-accordion' class="">
+                    <?php
+                    if(is_array($mep_event_faq) && sizeof($mep_event_faq) > 0){
+                        foreach ($mep_event_faq as $field) {
+                        ?>
+                            <div class="mep-faq-item">
+                                <button type="button" class="mep-faq-question"><?php if ($field['mep_faq_title'] != '') echo esc_attr($field['mep_faq_title']); ?></button>
+                                <div class="mep-faq-answer" style="display:none;">
+                                    <?php if ($field['mep_faq_content'] != '') echo wp_kses_post(html_entity_decode($field['mep_faq_content'])); ?>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.mep-faq-question').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var answer = this.nextElementSibling;
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                    } else {
+                        answer.style.display = 'block';
+                    }
+                });
+            });
+        });
+        </script>
 	<?php
 	}
 	}

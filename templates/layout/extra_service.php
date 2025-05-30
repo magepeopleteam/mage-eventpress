@@ -38,20 +38,22 @@
 							$input_data['type'] = $ticket_input_type;
 							$count++;?>
                             <div class="mep_ticket_item">
-                                <div class="ticket-info">
-                                    <div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
-                                    <input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
-	                                <?php if ( $mep_available_seat == 'on' ) { ?>
-                                        <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-			                                <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
-                                        </div>
-	                                <?php } ?>
-								</div>
-                                <div class="quantity-control">
-									<?php MP_Custom_Layout::qty_input($input_data); ?>
-                                </div>
-								<div class="ticket-price">
-                                    <?php echo wc_price($ticket_price); ?>
+								<div class="ticket-data">
+									<div class="ticket-info">
+										<div class="ticket-name"><?php echo esc_html($ticket_name); ?></div>
+										<input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
+										<?php if ( $mep_available_seat == 'on' ) { ?>
+											<div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+											</div>
+										<?php } ?>
+									</div>
+									<div class="quantity-control">
+										<?php MP_Custom_Layout::qty_input($input_data); ?>
+									</div>
+									<div class="ticket-price">
+										<?php echo wc_price($ticket_price); ?>
+									</div>
 								</div>
                             </div>
 							<?php

@@ -14,7 +14,7 @@
 @mixin card-body {
   padding: 20px 25px;
 }
-@mixin ticket-item {
+@mixin ticket-data{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -137,62 +137,74 @@
             .card-body{
                 @include card-body;
                 .mep_ticket_item{
-                    @include ticket-item;
-                    @media (max-width: 600px) {
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 10px;
-                    }
+                    display: flex;
+                    flex-direction: column;
                     &:last-child    {
                         border-bottom: none;
-                    }       
-                    .ticket-info{
-                        @include ticket-info;
-                        .ticket-name {
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-bottom: 6px;
-                        }
-                        .ticket-description {
-                            font-size: 14px;
-                            color: #6c757d;
-                            margin-bottom: 6px;
-                            line-height: 1.4;
-                        }
-                        .ticket-remaining {
-                            font-size: 14px;
-                            font-weight: 600;
-                            padding: 3px 8px;
-                            border-radius: 4px;
-                            display: inline-block;
-                            &.remaining-high{
-                                background-color: #e6f4ea;
-                                color: #137333;
-                            }
-                            &.remaining-low{
-                                background-color: #fce8e6;
-                                color: #c5221f;
-                            }
-                        }
                     }
-                    .quantity-control{
-                        .qtyIncDec{
-                            @include quantity-control;
-                            max-width: 200px;
-                            .decQty{
-                                @include qty-btn;
+                    .ticket-data{ 
+                        @include ticket-data; 
+                        @media (max-width: 600px) {
+                            flex-direction: row;
+                            align-items: start;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                        }    
+                        .ticket-info{
+                            @include ticket-info;
+                            .ticket-name {
+                                font-size: 16px;
+                                font-weight: 600;
+                                margin-bottom: 6px;
                             }
-                            .inputIncDec{
-                                @include qty-input;
+                            .ticket-description {
+                                font-size: 14px;
+                                color: #6c757d;
+                                margin-bottom: 6px;
+                                line-height: 1.4;
                             }
-                            .incQty{
-                                @include qty-btn;
+                            .ticket-remaining {
+                                font-size: 14px;
+                                font-weight: 600;
+                                padding: 3px 8px;
+                                border-radius: 4px;
+                                display: inline-block;
+                                &.remaining-high{
+                                    background-color: #e6f4ea;
+                                    color: #137333;
+                                }
+                                &.remaining-low{
+                                    background-color: #fce8e6;
+                                    color: #c5221f;
+                                }
                             }
                         }
+                        .quantity-control{
+                            .qtyIncDec{
+                                @include quantity-control;
+                                max-width: 200px;
+                                .decQty{
+                                    @include qty-btn;
+                                }
+                                .inputIncDec{
+                                    @include qty-input;
+                                }
+                                .incQty{
+                                    @include qty-btn;
+                                }
+                            }
+                        }
+                        .ticket-price{
+                            @include ticket-price;
+                        }  
                     }
-                    .ticket-price{
-                        @include ticket-price;
-                    }   
+                    .mep_attendee_info{
+                        background-color: #ececec;
+                        border-radius:0 0 12px 12px;
+                        .mep_form_item{
+                            padding: 10px;
+                        }
+                    } 
                 }
             }
         }

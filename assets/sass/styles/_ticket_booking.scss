@@ -34,7 +34,7 @@
   font-weight: 600;
   color: #2b3a55;
   text-align: right;
-  flex: 0 0 25%;
+  flex: 0 0 20%;
 }
 
 @mixin qty-btn {
@@ -143,14 +143,14 @@
                     }
                     .ticket-data{ 
                         @include ticket-data; 
-                        @media (max-width: 600px) {
+                        @media (max-width:1024px) {
                             flex-direction: row;
                             align-items: start;
                             flex-wrap: wrap;
                             gap: 10px;
                         }    
                         .ticket-info{
-                            @include ticket-info;
+                            flex: 0 0 49%;
                             .ticket-name {
                                 font-size: 16px;
                                 font-weight: 600;
@@ -179,6 +179,7 @@
                             }
                         }
                         .quantity-control{
+                            
                             .qtyIncDec{
                                 @include quantity-control;
                                 max-width: 200px;
@@ -195,7 +196,7 @@
                         }
                         .ticket-price{
                             @include ticket-price;
-                            @media (max-width: 600px){
+                            @media (max-width:1024px){
                                 text-align: left;
                                 flex: 0 0 100%;
                             }

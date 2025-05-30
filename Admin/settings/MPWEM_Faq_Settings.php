@@ -112,18 +112,18 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                     <div class="mep-modal-content">
                         <span class="mep-modal-close"><i class="fas fa-times"></i></span>
                         <div class="title">
-                            <h3><?php _e('Add F.A.Q.','mage-eventpress'); ?></h3>
+                            <h3><?php _e('Frequently Asked Questions','mage-eventpress'); ?></h3>
                             <div id="mep-faq-msg"></div>
                         </div>
                         <div class="content">
                             <label>
-                                <?php _e('Add Title','mage-eventpress'); ?>
+                                <?php _e('Question','mage-eventpress'); ?>
                                 <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>"> 
                                 <input type="text"   name="mep_faq_title"> 
                                 <input type="hidden" name="mep_faq_item_id">
                             </label>
                             <label>
-                                <?php _e('Add Content','mage-eventpress'); ?>
+                                <?php _e('Answere','mage-eventpress'); ?>
                             </label>
                             <?php 
                                 $content = ''; 
@@ -135,7 +135,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                                 );
                                 wp_editor( $content, $editor_id, $settings );
                             ?>
-                            <div class="mT"></div>
+                            <div style="margin-top: 10px;"></div>
                             <div class="mep_faq_save_buttons">
                                 <p><button id="mep_faq_save" class="button button-primary button-large"><?php _e('Save','mage-eventpress'); ?></button> <button id="mep_faq_save_close" class="button button-primary button-large">save close</button><p>
                             </div>
@@ -157,7 +157,7 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                         <div class="mep-faq-item mpStyle" data-id="<?php echo esc_attr($key); ?>">
                             <section class="faq-header" data-collapse-target="#faq-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
-                                    <p><?php echo esc_html($value['mep_faq_title']); ?></p>
+                                    <p><b><?php _e('Question:','mage-eventpress'); ?></b> <span class="question"><?php echo esc_html($value['mep_faq_title']); ?></span></p>
                                     <input type="hidden" name='mep_faq_title_raw[]' value='<?php echo esc_html($value['mep_faq_title']); ?>' class="hidden">
                                     <div class="faq-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
@@ -168,8 +168,9 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                             </section>
                             <section class="faq-content mB" data-collapse="#faq-content-<?php echo esc_attr($key); ?>">
                                 <?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?>
-                                <textarea style='display:none;' name="mep_faq_details_raw[]" id=""><?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?></textarea>
                             </section>
+                            <textarea style='display:none;' name="mep_faq_details_raw[]" id=""><?php echo wp_kses_post(wpautop(wp_kses_post($value['mep_faq_content']))); ?></textarea>
+
                         </div>
                     <?php
                 endforeach;

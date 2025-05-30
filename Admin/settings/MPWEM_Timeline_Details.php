@@ -101,7 +101,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                                 );
                                 wp_editor( $content, $editor_id, $settings );
                             ?>
-                            <div class="mT"></div>
+                            <div style="margin-top: 10px;"></div>
                             <div class="mep_timeline_save_buttons">
                                 <p><button id="mep_timeline_save" class="button button-primary button-large"><?php _e('Save','mage-eventpress'); ?></button> <button id="mep_timeline_save_close" class="button button-primary button-large">save close</button><p>
                             </div>

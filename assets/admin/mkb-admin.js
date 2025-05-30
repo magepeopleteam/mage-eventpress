@@ -228,7 +228,7 @@
 		$('.mep_faq_update_buttons').show();
 		var itemId = $(this).closest('.mep-faq-item').data('id');
 		var parent = $(this).closest('.mep-faq-item');
-		var headerText = parent.find('.faq-header p').text().trim();
+		var headerText = parent.find('.faq-header .question').text().trim();
 		var faqContentId = parent.find('.faq-content').text().trim();
 		var editorId = 'mep_faq_content';
 		$('input[name="mep_faq_title"]').val(headerText);

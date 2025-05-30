@@ -55,18 +55,27 @@ class MEP_Required_Plugins
 	}
 
 	public function mep_plugin_activate(){
-		if(isset($_GET['mep_plugin_activate']) && !is_plugin_active( $_GET['mep_plugin_activate'] )){
-			$slug = $_GET['mep_plugin_activate'];
-			$activate = activate_plugin( $slug );
-			$url = admin_url('plugins.php');
-			echo '<script>
-			var url = "'.$url.'";
-			window.location.replace(url);
-			</script>';
-		}
-		else{
+		// Only allow users with the right capability
+		if (!current_user_can('activate_plugins')) {
 			return false;
 		}
+		// Check required params and nonce
+		if (isset($_GET['mep_plugin_activate'], $_GET['_mep_nonce'])) {
+			$slug = $_GET['mep_plugin_activate'];
+			$allowed_plugins = array('woocommerce/woocommerce.php'); // Whitelist
+			if (!in_array($slug, $allowed_plugins, true)) {
+				return false;
+			}
+			if (!wp_verify_nonce($_GET['_mep_nonce'], 'mep_activate_plugin_' . $slug)) {
+				return false;
+			}
+			if (!is_plugin_active($slug)) {
+				$activate = activate_plugin($slug);
+				$url = admin_url('plugins.php');
+				echo '<script>var url = "' . esc_js($url) . '"; window.location.replace(url);</script>';
+			}
+		}
+		return false;
 	}
 
 	public function mep_admin_notices(){		
@@ -82,8 +91,9 @@ class MEP_Required_Plugins
         }
         elseif($this->mep_chk_plugin_folder_exist($slug) == true && !is_plugin_active( 'woocommerce/woocommerce.php')){
             $plugin = 'woocommerce/woocommerce.php';
-            $url = admin_url('plugins.php').'?mep_plugin_activate='.$plugin;
-            $wc_btn = '<a href="'.esc_url($url).'">Active Now</a>';
+            $nonce = wp_create_nonce('mep_activate_plugin_' . $plugin);
+            $url = admin_url('plugins.php').'?mep_plugin_activate='.$plugin.'&_mep_nonce='.$nonce;
+            $wc_btn = '<a href="'.esc_url($url).'">Activate Now</a>';
             printf(
                 '<div class="error" style="'.$style.'"><p><strong>%s</strong> '.$wc_btn.'</p></div>',
                 __('You must activate the WooCommerce plugin before activating Event Manager For WooCommerce. Because it is dependent on the WooCommerce plugin.','mage-eventpress')

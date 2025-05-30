@@ -15,6 +15,7 @@
 			echo apply_filters('mage_event_single_org_name', $content, $event_id);
 		}
 	}
+	
 	add_action('mep_event_organizer_name', 'mep_ev_org_name');
 	if (!function_exists('mep_ev_org_name')) {
 		function mep_ev_org_name() {
@@ -31,4 +32,27 @@
 			$content = ob_get_clean();
 			echo apply_filters('mage_event_single_org_name', $content, $post->ID);
 		}
+	}
+
+	add_action('mep_event_organized_by', 'mep_event_organized_by');
+	function mep_event_organized_by($event_id) {
+		// Get organizer terms to identify primary organizer
+		$org_terms = get_the_terms($event_id, 'mep_org');
+		$links = array();
+		if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
+				<div class="mep-org-details">
+					<div class="org-name">
+						<div><?php echo _e('Organized By:'); ?></div>
+						<?php foreach ($org_terms as $index => $org): ?>
+							<a href="<?php echo get_term_link($org->term_id); ?>">
+								<?php echo esc_html($org->name); ?>
+							</a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php else :
+				// If no custom organizer display is needed, use the default
+				do_action('mep_event_organizer', $event_id);
+		endif;
+
 	}

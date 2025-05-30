@@ -75,139 +75,7 @@
 				max-width: 70%;
 				margin-right:2%;
 			}
-			.mep-timeline {
-				position: relative;
-				padding: 20px 0;
-				list-style: none;
-				.item {
-					display: flex;
-					align-items: flex-start;
-					margin-bottom: 20px;
-					position: relative;
-					padding-left: 40px;
-					&:last-child {
-						margin-bottom: 0;
-						.icon::after {
-							display: none;
-						}
-					} 
-					.icon {
-						position: absolute;
-						left: 0;
-						top: 0;
-						width: 40px;
-						height: 40px;
-						border-radius: 50%;
-						background-color: #fff; 
-						border: 1px solid var(--mpev-primary);
-						color: var(--mpev-primary);
-						font-weight: bold;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						font-size: var(--button_fs);
-    					font-weight: var(--fw-medium);
-						z-index: 1;
-						&::after {
-							content: '';
-							position: absolute;
-							left: 50%;
-							top: 100%;
-							width: 1px;
-							height: calc(100% + 50px); // Extend the line to connect items
-							background-color: var(--mpev-primary); // Grey timeline line
-							z-index: -1;
-							transform: translateX(-50%);
-						}
-					}
-					.content {
-						padding-left: 10px;
-						position: relative;
-						margin-top: 3px;
-						.title {
-							font-size: 16px;
-							font-weight: bold;
-							margin-bottom: 5px;
-							color: #333; // Dark text color for titles
-						}
 
-						.details {
-							font-size: 14px;
-							color: #666;
-						}
-					}
-				}
-			}
-			.date-time-area{
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				flex-direction: column;
-				margin: 20px 0;
-				padding: 10px 0;
-				gap: 20px;
-				label,.mpwem_time_area{
-					width: 100%;
-					position: relative;
-					input,select{
-						border: 1px solid var(--mpev-primary);
-						padding: 15px;
-						padding-left: 30px;
-						&:focus{
-							background-color: #fff;
-							box-shadow: 0 0 5px var(--mpev-primary);
-							color: var(--mpev-primary);
-						}
-					}
-					select.formControl{
-						background:none;
-					}
-					span{
-						display: none;
-					}
-					i{
-						position: absolute;
-						z-index: 1;
-						top: 50%;
-						left:10px;
-						color: var(--mpev-primary);
-						transform: translateY(-50%);
-					}
-				}
-				label{
-					position: relative;
-					font-family: "Font Awesome 5 Free";
-					&::after{
-						
-						content: "\f078";
-						position: absolute;
-						top:50%;
-						right:10px;
-						transform: translateY(-50%);
-						color: var(--mpev-primary);
-					}
-				}
-			}
-			
-			.mpwem_form_submit_area{
-				._mpBtn{
-					color:var(--mpev-primary);
-					border: 1px solid var(--mpev-primary);
-					border-radius: 5px;
-					padding:13px 25px;
-					font-weight: bold;
-					.mpwem_total{
-						color:var(--mpev-primary);
-					}
-				}
-				button[type=submit]{
-					background-color: var(--mpev-primary);
-					border: 1px solid var(--mpev-primary);
-				}
-				.mpStyle [class*="_themeButton"]{
-					padding: 10px;
-				}
-			}
 		}
 		.mpwem_right_content{
 			max-width: 100%;
@@ -246,7 +114,7 @@
 					}
 					button{
 						background-color: #fff;
-						padding:15px;
+						padding:13px 15px !important;
 						border: 1px solid var(--mpev-primary);
 						margin-top: 20px;
 						color: var(--mpev-primary);
@@ -270,6 +138,8 @@
 							list-style-type:disc;
 							padding-left: 22px;
 							margin-bottom: 20px;
+							max-height: 315px;
+        					overflow: hidden;
 							li{
 								margin-bottom: 20px;
 								&::marker {
@@ -322,7 +192,7 @@
 							background-color: #fff;
 							color: var(--mpev-primary) !important;
 							height: auto !important;
-							padding:10px !important;
+							padding:5px 10px !important;
 							border-radius: var(--dBR) !important;
 							border: 1px solid var(--mpev-primary);
 							margin: 0 !important;
@@ -346,9 +216,9 @@
 				}
 				.share_widgets{
 					text-align: center;
-					padding: 30px;
+					padding: 15px;
 					.mep-social-share{
-						margin-top: 25px;
+						margin-top: 10px;
 						li{
 							margin: 7px;
 							a{
@@ -383,10 +253,10 @@
 					background-color: #fff;
 					color: var(--mpev-primary) !important;
 					height: auto !important;
-					padding:15px !important;
+					padding:13px 15px !important;
 					border-radius: var(--dBR) !important;
 					border: 1px solid var(--mpev-primary);
-					margin-top: 20px;
+					margin-top: 0;
 					color: var(--mpev-primary);
 					font-size: var(--button_fs);
 					font-weight: var(--fw-medium);

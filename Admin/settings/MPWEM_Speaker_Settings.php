@@ -146,6 +146,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         $speakers_id     = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
         $speaker_icon    = get_post_meta($event_id, 'mep_event_speaker_icon', true) ? get_post_meta($event_id, 'mep_event_speaker_icon', true) : 'fa fa-microphone';
         $speaker_label   = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker", "mage-eventpress");
+        if($speakers_id):
         ?>
         <div class="speaker-widget">
             <h2 class="_mB"><i class="<?php echo esc_attr($speaker_icon); ?>"></i> <?php echo esc_html($speaker_label); ?></h2>
@@ -165,6 +166,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             </div>
         </div>
         <?php
+        endif;
         }
         public function show_all_icons() {
             $icons = $this->get_icons();

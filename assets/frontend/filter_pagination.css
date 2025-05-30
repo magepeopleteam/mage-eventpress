@@ -175,3 +175,12 @@ div.buttonGroup > *,
 }
 .list_with_filter_section label {position: relative;}
 .list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
+
+@media only screen and (min-width: 10px) {
+   .mep_smart_theme div.mpwem_organizer, .mep_smart_theme div.mpwem_organizer a{ font-size: 18px !important;}
+   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i{width:30px !important; height:30px !important;}
+   .mep_smart_theme div.mpwem_location, div.mpwem_time{margin:0px !important;}
+   .mpwem_registration_area input#mpwem_date_time{border-radius:5px !important;}
+   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {padding: 10px 30px !important; }
+    .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn{padding: 5px 10px !important;}
+}

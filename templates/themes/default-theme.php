@@ -24,12 +24,12 @@
 	// echo $event_id;
 	$gallery_image_arr = get_post_meta( $event_id, 'mep_gallery_images', true ) ? get_post_meta( $event_id, 'mep_gallery_images', true ) : [];
 ?>
+<div class="mep-default-title">
+    <?php do_action( 'mep_event_title', $event_id ); ?>
+</div>
 <div class="mpStyle mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
-        <div class="mep-default-title">
-			<?php do_action( 'mep_event_title', $event_id ); ?>
-        </div>
-        <div class="_mT mpwem_slider_area">
+        <div class="mpwem_slider_area">
 		    <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-date-location">
@@ -73,7 +73,8 @@
 				<?php } ?>
         </div>
         <div class="mep-default-feature-content">
-			<?php do_action( 'mep_event_details', $event_id ); ?>
+            <div class="mpwem_details_content"><?php the_content(); ?></div>
+            <?php do_action('mpwem_timeline'); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
 			<?php
@@ -106,26 +107,7 @@
         <div class="df-sidebar-part">
             <?php if ($hide_org_by_details == 'no' && has_term('','mep_org',$event_id)) : ?>
                 <div class="mep-default-sidrbar-meta">
-                    <?php 
-                    // Get organizer terms to identify primary organizer
-                    $org_terms = get_the_terms($event_id, 'mep_org');
-                    $links = array();
-                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
-                            <div class="mep-org-details">
-                                <div class="org-name">
-                                    <div><?php echo _e('Organized By:'); ?></div>
-                                    <?php foreach ($org_terms as $index => $org): ?>
-                                        <a href="<?php echo get_term_link($org->term_id); ?>">
-                                            <?php echo esc_html($org->name); ?>
-                                        </a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        <?php else :
-                            // If no custom organizer display is needed, use the default
-                            do_action('mep_event_organizer', $event_id);
-                    endif;
-                    ?>
+                    <?php  do_action('mep_event_organized_by', $event_id); ?>
                 </div>
             <?php endif; ?>
 

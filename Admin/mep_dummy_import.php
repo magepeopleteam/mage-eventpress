@@ -442,19 +442,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time' => 	'9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time'  =>  '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time'  => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -625,19 +629,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time'  => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time'  => '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -804,19 +812,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time' => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time' => '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -983,19 +995,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time'  => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time'  => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time'  => '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -1173,19 +1189,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
 										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_time'  => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time' => '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -1353,19 +1373,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time' => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time' => '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' => '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -1550,19 +1574,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time'  => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
 										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_time' 	=> '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' 	=> '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),
@@ -1769,19 +1797,23 @@
 									//Daywise Details
 									'mep_event_day' => array(
 										[
-										'mep_day_title' => 'Pre-Event Setup (8:00 AM - 9:00 AM)',
+										'mep_day_title' => 'Pre-Event Setup',
+										'mep_day_time' => '8:00 AM - 9:00 AM',
 										'mep_day_content' => 'Venue setup: arrange seating, stage, podium, and registration desk. <br>Test AV equipment: microphones, projectors, screens, and internet connections. <br>Set up signage, banners, and branding materials',
 										],
 										[
-										'mep_day_title' => 'Morning Session (9:00 AM - 12:00 PM)',
+										'mep_day_title' => 'Morning Session',
+										'mep_day_time' => '9:00 AM - 12:00 PM',
 										'mep_day_content' => 'Welcome speech by the host/emcee. <br>Overview of the seminar agenda and objectives. <br>Topic: "The Future of IT in Business."',
 										],
 										[
-										'mep_day_title' => 'Lunch Break (12:00 PM - 1:00 PM)',
+										'mep_day_title' => 'Lunch Break',
+										'mep_day_time' 	=> '12:00 PM - 1:00 PM',
 										'mep_day_content' => ' Lunch served. Open networking opportunity for attendees. <br>Session 1: "Cybersecurity Best Practices."',
 										],
 										[
-										'mep_day_title' => 'Post-Event Wrap-Up (4:30 PM - 5:00 PM)',
+										'mep_day_title' => 'Post-Event Wrap-Up',
+										'mep_day_time' 	=> '4:30 PM - 5:00 PM',
 										'mep_day_content' => ' Collect attendee feedback forms or distribute online survey links. <br>Pack up materials, banners, and equipment. <br>Final networking and informal conversations.',
 										],
 									),

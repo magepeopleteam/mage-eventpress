@@ -124,27 +124,30 @@
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items {
   margin-bottom: 20px;
 }
-#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header {
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item {
+  margin-bottom: 20px;
+}
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header {
   position: relative;
   z-index: 0;
 }
-#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header.active {
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header.active {
   background-color: var(--mpev-light);
 }
-#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header .timeline-action {
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header .timeline-action {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
   z-index: 1;
 }
-#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-header .timeline-action span {
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header .timeline-action span {
   padding: 5px 10px;
   background-color: var(--mpev-light);
   color: var(--mpev-primary);
   border-radius: 2px;
 }
-#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .timeline-content {
+#mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-content {
   display: none;
 }
 

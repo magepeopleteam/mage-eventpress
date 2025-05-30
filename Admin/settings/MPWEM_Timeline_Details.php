@@ -79,7 +79,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                         </div>
                         <div class="content">
                             <label>
-                                <?php _e('Add Title','mage-eventpress'); ?>
+                                <?php _e('Title','mage-eventpress'); ?>
                                 <input type="hidden" name="mep_post_id" value="<?php echo $post_id; ?>" > 
                                 <input type="text"   name="mep_timeline_title" placeholder="<?php esc_html_e('Pre-Event Setup', 'mage-eventpress'); ?>"> 
                                 <input type="hidden" name="mep_timeline_item_id">
@@ -124,9 +124,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
                         <div class="mep-timeline-item mpStyle" data-id="<?php echo esc_attr($key); ?>">
                             <section class="timeline-header" data-collapse-target="#timeline-content-<?php echo esc_attr($key); ?>">
                                 <label class="mpev-label">
-                                    <p><span class="title"><?php echo esc_html($value['mep_day_title']); ?></span> <span class="time"><?php echo esc_html(isset($value['mep_day_time'])?$value['mep_day_time']:''); ?></span></p>
-                                    
-
+                                    <p><b><?php _e('Title:','mage-eventpress'); ?></b> <span class="title"><?php echo esc_html($value['mep_day_title']); ?></span> <b><?php _e('Time:','mage-eventpress'); ?></b> <span class="time"><?php echo esc_html(isset($value['mep_day_time'])?$value['mep_day_time']:''); ?></span></p>
                                     <div class="timeline-action">
                                         <span class="" ><i class="fas fa-eye"></i></span>
                                         <span class="mep-timeline-item-edit" data-modal="mep-timeline-item-new" ><i class="fas fa-edit"></i></span>

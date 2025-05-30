@@ -99,8 +99,8 @@
                                     <div class="ticket-price">
 										<?php echo wc_price( $ticket_price ); ?>
                                     </div>
+	                                <?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
                                 </div>
-								<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
 								<?php
 							}
 						}

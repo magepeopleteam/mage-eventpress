@@ -4529,7 +4529,7 @@ input.mpe-new-input-group-field {
 }
 .mep-timeline .timeline .timeline-item {
   position: relative;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
   transition: transform 0.3s ease;
 }
 .mep-timeline .timeline .timeline-item:hover {
@@ -4656,57 +4656,62 @@ input.mpe-new-input-group-field {
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
   display: flex;
+  flex-direction: column;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
+  border-bottom: none;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 18px 0;
   border-bottom: 1px solid #eaeaea;
 }
 @media (max-width: 600px) {
-  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item {
-    flex-direction: column;
-    align-items: center;
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data {
+    flex-direction: row;
+    align-items: start;
+    flex-wrap: wrap;
     gap: 10px;
   }
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:last-child, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:last-child {
-  border-bottom: none;
-}
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info {
   flex: 0 0 50%;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-name, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-name {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 6px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-description, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-description {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description {
   font-size: 14px;
   color: #6c757d;
   margin-bottom: 6px;
   line-height: 1.4;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining {
   font-size: 14px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
   display: inline-block;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-high {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-high, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-high {
   background-color: #e6f4ea;
   color: #137333;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-info .ticket-remaining.remaining-low {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-low, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-low {
   background-color: #fce8e6;
   color: #c5221f;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec {
   display: flex;
   align-items: center;
   margin: 0 30px;
   max-width: 200px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .decQty {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -4721,7 +4726,7 @@ input.mpe-new-input-group-field {
   transition: all 0.2s ease;
   padding: 10px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .inputIncDec {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .inputIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .inputIncDec {
   width: 50px;
   height: 36px;
   border: none;
@@ -4729,7 +4734,7 @@ input.mpe-new-input-group-field {
   font-size: 16px;
   margin: 0 10px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .quantity-control .qtyIncDec .incQty {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .incQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .incQty {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -4744,13 +4749,20 @@ input.mpe-new-input-group-field {
   transition: all 0.2s ease;
   padding: 10px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-price {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
   font-size: 18px;
   font-weight: 600;
   color: #2b3a55;
   width: 100px;
   text-align: right;
   flex: 0 0 10%;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info {
+  background-color: #ececec;
+  border-radius: 0 0 12px 12px;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item {
+  padding: 10px;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service {
   margin-top: 30px;

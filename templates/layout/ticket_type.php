@@ -54,51 +54,53 @@
 								$count ++;
 								?>
                                 <div class="mep_ticket_item">
-                                    <div class="ticket-info">
-                                        <div class="ticket-name"><?php echo esc_html( $ticket_name ); ?></div>
-										<?php if ( $ticket_details ) { ?>
-                                            <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
-										<?php } ?>
-										<?php if ( $mep_available_seat == 'on' ) { ?>
-                                            <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
-                                            </div>
-										<?php } ?>
-                                    </div>
-                                    <div class="quantity-control">
-                                        <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
-                                        <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
-										<?php
-											$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
-											if ( $early_date ) {
-												$sale_end_datetime = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
-												if ( $sale_end_datetime ) {
-													$current_time = current_time( 'Y-m-d H:i' );
-													if ( strtotime( $current_time ) < strtotime( $sale_end_datetime ) ) {
-														MP_Custom_Layout::qty_input( $input_data );
+									<div class="ticket-data">
+										<div class="ticket-info">
+											<div class="ticket-name"><?php echo esc_html( $ticket_name ); ?></div>
+											<?php if ( $ticket_details ) { ?>
+												<div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
+											<?php } ?>
+											<?php if ( $mep_available_seat == 'on' ) { ?>
+												<div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+													<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+												</div>
+											<?php } ?>
+										</div>
+										<div class="quantity-control">
+											<input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
+											<input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
+											<?php
+												$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
+												if ( $early_date ) {
+													$sale_end_datetime = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+													if ( $sale_end_datetime ) {
+														$current_time = current_time( 'Y-m-d H:i' );
+														if ( strtotime( $current_time ) < strtotime( $sale_end_datetime ) ) {
+															MP_Custom_Layout::qty_input( $input_data );
+														} else {
+															?>
+															<span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
+																	echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
+															<input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+															<?php
+														}
 													} else {
-														?>
-                                                        <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
-																echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
-                                                        <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
-														<?php
+														MP_Custom_Layout::qty_input( $input_data );
 													}
 												} else {
-													MP_Custom_Layout::qty_input( $input_data );
+													$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+													?>
+													<span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
+															echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+													<input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+													<?php
 												}
-											} else {
-												$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
-												?>
-                                                <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
-														echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
-                                                <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
-												<?php
-											}
-										?>
-                                    </div>
-                                    <div class="ticket-price">
-										<?php echo wc_price( $ticket_price ); ?>
-                                    </div>
+											?>
+										</div>
+										<div class="ticket-price">
+											<?php echo wc_price( $ticket_price ); ?>
+										</div>
+									</div>
 	                                <?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
                                 </div>
 								<?php

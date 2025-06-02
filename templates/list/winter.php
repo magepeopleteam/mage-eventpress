@@ -25,7 +25,6 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
 >
     <?php do_action('mep_event_winter_list_loop_header', $event_id); ?>
     <div class="mep_list_date_wrapper">
-        <i class="fas fa-caret-right"></i>
         <h4 class='mep_winter_list_date'><span class="mep_winter_list_dd"><?php echo esc_html(get_mep_datetime(get_post_meta($event_id,'event_upcoming_datetime',true),'day')); ?></span><span class="mep_winter_list_mm_yy"><?php echo esc_html($start_mm_yy); ?></span></h4>
     </div>
     <div class="mep_list_winter_thumb_wrapper">

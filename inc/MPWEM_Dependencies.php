@@ -116,6 +116,7 @@
 				// custom
 				wp_enqueue_script('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.js', array('jquery'), time(), true);
 				wp_enqueue_style('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time());
+				wp_enqueue_style('mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), time());
 				do_action('add_mpwem_admin_script');
 			}
 			public function frontend_enqueue() {

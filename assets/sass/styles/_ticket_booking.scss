@@ -183,6 +183,9 @@
                             .qtyIncDec{
                                 @include quantity-control;
                                 max-width: 200px;
+                                @media(max-width:1024px) {
+                                    margin:0;
+                                }
                                 .decQty{
                                     @include qty-btn;
                                 }

@@ -4718,6 +4718,11 @@ input.mpe-new-input-group-field {
   margin: 0 30px;
   max-width: 200px;
 }
+@media (max-width: 1024px) {
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec {
+    margin: 0;
+  }
+}
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty {
   width: 36px;
   height: 36px;

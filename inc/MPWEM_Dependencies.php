@@ -119,10 +119,12 @@
 				do_action('add_mpwem_admin_script');
 			}
 			public function frontend_enqueue() {
+				
 				$this->global_enqueue();
 				//wp_enqueue_script('wc-checkout');
+			
 				//timeline
-				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(''));
+				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css',array(),'1.0.0','all');
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
 				//calender
 				wp_enqueue_style('mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array());

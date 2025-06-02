@@ -33,26 +33,31 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
         </a>
     </div>
     <div class="mep_list_event_details">
-        <h4 class="mep_list_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
-        <div class="mep_list_details_col_wrapper">
+        <h2 class="mep_list_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+        <h3 class="mep_price">                    
+            <?php if ($show_price == 'yes') {
+                echo esc_html($show_price_label) . " " . mep_event_list_price($event_id);
+            } ?>
+        </h3>
+        <div class="mep_list_details_wrapper">
             <div class="mep_list_details_col_one">
-                        <span class="mep_price">                    
-                        <?php if ($show_price == 'yes') {
-                            echo esc_html($show_price_label) . " " . mep_event_list_price($event_id);
-                        } ?>
-                        </span>
-                <a href="<?php the_permalink(); ?>">
-                    <span class="mep_winter_event_time"><i class="<?php echo esc_attr($event_time_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></span>
-                    <span class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php mep_get_event_city($event_id); ?></span>
-                    <span class="mep_winter_event_date"><i class="<?php echo esc_attr($event_date_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></span>
-                    <?php 
-                    // Display the first organizer (primary organizer)
-                    $org_terms = get_the_terms($event_id, 'mep_org');
-                    if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
-                    ?>
-                    <span class='mep_winter_event_organizer'><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i> <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a></span>
-                    <?php } ?>
-                </a>
+                <?php if(get_mep_datetime($end_time_format, 'time')): ?>
+                    <p class="mep_winter_event_time"><i class="<?php echo esc_attr($event_time_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></p>
+                <?php endif; ?>
+                <?php if(mep_get_event_city($event_id)): ?>
+                    <p class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php echo mep_get_event_city($event_id); ?></p>
+                <?php endif; ?>
+                <?php if(get_mep_datetime($start_date_format, 'date')): ?>
+                    <p class="mep_winter_event_date"><i class="<?php echo esc_attr($event_date_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></p>
+                <?php endif; ?>
+                <?php
+                $org_terms = get_the_terms($event_id, 'mep_org');
+                if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
+                ?>
+                <p class='mep_winter_event_organizer'>
+                    <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i> <?php echo esc_html($org_terms[0]->name); ?></a>
+                </p>
+                <?php } ?>
             </div>
 
             <div class="mep_list_details_col_two">
@@ -77,6 +82,6 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                 <?php do_action('mep_event_list_loop_footer', $event_id); ?>
             </div>
         </div>
+        <?php do_action('mep_event_winter_list_loop_end', $event_id); ?>
     </div>
-    <?php do_action('mep_event_winter_list_loop_end', $event_id); ?>
 </div>

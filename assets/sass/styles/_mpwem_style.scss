@@ -2618,9 +2618,7 @@ New Spring list style css added by ariful
 .mep_event_spring_list .mep_more_date_btn:before {
 	border-radius: 0;
 }
-.mep_event_spring_list .mep_price {
-	line-height: 25px;
-}
+
 .mep_event_spring_list .mp_event_hide_event_time {
 	position: absolute;
 	z-index: 999999;
@@ -2687,209 +2685,165 @@ table.table.table-bordered.mep_event_add_cart_table {
 /*************************************************************
 New Winter list style css added by ariful
 **************************************************************/
-.mep_event_winter_list {
+div.mep_event_winter_list {
 	width: 100%;
+	background: white;
+	border-radius: 20px;
 	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+	border: 1px solid rgba(0,0,0,0.06);
+	transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	display: flex;
+	min-height: 160px;
+	position: relative;
 	padding: 0;
-	background: #1B3045;
+}
+div.mep_event_winter_list:hover{
+	transform: translateY(-8px) scale(1.02);
+  	box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+	border:none;
+}
+.mep_event_winter_list .mep_list_date_wrapper {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	width: 140px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
 }
 .mep_event_winter_list .mep_list_event_details {
 	width: auto;
 }
+
+.mep_event_winter_list .mep_list_winter_thumb_wrapper{
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		margin: 20px;
+		overflow: hidden;
+		position: relative;
+		border: 4px solid white;
+		box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+		flex-shrink: 0;
+		background: linear-gradient(135deg, #667eea, #764ba2);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		font-size: 2.5rem;
+}
+
 .mep_event_winter_list .mep_list_winter_thumb {
-	width: 150px;
-	height: 150px;
+	width: 100px;
+	height: 100px;
 	border-radius: 50%;
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	margin: auto;
-	border: 2px solid #F04D42;
+	
 }
-.mep_winter_event_time,
-.mep_winter_event_location,
-.mep_winter_event_date {
-	margin-bottom: 10px;
-	display: block;
-}
-.mep_event_winter_list .mep_list_date_wrapper {
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
-	background-image: linear-gradient(var(--mpev-base), #FE7541);
-}
+
 .mep_event_winter_list .mep_list_date_wrapper .mep_list_date {
 	color: #FFF;
 }
-@media only screen and (min-width: 768px) {
-	.mep_event_winter_list .mep_list_date_wrapper {
-		float: left;
-		width: 24%;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		padding: 10px;
-	}
-	.mep_event_winter_list .mep_list_event_details {
-		float: left;
-		width: 50%;
-		display: block;
-		padding: 10px;
-	}
-	.mep_event_winter_list .mep_list_winter_thumb_wrapper {
-		float: left;
-		width: 24%;
-		display: flex;
-		justify-content: flex-start;
-		flex-direction: column;
-		padding: 20px;
-	}
-	.mep_event_winter_list .mep_list_date_wrapper {
-		height: 100%;
-		position: relative;
-	}
-	.mep_event_winter_list .mep_list_date_wrapper i {
-		position: absolute;
-		right: -12px;
-		color: var(--mpev-base);
-		font-size: 40px;
-	}
-	.mep_event_winter_list .mep_list_details_col_one,
-	.mep_event_winter_list .mep_list_details_col_two {
-		width: 50%;
-		float: left;
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-	.mep_event_winter_list .mep_list_title {
-		padding-left: 10px;
-		padding-right: 10px;
-		margin-bottom: 10px;
-	}
-	.mep_event_winter_list .mep_list_title a {
-		font-weight: 600;
-	}
-	.mep_event_winter_list .mep_list_details_col_wrapper {
-		display: flex;
-		align-items: flex-end;
-	}
+
+.mep_event_winter_list .mep_list_date_wrapper {
+	float: left;
+	width: 24%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 10px;
 }
-@media only screen and (max-width: 767px) {
-	.mep_event_winter_list .mep_list_date_wrapper,
-	.mep_event_winter_list .mep_list_event_details,
-	.mep_event_winter_list .mep_list_winter_thumb_wrapper {
-		display: flex;
-		width: 100%;
-		flex-flow: column;
-		min-height: auto;
-	}
-	.mep_event_winter_list .mep_list_date_wrapper {
-		height: 200px;
-	}
-	.mep_event_winter_list .mep_list_event_details {
-		order: 2;
-		padding: 10px;
-	}
-	.mep_event_winter_list h4 {
-		font-size: 20px;
-	}
-	.mep_event_winter_list .mep_list_winter_thumb {
-		width: 100%;
-		height: 200px;
-		border-radius: 0;
-	}
-	.mep_event_winter_list {
-		display: flex !important;
-		flex-flow: column;
-	}
-	.mep_event_winter_list .mep_list_winter_thumb_wrapper {
-		order: 1;
-	}
-	.mep_event_winter_list .mep_list_event_details.mep_list_details_col_one {
-		order: 3;
-		margin-bottom: 20px;
-	}
-	.mep_event_winter_list .mep_list_event_details.mep_list_details_col_two {
-		order: 2;
-	}
-	.mep_event_winter_list .mep_list_date_wrapper {
-		display: none;
-	}
-	.mep_event_winter_list .mep_list_details_col_wrapper {
-		display: flex;
-		align-items: flex-start;
-		flex-direction: column;
-	}
-	.mep_event_winter_list .mep_list_title {
-		margin-bottom: 10px;
-	}
-	.mep_event_winter_list .mep_list_details_col_one a {
-		margin-bottom: 10px;
-	}
-	.mep_event_winter_list .mep_more_date_btn {
-		margin-bottom: 10px;
-	}
+.mep_event_winter_list .mep_list_event_details {
+	float: left;
+	width: 50%;
+	display: block;
+	padding: 10px;
+	margin:0;
 }
-.mep_event_winter_list .mep_more_date_btn.mep-tem3-title-sec.mp_event_hide_event_time {
-	display: none;
+.mep_event_winter_list .mep_list_date_wrapper {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	width: 140px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
 }
-.mep_event_winter_list .mep_more_date_btn {
-	margin-left: 0;
-	border-radius: 0;
-}
-.mep_event_winter_list .mep_more_date_btn:before {
-	border-radius: 0;
-}
-.mep_event_winter_list .mep_price {
-	line-height: 25px;
-	margin-bottom: 10px;
-}
-.mep_event_winter_list .mp_event_hide_event_time {
-	position: absolute;
-	z-index: 999999;
-	right: 15px;
-	top: 5px;
-	margin-top: 0;
-	height: 38px;
-}
-.mep_event_winter_list ul.mp_event_more_date_list {
-	top: 0;
-	max-height: 100%;
-}
-.mep_event_winter_list ul.mp_event_more_date_list li {
-	padding: 5px;
-}
-.mep_event_winter_list .mep_more_date_btn {
-	background-color: var(--mpev-base);
-	color: #FFF;
-}
-.mep_event_winter_list .mep_list_details_col_one i {
-	margin-right: 5px;
-}
-.mep_event_winter_list .mep_more_date_btn.mp_event_visible_event_time {
-	display: block !important;
+.mep_event_winter_list .mep_list_date_wrapper .mep_winter_list_date{
+	color:#fff;
+	display: flex;
+	flex-direction: column;
 }
 
-.mep_event_winter_list a,
+.mep_event_winter_list .mep_list_date_wrapper .mep_winter_list_dd{
+	font-size: 3rem;
+	font-weight: 800;
+	line-height: 1;
+	margin-bottom: 4px;
+	text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.mep_event_winter_list .mep_list_title {
+	margin: 0;
+	margin-bottom: 10px;
+	font-size: 30px;
+	font-weight: bold;
+	color: #1a202c;
+	line-height: 1.3;
+	padding: 0;
+}
+
 .mep_event_winter_list .mep_price {
-	color: #FFF;
+	margin: 0;
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #1a202c;
+	line-height: 1.3;
+	color: #059669;
 }
-.mep_event_winter_list .mep_winter_list_dd {
+
+.mep_event_winter_list .mep_list_details_wrapper{
+	display: flex;
+	justify-content: space-between;
+	align-items: space-between;
+}
+
+.mep_event_winter_list .mep_list_details_wrapper p{
+	color: #64748b;
+	a{
+		color: #64748b;
+	}
+	margin:5px 0;
+	i{
+		color: var(--mpev-base);
+	}
+}
+
+.mep_event_winter_list .mep_list_details_wrapper .mep-tem3-title-sec{
+	margin: 10px 0;
+	border-radius: 20px;
+	padding: 0 10px;
+}
+.mep_event_winter_list .mep_list_details_wrapper .mp_event_visible_event_time{
+	margin-top: 10px;
 	display: block;
-	text-align: center;
-	font-size: 45px;
-	font-weight: 900;
-	line-height: 45px;
 }
-.mep_event_winter_list .mep_winter_list_date {
-	color: #FFF;
-}
-.mep_event_winter_list .mep_winter_event_location span {
-	margin-left: 5px;
-}
-.mep_event_winter_list .mep_more_date_btn {
-	margin-top: 0;
+
+.mep_event_winter_list .mep_list_details_wrapper ul.mp_event_more_date_list{
+  top:0;
+  right: 0;
+  left:80%;
 }
 
 .mep_same_attendee input {
@@ -2974,10 +2928,6 @@ Mobile View css update by ariful | date: 19.10.2021
 		margin-top: 20px;
 		margin-left: 20px;
 		margin-right: 20px;
-	}
-	.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_two .mep_list_title,
-	.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_two .mep_price {
-		margin-bottom: 10px;
 	}
 }
 /******************************************************************

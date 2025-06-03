@@ -4544,6 +4544,12 @@ input.mpe-new-input-group-field {
   border: 1px solid var(--mpev-base);
   position: relative;
   z-index: 1;
+  flex-direction: column;
+}
+@media (min-width: 1024px) {
+  .mpwem_registration_area .date-time-header {
+    flex-direction: row;
+  }
 }
 .mpwem_registration_area .date-time-header .ticket-title {
   margin: 0;
@@ -4554,9 +4560,16 @@ input.mpe-new-input-group-field {
 }
 .mpwem_registration_area .date-time-area {
   display: flex;
-  justify-content: end;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
   gap: 20px;
+}
+@media (min-width: 1024px) {
+  .mpwem_registration_area .date-time-area {
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+  }
 }
 .mpwem_registration_area .date-time-area label {
   display: flex;
@@ -4576,6 +4589,11 @@ input.mpe-new-input-group-field {
 .mpwem_registration_area .date-time-area .formControl {
   border-radius: 5px;
   padding: 10px 15px;
+}
+@media (max-width: 600px) {
+  .mpwem_registration_area .date-time-area .formControl {
+    width: 100%;
+  }
 }
 .mpwem_registration_area .mpwem_booking_panel {
   margin-bottom: 20px;

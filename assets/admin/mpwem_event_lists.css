@@ -96,6 +96,9 @@
     color: #9ca3af;
     font-size: 0.9rem;
 }
+.mpwem_event_list .stat-item{
+    cursor: pointer;
+}
 .mpwem_event_list .search-box input {
     width: 100%;
     padding: 10px 16px 10px 40px;
@@ -346,6 +349,10 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+}
+
+.mpwem_filter_btn_active_bg_color{
+    color: #990000;
 }
 
 @media (max-width: 1024px) {

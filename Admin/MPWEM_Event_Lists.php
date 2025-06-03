@@ -18,6 +18,7 @@ if (!class_exists('MPWEM_Event_Lists')) {
         public function display_event_list() {
             require MPWEM_Functions::template_path('layout/event_lists.php');
         }
+
     }
 
     new MPWEM_Event_Lists();

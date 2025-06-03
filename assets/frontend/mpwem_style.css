@@ -4709,6 +4709,12 @@ input.mpe-new-input-group-field {
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item {
   padding: 10px;
 }
+@media (max-width: 600px) {
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label {
+    flex-direction: column;
+    align-items: start;
+  }
+}
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service {
   margin-top: 30px;
 }

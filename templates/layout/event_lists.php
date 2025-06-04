@@ -5,9 +5,6 @@ $post_counts = array(
     'publish' => isset($counts->publish) ? $counts->publish : 0,
     'draft'   => isset($counts->draft) ? $counts->draft : 0,
     'trash'   => isset($counts->trash) ? $counts->trash : 0,
-    'pending' => isset($counts->pending) ? $counts->pending : 0,
-    'future'  => isset($counts->future) ? $counts->future : 0,
-    'private' => isset($counts->private) ? $counts->private : 0,
 );
 
 $total_event = $post_counts['publish'] + $post_counts['draft']  + $post_counts['trash'] ;
@@ -19,7 +16,7 @@ $events = get_posts(array(
     'numberposts' => -1
 ));
 
-$post_type = 'mep_events'; // Replace with your custom post type slug
+$post_type = 'mep_events';
 $add_new_link = admin_url('post-new.php?post_type=' . $post_type);
 $trash_url = admin_url('edit.php?post_status=trash&post_type=mep_events');
 
@@ -140,7 +137,6 @@ $revenue_percent_change = get_change_in_percent( $current_month_revenue, $prev_m
 $reg_percent_change= get_change_in_percent( $current_month_registration, $prev_month_registration );
 
 $get_all_categories = get_all_event_taxonomy( 'mep_cat' );
-//$get_all_organiser = get_all_event_taxonomy( 'mep_org' );
 
 function render_mep_events_by_status( $posts ) {
     ob_start();
@@ -408,10 +404,10 @@ function render_mep_events_by_status( $posts ) {
 
             <div class="pagination">
                 <div class="pagination-info">
-                    Showing <span id="visibleCount">0</span> of <span id="totalCount">0</span> events
+                    <?php esc_attr_e( 'Showing', 'mage-eventpress' );?> <span id="visibleCount">0</span> of <span id="totalCount">0</span> <?php esc_attr_e( ' git events', 'mage-eventpress' );?>
                 </div>
                 <button class="load-more-btn" id="loadMoreBtn">
-                    <span>Load More Events</span>
+                    <span><?php esc_attr_e( 'Load More Events', 'mage-eventpress' );?></span>
                     <span>↓</span>
                 </button>
             </div>

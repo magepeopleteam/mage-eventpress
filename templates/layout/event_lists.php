@@ -19,6 +19,27 @@ $events = get_posts(array(
     'numberposts' => -1
 ));
 
+$post_type = 'mep_events'; // Replace with your custom post type slug
+$add_new_link = admin_url('post-new.php?post_type=' . $post_type);
+$trash_url = admin_url('edit.php?post_status=trash&post_type=mep_events');
+
+function get_all_event_taxonomy(){
+    $categories = array();
+
+    $terms = get_terms( array(
+        'taxonomy'   => 'mep_cat',
+        'hide_empty' => false,
+    ) );
+
+    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+        foreach ( $terms as $term ) {
+            $categories[ $term->slug ] = $term->name;
+        }
+    }
+
+    error_log( print_r( [ '$categories' => $categories ], true ) );
+}
+
 function render_mep_events_by_status( $posts ) {
     ob_start();
         if (!empty($posts)) {
@@ -204,10 +225,10 @@ function render_mep_events_by_status( $posts ) {
             <div class="header">
                 <div class="header-top">
                     <h1><?php esc_html_e( 'Event Management Dashboard', 'mage-eventpress' )?></h1>
-                    <button class="add-event-btn">
+                    <a href="<?php echo esc_url( $add_new_link );?>"><button class="add-event-btn">
                         <span>+</span>
                         <?php esc_html_e( 'Add New Event', 'mage-eventpress' )?>
-                    </button>
+                        </button></a>
                 </div>
 
                 <div class="analytics">
@@ -251,10 +272,10 @@ function render_mep_events_by_status( $posts ) {
                         <span><?php esc_attr_e( 'Draft', 'mage-eventpress' );?></span>
                         <span class="stat-number"><?php echo esc_attr( $post_counts['draft'] );?></span>
                     </div>
-                    <div class="stat-item">
+                    <a href="<?php echo esc_url( $trash_url );?>"><div class="stat-item">
                         <span><?php esc_attr_e( 'Trash', 'mage-eventpress' );?></span>
                         <span class="stat-number"><?php echo esc_attr( $post_counts['trash'] );?></span>
-                    </div>
+                        </div></a>
                 </div>
             </div>
 

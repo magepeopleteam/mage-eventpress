@@ -14,6 +14,7 @@
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {
+        ?><div class="mpStyle"><?php
 		$reg_status = MP_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 		//echo '<pre>';			print_r($reg_status);			echo '</pre>';
 		if ( $reg_status == 'on' ) {
@@ -39,5 +40,6 @@
 		} else {
 			// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is  no longer available', 'mage-eventpress' ) );
 		}
+		?></div><?php
 	}
 	echo ob_get_clean();

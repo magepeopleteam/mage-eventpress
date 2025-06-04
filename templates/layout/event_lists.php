@@ -23,50 +23,142 @@ $post_type = 'mep_events'; // Replace with your custom post type slug
 $add_new_link = admin_url('post-new.php?post_type=' . $post_type);
 $trash_url = admin_url('edit.php?post_status=trash&post_type=mep_events');
 
-function get_all_event_taxonomy(){
-    $categories = array();
+function get_all_event_taxonomy( $taxonomy ){
+    $taxonomies = array();
 
     $terms = get_terms( array(
-        'taxonomy'   => 'mep_cat',
+        'taxonomy'   => $taxonomy,
         'hide_empty' => false,
     ) );
 
     if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         foreach ( $terms as $term ) {
-            $categories[ $term->slug ] = $term->name;
+            $taxonomies[ $term->slug ] = $term->name;
         }
     }
 
-    error_log( print_r( [ '$categories' => $categories ], true ) );
+    return $taxonomies;
 }
+function get_event_wise_taxonomy( $event_id, $taxonomy ){
+    $terms = get_the_terms( $event_id, $taxonomy );
+    $cat_data = $category_data =[];
+    $all_category = '';
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            $all_category .= $term->name.', ';
+            $cat_data[] = [
+                'name' => $term->name,
+                'slug' => $term->slug,
+            ];
+        }
+    }
+
+    $all_category = rtrim($all_category, ", \t\n\r\0\x0B");
+    $category_data  = array(
+        'all_category' =>$all_category,
+        'cat_data' =>$cat_data,
+    );
+
+    return $category_data;
+}
+
+
+$completed_orders = wc_get_orders([
+    'status' => 'wc-completed',
+    'limit'  => -1,
+    'return' => 'ids',
+]);
+
+$total_registration = count($completed_orders);
+function get_monthly_revenue($year = null, $month = null) {
+    if (!$year) {
+        $year = date('Y');
+    }
+    if (!$month) {
+        $month = date('m');
+    }
+    $start_date = "$year-$month-01 00:00:00";
+    $end_date   = date('Y-m-t 23:59:59', strtotime($start_date));
+    $orders = wc_get_orders([
+        'limit'        => -1,
+        'status'       => 'wc-completed',
+        'date_created' => $start_date . '...' . $end_date,
+        'return'       => 'ids',
+    ]);
+    $total = 0;
+
+    $each_month_order_count = count( $orders );
+
+    foreach ($orders as $order_id) {
+        $order = wc_get_order($order_id);
+        if ($order) {
+            $total += $order->get_total();
+        }
+    }
+
+    return array(
+        'revenue' => $total,
+        'each_month_registration' => $each_month_order_count,
+    );
+}
+function get_change_in_percent( $current_month, $prev_month){
+    $change = $current_month - $prev_month;
+    if ($prev_month > 0) {
+        $percent_change = ($change / $prev_month) * 100;
+    } else {
+        $percent_change = 100;
+    }
+
+    $direction_icon = $change > 0 ? '+' : ($change < 0 ? '-' : '+');
+
+    return  array(
+           'percent_change' => $percent_change,
+           'inc_dec_sign' => $direction_icon,
+    );
+}
+
+$year = date('Y');
+$month = date('m');
+
+$prev_year = $year;
+$prev_month = $month - 1;
+if( $month === 1 ){
+    $prev_month = 12;
+    $prev_year = $year - 1;
+}
+$currency = get_woocommerce_currency();
+$header_info = get_monthly_revenue( $year, $month);
+$prev_header_info = get_monthly_revenue( $prev_year, $prev_month);
+$current_month_revenue = $header_info['revenue'];
+$current_month_registration = $header_info['each_month_registration'];
+
+$prev_month_revenue = $prev_header_info['revenue'];
+$prev_month_registration = $prev_header_info['each_month_registration'];
+
+$rev_change = $current_month_revenue - $prev_month_revenue;
+$revenue_percent_change = get_change_in_percent( $current_month_revenue, $prev_month_revenue );
+$reg_percent_change= get_change_in_percent( $current_month_registration, $prev_month_registration );
+
+$get_all_categories = get_all_event_taxonomy( 'mep_cat' );
+//$get_all_organiser = get_all_event_taxonomy( 'mep_org' );
 
 function render_mep_events_by_status( $posts ) {
     ob_start();
         if (!empty($posts)) {
             foreach ($posts as $post) {
                 $id    = $post->ID;
-
                 $title = get_the_title($id);
                 $status = get_post_status($id);
-                // Action links
                 $edit_link   = get_edit_post_link($id);
                 $delete_link = get_delete_post_link($id); // Moves to Trash
                 $view_link   = get_permalink($id);
-                $duplicate_link = admin_url('admin.php?action=duplicate_post&post=' . $id);
 
-                // Get postmeta fields
                 $start_date      = get_post_meta($id, 'event_start_datetime', true);
                 $start_date = date('F j, Y', strtotime( $start_date ));
                 $start_time      = get_post_meta($id, 'event_start_time', true);
                 $end_date        = get_post_meta($id, 'event_end_datetime', true);
-                $more_dates      = get_post_meta($id, 'mep_event_more_date', true);
-                $recurring       = get_post_meta($id, 'mep_enable_recurring', true);
                 $ticket_type     = get_post_meta($id, 'mep_event_ticket_type', true);
-                $extra_prices    = get_post_meta($id, 'mep_events_extra_prices', true);
                 $location           = get_post_meta($id, 'mep_location_venue', true);
-                $street          = get_post_meta($id, 'mep_street', true);
-                $city            = get_post_meta($id, 'mep_city', true);
-                $country         = get_post_meta($id, 'mep_country', true);
 
 
                 $event_id           = $id ?? 0;
@@ -84,26 +176,11 @@ function render_mep_events_by_status( $posts ) {
                     $full_class = '';
                 }
 
-                $total_reserve      = MPWEM_Functions::get_reserve_ticket( $event_id );
-                $total_available    = $total_ticket - ( $total_sold + $total_reserve );
-
-                $tax = $terms = get_the_terms($id, 'mep_cat');
-                $cat_data = [];
-                if (!empty($terms) && !is_wp_error($terms)) {
-                    foreach ($terms as $term) {
-                        $cat_data[] = [
-                            'name' => $term->name,
-                            'slug' => $term->slug,
-                        ];
-                    }
-                }
-
-                $category = isset( $cat_data[0] ) ? $cat_data[0]['name'] : '';
-
-
-                /*$start_timestamp = strtotime($start_date);
-                $end_timestamp = strtotime($end_date);
-                $today_timestamp = strtotime(date('Y-m-d'));*/
+                $cat_data = get_event_wise_taxonomy( $id, 'mep_cat' );
+                $organiser_data = get_event_wise_taxonomy( $id, 'mep_org' );
+                $category = isset( $cat_data['cat_data'][0] ) ? $cat_data['cat_data'][0]['name'] : '';
+                $event_category =  isset( $cat_data['all_category'] ) ? $cat_data['all_category'] : '';
+                $event_organiser =  isset( $organiser_data['all_category'] ) ? $organiser_data['all_category'] : '';
 
                 $start_timestamp = strtotime($start_date);
                 $end_timestamp   = strtotime($end_date);
@@ -119,12 +196,16 @@ function render_mep_events_by_status( $posts ) {
                     $event_status = 'Expired';
                     $event_status_class = 'status-expired';
                 }
-//                error_log( print_r( [ '$event_status' => $event_status ], true ) );
 
                 $ticket_type_count = 0;
                 ?>
 
-                <tr class="mpwem_event_list_card" data-event-status="<?php echo esc_attr( $status );?>">
+                <tr class="mpwem_event_list_card"
+                    data-event-status="<?php echo esc_attr( $status );?>"
+                    data-filter-by-category="<?php echo esc_attr( $event_category );?>"
+                    data-filter-by-event-name="<?php echo esc_attr( $title );?>"
+                    data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
+                >
                     <td>
                         <div class="event-image-placeholder">📚</div>
                     </td>
@@ -203,7 +284,11 @@ function render_mep_events_by_status( $posts ) {
                             <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event">👁️</button></a>
                             <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event">✏️</button></a>
                             <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event">🗑️</button></a>
-                            <a href="<?php echo esc_url( $duplicate_link )?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>
+<!--                            <a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
+                            <a title="<?php echo esc_attr__('Duplicate Hotel ', 'tour-booking-manager') . ' : ' . get_the_title($id); ?>"  href="<?php echo wp_nonce_url(
+                                admin_url('admin.php?action=mpwem_duplicate_post&post_id=' . $id),
+                                'mpwem_duplicate_post_' . $id
+                            ); ?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>
                         </div>
                     </td>
                 </tr>
@@ -243,19 +328,19 @@ function render_mep_events_by_status( $posts ) {
                         <div class="trend neutral">→ <?php esc_attr_e( 'Same as last week', 'mage-eventpress' );?></div>
                     </div>
                     <div class="analytics-card">
-                        <h3>2,847</h3>
+                        <h3><?php echo esc_attr( $total_registration ); ?></h3>
                         <p><?php esc_attr_e( 'Total Registrations', 'mage-eventpress' );?></p>
-                        <div class="trend up">↗ <?php esc_attr_e( '+23% this month', 'mage-eventpress' );?></div>
+                        <div class="trend up">↗ <?php echo esc_attr( $reg_percent_change['inc_dec_sign'].'%'.$reg_percent_change['percent_change']);?></div>
                     </div>
-                    <div class="analytics-card">
+                    <!--<div class="analytics-card">
                         <h3>94%</h3>
-                        <p><?php esc_attr_e( 'Avg. Capacity Filled', 'mage-eventpress' );?></p>
-                        <div class="trend up"><?php esc_attr_e( '↗ +5% this month', 'mage-eventpress' );?></div>
-                    </div>
+                        <p><?php /*esc_attr_e( 'Avg. Capacity Filled', 'mage-eventpress' );*/?></p>
+                        <div class="trend up"><?php /*esc_attr_e( '↗ +5% this month', 'mage-eventpress' );*/?></div>
+                    </div>-->
                     <div class="analytics-card">
-                        <h3>$12,450</h3>
+                        <h3><?php echo $currency.$current_month_revenue?></h3>
                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' );?></p>
-                        <div class="trend up"><?php esc_attr_e( '↗ +18% vs last month', 'mage-eventpress' );?></div>
+                        <div class="trend up"><?php esc_attr_e( '↗ '.$revenue_percent_change['inc_dec_sign'].$revenue_percent_change['percent_change'].'% vs last month', 'mage-eventpress' );?></div>
                     </div>
                 </div>
 
@@ -282,18 +367,20 @@ function render_mep_events_by_status( $posts ) {
             <div class="controls">
                 <div class="search-box">
                     <div class="search-icon">🔍</div>
-                    <input type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' );?>">
+                    <input id="mpwem_search_event_list" type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' );?>">
                 </div>
-                <select class="category-select">
+                <select class="category-select" id="mpwem_event_filter_by_category">
                     <option><?php esc_attr_e( 'All Categories', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Education', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Travel', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Entertainment', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Reunion Event', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Indoor Games', 'mage-eventpress' );?></option>
-                    <option><?php esc_attr_e( 'Cooking Class', 'mage-eventpress' );?></option>
+                    <?php
+                    if( is_array( $get_all_categories ) && !empty( $get_all_categories ) ){
+                        foreach ( $get_all_categories as $key => $event_categories ){ ?>
+                            <option><?php echo esc_attr( $event_categories );?></option>
+                       <?php }
+
+                    }
+                    ?>
                 </select>
-                <button class="filter-btn"><?php esc_attr_e( 'Filter', 'mage-eventpress' );?></button>
+<!--                <button class="filter-btn">--><?php //esc_attr_e( 'Filter', 'mage-eventpress' );?><!--</button>-->
 <!--                <button class="filter-btn">Export</button>-->
             </div>
 
@@ -319,15 +406,16 @@ function render_mep_events_by_status( $posts ) {
                 </table>
             </div>
 
-            <!--<div class="pagination">
+            <div class="pagination">
                 <div class="pagination-info">
-                    Showing 8 of 43 events
+                    Showing <span id="visibleCount">0</span> of <span id="totalCount">0</span> events
                 </div>
                 <button class="load-more-btn" id="loadMoreBtn">
                     <span>Load More Events</span>
                     <span>↓</span>
                 </button>
-            </div>-->
+            </div>
+
         </div>
     </div>
 </div>

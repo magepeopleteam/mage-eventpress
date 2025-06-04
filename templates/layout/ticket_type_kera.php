@@ -16,7 +16,7 @@
 	$total_available = $total_ticket - ( $total_sold + $total_reserve );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {
-		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
+		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ),$date );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		if ( sizeof( $ticket_types ) > 0 ) {
 			$categories  = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );

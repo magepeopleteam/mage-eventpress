@@ -46,8 +46,10 @@
 			$datetime2 = new DateTime($newformat);
 			$interval = $datetime1->diff($datetime2);
 			$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true) ? get_post_meta($post_id, 'mep_event_ticket_type', true) : array();
-			$total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($post_id, 'total'), $post_id);
-			$total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($post_id, 'resv'), $post_id);
+			$event_date = get_post_meta($post_id, 'event_start_date', true) ? get_post_meta($post_id, 'event_start_date', true) : '';
+			$upcoming_date = !empty(mep_get_event_upcoming_date($post_id)) ? mep_get_event_upcoming_date($post_id) : $event_date;
+			$total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($post_id, 'total'), $post_id, $upcoming_date);
+			$total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($post_id, 'resv'), $post_id, $upcoming_date);
 			$recurring = get_post_meta($post_id, 'mep_enable_recurring', true) ? get_post_meta($post_id, 'mep_enable_recurring', true) : 'no';
 			$_upcoming_date = !empty(mep_get_event_upcoming_date($post_id)) ? mep_get_event_upcoming_date($post_id) : '';
 			$mep_manual_seat_Left_fix = mep_get_option( 'mep_manual_seat_Left_fix', 'general_setting_sec', 'disable' );
@@ -229,10 +231,11 @@
 			$datetime2 = new DateTime($newformat);
 			$interval = $datetime1->diff($datetime2);
 			$mep_event_ticket_type = get_post_meta($post_id, 'mep_event_ticket_type', true) ? get_post_meta($post_id, 'mep_event_ticket_type', true) : array();
-			$total_seat = mep_event_total_seat(get_the_id(), 'total');
-			$total_resv = mep_event_total_seat(get_the_id(), 'resv');
+			$event_date = get_post_meta($post_id, 'event_start_date', true) ? get_post_meta($post_id, 'event_start_date', true) : '';
+			$upcoming_date = !empty(mep_get_event_upcoming_date($post_id)) ? mep_get_event_upcoming_date($post_id) : $event_date;
+			$total_seat = apply_filters('mep_event_total_seat_counts', mep_event_total_seat($post_id, 'total'), $post_id, $upcoming_date);
+			$total_resv = apply_filters('mep_event_total_resv_seat_count', mep_event_total_seat($post_id, 'resv'), $post_id, $upcoming_date);
 			// $upcoming_date              = !empty(mep_get_event_upcoming_date($post_id)) ? mep_get_event_upcoming_date($post_id) : '';
-			$upcoming_date = '';
 			$total_sold = mep_get_event_total_seat_left($post_id, $upcoming_date);
 			$total_left = $total_seat - ($total_sold + $total_resv);
 			// $total_left              = mep_get_event_total_seat_left($post_id, $upcoming_date);

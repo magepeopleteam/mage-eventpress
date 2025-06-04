@@ -14,6 +14,7 @@
 				add_action('mpwem_location', [$this, 'location'],10,2);
 				add_action('mpwem_time', [$this, 'time'],10,5);
 				add_action('mpwem_registration', [$this, 'registration'],10,4);
+				add_action('mep_add_to_cart', [$this, 'registration'],10,4);
 				add_action('mpwem_registration_content', [$this, 'registration_content'],10,4);
 				add_action('mpwem_date_select', [$this, 'date_select'],10,4);
 				add_action('mpwem_date_time', [$this, 'date_time'],10,4);

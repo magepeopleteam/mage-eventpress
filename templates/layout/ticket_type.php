@@ -18,7 +18,7 @@
 	//echo '<pre>';print_r(current_time( 'Y-m-d H:i:s' ) );echo '</pre>';
 	//echo '<pre>';print_r($date);echo '</pre>';
 	if ( $total_available > 0 ) {
-		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) );
+		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ) ,$date);
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		$date_type    = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		$count        = 0;

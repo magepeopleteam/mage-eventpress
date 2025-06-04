@@ -179,6 +179,28 @@ $reg_percent_change= get_change_in_percent( $current_month_registration, $prev_m
 
 $get_all_categories = get_all_event_taxonomy( 'mep_cat' );
 
+function get_time_remaining( $future_datetime, $end_date ) {
+    $now = new DateTime();
+    $future = new DateTime( $future_datetime );
+    $end_date = new DateTime( $end_date );
+
+    if ( $end_date <= $now ) {
+        return 'Time is up!';
+    }
+
+    if ( $now >= $future && $now <= $end_date ) {
+        return 'Running!';
+    }
+
+    $interval = $now->diff( $future );
+
+    return sprintf(
+        '%d days, %d hours, %d minutes remaining',
+        $interval->days,
+        $interval->h,
+        $interval->i
+    );
+}
 function render_mep_events_by_status( $posts ) {
     ob_start();
         if (!empty($posts)) {
@@ -189,13 +211,16 @@ function render_mep_events_by_status( $posts ) {
                 $edit_link   = get_edit_post_link($id);
                 $delete_link = get_delete_post_link($id); // Moves to Trash
                 $view_link   = get_permalink($id);
-
                 $start_date      = get_post_meta($id, 'event_start_datetime', true);
+                $remaining_date = $start_date;
+
                 $start_date = date('F j, Y', strtotime( $start_date ));
                 $start_time      = get_post_meta($id, 'event_start_time', true);
                 $end_date        = get_post_meta($id, 'event_end_datetime', true);
                 $ticket_type     = get_post_meta($id, 'mep_event_ticket_type', true);
                 $location           = get_post_meta($id, 'mep_location_venue', true);
+
+                $time_remaining = get_time_remaining( $remaining_date, $end_date );
 
 
                 $event_id           = $id ?? 0;
@@ -285,6 +310,7 @@ function render_mep_events_by_status( $posts ) {
                         <div class="date-time">
                             <span ><?php echo esc_attr( $start_date );?></span>
                             <span class="time"><?php echo esc_attr( $start_time );?></span>
+                            <span class="mpwem_remaining_days"><?php echo esc_attr( $time_remaining );?></span>
                         </div>
                     </td>
                     <td>

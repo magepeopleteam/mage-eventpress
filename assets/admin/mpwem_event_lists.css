@@ -354,6 +354,13 @@
 .mpwem_filter_btn_active_bg_color{
     color: #990000;
 }
+.mpwem_remaining_days{
+    background-color: var(--mpev-green);
+    padding: 5px;
+    border-radius: 5px;
+    /* border: 1px solid #50969f; */
+    color: var(--mpev-white);
+}
 
 @media (max-width: 1024px) {
     .mpwem_event_list .analytics {

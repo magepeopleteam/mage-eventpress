@@ -44,6 +44,8 @@ function get_active_expire_upcoming_count( $events ){
         }
     }
 
+    $active_count = $active_count + $upcoming_count;
+
     return array(
         'active_count' => $active_count,
         'expire_count' => $expire_count,
@@ -222,8 +224,8 @@ function render_mep_events_by_status( $posts ) {
                 $now             = time();
 
                 if ( $now < $start_timestamp ) {
-                    $event_status =  'Upcoming';
-                    $event_status_class = 'status-upcoming';
+                    $event_status =  'Active';
+                    $event_status_class = 'status-active';
                 } elseif ($now >= $start_timestamp && $now <= $end_timestamp) {
                     $event_status = 'Active';
                     $event_status_class = 'status-active';
@@ -400,10 +402,10 @@ function render_mep_events_by_status( $posts ) {
                         <span><?php esc_attr_e( 'Active', 'mage-eventpress' );?></span>
                         <span class="stat-number"><?php echo esc_attr( $event_status_count['active_count'] );?></span>
                     </div>
-                    <div class="stat-item mpwem_filter_by_active_status" data-by-filter="upcoming">
-                        <span><?php esc_attr_e( 'Upcoming', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $event_status_count['upcoming_count'] );?></span>
-                    </div>
+                    <!--<div class="stat-item mpwem_filter_by_active_status" data-by-filter="upcoming">
+                        <span><?php /*esc_attr_e( 'Upcoming', 'mage-eventpress' );*/?></span>
+                        <span class="stat-number"><?php /*echo esc_attr( $event_status_count['upcoming_count'] );*/?></span>
+                    </div>-->
                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="expired">
                         <span><?php esc_attr_e( 'Expired', 'mage-eventpress' );?></span>
                         <span class="stat-number"><?php echo esc_attr( $event_status_count['expire_count'] );?></span>

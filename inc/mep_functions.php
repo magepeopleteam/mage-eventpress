@@ -2344,7 +2344,7 @@
 			$upcoming_date = ! empty( $m ) && ! empty( mep_get_event_upcoming_date( $event_id ) ) ? mep_get_event_upcoming_date( $event_id ) : '';
 			$event_date = date( 'Y-m-d H:i', strtotime( mep_get_event_upcoming_date( $event_id ) ) );
 			$total_seat    = apply_filters( 'mep_event_total_seat_countsQ', mep_event_total_seat( $event_id, 'total' ), $event_id );
-			$total_resv    = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
+			$total_resv    = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id, $event_date );
 			$total_sold    = mep_get_event_total_seat_left( $event_id, $upcoming_date );
 			$total_sold = mep_ticket_type_sold($event_id,'',$event_date);
 			$recurring  = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
@@ -2370,7 +2370,7 @@
                 <span class="mep_seat_stat_info_<?php echo $event_id; ?>">
                     <?php
 	                    // $sold = ($total_seat - $total_left);
-	                    $seat_count_var = apply_filters( 'mep_event_total_seat_counts', $total_seat, $event_id ) . ' - ' . apply_filters( 'mep_event_total_seat_sold', $total_sold, $event_id, $event_date ) . ' = ' . apply_filters( 'mep_event_total_seat_left', $total_left, $event_id, '', $event_date );
+	                    $seat_count_var = apply_filters('mep_event_total_seat_counts', $total_seat, $event_id, $event_date) . ' - ' . apply_filters('mep_event_total_seat_sold', $total_sold, $event_id, $event_date) . ' = ' . apply_filters('mep_event_total_seat_left', $total_left, $event_id, '', $event_date);
 	                    echo apply_filters( 'mep_event_seat_status_text', $seat_count_var, $total_seat, $total_sold, $total_left );
                     ?>
                 </span>

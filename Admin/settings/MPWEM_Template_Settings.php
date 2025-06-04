@@ -44,18 +44,32 @@ if(!class_exists('MPWEM_Template_Settings')){
                 </section>
                 
                 <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e('Template', 'mage-eventpress'); ?></span></h2>
-                            <span><?php esc_html_e('Select a template to show your event', 'mage-eventpress'); ?></span>
-                        </div>
-                        <div class='sec'>
-                            <span><?php event_single_template_list($_current_template); ?></span>
-                        </div>
-                    </label>
+                    <div class="mep-template-section">
+                        <input type="hidden" name="mep_event_template" value="<?php echo esc_attr($_current_template); ?>" />
+                        <?php $templates = $this->get_template($_current_template); ?>
+                        <?php foreach($templates as $template):  ?>
+                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="https://placehold.co/100" alt=""><?php echo $template['name']; ?></div>
+                        <?php endforeach; ?>
+                    </div>
                 </section>
             </div>
             <?php
+        }
+
+        public function get_template($current_theme){
+                $themes = mep_event_template_name();
+				$deprecated_themes = ['royal.php', 'theme-1.php', 'theme-2.php', 'theme-3.php', 'vanilla.php'];
+				
+				foreach ( $themes as $theme_file => $theme_name ) {
+					if ( in_array( $theme_file, $deprecated_themes ) && $current_theme !== $theme_file ) {
+						continue;
+					}
+                    $template[] = [
+                        'name' => $theme_name,
+                        'value' => $theme_file,
+                    ];
+				}
+                return $template;
         }
     }
 

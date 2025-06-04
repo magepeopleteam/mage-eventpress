@@ -1837,6 +1837,27 @@ h3.mep_virtual_sec_title {
 }
 
 /*******************Tab general settings****************/
+.mep-template-section {
+  display: flex;
+  gap: 50px;
+}
+
+.mep-template-section .mep-template {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mep-template-section .mep-template img {
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+
+.mep-template-section .mep-template.active img {
+  border: 2px solid var(--mpev-primary);
+  border-radius: 5px;
+}
+
 /********************Round toggle switch****************/
 #mp_event_all_info_in_tab label.mpev-switch {
   position: relative;

@@ -61,9 +61,7 @@
 }
 
 @mixin summary{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+   
     padding: 25px;
     background-color: #f8f9fa;
     border-top: 1px solid #eaeaea;
@@ -228,10 +226,25 @@
                             padding: 10px;
                             .mp_form_item {
                                 label{
-                                    @media (max-width:600px) {
-                                        flex-direction: column;
-                                        align-items: start;
+                                    flex-direction: column;
+                                    align-items: start;
+                                    span{
+                                            width: 100%;
+                                        }
+                                        .formControl{
+                                            width: 100%;
+                                            margin-top: 5px;
+                                        }
+                                    @media (min-width:600px) {
+                                        flex-direction: row;
+                                        span{
+                                            width: 28%;
+                                        }
+                                        .formControl{
+                                            width: 70%;
+                                        }
                                     }
+                                    
                                 }
                             }
                         }
@@ -244,6 +257,18 @@
         }
         .mpwem_form_submit_area{
             @include summary;
+            .term_condition_area{
+                background:none;
+                a{
+                    color: #333;
+                    font-weight: normal;
+                }
+            }
+            .mpwem_summery{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
             .total {
                 font-size: 18px;
                 font-weight: 600;

@@ -10,7 +10,7 @@
 	//$backend_order = MP_Global_Function::data_sanitize($_POST['backend_order']);
 	$link_wc_product = MP_Global_Function::get_post_info($event_id, 'link_wc_product');;
 ?>
-	<div class="mpwem_form_submit_area">
+	<div class="mpwem_summery">
 		<div class="total"><?php esc_html_e('Total Price : ', 'mage-eventpress'); ?>
 			<span class="mpwem_total"><?php echo wc_price(0); ?></span>
 		</div>

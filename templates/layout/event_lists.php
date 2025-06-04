@@ -16,6 +16,21 @@ $events = get_posts(array(
     'numberposts' => -1
 ));
 
+function get_dates_by_interval($start, $end, $days = 4) {
+    $start_date = new DateTime($start);
+    $end_date = new DateTime($end);
+    $interval = new DateInterval("P{$days}D"); // Dynamic day interval
+    $date_range = new DatePeriod($start_date, $interval, $end_date);
+
+    $dates = [];
+
+    foreach ($date_range as $date) {
+        $dates[] = $date->format('D j M, Y'); // e.g., Thu 1 May, 2025
+    }
+
+    return $dates;
+}
+
 function get_active_expire_upcoming_count( $events ){
     $active_count = 0 ;
     $expire_count = 0 ;
@@ -54,7 +69,6 @@ function get_active_expire_upcoming_count( $events ){
 }
 
 $event_status_count = get_active_expire_upcoming_count( $events );
-//error_log( print_r( [ '$event_status_count' => $event_status_count ], true ) );
 
 
 $post_type = 'mep_events';
@@ -184,13 +198,13 @@ function get_time_remaining( $future_datetime, $end_date ) {
     $future = new DateTime( $future_datetime );
     $end_date = new DateTime( $end_date );
 
-    if ( $end_date <= $now ) {
+    if ( $future <= $now ) {
         return 'Time is up!';
     }
 
-    if ( $now >= $future && $now <= $end_date ) {
+    /*if ( $now >= $future && $now <= $end_date ) {
         return 'Running!';
-    }
+    }*/
 
     $interval = $now->diff( $future );
 
@@ -213,7 +227,6 @@ function render_mep_events_by_status( $posts ) {
                 $view_link   = get_permalink($id);
                 $start_date      = get_post_meta($id, 'event_start_datetime', true);
                 $remaining_date = $start_date;
-
                 $start_date = date('F j, Y', strtotime( $start_date ));
                 $start_time      = get_post_meta($id, 'event_start_time', true);
                 $end_date        = get_post_meta($id, 'event_end_datetime', true);
@@ -222,14 +235,22 @@ function render_mep_events_by_status( $posts ) {
 
                 $time_remaining = get_time_remaining( $remaining_date, $end_date );
 
+                $event_type = MP_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
 
                 $event_id           = $id ?? 0;
-                $all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-                $all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
-                $date               = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+                $all_dates          =  MPWEM_Functions::get_dates( $event_id );
+                $all_times          =  MPWEM_Functions::get_times( $event_id, $all_dates );
+                $date               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 
-                $total_ticket       = MPWEM_Functions::get_total_ticket( $event_id );
-                $total_sold         = mep_get_event_total_seat_left( $event_id, $date );
+                if( $event_type === 'everyday' ){
+                    $time_remaining = get_time_remaining( $date, $end_date );
+                    $start_date = date('F j, Y', strtotime( $date ));
+                }
+
+
+                $total_ticket       = MPWEM_Functions::get_total_ticket( $id );
+                $total_sold         = mep_get_event_total_seat_left( $id );
+
                 if( $total_ticket === $total_sold ){
                     $text = 'Full';
                     $full_class = 'capacity-full';

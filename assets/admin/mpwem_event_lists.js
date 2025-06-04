@@ -103,6 +103,21 @@
         showNextItems();
     });
 
+    $(document).on('click', '.mpwem_filter_by_active_status', function () {
+        $('.mpwem_filter_by_active_status').removeClass('mpwem_filter_btn_active_bg_color').addClass('mpwem_filter_btn_bg_color');
+        $(this).removeClass('mpwem_filter_btn_bg_color').addClass('mpwem_filter_btn_active_bg_color');
+
+        let searchText = $(this).attr('data-by-filter').toLowerCase();
+        $('.mpwem_event_list_card').hide();
+        currentFilteredItems = $('.mpwem_event_list_card').filter(function () {
+            let status = $(this).data('event-active-status').toLowerCase();
+            return (searchText === 'all' || status.includes(searchText));
+        });
+        // Reset counter and show first N
+        $('#visibleCount').text(0);
+        showNextItems();
+    });
+
 
 
 }(jQuery));

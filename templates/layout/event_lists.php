@@ -16,6 +16,45 @@ $events = get_posts(array(
     'numberposts' => -1
 ));
 
+function get_active_expire_upcoming_count( $events ){
+    $active_count = 0 ;
+    $expire_count = 0 ;
+    $upcoming_count = 0 ;
+    if (!empty($events)) {
+        foreach ($events as $post) {
+            $id = $post->ID;
+
+            $start_date = get_post_meta($id, 'event_start_datetime', true);
+            $start_date = date('F j, Y', strtotime($start_date));
+            $end_date = get_post_meta($id, 'event_end_datetime', true);
+
+
+            $start_timestamp = strtotime($start_date);
+            $end_timestamp = strtotime($end_date);
+            $now = time();
+
+            if ( $now < $start_timestamp ) {
+                $upcoming_count++;
+            } elseif ($now >= $start_timestamp && $now <= $end_timestamp) {
+                $active_count++;
+            } else if ( $now > $end_timestamp) {
+
+                $expire_count++;
+            }
+        }
+    }
+
+    return array(
+        'active_count' => $active_count,
+        'expire_count' => $expire_count,
+        'upcoming_count' => $upcoming_count,
+    );
+}
+
+$event_status_count = get_active_expire_upcoming_count( $events );
+//error_log( print_r( [ '$event_status_count' => $event_status_count ], true ) );
+
+
 $post_type = 'mep_events';
 $add_new_link = admin_url('post-new.php?post_type=' . $post_type);
 $trash_url = admin_url('edit.php?post_status=trash&post_type=mep_events');
@@ -191,6 +230,9 @@ function render_mep_events_by_status( $posts ) {
                 } else if( $now > $end_timestamp ) {
                     $event_status = 'Expired';
                     $event_status_class = 'status-expired';
+                }else{
+                    $event_status = '';
+                    $event_status_class = '';
                 }
 
                 $ticket_type_count = 0;
@@ -198,6 +240,7 @@ function render_mep_events_by_status( $posts ) {
 
                 <tr class="mpwem_event_list_card"
                     data-event-status="<?php echo esc_attr( $status );?>"
+                    data-event-active-status="<?php echo esc_attr( $event_status );?>"
                     data-filter-by-category="<?php echo esc_attr( $event_category );?>"
                     data-filter-by-event-name="<?php echo esc_attr( $title );?>"
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
@@ -319,14 +362,14 @@ function render_mep_events_by_status( $posts ) {
                         <div class="trend up">↗ +12% this month</div>
                     </div>
                     <div class="analytics-card">
-                        <h3><?php echo esc_attr( $post_counts['publish'] );?></h3>
+                        <h3><?php echo esc_attr( $event_status_count['active_count'] );?></h3>
                         <p><?php esc_attr_e( 'Active Events', 'mage-eventpress' );?></p>
                         <div class="trend neutral">→ <?php esc_attr_e( 'Same as last week', 'mage-eventpress' );?></div>
                     </div>
                     <div class="analytics-card">
                         <h3><?php echo esc_attr( $total_registration ); ?></h3>
                         <p><?php esc_attr_e( 'Total Registrations', 'mage-eventpress' );?></p>
-                        <div class="trend up">↗ <?php echo esc_attr( $reg_percent_change['inc_dec_sign'].'%'.$reg_percent_change['percent_change']);?></div>
+                        <div class="trend up">↗ <?php echo esc_attr( $reg_percent_change['inc_dec_sign'].'%'.$reg_percent_change['percent_change'].' vs last month');?></div>
                     </div>
                     <!--<div class="analytics-card">
                         <h3>94%</h3>
@@ -352,6 +395,18 @@ function render_mep_events_by_status( $posts ) {
                     <div class="stat-item mpwem_filter_by_status" data-by-filter="draft">
                         <span><?php esc_attr_e( 'Draft', 'mage-eventpress' );?></span>
                         <span class="stat-number"><?php echo esc_attr( $post_counts['draft'] );?></span>
+                    </div>
+                    <div class="stat-item mpwem_filter_by_active_status" data-by-filter="active">
+                        <span><?php esc_attr_e( 'Active', 'mage-eventpress' );?></span>
+                        <span class="stat-number"><?php echo esc_attr( $event_status_count['active_count'] );?></span>
+                    </div>
+                    <div class="stat-item mpwem_filter_by_active_status" data-by-filter="upcoming">
+                        <span><?php esc_attr_e( 'Upcoming', 'mage-eventpress' );?></span>
+                        <span class="stat-number"><?php echo esc_attr( $event_status_count['upcoming_count'] );?></span>
+                    </div>
+                    <div class="stat-item mpwem_filter_by_active_status" data-by-filter="expired">
+                        <span><?php esc_attr_e( 'Expired', 'mage-eventpress' );?></span>
+                        <span class="stat-number"><?php echo esc_attr( $event_status_count['expire_count'] );?></span>
                     </div>
                     <a href="<?php echo esc_url( $trash_url );?>"><div class="stat-item">
                         <span><?php esc_attr_e( 'Trash', 'mage-eventpress' );?></span>

@@ -1507,16 +1507,16 @@
 		function mep_add_to_google_calender_link( $pid ) {
 			$event       = get_post( $pid );
 			$event_meta  = get_post_custom( $pid );
-			$start_date  = ! empty( get_post_meta( $pid, 'event_start_date', true ) ) ? get_post_meta( $pid, 'event_start_date', true ) : "";
-			$start_time  = ! empty( get_post_meta( $pid, 'event_start_time', true ) ) ? get_post_meta( $pid, 'event_start_time', true ) : "";
-			$end_date    = ! empty( get_post_meta( $pid, 'event_end_date', true ) ) ? get_post_meta( $pid, 'event_end_date', true ) : "";
-			$end_time    = ! empty( get_post_meta( $pid, 'event_end_time', true ) ) ? get_post_meta( $pid, 'event_end_time', true ) : "";
-			$venue       = ! empty( get_post_meta( $pid, 'mep_location_venue', true ) ) ? get_post_meta( $pid, 'mep_location_venue', true ) : "";
-			$street      = ! empty( get_post_meta( $pid, 'mep_street', true ) ) ? get_post_meta( $pid, 'mep_street', true ) : "";
-			$city        = ! empty( get_post_meta( $pid, 'mep_city', true ) ) ? get_post_meta( $pid, 'mep_city', true ) : "";
-			$state       = ! empty( get_post_meta( $pid, 'mep_state', true ) ) ? get_post_meta( $pid, 'mep_state', true ) : "";
-			$postcode    = ! empty( get_post_meta( $pid, 'mep_postcode', true ) ) ? get_post_meta( $pid, 'mep_postcode', true ) : "";
-			$country     = ! empty( get_post_meta( $pid, 'mep_country', true ) ) ? get_post_meta( $pid, 'mep_country', true ) : "";
+			$start_date  = ! empty( get_post_meta( $pid, 'event_start_date', true ) ) ? esc_html(get_post_meta( $pid, 'event_start_date', true )) : "";
+			$start_time  = ! empty( get_post_meta( $pid, 'event_start_time', true ) ) ? esc_html(get_post_meta( $pid, 'event_start_time', true )) : "";
+			$end_date    = ! empty( get_post_meta( $pid, 'event_end_date', true ) ) ? esc_html(get_post_meta( $pid, 'event_end_date', true )) : "";
+			$end_time    = ! empty( get_post_meta( $pid, 'event_end_time', true ) ) ? esc_html(get_post_meta( $pid, 'event_end_time', true )) : "";
+			$venue       = ! empty( get_post_meta( $pid, 'mep_location_venue', true ) ) ? esc_html(get_post_meta( $pid, 'mep_location_venue', true )) : "";
+			$street      = ! empty( get_post_meta( $pid, 'mep_street', true ) ) ? esc_html(get_post_meta( $pid, 'mep_street', true )) : "";
+			$city        = ! empty( get_post_meta( $pid, 'mep_city', true ) ) ? esc_html(get_post_meta( $pid, 'mep_city', true )) : "";
+			$state       = ! empty( get_post_meta( $pid, 'mep_state', true ) ) ? esc_html(get_post_meta( $pid, 'mep_state', true )) : "";
+			$postcode    = ! empty( get_post_meta( $pid, 'mep_postcode', true ) ) ? esc_html(get_post_meta( $pid, 'mep_postcode', true )) : "";
+			$country     = ! empty( get_post_meta( $pid, 'mep_country', true ) ) ? esc_html(get_post_meta( $pid, 'mep_country', true )) : "";
 			$event_start = $start_date . ' ' . $start_time;
 			$event_end   = $end_date . ' ' . $end_time;
 			$location    = $venue . " " . $street . " " . $city . " " . $state . " " . $postcode . " " . $country;
@@ -2080,19 +2080,19 @@
 			if ( $location_sts ) {
 				$org_arr  = get_the_terms( $event_id, 'mep_org' );
 				$org_id   = $org_arr[0]->term_id;
-				$location = get_term_meta( $org_id, 'org_location', true ) ? get_term_meta( $org_id, 'org_location', true ) : '';
-				$street   = get_term_meta( $org_id, 'org_street', true ) ? get_term_meta( $org_id, 'org_street', true ) : '';
-				$city     = get_term_meta( $org_id, 'org_city', true ) ? get_term_meta( $org_id, 'org_city', true ) : '';
-				$state    = get_term_meta( $org_id, 'org_state', true ) ? get_term_meta( $org_id, 'org_state', true ) : '';
-				$zip      = get_term_meta( $org_id, 'org_postcode', true ) ? get_term_meta( $org_id, 'org_postcode', true ) : '';
-				$country  = get_term_meta( $org_id, 'org_country', true ) ? get_term_meta( $org_id, 'org_country', true ) : '';
+				$location = get_term_meta( $org_id, 'org_location', true ) ? esc_html(get_term_meta( $org_id, 'org_location', true )) : '';
+				$street   = get_term_meta( $org_id, 'org_street', true ) ? esc_html(get_term_meta( $org_id, 'org_street', true )) : '';
+				$city     = get_term_meta( $org_id, 'org_city', true ) ? esc_html(get_term_meta( $org_id, 'org_city', true )) : '';
+				$state    = get_term_meta( $org_id, 'org_state', true ) ? esc_html(get_term_meta( $org_id, 'org_state', true )) : '';
+				$zip      = get_term_meta( $org_id, 'org_postcode', true ) ? esc_html(get_term_meta( $org_id, 'org_postcode', true )) : '';
+				$country  = get_term_meta( $org_id, 'org_country', true ) ? esc_html(get_term_meta( $org_id, 'org_country', true )) : '';
 			} else {
-				$location = get_post_meta( $event_id, 'mep_location_venue', true ) ? get_post_meta( $event_id, 'mep_location_venue', true ) : '';
-				$street   = get_post_meta( $event_id, 'mep_street', true ) ? get_post_meta( $event_id, 'mep_street', true ) : '';
-				$city     = get_post_meta( $event_id, 'mep_city', true ) ? get_post_meta( $event_id, 'mep_city', true ) : '';
-				$state    = get_post_meta( $event_id, 'mep_state', true ) ? get_post_meta( $event_id, 'mep_state', true ) : '';
-				$zip      = get_post_meta( $event_id, 'mep_postcode', true ) ? get_post_meta( $event_id, 'mep_postcode', true ) : '';
-				$country  = get_post_meta( $event_id, 'mep_country', true ) ? get_post_meta( $event_id, 'mep_country', true ) : '';
+				$location = get_post_meta( $event_id, 'mep_location_venue', true ) ? esc_html(get_post_meta( $event_id, 'mep_location_venue', true )) : '';
+				$street   = get_post_meta( $event_id, 'mep_street', true ) ? esc_html(get_post_meta( $event_id, 'mep_street', true )) : '';
+				$city     = get_post_meta( $event_id, 'mep_city', true ) ? esc_html(get_post_meta( $event_id, 'mep_city', true )) : '';
+				$state    = get_post_meta( $event_id, 'mep_state', true ) ? esc_html(get_post_meta( $event_id, 'mep_state', true )) : '';
+				$zip      = get_post_meta( $event_id, 'mep_postcode', true ) ? esc_html(get_post_meta( $event_id, 'mep_postcode', true )) : '';
+				$country  = get_post_meta( $event_id, 'mep_country', true ) ? esc_html(get_post_meta( $event_id, 'mep_country', true )) : '';
 			}
 			$location_arr = [ $location, $city ];
 			$content      = implode( ', ', array_filter( $location_arr ) );

@@ -688,17 +688,10 @@ ul.mep-social-share a {
 
 ul.mep-social-share {
   padding: 15px 0 0 0;
-  list-style: none;
-  list-style-type: none;
 }
 
 ul.mep-social-share li {
   margin: 0 8px 0 0;
-}
-
-ul.mep-social-share li::marker {
-  display: none;
-  content: '';
 }
 
 ul.mep-social-share li a {
@@ -4754,9 +4747,6 @@ input.mpe-new-input-group-field {
   margin-top: 30px;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px;
   background-color: #f8f9fa;
   border-top: 1px solid #eaeaea;
@@ -4764,6 +4754,18 @@ input.mpe-new-input-group-field {
   margin-bottom: 50px;
   border-radius: 0 0 12px 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area {
+  background: none;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area a {
+  color: #333;
+  font-weight: normal;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .mpwem_summery {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
@@ -6114,8 +6116,4 @@ Vanilla theme css by ariful
   padding: 20px 25px;
 }
 
-.mep-faq-item { margin-bottom: 10px; }
-.mep-faq-question { width: 100%; text-align: left; background: #f7f7f7; border: none; padding: 10px; cursor: pointer; font-size: 16px; font-weight: 600; }
-.mep-faq-answer { padding: 10px; background: #fff; border: 1px solid #eee; display: none; }
-.mep-event-thumb-img img { max-width: 100%; height: auto; display: block; }
-.mep-default-share-btn { margin-top: 20px; }
+/*# sourceMappingURL=mpwem_style.css.map */

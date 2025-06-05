@@ -41,7 +41,7 @@
 					}
 				}
 
-				return apply_filters( 'mep_event_total_seat_counts', $total_ticket, $event_id ,$date);
+				return apply_filters( 'mpwem_event_total_seat_counts', $total_ticket, $event_id ,$date);
 			}
 
 			public static function get_reserve_ticket( $event_id ,$date) {
@@ -53,7 +53,7 @@
 					}
 				}
 
-				return apply_filters( 'mep_event_total_resv_seat_count', $reserve_ticket, $event_id ,$date);
+				return apply_filters( 'mpwem_event_total_resv_seat_count', $reserve_ticket, $event_id ,$date);
 			}
 
 			public static function get_available_ticket( $event_id, $ticket_name, $date, $ticket_type = [] ) {

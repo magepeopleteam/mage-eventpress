@@ -385,6 +385,7 @@
     /* border: 1px solid #50969f; */
     color: var(--mpev-white);
 }
+.notice{display:none; }
 
 @media (max-width: 1024px) {
     .mpwem_event_list .analytics {

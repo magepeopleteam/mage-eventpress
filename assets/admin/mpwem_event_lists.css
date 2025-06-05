@@ -103,6 +103,7 @@
     background:#fff;
     padding:5px 10px;
     border-radius:5px;
+    border:1px solid #ddd;
 }
 .mpwem_event_list .search-box input {
     width: 100%;

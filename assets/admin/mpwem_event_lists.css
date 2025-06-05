@@ -128,6 +128,15 @@
     width: 100%;
     border-collapse: collapse;
 }
+
+.mpwem_event_list table tr:nth-child(odd) {
+    background-color: #f7f7f7; /* light gray for odd rows */
+}
+
+.mpwem_event_list table tr:nth-child(even) {
+    background-color: #ffffff; /* white for even rows */
+}
+
 .mpwem_event_list .event-table tr {
     transition: all 0.2s ease;
 }
@@ -150,10 +159,20 @@
 }
 .mpwem_event_list .event-table td {
     border: none !important;
-    padding: 16px 20px !important;
+    padding: 15px 15px !important;
     border-bottom: 1px solid #f1f5f9 !important;
     vertical-align: middle !important;
 }
+
+.mpwem_event_list table tbody tr {
+    transition: background-color 0.3s ease;
+}
+.mpwem_event_list table tbody tr:hover {
+    background-color: #e0f7fa;
+    cursor: pointer;
+}
+
+
 .mpwem_event_list .event-image-placeholder {
     width: 60px;
     height: 60px;
@@ -174,6 +193,11 @@
     align-items: center;
     gap: 8px;
 }
+
+.mpwem_event_title{
+    min-width: 200px;
+}
+
 .mpwem_event_list .event-category {
     background: #e0f2fe;
     color: #0369a1;

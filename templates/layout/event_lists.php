@@ -199,7 +199,7 @@ function get_time_remaining( $future_datetime, $end_date ) {
     $end_date = new DateTime( $end_date );
 
     if ( $future <= $now ) {
-        return 'Time is up!';
+        return 'Expired!';
     }
 
     /*if ( $now >= $future && $now <= $end_date ) {
@@ -307,7 +307,7 @@ function render_mep_events_by_status( $posts ) {
                             <img class="mpwem_event_feature_image" src="<?php echo esc_url($thumbnail_url);?>">
                         </div>
                     </td>
-                    <td>
+                    <td class="mpwem_event_title">
                         <div class="event-name">
                             <?php echo esc_attr($title .' '.$event_type_status );?>
                             <div class="event-status-inline">
@@ -330,9 +330,7 @@ function render_mep_events_by_status( $posts ) {
                         </div>
                         <div class="event-category"><?php echo esc_attr( $category );?></div>
                     </td>
-                    <td>
-                        <div class="status-badge <?php echo esc_attr( $event_status_class );?>"><?php echo esc_attr( $event_status );?></div>
-                    </td>
+
                     <td>
                         <div class="location">
                             📍 <?php echo esc_attr( $location );?>
@@ -342,8 +340,11 @@ function render_mep_events_by_status( $posts ) {
                         <div class="date-time">
                             <span ><?php echo esc_attr( $start_date );?></span>
                             <span class="time"><?php echo esc_attr( $start_time );?></span>
-                            <span class="mpwem_remaining_days"><?php echo esc_attr( $time_remaining );?></span>
+<!--                            <span class="mpwem_remaining_days">--><?php //echo esc_attr( $time_remaining );?><!--</span>-->
                         </div>
+                    </td>
+                    <td>
+                        <div class="status-badge mpwem_remaining_days <?php echo esc_attr( $event_status_class ); ?>"><?php echo esc_attr( $time_remaining );?></div>
                     </td>
                     <td>
                         <div class="ticket-types">
@@ -501,9 +502,9 @@ function render_mep_events_by_status( $posts ) {
                     <tr>
                         <th><?php esc_attr_e( 'Image', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Event Name', 'mage-eventpress' );?></th>
-                        <th><?php esc_attr_e( 'Status', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Location', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Event Date', 'mage-eventpress' );?></th>
+                        <th><?php esc_attr_e( 'Event Starts In', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Ticket Types', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Capacity', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Actions', 'mage-eventpress' );?></th>

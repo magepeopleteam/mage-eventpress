@@ -1436,6 +1436,19 @@
 			return $the_file_path;
 		}
 	}
+
+	if ( ! function_exists( 'mep_template_file_url' ) ) {
+		function mep_template_file_url( $file_name ) {
+			$template_path = get_stylesheet_directory() . '/mage-events/';
+			$default_path  = MEP_URL . 'templates/';
+			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
+			$themedir      = $thedir . $file_name;
+			$the_file_path = locate_template( array( 'mage-events/' . $file_name ) ) ? $themedir : $default_path . $file_name;
+
+			return $the_file_path;
+		}
+	}
+
 	if ( ! function_exists( 'mep_template_part_file_path' ) ) {
 		function mep_template_part_file_path( $file_name ) {
 			$the_file_path = plugin_dir_path( __DIR__ ) . 'inc/template-prts/' . $file_name;
@@ -1697,6 +1710,7 @@
 			return $theme;
 		}
 	}
+	// depricated event_single_template_list function
 	if ( ! function_exists( 'event_single_template_list' ) ) {
 			function event_single_template_list( $current_theme ) {
 				$themes = mep_event_template_name();

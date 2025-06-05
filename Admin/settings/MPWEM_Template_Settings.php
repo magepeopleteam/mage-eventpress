@@ -21,7 +21,7 @@ if(!class_exists('MPWEM_Template_Settings')){
         }
         public function template_tab_content($post_id){
             $values = get_post_custom($post_id);
-			$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'theme-2');
+			$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme');
 			if (array_key_exists('mep_event_template', $values)) {
 				$current_template = $values['mep_event_template'][0];
 			} else {
@@ -40,23 +40,41 @@ if(!class_exists('MPWEM_Template_Settings')){
                 
                 <section class="bg-light">
                     <h2><?php esc_html_e('Template Settings', 'mage-eventpress'); ?></h2>
-                    <span><?php esc_html_e('Easily create and manage a timeline of activities.', 'mage-eventpress'); ?></span>
+                    <span><?php esc_html_e('Select Template from below. Read documention to override template, click', 'mage-eventpress'); ?> <a href="https://docs.mage-people.com/woocommerce-event-manager/how-to-override-and-change-event-templates/"><?php _e('Here','mage-eventpress') ?></a></span>
                 </section>
                 
                 <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e('Template', 'mage-eventpress'); ?></span></h2>
-                            <span><?php esc_html_e('Select a template to show your event', 'mage-eventpress'); ?></span>
-                        </div>
-                        <div class='sec'>
-                            <span><?php event_single_template_list($_current_template); ?></span>
-                        </div>
-                    </label>
+                    <div class="mep-template-section">
+                        <input type="hidden" name="mep_event_template" value="<?php echo esc_attr($_current_template); ?>" />
+                        <?php $templates = $this->get_template($_current_template); ?>
+                        <?php foreach($templates as $template):  ?>
+                            <?php 
+                                $image = preg_replace('/\.php$/', '.png', $template['value']);
+                            ?>
+                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="<?php echo mep_template_file_url( 'screenshot/').$image; ?>" data-mep-template="<?php echo $template['value']; ?>"><?php echo $template['name']; ?></div>
+                        <?php endforeach; ?>
+                    </div>
                 </section>
             </div>
             <?php
         }
+
+        public function get_template($current_theme){
+                $themes = mep_event_template_name();
+				$deprecated_themes = ['royal.php', 'theme-1.php', 'theme-2.php', 'theme-3.php', 'vanilla.php'];
+				
+				foreach ( $themes as $theme_file => $theme_name ) {
+					if ( in_array( $theme_file, $deprecated_themes ) && $current_theme !== $theme_file ) {
+						continue;
+					}
+                    $template[] = [
+                        'name' => $theme_name,
+                        'value' => $theme_file,
+                    ];
+				}
+                return $template;
+        }
+        
     }
 
     new MPWEM_Template_Settings();

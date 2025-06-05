@@ -568,6 +568,12 @@ function save_email_text(){
 	});
 }
 
+// ================ Template slection ===============
+$(document).on('click','.mep-template img',function(e){
+	$('[name="mep_event_template"]').val($(this).data('mep-template'));
+	$('.mep-template').removeClass('active')
+	$(this).parent('.mep-template').addClass('active');
+});
 // ================ Icon Select Settings ===============
 $(document).on('click','.fa-icon-lists [data-icon]',function(e){
 	e.preventDefault();

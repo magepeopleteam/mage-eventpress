@@ -290,6 +290,21 @@ vulnerabilities.
 
 
 == Changelog ==
+
+= 4.4.3 =
+* Mobile responsive issue fixed
+* Removed org link from event list page
+* Missing style issue fixed
+  04 June 2025*
+
+
+= 4.4.1 =
+* Double Email Sending issue fixed
+* FAQ, Email Text, Timeline not save issue fixed
+* UI & UX Improved
+* Recurring Stat page design optimized.
+  29 May 2025*
+
 = 4.3.9 =
 * Event Edit Not working issue fixed.
 * Virtual Event Info not sending to confirmation email issue fixed.

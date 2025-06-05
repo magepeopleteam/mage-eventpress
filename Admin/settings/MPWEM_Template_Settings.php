@@ -40,7 +40,7 @@ if(!class_exists('MPWEM_Template_Settings')){
                 
                 <section class="bg-light">
                     <h2><?php esc_html_e('Template Settings', 'mage-eventpress'); ?></h2>
-                    <span><?php esc_html_e('Easily create and manage a timeline of activities.', 'mage-eventpress'); ?></span>
+                    <span><?php esc_html_e('Select Template from below. Read documention to override template, click', 'mage-eventpress'); ?> <a href="https://docs.mage-people.com/woocommerce-event-manager/how-to-override-and-change-event-templates/"><?php _e('Here','mage-eventpress') ?></a></span>
                 </section>
                 
                 <section>
@@ -48,7 +48,10 @@ if(!class_exists('MPWEM_Template_Settings')){
                         <input type="hidden" name="mep_event_template" value="<?php echo esc_attr($_current_template); ?>" />
                         <?php $templates = $this->get_template($_current_template); ?>
                         <?php foreach($templates as $template):  ?>
-                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="https://placehold.co/100" data-mep-template="<?php echo $template['value']; ?>"><?php echo $template['name']; ?></div>
+                            <?php 
+                                $image = preg_replace('/\.php$/', '.png', $template['value']);
+                            ?>
+                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="<?php echo mep_template_file_url( 'screenshot/').$image; ?>" data-mep-template="<?php echo $template['value']; ?>"><?php echo $template['name']; ?></div>
                         <?php endforeach; ?>
                     </div>
                 </section>
@@ -71,6 +74,7 @@ if(!class_exists('MPWEM_Template_Settings')){
 				}
                 return $template;
         }
+        
     }
 
     new MPWEM_Template_Settings();

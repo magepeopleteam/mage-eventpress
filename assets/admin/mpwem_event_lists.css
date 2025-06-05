@@ -135,18 +135,18 @@
 }
 
 .mpwem_event_list table tr:nth-child(odd) {
-    background-color: #f7f7f7; /* light gray for odd rows */
+    background-color: #ffffff; /* light gray for odd rows */
 }
 
 .mpwem_event_list table tr:nth-child(even) {
-    background-color: #ffffff; /* white for even rows */
+    background-color: #f7f7f7; /* white for even rows */
 }
 
 .mpwem_event_list .event-table tr {
     transition: all 0.2s ease;
 }
 .mpwem_event_list .event-table th {
-    background: #f8fafc;
+    background: #e6f1f7;
     padding: 16px 20px;
     text-align: left;
     font-weight: 600;

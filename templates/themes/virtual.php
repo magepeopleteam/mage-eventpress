@@ -1,5 +1,5 @@
 <?php
-// Template Name: Virtual Event Theme
+// Template Name: Virtual Event
 
 // Settings Value :::::::::::::::::::::::::::::::::::::::;
 	$event_id                 = empty( $event_id ) ? get_the_id() : $event_id;

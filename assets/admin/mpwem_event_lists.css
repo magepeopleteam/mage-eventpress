@@ -27,7 +27,6 @@
     flex-wrap: wrap;
     margin-top: 16px;
     margin-bottom:16px;
-    padding-left:10px;
 }
 .mpwem_event_list .header h1 {
     font-size: 2rem;
@@ -101,6 +100,9 @@
 }
 .mpwem_event_list .stat-item{
     cursor: pointer;
+    background:#fff;
+    padding:5px 10px;
+    border-radius:5px;
 }
 .mpwem_event_list .search-box input {
     width: 100%;

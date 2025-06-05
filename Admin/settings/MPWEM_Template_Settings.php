@@ -21,7 +21,7 @@ if(!class_exists('MPWEM_Template_Settings')){
         }
         public function template_tab_content($post_id){
             $values = get_post_custom($post_id);
-			$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'theme-2');
+			$global_template = mep_get_option('mep_global_single_template', 'single_event_setting_sec', 'default-theme');
 			if (array_key_exists('mep_event_template', $values)) {
 				$current_template = $values['mep_event_template'][0];
 			} else {
@@ -48,7 +48,7 @@ if(!class_exists('MPWEM_Template_Settings')){
                         <input type="hidden" name="mep_event_template" value="<?php echo esc_attr($_current_template); ?>" />
                         <?php $templates = $this->get_template($_current_template); ?>
                         <?php foreach($templates as $template):  ?>
-                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="https://placehold.co/100" alt=""><?php echo $template['name']; ?></div>
+                            <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="https://placehold.co/100" data-mep-template="<?php echo $template['value']; ?>"><?php echo $template['name']; ?></div>
                         <?php endforeach; ?>
                     </div>
                 </section>

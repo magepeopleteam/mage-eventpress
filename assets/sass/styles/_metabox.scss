@@ -1404,6 +1404,7 @@ h3.mep_virtual_sec_title {
 .mep-template-section .mep-template img{
 	border: 2px solid #ddd;
 	border-radius: 5px;
+	cursor: pointer;
 }
 .mep-template-section .mep-template.active img{
 	border: 2px solid var(--mpev-primary);

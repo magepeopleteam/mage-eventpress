@@ -110,6 +110,7 @@
 		}
 	} else {
 		MPWEM_Layout::msg( esc_html__( 'Sorry, no ticket available', 'mage-eventpress' ) );
+        do_action('mep_after_no_seat_notice', $event_id);
 	}
 
 //	echo '<pre>';print_r($total_ticket);echo '</pre>';

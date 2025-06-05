@@ -221,6 +221,7 @@ function render_mep_events_by_status( $posts ) {
             foreach ($posts as $post) {
                 $id    = $post->ID;
                 $title = get_the_title($id);
+                $thumbnail_url = get_the_post_thumbnail_url($id, 'small');
                 $status = get_post_status($id);
                 $edit_link   = get_edit_post_link($id);
                 $delete_link = get_delete_post_link($id); // Moves to Trash
@@ -242,14 +243,22 @@ function render_mep_events_by_status( $posts ) {
                 $all_times          =  MPWEM_Functions::get_times( $event_id, $all_dates );
                 $date               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 
+                $total_ticket       = MPWEM_Functions::get_total_ticket( $id );
+                $total_sold         = mep_get_event_total_seat_left( $id );
+
                 if( $event_type === 'everyday' ){
                     $time_remaining = get_time_remaining( $date, $end_date );
                     $start_date = date('F j, Y', strtotime( $date ));
+                    $event_type_status = 'Recurring Event (Repeated)';
+                    $total_sold         = mep_get_event_total_seat_left( $id, $date );
+                }else if( $event_type === 'yes' ){
+                    $time_remaining = get_time_remaining( $date, $end_date );
+                    $start_date = date('F j, Y', strtotime( $date ));
+                    $event_type_status = 'Recurring Event (Selected Dates)';
+                    $total_sold         = mep_get_event_total_seat_left( $id, $date );
+                }else{
+                    $event_type_status = '';
                 }
-
-
-                $total_ticket       = MPWEM_Functions::get_total_ticket( $id );
-                $total_sold         = mep_get_event_total_seat_left( $id );
 
                 if( $total_ticket === $total_sold ){
                     $text = 'Full';
@@ -294,11 +303,13 @@ function render_mep_events_by_status( $posts ) {
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
                 >
                     <td>
-                        <div class="event-image-placeholder">📚</div>
+                        <div class="event-image-placeholder">
+                            <img class="mpwem_event_feature_image" src="<?php echo esc_url($thumbnail_url);?>">
+                        </div>
                     </td>
                     <td>
                         <div class="event-name">
-                            <?php echo esc_attr($title);?>
+                            <?php echo esc_attr($title .' '.$event_type_status );?>
                             <div class="event-status-inline">
                                 <?php if( $status === 'publish'){?>
                                 <div class="status-live-inline">

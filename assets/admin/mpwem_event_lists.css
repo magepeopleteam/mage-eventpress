@@ -155,8 +155,8 @@
     vertical-align: middle !important;
 }
 .mpwem_event_list .event-image-placeholder {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
     background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
     display: flex;

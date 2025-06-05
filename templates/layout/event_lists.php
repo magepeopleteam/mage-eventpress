@@ -242,6 +242,7 @@ function render_mep_events_by_status( $posts ) {
                 $all_dates          =  MPWEM_Functions::get_dates( $event_id );
                 $all_times          =  MPWEM_Functions::get_times( $event_id, $all_dates );
                 $date               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+                $time               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 
                 $total_ticket       = MPWEM_Functions::get_total_ticket( $id );
                 $total_sold         = mep_get_event_total_seat_left( $id );
@@ -339,7 +340,7 @@ function render_mep_events_by_status( $posts ) {
                     <td>
                         <div class="date-time">
                             <span ><?php echo esc_attr( $start_date );?></span>
-                            <span class="time"><?php echo esc_attr( $start_time );?></span>
+                            <span class="time"><?php echo esc_attr( $time );?></span>
 <!--                            <span class="mpwem_remaining_days">--><?php //echo esc_attr( $time_remaining );?><!--</span>-->
                         </div>
                     </td>

@@ -858,10 +858,6 @@ ul#mep_add_calender_links li a {
   color: var(--mpev-base-txt);
   font-weight: normal;
 }
-.mep-default-theme .mep-org-details .org-name a {
-  color: var(--mpev-base-txt);
-  font-weight: bold;
-}
 
 .mep-default-sidebar.margin {
   margin-top: 42px;

@@ -44,9 +44,7 @@
 					<div class="org-name">
 						<div><?php echo _e('Organized By:'); ?></div>
 						<?php foreach ($org_terms as $index => $org): ?>
-							<a href="<?php echo get_term_link($org->term_id); ?>">
-								<?php echo esc_html($org->name); ?>
-							</a><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?>
+							<strong><?php echo esc_html($org->name); ?><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?></strong>
 						<?php endforeach; ?>
 					</div>
 				</div>

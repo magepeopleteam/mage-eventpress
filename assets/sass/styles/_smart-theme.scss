@@ -560,9 +560,11 @@
 		
 	}
 /*****************************/
-	div.mpwem_details_content,
-	div.mpwem_details_content p{line-height: 1.7 !important;color:#8D8D8D;font-size:16px !important;}
-/*****************************/
+	.mpwem_details_content img:not(.mp_wp_editor img) {
+		width: auto;
+		height: auto;
+		max-width: 100%;
+	}
 	div.mpwem_ex_service,
 	div.mep_attendee_info,
 	div.mep_attendee_info_hidden{display: none;}

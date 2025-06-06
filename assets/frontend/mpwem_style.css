@@ -1465,11 +1465,8 @@ ul.event-custom-price li ul {
 div.mep-default-feature-content p,
 div.mep-default-feature-content ul,
 div.mep-default-feature-content ul li {
-  color: #3A3A3A;
-  font-size: 16px;
   padding: inherit;
   margin: 15px 0;
-  line-height: 22px;
   list-style: inherit;
 }
 
@@ -5421,7 +5418,6 @@ Vanilla theme css by ariful
     justify-content: start;
   }
   /*****************************/
-  /*****************************/
   /***************************************************/
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
@@ -5999,11 +5995,10 @@ Vanilla theme css by ariful
   .slick-dots li.slick-active button::before {
     color: var(--mpev-primary);
   }
-  div.mpwem_details_content,
-  div.mpwem_details_content p {
-    line-height: 1.7 !important;
-    color: #8D8D8D;
-    font-size: 16px !important;
+  .mpwem_details_content img:not(.mp_wp_editor img) {
+    width: auto;
+    height: auto;
+    max-width: 100%;
   }
   div.mpwem_ex_service,
   div.mep_attendee_info,

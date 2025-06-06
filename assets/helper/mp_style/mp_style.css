@@ -454,11 +454,7 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-	.mpStyle img:not(.mp_wp_editor img) {
-		width: 100%;
-		height: auto;
-		max-width: 100%;
-	}
+
 	/*******Click slider***************/
 	.mpStyle [class*="clickSlide"] {
 		background-color: var(--color_white);

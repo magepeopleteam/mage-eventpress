@@ -49,39 +49,6 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			]
 		);
 
-
-
-		$this->add_control(
-			'mep_event_savq_display',
-			[
-				'label' => __( 'Display Available Quantity?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
-				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .xtra-item-left' => 'display: {{VALUE}};',
-                ],                
-			]
-		); 
-
-		$this->add_control(
-			'mep_cart_btn_label',
-			[
-				'label' => __( 'Cart Button Text', 'mage-eventpress' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => __( 'Register For This Event', 'mage-eventpress' ),
-			]
-		);
-
-
-
-
-
-
         $this->end_controls_section();
 
 
@@ -105,86 +72,11 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				],			
                 'separator' => 'none',
                 'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title' => 'display: {{VALUE}};',
-                ],                
-			]
-		); 
-		$this->add_control(
-			'mep_ticket_label',
-			[
-				'label' => __( 'Ticket Type Title', 'mage-eventpress' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => __( 'Ticket Type:', 'mage-eventpress' ),
-			]
-		);
-		$this->add_control(
-			'mep_event_stqc_display',
-			[
-				'label' => __( 'Display Ticket Quantity Column?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'table-cell',
-				'options' => [
-					'table-cell' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget td.ticket-qty' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header' => 'display: {{VALUE}};',
                 ],                
 			]
 		); 
 
-
-		$this->add_control(
-			'mep_event_stpc_display',
-			[
-				'label' => __( 'Display Ticket Price Column?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'table-cell',
-				'options' => [
-					'table-cell' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget td.ticket-price' => 'display: {{VALUE}};',
-                ],                
-			]
-		);
-
-		$this->add_control(
-			'mep_event_display_tkt_qty',
-			[
-				'label' => __( 'Display Ticket Qty: text?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
-				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget td span.tkt-qty' => 'display: {{VALUE}};',
-                ],                
-			]
-		);
-
-		$this->add_control(
-			'mep_event_display_tkt_price_txt',
-			[
-				'label' => __( 'Display Per Ticket Price: text?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
-				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget td span.tkt-pric' => 'display: {{VALUE}};',
-                ],                
-			]
-		);
 
 
 		$this->add_group_control(
@@ -193,7 +85,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'name' => 'mep_event_cart_ttt_typo',
 				'label' => __( 'Title Text Typography', 'mage-eventpress' ),
 				// 'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title',			
+				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header, {{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header',			
 			]
         );
 
@@ -203,7 +95,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'label' => __( 'Title Background', 'mage-eventpress' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header, {{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header' => 'background: {{VALUE}} !important;',
 				],
 			]
 		);
@@ -214,7 +106,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'label' => __( 'Title Text Color', 'mage-eventpress' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header, {{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -227,150 +119,41 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_ticket_type_title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header, {{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
-
-		$this->end_controls_section();
-
-
-// Extra Service Table Styling Sec
-		$this->start_controls_section(
-			'mep_event_cart_extra_service_style_settings',
-			[
-				'label' => __( 'Extra Service Style Settings', 'mage-eventpress' ),
-				'tab' => Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->add_control(
-			'mep_event_exs_display',
-			[
-				'label' => __( 'Display Extra Service Title?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
-				'options' => [
-					'block' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title' => 'display: {{VALUE}};',
-                ],                
-			]
-		); 		
-		$this->add_control(
-			'mep_ex_service_label',
-			[
-				'label' => __( 'Extra Service Title', 'mage-eventpress' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => __( 'Extra Service:', 'mage-eventpress' ),
-			]
-		);
-		$this->add_control(
-			'mep_event_exs_table_head_display',
-			[
-				'label' => __( 'Display Extra Service Table Head?', 'mage-eventpress' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'block',
-				'options' => [
-					'table-row' => __( 'Yes', 'mage-eventpress' ),					
-					'none' => __( 'No', 'mage-eventpress' )
-				],			
-                'separator' => 'none',
-                'selectors' => [
-                    '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget table tr.mep_extra_service_table_head' => 'display: {{VALUE}};',
-                ],                
-			]
-		); 
-
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name' => 'mep_event_cart_exst_typo',
-				'label' => __( 'Title Text Typography', 'mage-eventpress' ),
-				// 'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title',			
-			]
-        );
-
-		$this->add_control(
-			'mep_event_cart_exst_bg_color',
-			[
-				'label' => __( 'Title Background', 'mage-eventpress' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'mep_event_cart_exst_txt_color',
-			[
-				'label' => __( 'Title Text Color', 'mage-eventpress' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-
 		$this->add_responsive_control(
-			'mep_event_cart_exst_padding',
+			'mep_cart_section_sec_border_radius',
 			[
-				'label' => __( 'Title Padding', 'elementor' ),
+				'label' => __('Border Radius', 'mage-eventpress'),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h3.mep_extra_service_title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type, {{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
+
+
 			]
 		);
-
 		$this->end_controls_section();
-
-
 
 		$this->start_controls_section(
 			'mep_event_add_to_cart_section_style_settings',
 			[
-				'label' => __( 'Cart Section & Button Style Settings', 'mage-eventpress' ),
+				'label' => __( 'Cart Button Style Settings', 'mage-eventpress' ),
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name' => 'mep_event_title_typography',
-				'label' => __( 'Event Table Title Typography', 'mage-eventpress' ),
-				// 'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget h4.mep-cart-table-title',			
-			]
-        );
-
+	
 		$this->add_control(
-				'mep_event_table_headline_color',
+				'mep_event_button_bg_color',
 				[
-					'label' => __( 'Event Table Header Text Color', 'mage-eventpress' ),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [					
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep_re_datelist_label' => 'color: {{VALUE}};',
-					],
-				]
-	    );
-
-		$this->add_control(
-				'mep_event_table_headline_bg_color',
-				[
-					'label' => __( 'Event Table Header Background Color', 'mage-eventpress' ),
+					'label' => __('Cart Button Background Color', 'mage-eventpress'),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep_everyday_date_secs' => 'background-color: {{VALUE}} !important;',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]' => 'background-color: {{VALUE}} !important;border-color:{{VALUE}} !important',
 					],
 				]
 	    );
@@ -381,8 +164,8 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 					'label' => __( 'Cart Button Text Color', 'mage-eventpress' ),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text' => 'color: {{VALUE}};',
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text:hover' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]' => 'color: {{VALUE}};',
 					],
 				]
 	    );
@@ -394,21 +177,9 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'name' => 'mep_event_button_typography',
 				'label' => __( 'Cart Button Text Typography', 'mage-eventpress' ),
 				// 'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart .mep-cart-btn-text',			
+				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]',			
 			]
         );
-
-
-		$this->add_control(
-				'mep_event_button_bg_color',
-				[
-					'label' => __('Cart Button Background Color', 'mage-eventpress'),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'background-color: {{VALUE}} !important;border-color:{{VALUE}} !important',
-					],
-				]
-	    );
 
 		$this->add_responsive_control(
 			'mep_event_btn_padding',
@@ -417,7 +188,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
 				],
 			]
 		);
@@ -429,52 +200,16 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .btn-mep-event-cart' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit]' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
-
-		$this->add_control(
-				'mep_event_section_bg_color',
-				[
-					'label' => __( 'Event Section Background Color', 'mage-eventpress' ),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep-events-wrapper' => 'background-color: {{VALUE}};',
-					],
-				]
-	    );
-
-		$this->add_control(
-				'mep_event_section_text_color',
-				[
-					'label' => __( 'Event Section Text Color', 'mage-eventpress' ),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep-events-wrapper' => 'color: {{VALUE}};',
-						'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep-events-wrapper table td' => 'color: {{VALUE}};',
-					],
-				]
-	    );
-
-		$this->add_responsive_control(
-			'mep_event_section_padding',
-			[
-				'label' => __( 'Event Section Padding', 'elementor' ),
-				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%', 'rem' ],
-				'selectors' => [
-					'{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep-events-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'box_shadow',
 				'label' => __( 'Box Shadow', 'plugin-domain' ),
-				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mep-events-wrapper',
+				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_booking_panel',
 			]
 		);
         $this->end_controls_section();

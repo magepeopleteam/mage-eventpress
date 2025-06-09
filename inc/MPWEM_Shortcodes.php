@@ -31,6 +31,6 @@
 
 				return ob_get_clean();
 			}
-		}
+		} 
 		new MPWEM_Shortcodes();
 	}

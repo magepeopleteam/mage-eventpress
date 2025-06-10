@@ -8,8 +8,10 @@
 	} // Cannot access pages directly.
 	$event_id = $event_id ?? 0;
 	//echo '<pre>';			print_r($event_id);			echo '</pre>';
-	$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-	$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
+	$all_dates=$all_dates??[];
+	$all_times=$all_times??[];
+	$all_dates = is_array($all_dates) && sizeof($all_dates)>0 ?$all_dates: MPWEM_Functions::get_dates( $event_id );
+	$all_times = is_array($all_times) && sizeof($all_times)>0 ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates );
 	$date      = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();

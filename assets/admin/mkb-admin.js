@@ -103,7 +103,7 @@
 			}
 		});
 	});
-	$(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"],.mp_ticket_type_table [name="option_name[]"]', function () {
+	$(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"]', function () {
 		let n = $(this).val();
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 	});

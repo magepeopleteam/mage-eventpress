@@ -7,7 +7,7 @@
 	body { margin: 0; padding: 0; }
 	body.noScroll { overflow: hidden; }
 	/******/
-	.mpStyle { font-size: var(--fs); font-weight: var(--fw); color: var(--d_color); line-height: 1.5; width: 100%; }
+	.mpStyle { font-size: var(--fs); font-weight: var(--fw); line-height: 1.5; width: 100%; }
 	.mpStyle,
 	.mpStyle [data-collapse].mActive { display: block; }
 	.mpStyle table th[data-collapse].mActive,

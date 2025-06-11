@@ -10,10 +10,7 @@
 	$all_dates = $all_dates ?? MPWEM_Functions::get_dates($event_id);
 	$all_times = $all_times ?? MPWEM_Functions::get_times($event_id, $all_dates);
 	$date = $date ?? MPWEM_Functions::get_upcoming_date_time($event_id, $all_dates, $all_times);
-	$total_sold = mep_get_event_total_seat_left($event_id, $date);
-	$total_ticket = MPWEM_Functions::get_total_ticket($event_id);
-	$total_reserve = MPWEM_Functions::get_reserve_ticket($event_id);
-	$total_available = $total_ticket - ($total_sold + $total_reserve);
+	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ($total_available > 0) {
 		$ex_services = MP_Global_Function::get_post_info($event_id, 'mep_events_extra_prices', []);
@@ -44,7 +41,7 @@
 										<input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
 										<?php if ( $mep_available_seat == 'on' ) { ?>
 											<div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
 											</div>
 										<?php } ?>
 									</div>

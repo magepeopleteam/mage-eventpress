@@ -20,7 +20,19 @@
 			}
 
 			//==========================//
-			public static function get_total_ticket( $event_id ) {
+			public static function get_total_available_seat( $event_id, $date = '' ) {
+				$total_sold       = self::get_total_sold( $event_id,$date );
+				$total_ticket       = self::get_total_ticket( $event_id,$date );
+				$total_reserve      = self::get_reserve_ticket( $event_id,$date );
+				return $total_ticket - ( $total_sold + $total_reserve );
+			}
+			public static function get_total_sold( $event_id, $date = '' ) {
+				$date          = ! empty( $date ) ? date( 'YmdHi', strtotime( $date ) ) : 0;
+				$meta_name     = $date > 0 ? $event_id . '_' . $date : 'mep_total_seat_left';
+				$total_sold = MP_Global_Function::get_post_info( $event_id, $meta_name );
+				return ! empty( $total_sold ) ? $total_sold : mep_update_event_total_seat( $event_id, $date );
+			}
+			public static function get_total_ticket( $event_id,$date ) {
 				$total_ticket = 0;
 				$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				if ( sizeof( $ticket_types ) > 0 ) {
@@ -29,10 +41,10 @@
 					}
 				}
 
-				return apply_filters( 'mep_event_total_seat_counts', $total_ticket, $event_id );
+				return apply_filters( 'mpwem_event_total_seat_counts', $total_ticket, $event_id ,$date);
 			}
 
-			public static function get_reserve_ticket( $event_id ) {
+			public static function get_reserve_ticket( $event_id ,$date) {
 				$reserve_ticket = 0;
 				$ticket_types   = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				if ( sizeof( $ticket_types ) > 0 ) {
@@ -41,7 +53,7 @@
 					}
 				}
 
-				return apply_filters( 'mep_event_total_resv_seat_count', $reserve_ticket, $event_id );
+				return apply_filters( 'mpwem_event_total_resv_seat_count', $reserve_ticket, $event_id ,$date);
 			}
 
 			public static function get_available_ticket( $event_id, $ticket_name, $date, $ticket_type = [] ) {

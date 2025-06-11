@@ -36,6 +36,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 				require_once(dirname(__DIR__) . '/lib/classes/class-mep.php');
 				require_once(dirname(__DIR__) . "/inc/mep_functions.php");

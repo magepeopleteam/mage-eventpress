@@ -71,6 +71,11 @@ div.item_hover_effect a:hover {
   color: var(--mpev-base);
 }
 
+.mep_event_list .mep_list_date .mep_minimal_list_organizer {
+  color: #505050;
+  font-weight: normal;
+}
+
 .mep_event_list_item:hover {
   border-color: var(--mpev-base);
 }
@@ -858,10 +863,6 @@ ul#mep_add_calender_links li a {
   color: var(--mpev-base-txt);
   font-weight: normal;
 }
-.mep-default-theme .mep-org-details .org-name a {
-  color: var(--mpev-base-txt);
-  font-weight: bold;
-}
 
 .mep-default-sidebar.margin {
   margin-top: 42px;
@@ -1465,11 +1466,8 @@ ul.event-custom-price li ul {
 div.mep-default-feature-content p,
 div.mep-default-feature-content ul,
 div.mep-default-feature-content ul li {
-  color: #3A3A3A;
-  font-size: 16px;
   padding: inherit;
   margin: 15px 0;
-  line-height: 22px;
   list-style: inherit;
 }
 
@@ -4754,6 +4752,7 @@ input.mpe-new-input-group-field {
   }
   .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span {
     width: 50%;
+    text-wrap: wrap;
   }
   .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
     width: 50%;
@@ -5421,7 +5420,6 @@ Vanilla theme css by ariful
     justify-content: start;
   }
   /*****************************/
-  /*****************************/
   /***************************************************/
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
@@ -5998,12 +5996,6 @@ Vanilla theme css by ariful
   }
   .slick-dots li.slick-active button::before {
     color: var(--mpev-primary);
-  }
-  div.mpwem_details_content,
-  div.mpwem_details_content p {
-    line-height: 1.7 !important;
-    color: #8D8D8D;
-    font-size: 16px !important;
   }
   div.mpwem_ex_service,
   div.mep_attendee_info,

@@ -41,7 +41,7 @@
 										<input type="hidden" name="event_extra_service_name[]" value="<?php echo esc_attr($ticket_name); ?>" />
 										<?php if ( $mep_available_seat == 'on' ) { ?>
 											<div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining' ); ?>
+												<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
 											</div>
 										<?php } ?>
 									</div>

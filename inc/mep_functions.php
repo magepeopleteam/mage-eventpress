@@ -257,14 +257,27 @@
 
 		return null;
 	}
-	function mep_add_event_into_feed_request( $qv ) {
-		if ( isset( $qv['feed'] ) && ! isset( $qv['post_type'] ) ) {
-			$qv['post_type'] = array( 'mep_events' );
+function mep_add_event_into_feed_request( $qv ) {
+	if ( isset( $qv['feed'] ) ) {
+		// If 'post_type' is already set, make sure it's an array
+		if ( isset( $qv['post_type'] ) ) {
+			$post_types = (array) $qv['post_type'];
+		} else {
+			// Default post type for feeds is 'post'
+			$post_types = array( 'post' );
 		}
 
-		return $qv;
+		// Add 'mep_events' if not already present
+		if ( ! in_array( 'mep_events', $post_types ) ) {
+			$post_types[] = 'mep_events';
+		}
+
+		$qv['post_type'] = $post_types;
 	}
-	add_filter( 'request', 'mep_add_event_into_feed_request' );
+	return $qv;
+}
+add_filter( 'request', 'mep_add_event_into_feed_request' );
+
 	if ( ! function_exists( 'mepfix_sitemap_exclude_post_type' ) ) {
 		function mepfix_sitemap_exclude_post_type() {
 			return [ 'auto-draft' ];

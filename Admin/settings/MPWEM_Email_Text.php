@@ -71,7 +71,7 @@ if(!class_exists('MPWEM_Email_Text')){
             $text = get_post_meta($post_id, 'mep_event_cc_email_text', true);
             ?>
 
-                <?php echo wp_kses_post($text); ?>
+                <?php echo  nl2br(wp_kses_post($text)); ?>
             <?php
         }
 

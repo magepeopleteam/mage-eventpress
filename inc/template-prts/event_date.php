@@ -102,9 +102,9 @@ if (!function_exists('mep_date_in_default_theme')) {
             require(mep_template_file_path('single/date_list_title.php')); 
         }
         if (sizeof($more_date) > 2) {
-            echo '<ul id="mep_event_date_sch">';
+            echo '<ul class="mep_event_date_sch" id="mep_event_date_sch">';
         } else {
-            echo '<ul>';
+            echo '<ul class="mep_event_date_sch">';
         }
 
         if ($recurring == 'yes') {

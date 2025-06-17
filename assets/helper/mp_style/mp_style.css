@@ -21,7 +21,6 @@
 	[data-target-popup],
 	[data-icon-change],
 	[data-icon-change] { cursor: pointer; }
-	div.mpStyle [data-required],
 	div.mpStyle [data-collapse] { display: none; }
 	/*******/
 	div.mpStyle a,

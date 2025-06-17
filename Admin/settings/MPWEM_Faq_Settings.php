@@ -13,17 +13,13 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         public function __construct() {
             add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'faq_tab']);
             add_action('mp_event_all_in_tab_item', [$this, 'faq_tab_content']);
-
             add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save faq data
             add_action('wp_ajax_mep_faq_data_save', [$this, 'save_faq_data_settings']);
-	        add_action('wp_ajax_nopriv_mep_faq_data_save', [$this, 'save_faq_data_settings']);
             // update faq data
             add_action('wp_ajax_mep_faq_data_update', [$this, 'faq_data_update']);
-	        add_action('wp_ajax_nopriv_mep_faq_data_update', [$this, 'faq_data_update']);
             // mep_delete_faq_data
-            add_action('wp_ajax_mep_faq_delete_item', [$this, 'faq_delete_item']);
-             add_action('wp_ajax_nopriv_mep_faq_delete_item', [$this, 'faq_delete_item']);
+            add_action('wp_ajax_mep_faq_delete_item', [$this, 'faq_delete_item']);           
 
             add_action( 'save_post', [$this,'data_save'] );
         }
@@ -316,13 +312,13 @@ if( ! class_exists('MPWEM_Faq_Settings')){
                     if (isset($details[$index]) && trim($value) !== '') {
                         $combined[] = array(
                             'mep_faq_title'   => sanitize_text_field($value),
-                            'mep_faq_content' => sanitize_textarea_field($details[$index])
+                            'mep_faq_content' => wp_kses_post($details[$index])
                         );
                     }
                 }
 
                 update_post_meta($post_id, 'mep_event_faq', $combined);
-                $faq_description    = isset( $_POST['mep_faq_description'] ) ? sanitize_text_field($_POST['mep_faq_description']) : '';
+                $faq_description    = isset( $_POST['mep_faq_description'] ) ? wp_kses_post($_POST['mep_faq_description']) : '';
                 update_post_meta( $post_id, 'mep_faq_description', $faq_description );
             }
         }

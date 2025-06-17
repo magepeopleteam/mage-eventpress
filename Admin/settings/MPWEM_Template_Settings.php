@@ -49,7 +49,7 @@ if(!class_exists('MPWEM_Template_Settings')){
                         <?php $templates = $this->get_template($_current_template); ?>
                         <?php foreach($templates as $template):  ?>
                             <?php 
-                                $image = preg_replace('/\.php$/', '.png', $template['value']);
+                                $image = preg_replace('/\.php$/', '.webp', $template['value']);
                             ?>
                             <div class="mep-template <?php echo $_current_template == $template['value']?'active':''; ?>"><img src="<?php echo mep_template_file_url( 'screenshot/').$image; ?>" data-mep-template="<?php echo $template['value']; ?>"><?php echo $template['name']; ?></div>
                         <?php endforeach; ?>

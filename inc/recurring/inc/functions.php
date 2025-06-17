@@ -1178,7 +1178,7 @@
 
 		return array_merge( $default_translation, $recurring_translation );
 	}
-	add_filter( 'mep_settings_styling_arr', 'mep_re_style_strings_reg' );
+	//add_filter( 'mep_settings_styling_arr', 'mep_re_style_strings_reg' );
 	function mep_re_style_strings_reg( $default_translation ) {
 		$recurring_translation = array(
 			array(

@@ -9,7 +9,7 @@
 	$event_id  = $event_id ?? 0;
 	$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
-	$date      = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$date               = empty($date )? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ):$date;
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {

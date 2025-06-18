@@ -169,40 +169,40 @@ This is a plugin that allows event managers and ticket sellers to submit events 
 
 ### 📋 Shortcodes included with Woocommerce Events Manager
 
-```
+`
 [event-list cat='' org='' column='2' style='grid' cat-filter='no' org-filter='no' show='' pagination='no' sort='ASC']
-```
+`
 
 
 🟩 **Grid style:**  
 To Show the Events in Grid Style. example 👉[Grid Style Demo](https://wpevently.com/events-grid-style/)👈:  
 
-```
+`
 [event-list style='grid']
-```
+`
 
 
 📄 **List style:**  
 To Show the Events in List Style. example 👉[List Style Demo](https://wpevently.com/events-list-style/)👈:   
 
-```
+`
 [event-list style='list']
-```
+`
 
 
 🔢 **show:**  
 By default, all events are shown without any limit. If you want to change it and set a limit, input the limit number. For example: 
 
-```
+`
 [event-list show='10']
-```
+`
 
 📑 **pagination:**  
 If you want to show pagination with the event list, you can set the value to "yes." For example:  
 
-```
+`
 [event-list pagination='yes']
-```
+`
 More ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 
 

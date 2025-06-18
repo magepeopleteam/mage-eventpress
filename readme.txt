@@ -10,7 +10,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Event Manager Plugin: WpEvently is a flexible and easy-to-use event booking and ticketing plugin for WooCommerce. Sell tickets, manage attendees, and display events using a responsive event calendar.
+Flexible WooCommerce plugin for event booking, attendee management, and responsive ticketing with a modern event calendar.
 
 
 == Description ==

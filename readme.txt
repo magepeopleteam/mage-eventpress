@@ -190,13 +190,9 @@ We have full confidence in our plugin and its ability to work well with any them
 [Bus Booking Manager](https://wordpress.org/plugins/bus-booking-manager/)
 [Bus Ticket Booking with Seat Reservation](https://wordpress.org/plugins/bus-ticket-booking-with-seat-reservation/)
 [Tour & Travel Manager For Woocommerce](https://wordpress.org/plugins/tour-booking-manager/)
-[Advanced – Deposit & Partial Payment for WooCommerce
-](https://wordpress.org/plugins/advanced-partial-payment-or-deposit-for-woocommerce/)
-[Booking and Rental Manager Pro for WordPress
-](https://mage-people.com/product/booking-and-rental-manager-for-woocommerce-pro/)
-[WordPress Service Booking & Scheduling Plugin Pro
-](https://mage-people.com/product/wordpress-service-booking-plugin-all-kind-of-service-booking-solution/)
-
+[Advanced – Deposit & Partial Payment for WooCommerce](https://wordpress.org/plugins/advanced-partial-payment-or-deposit-for-woocommerce/)
+[Booking and Rental Manager Pro for WordPress](https://mage-people.com/product/booking-and-rental-manager-for-woocommerce-pro/)
+[WordPress Service Booking & Scheduling Plugin Pro](https://mage-people.com/product/wordpress-service-booking-plugin-all-kind-of-service-booking-solution/)
 
 
 **CHECK OUT OUR Themes** 

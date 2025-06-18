@@ -1,6 +1,6 @@
-=== Event Manager and Tickets Selling Plugin for WooCommerce - WpEvently - WordPress Plugin ===
+=== Event Booking & Management Plugin for WooCommerce – WpEvently - WordPress Plugin ===
 Contributors: magepeopleteam, aamahin
-Tags: event, woocomerce events manager, events manager, Wordpress Events plugin, Events plugin
+Tags: event, WooCommerce events manager, event booking, Wordpress Events plugin, event calendar
 Requires at least: 5.3
 Stable tag: trunk
 Tested up to: 6.8.1
@@ -10,14 +10,14 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Event Manager Plugin: WPEvently is the best WordPress event plugin for creating events, managing registrations, and selling tickets easily.
+WooCommerce Event Manager Plugin: WpEvently is a flexible and easy-to-use event booking and ticketing plugin for WooCommerce. Sell tickets, manage attendees, and display events using a responsive event calendar.
 
 
 == Description ==
 
-The Event Manager plugin for WooCommerce simplifies the complicated event registration process. [Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the complete and simplest event management plugin for WordPress.
-Registering an event to a data-analyzing dashboard everything is available connecting the plugin with woo-commerce. 
-Take advantage of compatibility with all WordPress versions and utilize all well-known payment gateways through WooCommerce. 
+The Event Manager plugin for WooCommerce simplifies the complicated event registration process. **WpEvently** is a complete [event booking and event manager plugin](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) for WordPress users who need a reliable way to **sell tickets**, **register attendees**, and **manage events**. Built to work seamlessly with **WooCommerce**, it gives you full control over pricing, ticket types, and attendee data collection.
+
+Whether you're hosting conferences, classes, concerts, or workshops, WpEvently is your all-in-one **WordPress event solution**.
 
 ## LETS SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
 https://www.youtube.com/watch?v=zP2ADxzUrYw
@@ -25,81 +25,78 @@ https://www.youtube.com/watch?v=zP2ADxzUrYw
 
 ## Event Manager: #1 WooCommerce Event Management Plugin
 Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with Woocommerce event manager.
-Whether you are a small event organizer or large, we have thousands of trusted businesses.
+Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 
 ###  Explore The Demo:
 
 🌐 [Live Demo](https://wpevently.com/)
 📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
-🛍️ [Buy Event Manager and Tickets Selling Plugin for WooCommerce Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
+🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
 
 
-### Experience The Smooth Event Management Experience
+### 🎯 Experience Smooth Event Management
 Creating an event and managing it in one place has never been easier, faster, organized and smooth. Multiple Ticketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
-We are not limiting you here, the free version features most of the basic event management activity.
+We are not limiting you here; the free version features most of the basic event management activity.
 
-### Create Recurring Events as repeated dates now Easier
-The Repeating Event feature is now available in Event Manager Plugin which makes it easy to sell tickets for recurring events, like daily or weekly tours, appointments, or salon bookings. 
+### 🔁 Create and Manage Recurring Events now more easily
+Effortlessly set up repeating events—daily, weekly, or custom schedules. Whether you're running tours, appointments, or classes, WPEvently helps you sell tickets for recurring dates smoothly.
 
-### Sell Tickets on different dates (Particular dates) froma  single event 
-Sell tickets for events on different fixed dates with ease. Add multiple event dates in the backend and allow customers to choose their preferred date and time before purchasing tickets on the front end.
+### 📅 Sell Tickets for Multiple Fixed Dates from a Single Event
+With WPEvently, you can add multiple specific dates to a single event and let your customers select their preferred date/time before booking. Perfect for sessions, workshops, or performances with set schedules.
 
-## LET'S CREATE A PROFESSIONAL EVENT MANAGER ATTENDEE REGISTRATION FORM
-
-Creating an event might be offered by many, but when it comes to creating something professional and lucrative, we are here to get the job done for you.
-The continuous process of optimizing your event can be time-consuming. When you need to create something highly effective but have limited time available, [Evently-WordPress Event Manager](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for.
-
-With the Event Manager, you can implement these features and make your event done:
+### 📝 Build a Professional Event Registration Form
+Stand out with a customizable and dynamic attendee registration form. Apply conditional logic, such as showing a school name field only when the ticket type is “Child”. Designed for both flexibility and professionalism, even under tight deadlines.
+When you need to create something highly effective but have limited time available, [WordPress Event Manager - WpEvently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Event Manager, you can implement these features and make your event done.
 
 
 
-### Features are Available With Free Version
+### 🆓 Features are Available With Free Version
 
-* **Different Payment Method**
-Use All Payment Methods available in WooCommerce.
+✔ **Multiple Payment Methods**
+Supports all WooCommerce payment gateways. Use any available WooCommerce payment method to collect event ticket payments
 
-* **Cross Browser Support**
-Chrome, Firefox, Safari, and Opera are all popular web browsers that work well and there is no conflict with each other.
+✔ **Cross-Browser Compatibility**
+Fully compatible with all modern browsers like Chrome, Firefox, Safari, and Opera. Seamless performance across platforms.
 
-* **Responsive and SEO-Friendly**
-Make your events responsive and SEO-friendly with the advanced event manager plugin.
+✔ **Responsive & SEO-Friendly Design**
+Events display beautifully across all devices. Built with SEO best practices to help your event pages rank better.
 
-* **Multilingual Translation Support**
-Deliver your event content in multiple available options in the free version.
+✔ **Multilingual & Translation Ready**
+Translate your event content into any language. Fully compatible with translation plugins.
 
-* **Short Code**
-Available Short Code for Customizing Events & For Showing Events In Any Web Page.
+✔ **Custom Shortcodes**
+Use available shortcodes to display and customize events on any page or post with ease.
 
-* **Event Name & Event Description**
-Event Name & Event Description for seamless user experience
+✔ **Event Name & Description Fields**
+Add meaningful event names and detailed descriptions for better user experience and clarity.
 
-* **Multi management**
-Manage Event Ticket Type, Quantity, Prices, Category & Organizer.
+✔ **Multi-Level Event Management**
+Manage ticket types, quantities, pricing, event categories, and organizers — all from the backend dashboard.
 
-* **Google Map Integration**
-Show Event Venue Using Google Maps.
+✔ **Google Maps Integration**
+Display event venues using Google Maps to help attendees find the location easily.
 
-* **Event Date Options**
-Option of Adding Event Start Date, End Date, and Multi Date & Time.
+✔ **Flexible Date & Time Options**
+Add start/end dates, set recurring schedules, and allow multi-date time selection for your events.
 
-* **Easy Event Reset**
-One Click Event Rest Option.
+✔ **One-Click Event Reset**
+Reset event data with just a single click if you need to start fresh.
 
-* **Custom Event Templates**
-Multiple Event Templates (You can select a different template for each event)
+✔ **Custom Event Templates**
+Choose from multiple pre-designed event templates. Assign different templates for different events.
 
-* **WooCommerce Integration**
- WooCommerce Support, You can Sell products and events separately. There is no mixing with Event with the WooCommerce Products.
+✔ **WooCommerce Compatibility**
+ Works natively with WooCommerce. Sell event tickets and other products independently or together — no conflict.
 
-* **Theme Compatibility**
-Works with any standards-compliant WordPress Theme.
+✔ **Theme Compatibility**
+Compatible with any standards-compliant WordPress theme. No design or layout conflicts.
 
 
 
 
-### Create Some Great Event Features With the Event Manager Pro Version
+### 🚀 Create Some Great Event Features With the Event Manager Pro Version
 
 https://www.youtube.com/watch?v=9ur9Mnq20mc
 
@@ -109,30 +106,30 @@ Unlock your event design and management full features with the [Event Manager Pr
 After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode can also be enabled so it will generate a single ticket for an order instead of creating multiple tickets.
 
 * **Custom Registration Form For Individuals:**
-Offer custom fields for individual attendees with Custom registration, It can be enabled for each event. and Conditions can be applied for the attendee form also Global Attendee form can be created so the same form can be assigned to multiple events with creation every time.
+Offer custom fields for individual attendees with Custom registration. It can be enabled for each event. Conditions can be applied for the attendee form. Global Attendee forms can also be created and assigned to multiple events.
 
-* **Automatic Email Conformation:**
-The Automatic email function can be set up based on payment status and a pdf ticket will be sent with that email with company and event details information.
+* **Automatic Email Confirmation:**
+The Automatic email function can be set up based on payment status. A PDF ticket will be sent with that email including company and event details.
 
 
 * **Event Attendee Dashboard**
-The Event Attendee list can be viewed from the dashboard with attendee details information that is captured during event registration.
+The Event Attendee list can be viewed from the dashboard with attendee details information captured during event registration.
 
 * **Edit Attendee Information:**
-When you have admin access, you can edit each attendee's information and change any event date as a bulk attendee edit.
+Admins can edit each attendee’s information and change any event date via bulk attendee edit.
 
 * **Export Data CSV Format:**
-From the admin dashboard event organizers can export the attendee list in CSV format with Extra service details. A CSV file can be configured so that the organizer can decide which field needs to be exported.
+Event organizers can export the attendee list in CSV format with extra service details. The CSV fields can be customized as per requirement.
 
-* **Sent Update Through Email:**
-Any update notification email can be sent to each event attendee list from the admin dashboard. For instance, if you change anything in an event then the admin can send an email to all attendees about that update.
+* **Send Updates Through Email:**
+Admins can send event update notifications to all attendees via email directly from the dashboard.
 
 * **Event Sales Report:**
-Get all the sales reports with the event manager pro version where the admin can see the details of every event
+View detailed event-wise sales reports with the Event Manager Pro version.
 
 
 
-### Powerful Integration With Available Addons:	
+### 🔌Powerful Integration With Available Addons:	
 When you are just managing a simple event then the free version with basic features is enough to go, but when you are planning to do something great at that time addons will come to drive you to the solution.
 Below you will find details of each plugin that is available with the plugin and the live features that plugins offer.
 
@@ -170,43 +167,42 @@ This plugin allows you to sell tickets with different seat plans. You can map ou
 This is a plugin that allows event managers and ticket sellers to submit events from their WooCommerce accounts.
 
 
-### Shortcodes included with Woocommerce Events Manager
+### 📋 Shortcodes included with Woocommerce Events Manager
 
-`
+```
 [event-list cat='' org='' column='2' style='grid' cat-filter='no' org-filter='no' show='' pagination='no' sort='ASC']
-`
+```
 
 
-**Grid style:**  
+🟩 **Grid style:**  
 To Show the Events in Grid Style. example 👉[Grid Style Demo](https://wpevently.com/events-grid-style/)👈:  
 
-`
+```
 [event-list style='grid']
-`
+```
 
 
-**List style:**  
+📄 **List style:**  
 To Show the Events in List Style. example 👉[List Style Demo](https://wpevently.com/events-list-style/)👈:   
 
-`
+```
 [event-list style='list']
-`
+```
 
 
-**show:**  
+🔢 **show:**  
 By default, all events are shown without any limit. If you want to change it and set a limit, input the limit number. For example: 
 
-`
+```
 [event-list show='10']
-`
+```
 
-**pagination:**  
+📑 **pagination:**  
 If you want to show pagination with the event list, you can set the value to "yes." For example:  
 
-`
+```
 [event-list pagination='yes']
-
-`
+```
 More ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 
 

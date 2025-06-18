@@ -1,6 +1,6 @@
 === Event Booking & Management Plugin for WooCommerce – WpEvently - WordPress Plugin ===
 Contributors: magepeopleteam, aamahin
-Tags: event, WooCommerce events manager, event booking, Wordpress Events plugin, event calendar
+Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
 Requires at least: 5.3
 Stable tag: trunk
 Tested up to: 6.8.1
@@ -19,12 +19,12 @@ The Event Manager plugin for WooCommerce simplifies the complicated event regist
 
 Whether you're hosting conferences, classes, concerts, or workshops, WpEvently is your all-in-one **WordPress event solution**.
 
-## LETS SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
+## LET'S SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
 https://www.youtube.com/watch?v=zP2ADxzUrYw
 
 
 ## Event Manager: #1 WooCommerce Event Management Plugin
-Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with Woocommerce event manager.
+Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with WooCommerce Event Manager.
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 
 ###  Explore The Demo:
@@ -37,7 +37,7 @@ Whether you are a small event organizer or a large one, we have thousands of tru
 
 
 ### 🎯 Experience Smooth Event Management
-Creating an event and managing it in one place has never been easier, faster, organized and smooth. Multiple Ticketing and Sales report features make the task at your fingertips. These features are available in the Event Manager Pro Version.
+Creating an event and managing it in one place has never been easier, faster, organized, or smoother. Multiple Ticketing and Sales report features put the task at your fingertips. These features are available in the Event Manager Pro Version.
 We are not limiting you here; the free version features most of the basic event management activity.
 
 ### 🔁 Create and Manage Recurring Events now more easily
@@ -48,7 +48,7 @@ With WPEvently, you can add multiple specific dates to a single event and let yo
 
 ### 📝 Build a Professional Event Registration Form
 Stand out with a customizable and dynamic attendee registration form. Apply conditional logic, such as showing a school name field only when the ticket type is “Child”. Designed for both flexibility and professionalism, even under tight deadlines.
-When you need to create something highly effective but have limited time available, [WordPress Event Manager - WpEvently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Event Manager, you can implement these features and make your event done.
+When you need to create something highly effective but have limited time available, [WordPress Event Manager - WpEvently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Event Manager, you can implement these features and make your event a success.
 
 
 
@@ -70,7 +70,7 @@ Translate your event content into any language. Fully compatible with translatio
 Use available shortcodes to display and customize events on any page or post with ease.
 
 ✔ **Event Name & Description Fields**
-Add meaningful event names and detailed descriptions for better user experience and clarity.
+Add meaningful event names and detailed descriptions for a better user experience and clarity.
 
 ✔ **Multi-Level Event Management**
 Manage ticket types, quantities, pricing, event categories, and organizers — all from the backend dashboard.
@@ -100,20 +100,20 @@ Compatible with any standards-compliant WordPress theme. No design or layout con
 
 https://www.youtube.com/watch?v=9ur9Mnq20mc
 
-Unlock your event design and management full features with the [Event Manager Pro Version.](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)  Offering something custom and managing bulk amounts of data becomes easier with the pro version of the plugin. Let's see what the pro version offers you to make something premium.
+Unlock your event design and management full features with the [Event Manager Pro Version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/).  Offering something custom and managing bulk amounts of data becomes easier with the pro version of the plugin. Let's see what the pro version offers you to make something premium.
 
 * **Download Tickets:**
-After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode can also be enabled so it will generate a single ticket for an order instead of creating multiple tickets.
+After successful Event Registration and Payment are completed, it will generate a PDF ticket for each attendee. Single Ticket mode can also be enabled, so it will generate a single ticket for an order instead of creating multiple tickets.
 
 * **Custom Registration Form For Individuals:**
-Offer custom fields for individual attendees with Custom registration. It can be enabled for each event. Conditions can be applied for the attendee form. Global Attendee forms can also be created and assigned to multiple events.
+Offer custom fields for individual attendees with Custom registration. It can be enabled for each event. Conditions can be applied to the attendee form. Global Attendee forms can also be created and assigned to multiple events.
 
 * **Automatic Email Confirmation:**
-The Automatic email function can be set up based on payment status. A PDF ticket will be sent with that email including company and event details.
+The Automatic email function can be set up based on payment status. A PDF ticket will be sent with that email, including company and event details.
 
 
 * **Event Attendee Dashboard**
-The Event Attendee list can be viewed from the dashboard with attendee details information captured during event registration.
+The Event Attendee list can be viewed from the dashboard, with attendee details information captured during event registration.
 
 * **Edit Attendee Information:**
 Admins can edit each attendee’s information and change any event date via bulk attendee edit.
@@ -130,8 +130,8 @@ View detailed event-wise sales reports with the Event Manager Pro version.
 
 
 ### 🔌Powerful Integration With Available Addons:	
-When you are just managing a simple event then the free version with basic features is enough to go, but when you are planning to do something great at that time addons will come to drive you to the solution.
-Below you will find details of each plugin that is available with the plugin and the live features that plugins offer.
+When you are just managing a simple event, then the free version with basic features is enough to go, but when you are planning to do something great, at that time, add-ons will come to drive you to the solution.
+Below you will find details of each plugin that is available with the plugin and the live features that the plugins offer.
 
 
 
@@ -142,7 +142,7 @@ The QR code addon prints QR codes on PDF tickets that can be used for ticket val
 The Event Calendar addon will improve the display of the event calendar feature by adding images and providing more detailed information.
 
 👉[Advanced Coupon Code Addon](https://mage-people.com/product/mage-coupon-advanced-for-woocommerce/) 👈
-The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying qty
+The Advanced Coupon code addon helps admins create coupons based on per-event ticket type, and buying quantity
 👉[Event Waitlist Addon](https://mage-people.com/product/woocommerce-event-waitlist-addon/) 👈 
 Our waitlist addon will help you add a waitlist form to your event page when tickets sell out. 
 👉[Event Book an Event From Dashboard](https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/) 👈
@@ -286,6 +286,13 @@ vulnerabilities.
 
 
 == Changelog ==
+
+= 4.4.4 =
+* Design responsive issue fixed
+* Email Text Not saving issue fixed.
+* Datepicker Year list issue fixed
+* Event Expired issue fixed
+  12 June 2025*
 
 = 4.4.3 =
 * Mobile responsive issue fixed

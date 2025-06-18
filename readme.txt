@@ -26,72 +26,50 @@ https://www.youtube.com/watch?v=zP2ADxzUrYw
 ## Event Manager: #1 WooCommerce Event Management Plugin
 Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with WooCommerce Event Manager.
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
-
 ###  Explore The Demo:
-
 🌐 [Live Demo](https://wpevently.com/)
 📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
-
-
 ### 🎯 Experience Smooth Event Management
 Creating an event and managing it in one place has never been easier, faster, organized, or smoother. Multiple Ticketing and Sales report features put the task at your fingertips. These features are available in the Event Manager Pro Version.
 We are not limiting you here; the free version features most of the basic event management activity.
-
 ### 🔁 Create and Manage Recurring Events now more easily
 Effortlessly set up repeating events—daily, weekly, or custom schedules. Whether you're running tours, appointments, or classes, WPEvently helps you sell tickets for recurring dates smoothly.
-
 ### 📅 Sell Tickets for Multiple Fixed Dates from a Single Event
 With WPEvently, you can add multiple specific dates to a single event and let your customers select their preferred date/time before booking. Perfect for sessions, workshops, or performances with set schedules.
-
 ### 📝 Build a Professional Event Registration Form
 Stand out with a customizable and dynamic attendee registration form. Apply conditional logic, such as showing a school name field only when the ticket type is “Child”. Designed for both flexibility and professionalism, even under tight deadlines.
 When you need to create something highly effective but have limited time available, [WordPress Event Manager - WpEvently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Event Manager, you can implement these features and make your event a success.
 
-
-
 ### 🆓 Features are Available With Free Version
 
-✔ **Multiple Payment Methods**
-Supports all WooCommerce payment gateways. Use any available WooCommerce payment method to collect event ticket payments
+✔ **Multiple Payment Methods:** Supports all WooCommerce payment gateways. Use any available WooCommerce payment method to collect event ticket payments
 
-✔ **Cross-Browser Compatibility**
-Fully compatible with all modern browsers like Chrome, Firefox, Safari, and Opera. Seamless performance across platforms.
+✔ **Cross-Browser Compatibility:** Fully compatible with all modern browsers like Chrome, Firefox, Safari, and Opera. Seamless performance across platforms.
 
-✔ **Responsive & SEO-Friendly Design**
-Events display beautifully across all devices. Built with SEO best practices to help your event pages rank better.
+✔ **Responsive & SEO-Friendly Design:** Events display beautifully across all devices. Built with SEO best practices to help your event pages rank better.
 
-✔ **Multilingual & Translation Ready**
-Translate your event content into any language. Fully compatible with translation plugins.
+✔ **Multilingual & Translation Ready:** Translate your event content into any language. Fully compatible with translation plugins.
 
-✔ **Custom Shortcodes**
-Use available shortcodes to display and customize events on any page or post with ease.
+✔ **Custom Shortcodes:** Use available shortcodes to display and customize events on any page or post with ease.
 
-✔ **Event Name & Description Fields**
-Add meaningful event names and detailed descriptions for a better user experience and clarity.
+✔ **Event Name & Description Fields:** Add meaningful event names and detailed descriptions for a better user experience and clarity.
 
-✔ **Multi-Level Event Management**
-Manage ticket types, quantities, pricing, event categories, and organizers — all from the backend dashboard.
+✔ **Multi-Level Event Management:** Manage ticket types, quantities, pricing, event categories, and organizers — all from the backend dashboard.
 
-✔ **Google Maps Integration**
-Display event venues using Google Maps to help attendees find the location easily.
+✔ **Google Maps Integration:** Display event venues using Google Maps to help attendees find the location easily.
 
-✔ **Flexible Date & Time Options**
-Add start/end dates, set recurring schedules, and allow multi-date time selection for your events.
+✔ **Flexible Date & Time Options:** Add start/end dates, set recurring schedules, and allow multi-date time selection for your events.
 
-✔ **One-Click Event Reset**
-Reset event data with just a single click if you need to start fresh.
+✔ **One-Click Event Reset:** Reset event data with just a single click if you need to start fresh.
 
-✔ **Custom Event Templates**
-Choose from multiple pre-designed event templates. Assign different templates for different events.
+✔ **Custom Event Templates:** Choose from multiple pre-designed event templates. Assign different templates for different events.
 
-✔ **WooCommerce Compatibility**
- Works natively with WooCommerce. Sell event tickets and other products independently or together — no conflict.
+✔ **WooCommerce Compatibility:**  Works natively with WooCommerce. Sell event tickets and other products independently or together — no conflict.
 
-✔ **Theme Compatibility**
-Compatible with any standards-compliant WordPress theme. No design or layout conflicts.
+✔ **Theme Compatibility:** Compatible with any standards-compliant WordPress theme. No design or layout conflicts.
 
 
 
@@ -181,14 +159,12 @@ To Show the Events in Grid Style. example 👉[Grid Style Demo](https://wpeventl
 [event-list style='grid']
 `
 
-
 📄 **List style:**  
 To Show the Events in List Style. example 👉[List Style Demo](https://wpevently.com/events-list-style/)👈:   
 
 `
 [event-list style='list']
 `
-
 
 🔢 **show:**  
 By default, all events are shown without any limit. If you want to change it and set a limit, input the limit number. For example: 
@@ -239,17 +215,17 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 
 == Frequently Asked Questions ==
 
-= Q.Is Woocommerce Events Manager Free? =
+= Q. Is Woocommerce Events Manager Free? =
 A. Yes! Woocommerce Events Manager is free.
 
 You can check the demo of this plugin from here:
 [View Live PRO Version Demo For Business](https://wpevently.com/)
 
-= Q.Any Documentation? =
+= Q. Any Documentation? =
 A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
  
-= Q.I installed correctly but 404 error what can I do?  =
-A. You need to Re-save permalink settings it will solve the 404. If still does not work that means your permalink not working, or you may have httaccess problem or you have a server permission problem. 
+= Q. I installed correctly,y but 404 error what can I do?  =
+A. You need to re-save the permalink setting,s it will solve the 404. If still does not work that means your permalink not working, or you may have httaccess problem or you have a server permission problem. 
 
 = Q.How its work? =
 A. Woocommerce Events Manager is one of the simple event plugins for WordPress which is based on Woocommerce. It works as an individual event and its payment functionality is handled with woocommerce so there are no worries about the payment gateway you can use every payment gateway that supports woocommerce. The interesting part is the event post type is completely different there is no connection with woocommerce product so you can sell anything from the woocommerce product. 

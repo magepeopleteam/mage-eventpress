@@ -2294,7 +2294,7 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 			$reg_form_id           = mep_fb_get_reg_form_id( $product_id );
 			$mep_form_builder_data = get_post_meta( $reg_form_id, 'mep_form_builder_data', true );
 			$iu                    = 0;
-			if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
+			//if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
 				if ( sizeof( $names ) > 0 ) {
 					$same_attendee     = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$current_template  = MP_Global_Function::get_post_info( $product_id, 'mep_event_template' );
@@ -2360,7 +2360,7 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 						}
 					}
 				}
-			}
+			//}
 
 			return apply_filters( 'mep_cart_user_data_prepare', $user, $product_id );
 		}

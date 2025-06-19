@@ -180,6 +180,7 @@ if( $month === 1 ){
     $prev_year = $year - 1;
 }
 $currency = get_woocommerce_currency();
+$currency_symbol = get_woocommerce_currency_symbol($currency);
 $header_info = get_monthly_revenue( $year, $month);
 $prev_header_info = get_monthly_revenue( $prev_year, $prev_month);
 $current_month_revenue = $header_info['revenue'];
@@ -377,12 +378,12 @@ function render_mep_events_by_status( $posts ) {
                             <?php }?>
                         </div>
                     </td>
-                    <td class="capacity">
-                        <div class="capacity-number"><?php echo esc_attr( $total_sold );?>/<?php echo esc_attr( $total_ticket );?></div>
-                        <div class="capacity-bar">
-                            <div class="capacity-fill <?php echo esc_attr( $full_class );?>" style="width: 100%"></div>
+                    <td class="mpwem_event_list_capacity">
+                        <div class="mpwem_event_list_capacity-number"><?php echo esc_attr( $total_sold );?>/<?php echo esc_attr( $total_ticket );?></div>
+                        <div class="mpwem_event_list_capacity-bar">
+                            <div class="mpwem_event_list_capacity-fill <?php echo esc_attr( $full_class );?>" style="width: 100%"></div>
                         </div>
-                        <div class="capacity-status"><?php echo esc_attr( $text );?></div>
+                        <div class="mpwem_event_list_capacity-status"><?php echo esc_attr( $text );?></div>
                     </td>
                     <td>
                         <div class="actions">
@@ -443,7 +444,7 @@ function render_mep_events_by_status( $posts ) {
                         <div class="trend up"><?php /*esc_attr_e( '↗ +5% this month', 'mage-eventpress' );*/?></div>
                     </div>-->
                     <div class="analytics-card">
-                        <h3><?php echo $currency.$current_month_revenue?></h3>
+                        <h3><?php echo $currency_symbol.' '.$current_month_revenue?></h3>
                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' );?></p>
                         <div class="trend up"><?php esc_attr_e( '↗ '.$revenue_percent_change['inc_dec_sign'].$revenue_percent_change['percent_change'].'% vs last month', 'mage-eventpress' );?></div>
                     </div>

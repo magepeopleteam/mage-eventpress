@@ -176,6 +176,30 @@
         });
     });
 
+    $('.mpwem_event_list_capacity').each(function() {
+        let capacityNumber = $(this).find('.mpwem_event_list_capacity-number').text().trim(); // e.g. "600/600"
+        let parts = capacityNumber.split('/');
+        if(parts.length === 2) {
+            let current = parseFloat(parts[0]);
+            let total = parseFloat(parts[1]);
+            if (!isNaN(current) && !isNaN(total) && total > 0) {
+                let percent = (current / total) * 100;
+                percent = Math.min(percent, 100); // max 100%
+
+                let $fill = $(this).find('.mpwem_event_list_capacity-fill');
+                $fill.css('width', percent + '%');
+
+                if (percent >= 100) {
+                    $fill.css('background-color', '#dc3545'); // red when full
+                    $(this).find('.mpwem_event_list_capacity-status').text('Full').css('color', '#dc3545');
+                } else {
+                    $fill.css('background-color', '#28a745');
+                    $(this).find('.mpwem_event_list_capacity-status').text('Available').css('color', '#28a745');
+                }
+            }
+        }
+    });
+
 
 
 }(jQuery));

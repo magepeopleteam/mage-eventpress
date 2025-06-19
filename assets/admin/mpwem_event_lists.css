@@ -273,15 +273,15 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.mpwem_event_list .capacity {
+.mpwem_event_list_capacity {
     text-align: center;
 }
-.mpwem_event_list .capacity-number {
+.mpwem_event_list_capacity-number {
     font-weight: 600;
     color: #1e293b;
     font-size: 0.9rem;
 }
-.mpwem_event_list .capacity-bar {
+.mpwem_event_list_capacity-bar {
     width: 60px;
     height: 6px;
     background: #f1f5f9;
@@ -289,16 +289,16 @@
     overflow: hidden;
     margin: 6px auto 4px;
 }
-.mpwem_event_list .capacity-status {
+.mpwem_event_list_capacity-status {
     font-size: 0.75rem;
     color: #64748b;
 }
-.mpwem_event_list .capacity-fill {
+.mpwem_event_list_capacity-fill {
     height: 100%;
     border-radius: 3px;
     transition: width 0.3s ease;
 }
-.mpwem_event_list .capacity-full {
+.mpwem_event_list_capacity-full {
     background: #ef4444;
 }
 .mpwem_event_list .actions {

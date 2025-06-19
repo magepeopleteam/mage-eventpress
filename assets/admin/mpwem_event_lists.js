@@ -118,6 +118,64 @@
         showNextItems();
     });
 
+    $(document).on('click', '#mpwem_select_all_post', function() {
+        let isChecked = $(this).prop('checked');
+        $('.mpwem_select_single_post').prop('checked', isChecked);
+        if (isChecked) {
+            $('#mpwem_multiple_trash_holder').fadeIn();
+        } else {
+            $('#mpwem_multiple_trash_holder').fadeOut();
+        }
+    });
+
+    // When any single checkbox is clicked
+    $(document).on('click', '.mpwem_select_single_post', function() {
+
+        let total = $('.mpwem_select_single_post').length;
+        let checked = $('.mpwem_select_single_post:checked').length;
+
+        $('#mpwem_select_all_post').prop('checked', total === checked);
+        if (checked > 0) {
+            $('#mpwem_multiple_trash_holder').fadeIn();
+        } else {
+            $('#mpwem_multiple_trash_holder').fadeOut();
+        }
+
+    });
+
+    $(document).on('click', '#mpwem_multiple_trash_btn', function(e) {
+        e.preventDefault();
+
+        let selectedIDs = [];
+        $('.mpwem_select_single_post:checked').each(function() {
+            let idAttr = $(this).attr('id');
+            let postId = idAttr.split('_').pop();
+            selectedIDs.push(postId);
+        });
+
+        if (selectedIDs.length === 0) {
+            alert('Please select at least one post to trash.');
+            return;
+        }
+
+        $.ajax({
+            url: mep_ajax .url,
+            type: 'POST',
+            data: {
+                action: 'mpwem_trash_multiple_posts',
+                post_ids: selectedIDs,
+                nonce: mep_ajax.nonce
+            },
+            success: function(response) {
+                alert(response.data.message);
+                location.reload();
+            },
+            error: function() {
+                alert('An error occurred while trashing posts.');
+            }
+        });
+    });
+
 
 
 }(jQuery));

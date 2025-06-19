@@ -179,7 +179,7 @@
 }
 
 
-.mpwem_event_list .event-image-placeholder {
+.mpwem_event_list .mpwem_event-image-placeholder {
     width: 60px;
     height: 60px;
     border-radius: 8px;
@@ -189,6 +189,10 @@
     justify-content: center;
     font-size: 1.2rem;
     border: 1px solid #e2e8f0;
+}
+.mpwem_event_feature_image{
+    width: 60px;
+    height: 60px;
 }
 .mpwem_event_list .event-name {
     font-weight: 600;
@@ -393,12 +397,40 @@
 }
 .notice{display:none; }
 
+#mpwem_multiple_trash_holder {
+    display: none;
+    text-align: right;
+    padding: 2px 2px;
+    background-color: #fff3f3;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(255, 0, 0, 0.1);
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: 0;
+}
+#mpwem_multiple_trash_holder .mpwem_multiple_trash_btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+#mpwem_multiple_trash_holder .mpwem_multiple_trash_btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
 @media (max-width: 1024px) {
     .mpwem_event_list .analytics {
         grid-template-columns: repeat(2, 1fr);
     }
     .mpwem_event_list .controls {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
     }
 }

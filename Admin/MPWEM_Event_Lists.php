@@ -13,6 +13,23 @@ if (!class_exists('MPWEM_Event_Lists')) {
             add_action('admin_menu', array($this, 'event_list_menu'));
 
             add_action('admin_action_mpwem_duplicate_post', [$this,'mpwem_duplicate_post_function']);
+
+            add_action('wp_ajax_mpwem_trash_multiple_posts', [$this,'mpwem_trash_multiple_posts']);
+        }
+
+        function mpwem_trash_multiple_posts() {
+//            check_ajax_referer('mep-ajax-nonce', 'security');
+            if (!current_user_can('delete_posts')) {
+                wp_send_json_error(['message' => 'Permission denied']);
+            }
+            $post_ids = isset($_POST['post_ids']) ? array_map('intval', $_POST['post_ids']) : [];
+            foreach ($post_ids as $post_id) {
+                if (get_post_status($post_id) !== 'trash') {
+                    wp_trash_post($post_id);
+                }
+            }
+
+            wp_send_json_success(['message' => 'Selected posts moved to trash successfully.']);
         }
 
         function mpwem_duplicate_post_function() {

@@ -245,7 +245,7 @@ function render_mep_events_by_status( $posts ) {
                 $date               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
                 $time               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 
-                $total_ticket       = MPWEM_Functions::get_total_ticket( $id );
+                $total_ticket       = MPWEM_Functions::get_total_ticket( $id, $date );
                 $total_sold         = mep_get_event_total_seat_left( $id );
 
                 if( $event_type === 'everyday' ){
@@ -305,10 +305,10 @@ function render_mep_events_by_status( $posts ) {
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
                 >
                     <td data-event-id="<?php echo esc_attr( $id );?>">
-                        <input type="checkbox" class="checkbox" name="mpwem_checkbox_post_id[]">
+                        <input type="checkbox" class="checkbox mpwem_select_single_post" id="mpwem_select_single_post_<?php echo esc_attr( $id );?>" name="mpwem_checkbox_post_id[]">
                     </td>
                     <td>
-                        <div class="event-image-placeholder">
+                        <div class="mpwem_event-image-placeholder">
                             <img class="mpwem_event_feature_image" src="<?php echo esc_url($thumbnail_url);?>">
                         </div>
                     </td>
@@ -482,6 +482,9 @@ function render_mep_events_by_status( $posts ) {
             </div>
 
             <div class="controls">
+                <div class="mpwem_multiple_trash_holder" id="mpwem_multiple_trash_holder" style="display: none">
+                    <button class="mpwem_multiple_trash_btn" id="mpwem_multiple_trash_btn">Trash</button>
+                </div>
                 <div class="search-box">
                     <div class="search-icon">🔍</div>
                     <input id="mpwem_search_event_list" type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' );?>">
@@ -505,7 +508,9 @@ function render_mep_events_by_status( $posts ) {
                 <table class="event-table">
                     <thead>
                     <tr>
-                        <th width="40"><input type="checkbox" class="checkbox"></th>
+                        <th width="40">
+                            <input type="checkbox" class="checkbox" id="mpwem_select_all_post">
+                        </th>
                         <th><?php esc_attr_e( 'Image', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Event Name', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Location', 'mage-eventpress' );?></th>

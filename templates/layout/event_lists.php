@@ -244,12 +244,13 @@ function render_mep_events_by_status( $posts ) {
                 $event_id           = $id ?? 0;
                 $all_dates          =  MPWEM_Functions::get_dates( $event_id );
                 $all_times          =  MPWEM_Functions::get_times( $event_id, $all_dates );
+
                 if( !empty( $all_dates ) ){
                     $date               =  MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
                 }else{
                     $date = $start_date;
                 }
-                if( !empty( $all_dates ) ) {
+                if( !empty( $all_dates ) && !empty( $all_times ) ) {
                     $time = MPWEM_Functions::get_upcoming_date_time($event_id, $all_dates, $all_times);
                     $time = date('H:i', strtotime( $time ));
                 }else{

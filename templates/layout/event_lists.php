@@ -115,9 +115,9 @@ function get_event_wise_taxonomy( $event_id, $taxonomy ){
     return $category_data;
 }
 
-
+$order_status = array( 'wc-completed', 'wc-processing');
 $completed_orders = wc_get_orders([
-    'status' => 'wc-completed',
+    'status' => $order_status,
     'limit'  => -1,
     'return' => 'ids',
 ]);
@@ -131,10 +131,11 @@ function get_monthly_revenue($year = null, $month = null) {
         $month = date('m');
     }
     $start_date = "$year-$month-01 00:00:00";
+    $order_status = array( 'wc-completed', 'wc-processing');
     $end_date   = date('Y-m-t 23:59:59', strtotime($start_date));
     $orders = wc_get_orders([
         'limit'        => -1,
-        'status'       => 'wc-completed',
+        'status'       => $order_status,
         'date_created' => $start_date . '...' . $end_date,
         'return'       => 'ids',
     ]);

@@ -9,7 +9,8 @@ $post_counts = array(
 
 $total_event = $post_counts['publish'] + $post_counts['draft']  + $post_counts['trash'] ;
 
-$statuses = ['publish', 'draft', 'trash'];
+//$statuses = ['publish', 'draft', 'trash'];
+$statuses = ['publish', 'draft'];
 $events = get_posts(array(
     'post_type'   => 'mep_events',
     'post_status' => $statuses,
@@ -303,6 +304,9 @@ function render_mep_events_by_status( $posts ) {
                     data-filter-by-event-name="<?php echo esc_attr( $title );?>"
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
                 >
+                    <td data-event-id="<?php echo esc_attr( $id );?>">
+                        <input type="checkbox" class="checkbox" name="mpwem_checkbox_post_id[]">
+                    </td>
                     <td>
                         <div class="event-image-placeholder">
                             <img class="mpwem_event_feature_image" src="<?php echo esc_url($thumbnail_url);?>">
@@ -315,7 +319,7 @@ function render_mep_events_by_status( $posts ) {
                                 <?php if( $status === 'publish'){?>
                                 <div class="status-live-inline">
                                     <div class="live-indicator-inline"></div>
-                                    Live
+                                    Published
                                 </div>
                                 <?php } else if($status === 'draft'){?>
                                     <div class="event-status-inline">
@@ -501,6 +505,7 @@ function render_mep_events_by_status( $posts ) {
                 <table class="event-table">
                     <thead>
                     <tr>
+                        <th width="40"><input type="checkbox" class="checkbox"></th>
                         <th><?php esc_attr_e( 'Image', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Event Name', 'mage-eventpress' );?></th>
                         <th><?php esc_attr_e( 'Location', 'mage-eventpress' );?></th>

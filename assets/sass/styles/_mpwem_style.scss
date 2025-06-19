@@ -54,6 +54,11 @@ div.item_hover_effect a:hover{
 	color: var(--mpev-base);
 }
 
+.mep_event_list .mep_list_date .mep_minimal_list_organizer{
+	color: #505050;
+	font-weight: normal;
+}
+
 .mep_event_list_item:hover {
 	border-color: var(--mpev-base);
 }
@@ -355,7 +360,6 @@ div.df-dtl p {
 }
 /********Paragraph ***********/
 div.mep-default-feature-content p {
-	color: #3A3A3A;
 	font-size: 16px;
 }
 .mep-event-details p {
@@ -743,10 +747,6 @@ ul#mep_add_calender_links li a {
 	.org-name{
 		color: var(--mpev-base-txt);
 		font-weight: normal;
-		a{
-			color: var(--mpev-base-txt);
-			font-weight: bold;
-		}
 	}
 }
 .mep-default-sidebar.margin{
@@ -1265,11 +1265,8 @@ ul.event-custom-price li ul {
 div.mep-default-feature-content p,
 div.mep-default-feature-content ul,
 div.mep-default-feature-content ul li {
-	color: #3A3A3A;
-	font-size: 16px;
 	padding: inherit;
 	margin: 15px 0;
-	line-height: 22px;
 	list-style: inherit;
 }
 .mep-events-wrapper p:not(.mep-events-wrapper .mep-default-feature-content p, .ui-accordion .ui-accordion-content, .mep-event-review-form .label) {

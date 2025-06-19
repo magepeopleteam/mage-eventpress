@@ -55,7 +55,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                 if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
                 ?>
                 <p class='mep_winter_event_organizer'>
-                    <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><i class="<?php echo esc_attr($event_organizer_icon); ?>"></i> <?php echo esc_html($org_terms[0]->name); ?></a>
+                   <i class="<?php echo esc_attr($event_organizer_icon); ?>"></i> <?php echo esc_html($org_terms[0]->name); ?>
                 </p>
                 <?php } ?>
             </div>

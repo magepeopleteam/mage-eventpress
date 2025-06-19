@@ -103,7 +103,7 @@
 			}
 		});
 	});
-	$(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"],.mp_ticket_type_table [name="option_name[]"]', function () {
+	$(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"]', function () {
 		let n = $(this).val();
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 	});
@@ -568,6 +568,12 @@ function save_email_text(){
 	});
 }
 
+// ================ Template slection ===============
+$(document).on('click','.mep-template img',function(e){
+	$('[name="mep_event_template"]').val($(this).data('mep-template'));
+	$('.mep-template').removeClass('active')
+	$(this).parent('.mep-template').addClass('active');
+});
 // ================ Icon Select Settings ===============
 $(document).on('click','.fa-icon-lists [data-icon]',function(e){
 	e.preventDefault();

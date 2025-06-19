@@ -42,7 +42,7 @@ $event_organizer_icon = mep_get_option('mep_event_organizer_icon', 'icon_setting
                     ?>
                     <span class='mep_minimal_list_organizer'>
                         <i class="<?php echo $event_organizer_icon; ?>"></i>
-                        <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a>
+                       <?php echo esc_html($org_terms[0]->name); ?>
                     </span>
                     <?php } ?>
                 </h3>

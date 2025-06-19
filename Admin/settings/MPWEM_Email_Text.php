@@ -32,7 +32,7 @@ if(!class_exists('MPWEM_Email_Text')){
                 return;
             }
 
-            if (isset($_POST['mep_event_cc_email_text'])) {
+            if (isset($_POST['mep_event_cc_email_text']) && !empty($_POST['mep_event_cc_email_text']) ) {
                 $mep_event_cc_email_text_raw = wp_kses_post($_POST['mep_event_cc_email_text']);
                 update_post_meta($post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text_raw);
             }
@@ -71,7 +71,7 @@ if(!class_exists('MPWEM_Email_Text')){
             $text = get_post_meta($post_id, 'mep_event_cc_email_text', true);
             ?>
 
-                <?php echo wp_kses_post($text); ?>
+                <?php echo  nl2br(wp_kses_post($text)); ?>
             <?php
         }
 
@@ -98,6 +98,7 @@ if(!class_exists('MPWEM_Email_Text')){
                         <?php $this->show_email_text($post_id); ?>
                     </div>
                     <button class="button mep-email-text-new" data-modal="mep-email-text-new" type="button"><?php _e('Manage Email Text','mage-eventpress'); ?></button>
+
                 </section>
 
                 <!-- sidebar collapse open -->

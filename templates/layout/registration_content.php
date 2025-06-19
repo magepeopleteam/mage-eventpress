@@ -9,7 +9,7 @@
 	$event_id  = $event_id ?? 0;
 	$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
-	$date      = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$date               = empty($date )? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ):$date;
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {
@@ -26,7 +26,10 @@
 				<?php require apply_filters( 'mpwem_ticket_file', MPWEM_Functions::template_path( 'layout/ticket_type.php' ), $event_id ); ?>
 				<?php do_action( 'mpwem_single_attendee', $event_id ); ?>
 				<?php require MPWEM_Functions::template_path( 'layout/extra_service.php' ); ?>
-				<?php require MPWEM_Functions::template_path( 'layout/add_to_cart.php' ); ?>
+				<div class="mpwem_form_submit_area">
+					<?php do_action( 'mep_add_term_condition', $event_id ); ?>
+					<?php require MPWEM_Functions::template_path( 'layout/add_to_cart.php' ); ?>
+				</div>
             </div>
 			<?php
 		} else {

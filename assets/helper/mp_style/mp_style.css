@@ -7,12 +7,11 @@
 	body { margin: 0; padding: 0; }
 	body.noScroll { overflow: hidden; }
 	/******/
-	.mpStyle { font-size: var(--fs); font-weight: var(--fw); color: var(--d_color); line-height: 1.5; width: 100%; }
+	.mpStyle { font-size: var(--fs); font-weight: var(--fw); line-height: 1.5; width: 100%; }
 	.mpStyle,
 	.mpStyle [data-collapse].mActive { display: block; }
 	.mpStyle table th[data-collapse].mActive,
 	.mpStyle table td[data-collapse].mActive { display: table-cell; }
-	.mpStyle p:not(.mp_wp_editor p) { margin: 0; padding: 0; line-height: 1.5; font-size: var(--fs); }
 	.mpStyle a:not(.mp_wp_editor a) { color: var(--color_theme); text-decoration: none; }
 	.mpStyle a:hover { opacity: 0.5; }
 	.mpStyle a:not(.mp_wp_editor a),
@@ -21,7 +20,6 @@
 	[data-target-popup],
 	[data-icon-change],
 	[data-icon-change] { cursor: pointer; }
-	div.mpStyle [data-required],
 	div.mpStyle [data-collapse] { display: none; }
 	/*******/
 	div.mpStyle a,
@@ -184,7 +182,6 @@
 	.mpStyle .justifyEnd { display: -webkit-flex; display: flex; -webkit-justify-content: flex-end; justify-content: flex-end; }
 	.mpStyle [class*="_justifyEnd"] { -webkit-justify-content: flex-end; justify-content: flex-end; }
 	/********/
-	.mpStyle label,
 	.mpStyle .customRadio,
 	.mpStyle .formControl,
 	.mpStyle .title_on_border,
@@ -303,7 +300,7 @@
 	.mpStyle .dNone, .mpStyle [class*="_dNone"] { display: none; }
 	.mpStyle .dBlock, .mpStyle [class*="_dBlock"] { display: block; }
 	.mpStyle .dInlineBlock, .mpStyle [class*="_dInlineBlock"],
-	.mpStyle small, .mpStyle span, .mpStyle strong { display: inline-block; }
+	.mpStyle small, .mpStyle strong { display: inline-block; }
 	/**************/
 	.mpStyle .fLeft, .mpStyle [class*="_fLeft"] { float: left; }
 	.mpStyle .fRight, .mpStyle [class*="_fRight"] { float: right; }
@@ -454,11 +451,7 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-	.mpStyle img:not(.mp_wp_editor img) {
-		width: 100%;
-		height: auto;
-		max-width: 100%;
-	}
+
 	/*******Click slider***************/
 	.mpStyle [class*="clickSlide"] {
 		background-color: var(--color_white);

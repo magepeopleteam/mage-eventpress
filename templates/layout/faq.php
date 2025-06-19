@@ -7,7 +7,7 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id = $event_id ?? 0;
-	$faqs     = MP_Global_Function::get_post_info( $event_id, 'mep_event_faq', [] );
+	$faqs     = get_post_meta( $event_id, 'mep_event_faq', true);
 	$faq_description = get_post_meta($event_id,'mep_faq_description',true);
 	$faq_description = $faq_description? $faq_description : '';
 
@@ -25,7 +25,7 @@
                         <i class="fa fa-chevron-right"></i>
                     </div>
                     <div class="content" data-collapse="faq-content-<?php echo esc_attr($key); ?>">
-	                    <?php echo wp_kses_post(html_entity_decode(nl2br($faq['mep_faq_content']))); ?>
+	                    <?php echo wpautop(wp_kses_post($faq['mep_faq_content'])); ?>
                     </div>
                 </div>
 			<?php } ?>

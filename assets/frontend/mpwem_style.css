@@ -71,6 +71,11 @@ div.item_hover_effect a:hover {
   color: var(--mpev-base);
 }
 
+.mep_event_list .mep_list_date .mep_minimal_list_organizer {
+  color: #505050;
+  font-weight: normal;
+}
+
 .mep_event_list_item:hover {
   border-color: var(--mpev-base);
 }
@@ -411,7 +416,6 @@ div.df-dtl p {
 
 /********Paragraph ***********/
 div.mep-default-feature-content p {
-  color: #3A3A3A;
   font-size: 16px;
 }
 
@@ -688,17 +692,10 @@ ul.mep-social-share a {
 
 ul.mep-social-share {
   padding: 15px 0 0 0;
-  list-style: none;
-  list-style-type: none;
 }
 
 ul.mep-social-share li {
   margin: 0 8px 0 0;
-}
-
-ul.mep-social-share li::marker {
-  display: none;
-  content: '';
 }
 
 ul.mep-social-share li a {
@@ -864,10 +861,6 @@ ul#mep_add_calender_links li a {
 .mep-default-theme .mep-org-details .org-name {
   color: var(--mpev-base-txt);
   font-weight: normal;
-}
-.mep-default-theme .mep-org-details .org-name a {
-  color: var(--mpev-base-txt);
-  font-weight: bold;
 }
 
 .mep-default-sidebar.margin {
@@ -1472,11 +1465,8 @@ ul.event-custom-price li ul {
 div.mep-default-feature-content p,
 div.mep-default-feature-content ul,
 div.mep-default-feature-content ul li {
-  color: #3A3A3A;
-  font-size: 16px;
   padding: inherit;
   margin: 15px 0;
-  line-height: 22px;
   list-style: inherit;
 }
 
@@ -4381,13 +4371,13 @@ input.mpe-new-input-group-field {
   font-weight: bold;
   margin-bottom: 10px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch {
   margin-left: 10px;
   max-height: 315px;
   overflow: hidden;
   margin-bottom: 20px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li {
   border-top: 1px dashed #DDD;
   padding: 10px 0;
   display: flex;
@@ -4396,7 +4386,7 @@ input.mpe-new-input-group-field {
   position: relative;
   padding-left: 15px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li::before {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li::before {
   content: "";
   width: 8px;
   height: 8px;
@@ -4406,34 +4396,34 @@ input.mpe-new-input-group-field {
   left: 0;
   background-color: var(--mpev-base);
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li a {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li a {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
   color: inherit;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li span {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span {
   display: flex;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li span.mep-more-date {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span.mep-more-date {
   margin: 0;
   font-weight: bold;
   margin-bottom: 5px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li span.mep-more-time {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span.mep-more-time {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li .mep_date_scdl_start_datetime {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li .mep_date_scdl_start_datetime {
   font-weight: bold;
   margin-bottom: 10px;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li:first-child {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li:first-child {
   border: none;
 }
-.mep-default-sidrbar-events-schedule ul#mep_event_date_sch li i {
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li i {
   background: var(--mpev-base);
   color: var(--mpev-base-txt);
   background: var(--mpev-base-txt);
@@ -4744,19 +4734,33 @@ input.mpe-new-input-group-field {
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item {
   padding: 10px;
 }
-@media (max-width: 600px) {
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label {
+  flex-direction: column;
+  align-items: start;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span {
+  width: 100%;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
+  width: 100%;
+  margin-top: 5px;
+}
+@media (min-width: 600px) {
   .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label {
-    flex-direction: column;
-    align-items: start;
+    flex-direction: row;
+  }
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span {
+    width: 50%;
+    text-wrap: wrap;
+  }
+  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
+    width: 50%;
   }
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service {
   margin-top: 30px;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 25px;
   background-color: #f8f9fa;
   border-top: 1px solid #eaeaea;
@@ -4764,6 +4768,18 @@ input.mpe-new-input-group-field {
   margin-bottom: 50px;
   border-radius: 0 0 12px 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area {
+  background: none;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area a {
+  color: #333;
+  font-weight: normal;
+}
+.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .mpwem_summery {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
@@ -5403,7 +5419,6 @@ Vanilla theme css by ariful
     justify-content: start;
   }
   /*****************************/
-  /*****************************/
   /***************************************************/
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
@@ -5981,12 +5996,6 @@ Vanilla theme css by ariful
   .slick-dots li.slick-active button::before {
     color: var(--mpev-primary);
   }
-  div.mpwem_details_content,
-  div.mpwem_details_content p {
-    line-height: 1.7 !important;
-    color: #8D8D8D;
-    font-size: 16px !important;
-  }
   div.mpwem_ex_service,
   div.mep_attendee_info,
   div.mep_attendee_info_hidden {
@@ -6114,8 +6123,4 @@ Vanilla theme css by ariful
   padding: 20px 25px;
 }
 
-.mep-faq-item { margin-bottom: 10px; }
-.mep-faq-question { width: 100%; text-align: left; background: #f7f7f7; border: none; padding: 10px; cursor: pointer; font-size: 16px; font-weight: 600; }
-.mep-faq-answer { padding: 10px; background: #fff; border: 1px solid #eee; display: none; }
-.mep-event-thumb-img img { max-width: 100%; height: auto; display: block; }
-.mep-default-share-btn { margin-top: 20px; }
+/*# sourceMappingURL=mpwem_style.css.map */

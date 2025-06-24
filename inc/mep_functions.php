@@ -3185,7 +3185,7 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 				),
 				array(
 					'id'    => 'mep_settings_licensing',
-					'title' => __( 'License', 'mage-eventpress' )
+					'title' => '<i class="fas fa-shield-alt"></i>' . __( 'License', 'mage-eventpress' )
 				)
 			);
 

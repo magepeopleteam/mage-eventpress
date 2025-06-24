@@ -1113,10 +1113,12 @@
 						change_extra_service_status( $order_id, 'publish', 'trash', 'completed' );
 						change_extra_service_status( $order_id, 'publish', 'publish', 'completed' );
 						do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
-						if ( in_array( 'completed', $email_send_status ) ) {
-							mep_event_confirmation_email_sent( $event_id, $email, $order_id );
-							if ( ! empty( $org_email ) ) {
-								mep_event_confirmation_email_sent( $event_id, $org_email, $order_id );
+						if ( $enable_billing_email == 'enable' ) {
+							if ( in_array( 'completed', $email_send_status ) ) {
+								mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+								if ( ! empty( $org_email ) ) {
+									// mep_event_confirmation_email_sent( $event_id, $org_email, $order_id );
+								}
 							}
 						}
 					}

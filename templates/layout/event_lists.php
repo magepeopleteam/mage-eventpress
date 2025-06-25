@@ -222,20 +222,20 @@ function render_mep_events_by_status( $posts ) {
     ob_start();
         if (!empty($posts)) {
             foreach ($posts as $post) {
-                $id    = $post->ID;
-                $title = get_the_title($id);
-                $thumbnail_url = get_the_post_thumbnail_url($id, 'small');
-                $status = get_post_status($id);
-                $edit_link   = get_edit_post_link($id);
-                $delete_link = get_delete_post_link($id); // Moves to Trash
-                $view_link   = get_permalink($id);
-                $start_date      = get_post_meta($id, 'event_start_datetime', true);
+                $id             = $post->ID;
+                $title          = get_the_title($id);
+                $thumbnail_url  = get_the_post_thumbnail_url($id, 'small');
+                $status         = get_post_status($id);
+                $edit_link      = get_edit_post_link($id);
+                $delete_link    = get_delete_post_link($id); // Moves to Trash
+                $view_link      = get_permalink($id);
+                $start_date     = get_post_meta($id, 'event_start_datetime', true);
                 $remaining_date = $start_date;
-                $start_date = date('F j, Y', strtotime( $start_date ));
-                $start_time      = get_post_meta($id, 'event_start_time', true);
-                $end_date        = get_post_meta($id, 'event_end_datetime', true);
-                $ticket_type     = get_post_meta($id, 'mep_event_ticket_type', true);
-                $location           = get_post_meta($id, 'mep_location_venue', true);
+                $start_date     = date('F j, Y', strtotime( $start_date ));
+                $start_time     = get_post_meta($id, 'event_start_time', true);
+                $end_date       = get_post_meta($id, 'event_end_datetime', true);
+                $ticket_type    = get_post_meta($id, 'mep_event_ticket_type', true);
+                $location       = get_post_meta($id, 'mep_location_venue', true);
 
                 $time_remaining = get_time_remaining( $remaining_date, $end_date );
 
@@ -299,7 +299,7 @@ function render_mep_events_by_status( $posts ) {
                 } elseif ($now >= $start_timestamp && $now <= $end_timestamp) {
                     $event_status = 'Active';
                     $event_status_class = 'status-active';
-                } else if( $now > $end_timestamp ) {
+                } elseif( $now > $end_timestamp ) {
                     $event_status = 'Expired';
                     $event_status_class = 'status-expired';
                 }else{
@@ -310,19 +310,16 @@ function render_mep_events_by_status( $posts ) {
                 $ticket_type_count = 0;
                 ?>
 
-                <tr class="mpwem_event_list_card"
-                    data-event-status="<?php echo esc_attr( $status );?>"
-                    data-event-active-status="<?php echo esc_attr( $event_status );?>"
-                    data-filter-by-category="<?php echo esc_attr( $event_category );?>"
+                <tr class="mpwem_event_list_card" data-event-status="<?php echo esc_attr( $status );?>" data-event-active-status="<?php echo esc_attr( $event_status );?>" data-filter-by-category="<?php echo esc_attr( $event_category );?>"
                     data-filter-by-event-name="<?php echo esc_attr( $title );?>"
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
                 >
-                    <td data-event-id="<?php echo esc_attr( $id );?>">
+                    <td data-event-id="<?php echo esc_attr( $id );?>"> 
                         <input type="checkbox" class="checkbox mpwem_select_single_post" id="mpwem_select_single_post_<?php echo esc_attr( $id );?>" name="mpwem_checkbox_post_id[]">
                     </td>
                     <td>
                         <div class="mpwem_event-image-placeholder">
-                            <img class="mpwem_event_feature_image" src="<?php echo esc_url($thumbnail_url);?>">
+                            <img class="mpwem_event_feature_image" src="<?php echo esc_url( !empty($thumbnail_url) ? $thumbnail_url : 'https://placehold.co/300x300?text=No+Event+Image+Found' ); ?>">
                         </div>
                     </td>
                     <td class="mpwem_event_title">
@@ -332,15 +329,15 @@ function render_mep_events_by_status( $posts ) {
                                 <?php if( $status === 'publish'){?>
                                 <div class="status-live-inline">
                                     <div class="live-indicator-inline"></div>
-                                    Published
+                                    <?php _e('Published','mage-eventpress'); ?>
                                 </div>
                                 <?php } else if($status === 'draft'){?>
                                     <div class="event-status-inline">
-                                        <div class="status-draft-inline">Draft</div>
+                                        <div class="status-draft-inline"><?php _e('Draft','mage-eventpress'); ?></div>
                                     </div>
                                 <?php } else{?>
                                     <div class="event-status-inline">
-                                        <div class="status-draft-inline">Trash</div>
+                                        <div class="status-draft-inline"><?php _e('Trash','mage-eventpress'); ?></div>
                                     </div>
                                 <?php } ?>
 

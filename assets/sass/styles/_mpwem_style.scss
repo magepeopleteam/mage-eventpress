@@ -3903,6 +3903,15 @@ input.mpe-new-input-group-field {
 	}
 }
 
+.mep-default-theme .mep_checkbox_item ._fs_label{
+	margin-bottom: 15px;
+	display: block;
+}
+
+.mep-default-theme .groupRadioCheck{
+	margin-top: 5px;
+}
+
 .groupRadioCheck [data-radio-check].mpActive {
     border-color: var(--mpev-base);
 	background-color: var(--mpev-base);

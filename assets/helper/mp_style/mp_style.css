@@ -934,7 +934,7 @@
 	.mpStyle .customRadio.button_type::before,
 	.mpStyle .customRadio.button_type::after { display: none; }
 	/**********Checkbox Custom*********/
-	.mpStyle .customCheckbox { padding: 3px 0 0 30px; position: relative; line-height: 1; min-width: auto; white-space: normal !important;}
+	.mpStyle .customCheckbox { position: relative; line-height: 1; min-width: auto; white-space: normal !important;}
 	.mpStyle .customCheckbox::before {
 		content: ""; position: absolute; left: 0; top: 0; height: 20px; width: 20px;
 		background-color: var(--color_theme_alter);

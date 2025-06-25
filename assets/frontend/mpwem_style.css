@@ -4363,6 +4363,15 @@ input.mpe-new-input-group-field {
   margin: 10px 0;
 }
 
+.mep-default-theme .mep_checkbox_item ._fs_label {
+  margin-bottom: 15px;
+  display: block;
+}
+
+.mep-default-theme .groupRadioCheck {
+  margin-top: 5px;
+}
+
 .groupRadioCheck [data-radio-check].mpActive {
   border-color: var(--mpev-base);
   background-color: var(--mpev-base);
@@ -4586,8 +4595,8 @@ input.mpe-new-input-group-field {
   gap: 15px;
 }
 .mpwem_registration_area .date-time-area label span {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: normal;
   color: var(--mpev-base-txt);
 }
 .mpwem_registration_area .date-time-area label i {

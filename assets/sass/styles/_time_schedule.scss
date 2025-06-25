@@ -14,22 +14,31 @@
         overflow: hidden;
         
         li{
-            border-top: 1px dashed #DDD;
-            padding: 10px 0;
+            border: 1px solid #ccd6e2;
+            background-color: #f8fafc;
+            padding: 15px;
             display: flex;
             flex-direction: row;
             align-items: start;
             position: relative;	
-            padding-left: 15px;
+            padding-left: 25px;
+            margin-bottom:10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
             &::before{
                 content: "";
                 width: 8px;
                 height: 8px;
                 border-radius: 50px;
                 position: absolute;
-                top:14px;
-                left:0;
+                top:18px;
+                left:10px;
                 background-color: var(--mpev-base);
+            }
+            &:hover{
+                border-color: #cbd5e1;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                transform: translateY(1px);
             }
             a {
                 display: -webkit-flex;
@@ -55,9 +64,7 @@
                 font-weight: bold;
                 margin-bottom: 10px;
             }
-            &:first-child {
-                border: none;
-            }
+            
             i{
                 background: var(--mpev-base);
                 color: var(--mpev-base-txt);

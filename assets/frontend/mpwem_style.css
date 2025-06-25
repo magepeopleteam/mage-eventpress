@@ -4404,13 +4404,17 @@ input.mpe-new-input-group-field {
   overflow: hidden;
 }
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li {
-  border-top: 1px dashed #DDD;
-  padding: 10px 0;
+  border: 1px solid #ccd6e2;
+  background-color: #f8fafc;
+  padding: 15px;
   display: flex;
   flex-direction: row;
   align-items: start;
   position: relative;
-  padding-left: 15px;
+  padding-left: 25px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li::before {
   content: "";
@@ -4418,9 +4422,14 @@ input.mpe-new-input-group-field {
   height: 8px;
   border-radius: 50px;
   position: absolute;
-  top: 14px;
-  left: 0;
+  top: 18px;
+  left: 10px;
   background-color: var(--mpev-base);
+}
+.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transform: translateY(1px);
 }
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li a {
   display: -webkit-flex;
@@ -4445,9 +4454,6 @@ input.mpe-new-input-group-field {
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li .mep_date_scdl_start_datetime {
   font-weight: bold;
   margin-bottom: 10px;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li:first-child {
-  border: none;
 }
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li i {
   background: var(--mpev-base);

@@ -688,6 +688,7 @@ ul.mep-social-share a {
 
 .mep-share-btn-title {
   margin-bottom: 20px;
+  display: block;
 }
 
 ul.mep-social-share {
@@ -4491,7 +4492,7 @@ input.mpe-new-input-group-field {
 .mep-timeline .timeline .timeline-content {
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 25px 30px;
+  padding: 15px 20px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
 }

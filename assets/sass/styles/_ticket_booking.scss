@@ -221,28 +221,40 @@
                     }
                     .mep_attendee_info{
                         background-color: #ececec;
-                        border-radius:0 0 12px 12px;
+                        border-radius:12px;
                         .mep_form_item{
                             padding: 10px;
+                            border-top: 1px solid #7d7d7d;
+                            &:first-child{
+                                border-top: none;
+                            }
+                            h6{
+                                padding:10px 10px;
+                            }
                             .mp_form_item {
                                 label{
                                     flex-direction: column;
                                     align-items: start;
+                                    width: 100%;
                                     span{
                                             width: 100%;
+                                            font-weight: normal;
                                         }
                                         .formControl{
                                             width: 100%;
                                             margin-top: 5px;
                                         }
+                                    select.formControl{
+                                        width: 100%;
+                                        max-width: 100%;
+                                    }
                                     @media (min-width:600px) {
                                         flex-direction: row;
                                         span{
-                                            width: 50%;
                                             text-wrap: wrap;
                                         }
                                         .formControl{
-                                            width: 50%;
+                                            width: 100%;
                                         }
                                     }
                                     

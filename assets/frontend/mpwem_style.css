@@ -768,7 +768,7 @@ ul.mep-social-share li a.email:hover i {
 
 /********Add to calender ***********/
 .mep-default-sidrbar-calender-btn {
-  margin: 30px 10px;
+  margin: 20px 10px;
   position: relative;
 }
 
@@ -1542,7 +1542,6 @@ button.mep-cat-control.mixitup-control-active {
   display: block;
   overflow: hidden;
   padding: 10px;
-  margin-top: 20px;
   margin-bottom: 5px;
 }
 
@@ -1551,10 +1550,10 @@ button.mep-cat-control.mixitup-control-active {
   font-weight: 600;
   color: #444444;
   font-size: 16px;
-  border-top: 1px solid #DDD;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+}
+
+.mep-default-sidebar .mep-default-sidebar-speaker-list h3 {
+  padding: 15px 0;
 }
 
 .mep-default-sidebar-speaker-list h3 i {
@@ -1871,7 +1870,7 @@ div.mep-day-details-section h4 {
 }
 
 .mep-default-sidebar-address {
-  padding: 20px 15px;
+  padding: 15px;
 }
 .mep-default-sidebar-address .location-widgets {
   display: flex;
@@ -1897,7 +1896,7 @@ div.mep-day-details-section h4 {
   border: 0;
   font-size: 15px;
   padding: 0 15px;
-  margin: 10px auto;
+  margin: 20px auto;
   margin-bottom: 5px;
   border-radius: 50px;
   max-width: max-content;
@@ -4371,11 +4370,13 @@ input.mpe-new-input-group-field {
   font-weight: bold;
   margin-bottom: 10px;
 }
+.mep-default-sidrbar-events-schedule #mep_event_date_sch {
+  margin-bottom: 20px;
+}
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch {
   margin-left: 10px;
   max-height: 315px;
   overflow: hidden;
-  margin-bottom: 20px;
 }
 .mep-default-sidrbar-events-schedule ul.mep_event_date_sch li {
   border-top: 1px dashed #DDD;
@@ -5557,13 +5558,15 @@ Vanilla theme css by ariful
     background: none;
     margin-right: 15px;
   }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets {
+    padding-bottom: 0;
+  }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets [data-read] {
     color: var(--mpev-primary);
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul {
     list-style-type: disc;
     padding-left: 22px;
-    margin-bottom: 20px;
     max-height: 315px;
     overflow: hidden;
   }
@@ -5638,6 +5641,10 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
     text-align: center;
     padding: 15px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets h2.share-widget-title {
+    font-size: 19px;
+    letter-spacing: 2px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share {
     margin-top: 10px;

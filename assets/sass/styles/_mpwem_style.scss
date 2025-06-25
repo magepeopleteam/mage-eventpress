@@ -666,7 +666,7 @@ ul.mep-social-share li a.email:hover i {
 }
 /********Add to calender ***********/
 .mep-default-sidrbar-calender-btn {
-	margin: 30px 10px;
+	margin: 20px 10px;
 	position: relative;
 }
 #mep_add_calender_button.mep-add-calender {
@@ -1332,7 +1332,6 @@ button.mep-cat-control.mixitup-control-active {
 	display: block;
 	overflow: hidden;
 	padding: 10px;
-	margin-top: 20px;
 	margin-bottom: 5px;
 }
 .mep-default-sidebar-speaker-list h3 {
@@ -1340,10 +1339,9 @@ button.mep-cat-control.mixitup-control-active {
 	font-weight: 600;
 	color: #444444;
 	font-size: 16px;
-	border-top: 1px solid #DDD;
-	margin-bottom: 10px;
-	padding-bottom: 5px;
-	padding-top: 5px;
+}
+.mep-default-sidebar .mep-default-sidebar-speaker-list h3 {
+	padding: 15px 0;
 }
 .mep-default-sidebar-speaker-list h3 i {
 	display: inline-block;
@@ -1624,7 +1622,7 @@ div.mep-day-details-section h4 {
 	font-size: 18px;
 }
 .mep-default-sidebar-address{
-	padding: 20px 15px;
+	padding: 15px;
 	.location-widgets{
 		display: flex;
 		flex-direction: row;
@@ -1650,7 +1648,7 @@ div.mep-day-details-section h4 {
 		border: 0;
 		font-size: 15px;
 		padding: 0 15px;
-		margin:10px auto;
+		margin:20px auto;
 		margin-bottom:5px;
 		border-radius: 50px;
 		max-width: max-content;

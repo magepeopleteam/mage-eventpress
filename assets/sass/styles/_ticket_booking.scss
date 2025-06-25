@@ -220,14 +220,11 @@
                         }  
                     }
                     .mep_attendee_info{
-                        background-color: #ececec;
-                        border-radius:12px;
                         .mep_form_item{
                             padding: 10px;
-                            border-top: 1px solid #7d7d7d;
-                            &:first-child{
-                                border-top: none;
-                            }
+                            margin-top:5px;
+                            background-color: #ececec;
+                            border-radius:12px;
                             h6{
                                 padding:10px 10px;
                             }

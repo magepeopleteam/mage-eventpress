@@ -600,6 +600,7 @@ ul.mep-social-share a {
 
 .mep-share-btn-title{
 	margin-bottom: 20px;
+	display: block;
 }
 
 ul.mep-social-share {
@@ -3901,3 +3902,27 @@ input.mpe-new-input-group-field {
 		margin: 10px 0;
 	}
 }
+
+.mep-default-theme .mep_checkbox_item ._fs_label{
+	margin-bottom: 15px;
+	display: block;
+}
+
+.mep-default-theme .groupRadioCheck{
+	margin-top: 5px;
+}
+
+.groupRadioCheck [data-radio-check].mpActive {
+    border-color: var(--mpev-base);
+	background-color: var(--mpev-base);
+	color: var(--mpev-base-txt);
+}
+
+.groupRadioCheck [data-radio-check]:hover {
+    border-color: var(--mpev-base);
+	background-color: var(--mpev-base);
+}
+
+  .mpStyle .customCheckbox::before {
+    border: 2px solid var(--mpev-base);
+  }

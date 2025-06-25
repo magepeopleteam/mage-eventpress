@@ -307,6 +307,11 @@ function render_mep_events_by_status( $posts ) {
                     $event_status_class = '';
                 }
 
+                if( $time_remaining === 'Expired!' ){
+                    $event_status_class = 'status-expired';
+                }
+
+
                 $ticket_type_count = 0;
                 ?>
 

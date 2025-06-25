@@ -66,6 +66,7 @@ if (!class_exists('MPWEM_Event_Lists')) {
         }
 
         public function event_list_menu() {
+            
             add_submenu_page('edit.php?post_type=mep_events', __('Event Lists', 'mage-eventpress'), __('Event Lists', 'mage-eventpress'), 'manage_options', 'mep_event_lists', array($this, 'display_event_list'));
         }
         public function display_event_list() {
@@ -76,3 +77,5 @@ if (!class_exists('MPWEM_Event_Lists')) {
 
     new MPWEM_Event_Lists();
 }
+
+

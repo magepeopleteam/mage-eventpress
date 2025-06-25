@@ -4826,3 +4826,33 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 		$button = apply_filters( 'mep_cart_icon', "<i class='fa fa-shopping-cart'></i>", $event_id );
 		echo '<span class="mep-cart-btn-icon">' . $button . '</span>';
 	}
+
+
+	
+
+	add_action('admin_menu', 'mep_remove_cpt_list_page');
+	function mep_remove_cpt_list_page() {
+		$user_choose_list_style= mep_get_option( 'mep_event_list_page_style', 'general_setting_sec', 'new' );
+		if($user_choose_list_style == 'new'){
+			remove_submenu_page('edit.php?post_type=mep_events', 'edit.php?post_type=mep_events');
+		}else{
+			remove_submenu_page('edit.php?post_type=mep_events','mep_event_lists' );
+		}
+
+	}
+
+	add_action('admin_menu', 'mep_move_event_list_to_top', 999);
+	function mep_move_event_list_to_top() {
+		global $submenu;
+		$parent_slug = 'edit.php?post_type=mep_events';
+		if (isset($submenu[$parent_slug])) {
+			foreach ($submenu[$parent_slug] as $key => $item) {
+				if ($item[2] === 'mep_event_lists') {
+					$event_list_item = $item;
+					unset($submenu[$parent_slug][$key]);
+					array_unshift($submenu[$parent_slug], $event_list_item);
+					break;
+				}
+			}
+		}
+	}

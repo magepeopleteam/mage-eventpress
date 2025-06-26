@@ -1531,7 +1531,7 @@
 }
 /******************************************************************** Date picker ************************************************/
 @media only screen and (min-width: 10px) {
-	#ui-datepicker-div {width: 342px;border-color: var(--color_theme);padding: 0;background-color: #FFF;}
+	#ui-datepicker-div {width: 342px;border-color: var(--color_theme);padding: 0;background-color: #FFF;z-index: 111111111 !important;}
 	#ui-datepicker-div .ui-datepicker-header {
 		background-color: var(--color_theme);background-image: none;border-color: var(--color_theme);
 		padding: var(--dMP_xs);color: var(--color_theme_alter);border-radius: 0;

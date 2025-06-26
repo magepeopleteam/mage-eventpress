@@ -233,7 +233,7 @@
         const startDate = $('#mep-start-date').val();
         const endDate = $('#mep-end-date').val();
         const eventId = $('#mep-event-filter').val();
-
+        var filter_with_category               = $("select[name='filter_with_category']").val();
         // Make AJAX request
         $.ajax({
             url: mep_analytics_data.ajax_url,
@@ -243,7 +243,8 @@
                 nonce: mep_analytics_data.nonce,
                 start_date: startDate,
                 end_date: endDate,
-                event_id: eventId
+                event_id: eventId,
+                "filter_with_category" : filter_with_category
             },
             success: function(response) {
                 if (response.success) {

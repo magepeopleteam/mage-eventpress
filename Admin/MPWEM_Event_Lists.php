@@ -74,8 +74,5 @@ if (!class_exists('MPWEM_Event_Lists')) {
         }
 
     }
-
     new MPWEM_Event_Lists();
 }
-
-

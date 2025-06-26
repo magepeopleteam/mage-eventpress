@@ -1,3 +1,4 @@
+
 <?php
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
@@ -1144,12 +1145,10 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 						change_extra_service_status( $order_id, 'publish', 'trash', 'completed' );
 						change_extra_service_status( $order_id, 'publish', 'publish', 'completed' );
 						do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
-						if ( $enable_billing_email == 'enable' ) {
-							if ( in_array( 'completed', $email_send_status ) ) {
-								mep_event_confirmation_email_sent( $event_id, $email, $order_id );
-								if ( ! empty( $org_email ) ) {
-									// mep_event_confirmation_email_sent( $event_id, $org_email, $order_id );
-								}
+						if ( in_array( 'completed', $email_send_status ) ) {
+							mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+							if ( ! empty( $org_email ) ) {
+								mep_event_confirmation_email_sent( $event_id, $org_email, $order_id );
 							}
 						}
 					}
@@ -3203,7 +3202,7 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 				),
 				array(
 					'id'    => 'mep_settings_licensing',
-					'title' => '<i class="fas fa-shield-alt"></i>' . __( 'License', 'mage-eventpress' )
+					'title' => __( 'License', 'mage-eventpress' )
 				)
 			);
 
@@ -4843,34 +4842,4 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 	function mep_add_cart_btn_icon( $event_id ) {
 		$button = apply_filters( 'mep_cart_icon', "<i class='fa fa-shopping-cart'></i>", $event_id );
 		echo '<span class="mep-cart-btn-icon">' . $button . '</span>';
-	}
-
-
-	
-
-	add_action('admin_menu', 'mep_remove_cpt_list_page');
-	function mep_remove_cpt_list_page() {
-		$user_choose_list_style= mep_get_option( 'mep_event_list_page_style', 'general_setting_sec', 'new' );
-		if($user_choose_list_style == 'new'){
-			remove_submenu_page('edit.php?post_type=mep_events', 'edit.php?post_type=mep_events');
-		}else{
-			remove_submenu_page('edit.php?post_type=mep_events','mep_event_lists' );
-		}
-
-	}
-
-	add_action('admin_menu', 'mep_move_event_list_to_top', 999);
-	function mep_move_event_list_to_top() {
-		global $submenu;
-		$parent_slug = 'edit.php?post_type=mep_events';
-		if (isset($submenu[$parent_slug])) {
-			foreach ($submenu[$parent_slug] as $key => $item) {
-				if ($item[2] === 'mep_event_lists') {
-					$event_list_item = $item;
-					unset($submenu[$parent_slug][$key]);
-					array_unshift($submenu[$parent_slug], $event_list_item);
-					break;
-				}
-			}
-		}
 	}

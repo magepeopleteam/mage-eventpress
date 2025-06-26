@@ -279,19 +279,50 @@ function mp_all_content_change($this) {
 	$(document).on("click", "div.mpStyle .decQty ,div.mpStyle .incQty", function () {
 		let current = $(this);
 		let target = current.closest('.qtyIncDec').find('input');
-		let currentValue = parseInt(target.val());
-		let value = current.hasClass('incQty') ? (currentValue + 1) : ((currentValue - 1) > 0 ? (currentValue - 1) : 0);
-		let min = parseInt(target.attr('min'));
-		let max = parseInt(target.attr('max'));
+		let currentValue = parseInt(target.val()) || 0;
+		let min = parseInt(target.attr('min')) || 0;
+		let max = parseInt(target.attr('max')) || 999;
+		let minQty = parseInt(target.attr('data-min-qty')) || 0;
+		let value;
+		
 		target.parents('.qtyIncDec').find('.incQty , .decQty').removeClass('mpDisabled');
-		if (value < min || isNaN(value) || value === 0) {
-			value = min;
-			target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
+		
+		if (current.hasClass('incQty')) {
+			// Increment logic
+			if (currentValue === 0 && minQty > 0) {
+				// Jump from 0 to min_qty if min_qty is set
+				value = minQty;
+			} else {
+				// Normal increment
+				value = currentValue + 1;
+			}
+		} else {
+			// Decrement logic
+			if (currentValue <= minQty && minQty > 0) {
+				// If at min_qty, go to 0
+				value = 0;
+			} else {
+				// Normal decrement but not below 0
+				value = Math.max(0, currentValue - 1);
+			}
 		}
+		
+		// Enforce max limit
 		if (value > max) {
 			value = max;
 			target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
 		}
+		
+		// Disable decrement button at 0
+		if (value === 0) {
+			target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
+		}
+		
+		// Disable increment button at max
+		if (value >= max) {
+			target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
+		}
+		
 		target.val(value).trigger('change').trigger('input');
 	});
 }(jQuery));

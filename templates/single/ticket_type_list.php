@@ -47,6 +47,7 @@
 				if ($qty_t_type == 'dropdown') { ?>
                     <select name="option_qty[]" id="eventpxtp_<?php echo esc_attr($count); ?>" <?php if ($total_left <= 0) { ?> style='display: none!important;' <?php } ?> class='extra-qty-box etp'>
 						<?php
+							// Include 0 option if min_qty > 0
 							if ($total_min_seat > 0) {
 								?>
                                 <option value="0" <?php echo esc_attr('Selected'); ?>>
@@ -54,7 +55,8 @@
                                 </option>
 								<?php
 							}
-							for ($i = $total_min_seat; $i <= $total_left; $i++) { ?>
+							// Start from min_qty or 1, whichever is higher
+							for ($i = max($total_min_seat, 1); $i <= $total_left; $i++) { ?>
                                 <option value="<?php echo esc_attr($i); ?>" <?php if ($i == $default_quantity) {
 									echo esc_attr('Selected');
 								} ?>><?php echo esc_html($i); ?>
@@ -65,7 +67,7 @@
 				<?php } else { ?>
                     <div class="mage_input_group">
                         <span class="fa fa-minus qty_dec"></span>
-                        <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo esc_attr($data_price); ?>' value='<?php echo esc_attr($default_qty); ?>' min="<?php echo esc_attr($total_min_seat); ?>" max="<?php echo esc_attr(max($total_left, 0)); ?>">
+                        <input id="eventpxtp_<?php echo esc_attr($count); ?>" type="text" class='extra-qty-box etp' name='option_qty[]' data-price='<?php echo esc_attr($data_price); ?>' value='<?php echo esc_attr($default_qty > 0 ? $default_qty : 0); ?>' min="0" max="<?php echo esc_attr(max($total_left, 0)); ?>" data-min-qty="<?php echo esc_attr($total_min_seat); ?>">
                         <span class="fa fa-plus qty_inc"></span>
                     </div>
 				<?php }

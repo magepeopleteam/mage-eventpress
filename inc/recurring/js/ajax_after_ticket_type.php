@@ -2,12 +2,34 @@
 jQuery(document).ready(function($) {
                 $('#mep_recutting_ticket_type_list .qty_dec').on('click', function() {
                     let target = $(this).siblings('input');
-                    let value = parseInt(target.val()) - 1;
+                    let currentValue = parseInt(target.val()) || 0;
+                    let minQty = parseInt(target.attr('data-min-qty')) || 0;
+                    let value;
+                    
+                    if (currentValue <= minQty && minQty > 0) {
+                        // If at min_qty, go to 0
+                        value = 0;
+                    } else {
+                        // Normal decrement but not below 0
+                        value = Math.max(0, currentValue - 1);
+                    }
+                    
                     qtyPlace(target, value);
                 });
                 $('#mep_recutting_ticket_type_list .qty_inc').on('click', function() {
                     let target = $(this).siblings('input');
-                    let value = parseInt(target.val()) + 1;
+                    let currentValue = parseInt(target.val()) || 0;
+                    let minQty = parseInt(target.attr('data-min-qty')) || 0;
+                    let value;
+                    
+                    if (currentValue === 0 && minQty > 0) {
+                        // Jump from 0 to min_qty if min_qty is set
+                        value = minQty;
+                    } else {
+                        // Normal increment
+                        value = currentValue + 1;
+                    }
+                    
                     qtyPlace(target, value);
                 });
                 $('#mep_recutting_ticket_type_list .mage_input_group input').on('keyup', function() {
@@ -29,17 +51,30 @@ jQuery(document).ready(function($) {
                 });
 
                 function qtyPlace(target, value) {
-                    let minSeat = parseInt(target.attr('min'));
-                    let maxSeat = parseInt(target.attr('max'));
-                    if (value < minSeat || isNaN(value)) {
-                        value = minSeat;
+                    let minSeat = parseInt(target.attr('min')) || 0;
+                    let maxSeat = parseInt(target.attr('max')) || 999;
+                    let minQty = parseInt(target.attr('data-min-qty')) || 0;
+                    
+                    // Handle NaN case
+                    if (isNaN(value)) {
+                        value = 0;
+                    }
+                    
+                    // Enforce boundaries
+                    if (value < 0) {
+                        value = 0;
                     }
                     if (value > maxSeat) {
-                        value = maxSeat
+                        value = maxSeat;
                     }
+                    
+                    // Special handling: if user manually enters a value between 1 and minQty-1, jump to minQty
+                    if (minQty > 0 && value > 0 && value < minQty) {
+                        value = minQty;
+                    }
+                    
                     target.val(value).change();
                     mageErrorQty();
-
                 }
 
                 function mageErrorQty() {

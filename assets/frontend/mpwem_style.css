@@ -53,6 +53,10 @@ div.item_hover_effect a:hover {
   color: var(--mpev-base-txt);
 }
 
+.mep-tem3-title-sec.mep_single_date_btn {
+  padding: 10px 15px !important;
+}
+
 .mep-default-sidrbar-meta .fa-list-alt, .mep-list-footer ul li i {
   background: transparent;
   color: var(--mpev-base);

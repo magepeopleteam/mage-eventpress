@@ -71,6 +71,9 @@
 		.mpwem_left_content{
 			max-width: 100%;
 			width: 100%;
+			h2{
+				font-size: 24px;
+			}
 			@media (min-width:1024px) {
 				max-width: 70%;
 				margin-right:2%;
@@ -83,6 +86,9 @@
 			@media (min-width:1024px) {
 				max-width: 30%;
 				width: 100%;
+			}
+			h2{
+				font-size: 24px;
 			}
 			.mpwem_sidebar_content{
 				background-color: #fff;
@@ -330,6 +336,9 @@
 		}
 		.map_location{
 			margin: 50px 0;
+			h2{
+				font-size: 24px;
+			}
 			iframe{
 				margin-top: 20px;
 				border-radius: 15px;
@@ -346,7 +355,9 @@
 				padding:40px;
 				margin: 40px auto;
 			}
-
+			h2{
+				font-size: 24px;
+			}
 			.desc{
 				width: auto;
 				color: #666;
@@ -477,6 +488,9 @@
 	.mep-related-events{
 		margin: 20px 0;
 		position: relative;
+		h2{
+			font-size: 24px;;
+		}
 		.related-events-header{
 			display: flex;
 			justify-content: space-between;

@@ -4472,7 +4472,7 @@ input.mpe-new-input-group-field {
   margin-bottom: 50px;
 }
 .mep-timeline .section-title {
-  font-size: 25px;
+  font-size: 24px;
   font-weight: bold;
   margin: 30px 0;
 }
@@ -5529,6 +5529,9 @@ Vanilla theme css by ariful
     max-width: 100%;
     width: 100%;
   }
+  .mep_smart_theme .mpwem_left_content h2 {
+    font-size: 24px;
+  }
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
   .mep_smart_theme .mpwem_left_content {
@@ -5549,6 +5552,9 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
+  .mep_smart_theme .mpwem_right_content h2 {
+    font-size: 24px;
+  }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content {
     background-color: #fff;
     border-radius: 20px;
@@ -5786,6 +5792,9 @@ Vanilla theme css by ariful
   .mep_smart_theme .map_location {
     margin: 50px 0;
   }
+  .mep_smart_theme .map_location h2 {
+    font-size: 24px;
+  }
   .mep_smart_theme .map_location iframe {
     margin-top: 20px;
     border-radius: 15px;
@@ -5806,6 +5815,9 @@ Vanilla theme css by ariful
   }
 }
 @media only screen and (min-width: 10px) {
+  .mep_smart_theme .faq_area h2 {
+    font-size: 24px;
+  }
   .mep_smart_theme .faq_area .desc {
     width: auto;
     color: #666;
@@ -5947,6 +5959,9 @@ Vanilla theme css by ariful
   .mep-related-events {
     margin: 20px 0;
     position: relative;
+  }
+  .mep-related-events h2 {
+    font-size: 24px;
   }
   .mep-related-events .related-events-header {
     display: flex;

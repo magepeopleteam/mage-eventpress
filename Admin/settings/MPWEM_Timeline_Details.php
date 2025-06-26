@@ -150,7 +150,7 @@ if( ! class_exists('MPWEM_Timeline_Details')){
             if( ! empty($mep_timeline)):
                 ?>
                 <div class="mep-timeline">
-                    <div class="section-title"><?php esc_html_e('Event Timelines','mage-eventpress'); ?></div>  
+                    <h2 class="section-title"><?php esc_html_e('Event Timelines','mage-eventpress'); ?></h2>  
                     <div class="timeline">
                         <?php
                         $counter = 1;

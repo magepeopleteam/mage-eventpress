@@ -5446,7 +5446,7 @@ Vanilla theme css by ariful
 @media only screen and (min-width: 10px) {
   .mep_smart_theme .mpwem_tile {
     color: #000;
-    font-size: 40px;
+    font-size: 32px;
   }
   .mep_smart_theme .mpwem_organizer {
     margin: 5px 0;
@@ -5455,6 +5455,7 @@ Vanilla theme css by ariful
     display: flex;
     flex-direction: column;
     justify-content: start;
+    gap: 10px;
   }
   /*****************************/
   /***************************************************/
@@ -5471,13 +5472,13 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i {
     width: 55px;
     height: 55px;
-    background-color: var(--mpev-secondary);
     color: var(--mpev-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 25px;
     border-radius: 5px;
+    margin-right: 5px;
   }
   .mep_smart_theme .mpwem_location_time .mpwem_location {
     align-items: start;
@@ -5491,7 +5492,6 @@ Vanilla theme css by ariful
 @media only screen and (min-width: 10px) {
   .mep_smart_theme .mpwem_location_time .mpwem_location div {
     width: 80%;
-    margin-left: 5px;
   }
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
@@ -6095,16 +6095,13 @@ Vanilla theme css by ariful
   div.mpwem_organizer,
   div.mpwem_organizer a {
     font-size: 24px;
-    margin: var(--dMP_xs) 0 0 0;
     color: #878787 !important;
     font-weight: 400;
   }
   div.mpwem_location,
   div.mpwem_time {
     color: #393332;
-    font-size: 18px;
-    margin: var(--dMP_xs) var(--dMP) 0 0;
-    display: -webkit-flex;
+    font-size: 16px;
     display: flex;
     -webkit-align-items: center;
     align-items: center;

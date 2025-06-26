@@ -20,7 +20,7 @@
 				$end_time = array_key_exists('end', $all_times) ? $all_times['end']['time'] : '';
 				?>
                 <div class="mpwem_time">
-                    <i class="far fa-clock"></i>&nbsp;&nbsp;<?php echo esc_html(MP_Global_Function::date_format($start_time, 'time') . ' ' . ($end_time ? ' - ' . MP_Global_Function::date_format($end_time, 'time') : '')); ?>
+                    <i class="far fa-clock"></i><?php echo esc_html(MP_Global_Function::date_format($start_time, 'time') . ' ' . ($end_time ? ' - ' . MP_Global_Function::date_format($end_time, 'time') : '')); ?>
                 </div>
 				<?php
 			} else {

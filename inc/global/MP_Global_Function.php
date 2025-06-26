@@ -60,6 +60,26 @@
 				}
 				return $all_data;
 			}
+			public static function all_taxonomy_as_text($event_id, $taxonomy): string {
+				$taxonomy_text = '';
+				$all_taxonomy = get_the_terms($event_id, $taxonomy);
+				if ($all_taxonomy && sizeof($all_taxonomy) > 0) {
+					foreach ($all_taxonomy as $category) {
+						$taxonomy_text = $taxonomy_text?$taxonomy_text . '- ' . $category->name:$category->name;
+					}
+				}
+				return $taxonomy_text;
+			}
+			public static function all_taxonomy_data($event_id, $taxonomy){
+				$taxonomy_data =[];
+				$all_taxonomy = get_the_terms($event_id, $taxonomy);
+				if ($all_taxonomy && sizeof($all_taxonomy) > 0) {
+					foreach ($all_taxonomy as $category) {
+						$taxonomy_data[] = $category->name;
+					}
+				}
+				return $taxonomy_data;
+			}
 			//***********************************//
 			public static function get_submit_info($key, $default = '') {
 				return self::data_sanitize($_POST[$key] ?? $default);

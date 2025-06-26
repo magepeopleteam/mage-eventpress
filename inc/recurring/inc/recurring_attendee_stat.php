@@ -162,6 +162,7 @@ function mep_recurring_attendee_stat_dashboard(){
 
                     // if (event_id > 0) {
                         var filter_by               = $("input[name='attendee_filter_by']:checked").val();
+                        var filter_with_category               = $("input[name='filter_with_category']").val();
                         var ev_filter_key           = jQuery('#attendee_filter_key').val();
                         var ev_event_date           = jQuery('#mep_everyday_ticket_time').val();
                         var re_event_date           = jQuery('#mep_recurring_date').val();
@@ -179,7 +180,8 @@ function mep_recurring_attendee_stat_dashboard(){
                                 "ev_filter_key"     : ev_filter_key,
                                 "event_date"        : event_date,
                                 "checkin_status"    : checkin_status,
-                                "event_id"          : event_id
+                                "event_id"          : event_id,
+                                "filter_with_category"          : filter_with_category
                             },
                             beforeSend: function() {
                                 jQuery('#event_attendee_list_table_item').html('<h5 class="mep-processing"><?php echo mep_get_option('mep_event_rec_please_wait_attendee_loading_text', 'label_setting_sec', 'Please wait! Attendee Stat. is Loading..'); ?></h5>');

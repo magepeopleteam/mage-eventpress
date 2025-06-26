@@ -402,9 +402,9 @@ function render_mep_events_by_status( $posts ) {
                     <td>
                         <div class="actions">
                         <?php do_action('mep_before_dashboard_event_list',$id); ?>
-                            <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event">👁️</button></a>
-                            <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event">✏️</button></a>
-                            <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event">🗑️</button></a>
+                            <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event"><span class="dashicons dashicons-visibility"></span></button></a>
+                            <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event"><span class="dashicons dashicons-edit"></span></button></a>
+                            <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event"><span class="dashicons dashicons-trash"></span></button></a>
                             <!--<a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
                             <!-- <a title="<?php //echo esc_attr__('Duplicate Hotel ', 'tour-booking-manager') . ' : ' . get_the_title($id); ?>"  href="<?php //echo wp_nonce_url(admin_url('admin.php?action=mpwem_duplicate_post&post_id=' . $id),'mpwem_duplicate_post_' . $id; ?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a> -->
                         <?php do_action('mep_after_dashboard_event_list',$id); ?>
@@ -466,19 +466,19 @@ function render_mep_events_by_status( $posts ) {
                 <div class="stats-summary">
                     <div class="stat-item mpwem_filter_by_status mpwem_filter_btn_active_bg_color" data-by-filter="all">
                         <span><?php esc_attr_e( 'All Events', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $total_event );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $total_event );?>)</span>
                     </div>
                     <div class="stat-item mpwem_filter_by_status" data-by-filter="publish">
                         <span><?php esc_attr_e( 'Published', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $post_counts['publish'] );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $post_counts['publish'] );?>)</span>
                     </div>
                     <div class="stat-item mpwem_filter_by_status" data-by-filter="draft">
                         <span><?php esc_attr_e( 'Draft', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $post_counts['draft'] );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $post_counts['draft'] );?>)</span>
                     </div>
                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="active">
                         <span><?php esc_attr_e( 'Active', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $event_status_count['active_count'] );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $event_status_count['active_count'] );?>)</span>
                     </div>
                     <!--<div class="stat-item mpwem_filter_by_active_status" data-by-filter="upcoming">
                         <span><?php /*esc_attr_e( 'Upcoming', 'mage-eventpress' );*/?></span>
@@ -486,11 +486,11 @@ function render_mep_events_by_status( $posts ) {
                     </div>-->
                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="expired">
                         <span><?php esc_attr_e( 'Expired', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $event_status_count['expire_count'] );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $event_status_count['expire_count'] );?>)</span>
                     </div>
                     <a href="<?php echo esc_url( $trash_url );?>"><div class="stat-item">
                         <span><?php esc_attr_e( 'Trash', 'mage-eventpress' );?></span>
-                        <span class="stat-number"><?php echo esc_attr( $post_counts['trash'] );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $post_counts['trash'] );?>)</span>
                         </div></a>
                 </div>
             </div>

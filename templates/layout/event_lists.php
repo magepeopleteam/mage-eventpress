@@ -347,8 +347,12 @@ function render_mep_events_by_status( $posts ) {
                                 <?php } ?>
 
                             </div>
+                           
                         </div>
-                        <div class="event-category"><?php echo esc_attr( $category );?></div>
+                         <div class='mep_after_event_title'>
+                                <?php do_action('mep_dashboard_event_list_after_event_title',$id); ?>
+                            </div>
+                        <div class="event-category" style='margin:10px 0;'><?php echo esc_attr( $category );?></div>
                     </td>
 
                     <td>

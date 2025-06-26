@@ -5,6 +5,24 @@
 	appsero_init_tracker_mage_eventpress();
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
+	add_action('mep_dashboard_event_list_after_event_title','mep_add_show_sku_post_id_in_new_event_list_dashboard');
+	if ( ! function_exists( 'mep_add_show_sku_post_id_in_new_event_list_dashboard' ) ) {
+		function mep_add_show_sku_post_id_in_new_event_list_dashboard($event_id) {
+			
+				$custom_meta_value = get_post_meta( $event_id, '_sku', true ) ? 'SKU: ' . get_post_meta( $event_id, '_sku', true ) : 'ID: ' . $event_id;
+				if ( ! empty( $custom_meta_value ) ) {
+					$custom_action = [
+						'custom_meta' => '<span style="color:rgb(117, 111, 111); font-weight: bold;font-size: 12px;">' . esc_html( $custom_meta_value ) . '</span>'
+					];
+					// $actions       = array_merge( $custom_action, $actions );
+				}
+			
+
+			echo $custom_action['custom_meta'];
+		}
+	}
+
+
 	if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
 			if ( $post->post_type === 'mep_events' ) {

@@ -329,7 +329,7 @@ function render_mep_events_by_status( $posts ) {
                     </td>
                     <td class="mpwem_event_title">
                         <div class="event-name">
-                            <?php echo esc_attr($title .' '.$event_type_status );?>
+                            <a href="<?php echo esc_url( $edit_link );?>"><?php echo esc_attr($title .' '.$event_type_status );?></a>
                             <div class="event-status-inline">
                                 <?php if( $status === 'publish'){?>
                                 <div class="status-live-inline">
@@ -401,14 +401,13 @@ function render_mep_events_by_status( $posts ) {
                     </td>
                     <td>
                         <div class="actions">
+                        <?php do_action('mep_before_dashboard_event_list',$id); ?>
                             <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event">👁️</button></a>
                             <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event">✏️</button></a>
                             <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event">🗑️</button></a>
-<!--                            <a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
-                            <a title="<?php echo esc_attr__('Duplicate Hotel ', 'tour-booking-manager') . ' : ' . get_the_title($id); ?>"  href="<?php echo wp_nonce_url(
-                                admin_url('admin.php?action=mpwem_duplicate_post&post_id=' . $id),
-                                'mpwem_duplicate_post_' . $id
-                            ); ?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>
+                            <!--<a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
+                            <!-- <a title="<?php //echo esc_attr__('Duplicate Hotel ', 'tour-booking-manager') . ' : ' . get_the_title($id); ?>"  href="<?php //echo wp_nonce_url(admin_url('admin.php?action=mpwem_duplicate_post&post_id=' . $id),'mpwem_duplicate_post_' . $id; ?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a> -->
+                        <?php do_action('mep_after_dashboard_event_list',$id); ?>
                         </div>
                     </td>
                 </tr>

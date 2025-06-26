@@ -167,7 +167,9 @@
 					$end_date_time   = $end_time ? $end_date . ' ' . $end_time : $end_date;
 					$count           = 0;
 					$expire_check    = $expire_on == 'event_start_datetime' ? $start_date_time : $end_date_time;
-					if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now && strtotime( $start_date_time ) < strtotime( $end_date_time ) ) {
+					// if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now && strtotime( $start_date_time ) < strtotime( $end_date_time ) ) {
+					if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now  ) {
+
 						$all_dates[ $count ]['time'] = $start_date_time;
 						$all_dates[ $count ]['end']  = $end_date_time;
 					}
@@ -232,7 +234,6 @@
 					usort( $all_dates, "MP_Global_Function::sort_date" );
 					$all_dates = array_unique( $all_dates );
 				}
-
 				return $all_dates;
 			}
 

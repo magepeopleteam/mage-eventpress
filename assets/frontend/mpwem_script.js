@@ -109,10 +109,11 @@ function mpwem_attendee_management(parent, total_qty) {
                                 hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
                                     form_target.append(hidden_target.html()).promise().done(function (){
-                                        jQuery(this).find('.mep_form_item').each(function (){
+                                        jQuery(this).find('.mp_form_item').each(function (){
                                             let condition_type = jQuery(this).attr('data-depend');
-                                            if(condition_type==='mep_ticket_type'){
-
+                                            let current_ticket_name = jQuery(this).attr('data-condition-value');
+                                            if(condition_type==='mep_ticket_type' && current_ticket_name===ticket_name){
+                                                jQuery(this).slideDown('fast').removeClass('dNone');
                                             }
                                         });
                                     });

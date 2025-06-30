@@ -52,7 +52,7 @@
 							</div>
 							<span><?php echo esc_html__('Please upload gallary images size in ratio 4:3. Ex: Image size width=1200px and height=900px. gallery and feature image should be in same size.','mage-eventpress'); ?></span>
 							<div style="margin-top: 20px;">
-								<?php MP_Custom_Layout::add_multi_image('mep_gallery_images', $image_ids); ?>
+								<?php MPWEM_Custom_Layout::add_multi_image('mep_gallery_images', $image_ids); ?>
 							</div>
 						</section>
 					</div>

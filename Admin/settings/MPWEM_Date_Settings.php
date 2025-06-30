@@ -77,13 +77,13 @@
                                         <td><?php self::date_item( 'event_more_end_date[]', $more_end_date ); ?></td>
                                         <td><?php self::time_item( 'event_more_end_time[]', $more_end_time ); ?></td>
 										<?php do_action( 'mep_date_table_body_more_date', $post_id, $more_date ); ?>
-                                        <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                        <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                     </tr>
 								<?php } ?>
 							<?php } ?>
                             </tbody>
                         </table>
-						<?php MP_Custom_Layout::add_new_button( esc_html__( 'Add More Dates', 'mage-eventpress' ) ); ?>
+						<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Dates', 'mage-eventpress' ) ); ?>
                         <div class="mp_hidden_content">
                             <table>
                                 <tbody class="mp_hidden_item">
@@ -93,7 +93,7 @@
                                     <td><?php self::date_item( 'event_more_end_date[]', '' ); ?></td>
                                     <td><?php self::time_item( 'event_more_end_time[]', '' ); ?></td>
 									<?php do_action( 'mep_date_table_empty', $post_id ); ?>
-                                    <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                    <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -221,7 +221,7 @@
 													?>
                                                     <tr class="mp_remove_area">
                                                         <td><?php $this->date_item( 'mep_ticket_off_dates[]', $off_day['mep_ticket_off_date'] ); ?></td>
-                                                        <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                                        <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                                     </tr>
 													<?php
 												}
@@ -230,13 +230,13 @@
 									?>
                                     </tbody>
                                 </table>
-								<?php MP_Custom_Layout::add_new_button( esc_html__( 'Add New Off date', 'mage-eventpress' ) ); ?>
+								<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Off date', 'mage-eventpress' ) ); ?>
                                 <div class="mp_hidden_content">
                                     <table>
                                         <tbody class="mp_hidden_item">
                                         <tr class="mp_remove_area">
                                             <td><?php $this->date_item( 'mep_ticket_off_dates[]' ); ?></td>
-                                            <td><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                                            <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -366,7 +366,7 @@
 						} ?>
                         </tbody>
                     </table>
-					<?php MP_Custom_Layout::add_new_button( esc_html__( 'Add new Time Slot', 'mage-eventpress' ) ); ?>
+					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add new Time Slot', 'mage-eventpress' ) ); ?>
                     <div class="mp_hidden_content">
                         <table>
                             <tbody class="mp_hidden_item">
@@ -387,7 +387,7 @@
                         <label><input type="text" class="formControl" value="<?php echo esc_attr( $label ); ?>" name="<?php echo esc_attr( $key . '_label[]' ); ?>" placeholder="<?php esc_attr_e( 'Time Slot Label', 'mage-eventpress' ); ?>"/></label>
                     </td>
                     <td><?php self::time_item( $key . '_time[]', $time ); ?></td>
-                    <td class="_w_150"><?php MP_Custom_Layout::move_remove_button(); ?></td>
+                    <td class="_w_150"><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                 </tr>
 				<?php
 			}
@@ -448,7 +448,7 @@
                                 </tbody>
                             </table>
                             <div class="mt-2"></div>
-							<?php MP_Custom_Layout::add_new_button( esc_html__( 'Add New Special Date', 'mage-eventpress' ), 'ttbm_add_new_special_date' ); ?>
+							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Special Date', 'mage-eventpress' ), 'ttbm_add_new_special_date' ); ?>
 							<?php $this->hidden_special_on_day_item(); ?>
                         </div>
                     </section>
@@ -493,7 +493,7 @@
                     </td>
                     <td><?php $this->time_slot_setting( '', '', $slot_name, $time_name, $time ); ?></td>
                     <td>
-						<?php MP_Custom_Layout::move_remove_button(); ?>
+						<?php MPWEM_Custom_Layout::move_remove_button(); ?>
                     </td>
                 </tr>
 				<?php
@@ -533,7 +533,7 @@
 						?>
                         </tbody>
                     </table>
-					<?php MP_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mp_add_item', '_dButton_xs_mt_xs' ); ?>
+					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mp_add_item', '_dButton_xs_mt_xs' ); ?>
 					<?php $this->hidden_time_slot_item( $slot_name, $time_name ); ?>
                 </div>
 				<?php
@@ -555,7 +555,7 @@
                         </label>
                     </td>
                     <td>
-						<?php MP_Custom_Layout::move_remove_button(); ?>
+						<?php MPWEM_Custom_Layout::move_remove_button(); ?>
                     </td>
                 </tr>
 				<?php

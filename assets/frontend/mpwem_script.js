@@ -105,9 +105,17 @@ function mpwem_attendee_management(parent, total_qty) {
                             }
                         } else {
                             for (let i = form_length; i < qty; i++) {
-                                hidden_target.find('.mpwem_ticket_name').html(current_parent.find('[name="option_name[]"]').val());
+                                let ticket_name=current_parent.find('[name="option_name[]"]').val();
+                                hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
-                                    form_target.append(hidden_target.html());
+                                    form_target.append(hidden_target.html()).promise().done(function (){
+                                        jQuery(this).find('.mep_form_item').each(function (){
+                                            let condition_type = jQuery(this).attr('data-depend');
+                                            if(condition_type==='mep_ticket_type'){
+
+                                            }
+                                        });
+                                    });
                                 }).promise().done(function () {
                                     mp_load_date_picker(parent);
                                 });

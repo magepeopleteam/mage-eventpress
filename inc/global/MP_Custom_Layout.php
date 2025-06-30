@@ -6,11 +6,11 @@
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
-	if (!class_exists('MP_Custom_Layout')) {
-		class MP_Custom_Layout {
+	if (!class_exists('MPWEM_Custom_Layout')) {
+		class MPWEM_Custom_Layout {
 			public function __construct() {
-				add_action('add_mp_hidden_table', array($this, 'hidden_table'), 10, 2);
-				add_action('add_mp_pagination_section', array($this, 'pagination'), 10, 3);
+				add_action('add_mpwem_hidden_table', array($this, 'hidden_table'), 10, 2);
+				add_action('add_mpwem_pagination_section', array($this, 'pagination'), 10, 3);
 			}
 			public function hidden_table($hook_name, $data = array()) {
 				?>
@@ -159,7 +159,7 @@
 						?>
                     </div>
                     <div class="">
-						<?php MP_Custom_Layout::add_new_button(esc_html__('Add Image', 'mage-eventpress'), 'add_multi_image', '_dButton_xs_bgColor_1'); ?>
+						<?php MPWEM_Custom_Layout::add_new_button(esc_html__('Add Image', 'mage-eventpress'), 'add_multi_image', '_dButton_xs_bgColor_1'); ?>
                     </div>
                 </div>
 				<?php
@@ -241,5 +241,5 @@
                 }
 			}
 		}
-		new MP_Custom_Layout();
+		new MPWEM_Custom_Layout();
 	}

@@ -74,7 +74,7 @@
 													if ( $sale_end_datetime ) {
 														$current_time = current_time( 'Y-m-d H:i' );
 														if ( strtotime( $current_time ) < strtotime( $sale_end_datetime ) ) {
-															MP_Custom_Layout::qty_input( $input_data );
+															MPWEM_Custom_Layout::qty_input( $input_data );
 														} else {
 															?>
                                                             <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
@@ -83,7 +83,7 @@
 															<?php
 														}
 													} else {
-														MP_Custom_Layout::qty_input( $input_data );
+														MPWEM_Custom_Layout::qty_input( $input_data );
 													}
 												} else {
 													$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';

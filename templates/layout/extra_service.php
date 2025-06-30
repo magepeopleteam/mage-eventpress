@@ -46,7 +46,7 @@
 										<?php } ?>
 									</div>
 									<div class="quantity-control">
-										<?php MP_Custom_Layout::qty_input($input_data); ?>
+										<?php MPWEM_Custom_Layout::qty_input($input_data); ?>
 									</div>
 									<div class="ticket-price">
 										<?php echo wc_price($ticket_price); ?>

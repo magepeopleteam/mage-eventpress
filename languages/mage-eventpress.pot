@@ -247,7 +247,7 @@ msgstr ""
 msgid "Add Icon"
 msgstr ""
 
-#: inc/global/MP_Custom_Layout.php:162
+#: inc/global/MPWEM_Custom_Layout.php:162
 msgid "Add Image"
 msgstr ""
 
@@ -3378,11 +3378,11 @@ msgstr ""
 msgid "google-wallet"
 msgstr ""
 
-#: lib/classes/class-mep.php:178 inc/global/MP_Custom_Layout.php:70
+#: lib/classes/class-mep.php:178 inc/global/MPWEM_Custom_Layout.php:70
 msgid "GoTO Next Page"
 msgstr ""
 
-#: lib/classes/class-mep.php:159 inc/global/MP_Custom_Layout.php:48
+#: lib/classes/class-mep.php:159 inc/global/MPWEM_Custom_Layout.php:48
 msgid "GoTO Previous Page"
 msgstr ""
 
@@ -4118,7 +4118,7 @@ msgstr ""
 msgid "less"
 msgstr ""
 
-#: lib/classes/class-mep.php:147 inc/global/MP_Custom_Layout.php:175
+#: lib/classes/class-mep.php:147 inc/global/MPWEM_Custom_Layout.php:175
 msgid "Less More"
 msgstr ""
 
@@ -4206,7 +4206,7 @@ msgstr ""
 msgid "Load Font Awesome From Theme?"
 msgstr ""
 
-#: lib/classes/class-mep.php:146 lib/classes/class-mep.php:149 inc/global/MP_Custom_Layout.php:39 inc/global/MP_Custom_Layout.php:175 inc/global/MP_Custom_Layout.php:176
+#: lib/classes/class-mep.php:146 lib/classes/class-mep.php:149 inc/global/MPWEM_Custom_Layout.php:39 inc/global/MPWEM_Custom_Layout.php:175 inc/global/MPWEM_Custom_Layout.php:176
 msgid "Load More"
 msgstr ""
 
@@ -6365,7 +6365,7 @@ msgstr ""
 msgid "Sorry, no ticket available"
 msgstr ""
 
-#: inc/global/MP_Custom_Layout.php:232
+#: inc/global/MPWEM_Custom_Layout.php:232
 msgid "Sorry, not available"
 msgstr ""
 

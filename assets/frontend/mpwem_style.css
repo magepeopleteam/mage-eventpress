@@ -5205,13 +5205,13 @@ Royal theme css by ariful | Date: 19-10-2021
 }
 
 /********Bristol Theme(theme - 3)**********************/
-.bristol .mep-default-feature-location {
-  display: flex;
-  align-items: start;
-}
-
 .bristol .mep-default-sidrbar-meta {
   background: none;
+  display: block;
+}
+
+.bristol .mep-default-sidrbar-meta i {
+  display: none;
 }
 
 .bristol .mep-default-title h2 {
@@ -5221,6 +5221,7 @@ Royal theme css by ariful | Date: 19-10-2021
 .bristol .mep-event-meta {
   padding: 10px;
   font-size: 16px;
+  padding-top: 0;
 }
 
 .bristol .mep-event-meta ul.mep-social-share {
@@ -5240,6 +5241,11 @@ Royal theme css by ariful | Date: 19-10-2021
 .bristol div.mep-default-feature-date,
 .bristol div.mep-default-feature-location {
   background-color: transparent;
+}
+
+div.bristol div.bristol_divided div.mep-default-feature-location {
+  display: flex;
+  align-items: start;
 }
 
 .bristol_center_box {

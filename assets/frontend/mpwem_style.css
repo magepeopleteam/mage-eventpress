@@ -5280,6 +5280,10 @@ div.bristol div.bristol_divided div.mep-default-feature-location {
   color: #888;
 }
 
+.bristol .mep-default-sidrbar-social .mep-share-btn-title {
+  margin-bottom: 0;
+}
+
 /*************************************************************
 Vanilla theme css by ariful
 **************************************************************/

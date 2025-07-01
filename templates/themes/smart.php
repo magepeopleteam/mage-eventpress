@@ -3,6 +3,7 @@
 	// Settings Value :::::::::::::::::::::::::::::::::::::::;
 	$event_id           = empty( $event_id ) ? get_the_id() : $event_id;
 	$all_dates          = MPWEM_Functions::get_dates( $event_id );
+    //echo '<pre>';print_r($all_dates);echo '</pre>';
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');

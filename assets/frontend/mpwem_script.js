@@ -27,6 +27,13 @@ function mpwem_qty(parent) {
     }
     return total_qty;
 }
+function mpwem_qty_ex(parent) {
+    let total_qty = 0;
+    parent.find('[name="event_extra_service_qty[]"]').each(function () {
+        total_qty = total_qty + parseInt(jQuery(this).val());
+    });
+    return total_qty;
+}
 function mpwem_price(parent) {
     let total = 0;
     if (parent.find('.mpwem_seat_plan_area').length > 0) {
@@ -218,7 +225,20 @@ function mpwem_attendee_management(parent, total_qty) {
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
-        mpwem_price_calculation(parent);
+        if (parent.find('[name="mepgq_max_ex_qty"]').length > 0) {
+            let qty = $(this).val();
+            let total_qty = mpwem_qty_ex(parent);
+            let max_qty_gq = parseInt(parent.find('[name="mepgq_max_ex_qty"]').val());
+            if (total_qty > max_qty_gq) {
+                qty = qty - total_qty + max_qty_gq;
+                $(this).val(qty);
+                mpwem_price_calculation(parent);
+            } else {
+                mpwem_price_calculation(parent);
+            }
+        } else {
+            mpwem_price_calculation(parent);
+        }
     });
     /************File Upload*************/
     $(document).on('change', '.mep_form_item .mep_file_item input[type="file"]', function (e) {

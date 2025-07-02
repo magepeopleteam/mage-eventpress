@@ -562,7 +562,6 @@
 		width: 100%;
 		position: relative;
 		overflow: hidden;
-		border-radius: 10px;
 	}
 	div.superSlider .sliderItem img {
 		width: 100%;
@@ -579,7 +578,6 @@
 		-webkit-transition: -webkit-transform 0.06s ease-in-out;
 		transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
 		height: 100%;
-		
 	}
 	div.superSlider .sliderItem.activeSlide {
 		z-index: 1;
@@ -647,7 +645,7 @@
 	}
 	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem{margin:0 10px 0 0;width: auto;max-width:25%;-webkit-flex:1;flex:1;}
 	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem:last-child{margin: 0;}
-	div.superSlider .sliderShowcaseItem {  position: relative;    overflow: hidden;border-radius: 10px; }
+	div.superSlider .sliderShowcaseItem {  position: relative;    overflow: hidden; }
 	div.superSlider  .sliderShowcase.style_1 .sliderShowcaseItem{-webkit-flex: 1;flex: 1;}
 	div.superSlider .area_column .sliderShowcaseItem {		width: calc(25% - var(--dMP_xs));	}
 	div.superSlider .sliderShowcase div.superSlider .area_column {
@@ -934,7 +932,7 @@
 	.mpStyle .customRadio.button_type::before,
 	.mpStyle .customRadio.button_type::after { display: none; }
 	/**********Checkbox Custom*********/
-	.mpStyle .customCheckbox { position: relative; line-height: 1; min-width: auto; white-space: normal !important;}
+	.mpStyle .customCheckbox { padding: 3px 0 0 30px; position: relative; line-height: 1; min-width: auto; white-space: normal !important;}
 	.mpStyle .customCheckbox::before {
 		content: ""; position: absolute; left: 0; top: 0; height: 20px; width: 20px;
 		background-color: var(--color_theme_alter);
@@ -1533,7 +1531,7 @@
 }
 /******************************************************************** Date picker ************************************************/
 @media only screen and (min-width: 10px) {
-	#ui-datepicker-div {width: 342px;border-color: var(--color_theme);padding: 0;background-color: #FFF;z-index: 111111111 !important;}
+	#ui-datepicker-div {width: 342px;border-color: var(--color_theme);padding: 0;background-color: #FFF;}
 	#ui-datepicker-div .ui-datepicker-header {
 		background-color: var(--color_theme);background-image: none;border-color: var(--color_theme);
 		padding: var(--dMP_xs);color: var(--color_theme_alter);border-radius: 0;

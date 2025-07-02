@@ -3,11 +3,7 @@ jQuery(document).ready(function($) {
 
     $(".dependency-field").formFieldDependency({});
     $(".sortable" ).sortable({ handle: ".sort" });
-    
-    // Safety check for wpColorPicker to ensure compatibility with all themes
-    if ($.fn.wpColorPicker) {
-        $('.colorpicker').wpColorPicker();
-    }
+    $('.colorpicker').wpColorPicker();
 
 
     jQuery(document).on('click', '.field-switcher-wrapper .switcher .layer', function() {

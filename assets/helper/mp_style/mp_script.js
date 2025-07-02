@@ -681,9 +681,9 @@ function mp_check_required(input) {
 		$(this).val(n.replace(/[@%'":;&_]/g, ''));
 		return true;
 	});
-	// $(document).on('keyup change', '.mpStyle [required]', function () {
-	// 	mp_check_required($(this));
-	// });
+	$(document).on('keyup change', '.mpStyle [required]', function () {
+		mp_check_required($(this));
+	});
 }(jQuery));
 //==========================================================pagination==========//
 function mp_pagination_page_management(parent, pagination_page, total_item) {

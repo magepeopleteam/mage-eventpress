@@ -108,17 +108,6 @@
 								)
 							),
 							array(
-								'name' => 'mep_event_list_page_style',
-								'label' => 	__('Dashboard Event List Page Style', 'mage-eventpress'),
-								'desc' => 	__('You can choose the Event List Page Design in Dasboard', 'mage-eventpress'),
-								'type' => 'select',
-								'default' => 'new',
-								'options' => array(
-									'new' 	=> 'New Modern Style',
-									'wp' 	=> 'WordPress Default Post List Style'
-								)
-							),							
-							array(
 								'name' => 'mep_rest_api_status',
 								'label' => __('Enable Rest API?', 'mage-eventpress'),
 								'desc' => __('If you want to enable event data available in the Rest API Please enable this.', 'mage-eventpress'),

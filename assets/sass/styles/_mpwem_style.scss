@@ -37,9 +37,7 @@ div.item_hover_effect a:hover{
 	background: var(--mpev-base);
 	color: var(--mpev-base-txt);
 }
-.mep-tem3-title-sec.mep_single_date_btn{
-	padding:10px 15px !important;
-}
+
 .mep-default-sidrbar-meta .fa-list-alt,.mep-list-footer ul li i {
 	background: transparent;
 	color: var(--mpev-base);
@@ -602,7 +600,6 @@ ul.mep-social-share a {
 
 .mep-share-btn-title{
 	margin-bottom: 20px;
-	display: block;
 }
 
 ul.mep-social-share {
@@ -669,7 +666,7 @@ ul.mep-social-share li a.email:hover i {
 }
 /********Add to calender ***********/
 .mep-default-sidrbar-calender-btn {
-	margin: 20px 10px;
+	margin: 30px 10px;
 	position: relative;
 }
 #mep_add_calender_button.mep-add-calender {
@@ -1335,6 +1332,7 @@ button.mep-cat-control.mixitup-control-active {
 	display: block;
 	overflow: hidden;
 	padding: 10px;
+	margin-top: 20px;
 	margin-bottom: 5px;
 }
 .mep-default-sidebar-speaker-list h3 {
@@ -1342,9 +1340,10 @@ button.mep-cat-control.mixitup-control-active {
 	font-weight: 600;
 	color: #444444;
 	font-size: 16px;
-}
-.mep-default-sidebar .mep-default-sidebar-speaker-list h3 {
-	padding: 15px 0;
+	border-top: 1px solid #DDD;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 .mep-default-sidebar-speaker-list h3 i {
 	display: inline-block;
@@ -1625,7 +1624,7 @@ div.mep-day-details-section h4 {
 	font-size: 18px;
 }
 .mep-default-sidebar-address{
-	padding: 15px;
+	padding: 20px 15px;
 	.location-widgets{
 		display: flex;
 		flex-direction: row;
@@ -1651,7 +1650,7 @@ div.mep-day-details-section h4 {
 		border: 0;
 		font-size: 15px;
 		padding: 0 15px;
-		margin:20px auto;
+		margin:10px auto;
 		margin-bottom:5px;
 		border-radius: 50px;
 		max-width: max-content;
@@ -2284,6 +2283,8 @@ div.three_column {
 	display: block;
 }
 .mep_single_date_btn {
+	height: 35px;
+	line-height: 35px !important;
 	font-size: 15px;
 	width: max-content;
 	padding: 0 15px 0 15px !important;
@@ -3902,27 +3903,3 @@ input.mpe-new-input-group-field {
 		margin: 10px 0;
 	}
 }
-
-.mep-default-theme .mep_checkbox_item ._fs_label{
-	margin-bottom: 15px;
-	display: block;
-}
-
-.mep-default-theme .groupRadioCheck{
-	margin-top: 5px;
-}
-
-.groupRadioCheck [data-radio-check].mpActive {
-    border-color: var(--mpev-base);
-	background-color: var(--mpev-base);
-	color: var(--mpev-base-txt);
-}
-
-.groupRadioCheck [data-radio-check]:hover {
-    border-color: var(--mpev-base);
-	background-color: var(--mpev-base);
-}
-
-  .mpStyle .customCheckbox::before {
-    border: 2px solid var(--mpev-base);
-  }

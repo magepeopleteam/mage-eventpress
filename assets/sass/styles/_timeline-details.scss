@@ -2,7 +2,7 @@
     margin-top:30px;
     margin-bottom:50px;
     .section-title{
-        font-size: 24px;
+        font-size: 25px;
         font-weight: bold;
         margin: 30px 0;
     }
@@ -17,7 +17,6 @@
             height: 100%;
             width: 2px;
             background-color: #e0e0e0;
-            z-index: 0;
         }
         .timeline-item {
             position: relative;
@@ -50,14 +49,14 @@
             .timeline-content {
                 background-color: #ffffff;
                 border-radius: 12px;
-                padding:15px 20px;
+                padding: 25px 30px;
                 box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
                 transition: transform 0.3s ease;
                 
                 .timeline-title {
                     font-size: 18px;
                     font-weight: 600;
-                    margin-bottom: 5px;
+                    margin-bottom: 15px;
                     color: #212121;
                     display: flex;
                     align-items: center;

@@ -3,7 +3,7 @@
 	.mep_smart_theme{
 		.mpwem_tile{
 			color: #000;
-			font-size: 32px;
+			font-size: 40px;
 		}
 		.mpwem_organizer{
 			margin: 5px 0;
@@ -12,7 +12,6 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: start;
-			gap:10px;
 			@media (min-width:1024px) {
 				flex-direction: row;
 			}
@@ -21,14 +20,13 @@
 				i{
 					width: 55px;
 					height: 55px;
-					// background-color: var(--mpev-secondary);
+					background-color: var(--mpev-secondary);
 					color:var(--mpev-primary);
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					font-size: 25px;
 					border-radius: 5px;
-					margin-right: 5px;
 				}
 			}
 			.mpwem_location{
@@ -38,6 +36,7 @@
 				}
 				div{
 					width: 80%;
+					margin-left: 5px;
 					@media (min-width:1024px) {
 						width: auto;
 					}
@@ -72,9 +71,6 @@
 		.mpwem_left_content{
 			max-width: 100%;
 			width: 100%;
-			h2{
-				font-size: 24px;
-			}
 			@media (min-width:1024px) {
 				max-width: 70%;
 				margin-right:2%;
@@ -88,26 +84,22 @@
 				max-width: 30%;
 				width: 100%;
 			}
-			h2{
-				font-size: 24px;
-			}
 			.mpwem_sidebar_content{
 				background-color: #fff;
 				border-radius: 20px;
 				box-shadow: 0 0 5px #ddd;
-				padding-bottom:20px;
+				padding:30px 0;
 				.date_widgets,.location_widgets{
 					display: flex;
 					justify-content: start;
 					align-items: start;
-					gap: 10px;
-					padding: 25px 15px;
-					padding-bottom: 10px;
+					gap: 20px;
+					padding: 15px;
 					border-bottom: 1px solid #ddd;
 					i{
-						font-size: 25px;
-						padding:0;
-						// background-color: var(--mpev-secondary);
+						font-size: 30px;
+						padding: 15px;
+						background-color: var(--mpev-secondary);
 						color: var(--mpev-primary);
 						border-radius: 10px;
 					}
@@ -122,9 +114,9 @@
 					}
 					button{
 						background-color: #fff;
-						padding:7px 10px !important;
+						padding:13px 15px !important;
 						border: 1px solid var(--mpev-primary);
-						margin: 15px 0; 
+						margin-top: 20px;
 						color: var(--mpev-primary);
 						&:hover{
 							background-color: var(--mpev-secondary);
@@ -133,7 +125,7 @@
 							font-size: 16px;
 							padding: 0;
 							background: none;
-							margin-right:6px;
+							margin-right:15px;
 						}
 					}
 				}
@@ -143,35 +135,16 @@
 					}
 					.date-lists{
 						ul{
-							list-style-type:none;
+							list-style-type:disc;
+							padding-left: 22px;
+							margin-bottom: 20px;
 							max-height: 315px;
         					overflow: hidden;
 							li{
-								border: 1px solid #ccd6e2;
-								background-color: #f8fafc;
-								padding: 15px;
-								display: flex;
-								flex-direction: row;
-								align-items: start;
-								position: relative;	
-								padding-left: 25px;
-								margin-bottom:10px;
-								border-radius: 12px;
-								transition: all 0.3s ease;
-								&::before{
-									content: "";
-									width: 8px;
-									height: 8px;
-									border-radius: 50px;
-									position: absolute;
-									top:18px;
-									left:10px;
-									background-color: var(--mpev-base);
-								}
-								&:hover{
-									border-color: #cbd5e1;
-									box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-									transform: translateY(1px);
+								margin-bottom: 20px;
+								&::marker {
+									color: var(--mpev-primary); 
+									font-size: 1.5em; 
 								}
 								span{
 									display: block;
@@ -222,8 +195,8 @@
 							padding:5px 10px !important;
 							border-radius: var(--dBR) !important;
 							border: 1px solid var(--mpev-primary);
-							margin: 20px 0 !important;
-							margin-bottom:10px !important;
+							margin: 0 !important;
+							margin-top: 20px;
 							color: var(--mpev-primary);
 							font-size: var(--button_fs);
 							font-weight: var(--fw-medium);
@@ -235,7 +208,7 @@
 								font-size: 16px;
 								padding: 0;
 								background: none;
-								margin-right:6px;
+								margin-right:15px;
 								display: inline-block;
 							}
 						}
@@ -244,10 +217,6 @@
 				.share_widgets{
 					text-align: center;
 					padding: 15px;
-					h2.share-widget-title{
-						font-size: 19px;
-    					letter-spacing: 2px;
-					}
 					.mep-social-share{
 						margin-top: 10px;
 						li{
@@ -284,7 +253,7 @@
 					background-color: #fff;
 					color: var(--mpev-primary) !important;
 					height: auto !important;
-					padding:5px 10px !important;
+					padding:13px 15px !important;
 					border-radius: var(--dBR) !important;
 					border: 1px solid var(--mpev-primary);
 					margin-top: 0;
@@ -299,12 +268,12 @@
 						font-size: 16px;
 						padding: 0;
 						background: none;
-						margin-right:6px;
+						margin-right:15px;
 					}
 				}
 			}
 			.speaker-widget{
-				margin-top: 10px;
+				margin-top: 50px;
 				h2{
 					text-transform: capitalize;
 				}
@@ -337,9 +306,6 @@
 		}
 		.map_location{
 			margin: 50px 0;
-			h2{
-				font-size: 24px;
-			}
 			iframe{
 				margin-top: 20px;
 				border-radius: 15px;
@@ -356,9 +322,7 @@
 				padding:40px;
 				margin: 40px auto;
 			}
-			h2{
-				font-size: 24px;
-			}
+
 			.desc{
 				width: auto;
 				color: #666;
@@ -440,6 +404,7 @@
 				}
 			}
 		}
+		
 	}
 	.attendee_area{
 		margin: 10px 0;
@@ -488,9 +453,6 @@
 	.mep-related-events{
 		margin: 20px 0;
 		position: relative;
-		h2{
-			font-size: 24px;;
-		}
 		.related-events-header{
 			display: flex;
 			justify-content: space-between;
@@ -520,7 +482,7 @@
 			.item{
 				width: 100%;
 				background-color: #fff;
-				padding: 0;
+				padding: 20PX;
 				border-radius: 10px;
 				box-shadow: 0 0 5px #ddd;
 				@media (min-width:540px) {
@@ -534,7 +496,6 @@
 					width: 100%;
 					height: 200px;
 					object-fit: cover;
-					border-radius: 10px 10px 0 0;
 				}
 				.mep-ev-start-date {
 					position: absolute;
@@ -556,8 +517,7 @@
 				.item-info{
 					display: flex;
 					justify-content: space-between;
-					padding:0 20px;
-					margin: 10px 0;
+					margin-top: 20px;
 					.title{
 						text-align: left;
 						color: #999;
@@ -610,13 +570,13 @@
 	.mep_attendee_info .mp_form_item.mep_checkbox_item>span,
 	.mep_attendee_info .mp_form_item.mep_radio_item>span,
 	.mep_attendee_info .mp_form_item.mep_file_item>span,
-	.mep_attendee_info .mp_form_item>label>span{min-width:200px;font-weight: normal;}
+	.mep_attendee_info .mp_form_item>label>span{min-width:200px;}
 	/***************************************************/
 	div.mpwem_organizer {display: -webkit-flex;display: flex;}
 	div.mpwem_organizer,
-	div.mpwem_organizer a{font-size: 24px;color:#878787 !important;font-weight: 400;}
+	div.mpwem_organizer a{font-size: 24px;margin: var(--dMP_xs) 0 0 0;color:#878787 !important;font-weight: 400;}
 	div.mpwem_location,
-	div.mpwem_time{color: #393332;font-size: 16px;display: flex;-webkit-align-items: center;align-items: center;}
+	div.mpwem_time{color: #393332;font-size: 18px;margin: var(--dMP_xs) var(--dMP)  0 0;	display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;}
 	div.mpwem_location span,
 	div.mpwem_time span{width: 55px;height: 55px;background-color: #F1F5FF;color:#6046FF;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;-webkit-justify-content: center;justify-content: center;font-size: 25px;}
 }

@@ -5,40 +5,28 @@
         font-weight: bold;
         margin-bottom:10px;
     }
-    #mep_event_date_sch{
-        margin-bottom: 20px;
-    }
     ul.mep_event_date_sch{
         margin-left: 10px;
         max-height: 315px;
         overflow: hidden;
-        
+        margin-bottom: 20px;
         li{
-            border: 1px solid #ccd6e2;
-            background-color: #f8fafc;
-            padding: 15px;
+            border-top: 1px dashed #DDD;
+            padding: 10px 0;
             display: flex;
             flex-direction: row;
             align-items: start;
             position: relative;	
-            padding-left: 25px;
-            margin-bottom:10px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            padding-left: 15px;
             &::before{
                 content: "";
                 width: 8px;
                 height: 8px;
                 border-radius: 50px;
                 position: absolute;
-                top:18px;
-                left:10px;
+                top:14px;
+                left:0;
                 background-color: var(--mpev-base);
-            }
-            &:hover{
-                border-color: #cbd5e1;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-                transform: translateY(1px);
             }
             a {
                 display: -webkit-flex;
@@ -64,7 +52,9 @@
                 font-weight: bold;
                 margin-bottom: 10px;
             }
-            
+            &:first-child {
+                border: none;
+            }
             i{
                 background: var(--mpev-base);
                 color: var(--mpev-base-txt);

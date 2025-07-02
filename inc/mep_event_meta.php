@@ -3,6 +3,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+
 	class MP_Event_All_Info_In_One {
 		public function __construct() {
 			add_action( 'add_meta_boxes', array( $this, 'mp_event_all_info_in_tab' ) );

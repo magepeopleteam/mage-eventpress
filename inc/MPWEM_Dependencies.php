@@ -48,7 +48,7 @@
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
 				require_once(dirname(__DIR__) . "/inc/recurring/inc/functions.php");	
 				require_once(dirname(__DIR__) . "/inc/recurring/inc/recurring_attendee_stat.php");
-				require_once(dirname(__DIR__) . "/inc/email/low_stock_notification.php");		
+				require_once(dirname(__DIR__) . "/inc/email/low_stock_notification.php");	
 			}
 			public function global_enqueue() {
 				wp_enqueue_script('jquery');
@@ -106,7 +106,14 @@
 				wp_localize_script('mep_ajax', 'mep_ajax_var', array('url' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('mep-ajax-nonce')));
 				//loading pick plugin
 				wp_enqueue_style('mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css');
-				wp_enqueue_script('magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array('jquery'));
+				
+				// Ensure wp-color-picker is available in admin
+				if (is_admin()) {
+					wp_enqueue_style('wp-color-picker');
+					wp_enqueue_script('wp-color-picker');
+				}
+				
+				wp_enqueue_script('magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array('jquery', 'wp-color-picker'));
 				wp_localize_script('PickpluginsOptionsFramework', 'PickpluginsOptionsFramework_ajax', array('PickpluginsOptionsFramework_ajaxurl' => admin_url('admin-ajax.php')));
 				wp_enqueue_script('form-field-dependency', MPWEM_PLUGIN_URL . '/assets/helper/form-field-dependency.js', array('jquery'), null, false);
 				//loading modal

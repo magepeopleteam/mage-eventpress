@@ -1,4 +1,3 @@
-
 <?php
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
@@ -16,13 +15,10 @@
 						'custom_meta' => '<span style="color:rgb(117, 111, 111); font-weight: bold;font-size: 12px;">' . esc_html( $custom_meta_value ) . '</span>'
 					];
 					// $actions       = array_merge( $custom_action, $actions );
-				}
-			
-
+				}		
 			echo $custom_action['custom_meta'];
 		}
 	}
-
 
 	if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {

@@ -1,5 +1,4 @@
 <?php
-
 use Sabberworm\CSS\Value\Value;
 
 	if (!defined('ABSPATH')) {

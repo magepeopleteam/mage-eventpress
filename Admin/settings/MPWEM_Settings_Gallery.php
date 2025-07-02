@@ -52,7 +52,7 @@
 							</div>
 							<span><?php echo esc_html__('Please upload gallary images size in ratio 4:3. Ex: Image size width=1200px and height=900px. gallery and feature image should be in same size.','mage-eventpress'); ?></span>
 							<div style="margin-top: 20px;">
-								<?php MP_Custom_Layout::add_multi_image('mep_gallery_images', $image_ids); ?>
+								<?php MPWEM_Custom_Layout::add_multi_image('mep_gallery_images', $image_ids); ?>
 							</div>
 						</section>
 					</div>
@@ -83,7 +83,7 @@
 				if (get_post_type($post_id) == 'mep_events') {
 					$slider = MP_Global_Function::get_submit_info('mep_display_slider') ? 'on' : 'off';
 					update_post_meta($post_id, 'mep_display_slider', $slider);
-					$images = MP_Global_Function::get_submit_info('mep_gallery_images', array());
+					$images = MP_Global_Function::get_submit_info('mep_gallery_images');
 					$single_image = MP_Global_Function::get_submit_info('mep_list_thumbnail', '');
 					$all_images = explode(',', $images);
 					update_post_meta($post_id, 'mep_gallery_images', $all_images);

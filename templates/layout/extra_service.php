@@ -11,8 +11,10 @@
 	$all_times = $all_times ?? MPWEM_Functions::get_times($event_id, $all_dates);
 	$date = $date ?? MPWEM_Functions::get_upcoming_date_time($event_id, $all_dates, $all_times);
 	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
+	$total_ex_available    = MPWEM_Functions::get_total_available_ex( $event_id, $date );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
-	if ($total_available > 0) {
+	if ($total_available > 0 && $total_ex_available>0) {
+		do_action( 'mepgq_max_ex_qty_hook', $event_id, $total_ex_available, $date );
 		$ex_services = MP_Global_Function::get_post_info($event_id, 'mep_events_extra_prices', []);
 		//echo '<pre>'; print_r($ex_services); echo '</pre>';
 		$count = 0;
@@ -25,8 +27,10 @@
 						$ticket_price = array_key_exists('option_price', $ticket_type) ? $ticket_type['option_price'] : 0;
 						$ticket_price = MP_Global_Function::get_wc_raw_price($event_id, $ticket_price);
 						$ticket_qty = array_key_exists('option_qty', $ticket_type) ? $ticket_type['option_qty'] : 0;
+						$ticket_qty = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_ex_available, $event_id );
 						$ticket_input_type = array_key_exists('option_qty_type', $ticket_type) ? $ticket_type['option_qty_type'] : 'inputbox';
 						$available = MPWEM_Functions::get_available_ex_service($event_id, $ticket_name, $date, $ticket_type);
+						$available = apply_filters( 'filter_mpwem_gq_ex_service', $available, $total_ex_available, $event_id );
 						if ($ticket_name && $ticket_qty > 0) {
 							$input_data=[];
 							$input_data['name'] = 'event_extra_service_qty[]';
@@ -46,7 +50,7 @@
 										<?php } ?>
 									</div>
 									<div class="quantity-control">
-										<?php MP_Custom_Layout::qty_input($input_data); ?>
+										<?php MPWEM_Custom_Layout::qty_input($input_data); ?>
 									</div>
 									<div class="ticket-price">
 										<?php echo wc_price($ticket_price); ?>

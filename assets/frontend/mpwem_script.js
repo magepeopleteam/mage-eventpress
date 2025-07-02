@@ -27,6 +27,13 @@ function mpwem_qty(parent) {
     }
     return total_qty;
 }
+function mpwem_qty_ex(parent) {
+    let total_qty = 0;
+    parent.find('[name="event_extra_service_qty[]"]').each(function () {
+        total_qty = total_qty + parseInt(jQuery(this).val());
+    });
+    return total_qty;
+}
 function mpwem_price(parent) {
     let total = 0;
     if (parent.find('.mpwem_seat_plan_area').length > 0) {
@@ -105,9 +112,18 @@ function mpwem_attendee_management(parent, total_qty) {
                             }
                         } else {
                             for (let i = form_length; i < qty; i++) {
-                                hidden_target.find('.mpwem_ticket_name').html(current_parent.find('[name="option_name[]"]').val());
+                                let ticket_name=current_parent.find('[name="option_name[]"]').val();
+                                hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
-                                    form_target.append(hidden_target.html());
+                                    form_target.append(hidden_target.html()).promise().done(function (){
+                                        jQuery(this).find('.mp_form_item').each(function (){
+                                            let condition_type = jQuery(this).attr('data-depend');
+                                            let current_ticket_name = jQuery(this).attr('data-condition-value');
+                                            if(condition_type==='mep_ticket_type' && current_ticket_name===ticket_name){
+                                                jQuery(this).slideDown('fast').removeClass('dNone');
+                                            }
+                                        });
+                                    });
                                 }).promise().done(function () {
                                     mp_load_date_picker(parent);
                                 });
@@ -209,7 +225,20 @@ function mpwem_attendee_management(parent, total_qty) {
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
-        mpwem_price_calculation(parent);
+        if (parent.find('[name="mepgq_max_ex_qty"]').length > 0) {
+            let qty = $(this).val();
+            let total_qty = mpwem_qty_ex(parent);
+            let max_qty_gq = parseInt(parent.find('[name="mepgq_max_ex_qty"]').val());
+            if (total_qty > max_qty_gq) {
+                qty = qty - total_qty + max_qty_gq;
+                $(this).val(qty);
+                mpwem_price_calculation(parent);
+            } else {
+                mpwem_price_calculation(parent);
+            }
+        } else {
+            mpwem_price_calculation(parent);
+        }
     });
     /************File Upload*************/
     $(document).on('change', '.mep_form_item .mep_file_item input[type="file"]', function (e) {

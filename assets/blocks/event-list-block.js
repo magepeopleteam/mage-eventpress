@@ -1,7 +1,7 @@
-( function( blocks, i18n, element, components, editor ) {
+( function( blocks, i18n, element, components, blockEditor ) {
     var el = element.createElement;
     var __ = i18n.__;
-    var InspectorControls = editor.InspectorControls;
+    var InspectorControls = blockEditor.InspectorControls;
     var PanelBody = components.PanelBody;
     var SelectControl = components.SelectControl;
     var TextControl = components.TextControl;

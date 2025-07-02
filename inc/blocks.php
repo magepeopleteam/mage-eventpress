@@ -48,7 +48,7 @@ function mep_register_event_list_block() {
             'wp-i18n',
             'wp-element',
             'wp-components',
-            'wp-editor'
+            'wp-block-editor'
         ),
         filemtime(plugin_dir_path(__FILE__) . '../assets/blocks/event-list-block.js'),
         true

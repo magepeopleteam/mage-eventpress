@@ -1334,92 +1334,104 @@
 					'mp_slider_settings' => array(
 						array(
 							'name' => 'slider_type',
-							'label' => esc_html__('Slider Type', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Type Default Slider', 'service-booking-manager'),
+							'label' => esc_html__('Slider Type', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Type Default Slider', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'slider',
 							'options' => array(
-								'slider' => esc_html__('Slider', 'service-booking-manager'),
-								'single_image' => esc_html__('Post Thumbnail', 'service-booking-manager')
+								'slider' => esc_html__('Slider', 'mage-eventpress'),
+								'single_image' => esc_html__('Post Thumbnail', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'slider_style',
-							'label' => esc_html__('Slider Style', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Style Default Style One', 'service-booking-manager'),
+							'label' => esc_html__('Slider Style', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Style Default Style One', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'style_1',
 							'options' => array(
-								'style_1' => esc_html__('Style One', 'service-booking-manager'),
-								'style_2' => esc_html__('Style Two', 'service-booking-manager'),
+								'style_1' => esc_html__('Style One', 'mage-eventpress'),
+								'style_2' => esc_html__('Style Two', 'mage-eventpress'),
 							)
 						),
 						array(
 							'name' => 'indicator_visible',
-							'label' => esc_html__('Slider Indicator Visible?', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Indicator Visible or Not? Default ON', 'service-booking-manager'),
+							'label' => esc_html__('Slider Indicator Visible?', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Indicator Visible or Not? Default ON', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'on',
 							'options' => array(
-								'on' => esc_html__('ON', 'service-booking-manager'),
-								'off' => esc_html__('Off', 'service-booking-manager')
+								'on' => esc_html__('ON', 'mage-eventpress'),
+								'off' => esc_html__('Off', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'indicator_type',
-							'label' => esc_html__('Slider Indicator Type', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Indicator Type Default Icon', 'service-booking-manager'),
+							'label' => esc_html__('Slider Indicator Type', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Indicator Type Default Icon', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'icon',
 							'options' => array(
-								'icon' => esc_html__('Icon Indicator', 'service-booking-manager'),
-								'image' => esc_html__('image Indicator', 'service-booking-manager')
+								'icon' => esc_html__('Icon Indicator', 'mage-eventpress'),
+								'image' => esc_html__('image Indicator', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'showcase_visible',
-							'label' => esc_html__('Slider Showcase Visible?', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Showcase Visible or Not? Default ON', 'service-booking-manager'),
+							'label' => esc_html__('Slider Showcase Visible?', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Showcase Visible or Not? Default ON', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'on',
 							'options' => array(
-								'on' => esc_html__('ON', 'service-booking-manager'),
-								'off' => esc_html__('Off', 'service-booking-manager')
+								'on' => esc_html__('ON', 'mage-eventpress'),
+								'off' => esc_html__('Off', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'showcase_position',
-							'label' => esc_html__('Slider Showcase Position', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Showcase Position Default Right', 'service-booking-manager'),
+							'label' => esc_html__('Slider Showcase Position', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Showcase Position Default Right', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'right',
 							'options' => array(
-								'top' => esc_html__('At Top Position', 'service-booking-manager'),
-								'right' => esc_html__('At Right Position', 'service-booking-manager'),
-								'bottom' => esc_html__('At Bottom Position', 'service-booking-manager'),
-								'left' => esc_html__('At Left Position', 'service-booking-manager')
+								'top' => esc_html__('At Top Position', 'mage-eventpress'),
+								'right' => esc_html__('At Right Position', 'mage-eventpress'),
+								'bottom' => esc_html__('At Bottom Position', 'mage-eventpress'),
+								'left' => esc_html__('At Left Position', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'popup_image_indicator',
-							'label' => esc_html__('Slider Popup Image Indicator', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Popup Indicator Image ON or Off? Default ON', 'service-booking-manager'),
+							'label' => esc_html__('Slider Popup Image Indicator', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Popup Indicator Image ON or Off? Default ON', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'on',
 							'options' => array(
-								'on' => esc_html__('ON', 'service-booking-manager'),
-								'off' => esc_html__('Off', 'service-booking-manager')
+								'on' => esc_html__('ON', 'mage-eventpress'),
+								'off' => esc_html__('Off', 'mage-eventpress')
 							)
 						),
 						array(
 							'name' => 'popup_icon_indicator',
-							'label' => esc_html__('Slider Popup Icon Indicator', 'service-booking-manager'),
-							'desc' => esc_html__('Please Select Slider Popup Indicator Icon ON or Off? Default ON', 'service-booking-manager'),
+							'label' => esc_html__('Slider Popup Icon Indicator', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Popup Indicator Icon ON or Off? Default ON', 'mage-eventpress'),
 							'type' => 'select',
 							'default' => 'on',
 							'options' => array(
-								'on' => esc_html__('ON', 'service-booking-manager'),
-								'off' => esc_html__('Off', 'service-booking-manager')
+								'on' => esc_html__('ON', 'mage-eventpress'),
+								'off' => esc_html__('Off', 'mage-eventpress')
+							)
+						),
+						array(
+							'name' => 'slider_height',
+							'label' => esc_html__('Slider height', 'mage-eventpress'),
+							'desc' => esc_html__('Please Select Slider Height', 'mage-eventpress'),
+							'type' => 'select',
+							'default' => 'avg',
+							'options' => array(
+								'min' => esc_html__('Minimum', 'mage-eventpress'),
+								'avg' => esc_html__('Average', 'mage-eventpress'),
+								'max' => esc_html__('Maximum', 'mage-eventpress')
 							)
 						)
 					),

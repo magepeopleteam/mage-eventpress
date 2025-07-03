@@ -44,6 +44,7 @@
 					$slider_style      = MP_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
 					?>
 					<div class="superSlider placeholder_area fdColumn">
+                        <input type="hidden" name="slider_height_type" value="<?php echo esc_attr(MP_Global_Function::get_slider_settings( 'slider_height', 'avg' )); ?>" />
 						<div class="dFlex  <?php echo esc_attr( $column_class ); ?>">
 							<?php
 								if ( $showcase_position == 'top' || $showcase_position == 'left' ) {
@@ -57,7 +58,7 @@
 									?>
 									<div class="abTopLeft">
 										<button type="button" class="_dButton_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
-											<?php echo esc_html__( 'View All', 'service-booking-manager' ) . ' ' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'service-booking-manager' ); ?>
+											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
 										</button>
 									</div>
 									<?php

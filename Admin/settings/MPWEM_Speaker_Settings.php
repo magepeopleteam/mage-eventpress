@@ -51,7 +51,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                             <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
                             <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
                         </div>
-                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speakers'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
+                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speakers', 'mage-eventpress'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
                     </label>
                 </section>
                 <section>

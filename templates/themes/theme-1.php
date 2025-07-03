@@ -36,7 +36,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) :?>
                             <div class="mep-org-details">
                                 <div class="org-name">
-                                    <div><?php echo _e('Organized By:'); ?></div>
+                                    <div><?php echo mep_get_option('mep_organized_by_text', 'label_setting_sec') ? mep_get_option('mep_organized_by_text', 'label_setting_sec') : _e('Organized By:', 'mage-eventpress'); ?></div>
                                     <?php foreach ($org_terms as $index => $org): ?>
                                         <strong><?php echo esc_html($org->name); ?><?php if ($index < count($org_terms) - 1): ?>|<?php endif; ?></strong>
                                     <?php endforeach; ?>

@@ -44,7 +44,7 @@
 							$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 							$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 							$available = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
-							if ( $ticket_name && $ticket_qty > 0 ) {
+							if ( $ticket_name ) {
 								$input_data['name']      = 'option_qty[]';
 								$input_data['price']     = $ticket_price;
 								$input_data['available'] = $available;

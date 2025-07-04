@@ -178,7 +178,7 @@
 @media only screen and (min-width: 10px) {
 	div.mp_multi_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;}
 	div.mp_multi_image_item { position: relative; width: calc(25% - var(--dMP_xs)); min-width: 150px;margin: 0 var(--dMP_xs) var(--dMP_xs) 0;min-height: 50px;gap:var(--dMP_xs);}
-	div.mp_multi_image_item img(width:100%;height:150px;)
+	div.mp_multi_image_item img{width:100%;height:150px;}
 	span.mp_remove_single_image,
 	div.mpStyle span.mp_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
 	div.mp_single_image_item:hover span.mp_remove_single_image,

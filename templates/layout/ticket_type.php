@@ -6,6 +6,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+	
 	$event_id           = $event_id ?? 0;
 	$all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
@@ -44,6 +45,10 @@
 							$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 							$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 							$available = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
+							
+							// Determine if we should hide default remaining text when ribbons are active
+							$hide_default_remaining = apply_filters('mep_should_hide_default_remaining', false, $event_id, $ticket_name, $available);
+							
 							if ( $ticket_name && $ticket_qty > 0 ) {
 								$input_data['name']      = 'option_qty[]';
 								$input_data['price']     = $ticket_price;
@@ -55,17 +60,19 @@
 								$count ++;
 								?>
                                 <div class="mep_ticket_item">
+                                    <?php do_action('mep_ticket_stock_ribbons', $event_id, $ticket_name, $available); ?>
                                     <div class="ticket-data">
                                         <div class="ticket-info">
                                             <div class="ticket-name"><?php echo esc_html( $ticket_name ); ?></div>
 											<?php if ( $ticket_details ) { ?>
                                                 <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 											<?php } ?>
-											<?php if ( $mep_available_seat == 'on' ) { ?>
+											<?php if ( $mep_available_seat == 'on' && !$hide_default_remaining ) { ?>
                                                 <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
 													<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining','mage-eventpress' ); ?>
                                                 </div>
 											<?php } ?>
+											<?php do_action('mep_ticket_stock_warnings', $event_id, $ticket_name, $available); ?>
                                         </div>
                                         <div class="quantity-control">
                                             <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>

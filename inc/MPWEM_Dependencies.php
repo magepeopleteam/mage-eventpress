@@ -48,7 +48,7 @@
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");
 				require_once(dirname(__DIR__) . "/inc/recurring/inc/functions.php");	
 				require_once(dirname(__DIR__) . "/inc/recurring/inc/recurring_attendee_stat.php");
-				require_once(dirname(__DIR__) . "/inc/email/low_stock_notification.php");	
+				require_once(dirname(__DIR__) . "/inc/low_stock_notification.php");	
 			}
 			public function global_enqueue() {
 				wp_enqueue_script('jquery');

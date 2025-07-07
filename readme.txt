@@ -258,6 +258,14 @@ vulnerabilities.
 
 
 == Changelog ==
+= 4.4.5 =
+* Design responsive issue fixed
+* Yoast & UpdraftPlus warning issue fixed.
+* Whitespace error issue fixed
+* Old theme style issue fixed.
+* Divi Builder not working issue fixed.
+* New Event List Page Added
+  02 July 2025*
 
 = 4.4.4 =
 * Design responsive issue fixed

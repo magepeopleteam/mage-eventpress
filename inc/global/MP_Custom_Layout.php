@@ -151,7 +151,7 @@
 									?>
                                     <div class="mp_multi_image_item" data-image-id="<?php esc_attr_e($image); ?>">
                                         <span class="fas fa-times circleIcon_xs mp_remove_multi_image"></span>
-                                        <img class="w-100" src="<?php echo MP_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php esc_attr_e($image); ?>"/>
+                                        <img src="<?php echo MP_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php esc_attr_e($image); ?>"/>
                                     </div>
 									<?php
 								}

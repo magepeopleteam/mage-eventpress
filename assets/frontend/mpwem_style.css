@@ -4387,41 +4387,41 @@ input.mpe-new-input-group-field {
   border: 2px solid var(--mpev-base);
 }
 
-.mep_event_list .mep_event_list_item {
+.mep_event_list_item {
   padding: 0;
 }
 
-.mep_event_list .mep_list_event_details {
+.mep_event_list_item .mep_list_event_details {
   padding: 10px;
 }
 
-.mep_event_list .mep-list-header {
+.mep_event_list_item .mep-list-header {
   padding: 0;
 }
 
-.mep_event_list .mep-event-excerpt {
+.mep_event_list_item .mep-event-excerpt {
   padding: 0;
   margin: 10px 0;
 }
 
-.mep_event_list .mep-list-footer {
+.mep_event_list_item .mep-list-footer {
   padding: 0;
   margin: 0;
   margin-top: 20px;
 }
 
-.mep_event_list .mep-list-footer .mep_list_org_name {
+.mep_event_list_item .mep-list-footer .mep_list_org_name {
   margin: 0;
 }
 
-.mep_event_list .mep_list_org_name, .mep_event_list .mep_list_location_name, .mep_event_list .mep_list_event_date {
+.mep_event_list_item .mep_list_org_name, .mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date {
   display: flex;
   gap: 8px;
   align-items: center;
   margin: 0;
 }
 
-.mep_event_list .mep-list-footer-ul {
+.mep_event_list_item .mep-list-footer-ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -4429,27 +4429,47 @@ input.mpe-new-input-group-field {
   gap: 5px 10px;
 }
 
-.mep_event_list .mep_list_thumb {
+.mep_event_list_item .mep_list_thumb {
   border-radius: 5px 0 0 5px;
 }
 
-.mep_event_list .mep_bg_thumb {
-  min-height: 250px;
+.mep_event_list_item .mep_bg_thumb {
+  min-height: 200px;
   height: 100%;
 }
 
 @media (max-width: 768px) {
-  .mep_event_list .mep_bg_thumb {
+  .mep_event_list_item .mep_bg_thumb {
     min-height: 220px;
     height: auto;
   }
-  .mep_event_list .mep_list_thumb {
+  .mep_event_list_item .mep_list_thumb {
     border-radius: 5px 5px 0 0;
   }
-  .mep_event_list .mep_list_location_name, .mep_event_list .mep_list_event_date {
+  .mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date {
     align-items: start;
   }
 }
+.mep_event_grid_item .mep-list-footer-ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+  padding: 10px 0;
+}
+
+.mep_event_grid_item .mep_list_org_name, .mep_event_grid_item .mep_list_location_name, .mep_event_grid_item .mep_list_event_date {
+  gap: 10px;
+}
+
+.mep_event_grid_item .mep_list_event_date h5 {
+  display: block;
+}
+
+.mep_event_grid_item .mep_list_thumb {
+  border-radius: 5px 5px 0 0;
+}
+
 .mep-default-sidrbar-events-schedule {
   padding: 15px;
 }

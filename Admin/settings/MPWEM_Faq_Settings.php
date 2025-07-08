@@ -13,7 +13,6 @@ if( ! class_exists('MPWEM_Faq_Settings')){
         public function __construct() {
             add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'faq_tab']);
             add_action('mp_event_all_in_tab_item', [$this, 'faq_tab_content']);
-            add_action('admin_enqueue_scripts',  [$this, 'custom_editor_enqueue']);
             // save faq data
             add_action('wp_ajax_mep_faq_data_save', [$this, 'save_faq_data_settings']);
             // update faq data
@@ -23,46 +22,6 @@ if( ! class_exists('MPWEM_Faq_Settings')){
 
             add_action( 'save_post', [$this,'data_save'] );
         }
-
-        public function custom_editor_enqueue() {
-            // Enqueue necessary scripts
-            wp_enqueue_script('jquery');
-            wp_enqueue_script('editor');
-            wp_enqueue_script('media-upload');
-            wp_enqueue_script('thickbox');
-            wp_enqueue_style('thickbox');
-            
-            // Add custom JavaScript to handle FAQ editing
-            add_action('admin_footer', function() {
-                ?>
-                <script>
-                jQuery(document).ready(function($) {
-                    $(document).on('click', '.mep-faq-item-edit', function() {
-                        var faqID = $(this).data('faq-id');
-                        var faqTitle = $(this).data('faq-title');
-                        var faqContent = $(this).data('faq-content');
-                        
-                        // Set the values in the form
-                        $('input[name="mep_faq_title"]').val(faqTitle);
-                        $('input[name="mep_faq_item_id"]').val(faqID);
-                        
-                        // Set content in TinyMCE editor
-                        if (typeof tinymce !== 'undefined' && tinymce.get('mep_faq_content')) {
-                            tinymce.get('mep_faq_content').setContent(faqContent);
-                        } else {
-                            $('#mep_faq_content').val(faqContent);
-                        }
-                        
-                        // Show update buttons, hide save buttons
-                        $('.mep_faq_save_buttons').hide();
-                        $('.mep_faq_update_buttons').show();
-                    });
-                });
-                </script>
-                <?php
-            });
-        }
-        
         public function faq_tab(){
             ?>
             <li data-target-tabs="#mep_event_faq_meta">

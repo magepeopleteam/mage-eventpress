@@ -2,17 +2,6 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-// Enquing The recurring scripts for the front-end
-	add_action( 'wp_enqueue_scripts', 'mep_re_enqueue_scripts', 90 );
-	function mep_re_enqueue_scripts() {
-		wp_enqueue_style( 'mep-re-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_style.css', array() );
-	}
-// Enquing The recurring scripts for the back-end
-	add_action( 'admin_enqueue_scripts', 'mep_re_admin_enqueue_scripts', 90 );
-	function mep_re_admin_enqueue_scripts() {
-		wp_enqueue_style( 'mep-re-admin-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_admin_style.css', array(), time() );
-		wp_enqueue_script( 'mp_recurring_admin_script', plugin_dir_url( __DIR__ ) . 'js/admin_recurring.js', array( 'jquery' ), time(), true );
-	}
 	add_filter( 'mep_event_expire_datetime_val', 'mep_re_modify_event_expire_date', 15, 2 );
 	function mep_re_modify_event_expire_date( $expire_date, $event_id ) {
 		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';

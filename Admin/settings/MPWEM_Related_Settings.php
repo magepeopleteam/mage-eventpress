@@ -9,18 +9,12 @@
 				add_action( 'woocommerce_process_product_meta', [$this,'woocom_linked_products_data_custom_field_save'] );
 				add_action( 'woocommerce_after_single_product', [$this,'related_single_products'] );
 				add_action( 'after-single-events', [$this,'related_events'] );
-				add_action('wp_enqueue_scripts', [$this,'enqueue_slick_carousel']);
 
 				add_action('mep_admin_event_details_before_tab_name_rich_text',[$this,'event_related_tab']);
 				add_action('mp_event_all_in_tab_item',[$this,'event_related_content']);
 				add_action( 'save_post', [$this,'mep_event_related_products_data_save'] );
 			}
 
-			public function enqueue_slick_carousel() {
-				wp_enqueue_style('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css', array(), '1.8.1');
-				wp_enqueue_style('slick-carousel-theme', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css', array('slick-carousel'), '1.8.1'); 
-				wp_enqueue_script('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array('jquery'), '1.8.1', false);
-			}
 
 			public function event_related_tab() {
 				?>

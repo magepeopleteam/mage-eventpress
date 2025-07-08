@@ -1132,6 +1132,21 @@ div.mep_event_native_list .mep-list-header{
 	margin: -5px 0 0 0;
 	border-top: 1px dashed #DDD;
 }
+.mep_event_timeline_list .mep-list-header{
+	padding: 0;
+}
+
+.mep_event_timeline_list .mep_minimal_list_date ,
+.mep_event_timeline_list .mep_minimal_list_location ,
+.mep_event_timeline_list .mep_minimal_list_organizer {
+	margin:10px 0;
+}
+
+.mep_event_timeline_list .mep_minimal_list_date i,
+.mep_event_timeline_list .mep_minimal_list_location i,
+.mep_event_timeline_list .mep_minimal_list_organizer i{
+	padding-right: 10px;
+}
 /* Title Style */
 .mep_event_title_list_item {
 	display: block;

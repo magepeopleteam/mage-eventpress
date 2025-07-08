@@ -29,7 +29,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
     </div>
     <div class="mep_list_winter_thumb_wrapper">
         <a href="<?php echo get_the_permalink($event_id); ?>">
-            <div class="mep_list_winter_thumb" data-bg-image="<?php mep_get_list_thumbnail_src($event_id, 'thumbnail'); ?>"></div>
+            <div class="mep_list_winter_thumb" data-bg-image="<?php mep_get_list_thumbnail_src($event_id); ?>"></div>
         </a>
     </div>
     <div class="mep_list_event_details">
@@ -44,9 +44,9 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
                 <?php if(get_mep_datetime($end_time_format, 'time')): ?>
                     <p class="mep_winter_event_time"><i class="<?php echo esc_attr($event_time_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_time_format, 'time')); ?> - <?php echo esc_html(get_mep_datetime($end_time_format, 'time')); ?></p>
                 <?php endif; ?>
-                <?php if(mep_get_event_city($event_id)): ?>
-                    <p class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php echo mep_get_event_city($event_id); ?></p>
-                <?php endif; ?>
+                
+                <p class='mep_winter_event_location'><i class="<?php echo esc_attr($event_location_icon); ?>"></i> <?php echo mep_get_event_city($event_id); ?></p>
+                
                 <?php if(get_mep_datetime($start_date_format, 'date')): ?>
                     <p class="mep_winter_event_date"><i class="<?php echo esc_attr($event_date_icon); ?>"></i> <?php echo esc_html(get_mep_datetime($start_date_format, 'date')); ?> - <?php echo esc_html(get_mep_datetime($end_date_format, 'date')); ?></p>
                 <?php endif; ?>

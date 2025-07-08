@@ -668,8 +668,6 @@ ul.mep-social-share a {
 .mep-list-footer ul li i {
   background: var(--mpev-base-txt);
   color: var(--mpev-base);
-  width: 36px;
-  height: 36px;
   font-size: 14px;
 }
 
@@ -1264,11 +1262,16 @@ div.mep_event_native_list {
 }
 
 .mep_event_native_list .mep_list_thumb .mep_bg_thumb {
-  height: 45px;
+  height: 100%;
+  min-height: 45px;
 }
 
 .mep_list_thumb a {
   height: 100%;
+}
+
+div.mep_event_native_list .mep-list-header {
+  padding-left: 10px;
 }
 
 .mep_event_native_list .mep-list-header::before {
@@ -1320,6 +1323,22 @@ div.mep_event_native_list {
 .mep_event_timeline_list ul.mep-more-date-lists {
   margin: -5px 0 0 0;
   border-top: 1px dashed #DDD;
+}
+
+.mep_event_timeline_list .mep-list-header {
+  padding: 0;
+}
+
+.mep_event_timeline_list .mep_minimal_list_date,
+.mep_event_timeline_list .mep_minimal_list_location,
+.mep_event_timeline_list .mep_minimal_list_organizer {
+  margin: 10px 0;
+}
+
+.mep_event_timeline_list .mep_minimal_list_date i,
+.mep_event_timeline_list .mep_minimal_list_location i,
+.mep_event_timeline_list .mep_minimal_list_organizer i {
+  padding-right: 10px;
 }
 
 /* Title Style */
@@ -2314,10 +2333,11 @@ h3.mep_list_date {
   border: 1px solid var(--mpev-base);
   color: var(--mpev-base);
   border-radius: 20px;
-  padding: 2px 5px;
+  padding: 0 8px;
   transform: perspective(1px) translateZ(0);
   position: relative;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .mep_list_thumb {
@@ -2843,7 +2863,7 @@ New Spring list style css added by ariful
 **************************************************************/
 .mep_event_spring_list {
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
   background: #FCFCFC;
 }
@@ -2866,7 +2886,13 @@ New Spring list style css added by ariful
 .mep_spring_event_location,
 .mep_spring_event_date {
   display: flex;
+  align-items: start;
   margin-bottom: 10px;
+}
+
+.mep_event_spring_list .mep_list_event_details i {
+  margin-top: 5px;
+  color: var(--mpev-base);
 }
 
 .mep_event_spring_list .mep_list_date_wrapper {
@@ -2967,8 +2993,8 @@ New Spring list style css added by ariful
 }
 
 .mep_event_spring_list ul.mp_event_more_date_list {
-  top: 0;
-  max-height: 100%;
+  bottom: 100%;
+  height: 100%;
 }
 
 .mep_event_spring_list ul.mp_event_more_date_list li {
@@ -2984,7 +3010,7 @@ New Spring list style css added by ariful
 }
 
 .mep_event_spring_list .mep_more_date_btn.mp_event_visible_event_time {
-  display: block !important;
+  border-radius: 50px;
 }
 
 .mep_event_spring_list .mep_spring_list_date {
@@ -3064,8 +3090,8 @@ div.mep_event_winter_list:hover {
 }
 
 .mep_event_winter_list .mep_list_winter_thumb_wrapper {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   margin: 20px;
   overflow: hidden;
@@ -3082,15 +3108,28 @@ div.mep_event_winter_list:hover {
 }
 
 .mep_event_winter_list .mep_list_winter_thumb {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  width: 200px;
+  height: 200px;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   margin: auto;
 }
 
+@media only screen and (max-width: 767px) {
+  .mep_event_winter_list .mep_list_winter_thumb_wrapper {
+    margin: 0;
+    width: 100%;
+    height: 200px;
+    border-radius: 0;
+  }
+  .mep_event_winter_list .mep_list_winter_thumb {
+    width: auto;
+    height: 200px;
+    border-radius: 0;
+    object-fit: cover;
+  }
+}
 .mep_event_winter_list .mep_list_date_wrapper .mep_list_date {
   color: #FFF;
 }
@@ -3163,6 +3202,12 @@ div.mep_event_winter_list:hover {
   display: flex;
   justify-content: space-between;
   align-items: space-between;
+}
+
+.mep_event_winter_list .mep_list_details_col_one i {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
 }
 
 .mep_event_winter_list .mep_list_details_wrapper p {
@@ -4387,6 +4432,89 @@ input.mpe-new-input-group-field {
 
 .mpStyle .customCheckbox::before {
   border: 2px solid var(--mpev-base);
+}
+
+.mep_event_list_item {
+  padding: 0;
+}
+
+.mep_event_list_item .mep_list_event_details {
+  padding: 10px;
+}
+
+.mep_event_list_item .mep-list-header {
+  padding: 0;
+}
+
+.mep_event_list_item .mep-event-excerpt {
+  padding: 0;
+  margin: 10px 0;
+}
+
+.mep_event_list_item .mep-list-footer {
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.mep_event_list_item .mep-list-footer .mep_list_org_name {
+  margin: 0;
+}
+
+.mep_event_list_item .mep_list_org_name, .mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+}
+
+.mep_event_list_item .mep-list-footer-ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 10px;
+}
+
+.mep_event_list_item .mep_list_thumb {
+  border-radius: 5px 0 0 5px;
+}
+
+.mep_event_list_item .mep_bg_thumb {
+  min-height: 200px;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .mep_event_list_item .mep_bg_thumb {
+    min-height: 220px;
+    height: auto;
+  }
+  .mep_event_list_item .mep_list_thumb {
+    border-radius: 5px 5px 0 0;
+  }
+  .mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date {
+    align-items: start;
+  }
+}
+.mep_event_grid_item .mep-list-footer-ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+  padding: 10px 0;
+}
+
+.mep_event_grid_item .mep_list_org_name, .mep_event_grid_item .mep_list_location_name, .mep_event_grid_item .mep_list_event_date {
+  gap: 10px;
+}
+
+.mep_event_grid_item .mep_list_event_date h5 {
+  display: block;
+}
+
+.mep_event_grid_item .mep_list_thumb {
+  border-radius: 5px 5px 0 0;
 }
 
 .mep-default-sidrbar-events-schedule {

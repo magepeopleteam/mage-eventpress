@@ -1080,14 +1080,21 @@ div.mep_event_native_list {
 	width: 90px;
 }
 .mep_event_native_list .mep_list_thumb .mep_bg_thumb {
-	height: 45px;
+	height: 100%;
+	min-height: 45px;
 }
 .mep_list_thumb a {
 	height: 100%;
 }
+
+div.mep_event_native_list .mep-list-header{
+	padding-left:10px;
+}
+
 .mep_event_native_list .mep-list-header::before {
 	border-left: 2px solid;
 }
+
 .mep_event_native_list h3.mep_list_date i {
 	background: transparent;
 }

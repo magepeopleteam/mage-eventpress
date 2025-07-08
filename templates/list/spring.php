@@ -34,7 +34,7 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
             $org_terms = get_the_terms($event_id, 'mep_org');
             if ($org_terms && !is_wp_error($org_terms) && count($org_terms) > 0) {
             ?>
-            <span class='mep_spring_event_organizer'><i class="<?php echo $event_organizer_icon; ?>"></i> <a href="<?php echo get_term_link($org_terms[0]->term_id, 'mep_org'); ?>"><?php echo esc_html($org_terms[0]->name); ?></a></span>
+            <span class='mep_spring_event_organizer'><i class="<?php echo $event_organizer_icon; ?>"></i> <?php echo esc_html($org_terms[0]->name); ?></span>
             <?php } ?>
         </a>
         <?php do_action('mep_event_list_loop_footer', $event_id); ?>

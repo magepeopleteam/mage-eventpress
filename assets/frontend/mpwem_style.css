@@ -2316,6 +2316,7 @@ h3.mep_list_date {
   transform: perspective(1px) translateZ(0);
   position: relative;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .mep_list_thumb {
@@ -2841,7 +2842,7 @@ New Spring list style css added by ariful
 **************************************************************/
 .mep_event_spring_list {
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
   background: #FCFCFC;
 }
@@ -2864,7 +2865,13 @@ New Spring list style css added by ariful
 .mep_spring_event_location,
 .mep_spring_event_date {
   display: flex;
+  align-items: start;
   margin-bottom: 10px;
+}
+
+.mep_event_spring_list .mep_list_event_details i {
+  margin-top: 5px;
+  color: var(--mpev-base);
 }
 
 .mep_event_spring_list .mep_list_date_wrapper {
@@ -2965,8 +2972,8 @@ New Spring list style css added by ariful
 }
 
 .mep_event_spring_list ul.mp_event_more_date_list {
-  top: 0;
-  max-height: 100%;
+  bottom: 100%;
+  height: 100%;
 }
 
 .mep_event_spring_list ul.mp_event_more_date_list li {
@@ -2982,7 +2989,7 @@ New Spring list style css added by ariful
 }
 
 .mep_event_spring_list .mep_more_date_btn.mp_event_visible_event_time {
-  display: block !important;
+  border-radius: 50px;
 }
 
 .mep_event_spring_list .mep_spring_list_date {

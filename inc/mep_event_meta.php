@@ -61,6 +61,9 @@
                             <i class="fas fa-search-location"></i><?php esc_html_e( 'SEO Content', 'mage-eventpress' ); ?>
                         </li>
 						<?php do_action( 'mep_admin_event_details_before_tab_name_rich_text', $post_id ); ?>
+                        <li data-target-tabs="#mep_event_timeline_meta">
+                            <i class="far fa-newspaper"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?>
+                        </li>
 						<?php do_action( 'mp_event_all_in_tab_menu' ); ?>
 
 						<?php do_action( 'mep_admin_event_details_end_of_tab_name', $post_id ); ?>

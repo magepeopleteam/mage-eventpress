@@ -14,25 +14,7 @@
 			'mep_event_analytics_page'
 		);
 	}
-// Register and enqueue scripts and styles for the analytics page
-	add_action( 'admin_enqueue_scripts', 'mep_analytics_scripts' );
-	function mep_analytics_scripts( $hook ) {
-		if ( $hook != 'mep_events_page_mep_event_analytics_page' ) {
-			return;
-		}
-		// Enqueue Chart.js
-		wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js', array(), '3.9.1', true );
-		wp_enqueue_script( 'chartjs-date-adapter', 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js', array( 'chartjs' ), '2.0.0', true );
-		// Enqueue custom analytics scripts
-		wp_enqueue_script( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.js', array( 'jquery', 'chartjs' ), time(), true );
-		wp_enqueue_style( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.css', array(), time() );
-		// Localize script with AJAX URL, nonce, and currency symbol
-		wp_localize_script( 'mep-analytics', 'mep_analytics_data', array(
-			'ajax_url'        => admin_url( 'admin-ajax.php' ),
-			'nonce'           => wp_create_nonce( 'mep_analytics_nonce' ),
-			'currency_symbol' => get_woocommerce_currency_symbol(),
-		) );
-	}
+
 // Main analytics page content
 	function mep_event_analytics_page() {
 		// Get current date and 30 days ago for default date range

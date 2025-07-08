@@ -35,7 +35,7 @@
                 </div>
 			<?php //} ?>
 			<!-- timeline data display -->
-		    <?php do_action('mpwem_timeline'); ?>
+		    <?php do_action('mpwem_timeline',$event_id); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
         </div>
         <div class="mpwem_right_content">

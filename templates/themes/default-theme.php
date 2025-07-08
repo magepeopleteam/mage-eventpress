@@ -75,7 +75,7 @@
         </div>
         <div class="mep-default-feature-content">
             <div class="mpwem_details_content"><?php the_content(); ?></div>
-            <?php do_action('mpwem_timeline'); ?>
+            <?php do_action('mpwem_timeline',$event_id); ?>
         </div>
         <div class="mep-default-feature-cart-sec">
 			<?php

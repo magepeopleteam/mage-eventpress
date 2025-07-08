@@ -90,6 +90,13 @@
 				wp_enqueue_script('wp-color-picker');
 				wp_enqueue_style('wp-codemirror');
 				wp_enqueue_script('wp-codemirror');
+				wp_enqueue_script('jquery');
+				wp_enqueue_script('editor');
+				wp_enqueue_script('quicktags');
+				wp_enqueue_script('media-upload');
+				wp_enqueue_script('thickbox');
+				wp_enqueue_style('thickbox');
+				wp_enqueue_style('editor-buttons');
 				//********//
 				$this->global_enqueue();
 				//********//
@@ -119,6 +126,22 @@
 				//loading modal
 				wp_enqueue_style('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.css', array(), 1.0);
 				wp_enqueue_script('jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.js', array('jquery'), 1.0, true);
+				if ( $hook == 'mep_events_page_mep_event_analytics_page' ) {
+					// Enqueue Chart.js
+					wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js', array(), '3.9.1', true );
+					wp_enqueue_script( 'chartjs-date-adapter', 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js', array( 'chartjs' ), '2.0.0', true );
+					// Enqueue custom analytics scripts
+					wp_enqueue_script( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.js', array( 'jquery', 'chartjs' ), time(), true );
+					wp_enqueue_style( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.css', array(), time() );
+					// Localize script with AJAX URL, nonce, and currency symbol
+					wp_localize_script( 'mep-analytics', 'mep_analytics_data', array(
+						'ajax_url'        => admin_url( 'admin-ajax.php' ),
+						'nonce'           => wp_create_nonce( 'mep_analytics_nonce' ),
+						'currency_symbol' => get_woocommerce_currency_symbol(),
+					) );
+				}
+				wp_enqueue_style( 'mep-re-admin-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_admin_style.css', array(), time() );
+				wp_enqueue_script( 'mp_recurring_admin_script', plugin_dir_url( __DIR__ ) . 'js/admin_recurring.js', array( 'jquery' ), time(), true );
 				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
 				wp_enqueue_style('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.css', array(), time());
 				// custom
@@ -132,17 +155,22 @@
 				
 				$this->global_enqueue();
 				//wp_enqueue_script('wc-checkout');
-			
+				wp_enqueue_style('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css', array(), '1.8.1');
+				wp_enqueue_style('slick-carousel-theme', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css', array('slick-carousel'), '1.8.1');
+				wp_enqueue_script('slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array('jquery'), '1.8.1', false);
+				//
+				wp_enqueue_script('mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true);
+				wp_enqueue_script('mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array('jquery'), 1, true);
+				wp_enqueue_script('mep-moment-js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js', array(), 1, true);
+				//
+				wp_enqueue_style( 'mep-re-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_style.css', array() );
 				//timeline
 				wp_enqueue_style('mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css',array(),'1.0.0','all');
 				wp_enqueue_script('mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array('jquery'), 1, true);
 				//calender
 				wp_enqueue_style('mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array());
 				wp_enqueue_script('mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array('jquery', 'mep-moment-js'), 1, true);
-				//
-				wp_enqueue_script('mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true);
-				wp_enqueue_script('mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array('jquery'), 1, true);
-				wp_enqueue_script('mep-moment-js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js', array(), 1, true);
+
 				//custom
 				wp_enqueue_style('filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.css', array(), time());
 				wp_enqueue_script('filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), time(), true);

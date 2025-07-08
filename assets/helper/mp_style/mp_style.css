@@ -277,7 +277,7 @@
 	.mpStyle .navy_blueButton:hover, .mpStyle [class*="_navy_blueButton"]:hover { background-color: var(--color_theme_alter); color: var(--color_navy_blue); border-color: var(--color_navy_blue); }
 	.mpStyle .navy_blueButton:hover span, .mpStyle [class*="_navy_blueButton"]:hover span { color: var(--color_navy_blue); }
 	/****/
-	.mpStyle [class*="Button_xs"] { min-width: auto; min-height: var(--button_height_xs); padding: 7px var(--dMP_xs); font-size: var(--fs); }
+	.mpStyle [class*="Button_xs"] { min-width: auto; min-height: var(--button_height_xs); font-size: var(--fs); }
 	/*************************/
 	.mpStyle [class*="dButton"].mpActive { background-color: var(--color_theme); color: var(--color_theme_alter); }
 }
@@ -1146,6 +1146,10 @@
 	div.mpPopup .popupBody { padding: var(--dMP); overflow: auto; }
 	div.mpPopup .popupFooter { border-top: 4px double var(--color_border); padding: var(--dMP_xs); }
 	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
+	/****************************/
+	div.mpPopup.right_popup{-webkit-justify-content: flex-end;justify-content: flex-end;}
+	div.mpPopup.right_popup .popupMainArea{min-height: 100vh;border: 0;		border-radius: 0;		padding: 50px 20px;}
+	div.mpPopup.right_popup .popupClose{top: 0;right: 0;border-radius: 0;background-color: transparent;color:var(--color_danger);}
 }
 /******************************************************************** Pagination section ************************************************/
 @media only screen and (min-width: 10px) {

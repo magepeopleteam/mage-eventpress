@@ -22,6 +22,7 @@
 				add_action('mpwem_map', [$this, 'map'],10,4);
 				add_action('mpwem_related', [$this, 'related'],10,4);
 				add_action('mpwem_social', [$this, 'social'],10,4);
+				add_action('mpwem_timeline', [$this, 'timeline'],10,4);
 				/**************************/
 				add_action( 'wp_ajax_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
 				add_action( 'wp_ajax_nopriv_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
@@ -40,6 +41,7 @@
 			public function map($event_id): void { require MPWEM_Functions::template_path('layout/map.php'); }
 			public function related($event_id): void { require MPWEM_Functions::template_path('layout/related_event.php'); }
 			public function social($event_id): void { require MPWEM_Functions::template_path('layout/social.php'); }
+			public function timeline($event_id): void { require MPWEM_Functions::template_path('layout/timeline.php'); }
 			/**************************/
 			public function get_mpwem_ticket() {
 				$post_id     = $_REQUEST['post_id'] ?? '';

@@ -37,12 +37,12 @@
 						--sidebarRight: 300px;
 						--mainSection: calc(100% - 300px);
 						--dMPL: 40px;
-						--dMP: 20px;
-						--dMP_negetive: -20px;
-						--dMP_xs: 10px;
-						--dMP_xs_negative: -10px;
-						--dBRL: 10px;
-						--dBR: 5px;
+						--dMP: 16px;
+						--dMP_negetive: -16px;
+						--dMP_xs: 8px;
+						--dMP_xs_negative: -8px;
+						--dBRL: 8px;
+						--dBR: 3px;
 						--dShadow: 0 0 2px #665F5F7A;
 					}
 					/*****Font size********/

@@ -6221,5 +6221,16 @@ Vanilla theme css by ariful
 .mep-default-map .display-map {
   padding: 20px 25px;
 }
-
+/***********************************/
+div.mpwem_timeline_area{}
+div.timeline_item{padding: 0 0 0 40px;position: relative;transition: transform 0.3s ease;}
+div.timeline_item:hover{transform: translateY(-5px);}
+div.timeline_item .timeline_counter{position: absolute;  left: 0;  top: 0;  width: 30px;  height: 30px;  background-color: #ffffff;
+  border: 2px solid var(--mpev-primary);  border-radius: 50%;
+  display: flex;  align-items: center;  justify-content: center;
+  font-weight: 600;  color: var(--mpev-primary);  font-size: 14px;  z-index: 2;}
+div.timeline_item div.timeline_content{background-color: #ffffff;  padding: var(--dMP);  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);  }
+div.mpwem_timeline_area .timeline_time{font-size: 14px;  color: var(--mpev-primary);  font-weight: 500;  padding: 6px 12px;  background-color: var(--mpev-secondary);  border-radius: 20px;}
+div.mpwem_timeline_area .timeline_area{position: relative;}
+div.mpwem_timeline_area .timeline_area::before {  content: "";  position: absolute;  left: 15px;  top: 0;  height: 100%;  width: 2px;  background-color: #e0e0e0;  z-index: 0;}
 /*# sourceMappingURL=mpwem_style.css.map */

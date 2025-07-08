@@ -108,8 +108,8 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                         do_action('mep_event_list_upcoming_date_li', $event_id);
                     } ?>
                 </ul>
+            </div>
         </a>
-    </div>
     <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
         <div class="item_hover_effect">
             <a href="<?php echo esc_url(get_the_permalink($event_id)); ?>"><?php echo esc_html($mep_hide_event_hover_btn_text); ?></a>

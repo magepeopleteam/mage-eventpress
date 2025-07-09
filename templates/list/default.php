@@ -66,12 +66,12 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
             if ($style == 'list') {
                 ?>
                 <div class="mep-event-excerpt">
-                    <?php the_excerpt(); ?>
+                    <?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
                 </div>
             <?php } ?>
 
             <div class="mep-list-footer">
-                <ul>
+                <ul class="mep-list-footer-ul">
                     <?php
                     if ($hide_org_list == 'no') {
                         if (sizeof($author_terms) > 0) {
@@ -108,13 +108,13 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                         do_action('mep_event_list_upcoming_date_li', $event_id);
                     } ?>
                 </ul>
+            </div>
         </a>
+        <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
+            <div class="item_hover_effect">
+                <a href="<?php echo esc_url(get_the_permalink($event_id)); ?>"><?php echo esc_html($mep_hide_event_hover_btn_text); ?></a>
+            </div>
+        <?php } ?>
     </div>
-    <?php if ('yes' == $mep_hide_event_hover_btn) { ?>
-        <div class="item_hover_effect">
-            <a href="<?php echo esc_url(get_the_permalink($event_id)); ?>"><?php echo esc_html($mep_hide_event_hover_btn_text); ?></a>
-        </div>
-    <?php } ?>
-</div>
 
 <?php //} ?>

@@ -41,8 +41,6 @@
 				require_once(dirname(__DIR__) . '/lib/classes/class-mep.php');
 				require_once(dirname(__DIR__) . "/inc/mep_functions.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax.php");
-				require_once(dirname(__DIR__) . "/inc/mep_event_meta.php");
-				require_once(dirname(__DIR__) . "/inc/mep_event_fw_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_shortcode.php");
 				require_once(dirname(__DIR__) . "/inc/mep_tax_meta.php");
 				require_once(dirname(__DIR__) . "/inc/mep_query.php");

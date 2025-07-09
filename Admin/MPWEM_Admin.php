@@ -43,6 +43,11 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/mep_analytics.php';
 				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Venue_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Ticket_Price_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Seo_content_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_event_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Tax_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Date_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Email_Text.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Faq_Settings.php';

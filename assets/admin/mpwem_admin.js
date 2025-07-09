@@ -42,6 +42,18 @@
     });
 }(jQuery));
 //*********************************//
+function mpwem_initWpEditor(id) {
+    if (typeof tinymce !== 'undefined') {
+        if (tinymce.get(id)) {
+            tinymce.get(id).remove();
+        }
+        tinymce.init({selector: '#' + id});
+    }
+    if (typeof QTags !== 'undefined') {
+        QTags({id: id});
+    }
+}
+//*************Time Line Settings********************//
 (function ($) {
     "use strict";
     $(document).on('click', 'div.mpwem_timeline_settings [data-target-popup]', function (e) {
@@ -64,23 +76,12 @@
                 },
                 success: function (data) {
                     target.html(data).promise().done(function () {
-                        initWpEditor('mep_timeline_content');
+                        mpwem_initWpEditor('mep_timeline_content');
                     });
                 }
             });
         })
     });
-    function initWpEditor(id) {
-        if (typeof tinymce !== 'undefined') {
-            if (tinymce.get(id)) {
-                tinymce.get(id).remove();
-            }
-            tinymce.init({selector: '#' + id});
-        }
-        if (typeof QTags !== 'undefined') {
-            QTags({id: id});
-        }
-    }
     $(document).on('click', 'div.mpwem_timeline_popup .mpwem_timeline_save', function (e) {
         e.preventDefault();
         let parent=$(this).closest('.mpwem_timeline_popup');
@@ -145,23 +146,98 @@
         });
     });
 }(jQuery));
-//*********************************//
-jQuery(document).ready(function ($) {
-    $(document).on('click', '.mep-faq-item-edit', function () {
-        var faqID = $(this).data('faq-id');
-        var faqTitle = $(this).data('faq-title');
-        var faqContent = $(this).data('faq-content');
-        // Set the values in the form
-        $('input[name="mep_faq_title"]').val(faqTitle);
-        $('input[name="mep_faq_item_id"]').val(faqID);
-        // Set content in TinyMCE editor
-        if (typeof tinymce !== 'undefined' && tinymce.get('mep_faq_content')) {
-            tinymce.get('mep_faq_content').setContent(faqContent);
-        } else {
-            $('#mep_faq_content').val(faqContent);
-        }
-        // Show update buttons, hide save buttons
-        $('.mep_faq_save_buttons').hide();
-        $('.mep_faq_update_buttons').show();
+//*************Faq Settings********************//
+(function ($) {
+    "use strict";
+    $(document).on('click', 'div.mpwem_faq_settings [data-target-popup]', function (e) {
+        e.preventDefault();
+        let popup_id = $(this).attr('data-active-popup', '').data('target-popup');
+        let key = $(this).data('key');
+        let post_id = $('body').find('[name="post_ID"]').val();
+        let target = $(this).closest('.mpwem_faq_settings').find('.faq_input');
+        $('body').addClass('noScroll').find('[data-popup="' + popup_id + '"]').addClass('in').promise().done(function () {
+            jQuery.ajax({
+                type: 'POST',
+                url: mp_ajax_url,
+                data: {
+                    "action": "mpwem_load_faq",
+                    "key": key,
+                    "post_id": post_id,
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data).promise().done(function () {
+                        mpwem_initWpEditor('mep_faq_content');
+                    });
+                }
+            });
+        })
     });
-});
+
+    $(document).on('click', 'div.mpwem_faq_popup .mpwem_faq_save', function (e) {
+        e.preventDefault();
+        let parent=$(this).closest('.mpwem_faq_popup');
+        mpwem_faq_save(parent);
+    });
+    $(document).on('click', 'div.mpwem_faq_popup .mpwem_faq_save_close', function (e) {
+        e.preventDefault();
+        let parent=$(this).closest('.mpwem_faq_popup');
+        mpwem_faq_save(parent);
+        parent.find('.popupClose').trigger('click');
+    });
+    function mpwem_faq_save(parent){
+        let key = parent.find('[name="faq_item_key"]').val();
+        let title = parent.find('[name="mep_faq_title"]').val();
+        let des = $('body').find('[name="mep_faq_description"]').val();
+        let content = tinyMCE.get('mep_faq_content').getContent();
+        let post_id = $('body').find('[name="post_ID"]').val();
+        let target = parent.closest('.mpwem_faq_settings').find('.mpwem_faq_area');
+        let popup_target =parent.find('.faq_input');
+        jQuery.ajax({
+            type: 'POST',
+            url: mp_ajax_url,
+            data: {
+                "action": "mpwem_save_faq",
+                "key": key,
+                "title": title,
+                "des": des,
+                "content": content,
+                "post_id": post_id,
+                nonce: mep_ajax.nonce
+            },
+            beforeSend: function () {
+                dLoader_xs(target);
+                dLoader_xs(popup_target);
+            },
+            success: function (data) {
+                target.html(data).promise().done(function (){
+                    dLoaderRemove();
+                });
+            }
+        });
+    }
+    $(document).on('click', 'div.mpwem_faq_settings .mpwem_faq_remove', function (e) {
+        e.preventDefault();
+        let key = $(this).data('key');
+        let post_id = $('body').find('[name="post_ID"]').val();
+        let target = $(this).closest('.mpwem_faq_settings').find('.mpwem_faq_area');
+        jQuery.ajax({
+            type: 'POST',
+            url: mp_ajax_url,
+            data: {
+                "action": "mpwem_remove_faq",
+                "key": key,
+                "post_id": post_id,
+            },
+            beforeSend: function () {
+                dLoader_xs(target);
+            },
+            success: function (data) {
+                target.html(data);
+            }
+        });
+    });
+}(jQuery));
+//*********************************//

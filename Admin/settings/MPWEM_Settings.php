@@ -56,8 +56,7 @@
 						<?php do_action( 'mep_admin_event_details_after_tab_details_rich_text', $post_id ); ?>
 						<?php do_action( 'mep_admin_event_details_after_tab_details_settings', $post_id ); ?>
 						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
-						<?php
-							do_action( 'mep_admin_event_details_end_of_tab_details', $post_id ); ?>
+						<?php do_action( 'mep_admin_event_details_end_of_tab_details', $post_id ); ?>
                         <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
                     </div>
                 </div>

@@ -4049,7 +4049,7 @@ input.mpe-new-input-group-field {
 }
 
 // ===================timeline by sumon======================
-div.mpwem_timeline_area{}
+div.mpwem_timeline_area{margin: 20px 0;}
 div.timeline_item{padding: 0 0 0 40px;position: relative;transition: transform 0.3s ease;}
 div.timeline_item:hover{transform: translateY(-5px);}
 div.timeline_item .timeline_counter{position: absolute;  left: 0;  top: 15px;  width: 30px;  height: 30px;  background-color: #ffffff;

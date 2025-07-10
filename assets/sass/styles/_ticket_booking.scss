@@ -219,11 +219,18 @@
                             }
                         }  
                     }
-                     
+                    
                 }
             }
         }
         .mep_attendee_info{
+            .dLayout{
+                box-shadow:0 2px 12px rgba(0, 0, 0, 0.08);
+                border-radius: 12px;
+                border: 0;
+                margin:15px 0;
+                margin-bottom: 40px;
+            }
             .mep_form_item{
                 padding: 10px;
                 margin:5px 0;
@@ -262,7 +269,7 @@
                     }
                 }
             }
-        }
+        } 
         .mpwem_ex_service{
             margin-top: 30px;
         }

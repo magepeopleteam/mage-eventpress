@@ -254,6 +254,9 @@
 						justify-content: start;
 						li{
 							margin: 7px;
+							&:first-child{
+								margin-left: 0;
+							}
 							a{
 								color: #fff;
 							}

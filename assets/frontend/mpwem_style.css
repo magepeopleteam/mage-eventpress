@@ -5849,6 +5849,9 @@ Vanilla theme css by ariful
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li {
     margin: 7px;
   }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li:first-child {
+    margin-left: 0;
+  }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li a {
     color: #fff;
   }

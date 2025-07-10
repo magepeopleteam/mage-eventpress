@@ -142,9 +142,9 @@
                 @include card-header;
             }
             .card-body{
-                padding: 10px;
+                padding:0 10px 10px 10px;
                 @media (min-width:600px) {
-                    padding: 20px 25px;
+                    padding: 0 20px 20px 20px;
                 }
                 .mep_ticket_item{
                     display: flex;

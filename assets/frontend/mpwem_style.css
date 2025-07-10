@@ -4517,6 +4517,64 @@ input.mpe-new-input-group-field {
   border-radius: 5px 5px 0 0;
 }
 
+div.timeline_item {
+  padding: 0 0 0 40px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+div.timeline_item:hover {
+  transform: translateY(-5px);
+}
+
+div.timeline_item .timeline_counter {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 2px solid var(--mpev-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--mpev-primary);
+  font-size: 14px;
+  z-index: 2;
+}
+
+div.timeline_item div.timeline_content {
+  background-color: #ffffff;
+  padding: var(--dMP);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+div.mpwem_timeline_area .timeline_time {
+  font-size: 14px;
+  color: var(--mpev-primary);
+  font-weight: 500;
+  padding: 6px 12px;
+  background-color: var(--mpev-secondary);
+  border-radius: 20px;
+}
+
+div.mpwem_timeline_area .timeline_area {
+  position: relative;
+}
+
+div.mpwem_timeline_area .timeline_area::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  height: calc(100% - 15px);
+  width: 2px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
 .mep-default-sidrbar-events-schedule {
   padding: 15px;
 }
@@ -4597,86 +4655,6 @@ input.mpe-new-input-group-field {
   width: 20px;
   height: 20px;
   font-size: 11px;
-}
-
-.mep-timeline {
-  margin-top: 30px;
-  margin-bottom: 50px;
-}
-.mep-timeline .section-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 30px 0;
-}
-.mep-timeline .timeline {
-  position: relative;
-  padding-left: 50px;
-}
-.mep-timeline .timeline::before {
-  content: "";
-  position: absolute;
-  left: 21px;
-  top: 0;
-  height: 100%;
-  width: 2px;
-  background-color: #e0e0e0;
-  z-index: 0;
-}
-.mep-timeline .timeline .timeline-item {
-  position: relative;
-  padding-bottom: 20px;
-  transition: transform 0.3s ease;
-}
-.mep-timeline .timeline .timeline-item:hover {
-  transform: translateY(-5px);
-}
-.mep-timeline .timeline .timeline-item:last-child {
-  padding-bottom: 0;
-}
-.mep-timeline .timeline .timeline-item .timeline-point {
-  position: absolute;
-  left: -50px;
-  top: 0;
-  width: 42px;
-  height: 42px;
-  background-color: #ffffff;
-  border: 2px solid var(--mpev-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: var(--mpev-primary);
-  font-size: 16px;
-  z-index: 2;
-}
-.mep-timeline .timeline .timeline-content {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 15px 20px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-}
-.mep-timeline .timeline .timeline-content .timeline-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #212121;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.mep-timeline .timeline .timeline-content .timeline-title .timeline-time {
-  font-size: 14px;
-  color: var(--mpev-primary);
-  font-weight: 500;
-  padding: 6px 12px;
-  background-color: var(--mpev-secondary);
-  border-radius: 20px;
-}
-.mep-timeline .timeline .timeline-content .timeline-details {
-  font-size: 14px;
-  color: #616161;
 }
 
 .mpwem_registration_area .section-title {
@@ -4814,7 +4792,8 @@ input.mpe-new-input-group-field {
   line-height: 1.4;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining {
-  font-size: 14px;
+  font-size: 12px;
+  font-style: normal;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
@@ -4890,40 +4869,47 @@ input.mpe-new-input-group-field {
     flex: 0 0 100%;
   }
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .dLayout {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  border: 0;
+  margin: 15px 0;
+  margin-bottom: 40px;
+}
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item {
   padding: 10px;
-  margin-top: 5px;
+  margin: 5px 0;
   background-color: #ececec;
   border-radius: 12px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item h6, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item h6 {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item h6 {
   padding: 10px 10px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label {
   flex-direction: column;
   align-items: start;
   width: 100%;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label span {
   width: 100%;
   font-weight: normal;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
   width: 100%;
   margin-top: 5px;
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label select.formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label select.formControl {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label select.formControl {
   width: 100%;
   max-width: 100%;
 }
 @media (min-width: 600px) {
-  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label {
+  .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label {
     flex-direction: row;
   }
-  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label span {
+  .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label span {
     text-wrap: wrap;
   }
-  .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
+  .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label .formControl {
     width: 100%;
   }
 }
@@ -5850,8 +5836,8 @@ Vanilla theme css by ariful
     display: inline-block;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
-    text-align: center;
-    padding: 15px;
+    text-align: left;
+    margin-left: 18px;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets h2.share-widget-title {
     font-size: 19px;
@@ -5859,9 +5845,13 @@ Vanilla theme css by ariful
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share {
     margin-top: 10px;
+    justify-content: start;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li {
     margin: 7px;
+  }
+  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li:first-child {
+    margin-left: 0;
   }
   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li a {
     color: #fff;
@@ -5895,6 +5885,7 @@ Vanilla theme css by ariful
     border-radius: var(--dBR) !important;
     border: 1px solid var(--mpev-primary);
     margin-top: 0;
+    margin-left: 50px;
     color: var(--mpev-primary);
     font-size: var(--button_fs);
     font-weight: var(--fw-medium);
@@ -6349,16 +6340,5 @@ Vanilla theme css by ariful
 .mep-default-map .display-map {
   padding: 20px 25px;
 }
-/***********************************/
-div.mpwem_timeline_area{}
-div.timeline_item{padding: 0 0 0 40px;position: relative;transition: transform 0.3s ease;}
-div.timeline_item:hover{transform: translateY(-5px);}
-div.timeline_item .timeline_counter{position: absolute;  left: 0;  top: 15px;  width: 30px;  height: 30px;  background-color: #ffffff;
-  border: 2px solid var(--mpev-primary);  border-radius: 50%;
-  display: flex;  align-items: center;  justify-content: center;
-  font-weight: 600;  color: var(--mpev-primary);  font-size: 14px;  z-index: 2;}
-div.timeline_item div.timeline_content{background-color: #ffffff;  padding: var(--dMP);  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);  }
-div.mpwem_timeline_area .timeline_time{font-size: 14px;  color: var(--mpev-primary);  font-weight: 500;  padding: 6px 12px;  background-color: var(--mpev-secondary);  border-radius: 20px;}
-div.mpwem_timeline_area .timeline_area{position: relative;}
-div.mpwem_timeline_area .timeline_area::before {  content: "";  position: absolute;  left: 15px;  top: 15px;  height: calc(100% - 15px);  width: 2px;  background-color: #e0e0e0;  z-index: 0;}
+
 /*# sourceMappingURL=mpwem_style.css.map */

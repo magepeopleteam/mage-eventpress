@@ -12,7 +12,6 @@
 
 				add_action('mep_admin_event_details_before_tab_name_rich_text',[$this,'event_related_tab']);
 				add_action('mp_event_all_in_tab_item',[$this,'event_related_content']);
-				add_action( 'save_post', [$this,'mep_event_related_products_data_save'] );
 			}
 
 
@@ -23,22 +22,6 @@
 					</li>
 				<?php
 			}
-
-		
-			public function mep_event_related_products_data_save( $post_id ) {
-				global $wpdb;
-				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$event_list    = isset( $_POST['event_list'] ) ? $_POST['event_list'] : array();
-					$column_number = isset( $_POST['event_list_column'] ) ? $_POST['event_list_column'] : '';
-					$section_label = isset( $_POST['related_section_label'] ) ? $_POST['related_section_label'] : '';
-					$event_status = isset( $_POST['mep_related_event_status'] ) ? $_POST['mep_related_event_status'] : 'off';
-					update_post_meta( $post_id, '_list_column', $column_number );
-					update_post_meta( $post_id, 'event_list', $event_list );
-					update_post_meta( $post_id, 'related_section_label', $section_label );
-					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
-				}
-			}
-		
 			public function event_related_content($post_id) {
 				global $woocommerce, $post;
 				$args             = array(

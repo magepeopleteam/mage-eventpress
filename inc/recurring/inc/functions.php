@@ -2,16 +2,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-	add_filter( 'mep_event_expire_datetime_val', 'mep_re_modify_event_expire_date', 15, 2 );
-	function mep_re_modify_event_expire_date( $expire_date, $event_id ) {
-		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-		if ( $recurring == 'everyday' ) {
-			$start_date  = date( $expire_date );
-			$expire_date = date( "Y-m-d 23:59:59", strtotime( '+1 days', strtotime( $start_date ) ) );
-		}
 
-		return $expire_date;
-	}
 	function mep_re_get_repeted_event_period_date_arr( $start, $end, $interval ) {
 		$interval  = $interval ? $interval : 1;
 		$_interval = "P" . $interval . "D";
@@ -239,9 +230,6 @@
 			}
 		}
 		die();
-	}
-	function show_none( $content, $event_id ) {
-		echo $content = esc_attr( $event_id );
 	}
 	add_action( 'wp_ajax_mep_re_ajax_load_extra_service_list', 'mep_re_ajax_load_extra_service_list' );
 	add_action( 'wp_ajax_nopriv_mep_re_ajax_load_extra_service_list', 'mep_re_ajax_load_extra_service_list' );
@@ -1167,27 +1155,7 @@
 
 		return array_merge( $default_translation, $recurring_translation );
 	}
-	//add_filter( 'mep_settings_styling_arr', 'mep_re_style_strings_reg' );
-	function mep_re_style_strings_reg( $default_translation ) {
-		$recurring_translation = array(
-			array(
-				'name'    => 'mep_re_datepicker_bg_color',
-				'label'   => __( 'Recurring/Repeated Datepicker Background Color', 'mage-eventpress' ),
-				'desc'    => __( 'Select a color for Recurring/Repeated Datepickers Background', 'mage-eventpress' ),
-				'default' => '#ffbe30',
-				'type'    => 'color',
-			),
-			array(
-				'name'    => 'mep_re_datepicker_text_color',
-				'label'   => __( 'Recurring/Repeated Datepicker Text Color', 'mage-eventpress' ),
-				'desc'    => __( 'Select a Color for Recurring/Repeated Datepicker text', 'mage-eventpress' ),
-				'type'    => 'color',
-				'default' => '#ffffff',
-			),
-		);
 
-		return array_merge( $default_translation, $recurring_translation );
-	}
 	add_action( 'wp_ajax_mep_fb_ajax_attendee_filter_date', 'mep_fb_ajax_attendee_filter_date' );
 	function mep_fb_ajax_attendee_filter_date() {
 		$event_id  = sanitize_text_field( $_REQUEST['event_id'] );
@@ -1542,108 +1510,7 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ){
 			return $total;
 		}
 	}
-	add_action( 'mep_after_date_section', 'show_recurring_box' );
-	function show_recurring_box( $post_id ) {
-		$status                  = get_post_meta( $post_id, 'mep_enable_recurring', true );
-		$periods                 = get_post_meta( $post_id, 'mep_repeated_periods', true );
-		$mep_show_upcoming_event = get_post_meta( $post_id, 'mep_show_upcoming_event', true );
-		?>
-        <div class="show_rec_checkbox">
-            <label for="mep_normal_event">
-                <input id='mep_normal_event' type="radio" name='mep_enable_recurring' value='no' <?php if ( $status == 'no' ) {
-					echo 'Checked';
-				} ?> /> <?php _e( 'Normal Event', 'mage-eventpresscurring' ); ?>
-            </label>
-            <label for="mep_everyday_event">
-                <input id='mep_everyday_event' type="radio" name='mep_enable_recurring' value='everyday' <?php if ( $status == 'everyday' ) {
-					echo 'Checked';
-				} ?> /> <?php _e( 'Repeated Event?', 'mage-eventpresscurring' ); ?>
-            </label>
-            <span id='mep_repeated_periods_sec'>
-<label for="mep_repeated_periods">
-<?php _e( 'Repeated After ', 'mage-eventpresscurring' ); ?> <input style='width:60px' id='mep_repeated_periods' type="number" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/><?php _e( ' Days', 'mage-eventpress' ); ?> </label>
-</span>
-            <label for="mep_recurring_event">
-                <input id='mep_recurring_event' type="radio" name='mep_enable_recurring' value='yes' <?php if ( $status == 'yes' ) {
-					echo 'Checked';
-				} ?> /> <?php _e( 'Recurring Event of date listed above?', 'mage-eventpresscurring' ); ?>
-            </label>
-        </div>
-        <div class="show_rec_checkbox" id='show_rec_checkbox'>
-            <label for="mep_show_upcoming_event">
-                <input id='mep_show_upcoming_event' type="checkbox" name='mep_show_upcoming_event' value='yes' <?php if ( $mep_show_upcoming_event == 'yes' ) {
-					echo 'Checked';
-				} ?> /> <?php _e( 'Show Only Upcoming Event?', 'mage-eventpresscurring' ); ?>
-            </label>
-        </div>
-        <script>
-            jQuery(document).ready(function ($) {
 
-				<?php
-				if($status == 'everyday'){
-				?>
-                jQuery('#mep_repeated_periods_sec').show();
-                jQuery('#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox').show();
-				<?php
-				}else{
-				?>
-                jQuery('#mep_repeated_periods_sec').hide();
-                jQuery('#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox').hide();
-				<?php
-				}
-				?>
-
-				<?php
-				if($status == 'yes'){
-				?>
-                jQuery('#show_rec_checkbox').show();
-				<?php
-				}else{
-				?>
-                jQuery('#show_rec_checkbox').hide();
-				<?php
-				}
-				?>
-
-                jQuery('input[name="mep_enable_recurring"]').click(function () {
-                    if (jQuery(this).attr("value") == "everyday") {
-                        jQuery('#mep_repeated_periods_sec').show();
-                        jQuery('#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox').show();
-                    } else {
-                        jQuery('#mep_repeated_periods_sec').hide();
-                        jQuery('#mp_event_all_info_in_tab [data-tab-item="#mp_event_time"] .wrap.ppof-settings.ppof-metabox').hide();
-                    }
-                });
-                jQuery('input[name="mep_enable_recurring"]').click(function () {
-                    if (jQuery(this).attr("value") == "yes") {
-                        jQuery('#show_rec_checkbox').show();
-                    } else {
-                        jQuery('#show_rec_checkbox').hide();
-                    }
-                });
-            });
-        </script>
-		<?php
-	}
-	add_action( 'save_post', 'mep_recurring_events_meta_save' );
-	function mep_recurring_events_meta_save( $post_id ) {
-		if ( ! isset( $_POST['mep_event_ticket_type_nonce'] ) ||
-		     ! wp_verify_nonce( $_POST['mep_event_ticket_type_nonce'], 'mep_event_ticket_type_nonce' ) ) {
-			return;
-		}
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-		if ( get_post_type( $post_id ) == 'mep_events' ) {
-			$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( $_POST['mep_show_upcoming_event'] ) : '';
-			$mep_repeated_periods    = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( $_POST['mep_repeated_periods'] ) : '';
-			update_post_meta( $post_id, 'mep_show_upcoming_event', $mep_show_upcoming_event );
-			update_post_meta( $post_id, 'mep_repeated_periods', $mep_repeated_periods );
-		}
-	}
 	add_filter( 'mage_event_extra_service_list', 'mep_rq_extra_service_list', 10, 4 );
 	function mep_rq_extra_service_list( $content, $event_id, $event_meta, $start_date ) {
 		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';

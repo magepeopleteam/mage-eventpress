@@ -12,7 +12,7 @@
 	if ( sizeof( $all_dates ) > 0 ) {
 		$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		if ( $date_type == 'no' || $date_type == 'yes' ) {
-			$date        = $date ?? current( $all_dates )['time'];
+			$date        = !empty($date) ?$date: current( $all_dates )['time'];
 			$date_format = MP_Global_Function::check_time_exit_date( $date ) ? 'full' : '';
 			if ( sizeof( $all_dates ) == 1 ) {
 				?>

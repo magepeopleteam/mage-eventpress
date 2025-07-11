@@ -142,9 +142,9 @@
                 @include card-header;
             }
             .card-body{
-                padding: 10px;
+                padding:0 10px 10px 10px;
                 @media (min-width:600px) {
-                    padding: 20px 25px;
+                    padding: 0 20px 20px 20px;
                 }
                 .mep_ticket_item{
                     display: flex;
@@ -177,7 +177,8 @@
                                 line-height: 1.4;
                             }
                             .ticket-remaining {
-                                font-size: 14px;
+                                font-size: 12px;
+                                font-style: normal;
                                 font-weight: 600;
                                 padding: 3px 8px;
                                 border-radius: 4px;
@@ -219,49 +220,57 @@
                             }
                         }  
                     }
-                    .mep_attendee_info{
-                        .mep_form_item{
-                            padding: 10px;
-                            margin-top:5px;
-                            background-color: #ececec;
-                            border-radius:12px;
-                            h6{
-                                padding:10px 10px;
-                            }
-                            .mp_form_item {
-                                label{
-                                    flex-direction: column;
-                                    align-items: start;
-                                    width: 100%;
-                                    span{
-                                            width: 100%;
-                                            font-weight: normal;
-                                        }
-                                        .formControl{
-                                            width: 100%;
-                                            margin-top: 5px;
-                                        }
-                                    select.formControl{
-                                        width: 100%;
-                                        max-width: 100%;
-                                    }
-                                    @media (min-width:600px) {
-                                        flex-direction: row;
-                                        span{
-                                            text-wrap: wrap;
-                                        }
-                                        .formControl{
-                                            width: 100%;
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-                    } 
+                    
                 }
             }
         }
+        .mep_attendee_info{
+            .dLayout{
+                box-shadow:0 2px 12px rgba(0, 0, 0, 0.08);
+                border-radius: 12px;
+                border: 0;
+                margin:15px 0;
+                margin-bottom: 40px;
+            }
+            .mep_form_item{
+                padding: 10px;
+                margin:5px 0;
+                background-color: #ececec;
+                border-radius:12px;
+                h6{
+                    padding:10px 10px;
+                }
+                .mp_form_item {
+                    label{
+                        flex-direction: column;
+                        align-items: start;
+                        width: 100%;
+                        span{
+                                width: 100%;
+                                font-weight: normal;
+                            }
+                            .formControl{
+                                width: 100%;
+                                margin-top: 5px;
+                            }
+                        select.formControl{
+                            width: 100%;
+                            max-width: 100%;
+                        }
+                        @media (min-width:600px) {
+                            flex-direction: row;
+                            span{
+                                text-wrap: wrap;
+                            }
+                            .formControl{
+                                width: 100%;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        } 
         .mpwem_ex_service{
             margin-top: 30px;
         }

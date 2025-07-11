@@ -238,12 +238,10 @@ function mep_event_list($atts, $content = null)
                 control: '[data-mixitup-control]'
             }
             });
-
             // Handle title filter input
             jQuery('input[name="filter_with_title"]').on('keyup', function() {
                 var searchText = jQuery(this).val().toLowerCase();
-                var items = jQuery('.mep-event-list-loop');
-                
+                var items = jQuery('.mep-event-list-loop');                
                 items.each(function() {
                     var itemTitle = jQuery(this).data('title').toLowerCase();
                     if (itemTitle.indexOf(searchText) > -1) {
@@ -253,22 +251,18 @@ function mep_event_list($atts, $content = null)
                     }
                 });
             });
-
             // Handle date filter change
             jQuery('input[name="filter_with_date"]').on('change', function() {
                 var selectedDate = jQuery(this).val();
-                var items = jQuery('.mep-event-list-loop');
-                
+                var items = jQuery('.mep-event-list-loop');                
                 if (!selectedDate) {
                     items.show();
                 } else {
                     var filterDate = new Date(selectedDate);
-                    filterDate.setHours(0,0,0,0); // Reset time part for date comparison
-                    
+                    filterDate.setHours(0,0,0,0); // Reset time part for date comparison                    
                     items.each(function() {
                         var itemDate = new Date(jQuery(this).data('date'));
-                        itemDate.setHours(0,0,0,0); // Reset time part for date comparison
-                        
+                        itemDate.setHours(0,0,0,0); // Reset time part for date comparison                        
                         if (itemDate.getTime() === filterDate.getTime()) {
                             jQuery(this).show();
                         } else {
@@ -277,12 +271,10 @@ function mep_event_list($atts, $content = null)
                     });
                 }
             });
-
             // Handle state filter change
             jQuery('select[name="filter_with_state"]').on('change', function() {
                 var state = jQuery(this).val();
-                var items = jQuery('.mep-event-list-loop');
-                
+                var items = jQuery('.mep-event-list-loop');                
                 if (state === '') {
                     items.show();
                 } else {
@@ -296,12 +288,10 @@ function mep_event_list($atts, $content = null)
                     });
                 }
             });
-
             // Handle city filter change
             jQuery('select[name="filter_with_city"]').on('change', function() {
                 var city = jQuery(this).val();
-                var items = jQuery('.mep-event-list-loop');
-                
+                var items = jQuery('.mep-event-list-loop');                
                 if (city === '') {
                     items.show();
                 } else {
@@ -315,7 +305,6 @@ function mep_event_list($atts, $content = null)
                     });
                 }
             });
-
             <?php if ($pagination == 'carousal') { ?>
                 jQuery('#mep-carousel<?php echo esc_attr($cid); ?>').owlCarousel({
                     autoplay:  <?php echo mep_get_option('mep_autoplay_carousal', 'carousel_setting_sec', 'true'); ?>,
@@ -341,8 +330,7 @@ function mep_event_list($atts, $content = null)
             <?php } ?>
             <?php do_action('mep_event_shortcode_js_script', $params); ?>
         });
-    </script>
-<?php
+    </script><?php
     $content = ob_get_clean();
     return $content;
 }
@@ -550,10 +538,8 @@ function mep_event_onepage_list($atts, $content = null)
     $cid            = $params['carousal-id'];
     $status         = $params['status'];
     $main_div       = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
-
     $time_line_div_start    = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
     $time_line_div_end      = $style == 'timeline' ? '</div></div></div>' : '';
-
     $flex_column    = $column;
     $mage_div_count = 0;
     $event_expire_on = mep_get_option('mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime');
@@ -580,20 +566,14 @@ function mep_event_onepage_list($atts, $content = null)
             $show_price         = mep_get_option('mep_event_price_show', 'event_list_setting_sec', 'yes');
             $show_price_label   = mep_get_option('event-price-label', 'general_setting_sec', 'Price Starts from:');
             $paged              = get_query_var("paged") ? get_query_var("paged") : 1;
-
-
-
             ?>
             <div class="mep_event_list_sec">
                 <?php
-
                 /**
                  * The Main Query function mep_event_query is locet in inc/mep_query.php File
                  */
                 $loop               =  mep_event_query($show, $sort, $cat, $org, $city, $country, $status);
                 $loop->the_post();
-
-
                 $event_meta         = get_post_custom(get_the_id());
                 $author_terms       = get_the_terms(get_the_id(), 'mep_org');
                 $start_datetime     = $event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0];
@@ -618,7 +598,6 @@ function mep_event_onepage_list($atts, $content = null)
                      * This is the hook where Event Loop List fired from inc/template-parts/event_loop_list.php File
                      */
                     do_action('mep_event_list_shortcode', get_the_id(), $columnNumber, $style,$width);
-
                     $currency_pos = get_option('woocommerce_currency_pos');
                     $mep_full_name = mage_array_strip($event_meta['mep_full_name'][0]);
                     $mep_reg_email = mage_array_strip($event_meta['mep_reg_email'][0]);

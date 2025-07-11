@@ -311,3 +311,11 @@ background: #f5f8ff;
     width: 96% !important;
 	min-width: 100px !important;
 }
+#mp_event_all_info_in_tab .mpwem_faq_save_close, #mp_event_all_info_in_tab  .mpwem_timeline_save_close{
+	background-color: var(--mpev-primary);
+	color: var(--mpev-white);
+}
+#mp_event_all_info_in_tab .mpwem_faq_save, #mp_event_all_info_in_tab  .mpwem_timeline_save{
+	background-color: var(--mpev-primary);
+	color: var(--mpev-white);
+}

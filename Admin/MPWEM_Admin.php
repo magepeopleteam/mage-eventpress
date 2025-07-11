@@ -41,6 +41,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/mep_analytics.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Template_Override_Menu.php';
 				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Venue_Settings.php';
@@ -56,6 +57,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Template_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings_Gallery.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Related_Settings.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Template_Override_Settings.php';
 			}
 			public function add_dummy_data() {
 				//new MPTBM_Dummy_Import();

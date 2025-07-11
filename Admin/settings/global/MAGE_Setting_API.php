@@ -403,6 +403,22 @@
 				
 			}
 			
+			/**
+			 * Displays a title field for a settings field
+			 *
+			 * @param array   $args settings field args
+			 */
+			function callback_title( $args ) {
+				$html = '<div class="mep-settings-section-title">';
+				$title = isset($args['label']) ? $args['label'] : (isset($args['name']) ? $args['name'] : '');
+				$html .= '<h3>' . esc_html($title) . '</h3>';
+				if (!empty($args['desc'])) {
+					$html .= '<p class="description">' . wp_kses_post($args['desc']) . '</p>';
+				}
+				$html .= '</div>';
+				
+				echo $html;
+			}
 			
 			/**
 			 * Displays a select box for creating the pages select box
@@ -669,6 +685,26 @@
 					</style>
 				<?php
 				endif;
+				?>
+				<style type="text/css">
+					.mep-settings-section-title {
+						background: #f9f9f9;
+						padding: 10px 15px;
+						margin: 15px 0;
+						border-left: 4px solid #0073aa;
+					}
+					.mep-settings-section-title h3 {
+						margin: 0;
+						font-size: 16px;
+						font-weight: 600;
+					}
+					.mep-settings-section-title p.description {
+						margin: 5px 0 0;
+						font-style: italic;
+						color: #666;
+					}
+				</style>
+				<?php
 			}
 			
 		}

@@ -61,11 +61,34 @@
 											<?php if ( $ticket_details ) { ?>
                                                 <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 											<?php } ?>
-											<?php if ( $mep_available_seat == 'on' ) { ?>
-                                                <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-													<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining','mage-eventpress' ); ?>
-                                                </div>
-											<?php } ?>
+											<?php if ( $mep_available_seat == 'on' ) { 
+                                                    // Use the new function to display low stock warning if applicable
+                                                    if (function_exists('mep_display_low_stock_warning')) {
+                                                        mep_display_low_stock_warning($available, $event_id);
+                                                    } else {
+                                                        // Fallback to original code if function doesn't exist
+                                                        $show_low_stock_warning = mep_get_option('mep_show_low_stock_warning', 'general_setting_sec', 'yes');
+                                                        $low_stock_threshold = (int)mep_get_option('mep_low_stock_threshold', 'general_setting_sec', 3);
+                                                        
+                                                        if ($show_low_stock_warning === 'yes' && $available > 0 && $available <= $low_stock_threshold) {
+                                                            $low_stock_text = mep_get_option('mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left');
+                                                            $warning_text = sprintf($low_stock_text, $available);
+                                                        ?>
+                                                            <div class="mep-low-stock-warning">
+                                                                <i class="fa fa-exclamation-circle"></i>
+                                                                <span class="mep-low-stock-warning-text"><?php echo esc_html($warning_text); ?></span>
+                                                            </div>
+                                                        <?php 
+                                                        } else {
+                                                            // Only show regular remaining tickets if low stock warning is not showing
+                                                        ?>
+                                                            <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
+                                                                <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining','mage-eventpress' ); ?>
+                                                            </div>
+                                                        <?php
+                                                        }
+                                                    }
+                                                } ?>
                                         </div>
                                         <div class="quantity-control">
                                             <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
@@ -100,6 +123,25 @@
                                         </div>
                                         <div class="ticket-price">
 											<?php echo wc_price( $ticket_price ); ?>
+                                            
+                                            <?php
+                                            // Use the new function to display limited availability ribbon if applicable
+                                            if (function_exists('mep_display_limited_availability_ribbon')) {
+                                                mep_display_limited_availability_ribbon($available, $event_id);
+                                            } else {
+                                                // Fallback to original code if function doesn't exist
+                                                $show_limited_availability = mep_get_option('mep_show_limited_availability_ribbon', 'general_setting_sec', 'no');
+                                                $limited_availability_threshold = (int)mep_get_option('mep_limited_availability_threshold', 'general_setting_sec', 5);
+                                                
+                                                if ($show_limited_availability === 'yes' && $available > 0 && $available <= $limited_availability_threshold) {
+                                                ?>
+                                                    <div class="mep-limited-ribbon-section">
+                                                        <span class="mep-limited-ribbon"><?php _e('Limited Availability', 'mage-eventpress'); ?></span>
+                                                    </div>
+                                                <?php 
+                                                }
+                                            }
+                                            ?>
                                         </div>
                                     </div>
 									<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

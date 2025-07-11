@@ -1,0 +1,95 @@
+/**
+ * Stock Status Styles
+ * 
+ * This file contains all CSS styles related to stock status,
+ * low stock warnings, and limited availability ribbons.
+ * 
+ * @package MagePeople Event Press
+ * @since 1.0.0
+ */
+
+/* Low Stock Warning Styles */
+.mep-low-stock-warning {
+    background-color: #fff3cd;
+    border-left: 3px solid #f39c12;
+    border-radius: 3px;
+    padding: 6px 10px;
+    margin: 5px 0;
+    color: #856404;
+    font-size: 0.85em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    width: fit-content;
+}
+
+.mep-low-stock-warning i {
+    margin-right: 6px;
+    color: #f39c12;
+}
+
+.mep-low-stock-warning-text {
+    flex: 1;
+}
+
+/* Limited Availability Ribbon Styles */
+.mep-limited-ribbon-section {
+    margin-top: 8px;
+    display: block;
+    width: 100%;
+}
+
+.mep-limited-ribbon {
+    background-color: #f39c12;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sold Out Ribbon Styles */
+.mep-sold-out-ribbon {
+    background-color: #e74c3c;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
+}
+
+/* Ticket Remaining Counter */
+.ticket-remaining {
+    font-size: 0.85em;
+    color: #666;
+    margin: 5px 0;
+}
+
+.ticket-remaining.remaining-low {
+    color: #f39c12;
+    font-weight: 600;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .mep-low-stock-warning {
+        font-size: 0.8em;
+        padding: 5px 8px;
+    }
+    
+    .mep-limited-ribbon,
+    .mep-sold-out-ribbon {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+} 

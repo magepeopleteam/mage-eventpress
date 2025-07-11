@@ -1,0 +1,61 @@
+/* Low Stock Warning Styles */
+.mep-low-stock-warning {
+    background-color: #fff3cd;
+    border-left: 3px solid #f39c12;
+    border-radius: 3px;
+    padding: 6px 10px;
+    margin: 5px 0;
+    color: #856404;
+    font-size: 0.85em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    width: fit-content;
+}
+
+.mep-low-stock-warning i {
+    margin-right: 6px;
+    color: #f39c12;
+}
+
+.mep-low-stock-warning-text {
+    flex: 1;
+}
+
+/* Limited Availability Ribbon Styles */
+.mep-limited-ribbon-section {
+    margin-top: 8px;
+    display: block;
+    width: 100%;
+}
+
+.mep-limited-ribbon {
+    background-color: #f39c12;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Limited Availability Ribbon Improvements */
+.ribbon.limited-availability {
+    background-color: #f39c12 !important;
+    color: white !important;
+}
+
+.ribbon.sold-out {
+    background-color: #e74c3c !important;
+    color: white !important;
+}
+
+/* Ensure ribbons are visible */
+.mepev-ribbon .ribbon {
+    display: block;
+    z-index: 10;
+} 

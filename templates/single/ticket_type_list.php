@@ -30,19 +30,6 @@
             $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_type_name, $selected_date, $total_quantity, $total_resv_quantity);
             $available_seats = (int)$total_quantity - ((int)$total_sold + (int)$total_resv_quantity);
 
-            // Create a unique key for this ticket type on this date
-            $date_specific_key = 'mep_low_stock_' . $post_id . '_' . sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date);
-            
-            // Check and send notification if stock is low - allow filtering
-            do_action('mep_before_check_low_stock', $post_id, $ticket_type_name, $available_seats);
-            $notify_result = apply_filters('mep_check_low_stock', true, $post_id, $ticket_type_name, $available_seats);
-            
-            if ($notify_result) {
-                mep_check_and_notify_low_ticket_stock($post_id, $ticket_type_name, $available_seats);
-            }
-            
-            do_action('mep_after_check_low_stock', $post_id, $ticket_type_name, $available_seats);
-
 			if ($total_left > 0) {
 				if ($qty_t_type == 'dropdown') { ?>
                     <select name="option_qty[]" id="eventpxtp_<?php echo esc_attr($count); ?>" <?php if ($total_left <= 0) { ?> style='display: none!important;' <?php } ?> class='extra-qty-box etp'>
@@ -82,22 +69,60 @@
 			do_action('mepgq_max_qty_hook', $post_id, max($total_ticket_left, 0));
 		?>
 		<?php 
-            // Use the date-specific key for low stock tracking
-            $date_specific_low_stock_key = 'mep_showed_low_stock_' . sanitize_title($ticket_name) . '_' . sanitize_title($selected_date);
-            $low_stock_displayed = isset($GLOBALS[$date_specific_low_stock_key]) ? 
-                $GLOBALS[$date_specific_low_stock_key] : false;
-                
-            if ($mep_available_seat == 'on' && !$low_stock_displayed) { 
+            if ($mep_available_seat == 'on') { 
+                // Use the new function to display low stock warning if applicable
+                if (function_exists('mep_display_low_stock_warning')) {
+                    mep_display_low_stock_warning($available_seats, $post_id);
+                } else {
+                    // Fallback to original code if function doesn't exist
+                    $show_low_stock_warning = mep_get_option('mep_show_low_stock_warning', 'general_setting_sec', 'yes');
+                    $low_stock_threshold = (int)mep_get_option('mep_low_stock_threshold', 'general_setting_sec', 3);
+                    
+                    if ($show_low_stock_warning === 'yes' && $available_seats > 0 && $available_seats <= $low_stock_threshold) {
+                        $low_stock_text = mep_get_option('mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left');
+                        $warning_text = sprintf($low_stock_text, $available_seats);
+                    ?>
+                        <div class="mep-low-stock-warning">
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span class="mep-low-stock-warning-text"><?php echo esc_html($warning_text); ?></span>
+                        </div>
+                    <?php 
+                    } else {
+                        // Only show regular remaining tickets if low stock warning is not showing
+                    ?>
+                        <div class="xtra-item-left"><?php echo esc_html(max($available_seats, 0)); ?>
+                            <?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress')); ?>
+                        </div>
+                    <?php 
+                    }
+                }
+            } 
         ?>
-            <div class="xtra-item-left"><?php echo esc_html(max($total_ticket_left, 0)); ?>
-				<?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress')); ?>
-            </div>
-		<?php } ?>
     </td>
-    <td class="ticket-price"><strong><?php echo wc_price(esc_html(mep_get_price_including_tax($post_id, $ticket_price))); ?></strong>
+    <td class="ticket-price">
+        <strong><?php echo wc_price(esc_html(mep_get_price_including_tax($post_id, $ticket_price))); ?></strong>
 		<?php if ($total_seats > 0) { ?>
             <p style="display: none;" class="price_jq"><?php echo esc_html($tic_price) > 0 ? esc_html($tic_price) : 0; ?></p>
 		<?php } ?>
+        
+        <?php
+        // Use the new function to display limited availability ribbon if applicable
+        if (function_exists('mep_display_limited_availability_ribbon')) {
+            mep_display_limited_availability_ribbon($available_seats, $post_id);
+        } else {
+            // Fallback to original code if function doesn't exist
+            $show_limited_availability = mep_get_option('mep_show_limited_availability_ribbon', 'general_setting_sec', 'no');
+            $limited_availability_threshold = (int)mep_get_option('mep_limited_availability_threshold', 'general_setting_sec', 5);
+            
+            if ($show_limited_availability === 'yes' && $available_seats > 0 && $available_seats <= $limited_availability_threshold) {
+            ?>
+                <div class="mep-limited-ribbon-section">
+                    <span class="mep-limited-ribbon"><?php _e('Limited Availability', 'mage-eventpress'); ?></span>
+                </div>
+            <?php 
+            }
+        }
+        ?>
     </td>
 	<?php do_action('mep_ticket_type_list_row_end', $field, $post_id); ?>
 </tr>

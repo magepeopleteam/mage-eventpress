@@ -3,7 +3,7 @@
 		die;
 	} // Cannot access pages directly.
 // Enquing The recurring scripts for the front-end
-	add_action( 'wp_enqueue_scripts', 'mep_re_enqueue_scripts', 90 );
+	// add_action( 'wp_enqueue_scripts', 'mep_re_enqueue_scripts', 90 );
 	function mep_re_enqueue_scripts() {
 		wp_enqueue_style( 'mep-re-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_style.css', array() );
 	}

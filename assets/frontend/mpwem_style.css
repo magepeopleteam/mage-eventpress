@@ -6345,4 +6345,344 @@ Vanilla theme css by ariful
   padding: 20px 25px;
 }
 
+/* Corporate Speaker Layout Styles */
+.mep_corporate_speaker_layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.mep_speaker_hero_section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 60px 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.mep_speaker_hero_content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mep_speaker_avatar_section {
+  flex-shrink: 0;
+}
+
+.mep_speaker_thumbnail_corporate {
+  position: relative;
+}
+
+.mep_speaker_avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.mep_speaker_placeholder {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 6px solid rgba(255, 255, 255, 0.3);
+}
+
+.mep_speaker_placeholder i {
+  font-size: 80px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.mep_speaker_info_section {
+  flex: 1;
+  color: white;
+}
+
+.mep_speaker_name_corporate h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.mep_speaker_designation {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mep_speaker_company {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 0 30px 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.mep_speaker_contact_info {
+  margin-bottom: 30px;
+}
+
+.mep_contact_item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mep_contact_item:last-child {
+  border-bottom: none;
+}
+
+.mep_contact_item i {
+  width: 20px;
+  margin-right: 15px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mep_contact_label {
+  font-weight: 600;
+  margin-right: 10px;
+  min-width: 120px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mep_contact_value {
+  color: white;
+  font-weight: 400;
+}
+
+.mep_speaker_social_share h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  color: white;
+}
+
+.mep_social_buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.mep_social_btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+
+.mep_social_btn.mep_facebook {
+  background: #3b5998;
+  color: white;
+}
+
+.mep_social_btn.mep_twitter {
+  background: #1da1f2;
+  color: white;
+}
+
+.mep_social_btn.mep_linkedin {
+  background: #0077b5;
+  color: white;
+}
+
+.mep_social_btn.mep_whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.mep_social_btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mep_speaker_bio_section {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mep_speaker_bio_content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.mep_speaker_bio_content p {
+  margin-bottom: 20px;
+}
+
+.mep_speaker_bio_content h2,
+.mep_speaker_bio_content h3,
+.mep_speaker_bio_content h4 {
+  color: #2c3e50;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* Events List Section Styling */
+.mep_corporate_speaker_layout .mep_event_list {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mep_corporate_speaker_layout .mep_cat-details h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mep_speaker_hero_content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+  
+  .mep_speaker_hero_section {
+    padding: 40px 20px;
+  }
+  
+  .mep_speaker_name_corporate h1 {
+    font-size: 36px;
+  }
+  
+  .mep_speaker_designation {
+    font-size: 20px;
+  }
+  
+  .mep_speaker_company {
+    font-size: 16px;
+  }
+  
+  .mep_speaker_bio_section,
+  .mep_corporate_speaker_layout .mep_event_list {
+    padding: 25px;
+  }
+  
+  .mep_corporate_speaker_layout {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mep_speaker_avatar,
+  .mep_speaker_placeholder {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .mep_speaker_placeholder i {
+    font-size: 60px;
+  }
+  
+  .mep_speaker_name_corporate h1 {
+    font-size: 28px;
+  }
+  
+  .mep_contact_item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .mep_contact_label {
+    min-width: auto;
+  }
+}
+
+/* Enhanced Social Share Button Styles */
+.mep_speaker_social_share .mep_social_buttons {
+    transition: all 0.3s ease;
+}
+
+.mep_social_btn {
+    transition: all 0.3s ease !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.mep_social_btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.mep_social_btn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+}
+
+.mep_social_btn.mep_facebook:hover {
+    background-color: #1877f2 !important;
+    border-color: #1877f2 !important;
+}
+
+.mep_social_btn.mep_twitter:hover {
+    background-color: #1da1f2 !important;
+    border-color: #1da1f2 !important;
+}
+
+.mep_social_btn.mep_linkedin:hover {
+    background-color: #0077b5 !important;
+    border-color: #0077b5 !important;
+}
+
+.mep_social_btn.mep_whatsapp:hover {
+    background-color: #25d366 !important;
+    border-color: #25d366 !important;
+}
+
+/* Loading animation for social buttons */
+.mep_social_btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.mep_social_btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .mep_speaker_social_share .mep_social_buttons {
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .mep_social_btn {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+}
+
 /*# sourceMappingURL=mpwem_style.css.map */

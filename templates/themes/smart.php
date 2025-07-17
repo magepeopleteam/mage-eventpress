@@ -52,7 +52,7 @@
 			<!-- show speaker lists -->
 			<?php  if($speaker_status == 'yes'): ?>
                 <div class="mep-default-sidebar-speaker-list">
-					<?php do_action( 'mep_event_speaker', $event_id ); ?>
+					<?php do_action( 'mep_event_speakers_list', $event_id ); ?>
 				</div>
 			<?php endif; ?>
         </div>

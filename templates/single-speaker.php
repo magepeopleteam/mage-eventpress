@@ -1,4 +1,13 @@
 <?php
+// Enqueue the custom CSS for this template
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style(
+        'mep-single-speaker-style',
+        plugins_url('../assets/frontend/single-speaker.css', __FILE__),
+        array(),
+        filemtime(dirname(__DIR__, 2) . '/assets/frontend/single-speaker.css')
+    );
+});
 get_header();
 the_post();
 do_action('mep_before_events_speaker_wrapper');

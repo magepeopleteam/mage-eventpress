@@ -137,9 +137,8 @@
                     <?php do_action('mep_event_social_share', $event_id); ?>
                 </div>
             <?php }
-            if($speaker_status != 'yes' && (is_array($speakers_id) && sizeof($speakers_id) > 0)){ ?>
+            if($speaker_status == 'yes' && (is_array($speakers_id) && sizeof($speakers_id) > 0)){ ?>
                 <div class="mep-default-sidebar-speaker-list">
-                    <?php  ?>
                     <?php do_action('mep_event_speakers_list',$event_id); ?>
                 </div>
             <?php 

@@ -76,9 +76,6 @@
 				$end_date   = MP_Global_Function::get_post_info( $post_id, 'event_end_date' );
 				$end_time   = MP_Global_Function::get_post_info( $post_id, 'event_end_time' );
 				$more_dates = MP_Global_Function::get_post_info( $post_id, 'mep_event_more_date', [] );
-				echo '<pre>';
-				print_r( $more_dates );
-				echo '</pre>';
 				?>
                 <div class="mpStyle">
                     <section class="mp_settings_area <?php echo esc_attr( $event_type == 'no' || $event_type == 'yes' ? 'mActive' : '' ); ?>" data-collapse="#mep_normal_event">

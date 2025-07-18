@@ -209,4 +209,88 @@ function load_sortable_datepicker(parent, item) {
 			});
 		}
 	});
+
+////// templete override js //////
+		// Copy template to theme
+		$(document).on('click', '.mpwem-copy-template', function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var templatePath = button.data('template');
+			var templateItem = button.closest('.mpwem-template-item');
+			
+			templateItem.addClass('mpwem-loading');
+			
+			$.ajax({
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'mep_copy_template_to_theme',
+					template_path: templatePath,
+					nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
+				},
+				success: function(response) {
+					if (response.success) {
+						templateItem.addClass('overridden');
+						templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-overridden">Overridden</span>');
+						button.addClass('mpwem-hidden');
+						templateItem.find('.mpwem-remove-template, .mpwem-edit-template').removeClass('mpwem-hidden');
+						alert('Template copied successfully!');
+					} else {
+						alert('Error: ' + response.data);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.log('AJAX Error:', xhr, status, error);
+					alert('An error occurred while copying the template. Check browser console for details.');
+				},
+				complete: function() {
+					templateItem.removeClass('mpwem-loading');
+				}
+			});
+		});
+		
+		// Remove template from theme
+		$(document).on('click', '.mpwem-remove-template', function(e) {
+			e.preventDefault();
+			if (!confirm('Are you sure you want to remove this template override? This will restore the default plugin template.')) {
+				return;
+			}
+			
+			var button = $(this);
+			var templatePath = button.data('template');
+			var templateItem = button.closest('.mpwem-template-item');
+			
+			templateItem.addClass('mpwem-loading');
+			
+			$.ajax({
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'mep_remove_template_from_theme',
+					template_path: templatePath,
+					nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
+				},
+				success: function(response) {
+					if (response.success) {
+						templateItem.removeClass('overridden');
+						templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-default">Default</span>');
+						button.addClass('mpwem-hidden');
+						templateItem.find('.mpwem-edit-template').addClass('mpwem-hidden');
+						templateItem.find('.mpwem-copy-template').removeClass('mpwem-hidden');
+						alert('Template override removed successfully!');
+					} else {
+						alert('Error: ' + response.data);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.log('AJAX Error:', xhr, status, error);
+					alert('An error occurred while removing the template. Check browser console for details.');
+				},
+				complete: function() {
+					templateItem.removeClass('mpwem-loading');
+				}
+			});
+		});
 }(jQuery));
+
+

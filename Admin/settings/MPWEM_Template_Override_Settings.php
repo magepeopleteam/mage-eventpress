@@ -65,91 +65,10 @@ if (!class_exists('MPWEM_Template_Override_Settings')) {
                     <?php $this->render_template_category('single', __('Single Event Templates', 'mage-eventpress'), 'templates/single/'); ?>
                     <?php $this->render_template_category('list', __('Event List Templates', 'mage-eventpress'), 'templates/list/'); ?>
                 </div>
-            </div>
-            
-            <script>
-            jQuery(document).ready(function($) {
-                // Copy template to theme
-                $(document).on('click', '.mpwem-copy-template', function(e) {
-                    e.preventDefault();
-                    var button = $(this);
-                    var templatePath = button.data('template');
-                    var templateItem = button.closest('.mpwem-template-item');
-                    
-                    templateItem.addClass('mpwem-loading');
-                    
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'mep_copy_template_to_theme',
-                            template_path: templatePath,
-                            nonce: '<?php echo esc_js(wp_create_nonce('mep_template_override_nonce')); ?>'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                templateItem.addClass('overridden');
-                                templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-overridden">Overridden</span>');
-                                button.hide();
-                                templateItem.find('.mpwem-remove-template, .mpwem-edit-template').show();
-                                alert('Template copied successfully!');
-                            } else {
-                                alert('Error: ' + response.data);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('AJAX Error:', xhr, status, error);
-                            alert('An error occurred while copying the template. Check browser console for details.');
-                        },
-                        complete: function() {
-                            templateItem.removeClass('mpwem-loading');
-                        }
-                    });
-                });
-                
-                // Remove template from theme
-                $(document).on('click', '.mpwem-remove-template', function(e) {
-                    e.preventDefault();
-                    if (!confirm('Are you sure you want to remove this template override? This will restore the default plugin template.')) {
-                        return;
-                    }
-                    
-                    var button = $(this);
-                    var templatePath = button.data('template');
-                    var templateItem = button.closest('.mpwem-template-item');
-                    
-                    templateItem.addClass('mpwem-loading');
-                    
-                    $.ajax({
-                        url: ajaxurl,
-                        type: 'POST',
-                        data: {
-                            action: 'mep_remove_template_from_theme',
-                            template_path: templatePath,
-                            nonce: '<?php echo esc_js(wp_create_nonce('mep_template_override_nonce')); ?>'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                templateItem.removeClass('overridden');
-                                templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-default">Default</span>');
-                                button.hide();
-                                templateItem.find('.mpwem-edit-template').hide();
-                                templateItem.find('.mpwem-copy-template').show();
-                                alert('Template override removed successfully!');
-                            } else {
-                                alert('Error: ' + response.data);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('AJAX Error:', xhr, status, error);
-                            alert('An error occurred while removing the template. Check browser console for details.');
-                        },
-                        complete: function() {
-                            templateItem.removeClass('mpwem-loading');
-                        }
-                    });
-                });
-            });
+            </div>            
+            <script type="text/javascript">
+            // Pass nonce to JavaScript
+            var mpwem_template_override_nonce = '<?php echo esc_js(wp_create_nonce('mep_template_override_nonce')); ?>';
             </script>
             <?php
         }
@@ -191,19 +110,16 @@ if (!class_exists('MPWEM_Template_Override_Settings')) {
                                 <?php endif; ?>
                             </div>
                             <div class="mpwem-template-actions">
-                                <button class="mpwem-btn mpwem-btn-primary mpwem-copy-template" 
-                                        data-template="<?php echo esc_attr($template_path); ?>"
-                                        <?php echo $is_overridden ? 'style="display:none;"' : ''; ?>>
+                                <button class="mpwem-btn mpwem-btn-primary mpwem-copy-template<?php echo $is_overridden ? ' mpwem-hidden' : ''; ?>" 
+                                        data-template="<?php echo esc_attr($template_path); ?>">
                                     <?php esc_html_e('Copy to Theme', 'mage-eventpress'); ?>
                                 </button>
-                                <button class="mpwem-btn mpwem-btn-danger mpwem-remove-template" 
-                                        data-template="<?php echo esc_attr($template_path); ?>"
-                                        <?php echo !$is_overridden ? 'style="display:none;"' : ''; ?>>
+                                <button class="mpwem-btn mpwem-btn-danger mpwem-remove-template<?php echo !$is_overridden ? ' mpwem-hidden' : ''; ?>" 
+                                        data-template="<?php echo esc_attr($template_path); ?>">
                                     <?php esc_html_e('Remove Override', 'mage-eventpress'); ?>
                                 </button>
                                 <a href="<?php echo esc_url(admin_url('theme-editor.php?file=mage-events/' . str_replace('templates/', '', $template_path) . '&theme=' . get_stylesheet())); ?>" 
-                                   class="mpwem-btn mpwem-btn-secondary mpwem-edit-template"
-                                   <?php echo !$is_overridden ? 'style="display:none;"' : ''; ?>
+                                   class="mpwem-btn mpwem-btn-secondary mpwem-edit-template<?php echo !$is_overridden ? ' mpwem-hidden' : ''; ?>"
                                    target="_blank">
                                     <?php esc_html_e('Edit in Theme Editor', 'mage-eventpress'); ?>
                                 </a>

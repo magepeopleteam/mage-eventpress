@@ -140,7 +140,7 @@
 				}
 				wp_enqueue_style( 'mep-re-admin-style', plugin_dir_url( __DIR__ ) . 'css/mep_re_admin_style.css', array(), time() );
 				wp_enqueue_script( 'mp_recurring_admin_script', plugin_dir_url( __DIR__ ) . 'js/admin_recurring.js', array( 'jquery' ), time(), true );
-				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
+				wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
 				wp_enqueue_style('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.css', array(), time());
 				// custom
 				wp_enqueue_script('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.js', array('jquery'), time(), true);

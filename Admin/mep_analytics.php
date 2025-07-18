@@ -239,10 +239,20 @@
 				'total_sales'  => 0,
 				'dates'        => array(),
 			);
+			// De-duplication: Only count unique attendee/order/date/ticket_type
+			$unique_attendees = array();
 			// Process each attendee
 			foreach ( $attendees as $attendee ) {
 				$attendee_id = $attendee->ID;
 				$event_id = MP_Global_Function::get_post_info( $attendee_id, 'ea_event_id' );
+				$order_id     = get_post_meta( $attendee_id, 'ea_order_id', true );
+				$ticket_type  = get_post_meta( $attendee_id, 'ea_ticket_type', true );
+				$event_date   = get_post_meta( $attendee_id, 'ea_event_date', true );
+				$unique_key = $order_id . '_' . $event_id . '_' . $event_date . '_' . $ticket_type;
+				if (isset($unique_attendees[$unique_key])) {
+					continue; // Skip duplicate
+				}
+				$unique_attendees[$unique_key] = true;
 				$exit_true=false;
 				if($filter_with_category){
 					$taxonomy_info=MP_Global_Function::all_taxonomy_data($event_id,'mep_cat');
@@ -308,14 +318,23 @@
 				$total_seats     = mep_event_total_seat( $event_id, 'total' );
 				$available_seats = mep_get_event_total_available_seat( $event_id, $date );
 				$occupancy_rate  = $total_seats > 0 ? round( ( $date_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
-				$detailed_data[] = array(
-					'event'           => $event_title,
-					'date'            => $date,
-					'tickets_sold'    => $date_data['tickets_sold'],
-					'total_sales'     => $date_data['total_sales'],
-					'available_seats' => $available_seats,
-					'occupancy_rate'  => $occupancy_rate,
-				);
+				$normalized_title = trim(html_entity_decode($event_title));
+				$normalized_date = date('Y-m-d', strtotime($date));
+				$detailed_key = $normalized_title . '||' . $normalized_date;
+				if (!isset($detailed_data[$detailed_key])) {
+					$detailed_data[$detailed_key] = array(
+						'event'           => $normalized_title,
+						'date'            => $normalized_date,
+						'tickets_sold'    => 0,
+						'total_sales'     => 0,
+						'available_seats' => $available_seats,
+						'occupancy_rate'  => 0,
+					);
+				}
+				$detailed_data[$detailed_key]['tickets_sold'] += $date_data['tickets_sold'];
+				$detailed_data[$detailed_key]['total_sales'] += $date_data['total_sales'];
+				$detailed_data[$detailed_key]['available_seats'] = $available_seats;
+				$detailed_data[$detailed_key]['occupancy_rate'] = $occupancy_rate;
 			}
 		}
 		// Calculate average ticket price
@@ -347,7 +366,7 @@
 				'labels' => array_keys( $sales_by_weekday ),
 				'data'   => array_values( $sales_by_weekday ),
 			),
-			'detailed_data'      => $detailed_data
+			'detailed_data'      => array_values($detailed_data)
 		);
 		wp_send_json_success( $response );
 	}
@@ -441,9 +460,11 @@
 				$total_seats     = mep_event_total_seat( $event_id, 'total' );
 				$available_seats = mep_get_event_total_available_seat( $event_id, $date );
 				$occupancy_rate  = $total_seats > 0 ? round( ( $date_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
+				$normalized_title = trim(html_entity_decode($event_title));
+				$normalized_date = date('Y-m-d', strtotime($date));
 				$csv_data[] = array(
-					$event_title,
-					$date,
+					$normalized_title,
+					$normalized_date,
 					$date_data['tickets_sold'],
 					$date_data['total_sales'],
 					$available_seats,

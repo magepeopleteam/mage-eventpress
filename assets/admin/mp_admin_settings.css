@@ -319,3 +319,107 @@ background: #f5f8ff;
 	background-color: var(--mpev-primary);
 	color: var(--mpev-white);
 }
+
+@media only screen and (min-width: 10px) {
+	.mpwem-template-override-wrapper {
+		max-width: 1200px;
+		margin: 20px 0;
+	}
+	.mpwem-template-override-notice {
+		background: #fff3cd;
+		border: 1px solid #ffeaa7;
+		border-radius: 4px;
+		padding: 15px;
+		margin: 20px 0;
+	}
+	.mpwem-template-category {
+		background: #fff;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		margin: 20px 0;
+		padding: 20px;
+	}
+	.mpwem-template-category h3 {
+		margin-top: 0;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 10px;
+	}
+	.mpwem-template-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 15px;
+		margin-top: 15px;
+	}
+	.mpwem-template-item {
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 15px;
+		background: #f9f9f9;
+	}
+	.mpwem-template-item.overridden {
+		border-color: #28a745;
+		background: #d4edda;
+	}
+	.mpwem-template-name {
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+	.mpwem-template-path {
+		font-size: 12px;
+		color: #666;
+		margin-bottom: 10px;
+		font-family: monospace;
+	}
+	.mpwem-template-status {
+		margin-bottom: 10px;
+	}
+	.mpwem-template-actions {
+		display: flex;
+		gap: 10px;
+	}
+	.mpwem-btn {
+		padding: 8px 15px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 12px;
+	}
+	.mpwem-btn-primary {
+		background: #007cba;
+		color: white;
+	}
+	.mpwem-btn-danger {
+		background: #dc3545;
+		color: white;
+	}
+	.mpwem-btn-secondary {
+		background: #6c757d;
+		color: white;
+	}
+	.mpwem-btn:hover {
+		opacity: 0.8;
+	}
+	.mpwem-status-badge {
+		padding: 4px 8px;
+		border-radius: 3px;
+		font-size: 11px;
+		font-weight: bold;
+	}
+	.mpwem-status-overridden {
+		background: #28a745;
+		color: white;
+	}
+	.mpwem-status-default {
+		background: #6c757d;
+		color: white;
+	}
+	.mpwem-loading {
+		opacity: 0.6;
+		pointer-events: none;
+	}
+	.mpwem-hidden {
+		display: none !important;
+	}
+}

@@ -15,6 +15,7 @@ if (!class_exists('MPWEM_Event_Lists')) {
             add_action('admin_action_mpwem_duplicate_post', [$this,'mpwem_duplicate_post_function']);
 
             add_action('wp_ajax_mpwem_trash_multiple_posts', [$this,'mpwem_trash_multiple_posts']);
+            add_action('wp_ajax_mpwem_quick_edit_event', array($this, 'mpwem_quick_edit_event'));
         }
 
         function mpwem_trash_multiple_posts() {
@@ -71,6 +72,56 @@ if (!class_exists('MPWEM_Event_Lists')) {
         }
         public function display_event_list() {
             require MPWEM_Functions::template_path('layout/event_lists.php');
+        }
+
+        public function mpwem_quick_edit_event() {
+            // Verify nonce
+            if (!wp_verify_nonce($_POST['nonce'], 'mep_nonce')) {
+                wp_send_json_error(array('message' => 'Security check failed'));
+            }
+
+            // Check user capabilities
+            if (!current_user_can('edit_posts')) {
+                wp_send_json_error(array('message' => 'You do not have permission to edit events'));
+            }
+
+            $post_id = intval($_POST['post_id']);
+            if (!$post_id) {
+                wp_send_json_error(array('message' => 'Invalid event ID'));
+            }
+
+            // Update post data
+            $post_data = array(
+                'ID' => $post_id,
+                'post_title' => sanitize_text_field($_POST['post_title']),
+                'post_status' => sanitize_text_field($_POST['post_status'])
+            );
+
+            $result = wp_update_post($post_data);
+            if (is_wp_error($result)) {
+                wp_send_json_error(array('message' => 'Failed to update event'));
+            }
+
+            // Update event meta data
+            if (isset($_POST['event_start_datetime'])) {
+                update_post_meta($post_id, 'event_start_datetime', sanitize_text_field($_POST['event_start_datetime']));
+            }
+
+            if (isset($_POST['event_end_datetime'])) {
+                update_post_meta($post_id, 'event_end_datetime', sanitize_text_field($_POST['event_end_datetime']));
+            }
+
+            if (isset($_POST['mep_location_venue'])) {
+                update_post_meta($post_id, 'mep_location_venue', sanitize_text_field($_POST['mep_location_venue']));
+            }
+
+            // Update categories
+            if (isset($_POST['mep_cat']) && is_array($_POST['mep_cat'])) {
+                $categories = array_map('intval', $_POST['mep_cat']);
+                wp_set_post_terms($post_id, $categories, 'mep_cat');
+            }
+
+            wp_send_json_success(array('message' => 'Event updated successfully'));
         }
 
     }

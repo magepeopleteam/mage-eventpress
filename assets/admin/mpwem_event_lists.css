@@ -160,6 +160,239 @@
     top: 0;
     z-index: 10;
 }
+
+/* Sortable column styles */
+.mpwem_event_list .event-table th.sortable {
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.mpwem_event_list .event-table th.sortable:hover {
+    background-color: #d1e7f0;
+}
+
+.mpwem_event_list .sort-indicator {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #ccc;
+}
+
+.mpwem_event_list .sort-indicator.asc {
+    border-bottom: 4px solid #374151;
+    border-top: none;
+}
+
+.mpwem_event_list .sort-indicator.desc {
+    border-top: 4px solid #374151;
+    border-bottom: none;
+}
+
+/* WordPress inline edit styles */
+.mpwem_event_list .inline-edit-row {
+    background-color: #fefefe;
+    border-left: 4px solid #3b82f6;
+}
+
+.mpwem_event_list .inline-edit-col {
+    padding: 0;
+}
+
+.mpwem_event_list .inline-edit-col label {
+    display: block;
+    margin: 0.2em 0;
+    font-weight: 600;
+    color: #374151;
+}
+
+.mpwem_event_list .inline-edit-col .title {
+    display: inline-block;
+    width: 6em;
+    font-weight: 600;
+    color: #374151;
+}
+
+.mpwem_event_list .inline-edit-col input,
+.mpwem_event_list .inline-edit-col select {
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 250px;
+    pointer-events: auto !important;
+    z-index: 999;
+    position: relative;
+}
+
+.mpwem_event_list .inline-edit-col input:focus,
+.mpwem_event_list .inline-edit-col select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+    outline: none;
+}
+
+.mpwem_event_list .inline-edit-col select {
+    cursor: pointer;
+    background-color: #fff;
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    appearance: menulist;
+}
+
+.mpwem_event_list .inline-edit-col select[multiple] {
+    height: 80px;
+    -webkit-appearance: listbox;
+    -moz-appearance: listbox;
+    appearance: listbox;
+}
+
+.mpwem_event_list .inline-edit-legend {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+}
+
+.mpwem_event_list .inline-edit-save {
+    padding: 10px 0;
+}
+
+.mpwem_event_list .inline-edit-save .button {
+    margin-right: 10px;
+}
+
+.mpwem_event_list .quick-edit-row {
+    display: none;
+    background-color: #fefefe;
+    border-left: 4px solid #3b82f6;
+}
+
+.mpwem_event_list .quick-edit-row td {
+    padding: 15px;
+}
+
+.mpwem_event_list .quick-edit-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.mpwem_event_list .quick-edit-form .form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.mpwem_event_list .quick-edit-form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #374151;
+}
+
+.mpwem_event_list .quick-edit-form input,
+.mpwem_event_list .quick-edit-form select {
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.mpwem_event_list .quick-edit-form input:focus,
+.mpwem_event_list .quick-edit-form select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+    outline: none;
+}
+
+.mpwem_event_list .quick-edit-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.mpwem_event_list .quick-edit-actions .button {
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    background: #f8fafc;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.mpwem_event_list .quick-edit-actions .button-primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.mpwem_event_list .quick-edit-actions .button:hover {
+    background: #f1f5f9;
+    border-color: #9ca3af;
+}
+
+.mpwem_event_list .quick-edit-actions .button-primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.mpwem_event_list .quick-edit-actions .spinner {
+    float: none;
+    margin: 0 5px;
+    visibility: hidden;
+}
+
+.mpwem_event_list .quick-edit-actions .spinner.is-active {
+    visibility: visible;
+}
+
+/* Row action links */
+.mpwem_event_list .row-actions {
+    visibility: hidden;
+    color: #d1d5db;
+    font-size: 13px;
+}
+
+.mpwem_event_list .event-table tr:hover .row-actions {
+    visibility: visible;
+}
+
+.mpwem_event_list .row-actions span {
+    display: inline;
+}
+
+.mpwem_event_list .row-actions span:not(:last-child)::after {
+    content: " | ";
+    color: #d1d5db;
+}
+
+.mpwem_event_list .row-actions a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.mpwem_event_list .row-actions a:hover {
+    color: #2563eb;
+}
+
+.mpwem_event_list .row-actions .trash a {
+    color: #dc2626;
+}
+
+.mpwem_event_list .row-actions .trash a:hover {
+    color: #b91c1c;
+}
 .mpwem_event_list .event-table tr {
     transition: all 0.2s ease;
 }

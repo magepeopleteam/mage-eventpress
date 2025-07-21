@@ -1,41 +1,67 @@
 (function ($) {
 
 
+    // Filter by category
     $('#mpwem_event_filter_by_category').on('change', function() {
-        let filter_value = $(this).val().toLowerCase();
-
-        $('.mpwem_event_list_card').each(function() {
-            let categories = $(this).data('filter-by-category').toLowerCase();
-
-            if( filter_value === 'all categories' ){
-                $(this).show();
-            }else{
-                if (filter_value === '' || categories.includes(filter_value)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            }
-
-        });
+        applyFilters();
     });
 
+    // Search events
     $('#mpwem_search_event_list').on('keyup', function() {
-        let search = $(this).val().toLowerCase().trim();
+        applyFilters();
+    });
 
+    // Filter by date range
+    $('#mpwem_date_from, #mpwem_date_to').on('change', function() {
+        applyFilters();
+    });
+
+    // Clear date filter
+    $('#mpwem_clear_date_filter').on('click', function() {
+        $('#mpwem_date_from').val('');
+        $('#mpwem_date_to').val('');
+        applyFilters();
+    });
+
+    // Combined filter function
+    function applyFilters() {
+        var selectedCategory = $('#mpwem_event_filter_by_category').val().toLowerCase();
+        var searchTerm = $('#mpwem_search_event_list').val().toLowerCase().trim();
+        var dateFrom = $('#mpwem_date_from').val();
+        var dateTo = $('#mpwem_date_to').val();
+        
+        var fromTimestamp = dateFrom ? new Date(dateFrom + 'T00:00:00').getTime() / 1000 : null;
+        var toTimestamp = dateTo ? new Date(dateTo + 'T23:59:59').getTime() / 1000 : null;
+        
         $('.mpwem_event_list_card').each(function() {
-            var name = $(this).data('filter-by-event-name').toLowerCase();
-            var category = $(this).data('filter-by-category').toLowerCase();
-            var organiser = $(this).data('filter-by-event-organiser').toLowerCase();
-
-            // Check if search term is in any of the fields
-            if (name.includes(search) || category.includes(search) || organiser.includes(search)) {
+            var eventCategory = $(this).data('filter-by-category').toLowerCase();
+            var eventName = $(this).data('filter-by-event-name').toLowerCase();
+            var eventOrganiser = $(this).data('filter-by-event-organiser').toLowerCase();
+            var eventDate = parseInt($(this).data('event-date'));
+            
+            // Category filter
+            var showByCategory = selectedCategory === 'all categories' || eventCategory.includes(selectedCategory);
+            
+            // Search filter
+            var showBySearch = searchTerm === '' || eventName.includes(searchTerm) || eventOrganiser.includes(searchTerm) || eventCategory.includes(searchTerm);
+            
+            // Date filter
+            var showByDate = true;
+            if (fromTimestamp && eventDate < fromTimestamp) {
+                showByDate = false;
+            }
+            if (toTimestamp && eventDate > toTimestamp) {
+                showByDate = false;
+            }
+            
+            // Show/hide based on all filters
+            if (showByCategory && showBySearch && showByDate) {
                 $(this).show();
             } else {
                 $(this).hide();
             }
         });
-    });
+    }
 
 
 
@@ -198,6 +224,144 @@
                 }
             }
         }
+    });
+
+    // Sorting functionality
+    let sortDirection = {};
+    $('.sortable').on('click', function() {
+        let sortBy = $(this).data('sort');
+        let currentDirection = sortDirection[sortBy] || 'asc';
+        let newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+        sortDirection[sortBy] = newDirection;
+
+        // Update sort indicators
+        $('.sort-indicator').removeClass('asc desc');
+        $(this).find('.sort-indicator').addClass(newDirection);
+
+        // Sort the table rows
+        let $tbody = $('.event-table tbody');
+        let $rows = $tbody.find('.mpwem_event_list_card').get();
+
+        $rows.sort(function(a, b) {
+            let aVal, bVal;
+            
+            if (sortBy === 'date') {
+                aVal = parseInt($(a).data('event-date'));
+                bVal = parseInt($(b).data('event-date'));
+            } else if (sortBy === 'title') {
+                aVal = $(a).data('event-title').toLowerCase();
+                bVal = $(b).data('event-title').toLowerCase();
+            }
+
+            if (newDirection === 'asc') {
+                return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+            } else {
+                return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+            }
+        });
+
+        // Re-append sorted rows (along with their quick-edit rows)
+        $.each($rows, function(index, row) {
+            let $row = $(row);
+            let $quickEditRow = $row.next('.quick-edit-row');
+            $tbody.append($row);
+            if ($quickEditRow.length) {
+                $tbody.append($quickEditRow);
+            }
+        });
+    });
+
+    // Quick Edit functionality
+    $(document).on('click', '.editinline', function(e) {
+        e.preventDefault();
+        let $row = $(this).closest('tr');
+        let $quickEditRow = $row.next('.quick-edit-row');
+        
+        // Hide all other quick edit rows
+        $('.quick-edit-row').hide();
+        $('.mpwem_event_list_card').show();
+        
+        // Show this quick edit row and hide the main row
+        $row.hide();
+        $quickEditRow.show();
+        
+        // Ensure dropdowns are properly initialized
+        $quickEditRow.find('select').each(function() {
+            $(this).prop('disabled', false);
+            $(this).css({
+                'pointer-events': 'auto',
+                'z-index': '999',
+                'position': 'relative'
+            });
+        });
+        
+        // Focus on first input
+        $quickEditRow.find('input[name="post_title"]').focus();
+    });
+    
+    // Ensure dropdown functionality
+    $(document).on('click', '.quick-edit-row select', function(e) {
+        e.stopPropagation();
+        $(this).focus();
+    });
+    
+    $(document).on('mousedown', '.quick-edit-row select', function(e) {
+        e.stopPropagation();
+    });
+
+    // Cancel quick edit
+    $(document).on('click', '.quick-edit-row .cancel', function() {
+        let $quickEditRow = $(this).closest('.quick-edit-row');
+        let $mainRow = $quickEditRow.prev('.mpwem_event_list_card');
+        
+        $quickEditRow.hide();
+        $mainRow.show();
+    });
+
+    // Save quick edit
+    $(document).on('click', '.quick-edit-row .save', function() {
+        let $button = $(this);
+        let $quickEditRow = $button.closest('.quick-edit-row');
+        let $mainRow = $quickEditRow.prev('.mpwem_event_list_card');
+        let eventId = $quickEditRow.data('event-id');
+        
+        // Show spinner
+        $quickEditRow.find('.spinner').addClass('is-active');
+        $button.prop('disabled', true);
+        
+        // Collect form data
+        let formData = {
+            action: 'mpwem_quick_edit_event',
+            post_id: eventId,
+            post_title: $quickEditRow.find('input[name="post_title"]').val(),
+            event_start_datetime: $quickEditRow.find('input[name="event_start_datetime"]').val(),
+            event_end_datetime: $quickEditRow.find('input[name="event_end_datetime"]').val(),
+            mep_location_venue: $quickEditRow.find('input[name="mep_location_venue"]').val(),
+            post_status: $quickEditRow.find('select[name="_status"]').val(),
+            mep_cat: $quickEditRow.find('select[name="mep_cat[]"]').val() || [],
+            nonce: mep_ajax.nonce
+        };
+        
+        $.ajax({
+            url: mep_ajax.url,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Update the main row with new data
+                    location.reload(); // Simple reload for now
+                } else {
+                    alert('Error: ' + (response.data.message || 'Unknown error occurred'));
+                }
+            },
+            error: function() {
+                alert('An error occurred while saving the event.');
+            },
+            complete: function() {
+                $quickEditRow.find('.spinner').removeClass('is-active');
+                $button.prop('disabled', false);
+            }
+        });
     });
 
 

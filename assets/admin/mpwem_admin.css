@@ -2061,4 +2061,68 @@ div.mep_special_on_dates_setting table.mep_special_on_dates_table tbody th {
 
 /*******************************/
 div.mpPopup.mpwem_timeline_popup .popupBody{min-height: 400px;}
+/* Date Filter Styles */
+.date-filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 15px;
+    flex-wrap: wrap;
+}
+
+.date-filter-container label {
+    font-weight: 500;
+    color: #555;
+    font-size: 13px;
+    margin: 0;
+}
+
+.date-filter {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #fff;
+    min-width: 140px;
+}
+
+.date-filter:focus {
+    border-color: #007cba;
+    outline: none;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+.clear-date-btn {
+    padding: 6px 12px;
+    background: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s ease;
+}
+
+.clear-date-btn:hover {
+    background: #e0e0e0;
+    border-color: #999;
+}
+
+.clear-date-btn:active {
+    background: #d0d0d0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .date-filter-container {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .date-filter {
+        min-width: 120px;
+    }
+}
+
 /*# sourceMappingURL=mpwem_admin.css.map */

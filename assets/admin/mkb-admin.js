@@ -219,7 +219,12 @@
         close_sidebar_modal(e);
     });
     function save_email_text() {
-        var content = tinyMCE.get('mep_event_cc_email_text').getContent();
+        var content;
+        if (jQuery("#wp-mep_event_cc_email_text-wrap").hasClass('html-active')){
+            content = jQuery('#mep_event_cc_email_text').val()
+        } else {
+            content = tinyMCE.get('mep_event_cc_email_text').getContent();
+        }
         var postID = $('input[name="mep_post_id"]');
         $.ajax({
             url: mp_ajax_url,

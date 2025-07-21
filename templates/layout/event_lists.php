@@ -4,13 +4,14 @@ $counts = wp_count_posts('mep_events');
 $post_counts = array(
     'publish' => isset($counts->publish) ? $counts->publish : 0,
     'draft'   => isset($counts->draft) ? $counts->draft : 0,
+    'private' => isset($counts->private) ? $counts->private : 0,
     'trash'   => isset($counts->trash) ? $counts->trash : 0,
 );
 
-$total_event = $post_counts['publish'] + $post_counts['draft']  + $post_counts['trash'] ;
+$total_event = $post_counts['publish'] + $post_counts['draft'] + $post_counts['private'] + $post_counts['trash'] ;
 
 //$statuses = ['publish', 'draft', 'trash'];
-$statuses = ['publish', 'draft'];
+$statuses = ['publish', 'draft', 'private'];
 $events = get_posts(array(
     'post_type'   => 'mep_events',
     'post_status' => $statuses,
@@ -348,6 +349,11 @@ function render_mep_events_by_status( $posts ) {
                                     <div class="event-status-inline">
                                         <div class="status-draft-inline"><?php _e('Draft','mage-eventpress'); ?></div>
                                     </div>
+                                <?php } else if($status === 'private'){?>
+                                <div class="status-private-inline">
+                                    <div class="private-indicator-inline"></div>
+                                    <?php _e('Private','mage-eventpress'); ?>
+                                </div>
                                 <?php } else{?>
                                     <div class="event-status-inline">
                                         <div class="status-draft-inline"><?php _e('Trash','mage-eventpress'); ?></div>
@@ -476,6 +482,7 @@ function render_mep_events_by_status( $posts ) {
                                         <?php $current_status = get_post_status($id); ?>
                                         <option value="publish" <?php selected( $current_status, 'publish' ); ?>><?php _e('Published', 'mage-eventpress'); ?></option>
                                         <option value="draft" <?php selected( $current_status, 'draft' ); ?>><?php _e('Draft', 'mage-eventpress'); ?></option>
+                                        <option value="private" <?php selected( $current_status, 'private' ); ?>><?php _e('Private', 'mage-eventpress'); ?></option>
                                     </select>
                                 </label>
                                 <label>
@@ -579,6 +586,10 @@ function render_mep_events_by_status( $posts ) {
                     <div class="stat-item mpwem_filter_by_status" data-by-filter="draft">
                         <span><?php esc_attr_e( 'Draft', 'mage-eventpress' );?></span>
                         <span class="stat-number">(<?php echo esc_attr( $post_counts['draft'] );?>)</span>
+                    </div>
+                    <div class="stat-item mpwem_filter_by_status" data-by-filter="private">
+                        <span><?php esc_attr_e( 'Private', 'mage-eventpress' );?></span>
+                        <span class="stat-number">(<?php echo esc_attr( $post_counts['private'] );?>)</span>
                     </div>
                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="active">
                         <span><?php esc_attr_e( 'Active', 'mage-eventpress' );?></span>

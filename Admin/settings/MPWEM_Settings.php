@@ -136,8 +136,6 @@
 					update_post_meta( $post_id, '_price', 0 );
 					update_post_meta( $post_id, '_virtual', 'yes' );
 					update_post_meta( $post_id, '_sku', $sku );
-					$mep_event_cc_email_text_raw =  isset( $_POST['mep_event_cc_email_text'] ) ?wp_kses_post($_POST['mep_event_cc_email_text']):'';
-					update_post_meta($post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text_raw);
 				}
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
 					$event_list    = isset( $_POST['event_list'] ) ? $_POST['event_list'] : array();

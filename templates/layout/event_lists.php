@@ -197,27 +197,36 @@ $reg_percent_change= get_change_in_percent( $current_month_registration, $prev_m
 
 $get_all_categories = get_all_event_taxonomy( 'mep_cat' );
 
-function get_time_remaining( $future_datetime, $end_date ) {
-    $now = new DateTime();
-    $future = new DateTime( $future_datetime );
-    $end_date = new DateTime( $end_date );
-
-    if ( $future <= $now ) {
-        return 'Expired!';
+function get_time_remaining_fixed( $event_id, $end_date ) {
+    $all_dates = MPWEM_Functions::get_dates( $event_id );
+    $all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
+    $now = time();
+    $future_found = false;
+    $closest_future = null;
+    foreach ($all_dates as $date_info) {
+        $date_str = is_array($date_info) && isset($date_info['time']) ? $date_info['time'] : $date_info;
+        $date_ts = strtotime($date_str);
+        if ($date_ts > $now && (!$closest_future || $date_ts < $closest_future)) {
+            $closest_future = $date_ts;
+            $future_found = true;
+        }
     }
-
-    /*if ( $now >= $future && $now <= $end_date ) {
-        return 'Running!';
-    }*/
-
-    $interval = $now->diff( $future );
-
-    return sprintf(
-        '%d days, %d hours, %d minutes remaining',
-        $interval->days,
-        $interval->h,
-        $interval->i
-    );
+    if ($future_found && $closest_future) {
+        $interval = $closest_future - $now;
+        $days = floor($interval / 86400);
+        $hours = floor(($interval % 86400) / 3600);
+        $minutes = floor(($interval % 3600) / 60);
+        return sprintf('%d days, %d hours, %d minutes remaining', $days, $hours, $minutes);
+    }
+    // fallback: check end_date
+    if (strtotime($end_date) > $now) {
+        $interval = strtotime($end_date) - $now;
+        $days = floor($interval / 86400);
+        $hours = floor(($interval % 86400) / 3600);
+        $minutes = floor(($interval % 3600) / 60);
+        return sprintf('%d days, %d hours, %d minutes remaining', $days, $hours, $minutes);
+    }
+    return 'Expired!';
 }
 function render_mep_events_by_status( $posts ) {
     ob_start();
@@ -238,7 +247,7 @@ function render_mep_events_by_status( $posts ) {
                 $ticket_type    = get_post_meta($id, 'mep_event_ticket_type', true);
                 $location       = get_post_meta($id, 'mep_location_venue', true);
 
-                $time_remaining = get_time_remaining( $remaining_date, $end_date );
+                $time_remaining = get_time_remaining_fixed( $id, $end_date );
 
                 $event_type = MP_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
 
@@ -263,12 +272,12 @@ function render_mep_events_by_status( $posts ) {
                 $total_sold         = mep_get_event_total_seat_left( $id );
 
                 if( $event_type === 'everyday' ){
-                    $time_remaining = get_time_remaining( $date, $end_date );
+                    $time_remaining = get_time_remaining_fixed( $id, $end_date );
                     $start_date = date('F j, Y', strtotime( $date ));
                     $event_type_status = 'Recurring Event (Repeated)';
                     $total_sold         = mep_get_event_total_seat_left( $id, $date );
                 }else if( $event_type === 'yes' ){
-                    $time_remaining = get_time_remaining( $date, $end_date );
+                    $time_remaining = get_time_remaining_fixed( $id, $end_date );
                     $start_date = date('F j, Y', strtotime( $date ));
                     $event_type_status = 'Recurring Event (Selected Dates)';
                     $total_sold         = mep_get_event_total_seat_left( $id, $date );

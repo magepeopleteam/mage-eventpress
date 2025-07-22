@@ -378,19 +378,21 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 			}
 		}
 	}
+
 	if ( ! function_exists( 'mep_get_attendee_info_query' ) ) {
 		function mep_get_attendee_info_query( $event_id, $order_id ) {
 			$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
 			$order_status        = array_values( $_order_status );
+
 			$order_status_filter = array(
 				'key'     => 'ea_order_status',
 				'value'   => $order_status,
-				'compare' => 'OR'
+				'compare' => 'IN'
 			);
-			$args                = array(
+			$args = array(
 				'post_type'      => 'mep_events_attendees',
-				'posts_per_page' => - 1,
+				'posts_per_page' => -1,
 				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
@@ -409,11 +411,11 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 					$order_status_filter
 				)
 			);
-			$loop                = new WP_Query( $args );
-
+			$loop = new WP_Query( $args );
 			return $loop;
 		}
 	}
+
 	if ( ! function_exists( 'mep_email_dynamic_content' ) ) {
 		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0 ) {
 			$event_name   = get_the_title( $event_id );

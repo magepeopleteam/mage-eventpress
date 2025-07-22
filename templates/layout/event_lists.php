@@ -360,20 +360,6 @@ function render_mep_events_by_status( $posts ) {
                                     </div>
                                 <?php } ?>
                             </div>
-                            <div class="row-actions">
-                                <span class="edit">
-                                    <a href="<?php echo esc_url( $edit_link );?>" aria-label="<?php echo esc_attr( sprintf( __( 'Edit "%s"', 'mage-eventpress' ), $title ) ); ?>"><?php _e('Edit', 'mage-eventpress'); ?></a> |
-                                </span>
-                                <span class="inline hide-if-no-js">
-                                    <button type="button" class="button-link editinline" aria-label="<?php echo esc_attr( sprintf( __( 'Quick edit "%s" inline', 'mage-eventpress' ), $title ) ); ?>" aria-expanded="false"><?php _e('Quick Edit', 'mage-eventpress'); ?></button> |
-                                </span>
-                                <span class="trash">
-                                    <a href="<?php echo esc_url( $delete_link );?>" class="submitdelete" aria-label="<?php echo esc_attr( sprintf( __( 'Move "%s" to the Trash', 'mage-eventpress' ), $title ) ); ?>"><?php _e('Trash', 'mage-eventpress'); ?></a> |
-                                </span>
-                                <span class="view">
-                                    <a href="<?php echo esc_url( $view_link );?>" rel="bookmark" aria-label="<?php echo esc_attr( sprintf( __( 'View "%s"', 'mage-eventpress' ), $title ) ); ?>"><?php _e('View', 'mage-eventpress'); ?></a>
-                                </span>
-                            </div>
                         </div>
                          <div class='mep_after_event_title'>
                                 <?php do_action('mep_dashboard_event_list_after_event_title',$id); ?>
@@ -433,6 +419,7 @@ function render_mep_events_by_status( $posts ) {
                         <div class="actions">
                         <?php do_action('mep_before_dashboard_event_list',$id); ?>
                             <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event"><span class="dashicons dashicons-visibility"></span></button></a>
+                            <a href="#"><button class="action-btn quick-edit" title="Quick Edit" data-event-id="<?php echo esc_attr($id); ?>"><span class="dashicons dashicons-edit-page"></span></button></a>
                             <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event"><span class="dashicons dashicons-edit"></span></button></a>
                             <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event"><span class="dashicons dashicons-trash"></span></button></a>
                             <!--<a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
@@ -514,6 +501,7 @@ function render_mep_events_by_status( $posts ) {
                                 </label>
                             </div>
                         </fieldset>
+                        <input type="hidden" class="mep-quick-edit-nonce" value="<?php echo esc_attr( wp_create_nonce('mep_nonce') ); ?>" />
                         <div class="submit inline-edit-save">
                             <button type="button" class="button cancel alignleft"><?php _e('Cancel', 'mage-eventpress'); ?></button>
                             <button type="button" class="button button-primary save alignright"><?php _e('Update', 'mage-eventpress'); ?></button>

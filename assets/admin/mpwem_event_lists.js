@@ -277,19 +277,20 @@
     });
 
     // Quick Edit functionality
-    $(document).on('click', '.editinline', function(e) {
+    $(document).on('click', '.editinline, .action-btn.quick-edit', function(e) {
         e.preventDefault();
         let $row = $(this).closest('tr');
+        // If triggered from the icon, $row may be the <tr> or a <div> inside <td>
+        if (!$row.hasClass('mpwem_event_list_card')) {
+            $row = $row.closest('tr.mpwem_event_list_card');
+        }
         let $quickEditRow = $row.next('.quick-edit-row');
-        
         // Hide all other quick edit rows
         $('.quick-edit-row').hide();
         $('.mpwem_event_list_card').show();
-        
         // Show this quick edit row and hide the main row
         $row.hide();
         $quickEditRow.show();
-        
         // Ensure dropdowns are properly initialized
         $quickEditRow.find('select').each(function() {
             $(this).prop('disabled', false);
@@ -299,7 +300,6 @@
                 'position': 'relative'
             });
         });
-        
         // Focus on first input
         $quickEditRow.find('input[name="post_title"]').focus();
     });
@@ -344,7 +344,7 @@
             mep_location_venue: $quickEditRow.find('input[name="mep_location_venue"]').val(),
             post_status: $quickEditRow.find('select[name="_status"]').val(),
             mep_cat: $quickEditRow.find('select[name="mep_cat[]"]').val() || [],
-            nonce: mep_ajax.nonce
+            nonce: $quickEditRow.find('.mep-quick-edit-nonce').val()
         };
         
         $.ajax({

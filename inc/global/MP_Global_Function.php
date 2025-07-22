@@ -254,11 +254,11 @@
 			public static function check_licensee_date( $date ) {
 				if ( $date ) {
 					if ( $date == 'lifetime' ) {
-						return esc_html__( 'Lifetime', 'bus-ticket-booking-with-seat-reservation' );
+						return esc_html__( 'Lifetime', 'mage-eventpress' );
 					} else if ( strtotime( current_time( 'Y-m-d H:i' ) ) < strtotime( date( 'Y-m-d H:i', strtotime( $date ) ) ) ) {
 						return MP_Global_Function::date_format( $date, 'full' );
 					} else {
-						return esc_html__( 'Expired', 'bus-ticket-booking-with-seat-reservation' );
+						return esc_html__( 'Expired', 'mage-eventpress' );
 					}
 				}
 
@@ -488,13 +488,13 @@
 
 			public static function week_day(): array {
 				return [
-					'mon' => esc_html__( 'Monday', 'bus-ticket-booking-with-seat-reservation' ),
-					'tue' => esc_html__( 'Tuesday', 'bus-ticket-booking-with-seat-reservation' ),
-					'wed' => esc_html__( 'Wednesday', 'bus-ticket-booking-with-seat-reservation' ),
-					'thu' => esc_html__( 'Thursday', 'bus-ticket-booking-with-seat-reservation' ),
-					'fri' => esc_html__( 'Friday', 'bus-ticket-booking-with-seat-reservation' ),
-					'sat' => esc_html__( 'Saturday', 'bus-ticket-booking-with-seat-reservation' ),
-					'sun' => esc_html__( 'Sunday', 'bus-ticket-booking-with-seat-reservation' ),
+					'mon' => esc_html__( 'Monday', 'mage-eventpress' ),
+					'tue' => esc_html__( 'Tuesday', 'mage-eventpress' ),
+					'wed' => esc_html__( 'Wednesday', 'mage-eventpress' ),
+					'thu' => esc_html__( 'Thursday', 'mage-eventpress' ),
+					'fri' => esc_html__( 'Friday', 'mage-eventpress' ),
+					'sat' => esc_html__( 'Saturday', 'mage-eventpress' ),
+					'sun' => esc_html__( 'Sunday', 'mage-eventpress' ),
 				];
 			}
 
@@ -637,7 +637,7 @@
 			//***********************************//
 			public static function license_error_text( $response, $license_data, $plugin_name ) {
 				if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-					$message = ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : esc_html__( 'An error occurred, please try again.', 'bus-ticket-booking-with-seat-reservation' );
+					$message = ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : esc_html__( 'An error occurred, please try again.', 'mage-eventpress' );
 				} else {
 					if ( false === $license_data->success ) {
 						switch ( $license_data->error ) {
@@ -645,31 +645,31 @@
 								$message = esc_html__( 'Your license key expired on ' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) );
 								break;
 							case 'revoked':
-								$message = esc_html__( 'Your license key has been disabled.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'Your license key has been disabled.', 'mage-eventpress' );
 								break;
 							case 'missing':
-								$message = esc_html__( 'Missing license.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'Missing license.', 'mage-eventpress' );
 								break;
 							case 'invalid':
-								$message = esc_html__( 'Invalid license.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'Invalid license.', 'mage-eventpress' );
 								break;
 							case 'site_inactive':
-								$message = esc_html__( 'Your license is not active for this URL.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'Your license is not active for this URL.', 'mage-eventpress' );
 								break;
 							case 'item_name_mismatch':
-								$message = esc_html__( 'This appears to be an invalid license key for .', 'bus-ticket-booking-with-seat-reservation' ) . ' ' . $plugin_name;
+								$message = esc_html__( 'This appears to be an invalid license key for .', 'mage-eventpress' ) . ' ' . $plugin_name;
 								break;
 							case 'no_activations_left':
-								$message = esc_html__( 'Your license key has reached its activation limit.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'Your license key has reached its activation limit.', 'mage-eventpress' );
 								break;
 							default:
-								$message = esc_html__( 'An error occurred, please try again.', 'bus-ticket-booking-with-seat-reservation' );
+								$message = esc_html__( 'An error occurred, please try again.', 'mage-eventpress' );
 								break;
 						}
 					} else {
 						$payment_id = $license_data->payment_id;
 						$expire     = $license_data->expires;
-						$message    = esc_html__( 'Success, License Key is valid for the plugin', 'bus-ticket-booking-with-seat-reservation' ) . ' ' . $plugin_name . ' ' . esc_html__( 'Your Order id is', 'bus-ticket-booking-with-seat-reservation' ) . ' ' . $payment_id . ' ' . $plugin_name . ' ' . esc_html__( 'Validity of this licenses is', 'bus-ticket-booking-with-seat-reservation' ) . ' ' . MP_Global_Function::check_licensee_date( $expire );
+						$message    = esc_html__( 'Success, License Key is valid for the plugin', 'mage-eventpress' ) . ' ' . $plugin_name . ' ' . esc_html__( 'Your Order id is', 'mage-eventpress' ) . ' ' . $payment_id . ' ' . $plugin_name . ' ' . esc_html__( 'Validity of this licenses is', 'mage-eventpress' ) . ' ' . MP_Global_Function::check_licensee_date( $expire );
 					}
 				}
 

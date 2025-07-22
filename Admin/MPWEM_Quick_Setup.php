@@ -18,7 +18,7 @@
 				wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
 				wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
 				wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
-				wp_enqueue_style('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.css', array(), time());
+				wp_enqueue_style('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time());
 				wp_enqueue_style('mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4');
 			}
 			public function quick_setup_menu() {

@@ -87,8 +87,15 @@
 			}
 
 			public function mpwem_load_timeline() {
-				$post_id        = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
-				$key            = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$key            = isset( $_REQUEST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$time_line_info = [];
 				if ( $post_id ) {
 					$time_line_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
@@ -99,16 +106,11 @@
 				$title   = array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
 				$time    = array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
 				$content = html_entity_decode( array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '' );
-				if ( $title ) {
-					?>
+				if ( $title ) { ?>
                     <h4 class="_mB"><?php echo esc_html__( 'Edit Timeline Info : ', 'mage-eventpress' ) . esc_html( $title ); ?></h4>
-					<?php
-				} else {
-					?>
+				<?php } else { ?>
                     <h4 class="_mB"><?php esc_html_e( 'Add New Timeline Info', 'mage-eventpress' ); ?></h4>
-					<?php
-				}
-				?>
+				<?php } ?>
                 <input type="hidden" name="timeline_item_key" value="<?php echo esc_attr( $key ); ?>">
                 <label>
                     <span><?php esc_html_e( 'Title', 'mage-eventpress' ); ?></span>
@@ -135,8 +137,15 @@
 			}
 
 			public function mpwem_remove_timeline() {
-				$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
-				$key     = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
 					$time_line_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
 					if ( sizeof( $time_line_infos ) > 0 && array_key_exists( $key, $time_line_infos ) ) {
@@ -150,19 +159,18 @@
 			}
 
 			public function mpwem_save_timeline() {
-				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
-					wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
-					die;
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
 				}
-				$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
 					die;
 				}
-				$key     = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
-				$title   = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : '';
-				$time    = isset( $_REQUEST['time'] ) ? sanitize_text_field( $_REQUEST['time'] ) : '';
-				$content = isset( $_REQUEST['content'] ) ? wp_kses_post( $_REQUEST['content'] ) : '';
+				$key     = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
+				$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+				$time    = isset( $_POST['time'] ) ? sanitize_text_field( wp_unslash( $_POST['time'] ) ) : '';
+				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
 					$time_line_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
 					if ( ! array_key_exists( $key, $time_line_infos ) ) {

@@ -17,18 +17,34 @@ if (!class_exists('MPWEM_Event_Lists')) {
             add_action('wp_ajax_mpwem_trash_multiple_posts', [$this,'mpwem_trash_multiple_posts']);
         }
 
-        function mpwem_trash_multiple_posts() {
-//            check_ajax_referer('mep-ajax-nonce', 'security');
+        /**
+         * Handles AJAX request to move multiple mep_events posts to trash.
+         *
+         * Checks nonce, user authentication, and permissions before processing.
+         * Expects $_POST['post_ids'] as an array of post IDs and $_POST['nonce'] for security.
+         *
+         * @return void Outputs JSON response and terminates execution.
+         */
+        function mpwem_trash_multiple_posts() {           
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mpwem_multiple_trash_nonce')) {
+                wp_send_json_error(['message' => 'Invalid nonce']);
+            }
+            if (!is_user_logged_in()) {
+                wp_send_json_error(['message' => 'User not logged in']);
+            }
             if (!current_user_can('delete_posts')) {
                 wp_send_json_error(['message' => 'Permission denied']);
             }
-            $post_ids = isset($_POST['post_ids']) ? array_map('intval', $_POST['post_ids']) : [];
+            // Sanitize and validate post IDs
+            $post_ids = (isset($_POST['post_ids']) && is_array($_POST['post_ids'])) ? array_map('intval', $_POST['post_ids']) : [];
+            if (empty($post_ids)) {
+                wp_send_json_error(['message' => 'No valid post IDs provided.']);
+            }
             foreach ($post_ids as $post_id) {
-                if (get_post_status($post_id) !== 'trash') {
+                if (get_post_type($post_id) === 'mep_events' && get_post_status($post_id) !== 'trash' && (get_post_field('post_author', $post_id) == get_current_user_id() || is_super_admin())) {
                     wp_trash_post($post_id);
                 }
             }
-
             wp_send_json_success(['message' => 'Selected posts moved to trash successfully.']);
         }
 

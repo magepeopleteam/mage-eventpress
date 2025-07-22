@@ -10,148 +10,131 @@
 		class MPWEM_event_Settings {
 			public function __construct() {
 				add_action( 'mp_event_all_in_tab_item', array( $this, 'event_settings' ) );
+				add_action( 'wp_ajax_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
+				add_action( 'wp_ajax_nopriv_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
 			}
 
 			public function event_settings( $event_id ) {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				?>
-                <div class="mp_tab_item" data-tab-item="#mp_event_settings">
-                    <h3><?php echo esc_html( $event_label );
-							esc_html_e( ' Settings :', 'mage-eventpress' ); ?></h3>
-                    <p><?php esc_html_e( 'Configure Your Settings Here', 'mage-eventpress' ) ?></p>
-					<?php $this->mp_event_settings( $event_id ); ?>
+                <div class="mpStyle mp_tab_item mpwem_event_settings" data-tab-item="#mpwem_event_settings">
+                    <div class="_dLayout_xs_mp_zero">
+                        <div class="_bgLight_padding">
+                            <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Settings', 'mage-eventpress' ); ?></h4>
+                            <span class="_mp_zero"><?php esc_html_e( 'Configure Your Settings Here.', 'mage-eventpress' ); ?></span>
+                        </div>
+						<?php
+							$this->sku( $event_id );
+							$this->display_end_date_time( $event_id );
+							$this->display_available_seat( $event_id );
+							$this->reset_booking();
+							$this->event_member( $event_id );
+						?>
+                    </div>
+					<?php do_action( 'mp_event_switching_button_hook', $event_id ); ?>
 					<?php do_action( 'mep_event_tab_after_settings' ); ?>
                 </div>
 				<?php
 			}
 
-			public function mp_event_settings( $post_id ) {
+			public function sku( $event_id ) {
+				$sku = MP_Global_Function::get_post_info( $event_id, '_sku' );
 				?>
-                <section class="bg-light">
-                    <h2><?php esc_html_e( 'General Settings', 'mage-eventpress' ) ?></h2>
-                    <span><?php esc_html_e( 'Configure Event Locations and Virtual Venues', 'mage-eventpress' ) ?></span>
-                </section>
-				<?php $this->mp_event_reg_status( $post_id ); ?>
-                <table>
-					<?php
-						$this->mp_event_enddatetime_status( $post_id );
-						$this->mp_event_available_seat_status( $post_id );
-						$this->mp_event_reset_booking_count( $post_id );
-						do_action( 'mp_event_switching_button_hook', $post_id );
-						$this->mp_event_speaker_ticket_type( $post_id );
-					?>
-                </table>
-				<?php
-			}
-
-			public function mp_event_reg_status( $post_id ) {
-				?>
-                <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></h2>
-                            <span><?php _e( 'Event SKU No', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <input class="mep_input_text" type="text" name="mep_event_sku" value="<?php echo get_post_meta( $post_id, '_sku', true ); ?>"/>
+                <div class="_padding_bT">
+                    <label class="justifyBetween _alignCenter">
+                        <span><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
+                        <input class="formControl mp_id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
                     </label>
-                </section>
+                    <span class="des_info"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
+                </div>
 				<?php
 			}
 
-			public function mp_event_enddatetime_status( $post_id ) {
-				$mep_show_end_datetime = get_post_meta( $post_id, 'mep_show_end_datetime', true );
-				$mep_show_end_datetime = $mep_show_end_datetime ? $mep_show_end_datetime : 'yes';
+			public function display_end_date_time( $event_id ) {
+				$display = MP_Global_Function::get_post_info( $event_id, 'mep_show_end_datetime', 'yes' );
+				$checked = $display == 'no' ? '' : 'checked';
 				?>
-                <section>
-                    <div class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e( 'Display End Datetime', 'mage-eventpress' ); ?></span></h2>
-                            <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <label class="mpev-switch">
-                            <input type="checkbox" name="mep_show_end_datetime" value="<?php echo esc_attr( $mep_show_end_datetime ); ?>" <?php echo esc_attr( ( $mep_show_end_datetime == 'yes' ) ? 'checked' : '' ); ?> data-toggle-values="yes,no">
-                            <span class="mpev-slider"></span>
-                        </label>
+                <div class="_padding_bT">
+                    <div class="justifyBetween _alignCenter">
+                        <label><span><?php esc_html_e( 'Display End Datetime', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_end_datetime', $checked ); ?>
                     </div>
-                </section>
+                    <span class="des_info"><?php esc_html_e( 'You can ON/OFF End date  time display by going to the settings', 'mage-eventpress' ); ?></span>
+                </div>
 				<?php
 			}
 
-			public function mp_event_available_seat_status( $post_id ) {
-				wp_nonce_field( 'mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce' );
-				$seat_checked = get_post_meta( $post_id, 'mep_available_seat', true );
-				$seat_checked = $seat_checked ? $seat_checked : 'no';
+			public function display_available_seat( $event_id ) {
+				$display = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'off' );
+				$checked = $display == 'off' ? '' : 'checked';
 				?>
-                <section>
-                    <div class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e( 'Show Available Seat?', 'mage-eventpress' ); ?></h2>
-                            <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <label class="mpev-switch">
-                            <input type="checkbox" name="mep_available_seat" value="<?php echo esc_attr( $seat_checked ); ?>" <?php echo esc_attr( ( $seat_checked == 'on' ) ? 'checked' : '' ); ?> data-toggle-values="on,off">
-                            <span class="mpev-slider"></span>
-                        </label>
+                <div class="_padding_bT">
+                    <div class="justifyBetween _alignCenter">
+                        <label><span><?php esc_html_e( 'Show Available Seat?', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_available_seat', $checked ); ?>
                     </div>
-                </section>
+                    <span class="des_info"><?php esc_html_e( 'You can ON/OFF available seat display by going to the settings', 'mage-eventpress' ); ?></span>
+                </div>
 				<?php
 			}
 
-			public function mp_event_reset_booking_count( $post_id ) {
+			public function reset_booking() {
 				?>
-                <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></h2>
-                            <span><?php _e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <div class="mpStyle">
-                            <div class="_dFlex_justifyEnd">
-                                <button class="button" type="button" id="mep-reset-booking" data-post-id='<?php echo esc_html( $post_id ); ?>'>
-                                    <input type="hidden" class="hidden" id='mep-reset-booking-nonce' name='reset-booking-nonce' value="<?php echo wp_create_nonce( 'mep-ajax-reset-booking-nonce' ); ?>">
-                                    <span class="fas fa-refresh"></span>
-                                    <span class="mL_xs"><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></span>
-                                </button>
-                            </div>
-                            <div class="_dFlex_justifyEnd" id="mp-reset-status"></div>
-                        </div>
-                    </label>
-                </section>
-				<?php
-			}
-
-			public function mp_event_speaker_ticket_type( $post_id ) {
-				$event_type        = get_post_meta( $post_id, 'mep_event_type', true );
-				$event_member_type = get_post_meta( $post_id, 'mep_member_only_event', true );
-				$saved_user_role   = get_post_meta( $post_id, 'mep_member_only_user_role', true ) ? get_post_meta( $post_id, 'mep_member_only_user_role', true ) : [];
-				?>
-                <section>
-                    <div class="mpev-label">
-                        <div>
-                            <h2><span><?php esc_html_e( 'Member Only Event?', 'mage-eventpress' ); ?></span></h2>
-                            <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <label class="mpev-switch">
-                            <input type="checkbox" name="mep_member_only_event" value="<?php echo esc_attr( $event_member_type ); ?>" <?php echo esc_attr( ( $event_member_type == 'member_only' ) ? 'checked' : '' ); ?> data-collapse-target="#event_virtual_type" data-toggle-values="member_only,for_all">
-                            <span class="mpev-slider"></span>
-                        </label>
+                <div class="_padding_bT">
+                    <div class="justifyBetween _alignCenter">
+                        <label><span><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></label>
+                        <button type="button" class="_mpBtn_xs_primaryButton mpwem_reset_booking"><span class="fas fa-refresh _mR_xs"></span><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></button>
                     </div>
-                </section>
-                <section id="event_virtual_type" style="display: <?php echo $event_member_type == 'member_only' ? 'block' : 'none'; ?>;">
-                    <label class="mpev-label">
-                        <div>
-                            <h2><?php _e( 'Select User Role', 'mage-eventpress' ); ?></h2>
-                            <span><?php _e( 'Select User Role', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <select name='mep_member_only_user_role[]' multiple>
-                            <option value="all" <?php if ( in_array( 'all', $saved_user_role ) ) {
-								echo esc_attr( 'Selected' );
-							} ?>><?php esc_html_e( 'For Any Logged in user', 'mage-eventpress' ); ?> </option>
-							<?php echo mep_get_user_list( $saved_user_role ); ?>
+                    <span class="des_info"><?php esc_html_e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
+                </div>
+				<?php
+			}
+
+			public function event_member( $event_id ) {
+				$user_roles     = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_user_role', [] );
+				$display        = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_event', 'for_all' );
+				$checked        = $display == 'for_all' ? '' : 'checked';
+				$active         = $display == 'for_all' ? '' : 'mActive';
+				$editable_roles = get_editable_roles();
+				?>
+                <div class="_padding_bT">
+                    <div class="justifyBetween _alignCenter">
+                        <label><span><?php esc_html_e( 'Member Only Event?', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_member_only_event', $checked ); ?>
+                    </div>
+                    <span class="des_info"><?php esc_html_e( 'You can change event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
+                </div>
+                <div class="_padding_bT <?php echo esc_attr( $active ); ?>" data-collapse="#mep_member_only_event">
+                    <label class="justifyBetween _alignCenter">
+                        <span><?php esc_html_e( 'Select User Role', 'mage-eventpress' ); ?></span>
+                        <select name='mep_member_only_user_role[]' class="fornControl mp_select2" multiple>
+                            <option value="all" <?php echo esc_attr( in_array( 'all', $user_roles ) ? 'selected' : '' ); ?>><?php esc_html_e( 'For Any Logged in user', 'mage-eventpress' ); ?></option>
+							<?php foreach ( $editable_roles as $role => $details ) { ?>
+                                <option value="<?php echo esc_attr( $role ); ?>" <?php echo esc_attr( in_array( $role, $user_roles ) ? 'selected' : '' ); ?>><?php echo translate_user_role( $details['name'] ); ?></option>
+							<?php } ?>
                         </select>
                     </label>
-                </section>
+                    <span class="des_info"><?php esc_html_e( 'You can select event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
+                </div>
 				<?php
+			}
+
+			public function mpwem_reset_booking() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$reset = mep_reset_event_booking( $post_id );
+				if ( $reset ) {
+					esc_html_e( "Successfully Booking Reset ", 'mage-eventpress' );
+				} else {
+					esc_html_e( "Booking Reset unsuccessful", 'mage-eventpress' );
+				}
+				die();
 			}
 		}
 		new MPWEM_event_Settings();

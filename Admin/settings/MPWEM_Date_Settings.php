@@ -183,101 +183,42 @@
 			}
 
 			public function off_days_section( $post_id ) {
+				$off_day_array = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_offdays' );
+				if ( ! is_array( $off_day_array ) ) {
+					$maybe_unserialized = @unserialize( $off_day_array );
+					if ( is_array( $maybe_unserialized ) ) {
+						$off_day_array = $maybe_unserialized;
+					} else {
+						$off_day_array = explode( ',', (string) $off_day_array );
+					}
+				}
+				$off_days = $off_day_array ? implode( ',', $off_day_array ) : '';
+				$days     = MP_Global_Function::week_day();
 				?>
-                <section class="bg-light" style="margin-top: 20px;">
-                    <h2><?php esc_html_e( 'Off Days Setting', 'mage-eventpress' ) ?></h2>
-                    <span><?php esc_html_e( 'Configure Event Locations and Virtual Venues', 'mage-eventpress' ) ?></span>
-                </section>
                 <div class="mpStyle">
-                    <section>
-                        <label class="mpev-label">
-                            <div>
-                                <h2><span><?php esc_html_e( 'Ticket Offdays', 'mage-eventpress' ); ?></span></h2>
-                                <span><?php _e( 'Select Offdays', 'mage-eventpress' ); ?></span>
+                    <div class="_mT">
+                        <div class="_dLayout_xs_mp_zero">
+                            <div class="_bgLight_padding">
+                                <h4><?php esc_html_e( 'Off Days Setting', 'mage-eventpress' ); ?></h4>
+                                <span class="_mp_zero"><?php esc_html_e( 'Configure Event Off Days Setting', 'mage-eventpress' ); ?></span>
                             </div>
-							<?php
-								$off_day_array = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_offdays', [] );
-								if ( ! is_array( $off_day_array ) ) {
-									// Try to unserialize if it's serialized
-									$maybe_unserialized = @unserialize( $off_day_array );
-									if ( is_array( $maybe_unserialized ) ) {
-										$off_day_array = $maybe_unserialized;
-									} else {
-										$off_day_array = explode( ',', (string) $off_day_array );
-									}
-								}
-								$off_days = $off_day_array ? implode( ',', $off_day_array ) : '';
-							?>
-                            <div class="dFlex groupCheckBox">
-                                <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
-								<?php
-									$days = array(
-										'sun' => esc_html__( 'Sunday', 'mage-eventpress' ),
-										'mon' => esc_html__( 'Monday', 'mage-eventpress' ),
-										'tue' => esc_html__( 'Tuesday', 'mage-eventpress' ),
-										'wed' => esc_html__( 'Wednesday', 'mage-eventpress' ),
-										'thu' => esc_html__( 'Thursday', 'mage-eventpress' ),
-										'fri' => esc_html__( 'Friday', 'mage-eventpress' ),
-										'sat' => esc_html__( 'Saturday', 'mage-eventpress' )
-									);
-									foreach ( $days as $key => $day ) { ?>
-                                        <label class="customCheckboxLabel ">
-                                            <input type="checkbox" <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'checked' : '' ); ?> data-checked="<?php echo esc_attr( $key ); ?>"/>
-                                            <span class="customCheckbox"><?php echo esc_html( $day ); ?></span>
-                                        </label>
-									<?php } ?>
+                            <div class="_padding_bT">
+                                <label class="justifyBetween _alignCenter">
+                                    <span><?php esc_html_e( 'Ticket Off days', 'mage-eventpress' ); ?></span>
+                                    <div class="groupCheckBox">
+                                        <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
+										<?php foreach ( $days as $key => $day ) { ?>
+                                            <label class="customCheckboxLabel ">
+                                                <input type="checkbox" <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'checked' : '' ); ?> data-checked="<?php echo esc_attr( $key ); ?>"/>
+                                                <span class="customCheckbox"><?php echo esc_html( $day ); ?></span>
+                                            </label>
+										<?php } ?>
+                                    </div>
+                                </label>
+                                <span class="des_info"><?php esc_html_e( 'Select Off days', 'mage-eventpress' ); ?></span>
                             </div>
-                        </label>
-                    </section>
-                    <section>
-                        <label class="mpev-label">
-                            <div>
-                                <h2><span><?php esc_html_e( 'Ticket Off Dates List', 'mage-eventpress' ); ?></span></h2>
-                                <span><?php _e( 'Ticket Off Dates List', 'mage-eventpress' ); ?></span>
-                            </div>
-                            <div class="mp_settings_area ">
-                                <table>
-                                    <tbody class="mp_item_insert mp_sortable_area">
-									<?php
-										$off_day_lists = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
-										// If it's not an array, try unserializing or fallback
-										if ( ! is_array( $off_day_lists ) ) {
-											$maybe_unserialized = @unserialize( $off_day_lists );
-											if ( is_array( $maybe_unserialized ) ) {
-												$off_day_lists = $maybe_unserialized;
-											} else {
-												$off_day_lists = []; // fallback to empty array
-											}
-										}
-										if ( ! empty( $off_day_lists ) ) {
-											foreach ( $off_day_lists as $off_day ) {
-												if ( is_array( $off_day ) && ! empty( $off_day['mep_ticket_off_date'] ) ) {
-													?>
-                                                    <tr class="mp_remove_area">
-                                                        <td><?php $this->date_item( 'mep_ticket_off_dates[]', $off_day['mep_ticket_off_date'] ); ?></td>
-                                                        <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
-                                                    </tr>
-													<?php
-												}
-											}
-										}
-									?>
-                                    </tbody>
-                                </table>
-								<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Off date', 'mage-eventpress' ) ); ?>
-                                <div class="mp_hidden_content">
-                                    <table>
-                                        <tbody class="mp_hidden_item">
-                                        <tr class="mp_remove_area">
-                                            <td><?php $this->date_item( 'mep_ticket_off_dates[]' ); ?></td>
-                                            <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </label>
-                    </section>
+                        </div>
+                    </div>
                 </div>
 				<?php
 			}

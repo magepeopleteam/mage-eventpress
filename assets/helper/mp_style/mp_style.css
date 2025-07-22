@@ -1,4 +1,33 @@
 @charset "utf-8";
+:root {
+	--mpev-primary: #F12971;
+	--mpev-dark: #303030;
+	--mpev-gray: #D3D3D3;
+	--mpev-light: #F2F2F2;
+	--mpev-green: #32C1A4;
+	--mpev-red: #ED5A54;
+	--mpev-orange: #FFBE00;
+	--mpev-white: #FFFFFF;
+	--mpev-black: #000000;
+	--mpev-purple: #9013FE;
+	--mpev-base: var(--mpev-base);
+	--mpev-base-txt: #FFFFFF;
+	--mpev-title-bg: var(--mpev-base);
+	--mpev-title-txt: #FFFFFF;
+	--mpev-calender-btn-bg: var(--mpev-base);
+	--mpev-calender-btn-txt: #FFFFFF;
+	--mpev-cart-btn-bg: var(--mpev-base);
+	--mpev-cart-btn-txt: #FFFFFF;
+	--mpev-faq-bg: var(--mpev-base);
+	--mpev-faq-text: #FFFFFF;
+	--mpev-royal-primary-bg: var(--mpev-base);
+	--mpev-royal-secondary-bg: #FFFFFF;
+	--mpev-royal-icons-bg: var(--mpev-base);
+	--mpev-royal-border: var(--mpev-base);
+	--mpev-royal-txt: #FFFFFF;
+	--mpev-recring-dpkr-bg: var(--mpev-base);
+	--mpev-recring-dpkr-txt: #FFFFFF;
+}
 /******************************************************************** General ************************************************/
 @media only screen and (min-width: 10px) {
 	.mpStyle *,
@@ -241,12 +270,11 @@
 /******************************************************************** Button Section ************************************************/
 @media only screen and (min-width: 10px) {
 	.mpStyle .mpBtn, .mpStyle [class*="_mpBtn"],
-	.mpStyle button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
+	.mpStyle button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; border: 1px solid var(--color_border);line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
 	.mpStyle button[disabled] { cursor: not-allowed; opacity: 0.8; background-color: #DDD; }
 	.mpStyle button:hover, .mpStyle button:focus { text-decoration: none; opacity: 0.8; background-color: var(--color_theme_cc); color: #FFF; }
 	.mpStyle button:hover span, .mpStyle button:focus span { color: #FFF; }
-	.mpStyle .mpBtn, .mpStyle [class*="_mpBtn"] { padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; border: 1px solid var(--color_border); font-weight: var(--fw-thin);}
-	.mpStyle .mpBtn_xs, .mpStyle [class*="_mpBtn_xs"] { padding: 7px var(--dMP_xs); }
+	.mpStyle .mpBtn_xs, .mpStyle [class*="_mpBtn_xs"] { padding: 7px var(--dMP_xs); font-size: var(--fs);}
 	.mpStyle .mpBtn.mpActive, .mpStyle [class*="_mpBtn"].mpActive { border-color: var(--color_theme); color: var(--color_theme); }
 	.mpStyle .mpBtn.mActive, .mpStyle [class*="_mpBtn"].mActive,
 	.mpStyle .mpBtn.mpActive:hover, .mpStyle [class*="_mpBtn"].mpActive:hover { background-color: var(--color_theme); color: var(--color_theme_alter); }
@@ -276,6 +304,11 @@
 	.mpStyle .navy_blueButton span, .mpStyle [class*="_navy_blueButton"] span { color: var(--color_theme_alter); }
 	.mpStyle .navy_blueButton:hover, .mpStyle [class*="_navy_blueButton"]:hover { background-color: var(--color_theme_alter); color: var(--color_navy_blue); border-color: var(--color_navy_blue); }
 	.mpStyle .navy_blueButton:hover span, .mpStyle [class*="_navy_blueButton"]:hover span { color: var(--color_navy_blue); }
+	/*********/
+	.mpStyle .primaryButton, .mpStyle [class*="_primaryButton"] {}
+	.mpStyle .primaryButton, .mpStyle [class*="_primaryButton"] { background-color: var(--mpev-primary); color: var(--color_theme_alter); border: 2px solid var(--mpev-primary); }
+	.mpStyle .primaryButton span, .mpStyle [class*="_primaryButton"] span { color: var(--color_theme_alter); }
+	.mpStyle .primaryButton:hover, .mpStyle [class*="_primaryButton"]:hover { background-color: var(--mpev-primary); color: var(--color_theme_alter); border-color: var(--color_theme_alter); opacity: 0.8; }
 	/****/
 	.mpStyle [class*="Button_xs"] { min-width: auto; min-height: var(--button_height_xs); font-size: var(--fs); }
 	/*************************/
@@ -300,7 +333,7 @@
 	.mpStyle .dNone, .mpStyle [class*="_dNone"] { display: none; }
 	.mpStyle .dBlock, .mpStyle [class*="_dBlock"] { display: block; }
 	.mpStyle .dInlineBlock, .mpStyle [class*="_dInlineBlock"],
-	.mpStyle small, .mpStyle strong { display: inline-block; }
+	.mpStyle small, .mpStyle span, .mpStyle strong { display: inline-block; }
 	/**************/
 	.mpStyle .fLeft, .mpStyle [class*="_fLeft"] { float: left; }
 	.mpStyle .fRight, .mpStyle [class*="_fRight"] { float: right; }
@@ -451,7 +484,6 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-
 	/*******Click slider***************/
 	.mpStyle [class*="clickSlide"] {
 		background-color: var(--color_white);
@@ -500,8 +532,8 @@
 		width: 100%;
 		min-height: inherit;
 	}
-	[data-bg-image]:before{
-		content: '';
+	[data-bg-image]:before {
+		content: "";
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -511,7 +543,7 @@
 		opacity: .4;
 	}
 	[data-bg-image] > * {
-		color: #fff;
+		color: #FFF;
 	}
 	div.bg_image_area:hover [data-bg-image],
 	[data-bg-image]:hover {
@@ -551,7 +583,7 @@
 		overflow: hidden;
 		display: -webkit-flex;
 		display: flex;
-		background-color: #fff;
+		background-color: #FFF;
 		position: relative;
 	}
 	div.superSlider .area_column {
@@ -579,7 +611,6 @@
 		-webkit-transition: -webkit-transform 0.06s ease-in-out;
 		transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
 		height: 100%;
-		
 	}
 	div.superSlider .sliderItem.activeSlide {
 		z-index: 1;
@@ -627,11 +658,11 @@
 	}
 	div.superSlider .sliderShowcase.left {
 		margin: 0 var(--dMP_xs) 0 0;
-		gap:var(--dMP_xs);
+		gap: var(--dMP_xs);
 	}
 	div.superSlider .sliderShowcase.right {
 		margin: 0 0 0 var(--dMP_xs);
-		gap:var(--dMP_xs);
+		gap: var(--dMP_xs);
 	}
 	div.superSlider .area_column .sliderShowcase {
 		width: 100%;
@@ -639,17 +670,17 @@
 	}
 	div.superSlider .sliderShowcase.top {
 		margin: 0 0 var(--dMP_xs) 0;
-		gap:var(--dMP_xs);
+		gap: var(--dMP_xs);
 	}
 	div.superSlider .sliderShowcase.bottom {
 		margin: var(--dMP_xs) 0 0 0;
-		gap:var(--dMP_xs);
+		gap: var(--dMP_xs);
 	}
-	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem{margin:0 10px 0 0;width: auto;max-width:25%;-webkit-flex:1;flex:1;}
-	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem:last-child{margin: 0;}
-	div.superSlider .sliderShowcaseItem {  position: relative;    overflow: hidden;border-radius: 10px; }
-	div.superSlider  .sliderShowcase.style_1 .sliderShowcaseItem{-webkit-flex: 1;flex: 1;}
-	div.superSlider .area_column .sliderShowcaseItem {		width: calc(25% - var(--dMP_xs));	}
+	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem {margin: 0 10px 0 0;width: auto;max-width: 25%;-webkit-flex: 1;flex: 1;}
+	div.superSlider .sliderShowcase.bottom .sliderShowcaseItem:last-child {margin: 0;}
+	div.superSlider .sliderShowcaseItem { position: relative; overflow: hidden;border-radius: 10px; }
+	div.superSlider .sliderShowcase.style_1 .sliderShowcaseItem {-webkit-flex: 1;flex: 1;}
+	div.superSlider .area_column .sliderShowcaseItem { width: calc(25% - var(--dMP_xs)); }
 	div.superSlider .sliderShowcase div.superSlider .area_column {
 		margin: 0 0 var(--dMP_xs) 0;
 		position: relative;
@@ -667,9 +698,9 @@
 		bottom: 0;
 		-webkit-border-radius: 5px;
 		border-radius: 5px;
-		background-color: #000b;
+		background-color: #000B;
 		font-size: 18px;
-		color: #fff;
+		color: #FFF;
 	}
 	div.superSlider .sliderMoreItem span {
 		margin: 0 5px;
@@ -685,9 +716,9 @@
 		margin: 5px -5px;
 	}
 	div.superSlider .slideIndicatorItem {
-		border: 3px solid #ddd;
+		border: 3px solid #DDD;
 		margin: 5px;
-		background-color: #ddd;
+		background-color: #DDD;
 		width: 75px;
 		overflow: hidden;
 		position: relative;
@@ -703,10 +734,10 @@
 		top: calc(50% - 15px);
 		font-size: 30px;
 		cursor: pointer;
-		color: #fff;
+		color: #FFF;
 	}
 	div.superSlider .iconIndicator:hover {
-		color: #fff;
+		color: #FFF;
 	}
 	div.superSlider .iconIndicator.prevItem {
 		left: 20px;
@@ -742,7 +773,7 @@
 		bottom: 0;
 		z-index: 111111111;
 		overflow: hidden auto;
-		background: #000c;
+		background: #000C;
 	}
 	div.superSlider .sliderPopup .popupClose {
 		position: absolute;
@@ -752,12 +783,12 @@
 		right: 50px;
 		width: 50px;
 		height: 50px;
-		background-color: #fff;
+		background-color: #FFF;
 		color: #222;
 		font-size: 20px;
 	}
 	div.superSlider .sliderPopup .popupClose:hover {
-		color: #fff;
+		color: #FFF;
 		background-color: #222;
 	}
 	div.superSlider .sliderPopup .sliderAllItem {
@@ -772,11 +803,11 @@
 		height: 100%;
 	}
 	div.superSlider .sliderPopup .popupHeader {
-		border-bottom: 1px solid #fff;
+		border-bottom: 1px solid #FFF;
 	}
 	div.superSlider .sliderPopup .popupHeader,
 	div.superSlider .sliderPopup .popupFooter {
-		color: #fff;
+		color: #FFF;
 		padding: 15px;
 		max-height: 15vh;
 		overflow: hidden auto;
@@ -789,11 +820,11 @@
 		overflow: visible;
 	}
 	div.superSlider .sliderPopup .popupHeader h2 {
-		color: #fff;
+		color: #FFF;
 		text-align: center;
 	}
 	div.superSlider .sliderPopup .popupFooter {
-		border-top: 1px solid #fff;
+		border-top: 1px solid #FFF;
 	}
 	div.superSlider .sliderPopup .popupBody {
 		position: relative;
@@ -806,6 +837,8 @@
 }
 /******************************************************************** Layout Section ************************************************/
 @media only screen and (min-width: 10px) {
+	/***********Input description***********/
+	.mpStyle span.des_info {font-size: var(--fs);line-height: 1.5;}
 	/***********Circular***********/
 	.mpStyle .circleIcon, .mpStyle [class*="_circleIcon"] { width: 40px; height: 40px; min-width: 40px; background-color: var(--color_theme); color: var(--color_theme_alter); margin: 0 var(--dMP) 0 0; }
 	.mpStyle .circleIcon_xs, .mpStyle [class*="_circleIcon_xs"] { width: 25px; height: 25px; min-width: 25px; font-size: var(--fs_small); margin: 0 var(--dMP_xs) 0 0; }
@@ -869,11 +902,11 @@
 	.mpStyle .formControl::placeholder { color: #0005; }
 	.mpStyle .formControl:disabled { background-color: #DDD5; color: #FFF; }
 	/***************************/
-	div.mpStyle .formControl { width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 34px; border: 1px solid var(--color_border); padding: 5px var(--dMP_xs); font-size: var(--fs); color: var(--d_color); background-color: #FFF; }
+	div.mpStyle .formControl { width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 34px; border: 1px solid var(--color_border); padding: 5px var(--dMP_xs); font-size: var(--fs); color: var(--d_color); background-color: #F5F8FF; }
 	.mpStyle .formControl:focus { outline: 0; background-color: #FFF; border-color: #80BDFF; }
 	div.mpStyle select.formControl {
 		background-image: url("../images/arrow_down.png");background-repeat: no-repeat;background-position: calc(100% - var(--dMP_xs));background-size: auto;
-		-webkit-appearance: none; padding: var(--dMP_xs) 35px var(--dMP_xs) var(--dMP_xs);max-width: 200px;
+		-webkit-appearance: none; padding: var(--dMP_xs) 35px var(--dMP_xs) var(--dMP_xs);max-width: 250px;
 	}
 	div.mpStyle select.formControl:focus { background-color: var(--color_theme_aa); }
 	div.mpStyle .formControl.date_type_without_year,
@@ -934,13 +967,10 @@
 	.mpStyle .customRadio.button_type::before,
 	.mpStyle .customRadio.button_type::after { display: none; }
 	/**********Checkbox Custom*********/
-	.mpStyle .customCheckbox { position: relative; line-height: 1; min-width: auto; white-space: normal !important;}
-	.mpStyle .customCheckbox::before {
-		content: ""; position: absolute; left: 0; top: 0; height: 20px; width: 20px;
-		background-color: var(--color_theme_alter);
-		border: 2px solid var(--color_theme); border-radius: 2px; }
-	.mpStyle .customCheckboxLabel { padding: 0 0 10px 0; cursor: pointer; font-weight: var(--fw-medium); }
-	.mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--color_theme_cc); }
+	.mpStyle .customCheckbox { padding: 1px 0 0 28px; position: relative; line-height: 1; min-width: auto; white-space: wrap; }
+	.mpStyle .customCheckbox::before { content: ""; position: absolute; left: 0; top: 0; height: 18px; width: 18px; background-color: var(--color_theme_alter); border: 2px solid var(--mpev-primary); border-radius: 2px; }
+	.mpStyle .customCheckboxLabel { margin: 0 var(--dMP_xs) var(--dMP_xs) 0; cursor: pointer; font-weight: var(--fw-medium); }
+	.mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--mpev-primary); border: 2px solid var(--mpev-primary); }
 	/*******************/
 	div.mpStyle .selectCheckbox { min-width: 150px; padding: var(--dMP_xs); width: auto; border: 1px solid var(--color_border); cursor: pointer; }
 	div.mpStyle .customCheckboxLabel input[type="checkbox"],
@@ -950,7 +980,7 @@
 	div.mpStyle .selectCheckbox input:focus ~ .customCheckbox::before { outline: 0; }
 	div.mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::after,
 	div.mpStyle .selectCheckbox input:checked ~ .customCheckbox::after {
-		content: ""; position: absolute; left: 2px; top: 4px; height: 8px; width: 16px;
+		content: ""; position: absolute; left: 2px; top: 4px; height: 7px; width: 14px;
 		border: 2px solid var(--color_theme_alter); border-top: none; border-right: none;
 		z-index: 11; background-color: transparent; -ms-transform: rotate(-45deg); transform: rotate(-45deg);
 	}
@@ -959,17 +989,9 @@
 	div.mpStyle .customCheckboxLabel.only_checkbox span {padding: 0;}
 	/*********Input Switch*******/
 	.mpStyle .roundSwitchLabel input[type="checkbox"] { display: none; }
-	.mpStyle .roundSwitch {
-		width: 52px; height: 25px; min-width: auto;
-		position: relative; background-color: #CCC; border-radius: 30px;
-		-webkit-transition: .4s; transition: .4s;
-	}
-	.mpStyle .roundSwitch::before {
-		position: absolute; content: "";height: 23px; width: 23px; left: 1px; bottom: 1px;
-		background-color: white; border-radius: 50%;
-		-webkit-transition: .4s; transition: .4s;
-	}
-	.mpStyle .roundSwitchLabel input:checked + .roundSwitch { background-color: var(--color_theme); }
+	.mpStyle .roundSwitch { width: 50px; height: 22px; min-width: auto; position: relative; background-color: #CCC; border-radius: 30px; -webkit-transition: .4s; transition: .4s; }
+	.mpStyle .roundSwitch::before { position: absolute; content: "";height: 18px; width: 18px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; -webkit-transition: .4s; transition: .4s; }
+	.mpStyle .roundSwitchLabel input:checked + .roundSwitch { background-color: var(--mpev-primary); }
 	.mpStyle .roundSwitchLabel input:focus + .roundSwitch { box-shadow: 0 0 1px #2276D2; }
 	.mpStyle .roundSwitchLabel input:checked + .roundSwitch:before { -ms-transform: translateX(27px); transform: translateX(27px); }
 	/*********Group radio check*******/
@@ -1147,9 +1169,9 @@
 	div.mpPopup .popupFooter { border-top: 4px double var(--color_border); padding: var(--dMP_xs); }
 	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
 	/****************************/
-	div.mpPopup.right_popup{-webkit-justify-content: flex-end;justify-content: flex-end;}
-	div.mpPopup.right_popup .popupMainArea{min-height: 100vh;border: 0;		border-radius: 0;		padding: 50px 20px;}
-	div.mpPopup.right_popup .popupClose{top: 0;right: 0;border-radius: 0;background-color: transparent;color:var(--color_danger);}
+	div.mpPopup.right_popup {-webkit-justify-content: flex-end;justify-content: flex-end;}
+	div.mpPopup.right_popup .popupMainArea {min-height: 100vh;border: 0; border-radius: 0; padding: 50px 20px;}
+	div.mpPopup.right_popup .popupClose {top: 0;right: 0;border-radius: 0;background-color: transparent;color: var(--color_danger);}
 }
 /******************************************************************** Pagination section ************************************************/
 @media only screen and (min-width: 10px) {
@@ -1503,7 +1525,7 @@
 @media only screen and (min-width: 10px) {
 	div.mpStyle span.selection,
 	div.mpStyle span.select2-container.select2,
-	div.mpStyle span.select2-container span.select2-selection { min-width: auto; width: 100% !important; height: 100%; }
+	div.mpStyle span.select2-container span.select2-selection { min-width: auto; width: 100% !important; height: 100%; max-width: 300px;}
 	div.mpStyle span.selection { overflow: hidden; max-width: 100%; }
 	div.mpStyle span.select2-container span.select2-selection__rendered { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; height: 100%; }
 	div.mpStyle span.select2-container .select2-selection__arrow { top: 2px; height: 37px; }

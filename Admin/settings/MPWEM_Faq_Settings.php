@@ -21,7 +21,7 @@
 
 			public function faq_tab_content( $post_id ) {
 				$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
-				$faq_des = MP_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
+				$faq_des   = MP_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
                 <div class="mp_tab_item mpStyle mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
@@ -31,7 +31,7 @@
                             <span class="_mp_zero"><?php esc_html_e( 'FAQ Settings will be here.', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bB">
-                            <label class="_dFlex">
+                            <label class="justifyBetween">
                                 <span class="_mR"><?php esc_html_e( 'FAQ Description', 'mage-eventpress' ); ?></span>
                                 <textarea class="formControl" name="mep_faq_description" rows="6" placeholder="Explore essential details and clear up any doubts about the event."><?php echo esc_textarea( $faq_des ); ?></textarea>
                             </label>
@@ -89,9 +89,17 @@
 					}
 				}
 			}
+
 			public function mpwem_load_faq() {
-				$post_id        = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
-				$key            = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$key      = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$faq_info = [];
 				if ( $post_id ) {
 					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
@@ -133,8 +141,15 @@
 			}
 
 			public function mpwem_remove_faq() {
-				$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
-				$key     = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
 					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
 					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
@@ -148,26 +163,24 @@
 			}
 
 			public function mpwem_save_faq() {
-				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-nonce' ) ) {
-					wp_send_json_error( [ 'message' => 'Invalid nonce' ] );
-					die;
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
 				}
-				$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( $_REQUEST['post_id'] ) : '';
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
 					die;
 				}
-				$key     = isset( $_REQUEST['key'] ) ? sanitize_text_field( $_REQUEST['key'] ) : '';
-				$title   = isset( $_REQUEST['title'] ) ? sanitize_text_field( $_REQUEST['title'] ) : '';
-				$des   = isset( $_REQUEST['des'] ) ? sanitize_text_field( $_REQUEST['des'] ) : '';
-				$content = isset( $_REQUEST['content'] ) ? wp_kses_post( $_REQUEST['content'] ) : '';
+				$key     = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
+				$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+				$des     = isset( $_POST['des'] ) ? sanitize_text_field( wp_unslash( $_POST['des'] ) ) : '';
+				$content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
 					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
 					if ( ! array_key_exists( $key, $faq_infos ) ) {
 						$key = sizeof( $faq_infos );
 					}
 					$faq_infos[ $key ]['mep_faq_title']   = $title;
-
 					$faq_infos[ $key ]['mep_faq_content'] = $content;
 					update_post_meta( $post_id, 'mep_event_faq', $faq_infos );
 					update_post_meta( $post_id, 'mep_faq_description', $des );

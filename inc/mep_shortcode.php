@@ -197,13 +197,8 @@ function mep_event_list($atts, $content = null)
             echo wp_kses_post($main_div);
             echo wp_kses_post($time_line_div_start);
             while ($loop->have_posts()) {
-
-                $loop->the_post();
-                
+                $loop->the_post();                
                 mep_update_event_upcoming_date(get_the_id());
-
-                mep_update_event_upcoming_date(get_the_id());
-
                 if ($style == 'grid' && (int)$column>0 && $pagination != 'carousal') {
 	                $columnNumber='column_style';
 	                $width=100/(int)$column;

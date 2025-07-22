@@ -171,6 +171,11 @@
 
     $(document).on('click', '#mpwem_multiple_trash_btn', function(e) {
         e.preventDefault();
+        let nonce = $('#mpwem_multiple_trash_nonce').val(); 
+        if (!nonce || !mep_ajax || !mep_ajax.nonce) {
+            alert('Nonce is missing or invalid.');
+            return;
+        }
 
         let selectedIDs = [];
         $('.mpwem_select_single_post:checked').each(function() {
@@ -190,7 +195,7 @@
             data: {
                 action: 'mpwem_trash_multiple_posts',
                 post_ids: selectedIDs,
-                nonce: mep_ajax.nonce
+                nonce: nonce
             },
             success: function(response) {
                 alert(response.data.message);

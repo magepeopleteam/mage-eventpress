@@ -612,7 +612,8 @@ function render_mep_events_by_status( $posts ) {
 
             <div class="controls">
                 <div class="mpwem_multiple_trash_holder" id="mpwem_multiple_trash_holder" style="display: none">
-                    <button class="mpwem_multiple_trash_btn" id="mpwem_multiple_trash_btn">Trash</button>
+                    <button class="mpwem_multiple_trash_btn" id="mpwem_multiple_trash_btn">Trash</button> 
+                    <input type="hidden" id='mpwem_multiple_trash_nonce' value="<?php echo esc_attr( wp_create_nonce( 'mpwem_multiple_trash_nonce' ) );?>">
                 </div>
                 <div class="search-box">
                     <div class="search-icon">🔍</div>

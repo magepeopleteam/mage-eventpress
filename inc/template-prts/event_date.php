@@ -142,6 +142,40 @@ if (!function_exists('mep_date_in_default_theme')) {
                     require(mep_template_file_path('single/date_list.php')); 
                 }
             } else {
+                // For single events, ensure we always have the most current datetime
+                // Use start_datetime if available, otherwise construct from date and time fields
+                if (empty($start_datetime) || !$start_datetime) {
+                    // Fallback: construct datetime from individual fields
+                    if (!empty($start_date) && !empty($start_time)) {
+                        $start_datetime = $start_date . ' ' . $start_time;
+                    } elseif (!empty($start_date)) {
+                        $start_datetime = $start_date;
+                    }
+                }
+                
+                if (empty($end_datetime) || !$end_datetime) {
+                    // Fallback: construct datetime from individual fields
+                    if (!empty($end_date) && !empty($end_time)) {
+                        $end_datetime = $end_date . ' ' . $end_time;
+                    } elseif (!empty($end_date)) {
+                        $end_datetime = $end_date;
+                    }
+                }
+                
+                // Double-check by comparing with individual fields to ensure consistency
+                $constructed_start_datetime = $start_date . ' ' . $start_time;
+                $constructed_end_datetime = $end_date . ' ' . $end_time;
+                
+                if (!empty($start_date) && !empty($start_time) && $constructed_start_datetime != $start_datetime) {
+                    // If there's a mismatch, use the constructed datetime (more reliable)
+                    $start_datetime = $constructed_start_datetime;
+                }
+                
+                if (!empty($end_date) && !empty($end_time) && $constructed_end_datetime != $end_datetime) {
+                    // If there's a mismatch, use the constructed datetime (more reliable)
+                    $end_datetime = $constructed_end_datetime;
+                }
+                
                 require(mep_template_file_path('single/date_list.php')); 
             }
         }
@@ -195,10 +229,31 @@ if (!function_exists('mep_ev_date')) {
                 }
             }
         } else {
+            // For single events, ensure we always have the most current date
+            // Use start_datetime if available, otherwise construct from date and time fields
+            $display_datetime = $start_datetime;
+            if (empty($start_datetime) || !$start_datetime) {
+                // Fallback: construct datetime from individual fields
+                if (!empty($start_date) && !empty($start_time)) {
+                    $display_datetime = $start_date . ' ' . $start_time;
+                } elseif (!empty($start_date)) {
+                    $display_datetime = $start_date;
+                }
+            }
+            
+            // Double-check by comparing with individual fields to ensure consistency
+            $constructed_datetime = $start_date . ' ' . $start_time;
+            if (!empty($start_date) && !empty($start_time) && $constructed_datetime != $start_datetime) {
+                // If there's a mismatch, use the constructed datetime (more reliable)
+                $display_datetime = $constructed_datetime;
+            }
+            
+            if (!empty($display_datetime)) {
             ?>
             <p><?php    
-             echo  apply_filters('mep_display_date_only',get_mep_datetime($start_datetime, 'date-text'),$event_id); ?></p>
+             echo  apply_filters('mep_display_date_only',get_mep_datetime($display_datetime, 'date-text'),$event_id); ?></p>
             <?php
+            }
         }
     }
 }
@@ -243,9 +298,30 @@ if (!function_exists('mep_ev_time')) {
                 }
             }
         } else {
+            // For single events, ensure we always have the most current time
+            // Use start_datetime if available, otherwise construct from date and time fields
+            $display_datetime = $start_datetime;
+            if (empty($start_datetime) || !$start_datetime) {
+                // Fallback: construct datetime from individual fields
+                if (!empty($start_date) && !empty($start_time)) {
+                    $display_datetime = $start_date . ' ' . $start_time;
+                } elseif (!empty($start_date)) {
+                    $display_datetime = $start_date;
+                }
+            }
+            
+            // Double-check by comparing with individual fields to ensure consistency
+            $constructed_datetime = $start_date . ' ' . $start_time;
+            if (!empty($start_date) && !empty($start_time) && $constructed_datetime != $start_datetime) {
+                // If there's a mismatch, use the constructed datetime (more reliable)
+                $display_datetime = $constructed_datetime;
+            }
+            
+            if (!empty($display_datetime)) {
             ?>
-            <p><?php echo apply_filters('mep_event_details_only_time',get_mep_datetime($start_datetime, 'time'),$event_id); ?></p>
+            <p><?php echo apply_filters('mep_event_details_only_time',get_mep_datetime($display_datetime, 'time'),$event_id); ?></p>
 <?php
+            }
         }
     }
 }
@@ -265,3 +341,38 @@ if (!function_exists('mep_ev_date_ticket')) {
         echo get_mep_datetime($start_datetime, 'date-text');
     }
 }
+
+// Ensure event datetime fields are always synchronized
+if (!function_exists('mep_sync_event_datetime_fields')) {
+    function mep_sync_event_datetime_fields($post_id) {
+        // Only process mep_events post type
+        if (get_post_type($post_id) !== 'mep_events') {
+            return;
+        }
+        
+        // Avoid infinite loops
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+        
+        // Get individual date and time fields
+        $start_date = get_post_meta($post_id, 'event_start_date', true);
+        $start_time = get_post_meta($post_id, 'event_start_time', true);
+        $end_date = get_post_meta($post_id, 'event_end_date', true);
+        $end_time = get_post_meta($post_id, 'event_end_time', true);
+        
+        // Update combined datetime fields if individual fields exist
+        if (!empty($start_date) && !empty($start_time)) {
+            $event_start_datetime = date('Y-m-d H:i:s', strtotime($start_date . ' ' . $start_time));
+            update_post_meta($post_id, 'event_start_datetime', $event_start_datetime);
+        }
+        
+        if (!empty($end_date) && !empty($end_time)) {
+            $event_end_datetime = date('Y-m-d H:i:s', strtotime($end_date . ' ' . $end_time));
+            update_post_meta($post_id, 'event_end_datetime', $event_end_datetime);
+        }
+    }
+}
+
+// Hook to ensure datetime fields are synchronized on save
+add_action('save_post', 'mep_sync_event_datetime_fields', 20);

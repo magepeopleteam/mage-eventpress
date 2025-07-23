@@ -199,71 +199,11 @@
     border-left: 4px solid #3b82f6;
 }
 
-.mpwem_event_list .inline-edit-col {
-    padding: 0;
-}
-
-.mpwem_event_list .inline-edit-col label {
-    display: block;
-    margin: 0.2em 0;
-    font-weight: 600;
-    color: #374151;
-}
-
-.mpwem_event_list .inline-edit-col .title {
-    display: inline-block;
-    width: 6em;
-    font-weight: 600;
-    color: #374151;
-}
-
-.mpwem_event_list .inline-edit-col input,
-.mpwem_event_list .inline-edit-col select {
-    padding: 6px 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    font-size: 13px;
-    width: 100%;
-    max-width: 250px;
-    pointer-events: auto !important;
-    z-index: 999;
-    position: relative;
-}
-
-.mpwem_event_list .inline-edit-col input:focus,
-.mpwem_event_list .inline-edit-col select:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;
-    outline: none;
-}
-
-.mpwem_event_list .inline-edit-col select {
-    cursor: pointer;
-    background-color: #fff;
-    -webkit-appearance: menulist;
-    -moz-appearance: menulist;
-    appearance: menulist;
-}
-
-.mpwem_event_list .inline-edit-col select[multiple] {
-    height: 80px;
-    -webkit-appearance: listbox;
-    -moz-appearance: listbox;
-    appearance: listbox;
-}
-
 .mpwem_event_list .inline-edit-legend {
     font-weight: 600;
     color: #374151;
-    margin-bottom: 10px;
-}
-
-.mpwem_event_list .inline-edit-save {
-    padding: 10px 0;
-}
-
-.mpwem_event_list .inline-edit-save .button {
-    margin-right: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
 .mpwem_event_list .quick-edit-row {
@@ -274,6 +214,104 @@
 
 .mpwem_event_list .quick-edit-row td {
     padding: 15px;
+}
+
+/* Quick Edit Form Layout */
+.mpwem_event_list .quick-edit-row .colspanchange {
+    padding: 0;
+}
+
+.mpwem_event_list .inline-edit-col-left,
+.mpwem_event_list .inline-edit-col-right {
+    float: left;
+    width: 50%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.mpwem_event_list .inline-edit-col-left {
+    border-right: 1px solid #e5e7eb;
+}
+
+.mpwem_event_list .inline-edit-col-right {
+    padding-left: 20px;
+}
+
+.mpwem_event_list .inline-edit-col {
+    padding: 0;
+    margin: 0;
+}
+
+.mpwem_event_list .inline-edit-col label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.mpwem_event_list .inline-edit-col .title {
+    display: inline-block;
+    width: 120px;
+    font-weight: 600;
+    color: #374151;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.mpwem_event_list .inline-edit-col .input-text-wrap {
+    flex: 1;
+}
+
+.mpwem_event_list .inline-edit-col input,
+.mpwem_event_list .inline-edit-col select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+
+.mpwem_event_list .inline-edit-col input:focus,
+.mpwem_event_list .inline-edit-col select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.mpwem_event_list .inline-edit-col select[multiple] {
+    height: 100px;
+    resize: vertical;
+}
+
+.mpwem_event_list .inline-edit-save {
+    clear: both;
+    padding: 15px;
+    border-top: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mpwem_event_list .inline-edit-save .alignleft {
+    margin-right: auto;
+}
+
+.mpwem_event_list .inline-edit-save .alignright {
+    margin-left: 10px;
+}
+
+.mpwem_event_list .inline-edit-save .spinner {
+    float: none;
+    margin: 0 10px;
+    visibility: hidden;
+}
+
+.mpwem_event_list .inline-edit-save .spinner.is-active {
+    visibility: visible;
 }
 
 .mpwem_event_list .quick-edit-form {

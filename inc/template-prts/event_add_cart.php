@@ -104,7 +104,7 @@
                     <form action="" method='post' id="mage_event_submit" enctype="multipart/form-data">
 						<?php
 							/**
-							 * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/event_ticket_type_extra_service.php
+							 * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/
 							 */
 							do_action('mep_event_ticket_types_list');
 							do_action('mep_event_extra_service_list');

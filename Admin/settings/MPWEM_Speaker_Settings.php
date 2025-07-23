@@ -20,7 +20,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             add_action('wp_ajax_mep_pick_icon',[$this,'pick_icon']);
             add_action('wp_ajax_nopriv_mep_pick_icon',[$this,'pick_icon']);
 
-            add_action('mpwem_settings_save', array($this, 'save_settings'));
+
         }
         public function speaker_tab(){
             ?>
@@ -193,17 +193,6 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 die;
             }
             
-        }
-        public function save_settings($post_id) {
-            if (get_post_type($post_id) == 'mep_events') {
-                $speaker_title = MP_Global_Function::get_submit_info('mep_speaker_title');
-                $speaker_icon = MP_Global_Function::get_submit_info('mep_event_speaker_icon');
-                $speakers = MP_Global_Function::get_submit_info('mep_event_speakers_list');
-                
-                update_post_meta($post_id, 'mep_speaker_title', $speaker_title);
-                update_post_meta($post_id, 'mep_event_speaker_icon', $speaker_icon);
-                update_post_meta($post_id, 'mep_event_speakers_list', $speakers);
-            }
         }
     }
     new MPWEM_Speaker_Settings();

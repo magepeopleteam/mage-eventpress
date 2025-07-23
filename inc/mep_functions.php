@@ -36,26 +36,7 @@
 		}
 	}
 	add_filter( 'post_row_actions', 'mep_add_show_sku_post_id_in_event_list_dashboard', 10, 2 );
-	add_action( 'wp_ajax_mep_reset_booking_func', 'mep_reset_booking_func' );
-	function mep_reset_booking_func() {
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'mep-ajax-reset-booking-nonce' ) ) {
-			_e( 'Nonce verification failed.', 'mage-eventpress' );
-			die();
-		}
-		if ( ! isset( $_POST['post_id'] ) || empty( $_POST['post_id'] ) ) {
-			_e( "Post ID is missing ", 'mage-eventpress' );
-			die();
-		}
-		// nonce
-		$post_id = sanitize_text_field( intval( $_POST['post_id'] ) );
-		$reset   = mep_reset_event_booking( $post_id );
-		if ( $reset ) {
-			_e( "Successfully Booking Reset ", 'mage-eventpress' );
-		} else {
-			_e( "Booking Reset unsuccessful", 'mage-eventpress' );
-		}
-		die();
-	}
+
 	add_filter( 'mep_events_post_type_show_in_rest', 'mep_rest_api_status_check' );
 	add_filter( 'mep_event_attendees_type_show_in_rest', 'mep_rest_api_status_check' );
 	add_filter( 'mep_speaker_post_type_show_in_rest', 'mep_rest_api_status_check' );
@@ -378,19 +359,21 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 			}
 		}
 	}
+
 	if ( ! function_exists( 'mep_get_attendee_info_query' ) ) {
 		function mep_get_attendee_info_query( $event_id, $order_id ) {
 			$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
 			$order_status        = array_values( $_order_status );
+
 			$order_status_filter = array(
 				'key'     => 'ea_order_status',
 				'value'   => $order_status,
-				'compare' => 'OR'
+				'compare' => 'IN'
 			);
-			$args                = array(
+			$args = array(
 				'post_type'      => 'mep_events_attendees',
-				'posts_per_page' => - 1,
+				'posts_per_page' => -1,
 				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
@@ -409,11 +392,11 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 					$order_status_filter
 				)
 			);
-			$loop                = new WP_Query( $args );
-
+			$loop = new WP_Query( $args );
 			return $loop;
 		}
 	}
+
 	if ( ! function_exists( 'mep_email_dynamic_content' ) ) {
 		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0 ) {
 			$event_name   = get_the_title( $event_id );
@@ -4073,74 +4056,6 @@ add_filter( 'request', 'mep_add_event_into_feed_request' );
 			}
 
 			return $is_bad_slug;
-		}
-	}
-	if ( ! function_exists( 'mep_get_user_list' ) ) {
-		function mep_get_user_list( $name = [] ) {
-			ob_start();
-			$editable_roles = get_editable_roles();
-			foreach ( $editable_roles as $role => $details ) {
-				$sub['role'] = esc_attr( $role );
-				$sub['name'] = translate_user_role( $details['name'] );
-				$roles[]     = $sub;
-				?>
-                <option value="<?php echo esc_attr( $role ); ?>" <?php if ( in_array( esc_attr( $role ), $name ) ) {
-					echo 'Selected';
-				} ?>><?php echo translate_user_role( $details['name'] ); ?></option>
-				<?php
-			}
-
-			return ob_get_clean();
-		}
-	}
-	if ( ! function_exists( 'mep_get_event_add_cart_sec' ) ) {
-		function mep_get_event_add_cart_sec( $post_id ) {
-			global $event_meta;
-			$mep_event_ticket_type = get_post_meta( $post_id, 'mep_event_ticket_type', true ) ? get_post_meta( $post_id, 'mep_event_ticket_type', true ) : array();
-			$cart_product_id       = get_post_meta( $post_id, 'link_wc_product', true ) ? esc_attr( get_post_meta( $post_id, 'link_wc_product', true ) ) : esc_attr( $post_id );
-			?>
-            <!-- Register Now Title -->
-            <h4 class="mep-cart-table-title">
-				<?php echo mep_get_option( 'mep_register_now_text', 'label_setting_sec', __( 'Register Now:', 'mage-eventpress' ) ); ?>
-            </h4>
-            <!--The event add to cart main form start here-->
-            <form action="" method='post' id="mage_event_submit" enctype="multipart/form-data">
-				<?php
-					/**
-					 * Here is a magic hook which fire just before of the Add to Cart Button, And the Ticket type & Extra service list are hooked up into this, You can find them into inc/template-parts/event_ticket_type_extra_service.php
-					 */
-					do_action( 'mep_event_ticket_type_extra_service', $post_id );
-				?>
-                <input type='hidden' id='rowtotal' value="<?php echo get_post_meta( $post_id, "_price", true ); ?>"/>
-                <input type="hidden" name='currency_symbol' value="<?php echo get_woocommerce_currency_symbol(); ?>">
-                <input type="hidden" name='currency_position' value="<?php echo get_option( 'woocommerce_currency_pos' ); ?>">
-                <input type="hidden" name='currency_decimal' value="<?php echo wc_get_price_decimal_separator(); ?>">
-                <input type="hidden" name='currency_thousands_separator' value="<?php echo wc_get_price_thousand_separator(); ?>">
-                <input type="hidden" name='currency_number_of_decimal' value="<?php echo wc_get_price_decimals(); ?>">
-				<?php do_action( 'mep_add_term_condition', $post_id ); ?>
-                <!--The Add to cart button table start Here-->
-                <table class='table table-bordered mep_event_add_cart_table'>
-                    <tr>
-                        <td style='text-align:left;' class='total-col'><?php echo mep_get_option( 'mep_quantity_text', 'label_setting_sec', __( 'Quantity:', 'mage-eventpress' ) );
-								if ( $mep_event_ticket_type ) { ?>
-                                    <input id="quantity_5a7abbd1bff73" class="input-text qty text extra-qty-box" step="1" min="1" name="quantity" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" type="hidden">
-                                    <span id="ttyttl"></span>
-								<?php } ?>
-                            <span class='the-total'> <?php echo mep_get_option( 'mep_total_text', 'label_setting_sec', __( 'Total', 'mage-eventpress' ) ); ?>
-                                    <span id="usertotal"></span>
-                                </span>
-                        </td>
-                        <td style='text-align:right;'>
-                            <input type="hidden" name="mep_event_location_cart" value="<?php trim( mep_ev_location_ticket( $post_id, $event_meta ) ); ?>">
-                            <input type="hidden" name="mep_event_date_cart" value="<?php do_action( 'mep_event_date' ); ?>">
-                            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $cart_product_id ); ?>" class="single_add_to_cart_button button alt btn-mep-event-cart"><?php esc_html_e( mep_get_label( $post_id, 'mep_cart_btn_text', 'Register For This Event' ), 'mage-eventpress' ); ?> </button>
-                        </td>
-                    </tr>
-                </table>
-                <!--The Add to cart button table start Here-->
-            </form>
-            <!--The event add to cart main form end here-->
-			<?php
 		}
 	}
 	if ( ! function_exists( 'mep_default_sidebar_reg' ) ) {

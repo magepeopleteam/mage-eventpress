@@ -1,5 +1,21 @@
 (function ($) {
 
+    // Ticket types toggle functionality
+    $(document).on('click', '.ticket-more', function() {
+        var $ticketTypes = $(this).closest('.ticket-types');
+        var $moreButton = $(this);
+        var moreCount = $moreButton.data('more-count');
+        
+        if ($ticketTypes.hasClass('expanded')) {
+            // Collapse - hide extra tickets
+            $ticketTypes.removeClass('expanded');
+            $moreButton.text('+' + moreCount + ' more');
+        } else {
+            // Expand - show all tickets
+            $ticketTypes.addClass('expanded');
+            $moreButton.text('- less');
+        }
+    });
 
     // Filter by category
     $('#mpwem_event_filter_by_category').on('change', function() {

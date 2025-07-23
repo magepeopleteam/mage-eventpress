@@ -28,10 +28,10 @@ $event_organizer_icon = mep_get_option('mep_event_organizer_icon', 'icon_setting
                         <h3 class='mep_list_date'>
                             <span class='mep_minimal_list_date'>
                                 <i class="<?php echo $event_date_icon; ?>"></i>
-                                <?php echo esc_html(get_mep_datetime($event_meta['event_start_datetime'][0], 'time')); ?> - <?php if ($start_datetime == $end_datetime) {
-                                    echo esc_html(get_mep_datetime($event_meta['event_end_datetime'][0], 'time'));
+                                <?php echo esc_html(get_mep_datetime($event_meta['event_start_date'][0] . ' ' . $event_meta['event_start_time'][0], 'time')); ?> - <?php if ($start_datetime == $end_datetime) {
+                                    echo esc_html(get_mep_datetime($event_meta['event_end_date'][0] . ' ' . $event_meta['event_end_time'][0], 'time'));
                                 } else {
-                                    echo esc_html(get_mep_datetime($event_meta['event_end_datetime'][0], 'date-time-text'));
+                                    echo esc_html(get_mep_datetime($event_meta['event_end_date'][0] . ' ' . $event_meta['event_end_time'][0], 'date-time-text'));
                                 } ?>
                             </span>
                             <span class='mep_minimal_list_location'><i class="<?php echo $event_location_icon; ?>"></i> <?php mep_get_event_city($event_id); ?></span>

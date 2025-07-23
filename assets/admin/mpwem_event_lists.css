@@ -506,6 +506,16 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
+.mpwem_event_list .ticket-more:hover {
+    background: #cbd5e1;
+    color: #475569;
+}
+.mpwem_event_list .ticket-item-hidden {
+    display: none;
+}
+.mpwem_event_list .ticket-types.expanded .ticket-item-hidden {
+    display: block;
+}
 .mpwem_event_list_capacity {
     text-align: center;
 }

@@ -25,7 +25,7 @@ do_action('mep_before_events_speaker_wrapper');
                 'post_type'         => array('mep_events'),
                 'paged'             => $paged,
                 'orderby'           => 'meta_value',
-                'meta_key'          => 'event_start_datetime',
+                'meta_key'          => 'event_start_date',
                 'meta_query' => array(
                     array(
                         'key'       => 'mep_event_speakers_list',

@@ -41,9 +41,9 @@ function get_active_expire_upcoming_count( $events ){
         foreach ($events as $post) {
             $id = $post->ID;
 
-            $start_date = get_post_meta($id, 'event_start_datetime', true);
+            $start_date = get_post_meta($id, 'event_start_date', true);
             $start_date = date('F j, Y', strtotime($start_date));
-            $end_date = get_post_meta($id, 'event_end_datetime', true);
+            $end_date = get_post_meta($id, 'event_end_date', true);
 
 
             $start_timestamp = strtotime($start_date);
@@ -239,11 +239,14 @@ function render_mep_events_by_status( $posts ) {
                 $edit_link      = get_edit_post_link($id);
                 $delete_link    = get_delete_post_link($id); // Moves to Trash
                 $view_link      = get_permalink($id);
-                $start_date     = get_post_meta($id, 'event_start_datetime', true);
-                $remaining_date = $start_date;
-                $start_date     = date('F j, Y', strtotime( $start_date ));
+                // Get the actual event start date instead of the publish date
+                $actual_start_date = get_post_meta($id, 'event_start_date', true);
+                $remaining_date = $actual_start_date;
+                $start_date     = $actual_start_date;
+                $formatted_start_date = date('F j, Y', strtotime( $actual_start_date ));
                 $start_time     = get_post_meta($id, 'event_start_time', true);
-                $end_date       = get_post_meta($id, 'event_end_datetime', true);
+                $end_date       = get_post_meta($id, 'event_end_date', true);
+                $end_time       = get_post_meta($id, 'event_end_time', true);
                 $ticket_type    = get_post_meta($id, 'mep_event_ticket_type', true);
                 $location       = get_post_meta($id, 'mep_location_venue', true);
 
@@ -273,12 +276,12 @@ function render_mep_events_by_status( $posts ) {
 
                 if( $event_type === 'everyday' ){
                     $time_remaining = get_time_remaining_fixed( $id, $end_date );
-                    $start_date = date('F j, Y', strtotime( $date ));
+                    $formatted_start_date = date('F j, Y', strtotime( $date ));
                     $event_type_status = 'Recurring Event (Repeated)';
                     $total_sold         = mep_get_event_total_seat_left( $id, $date );
                 }else if( $event_type === 'yes' ){
                     $time_remaining = get_time_remaining_fixed( $id, $end_date );
-                    $start_date = date('F j, Y', strtotime( $date ));
+                    $formatted_start_date = date('F j, Y', strtotime( $date ));
                     $event_type_status = 'Recurring Event (Selected Dates)';
                     $total_sold         = mep_get_event_total_seat_left( $id, $date );
                 }else{
@@ -331,7 +334,7 @@ function render_mep_events_by_status( $posts ) {
                     data-filter-by-category="<?php echo esc_attr( $event_category );?>"
                     data-filter-by-event-name="<?php echo esc_attr( $title );?>"
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser );?>"
-                    data-event-date="<?php echo esc_attr( strtotime($start_date) );?>"
+                    data-event-date="<?php echo esc_attr( strtotime($date) );?>"
                     data-event-title="<?php echo esc_attr( $title );?>"
                     data-event-id="<?php echo esc_attr( $id );?>"
                 >
@@ -383,7 +386,7 @@ function render_mep_events_by_status( $posts ) {
                     </td>
                     <td>
                         <div class="date-time">
-                            <span ><?php echo esc_attr( $start_date );?></span>
+                            <span ><?php echo esc_attr( $formatted_start_date );?></span>
                             <span class="time"><?php echo esc_attr( $time );?></span>
 <!--                            <span class="mpwem_remaining_days">--><?php //echo esc_attr( $time_remaining );?><!--</span>-->
                         </div>
@@ -394,26 +397,24 @@ function render_mep_events_by_status( $posts ) {
                     <td>
                         <div class="ticket-types">
                             <?php
-                            $dis_ticket_type_count = 0; ;
+                            $dis_ticket_type_count = 0;
                             if( is_array( $ticket_type ) && !empty( $ticket_type ) ){
                                 $ticket_type_count = count( $ticket_type );
                                 foreach ( $ticket_type as $type ) {
-                                    if( $dis_ticket_type_count < 2 ){
+                                    $is_hidden = $dis_ticket_type_count >= 2 ? 'ticket-item-hidden' : '';
                                     ?>
-                                    <div class="ticket-item">
+                                    <div class="ticket-item <?php echo esc_attr($is_hidden); ?>">
                                         <span class="ticket-name"><?php echo esc_html( $type['option_name_t']);?></span>
                                         <span class="ticket-price ticket-free"><?php echo esc_attr( $type['option_price_t']);?></span>
                                     </div>
-                              <?php
-                                    }
+                                    <?php
                                     $dis_ticket_type_count++;
                                 }
-                                ?>
-                            <?php }
+                            }
                             if( $ticket_type_count > 2 ){
                                 $more_ticket_type = $ticket_type_count - 2;
                             ?>
-                            <div class="ticket-more">+<?php echo esc_attr( $more_ticket_type );?> more</div>
+                            <div class="ticket-more" data-more-count="<?php echo esc_attr( $more_ticket_type );?>">+<?php echo esc_attr( $more_ticket_type );?> more</div>
                             <?php }?>
                         </div>
                     </td>
@@ -459,7 +460,7 @@ function render_mep_events_by_status( $posts ) {
                                 <label>
                                     <span class="title"><?php _e('Event End Date', 'mage-eventpress'); ?></span>
                                     <span class="input-text-wrap">
-                                        <input type="datetime-local" name="event_end_datetime" class="event-end-date" value="<?php echo esc_attr( date('Y-m-d\TH:i', strtotime($end_date)) ); ?>">
+                                        <input type="datetime-local" name="event_end_datetime" class="event-end-date" value="<?php echo esc_attr( date('Y-m-d\TH:i', strtotime($end_date . ' ' . $end_time)) ); ?>">
                                     </span>
                                 </label>
                                 <label>

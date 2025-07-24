@@ -4,6 +4,9 @@ the_post();
 do_action('mep_before_events_speaker_wrapper');
 ?>
 <div class="mep_events_speaker_wraper">
+    <style>
+     
+    </style>
     <div class="mep_speaker_thumbnail">
         <?php the_post_thumbnail('full'); ?>
     </div>

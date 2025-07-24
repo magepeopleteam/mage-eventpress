@@ -4060,3 +4060,4 @@ div.timeline_item div.timeline_content{background-color: #ffffff;  padding: var(
 div.mpwem_timeline_area .timeline_time{font-size: 14px;  color: var(--mpev-primary);  font-weight: 500;  padding: 6px 12px;  background-color: var(--mpev-secondary);  border-radius: 20px;}
 div.mpwem_timeline_area .timeline_area{position: relative;}
 div.mpwem_timeline_area .timeline_area::before {  content: "";  position: absolute;  left: 15px;  top: 15px;  height: calc(100% - 15px);  width: 2px;  background-color: #e0e0e0;  z-index: 0;}
+

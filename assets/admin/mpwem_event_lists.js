@@ -276,13 +276,22 @@
         });
     });
 
-    // Quick Edit functionality
+    // Quick Edit functionality - Works with both custom and default WordPress list views
     $(document).on('click', '.editinline, .action-btn.quick-edit', function(e) {
         e.preventDefault();
+        
+        // Check if this is the default WordPress quick edit
+        if ($(this).hasClass('editinline') && $(this).closest('#the-list').length) {
+            // Let WordPress handle its default quick edit
+            return;
+        }
+        
         let $row = $(this).closest('tr');
+        
         // If triggered from the icon, $row may be the <tr> or a <div> inside <td>
         if (!$row.hasClass('mpwem_event_list_card')) {
             $row = $row.closest('tr.mpwem_event_list_card');
+            if (!$row.length) return; // Not our custom UI
         }
         let $quickEditRow = $row.next('.quick-edit-row');
         // Hide all other quick edit rows
@@ -354,9 +363,60 @@
             success: function(response) {
                 if (response.success) {
                     // Update the main row with new data
-                    location.reload(); // Simple reload for now
+                    if ($quickEditRow.closest('.wp-list-table').length) {
+                        // For default WordPress list view, let it handle the update
+                        location.reload();
+                    } else {
+                        // For custom list view, update the row and show it
+                        $quickEditRow.hide();
+                        
+                        // Update the main row with new data if available in response
+                        if (response.data && response.data.updated_data) {
+                            const data = response.data.updated_data;
+                            
+                            // Update title
+                            $mainRow.find('.row-title').text(data.post_title || '');
+                            
+                            // Update status
+                            const statusBadge = $mainRow.find('.mep_event_status');
+                            if (statusBadge.length) {
+                                const statusText = data.post_status === 'publish' ? 'Published' : 
+                                                data.post_status === 'draft' ? 'Draft' : 
+                                                data.post_status === 'pending' ? 'Pending' : data.post_status;
+                                statusBadge.text(statusText)
+                                    .removeClass('mep_status_publish mep_status_draft mep_status_pending')
+                                    .addClass('mep_status_' + data.post_status);
+                            }
+                            
+                            // Update date and time
+                            if (data.event_start_datetime) {
+                                const startDate = new Date(data.event_start_datetime);
+                                const formattedDate = startDate.toLocaleDateString() + ' ' + startDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                                $mainRow.find('.mep_event_date').text(formattedDate);
+                            }
+                            
+                            // Update location if available
+                            if (data.mep_location_venue) {
+                                $mainRow.find('.mep_event_location').text(data.mep_location_venue);
+                            }
+                            
+                            // Update categories if available
+                            if (data.mep_categories && data.mep_categories.length > 0) {
+                                $mainRow.find('.mep_event_categories').text(data.mep_categories.join(', '));
+                            }
+                            
+                            // Update the data attributes for sorting
+                            $mainRow.attr('data-event-title', data.post_title.toLowerCase());
+                            if (data.event_start_datetime) {
+                                $mainRow.attr('data-event-date', new Date(data.event_start_datetime).getTime());
+                            }
+                        }
+                        
+                        // Show the main row after all updates
+                        $mainRow.show();
+                    }
                 } else {
-                    alert('Error: ' + (response.data.message || 'Unknown error occurred'));
+                    alert('Error: ' + (response.data && response.data.message ? response.data.message : 'Unknown error occurred'));
                 }
             },
             error: function() {

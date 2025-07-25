@@ -221,7 +221,6 @@
 
 			public function add_frontend_head() {
 				$this->js_constant();
-				$this->custom_css();
 				$this->event_rich_text_data();
 				$this->add_open_graph_tags();
 			}
@@ -240,21 +239,6 @@
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
                 </script>
 				<?php
-			}
-
-			public function custom_css() {
-				$custom_css         = MP_Global_Function::get_settings( 'mep_settings_custom_css', 'mep_custom_css' );
-				$not_available_hide = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_not_available_event_from_list_page', 'no' );
-				ob_start();
-				?>
-                <style>
-                    <?php echo $custom_css; ?>
-                    <?php  if($not_available_hide == 'yes'){ ?>
-					.event-no-availabe-seat { display: none !important; }
-                    <?php } 	?>
-                </style>
-				<?php
-				echo ob_get_clean();
 			}
 
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.

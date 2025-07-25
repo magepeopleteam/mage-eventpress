@@ -1044,6 +1044,10 @@ h3.mep_list_date {
   margin: 0 0 0 10px;
 }
 
+.mep_list_location_name .evl-cc {
+  line-height: 0;
+}
+
 /*******Grid Style******/
 .mep_event_grid_item {
   border: 1px solid #DDD;

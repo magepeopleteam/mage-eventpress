@@ -239,6 +239,13 @@
 						update_post_meta( $post_id, 'event_start_time', $start_time );
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
+
+						/********************/
+						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
+						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
+						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+
 						$start_date_more = MP_Global_Function::get_submit_info( 'event_more_start_date', [] );
 						$start_time_more = MP_Global_Function::get_submit_info( 'event_more_start_time', [] );
 						$end_date_more   = MP_Global_Function::get_submit_info( 'event_more_end_date', [] );
@@ -256,11 +263,7 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-						/********************/
-						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
-						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
-						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
-						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+
 						$md                    = sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
 						$event_expire_datetime = sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );

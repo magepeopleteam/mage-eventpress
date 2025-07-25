@@ -617,7 +617,7 @@
 			//  print_r($value);
 			$global_on_days_arr[] = $value->format( 'Y-m-d' );
 		}
-		
+
 		$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
 		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
 
@@ -652,7 +652,7 @@
 					}
 					sort($global_on_days_arr);
 
-		
+
 		$event_date_display_list = mep_re_get_the_upcomming_date_arr( $event_id );
 		foreach ( $event_date_display_list as $every_day ) {
 			$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
@@ -705,7 +705,7 @@
 		$global_on_days_arr 	= [];
 		$off_dates          	= [];
 		$the_recurring_dates 	= [];
-		
+
 		foreach ( $period as $key => $value ) {
 			$global_on_days_arr[] = $value->format( 'Y-m-d' );
 		}
@@ -979,7 +979,7 @@
 				echo mep_get_option( 'mep_event_rec_day_off_text', 'label_setting_sec', __( 'Day Off', 'mage-eventpress' ) );
 			} else {
 				?>
-				
+
                 <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
                 <select name="ea_event_date" id="mep_everyday_ticket_time">
                     <option value="0"><?php echo mep_get_option( 'mep_event_rec_select_a_time_text', 'label_setting_sec', __( 'Please Select A Time', 'mage-eventpress' ) ); ?></option>
@@ -1464,8 +1464,9 @@ function mep_re_add_link_to_date_list_item( $event_id, $start_datetime ){
 
 	$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 if ( $recurring == 'everyday' || $recurring == 'yes' ){
+	$event_url = add_query_arg( [ 'action' => 'mpwem_date_'.$event_id, 'date' => strtotime( $start_datetime ), '_wpnonce' => wp_create_nonce( 'mpwem_date_'.$event_id) ], get_the_permalink( $event_id ) );
 	?>
-    <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $start_datetime ) ); ?>">
+    <a href="<?php echo esc_url($event_url); ?>">
 		<?php
 			}
 			}

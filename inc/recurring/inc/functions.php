@@ -1459,8 +1459,9 @@
 
 		return $post_states;
 	}
-	add_action( 'mep_single_before_event_date_list_item', 'mep_re_add_link_to_date_list_item', 10, 2 );
+add_action( 'mep_single_before_event_date_list_item', 'mep_re_add_link_to_date_list_item', 10, 2 );
 function mep_re_add_link_to_date_list_item( $event_id, $start_datetime ){
+
 	$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 if ( $recurring == 'everyday' || $recurring == 'yes' ){
 	?>

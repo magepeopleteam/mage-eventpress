@@ -34,8 +34,8 @@
 					$event_extra          = mep_cart_event_extra_service( 'event_extra_service', $total_price, $product_id );
 					$total_price          = mep_cart_event_extra_service( 'ticket_price', $total_price, $product_id );
 					$user                 = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();
-					$validate       = mep_cart_ticket_type( 'validation_data', $total_price, $product_id );
-					$time_slot_text = isset( $_REQUEST['time_slot_name'] ) ? sanitize_text_field( $_REQUEST['time_slot_name'] ) : '';
+					$validate             = mep_cart_ticket_type( 'validation_data', $total_price, $product_id );
+					$time_slot_text       = isset( $_REQUEST['time_slot_name'] ) ? sanitize_text_field( $_REQUEST['time_slot_name'] ) : '';
 					if ( ! empty( $time_slot_text ) ) {
 						$cart_item_data['event_everyday_time_slot'] = $time_slot_text;
 					}
@@ -85,7 +85,7 @@
 					$user_info            = $cart_item['event_user_info'];
 					$ticket_type_arr      = $cart_item['event_ticket_info'];
 					$event_extra_service  = $cart_item['event_extra_service'];
-					$event_date  = $cart_item['event_cart_date'];
+					$event_date           = $cart_item['event_cart_date'];
 					$recurring            = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status          = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
 					//echo '<pre>';print_r($cart_item);echo '</pre>';

@@ -18,7 +18,7 @@
 	if ( $event_id > 0 ) {
         ?><div class="mpStyle"><?php
 		$reg_status = MP_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
-		//echo '<pre>';			print_r($reg_status);			echo '</pre>';
+		//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 		if ( $reg_status == 'on' ) {
 			if ( sizeof( $all_dates ) > 0 ) {
 				$event_member_type = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_event', 'for_all' );

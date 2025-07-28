@@ -53,14 +53,15 @@ if (!function_exists('mep_notify_admin_low_ticket_stock')) {
         
         // Format the date for display
         $formatted_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($selected_date));
-        
-        // Email subject
+
         $subject = sprintf(
-            __('[%s] Low Ticket Stock Alert - %s - %s', 'mage-eventpress'),
+            // translators: %1$s is the site name, %2$s is the event name, %3$s is the formatted event date.
+            __('[%1$s] Low Ticket Stock Alert - %2$s - %3$s', 'mage-eventpress'),
             $site_name,
             $event_name,
             $formatted_date
         );
+
         
         // Email message
         $message = sprintf(
@@ -68,19 +69,19 @@ if (!function_exists('mep_notify_admin_low_ticket_stock')) {
             __(
                 'Hello %5$s,
 
-This is an automated notification to inform you about low ticket stock:
+                This is an automated notification to inform you about low ticket stock:
 
-Event: %2$s
-Date: %7$s
-Ticket Type: %1$s
-Available Seats: %3$d
+                Event: %2$s
+                Date: %7$s
+                Ticket Type: %1$s
+                Available Seats: %3$d
 
-Please consider adding more seats or taking appropriate action.
+                Please consider adding more seats or taking appropriate action.
 
-You can manage this event here: %4$s
+                You can manage this event here: %4$s
 
-Best regards,
-%6$s', 
+                Best regards,
+                %6$s', 
                 'mage-eventpress'
             ),
             $ticket_type_name,
@@ -218,10 +219,12 @@ if (!function_exists('mep_display_low_stock_warning')) {
             $warning_text = apply_filters(
                 'mep_low_stock_warning_text',
                 sprintf(
-                    esc_html__('Hurry! Only %s %s tickets left', 'mage-eventpress'),
-                    esc_html($available_seats),
-                    esc_html($ticket_type_name)
+                    // translators: %1$s is the number of available seats, %2$s is the ticket type name.
+                    esc_html__( 'Hurry! Only %1$s %2$s tickets left', 'mage-eventpress' ),
+                    esc_html( $available_seats ),
+                    esc_html( $ticket_type_name )
                 ),
+
                 $available_seats,
                 $ticket_type_name,
                 $event_id

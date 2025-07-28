@@ -28,7 +28,19 @@
 			function admin_menu() {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				//add_options_page( 'Event Settings', 'Event Settings', 'delete_posts', 'mep_event_settings_page', array($this, 'plugin_page') );
-				add_submenu_page( 'edit.php?post_type=mep_events', __( $event_label . ' Settings', 'mage-eventpress' ), __( $event_label . ' Settings', 'mage-eventpress' ), 'manage_options', 'mep_event_settings_page', array( $this, 'plugin_page' ) );
+				$menu_label = sprintf(
+					/* translators: %s is the event label, e.g., "Conference" */
+					__( '%s Settings', 'mage-eventpress' ),
+					$event_label
+					);
+					add_submenu_page(
+						'edit.php?post_type=mep_events',
+						$menu_label,
+						$menu_label,
+						'manage_options',
+						'mep_event_settings_page',
+						array( $this, 'plugin_page' )
+					);
 			}
 
 			function get_settings_sections() {

@@ -149,7 +149,7 @@
 																							MPWEM_Custom_Layout::qty_input( $input_data );
 																						}else{
 																							?>
-                                                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
+                                                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-eventpress' );
 																									echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
                                                                                             <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
 																							<?php
@@ -160,7 +160,7 @@
 																				} else {
 																					$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
 																					?>
-                                                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
+                                                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
 																							echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
                                                                                     <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
 																					<?php

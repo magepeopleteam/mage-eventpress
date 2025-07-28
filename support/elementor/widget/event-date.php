@@ -53,7 +53,7 @@ class MEPEventDateWidget extends Widget_Base {
 			[
 				'label' => __( 'Before Text', 'mage-eventpress' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( '', 'mage-eventpress' ),
+				'default' => '',
 			]
 		);
 		$this->add_control(
@@ -61,7 +61,7 @@ class MEPEventDateWidget extends Widget_Base {
 			[
 				'label' => __( 'After Text', 'mage-eventpress' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( '', 'mage-eventpress' ),
+				'default' => '',
 			]
 		);
 		$this->add_control(
@@ -100,7 +100,7 @@ class MEPEventDateWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_date_display_icon',
 			[
-				'label' => __( 'Icon Before', 'text-domain' ),
+				'label' => __( 'Icon Before', 'mage-eventpress' ),
 				'type' => \Elementor\Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-calendar-alt',
@@ -140,7 +140,7 @@ class MEPEventDateWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_date_icon_size',
 			[
-				'label' => __( 'Icon Size', 'plugin-domain' ),
+				'label' => __( 'Icon Size', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -178,7 +178,7 @@ class MEPEventDateWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_date_icon_margin',
 			[
-				'label' => __( 'Icon Margin', 'elementor' ),
+				'label' => __( 'Icon Margin', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [

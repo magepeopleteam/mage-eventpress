@@ -542,7 +542,6 @@ function render_mep_events_by_status( $posts ) {
                         <?php esc_html_e( 'Add New Event', 'mage-eventpress' )?>
                         </button></a>
                 </div>
-
                 <div class="analytics">
                     <div class="analytics-card">
                         <h3><?php echo esc_attr( $total_event );?></h3>
@@ -567,10 +566,19 @@ function render_mep_events_by_status( $posts ) {
                     <div class="analytics-card">
                         <h3><?php echo $currency_symbol.' '.$current_month_revenue?></h3>
                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' );?></p>
-                        <div class="trend up"><?php esc_attr_e( '↗ '.$revenue_percent_change['inc_dec_sign'].$revenue_percent_change['percent_change'].'% vs last month', 'mage-eventpress' );?></div>
+                        <div class="trend up">
+                            <?php                            
+                            printf(
+                                // translators: %1$s is the sign (+/-), %2$s is the percentage change.
+                                esc_html__( '↗ %1$s%2$s%% vs last month', 'mage-eventpress' ),
+                                esc_html( $revenue_percent_change['inc_dec_sign'] ),
+                                esc_html( $revenue_percent_change['percent_change'] )
+                            );
+                            ?>
+                        </div>
+
                     </div>
                 </div>
-
                 <div class="stats-summary">
                     <div class="stat-item mpwem_filter_by_status mpwem_filter_btn_active_bg_color" data-by-filter="all">
                         <span><?php esc_attr_e( 'All Events', 'mage-eventpress' );?></span>

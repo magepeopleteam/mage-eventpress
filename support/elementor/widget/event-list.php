@@ -335,7 +335,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_date_width',
 			[
-				'label' => __( 'Width', 'simple-email-mailchimp-subscriber' ),
+				'label' => __( 'Width', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -382,7 +382,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_date_padding',
 			[
-				'label' => __( 'Padding', 'plugin-name' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -393,7 +393,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_date_margin',
 			[
-				'label' => __( 'Margin', 'plugin-name' ),
+				'label' => __( 'Margin', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -469,7 +469,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_title_style_padding',
 			[
-				'label' => __( 'Padding', 'plugin-name' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -541,7 +541,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_price_style_padding',
 			[
-				'label' => __( 'Padding', 'plugin-name' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [

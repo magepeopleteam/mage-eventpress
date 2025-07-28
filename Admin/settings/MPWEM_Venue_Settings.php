@@ -41,8 +41,8 @@
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
-					$event_label . __( ' Details' ),
-					__( 'Organizer' ),
+					$event_label . __( ' Details', 'mage-eventpress' ) => 0,
+					__( 'Organizer', 'mage-eventpress' ) => 0,
 				];
 				if ( $this->is_gutenberg_active() ) { ?>
                     <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr( $author_id ); ?>">
@@ -57,7 +57,7 @@
                             </div>
                             <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
 								<?php foreach ( $organizer as $key => $value ): ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php esc_html_e( $value ); ?> </option>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php echo esc_html( $value ); ?> </option>
 								<?php endforeach; ?>
                             </select>
                         </label>

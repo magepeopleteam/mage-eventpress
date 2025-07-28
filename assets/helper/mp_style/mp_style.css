@@ -484,39 +484,6 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-	/*******Click slider***************/
-	.mpStyle [class*="clickSlide"] {
-		background-color: var(--color_white);
-		padding: var(--dMP);
-	}
-	.mpStyle [class*="slideItem"] {
-		display: none;
-	}
-	.mpStyle [class*="slideItem"].active {
-		display: block;
-	}
-	.mpStyle [class*="slideItem"] img {
-		width: 100%;
-	}
-	.mpStyle [class*="slideIndicator"] {
-		margin: var(--dMP) 0 0 0;
-	}
-	.mpStyle [class*="slideIndicatorItem"] {
-		border: 3px solid var(--color_border);
-		margin: 0 5px;
-		background-color: var(--color_border);
-	}
-	.mpStyle [class*="slideIndicatorItem"].active {
-		border-color: var(--color_active);
-		background-color: var(--color_active);
-	}
-	.mpStyle [class*="slideIndicatorItem"] img {
-		height: 30px;
-		width: auto;
-	}
-	.mpStyle [class*="slideIndicatorItem"].active img {
-		height: 35px;
-	}
 	/***********Bg Image****************/
 	div.bg_image_area {
 		width: 100%;

@@ -5,7 +5,7 @@
 //Add admin page to the menu
 	add_action('admin_menu', 'mep_event_status_admin_menu');
 	function mep_event_status_admin_menu() {
-		add_submenu_page('edit.php?post_type=mep_events', __('Status', 'mage-eventpress'), __('<span style="color:yellow">Status</span>', 'mage-eventpress'), 'manage_options', 'mep_event_status_page', 'mep_event_status_page');
+		add_submenu_page('edit.php?post_type=mep_events', __('Status', 'mage-eventpress'), '<span style="color:yellow">Status</span>', 'manage_options', 'mep_event_status_page', 'mep_event_status_page');
 	}
 	function mep_event_status_page() {
 		$wp_v = get_bloginfo('version');
@@ -96,7 +96,7 @@
 							<div id="empty-cart-message"></div>
 								<?php wp_nonce_field( 'delete-event-temp-cart'); ?>
 								<input type="hidden" name='empty_event_cart_temp' value='yes'/>
-								<button id="empty-cart-btn" class="button button-primary"><?php _e('Empty Cart','mage-evetpress'); ?></button>								
+								<button id="empty-cart-btn" class="button button-primary"><?php _e('Empty Cart','mage-eventpress'); ?></button>								
 							<?php
 						} ?>
 						</td>

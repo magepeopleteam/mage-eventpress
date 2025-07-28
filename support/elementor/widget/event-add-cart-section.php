@@ -115,7 +115,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cart_ttt_padding',
 			[
-				'label' => __( 'Title Padding', 'elementor' ),
+				'label' => __( 'Title Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -208,7 +208,7 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'box_shadow',
-				'label' => __( 'Box Shadow', 'plugin-domain' ),
+				'label' => __( 'Box Shadow', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-event-add-to-cart-section-widget .mpwem_booking_panel',
 			]
 		);

@@ -880,7 +880,7 @@
 			?>
             <div>
                 <h5 style='text-align:center;color:red;font-size:20px'>
-					<?php _e( 'Please Set Correct Event Start & Expire date', 'mage-event-press' ); ?>
+					<?php _e( 'Please Set Correct Event Start & Expire date', 'mage-eventpress' ); ?>
                 </h5>
             </div>
 			<?php
@@ -895,7 +895,7 @@
 			array(
 				'name'    => 'mep_datepicker_format',
 				'label'   => __( 'Date Picker Format', 'mage-eventpress' ),
-				'desc'    => __( 'If you want to change Date Picker Format, please select format. Default is yy-mm-dd. <b>Text Based Date format will not works in other language except english. Is your website is not English language please do not use any text based datepicker.</b>', 'mep-form-builder' ),
+				'desc'    => __( 'If you want to change Date Picker Format, please select format. Default is yy-mm-dd. <b>Text Based Date format will not works in other language except english. Is your website is not English language please do not use any text based datepicker.</b>', 'mage-eventpress' ),
 				'type'    => 'select',
 				'default' => 'no',
 				'options' => array(
@@ -1448,9 +1448,9 @@
 		$eid       = $post->ID;
 		$recurring = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 		if ( $recurring == 'everyday' ) {
-			$event_state = __( 'Recurring Event (Repeated)', 'mage-eventpresscurring' );
+			$event_state = __( 'Recurring Event (Repeated)', 'mage-eventpress' );
 		} elseif ( $recurring == 'yes' ) {
-			$event_state = __( 'Recurring Event (Selected Dates)', 'mage-eventpresscurring' );
+			$event_state = __( 'Recurring Event (Selected Dates)', 'mage-eventpress' );
 		} else {
 			$event_state = '';
 		}

@@ -8,7 +8,7 @@
 		add_submenu_page(
 			'edit.php?post_type=mep_events',
 			__( 'Analytics', 'mage-eventpress' ),
-			__( '<span style="color:#32c1a4">Analytics</span>', 'mage-eventpress' ),
+			'<span style="color:#32c1a4">Analytics</span>', // Menu title with HTML outside translation
 			'manage_options',
 			'mep_event_analytics_page',
 			'mep_event_analytics_page'

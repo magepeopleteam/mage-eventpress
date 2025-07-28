@@ -12,6 +12,14 @@ div.item_bg_image:hover {
 	-webkit-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;
 }
+
+.mep_list_event_details h2, .mep_list_event_details h3, .mep_list_event_details h4, .mep_list_event_details h5, .mep_list_event_details h6 {
+    padding: 0;
+    margin: 0;
+    line-height: 27px;
+    color: inherit;
+}
+
 /****************************************/
 div.search_result_empty {
 	display: none;font-weight: 500;

@@ -1110,6 +1110,13 @@
 							'desc'    => __( 'Please enter the translated text of <strong>Limited Availability</strong>.', 'mage-eventpress' ),
 							'type'    => 'text',
 							'default' => 'Limited Availability'
+						),
+						array(
+							'name'    => 'mep_ticket_options_text',
+							'label'   => __( 'Ticket Options', 'mage-eventpress' ),
+							'desc'    => __( 'Please enter the translated text of <strong>Ticket Options</strong>.', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Ticket Options'
 						)
 					) ),
 					'style_setting_sec'        => apply_filters( 'mep_settings_styling_arr', array(
@@ -1308,16 +1315,16 @@
 					),
 					'carousel_setting_sec'     => apply_filters( 'mep_settings_carousel_arr', array(
 							array(
-								'name'    => 'mep_load_carousal_from_theme',
-								'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
-								'desc'    => __( 'If your theme is not loading the Owl Carousel Library, or if you"re having issues with Owl Carousel, you can set this option to "Yes" to fix the issue.', 'mage-eventpress' ),
-								'type'    => 'select',
-								'default' => 'no',
-								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
-								)
-							),
+						'name'    => 'mep_load_carousal_from_theme',
+						'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
+						'desc'    => __( 'Select "Yes" only if your theme already includes Owl Carousel library. Select "No" (recommended) to let the plugin load its own Owl Carousel library. If carousel is not working, ensure this is set to "No".', 'mage-eventpress' ),
+						'type'    => 'select',
+						'default' => 'no',
+						'options' => array(
+							'no'  => __( 'No - Load from Plugin (Recommended)', 'mage-eventpress' ),
+							'yes' => __( 'Yes - Load from Theme', 'mage-eventpress' )
+						)
+					),
 							array(
 								'name'    => 'mep_autoplay_carousal',
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),

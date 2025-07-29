@@ -21,7 +21,7 @@
 		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
 				<?php if ( $date_type == 'no' ) { ?>
-                    <div class="card-header"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
+                    <div class="card-header"><?php echo esc_html(mep_get_option('mep_ticket_options_text', 'label_setting_sec', __('Ticket Options', 'mage-eventpress'))); ?></div>
 				<?php } ?>
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {

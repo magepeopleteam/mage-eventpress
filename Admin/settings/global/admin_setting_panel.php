@@ -1111,13 +1111,6 @@
 							'type'    => 'text',
 							'default' => 'Limited Availability'
 						),
-						array(
-							'name'    => 'mep_ticket_options_text',
-							'label'   => __( 'Ticket Options', 'mage-eventpress' ),
-							'desc'    => __( 'Please enter the translated text of <strong>Ticket Options</strong>.', 'mage-eventpress' ),
-							'type'    => 'text',
-							'default' => 'Ticket Options'
-						)
 					) ),
 					'style_setting_sec'        => apply_filters( 'mep_settings_styling_arr', array(
 							// Base Background & Text Color

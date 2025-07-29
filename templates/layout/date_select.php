@@ -19,7 +19,7 @@
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 			<?php } else { ?>
 				<div class="date-time-header">
-					<div class="ticket-title"><?php echo esc_html(mep_get_option('mep_ticket_options_text', 'label_setting_sec', __('Ticket Options', 'mage-eventpress'))); ?></div>
+					<div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
 					<div class="date-time-area">
 						<label>
 							<span><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></span>

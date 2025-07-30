@@ -389,6 +389,14 @@
 								'placeholder' => '5'
 							),
 							array(
+								'name'        => 'mep_limited_availability_text',
+								'label'       => __( 'Limited Availability Ribbon Text', 'mage-eventpress' ),
+								'desc'        => __( 'The text to display on the limited availability ribbon.', 'mage-eventpress' ),
+								'type'        => 'text',
+								'default'     => 'Limited Availability',
+								'placeholder' => 'Limited Availability'
+							),
+							array(
 								'name'    => 'mep_show_low_stock_warning',
 								'label'   => __( 'Show Low Stock Warning?', 'mage-eventpress' ),
 								'desc'    => __( 'Enable this to show a warning message when event seats are running low.', 'mage-eventpress' ),

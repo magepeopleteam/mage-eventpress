@@ -263,14 +263,7 @@ div.buttonGroup > *,
 }
 /* low stock warning css */
 @media only screen and (min-width: 10px) {
-/**
- * Low Stock Display Styles for Mage EventPress
- * 
- * @Author 		engr.sumonazma@gmail.com
- * Copyright: 	mage-people.com
- */
 
-/* Low Stock Warning Styles */
 .mep-low-stock-warning {
     background: linear-gradient(135deg, #ff6b6b, #ee5a52);
     color: #ffffff;

@@ -38,7 +38,6 @@
 		// add_action('activated_plugin', 'mep_event_activation_redirect');
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Dependencies.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/blocks.php';
-		require_once MPWEM_PLUGIN_DIR . '/inc/mep_low_stock_display.php';
 
 		// Register block editor assets
 		add_action('init', 'mep_register_block_assets');

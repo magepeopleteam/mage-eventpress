@@ -261,3 +261,14 @@ div.buttonGroup > *,
 	transform: translateY(-4px) scale(1.025);
 }
 }
+/* low stock warning css */
+.mep-low-stock-warning-ribbon-text {
+	background: #ff1700; 
+	color: white; 
+	padding: 4px 8px; 
+	border-radius: 3px; 
+	font-size: 12px; 
+	text-align: center; 
+	margin-bottom: 8px; 
+	display: inline-block !important;
+}

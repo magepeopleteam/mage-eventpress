@@ -29,20 +29,6 @@
             // Use the selected date for calculating availability
             $total_sold = mep_get_ticket_type_seat_count($post_id, $ticket_type_name, $selected_date, $total_quantity, $total_resv_quantity);
             $available_seats = (int)$total_quantity - ((int)$total_sold + (int)$total_resv_quantity);
-
-            // Create a unique key for this ticket type on this date
-            $date_specific_key = 'mep_low_stock_' . $post_id . '_' . sanitize_title($ticket_type_name) . '_' . sanitize_title($selected_date);
-            
-            // Check and send notification if stock is low - allow filtering
-            do_action('mep_before_check_low_stock', $post_id, $ticket_type_name, $available_seats);
-            $notify_result = apply_filters('mep_check_low_stock', true, $post_id, $ticket_type_name, $available_seats);
-            
-            if ($notify_result) {
-                mep_check_and_notify_low_ticket_stock($post_id, $ticket_type_name, $available_seats);
-            }
-            
-            do_action('mep_after_check_low_stock', $post_id, $ticket_type_name, $available_seats);
-
 			if ($total_left > 0) {
 				if ($qty_t_type == 'dropdown') { ?>
                     <select name="option_qty[]" id="eventpxtp_<?php echo esc_attr($count); ?>" <?php if ($total_left <= 0) { ?> style='display: none!important;' <?php } ?> class='extra-qty-box etp'>

@@ -24,16 +24,7 @@ class MEP_Low_Stock_Display {
         // Add email notification functionality
         add_action('mep_low_stock_detected', array($this, 'send_low_stock_email'), 10, 4);
     }
-    
-    /**
-     * Enqueue CSS styles for low stock warnings and ribbons
-     */
-    public function enqueue_styles() {
-        if (is_singular('mep_events')) {
-            wp_enqueue_style('mep-low-stock-display', plugin_dir_url(__FILE__) . '../assets/frontend/mep-low-stock-display.css', array(), '1.0.2');
-        }
-    }
-        
+            
     /**
      * Check if low stock warning should be shown
      */

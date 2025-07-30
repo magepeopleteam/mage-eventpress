@@ -61,30 +61,27 @@
 											<?php if ( $ticket_details ) { ?>
                                                 <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 											<?php } ?>
-											<?php 
-												// Check if low stock warning is enabled and if we should hide remaining tickets
-												$show_low_stock_warning = mep_get_option('mep_show_low_stock_warning', 'general_setting_sec', 'yes');
-												$low_stock_threshold = (int)mep_get_option('mep_low_stock_threshold', 'general_setting_sec', '3');
-												$should_hide_remaining = ($show_low_stock_warning === 'yes' && $available > 0 && $available <= $low_stock_threshold);
-												
-												// Show low stock warning text under description with same styling as remaining tickets
-												if ($show_low_stock_warning === 'yes' && $available > 0 && $available <= $low_stock_threshold) {
-													$custom_warning_text = mep_get_option('mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left');
-													$warning_text = sprintf(esc_html__($custom_warning_text, 'mage-eventpress'), esc_html($available));
-													?>
-													<div class="ticket-remaining xtra-item-left remaining-low">
-														<?php echo $warning_text; ?>
-													</div>
-													<?php
-												}
-												
-												// Only show remaining tickets if not in low stock warning state
-												if ( $mep_available_seat == 'on' && !$should_hide_remaining ) { 
-											?>
+                                            
+                                            <?php 
+                                            // Check if low stock warning should be shown
+                                            $show_low_stock_warning = false;
+                                            if (function_exists('mep_is_low_stock')) {
+                                                $show_low_stock_warning = mep_is_low_stock($event_id, $ticket_name, $available);
+                                            }
+                                            
+                                            // Only show "Tickets remaining" if low stock warning is not shown
+                                            if ( $mep_available_seat == 'on' && !$show_low_stock_warning ) { ?>
                                                 <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
 													<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining','mage-eventpress' ); ?>
                                                 </div>
 											<?php } ?>
+                                            
+                                            <?php 
+                                            // Display low stock warning
+                                            if (function_exists('mep_display_low_stock_warning')) {
+                                                mep_display_low_stock_warning($event_id, $ticket_name, $available);
+                                            }
+                                            ?>
                                         </div>
                                         <div class="quantity-control">
                                             <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
@@ -118,18 +115,16 @@
 											?>
                                         </div>
                                         <div class="ticket-price">
-											<?php 
-												// Hook for limited availability ribbon before price
-												do_action( 'mep_before_ticket_price', $event_id, $ticket_name, $ticket_type, $ticket_price, $date );
-												echo wc_price( $ticket_price ); 
-											?>
+                                            <?php 
+                                            // Display limited availability ribbon above price
+                                            if (function_exists('mep_display_limited_availability_ribbon')) {
+                                                mep_display_limited_availability_ribbon($event_id, $ticket_name, $available);
+                                            }
+                                            ?>
+											<?php echo wc_price( $ticket_price ); ?>
                                         </div>
                                     </div>
-									<?php 
-										// Hook for low stock warning after ticket quantity
-										do_action( 'mep_after_ticket_type_qty', $event_id, $ticket_name, $ticket_type, $ticket_d_qty, $date );
-										do_action( 'mpwem_multi_attendee', $event_id ); 
-									?>
+									<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
                                 </div>
 								<?php
 							}

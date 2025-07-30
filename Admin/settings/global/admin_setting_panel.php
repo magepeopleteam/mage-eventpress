@@ -385,7 +385,7 @@
 								'label'       => __( 'Limited Availability Threshold', 'mage-eventpress' ),
 								'desc'        => __( 'Show "Limited Availability" ribbon when available seats are less than or equal to this number.', 'mage-eventpress' ),
 								'type'        => 'number',
-								'default'     => '5',
+								'default'     => '0',
 								'placeholder' => '5'
 							),
 							array(
@@ -412,7 +412,7 @@
 								'label'       => __( 'Low Stock Threshold', 'mage-eventpress' ),
 								'desc'        => __( 'Show low stock warning when available seats are less than or equal to this number.', 'mage-eventpress' ),
 								'type'        => 'number',
-								'default'     => '3',
+								'default'     => '0',
 								'placeholder' => '3'
 							),
 							array(

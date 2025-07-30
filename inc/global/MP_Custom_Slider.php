@@ -96,6 +96,7 @@
 							foreach ( $image_ids as $id ) {
 								$image_url = MP_Global_Function::get_image_url( '', $id );
 								$size = getimagesize($image_url);
+								$image_url=$image_url?:MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ;
 								$width=0;
 								$height=0;
 								if ($size) {

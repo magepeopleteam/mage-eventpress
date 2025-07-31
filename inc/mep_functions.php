@@ -58,6 +58,49 @@
 			return preg_match( $pattern, $filename ) === 1;
 		}
 	}
+
+	// Helper function to detect serialized PHP objects
+	if ( ! function_exists( 'mep_contains_serialized_object' ) ) {
+		function mep_contains_serialized_object($value) {
+			return is_string($value) && preg_match('/^O:\d+:"[^"]+":\d+:{/', $value);
+		}
+	}
+
+	// Helper function: Detect if input is a serialized PHP object
+	function mep_is_serialized_object($value) {
+		if (!is_string($value)) {
+			return false;
+		}
+
+		// Suppress errors during unserialize
+		$unserialized = @unserialize($value);
+
+		// If the result is an object, block it
+		return is_object($unserialized);
+	}
+
+	// Prevent saving serialized objects
+	function mep_is_malicious_value( $value ) {
+		if ( is_array( $value ) || is_object( $value ) ) {
+			return true;
+		}
+		
+		// Serialized object pattern (e.g., O:4:"Evil":0:{})
+		if ( is_string( $value ) && preg_match( '/^O:\d+:"[a-zA-Z0-9_]+":\d+:{/s', trim( $value ) ) ) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	function mep_letters_numbers_spaces_only( $value ) {
+		// Set encoding explicitly
+		mb_regex_encoding('UTF-8');
+		return mb_ereg_replace('[^[:alnum:][:space:]]+', '', $value);
+
+	}
+
+
 	if ( ! function_exists( 'mep_temp_attendee_create_for_cart_ticket_array' ) ) {
 		function mep_temp_attendee_create_for_cart_ticket_array( $event_id, $ticket_type ) {
 			foreach ( $ticket_type as $ticket ) {

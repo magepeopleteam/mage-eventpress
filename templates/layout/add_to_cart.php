@@ -21,14 +21,6 @@
 		<?php } else { ?>
 			<button type="submit" class="_themeButton" name="add-to-cart" value="<?php echo esc_attr($link_wc_product); ?>">
 				<?php do_action('mep_before_add_cart_button', $event_id); echo esc_html(mep_get_label($event_id, 'mep_cart_btn_text', __('Register For This Event', 'mage-eventpress'))); do_action('mep_after_add_cart_button', $event_id); ?>
-				<?php
-				echo esc_html( mep_get_label(
-					$event_id,
-					'mep_cart_btn_text',
-					__( 'Register For This Event', 'mage-eventpress' )
-				) );
-				?>
-				<?php do_action('mep_after_add_cart_button', $event_id); ?>
 			</button>
 		<?php } ?>
 	</div>

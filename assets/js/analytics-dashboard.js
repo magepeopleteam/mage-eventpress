@@ -82,9 +82,7 @@
                 chartType: $('#mpwem-chart-type').val()
             };
             
-            console.log('Applying filters:', this.currentFilters);
-            console.log('Category filter value:', $('#mpwem-category-filter').val());
-            console.log('Event filter value:', $('#mpwem-event-filter').val());
+
             this.loadAnalyticsData();
         }
 
@@ -96,8 +94,7 @@
         loadAnalyticsData() {
             this.showLoading();
             
-            // Debug: Check if mpwem_analytics is defined
-            console.log('mpwem_analytics object:', window.mpwem_analytics);
+
             
             if (!window.mpwem_analytics) {
                 console.error('mpwem_analytics object is not defined!');
@@ -112,15 +109,13 @@
                 filters: this.currentFilters
             };
 
-            console.log('Sending AJAX request with data:', data);
-            console.log('AJAX URL:', window.mpwem_analytics.ajax_url);
+
 
             $.ajax({
                 url: window.mpwem_analytics.ajax_url,
                 type: 'POST',
                 data: data,
                 success: (response) => {
-                    console.log('AJAX response received:', response);
                     this.hideLoading();
                     if (response.success) {
                         this.updateSummaryCards(response.data.summary);
@@ -174,7 +169,7 @@
             const isPositive = change > 0;
             const isNegative = change < 0;
             
-            console.log('Updating change indicator:', selector, 'Change value:', change);
+
             
             $element.removeClass('positive negative neutral');
             

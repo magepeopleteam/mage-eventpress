@@ -90,17 +90,10 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
 
 
         public function get_analytics_data() {
-            // Add debugging
-            error_log('MPWEM Analytics: AJAX request received');
-            error_log('MPWEM Analytics: POST data: ' . print_r($_POST, true));
-            
             // Verify nonce
             if (!wp_verify_nonce($_POST['nonce'], 'mpwem_analytics_nonce')) {
-                error_log('MPWEM Analytics: Nonce verification failed');
                 wp_send_json_error(array('message' => 'Security check failed'));
             }
-
-            error_log('MPWEM Analytics: Nonce verification passed');
 
             // Handle filters parameter (JSON string from JavaScript)
             $filters = array();
@@ -116,7 +109,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 }
             }
 
-            error_log('MPWEM Analytics: Parsed filters: ' . print_r($filters, true));
+
 
             $date_from = sanitize_text_field($filters['dateFrom'] ?? $_POST['date_from'] ?? '');
             $date_to = sanitize_text_field($filters['dateTo'] ?? $_POST['date_to'] ?? '');
@@ -133,9 +126,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 $date_to = date('Y-m-t'); // Last day of current month
             }
 
-            error_log('MPWEM Analytics: Processing data for date range: ' . $date_from . ' to ' . $date_to);
-            error_log('MPWEM Analytics: Event filter: ' . $event_filter);
-            error_log('MPWEM Analytics: Category filter: ' . $category_filter);
+
 
             $analytics_data = $this->calculate_analytics_data($date_from, $date_to, $category_filter, $event_filter);
             $chart_data = $this->get_chart_data_by_type($chart_type, $date_from, $date_to, $period, $category_filter, $event_filter);
@@ -169,8 +160,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 'currency_symbol' => $analytics_data['currency_symbol']
             );
             
-            error_log('MPWEM Analytics: Sending response with ' . count($response_data['events']) . ' events');
-            error_log('MPWEM Analytics: Summary data - Revenue: ' . $response_data['summary']['totalRevenue'] . ', Revenue Change: ' . $response_data['summary']['revenueChange'] . '%, Orders: ' . $response_data['summary']['totalOrders'] . ', Orders Change: ' . $response_data['summary']['ordersChange'] . '%');
+
             wp_send_json_success($response_data);
         }
 
@@ -210,8 +200,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
         private function calculate_analytics_data($date_from, $date_to, $category_filter = '', $event_filter = '') {
             global $wpdb;
 
-            // Add debugging for filters
-            error_log('MPWEM Analytics: Filters - Event: ' . $event_filter . ', Category: ' . $category_filter);
+
 
             // Get orders in date range
             $order_status = array('wc-completed', 'wc-processing');
@@ -248,14 +237,12 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                     if (get_post_type($event_id) == 'mep_events') {
                         // Apply event filter - convert both to strings for comparison
                         if (!empty($event_filter) && (string)$event_id !== (string)$event_filter) {
-                            error_log('MPWEM Analytics: Skipping event ' . $event_id . ' due to filter ' . $event_filter);
                             continue;
                         }
 
                         // Apply category filter
                         $event_categories = wp_get_post_terms($event_id, 'mep_cat', array('fields' => 'slugs'));
                         if (!empty($category_filter) && !in_array($category_filter, $event_categories)) {
-                            error_log('MPWEM Analytics: Skipping event ' . $event_id . ' due to category filter ' . $category_filter . ' (event categories: ' . implode(',', $event_categories) . ')');
                             continue;
                         }
 
@@ -321,7 +308,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
             $net_revenue = $total_revenue - $refunds;
             $profit_loss = $net_revenue; // Simplified - you might want to subtract costs
 
-            error_log('MPWEM Analytics: Final results - Revenue: ' . $total_revenue . ', Orders: ' . $total_orders . ', Tickets: ' . $total_tickets . ', Events: ' . count($event_data));
+
 
             return array(
                 'summary' => array(
@@ -341,7 +328,6 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
         }
 
         private function get_chart_data_by_type($chart_type, $date_from, $date_to, $period, $category_filter = '', $event_filter = '') {
-            error_log('MPWEM Analytics: Chart data - Type: ' . $chart_type . ', Period: ' . $period . ', Event Filter: ' . $event_filter . ', Category Filter: ' . $category_filter);
             
             $start_date = new DateTime($date_from);
             $end_date = new DateTime($date_to);
@@ -472,7 +458,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 $current->add($interval);
             }
 
-            error_log('MPWEM Analytics: Chart data generated: ' . count($chart_data) . ' data points');
+
             return $chart_data;
         }
 
@@ -558,7 +544,6 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 
                 // Check again after loading
                 if (!class_exists('mPDF') && !class_exists('\Mpdf\Mpdf')) {
-                    error_log('MPWEM Analytics: mPDF library not available, falling back to HTML');
                     $this->export_to_html_fallback($data, $date_from, $date_to);
                     return;
                 }
@@ -571,11 +556,8 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
             $html = $this->generate_pdf_html($data, $date_from, $date_to, $currency_symbol);
             
             try {
-                error_log('MPWEM Analytics: Starting PDF generation');
-                
                 // Initialize mPDF
                 if (class_exists('\Mpdf\Mpdf')) {
-                    error_log('MPWEM Analytics: Using \Mpdf\Mpdf class');
                     $mpdf = new \Mpdf\Mpdf([
                         'mode' => 'utf-8',
                         'format' => 'A4',
@@ -585,11 +567,8 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                         'margin_bottom' => 15
                     ]);
                 } else {
-                    error_log('MPWEM Analytics: Using mPDF class');
                     $mpdf = new mPDF('utf-8', 'A4', 15, 15, 15, 15);
                 }
-                
-                error_log('MPWEM Analytics: mPDF initialized successfully');
                 
                 // Configure mPDF settings
                 $mpdf->allow_charset_conversion = true;
@@ -599,12 +578,8 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 $mpdf->autoArabic = true;
                 $mpdf->autoLangToFont = true;
                 
-                error_log('MPWEM Analytics: Writing HTML to PDF');
-                
                 // Write HTML to PDF
                 $mpdf->WriteHTML($html);
-                
-                error_log('MPWEM Analytics: Outputting PDF file: ' . $filename);
                 
                 // Output PDF
                 $mpdf->Output($filename, 'D');
@@ -612,16 +587,11 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 
             } catch (Exception $e) {
                 // Fallback to HTML if PDF generation fails
-                error_log('MPWEM Analytics: PDF generation failed: ' . $e->getMessage());
                 $this->export_to_html_fallback($data, $date_from, $date_to);
             }
         }
 
         private function generate_pdf_html($data, $date_from, $date_to, $currency_symbol) {
-            // Debug logging
-            error_log('MPWEM Analytics: generate_pdf_html called with data structure: ' . print_r($data, true));
-            error_log('MPWEM Analytics: Date range: ' . $date_from . ' to ' . $date_to);
-            error_log('MPWEM Analytics: Currency symbol: ' . $currency_symbol);
             
             // Create compact HTML to prevent extra page
             $html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Analytics Report</title><style>body{font-family:Arial,sans-serif;margin:0;padding:15px;color:#333;font-size:10px;line-height:1.3}.header{text-align:center;margin-bottom:20px;border-bottom:2px solid #007cba;padding-bottom:15px;page-break-after:avoid}.header h1{color:#007cba;margin:0;font-size:18px;page-break-after:avoid}.header p{color:#666;margin:8px 0 0 0;font-size:11px;page-break-after:avoid}.summary{margin-bottom:20px;page-break-inside:avoid}.summary h2{color:#007cba;border-bottom:1px solid #ddd;padding-bottom:8px;font-size:14px;page-break-after:avoid}.summary table{width:100%;border-collapse:collapse;margin-top:10px;page-break-inside:avoid}.summary th,.summary td{border:1px solid #ddd;padding:8px;text-align:left;font-size:10px}.summary th{background-color:#f8f9fa;font-weight:bold;color:#333}.summary td{background-color:#fff}.events{margin-bottom:20px;page-break-inside:avoid}.events h2{color:#007cba;border-bottom:1px solid #ddd;padding-bottom:8px;font-size:14px;page-break-after:avoid}.events table{width:100%;border-collapse:collapse;margin-top:10px;page-break-inside:avoid}.events th,.events td{border:1px solid #ddd;padding:8px;text-align:left;font-size:10px}.events th{background-color:#f8f9fa;font-weight:bold;color:#333}.events td{background-color:#fff}.categories{margin-bottom:20px;page-break-inside:avoid}.categories h2{color:#007cba;border-bottom:1px solid #ddd;padding-bottom:8px;font-size:14px;page-break-after:avoid}.categories table{width:100%;border-collapse:collapse;margin-top:10px;page-break-inside:avoid}.categories th,.categories td{border:1px solid #ddd;padding:8px;text-align:left;font-size:10px}.categories th{background-color:#f8f9fa;font-weight:bold;color:#333}.categories td{background-color:#fff}.footer{margin-top:20px;text-align:center;color:#666;font-size:10px;border-top:1px solid #ddd;padding-top:15px;page-break-before:avoid}tr{page-break-inside:avoid}h1,h2,h3{page-break-after:avoid}p,div{page-break-inside:avoid}</style></head><body><div class="header"><h1>Analytics Report</h1><p>Period: ' . $date_from . ' to ' . $date_to . '</p></div>';
@@ -634,7 +604,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
             // Add events section
             if (!empty($data['events'])) {
                 $html .= '<div class="events"><h2>Event Performance</h2><table><tr><th>Event</th><th>Revenue</th><th>Tickets Sold</th><th>Orders</th></tr>';
-                foreach ($data['events'] as $event) {
+            foreach ($data['events'] as $event) {
                     $html .= '<tr><td>' . esc_html($event['title'] ?? 'Unknown Event') . '</td><td>' . $currency_symbol . number_format($event['revenue'] ?? 0, 2) . '</td><td>' . number_format($event['tickets'] ?? 0) . '</td><td>' . number_format($event['orders'] ?? 0) . '</td></tr>';
                 }
                 $html .= '</table></div>';
@@ -652,7 +622,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
             // Add footer
             $html .= '<div class="footer"><p>Generated by MageEventPress Analytics Dashboard</p></div></body></html>';
             
-            error_log('MPWEM Analytics: HTML generated successfully, length: ' . strlen($html));
+
             
             return $html;
         }
@@ -671,7 +641,6 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
         }
 
         private function format_events_for_table($events_data) {
-            error_log('MPWEM Analytics: Formatting events data: ' . print_r($events_data, true));
             
             $formatted_events = array();
             
@@ -694,12 +663,11 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 return $b['revenue'] <=> $a['revenue'];
             });
             
-            error_log('MPWEM Analytics: Formatted events: ' . count($formatted_events) . ' events');
+
             return $formatted_events;
         }
 
         private function format_categories_for_table($categories_data) {
-            error_log('MPWEM Analytics: Formatting categories data: ' . print_r($categories_data, true));
             
             $formatted_categories = array();
             
@@ -718,7 +686,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 return $b['revenue'] <=> $a['revenue'];
             });
             
-            error_log('MPWEM Analytics: Formatted categories: ' . count($formatted_categories) . ' categories');
+
             return $formatted_categories;
         }
 
@@ -742,7 +710,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
             $previous_date_from = $previous_start->format('Y-m-d');
             $previous_date_to = $previous_end->format('Y-m-d');
             
-            error_log('MPWEM Analytics: Previous period - From: ' . $previous_date_from . ' To: ' . $previous_date_to);
+
             
             return $this->calculate_analytics_data($previous_date_from, $previous_date_to, $category_filter, $event_filter);
         }
@@ -792,7 +760,7 @@ if (!class_exists('MPWEM_Analytics_Dashboard')) {
                 $previous_data['summary']['net_revenue']
             );
             
-            error_log('MPWEM Analytics: Percentage changes calculated - Revenue: ' . $changes['revenue_change'] . '%, Orders: ' . $changes['orders_change'] . '%, Tickets: ' . $changes['tickets_change'] . '%');
+
             
             return $changes;
         }

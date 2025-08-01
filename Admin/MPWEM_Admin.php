@@ -40,8 +40,8 @@
 				require_once MPWEM_PLUGIN_DIR . '/Admin/status.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
-				require_once MPWEM_PLUGIN_DIR . '/Admin/mep_analytics.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Template_Override_Menu.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Analytics_Dashboard.php';
 				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/Admin/settings/MPWEM_Venue_Settings.php';

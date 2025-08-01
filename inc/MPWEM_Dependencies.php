@@ -34,6 +34,7 @@
 
 			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Analytics_Dashboard.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
@@ -110,20 +111,6 @@
 				wp_enqueue_style( 'jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.css', array(), 1.0 );
 				wp_enqueue_script( 'jquery.modal.min', MPWEM_PLUGIN_URL . '/assets/helper/jquery_modal/jquery.modal.min.js', array( 'jquery' ), 1.0, true );
 				//******************/
-				if ( $hook == 'mep_events_page_mep_event_analytics_page' ) {
-					// Enqueue Chart.js
-					wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js', array(), '3.9.1', true );
-					wp_enqueue_script( 'chartjs-date-adapter', 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js', array( 'chartjs' ), '2.0.0', true );
-					// Enqueue custom analytics scripts
-					wp_enqueue_script( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.js', array( 'jquery', 'chartjs' ), time(), true );
-					wp_enqueue_style( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.css', array(), time() );
-					// Localize script with AJAX URL, nonce, and currency symbol
-					wp_localize_script( 'mep-analytics', 'mep_analytics_data', array(
-						'ajax_url'        => admin_url( 'admin-ajax.php' ),
-						'nonce'           => wp_create_nonce( 'mep_analytics_nonce' ),
-						'currency_symbol' => get_woocommerce_currency_symbol(),
-					) );
-				}
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
@@ -138,6 +125,33 @@
 						'nonce' => wp_create_nonce( 'mep_nonce' )
 					) );
 					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), time() );
+				}
+				
+				// Load analytics dashboard scripts on analytics page
+				if ( $hook == 'mep_events_page_mep_analytics_dashboard' || 
+					 ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && 
+					   isset( $_GET['page'] ) && $_GET['page'] == 'mep_analytics_dashboard' ) ) {
+					// Chart.js for analytics charts
+					wp_enqueue_script( 'chart-js', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '3.9.1', true );
+					// Analytics dashboard assets
+					wp_enqueue_style( 'mpwem_analytics_dashboard', MPWEM_PLUGIN_URL . '/assets/css/analytics-dashboard.css', array(), time() );
+					wp_enqueue_script( 'mpwem_analytics_dashboard', MPWEM_PLUGIN_URL . '/assets/js/analytics-dashboard.js', array( 'jquery', 'chart-js' ), time(), true );
+					wp_localize_script( 'mpwem_analytics_dashboard', 'mpwem_analytics', array(
+						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'nonce'    => wp_create_nonce( 'mpwem_analytics_nonce' ),
+						'currency_symbol' => get_woocommerce_currency_symbol(),
+						'currency_position' => get_option( 'woocommerce_currency_pos' ),
+						'decimal_separator' => wc_get_price_decimal_separator(),
+						'thousand_separator' => wc_get_price_thousand_separator(),
+						'num_decimals' => get_option( 'woocommerce_price_num_decimals', 2 ),
+						'translations' => array(
+							'loading' => __( 'Loading...', 'mage-eventpress' ),
+							'error' => __( 'Error loading data', 'mage-eventpress' ),
+							'no_data' => __( 'No data available', 'mage-eventpress' ),
+							'export_success' => __( 'Export completed successfully', 'mage-eventpress' ),
+							'export_error' => __( 'Export failed', 'mage-eventpress' )
+						)
+					) );
 				}
 				/******************************/
 				// custom

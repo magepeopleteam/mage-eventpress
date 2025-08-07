@@ -15,8 +15,13 @@
 				$default_dir   = MPWEM_PLUGIN_DIR . '/templates/';
 				$dir           = is_dir( $template_path ) ? $template_path : $default_dir;
 				$file_path     = $dir . $file_name;
-
-				return locate_template( array( 'templates/' . $file_name ) ) ? $file_path : $default_dir . $file_name;
+				// Check if template exists in theme's mage-events directory
+				$theme_template_path = $template_path . $file_name;
+				if ( file_exists( $theme_template_path ) ) {
+					return $theme_template_path;
+				}
+				// Fallback to plugin's default template
+				return $default_dir . $file_name;
 			}
 
 			//==========================//

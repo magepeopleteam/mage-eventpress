@@ -23,7 +23,6 @@
 				// Fallback to plugin's default template
 				return $default_dir . $file_name;
 			}
-
 			//==========================//
 			public static function get_total_available_seat( $event_id, $date = '' ) {
 				$total_sold    = self::get_total_sold( $event_id, $date );

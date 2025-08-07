@@ -72,7 +72,6 @@ if (!class_exists('MPWEM_Template_Override_Settings')) {
             </script>
             <?php
         }
-        
         /**
          * Render a template category section
          */

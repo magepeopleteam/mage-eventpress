@@ -58,8 +58,15 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                     <label class="mpev-label">
                         <div>
                             <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
-                            <span><?php echo __('Please select Speakers, You can Add New Speakers From <a href="' . get_admin_url() . 'post-new.php?post_type=mep_event_speaker' . '">Here</a>', 'mage-eventpress'); ?></span>
-                            
+                            <span>
+                                <?php
+                                    printf(
+                                        /* translators: %s: HTML link to add new speakers */
+                                        __( 'Please select Speakers. You can add new speakers from %s.', 'mage-eventpress' ),
+                                        '<a href="' . esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) . '">' . esc_html__( 'here', 'mage-eventpress' ) . '</a>'
+                                    );
+                                ?>
+                            </span>                            
                         </div>
                         <div class="mep-icon-wrapper">
                             <i class="<?php echo esc_attr($speaker_icon); ?>"></i>

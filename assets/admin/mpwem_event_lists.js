@@ -276,8 +276,8 @@
         });
     });
 
-    // Quick Edit functionality
-    $(document).on('click', '.editinline, .action-btn.quick-edit', function(e) {
+    // Quick Edit functionality - Only for custom event lists page
+    $(document).on('click', '.action-btn.quick-edit', function(e) {
         e.preventDefault();
         let $row = $(this).closest('tr');
         // If triggered from the icon, $row may be the <tr> or a <div> inside <td>
@@ -291,6 +291,11 @@
         // Show this quick edit row and hide the main row
         $row.hide();
         $quickEditRow.show();
+        
+        // Only handle custom quick edit on the custom event lists page
+        if (!$('.mpwem_event_list').length) {
+            return;
+        }
         // Ensure dropdowns are properly initialized
         $quickEditRow.find('select').each(function() {
             $(this).prop('disabled', false);

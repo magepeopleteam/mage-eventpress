@@ -133,7 +133,13 @@
                                     <input type="hidden" name="mep_event_date_cart" value="<?php //do_action('mep_event_date'); ?>">
 									<?php if ($not_in_the_cart) { ?>
                                         <button type="submit" name="add-to-cart" value="<?php echo esc_html($cart_product_id); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php do_action('mep_before_add_cart_button', $post_id);
-												esc_html_e(mep_get_label($post_id, 'mep_cart_btn_text', __('Register For This Event', 'mage-eventpress')), 'mage-eventpress');
+												echo esc_html(
+													mep_get_label(
+														$post_id,
+														'mep_cart_btn_text',
+														__('Register For This Event', 'mage-eventpress')
+													)
+												);
 												do_action('mep_after_add_cart_button', $post_id); ?></button>
 									<?php } else { ?>
                                         <a href="<?php echo wc_get_cart_url(); ?>" class="button-default woocommerce button alt button alt btn-mep-event-cart"><?php esc_html_e('Already Added into Cart!', 'mage-eventpress'); ?> </a>

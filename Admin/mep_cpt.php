@@ -11,34 +11,63 @@
 		$event_slug = mep_get_option('mep_event_slug', 'general_setting_sec', 'events');
 		$event_icon = mep_get_option('mep_event_icon', 'general_setting_sec', 'dashicons-calendar-alt');
 		$labels = array(
-			'name' => __($event_label, 'mage-eventpress'),
-			'singular_name' => __($event_label, 'mage-eventpress'),
-			'menu_name' => __($event_label, 'mage-eventpress'),
-			'name_admin_bar' => __($event_label, 'mage-eventpress'),
-			'archives' => __($event_label . ' List', 'mage-eventpress'),
-			'attributes' => __($event_label . ' List', 'mage-eventpress'),
-			'parent_item_colon' => __($event_label . ' Item:', 'mage-eventpress'),
-			'all_items' => __('All ', 'mage-eventpress') . $event_label,
-			'add_new_item' => __('Add New ', 'mage-eventpress') . $event_label,
-			'add_new' => __('Add New ', 'mage-eventpress') . $event_label,
-			'new_item' => __('New ', 'mage-eventpress') . $event_label,
-			'edit_item' => __('Edit ', 'mage-eventpress') . $event_label,
-			'update_item' => __('Update ', 'mage-eventpress') . $event_label,
-			'view_item' => __('View ', 'mage-eventpress') . $event_label,
-			'view_items' => __('View ', 'mage-eventpress') . $event_label,
-			'search_items' => __('Search ', 'mage-eventpress') . $event_label,
-			'not_found' => $event_label . __(' Not found', 'mage-eventpress'),
-			'not_found_in_trash' => $event_label . __(' Not found in Trash', 'mage-eventpress'),
-			'featured_image' => $event_label . __(' Feature Image', 'mage-eventpress'),
-			'set_featured_image' => __('Set ', 'mage-eventpress') . $event_label . __(' featured image', 'mage-eventpress'),
-			'remove_featured_image' => __('Remove ', 'mage-eventpress') . $event_label . __(' featured image', 'mage-eventpress'),
-			'use_featured_image' => __('Use as ', 'mage-eventpress') . $event_label . __(' featured image', 'mage-eventpress'),
-			'insert_into_item' => __('Insert into ', 'mage-eventpress') . $event_label,
-			'uploaded_to_this_item' => __('Uploaded to this ', 'mage-eventpress') . $event_label,
-			'items_list' => $event_label . __(' list', 'mage-eventpress'),
-			'items_list_navigation' => $event_label . __(' list navigation', 'mage-eventpress'),
-			'filter_items_list' => __('Filter ', 'mage-eventpress') . $event_label . __(' list', 'mage-eventpress'),
+			/* translators: %s: Event label */
+			'name' => $event_label,
+			/* translators: %s: Event label */
+			'singular_name' => $event_label,
+			/* translators: %s: Event label */
+			'menu_name' => $event_label,
+			/* translators: %s: Event label */
+			'name_admin_bar' => $event_label,
+			/* translators: %s: Event label */
+			'archives' => sprintf( __( '%s List', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'attributes' => sprintf( __( '%s Attributes', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'parent_item_colon' => sprintf( __( '%s Item:', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'all_items' => sprintf( __( 'All %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'add_new_item' => sprintf( __( 'Add New %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'add_new' => sprintf( __( 'Add New %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'new_item' => sprintf( __( 'New %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'edit_item' => sprintf( __( 'Edit %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'update_item' => sprintf( __( 'Update %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'view_item' => sprintf( __( 'View %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'view_items' => sprintf( __( 'View %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'search_items' => sprintf( __( 'Search %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'not_found' => sprintf( __( '%s not found', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'not_found_in_trash' => sprintf( __( '%s not found in Trash', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'featured_image' => sprintf( __( '%s Featured Image', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'set_featured_image' => sprintf( __( 'Set %s featured image', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'remove_featured_image' => sprintf( __( 'Remove %s featured image', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'use_featured_image' => sprintf( __( 'Use as %s featured image', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'insert_into_item' => sprintf( __( 'Insert into %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'items_list' => sprintf( __( '%s list', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'items_list_navigation' => sprintf( __( '%s list navigation', 'mage-eventpress' ), $event_label ),
+			/* translators: %s: Event label */
+			'filter_items_list' => sprintf( __( 'Filter %s list', 'mage-eventpress' ), $event_label ),
 		);
+
+
 		$rewrite = array(
 			'slug' => $event_slug,
 			'with_front' => true,

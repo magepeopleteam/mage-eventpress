@@ -249,19 +249,3 @@ if (!function_exists('mep_ev_time')) {
         }
     }
 }
-
-if (!function_exists('mep_ev_time_ticket')) {
-    function mep_ev_time_ticket($event_meta)
-    {
-        $start_datetime = $event_meta['event_start_datetime'][0];
-        echo get_mep_datetime($start_datetime, 'time');
-    }
-}
-
-if (!function_exists('mep_ev_date_ticket')) {
-    function mep_ev_date_ticket($event_meta)
-    {
-        $start_datetime = $event_meta['event_start_datetime'][0];
-        echo get_mep_datetime($start_datetime, 'date-text');
-    }
-}

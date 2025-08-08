@@ -95,9 +95,17 @@
 							$count = 1;
 							foreach ( $image_ids as $id ) {
 								$image_url = MP_Global_Function::get_image_url( '', $id );
+								$image_url=$image_url?:MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ;
+								$size = getimagesize($image_url);
+								$width=0;
+								$height=0;
+								if ($size) {
+									$width = $size[0];
+									$height = $size[1];
+								}
 								?>
 								<div class="sliderItem" data-slide-index="<?php echo esc_html( $count ); ?>" data-target-popup="superSlider" data-placeholder>
-									<div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
+									<div data-bg-image="<?php echo esc_html( $image_url ); ?>" data-width="<?php echo esc_html( $width ); ?>" data-height="<?php echo esc_html( $height ); ?>"></div>
 								</div>
 								<?php
 								$count ++;

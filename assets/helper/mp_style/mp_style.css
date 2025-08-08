@@ -484,39 +484,6 @@
 }
 /******************************************************************** Image/slider Section ************************************************/
 @media only screen and (min-width: 10px) {
-	/*******Click slider***************/
-	.mpStyle [class*="clickSlide"] {
-		background-color: var(--color_white);
-		padding: var(--dMP);
-	}
-	.mpStyle [class*="slideItem"] {
-		display: none;
-	}
-	.mpStyle [class*="slideItem"].active {
-		display: block;
-	}
-	.mpStyle [class*="slideItem"] img {
-		width: 100%;
-	}
-	.mpStyle [class*="slideIndicator"] {
-		margin: var(--dMP) 0 0 0;
-	}
-	.mpStyle [class*="slideIndicatorItem"] {
-		border: 3px solid var(--color_border);
-		margin: 0 5px;
-		background-color: var(--color_border);
-	}
-	.mpStyle [class*="slideIndicatorItem"].active {
-		border-color: var(--color_active);
-		background-color: var(--color_active);
-	}
-	.mpStyle [class*="slideIndicatorItem"] img {
-		height: 30px;
-		width: auto;
-	}
-	.mpStyle [class*="slideIndicatorItem"].active img {
-		height: 35px;
-	}
 	/***********Bg Image****************/
 	div.bg_image_area {
 		width: 100%;
@@ -1587,6 +1554,38 @@
 	#ui-datepicker-div .ui-datepicker-title {background-color: var(--color_theme);color: var(--color_theme_alter);background-image: none;font-size: var(--fs_h5);display: -webkit-flex;display: flex;margin: 0;}
 	#ui-datepicker-div .ui-datepicker-title select {min-width: 100px;height: 30px;font-size: var(--fs);padding: 0 var(--dMP_xs);text-align: left;}
 	#ui-datepicker-div.ui-datepicker td {background-color: floralwhite;border: 1px dotted #000;padding: 4px 6px;}
+}
+/********************************************************************************************************************/
+/* Carousel Fallback Styles - When Owl Carousel is not available */
+.mep-carousel-fallback {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 20px;
+	width: 100%;
+}
+
+.mep-carousel-fallback .mep-event-item {
+	width: 100% !important;
+	margin: 0 !important;
+	flex: none !important;
+}
+
+@media (max-width: 768px) {
+	.mep-carousel-fallback {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+	.mep-carousel-fallback {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1025px) {
+	.mep-carousel-fallback {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 /********************************************************************************************************************/
 @media only screen and (min-width: 10px) {

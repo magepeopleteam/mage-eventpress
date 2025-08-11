@@ -5706,7 +5706,10 @@ Vanilla theme css by ariful
     box-shadow: 0 0 5px #ddd;
     padding-bottom: 20px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets {
+
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets,
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets{
     display: flex;
     justify-content: start;
     align-items: start;
@@ -5715,46 +5718,56 @@ Vanilla theme css by ariful
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets i {
+
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets i, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets i,
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets i {
     font-size: 25px;
     padding: 0;
     color: var(--mpev-primary);
     border-radius: 10px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets h2, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets h2 {
+
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets h2, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets h2,
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets h2 {
     font-size: 19px;
     letter-spacing: 2px;
     margin-bottom: 15px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets p, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets p {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets p, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets p {
     font-size: 16px;
     margin-bottom: 5px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets button, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets button {
     background-color: #fff;
     padding: 7px 10px !important;
     border: 1px solid var(--mpev-primary);
     margin: 15px 0;
     color: var(--mpev-primary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button:hover, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button:hover {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets button:hover, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets button:hover {
     background-color: var(--mpev-secondary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets button i, .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .location_widgets button i {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets button i, 
+  .mep_smart_theme .mpwem_sidebar_content .location_widgets button i {
     font-size: 16px;
     padding: 0;
     background: none;
     margin-right: 6px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets [data-read] {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets [data-read] {
     color: var(--mpev-primary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul {
     list-style-type: none;
     max-height: 315px;
     overflow: hidden;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li {
     border: 1px solid #ccd6e2;
     background-color: #f8fafc;
     padding: 15px;
@@ -5767,7 +5780,7 @@ Vanilla theme css by ariful
     border-radius: 12px;
     transition: all 0.3s ease;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li::before {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li::before {
     content: "";
     width: 8px;
     height: 8px;
@@ -5777,17 +5790,17 @@ Vanilla theme css by ariful
     left: 10px;
     background-color: var(--mpev-base);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li:hover {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li:hover {
     border-color: #cbd5e1;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transform: translateY(1px);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span {
     display: block;
     margin: 0;
     font-size: 16px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -5795,12 +5808,12 @@ Vanilla theme css by ariful
     margin-left: 25px;
     margin-top: 10px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span {
     margin: 5px 5px;
     position: relative;
     padding-left: 14px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span::before {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span::before {
     content: "";
     width: 5px;
     height: 5px;
@@ -5812,14 +5825,14 @@ Vanilla theme css by ariful
     top: 50%;
     transform: translateY(-50%);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
     margin: 0;
     font-size: 16px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists i {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists i {
     display: none;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
     background-color: #fff;
     color: var(--mpev-primary) !important;
     height: auto !important;
@@ -5833,41 +5846,38 @@ Vanilla theme css by ariful
     font-weight: var(--fw-medium);
     line-height: inherit;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn:hover {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn:hover {
     background-color: var(--mpev-secondary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn i {
+  .mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn i {
     font-size: 16px;
     padding: 0;
     background: none;
     margin-right: 6px;
     display: inline-block;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {
-    text-align: left;
-    margin-left: 18px;
-  }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets h2.share-widget-title {
+
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets h2.share-widget-title {
     font-size: 19px;
     letter-spacing: 2px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .mep-social-share {
     margin-top: 10px;
     justify-content: start;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .mep-social-share li {
     margin: 7px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li:first-child {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .mep-social-share li:first-child {
     margin-left: 0;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .mep-social-share li a {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .mep-social-share li a {
     color: #fff;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .icons {
     margin-top: 20px;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons i {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .icons i {
     padding: 10px;
     background-color: var(--mpev-primary);
     width: 46px;
@@ -5880,46 +5890,49 @@ Vanilla theme css by ariful
     border: 1px solid var(--mpev-primary);
     transition: all 0.4s;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets .icons i:hover {
+  .mep_smart_theme .mpwem_sidebar_content .share_widgets .icons i:hover {
     background-color: var(--mpev-secondary);
     color: var(--mpev-primary);
     border: 1px solid var(--mpev-primary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender {
+  .mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender {
     background-color: #fff;
     color: var(--mpev-primary) !important;
     height: auto !important;
     padding: 5px 10px !important;
     border-radius: var(--dBR) !important;
     border: 1px solid var(--mpev-primary);
-    margin-top: 0;
+    margin-top: 15px;
     margin-left: 50px;
     color: var(--mpev-primary);
     font-size: var(--button_fs);
     font-weight: var(--fw-medium);
     line-height: inherit;
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender:hover {
+  .mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender:hover {
     background-color: var(--mpev-secondary);
   }
-  .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender i {
+  .mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender i {
     font-size: 16px;
     padding: 0;
     background: none;
     margin-right: 6px;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget {
+  .mep_smart_theme .speaker-widget {
     margin-top: 10px;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget h2 {
+  .mep_smart_theme .speaker-widget h2 {
     text-transform: capitalize;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists {
+   .mep_smart_theme .speaker-widget i {
+    color: var(--mpev-primary);
+  }
+  .mep_smart_theme .speaker-widget .speaker-lists {
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 0 5px #ddd;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items {
+  .mep_smart_theme .speaker-widget .speaker-lists .items {
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -5928,13 +5941,13 @@ Vanilla theme css by ariful
     padding: 20px;
     border-bottom: 1px solid #ddd;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items:last-child {
+  .mep_smart_theme .speaker-widget .speaker-lists .items:last-child {
     border-bottom: 0;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items img {
+  .mep_smart_theme .speaker-widget .speaker-lists .items img {
     width: 70px;
   }
-  .mep_smart_theme .mpwem_right_content .speaker-widget .speaker-lists .items h2 {
+  .mep_smart_theme .speaker-widget .speaker-lists .items h2 {
     font-size: 19px;
     letter-spacing: 0.04em;
     color: #333;

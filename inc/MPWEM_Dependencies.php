@@ -46,7 +46,7 @@
 				require_once( dirname( __DIR__ ) . "/inc/mep_query.php" );
 				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/functions.php" );
 				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/recurring_attendee_stat.php" );
-				require_once( dirname( __DIR__ ) . "/inc/email/low_stock_notification.php" );
+				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 			}
 
 			public function global_enqueue() {
@@ -69,10 +69,10 @@
 				wp_enqueue_style( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.css', array(), '4.0.13' );
 				wp_enqueue_script( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.js', array(), '4.0.13' );
 				$owlCarousel = MP_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
-				if ( $owlCarousel == 'no' ) {
-					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
-					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array(), '2.3.4' );
-				}
+			if ( $owlCarousel == 'no' ) {
+				wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
+				wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
+			}
 				wp_enqueue_style( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time() );
 				wp_enqueue_script( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
@@ -127,12 +127,18 @@
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
-				wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
-				wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
-					'url'   => admin_url( 'admin-ajax.php' ),
-					'nonce' => wp_create_nonce( 'mep_nonce' )
-				) );
-				wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), time() );
+				
+				// Only load event lists scripts on relevant pages
+				if ( $hook == 'mep_events_page_mep_event_lists' || 
+					 ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && 
+					   ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
+					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
+					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
+						'url'   => admin_url( 'admin-ajax.php' ),
+						'nonce' => wp_create_nonce( 'mep_nonce' )
+					) );
+					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), time() );
+				}
 				/******************************/
 				// custom
 				wp_enqueue_style( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time() );
@@ -221,6 +227,7 @@
 
 			public function add_frontend_head() {
 				$this->js_constant();
+				$this->custom_css();
 				$this->event_rich_text_data();
 				$this->add_open_graph_tags();
 			}
@@ -239,6 +246,21 @@
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
                 </script>
 				<?php
+			}
+
+			public function custom_css() {
+				$custom_css         = MP_Global_Function::get_settings( 'mep_settings_custom_css', 'mep_custom_css' );
+				$not_available_hide = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_not_available_event_from_list_page', 'no' );
+				ob_start();
+				?>
+                <style>
+                    <?php echo $custom_css; ?>
+                    <?php  if($not_available_hide == 'yes'){ ?>
+					.event-no-availabe-seat { display: none !important; }
+                    <?php } 	?>
+                </style>
+				<?php
+				echo ob_get_clean();
 			}
 
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
@@ -346,4 +368,3 @@
 		}
 		new MPWEM_Dependencies();
 	}
-	

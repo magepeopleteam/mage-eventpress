@@ -21,7 +21,7 @@ function mep_re_timeList_loading(){
                     },
                     success: function(data){                       
                             jQuery('#mep_everyday_event_time_list').html(data);   
-                            jQuery('#mep_recutting_ticket_type_list').html('<h5 class="mep-warning"><?php echo mep_get_option( 'mep_event_rec_please_select_time_text', 'label_setting_sec', __('Please Select Time','mage-eventpress-re')); ?></h5>');                       
+                            jQuery('#mep_recutting_ticket_type_list').html('<h5 class="mep-warning"><?php echo mep_get_option( 'mep_event_rec_please_select_time_text', 'label_setting_sec', __('Please Select Time','mage-eventpress')); ?></h5>');                       
                             jQuery('#mep_recurring_extra_service_list').html('');  
                             <?php if($time_auto_select == 'yes'){ ?>
                             jQuery('#mep_everyday_ticket_time option[class="availabe-date"]').first().attr("selected", "selected");   

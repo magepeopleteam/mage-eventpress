@@ -116,7 +116,10 @@ if (!class_exists('AddMetaBox')) {
 							do_action('nav_header_top');
 							?>
 							<div class="themeName"><?php echo esc_html($this->get_item_name()); ?></div>
-							<div class="themeVersion"><?php echo sprintf(__('Version: %s', 'wp-theme-settings'), $this->get_item_version()); ?></div>
+							<div class="themeVersion"><?php 
+							 // translators: %s is the event label (e.g., "Event", "Workshop").
+							echo sprintf(__('Version: %s', 'mage-eventpress'), $this->get_item_version()); 
+							?></div>
 							<?php
 							do_action('nav_header_bottom');
 							?>

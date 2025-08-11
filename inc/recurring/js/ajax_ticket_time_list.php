@@ -12,7 +12,7 @@ function mep_rec_ticketType_on_time_change(){
             var event_id = jQuery('#mep_event_id').val(); 
             if(event_date == 0){ 
                 // jQuery('#mep_recutting_ticket_type_list').hide(); 
-                jQuery('#mep_recutting_ticket_type_list').html('<h5 class="mep-warning"><?php echo mep_get_option( 'mep_event_rec_please_select_time_text', 'label_setting_sec', __('Please Select Time','mage-eventpress-re')); ?></h5>'); 
+                jQuery('#mep_recutting_ticket_type_list').html('<h5 class="mep-warning"><?php echo mep_get_option( 'mep_event_rec_please_select_time_text', 'label_setting_sec', __('Please Select Time','mage-eventpress')); ?></h5>'); 
             }else{
 
                 jQuery.ajax({

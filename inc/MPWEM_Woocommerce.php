@@ -247,7 +247,7 @@
 						}
 						if ( sizeof( $custom_forms_id ) > 0 ) {
 							foreach ( $custom_forms_id as $key => $value ) {
-								$item->add_meta_data( __( $key, 'mage-eventpress' ), $userinf[ $value ] );
+								$item->add_meta_data( $key, $userinf[ $value ] );
 							}
 						}
 					}

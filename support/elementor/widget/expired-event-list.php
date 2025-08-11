@@ -827,7 +827,7 @@ class MEPExpiredEventWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_details_padding',
 			[
-				'label' => __( 'Event Details Padding', 'elementor' ),
+				'label' => __( 'Event Details Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [

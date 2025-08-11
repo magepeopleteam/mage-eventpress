@@ -12,7 +12,14 @@
 				add_action('admin_menu', array($this, 'welcome_menu'));
 			}
 			public function welcome_menu() {
-				add_submenu_page('edit.php?post_type=mep_events', __('Welcome', 'mage-eventpress'), __('<span style="color:#10dd10">Welcome</span>', 'mage-eventpress'), 'manage_options', 'mep_event_welcome_page', array($this, 'welcome_page'));
+				add_submenu_page(
+					'edit.php?post_type=mep_events',
+					__('Welcome', 'mage-eventpress'), // page title
+					'<span style="color:#10dd10">' . __('Welcome', 'mage-eventpress') . '</span>', // menu title with HTML outside translation
+					'manage_options',
+					'mep_event_welcome_page',
+					array($this, 'welcome_page')
+				);
 			}
 			public function welcome_page() {
 				?>
@@ -954,11 +961,11 @@
 										foreach ($faqs as $key => $faq) {
 											?>
 											<div class="mp_faq_item">
-												<h5 class="mp_faq_title" data-open-icon="fa-plus" data-close-icon="fa-minus" data-collapse-target="#mpwem_faq_datails_<?php esc_attr_e($key); ?>" data-add-class="active">
+												<h5 class="mp_faq_title" data-open-icon="fa-plus" data-close-icon="fa-minus" data-collapse-target="#mpwem_faq_datails_<?php echo esc_attr($key); ?>" data-add-class="active">
 													<span data-icon class="fas fa-plus"></span>
 													<?php echo esc_html($faq['title']); ?>
 												</h5>
-												<div data-collapse="#mpwem_faq_datails_<?php esc_attr_e($key); ?>">
+												<div data-collapse="#mpwem_faq_datails_<?php echo esc_attr($key); ?>">
 													<div class="mp_faq_content">
 														<?php echo esc_html($faq['des']); ?>
 													</div>

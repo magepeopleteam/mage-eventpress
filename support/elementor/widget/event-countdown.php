@@ -100,7 +100,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'mep_event_cd_day_border',
-				'label' => __( 'Border', 'plugin-domain' ),
+				'label' => __( 'Border', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span',
 			]
 		);   
@@ -144,7 +144,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_day_padding',
 			[
-				'label' => __( 'Padding', 'elementor' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -155,7 +155,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_day_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor' ),
+				'label' => __( 'Border Radius', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -167,7 +167,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'mep_event_cd_day_box_shadow',
-				'label' => __( 'Box Shadow', 'plugin-domain' ),
+				'label' => __( 'Box Shadow', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#days span',
 			]
 		);
@@ -212,7 +212,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'mep_event_cd_hours_border',
-				'label' => __( 'Border', 'plugin-domain' ),
+				'label' => __( 'Border', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span',
 			]
 		);        
@@ -249,7 +249,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_hours_padding',
 			[
-				'label' => __( 'Padding', 'elementor' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -260,7 +260,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_hours_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor' ),
+				'label' => __( 'Border Radius', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -272,7 +272,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'mep_event_cd_hours_box_shadow',
-				'label' => __( 'Box Shadow', 'plugin-domain' ),
+				'label' => __( 'Box Shadow', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#hours span',
 			]
 		);		
@@ -314,7 +314,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'mep_event_cd_minutes_border',
-				'label' => __( 'Border', 'plugin-domain' ),
+				'label' => __( 'Border', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes .wrapper',
 			]
 		);        
@@ -351,7 +351,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_minutes_padding',
 			[
-				'label' => __( 'Padding', 'elementor' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -362,7 +362,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_minutes_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor' ),
+				'label' => __( 'Border Radius', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -374,7 +374,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'mep_event_cd_minutes_box_shadow',
-				'label' => __( 'Box Shadow', 'plugin-domain' ),
+				'label' => __( 'Box Shadow', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#minutes span',
 			]
 		);			
@@ -415,7 +415,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'mep_event_cd_seconds_border',
-				'label' => __( 'Border', 'plugin-domain' ),
+				'label' => __( 'Border', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span',
 			]
 		);        
@@ -452,7 +452,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_seconds_padding',
 			[
-				'label' => __( 'Padding', 'elementor' ),
+				'label' => __( 'Padding', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -463,7 +463,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_cd_seconds_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor' ),
+				'label' => __( 'Border Radius', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -475,7 +475,7 @@ class MEPEventCountdownWidget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'mep_event_cd_seconds_box_shadow',
-				'label' => __( 'Box Shadow', 'plugin-domain' ),
+				'label' => __( 'Box Shadow', 'mage-eventpress' ),
 				'selector' => '{{WRAPPER}} .mep-elementor-widget-countdown .mep-event-countdown-timer div#seconds span',
 			]
 		);		

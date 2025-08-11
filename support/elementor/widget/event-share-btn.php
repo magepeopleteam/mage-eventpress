@@ -85,7 +85,7 @@ class MEPEventShareBTNtWidget extends Widget_Base {
 		$this->add_responsive_control(
 			'mep_event_share_btn_icon_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor' ),
+				'label' => __( 'Border Radius', 'mage-eventpress' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%', 'rem' ],
 				'selectors' => [
@@ -96,7 +96,7 @@ class MEPEventShareBTNtWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_share_btn_icon_space',
 			[
-				'label' => __( 'Icon Space', 'plugin-domain' ),
+				'label' => __( 'Icon Space', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -123,7 +123,7 @@ class MEPEventShareBTNtWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_share_btn_icon_size',
 			[
-				'label' => __( 'Icon Size', 'plugin-domain' ),
+				'label' => __( 'Icon Size', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -150,7 +150,7 @@ class MEPEventShareBTNtWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_share_btn_width',
 			[
-				'label' => __( 'Width', 'plugin-domain' ),
+				'label' => __( 'Width', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -177,7 +177,7 @@ class MEPEventShareBTNtWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_share_btn_height',
 			[
-				'label' => __( 'Height', 'plugin-domain' ),
+				'label' => __( 'Height', 'mage-eventpress' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [

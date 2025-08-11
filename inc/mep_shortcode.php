@@ -287,27 +287,34 @@
                     }
                 });
 				<?php if ($pagination == 'carousal') { ?>
-                jQuery('#mep-carousel<?php echo esc_attr( $cid ); ?>').owlCarousel({
-                    autoplay:  <?php echo mep_get_option( 'mep_autoplay_carousal', 'carousel_setting_sec', 'true' ); ?>,
-                    autoplayTimeout:<?php echo mep_get_option( 'mep_speed_carousal', 'carousel_setting_sec', '5000' ); ?>,
-                    autoplayHoverPause: true,
-                    loop: <?php echo mep_get_option( 'mep_loop_carousal', 'carousel_setting_sec', 'true' ); ?>,
-                    margin: 20,
-                    nav: <?php echo esc_attr( $nav ); ?>,
-                    dots: <?php echo esc_attr( $dot ); ?>,
-                    responsiveClass: true,
-                    responsive: {
-                        0: {
-                            items: 1,
-                        },
-                        600: {
-                            items: 2,
-                        },
-                        1000: {
-                            items: <?php echo esc_attr( $column ); ?>,
+                // Initialize Owl Carousel
+                if (typeof jQuery().owlCarousel === 'function') {
+                    jQuery('#mep-carousel<?php echo esc_attr( $cid ); ?>').owlCarousel({
+                        autoplay:  <?php echo mep_get_option( 'mep_autoplay_carousal', 'carousel_setting_sec', 'true' ); ?>,
+                        autoplayTimeout:<?php echo mep_get_option( 'mep_speed_carousal', 'carousel_setting_sec', '5000' ); ?>,
+                        autoplayHoverPause: true,
+                        loop: <?php echo mep_get_option( 'mep_loop_carousal', 'carousel_setting_sec', 'true' ); ?>,
+                        margin: 20,
+                        nav: <?php echo esc_attr( $nav ) == '1' ? 'true' : 'false'; ?>,
+                        dots: <?php echo esc_attr( $dot ) == '1' ? 'true' : 'false'; ?>,
+                        responsiveClass: true,
+                        responsive: {
+                            0: {
+                                items: 1,
+                            },
+                            600: {
+                                items: 2,
+                            },
+                            1000: {
+                                items: <?php echo esc_attr( $column ); ?>,
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    console.warn('Event Press: Owl Carousel library not found. Please go to Events → Global Settings → Carousel Settings and set "Load Owl Carousel From Theme" to "No" if your theme does not include Owl Carousel.');
+                    // Fallback: Display items in a simple grid layout
+                    jQuery('#mep-carousel<?php echo esc_attr( $cid ); ?>').addClass('mep-carousel-fallback');
+                }
 				<?php } ?>
 				<?php do_action( 'mep_event_shortcode_js_script', $params ); ?>
             });
@@ -316,6 +323,7 @@
 
 		return $content;
 	}
+
 	/**
 	 * This Is a Shortcode for display Expired Events, This will be depriciated in the version 4.0, because we added this feature into the main shortcode [event-list]. Just use [event-list status="expired"]
 	 */

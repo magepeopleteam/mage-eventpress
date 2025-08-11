@@ -15,7 +15,19 @@
 
 			public function event_meta_tab() {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-				add_meta_box( 'mp_event_all_info_in_tab', __( '<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress' ) . get_the_title( get_the_id() ), array( $this, 'event_tab' ), 'mep_events', 'normal', 'high' );
+				add_meta_box(
+					'mp_event_all_info_in_tab',
+					sprintf(
+						/* translators: %1$s: Event label (e.g., Conference), %2$s: Event title */
+						__( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', 'mage-eventpress' ),
+						esc_html( $event_label ),
+						esc_html( get_the_title( get_the_ID() ) )
+					),
+					array( $this, 'event_tab' ),
+					'mep_events',
+					'normal',
+					'high'
+				);
 			}
 
 			public function event_tab() {

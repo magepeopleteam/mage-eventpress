@@ -2249,4 +2249,75 @@ div.mpPopup.mpwem_timeline_popup .popupBody {min-height: 400px;}
 		min-width: 120px;
 	}
 }
-/*# sourceMappingURL=mpwem_admin.css.map */
+
+div.mpStyle.mep-quick-setup  .formControl{
+	max-width: 100%;
+	margin:8px 0;
+	padding: 14px 16px;
+	border: 2px solid #e5e7eb;
+	border-radius: 12px;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	background: white;
+	color: #374151;
+	font-weight: normal;
+}
+div.mpStyle.mep-quick-setup  select.formControl:focus{
+	background-color: transparent;
+	border: 1px solid #0080F0;
+}
+
+div.mpStyle.mep-quick-setup .info_text{
+	color: #6b7280;
+	margin-bottom: 28px;
+	font-style:normal;
+}
+
+div.mpStyle.mep-quick-setup .info_text span{
+	color: #b1b4bc;
+}
+
+div.mpStyle.mep-quick-setup .tabsContentNext{
+	padding:20px 0;
+}
+
+div.mpStyle.mep-quick-setup [class*="_adminLayout"]{
+	background-color: #f8f7fc;
+
+}
+
+.mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"]::after {
+    border-color: var(--mpev-primary);
+}
+
+.mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"]{
+background-color: var(--mpev-primary);
+border: 1px solid var(--mpev-primary);
+}
+
+.mep-quick-setup .mpTabsNext .tabItemNext [class*="circleIcon"]{
+border: 1px solid #d6d6d6;
+}
+
+.mep-quick-setup .mpTabsNext .tabItemNext.active .circleTitle {
+    color: var(--mpev-primary);
+  }
+
+  .mep-quick-setup .nextTab_prev{
+	border: 1px solid #333;
+  }
+
+.mep-quick-setup .nextTab_prev:hover, .mep-quick-setup .nextTab_prev:focus{
+	background-color: #ddd;
+	color: #000;
+}
+
+.mep-quick-setup .themeButton:hover, .mep-quick-setup .themeButton:focus{
+	opacity: .8;
+	background-color: var(--mpev-primary);
+	border:2px solid transparent
+}
+
+.mep-quick-setup .nextTab_prev:hover span, .mep-quick-setup .nextTab_prev:focus span{
+	color: #000;
+}

@@ -41,8 +41,8 @@
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
-					$event_label . __( ' Details' ),
-					__( 'Organizer' ),
+					$event_label . __( ' Details', 'mage-eventpress' ),
+					__( 'Organizer' ,'mage-eventpress'),
 				];
 				if ( $this->is_gutenberg_active() ) { ?>
                     <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr( $author_id ); ?>">

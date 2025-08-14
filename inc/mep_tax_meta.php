@@ -58,9 +58,9 @@ function mep_org_tax_location_fileds($taxonomy)
       <!-- <div id="map"></div> -->
       <?php
       $user_api = mep_get_option('google-map-api', 'general_setting_sec', '');
-      if ($user_api) {
-        //wp_enqueue_script('gmap-libs','https://maps.googleapis.com/maps/api/js?key='.$user_api.'&libraries=places&callback=initMap',array('jquery','gmap-scripts'),1,true);
-      ?>
+     if ($user_api) {
+       wp_enqueue_script('gmap-libs','https://maps.googleapis.com/maps/api/js?key='.$user_api.'&libraries=places&callback=initMap',array('jquery','gmap-scripts'),1,true);
+     ?>
         <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($user_api); ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
       <?php
       }

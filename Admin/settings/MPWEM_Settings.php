@@ -76,18 +76,18 @@
 				}
 				/**********Venue/Location Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_event_type']) ) ? 'online' : 'offline';
+					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field($_POST['mep_event_type']) ? 'online' : 'offline';
 					$mep_org_address    = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					$mep_location_venue = isset( $_POST['mep_location_venue'] ) ? sanitize_text_field( $_POST['mep_location_venue'] ) : "";
-					$mep_street         = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_street']) ) : "";
-					$mep_city           = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_city']) ) : "";
-					$mep_state          = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_state']) ) : "";
-					$mep_postcode       = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_postcode']) ) : "";
-					$mep_country        = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_country']) ) : "";
+					$mep_street         = isset( $_POST['mep_street'] ) ? sanitize_text_field( $_POST['mep_street'] ) : "";
+					$mep_city           = isset( $_POST['mep_city'] ) ? sanitize_text_field( $_POST['mep_city'] ) : "";
+					$mep_state          = isset( $_POST['mep_state'] ) ? sanitize_text_field( $_POST['mep_state'] ) : "";
+					$mep_postcode       = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( $_POST['mep_postcode'] ) : "";
+					$mep_country        = isset( $_POST['mep_country'] ) ? sanitize_text_field( $_POST['mep_country'] ) : "";
 					$latitude           = isset( $_POST['latitude'] ) ? sanitize_text_field( $_POST['latitude'] ) : "";
 					$longitude          = isset( $_POST['longitude'] ) ? sanitize_text_field( $_POST['longitude'] ) : "";
-					$mep_sgm            = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_sgm']) ) : "";
-					$location_name      = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['location_name']) ) : "";
+					$mep_sgm            = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( $_POST['mep_sgm'] ) : "";
+					$location_name      = isset( $_POST['location_name'] ) ? sanitize_text_field( $_POST['location_name'] ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
 					update_post_meta( $post_id, 'mep_org_address', $mep_org_address );
 					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
@@ -103,17 +103,17 @@
 				}
 				/**********Form empty data Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_full_name']) ) : "";
-					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_email']) ) : "";
-					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_phone']) ) : "";
-					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_address']) ) : "";
-					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_designation']) ) : "";
-					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_website']) ) : "";
-					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_veg']) ) : "";
-					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_company']) ) : "";
-					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_gender']) ) : "";
-					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_tshirtsize']) ) : "";
-					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_tshirtsize_list']) ) : "";
+					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( $_POST['mep_full_name'] ) : "";
+					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( $_POST['mep_reg_email'] ) : "";
+					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( $_POST['mep_reg_phone'] ) : "";
+					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( $_POST['mep_reg_address'] ) : "";
+					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( $_POST['mep_reg_designation'] ) : "";
+					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( $_POST['mep_reg_website'] ) : "";
+					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( $_POST['mep_reg_veg'] ) : "";
+					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( $_POST['mep_reg_company'] ) : "";
+					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( $_POST['mep_reg_gender'] ) : "";
+					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( $_POST['mep_reg_tshirtsize'] ) : "";
+					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( $_POST['mep_reg_tshirtsize_list'] ) : "";
 					
 					update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
 					update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );

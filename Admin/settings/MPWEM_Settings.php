@@ -15,19 +15,7 @@
 
 			public function event_meta_tab() {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-				add_meta_box(
-					'mp_event_all_info_in_tab',
-					sprintf(
-						/* translators: %1$s: Event label (e.g., Conference), %2$s: Event title */
-						__( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', 'mage-eventpress' ),
-						esc_html( $event_label ),
-						esc_html( get_the_title( get_the_ID() ) )
-					),
-					array( $this, 'event_tab' ),
-					'mep_events',
-					'normal',
-					'high'
-				);
+				add_meta_box( 'mp_event_all_info_in_tab', __( '<i class="fas fa-info-circle"></i> ' . $event_label . ' Information : ', 'mage-eventpress' ) . get_the_title( get_the_id() ), array( $this, 'event_tab' ), 'mep_events', 'normal', 'high' );
 			}
 
 			public function event_tab() {
@@ -88,7 +76,7 @@
 				}
 				/**********Venue/Location Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field( $_POST['mep_event_type'] ) ? 'online' : 'offline';
+					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field($_POST['mep_event_type']) ? 'online' : 'offline';
 					$mep_org_address    = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					$mep_location_venue = isset( $_POST['mep_location_venue'] ) ? sanitize_text_field( $_POST['mep_location_venue'] ) : "";
 					$mep_street         = isset( $_POST['mep_street'] ) ? sanitize_text_field( $_POST['mep_street'] ) : "";
@@ -97,7 +85,7 @@
 					$mep_postcode       = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( $_POST['mep_postcode'] ) : "";
 					$mep_country        = isset( $_POST['mep_country'] ) ? sanitize_text_field( $_POST['mep_country'] ) : "";
 					$latitude           = isset( $_POST['latitude'] ) ? sanitize_text_field( $_POST['latitude'] ) : "";
-					$longitude          = isset( $_POST['latitude'] ) ? sanitize_text_field( $_POST['longitude'] ) : "";
+					$longitude          = isset( $_POST['longitude'] ) ? sanitize_text_field( $_POST['longitude'] ) : "";
 					$mep_sgm            = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( $_POST['mep_sgm'] ) : "";
 					$location_name      = isset( $_POST['location_name'] ) ? sanitize_text_field( $_POST['location_name'] ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
@@ -126,6 +114,7 @@
 					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( $_POST['mep_reg_gender'] ) : "";
 					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( $_POST['mep_reg_tshirtsize'] ) : "";
 					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( $_POST['mep_reg_tshirtsize_list'] ) : "";
+					
 					update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
 					update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );
 					update_post_meta( $post_id, 'mep_reg_phone', $mep_reg_phone );

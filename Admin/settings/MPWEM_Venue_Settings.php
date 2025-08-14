@@ -41,8 +41,8 @@
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
-					$event_label . __( ' Details', 'mage-eventpress' ) => 0,
-					__( 'Organizer', 'mage-eventpress' ) => 0,
+					$event_label . __( ' Details' ),
+					__( 'Organizer' ),
 				];
 				if ( $this->is_gutenberg_active() ) { ?>
                     <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr( $author_id ); ?>">
@@ -57,7 +57,7 @@
                             </div>
                             <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
 								<?php foreach ( $organizer as $key => $value ): ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php echo esc_html( $value ); ?> </option>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php esc_html_e( $value ); ?> </option>
 								<?php endforeach; ?>
                             </select>
                         </label>
@@ -135,12 +135,12 @@
                                     <div class='sec'>
                                         <input id="pac-input" name='location_name' value=''/>
                                     </div>
-                                <input type="hidden" class="form-control" required name="latitude" value="<?php if ( array_key_exists( 'latitude', $values ) ) {
-									echo esc_attr( $values['latitude'][0] );
-								} ?>">
-                                <input type="hidden" class="form-control" required name="longitude" value="<?php if ( array_key_exists( 'longitude', $values ) ) {
-									echo esc_attr( $values['longitude'][0] );
-								} ?>">
+                                <input type="hidden" class="form-control" required id="latitude" name="latitude" value="<?php if ( array_key_exists( 'latitude', $values ) ) {
+         echo esc_attr( $values['latitude'][0] );
+        } ?>">
+                                <input type="hidden" class="form-control" required id="longitude" name="longitude" value="<?php if ( array_key_exists( 'longitude', $values ) ) {
+         echo esc_attr( $values['longitude'][0] );
+        } ?>">
                                     <div id="map"></div>
 									<?php
 								} else {
@@ -188,8 +188,8 @@
                                                 }
                                             });
                                             google.maps.event.addListener(marker, 'dragend', function () {
-                                                document.getElementsByName('latitude')[0].value = marker.getPosition().lat();
-                                                document.getElementsByName('longitude')[0].value = marker.getPosition().lng();
+                                                document.getElementById('latitude').value = marker.getPosition().lat();
+                                                document.getElementById('longitude').value = marker.getPosition().lng();
                                             })
                                             autocomplete.addListener('place_changed', function () {
                                                 infowindow.close();
@@ -226,8 +226,8 @@
                                                 var latitude = place.geometry.location.lat();
                                                 var longitude = place.geometry.location.lng();
                                                 // $("input[name=coordinate]").val(address);
-                                                jQuery("input[name=latitude]").val(latitude);
-                                                jQuery("input[name=longitude]").val(longitude);
+                                                jQuery("#latitude").val(latitude);
+                                                jQuery("#longitude").val(longitude);
                                             });
                                         }
                                         google.maps.event.addDomListener(window, "load", initMap);
@@ -262,12 +262,10 @@
                                 jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
-                        jQuery('[name="mep_location_venue"]').keypress(function () {
+                        jQuery('[name="mep_location_venue"]').on('input', function () {
                             let location = jQuery(this).val();
-                            if (location === '') {
-                                // alert('Please Enter Location First');
-                            } else {
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                            if (location !== '') {
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + encodeURIComponent(location) + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
                     </script>

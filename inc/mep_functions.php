@@ -3057,6 +3057,11 @@
 			return $array_or_string;
 		}
 	}
+if ( ! function_exists( 'mep_letters_numbers_spaces_only' ) ) {
+		function mep_letters_numbers_spaces_only( $string ) {
+			return preg_replace( '/[^a-zA-Z0-9\s]/', '', $string );
+		}
+	}
 	/**
 	 * The Giant SEO Plugin Yoast PRO doing some weird thing and that is its auto create a 301 redirect url when delete a post its causing our event some issue Thats why i disable those part for our event post type with the below filter hoook which is provide by Yoast.
 	 */

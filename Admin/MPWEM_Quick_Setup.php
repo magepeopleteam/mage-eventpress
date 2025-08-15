@@ -129,11 +129,11 @@
 					wp_redirect(admin_url('edit.php?post_type=mep_events'));
 				}
 				?>
-				<div class="mpStyle">
-					<div class=_dShadow_6_adminLayout">
+				<div class="mpStyle mep-quick-setup">
+					<div class="_dShadow_6_adminLayout">
 						<form method="post" action="">
 							<div class="mpTabsNext">
-								<div class="tabListsNext _max_700_mAuto">
+								<div class="tabListsNext _mAuto">
 									<div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
 										<h4 class="circleIcon" data-class>
 											<span class="mp_zero" data-icon></span>
@@ -156,7 +156,7 @@
 										<h6 class="circleTitle" data-class><?php esc_html_e('Done', 'mage-eventpress'); ?></h6>
 									</div>
 								</div>
-								<div class="tabsContentNext _infoLayout_mT">
+								<div class="tabsContentNext _mT">
 									<?php
 										$this->setup_welcome_content();
 										$this->setup_general_content();
@@ -185,7 +185,8 @@
 				?>
 				<div data-tabs-next="#mpwem_qs_welcome">
 					<h2><?php esc_html_e('Event Manager and Tickets Selling Plugin', 'mage-eventpress'); ?></h2>
-					<p class="mTB_xs"><?php esc_html_e('Thanks for choosing Event Manager and Tickets Selling Plugin for WooCommerce for your site, Please go step by step and choose some options to get started.', 'mage-eventpress'); ?></p>
+					<p class="mTB_xs"><?php esc_html_e('Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
+', 'mage-eventpress'); ?></p>
 					<div class="_dLayout_mT_alignCenter justifyBetween">
 						<h5>
 							<?php if ($status == 1) {
@@ -223,7 +224,7 @@
 					<div class="section">
 						<h2><?php esc_html_e('General settings', 'mage-eventpress'); ?></h2>
 						<p class="mTB_xs"><?php esc_html_e('Choose some general option.', 'mage-eventpress'); ?></p>
-						<div class="_dLayout_mT">
+						<div class="_mT">
 							<label class="_fullWidth">
 								<span class="min_200"><?php esc_html_e('Events Label:', 'mage-eventpress'); ?></span>
 								<input type="text" class="formControl" name="event_label" value='<?php echo esc_attr($label); ?>'/>
@@ -232,16 +233,14 @@
 								<span class="fas fa-info-circle"></span>
 								<?php esc_html_e('It will change the Events post type label on the entire plugin.', 'mage-eventpress'); ?>
 							</i>
-							<div class="divider"></div>
 							<label class="_fullWidth">
 								<span class="min_200"><?php esc_html_e('Events Slug:', 'mage-eventpress'); ?></span>
 								<input type="text" class="formControl" name="event_slug" value='<?php echo esc_attr($slug); ?>'/>
 							</label>
 							<i class="info_text">
 								<span class="fas fa-info-circle"></span>
-								<?php esc_html_e('It will change the Events slug on the entire plugin. Remember after changing this slug you need to flush permalinks. Just go to Settings->Permalinks hit the Save Settings button', 'mage-eventpress'); ?>
+								<?php esc_html_e('Changing this will update the Events slug across the plugin. After that, go to Settings → Permalinks and click Save to refresh links.', 'mage-eventpress'); ?>
 							</i>
-							<div class="divider"></div>
 							<label class="_fullWidth">
 								<span class="min_200"><?php esc_html_e('When will the event expire', 'mage-eventpress'); ?></span>
 								<select class="formControl" name="event_expire_on">
@@ -257,7 +256,6 @@
 								<span class="fas fa-info-circle"></span>
 								<?php esc_html_e('Please select when the event will expire', 'mage-eventpress'); ?>
 							</i>
-							<div class="divider"></div>
 							<label class="_fullWidth">
 								<span class="min_200"><?php esc_html_e('Email From Name:', 'mage-eventpress'); ?></span>
 								<input type="text" class="formControl" name="email_from_name" value='<?php echo esc_attr($from_email); ?>'/>
@@ -266,7 +264,6 @@
 								<span class="fas fa-info-circle"></span>
 								<?php esc_html_e('Please enter the email from name', 'mage-eventpress'); ?>
 							</i>
-							<div class="divider"></div>
 							<label class="_fullWidth">
 								<span class="min_200"><?php esc_html_e('From Email Address:', 'mage-eventpress'); ?></span>
 								<input type="text" class="formControl" name="email_from_address" value='<?php echo esc_attr($from_email_address); ?>'/>

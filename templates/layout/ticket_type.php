@@ -10,7 +10,7 @@
 	$all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
 	$date               = empty($date )? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ):$date;
-	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
+	$total_available    = $total_available??MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available=max( $total_available, 0 );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {

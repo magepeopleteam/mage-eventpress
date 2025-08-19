@@ -63,7 +63,7 @@ class MEPEventScheduleWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_sch_sec_height',
 			[
-				'label' => __( 'Section Height', 'plugin-name' ),
+				'label' => __( 'Section Height', 'mage-eventpress' ),
 				'type' => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => [ 'px'],
 				'range' => [
@@ -133,7 +133,7 @@ class MEPEventScheduleWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_sch_item_space',
 			[
-				'label' => __( 'Item Space', 'plugin-name' ),
+				'label' => __( 'Item Space', 'mage-eventpress' ),
 				'type' => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => [ 'px'],
 				'range' => [

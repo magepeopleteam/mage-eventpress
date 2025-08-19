@@ -10,7 +10,7 @@
 	$all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
 	$date               = empty($date )? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ):$date;
-	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
+	$total_available    = $total_available??MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available=max( $total_available, 0 );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {
@@ -61,11 +61,27 @@
 											<?php if ( $ticket_details ) { ?>
                                                 <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 											<?php } ?>
-											<?php if ( $mep_available_seat == 'on' ) { ?>
+                                            
+                                            <?php 
+                                            // Check if low stock warning should be shown
+                                            $show_low_stock_warning = false;
+                                            if (function_exists('mep_is_low_stock')) {
+                                                $show_low_stock_warning = mep_is_low_stock($event_id, $ticket_name, $available);
+                                            }
+                                            
+                                            // Only show "Tickets remaining" if low stock warning is not shown
+                                            if ( $mep_available_seat == 'on' && !$show_low_stock_warning ) { ?>
                                                 <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
 													<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining','mage-eventpress' ); ?>
                                                 </div>
 											<?php } ?>
+                                            
+                                            <?php 
+                                            // Display low stock warning
+                                            if (function_exists('mep_display_low_stock_warning')) {
+                                                mep_display_low_stock_warning($event_id, $ticket_name, $available);
+                                            }
+                                            ?>
                                         </div>
                                         <div class="quantity-control">
                                             <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
@@ -80,7 +96,7 @@
 															MPWEM_Custom_Layout::qty_input( $input_data );
 														} else {
 															?>
-                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-evetpress' );
+                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-eventpress' );
 																	echo get_mep_datetime( $sale_end_datetime, 'date-time-text' ); ?></span>
                                                             <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
 															<?php
@@ -91,7 +107,7 @@
 												} else {
 													$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
 													?>
-                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-evetpress' );
+                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
 															echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
                                                     <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
 													<?php
@@ -99,6 +115,12 @@
 											?>
                                         </div>
                                         <div class="ticket-price">
+                                            <?php 
+                                            // Display limited availability ribbon above price
+                                            if (function_exists('mep_display_limited_availability_ribbon')) {
+                                                mep_display_limited_availability_ribbon($event_id, $ticket_name, $available);
+                                            }
+                                            ?>
 											<?php echo wc_price( $ticket_price ); ?>
                                         </div>
                                     </div>

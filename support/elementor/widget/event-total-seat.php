@@ -53,7 +53,7 @@ class MEPEventSeattWidget extends Widget_Base {
 			[
 				'label' => __( 'Before Text', 'mage-eventpress' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( '', 'mage-eventpress' ),
+				'default' => '',
 			]
 		);
 		$this->add_control(
@@ -61,7 +61,7 @@ class MEPEventSeattWidget extends Widget_Base {
 			[
 				'label' => __( 'After Text', 'mage-eventpress' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( '', 'mage-eventpress' ),
+				'default' => '',
 			]
 		);
 

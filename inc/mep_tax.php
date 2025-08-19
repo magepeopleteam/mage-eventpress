@@ -8,28 +8,49 @@ function mep_cpt_tax(){
 	$event_cat_slug        	= mep_get_option('mep_event_cat_slug', 'general_setting_sec', 'mep_cat');
 	$event_org_slug        	= mep_get_option('mep_event_org_slug', 'general_setting_sec', 'mep_org');
 
-	$labels = array(
-		'name'                       => _x( $event_label.' '.$event_cat_label,'mage-eventpress' ),
-		'singular_name'              => _x( $event_label.' '.$event_cat_label,'mage-eventpress' ),
-		'menu_name'                  => __( $event_cat_label, 'mage-eventpress' ),
-		'all_items'                  => __( 'All '.$event_label.' Category', 'mage-eventpress' ),
-		'parent_item'                => __( 'Parent '.$event_cat_label, 'mage-eventpress' ),
-		'parent_item_colon'          => __( 'Parent '.$event_cat_label.':', 'mage-eventpress' ),
-		'new_item_name'              => __( 'New '.$event_cat_label.' Name', 'mage-eventpress' ),
-		'add_new_item'               => __( 'Add New '.$event_cat_label, 'mage-eventpress' ),
-		'edit_item'                  => __( 'Edit '.$event_cat_label, 'mage-eventpress' ),
-		'update_item'                => __( 'Update '.$event_cat_label, 'mage-eventpress' ),
-		'view_item'                  => __( 'View '.$event_cat_label, 'mage-eventpress' ),
-		'separate_items_with_commas' => __( 'Separate '.$event_cat_label.' with commas', 'mage-eventpress' ),
-		'add_or_remove_items'        => __( 'Add or remove '.$event_cat_label, 'mage-eventpress' ),
-		'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
-		'popular_items'              => __( 'Popular '.$event_cat_label, 'mage-eventpress' ),
-		'search_items'               => __( 'Search '.$event_cat_label, 'mage-eventpress' ),
-		'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
-		'no_terms'                   => __( 'No '.$event_cat_label, 'mage-eventpress' ),
-		'items_list'                 => __( $event_cat_label.' list', 'mage-eventpress' ),
-		'items_list_navigation'      => __( $event_cat_label.' list navigation', 'mage-eventpress' ),
-	);
+$labels = array(
+ // translators: %1$s is the event label, %2$s is the category label.
+    'name' => sprintf( _x( '%1$s %2$s', 'Taxonomy general name', 'mage-eventpress' ), $event_label, $event_cat_label ),
+    // translators: %1$s is the event label, %2$s is the category label.
+    'singular_name' => sprintf( _x( '%1$s %2$s', 'Taxonomy singular name', 'mage-eventpress' ), $event_label, $event_cat_label ),
+	'menu_name' => $event_cat_label,
+    // translators: %s is the event label.
+    'all_items' => sprintf( __( 'All %s Category', 'mage-eventpress' ), $event_label ),
+    // translators: %s is the category label.
+    'parent_item' => sprintf( __( 'Parent %s', 'mage-eventpress' ), $event_cat_label ),
+    // translators: %s is the category label.
+    'parent_item_colon' => sprintf( __( 'Parent %s:', 'mage-eventpress' ), $event_cat_label ),
+    // translators: %s is the category label.
+    'new_item_name'              => sprintf( __( 'New %s Name', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'add_new_item'               => sprintf( __( 'Add New %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'edit_item'                  => sprintf( __( 'Edit %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'update_item'                => sprintf( __( 'Update %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'view_item'                  => sprintf( __( 'View %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
+	    // translators: %s is the category label.
+    'popular_items'              => sprintf( __( 'Popular %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'search_items'               => sprintf( __( 'Search %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
+	    // translators: %s is the category label.
+    'no_terms'                   => sprintf( __( 'No %s', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'items_list'                 => sprintf( __( '%s list', 'mage-eventpress' ), $event_cat_label ),
+	    // translators: %s is the category label.
+    'items_list_navigation'      => sprintf( __( '%s list navigation', 'mage-eventpress' ), $event_cat_label ),
+);
+
+
 
 	$args = array(
 		'hierarchical'          => true,
@@ -46,28 +67,66 @@ function mep_cpt_tax(){
 register_taxonomy('mep_cat', 'mep_events', $args);
 
 
-	$labelso = array(
-		'name'                       => _x( $event_label.' '.$event_org__label,'mage-eventpress' ),
-		'singular_name'              => _x( $event_label.' '.$event_org__label,'mage-eventpress' ),
-		'menu_name'                  => __( $event_org__label, 'mage-eventpress' ),
-		'all_items'                  => __( 'All '.$event_label.' '.$event_org__label, 'mage-eventpress' ),
-		'parent_item'                => __( 'Parent '.$event_org__label, 'mage-eventpress' ),
-		'parent_item_colon'          => __( 'Parent '.$event_org__label.':', 'mage-eventpress' ),
-		'new_item_name'              => __( 'New '.$event_org__label.' Name', 'mage-eventpress' ),
-		'add_new_item'               => __( 'Add New '.$event_org__label, 'mage-eventpress' ),
-		'edit_item'                  => __( 'Edit '.$event_org__label, 'mage-eventpress' ),
-		'update_item'                => __( 'Update '.$event_org__label, 'mage-eventpress' ),
-		'view_item'                  => __( 'View '.$event_org__label, 'mage-eventpress' ),
-		'separate_items_with_commas' => __( 'Separate '.$event_org__label.' with commas', 'mage-eventpress' ),
-		'add_or_remove_items'        => __( 'Add or remove '.$event_org__label, 'mage-eventpress' ),
-		'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
-		'popular_items'              => __( 'Popular '.$event_org__label, 'mage-eventpress' ),
-		'search_items'               => __( 'Search '.$event_org__label, 'mage-eventpress' ),
-		'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
-		'no_terms'                   => __( 'No '.$event_org__label, 'mage-eventpress' ),
-		'items_list'                 => __( $event_org__label.' list', 'mage-eventpress' ),
-		'items_list_navigation'      => __( $event_org__label.' list navigation', 'mage-eventpress' ),
-	);
+$labelso = array(
+    // translators: %1$s is the event label, %2$s is the organization label.
+    'name'                       => sprintf( _x( '%1$s %2$s', 'taxonomy general name', 'mage-eventpress' ), $event_label, $event_org__label ),
+
+    // translators: %1$s is the event label, %2$s is the organization label.
+    'singular_name'              => sprintf( _x( '%1$s %2$s', 'taxonomy singular name', 'mage-eventpress' ), $event_label, $event_org__label ),
+
+    // translators: %s is the organization label.
+    'menu_name'                  => $event_org__label,
+
+    // translators: %1$s is the event label, %2$s is the organization label.
+    'all_items'                  => sprintf( __( 'All %1$s %2$s', 'mage-eventpress' ), $event_label, $event_org__label ),
+
+    // translators: %s is the organization label.
+    'parent_item'                => sprintf( __( 'Parent %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'parent_item_colon'          => sprintf( __( 'Parent %s:', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'new_item_name'              => sprintf( __( 'New %s Name', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'add_new_item'               => sprintf( __( 'Add New %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'edit_item'                  => sprintf( __( 'Edit %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'update_item'                => sprintf( __( 'Update %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'view_item'                  => sprintf( __( 'View %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'mage-eventpress' ), $event_org__label ),
+
+    'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
+
+    // translators: %s is the organization label.
+    'popular_items'              => sprintf( __( 'Popular %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'search_items'               => sprintf( __( 'Search %s', 'mage-eventpress' ), $event_org__label ),
+
+    'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
+
+    // translators: %s is the organization label.
+    'no_terms'                   => sprintf( __( 'No %s', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'items_list'                 => sprintf( __( '%s list', 'mage-eventpress' ), $event_org__label ),
+
+    // translators: %s is the organization label.
+    'items_list_navigation'      => sprintf( __( '%s list navigation', 'mage-eventpress' ), $event_org__label ),
+);
+
 
 	$argso = array(
 		'hierarchical'          => true,
@@ -94,11 +153,11 @@ add_filter("manage_edit-mep_cat_columns", 'mep_add_cat_tax_column');
 function mep_add_cat_tax_column($theme_columns) {
     $new_columns = array(
         'cb' => '<input type="checkbox" />',
-        'name' => __('Name'),
+        'name' => __('Name','mage-eventpress'),
          'mep_cat_id' => 'CatID',
 //      'description' => __('Description'),
-        'slug' => __('Slug'),
-        'posts' => __('Posts')
+        'slug' => __('Slug','mage-eventpress'),
+        'posts' => __('Posts','mage-eventpress')
         );
     return $new_columns;
 }
@@ -123,11 +182,11 @@ add_filter("manage_edit-mep_org_columns", 'mep_add_org_tax_column');
 function mep_add_org_tax_column($theme_columns) {
     $new_columns = array(
         'cb' => '<input type="checkbox" />',
-        'name' => __('Name'),
+        'name' => __('Name', 'mage-eventpress'),
          'mep_org_id' => 'OrgID',
-//      'description' => __('Description'),
-        'slug' => __('Slug'),
-        'posts' => __('Posts')
+//      'description' => __('Description', 'mage-eventpress'),
+        'slug' => __('Slug', 'mage-eventpress'),
+        'posts' => __('Posts', 'mage-eventpress')
         );
     return $new_columns;
 }

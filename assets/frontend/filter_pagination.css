@@ -189,7 +189,6 @@ div.buttonGroup > *,
    .mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i{width:30px !important; height:30px !important;}
    .mep_smart_theme div.mpwem_location, div.mpwem_time{margin:0px !important;}
    .mpwem_registration_area input#mpwem_date_time{border-radius:5px !important;}
-   .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .share_widgets {padding: 10px 30px !important; }
     .mep_smart_theme .mpwem_right_content .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn{padding: 5px 10px !important;}
 }
 
@@ -260,4 +259,197 @@ div.buttonGroup > *,
 	box-shadow: 0 8px 32px rgba(26,115,232,0.13);
 	transform: translateY(-4px) scale(1.025);
 }
+}
+/* low stock warning css */
+@media only screen and (min-width: 10px) {
+
+.mep-low-stock-warning {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    margin: 3px 0;
+    box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+    position: relative;
+    overflow: hidden;
+    animation: pulse-warning 2s infinite;
+	width: 40%;
+}
+
+.mep-low-stock-warning::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes pulse-warning {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Limited Availability Ribbon Styles */
+.mep-limited-availability-ribbon {
+    background: linear-gradient(135deg, #ffa726, #ff9800);
+    color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    margin: 2px 0;
+    box-shadow: 0 1px 3px rgba(255, 167, 38, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mep-limited-availability-ribbon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer-ribbon 3s infinite;
+}
+
+@keyframes shimmer-ribbon {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Fix spacing issues in ticket layout */
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data {
+    padding: 12px 0 !important;
+    margin: 0 !important;
+    gap: 8px;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body {
+    padding: 10px 15px 15px 15px !important;
+}
+
+@media (min-width: 600px) {
+    .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body {
+        padding: 15px 20px 20px 20px !important;
+    }
+}
+
+/* Limited availability ribbon above price */
+.ticket-price .mep-limited-availability-ribbon {
+    margin-bottom: 6px;
+    display: block;
+    text-align: center;
+    width: 80%;
+    margin-left: 20%;
+}
+
+/* Hide tickets remaining when low stock warning is shown */
+.mep_ticket_item .mep-low-stock-warning + .ticket-remaining,
+.mep_ticket_item .mep-low-stock-warning ~ .ticket-remaining {
+    display: none !important;
+}
+
+/* Reduce spacing in ticket info */
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name {
+    margin-bottom: 4px !important;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description {
+    margin-bottom: 4px !important;
+    font-size: 13px !important;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining {
+    margin: 2px 0 !important;
+    padding: 2px 6px !important;
+    font-size: 11px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mep-low-stock-warning,
+    .mep-limited-availability-ribbon {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data {
+        padding: 8px 0 !important;
+        gap: 6px;
+    }
+}
+
+/* Dark theme compatibility */
+@media (prefers-color-scheme: dark) {
+    .mep-low-stock-warning {
+        background: linear-gradient(135deg, #d32f2f, #c62828);
+        box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3);
+    }
+    
+    .mep-limited-availability-ribbon {
+        background: linear-gradient(135deg, #f57c00, #ef6c00);
+        box-shadow: 0 1px 3px rgba(245, 124, 0, 0.3);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .mep-low-stock-warning,
+    .mep-limited-availability-ribbon {
+        border: 2px solid #ffffff;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .mep-low-stock-warning,
+    .mep-limited-availability-ribbon {
+        animation: none;
+    }
+    
+    .mep-low-stock-warning::before,
+    .mep-limited-availability-ribbon::before {
+        animation: none;
+    }
+}
+
 }

@@ -28,7 +28,19 @@
 			function admin_menu() {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				//add_options_page( 'Event Settings', 'Event Settings', 'delete_posts', 'mep_event_settings_page', array($this, 'plugin_page') );
-				add_submenu_page( 'edit.php?post_type=mep_events', __( $event_label . ' Settings', 'mage-eventpress' ), __( $event_label . ' Settings', 'mage-eventpress' ), 'manage_options', 'mep_event_settings_page', array( $this, 'plugin_page' ) );
+				$menu_label = sprintf(
+					/* translators: %s is the event label, e.g., "Conference" */
+					__( '%s Settings', 'mage-eventpress' ),
+					$event_label
+					);
+					add_submenu_page(
+						'edit.php?post_type=mep_events',
+						$menu_label,
+						$menu_label,
+						'manage_options',
+						'mep_event_settings_page',
+						array( $this, 'plugin_page' )
+					);
 			}
 
 			function get_settings_sections() {
@@ -373,8 +385,16 @@
 								'label'       => __( 'Limited Availability Threshold', 'mage-eventpress' ),
 								'desc'        => __( 'Show "Limited Availability" ribbon when available seats are less than or equal to this number.', 'mage-eventpress' ),
 								'type'        => 'number',
-								'default'     => '5',
+								'default'     => '0',
 								'placeholder' => '5'
+							),
+							array(
+								'name'        => 'mep_limited_availability_text',
+								'label'       => __( 'Limited Availability Ribbon Text', 'mage-eventpress' ),
+								'desc'        => __( 'The text to display on the limited availability ribbon.', 'mage-eventpress' ),
+								'type'        => 'text',
+								'default'     => 'Limited Availability',
+								'placeholder' => 'Limited Availability'
 							),
 							array(
 								'name'    => 'mep_show_low_stock_warning',
@@ -392,7 +412,7 @@
 								'label'       => __( 'Low Stock Threshold', 'mage-eventpress' ),
 								'desc'        => __( 'Show low stock warning when available seats are less than or equal to this number.', 'mage-eventpress' ),
 								'type'        => 'number',
-								'default'     => '3',
+								'default'     => '0',
 								'placeholder' => '3'
 							),
 							array(
@@ -1098,7 +1118,7 @@
 							'desc'    => __( 'Please enter the translated text of <strong>Limited Availability</strong>.', 'mage-eventpress' ),
 							'type'    => 'text',
 							'default' => 'Limited Availability'
-						)
+						),
 					) ),
 					'style_setting_sec'        => apply_filters( 'mep_settings_styling_arr', array(
 							// Base Background & Text Color
@@ -1296,16 +1316,16 @@
 					),
 					'carousel_setting_sec'     => apply_filters( 'mep_settings_carousel_arr', array(
 							array(
-								'name'    => 'mep_load_carousal_from_theme',
-								'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
-								'desc'    => __( 'If your theme is not loading the Owl Carousel Library, or if you"re having issues with Owl Carousel, you can set this option to "Yes" to fix the issue.', 'mage-eventpress' ),
-								'type'    => 'select',
-								'default' => 'no',
-								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
-								)
-							),
+						'name'    => 'mep_load_carousal_from_theme',
+						'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
+						'desc'    => __( 'Select "Yes" only if your theme already includes Owl Carousel library. Select "No" (recommended) to let the plugin load its own Owl Carousel library. If carousel is not working, ensure this is set to "No".', 'mage-eventpress' ),
+						'type'    => 'select',
+						'default' => 'no',
+						'options' => array(
+							'no'  => __( 'No - Load from Plugin (Recommended)', 'mage-eventpress' ),
+							'yes' => __( 'Yes - Load from Theme', 'mage-eventpress' )
+						)
+					),
 							array(
 								'name'    => 'mep_autoplay_carousal',
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),

@@ -41,7 +41,9 @@
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
-					$event_label . __( ' Details','mage-eventpress' ), __( 'Organizer','mage-eventpress' ),
+
+					$event_label . __( ' Details', 'mage-eventpress' ),
+					__( 'Organizer' ,'mage-eventpress'),
 				];
 				if ( $this->is_gutenberg_active() ) { ?>
                     <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr( $author_id ); ?>">
@@ -134,12 +136,12 @@
                                     <div class='sec'>
                                         <input id="pac-input" name='location_name' value=''/>
                                     </div>
-                                <input type="hidden" class="form-control" required name="latitude" value="<?php if ( array_key_exists( 'latitude', $values ) ) {
-									echo esc_attr( $values['latitude'][0] );
-								} ?>">
-                                <input type="hidden" class="form-control" required name="longitude" value="<?php if ( array_key_exists( 'longitude', $values ) ) {
-									echo esc_attr( $values['longitude'][0] );
-								} ?>">
+                                <input type="hidden" class="form-control" required id="latitude" name="latitude" value="<?php if ( array_key_exists( 'latitude', $values ) ) {
+         echo esc_attr( $values['latitude'][0] );
+        } ?>">
+                                <input type="hidden" class="form-control" required id="longitude" name="longitude" value="<?php if ( array_key_exists( 'longitude', $values ) ) {
+         echo esc_attr( $values['longitude'][0] );
+        } ?>">
                                     <div id="map"></div>
 									<?php
 								} else {
@@ -150,87 +152,127 @@
 								<?php
 									}
 									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
-										$lat = $values['latitude'][0];
+										$lat = str_replace( ',', '.', $values['latitude'][0] );
 									} else {
 										$lat = '37.0902';
 									}
 									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
-										$lon = $values['longitude'][0];
+										$lon = str_replace( ',', '.', $values['longitude'][0] );
 									} else {
 										$lon = '95.7129';
 									}
 								?>
-                                    <script>
-                                        function initMap() {
-                                            var map = new google.maps.Map(document.getElementById('map'), {
-                                                center: {
-                                                    lat: <?php echo esc_attr( $lat ); ?>,
-                                                    lng: <?php echo esc_attr( $lon ); ?>
-                                                },
-                                                zoom: 17
-                                            });
-                                            var input = /** @type {!HTMLInputElement} */ (
-                                                document.getElementById('pac-input'));
-                                            var types = document.getElementById('type-selector');
-                                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
-                                            var autocomplete = new google.maps.places.Autocomplete(input);
-                                            autocomplete.bindTo('bounds', map);
-                                            var infowindow = new google.maps.InfoWindow();
-                                            var marker = new google.maps.Marker({
-                                                map: map,
-                                                anchorPoint: new google.maps.Point(0, -29),
-                                                draggable: true,
-                                                position: {
-                                                    lat: <?php echo esc_attr( $lat ); ?>,
-                                                    lng: <?php echo esc_attr( $lon ); ?>
-                                                }
-                                            });
-                                            google.maps.event.addListener(marker, 'dragend', function () {
-                                                document.getElementsByName('latitude')[0].value = marker.getPosition().lat();
-                                                document.getElementsByName('longitude')[0].value = marker.getPosition().lng();
-                                            })
-                                            autocomplete.addListener('place_changed', function () {
-                                                infowindow.close();
-                                                marker.setVisible(false);
-                                                var place = autocomplete.getPlace();
-                                                if (!place.geometry) {
-                                                    window.alert("Autocomplete's returned place contains no geometry");
-                                                    return;
-                                                }
-                                                // If the place has a geometry, then present it on a map.
-                                                if (place.geometry.viewport) {
-                                                    map.fitBounds(place.geometry.viewport);
-                                                } else {
-                                                    map.setCenter(place.geometry.location);
-                                                    map.setZoom(17); // Why 17? Because it looks good.
-                                                }
-                                                marker.setIcon( /** @type {google.maps.Icon} */ ({
-                                                    url: 'http://maps.google.com/mapfiles/ms/icons/red.png',
-                                                    size: new google.maps.Size(71, 71),
-                                                    origin: new google.maps.Point(0, 0),
-                                                    anchor: new google.maps.Point(17, 34),
-                                                    scaledSize: new google.maps.Size(35, 35)
-                                                }));
-                                                marker.setPosition(place.geometry.location);
-                                                marker.setVisible(true);
-                                                var address = '';
-                                                if (place.address_components) {
-                                                    address = [
-                                                        (place.address_components[0] && place.address_components[0].short_name || ''),
-                                                        (place.address_components[1] && place.address_components[1].short_name || ''),
-                                                        (place.address_components[2] && place.address_components[2].short_name || '')
-                                                    ].join(' ');
-                                                }
-                                                var latitude = place.geometry.location.lat();
-                                                var longitude = place.geometry.location.lng();
-                                                // $("input[name=coordinate]").val(address);
-                                                jQuery("input[name=latitude]").val(latitude);
-                                                jQuery("input[name=longitude]").val(longitude);
-                                            });
-                                        }
-                                        google.maps.event.addDomListener(window, "load", initMap);
-                                    </script>
+                                   <script>
+                                       function initMap() {
+                                           var map = new google.maps.Map(document.getElementById('map'), {
+                                               center: {
+                                                   lat: <?php echo esc_attr($lat); ?>,
+                                                   lng: <?php echo esc_attr($lon); ?>
+                                               },
+                                               zoom: 17
+                                           });
+                                           var input = /** @type {!HTMLInputElement} */ (
+                                               document.getElementById('pac-input'));
+                                           var types = document.getElementById('type-selector');
+                                           map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                                           map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+                                           var autocomplete = new google.maps.places.Autocomplete(input);
+                                           autocomplete.bindTo('bounds', map);
+                                           var infowindow = new google.maps.InfoWindow();
+                                           var marker = new google.maps.Marker({
+                                               map: map,
+                                               anchorPoint: new google.maps.Point(0, -29),
+                                               draggable: true,
+                                               position: {
+                                                   lat: <?php echo esc_attr($lat); ?>,
+                                                   lng: <?php echo esc_attr($lon); ?>
+                                               }
+                                           });
+                                           google.maps.event.addListener(marker, 'dragend', function() {
+                                               document.getElementById('latitude').value = marker.getPosition().lat();
+                                               document.getElementById('longitude').value = marker.getPosition().lng();
+                                           })
+                                           autocomplete.addListener('place_changed', function() {
+                                               infowindow.close();
+                                               marker.setVisible(false);
+                                               var place = autocomplete.getPlace();
+                                               if (!place.geometry) {
+                                                   window.alert("Autocomplete's returned place contains no geometry");
+                                                   return;
+                                               }
+                                               // If the place has a geometry, then present it on a map.
+                                               if (place.geometry.viewport) {
+                                                   map.fitBounds(place.geometry.viewport);
+                                               } else {
+                                                   map.setCenter(place.geometry.location);
+                                                   map.setZoom(17); // Why 17? Because it looks good.
+                                               }
+                                               marker.setIcon( /** @type {google.maps.Icon} */ ({
+                                                   url: 'http://maps.google.com/mapfiles/ms/icons/red.png',
+                                                   size: new google.maps.Size(71, 71),
+                                                   origin: new google.maps.Point(0, 0),
+                                                   anchor: new google.maps.Point(17, 34),
+                                                   scaledSize: new google.maps.Size(35, 35)
+                                               }));
+                                               marker.setPosition(place.geometry.location);
+                                               marker.setVisible(true);
+                                               var address = '';
+                                               if (place.address_components) {
+                                                   address = [
+                                                       (place.address_components[0] && place.address_components[0].short_name || ''),
+                                                       (place.address_components[1] && place.address_components[1].short_name || ''),
+                                                       (place.address_components[2] && place.address_components[2].short_name || '')
+                                                   ].join(' ');
+                                               }
+                                               var latitude = place.geometry.location.lat();
+                                               var longitude = place.geometry.location.lng();
+                                               // $("input[name=coordinate]").val(address);
+                                               jQuery("#latitude").val(latitude);
+                                               jQuery("#longitude").val(longitude);
+                                           });
+
+         function debounce(func, wait, immediate) {
+          var timeout;
+          return function() {
+           var context = this, args = arguments;
+           var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+           };
+           var callNow = immediate && !timeout;
+           clearTimeout(timeout);
+           timeout = setTimeout(later, wait);
+           if (callNow) func.apply(context, args);
+          };
+         };
+
+         var geocodeAddress = debounce(function() {
+          var geocoder = new google.maps.Geocoder();
+          var address = jQuery('[name="mep_location_venue"]').val() + ', ' + jQuery('[name="mep_street"]').val() + ', ' + jQuery('[name="mep_city"]').val() + ', ' + jQuery('[name="mep_state"]').val() + ', ' + jQuery('[name="mep_postcode"]').val() + ', ' + jQuery('[name="mep_country"]').val();
+          geocoder.geocode({
+           'address': address
+          }, function(results, status) {
+           if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            marker.setPosition(results[0].geometry.location);
+            jQuery("#latitude").val(results[0].geometry.location.lat());
+            jQuery("#longitude").val(results[0].geometry.location.lng());
+           }
+          });
+         }, 1500);
+
+         jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
+
+                                       }
+                                       (function() {
+                                           var google_map_api_key = '<?php echo $user_api; ?>';
+                                           var script = document.createElement('script');
+                                           script.src = 'https://maps.googleapis.com/maps/api/js?key=' + google_map_api_key + '&libraries=places&callback=initMap';
+                                           script.defer = true;
+                                           script.async = true;
+                                           document.head.appendChild(script);
+                                       })();
+                                   </script>
 									<?php
 								}
 							?>
@@ -261,12 +303,10 @@
                                 jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
-                        jQuery('[name="mep_location_venue"]').keypress(function () {
+                        jQuery('[name="mep_location_venue"]').on('input', function () {
                             let location = jQuery(this).val();
-                            if (location === '') {
-                                // alert('Please Enter Location First');
-                            } else {
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                            if (location !== '') {
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + encodeURIComponent(location) + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
                     </script>

@@ -31,12 +31,12 @@ if (!function_exists('mep_display_event_loop_list')) {
         $hide_only_end_time_list = mep_get_option('mep_event_hide_end_time_list', 'event_list_setting_sec', 'no');
         $recurring              = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
         $event_type             = get_post_meta(get_the_id(), 'mep_event_type', true) ? get_post_meta(get_the_id(), 'mep_event_type', true) : 'offline';
-        
+        $upcoming_date          = mep_get_event_upcoming_date($event_id);
         // $post_id = get_the_id();
 
         $total_seat = mep_event_total_seat($event_id, 'total');
         $total_resv = mep_event_total_seat($event_id, 'resv');
-        $total_sold = mep_get_event_total_seat_left($event_id);
+        $total_sold = mep_get_event_total_seat_left($event_id,$upcoming_date);
         $_total_left = $total_seat - ($total_sold + $total_resv);    
                 
         $total_left = apply_filters('mep_event_list_total_seat_count', $_total_left, $event_id);

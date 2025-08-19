@@ -25,7 +25,7 @@
             <td align="Left"><?php echo esc_html($service_name); ?>
             <?php if ($mep_available_seat == 'on') { ?>
                 <div class="xtra-item-left"><?php echo esc_html($ext_left); ?>
-                    <?php echo mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress'));  ?>
+                    <?php echo esc_html(mep_get_option('mep_left_text', 'label_setting_sec', __('Left:', 'mage-eventpress'))); ?>
                 </div>
                 <?php } ?>
                 
@@ -48,7 +48,7 @@
                         </div>
                 <?php }
                 } else {
-                    echo mep_get_option('mep_not_available_text', 'label_setting_sec', __('Not Available', 'mage-eventpress'));
+                    echo esc_html(mep_get_option('mep_not_available_text', 'label_setting_sec', __('Not Available', 'mage-eventpress')));
                 } ?>
             </td>
             <td class="mage_text_center"><?php echo wc_price(esc_html(mep_get_price_including_tax($post_id, $service_price)));

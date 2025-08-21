@@ -1552,7 +1552,7 @@
 	#ui-datepicker-div a.ui-state-default:hover {background-color: darksalmon;}
 	#ui-datepicker-div .ui-state-active {background-color: var(--color_theme);color: var(--color_theme_alter);background-image: none;}
 	#ui-datepicker-div .ui-datepicker-title {background-color: var(--color_theme);color: var(--color_theme_alter);background-image: none;font-size: var(--fs_h5);display: -webkit-flex;display: flex;margin: 0;}
-	#ui-datepicker-div .ui-datepicker-title select {min-width: 100px;height: 30px;font-size: var(--fs);padding: 0 var(--dMP_xs);text-align: left;}
+	#ui-datepicker-div .ui-datepicker-title select {min-width: 100px;height: 30px;font-size: var(--fs);padding: 0 var(--dMP_xs);text-align: left;visibility: visible;}
 	#ui-datepicker-div.ui-datepicker td {background-color: floralwhite;border: 1px dotted #000;padding: 4px 6px;}
 }
 /********************************************************************************************************************/

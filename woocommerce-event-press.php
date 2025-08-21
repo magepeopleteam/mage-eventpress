@@ -81,7 +81,7 @@
 			// Enqueue block editor assets
 			if (is_admin()) {
 				wp_enqueue_script('mep-blocks-editor');
-				wp_enqueue_style('mep-blocks-editor');
+				//wp_enqueue_style('mep-blocks-editor');
 			}
 		}
 

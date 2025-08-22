@@ -17,22 +17,39 @@ if (!function_exists('mep_event_google_map')) {
 		do_action('mep_event_before_google_map');
 		if ($location_sts) {
 			$org_arr 	= get_the_terms($event_id, 'mep_org');
-			$org_id 	= $org_arr[0]->term_id;
-			$lat 		= get_term_meta($org_id, 'latitude', true) ? get_term_meta($org_id, 'latitude', true) : 0;
-			$lon 		= get_term_meta($org_id, 'longitude', true) ? get_term_meta($org_id, 'longitude', true) : 0;
+			if ($org_arr && !is_wp_error($org_arr)) {
+				$org_id 	= $org_arr[0]->term_id;
+				$lat 		= get_term_meta($org_id, 'latitude', true) ? floatval(get_term_meta($org_id, 'latitude', true)) : 0;
+				$lon 		= get_term_meta($org_id, 'longitude', true) ? floatval(get_term_meta($org_id, 'longitude', true)) : 0;
+			} else {
+				$lat = 0;
+				$lon = 0;
+			}
 		} else {
-			$lat 		= get_post_meta($event_id, 'latitude', true) ? get_post_meta($event_id, 'latitude', true) : 0;			
-			$lon 		= get_post_meta($event_id, 'longitude', true) ? get_post_meta($event_id, 'longitude', true) : 0;						
+			$lat 		= get_post_meta($event_id, 'latitude', true) ? floatval(get_post_meta($event_id, 'latitude', true)) : 0;			
+			$lon 		= get_post_meta($event_id, 'longitude', true) ? floatval(get_post_meta($event_id, 'longitude', true)) : 0;						
 		}
 		if ($status) {
 			if ($map_type == 'iframe') {
+				$location_query = '';
+				// Try coordinates first, then fallback to address
+				if ($lat != 0 && $lon != 0) {
+					$location_query = $lat . ',' . $lon;
+				} else {
+					$location_query = urlencode(mep_get_event_locaion_item($event_id, 'mep_location_venue'));
+				}
 ?>
 				<div class="mep-gmap-sec">
-					<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo mep_get_event_locaion_item($event_id, 'mep_location_venue'); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style='width: 100%;min-height: 250px;'></iframe>
+					<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo $location_query; ?>&t=&z=17&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style='width: 100%;min-height: 250px;'></iframe>
 				</div>
 				<?php
 			} else {
 				if ($user_api) {
+					// Set default coordinates if none exist
+					if ($lat == 0 && $lon == 0) {
+						$lat = 37.0902; // Default latitude
+						$lon = -95.7129; // Default longitude
+					}
 				?>
 					<div class="mep-gmap-sec">
 						<div id="map" class='mep_google_map'></div>
@@ -40,14 +57,17 @@ if (!function_exists('mep_event_google_map')) {
 					<script>
 						var map;
 						function initMap() {
+							var mapCenter = {
+								lat: <?php echo esc_attr($lat); ?>,
+								lng: <?php echo esc_attr($lon); ?>
+							};
+							
 							map = new google.maps.Map(document.getElementById('map'), {
-								center: {
-									lat: <?php echo esc_attr($lat); ?>,
-									lng: <?php echo esc_attr($lon); ?>
-								},
+								center: mapCenter,
 								zoom: <?php echo $map_zoom; ?>
 							});
-							marker = new google.maps.Marker({
+							
+							var marker = new google.maps.Marker({
 								map: map,
 								draggable: false,
 								animation: google.maps.Animation.DROP,

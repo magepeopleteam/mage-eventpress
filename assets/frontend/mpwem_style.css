@@ -202,12 +202,21 @@ ul#mep_add_calender_links li a {
   text-decoration: none;
 }
 
-.mep-events-wrapper ul {
+.mep-events-wrapper ul:not(.mp_wp_editor ul) {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
+.mp_wp_editor ul,
+.mp_wp_editor ol {
+  list-style-type: inherit;
+  margin-left: 20px;
+  padding-left: 20px;
+}
 
+.mp_wp_editor ol {
+  list-style-type: decimal;
+}
 .mep-events-wrapper .mage_text_center {
   text-align: center;
 }

@@ -31,7 +31,7 @@
 					if($description_title=='no'): ?>
 						<h2 class="_mB"><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h2>
 					<?php endif; ?>
-					<div class="mpwem_details_content"><?php the_content(); ?></div>
+					<div class="mpwem_details_content mp_wp_editor"><?php the_content(); ?></div>
                 </div>
 			<?php //} ?>
 			<!-- timeline data display -->

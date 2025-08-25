@@ -223,8 +223,8 @@
                                        class="formControl inputIncDec mp_number_validation"
                                        data-price="<?php echo esc_attr($price); ?>"
                                        name="<?php echo esc_attr($input_name); ?>"
-                                       value="<?php echo esc_attr($default_qty > 0 ? $default_qty : 0); ?>"
-                                       min="0"
+                                       value="<?php echo esc_attr( max( $default_qty, 0 ) ); ?>"
+                                       min="<?php echo esc_attr($min_qty); ?>"
                                        max="<?php echo esc_attr($max_qty); ?>"
                                        data-min-qty="<?php echo esc_attr($min_qty); ?>"
                                 />

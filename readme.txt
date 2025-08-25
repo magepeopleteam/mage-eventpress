@@ -1,4 +1,4 @@
-=== Event Booking & Management Plugin for WooCommerce – WpEvently - WordPress Plugin ===
+=== Event Booking Manager for WooCommerce – WpEvently ===
 Contributors: magepeopleteam, aamahin
 Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
 Requires at least: 5.3

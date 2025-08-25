@@ -385,7 +385,6 @@ function render_mep_events_by_status( $posts ) {
                         <div class="date-time">
                             <span ><?php echo esc_attr( $start_date );?></span>
                             <span class="time"><?php echo esc_attr( $time );?></span>
-<!--                            <span class="mpwem_remaining_days">--><?php //echo esc_attr( $time_remaining );?><!--</span>-->
                         </div>
                     </td>
                     <td>
@@ -402,7 +401,8 @@ function render_mep_events_by_status( $posts ) {
                                     ?>
                                     <div class="ticket-item">
                                         <span class="ticket-name"><?php echo esc_html( $type['option_name_t']);?></span>
-                                        <span class="ticket-price ticket-free"><?php echo esc_attr( $type['option_price_t']);?></span>
+                                      <span class="ticket-price ticket-free"><?php echo isset($type['option_price_t']) ? esc_html($type['option_price_t']) : ''; ?></span>
+
                                     </div>
                               <?php
                                     }
@@ -413,16 +413,16 @@ function render_mep_events_by_status( $posts ) {
                             if( $ticket_type_count > 2 ){
                                 $more_ticket_type = $ticket_type_count - 2;
                             ?>
-                            <div class="ticket-more">+<?php echo esc_attr( $more_ticket_type );?> more</div>
+                            <div class="ticket-more">+<?php echo esc_html( $more_ticket_type );?> more</div>
                             <?php }?>
                         </div>
                     </td>
                     <td class="mpwem_event_list_capacity">
-                        <div class="mpwem_event_list_capacity-number"><?php echo esc_attr( $total_sold );?>/<?php echo esc_attr( $total_ticket );?></div>
+                        <div class="mpwem_event_list_capacity-number"><?php echo esc_html( $total_sold );?>/<?php echo esc_html( $total_ticket );?></div>
                         <div class="mpwem_event_list_capacity-bar">
                             <div class="mpwem_event_list_capacity-fill <?php echo esc_attr( $full_class );?>" style="width: 100%"></div>
                         </div>
-                        <div class="mpwem_event_list_capacity-status"><?php echo esc_attr( $text );?></div>
+                        <div class="mpwem_event_list_capacity-status"><?php echo esc_html( $text );?></div>
                     </td>
                     <td>
                         <div class="actions">
@@ -431,9 +431,7 @@ function render_mep_events_by_status( $posts ) {
                             <a href="#"><button class="action-btn quick-edit" title="Quick Edit" data-event-id="<?php echo esc_attr($id); ?>"><span class="dashicons dashicons-edit-page"></span></button></a>
                             <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event"><span class="dashicons dashicons-edit"></span></button></a>
                             <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event"><span class="dashicons dashicons-trash"></span></button></a>
-                            <!--<a href="--><?php //echo esc_url( $duplicate_link )?><!--"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a>-->
-                            <!-- <a title="<?php //echo esc_attr__('Duplicate Hotel ', 'tour-booking-manager') . ' : ' . get_the_title($id); ?>"  href="<?php //echo wp_nonce_url(admin_url('admin.php?action=mpwem_duplicate_post&post_id=' . $id),'mpwem_duplicate_post_' . $id; ?>"><button class="action-btn duplicate" title="Duplicate Event">📋</button></a> -->
-                        <?php do_action('mep_after_dashboard_event_list',$id); ?>
+                            <?php do_action('mep_after_dashboard_event_list',$id); ?>
                         </div>
                     </td>
                 </tr>
@@ -558,11 +556,6 @@ function render_mep_events_by_status( $posts ) {
                         <p><?php esc_attr_e( 'Total Registrations', 'mage-eventpress' );?></p>
                         <div class="trend up">↗ <?php echo esc_attr( $reg_percent_change['inc_dec_sign'].'%'.$reg_percent_change['percent_change'].' vs last month');?></div>
                     </div>
-                    <!--<div class="analytics-card">
-                        <h3>94%</h3>
-                        <p><?php /*esc_attr_e( 'Avg. Capacity Filled', 'mage-eventpress' );*/?></p>
-                        <div class="trend up"><?php /*esc_attr_e( '↗ +5% this month', 'mage-eventpress' );*/?></div>
-                    </div>-->
                     <div class="analytics-card">
                         <h3><?php echo $currency_symbol.' '.$current_month_revenue?></h3>
                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' );?></p>
@@ -600,10 +593,6 @@ function render_mep_events_by_status( $posts ) {
                         <span><?php esc_attr_e( 'Active', 'mage-eventpress' );?></span>
                         <span class="stat-number">(<?php echo esc_attr( $event_status_count['active_count'] );?>)</span>
                     </div>
-                    <!--<div class="stat-item mpwem_filter_by_active_status" data-by-filter="upcoming">
-                        <span><?php /*esc_attr_e( 'Upcoming', 'mage-eventpress' );*/?></span>
-                        <span class="stat-number"><?php /*echo esc_attr( $event_status_count['upcoming_count'] );*/?></span>
-                    </div>-->
                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="expired">
                         <span><?php esc_attr_e( 'Expired', 'mage-eventpress' );?></span>
                         <span class="stat-number">(<?php echo esc_attr( $event_status_count['expire_count'] );?>)</span>
@@ -642,8 +631,6 @@ function render_mep_events_by_status( $posts ) {
                     <input type="date" id="mpwem_date_to" class="date-filter">
                     <button type="button" id="mpwem_clear_date_filter" class="clear-date-btn"><?php esc_attr_e( 'Clear', 'mage-eventpress' );?></button>
                 </div>
-<!--                <button class="filter-btn">--><?php //esc_attr_e( 'Filter', 'mage-eventpress' );?><!--</button>-->
-<!--                <button class="filter-btn">Export</button>-->
             </div>
 
             <div class="table-container">
@@ -679,7 +666,7 @@ function render_mep_events_by_status( $posts ) {
 
             <div class="pagination">
                 <div class="pagination-info">
-                    <?php esc_attr_e( 'Showing', 'mage-eventpress' );?> <span id="visibleCount">0</span> of <span id="totalCount">0</span> <?php esc_attr_e( ' git events', 'mage-eventpress' );?>
+                    <?php esc_attr_e( 'Showing', 'mage-eventpress' );?> <span id="visibleCount">0</span> of <span id="totalCount">0</span> <?php esc_attr_e( ' Events', 'mage-eventpress' );?>
                 </div>
                 <button class="load-more-btn" id="loadMoreBtn">
                     <span><?php esc_attr_e( 'Load More Events', 'mage-eventpress' );?></span>

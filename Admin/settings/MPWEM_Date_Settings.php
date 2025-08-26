@@ -199,25 +199,79 @@
                     <div class="_mT">
                         <div class="_dLayout_xs_mp_zero">
                             <div class="_bgLight_padding">
-                                <h4><?php esc_html_e( 'Off Days Setting', 'mage-eventpress' ); ?></h4>
-                                <span class="_mp_zero"><?php esc_html_e( 'Configure Event Off Days Setting', 'mage-eventpress' ); ?></span>
+                                <h4><?php esc_html_e( 'Off Days & Dates Setting', 'mage-eventpress' ); ?></h4>
+                                <span class="_mp_zero"><?php esc_html_e( 'Configure Event Off Days & Dates Setting', 'mage-eventpress' ); ?></span>
                             </div>
-                            <div class="_padding_bT">
-                                <label class="justifyBetween _alignCenter">
-                                    <span><?php esc_html_e( 'Ticket Off days', 'mage-eventpress' ); ?></span>
-                                    <div class="groupCheckBox">
-                                        <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
-										<?php foreach ( $days as $key => $day ) { ?>
-                                            <label class="customCheckboxLabel ">
-                                                <input type="checkbox" <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'checked' : '' ); ?> data-checked="<?php echo esc_attr( $key ); ?>"/>
-                                                <span class="customCheckbox"><?php echo esc_html( $day ); ?></span>
-                                            </label>
-										<?php } ?>
+                            <div class="mpTabs _padding ">
+                                <ul class="tabLists">
+                                    <li data-tabs-target="#mpwem_off_days"><?php esc_html_e( 'Off Days ', 'mage-eventpress' ); ?></li>
+                                    <li data-tabs-target="#mpwem_off_dates"><?php esc_html_e( 'Off Dates ', 'mage-eventpress' ); ?></li>
+                                </ul>
+                                <div class="tabsContent _mT">
+                                    <div class="tabsItem" data-tabs="#mpwem_off_days">
+                                        <label class="justifyBetween _alignCenter">
+                                            <span><?php esc_html_e( 'Ticket Off days', 'mage-eventpress' ); ?></span>
+                                            <div class="groupCheckBox">
+                                                <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
+												<?php foreach ( $days as $key => $day ) { ?>
+                                                    <label class="customCheckboxLabel ">
+                                                        <input type="checkbox" <?php echo esc_attr( in_array( $key, $off_day_array ) ? 'checked' : '' ); ?> data-checked="<?php echo esc_attr( $key ); ?>"/>
+                                                        <span class="customCheckbox"><?php echo esc_html( $day ); ?></span>
+                                                    </label>
+												<?php } ?>
+                                            </div>
+                                        </label>
+                                        <span class="des_info"><?php esc_html_e( 'Select Off days', 'mage-eventpress' ); ?></span>
                                     </div>
-                                </label>
-                                <span class="des_info"><?php esc_html_e( 'Select Off days', 'mage-eventpress' ); ?></span>
+                                    <div class="tabsItem" data-tabs="#mpwem_off_dates">
+                                        <label><?php esc_html_e( 'Select Off Dates ', 'mage-eventpress' ); ?></label>
+                                        <span class="info_text"><?php esc_html_e( 'Configure Tour Off Dates ', 'mage-eventpress' ); ?></span>
+                                        <div class="mp_settings_area">
+                                            <div class="mp_item_insert mp_sortable_area">
+												<?php
+													$all_off_dates = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
+													$off_dates     = array();
+													foreach ( $all_off_dates as $off_date ) {
+														$off_dates[] = $off_date['mep_ticket_off_date'];
+													}
+													if ( sizeof( $off_dates ) ) {
+														foreach ( $off_dates as $off_date ) {
+															if ( $off_date ) {
+																self::off_date_item( $off_date );
+															}
+														}
+													}
+												?>
+                                            </div>
+											<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
+                                            <div class="mp_hidden_content">
+                                                <div class="mp_hidden_item">
+													<?php self::off_date_item(); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+				<?php
+			}
+
+			public function off_date_item( $date = '' ) {
+				$date_format  = MP_Global_Function::date_picker_format();
+				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+				$hidden_date  = $date ? date_i18n( 'Y-m-d', strtotime( $date ) ) : '';
+				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
+				?>
+                <div class="mp_remove_area _mT_xs">
+                    <div class="groupContent">
+                        <label>
+                            <input type="hidden" name="mep_ticket_off_dates[]" value="<?php echo esc_attr( $hidden_date ); ?>"/>
+                            <input value="<?php echo esc_attr( $visible_date ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        </label>
+	                    <?php MPWEM_Custom_Layout::move_remove_button(); ?>
                     </div>
                 </div>
 				<?php

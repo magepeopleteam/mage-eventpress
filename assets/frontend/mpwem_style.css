@@ -937,6 +937,7 @@ div.mep_event_list a {
 
 .mep_event_list_item {
   border: 1px solid #DDD;
+  background-color:#f8f8f8;
   padding: 10px;
   margin: 10px 0;
 }

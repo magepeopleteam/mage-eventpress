@@ -6229,21 +6229,23 @@ Vanilla theme css by ariful
     color: var(--mpev-primary);
     margin: 0;
   }
-  .slick-slide {
+  
+    .mep-related-events .mep-related-events-items .slick-slide {
     margin: 10px 10px;
-    padding: 0 10px;
     box-sizing: border-box;
     display: flex;
     align-items: stretch;
+    flex-direction: column;
   }
-  .slick-slide > div {
+  
+  .mep-related-events-items  .slick-slide > div {
     flex: 1;
     min-height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .slick-dots li.slick-active button::before {
+  .mep-related-events-items  .slick-dots li.slick-active button::before {
     color: var(--mpev-primary);
   }
   div.mpwem_ex_service,

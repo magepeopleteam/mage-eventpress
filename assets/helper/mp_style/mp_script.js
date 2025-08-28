@@ -338,16 +338,25 @@ function mp_all_content_change($this) {
         let value = current.hasClass('incQty') ? (currentValue + 1) : ((currentValue - 1) > 0 ? (currentValue - 1) : 0);
         let min = parseInt(target.attr('min'));
         let max = parseInt(target.attr('max'));
+        let minQty = parseInt(target.attr('data-min-qty')) || 0;
+        //value=(value<min && minQty>0)
         target.parents('.qtyIncDec').find('.incQty , .decQty').removeClass('mpDisabled');
         if (value < min || isNaN(value) || value === 0) {
-            value = min;
-            target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
+            if(current.hasClass('incQty')){
+                value=min;
+            }
+            if(current.hasClass('decQty')){
+                value = minQty===0 ?0:min;
+            }
+            if(value>0){
+                target.parents('.qtyIncDec').find('.decQty').removeClass('mpDisabled');
+            }
         }
         if (value > max) {
             value = max;
             target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
         }
-        target.val(value).trigger('change').trigger('input');
+
         target.val(value).trigger('change').trigger('input');
     });
 }(jQuery));

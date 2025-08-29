@@ -136,12 +136,20 @@
                                     <div class='sec'>
                                         <input id="pac-input" name='location_name' value=''/>
                                     </div>
-                                <input type="hidden" class="form-control" required id="latitude" name="latitude" value="<?php if ( array_key_exists( 'latitude', $values ) ) {
-         echo esc_attr( $values['latitude'][0] );
-        } ?>">
-                                <input type="hidden" class="form-control" required id="longitude" name="longitude" value="<?php if ( array_key_exists( 'longitude', $values ) ) {
-         echo esc_attr( $values['longitude'][0] );
-        } ?>">
+                                <input type="hidden" class="form-control" id="latitude" name="latitude" value="<?php 
+                                    if ( array_key_exists( 'latitude', $values ) && !empty($values['latitude'][0]) ) {
+                                        echo esc_attr( $values['latitude'][0] );
+                                    } else {
+                                        echo esc_attr( get_post_meta( $post_id, 'latitude', true ) );
+                                    }
+                                ?>">
+                                <input type="hidden" class="form-control" id="longitude" name="longitude" value="<?php 
+                                    if ( array_key_exists( 'longitude', $values ) && !empty($values['longitude'][0]) ) {
+                                        echo esc_attr( $values['longitude'][0] );
+                                    } else {
+                                        echo esc_attr( get_post_meta( $post_id, 'longitude', true ) );
+                                    }
+                                ?>">
                                     <div id="map"></div>
 									<?php
 								} else {
@@ -151,16 +159,25 @@
 							</span>
 								<?php
 									}
-									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
-										$lat = str_replace( ',', '.', $values['latitude'][0] );
-									} else {
-										$lat = '37.0902';
-									}
-									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
-										$lon = str_replace( ',', '.', $values['longitude'][0] );
-									} else {
-										$lon = '95.7129';
-									}
+									                                    // Get coordinates from post meta or form values
+                                    $saved_lat = get_post_meta( $post_id, 'latitude', true );
+                                    $saved_lon = get_post_meta( $post_id, 'longitude', true );
+                                    
+                                    if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
+                                        $lat = str_replace( ',', '.', $values['latitude'][0] );
+                                    } elseif ( !empty( $saved_lat ) ) {
+                                        $lat = str_replace( ',', '.', $saved_lat );
+                                    } else {
+                                        $lat = '37.0902';
+                                    }
+                                    
+                                    if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
+                                        $lon = str_replace( ',', '.', $values['longitude'][0] );
+                                    } elseif ( !empty( $saved_lon ) ) {
+                                        $lon = str_replace( ',', '.', $saved_lon );
+                                    } else {
+                                        $lon = '95.7129';
+                                    }
 								?>
                                    <script>
                                        function initMap() {
@@ -171,13 +188,15 @@
                                                },
                                                zoom: 17
                                            });
-                                           var input = /** @type {!HTMLInputElement} */ (
-                                               document.getElementById('pac-input'));
-                                           var types = document.getElementById('type-selector');
-                                           map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                                           map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+                                           
+                                           var input = document.getElementById('pac-input');
+                                           if (input) {
+                                               map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                                           }
+                                           
                                            var autocomplete = new google.maps.places.Autocomplete(input);
                                            autocomplete.bindTo('bounds', map);
+                                           
                                            var infowindow = new google.maps.InfoWindow();
                                            var marker = new google.maps.Marker({
                                                map: map,
@@ -188,10 +207,16 @@
                                                    lng: <?php echo esc_attr($lon); ?>
                                                }
                                            });
+                                           
                                            google.maps.event.addListener(marker, 'dragend', function() {
-                                               document.getElementById('latitude').value = marker.getPosition().lat();
-                                               document.getElementById('longitude').value = marker.getPosition().lng();
-                                           })
+                                               var lat = marker.getPosition().lat();
+                                               var lng = marker.getPosition().lng();
+                                               document.getElementById('latitude').value = lat;
+                                               document.getElementById('longitude').value = lng;
+                                               jQuery('#latitude').val(lat).trigger('change');
+                                               jQuery('#longitude').val(lng).trigger('change');
+                                               console.log('Coordinates updated: ', lat, lng);
+                                           });
                                            autocomplete.addListener('place_changed', function() {
                                                infowindow.close();
                                                marker.setVisible(false);
@@ -224,11 +249,16 @@
                                                        (place.address_components[2] && place.address_components[2].short_name || '')
                                                    ].join(' ');
                                                }
-                                               var latitude = place.geometry.location.lat();
-                                               var longitude = place.geometry.location.lng();
-                                               // $("input[name=coordinate]").val(address);
-                                               jQuery("#latitude").val(latitude);
-                                               jQuery("#longitude").val(longitude);
+                                                var latitude = place.geometry.location.lat();
+                                                var longitude = place.geometry.location.lng();
+                                                
+                                                // Update both hidden fields and trigger change events
+                                                document.getElementById('latitude').value = latitude;
+                                                document.getElementById('longitude').value = longitude;
+                                                jQuery('#latitude').val(latitude).trigger('change');
+                                                jQuery('#longitude').val(longitude).trigger('change');
+                                                
+                                                console.log('Place selected - Coordinates updated: ', latitude, longitude);
                                            });
 
          function debounce(func, wait, immediate) {
@@ -246,36 +276,95 @@
           };
          };
 
-         var geocodeAddress = debounce(function() {
-          var geocoder = new google.maps.Geocoder();
-          var address = jQuery('[name="mep_location_venue"]').val() + ', ' + jQuery('[name="mep_street"]').val() + ', ' + jQuery('[name="mep_city"]').val() + ', ' + jQuery('[name="mep_state"]').val() + ', ' + jQuery('[name="mep_postcode"]').val() + ', ' + jQuery('[name="mep_country"]').val();
-          geocoder.geocode({
-           'address': address
-          }, function(results, status) {
-           if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            marker.setPosition(results[0].geometry.location);
-            jQuery("#latitude").val(results[0].geometry.location.lat());
-            jQuery("#longitude").val(results[0].geometry.location.lng());
+          // Enhanced function to handle both coordinates and addresses
+          var geocodeAddress = debounce(function() {
+           var geocoder = new google.maps.Geocoder();
+           var locationInput = jQuery('[name="mep_location_venue"]').val().trim();
+           
+           // Check if input looks like coordinates (lat,lng format)
+           var coordinatePattern = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
+           var coordinateMatch = locationInput.match(coordinatePattern);
+           
+           if (coordinateMatch) {
+               // Handle direct coordinate input
+               var lat = parseFloat(coordinateMatch[1]);
+               var lng = parseFloat(coordinateMatch[2]);
+               
+               // Validate coordinate ranges
+               if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                   var position = new google.maps.LatLng(lat, lng);
+                   
+                   map.setCenter(position);
+                   marker.setPosition(position);
+                   map.setZoom(15); // Zoom in for coordinate-based locations
+                   
+                   // Update coordinate fields
+                   document.getElementById('latitude').value = lat;
+                   document.getElementById('longitude').value = lng;
+                   jQuery('#latitude').val(lat).trigger('change');
+                   jQuery('#longitude').val(lng).trigger('change');
+                   
+                   console.log('Direct coordinates used - Map updated: ', lat, lng);
+                   
+                   // Optionally reverse geocode to get address
+                   geocoder.geocode({'location': position}, function(results, status) {
+                       if (status === 'OK' && results[0]) {
+                           console.log('Reverse geocoded address: ', results[0].formatted_address);
+                       }
+                   });
+               } else {
+                   console.warn('Invalid coordinate ranges: ', lat, lng);
+               }
+           } else {
+               // Handle regular address input
+               var address = locationInput + ', ' + jQuery('[name="mep_street"]').val() + ', ' + jQuery('[name="mep_city"]').val() + ', ' + jQuery('[name="mep_state"]').val() + ', ' + jQuery('[name="mep_postcode"]').val() + ', ' + jQuery('[name="mep_country"]').val();
+               
+               // Only geocode if we have a meaningful address
+               if (address.replace(/,\s*/g, '').trim().length > 3) {
+                   geocoder.geocode({
+                    'address': address
+                   }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK && results[0]) {
+                     var lat = results[0].geometry.location.lat();
+                     var lng = results[0].geometry.location.lng();
+                     
+                     map.setCenter(results[0].geometry.location);
+                     marker.setPosition(results[0].geometry.location);
+                     
+                     // Update coordinates with proper change triggers
+                     document.getElementById('latitude').value = lat;
+                     document.getElementById('longitude').value = lng;
+                     jQuery('#latitude').val(lat).trigger('change');
+                     jQuery('#longitude').val(lng).trigger('change');
+                     
+                     console.log('Geocoded address - Coordinates updated: ', lat, lng);
+                    } else {
+                     console.warn('Geocoding failed: ', status);
+                    }
+                   });
+               }
            }
-          });
-         }, 1500);
+          }, 800);
 
-         jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
+          jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
 
-                                       }
-                                       (function() {
-                                           var google_map_api_key = '<?php echo $user_api; ?>';
-                                           var script = document.createElement('script');
-                                           script.src = 'https://maps.googleapis.com/maps/api/js?key=' + google_map_api_key + '&libraries=places&callback=initMap';
-                                           script.defer = true;
-                                           script.async = true;
-                                           document.head.appendChild(script);
-                                       })();
-                                   </script>
-									<?php
-								}
-							?>
+                                        }
+                                        
+                                        (function() {
+                                            var google_map_api_key = '<?php echo $user_api; ?>';
+                                            var script = document.createElement('script');
+                                            script.src = 'https://maps.googleapis.com/maps/api/js?key=' + google_map_api_key + '&libraries=places&callback=initMap';
+                                            script.defer = true;
+                                            script.async = true;
+                                            script.onerror = function() {
+                                                console.error('Failed to load Google Maps API. Please check your API key.');
+                                            };
+                                            document.head.appendChild(script);
+                                        })();
+                                    </script>
+					<?php
+				}
+			?>
                         </div>
                     </section>
                     <script type="text/javascript">

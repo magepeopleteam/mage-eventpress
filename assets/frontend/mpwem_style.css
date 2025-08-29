@@ -202,12 +202,21 @@ ul#mep_add_calender_links li a {
   text-decoration: none;
 }
 
-.mep-events-wrapper ul {
+.mep-events-wrapper ul:not(.mp_wp_editor ul) {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
+.mp_wp_editor ul,
+.mp_wp_editor ol {
+  list-style-type: inherit;
+  margin-left: 20px;
+  padding-left: 20px;
+}
 
+.mp_wp_editor ol {
+  list-style-type: decimal;
+}
 .mep-events-wrapper .mage_text_center {
   text-align: center;
 }
@@ -928,6 +937,7 @@ div.mep_event_list a {
 
 .mep_event_list_item {
   border: 1px solid #DDD;
+  background-color:#f8f8f8;
   padding: 10px;
   margin: 10px 0;
 }
@@ -6220,21 +6230,23 @@ Vanilla theme css by ariful
     color: var(--mpev-primary);
     margin: 0;
   }
-  .slick-slide {
+  
+    .mep-related-events .mep-related-events-items .slick-slide {
     margin: 10px 10px;
-    padding: 0 10px;
     box-sizing: border-box;
     display: flex;
     align-items: stretch;
+    flex-direction: column;
   }
-  .slick-slide > div {
+  
+  .mep-related-events-items  .slick-slide > div {
     flex: 1;
     min-height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .slick-dots li.slick-active button::before {
+  .mep-related-events-items  .slick-dots li.slick-active button::before {
     color: var(--mpev-primary);
   }
   div.mpwem_ex_service,

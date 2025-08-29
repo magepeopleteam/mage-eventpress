@@ -124,7 +124,7 @@
                                 <th class='mep_hide_on_load' style="min-width: 40px;" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?>
 									<?php do_action( 'add_extra_field_icon', $post_id ); ?>
                                 </th>
-								<?php do_action( 'mep_add_extra_column' ); ?>
+								<?php do_action( 'mep_add_extra_column' ,$post_id); ?>
                                 <th class='mep_hide_on_load' style="min-width: 60px;" title="<?php esc_attr_e( 'Sale End Date', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date', 'mage-eventpress' ); ?></th>
                                 <th class='mep_hide_on_load' style="min-width: 60px;" title="<?php esc_attr_e( 'Sale End Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Time', 'mage-eventpress' ); ?></th>
                                 <th style="min-width: 60px;" title="<?php esc_attr_e( 'Qty Box Type', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
@@ -158,7 +158,7 @@
                                             <td><input type="number" size="4" pattern="[0-9]*" step="1" class="mp_formControl" name="option_qty_t[]" placeholder="Ex: 500" value="<?php echo esc_attr( $option_qty ) ?>"/></td>
                                             <td class='mep_hide_on_load'><input type="number" size="2" pattern="[0-9]*" step="1" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php echo esc_attr( $option_default_qty ) ?>"/></td>
                                             <td class='mep_hide_on_load'><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/></td>
-											<?php do_action( 'mep_add_extra_input_box', $field, $count ) ?>
+											<?php do_action( 'mep_add_extra_input_box', $field, $count,$post_id ) ?>
                                             <td class='mep_hide_on_load'>
 											<span class="sell_expire_date">
 												<input type="date" id="ticket_sale_start_date" class="mp_formControl" value='<?php if ( array_key_exists( 'option_sale_end_date_t', $field ) && $field['option_sale_end_date_t'] != '' ) {
@@ -206,7 +206,7 @@
                                 <td class='mep_hide_on_load'><input type="number" size="2" pattern="[0-9]*" class="mp_formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value=""/></td>
 								<?php $option_rsv_t = '<td class="mep_hide_on_load"><input type="number" class="mp_formControl" name="option_rsv_t[]" placeholder="Ex: 5" value=""/></td>'; ?>
 								<?php echo apply_filters( 'mep_add_field_to_ticket_type', mep_esc_html( $option_rsv_t ) ); ?>
-								<?php do_action( 'mep_add_extra_column_empty' ); ?>
+								<?php do_action( 'mep_add_extra_column_empty' ,$post_id); ?>
                                 <td class="mep_hide_on_load">
                                     <div class="sell_expire_date">
                                         <input type="date" id="ticket_sale_start_date" value='' name="option_sale_end_date[]"/>

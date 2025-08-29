@@ -194,6 +194,7 @@
 				$min_qty=max($min_qty, 0);
 				$max_qty = array_key_exists('max_qty', $data) ? $data['max_qty'] : '';
 				$input_type = array_key_exists('type', $data) ? $data['type'] : '';
+				$must_min = array_key_exists('must_min', $data) ? $data['must_min'] : 'off';
 				//$min_qty = max($default_qty, $min_qty);
 				$max_qty = $max_qty > 0 ? $max_qty : $available_seat;
 				$max_qty = min($available_seat, $max_qty);
@@ -205,7 +206,7 @@
                             <select class="formControl" name="<?php echo esc_attr($input_name); ?>" data-price="<?php echo esc_attr($price); ?>">
 								<?php 
 								// Include 0 option if min_qty > 0
-								if ($min_qty > 0) { ?>
+								if ($must_min =='off') { ?>
 									<option value="0">0 <?php echo esc_html($text) ?></option>
 								<?php }
 								for ($i = max($min_qty, 1); $i <= $max_qty; $i++) { ?>
@@ -223,10 +224,10 @@
                                        class="formControl inputIncDec mp_number_validation"
                                        data-price="<?php echo esc_attr($price); ?>"
                                        name="<?php echo esc_attr($input_name); ?>"
-                                       value="<?php echo esc_attr($default_qty > 0 ? $default_qty : 0); ?>"
-                                       min="0"
+                                       value="<?php echo esc_attr( max( $default_qty, $min_qty,0 ) ); ?>"
+                                       min="<?php echo esc_attr($min_qty); ?>"
                                        max="<?php echo esc_attr($max_qty); ?>"
-                                       data-min-qty="<?php echo esc_attr($min_qty); ?>"
+                                       data-min-qty="<?php echo esc_attr($must_min =='off'?0:$min_qty); ?>"
                                 />
                             </label>
                             <div class="incQty">

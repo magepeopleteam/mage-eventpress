@@ -4958,6 +4958,7 @@ div.mpwem_timeline_area .timeline_area::before {
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .total {
   font-size: 18px;
   font-weight: 600;
+  color:#333;
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit] {
   background-color: var(--mpev-base);

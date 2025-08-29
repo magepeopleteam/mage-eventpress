@@ -4,7 +4,7 @@
  * Professional solution for Google Maps integration issues
  * 
  * @version 1.0.0
- * @author Cascade AI Assistant
+ * @author MagePeople Team
  */
 
 if (!defined('ABSPATH')) {

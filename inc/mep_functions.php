@@ -455,6 +455,7 @@
 			$email_body    = str_replace( "{event_time}", $time, $email_body );
 			$email_body    = str_replace( "{event_datetime}", $date_time, $email_body );
 			$email_body    = str_replace( "{ticket_type}", $ticket_type, $email_body );
+			$email_body    = str_replace( "{order_id}", $order_id, $email_body );
 
 			return $email_body;
 		}

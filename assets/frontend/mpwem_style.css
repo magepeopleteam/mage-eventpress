@@ -6238,6 +6238,7 @@ Vanilla theme css by ariful
     display: flex;
     align-items: stretch;
     flex-direction: column;
+    height:auto;
   }
   
   .mep-related-events-items  .slick-slide > div {

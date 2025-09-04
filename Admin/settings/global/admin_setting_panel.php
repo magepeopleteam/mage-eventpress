@@ -817,6 +817,7 @@
                                         Name:<b>{name}</b><br/>
                                         Event Name: <b>{event}</b><br/>
                                         Ticket Type: <b>{ticket_type}</b><br/>
+										Order ID: <b>{order_id}</b><br/>
                                         Event Date: <b>{event_date}</b><br/>
                                         Start Time: <b>{event_time}</b><br/>
                                         Full DateTime: <b>{event_datetime}</b>', 'mage-eventpress' ),

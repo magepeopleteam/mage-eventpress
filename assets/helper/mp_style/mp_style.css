@@ -39,6 +39,8 @@
 	.mpStyle { font-size: var(--fs); font-weight: var(--fw); line-height: 1.5; width: 100%; }
 	.mpStyle,
 	.mpStyle [data-collapse].mActive { display: block; }
+	table th[data-collapse].mActive,
+	table td[data-collapse].mActive,
 	.mpStyle table th[data-collapse].mActive,
 	.mpStyle table td[data-collapse].mActive { display: table-cell; }
 	.mpStyle a:not(.mp_wp_editor a) { color: var(--color_theme); text-decoration: none; }

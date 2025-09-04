@@ -116,6 +116,7 @@
 															$input_data['min_qty']   = $ticket_min_qty;
 															$input_data['max_qty']   = $ticket_max_qty;
 															$input_data['type']      = $ticket_input_type;
+															$input_data=apply_filters( 'filter_mpwem_min_qty_must', $input_data, $event_id );
 															$count ++;
 															if ( $count > 1 ) { ?>
                                                                 <div class="_divider"></div>

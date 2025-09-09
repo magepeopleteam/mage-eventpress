@@ -23,7 +23,6 @@ if ( wp_is_block_theme() ) {
             // If the block theme has a header part, print it
             wp_head();
             wp_body_open();
-            echo '<div class="wp-site-blocks">';
             echo '<header class="wp-block-template-part site-header">';
             echo $header_html;
             echo '</header>';
@@ -65,7 +64,7 @@ if ( post_password_required() ) : ?>
     do_action( 'mep_event_single_page_after_header', $event_id );
 ?>
 
-    <main class="mep-events-wrapper wrapper">
+    <div class="mep-events-wrapper wrapper">
         <div class="mep-events-container">
             <?php
             if ( $fatal_error_fix === 'disable' ) {
@@ -81,7 +80,7 @@ if ( post_password_required() ) : ?>
             ?>
         </div>
         <?php do_action( 'after-single-events' ); ?>
-    </main>
+    </div>
 
 <?php
     do_action( 'mep_event_single_template_end', $event_id );
@@ -92,11 +91,10 @@ endif;
 // FOOTER
 // ==============================
 if ( function_exists( 'block_footer_area' ) && wp_is_block_theme() ) {
-    echo '<footer class="wp-block-template-part site-footer">';
-    block_footer_area();
+    echo '<footer class="wp-block-template-part mep-site-footer">';
+        block_footer_area();
     echo '</footer>';
     wp_footer();
-    echo '</div></body></html>';
 } else {
     get_footer();
 }

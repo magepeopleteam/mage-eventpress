@@ -55,8 +55,8 @@
             
             var locationInput = $('[name="mep_location_venue"]').val().trim();
             
-            // Check if input looks like coordinates (lat,lng format)
-            var coordinatePattern = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
+            // Check if input looks like coordinates (lat,lng format) - flexible spacing
+            var coordinatePattern = /^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$/;
             var coordinateMatch = locationInput.match(coordinatePattern);
             
             if (coordinateMatch) {
@@ -68,7 +68,7 @@
                     this.updateCoordinates(lat, lng);
                     this.updateMapPosition(lat, lng);
                     
-                    console.log('MEP Enhanced: Direct coordinates processed:', lat, lng);
+                    // Coordinates processed successfully
                     this.showNotification('Coordinates updated successfully', 'success');
                 } else {
                     console.warn('MEP Enhanced: Invalid coordinate ranges:', lat, lng);
@@ -110,8 +110,6 @@
                 
                 this.updateCoordinates(lat, lng);
                 this.updateMapPosition(lat, lng);
-                
-                console.log('Geocoded successfully:', lat, lng);
             } else {
                 console.warn('Geocoding failed:', status);
                 this.handleGeocodeError(status);

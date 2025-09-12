@@ -8,8 +8,10 @@ $sold_out_ribbon                = mep_get_option('mep_show_sold_out_ribbon_list_
 $limited_availability_ribbon    = mep_get_option('mep_show_limited_availability_ribbon', 'general_setting_sec', 'no');
 $limited_availability_threshold = (int)mep_get_option('mep_limited_availability_threshold', 'general_setting_sec', '5');
 $taxonomy_category              = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
-$taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
+$taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org'); // 
 $date                           = get_post_meta($event_id, 'event_upcoming_datetime', true);
+$reg_status                     = get_post_meta($event_id, 'mep_reg_status', true);
+
 $event_location_icon            = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt');
 
@@ -38,7 +40,7 @@ $event_organizer_icon           = mep_get_option('mep_event_organizer_icon', 'ic
                 <div class='ribbon online'>
                     <i class="fas fa-vr-cardboard"></i> <?php echo mep_get_option('mep_event_virtual_label', 'label_setting_sec', __('Virtual', 'mage-eventpress')); ?>
                 </div>
-            <?php } if($sold_out_ribbon == 'yes' && $total_left <= 0){  ?>
+            <?php } if($sold_out_ribbon == 'yes' && $reg_status == 'on' && $total_left <= 0){  ?>
                 <div class="ribbon sold-out">
                     <?php echo mep_get_option('mep_event_sold_out_label', 'label_setting_sec', __('Sold Out', 'mage-eventpress')); ?>
                 </div>

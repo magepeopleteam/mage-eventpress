@@ -19,44 +19,42 @@
 			}
 
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
-				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true ) ? get_post_meta( $product_id, 'link_mep_event', true ) : $product_id;
+				$linked_event_id = MP_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
-				$recurring       = get_post_meta( $product_id, 'mep_enable_recurring', true ) ? get_post_meta( $product_id, 'mep_enable_recurring', true ) : 'no';
 				if ( get_post_type( $product_id ) == 'mep_events' ) {
-					$total_price          = get_post_meta( $product_id, '_price', true );
-					$form_position        = mep_get_option( 'mep_user_form_position', 'general_attendee_sec', 'details_page' );
-					$mep_event_start_date = isset( $_POST['mep_event_start_date'] ) ? mage_array_strip( $_POST['mep_event_start_date'] ) : array();
-					//echo '<pre>';print_r( $mep_event_start_date );echo '</pre>';
-					$event_cart_location  = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( $_POST['mep_event_location_cart'] ) : '';
-					$recurring_event_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? mage_array_strip( $_POST['recurring_event_date'] ) : array();
-					$ticket_type_arr      = mep_cart_ticket_type( 'ticket_type', $total_price, $product_id );
-					$total_price          = mep_cart_ticket_type( 'ticket_price', $total_price, $product_id );
-					$event_extra          = mep_cart_event_extra_service( 'event_extra_service', $total_price, $product_id );
-					$total_price          = mep_cart_event_extra_service( 'ticket_price', $total_price, $product_id );
-					$user                 = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();
-					$validate             = mep_cart_ticket_type( 'validation_data', $total_price, $product_id );
-					$time_slot_text       = isset( $_REQUEST['time_slot_name'] ) ? sanitize_text_field( $_REQUEST['time_slot_name'] ) : '';
+					$recurring      = MP_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
+					$form_position  = mep_get_option( 'mep_user_form_position', 'general_attendee_sec', 'details_page' );
+					$start_date     = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+					$start_date     = current( $start_date );
+					$location       = isset( $_POST['mep_event_location_cart'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_location_cart'] ) ) : '';
+					$recurring_date = $recurring == 'yes' && isset( $_POST['recurring_event_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['recurring_event_date'] ) ) : [];
+					$time_slot_text = isset( $_POST['time_slot_name'] ) ? sanitize_text_field( wp_unslash( $_POST['time_slot_name'] ) ) : '';
+					$ticket_info    = self::get_cart_ticket_info( $product_id );
+					$ticket_price   = self::get_cart_ticket_price( $ticket_info );
+					$ex_infos       = self::get_cart_ex_info( $product_id );
+					$ex_price       = self::get_cart_ex_price( $ex_infos );
+					$user           = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();;
+					$total_price = $ticket_price + $ex_price;
 					if ( ! empty( $time_slot_text ) ) {
 						$cart_item_data['event_everyday_time_slot'] = $time_slot_text;
 					}
-					$cart_item_data['event_ticket_info']        = $ticket_type_arr;
-					$cart_item_data['event_validate_info']      = $validate;
+					$cart_item_data['event_ticket_info'] = $ticket_info;
 					$cart_item_data['event_user_info']          = $user;
 					$cart_item_data['event_tp']                 = $total_price;
 					$cart_item_data['line_total']               = $total_price;
 					$cart_item_data['line_subtotal']            = $total_price;
-					$cart_item_data['event_extra_service']      = $event_extra;
-					$cart_item_data['event_cart_location']      = $event_cart_location;
-					$cart_item_data['event_cart_date']          = current( $mep_event_start_date );
-					$cart_item_data['event_recurring_date']     = array_unique( $recurring_event_date );
-					$cart_item_data['event_recurring_date_arr'] = $recurring_event_date;
-					$cart_item_data['event_cart_display_date']  = current( $mep_event_start_date );
+					$cart_item_data['event_extra_service']      = $ex_infos;
+					$cart_item_data['event_cart_location']      = $location;
+					$cart_item_data['event_cart_date']          = $start_date;
+					$cart_item_data['event_recurring_date']     = array_unique( $recurring_date );
+					$cart_item_data['event_recurring_date_arr'] = $recurring_date;
+					$cart_item_data['event_cart_display_date']  = $start_date;
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
-					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_type_arr );
+					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_info );
 
 					//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
-					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_type_arr, $event_extra );
+					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_info, $ex_infos );
 				} else {
 					return $cart_item_data;
 				}
@@ -267,6 +265,79 @@
 					$item->add_meta_data( '_event_extra_service', $event_extra_service );
 					do_action( 'mep_event_cart_order_data_add', $values, $item );
 				}
+			}
+
+			public static function get_cart_ticket_info( $post_id ) {
+				$ticket_info  = [];
+				$ticket_types = MP_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+				$start_date   = current( $start_date );
+				$names        = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
+				$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
+				$max_qty      = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
+				$total_price  = 0;
+				if ( sizeof( $names ) > 0 ) {
+					foreach ( $names as $key => $name ) {
+						$current_qty = array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
+						if ( $name && $current_qty > 0 ) {
+							$ticket_info[ $key ]['ticket_name']  = $name;
+							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id, $ticket_types );
+							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
+							$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
+							$ticket_info[ $key ]['event_date']   = $start_date;
+						}
+					}
+				}
+
+				return apply_filters( 'mep_cart_ticket_type_data_prepare', $ticket_info, 'ticket_type', $total_price, $post_id );
+			}
+
+			public static function get_cart_ticket_price( $ticket_infos ) {
+				$price = 0;
+				if ( sizeof( $ticket_infos ) > 0 ) {
+					foreach ( $ticket_infos as $ticket_info ) {
+						$qty           = array_key_exists( 'ticket_qty', $ticket_info ) ? $ticket_info['ticket_qty'] : 0;
+						$current_price = array_key_exists( 'ticket_price', $ticket_info ) ? $ticket_info['ticket_price'] : 0;
+						$price         = $price + $current_price * $qty;
+					}
+				}
+
+				return $price;
+			}
+
+			public static function get_cart_ex_info( $post_id ) {
+				$ticket_info  = [];
+				$ticket_types = MP_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
+				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+				$start_date   = current( $start_date );
+				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
+				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
+				if ( sizeof( $names ) > 0 ) {
+					foreach ( $names as $key => $name ) {
+						$current_qty = array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
+						if ( $name && $current_qty > 0 ) {
+							$ticket_info[ $key ]['service_name']  = $name;
+							$ticket_info[ $key ]['service_price'] = MPWEM_Functions::get_ex_price_by_name( $name, $post_id, $ticket_types );
+							$ticket_info[ $key ]['service_qty']   = $current_qty;
+							$ticket_info[ $key ]['event_date']    = $start_date;
+						}
+					}
+				}
+
+				return $ticket_info;
+			}
+
+			public static function get_cart_ex_price( $ticket_infos ) {
+				$price = 0;
+				if ( sizeof( $ticket_infos ) > 0 ) {
+					foreach ( $ticket_infos as $ticket_info ) {
+						$qty           = array_key_exists( 'service_qty', $ticket_info ) ? $ticket_info['service_qty'] : 0;
+						$current_price = array_key_exists( 'service_price', $ticket_info ) ? $ticket_info['service_price'] : 0;
+						$price         = $price + $current_price * $qty;
+					}
+				}
+
+				return $price;
 			}
 		}
 		new MPWEM_Woocommerce();

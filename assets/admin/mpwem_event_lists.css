@@ -678,11 +678,11 @@
     color: #990000;
 }
 .mpwem_remaining_days{
-    background-color: var(--mpev-green);
+    background-color: var(--color_green);
     padding: 5px;
     border-radius: 5px;
     /* border: 1px solid #50969f; */
-    color: var(--mpev-white);
+    color: var(--color_white);
 }
 
 

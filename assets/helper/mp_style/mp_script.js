@@ -698,6 +698,33 @@ function mp_check_required(input) {
     $(document).on('keyup change', '.mpStyle .mp_number_validation', function () {
         let n = $(this).val();
         $(this).val(n.replace(/\D/g, ''));
+        if($(this).closest('.qtyIncDec').length>0){
+            let current = $(this);
+            let target = current.closest('.qtyIncDec').find('input');
+            let currentValue = parseInt(target.val());
+            let value = current.hasClass('incQty') ? (currentValue + 1) : ((currentValue - 1) > 0 ? (currentValue - 1) : 0);
+            let min = parseInt(target.attr('min'));
+            let max = parseInt(target.attr('max'));
+            let minQty = parseInt(target.attr('data-min-qty')) || 0;
+            //value=(value<min && minQty>0)
+            target.parents('.qtyIncDec').find('.incQty , .decQty').removeClass('mpDisabled');
+            if (value < min || isNaN(value) || value === 0) {
+                if (current.hasClass('incQty')) {
+                    value = min;
+                }
+                if (current.hasClass('decQty')) {
+                    value = minQty === 0 ? 0 : min;
+                }
+                if (value > 0) {
+                    target.parents('.qtyIncDec').find('.decQty').removeClass('mpDisabled');
+                }
+            }
+            if (value > max) {
+                value = max;
+                target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
+            }
+            target.val(value);
+        }
         return true;
     });
     $(document).on('keyup change', '.mpStyle .mp_price_validation', function () {

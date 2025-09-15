@@ -1,32 +1,6 @@
 @charset "utf-8";
 :root {
-	--mpev-primary: #F12971;
-	--mpev-dark: #303030;
-	--mpev-gray: #D3D3D3;
-	--mpev-light: #F2F2F2;
-	--mpev-green: #32C1A4;
-	--mpev-red: #ED5A54;
-	--mpev-orange: #FFBE00;
-	--mpev-white: #FFFFFF;
-	--mpev-black: #000000;
-	--mpev-purple: #9013FE;
-	--mpev-base: var(--mpev-base);
-	--mpev-base-txt: #FFFFFF;
-	--mpev-title-bg: var(--mpev-base);
-	--mpev-title-txt: #FFFFFF;
-	--mpev-calender-btn-bg: var(--mpev-base);
-	--mpev-calender-btn-txt: #FFFFFF;
-	--mpev-cart-btn-bg: var(--mpev-base);
-	--mpev-cart-btn-txt: #FFFFFF;
-	--mpev-faq-bg: var(--mpev-base);
-	--mpev-faq-text: #FFFFFF;
-	--mpev-royal-primary-bg: var(--mpev-base);
-	--mpev-royal-secondary-bg: #FFFFFF;
-	--mpev-royal-icons-bg: var(--mpev-base);
-	--mpev-royal-border: var(--mpev-base);
-	--mpev-royal-txt: #FFFFFF;
-	--mpev-recring-dpkr-bg: var(--mpev-base);
-	--mpev-recring-dpkr-txt: #FFFFFF;
+
 }
 /******************************************************************** General ************************************************/
 @media only screen and (min-width: 10px) {
@@ -272,7 +246,7 @@
 /******************************************************************** Button Section ************************************************/
 @media only screen and (min-width: 10px) {
 	.mpStyle .mpBtn, .mpStyle [class*="_mpBtn"],
-	.mpStyle button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; border: 1px solid var(--color_border);line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
+	.mpStyle button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
 	.mpStyle button[disabled] { cursor: not-allowed; opacity: 0.8; background-color: #DDD; }
 	.mpStyle button:hover, .mpStyle button:focus { text-decoration: none; opacity: 0.8; background-color: var(--color_theme_cc); color: #FFF; }
 	.mpStyle button:hover span, .mpStyle button:focus span { color: #FFF; }
@@ -308,9 +282,9 @@
 	.mpStyle .navy_blueButton:hover span, .mpStyle [class*="_navy_blueButton"]:hover span { color: var(--color_navy_blue); }
 	/*********/
 	.mpStyle .primaryButton, .mpStyle [class*="_primaryButton"] {}
-	.mpStyle .primaryButton, .mpStyle [class*="_primaryButton"] { background-color: var(--mpev-primary); color: var(--color_theme_alter); border: 2px solid var(--mpev-primary); }
+	.mpStyle .primaryButton, .mpStyle [class*="_primaryButton"] { background-color: var(--color_theme); color: var(--color_theme_alter); border: 2px solid var(--color_theme); }
 	.mpStyle .primaryButton span, .mpStyle [class*="_primaryButton"] span { color: var(--color_theme_alter); }
-	.mpStyle .primaryButton:hover, .mpStyle [class*="_primaryButton"]:hover { background-color: var(--mpev-primary); color: var(--color_theme_alter); border-color: var(--color_theme_alter); opacity: 0.8; }
+	.mpStyle .primaryButton:hover, .mpStyle [class*="_primaryButton"]:hover { background-color: var(--color_theme); color: var(--color_theme_alter); border-color: var(--color_theme_alter); opacity: 0.8; }
 	/****/
 	.mpStyle [class*="Button_xs"] { min-width: auto; min-height: var(--button_height_xs); font-size: var(--fs); }
 	/*************************/
@@ -937,9 +911,9 @@
 	.mpStyle .customRadio.button_type::after { display: none; }
 	/**********Checkbox Custom*********/
 	.mpStyle .customCheckbox { padding: 1px 0 0 28px; position: relative; line-height: 1; min-width: auto; white-space: wrap; }
-	.mpStyle .customCheckbox::before { content: ""; position: absolute; left: 0; top: 0; height: 18px; width: 18px; background-color: var(--color_theme_alter); border: 2px solid var(--mpev-primary); border-radius: 2px; }
+	.mpStyle .customCheckbox::before { content: ""; position: absolute; left: 0; top: 0; height: 18px; width: 18px; background-color: var(--color_theme_alter); border: 2px solid var(--color_theme); border-radius: 2px; }
 	.mpStyle .customCheckboxLabel { margin: 0 var(--dMP_xs) var(--dMP_xs) 0; cursor: pointer; font-weight: var(--fw-medium); }
-	.mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--mpev-primary); border: 2px solid var(--mpev-primary); }
+	.mpStyle .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--color_theme); border: 2px solid var(--color_theme); }
 	/*******************/
 	div.mpStyle .selectCheckbox { min-width: 150px; padding: var(--dMP_xs); width: auto; border: 1px solid var(--color_border); cursor: pointer; }
 	div.mpStyle .customCheckboxLabel input[type="checkbox"],
@@ -960,7 +934,7 @@
 	.mpStyle .roundSwitchLabel input[type="checkbox"] { display: none; }
 	.mpStyle .roundSwitch { width: 50px; height: 22px; min-width: auto; position: relative; background-color: #CCC; border-radius: 30px; -webkit-transition: .4s; transition: .4s; }
 	.mpStyle .roundSwitch::before { position: absolute; content: "";height: 18px; width: 18px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; -webkit-transition: .4s; transition: .4s; }
-	.mpStyle .roundSwitchLabel input:checked + .roundSwitch { background-color: var(--mpev-primary); }
+	.mpStyle .roundSwitchLabel input:checked + .roundSwitch { background-color: var(--color_theme); }
 	.mpStyle .roundSwitchLabel input:focus + .roundSwitch { box-shadow: 0 0 1px #2276D2; }
 	.mpStyle .roundSwitchLabel input:checked + .roundSwitch:before { -ms-transform: translateX(27px); transform: translateX(27px); }
 	/*********Group radio check*******/

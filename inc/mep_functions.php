@@ -730,7 +730,6 @@
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {
 		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service ) {
 			$order        = wc_get_order( $order_id );
-			$order_meta   = get_post_meta( $order_id );
 			$order_status = $order->get_status();
 			if ( is_array( $_event_extra_service ) && sizeof( $_event_extra_service ) > 0 ) {
 				foreach ( $_event_extra_service as $extra_serive ) {
@@ -3243,32 +3242,7 @@ if ( ! function_exists( 'mep_letters_numbers_spaces_only' ) ) {
 			return $price;
 		}
 	}
-	if ( ! function_exists( 'mep_cart_event_extra_service' ) ) {
-		function mep_cart_event_extra_service( $type, $total_price, $product_id ) {
-			$mep_event_start_date_es = isset( $_POST['mep_event_start_date'] ) ? mage_array_strip( $_POST['mep_event_start_date'] ) : array();
-			$extra_service_name      = isset( $_POST['event_extra_service_name'] ) ? mage_array_strip( $_POST['event_extra_service_name'] ) : array();
-			$extra_service_qty       = isset( $_POST['event_extra_service_qty'] ) ? mage_array_strip( $_POST['event_extra_service_qty'] ) : array();
-			$extra_service_price     = mep_get_extra_price_arr( $extra_service_name, $product_id );
-			$event_extra             = [];
-			if ( $extra_service_name ) {
-				for ( $i = 0; $i < count( $extra_service_name ); $i ++ ) {
-					if ( $extra_service_qty[ $i ] > 0 ) {
-						$event_extra[ $i ]['service_name']  = ! empty( $extra_service_name[ $i ] ) ? stripslashes( strip_tags( $extra_service_name[ $i ] ) ) : '';
-						$event_extra[ $i ]['service_price'] = ! empty( $extra_service_price[ $i ] ) ? stripslashes( strip_tags( $extra_service_price[ $i ] ) ) : '';
-						$event_extra[ $i ]['service_qty']   = ! empty( $extra_service_qty[ $i ] ) ? stripslashes( strip_tags( $extra_service_qty[ $i ] ) ) : '';
-						$event_extra[ $i ]['event_date']    = $mep_event_start_date_es[0];
-						$extprice                           = ( (float) $extra_service_price[ $i ] * (float) $extra_service_qty[ $i ] );
-						$total_price                        = ( (float) $total_price + (float) $extprice );
-					}
-				}
-			}
-			if ( $type == 'ticket_price' ) {
-				return $total_price;
-			} else {
-				return $event_extra;
-			}
-		}
-	}
+
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {
 		function mep_get_user_custom_field_ids( $event_id ) {
 			$reg_form_id           = mep_fb_get_reg_form_id( $event_id );
@@ -3432,7 +3406,6 @@ if ( ! function_exists( 'mep_letters_numbers_spaces_only' ) ) {
 	}
 	add_action( 'mep_event_single_template_end', 'mep_single_page_js_script' );
 	add_action( 'mep_add_to_cart_shortcode_js', 'mep_single_page_js_script' );
-	add_action( 'mep_event_admin_booking_js', 'mep_single_page_js_script' );
 	if ( ! function_exists( 'mep_single_page_js_script' ) ) {
 		function mep_single_page_js_script( $event_id ) {
 			$event_id      = mep_get_default_lang_event_id( $event_id );

@@ -138,7 +138,11 @@
 			//echo '<pre>';print_r($ticket_types);echo '</pre>';
 		}
 	} else {
-		MPWEM_Layout::msg( esc_html__( 'Sorry, no ticket available', 'mage-eventpress' ) );
+		?>
+		<div class="no-ticket">
+			<?php _e( 'Sorry, no ticket available', 'mage-eventpress' ); ?>
+		</div>
+		<?php
         do_action('mep_after_no_seat_notice', $event_id);
 	}
 

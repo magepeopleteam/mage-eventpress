@@ -220,7 +220,7 @@
                                 <i class="fas fa-minus"></i>
                             </div>
                             <label>
-                                <input type="text"
+                                <input type="number"
                                        class="formControl inputIncDec mp_number_validation"
                                        data-price="<?php echo esc_attr($price); ?>"
                                        name="<?php echo esc_attr($input_name); ?>"

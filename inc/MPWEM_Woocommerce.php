@@ -8,17 +8,45 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Woocommerce' ) ) {
 		class MPWEM_Woocommerce {
-			public function __construct() {
-				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
-				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
-				add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 20, 2 );
-				add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 10, 90 );
-				/**********************************************/
-				add_action( 'woocommerce_after_checkout_validation', array( $this, 'after_checkout_validation' ) );
-				add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'checkout_create_order_line_item' ), 10, 4 );
-			}
+	public function __construct() {
+		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
+		add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
+		add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 20, 2 );
+		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 10, 90 );
+		/**********************************************/
+		add_action( 'woocommerce_after_checkout_validation', array( $this, 'after_checkout_validation' ) );
+		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'checkout_create_order_line_item' ), 10, 4 );
+		// Early hook to catch form submissions
+		add_action( 'init', array( $this, 'handle_event_registration_redirect' ), 20 );
+	}
 
-			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
+		public function handle_event_registration_redirect() {
+			// Check if this is an event registration form submission
+			if ( isset( $_POST['add-to-cart'] ) && ! wp_doing_ajax() && ! is_admin() ) {
+				$wc_product_id = sanitize_text_field( $_POST['add-to-cart'] );
+				$linked_event_id = get_post_meta( $wc_product_id, 'link_mep_event', true ) ? get_post_meta( $wc_product_id, 'link_mep_event', true ) : $wc_product_id;
+				$event_id = mep_product_exists( $linked_event_id ) ? $linked_event_id : $wc_product_id;
+				
+				if ( get_post_type( $event_id ) == 'mep_events' ) {
+					// Check if event is already in cart
+					if ( isset( WC()->cart ) && ! empty( WC()->cart->get_cart() ) ) {
+						foreach ( WC()->cart->get_cart() as $cart_item ) {
+							$cart_product_id = $cart_item['data']->get_id();
+							$cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+							
+							if ( $cart_product_id == $wc_product_id || $cart_event_id == $event_id || $cart_event_id == $wc_product_id || $cart_product_id == $event_id ) {
+								// Redirect directly to checkout
+								wc_add_notice( __( 'This event is already in your cart. Redirecting to checkout...', 'mage-eventpress' ), 'notice' );
+								wp_safe_redirect( wc_get_checkout_url() );
+								exit;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true ) ? get_post_meta( $product_id, 'link_mep_event', true ) : $product_id;
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				$recurring       = get_post_meta( $product_id, 'mep_enable_recurring', true ) ? get_post_meta( $product_id, 'mep_enable_recurring', true ) : 'no';
@@ -169,13 +197,26 @@
 				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true ) ? get_post_meta( $product_id, 'link_mep_event', true ) : $product_id;
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				$event_id        = $product_id;
-				if ( get_post_type( $event_id ) == 'mep_events' ) {
-					$not_in_the_cart = apply_filters( 'mep_check_product_into_cart', true, $wc_product_id );
-					if ( ! $not_in_the_cart ) {
-						wc_add_notice( "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error' );
-						$passed = false;
-					}
+		if ( get_post_type( $event_id ) == 'mep_events' ) {
+			$not_in_the_cart = apply_filters( 'mep_check_product_into_cart', true, $wc_product_id );
+			if ( ! $not_in_the_cart ) {
+				// Check if we should redirect to checkout instead of showing error
+				if ( ! wp_doing_ajax() && ! is_admin() ) {
+					// Set a redirect flag
+					set_transient( 'mep_redirect_to_checkout_' . get_current_user_id(), wc_get_checkout_url(), 30 );
+					wc_add_notice( __( 'This event is already in your cart. Redirecting to checkout...', 'mage-eventpress' ), 'notice' );
+					// Use WooCommerce's redirect after add to cart
+					add_filter( 'woocommerce_add_to_cart_redirect', function( $url ) {
+						return wc_get_checkout_url();
+					} );
+					// Also add JavaScript fallback
+					add_action( 'wp_footer', function() {
+						echo '<script>setTimeout(function() { window.location.href = "' . esc_url( wc_get_checkout_url() ) . '"; }, 2000);</script>';
+					} );
 				}
+				$passed = false;
+			}
+		}
 
 				return $passed;
 			}

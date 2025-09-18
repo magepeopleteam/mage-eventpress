@@ -2770,8 +2770,14 @@
 				update_post_meta( $pid, '_sold_individually', 'yes' );
 				update_post_meta( $pid, '_downloadable', $product_type );
 				update_post_meta( $pid, '_virtual', $product_type );
+				// Comprehensive SEO blocking from creation
 				$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
 				wp_set_object_terms( $pid, $terms, 'product_visibility' );
+				
+				// Additional SEO protection
+				update_post_meta( $pid, '_seo_noindex', 'yes' );
+				update_post_meta( $pid, '_yoast_wpseo_meta-robots-noindex', '1' );
+				update_post_meta( $pid, '_yoast_wpseo_meta-robots-nofollow', '1' );
 				wp_set_post_terms( $pid, $product_cat_ids, 'product_cat' );
 				update_post_meta( $post_id, 'check_if_run_once', true );
 			}
@@ -2833,8 +2839,14 @@
 				update_post_meta( $product_id, '_sold_individually', 'yes' );
 				update_post_meta( $product_id, '_downloadable', $product_type );
 				wp_set_post_terms( $product_id, $product_cat_ids, 'product_cat' );
+				// Comprehensive SEO blocking
 				$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
 				wp_set_object_terms( $product_id, $terms, 'product_visibility' );
+				
+				// Additional SEO protection
+				update_post_meta( $product_id, '_seo_noindex', 'yes' );
+				update_post_meta( $product_id, '_yoast_wpseo_meta-robots-noindex', '1' );
+				update_post_meta( $product_id, '_yoast_wpseo_meta-robots-nofollow', '1' );
 				// Update post
 				$my_post = array(
 					'ID'         => $product_id,
@@ -2871,8 +2883,66 @@
 				echo '<style> ' . esc_html( $parr ) . '{display:none!important}' . ' </style>';
 			}
 		}
+}
+
+// Cleanup hidden products when events are deleted
+add_action( 'before_delete_post', 'mep_cleanup_hidden_product_on_event_delete' );
+if ( ! function_exists( 'mep_cleanup_hidden_product_on_event_delete' ) ) {
+	function mep_cleanup_hidden_product_on_event_delete( $post_id ) {
+		if ( get_post_type( $post_id ) == 'mep_events' ) {
+			$linked_product_id = get_post_meta( $post_id, 'link_wc_product', true );
+			if ( $linked_product_id ) {
+				// Delete the linked WooCommerce product
+				wp_delete_post( $linked_product_id, true );
+				// Clean up meta data
+				delete_post_meta( $post_id, 'link_wc_product' );
+			}
+		}
 	}
-	add_action( 'init', 'mep_get_all_hidden_product_id_array' );
+}
+
+// Clean up orphaned products (products without linked events)
+add_action( 'wp_scheduled_delete', 'mep_cleanup_orphaned_hidden_products' );
+if ( ! function_exists( 'mep_cleanup_orphaned_hidden_products' ) ) {
+	function mep_cleanup_orphaned_hidden_products() {
+		$args = array(
+			'post_type'      => 'product',
+			'posts_per_page' => -1,
+			'meta_query'     => array(
+				array(
+					'key'     => 'link_mep_event',
+					'value'   => '',
+					'compare' => '!='
+				)
+			),
+			'tax_query'      => array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'name',
+					'terms'    => 'exclude-from-catalog'
+				)
+			)
+		);
+		
+		$products = new WP_Query( $args );
+		if ( $products->have_posts() ) {
+			while ( $products->have_posts() ) {
+				$products->the_post();
+				$product_id = get_the_ID();
+				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true );
+				
+				// Check if the linked event still exists
+				if ( ! get_post_status( $linked_event_id ) ) {
+					// Event doesn't exist, delete the orphaned product
+					wp_delete_post( $product_id, true );
+				}
+			}
+		}
+		wp_reset_postdata();
+	}
+}
+
+add_action( 'init', 'mep_get_all_hidden_product_id_array' );
 	function mep_get_all_hidden_product_id_array() {
 		$product_id = [];
 		$args       = array(
@@ -2914,45 +2984,82 @@
 			}
 		}
 	}
-	add_action( 'wp_head', 'mep_exclude_hidden_product_from_search_engine' );
-	if ( ! function_exists( 'mep_exclude_hidden_product_from_search_engine' ) ) {
-		function mep_exclude_hidden_product_from_search_engine() {
-			global $post;
-			if ( is_single() && is_product() ) {
-				$post_id    = $post->ID;
-				$visibility = get_the_terms( $post_id, 'product_visibility' ) ? get_the_terms( $post_id, 'product_visibility' ) : [ 0 ];
-				if ( is_object( $visibility[0] ) ) {
-					if ( $visibility[0]->name == 'exclude-from-catalog' ) {
-						$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true ) ? get_post_meta( $post_id, 'link_mep_event', true ) : 0;
-						if ( $check_event_hidden > 0 ) {
-							echo '<meta name="robots" content="noindex, nofollow">';
-						}
-					}
+// Comprehensive SEO blocking for hidden event products
+add_action( 'wp_head', 'mep_exclude_hidden_product_from_search_engine', 1 );
+if ( ! function_exists( 'mep_exclude_hidden_product_from_search_engine' ) ) {
+	function mep_exclude_hidden_product_from_search_engine() {
+		global $post;
+		if ( is_single() && is_product() ) {
+			$post_id = $post->ID;
+			$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true );
+			
+			// If this is a hidden event product, block ALL search engines comprehensively
+			if ( $check_event_hidden > 0 ) {
+				// Universal robots meta tag - the most important one
+				echo '<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">' . "\n";
+				
+				// Specific search engine directives
+				echo '<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">' . "\n";
+				echo '<meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">' . "\n";
+				echo '<meta name="slurp" content="noindex, nofollow, noarchive, nosnippet">' . "\n";
+				echo '<meta name="duckduckbot" content="noindex, nofollow, noarchive, nosnippet">' . "\n";
+				echo '<meta name="baiduspider" content="noindex, nofollow, noarchive, nosnippet">' . "\n";
+				echo '<meta name="yandexbot" content="noindex, nofollow, noarchive, nosnippet">' . "\n";
+				
+				// Additional HTTP header for extra protection
+				header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex');
+				
+				// Canonical URL to the real event if it exists
+				if ( get_post_status( $check_event_hidden ) == 'publish' ) {
+					$event_url = get_permalink( $check_event_hidden );
+					echo '<link rel="canonical" href="' . esc_url( $event_url ) . '">' . "\n";
+				}
+				
+				// Block social media sharing completely
+				echo '<meta property="og:title" content="">' . "\n";
+				echo '<meta property="og:description" content="">' . "\n";
+				echo '<meta property="og:image" content="">' . "\n";
+				echo '<meta property="og:url" content="">' . "\n";
+				echo '<meta name="twitter:card" content="summary">' . "\n";
+				echo '<meta name="twitter:title" content="">' . "\n";
+				echo '<meta name="twitter:description" content="">' . "\n";
+				echo '<meta name="twitter:image" content="">' . "\n";
+				
+				// Prevent page from being cached
+				echo '<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">' . "\n";
+				echo '<meta http-equiv="Pragma" content="no-cache">' . "\n";
+				echo '<meta http-equiv="Expires" content="0">' . "\n";
+			}
+		}
+	}
+}
+add_action( 'wp', 'mep_hide_hidden_product_from_single', 90 );
+if ( ! function_exists( 'mep_hide_hidden_product_from_single' ) ) {
+	function mep_hide_hidden_product_from_single() {
+		global $post, $wp_query;
+		if ( is_product() ) {
+			$post_id = $post->ID;
+			$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true );
+			
+			// If this is a hidden event product
+			if ( $check_event_hidden > 0 ) {
+				// Check if the linked event still exists and is published
+				if ( get_post_status( $check_event_hidden ) == 'publish' ) {
+					// Redirect to the actual event page with 301 redirect
+					$event_url = get_permalink( $check_event_hidden );
+					wp_redirect( $event_url, 301 );
+					exit();
+				} else {
+					// Event doesn't exist or is not published, show 404
+					$wp_query->set_404();
+					status_header( 404 );
+					get_template_part( 404 );
+					exit();
 				}
 			}
 		}
 	}
-	add_action( 'wp', 'mep_hide_hidden_product_from_single', 90 );
-	if ( ! function_exists( 'mep_hide_hidden_product_from_single' ) ) {
-		function mep_hide_hidden_product_from_single() {
-			global $post, $wp_query;
-			if ( is_product() ) {
-				$post_id    = $post->ID;
-				$visibility = get_the_terms( $post_id, 'product_visibility' ) ? get_the_terms( $post_id, 'product_visibility' ) : [ 0 ];
-				if ( is_object( $visibility[0] ) ) {
-					if ( $visibility[0]->name == 'exclude-from-catalog' ) {
-						$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true ) ? get_post_meta( $post_id, 'link_mep_event', true ) : 0;
-						if ( $check_event_hidden > 0 ) {
-							$wp_query->set_404();
-							status_header( 404 );
-							get_template_part( 404 );
-							exit();
-						}
-					}
-				}
-			}
-		}
-	}
+}
 	if ( ! function_exists( 'get_event_list_js' ) ) {
 		function get_event_list_js( $id, $event_meta, $currency_pos ) {
 			ob_start();
@@ -4129,21 +4236,37 @@ if ( ! function_exists( 'mep_letters_numbers_spaces_only' ) ) {
 			}
 		}
 	}
-	add_filter( 'mep_check_product_into_cart', 'mep_disable_add_to_cart_if_product_is_in_cart', 10, 2 );
-	if ( ! function_exists( 'mep_disable_add_to_cart_if_product_is_in_cart' ) ) {
-		function mep_disable_add_to_cart_if_product_is_in_cart( $is_purchasable, $product ) {
-			// Loop through cart items checking if the product is already in cart
-			if ( isset( WC()->cart ) && ! is_admin() && ! empty( WC()->cart->get_cart() ) ) {
-				foreach ( WC()->cart->get_cart() as $cart_item ) {
-					if ( $cart_item['data']->get_id() == $product ) {
-						return false;
+add_filter( 'mep_check_product_into_cart', 'mep_disable_add_to_cart_if_product_is_in_cart', 10, 2 );
+if ( ! function_exists( 'mep_disable_add_to_cart_if_product_is_in_cart' ) ) {
+	function mep_disable_add_to_cart_if_product_is_in_cart( $is_purchasable, $product ) {
+		// Get the proper event ID to check for
+		$linked_event_id = get_post_meta( $product, 'link_mep_event', true ) ? get_post_meta( $product, 'link_mep_event', true ) : $product;
+		$event_id = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product;
+		
+		// Loop through cart items checking if the event is already in cart
+		if ( isset( WC()->cart ) && ! is_admin() && ! empty( WC()->cart->get_cart() ) ) {
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				// Check both the WooCommerce product ID and the event ID
+				$cart_product_id = $cart_item['data']->get_id();
+				$cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+				
+				if ( $cart_product_id == $product || $cart_event_id == $event_id || $cart_event_id == $product || $cart_product_id == $event_id ) {
+					// Instead of blocking, redirect to checkout if item already exists
+					if ( ! wp_doing_ajax() && ! is_admin() ) {
+						wc_add_notice( __( 'This event is already in your cart. Redirecting to checkout...', 'mage-eventpress' ), 'notice' );
+						// Use JavaScript redirect to avoid headers already sent issues
+						add_action( 'wp_footer', function() {
+							echo '<script>setTimeout(function() { window.location.href = "' . esc_url( wc_get_checkout_url() ) . '"; }, 1500);</script>';
+						} );
 					}
+					return false;
 				}
 			}
-
-			return $is_purchasable;
 		}
+
+		return $is_purchasable;
 	}
+}
 	if ( ! function_exists( 'mep_get_default_lang_event_id' ) ) {
 		function mep_get_default_lang_event_id( $event_id ) {
 			global $sitepress;

@@ -2288,7 +2288,7 @@
 			$mep_user_email        = isset( $_POST['user_email'] ) ? mage_array_strip( $_POST['user_email'] ) : [];
 			$mep_user_phone        = isset( $_POST['user_phone'] ) ? mage_array_strip( $_POST['user_phone'] ) : [];
 			$mep_user_address      = isset( $_POST['user_address'] ) ? mage_array_strip( $_POST['user_address'] ) : [];
-			$mep_user_gender       = isset( $_POST['gender'] ) ? mage_array_strip( $_POST['gender'] ) : [];
+			$mep_user_gender       = isset( $_POST['user_gender'] ) ? mage_array_strip( $_POST['user_gender'] ) : [];
 			$mep_user_tshirtsize   = isset( $_POST['tshirtsize'] ) ? mage_array_strip( $_POST['tshirtsize'] ) : [];
 			$mep_user_company      = isset( $_POST['user_company'] ) ? mage_array_strip( $_POST['user_company'] ) : [];
 			$mep_user_desg         = isset( $_POST['user_designation'] ) ? mage_array_strip( $_POST['user_designation'] ) : [];

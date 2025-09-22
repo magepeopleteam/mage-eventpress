@@ -12,6 +12,7 @@
 	$date            = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
+	//echo '<pre>';print_r($total_available);echo '</pre>';
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ),$date );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );

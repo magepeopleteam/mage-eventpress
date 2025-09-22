@@ -13,12 +13,15 @@
 	$total_available    = $total_available??MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available=max( $total_available, 0 );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
+
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		$date_type    = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		$count        = 0;
-		if ( sizeof( $ticket_types ) > 0 ) { ?>
+		if ( sizeof( $ticket_types ) > 0 ) {
+			//echo '<pre>';print_r($total_available);echo '</pre>';
+            ?>
             <div class="mpwem_ticket_type">
 				<?php if ( $date_type == 'no' ) { ?>
                     <div class="card-header"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>

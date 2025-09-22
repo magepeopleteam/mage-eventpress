@@ -83,7 +83,7 @@
 			}
 
 			public function save_settings( $post_id ) {
-				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) && defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE && ! current_user_can( 'edit_post', $post_id ) ) {
+			if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
 				}
 				/**********Venue/Location Setting**********/

@@ -25,10 +25,7 @@
                 <input type="hidden" name='mep_event_start_date[]' value='<?php echo esc_attr( $date ); ?>'/>
                 <input type="hidden" name='mep_event_location_cart' value='<?php echo esc_attr( implode( ', ', $full_location ) ); ?>'/>
                 <input type="hidden" name='mep_same_attendee' value='<?php echo esc_attr( MP_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ) ); ?>'/>
-				<?php
-					//echo '<pre>';print_r(apply_filters( 'mpwem_ticket_file', MPWEM_Functions::template_path( 'layout/ticket_type.php' ), $event_id ));echo '</pre>';
-                    require apply_filters( 'mpwem_ticket_file', MPWEM_Functions::template_path( 'layout/ticket_type.php' ), $event_id );
-                    ?>
+				<?php require apply_filters( 'mpwem_ticket_file', MPWEM_Functions::template_path( 'layout/ticket_type.php' ), $event_id ); ?>
 				<?php do_action( 'mpwem_single_attendee', $event_id ); ?>
 				<?php require MPWEM_Functions::template_path( 'layout/extra_service.php' ); ?>
                 <div class="mpwem_form_submit_area">

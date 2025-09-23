@@ -13,15 +13,12 @@
 	$total_available    = $total_available??MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available=max( $total_available, 0 );
 	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
-
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		$date_type    = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		$count        = 0;
-		if ( sizeof( $ticket_types ) > 0 ) {
-			//echo '<pre>';print_r($total_available);echo '</pre>';
-            ?>
+		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
 				<?php if ( $date_type == 'no' ) { ?>
                     <div class="card-header"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
@@ -35,6 +32,7 @@
 							$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 							$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 							$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
+							$ticket_price_ = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
 							$ticket_price      = MPWEM_Functions::get_ticket_price( $event_id, $ticket_price, $ticket_name, $ticket_type );
 							$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 							$ticket_qty = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_available, $event_id );
@@ -126,7 +124,8 @@
                                                 mep_display_limited_availability_ribbon($event_id, $ticket_name, $available);
                                             }
                                             ?>
-											<?php echo wc_price( $ticket_price ); ?>
+											<?php echo wc_price( $ticket_price_ ); ?>
+											<?php //echo wc_price( $ticket_price ); ?>
                                         </div>
                                     </div>
 									<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

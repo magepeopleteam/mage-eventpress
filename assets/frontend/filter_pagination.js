@@ -163,9 +163,14 @@ function mpwem_page_scroll_to(target) {
 		e.preventDefault();
 		let pagination_page = $(this).data('pagination');
 		let parent = $(this).closest('.list_with_filter_section');
+		let style = parent.find('.mep_event_list_sec').data('pagination-style');
 		parent.find('[data-pagination]').removeClass('active_pagination');
 		$(this).addClass('active_pagination').promise().done(function () {
-			load_pagination(parent, pagination_page);
+			if(style === 'ajax'){
+				ajax_load_event_list(parent, pagination_page+1);
+			}else{
+				load_pagination(parent, pagination_page);
+			}
 		}).promise().done(function () {
 			mpwem_page_scroll_to(parent);
 			load_bg_img();
@@ -224,6 +229,10 @@ function mpwem_page_scroll_to(target) {
 		});
 	}
 	function load_pagination(parent, pagination_page) {
+		let style = parent.find('.mep_event_list_sec').data('pagination-style');
+		if(style === 'ajax'){
+			return; // handled by ajax_load_event_list
+		}
 		let all_item = parent.find('.all_filter_item');
 		let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
 		let pagination_type = parent.find('input[name="pagination_style"]').val();
@@ -253,6 +262,36 @@ function mpwem_page_scroll_to(target) {
 				pagination_management(parent, pagination_page);
 				mpwem_remove_loader(all_item);
 			});
+		});
+	}
+	function ajax_load_event_list(parent, page){
+		let holder = parent.find('.mep_event_list_sec');
+		let args = {
+			action: 'mpwem_load_event_list_page',
+			page: page,
+			cat: holder.data('cat'),
+			org: holder.data('org'),
+			style: holder.data('style'),
+			column: holder.data('column'),
+			city: holder.data('city'),
+			country: holder.data('country'),
+			status: holder.data('status'),
+			year: holder.data('year'),
+			sort: holder.data('sort'),
+			show: holder.data('show')
+		};
+		let inner = holder.find('.mage_grid_box');
+		if(inner.length===0){ inner = holder; }
+		mpwem_add_loader(inner);
+		jQuery.ajax({
+			type: 'POST',
+			url: typeof mp_ajax_url !== 'undefined' ? mp_ajax_url : (typeof mep_ajax !== 'undefined' ? mep_ajax.url : ''),
+			data: args,
+			success: function(html){
+				inner.html(html);
+				mpwem_remove_loader(inner);
+				load_bg_img();
+			}
 		});
 	}
 	function pagination_management(parent, pagination_page) {

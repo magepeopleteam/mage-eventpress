@@ -1,17 +1,6 @@
 div.list_with_filter_section {margin: 0 0 20px 0;}
 div.list_with_filter_section div.all_filter_item {display: none;}
-div.item_bg_image {
-	background-size: cover;
-	background-position: center center;
-	height: 100%;
-	-webkit-transition: all 0.5s ease-in-out;
-	transition: all 0.5s ease-in-out;
-}
-div.item_bg_image:hover {
-	transform: scale(1.1);
-	-webkit-transition: all 0.5s ease-in-out;
-	transition: all 0.5s ease-in-out;
-}
+
 
 .mep_list_event_details h2, .mep_list_event_details h3, .mep_list_event_details h4, .mep_list_event_details h5, .mep_list_event_details h6 {
     padding: 0;

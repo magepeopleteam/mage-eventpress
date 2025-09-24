@@ -28,6 +28,8 @@
 				add_action( 'wp_ajax_nopriv_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
 				add_action( 'wp_ajax_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
 				add_action( 'wp_ajax_nopriv_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
+				add_action( 'wp_ajax_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
+				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 			}
 			public function title($event_id,$only=''): void { require MPWEM_Functions::template_path('layout/title.php'); }
 			public function organizer($event_id,$only=''): void { require MPWEM_Functions::template_path('layout/organizer.php'); }
@@ -67,6 +69,40 @@
 					</select>
 				</label>
 				<?php
+				die();
+			}
+			public function mpwem_load_event_list_page() {
+				$atts = array(
+					'cat' => sanitize_text_field($_REQUEST['cat'] ?? ''),
+					'org' => sanitize_text_field($_REQUEST['org'] ?? ''),
+					'style' => sanitize_text_field($_REQUEST['style'] ?? 'grid'),
+					'column' => intval($_REQUEST['column'] ?? 3),
+					'city' => sanitize_text_field($_REQUEST['city'] ?? ''),
+					'country' => sanitize_text_field($_REQUEST['country'] ?? ''),
+					'status' => sanitize_text_field($_REQUEST['status'] ?? 'upcoming'),
+					'year' => sanitize_text_field($_REQUEST['year'] ?? ''),
+					'sort' => sanitize_text_field($_REQUEST['sort'] ?? 'ASC'),
+					'show' => intval($_REQUEST['show'] ?? -1),
+				);
+				$paged = intval($_REQUEST['page'] ?? 1);
+				$style = $atts['style'];
+				$column = $style != 'grid' ? 1 : $atts['column'];
+				$loop = mep_event_query( $atts['show'], $atts['sort'], $atts['cat'], $atts['org'], $atts['city'], $atts['country'], $atts['status'], '', $atts['year'], $paged );
+				ob_start();
+				while ( $loop->have_posts() ) {
+					$loop->the_post();
+					mep_update_event_upcoming_date( get_the_id() );
+					if ( $style == 'grid' && (int) $column > 0 ) {
+						$columnNumber = 'column_style';
+						$width        = 100 / (int) $column;
+					} else {
+						$columnNumber = 'one_column';
+						$width        = 100;
+					}
+					do_action( 'mep_event_list_shortcode', get_the_id(), $columnNumber, $style, $width, '' );
+				}
+				wp_reset_postdata();
+				echo ob_get_clean();
 				die();
 			}
 		}

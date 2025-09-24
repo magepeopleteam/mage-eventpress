@@ -10,6 +10,7 @@
 		class MPWEM_Venue_Settings {
 			public function __construct() {
 				add_action( 'mp_event_all_in_tab_item', array( $this, 'venue_settings' ) );
+				add_action( 'save_post', array( $this, 'save_venue_coordinates' ), 1 );
 			}
 
 			public function venue_settings( $event_id ) {
@@ -69,7 +70,9 @@
                                 <th><?php esc_html_e( 'Location/Venue:', 'mage-eventpress' ); ?></th>
                                 <td>
                                     <label>
-                                        <input type="text" name='mep_location_venue' placeholder="Ex: New york Meeting Center" class="mp_formControl" value='<?php echo mep_get_event_locaion_item( $post_id, 'mep_location_venue' ); ?>'>
+                                        <!-- Supports both location names and coordinates (format: latitude, longitude) -->
+                                        <input type="text" name='mep_location_venue' placeholder="Ex: New york Meeting Center or 56.976239, 24.419633" class="mp_formControl" value='<?php echo mep_get_event_locaion_item( $post_id, 'mep_location_venue' ); ?>'>
+                                        <small style="color: #666; display: block; margin-top: 4px;">Enter location name or coordinates in format: latitude, longitude</small>
                                     </label>
                                 </td>
                                 <th><span><?php esc_html_e( 'Street:', 'mage-eventpress' ); ?></span></th>
@@ -124,10 +127,19 @@
                     <section class="mp_form_area" id="mpev-show-map" style="display:<?php echo ( $map_visible == 1 ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
                         <div class="mp_form_item">
 							<?php
-								if ( $map_type == 'iframe' ) {
+							if ( $map_type == 'iframe' ) {
+								$location_value = mep_get_event_locaion_item( $post_id, 'mep_location_venue' );
+								// Check if it looks like coordinates and handle URL encoding appropriately
+								if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $location_value ) ) {
+									// For coordinates, use them directly
+									$query_param = trim( $location_value );
+								} else {
+									// For regular location names, URL encode
+									$query_param = urlencode( $location_value );
+								}
 									?>
                                     <div id="show_gmap">
-                                        <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo mep_get_event_locaion_item( $post_id, 'mep_location_venue' ); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                        <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo esc_attr( $query_param ); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                     </div>
 								<?php }
 								if ( $map_type == 'api' ) {
@@ -215,7 +227,6 @@
                                                document.getElementById('longitude').value = lng;
                                                jQuery('#latitude').val(lat).trigger('change');
                                                jQuery('#longitude').val(lng).trigger('change');
-                                               console.log('Coordinates updated: ', lat, lng);
                                            });
                                            autocomplete.addListener('place_changed', function() {
                                                infowindow.close();
@@ -257,8 +268,6 @@
                                                 document.getElementById('longitude').value = longitude;
                                                 jQuery('#latitude').val(latitude).trigger('change');
                                                 jQuery('#longitude').val(longitude).trigger('change');
-                                                
-                                                console.log('Place selected - Coordinates updated: ', latitude, longitude);
                                            });
 
          function debounce(func, wait, immediate) {
@@ -304,16 +313,12 @@
                    jQuery('#latitude').val(lat).trigger('change');
                    jQuery('#longitude').val(lng).trigger('change');
                    
-                   console.log('Direct coordinates used - Map updated: ', lat, lng);
-                   
                    // Optionally reverse geocode to get address
                    geocoder.geocode({'location': position}, function(results, status) {
-                       if (status === 'OK' && results[0]) {
-                           console.log('Reverse geocoded address: ', results[0].formatted_address);
-                       }
+                       // Address lookup complete
                    });
                } else {
-                   console.warn('Invalid coordinate ranges: ', lat, lng);
+                   // Invalid coordinate ranges
                }
            } else {
                // Handle regular address input
@@ -336,10 +341,8 @@
                      document.getElementById('longitude').value = lng;
                      jQuery('#latitude').val(lat).trigger('change');
                      jQuery('#longitude').val(lng).trigger('change');
-                     
-                     console.log('Geocoded address - Coordinates updated: ', lat, lng);
                     } else {
-                     console.warn('Geocoding failed: ', status);
+                     // Geocoding failed
                     }
                    });
                }
@@ -357,7 +360,7 @@
                                             script.defer = true;
                                             script.async = true;
                                             script.onerror = function() {
-                                                console.error('Failed to load Google Maps API. Please check your API key.');
+                                                // Failed to load Google Maps API
                                             };
                                             document.head.appendChild(script);
                                         })();
@@ -379,7 +382,19 @@
                                 jQuery('[name="mep_postcode"]').val('<?php echo mep_event_org_location_item( $post_id, 'org_postcode' ); ?>');
                                 jQuery('[name="mep_country"]').val('<?php echo mep_event_org_location_item( $post_id, 'org_country' ); ?>');
                                 let location = jQuery('[name="mep_location_venue"]').val();
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                                // Check if input looks like coordinates (lat,lng format)
+                                let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
+                                let queryParam;
+                                
+                                if (coordinatePattern.test(location.trim())) {
+                                    // For coordinates, use them directly without encoding the comma
+                                    queryParam = location.trim();
+                                } else {
+                                    // For regular addresses, encode the entire string
+                                    queryParam = encodeURIComponent(location);
+                                }
+                                
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             } else {
                                 jQuery('.mp_event_address').slideDown();
                                 jQuery('[name="mep_location_venue"]').val('<?php echo mep_event_location_item( $post_id, 'mep_location_venue' ); ?>');
@@ -389,13 +404,37 @@
                                 jQuery('[name="mep_postcode"]').val('<?php echo mep_event_location_item( $post_id, 'mep_postcode' ); ?>');
                                 jQuery('[name="mep_country"]').val('<?php echo mep_event_location_item( $post_id, 'mep_country' ); ?>');
                                 let location = jQuery('[name="mep_location_venue"]').val();
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + location + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                                // Check if input looks like coordinates (lat,lng format)
+                                let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
+                                let queryParam;
+                                
+                                if (coordinatePattern.test(location.trim())) {
+                                    // For coordinates, use them directly without encoding the comma
+                                    queryParam = location.trim();
+                                } else {
+                                    // For regular addresses, encode the entire string
+                                    queryParam = encodeURIComponent(location);
+                                }
+                                
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
                         jQuery('[name="mep_location_venue"]').on('input', function () {
                             let location = jQuery(this).val();
                             if (location !== '') {
-                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + encodeURIComponent(location) + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
+                                // Check if input looks like coordinates (lat,lng format)
+                                let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
+                                let queryParam;
+                                
+                                if (coordinatePattern.test(location.trim())) {
+                                    // For coordinates, use them directly without encoding the comma
+                                    queryParam = location.trim();
+                                } else {
+                                    // For regular addresses, encode the entire string
+                                    queryParam = encodeURIComponent(location);
+                                }
+                                
+                                jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
                     </script>
@@ -453,8 +492,46 @@
 				}
 				$use_block_editor = ( get_option( 'classic-editor-replace' ) === 'no-replace' );
 
-				return $use_block_editor;
+			return $use_block_editor;
+		}
+
+		/**
+		 * Custom save method for venue coordinates to preserve comma format
+		 */
+		public function save_venue_coordinates( $post_id ) {
+			// Check if this is an event post
+			if ( get_post_type( $post_id ) !== 'mep_events' ) {
+				return;
+			}
+
+			// Security checks
+			if ( ! isset( $_POST['mep_fw_nonce'] ) || ! wp_verify_nonce( $_POST['mep_fw_nonce'], 'mep_fw_nonce' ) ) {
+				return;
+			}
+
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+				return;
+			}
+
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return;
+			}
+
+			// Handle venue location coordinates specially
+			if ( isset( $_POST['mep_location_venue'] ) ) {
+				$venue_value = $_POST['mep_location_venue'];
+				
+				// Check if it looks like coordinates (lat,lng format)
+				if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $venue_value ) ) ) {
+					// For coordinates, use sanitize_text_field to preserve the comma and format
+					$sanitized_value = sanitize_text_field( trim( $venue_value ) );
+					update_post_meta( $post_id, 'mep_location_venue', $sanitized_value );
+					// Prevent downstream sanitizers from overriding this value
+					unset( $_POST['mep_location_venue'] );
+				}
+				// For non-coordinate values, let the normal save process handle it
 			}
 		}
-		new MPWEM_Venue_Settings();
 	}
+	new MPWEM_Venue_Settings();
+}

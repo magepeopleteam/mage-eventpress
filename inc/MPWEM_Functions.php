@@ -135,6 +135,39 @@
 
 				return MP_Global_Function::get_wc_raw_price( $event_id, $ticket_price );
 			}
+			public static function get_ticket_price_by_name($ticket_name,$post_id,$ticket_types=[]) {
+				$ticket_types = sizeof($ticket_types)>0?$ticket_types:MP_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+				$price        = 0;
+				$ticket_name = explode( '_', $ticket_name )[0];
+				$ticket_name = str_replace( "'", "", $ticket_name );
+				if ( sizeof( $ticket_types ) > 0 ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						$ticket_price = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
+						$name  = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+						$name = str_replace( "'", "", $name );
+						if($ticket_name==$name) {
+							$price = MPWEM_Functions::get_ticket_price( $post_id, $ticket_price, $name, $ticket_type );
+						}
+					}
+				}
+				return MP_Global_Function::get_wc_raw_price( $post_id, $price );
+			}
+			public static function get_ex_price_by_name($ticket_name,$post_id,$ticket_types=[]) {
+				$ticket_types = sizeof($ticket_types)>0?$ticket_types:MP_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
+				$price        = 0;
+				$ticket_name = explode( '_', $ticket_name )[0];
+				$ticket_name = str_replace( "'", "", $ticket_name );
+				if ( sizeof( $ticket_types ) > 0 ) {
+					foreach ( $ticket_types as $ticket_type ) {
+						$name  = array_key_exists( 'option_name', $ticket_type ) ? $ticket_type['option_name'] : '';
+						$name = str_replace( "'", "", $name );
+						if($ticket_name==$name) {
+							$price = array_key_exists( 'option_price', $ticket_type ) ? $ticket_type['option_price'] : 0;
+						}
+					}
+				}
+				return MP_Global_Function::get_wc_raw_price( $post_id, $price );
+			}
 
 			public static function get_min_price( $post_id ) {
 				$price        = 0;

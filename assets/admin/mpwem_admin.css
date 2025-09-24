@@ -8,44 +8,44 @@
 }
 /******************************************************************** Global settings ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mp_settings_panel {overflow: hidden;position: relative;display: -webkit-flex;display: flex; line-height: 1.4;border: 1px solid var(--mpev-gray);}
+	div.mp_settings_panel {overflow: hidden;position: relative;display: -webkit-flex;display: flex; line-height: 1.4;border: 1px solid var(--color_gray);}
 	div.mp_settings_panel tr.seat_reserved_order_status fieldset,
 	div.mp_settings_panel tr.mep_email_sending_order_status fieldset {display: -webkit-flex;display: flex; -webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.mp_settings_panel tr.seat_reserved_order_status fieldset label,
 	div.mp_settings_panel tr.mep_email_sending_order_status fieldset label {min-width: 150px;margin: 0 var(--dMP_xs) var(--dMP_xs) 0;}
 	/*******************/
 	.mp_settings_panel_header {
-		background-color: var(--mpev-primary);
+		background-color: var(--color_theme);
 		padding: 15px;
 		margin-top: 50px;
 	}
 	.mp_settings_panel_header h3 {
-		color: var(--mpev-white);
+		color: var(--color_white);
 		font-size: 18px;
 		font-weight: 700;
-		color: var(--mpev-white);
+		color: var(--color_white);
 		border: none;
 		padding: 0;
 		margin: 0;
 	}
 	.mp_settings_panel_header small {margin-left: 10px;font-size: 13px;}
 	.mp_settings_panel ul.nav-tab-wrapper {
-		color: var(--mpev-white);
+		color: var(--color_white);
 		padding: 25px 0 25px 25px;
-		background-color: var(--mpev-light);
+		background-color: var(--color_light);
 		min-width: 300px;
 		max-width: 320px;
 		overflow: hidden;
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li {
-		color: var(--mpev-dark);
+		color: var(--color_dark);
 		font-weight: normal;
 		display: flex;
 		align-items: center;
 		padding: 12px 15px;
 		margin: 0;
 		cursor: pointer;
-		color: var(--mpev-dark);
+		color: var(--color_dark);
 		position: relative;
 		font-size: 16px;
 		font-weight: normal;
@@ -60,10 +60,10 @@
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		border-bottom: 1px solid var(--mpev-gray);
+		border-bottom: 1px solid var(--color_gray);
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li i {
-		color: var(--mpev-primary);
+		color: var(--color_theme);
 	}
 	.mp_settings_panel .nav-tab {
 		color: #FFF;
@@ -74,18 +74,18 @@
 	.mp_settings_panel .nav-tab i,
 	.mp_settings_panel .metabox-holder h2 i {margin: 0 var(--dMP_xs) 0 0;}
 	.mp_settings_panel ul.nav-tab-wrapper li:hover {
-		background-color: var(--mpev-white);
-		color: var(--mpev-dark);
-		border-left: 2px solid var(--mpev-primary);
+		background-color: var(--color_white);
+		color: var(--color_dark);
+		border-left: 2px solid var(--color_theme);
 		transition: 0.2s;
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li:hover::after {
 		width: 100%;
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li.nav-tab-active {
-		background-color: var(--mpev-white);
-		color: var(--mpev-dark);
-		border-left: 2px solid var(--mpev-primary);
+		background-color: var(--color_white);
+		color: var(--color_dark);
+		border-left: 2px solid var(--color_theme);
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li.nav-tab-active::after {
 		width: 100%;
@@ -94,18 +94,18 @@
 		background: #FFF;
 		margin: 0;
 		width: calc(100% - 300px);
-		background-color: var(--mpev-white);
+		background-color: var(--color_white);
 		padding: 2%;
 	}
 	.mp_settings_panel .metabox-holder .bg-light {
-		border: 1px solid var(--mpev-gray);
+		border: 1px solid var(--color_gray);
 		padding: 20px;
 		border-bottom: 0;
 		margin-top: 50px;
 	}
 	.mp_settings_panel .metabox-holder .bg-light h2 {
 		margin: 0;
-		color: var(--mpev-primary);
+		color: var(--color_theme);
 	}
 	.mep_settings_icon {display: flex;justify-content: start;align-items: center;gap: 10px;}
 	.mp_settings_panel select {min-width: 150px;}
@@ -113,7 +113,7 @@
 	.mp_settings_panel table,
 	.mp_settings_panel table td,
 	.mp_settings_panel table th {border-collapse: collapse;}
-	.mp_settings_panel table th {width: 50%;padding: 10px 10px;font-size: 16px;text-align: left;font-weight: normal;vertical-align: middle;color: var(--mpev-dark);}
+	.mp_settings_panel table th {width: 50%;padding: 10px 10px;font-size: 16px;text-align: left;font-weight: normal;vertical-align: middle;color: var(--color_dark);}
 	.mp_settings_panel table td {padding: 5px 10px;font-size: 14px;}
 	.mp_settings_panel table tr:nth-child(even) {background-color: #F2F2F2;}
 	.mp_settings_panel p.submit {text-align: right; margin: 20px 0 0 0; padding: 0;}
@@ -121,17 +121,17 @@
 	.mp_settings_panel .description {display: block;font-weight: normal;font-size: var(--fs_small) !important;color: #666;}
 	div.mpStyle .description span,
 	.mp_settings_panel .description span {margin: 0 var(--dMP_xs) 0 0;}
-	.mp_settings_panel .description strong {color: var(--mpev-primary);}
+	.mp_settings_panel .description strong {color: var(--color_theme);}
 	.mp_settings_panel p.submit input {
 		font-size: 16px;
 		padding: 5px 30px;
 		border-radius: 0;
-		background: var(--mpev-primary);
-		border-color: var(--mpev-primary);
+		background: var(--color_theme);
+		border-color: var(--color_theme);
 		transition: 0.2s;}
 	.mp_settings_panel p.submit input:hover {
-		background: var(--mpev-primary);
-		border-color: var(--mpev-primary);
+		background: var(--color_theme);
+		border-color: var(--color_theme);
 		opacity: .8;
 	}
 	.mp_settings_panel #setting-error-tgmpa {order: 0;width: 100%}
@@ -295,12 +295,12 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	min-width: 100px !important;
 }
 #mp_event_all_info_in_tab .mpwem_faq_save_close, #mp_event_all_info_in_tab .mpwem_timeline_save_close {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 }
 #mp_event_all_info_in_tab .mpwem_faq_save, #mp_event_all_info_in_tab .mpwem_timeline_save {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 }
 @media only screen and (min-width: 10px) {
 	.mpwem-template-override-wrapper {
@@ -529,7 +529,7 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	z-index: 0;
 }
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .mep-faq-item .faq-header.active {
-	background-color: var(--mpev-light);
+	background-color: var(--color_light);
 }
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .mep-faq-item .faq-header .faq-action {
 	position: absolute;
@@ -540,8 +540,8 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 }
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .mep-faq-item .faq-header .faq-action span {
 	padding: 5px 10px;
-	background-color: var(--mpev-light);
-	color: var(--mpev-primary);
+	background-color: var(--color_light);
+	color: var(--color_theme);
 	border-radius: 2px;
 }
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items .mep-faq-item .faq-content {
@@ -558,7 +558,7 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	z-index: 0;
 }
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header.active {
-	background-color: var(--mpev-light);
+	background-color: var(--color_light);
 }
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header .timeline-action {
 	position: absolute;
@@ -569,8 +569,8 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 }
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-header .timeline-action span {
 	padding: 5px 10px;
-	background-color: var(--mpev-light);
-	color: var(--mpev-primary);
+	background-color: var(--color_light);
+	color: var(--color_theme);
 	border-radius: 2px;
 }
 #mp_event_all_info_in_tab .mep-timeline-section .mep-timeline-items .mep-timeline-item .timeline-content {
@@ -591,7 +591,7 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	padding: 5px;
 	height: 68vh;
 	overflow-y: scroll;
-	background-color: var(--mpev-light);
+	background-color: var(--color_light);
 }
 .fa-icon-lists .icon {
 	float: left;
@@ -604,14 +604,14 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 }
 .fa-icon-lists .icon:hover {
 	cursor: pointer;
-	color: var(--mpev-primary);
-	border: 1px solid var(--mpev-primary);
-	background-color: var(--mpev-white);
+	color: var(--color_theme);
+	border: 1px solid var(--color_theme);
+	background-color: var(--color_white);
 }
 .fa-icon-lists .icon.active {
-	color: var(--mpev-primary);
-	border: 1px solid var(--mpev-primary);
-	background-color: var(--mpev-white);
+	color: var(--color_theme);
+	border: 1px solid var(--color_theme);
+	background-color: var(--color_white);
 }
 .mep-speaker-wrapper {
 	width: 200px;
@@ -629,7 +629,7 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 .mep-icon-search-box .mep-icon-preview {
 	font-size: 36px;
 	border: 1px solid #333;
-	color: var(--mpev-primary);
+	color: var(--color_theme);
 	width: 60px;
 	text-align: center;
 	margin: 10px 0;
@@ -649,8 +649,8 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	font-weight: bold;
 }
 .mep_status span.active {
-	background-color: var(--mpev-green);
-	color: var(--mpev-white);
+	background-color: var(--color_green);
+	color: var(--color_white);
 	display: block;
 	text-align: center;
 	display: inline-block;
@@ -660,8 +660,8 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	width: 75%;
 }
 .mep_status .err {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 	display: block;
 	text-align: center;
 	display: inline-block;
@@ -671,8 +671,8 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	width: 75%;
 }
 span.mep_event_date {
-	background-color: var(--mpev-orange);
-	color: var(--mpev-white);
+	background-color: var(--color_orange);
+	color: var(--color_white);
 	display: block;
 	text-align: center;
 	display: inline-block;
@@ -685,8 +685,8 @@ td.mep_event_seat.column-mep_event_seat {
 	display: flex;
 }
 td.mep_event_seat.column-mep_event_seat span {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 	display: block;
 	text-align: center;
 	display: inline-block;
@@ -699,8 +699,8 @@ td.mep_event_seat.column-mep_event_seat span {
 td.mep_event_seat.column-mep_event_seat span:nth-child(3) {
 	width: 30px;
 	border-radius: 50px;
-	background-color: var(--mpev-gray);
-	color: var(--mpev-white);
+	background-color: var(--color_gray);
+	color: var(--color_white);
 }
 #mep_uid {
 	width: 65px;
@@ -740,7 +740,7 @@ table.atendee-info {
 	-moz-box-sizing: border-box;
 	outline: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	background-color: var(--mpev-white);
+	background-color: var(--color_white);
 }
 #pac-container {
 	padding-bottom: 12px;
@@ -755,7 +755,7 @@ table.atendee-info {
 	font-weight: 300;
 }
 #pac-input {
-	background-color: var(--mpev-white);
+	background-color: var(--color_white);
 	font-size: 15px;
 	font-weight: 300;
 	margin-left: 12px;
@@ -868,7 +868,7 @@ div#mage-primary-button {
 	line-height: 25px;
 	font-weight: 600;
 	background: #0071A1;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	text-decoration: none;
 	white-space: nowrap;
 	max-width: 100%;
@@ -1043,13 +1043,13 @@ iframe#gmap_canvas {
 	padding: 0;
 }
 #mp_event_all_info_in_tab .postbox-header {
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 	padding: 8px 12px;
 }
 #mp_event_all_info_in_tab .postbox-header h2 {
 	font-size: 18px;
 	font-weight: 700;
-	color: var(--mpev-white) !important;
+	color: var(--color_white) !important;
 	border: none !important;
 	padding: 0;
 }
@@ -1059,7 +1059,7 @@ iframe#gmap_canvas {
 	font-size: 28px;
 }
 #mp_event_all_info_in_tab .postbox-header button span {
-	color: var(--mpev-white);
+	color: var(--color_white);
 }
 #mp_event_all_info_in_tab .postbox-header button:hover span {
 	color: #999;
@@ -1094,7 +1094,7 @@ iframe#gmap_canvas {
 }
 #add-new-date-row,
 #mp_event_add_new_form {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	padding: 0.375rem 0.75rem;
@@ -1113,7 +1113,7 @@ iframe#gmap_canvas {
 }
 .mp_event_remove_this_row {
 	background-color: #EE1515;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -1162,9 +1162,9 @@ iframe#gmap_canvas {
 	min-height: 300px;
 }
 .mp_tab_menu {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	padding: 25px 0 25px 25px;
-	background-color: var(--mpev-light);
+	background-color: var(--color_light);
 	min-width: 250px;
 	max-width: 283px;
 }
@@ -1172,7 +1172,7 @@ iframe#gmap_canvas {
 	padding: 15px;
 	margin: 0;
 	cursor: pointer;
-	color: var(--mpev-dark);
+	color: var(--color_dark);
 	position: relative;
 	font-size: 16px;
 	font-weight: normal;
@@ -1186,7 +1186,7 @@ iframe#gmap_canvas {
 	position: absolute;
 	left: 0;
 	bottom: 0;
-	border-bottom: 1px solid var(--mpev-gray);
+	border-bottom: 1px solid var(--color_gray);
 }
 .field-icon-wrapper .icon-list li {
 	display: inline-block !important;
@@ -1203,17 +1203,17 @@ iframe#gmap_canvas {
 	display: inline-block !important;
 }
 .mp_tab_menu ul li.active {
-	background-color: var(--mpev-white);
-	color: var(--mpev-dark);
-	border-left: 2px solid var(--mpev-primary);
+	background-color: var(--color_white);
+	color: var(--color_dark);
+	border-left: 2px solid var(--color_theme);
 }
 .mp_tab_menu ul li:hover::after, .mp_tab_menu ul li.active::after {
 	width: 100%;
 }
 .mp_tab_menu ul li:hover {
-	color: var(--mpev-dark);
-	background: var(--mpev-white);
-	border-left: 2px solid var(--mpev-primary);
+	color: var(--color_dark);
+	background: var(--color_white);
+	border-left: 2px solid var(--color_theme);
 }
 .mp_tab_menu ul li.active::after {
 	position: absolute;
@@ -1222,7 +1222,7 @@ iframe#gmap_canvas {
 }
 .mp_tab_details {
 	width: calc(100% - 250px);
-	background-color: var(--mpev-white);
+	background-color: var(--color_white);
 	padding: 2% 5%;
 }
 .mp_tab_item {
@@ -1302,7 +1302,7 @@ p.event_meta_help_txt {
 	color: #999;
 }
 .mep-tooltips:hover {
-	color: var(--mpev-dark);
+	color: var(--color_dark);
 }
 .mep-tooltips {
 	position: relative;
@@ -1374,7 +1374,7 @@ label.mp_event_virtual_type_des textarea {
 }
 #mp_event_all_info_in_tab .mp_event_type_sortable_button {
 	cursor: move;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	display: inline-block;
@@ -1393,7 +1393,7 @@ label.mp_event_virtual_type_des textarea {
 	margin-left: 5px;
 }
 .ppof-settings .collapsible .header span.button {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	display: inline-block;
@@ -1412,7 +1412,7 @@ label.mp_event_virtual_type_des textarea {
 	margin-left: 5px;
 }
 .ppof-settings .collapsible .header span.button.remove {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #EE1515;
 	border-color: #EE1515;
 }
@@ -1508,7 +1508,7 @@ ul.mep_ready_template_list li a.preview-btn.btn {
 	background: #607D8B;
 	border: 0;
 	padding: 5px 10px;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	cursor: pointer;
 	font-size: 14px;
 	text-decoration: none;
@@ -1556,7 +1556,7 @@ p.mep-template-import-count {
 .mep_settings_panel_header {
 	background: #161B37;
 	padding: 30px 20px 30px 20px;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	font-size: 20px;
 	border-bottom: 1px solid #7D7D7D;
 }
@@ -1582,7 +1582,7 @@ p.mep-template-import-count {
 	line-height: 25px;
 	font-weight: normal;
 	background: #161B37;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	text-decoration: none;
 	white-space: nowrap;
 	max-width: 100%;
@@ -1622,7 +1622,7 @@ p.mep-template-import-count {
 	border-bottom: none;
 }
 .mage_settings_panel_wrap .metabox-holder {
-	background: var(--mpev-white);
+	background: var(--color_white);
 	padding: 0;
 	padding-top: 0px;
 }
@@ -1632,13 +1632,13 @@ p.mep-template-import-count {
 .wp-core-ui .mep_settings_wrapper .button-primary {
 	background: #0080F0;
 	border-color: #0080F0;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	transition: 0.2s;
 }
 .wp-core-ui .mep_settings_wrapper .button-primary:hover {
 	background: #035FAF;
 	border-color: #035FAF;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	transition: 0.2s;
 }
 .mep_settings_wrapper table.form-table tr:nth-child(2n+1) {
@@ -1668,10 +1668,10 @@ table.wc_status_table.widefat {
 	border-collapse: collapse;
 }
 .wc_status_table thead {
-	background: var(--mpev-primary);
+	background: var(--color_theme);
 }
 .wc_status_table thead h2 {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	margin: 0;
 }
 .wc_status_table tbody tr {
@@ -1697,7 +1697,7 @@ table.wc_status_table.widefat {
 	display: block;
 }
 .mep_warning_btn {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #007BFF;
 	border-color: #007BFF;
 	padding: 0.375rem 0.75rem;
@@ -1709,16 +1709,16 @@ table.wc_status_table.widefat {
 	font-weight: 400;
 }
 .mep_warning_btn:hover {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #0A5BB1;
 	border-color: #0A5BB1;
 	transition: 0.2s;
 }
 #add-row-t,
 #add-row {
-	color: var(--mpev-white);
-	background-color: var(--mpev-primary);
-	border-color: var(--mpev-primary);
+	color: var(--color_white);
+	background-color: var(--color_theme);
+	border-color: var(--color_theme);
 	padding: 0.375rem 0.75rem;
 	font-size: 1rem;
 	border-radius: 0.25rem;
@@ -1731,13 +1731,13 @@ table.wc_status_table.widefat {
 .wp-core-ui .button.remove-row-t,
 .wp-core-ui .button.remove-row,
 .wp-core-ui .button.remove-row-d {
-	color: var(--mpev-white);
+	color: var(--color_white);
 	background-color: #EE1515;
 	border-color: #EE1515;
 }
 .mp_tab_menu ul li i {
 	margin-right: 10px;
-	color: var(--mpev-primary);
+	color: var(--color_theme);
 }
 .field-repeatable-wrapper .item-wrap select {
 	margin-top: 10px;
@@ -1762,7 +1762,7 @@ table.wc_status_table.widefat {
 }
 .mep_global_icon_lib_btn {
 	background-color: #119167;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	border-color: #119167;
 	text-align: center;
 	transition: 0.2s;
@@ -1785,7 +1785,7 @@ table.wc_status_table.widefat {
 }
 .mep_global_icon_lib_btn:hover {
 	background-color: #1E1BBD;
-	color: var(--mpev-white);
+	color: var(--color_white);
 }
 /*Icon*/
 #mep_global_icon_list_wrapper.mage_modal {
@@ -1796,7 +1796,7 @@ table.wc_status_table.widefat {
 	background: #EA0C36;
 	transition: 0.2s;
 	padding: 5px 12px;
-	color: var(--mpev-white);
+	color: var(--color_white);
 	display: block;
 	margin-top: 5px;
 	line-height: 26px;
@@ -1809,7 +1809,7 @@ table.wc_status_table.widefat {
 .mep_global_icon_list_close_button:hover {
 	background: #C80A2E;
 	transition: 0.2s;
-	color: var(--mpev-white);
+	color: var(--color_white);
 }
 #mep_global_icon_list_wrapper label {
 	position: relative;
@@ -1828,7 +1828,7 @@ table.wc_status_table.widefat {
 }
 #mep_global_icon_list_wrapper label:hover {
 	background: #239108;
-	color: var(--mpev-white);
+	color: var(--color_white);
 }
 #mep_global_icon_list_wrapper input[type=radio] {
 	visibility: hidden;
@@ -1842,7 +1842,7 @@ table.wc_status_table.widefat {
 }
 #mep_global_icon_list_wrapper label.selected {
 	background: #239108;
-	color: var(--mpev-white);
+	color: var(--color_white);
 }
 .mep_global_icon_list_header {
 	display: -webkit-box;
@@ -1972,7 +1972,7 @@ h3.mep_virtual_sec_title {
 	font-size: 14px;
 }
 #mp_event_all_info_in_tab .mp_tab_details section {
-	border: 1px solid var(--mpev-gray);
+	border: 1px solid var(--color_gray);
 	padding: 20px;
 	margin-top: -1px;
 }
@@ -2007,7 +2007,7 @@ h3.mep_virtual_sec_title {
 	margin: 0;
 }
 .bg-light {
-	background-color: var(--mpev-light);
+	background-color: var(--color_light);
 }
 #mp_event_all_info_in_tab .mp_tab_details .row {
 	display: flex;
@@ -2047,8 +2047,8 @@ h3.mep_virtual_sec_title {
 	box-shadow: 0 0 10px #B9B9B9;
 }
 .mep-template-section .mep-template.active img {
-	border-color: var(--mpev-primary);
-	box-shadow: 0 0 10px var(--mpev-primary);
+	border-color: var(--color_theme);
+	box-shadow: 0 0 10px var(--color_theme);
 }
 /********************Round toggle switch****************/
 #mp_event_all_info_in_tab label.mpev-switch {
@@ -2071,8 +2071,8 @@ h3.mep_virtual_sec_title {
 	right: 0;
 	bottom: 0;
 	border-radius: 50px;
-	background-color: var(--mpev-gray);
-	border: 1px solid var(--mpev-gray);
+	background-color: var(--color_gray);
+	border: 1px solid var(--color_gray);
 	transition: 0.5s;
 }
 #mp_event_all_info_in_tab label.mpev-switch .mpev-slider:before {
@@ -2083,18 +2083,18 @@ h3.mep_virtual_sec_title {
 	left: 1px;
 	bottom: 1px;
 	border-radius: 50%;
-	border: 1px solid var(--mpev-white);
-	background-color: var(--mpev-white);
+	border: 1px solid var(--color_white);
+	background-color: var(--color_white);
 	transition: 0.4s;
 }
 #mp_event_all_info_in_tab label.mpev-switch input:checked + .mpev-slider {
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 }
 #mp_event_all_info_in_tab label.mpev-switch input:checked + .mpev-slider:before {
 	transform: translateX(26px);
 }
 #mp_event_all_info_in_tab label.mpev-switch input:focus + .mpev-slider {
-	box-shadow: inset 0 0 1px var(--mpev-dark);
+	box-shadow: inset 0 0 1px var(--color_dark);
 }
 /********************Round toggle switch****************/
 /********************ticketype table****************/
@@ -2113,49 +2113,49 @@ div.mpStyle .formControl.date_type {
 /* ***********mpStyle overright********** */
 
 .mpStyle .themeButton, .mpStyle [class*=_themeButton], .mpStyle [class*=_warningButton], #mp_event_all_info_in_tab .button {
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 	color: var(--color_theme_alter);
-	border: 2px solid var(--mpev-primary);
+	border: 2px solid var(--color_theme);
 }
 .mpStyle [class*=_navy_blueButton] {
-	background-color: var(--mpev-orange);
+	background-color: var(--color_orange);
 	color: var(--color_theme_alter);
-	border: 2px solid var(--mpev-primary);
+	border: 2px solid var(--color_theme);
 }
 /*.mpStyle .customCheckbox::before {*/
-/*	background-color: var(--mpev-white);*/
-/*	border: 2px solid var(--mpev-primary);*/
+/*	background-color: var(--color_white);*/
+/*	border: 2px solid var(--color_theme);*/
 /*}*/
 
 .mpStyle [data-tabs-target].active {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 	border: 0;
 }
 .mpStyle [data-tabs-target]:hover {
-	background-color: var(--mpev-gray);
-	border-color: var(--mpev-gray);
-	color: var(--mpev-dark);
+	background-color: var(--color_gray);
+	border-color: var(--color_gray);
+	color: var(--color_dark);
 }
 #ui-datepicker-div {
-	border-color: var(--mpev-primary);
+	border-color: var(--color_theme);
 }
 #ui-datepicker-div .ui-datepicker-header {
-	background-color: var(--mpev-primary);
-	border-color: var(--mpev-primary);
+	background-color: var(--color_theme);
+	border-color: var(--color_theme);
 }
 .ui-state-active, .ui-widget-content .ui-state-active {
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 }
 #ui-datepicker-div .ui-state-default {
-	color: var(--mpev-primary);
+	color: var(--color_theme);
 }
 #ui-datepicker-div a.ui-state-default:hover, #ui-datepicker-div .ui-state-active {
-	background-color: var(--mpev-primary);
-	color: var(--mpev-white);
+	background-color: var(--color_theme);
+	color: var(--color_white);
 }
 #ui-datepicker-div .ui-datepicker-title {
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 }
 /*********Special date settings**********************/
 div.mep_special_on_dates_setting table td {
@@ -2287,12 +2287,12 @@ div.mpStyle.mep-quick-setup [class*="_adminLayout"]{
 }
 
 .mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"]::after {
-    border-color: var(--mpev-primary);
+    border-color: var(--color_theme);
 }
 
 .mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"]{
-background-color: var(--mpev-primary);
-border: 1px solid var(--mpev-primary);
+background-color: var(--color_theme);
+border: 1px solid var(--color_theme);
 }
 
 .mep-quick-setup .mpTabsNext .tabItemNext [class*="circleIcon"]{
@@ -2300,7 +2300,7 @@ border: 1px solid #d6d6d6;
 }
 
 .mep-quick-setup .mpTabsNext .tabItemNext.active .circleTitle {
-    color: var(--mpev-primary);
+    color: var(--color_theme);
   }
 
   .mep-quick-setup .nextTab_prev{
@@ -2314,7 +2314,7 @@ border: 1px solid #d6d6d6;
 
 .mep-quick-setup .themeButton:hover, .mep-quick-setup .themeButton:focus{
 	opacity: .8;
-	background-color: var(--mpev-primary);
+	background-color: var(--color_theme);
 	border:2px solid transparent
 }
 

@@ -70,10 +70,10 @@
 				wp_enqueue_style( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.css', array(), '4.0.13' );
 				wp_enqueue_script( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.js', array(), '4.0.13' );
 				$owlCarousel = MP_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
-			if ( $owlCarousel == 'no' ) {
-				wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
-				wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
-			}
+				if ( $owlCarousel == 'no' ) {
+					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
+					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
+				}
 				wp_enqueue_style( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time() );
 				wp_enqueue_script( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
@@ -128,11 +128,10 @@
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
-				
 				// Only load event lists scripts on relevant pages
-				if ( $hook == 'mep_events_page_mep_event_lists' || 
-					 ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && 
-					   ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
+				if ( $hook == 'mep_events_page_mep_event_lists' ||
+				     ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&
+				       ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
 					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
 					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
 						'url'   => admin_url( 'admin-ajax.php' ),
@@ -171,55 +170,6 @@
 				wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time() );
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_frontend_script' );
-				$this->add_inline_styles();
-			}
-
-			public function add_inline_styles() {
-				$primary   = mep_get_option( 'mpev_primary_color', 'style_setting_sec', '#6046FF' );
-				$secondary = mep_get_option( 'mpev_secondary_color', 'style_setting_sec', '#F1F5FF' );
-				// mep_base_text_color
-				$base_color                      = mep_get_option( 'mep_base_color', 'style_setting_sec', $primary );
-				$base_text_color                 = mep_get_option( 'mep_base_text_color', 'style_setting_sec', $secondary );
-				$title_bg_color                  = mep_get_option( 'mep_title_bg_color', 'style_setting_sec', $primary );
-				$title_text_color                = mep_get_option( 'mep_title_text_color', 'style_setting_sec', $secondary );
-				$cart_btn_bg_color               = mep_get_option( 'mep_cart_btn_bg_color', 'style_setting_sec', $primary );
-				$cart_btn_txt_color              = mep_get_option( 'mep_cart_btn_text_color', 'style_setting_sec', $secondary );
-				$calender_btn_bg_color           = mep_get_option( 'mep_calender_btn_bg_color', 'style_setting_sec', $primary );
-				$calender_btn_txt_color          = mep_get_option( 'mep_calender_btn_text_color', 'style_setting_sec', $secondary );
-				$faq_label_bg_color              = mep_get_option( 'mep_faq_title_bg_color', 'style_setting_sec', $primary );
-				$faq_label_text_color            = mep_get_option( 'mep_faq_title_text_color', 'style_setting_sec', $secondary );
-				$royal_primary_bg_color          = mep_get_option( 'mep_royal_primary_bg_color', 'style_setting_sec', '#ffbe30' );
-				$royal_secondary_bg_color        = mep_get_option( 'mep_royal_secondary_bg_color', 'style_setting_sec', '#ffbe30' );
-				$royal_icons_bg_color            = mep_get_option( 'mep_royal_icons_bg_color', 'style_setting_sec', '#ffbe30' );
-				$royal_border_color              = mep_get_option( 'mep_royal_border_color', 'style_setting_sec', '#ffbe30' );
-				$royal_text_color                = mep_get_option( 'mep_royal_text_color', 'style_setting_sec', '#ffffff' );
-				$recurring_datepicker_bg_color   = mep_get_option( 'mep_re_datepicker_bg_color', 'style_setting_sec', '#ffbe30' );
-				$recurring_datepicker_text_color = mep_get_option( 'mep_re_datepicker_text_color', 'style_setting_sec', '#fff' );
-				$inline_css                      = "
-					:root{
-						--mpev-primary: {$primary};
-						--mpev-secondary:{$secondary};
-
-						--mpev-base: {$base_color};
-						--mpev-base-txt:{$base_text_color};
-						--mpev-title-bg:{$title_bg_color};
-						--mpev-title-txt:{$title_text_color};
-						--mpev-cart-btn-bg:{$cart_btn_bg_color};
-						--mpev-cart-btn-txt:{$cart_btn_txt_color};
-						--mpev-calender-btn-bg:{$calender_btn_bg_color};
-						--mpev-calender-btn-txt:{$calender_btn_txt_color};
-						--mpev-faq-bg:{$faq_label_bg_color};
-						--mpev-faq-text:{$faq_label_text_color};
-						--mpev-royal-primary-bg:{$royal_primary_bg_color};
-						--mpev-royal-secondary-bg:{$royal_secondary_bg_color};
-						--mpev-royal-icons-bg:{$royal_icons_bg_color};
-						--mpev-royal-border:{$royal_border_color};
-						--mpev-royal-txt:{$royal_text_color};
-						--mpev-recring-dpkr-bg:{$recurring_datepicker_bg_color};
-						--mpev-recring-dpkr-txt:{$recurring_datepicker_text_color};
-					}
-				";
-				wp_add_inline_style( 'mpwem_style', $inline_css );
 			}
 
 			public function add_admin_head() {

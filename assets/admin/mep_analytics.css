@@ -1,7 +1,7 @@
 
 /* Filters Section */
 .mep-analytics-filters {
-    background-color: var(--mpev-white);
+    background-color: var(--color_white);
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -39,7 +39,7 @@
 }
 
 .mep-card {
-    background-color: var(--mpev-white);
+    background-color: var(--color_white);
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -55,20 +55,20 @@
 .mep-card-icon {
     font-size: 2.5rem;
     margin-right: 20px;
-    color: var(--mpev-primary);
+    color: var(--color_theme);
 }
 
 .mep-card-content h3 {
     margin: 0;
     font-size: 1rem;
-    color: var(--mpev-dark);
+    color: var(--color_dark);
 }
 
 .mep-card-value {
     font-size: 2rem;
     font-weight: bold;
     margin: 5px 0 0;
-    color: var(--mpev-dark);
+    color: var(--color_dark);
 }
 
 /* Charts */
@@ -80,7 +80,7 @@
 }
 
 .mep-chart-wrapper {
-    background-color: var(--mpev-white);
+    background-color: var(--color_white);
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -90,7 +90,7 @@
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 1.2rem;
-    color: var(--mpev-dark);
+    color: var(--color_dark);
 }
 
 .mep-chart-container {
@@ -100,7 +100,7 @@
 
 /* Data Table */
 .mep-data-table-wrapper {
-    background-color: var(--mpev-white);
+    background-color: var(--color_white);
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -111,7 +111,7 @@
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 1.2rem;
-    color: var(--mpev-dark);
+    color: var(--color_dark);
 }
 
 .mep-data-table {
@@ -122,14 +122,14 @@
 .mep-data-table th {
     text-align: left;
     padding: 12px;
-    background-color: var(--mpev-light);
-    color: var(--mpev-dark);
+    background-color: var(--color_light);
+    color: var(--color_dark);
     font-weight: bold;
 }
 
 .mep-data-table td {
     padding: 12px;
-    border-bottom: 1px solid var(--mpev-light);
+    border-bottom: 1px solid var(--color_light);
 }
 
 /* Responsive Adjustments */
@@ -159,15 +159,15 @@
 
 /* Card Colors */
 #mep-total-sales .mep-card-icon {
-    color: var(--mpev-green);
+    color: var(--color_green);
 }
 
 #mep-tickets-sold .mep-card-icon {
-    color: var(--mpev-primary);
+    color: var(--color_theme);
 }
 
 #mep-total-events .mep-card-icon {
-    color: var(--mpev-orange);
+    color: var(--color_orange);
 }
 
 #mep-avg-ticket-price .mep-card-icon {
@@ -186,8 +186,8 @@
     content: "";
     width: 40px;
     height: 40px;
-    border: 5px solid var(--mpev-light);
-    border-top: 5px solid var(--mpev-primary);
+    border: 5px solid var(--color_light);
+    border-top: 5px solid var(--color_theme);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

@@ -12,9 +12,12 @@
 				add_action( 'wp_head', array( $this, 'add_global_style' ), 100 );
 				add_action( 'admin_head', array( $this, 'add_global_style' ), 100 );
 			}
+
 			public function add_global_style() {
+				$primary         = mep_get_option( 'mpev_primary_color', 'style_setting_sec', '#6046FF' );
+				$secondary       = mep_get_option( 'mpev_secondary_color', 'style_setting_sec', '#F1F5FF' );
 				$default_color   = MP_Global_Function::get_style_settings( 'default_text_color', '#303030' );
-				$theme_color     = MP_Global_Function::get_style_settings( 'theme_color', '#2F9DF4' );
+				$theme_color     = mep_get_option( 'mpev_primary_color', 'style_setting_sec', $primary );
 				$alternate_color = MP_Global_Function::get_style_settings( 'theme_alternate_color', '#fff' );
 				$warning_color   = MP_Global_Function::get_style_settings( 'warning_color', '#E67C30' );
 				$default_fs      = MP_Global_Function::get_style_settings( 'default_font_size', '14' ) . 'px';
@@ -30,7 +33,7 @@
 				$button_bg       = MP_Global_Function::get_style_settings( 'button_bg', '#ea8125' );
 				$section_bg      = MP_Global_Function::get_style_settings( 'section_bg', '#FAFCFE' );
 				?>
-				<style>
+                <style>
 					:root {
 						--dContainer_Width: 1320px;
 						--sidebarLeft: 280px;
@@ -94,6 +97,8 @@
 						--color_light: #F2F2F2;
 						--color_light_1: #BBB;
 						--color_light_2: #EAECEE;
+						--color_light_3: #878787;
+						--color_light_4: #f9f9f9;
 						--color_info: #666;
 						--color_yellow: #FEBB02;
 						--color_blue: #815DF2;
@@ -103,6 +108,13 @@
 						--color_3: #FAFCFE;
 						--color_4: #6148BA;
 						--color_5: #BCB;
+						--color_6: #ffbe30;
+						--color_7: <?php echo esc_attr($secondary); ?>;
+						--color_dark: #303030;
+						--color_gray: #D3D3D3;
+						--color_green: #32C1A4;
+						--color_red: #ED5A54;
+						--color_orange: #FFBE00;
 					}
 					@media only screen and (max-width: 1100px) {
 						:root {
@@ -137,7 +149,7 @@
 							--button_fs: 14px;
 						}
 					}
-				</style>
+                </style>
 				<?php
 			}
 		}

@@ -356,7 +356,7 @@ function mp_all_content_change($this) {
             value = max;
             target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
         }
-
+//alert(value);
         target.val(value).trigger('change').trigger('input');
     });
 }(jQuery));

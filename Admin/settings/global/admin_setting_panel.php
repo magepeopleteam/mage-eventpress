@@ -29,18 +29,18 @@
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				//add_options_page( 'Event Settings', 'Event Settings', 'delete_posts', 'mep_event_settings_page', array($this, 'plugin_page') );
 				$menu_label = sprintf(
-					/* translators: %s is the event label, e.g., "Conference" */
+				/* translators: %s is the event label, e.g., "Conference" */
 					__( '%s Settings', 'mage-eventpress' ),
 					$event_label
-					);
-					add_submenu_page(
-						'edit.php?post_type=mep_events',
-						$menu_label,
-						$menu_label,
-						'manage_options',
-						'mep_event_settings_page',
-						array( $this, 'plugin_page' )
-					);
+				);
+				add_submenu_page(
+					'edit.php?post_type=mep_events',
+					$menu_label,
+					$menu_label,
+					'manage_options',
+					'mep_event_settings_page',
+					array( $this, 'plugin_page' )
+				);
 			}
 
 			function get_settings_sections() {
@@ -1137,109 +1137,6 @@
 								'type'    => 'color',
 								'default' => '#f1f5ff'
 							),
-							// array(
-							// 	'name' => 'mep_base_color',
-							// 	'label' => __('Base Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_base_text_color',
-							// 	'label' => __('Base Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose a basic text color, it will change the text color.', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffffff'
-							// ),
-							// Label Background & Text Color
-							// array(
-							// 	'name' => 'mep_title_bg_color',
-							// 	'label' => __('Label Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose label background color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_title_text_color',
-							// 	'label' => __('Label Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose label text color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#fff'
-							// ),
-							// array(
-							// 	'name' => 'mep_cart_btn_bg_color',
-							// 	'label' => __('Cart Button Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose cart button background color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_cart_btn_text_color',
-							// 	'label' => __('Cart Button Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose cart button text color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#fff'
-							// ),
-							// array(
-							// 	'name' => 'mep_calender_btn_bg_color',
-							// 	'label' => __('Calender Button Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose calender button background color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_calender_btn_text_color',
-							// 	'label' => __('Calender Button Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose calender button text color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#fff'
-							// ),
-							// array(
-							// 	'name' => 'mep_faq_title_bg_color',
-							// 	'label' => __('FAQ Title Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose FAQ title background color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_faq_title_text_color',
-							// 	'label' => __('FAQ Title Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose FAQ title text color', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#fff'
-							// ),
-							// array(
-							// 	'name' => 'mep_royal_primary_bg_color',
-							// 	'label' => __('Royal Template Primary Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose primary background color for royal template', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// ),
-							// array(
-							// 	'name' => 'mep_royal_secondary_bg_color',
-							// 	'label' => __('Royal Template Secondary Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose secondary background color for royal template', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// ),
-							// array(
-							// 	'name' => 'mep_royal_icons_bg_color',
-							// 	'label' => __('Royal Template Icons Background Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose icons background color for royal template', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#ffbe30'
-							// ),
-							// array(
-							// 	'name' => 'mep_royal_border_color',
-							// 	'label' => __('Royal Template Border Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose border color for royal template', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// ),
-							// array(
-							// 	'name' => 'mep_royal_text_color',
-							// 	'label' => __('Royal Template Text Color', 'mage-eventpress'),
-							// 	'desc' => __('Choose text color for royal template', 'mage-eventpress'),
-							// 	'type' => 'color',
-							// 	'default' => '#000'
-							// ),
 						)
 					),
 					'icon_setting_sec'         => apply_filters( 'mep_settings_icon_arr', array(
@@ -1317,16 +1214,16 @@
 					),
 					'carousel_setting_sec'     => apply_filters( 'mep_settings_carousel_arr', array(
 							array(
-						'name'    => 'mep_load_carousal_from_theme',
-						'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
-						'desc'    => __( 'Select "Yes" only if your theme already includes Owl Carousel library. Select "No" (recommended) to let the plugin load its own Owl Carousel library. If carousel is not working, ensure this is set to "No".', 'mage-eventpress' ),
-						'type'    => 'select',
-						'default' => 'no',
-						'options' => array(
-							'no'  => __( 'No - Load from Plugin (Recommended)', 'mage-eventpress' ),
-							'yes' => __( 'Yes - Load from Theme', 'mage-eventpress' )
-						)
-					),
+								'name'    => 'mep_load_carousal_from_theme',
+								'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
+								'desc'    => __( 'Select "Yes" only if your theme already includes Owl Carousel library. Select "No" (recommended) to let the plugin load its own Owl Carousel library. If carousel is not working, ensure this is set to "No".', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'no'  => __( 'No - Load from Plugin (Recommended)', 'mage-eventpress' ),
+									'yes' => __( 'Yes - Load from Theme', 'mage-eventpress' )
+								)
+							),
 							array(
 								'name'    => 'mep_autoplay_carousal',
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),

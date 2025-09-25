@@ -1,6 +1,5 @@
 @charset "utf-8";
 :root {
-
 }
 /******************************************************************** General ************************************************/
 @media only screen and (min-width: 10px) {
@@ -843,7 +842,7 @@
 	.mpStyle label > span { white-space: nowrap }
 	/***************************/
 	.mpStyle .formControl::placeholder { color: #0005; }
-	.mpStyle .formControl:disabled { background-color: #DDD5; color: #FFF; }
+	.mpStyle .formControl:disabled { background-color: #DDD5; }
 	/***************************/
 	div.mpStyle .formControl { width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 34px; border: 1px solid var(--color_border); padding: 5px var(--dMP_xs); font-size: var(--fs); color: var(--d_color); background-color: #F5F8FF; }
 	.mpStyle .formControl:focus { outline: 0; background-color: #FFF; border-color: #80BDFF; }
@@ -966,7 +965,10 @@
 	.mpStyle .addonGroupContent:hover { background-color: #555; color: #F2F2F2; }
 	.mpStyle .groupContent .select2-container--default .select2-selection--single {border: none;border-radius: 0;}
 	/*****Form Qty inc dec*******/
-	.mpStyle .qtyIncDec { max-width: 100px; }
+	div.mpStyle .qtyIncDec { max-width: 100px; }
+	div.mpStyle .inputIncDec {width: 50px; height: 36px; border: none; text-align: center; font-size: 16px; margin: 0 10px; pointer-events: none;user-select: none;cursor: not-allowed;}
+	div.mpStyle .qtyIncDec .incQty,
+	div.mpStyle .qtyIncDec .decQty {width: 36px; height: 36px; border-radius: 50%; border: none; background-color: #F0F2F5; color: var(--color_theme); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; padding: 10px;}
 	/**********Responsive*********/
 	@media only screen and (max-width: 1250px) {
 		.mpStyle .inputInline .inputList { max-width: calc(25% - 10px); }
@@ -1539,25 +1541,21 @@
 	gap: 20px;
 	width: 100%;
 }
-
 .mep-carousel-fallback .mep-event-item {
 	width: 100% !important;
 	margin: 0 !important;
 	flex: none !important;
 }
-
 @media (max-width: 768px) {
 	.mep-carousel-fallback {
 		grid-template-columns: 1fr;
 	}
 }
-
 @media (min-width: 769px) and (max-width: 1024px) {
 	.mep-carousel-fallback {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
-
 @media (min-width: 1025px) {
 	.mep-carousel-fallback {
 		grid-template-columns: repeat(3, 1fr);

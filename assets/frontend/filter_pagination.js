@@ -11,7 +11,7 @@ function mpwem_remove_loader(target) {
 }
 function mpwem_page_scroll_to(target) {
 	jQuery('html, body').animate({
-		scrollTop: target.offset().top -= 100
+		scrollTop: target.offset().top - 100
 	}, 1000);
 }
 (function ($) {

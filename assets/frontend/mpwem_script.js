@@ -1,28 +1,32 @@
 function mpwem_price_calculation(parent) {
-    let total_qty = mpwem_qty(parent);
-    mpwem_attendee_management(parent, total_qty);
-    let target_summary = parent.find('.mpwem_total');
-    let total = mpwem_price(parent);
-    if (total_qty > 0) {
-        parent.find('.mpwem_ex_service').slideDown('fast');
-        parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
-        total = total + mpwem_ex_price(parent);
+    try {
+        const total_qty = mpwem_qty(parent);
+        mpwem_attendee_management(parent, total_qty);
+        const target_summary = parent.find('.mpwem_total');
+        let total = mpwem_price(parent);
+        if (total_qty > 0) {
+            parent.find('.mpwem_ex_service').slideDown('fast');
+            parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
+            total += mpwem_ex_price(parent);
+        } else {
+            parent.find('.mpwem_ex_service').slideUp('fast');
+            parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');
+        }
         target_summary.html(mpwem_price_format(total));
-    } else {
-        parent.find('.mpwem_ex_service').slideUp('fast');
-        parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');
-        target_summary.html(mpwem_price_format(total));
+    } catch (error) {
+        console.error('Error in price calculation:', error);
     }
 }
 function mpwem_qty(parent) {
     let total_qty = 0;
     if (parent.find('.mpwem_seat_plan_area').length > 0) {
-        parent.find('.mpwem_seat_available.mage_seat_selected').each(function () {
-            total_qty++;
-        });
+        // Count selected seats
+        total_qty = parent.find('.mpwem_seat_available.mage_seat_selected').length;
     } else {
+        // Sum up ticket quantities
         parent.find('[name="option_qty[]"]').each(function () {
-            total_qty = total_qty + parseInt(jQuery(this).val());
+            const qty = parseInt(jQuery(this).val()) || 0;
+            total_qty += qty;
         });
     }
     return total_qty;
@@ -30,7 +34,8 @@ function mpwem_qty(parent) {
 function mpwem_qty_ex(parent) {
     let total_qty = 0;
     parent.find('[name="event_extra_service_qty[]"]').each(function () {
-        total_qty = total_qty + parseInt(jQuery(this).val());
+        const qty = parseInt(jQuery(this).val()) || 0;
+        total_qty += qty;
     });
     return total_qty;
 }
@@ -38,25 +43,25 @@ function mpwem_price(parent) {
     let total = 0;
     if (parent.find('.mpwem_seat_plan_area').length > 0) {
         parent.find('.mpwem_seat_available.mage_seat_selected').each(function () {
-            total = total + parseFloat(jQuery(this).attr('data-seat_price'));
+            const seatPrice = parseFloat(jQuery(this).attr('data-seat_price')) || 0;
+            total += seatPrice;
         });
     } else {
+        // Calculate from ticket quantities and prices
         parent.find('[name="option_qty[]"]').each(function () {
-            let qty = parseInt(jQuery(this).val());
-            let price = parseFloat(jQuery(this).attr('data-price'));
-            price = price && price >= 0 ? price : 0;
-            total = total + price * qty;
+            const qty = parseInt(jQuery(this).val()) || 0;
+            const price = parseFloat(jQuery(this).attr('data-price')) || 0;
+            total += price * qty;
         });
     }
     return total;
 }
 function mpwem_ex_price(parent) {
-    let total = 0
+    let total = 0;
     parent.find('[name="event_extra_service_qty[]"]').each(function () {
-        let ex_qty = parseInt(jQuery(this).val());
-        let ex_price = jQuery(this).attr('data-price');
-        ex_price = ex_price && ex_price >= 0 ? ex_price : 0;
-        total = total + parseFloat(ex_price) * ex_qty;
+        const ex_qty = parseInt(jQuery(this).val()) || 0;
+        const ex_price = parseFloat(jQuery(this).attr('data-price')) || 0;
+        total += ex_price * ex_qty;
     });
     return total;
 }
@@ -112,14 +117,14 @@ function mpwem_attendee_management(parent, total_qty) {
                             }
                         } else {
                             for (let i = form_length; i < qty; i++) {
-                                let ticket_name=current_parent.find('[name="option_name[]"]').val();
+                                let ticket_name = current_parent.find('[name="option_name[]"]').val();
                                 hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
-                                    form_target.append(hidden_target.html()).promise().done(function (){
-                                        jQuery(this).find('.mp_form_item').each(function (){
+                                    form_target.append(hidden_target.html()).promise().done(function () {
+                                        jQuery(this).find('.mp_form_item').each(function () {
                                             let condition_type = jQuery(this).attr('data-depend');
                                             let current_ticket_name = jQuery(this).attr('data-condition-value');
-                                            if(condition_type==='mep_ticket_type' && current_ticket_name===ticket_name){
+                                            if (condition_type === 'mep_ticket_type' && current_ticket_name === ticket_name) {
                                                 jQuery(this).slideDown('fast').removeClass('dNone');
                                             }
                                         });
@@ -149,29 +154,35 @@ function mpwem_attendee_management(parent, total_qty) {
         });
     });
     $(document).on('change', '.mpwem_registration_area [name="mpwem_date_time"]', function () {
-        let parent = $(this).closest('.mpwem_registration_area');
-        let time_slot = parent.find('#mpwem_time');
-        //parent.find('.ttbm_booking_panel').html('');
+        const parent = $(this).closest('.mpwem_registration_area');
+        const time_slot = parent.find('#mpwem_time');
         if (time_slot.length > 0) {
-            let post_id = parent.find('[name="mpwem_post_id"]').val();
-            let dates = parent.find('[name="mpwem_date_time"]').val();
-            let target = parent.find('.mpwem_time_area');
+            const post_id = parent.find('[name="mpwem_post_id"]').val();
+            const dates = parent.find('[name="mpwem_date_time"]').val();
+            const target = parent.find('.mpwem_time_area');
             jQuery.ajax({
                 type: 'POST',
                 url: mp_ajax_url,
                 data: {
-                    "action": "get_mpwem_time",
-                    "post_id": post_id,
-                    "dates": dates,
+                    action: "get_mpwem_time",
+                    post_id: post_id,
+                    dates: dates,
                 },
                 beforeSend: function () {
                     dLoader_xs(target);
                 },
                 success: function (data) {
                     target.html(data).slideDown('fast').promise().done(function () {
-                        let date = parent.find('[name="mpwem_time"]').val();
+                        const date = parent.find('[name="mpwem_time"]').val();
                         get_mpwem_ticket(target, date);
                     });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading time slots:', error);
+                    target.html('<p class="error">Error loading time slots. Please try again.</p>');
+                },
+                complete: function () {
+                    dLoaderRemove(target);
                 }
             });
         } else {
@@ -209,12 +220,21 @@ function mpwem_attendee_management(parent, total_qty) {
     }
     $(document).on('change', '.mpwem_registration_area [name="option_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
+        let qty = $(this).val();
+        let total_qty = mpwem_qty(parent);
         if (parent.find('[name="mepgq_max_qty"]').length > 0) {
-            let qty = $(this).val();
-            let total_qty = mpwem_qty(parent);
             let max_qty_gq = parseInt(parent.find('[name="mepgq_max_qty"]').val());
-            if (total_qty > max_qty_gq) {
+            if ( max_qty_gq>0 && total_qty > max_qty_gq) {
                 qty = qty - total_qty + max_qty_gq;
+                $(this).val(qty);
+                mpwem_price_calculation(parent);
+            } else {
+                mpwem_price_calculation(parent);
+            }
+        } else if (parent.find('[name="mepmm_min_qty"]').length > 0) {
+            let max_qty = parseInt(parent.find('[name="mepmm_max_qty"]').val());
+            if (max_qty>0 && total_qty > max_qty) {
+                qty = qty - total_qty + max_qty;
                 $(this).val(qty);
                 mpwem_price_calculation(parent);
             } else {
@@ -222,6 +242,28 @@ function mpwem_attendee_management(parent, total_qty) {
             }
         } else {
             mpwem_price_calculation(parent);
+        }
+    });
+    $(document).on("click", ".mpwem_book_now", function (e) {
+        e.preventDefault();
+        let parent = $(this).closest('.mpwem_registration_area');
+        let total_qty = mpwem_qty(parent);
+        if (total_qty > 0) {
+            if (parent.find('[name="mepmm_min_qty"]').length > 0) {
+                let min_qty = parseInt(parent.find('[name="mepmm_min_qty"]').val());
+                if (total_qty < min_qty) {
+                    alert('must buy minimum number of ticket : ' + min_qty);
+                } else {
+                    parent.find('.mpwem_add_to_cart').trigger('click');
+                }
+            } else {
+                parent.find('.mpwem_add_to_cart').trigger('click');
+            }
+        } else {
+            alert('Please Select Ticket Type');
+            let currentTarget = $(this).closest('.mpwem_registration_area').find('[name="option_qty[]"]');
+            currentTarget.addClass('error');
+            return false;
         }
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {

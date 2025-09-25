@@ -60,7 +60,7 @@
 				//echo '<pre>';print_r($all_times);echo '</pre>';
 				?>
 				<label>
-					<span><?php esc_html_e( 'Select Time', 'mage-eventpress' ); ?></span>
+					<span><?php esc_html_e('Select Time', 'mage-eventpress'); ?></span>
 					<i class="far fa-clock"></i>
 					<select class="formControl" name="mpwem_time" id="mpwem_time">
 						<?php foreach ( $all_times as $times ) { ?>

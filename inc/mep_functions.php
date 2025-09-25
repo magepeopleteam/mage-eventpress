@@ -2002,11 +2002,21 @@
 		function mep_template_file_validate( $file_name ) {
 			$template_path = get_stylesheet_directory() . '/mage-events/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
-			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
-			$_themedir     = $thedir . "themes/" . $file_name;
-			$themedir      = file_exists( $_themedir ) ? $file_name : 'default-theme.php';
-
-			return $themedir;
+			
+			// Check theme directory first
+			$_themedir = $template_path . "themes/" . $file_name;
+			if (file_exists($_themedir)) {
+				return $file_name;
+			}
+			
+			// Fallback to plugin directory
+			$_plugindir = $default_path . "themes/" . $file_name;
+			if (file_exists($_plugindir)) {
+				return $file_name;
+			}
+			
+			// Default fallback
+			return 'default-theme.php';
 		}
 	}
 	if ( ! function_exists( 'mep_event_list_number_price' ) ) {
@@ -2197,27 +2207,30 @@
 						$org_arr = get_the_terms( $event_id, 'mep_org' );
 						if ( is_array( $org_arr ) && sizeof( $org_arr ) > 0 ) {
 							$org_id = $org_arr[0]->term_id;
-
-							return esc_html( get_term_meta( $org_id, 'org_location', true ) );
+							$venue_value = get_term_meta( $org_id, 'org_location', true );
+							// Check if it looks like coordinates (lat,lng format)
+							if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $venue_value ) ) {
+								// For coordinates, use sanitize_text_field to preserve the comma
+								return sanitize_text_field( $venue_value );
+							} else {
+								// For regular location names, use esc_html
+								return esc_html( $venue_value );
+							}
 						}
 					} else {
-						return esc_html( get_post_meta( $event_id, 'mep_location_venue', true ) );
-					}
-
-					return null;
-				}
-				if ( $item_name == 'mep_location_venue' ) {
-					if ( $location_sts ) {
-						$org_arr = get_the_terms( $event_id, 'mep_org' );
-						if ( is_array( $org_arr ) && sizeof( $org_arr ) > 0 ) {
-							$org_id = $org_arr[0]->term_id;
-
-							return esc_html( get_term_meta( $org_id, 'org_location', true ) );
+						$venue_value = get_post_meta( $event_id, 'mep_location_venue', true );
+						// Check if it looks like coordinates (lat,lng format)
+						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $venue_value ) ) {
+							// For coordinates, use sanitize_text_field to preserve the comma
+							return sanitize_text_field( $venue_value );
+						} else {
+							// For regular location names, use esc_html
+							return esc_html( $venue_value );
 						}
-					} else {
-						return esc_html( get_post_meta( $event_id, 'mep_location_venue', true ) );
 					}
-				}
+
+				return null;
+			}
 				if ( $item_name == 'mep_street' ) {
 					if ( $location_sts ) {
 						$org_arr = get_the_terms( $event_id, 'mep_org' );
@@ -3086,13 +3099,27 @@
 	if ( ! function_exists( 'mage_array_strip' ) ) {
 		function mage_array_strip( $array_or_string ) {
 			if ( is_string( $array_or_string ) ) {
-				$array_or_string = sanitize_text_field( htmlentities( nl2br( $array_or_string ) ) );
+				// Check if this looks like coordinates (lat,lng format)
+				if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $array_or_string ) ) ) {
+					// For coordinates, only use sanitize_text_field to preserve the comma
+					$array_or_string = sanitize_text_field( $array_or_string );
+				} else {
+					// For regular strings, use the original processing
+					$array_or_string = sanitize_text_field( htmlentities( nl2br( $array_or_string ) ) );
+				}
 			} elseif ( is_array( $array_or_string ) ) {
 				foreach ( $array_or_string as $key => &$value ) {
 					if ( is_array( $value ) ) {
 						$value = mage_array_strip( $value );
 					} else {
-						$value = sanitize_text_field( htmlentities( nl2br( $value ) ) );
+						// Check if this looks like coordinates (lat,lng format)
+						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $value ) ) ) {
+							// For coordinates, only use sanitize_text_field to preserve the comma
+							$value = sanitize_text_field( $value );
+						} else {
+							// For regular values, use the original processing
+							$value = sanitize_text_field( htmlentities( nl2br( $value ) ) );
+						}
 					}
 				}
 			}
@@ -3102,7 +3129,14 @@
 	}
 if ( ! function_exists( 'mep_letters_numbers_spaces_only' ) ) {
 		function mep_letters_numbers_spaces_only( $string ) {
-			return preg_replace( '/[^a-zA-Z0-9\s]/', '', $string );
+			// Check if this looks like coordinates (lat,lng format)
+			if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $string ) ) ) {
+				// For coordinates, preserve comma, decimal point, and minus sign
+				return preg_replace( '/[^a-zA-Z0-9\s,.\-]/', '', $string );
+			} else {
+				// For regular strings, remove all special characters
+				return preg_replace( '/[^a-zA-Z0-9\s]/', '', $string );
+			}
 		}
 	}
 	/**

@@ -83,7 +83,7 @@
 			}
 
 			public function save_settings( $post_id ) {
-				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) && defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE && ! current_user_can( 'edit_post', $post_id ) ) {
+			if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
 				}
 				/**********Venue/Location Setting**********/
@@ -91,7 +91,22 @@
 
 					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_event_type']) ) ? 'online' : 'offline';
 					$mep_org_address    = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
-					$mep_location_venue = isset( $_POST['mep_location_venue'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_location_venue']) ) : "";
+					// Handle venue location with coordinate detection
+					if ( isset( $_POST['mep_location_venue'] ) ) {
+						$raw_venue_value = $_POST['mep_location_venue'];
+						
+						// Check if it looks like coordinates (lat,lng format)
+						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $raw_venue_value ) ) ) {
+							// For coordinates, preserve comma, decimal point, and minus sign
+							$mep_location_venue = sanitize_text_field( trim( $raw_venue_value ) );
+						} else {
+							// For regular location names, use the filter
+							$after_filter = mep_letters_numbers_spaces_only( $raw_venue_value );
+							$mep_location_venue = sanitize_text_field( $after_filter );
+						}
+					} else {
+						$mep_location_venue = "";
+					}
 					$mep_street         = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_street']) ) : "";
 					$mep_city           = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_city']) ) : "";
 					$mep_state          = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_state']) ) : "";

@@ -139,7 +139,6 @@
 					$event_id        = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; // $values['event_id'];
 					$check_seat_plan = get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) ? get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) : array();
 					if ( get_post_type( $event_id ) == 'mep_events' && sizeof( $check_seat_plan ) == 0 ) {
-						$recurring  = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 						$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
 						$total_resv = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
 						$ticket_arr = $values['event_ticket_info'];

@@ -1,12 +1,16 @@
 function mpwem_initWpEditor(id) {
-    if (typeof tinymce !== 'undefined') {
-        if (tinymce.get(id)) {
-            tinymce.get(id).remove();
+    try {
+        if (typeof tinymce !== 'undefined') {
+            if (tinymce.get(id)) {
+                tinymce.get(id).remove();
+            }
+            tinymce.init({selector: '#' + id});
         }
-        tinymce.init({selector: '#' + id});
-    }
-    if (typeof QTags !== 'undefined') {
-        QTags({id: id});
+        if (typeof QTags !== 'undefined') {
+            QTags({id: id});
+        }
+    } catch (error) {
+        console.error('Error initializing WordPress editor:', error);
     }
 }
 //*************Un control js********************//

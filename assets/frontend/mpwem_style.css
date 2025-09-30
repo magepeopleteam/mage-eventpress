@@ -4217,45 +4217,9 @@ div.mpwem_timeline_area .timeline_area::before {
 		margin: 0;
 	}
 }
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .decQty {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
-	border: none;
-	background-color: #F0F2F5;
-	color: var(--color_theme);
-	font-size: 18px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 0.2s ease;
-	padding: 10px;
-}
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .inputIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .inputIncDec {
-	width: 50px;
-	height: 36px;
-	border: none;
-	text-align: center;
-	font-size: 16px;
-	margin: 0 10px;
-}
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .incQty, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec .incQty {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
-	border: none;
-	background-color: #F0F2F5;
-	color: var(--color_theme);
-	font-size: 18px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 0.2s ease;
-	padding: 10px;
-}
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
+
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
+.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
 	font-size: 18px;
 	font-weight: 600;
 	color: #2B3A55;

@@ -52,7 +52,6 @@
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
 					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_info );
-
 					//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
 					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_info, $ex_infos );
 				} else {
@@ -140,7 +139,6 @@
 					$event_id        = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; // $values['event_id'];
 					$check_seat_plan = get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) ? get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) : array();
 					if ( get_post_type( $event_id ) == 'mep_events' && sizeof( $check_seat_plan ) == 0 ) {
-						$recurring  = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
 						$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
 						$total_resv = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
 						$ticket_arr = $values['event_ticket_info'];

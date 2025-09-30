@@ -331,33 +331,50 @@ function mp_all_content_change($this) {
 //==============================================================================Qty inc dec================//
 (function ($) {
     "use strict";
-    $(document).on("click", "div.mpStyle .decQty ,div.mpStyle .incQty", function () {
+    $(document).on("click", "div.mpStyle .decQty, div.mpStyle .incQty", function () {
         let current = $(this);
         let target = current.closest('.qtyIncDec').find('input');
-        let currentValue = parseInt(target.val());
-        let value = current.hasClass('incQty') ? (currentValue + 1) : ((currentValue - 1) > 0 ? (currentValue - 1) : 0);
-        let min = parseInt(target.attr('min'));
-        let max = parseInt(target.attr('max'));
-        let minQty = parseInt(target.attr('data-min-qty')) || 0;
-        //value=(value<min && minQty>0)
-        target.parents('.qtyIncDec').find('.incQty , .decQty').removeClass('mpDisabled');
-        if (value < min || isNaN(value) || value === 0) {
-            if(current.hasClass('incQty')){
-                value=min;
-            }
-            if(current.hasClass('decQty')){
-                value = minQty===0 ?0:min;
-            }
-            if(value>0){
-                target.parents('.qtyIncDec').find('.decQty').removeClass('mpDisabled');
-            }
+        let currentValue = parseInt(target.val()) || 0;
+
+        // Get attribute values with proper fallbacks
+        let min = parseInt(target.attr('min')) || 0;
+        let max = parseInt(target.attr('max')) || Infinity;
+        let minQty = parseInt(target.attr('data-min-qty')) || min; // Default to min if not specified
+
+        // Calculate new value based on button click
+        let newValue = currentValue;
+
+        if (current.hasClass('incQty')) {
+            newValue = currentValue + 1;
+        } else if (current.hasClass('decQty')) {
+            newValue = currentValue - 1;
         }
-        if (value > max) {
-            value = max;
+
+        // Apply constraints in the correct order
+        // 1. First respect data-min-qty (if it exists)
+        if (minQty > min) {
+            newValue = Math.max(newValue, minQty);
+        } else {
+            // 2. Otherwise use regular min constraint
+            newValue = Math.max(newValue, min);
+        }
+
+        // 3. Apply max constraint
+        newValue = Math.min(newValue, max);
+
+        // Update button states
+        target.parents('.qtyIncDec').find('.incQty, .decQty').removeClass('mpDisabled');
+
+        if (newValue >= max) {
             target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
         }
-//alert(value);
-        target.val(value).trigger('change').trigger('input');
+
+        if (newValue <= minQty) {
+            target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
+        }
+
+        // Set the final value
+        target.val(newValue).trigger('change').trigger('input');
     });
 }(jQuery));
 //==============================================================================Input use as select================//

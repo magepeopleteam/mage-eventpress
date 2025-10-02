@@ -5601,4 +5601,41 @@ Vanilla theme css by ariful
 .mep-default-map .display-map {
 	padding: 20px 25px;
 }
+
+/* Event Tags Styling */
+.mep-event-tags-widget {
+	margin-bottom: 20px;
+}
+.mep-event-tags-widget .location-title {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 10px;
+	margin-left: 9%;
+}
+.mep-event-tags-list {
+	margin: 14px !important;
+	padding: 0;
+	line-height: 2;
+}
+.mep-event-tags-list a.mep-tag-link {
+	display: inline-block;
+	padding: 5px 15px;
+	margin: 3px 5px 3px 0;
+	background: #f5f5f5;
+	color: #555;
+	border-radius: 4px;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	border: 1px solid #e0e0e0;
+}
+.mep-event-tags-list a.mep-tag-link:hover {
+	background: var(--color_theme);
+	color: #fff;
+	border-color: var(--color_theme);
+	transform: translateY(-2px);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 /*# sourceMappingURL=mpwem_style.css.map */

@@ -142,6 +142,63 @@ $labelso = array(
 	);
 register_taxonomy('mep_org', 'mep_events', $argso);
 
+
+// Register Event Tags Taxonomy (Non-Hierarchical)
+$event_tag_label = mep_get_option('mep_event_tag_label', 'general_setting_sec', 'Tags');
+$event_tag_slug = mep_get_option('mep_event_tag_slug', 'general_setting_sec', 'mep_tag');
+
+$labelst = array(
+    // translators: %1$s is the event label, %2$s is the tag label.
+    'name'                       => sprintf( _x( '%1$s %2$s', 'taxonomy general name', 'mage-eventpress' ), $event_label, $event_tag_label ),
+    // translators: %1$s is the event label, %2$s is the tag label.
+    'singular_name'              => sprintf( _x( '%1$s %2$s', 'taxonomy singular name', 'mage-eventpress' ), $event_label, __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'menu_name'                  => $event_tag_label,
+    // translators: %1$s is the event label, %2$s is the tag label.
+    'all_items'                  => sprintf( __( 'All %1$s %2$s', 'mage-eventpress' ), $event_label, $event_tag_label ),
+    // translators: %s is the tag label.
+    'new_item_name'              => sprintf( __( 'New %s Name', 'mage-eventpress' ), __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'add_new_item'               => sprintf( __( 'Add New %s', 'mage-eventpress' ), __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'edit_item'                  => sprintf( __( 'Edit %s', 'mage-eventpress' ), __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'update_item'                => sprintf( __( 'Update %s', 'mage-eventpress' ), __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'view_item'                  => sprintf( __( 'View %s', 'mage-eventpress' ), __('Tag', 'mage-eventpress') ),
+    // translators: %s is the tag label.
+    'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'mage-eventpress' ), $event_tag_label ),
+    // translators: %s is the tag label.
+    'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'mage-eventpress' ), $event_tag_label ),
+    'choose_from_most_used'      => __( 'Choose from the most used', 'mage-eventpress' ),
+    // translators: %s is the tag label.
+    'popular_items'              => sprintf( __( 'Popular %s', 'mage-eventpress' ), $event_tag_label ),
+    // translators: %s is the tag label.
+    'search_items'               => sprintf( __( 'Search %s', 'mage-eventpress' ), $event_tag_label ),
+    'not_found'                  => __( 'Not Found', 'mage-eventpress' ),
+    // translators: %s is the tag label.
+    'no_terms'                   => sprintf( __( 'No %s', 'mage-eventpress' ), $event_tag_label ),
+    // translators: %s is the tag label.
+    'items_list'                 => sprintf( __( '%s list', 'mage-eventpress' ), $event_tag_label ),
+    // translators: %s is the tag label.
+    'items_list_navigation'      => sprintf( __( '%s list navigation', 'mage-eventpress' ), $event_tag_label ),
+);
+
+	$argst = array(
+		'hierarchical'          => false, // Non-hierarchical like WordPress tags
+		"public" 				=> true,
+		'labels'                => $labelst,
+		'show_ui'               => true,
+		'show_admin_column'     => true,
+		'update_count_callback' => '_update_post_term_count',
+		'query_var'             => true,
+		'rewrite'               => array( 'slug' => $event_tag_slug ),
+		'show_in_rest'          => true,
+		'rest_base'             => 'mep_tag',
+		'show_in_quick_edit'    => true,
+	);
+register_taxonomy('mep_tag', 'mep_events', $argst);
+
 }
 add_action("init","mep_cpt_tax",10);
 
@@ -196,6 +253,34 @@ add_filter("manage_mep_org_custom_column", 'mep_display_org_id_to_column', 10, 3
 function mep_display_org_id_to_column($out, $column_name, $theme_id) {
     switch ($column_name) {
         case 'mep_org_id': 
+                echo esc_html($theme_id);
+            break;
+ 
+        default:
+            break;
+    }
+    return $out;    
+}
+
+
+
+add_filter("manage_edit-mep_tag_columns", 'mep_add_tag_tax_column'); 
+function mep_add_tag_tax_column($theme_columns) {
+    $new_columns = array(
+        'cb' => '<input type="checkbox" />',
+        'name' => __('Name', 'mage-eventpress'),
+         'mep_tag_id' => 'TagID',
+        'slug' => __('Slug', 'mage-eventpress'),
+        'posts' => __('Posts', 'mage-eventpress')
+        );
+    return $new_columns;
+}
+
+
+add_filter("manage_mep_tag_custom_column", 'mep_display_tag_id_to_column', 10, 3);
+function mep_display_tag_id_to_column($out, $column_name, $theme_id) {
+    switch ($column_name) {
+        case 'mep_tag_id': 
                 echo esc_html($theme_id);
             break;
  

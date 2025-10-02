@@ -65,6 +65,11 @@ $_the_event_id = $event_id;
                     <?php do_action('mep_event_date_default_theme',$_the_event_id); ?>
                 </div>
             <?php }
+            if (has_term('', 'mep_tag', $event_id)): ?>
+                <div class="mep-default-sidebar-tags">
+                    <?php do_action('mep_event_tags', $event_id); ?>
+                </div>
+            <?php endif;
             if ($hide_share_details == 'no') { ?>
                 <div class="mep-default-sidrbar-social">
                     <?php do_action('mep_event_social_share', $_the_event_id); ?>

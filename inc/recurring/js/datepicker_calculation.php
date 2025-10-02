@@ -57,7 +57,7 @@
                 $global_on_days_arr[] = '"'.date('j-n-Y',strtotime($value->format('Y-m-d'))).'"';
             }
             // code by user
-			$special_dates = MP_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
+			$special_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
 			if ( is_array( $special_dates ) ) {
 				$now = strtotime(current_time( 'Y-m-d' ));
 				foreach ( $special_dates as $special_date ) {

@@ -3,11 +3,11 @@
 		die;
 	}
 	$event_id           = $event_id ?? get_the_id();
-	$related_tours      = MP_Global_Function::get_post_info( $event_id, 'related_event', array() );
+	$related_tours      = MPWEM_Global_Function::get_post_info( $event_id, 'related_event', array() );
 	$related_tour_count = sizeof( $related_tours );
    // echo '<pre>';print_r($related_tours);echo '</pre>';
 	$num_of_tour        = $num_of_tour ?? '';
-	if ( $related_tour_count > 0 && ( MP_Global_Function::get_post_info( $event_id, 'display_related', 'on' ) != 'off' || $num_of_tour > 0 ) ) {
+	if ( $related_tour_count > 0 && ( MPWEM_Global_Function::get_post_info( $event_id, 'display_related', 'on' ) != 'off' || $num_of_tour > 0 ) ) {
 		$num_of_tour = $num_of_tour > 0 ? $num_of_tour : 4;
 		$num_of_tour = min( $num_of_tour, $related_tour_count );
 		$grid_class  = $related_tour_count <= $num_of_tour ? 'grid_' . $num_of_tour : '';

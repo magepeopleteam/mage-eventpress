@@ -241,7 +241,7 @@
 			//==============//
 			public function get_slider_ids( $post_id, $key ) {
 				$thumb_id  = get_post_thumbnail_id( $post_id );
-				$image_ids = MP_Global_Function::get_post_info( $post_id, $key, array() );
+				$image_ids = MPWEM_Global_Function::get_post_info( $post_id, $key, array() );
 				if ( $thumb_id  && $thumb_id>0) {
 					array_unshift( $image_ids, $thumb_id );
 				}

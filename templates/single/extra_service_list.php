@@ -19,7 +19,7 @@
 //        $data_price     = str_replace(get_woocommerce_currency_symbol(), '', $actual_price);
 //        $data_price     = str_replace(wc_get_price_thousand_separator(), '', $data_price);
 //        $data_price     = str_replace(wc_get_price_decimal_separator(), '.', $data_price);
-        $data_price     = MP_Global_Function::get_wc_raw_price($post_id,$tic_price);
+        $data_price     = MPWEM_Global_Function::get_wc_raw_price($tic_price);
     ?>
         <tr>
             <td align="Left"><?php echo esc_html($service_name); ?>

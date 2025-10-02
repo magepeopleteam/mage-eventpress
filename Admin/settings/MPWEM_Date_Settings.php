@@ -13,8 +13,8 @@
 			}
 
 			public function date_time_tab( $post_id ) {
-				$event_type  = MP_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
-				$buffer_time = MP_Global_Function::get_post_info( $post_id, 'mep_buffer_time', 0 );
+				$event_type  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+				$buffer_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_buffer_time', 0 );
 				?>
                 <div class="mp_tab_item" data-tab-item="#mp_event_time">
                     <h3><?php esc_html_e( 'Date & Time', 'mage-eventpress' ) ?></h3>
@@ -48,7 +48,7 @@
 			}
 
 			public function event_type_section( $post_id ) {
-				$event_type = MP_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+				$event_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
 				?>
                 <section class="">
                     <div class="mpStyle">
@@ -70,12 +70,12 @@
 			}
 
 			public function normal_particular_section( $post_id ) {
-				$event_type = MP_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
-				$start_date = MP_Global_Function::get_post_info( $post_id, 'event_start_date' );
-				$start_time = MP_Global_Function::get_post_info( $post_id, 'event_start_time' );
-				$end_date   = MP_Global_Function::get_post_info( $post_id, 'event_end_date' );
-				$end_time   = MP_Global_Function::get_post_info( $post_id, 'event_end_time' );
-				$more_dates = MP_Global_Function::get_post_info( $post_id, 'mep_event_more_date', [] );
+				$event_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+				$start_date = MPWEM_Global_Function::get_post_info( $post_id, 'event_start_date' );
+				$start_time = MPWEM_Global_Function::get_post_info( $post_id, 'event_start_time' );
+				$end_date   = MPWEM_Global_Function::get_post_info( $post_id, 'event_end_date' );
+				$end_time   = MPWEM_Global_Function::get_post_info( $post_id, 'event_end_time' );
+				$more_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_more_date', [] );
 				?>
                 <div class="mpStyle">
                     <section class="mp_settings_area <?php echo esc_attr( $event_type == 'no' || $event_type == 'yes' ? 'mActive' : '' ); ?>" data-collapse="#mep_normal_event">
@@ -138,11 +138,11 @@
 			}
 
 			public function date_time_section( $post_id ) {
-				$start_date = MP_Global_Function::get_post_info( $post_id, 'event_start_date' );
-				$start_time = MP_Global_Function::get_post_info( $post_id, 'event_start_time' );
-				$end_date   = MP_Global_Function::get_post_info( $post_id, 'event_end_date' );
-				$end_time   = MP_Global_Function::get_post_info( $post_id, 'event_end_time' );
-				$periods    = MP_Global_Function::get_post_info( $post_id, 'mep_repeated_periods', 1 );
+				$start_date = MPWEM_Global_Function::get_post_info( $post_id, 'event_start_date' );
+				$start_time = MPWEM_Global_Function::get_post_info( $post_id, 'event_start_time' );
+				$end_date   = MPWEM_Global_Function::get_post_info( $post_id, 'event_end_date' );
+				$end_time   = MPWEM_Global_Function::get_post_info( $post_id, 'event_end_time' );
+				$periods    = MPWEM_Global_Function::get_post_info( $post_id, 'mep_repeated_periods', 1 );
 				?>
                 <div class="mpStyle">
                     <section>
@@ -183,7 +183,7 @@
 			}
 
 			public function off_days_section( $post_id ) {
-				$off_day_array = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_offdays' );
+				$off_day_array = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_offdays' );
 				if ( ! is_array( $off_day_array ) ) {
 					$maybe_unserialized = @unserialize( $off_day_array );
 					if ( is_array( $maybe_unserialized ) ) {
@@ -193,7 +193,7 @@
 					}
 				}
 				$off_days = $off_day_array ? implode( ',', $off_day_array ) : '';
-				$days     = MP_Global_Function::week_day();
+				$days     = MPWEM_Global_Function::week_day();
 				?>
                 <div class="mpStyle">
                     <div class="_mT">
@@ -229,7 +229,7 @@
                                         <div class="mp_settings_area">
                                             <div class="mp_item_insert mp_sortable_area">
 												<?php
-													$all_off_dates = MP_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
+													$all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
 													$off_dates     = array();
 													foreach ( $all_off_dates as $off_date ) {
 														$off_dates[] = $off_date['mep_ticket_off_date'];
@@ -278,7 +278,7 @@
 			}
 
 			public function time_settings_section( $post_id ) {
-				$display_time = MP_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'no' );
+				$display_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'no' );
 				?>
                 <section class="bg-light" style="margin-top: 20px;">
                     <h2><?php esc_html_e( 'Time Settings', 'mage-eventpress' ) ?></h2>
@@ -358,7 +358,7 @@
 			}
 
 			public function time_line( $post_id, $key ) {
-				$time_infos = MP_Global_Function::get_post_info( $post_id, $key, [] );
+				$time_infos = MPWEM_Global_Function::get_post_info( $post_id, $key, [] );
 				?>
                 <div class="mp_settings_area">
                     <table class="_layoutFixed mpwem_time_setting_table">
@@ -419,8 +419,8 @@
 
 			/*************************************/
 			public function special_on_dates_setting( $post_id ) {
-				$special_dates       = MP_Global_Function::get_post_info( $post_id, 'mep_special_date_info', array() );
-				$display_ticket_time = MP_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'off' );
+				$special_dates       = MPWEM_Global_Function::get_post_info( $post_id, 'mep_special_date_info', array() );
+				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'off' );
 				?>
                 <div class="mpStyle mep-special-datetime" style="display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
@@ -528,7 +528,7 @@
                         </thead>
                         <tbody class="mp_sortable_area mp_item_insert">
 						<?php
-							$time_slots = sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MP_Global_Function::get_post_info( $tour_id, $key, array() ) );
+							$time_slots = sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
 							if ( sizeof( $time_slots ) > 0 ) {
 								foreach ( $time_slots as $time_slot ) {
 									$this->time_slot_item( $slot_name, $time_name, $time_slot );

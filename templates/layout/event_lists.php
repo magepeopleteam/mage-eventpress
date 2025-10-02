@@ -249,7 +249,7 @@ function render_mep_events_by_status( $posts ) {
 
                 $time_remaining = get_time_remaining_fixed( $id, $end_date );
 
-                $event_type = MP_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
+                $event_type = MPWEM_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
 
                 $event_id           = $id ?? 0;
                 $all_dates          =  MPWEM_Functions::get_dates( $event_id );

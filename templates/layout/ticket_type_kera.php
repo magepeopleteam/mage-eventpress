@@ -11,10 +11,10 @@
 	$all_times       = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
 	$date            = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
-	$mep_available_seat = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
+	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ),$date );
-		$ticket_types = MP_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		if ( sizeof( $ticket_types ) > 0 ) {
 			$categories  = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
@@ -24,7 +24,7 @@
 				$ticket_group = array_key_exists( 'group_category', $ticket_type ) ? $ticket_type['group_category'] : '';
 				$available    = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 				if ( $ticket_group && in_array( $ticket_group, $categories ) ) {
-					$meta_id            = MP_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
+					$meta_id            = MPWEM_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
 					$ticket_group_order = '';
 					if ( sizeof( $new_tickets ) > 0 ) {
 						$exit = 0;
@@ -100,7 +100,9 @@
 														$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 														$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 														$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
-														$ticket_price      = MPWEM_Functions::get_ticket_price( $event_id, $ticket_price, $ticket_name, $ticket_type );
+														$ticket_price_ = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
+														$ticket_price_wc=wc_price($ticket_price_);
+														$ticket_price=MPWEM_Global_Function::price_convert_raw($ticket_price_wc);
 														$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 														$ticket_d_qty      = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
 														$ticket_min_qty = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
@@ -135,7 +137,7 @@
 	                                                                    <?php } ?>
                                                                     </div>
                                                                     <div class="">
-                                                                        <h6 class="_textCenter"><?php echo wc_price( $ticket_price ); ?></h6>
+                                                                        <h6 class="_textCenter"><?php echo wc_price( $ticket_price_ ); ?></h6>
                                                                         <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>

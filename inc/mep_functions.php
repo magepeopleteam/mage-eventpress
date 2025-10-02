@@ -2316,7 +2316,7 @@
 			//if ( isset( $_POST['user_name'] ) || isset( $_POST['user_email'] ) || isset( $_POST['user_phone'] ) || isset( $_POST['gender'] ) || isset( $_POST['tshirtsize'] ) || isset( $_POST['user_company'] ) || isset( $_POST['user_designation'] ) || isset( $_POST['user_website'] ) || isset( $_POST['vegetarian'] ) ) {
 			if ( sizeof( $names ) > 0 ) {
 				$same_attendee     = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
-				$current_template  = MP_Global_Function::get_post_info( $product_id, 'mep_event_template' );
+				$current_template  = MPWEM_Global_Function::get_post_info( $product_id, 'mep_event_template' );
 				$global_template   = mep_get_option( 'mep_global_single_template', 'single_event_setting_sec', 'default-theme.php' );
 				$_current_template = $current_template ?: $global_template;
 				foreach ( $names as $key => $name ) {

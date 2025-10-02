@@ -622,7 +622,7 @@
 		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
 
 		            // code by user
-					$special_dates = MP_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
+					$special_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
 					// print_r($special_dates);
 					if ( is_array( $special_dates ) ) {
 						$now = strtotime(current_time( 'Y-m-d' ));
@@ -712,7 +712,7 @@
 		$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
 		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
 				            // code by user
-							$special_dates = MP_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
+							$special_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
 							// print_r($special_dates);
 							if ( is_array( $special_dates ) ) {
 								$now = strtotime(current_time( 'Y-m-d' ));

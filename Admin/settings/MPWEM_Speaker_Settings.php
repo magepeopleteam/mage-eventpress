@@ -33,7 +33,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             $speakers_label = get_post_meta($post_id, 'mep_speaker_title', true);
             $speaker_icon = get_post_meta($post_id, 'mep_event_speaker_icon', true);
             //$speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
-            $speaker_lists =MP_Global_Function::get_post_info($post_id,'mep_event_speakers_list',[]);
+            $speaker_lists =MPWEM_Global_Function::get_post_info($post_id,'mep_event_speakers_list',[]);
             $speakers = $this->get_speakers();
             ?>
             <div class="mp_tab_item" data-tab-item="#mep_event_speakers_list_meta_boxes">

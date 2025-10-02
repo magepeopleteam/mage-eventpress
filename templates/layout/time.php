@@ -10,7 +10,7 @@
 	$date = $date ?? '';
 	$single = $single ?? true;
 	$all_dates = $all_dates ?? MPWEM_Functions::get_dates($event_id);
-	$date_type = MP_Global_Function::get_post_info($event_id, 'mep_enable_recurring', 'no');
+	$date_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_enable_recurring', 'no');
 	if (sizeof($all_dates) > 0) {
 		$all_times = $all_times ?? MPWEM_Functions::get_times($event_id, $all_dates, $date);
 		if (sizeof($all_times) > 0) {

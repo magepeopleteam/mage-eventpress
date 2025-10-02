@@ -20,8 +20,8 @@
 			}
 
 			public function faq_tab_content( $post_id ) {
-				$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
-				$faq_des   = MP_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
+				$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
                 <div class="mp_tab_item mpStyle mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
@@ -102,7 +102,7 @@
 				$key      = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$faq_info = [];
 				if ( $post_id ) {
-					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
 					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						$faq_info = $faq_infos[ $key ];
 					}
@@ -151,7 +151,7 @@
 				}
 				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
-					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
 					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						unset( $faq_infos[ $key ] );
 						$faq_infos = array_values( $faq_infos );
@@ -176,7 +176,7 @@
 				$des     = isset( $_POST['des'] ) ? sanitize_text_field( wp_unslash( $_POST['des'] ) ) : '';
 				$content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
-					$faq_infos = MP_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
 					if ( ! array_key_exists( $key, $faq_infos ) ) {
 						$key = sizeof( $faq_infos );
 					}

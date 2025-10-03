@@ -5,7 +5,7 @@
 	/**
 	 * This is the Main Query Function For Query the Event List, Just Pass the Required values It will return the Query As Object.
 	 */
-    function mep_event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0 ) {
+    function mep_event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 		$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 		$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
 		$event_expire_on     = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;
@@ -22,6 +22,7 @@
 		$etype = $evnt_type == 'expired' ? '<' : '>';
 		$cat_id = explode( ',', $cat );
 		$org_id = explode( ',', $org );
+		$tag_id = explode( ',', $tag );
 		$cat_filter = ! empty( $cat ) ? array(
 			'taxonomy' => 'mep_cat',
 			'field'    => 'term_id',
@@ -31,6 +32,11 @@
 			'taxonomy' => 'mep_org',
 			'field'    => 'term_id',
 			'terms'    => $org_id
+		) : '';
+		$tag_filter = ! empty( $tag ) ? array(
+			'taxonomy' => 'mep_tag',
+			'field'    => 'term_id',
+			'terms'    => $tag_id
 		) : '';
 		$city_filter = ! empty( $city ) ? array(
 			'key'     => 'mep_city',
@@ -73,7 +79,8 @@
 		$tax_query = array(
 			'relation' => 'AND',
 			$cat_filter,
-			$org_filter
+			$org_filter,
+			$tag_filter
 		);
 		$args = array(
 			'post_type'      => array( 'mep_events' ),

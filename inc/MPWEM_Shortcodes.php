@@ -17,10 +17,12 @@
 				$defaults            = array(
 					"cat"              => "0",
 					"org"              => "0",
+					"tag"              => "0",
 					"style"            => "grid",
 					"column"           => 3,
 					"cat-filter"       => "no",
 					"org-filter"       => "no",
+					"tag-filter"       => "no",
 					"show"             => "-1",
 					"pagination"       => "no",
 					"pagination-style" => "load_more",
@@ -45,9 +47,11 @@
 				$params              = shortcode_atts( $defaults, $atts );
 				$cat                 = $params['cat'];
 				$org                 = $params['org'];
+				$tag                 = $params['tag'];
 				$style               = $params['style'];
 				$cat_f               = $params['cat-filter'];
 				$org_f               = $params['org-filter'];
+				$tag_f               = $params['tag-filter'];
 				$show                = $params['show'];
 				$pagination          = $params['pagination'];
 				$pagination_style          = $params['pagination-style'];
@@ -70,7 +74,7 @@
 				/**
 				 * The Main Query function mep_event_query is locet in inc/mep_query.php File
 				 */
-				$loop = mep_event_query( $show, $sort, $cat, $org, $city, $country, $status, '', $year );
+				$loop = mep_event_query( $show, $sort, $cat, $org, $city, $country, $status, '', $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
                 <div class='list_with_filter_section mep_event_list'>
@@ -86,6 +90,12 @@
 							 */
 							do_action( 'mep_event_list_org_names', $org, $unq_id );
 						}
+						if ( $tag_f == 'yes' ) {
+							/**
+							 * This is the hook where Tag filter lists are fired from inc/template-parts/event_list_tax_name_list.php File
+							 */
+							do_action( 'mep_event_list_tag_names', $tag, $unq_id );
+						}
 						if ( $filter == 'yes' && $style != 'timeline' ) {
 							do_action( 'mpwem_list_with_filter_section', $loop, $params );
 						}
@@ -96,6 +106,7 @@
                     data-column="<?php echo esc_attr( $column ); ?>"
                     data-cat="<?php echo esc_attr( $cat ); ?>"
                     data-org="<?php echo esc_attr( $org ); ?>"
+                    data-tag="<?php echo esc_attr( $tag ); ?>"
                     data-city="<?php echo esc_attr( $city ); ?>"
                     data-country="<?php echo esc_attr( $country ); ?>"
                     data-status="<?php echo esc_attr( $status ); ?>"

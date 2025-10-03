@@ -41,3 +41,11 @@ if (!function_exists('mep_display_event_daywise_details')) {
     }
   }
 }
+
+add_action('mep_after_event_details', 'mep_display_event_tags', 15);
+if (!function_exists('mep_display_event_tags')) {
+  function mep_display_event_tags($event_id)
+  {
+    do_action('mep_event_tags', $event_id);
+  }
+}

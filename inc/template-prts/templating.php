@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 require_once(dirname(__FILE__) . "/thumbnail.php");
 require_once(dirname(__FILE__) . "/title.php");
 require_once(dirname(__FILE__) . "/organizer.php");
+require_once(dirname(__FILE__) . "/event_tags.php");
 require_once(dirname(__FILE__) . "/price.php");
 require_once(dirname(__FILE__) . "/total_seat.php");
 require_once(dirname(__FILE__) . "/add_calender.php");

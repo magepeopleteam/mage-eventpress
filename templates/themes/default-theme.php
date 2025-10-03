@@ -131,6 +131,12 @@
                 </div>
             <?php endif; ?>
             
+            <?php if (has_term('', 'mep_tag', $event_id)): ?>
+                <div class="mep-default-sidebar-tags">
+                    <?php do_action('mep_event_tags', $event_id); ?>
+                </div>
+            <?php endif; ?>
+            
             <?php
             if ($hide_share_details == 'no') { ?>
                 <div class="mep-default-sidrbar-social">

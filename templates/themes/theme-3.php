@@ -96,6 +96,11 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <?php do_action('mep_event_add_calender',$event_id); ?>
             </div>
         <?php } ?>
+        <?php if (has_term('', 'mep_tag', $event_id)): ?>
+            <div class="mep-default-sidebar-tags">
+                <?php do_action('mep_event_tags', $event_id); ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php
             if($speaker_status == 'yes'){ ?>

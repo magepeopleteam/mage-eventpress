@@ -47,6 +47,11 @@
             <div class="mpwem_sidebar_content">
 				<?php do_action( 'mpwem_date_time', $event_id, $all_dates, $all_times ); ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
+				<?php if (has_term('', 'mep_tag', $event_id)): ?>
+					<div class="mep-default-sidebar-tags">
+						<?php do_action('mep_event_tags', $event_id); ?>
+					</div>
+				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id ); ?>
 				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
             </div>

@@ -20,8 +20,10 @@ if (!function_exists('mep_display_event_loop_list')) {
         $newformat              = date_i18n('Y-m-d H:i:s', $time);
         $tt                     = get_the_terms($event_id, 'mep_cat');
         $torg                   = get_the_terms($event_id, 'mep_org');
+        $ttag                   = get_the_terms($event_id, 'mep_tag');
         $org_class              = mep_get_term_as_class($event_id, 'mep_org',$unq_id);
         $cat_class              = mep_get_term_as_class($event_id, 'mep_cat',$unq_id);
+        $tag_class              = mep_get_term_as_class($event_id, 'mep_tag',$unq_id);
         $event_multidate        = array_key_exists('mep_event_more_date', $event_meta) ? maybe_unserialize($event_meta['mep_event_more_date'][0]) : array();
         $available_seat         = apply_filters('mep_event_loop_list_available_seat', mep_get_total_available_seat($event_id, $event_meta), $event_id);
         // $available_seat         = 1;

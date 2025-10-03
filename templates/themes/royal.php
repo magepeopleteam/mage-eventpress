@@ -145,6 +145,12 @@
             <?php do_action('mep_event_details', $event_id); ?>
         </div>
         
+        <?php if (has_term('', 'mep_tag', $event_id)): ?>
+            <div class="mep-default-sidebar-tags">
+                <?php do_action('mep_event_tags', $event_id); ?>
+            </div>
+        <?php endif; ?>
+        
         <?php if ($hide_share_details == 'no') { ?>
             <div class="mep-default-sidrbar-social">
                 <?php do_action('mep_event_social_share', $event_id); ?>

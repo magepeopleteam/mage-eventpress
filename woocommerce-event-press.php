@@ -116,6 +116,7 @@
 		}
 	}
 	else {
+		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';

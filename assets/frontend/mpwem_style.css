@@ -5392,7 +5392,7 @@ Vanilla theme css by ariful
 	}
 	.mep-related-events .mep-related-events-items {
 		margin-top: 20px;
-		max-height: 350px;
+		height: 350px;
     	padding-bottom: 20px;
 	}
 	.mep-events-wrapper .mpwem_book_now[disabled]{

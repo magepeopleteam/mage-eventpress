@@ -6,7 +6,7 @@
  * Provides secure access to template override settings page.
  * 
  * @package MageEventPress
- * @subpackage Admin
+ * @subpackage admin
  * @author engr.sumonazma@gmail.com
  * @copyright mage-people.com
  * @since 1.0.0

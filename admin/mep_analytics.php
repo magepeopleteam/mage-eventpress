@@ -56,7 +56,7 @@
                     </select>
                 </div>
 	            <?php
-		            $category_lists = MP_Global_Function::get_all_term_data( 'mep_cat' );
+		            $category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
 		            if ( $category_lists && sizeof( $category_lists ) > 0 ) {
 			            ?>
                         <label>
@@ -255,7 +255,7 @@
 				$unique_attendees[$unique_key] = true;
 				$exit_true=false;
 				if($filter_with_category){
-					$taxonomy_info=MP_Global_Function::all_taxonomy_data($event_id,'mep_cat');
+					$taxonomy_info=MPWEM_Global_Function::all_taxonomy_data($event_id,'mep_cat');
 					if(in_array($filter_with_category,$taxonomy_info)){
 						$exit_true=true;
 					}

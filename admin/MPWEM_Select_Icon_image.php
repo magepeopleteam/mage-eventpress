@@ -109,7 +109,7 @@
 				<?php
 			}
 			public function add_multi_image($name, $images) {
-				$images = is_array($images) ? MP_Global_Function::array_to_string($images) : $images;
+				$images = is_array($images) ? MPWEM_Global_Function::array_to_string($images) : $images;
 				?>
 				<div class="mp_multi_image_area">
 				<input type="hidden" class="mp_multi_image_value" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($images); ?>" />
@@ -121,7 +121,7 @@
 									?>
 									<div class="mp_multi_image_item" data-image-id="<?php echo esc_attr($image); ?>">
 										<span class="fas fa-times circleIcon_xs mpwem_remove_multi_image"></span>
-										<img src="<?php echo MP_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php echo esc_attr($image); ?>"/>
+										<img src="<?php echo MPWEM_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php echo esc_attr($image); ?>"/>
 									</div>
 									<?php
 								}
@@ -150,7 +150,7 @@
 						<span class="fas fa-times mp_remove_icon mpwem_icon_remove" title="<?php esc_html_e('Remove Icon', 'mage-eventpress'); ?>"></span>
 					</div>
 					<div class="mp_image_item <?php echo esc_attr($image_class); ?>">
-						<img class="" src="<?php echo esc_attr(MP_Global_Function::get_image_url('', $image, 'medium')); ?>" alt="">
+						<img class="" src="<?php echo esc_attr(MPWEM_Global_Function::get_image_url('', $image, 'medium')); ?>" alt="">
 						<span class="fas fa-times mp_remove_icon mpwem_image_remove" title="<?php esc_html_e('Remove Image', 'mage-eventpress'); ?>"></span>
 					</div>
 					<div class="mpwem_add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">

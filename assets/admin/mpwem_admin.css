@@ -245,7 +245,7 @@
 		transition: 350ms ease-in-out;
 	}
 }
-/********************************************************************Admin layout ************************************************/
+/********************************************************************admin layout ************************************************/
 @media only screen and (min-width: 10px) {
 	.mpStyle .adminLayout,
 	.mpStyle [class*="_adminLayout"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--color_border);border-radius: var(--dBRL);}

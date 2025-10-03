@@ -18,7 +18,7 @@
             <div class="related_items">
 				<?php foreach ( $related_tours as $ttbm_post_id ) { ?>
                     <div class="item">
-                        <img src="<?php echo MP_Global_Function::get_image_url($ttbm_post_id);?>" alt="">
+                        <img src="<?php echo MPWEM_Global_Function::get_image_url($ttbm_post_id);?>" alt="">
                         <div class="item-info">
                             <div class="title">
                                 <h2><?php echo get_the_title($ttbm_post_id); ?></h2>

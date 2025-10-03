@@ -117,9 +117,8 @@
 	}
 	else {
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
-		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
-		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
+		require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';
 		function mep_no_woo_event_activation_redirect($plugin) {
 			if ($plugin == plugin_basename(__FILE__)) {
 				exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));

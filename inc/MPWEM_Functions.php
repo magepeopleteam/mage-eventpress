@@ -205,7 +205,7 @@
 					}
 				}
 
-				return MP_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
+				return MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 			}
 
 			public static function get_dates( $event_id ) {
@@ -213,7 +213,7 @@
 				$date_type   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
 				$now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
-				$expire_on   = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_event_expire_on_datetimes', 'event_start_datetime' );
+				$expire_on   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_expire_on_datetimes', 'event_start_datetime' );
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					$start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
 					$start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
@@ -248,7 +248,7 @@
 							}
 						}
 						if ( sizeof( $all_dates ) ) {
-							usort( $all_dates, "MP_Global_Function::sort_date_array" );
+							usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 						}
 					}
 				} else {
@@ -263,7 +263,7 @@
 					}
 					$repeated_after = MPWEM_Global_Function::get_post_info( $event_id, 'mep_repeated_periods', 1 );
 					if ( $start_date && $end_date ) {
-						$dates         = MP_Global_Function::date_separate_period( $start_date, $end_date, $repeated_after );
+						$dates         = MPWEM_Global_Function::date_separate_period( $start_date, $end_date, $repeated_after );
 						$all_off_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_ticket_off_dates', [] );
 						$off_dates     = [];
 						foreach ( $all_off_dates as $off_date ) {
@@ -287,7 +287,7 @@
 							}
 						}
 					}
-					usort( $all_dates, "MP_Global_Function::sort_date" );
+					usort( $all_dates, "MPWEM_Global_Function::sort_date" );
 					$all_date  = array_unique( $all_dates );
 					$all_dates = [];
 					$now       = strtotime( current_time( 'Y-m-d H:i:s' ) );

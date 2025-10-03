@@ -25,16 +25,15 @@
 
 			public function load_global_file() {
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Layout.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
-				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
 			}
 
 			private function load_file(): void {
-				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
@@ -60,17 +59,17 @@
 				wp_enqueue_style( 'select2' );
 				wp_localize_script( 'jquery', 'mep_ajax', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				wp_enqueue_style( 'mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2' );
-				$fontAwesome = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
+				$fontAwesome = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
 				if ( $fontAwesome == 'no' ) {
 					wp_enqueue_style( 'mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0' );
 					wp_enqueue_style( 'mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0' );
 					wp_enqueue_style( 'mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4' );
 				}
-				$flatIcon = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
+				$flatIcon = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
 				if ( $flatIcon == 'no' ) {
 					wp_enqueue_style( 'mp_flat_icon', MPWEM_PLUGIN_URL . '/assets/helper/flaticon/flaticon.css' );
 				}
-				$owlCarousel = MP_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
+				$owlCarousel = MPWEM_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
 				if ( $owlCarousel == 'no' ) {
 					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
 					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );

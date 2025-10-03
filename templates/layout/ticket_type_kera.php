@@ -16,7 +16,7 @@
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ),$date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		if ( sizeof( $ticket_types ) > 0 ) {
-			$categories  = MP_Global_Function::get_all_term_data( 'mep_tic_cat' );
+			$categories  = MPWEM_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
 			$group_name  = '';
 			foreach ( $ticket_types as $ticket_type ) {
@@ -35,13 +35,13 @@
 							}
 						}
 						if ( $exit == 0 ) {
-							$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+							$ticket_group_order = intval( MPWEM_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
 							if ( empty( $ticket_group_order ) || $ticket_group_order == 0 ) {
 								$ticket_group_order = $meta_id;
 							}
 						}
 					} else {
-						$ticket_group_order = intval( MP_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
+						$ticket_group_order = intval( MPWEM_Global_Function::get_term_meta( $meta_id, 'category_order' ) );
 					}
 					//echo '<pre>';print_r();echo '</pre>';
 					$new_tickets[ $ticket_group_order ]['group']   = $ticket_group;

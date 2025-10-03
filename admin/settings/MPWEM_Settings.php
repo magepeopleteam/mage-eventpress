@@ -401,19 +401,19 @@
 				}
 				/********Speker************/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$speaker_title = MP_Global_Function::get_submit_info( 'mep_speaker_title' );
-					$speaker_icon  = MP_Global_Function::get_submit_info( 'mep_event_speaker_icon' );
-					$speakers      = MP_Global_Function::get_submit_info( 'mep_event_speakers_list' );
+					$speaker_title = isset( $_POST['mep_speaker_title'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_speaker_title'] ) ) : '';
+					$speaker_icon  = isset( $_POST['mep_event_speaker_icon'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speaker_icon'] ) ) : '';
+					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speakers_list'] ) ) : '';
 					update_post_meta( $post_id, 'mep_speaker_title', $speaker_title );
 					update_post_meta( $post_id, 'mep_event_speaker_icon', $speaker_icon );
 					update_post_meta( $post_id, 'mep_event_speakers_list', $speakers );
 				}
 				/********Gallery************/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$slider = MP_Global_Function::get_submit_info( 'mep_display_slider' ) ? 'on' : 'off';
+					$slider = isset( $_POST['mep_display_slider'] ) && sanitize_text_field( wp_unslash( $_POST['mep_display_slider'] ) ) ? 'on' : 'off';
 					update_post_meta( $post_id, 'mep_display_slider', $slider );
-					$images       = MP_Global_Function::get_submit_info( 'mep_gallery_images' );
-					$single_image = MP_Global_Function::get_submit_info( 'mep_list_thumbnail', '' );
+					$images       = isset( $_POST['mep_gallery_images'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_gallery_images'] ) ) : '';
+					$single_image = isset( $_POST['mep_list_thumbnail'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_list_thumbnail'] ) ) : '';
 					$all_images   = explode( ',', $images );
 					update_post_meta( $post_id, 'mep_gallery_images', $all_images );
 					update_post_meta( $post_id, 'mep_list_thumbnail', $single_image );
@@ -449,8 +449,8 @@
 
 			public function day_wise_slot_save( $post_id, $name ) {
 				$all_global   = [];
-				$global_label = MP_Global_Function::get_submit_info( $name . '_label', [] );
-				$global_time  = MP_Global_Function::get_submit_info( $name . '_time', [] );
+				$global_label = isset( $_POST[ $name . '_label' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_label' ] ) ) : [];
+				$global_time  = isset( $_POST[ $name . '_time' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_time' ] ) ) : [];
 				if ( sizeof( $global_time ) > 0 && sizeof( $global_label ) ) {
 					foreach ( $global_time as $key => $time ) {
 						if ( $time && $global_label[ $key ] ) {
@@ -464,9 +464,9 @@
 
 			public static function des_array( $key ) {
 				$des = array(
-					'mep_display_slider'           => esc_html__( 'By default slider is ON but you can keep it off by switching this option', 'mage-eventpress' ),
-					'mep_gallery_images'           => esc_html__( 'Please upload images for gallery', 'mage-eventpress' ),
-					'gallery_settings_description' => esc_html__( 'Here gallery image can be added  to event so that guest can understand about this event.', 'mage-eventpress' ),
+					'mep_display_slider'           => __( 'By default slider is ON but you can keep it off by switching this option', 'mage-eventpress' ),
+					'mep_gallery_images'           => __( 'Please upload images for gallery', 'mage-eventpress' ),
+					'gallery_settings_description' => __( 'Here gallery image can be added  to event so that guest can understand about this event.', 'mage-eventpress' ),
 				);
 				$des = apply_filters( 'mpwem_filter_description_array', $des );
 

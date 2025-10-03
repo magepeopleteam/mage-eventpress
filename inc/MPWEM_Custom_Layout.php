@@ -139,7 +139,7 @@
 				<?php
 			}
 			public static function add_multi_image($name, $images) {
-				$images = is_array($images) ? MP_Global_Function::array_to_string($images) : $images;
+				$images = is_array($images) ? MPWEM_Global_Function::array_to_string($images) : $images;
 				?>
                 <div class="mp_multi_image_area">
                     <input type="hidden" class="mp_multi_image_value" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($images); ?>"/>
@@ -151,7 +151,7 @@
 									?>
                                     <div class="mp_multi_image_item" data-image-id="<?php echo esc_attr($image); ?>">
                                         <span class="fas fa-times circleIcon_xs mpwem_remove_multi_image"></span>
-                                        <img src="<?php echo MP_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php echo esc_attr($image); ?>"/>
+                                        <img src="<?php echo MPWEM_Global_Function::get_image_url('', $image, 'medium'); ?>" alt="<?php echo esc_attr($image); ?>"/>
                                     </div>
 									<?php
 								}

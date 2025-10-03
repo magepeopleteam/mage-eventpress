@@ -6,7 +6,7 @@
  * Provides secure copying and removal of template files to/from active theme.
  * 
  * @package MageEventPress
- * @subpackage Admin\Settings
+ * @subpackage admin\Settings
  * @author engr.sumonazma@gmail.com
  * @copyright mage-people.com
  * @since 1.0.0

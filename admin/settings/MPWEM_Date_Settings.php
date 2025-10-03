@@ -260,7 +260,7 @@
 			}
 
 			public function off_date_item( $date = '' ) {
-				$date_format  = MP_Global_Function::date_picker_format();
+				$date_format  = MPWEM_Global_Function::date_picker_format();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$hidden_date  = $date ? date_i18n( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
@@ -397,7 +397,7 @@
 			}
 
 			public static function date_item( $name, $date = '' ): void {
-				$date_format  = MP_Global_Function::date_picker_format();
+				$date_format  = MPWEM_Global_Function::date_picker_format();
 				$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
@@ -461,7 +461,7 @@
 			}
 
 			public function special_on_day_item( $special_date = array() ) {
-				$date_format        = MP_Global_Function::date_picker_format();
+				$date_format        = MPWEM_Global_Function::date_picker_format();
 				$now                = date_i18n( $date_format, time() );
 				$special_date       = $special_date && is_array( $special_date ) ? $special_date : array();
 				$date_name          = array_key_exists( 'date_label', $special_date ) ? $special_date['date_label'] : '';

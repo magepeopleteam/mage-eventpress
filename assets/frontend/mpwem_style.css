@@ -5149,7 +5149,7 @@ Vanilla theme css by ariful
 		border: 1px solid var(--color_theme);
 		margin-top: 15px;
 		margin-left: 50px;
-		color: var(--color_theme);
+		color: var(--color_theme) !important; 
 		font-size: var(--button_fs);
 		font-weight: var(--fw-medium);
 		line-height: inherit;

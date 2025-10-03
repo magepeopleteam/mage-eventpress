@@ -37,7 +37,8 @@
 			<!-- timeline data display -->
 		    <?php do_action('mpwem_timeline',$event_id); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
-        </div>
+			<?php do_action( 'mpwem_faq', $event_id ); ?>
+		</div>
         <div class="mpwem_right_content">
 			<?php $left_sidebar_title = mep_get_option('mep_event_hide_left_sidebar_title', 'single_event_setting_sec', 'no');
 			if($left_sidebar_title=='no'): ?>
@@ -58,7 +59,7 @@
         </div>
     </div>
 	<?php do_action( 'mpwem_map', $event_id ); ?>
-	<?php do_action( 'mpwem_faq', $event_id ); ?>
+	
 	<?php do_action( 'mpwem_related', $event_id ); ?>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

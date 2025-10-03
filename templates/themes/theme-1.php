@@ -20,7 +20,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
     <div class="mep_flex">
         <div class="spring_field_banner">
             <div class="_mT mpwem_slider_area">
-		        <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+		        <?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
             </div>
         </div>
         <div class="spring_field_banner_right">

@@ -24,11 +24,12 @@
 			}
 
 			public function load_global_file() {
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Layout.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Layout.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
 			}
 
@@ -55,6 +56,8 @@
 				wp_enqueue_script( 'jquery-ui-core' );
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_script( 'jquery-ui-accordion' );
+				wp_enqueue_script( 'selectWoo' );
+				wp_enqueue_style( 'select2' );
 				wp_localize_script( 'jquery', 'mep_ajax', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				wp_enqueue_style( 'mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2' );
 				$fontAwesome = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
@@ -67,8 +70,6 @@
 				if ( $flatIcon == 'no' ) {
 					wp_enqueue_style( 'mp_flat_icon', MPWEM_PLUGIN_URL . '/assets/helper/flaticon/flaticon.css' );
 				}
-				wp_enqueue_style( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.css', array(), '4.0.13' );
-				wp_enqueue_script( 'mp_select_2', MPWEM_PLUGIN_URL . '/assets/helper/select_2/select2.min.js', array(), '4.0.13' );
 				$owlCarousel = MP_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
 				if ( $owlCarousel == 'no' ) {
 					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
@@ -127,7 +128,6 @@
 				}
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
-				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
 				// Only load event lists scripts on relevant pages
 				if ( $hook == 'mep_events_page_mep_event_lists' ||
 				     ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&
@@ -178,7 +178,6 @@
 
 			public function add_frontend_head() {
 				$this->js_constant();
-				$this->custom_css();
 				$this->event_rich_text_data();
 				$this->add_open_graph_tags();
 			}
@@ -198,22 +197,6 @@
                 </script>
 				<?php
 			}
-
-			public function custom_css() {
-				$custom_css         = MP_Global_Function::get_settings( 'mep_settings_custom_css', 'mep_custom_css' );
-				$not_available_hide = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_not_available_event_from_list_page', 'no' );
-				ob_start();
-				?>
-                <style>
-                    <?php echo $custom_css; ?>
-                    <?php  if($not_available_hide == 'yes'){ ?>
-					.event-no-availabe-seat { display: none !important; }
-                    <?php } 	?>
-                </style>
-				<?php
-				echo ob_get_clean();
-			}
-
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;

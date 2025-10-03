@@ -209,7 +209,7 @@ class MEPEventScheduleWidget extends Widget_Base {
         if (get_post_type($event_id) == 'mep_events') {
 	?>	
         <div class="mep-default-schedule mep-elementor-widget-schedule">
-          <?php echo do_action('mep_event_date_default_theme',$event_id,'no');  ?>
+          <?php do_action('mep_event_date_default_theme',$event_id,'no');  ?>
         </div>
 	<?php
         }

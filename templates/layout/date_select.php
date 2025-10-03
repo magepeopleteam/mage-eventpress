@@ -10,7 +10,7 @@
 	$all_dates = $all_dates ?? [];
 	$date      = $date ?? '';
 	if ( sizeof( $all_dates ) > 0 ) {
-		$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+		$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		if ( $date_type == 'no' || $date_type == 'yes' ) {
 			$date        = !empty($date) ?$date: current( $all_dates )['time'];
 			$date_format = MP_Global_Function::check_time_exit_date( $date ) ? 'full' : '';
@@ -71,7 +71,7 @@
 			</div>
             
 			<?php
-			do_action( 'mp_load_date_picker_js', '#mpwem_date_time', $all_dates );
+			do_action( 'mpwem_load_date_picker_js', '#mpwem_date_time', $all_dates );
 			//echo '<pre>';			print_r($all_times);			echo '</pre>';
 		}
 	}

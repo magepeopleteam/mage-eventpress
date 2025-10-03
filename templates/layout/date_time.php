@@ -11,7 +11,7 @@
 	$hide_date_details  = mep_get_option('mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');
 	if($hide_date_details=='no'):
 		if ( sizeof( $all_dates ) > 0 ) {
-			$date_type = MP_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+			$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 			
 			?>
 			<div class="date_widgets">

@@ -9,8 +9,8 @@
 			}
 
 			public function gallery_settings( $tour_id ) {
-				$display_gallary = MP_Global_Function::get_post_info( $tour_id, 'mep_display_slider', 'on' );
-				$image_ids       = MP_Global_Function::get_post_info( $tour_id, 'mep_gallery_images', array() );
+				$display_gallary = MPWEM_Global_Function::get_post_info( $tour_id, 'mep_display_slider', 'on' );
+				$image_ids       = MPWEM_Global_Function::get_post_info( $tour_id, 'mep_gallery_images', array() );
 				?>
                 <div class="mp_tab_item" data-tab-item="#ttbm_settings_gallery">
                     <h3><?php esc_html_e( 'Gallery Settings', 'mage-eventpress' ); ?></h3>
@@ -57,11 +57,11 @@
                     <div class="mpStyle">
                         <section>
                             <h2><?php esc_html_e( 'Thumbnail', 'mage-eventpress' ); ?></h2>
-                            <span><?php echo esc_html__( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>
+                            <span><?php esc_html_e( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>
                             <div style="margin-top: 20px;">
 								<?php
 									$image_id = get_post_meta( $tour_id, 'mep_list_thumbnail', true );
-									do_action( 'mp_add_single_image', 'mep_list_thumbnail', $image_id );
+									do_action( 'mpwem_add_single_image', 'mep_list_thumbnail', $image_id );
 								?>
                             </div>
                         </section>

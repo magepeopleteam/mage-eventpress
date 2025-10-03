@@ -80,7 +80,7 @@ function pageScrollTo(target) {
     }, 1000);
 }
 //====================================================Load Date picker==============//
-function mp_load_date_picker(parent = jQuery('.mpStyle')) {
+function mpwem_load_date_picker(parent = jQuery('.mpStyle')) {
     parent.find(".date_type.hasDatepicker").each(function () {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
     }).promise().done(function () {
@@ -106,7 +106,7 @@ function mp_alert($this, attr = 'alert') {
 (function ($) {
     "use strict";
     $(document).ready(function () {
-        mp_load_date_picker();
+        mpwem_load_date_picker();
         $('.mp_select2').select2({});
     });
 }(jQuery));

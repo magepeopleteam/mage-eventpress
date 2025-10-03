@@ -17,12 +17,11 @@
 			public function add_admin_scripts() {
 				wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
 				wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
-				wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
 				wp_enqueue_style('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time());
 				wp_enqueue_style('mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4');
 			}
 			public function quick_setup_menu() {
-				$status = MP_Global_Function::check_woocommerce();
+				$status = MPWEM_Global_Function::check_woocommerce();
 				if ($status == 1) {
 					add_submenu_page('edit.php?post_type=mep_events', __('Quick Setup', 'mage-eventpress'), '<span style="color:#10dd10">' . esc_html__('Quick Setup', 'mage-eventpress') . '</span>', 'manage_options', 'mpwem_quick_setup', array($this, 'quick_setup'));
 					add_submenu_page('mep_events', esc_html__('Quick Setup', 'mage-eventpress'), '<span style="color:#10dd10">' . esc_html__('Quick Setup', 'mage-eventpress') . '</span>', 'manage_options', 'mpwem_quick_setup', array($this, 'quick_setup'));
@@ -33,7 +32,7 @@
 				}
 			}
 			public function quick_setup() {
-				$status = MP_Global_Function::check_woocommerce();
+				$status = MPWEM_Global_Function::check_woocommerce();
 				if (isset($_POST['active_woo_btn'])) {
 					?>
 					<script>
@@ -181,7 +180,7 @@
 				<?php
 			}
 			public function setup_welcome_content() {
-				$status = MP_Global_Function::check_woocommerce();
+				$status = MPWEM_Global_Function::check_woocommerce();
 				?>
 				<div data-tabs-next="#mpwem_qs_welcome">
 					<h2><?php esc_html_e('Event Manager and Tickets Selling Plugin', 'mage-eventpress'); ?></h2>

@@ -38,7 +38,7 @@
 			}
 
 			public function sku( $event_id ) {
-				$sku = MP_Global_Function::get_post_info( $event_id, '_sku' );
+				$sku = MPWEM_Global_Function::get_post_info( $event_id, '_sku' );
 				?>
                 <div class="_padding_bT">
                     <label class="justifyBetween _alignCenter">
@@ -51,7 +51,7 @@
 			}
 
 			public function display_end_date_time( $event_id ) {
-				$display = MP_Global_Function::get_post_info( $event_id, 'mep_show_end_datetime', 'yes' );
+				$display = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_end_datetime', 'yes' );
 				$checked = $display == 'no' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
@@ -65,7 +65,7 @@
 			}
 
 			public function display_available_seat( $event_id ) {
-				$display = MP_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'off' );
+				$display = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'off' );
 				$checked = $display == 'off' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
@@ -91,8 +91,8 @@
 			}
 
 			public function event_member( $event_id ) {
-				$user_roles     = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_user_role', [] );
-				$display        = MP_Global_Function::get_post_info( $event_id, 'mep_member_only_event', 'for_all' );
+				$user_roles     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_member_only_user_role', [] );
+				$display        = MPWEM_Global_Function::get_post_info( $event_id, 'mep_member_only_event', 'for_all' );
 				$checked        = $display == 'for_all' ? '' : 'checked';
 				$active         = $display == 'for_all' ? '' : 'mActive';
 				$editable_roles = get_editable_roles();

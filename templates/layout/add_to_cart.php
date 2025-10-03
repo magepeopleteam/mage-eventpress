@@ -8,7 +8,7 @@
 	} // Cannot access pages directly.
 	$event_id        = $event_id ?? 0;
 	$backend_order   = isset( $_REQUEST['backend_order'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['backend_order'] ) ) : null;
-	$link_wc_product = MP_Global_Function::get_post_info( $event_id, 'link_wc_product' );;
+	$link_wc_product = MPWEM_Global_Function::get_post_info( $event_id, 'link_wc_product' );;
 ?>
 <div class="mpwem_summery">
     <div class="total"><?php esc_html_e( 'Total Price : ', 'mage-eventpress' ); ?>

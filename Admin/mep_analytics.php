@@ -244,7 +244,7 @@
 			// Process each attendee
 			foreach ( $attendees as $attendee ) {
 				$attendee_id = $attendee->ID;
-				$event_id = MP_Global_Function::get_post_info( $attendee_id, 'ea_event_id' );
+				$event_id = MPWEM_Global_Function::get_post_info( $attendee_id, 'ea_event_id' );
 				$order_id     = get_post_meta( $attendee_id, 'ea_order_id', true );
 				$ticket_type  = get_post_meta( $attendee_id, 'ea_ticket_type', true );
 				$event_date   = get_post_meta( $attendee_id, 'ea_event_date', true );

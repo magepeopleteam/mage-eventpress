@@ -19,10 +19,10 @@
 			}
 
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
-				$linked_event_id = MP_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
+				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
 				if ( get_post_type( $product_id ) == 'mep_events' ) {
-					$recurring      = MP_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
+					$recurring      = MPWEM_Global_Function::get_post_info( $product_id, 'mep_enable_recurring', 'no' );
 					$form_position  = mep_get_option( 'mep_user_form_position', 'general_attendee_sec', 'details_page' );
 					$start_date     = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
 					$start_date     = current( $start_date );
@@ -83,8 +83,6 @@
 					$ticket_type_arr      = $cart_item['event_ticket_info'];
 					$event_extra_service  = $cart_item['event_extra_service'];
 					$event_date           = $cart_item['event_cart_date'];
-					$recurring            = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
-					$time_status          = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
 					//echo '<pre>';print_r($cart_item);echo '</pre>';
 					echo "<ul class='event-custom-price'>";
 					if ( $hide_date_status == 'no' ) {
@@ -97,24 +95,8 @@
                         <li><?php esc_html_e( " Location", 'mage-eventpress' ); ?>: <?php echo esc_html( $cart_item['event_cart_location'] ); ?></li>
 						<?php
 					}
-					if ( $recurring == 'everyday' && $time_status == 'no' ) {
-						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
-							echo '<li>';
-							echo mep_cart_display_user_list( $user_info, $eid );
-							echo '</li>';
-						}
-					} elseif ( $recurring == 'everyday' && $time_status == 'yes' ) {
-						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
-							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
-						}
-					} elseif ( $recurring == 'yes' ) {
-						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
-							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
-						}
-					} else {
-						if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
-							echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
-						}
+					if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
+						echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
 					}
 					if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
 						echo mep_cart_display_ticket_type_list( $ticket_type_arr, $eid );
@@ -267,7 +249,7 @@
 
 			public static function get_cart_ticket_info( $post_id ) {
 				$ticket_info  = [];
-				$ticket_types = MP_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
 				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
 				$start_date   = current( $start_date );
 				$names        = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
@@ -305,7 +287,7 @@
 
 			public static function get_cart_ex_info( $post_id ) {
 				$ticket_info  = [];
-				$ticket_types = MP_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
+				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
 				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
 				$start_date   = current( $start_date );
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];

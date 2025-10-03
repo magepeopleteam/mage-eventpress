@@ -172,73 +172,73 @@
 	div.mp_multi_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;}
 	div.mp_multi_image_item { position: relative; width: calc(19% - 5px); min-width: 130px;margin: 0 10px 5px 0;min-height: 50px;gap: 5px;}
 	div.mp_multi_image_item img {width: 100%;height: 120px;}
-	span.mp_remove_single_image,
-	div.mpStyle span.mp_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
-	div.mp_single_image_item:hover span.mp_remove_single_image,
-	div.mp_single_image_item:hover span.mp_remove_single_image:hover,
-	div.mp_multi_image_item:hover span.mp_remove_multi_image {opacity: 0.9;}
-	div.mp_add_single_image {max-width: 150px;width: 100%;}
+	span.mpwem_remove_single_image,
+	div.mpStyle span.mpwem_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
+	div.mp_single_image_item:hover span.mpwem_remove_single_image,
+	div.mp_single_image_item:hover span.mpwem_remove_single_image:hover,
+	div.mp_multi_image_item:hover span.mpwem_remove_multi_image {opacity: 0.9;}
+	div.mpwem_add_single_image {max-width: 150px;width: 100%;}
 	div.mp_single_image_item {position: relative; width: 100%;}
 }
 /******************************************************************** add Icon image ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mp_add_icon_image_area {border: 1px solid var(--color_theme);position: relative;max-width: 120px;}
-	div.mp_add_icon_image_area img {max-height: 100px;}
-	div.mpStyle div.mp_add_icon_image_area button {padding: 5px;font-size: 12px;}
-	div.mp_add_icon_image_area button span {margin: 0 5px 0 0;}
-	div.mpStyle div.mp_add_icon_image_area img {border-radius: 0;}
-	div.mp_add_icon_image_area div.mp_icon_item {padding: var(--dMP_xs);background-color: var(--color_light);font-size: 40px;}
+	div.mpwem_add_icon_image_area {border: 1px solid var(--color_theme);position: relative;max-width: 120px;}
+	div.mpwem_add_icon_image_area img {max-height: 100px;}
+	div.mpStyle div.mpwem_add_icon_image_area button {padding: 5px;font-size: 12px;}
+	div.mpwem_add_icon_image_area button span {margin: 0 5px 0 0;}
+	div.mpStyle div.mpwem_add_icon_image_area img {border-radius: 0;}
+	div.mpwem_add_icon_image_area div.mp_icon_item {padding: var(--dMP_xs);background-color: var(--color_light);font-size: 40px;}
 	div.mp_icon_item:hover .mp_remove_icon,
 	div.mp_image_item:hover .mp_remove_icon {opacity: 1;}
-	div.mp_add_icon_popup .popupHeader {
+	div.mpwem_add_icon_popup .popupHeader {
 		color: #FFF;height: 60px;
 		margin: 0 auto;width: 100%;background-color: #222;position: relative;
 		border-bottom: 1px solid #FFF;
 	}
-	div.mp_add_icon_popup .popupHeader h2 {
+	div.mpwem_add_icon_popup .popupHeader h2 {
 		color: #FFF;text-align: center;
 		font-size: 30px !important;
 		font-weight: 500;
 	}
-	div.mp_add_icon_popup .popupBody {padding: 0;}
-	div.mp_add_icon_popup ul.popupIconMenu {
+	div.mpwem_add_icon_popup .popupBody {padding: 0;}
+	div.mpwem_add_icon_popup ul.popupIconMenu {
 		min-width: 270px;background-color: #222;margin: 0;
 		max-height: calc(100vh - var(--dMP) - var(--dMP) - 60px);
 		overflow: hidden auto;
 	}
-	div.mp_add_icon_popup .popupIconMenu li {
+	div.mpwem_add_icon_popup .popupIconMenu li {
 		padding: 7px 15px;margin: 0;
 		border-bottom: 1px solid #DDD;
 		color: #FFF;font-size: 16px;display: block;cursor: pointer;
 		position: relative;
 		font-weight: 500;
 	}
-	div.mp_add_icon_popup .popupIconMenu li strong {color: #9F6C8A;}
-	div.mp_add_icon_popup .popupIconMenu li.active {background-color: #E3A939;}
-	div.mp_add_icon_popup .popupIconMenu li:hover {color: #E3A939;}
-	div.mp_add_icon_popup .popupIconMenu li.active:hover {color: #FFF;}
-	div.mp_add_icon_popup .popup_all_icon {
+	div.mpwem_add_icon_popup .popupIconMenu li strong {color: #9F6C8A;}
+	div.mpwem_add_icon_popup .popupIconMenu li.active {background-color: #E3A939;}
+	div.mpwem_add_icon_popup .popupIconMenu li:hover {color: #E3A939;}
+	div.mpwem_add_icon_popup .popupIconMenu li.active:hover {color: #FFF;}
+	div.mpwem_add_icon_popup .popup_all_icon {
 		width: 100%;padding: 10px;background-color: #FFF;
 		max-height: calc(100vh - var(--dMP) - var(--dMP) - 60px);
 		overflow: hidden auto;
 	}
-	div.mp_add_icon_popup .popup_all_icon .popupTabItem {width: 100%;}
-	div.mp_add_icon_popup .popup_all_icon .itemIconArea {
+	div.mpwem_add_icon_popup .popup_all_icon .popupTabItem {width: 100%;}
+	div.mpwem_add_icon_popup .popup_all_icon .itemIconArea {
 		width: 100%;
 		display: -webkit-flex;display: flex;
 		-webkit-flex-wrap: wrap;flex-wrap: wrap;
 	}
-	div.mp_add_icon_popup .iconItem {
+	div.mpwem_add_icon_popup .iconItem {
 		width: 60px;height: 60px;font-size: 30px;margin: 7px;cursor: pointer;
 		border: 2px solid #FFF;background-color: #F2F2F2;
 		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB;
 		box-shadow: 0 1px 4px 1px #DBDBDB;
 	}
-	div.mp_add_icon_popup .iconItem.active,
-	div.mp_add_icon_popup .iconItem:hover {border-color: var(--color_theme);color: var(--color_theme);border-radius: 5px;}
+	div.mpwem_add_icon_popup .iconItem.active,
+	div.mpwem_add_icon_popup .iconItem:hover {border-color: var(--color_theme);color: var(--color_theme);border-radius: 5px;}
 	/************* font***************/
-	div.mp_add_icon_popup .iconItem,
-	div.mp_add_icon_popup .popupIconMenu li {
+	div.mpwem_add_icon_popup .iconItem,
+	div.mpwem_add_icon_popup .popupIconMenu li {
 		-webkit-transition: 350ms ease-in-out;
 		-moz-transition: 350ms ease-in-out;
 		-o-transition: 350ms ease-in-out;
@@ -500,12 +500,12 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	gap: 7px;
 	margin: 15px 0;
 }
-.mep-modal-container .mep-modal-content .mp_add_icon_image_area {
+.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area {
 	position: relative;
 	max-width: 202px;
 	margin: 10px 0;
 }
-.mep-modal-container .mep-modal-content .mp_add_icon_image_area .mp_add_icon_image_button_area {
+.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area {
 	display: flex;
 	flex-direction: row;
 	justify-content: start;
@@ -513,7 +513,7 @@ div.mp_ticket_type_table #repeatable-fieldset-one th {
 	width: 100%;
 	border-radius: 3px;
 }
-.mep-modal-container .mep-modal-content .mp_add_icon_image_area .mp_add_icon_image_button_area .mp_image_add, .mep-modal-container .mep-modal-content .mp_add_icon_image_area .mp_add_icon_image_button_area .mp_icon_add {
+.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area .mpwem_image_add, .mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area .mpwem_icon_add {
 	padding: 10px 26px;
 	border-radius: 0;
 	margin: 1px;

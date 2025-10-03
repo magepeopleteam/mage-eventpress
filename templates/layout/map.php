@@ -7,7 +7,7 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id = $event_id ?? 0;
-	$map_status     = MP_Global_Function::get_post_info( $event_id, 'mep_sgm');
+	$map_status     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_sgm');
 	$isVirtual = get_post_meta($event_id,'mep_event_type',true);
 	if($isVirtual!='online'){
 		if ($map_status) {

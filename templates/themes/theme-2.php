@@ -21,7 +21,7 @@ $gallery_image_arr = get_post_meta($event_id,'mep_gallery_images',true) ? get_po
         <?php do_action('mep_event_title', $event_id); ?>
     </div>
     <div class="_mT mpwem_slider_area">
-		<?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+		<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e('Description', 'mage-eventpress'); ?></h4>

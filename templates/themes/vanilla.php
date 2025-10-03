@@ -24,7 +24,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 <div class="mpStyle mep-default-theme vanilla_theme">
     <div class="mep-default-content">
         <div class="_mT mpwem_slider_area">
-		    <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+		    <?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-title">
             <?php do_action('mep_event_title', $event_id); ?>

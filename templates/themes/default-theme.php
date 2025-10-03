@@ -31,7 +31,7 @@
 <div class="mpStyle mep-default-theme mep_flex default_theme">
     <div class="mep-default-content">
         <div class="mpwem_slider_area">
-		    <?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+		    <?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
         </div>
         <div class="mep-default-feature-date-location">
 			<?php if ( $hide_date_details == 'no' ) { ?>

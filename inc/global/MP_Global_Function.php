@@ -112,20 +112,16 @@
 					$data = unserialize( $data );
 					$data = self::data_sanitize( $data );
 				} elseif ( is_string( $data ) ) {
-					// Sanitize string: remove tags, slashes, and unsafe characters
 					$data = sanitize_text_field( stripslashes( strip_tags( $data ) ) );
 				} elseif ( is_array( $data ) ) {
-					// Recursively sanitize each value
 					foreach ( $data as $key => $value ) {
 						$data[ $key ] = self::data_sanitize( $value );
 					}
 				} elseif ( is_object( $data ) ) {
-					// If object — convert to array and sanitize
+
 					$data = (array) $data;
 					$data = self::data_sanitize( $data );
 				}
-
-				// Other types (int, float, bool) — leave as is
 				return $data;
 			}
 
@@ -324,6 +320,8 @@
 				$price = str_replace( 't_s', '', $price );
 				$price = str_replace( 'd_s', '.', $price );
 				$price = str_replace( '&nbsp;', '', $price );
+				$price = preg_replace( '/[^0-9.]/', '', $price );
+				$price = (float) $price;
 
 				return max( $price, 0 );
 			}
@@ -387,8 +385,8 @@
 				return wc_price( $return_price ) . ' ' . $display_suffix;
 			}
 
-			public static function get_wc_raw_price( $post_id, $price, $args = array() ) {
-				$price = self::wc_price( $post_id, $price, $args = array() );
+			public static function get_wc_raw_price( $price ) {
+				$price = wc_price( $price );
 
 				return self::price_convert_raw( $price );
 			}
@@ -454,7 +452,7 @@
 			public static function check_product_in_cart( $post_id ) {
 				$status = MP_Global_Function::check_woocommerce();
 				if ( $status == 1 ) {
-					$product_id = MP_Global_Function::get_post_info( $post_id, 'link_wc_product' );
+					$product_id = MPWEM_Global_Function::get_post_info( $post_id, 'link_wc_product' );
 					foreach ( WC()->cart->get_cart() as $cart_item ) {
 						if ( $cart_item['product_id'] == $product_id ) {
 							return true;
@@ -509,129 +507,6 @@
 				}
 
 				return $ids;
-			}
-
-			public static function esc_html( $string ): string {
-				$allow_attr = array(
-					'input'    => [
-						'type'               => [],
-						'class'              => [],
-						'id'                 => [],
-						'name'               => [],
-						'value'              => [],
-						'size'               => [],
-						'placeholder'        => [],
-						'min'                => [],
-						'max'                => [],
-						'checked'            => [],
-						'required'           => [],
-						'disabled'           => [],
-						'readonly'           => [],
-						'step'               => [],
-						'data-default-color' => [],
-						'data-price'         => [],
-					],
-					'p'        => [ 'class' => [] ],
-					'img'      => [ 'class' => [], 'id' => [], 'src' => [], 'alt' => [], ],
-					'fieldset' => [
-						'class' => []
-					],
-					'label'    => [
-						'for'   => [],
-						'class' => []
-					],
-					'select'   => [
-						'class'      => [],
-						'name'       => [],
-						'id'         => [],
-						'data-price' => [],
-					],
-					'option'   => [
-						'class'    => [],
-						'value'    => [],
-						'id'       => [],
-						'selected' => [],
-					],
-					'textarea' => [
-						'class' => [],
-						'rows'  => [],
-						'id'    => [],
-						'cols'  => [],
-						'name'  => [],
-					],
-					'h1'       => [ 'class' => [], 'id' => [], ],
-					'h2'       => [ 'class' => [], 'id' => [], ],
-					'h3'       => [ 'class' => [], 'id' => [], ],
-					'h4'       => [ 'class' => [], 'id' => [], ],
-					'h5'       => [ 'class' => [], 'id' => [], ],
-					'h6'       => [ 'class' => [], 'id' => [], ],
-					'a'        => [ 'class' => [], 'id' => [], 'href' => [], ],
-					'div'      => [
-						'class'                 => [],
-						'id'                    => [],
-						'data-ticket-type-name' => [],
-					],
-					'span'     => [
-						'class'             => [],
-						'id'                => [],
-						'data'              => [],
-						'data-input-change' => [],
-					],
-					'i'        => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'table'    => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'tr'       => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'td'       => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'thead'    => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'tbody'    => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'th'       => [
-						'class' => [],
-						'id'    => [],
-						'data'  => [],
-					],
-					'svg'      => [
-						'class'   => [],
-						'id'      => [],
-						'width'   => [],
-						'height'  => [],
-						'viewBox' => [],
-						'xmlns'   => [],
-					],
-					'g'        => [
-						'fill' => [],
-					],
-					'path'     => [
-						'd' => [],
-					],
-					'br'       => array(),
-					'em'       => array(),
-					'strong'   => array(),
-				);
-
-				return wp_kses( $string, $allow_attr );
 			}
 
 			//***********************************//

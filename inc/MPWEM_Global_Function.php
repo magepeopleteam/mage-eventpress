@@ -138,6 +138,27 @@
 				}
 			}
 			//=================//
+			public static function get_settings( $section, $key, $default = '' ) {
+				$options = get_option( $section );
+				if ( isset( $options[ $key ] ) && $options[ $key ] ) {
+					$default = $options[ $key ];
+				}
+
+				return $default;
+			}
+
+			public static function get_style_settings( $key, $default = '' ) {
+				return self::get_settings( 'style_setting_sec', $key, $default );
+			}
+
+			public static function get_slider_settings( $key, $default = '' ) {
+				return self::get_settings( 'mp_slider_settings', $key, $default );
+			}
+
+			public static function get_licence_settings( $key, $default = '' ) {
+				return self::get_settings( 'mp_basic_license_settings', $key, $default );
+			}
+			//=================//
 			public static function week_day(): array {
 				return [
 					'mon' => esc_html__( 'Monday', 'mage-eventpress' ),

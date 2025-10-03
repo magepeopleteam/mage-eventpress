@@ -18,7 +18,7 @@
 				add_meta_box(
 					'mp_event_all_info_in_tab',
 					sprintf(
-						/* translators: %1$s: Event label (e.g., Conference), %2$s: Event title */
+					/* translators: %1$s: Event label (e.g., Conference), %2$s: Event title */
 						__( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', 'mage-eventpress' ),
 						esc_html( $event_label ),
 						esc_html( get_the_title( get_the_ID() ) )
@@ -83,40 +83,37 @@
 			}
 
 			public function save_settings( $post_id ) {
-			if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
+				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
 					return;
 				}
 				/**********Venue/Location Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-
-					$mep_event_type     = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_event_type']) ) ? 'online' : 'offline';
-					$mep_org_address    = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
+					$mep_event_type  = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_event_type'] ) ) ? 'online' : 'offline';
+					$mep_org_address = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					// Handle venue location with coordinate detection
 					if ( isset( $_POST['mep_location_venue'] ) ) {
 						$raw_venue_value = $_POST['mep_location_venue'];
-						
 						// Check if it looks like coordinates (lat,lng format)
 						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $raw_venue_value ) ) ) {
 							// For coordinates, preserve comma, decimal point, and minus sign
 							$mep_location_venue = sanitize_text_field( trim( $raw_venue_value ) );
 						} else {
 							// For regular location names, use the filter
-							$after_filter = mep_letters_numbers_spaces_only( $raw_venue_value );
+							$after_filter       = mep_letters_numbers_spaces_only( $raw_venue_value );
 							$mep_location_venue = sanitize_text_field( $after_filter );
 						}
 					} else {
 						$mep_location_venue = "";
 					}
-					$mep_street         = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_street']) ) : "";
-					$mep_city           = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_city']) ) : "";
-					$mep_state          = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_state']) ) : "";
-					$mep_postcode       = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_postcode']) ) : "";
-					$mep_country        = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_country']) ) : "";
-					$latitude           = isset( $_POST['latitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['latitude']) ) : "";
-					$longitude          = isset( $_POST['longitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['longitude']) ) : "";
-					$mep_sgm            = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_sgm']) ) : "";
-					$location_name      = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['location_name']) ) : "";
-
+					$mep_street    = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_street'] ) ) : "";
+					$mep_city      = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_city'] ) ) : "";
+					$mep_state     = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_state'] ) ) : "";
+					$mep_postcode  = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_postcode'] ) ) : "";
+					$mep_country   = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_country'] ) ) : "";
+					$latitude      = isset( $_POST['latitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['latitude'] ) ) : "";
+					$longitude     = isset( $_POST['longitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['longitude'] ) ) : "";
+					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : "";
+					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
 					update_post_meta( $post_id, 'mep_org_address', $mep_org_address );
 					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
@@ -132,20 +129,17 @@
 				}
 				/**********Form empty data Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-
-					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_full_name']) ) : "";
-					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_email']) ) : "";
-					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_phone']) ) : "";
-					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_address']) ) : "";
-					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_designation']) ) : "";
-					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_website']) ) : "";
-					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_veg']) ) : "";
-					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_company']) ) : "";
-					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_gender']) ) : "";
-					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_tshirtsize']) ) : "";
-					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only($_POST['mep_reg_tshirtsize_list']) ) : "";
-
-					
+					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_full_name'] ) ) : "";
+					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_email'] ) ) : "";
+					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_phone'] ) ) : "";
+					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_address'] ) ) : "";
+					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_designation'] ) ) : "";
+					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_website'] ) ) : "";
+					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_veg'] ) ) : "";
+					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_company'] ) ) : "";
+					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_gender'] ) ) : "";
+					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_tshirtsize'] ) ) : "";
+					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_reg_tshirtsize_list'] ) ) : "";
 					update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
 					update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );
 					update_post_meta( $post_id, 'mep_reg_phone', $mep_reg_phone );
@@ -173,8 +167,8 @@
 				}
 				/**********Tax & others Setting**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$_tax_status = isset( $_POST['_tax_status'] ) ? sanitize_text_field( $_POST['_tax_status'] ) : 'none';
-					$_tax_class  = isset( $_POST['_tax_class'] ) ? sanitize_text_field( $_POST['_tax_class'] ) : '';
+					$_tax_status = isset( $_POST['_tax_status'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_status'] ) ) : 'none';
+					$_tax_class  = isset( $_POST['_tax_class'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_class'] ) ) : '';
 					update_post_meta( $post_id, '_tax_status', $_tax_status );
 					update_post_meta( $post_id, '_tax_class', $_tax_class );
 					update_post_meta( $post_id, '_stock_msg', 'new' );
@@ -183,10 +177,10 @@
 					update_post_meta( $post_id, '_virtual', 'yes' );
 				}
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$event_list    = isset( $_POST['event_list'] ) ? $_POST['event_list'] : array();
-					$column_number = isset( $_POST['event_list_column'] ) ? $_POST['event_list_column'] : '';
-					$section_label = isset( $_POST['related_section_label'] ) ? $_POST['related_section_label'] : '';
-					$event_status  = isset( $_POST['mep_related_event_status'] ) ? $_POST['mep_related_event_status'] : 'off';
+					$event_list    = isset( $_POST['event_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_list'] ) ) : [];
+					$column_number = isset( $_POST['event_list_column'] ) ? sanitize_text_field( wp_unslash( $_POST['event_list_column'] ) ) : '';
+					$section_label = isset( $_POST['related_section_label'] ) ? sanitize_text_field( wp_unslash( $_POST['related_section_label'] ) ) : '';
+					$event_status  = isset( $_POST['mep_related_event_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_related_event_status'] ) ) : 'off';
 					update_post_meta( $post_id, '_list_column', $column_number );
 					update_post_meta( $post_id, 'event_list', $event_list );
 					update_post_meta( $post_id, 'related_section_label', $section_label );
@@ -252,36 +246,27 @@
 				/**********Date**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
 					//************************************//
-					$date_type      = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( $_POST['mep_enable_recurring'] ) : 'no';
-					$allowed_values = array( 'no', 'yes', 'everyday' );
-					// Optionally validate as boolean '0' or '1'
-					if ( in_array( $date_type, $allowed_values, true ) ) {
-						update_post_meta( $post_id, 'mep_enable_recurring', $date_type );
-					} else {
-						// Invalid value — maybe set a default or reject
-						update_post_meta( $post_id, 'mep_enable_recurring', 'no' );
-					}
+					$date_type = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_enable_recurring'] ) ) : 'no';
+					update_post_meta( $post_id, 'mep_enable_recurring', $date_type );
 					//**********************//
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$start_date = MP_Global_Function::get_submit_info( 'event_start_date' );
-						$start_time = MP_Global_Function::get_submit_info( 'event_start_time' );
-						$end_date   = MP_Global_Function::get_submit_info( 'event_end_date' );
-						$end_time   = MP_Global_Function::get_submit_info( 'event_end_time' );
+						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
+						$start_time = isset( $_POST['event_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time'] ) ) : '';
+						$end_date   = isset( $_POST['event_end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date'] ) ) : '';
+						$end_time   = isset( $_POST['event_end_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_time'] ) ) : '';
 						update_post_meta( $post_id, 'event_start_date', $start_date );
 						update_post_meta( $post_id, 'event_start_time', $start_time );
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
-
 						/********************/
 						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
 						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
 						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
-
-						$start_date_more = MP_Global_Function::get_submit_info( 'event_more_start_date', [] );
-						$start_time_more = MP_Global_Function::get_submit_info( 'event_more_start_time', [] );
-						$end_date_more   = MP_Global_Function::get_submit_info( 'event_more_end_date', [] );
-						$end_time_more   = MP_Global_Function::get_submit_info( 'event_more_end_time', [] );
+						$start_date_more = isset( $_POST['event_more_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_date'] ) ) : [];
+						$start_time_more = isset( $_POST['event_more_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_time'] ) ) : [];
+						$end_date_more   = isset( $_POST['event_more_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_date'] ) ) : [];
+						$end_time_more   = isset( $_POST['event_more_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_time'] ) ) : [];
 						$more_dates      = [];
 						if ( sizeof( $start_date_more ) > 0 && sizeof( $end_date_more ) ) {
 							foreach ( $start_date_more as $key => $start_date ) {
@@ -295,28 +280,26 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-
 						$md                    = sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
 						$event_expire_datetime = sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} else {
-						$start_date = MP_Global_Function::get_submit_info( 'event_start_date_everyday' );
-						$start_time = MP_Global_Function::get_submit_info( 'event_start_time_everyday' );
-						$end_date   = MP_Global_Function::get_submit_info( 'event_end_date_everyday' );
-						$end_time   = MP_Global_Function::get_submit_info( 'event_end_time_everyday' );
+						$start_date = isset( $_POST['event_start_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_everyday'] ) ) : '';
+						$start_time = isset( $_POST['event_start_time_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time_everyday'] ) ) : '';
+						$end_date   = isset( $_POST['event_end_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date_everyday'] ) ) : '';
+						$end_time   = isset( $_POST['event_end_time_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_time_everyday'] ) ) : '';
 						update_post_meta( $post_id, 'event_start_date', $start_date );
 						update_post_meta( $post_id, 'event_start_time', $start_time );
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
 						//*******************//
-						$periods = MP_Global_Function::get_submit_info( 'mep_repeated_periods', 1 );
+						$periods = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_repeated_periods'] ) ) : '1';
 						update_post_meta( $post_id, 'mep_repeated_periods', $periods );
-
 						$off_days = isset( $_POST['mep_ticket_offdays'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_ticket_offdays'] ) ) : '';
 						$off_days = $off_days ? explode( ',', $off_days ) : '';
 						update_post_meta( $post_id, 'mep_ticket_offdays', $off_days );
 						$all_off_dates = [];
-						$off_dates     = MP_Global_Function::get_submit_info( 'mep_ticket_off_dates', [] );
+						$off_dates     = isset( $_POST['mep_ticket_off_dates'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_ticket_off_dates'] ) ) : [];
 						if ( sizeof( $off_dates ) > 0 ) {
 							foreach ( $off_dates as $key => $off_date ) {
 								if ( $off_date ) {
@@ -326,7 +309,7 @@
 						}
 						update_post_meta( $post_id, 'mep_ticket_off_dates', $all_off_dates );
 						/******************************/
-						$display_time = MP_Global_Function::get_submit_info( 'mep_disable_ticket_time' );
+						$display_time = isset( $_POST['mep_disable_ticket_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_disable_ticket_time'] ) ) : '';
 						$display_time = $display_time ? 'yes' : 'no';
 						update_post_meta( $post_id, 'mep_disable_ticket_time', $display_time );
 						/******************************/
@@ -340,14 +323,14 @@
 						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_fri' );
 						//***************//
 						$special_dates = array();
-						$hidden_name   = MP_Global_Function::get_submit_info( 'mep_special_date_hidden_name', array() );
-						$date_labels   = MP_Global_Function::get_submit_info( 'mep_special_date_name', array() );
-						$start_date    = MP_Global_Function::get_submit_info( 'mep_special_start_date', array() );
-						$end_date      = MP_Global_Function::get_submit_info( 'mep_special_end_date', array() );
+						$hidden_name   = isset( $_POST['mep_special_date_hidden_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_date_hidden_name'] ) ) : [];
+						$date_labels   = isset( $_POST['mep_special_date_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_date_name'] ) ) : [];
+						$start_date    = isset( $_POST['mep_special_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_start_date'] ) ) : [];
+						$end_date      = isset( $_POST['mep_special_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_end_date'] ) ) : [];
 						if ( count( $start_date ) > 0 ) {
 							for ( $i = 0; $i < count( $start_date ); $i ++ ) {
-								$time_labels = MP_Global_Function::get_submit_info( 'mep_special_time_label_' . $hidden_name[ $i ], array() );
-								$times       = MP_Global_Function::get_submit_info( 'mep_special_time_value_' . $hidden_name[ $i ], array() );
+								$time_labels = isset( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ) : [];
+								$times       = isset( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ) : [];
 								if ( $start_date[ $i ] != '' && $end_date[ $i ] != '' && sizeof( $time_labels ) > 0 && sizeof( $times ) > 0 ) {
 									$special_dates[ $i ]['date_label'] = $date_labels[ $i ];
 									$special_dates[ $i ]['start_date'] = date( 'Y-m-d', strtotime( $start_date[ $i ] ) );
@@ -366,7 +349,7 @@
 						update_post_meta( $post_id, 'mep_special_date_info', $special_dates );
 						update_post_meta( $post_id, 'mep_special_date_info', $special_dates );
 					}
-					$buffer_time = MP_Global_Function::get_submit_info( 'mep_buffer_time', 0 );
+					$buffer_time = isset( $_POST['mep_buffer_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_buffer_time'] ) ) : 0;
 					update_post_meta( $post_id, 'mep_buffer_time', $buffer_time );
 					//**********************//
 					$date_format                       = get_option( 'date_format' );
@@ -376,11 +359,11 @@
 					$current_global_custom_date_format = mep_get_option( 'mep_global_custom_date_format', 'datetime_setting_sec', $date_format );
 					$current_global_custom_time_format = mep_get_option( 'mep_global_custom_time_format', 'datetime_setting_sec', $time_format );
 					$current_global_timezone_display   = mep_get_option( 'mep_global_timezone_display', 'datetime_setting_sec', 'no' );
-					$mep_event_date_format             = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( $_POST['mep_event_date_format'] ) : $current_global_date_format;
-					$mep_event_time_format             = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( $_POST['mep_event_time_format'] ) : $current_global_time_format;
-					$mep_event_custom_date_format      = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( $_POST['mep_event_custom_date_format'] ) : $current_global_custom_date_format;
-					$mep_custom_event_time_format      = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( $_POST['mep_custom_event_time_format'] ) : $current_global_custom_time_format;
-					$mep_time_zone_display             = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( $_POST['mep_time_zone_display'] ) : $current_global_timezone_display;
+					$mep_event_date_format             = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_date_format'] ) ) : $current_global_date_format;
+					$mep_event_time_format             = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_time_format'] ) ) : $current_global_time_format;
+					$mep_event_custom_date_format      = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_custom_date_format'] ) ) : $current_global_custom_date_format;
+					$mep_custom_event_time_format      = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_custom_event_time_format'] ) ) : $current_global_custom_time_format;
+					$mep_time_zone_display             = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : $current_global_timezone_display;
 					update_post_meta( $post_id, 'mep_event_date_format', $mep_event_date_format );
 					update_post_meta( $post_id, 'mep_event_time_format', $mep_event_time_format );
 					update_post_meta( $post_id, 'mep_event_custom_date_format', $mep_event_custom_date_format );

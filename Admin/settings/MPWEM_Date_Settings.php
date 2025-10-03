@@ -78,7 +78,7 @@
 				$more_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_more_date', [] );
 				?>
                 <div class="mpStyle">
-                    <section class="mp_settings_area <?php echo esc_attr( $event_type == 'no' || $event_type == 'yes' ? 'mActive' : '' ); ?>" data-collapse="#mep_normal_event">
+                    <section class="mpwem_settings_area <?php echo esc_attr( $event_type == 'no' || $event_type == 'yes' ? 'mActive' : '' ); ?>" data-collapse="#mep_normal_event">
                         <table>
                             <thead>
                             <tr>
@@ -90,7 +90,7 @@
                                 <th><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                             </tr>
                             </thead>
-                            <tbody class="mp_sortable_area mp_item_insert">
+                            <tbody class="mpwem_sortable_area mpwem_item_insert">
                             <tr>
                                 <td><?php self::date_item( 'event_start_date', $start_date ); ?></td>
                                 <td><?php self::time_item( 'event_start_time', $start_time ); ?></td>
@@ -105,7 +105,7 @@
 									<?php $more_start_time = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
 									<?php $more_end_date = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
 									<?php $more_end_time = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
-                                    <tr class="mp_remove_area">
+                                    <tr class="mpwem_remove_area">
                                         <td><?php self::date_item( 'event_more_start_date[]', $more_start_date ); ?></td>
                                         <td><?php self::time_item( 'event_more_start_time[]', $more_start_time ); ?></td>
                                         <td><?php self::date_item( 'event_more_end_date[]', $more_end_date ); ?></td>
@@ -118,10 +118,10 @@
                             </tbody>
                         </table>
 						<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Dates', 'mage-eventpress' ) ); ?>
-                        <div class="mp_hidden_content">
+                        <div class="mpwem_hidden_content">
                             <table>
-                                <tbody class="mp_hidden_item">
-                                <tr class="mp_remove_area">
+                                <tbody class="mpwem_hidden_item">
+                                <tr class="mpwem_remove_area">
                                     <td><?php self::date_item( 'event_more_start_date[]', '' ); ?></td>
                                     <td><?php self::time_item( 'event_more_start_time[]', '' ); ?></td>
                                     <td><?php self::date_item( 'event_more_end_date[]', '' ); ?></td>
@@ -226,8 +226,8 @@
                                     <div class="tabsItem" data-tabs="#mpwem_off_dates">
                                         <label><?php esc_html_e( 'Select Off Dates ', 'mage-eventpress' ); ?></label>
                                         <span class="info_text"><?php esc_html_e( 'Configure Tour Off Dates ', 'mage-eventpress' ); ?></span>
-                                        <div class="mp_settings_area">
-                                            <div class="mp_item_insert mp_sortable_area">
+                                        <div class="mpwem_settings_area">
+                                            <div class="mpwem_item_insert mpwem_sortable_area">
 												<?php
 													$all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
 													$off_dates     = array();
@@ -244,8 +244,8 @@
 												?>
                                             </div>
 											<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
-                                            <div class="mp_hidden_content">
-                                                <div class="mp_hidden_item">
+                                            <div class="mpwem_hidden_content">
+                                                <div class="mpwem_hidden_item">
 													<?php self::off_date_item(); ?>
                                                 </div>
                                             </div>
@@ -265,7 +265,7 @@
 				$hidden_date  = $date ? date_i18n( 'Y-m-d', strtotime( $date ) ) : '';
 				$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
 				?>
-                <div class="mp_remove_area _mT_xs">
+                <div class="mpwem_remove_area _mT_xs">
                     <div class="groupContent">
                         <label>
                             <input type="hidden" name="mep_ticket_off_dates[]" value="<?php echo esc_attr( $hidden_date ); ?>"/>
@@ -360,9 +360,9 @@
 			public function time_line( $post_id, $key ) {
 				$time_infos = MPWEM_Global_Function::get_post_info( $post_id, $key, [] );
 				?>
-                <div class="mp_settings_area">
+                <div class="mpwem_settings_area">
                     <table class="_layoutFixed mpwem_time_setting_table">
-                        <tbody class="mp_sortable_area mp_item_insert">
+                        <tbody class="mpwem_sortable_area mpwem_item_insert">
 						<?php if ( is_array( $time_infos ) && sizeof( $time_infos ) > 0 ) {
 							foreach ( $time_infos as $time_info ) {
 								$this->time_line_item( $key, $time_info );
@@ -371,9 +371,9 @@
                         </tbody>
                     </table>
 					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add new Time Slot', 'mage-eventpress' ) ); ?>
-                    <div class="mp_hidden_content">
+                    <div class="mpwem_hidden_content">
                         <table>
-                            <tbody class="mp_hidden_item">
+                            <tbody class="mpwem_hidden_item">
 							<?php $this->time_line_item( $key ); ?>
                             </tbody>
                         </table>
@@ -386,7 +386,7 @@
 				$label = array_key_exists( 'mep_ticket_time_name', $time_info ) ? $time_info['mep_ticket_time_name'] : '';
 				$time  = array_key_exists( 'mep_ticket_time', $time_info ) ? $time_info['mep_ticket_time'] : '';
 				?>
-                <tr class="mp_remove_area">
+                <tr class="mpwem_remove_area">
                     <td>
                         <label><input type="text" class="formControl" value="<?php echo esc_attr( $label ); ?>" name="<?php echo esc_attr( $key . '_label[]' ); ?>" placeholder="<?php esc_attr_e( 'Time Slot Label', 'mage-eventpress' ); ?>"/></label>
                     </td>
@@ -430,7 +430,7 @@
                         </div>
                     </section>
                     <section>
-                        <div class="mp_settings_area">
+                        <div class="mpwem_settings_area">
                             <table class="mep_special_on_dates_table">
                                 <thead>
                                 <tr>
@@ -441,7 +441,7 @@
                                     <th class="w-10"><?php _e( 'Action', 'mage-eventpress' ); ?></th>
                                 </tr>
                                 </thead>
-                                <tbody class="mp_sortable_area mp_item_insert">
+                                <tbody class="mpwem_sortable_area mpwem_item_insert">
 								<?php
 									if ( sizeof( $special_dates ) > 0 ) {
 										foreach ( $special_dates as $special_date ) {
@@ -476,7 +476,7 @@
 				$slot_name          = 'mep_special_time_label_' . $unique_name . '[]';
 				$time_name          = 'mep_special_time_value_' . $unique_name . '[]';
 				?>
-                <tr class="mp_remove_area">
+                <tr class="mpwem_remove_area">
                     <td>
                         <label>
                             <input type="hidden" name="mep_special_date_hidden_name[]" value="<?php echo esc_attr( $unique_name ); ?>"/>
@@ -505,9 +505,9 @@
 
 			public function hidden_special_on_day_item() {
 				?>
-                <div class="mp_hidden_content">
+                <div class="mpwem_hidden_content">
                     <table>
-                        <tbody class="mp_hidden_item">
+                        <tbody class="mpwem_hidden_item">
 						<?php $this->special_on_day_item(); ?>
                         </tbody>
                     </table>
@@ -517,7 +517,7 @@
 
 			public function time_slot_setting( $tour_id, $key, $slot_name, $time_name, $time_slots = array() ) {
 				?>
-                <div class="mp_settings_area">
+                <div class="mpwem_settings_area">
                     <table>
                         <thead>
                         <tr>
@@ -526,7 +526,7 @@
                             <th style="width:30%"><?php _e( 'Action', 'mage-eventpress' ); ?></th>
                         </tr>
                         </thead>
-                        <tbody class="mp_sortable_area mp_item_insert">
+                        <tbody class="mpwem_sortable_area mpwem_item_insert">
 						<?php
 							$time_slots = sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
 							if ( sizeof( $time_slots ) > 0 ) {
@@ -537,7 +537,7 @@
 						?>
                         </tbody>
                     </table>
-					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mp_add_item', '_dButton_xs_mt_xs' ); ?>
+					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mpwem_add_item', '_dButton_xs_mt_xs' ); ?>
 					<?php $this->hidden_time_slot_item( $slot_name, $time_name ); ?>
                 </div>
 				<?php
@@ -547,7 +547,7 @@
 				$slot_label = array_key_exists( 'mep_ticket_time_name', $time_slots ) ? $time_slots['mep_ticket_time_name'] : '';
 				$slot_time  = array_key_exists( 'mep_ticket_time', $time_slots ) ? $time_slots['mep_ticket_time'] : '';
 				?>
-                <tr class="mp_remove_area">
+                <tr class="mpwem_remove_area">
                     <td>
                         <label>
                             <input type="text" name="<?php echo $slot_name; ?>" class="formControl mp_name_validation" value="<?php echo $slot_label; ?>" placeholder="<?php _e( 'Time Label', 'mage-eventpress' ); ?>" style="width:70px;"/>
@@ -567,9 +567,9 @@
 
 			public function hidden_time_slot_item( $slot_name, $time_name ) {
 				?>
-                <div class="mp_hidden_content">
+                <div class="mpwem_hidden_content">
                     <table>
-                        <tbody class="mp_hidden_item">
+                        <tbody class="mpwem_hidden_item">
 						<?php $this->time_slot_item( $slot_name, $time_name ); ?>
                         </tbody>
                     </table>

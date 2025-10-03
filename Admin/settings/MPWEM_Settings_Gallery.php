@@ -57,11 +57,11 @@
                     <div class="mpStyle">
                         <section>
                             <h2><?php esc_html_e( 'Thumbnail', 'mage-eventpress' ); ?></h2>
-                            <span><?php echo esc_html__( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>
+                            <span><?php esc_html_e( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>
                             <div style="margin-top: 20px;">
 								<?php
 									$image_id = get_post_meta( $tour_id, 'mep_list_thumbnail', true );
-									do_action( 'mp_add_single_image', 'mep_list_thumbnail', $image_id );
+									do_action( 'mpwem_add_single_image', 'mep_list_thumbnail', $image_id );
 								?>
                             </div>
                         </section>

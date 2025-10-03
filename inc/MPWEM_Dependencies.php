@@ -26,10 +26,10 @@
 			public function load_global_file() {
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Layout.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Custom_Slider.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Layout.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
+				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
 			}
 
@@ -128,7 +128,6 @@
 				}
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
-				//wp_enqueue_script('mp_admin_settings', MPWEM_PLUGIN_URL . '/assets/admin/mp_admin_settings.js', array('jquery'), time(), true);
 				// Only load event lists scripts on relevant pages
 				if ( $hook == 'mep_events_page_mep_event_lists' ||
 				     ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&

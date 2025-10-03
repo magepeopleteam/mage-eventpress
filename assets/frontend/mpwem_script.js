@@ -88,7 +88,7 @@ function mpwem_attendee_management(parent, total_qty) {
                             hidden_target.find('.mpwem_ticket_count').html(seat_name).promise().done(function () {
                                 form_target.append(hidden_target.html());
                             }).promise().done(function () {
-                                mp_load_date_picker(parent);
+                                mpwem_load_date_picker(parent);
                             });
                         }
                     }).promise().done(function () {
@@ -130,7 +130,7 @@ function mpwem_attendee_management(parent, total_qty) {
                                         });
                                     });
                                 }).promise().done(function () {
-                                    mp_load_date_picker(parent);
+                                    mpwem_load_date_picker(parent);
                                 });
                             }
                         }

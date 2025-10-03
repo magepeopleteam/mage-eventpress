@@ -117,7 +117,7 @@
 	}
 	else {
 		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
-		require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Style.php';
+		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 		require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Quick_Setup.php';
 		function mep_no_woo_event_activation_redirect($plugin) {
 			if ($plugin == plugin_basename(__FILE__)) {

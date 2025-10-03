@@ -21,7 +21,7 @@
 		<?php endif; ?>
     </div>
     <div class="_mT mpwem_slider_area">
-		<?php do_action( 'add_mp_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+		<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">

@@ -131,6 +131,11 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
         <div class="mep-default-feature-content">
             <?php do_action('mep_event_details', $event_id); ?>
         </div>
+        <?php if (has_term('', 'mep_tag', $event_id)): ?>
+            <div class="mep-default-sidebar-tags">
+                <?php do_action('mep_event_tags', $event_id); ?>
+            </div>
+        <?php endif; ?>
         <div class="mep-default-feature-cart-sec">
 	        <?php
 		        $all_dates          = MPWEM_Functions::get_dates( $event_id );

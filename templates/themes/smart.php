@@ -37,7 +37,8 @@
 			<!-- timeline data display -->
 		    <?php do_action('mpwem_timeline',$event_id); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date ); ?>
-        </div>
+			<?php do_action( 'mpwem_faq', $event_id ); ?>
+		</div>
         <div class="mpwem_right_content">
 			<?php $left_sidebar_title = mep_get_option('mep_event_hide_left_sidebar_title', 'single_event_setting_sec', 'no');
 			if($left_sidebar_title=='no'): ?>
@@ -46,6 +47,11 @@
             <div class="mpwem_sidebar_content">
 				<?php do_action( 'mpwem_date_time', $event_id, $all_dates, $all_times ); ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
+				<?php if (has_term('', 'mep_tag', $event_id)): ?>
+					<div class="mep-default-sidebar-tags">
+						<?php do_action('mep_event_tags', $event_id); ?>
+					</div>
+				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id ); ?>
 				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
             </div>
@@ -58,7 +64,7 @@
         </div>
     </div>
 	<?php do_action( 'mpwem_map', $event_id ); ?>
-	<?php do_action( 'mpwem_faq', $event_id ); ?>
+	
 	<?php do_action( 'mpwem_related', $event_id ); ?>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

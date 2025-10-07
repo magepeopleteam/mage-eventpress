@@ -1237,6 +1237,9 @@
 			if ( is_tax( 'mep_cat' ) ) {
 				$template = mep_template_file_path( 'taxonomy-category.php' );
 			}
+			if ( is_tax( 'mep_tag' ) ) {
+				$template = mep_template_file_path( 'taxonomy-category.php' );
+			}
 
 			return $template;
 		}

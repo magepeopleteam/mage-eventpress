@@ -42,9 +42,8 @@
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
-
 					$event_label . __( ' Details', 'mage-eventpress' ),
-					__( 'Organizer' ,'mage-eventpress'),
+					__( 'Organizer', 'mage-eventpress' ),
 				];
 				if ( $this->is_gutenberg_active() ) { ?>
                     <input type="hidden" name="post_author_gutenberg" value="<?php echo esc_attr( $author_id ); ?>">
@@ -127,16 +126,16 @@
                     <section class="mp_form_area" id="mpev-show-map" style="display:<?php echo ( $map_visible == 1 ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
                         <div class="mp_form_item">
 							<?php
-							if ( $map_type == 'iframe' ) {
-								$location_value = mep_get_event_locaion_item( $post_id, 'mep_location_venue' );
-								// Check if it looks like coordinates and handle URL encoding appropriately
-								if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $location_value ) ) {
-									// For coordinates, use them directly
-									$query_param = trim( $location_value );
-								} else {
-									// For regular location names, URL encode
-									$query_param = urlencode( $location_value );
-								}
+								if ( $map_type == 'iframe' ) {
+									$location_value = mep_get_event_locaion_item( $post_id, 'mep_location_venue' );
+									// Check if it looks like coordinates and handle URL encoding appropriately
+									if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $location_value ) ) {
+										// For coordinates, use them directly
+										$query_param = trim( $location_value );
+									} else {
+										// For regular location names, URL encode
+										$query_param = urlencode( $location_value );
+									}
 									?>
                                     <div id="show_gmap">
                                         <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=<?php echo esc_attr( $query_param ); ?>&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
@@ -148,20 +147,20 @@
                                     <div class='sec'>
                                         <input id="pac-input" name='location_name' value=''/>
                                     </div>
-                                <input type="hidden" class="form-control" id="latitude" name="latitude" value="<?php 
-                                    if ( array_key_exists( 'latitude', $values ) && !empty($values['latitude'][0]) ) {
-                                        echo esc_attr( $values['latitude'][0] );
-                                    } else {
-                                        echo esc_attr( get_post_meta( $post_id, 'latitude', true ) );
-                                    }
-                                ?>">
-                                <input type="hidden" class="form-control" id="longitude" name="longitude" value="<?php 
-                                    if ( array_key_exists( 'longitude', $values ) && !empty($values['longitude'][0]) ) {
-                                        echo esc_attr( $values['longitude'][0] );
-                                    } else {
-                                        echo esc_attr( get_post_meta( $post_id, 'longitude', true ) );
-                                    }
-                                ?>">
+                                <input type="hidden" class="form-control" id="latitude" name="latitude" value="<?php
+									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
+										echo esc_attr( $values['latitude'][0] );
+									} else {
+										echo esc_attr( get_post_meta( $post_id, 'latitude', true ) );
+									}
+								?>">
+                                <input type="hidden" class="form-control" id="longitude" name="longitude" value="<?php
+									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
+										echo esc_attr( $values['longitude'][0] );
+									} else {
+										echo esc_attr( get_post_meta( $post_id, 'longitude', true ) );
+									}
+								?>">
                                     <div id="map"></div>
 									<?php
 								} else {
@@ -171,203 +170,182 @@
 							</span>
 								<?php
 									}
-									                                    // Get coordinates from post meta or form values
-                                    $saved_lat = get_post_meta( $post_id, 'latitude', true );
-                                    $saved_lon = get_post_meta( $post_id, 'longitude', true );
-                                    
-                                    if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
-                                        $lat = str_replace( ',', '.', $values['latitude'][0] );
-                                    } elseif ( !empty( $saved_lat ) ) {
-                                        $lat = str_replace( ',', '.', $saved_lat );
-                                    } else {
-                                        $lat = '37.0902';
-                                    }
-                                    
-                                    if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
-                                        $lon = str_replace( ',', '.', $values['longitude'][0] );
-                                    } elseif ( !empty( $saved_lon ) ) {
-                                        $lon = str_replace( ',', '.', $saved_lon );
-                                    } else {
-                                        $lon = '95.7129';
-                                    }
+									// Get coordinates from post meta or form values
+									$saved_lat = get_post_meta( $post_id, 'latitude', true );
+									$saved_lon = get_post_meta( $post_id, 'longitude', true );
+									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
+										$lat = str_replace( ',', '.', $values['latitude'][0] );
+									} elseif ( ! empty( $saved_lat ) ) {
+										$lat = str_replace( ',', '.', $saved_lat );
+									} else {
+										$lat = '37.0902';
+									}
+									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
+										$lon = str_replace( ',', '.', $values['longitude'][0] );
+									} elseif ( ! empty( $saved_lon ) ) {
+										$lon = str_replace( ',', '.', $saved_lon );
+									} else {
+										$lon = '95.7129';
+									}
 								?>
-                                   <script>
-                                       function initMap() {
-                                           var map = new google.maps.Map(document.getElementById('map'), {
-                                               center: {
-                                                   lat: <?php echo esc_attr($lat); ?>,
-                                                   lng: <?php echo esc_attr($lon); ?>
-                                               },
-                                               zoom: 17
-                                           });
-                                           
-                                           var input = document.getElementById('pac-input');
-                                           if (input) {
-                                               map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                                           }
-                                           
-                                           var autocomplete = new google.maps.places.Autocomplete(input);
-                                           autocomplete.bindTo('bounds', map);
-                                           
-                                           var infowindow = new google.maps.InfoWindow();
-                                           var marker = new google.maps.Marker({
-                                               map: map,
-                                               anchorPoint: new google.maps.Point(0, -29),
-                                               draggable: true,
-                                               position: {
-                                                   lat: <?php echo esc_attr($lat); ?>,
-                                                   lng: <?php echo esc_attr($lon); ?>
-                                               }
-                                           });
-                                           
-                                           google.maps.event.addListener(marker, 'dragend', function() {
-                                               var lat = marker.getPosition().lat();
-                                               var lng = marker.getPosition().lng();
-                                               document.getElementById('latitude').value = lat;
-                                               document.getElementById('longitude').value = lng;
-                                               jQuery('#latitude').val(lat).trigger('change');
-                                               jQuery('#longitude').val(lng).trigger('change');
-                                           });
-                                           autocomplete.addListener('place_changed', function() {
-                                               infowindow.close();
-                                               marker.setVisible(false);
-                                               var place = autocomplete.getPlace();
-                                               if (!place.geometry) {
-                                                   window.alert("Autocomplete's returned place contains no geometry");
-                                                   return;
-                                               }
-                                               // If the place has a geometry, then present it on a map.
-                                               if (place.geometry.viewport) {
-                                                   map.fitBounds(place.geometry.viewport);
-                                               } else {
-                                                   map.setCenter(place.geometry.location);
-                                                   map.setZoom(17); // Why 17? Because it looks good.
-                                               }
-                                               marker.setIcon( /** @type {google.maps.Icon} */ ({
-                                                   url: 'http://maps.google.com/mapfiles/ms/icons/red.png',
-                                                   size: new google.maps.Size(71, 71),
-                                                   origin: new google.maps.Point(0, 0),
-                                                   anchor: new google.maps.Point(17, 34),
-                                                   scaledSize: new google.maps.Size(35, 35)
-                                               }));
-                                               marker.setPosition(place.geometry.location);
-                                               marker.setVisible(true);
-                                               var address = '';
-                                               if (place.address_components) {
-                                                   address = [
-                                                       (place.address_components[0] && place.address_components[0].short_name || ''),
-                                                       (place.address_components[1] && place.address_components[1].short_name || ''),
-                                                       (place.address_components[2] && place.address_components[2].short_name || '')
-                                                   ].join(' ');
-                                               }
+                                    <script>
+                                        function initMap() {
+                                            var map = new google.maps.Map(document.getElementById('map'), {
+                                                center: {
+                                                    lat: <?php echo esc_attr( $lat ); ?>,
+                                                    lng: <?php echo esc_attr( $lon ); ?>
+                                                },
+                                                zoom: 17
+                                            });
+                                            var input = document.getElementById('pac-input');
+                                            if (input) {
+                                                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                                            }
+                                            var autocomplete = new google.maps.places.Autocomplete(input);
+                                            autocomplete.bindTo('bounds', map);
+                                            var infowindow = new google.maps.InfoWindow();
+                                            var marker = new google.maps.Marker({
+                                                map: map,
+                                                anchorPoint: new google.maps.Point(0, -29),
+                                                draggable: true,
+                                                position: {
+                                                    lat: <?php echo esc_attr( $lat ); ?>,
+                                                    lng: <?php echo esc_attr( $lon ); ?>
+                                                }
+                                            });
+                                            google.maps.event.addListener(marker, 'dragend', function () {
+                                                var lat = marker.getPosition().lat();
+                                                var lng = marker.getPosition().lng();
+                                                document.getElementById('latitude').value = lat;
+                                                document.getElementById('longitude').value = lng;
+                                                jQuery('#latitude').val(lat).trigger('change');
+                                                jQuery('#longitude').val(lng).trigger('change');
+                                            });
+                                            autocomplete.addListener('place_changed', function () {
+                                                infowindow.close();
+                                                marker.setVisible(false);
+                                                var place = autocomplete.getPlace();
+                                                if (!place.geometry) {
+                                                    window.alert("Autocomplete's returned place contains no geometry");
+                                                    return;
+                                                }
+                                                // If the place has a geometry, then present it on a map.
+                                                if (place.geometry.viewport) {
+                                                    map.fitBounds(place.geometry.viewport);
+                                                } else {
+                                                    map.setCenter(place.geometry.location);
+                                                    map.setZoom(17); // Why 17? Because it looks good.
+                                                }
+                                                marker.setIcon( /** @type {google.maps.Icon} */ ({
+                                                    url: 'http://maps.google.com/mapfiles/ms/icons/red.png',
+                                                    size: new google.maps.Size(71, 71),
+                                                    origin: new google.maps.Point(0, 0),
+                                                    anchor: new google.maps.Point(17, 34),
+                                                    scaledSize: new google.maps.Size(35, 35)
+                                                }));
+                                                marker.setPosition(place.geometry.location);
+                                                marker.setVisible(true);
+                                                var address = '';
+                                                if (place.address_components) {
+                                                    address = [
+                                                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                                                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                                                        (place.address_components[2] && place.address_components[2].short_name || '')
+                                                    ].join(' ');
+                                                }
                                                 var latitude = place.geometry.location.lat();
                                                 var longitude = place.geometry.location.lng();
-                                                
                                                 // Update both hidden fields and trigger change events
                                                 document.getElementById('latitude').value = latitude;
                                                 document.getElementById('longitude').value = longitude;
                                                 jQuery('#latitude').val(latitude).trigger('change');
                                                 jQuery('#longitude').val(longitude).trigger('change');
-                                           });
-
-         function debounce(func, wait, immediate) {
-          var timeout;
-          return function() {
-           var context = this, args = arguments;
-           var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-           };
-           var callNow = immediate && !timeout;
-           clearTimeout(timeout);
-           timeout = setTimeout(later, wait);
-           if (callNow) func.apply(context, args);
-          };
-         };
-
-          // Enhanced function to handle both coordinates and addresses
-          var geocodeAddress = debounce(function() {
-           var geocoder = new google.maps.Geocoder();
-           var locationInput = jQuery('[name="mep_location_venue"]').val().trim();
-           
-           // Check if input looks like coordinates (lat,lng format)
-           var coordinatePattern = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
-           var coordinateMatch = locationInput.match(coordinatePattern);
-           
-           if (coordinateMatch) {
-               // Handle direct coordinate input
-               var lat = parseFloat(coordinateMatch[1]);
-               var lng = parseFloat(coordinateMatch[2]);
-               
-               // Validate coordinate ranges
-               if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-                   var position = new google.maps.LatLng(lat, lng);
-                   
-                   map.setCenter(position);
-                   marker.setPosition(position);
-                   map.setZoom(15); // Zoom in for coordinate-based locations
-                   
-                   // Update coordinate fields
-                   document.getElementById('latitude').value = lat;
-                   document.getElementById('longitude').value = lng;
-                   jQuery('#latitude').val(lat).trigger('change');
-                   jQuery('#longitude').val(lng).trigger('change');
-                   
-                   // Optionally reverse geocode to get address
-                   geocoder.geocode({'location': position}, function(results, status) {
-                       // Address lookup complete
-                   });
-               } else {
-                   // Invalid coordinate ranges
-               }
-           } else {
-               // Handle regular address input
-               var address = locationInput + ', ' + jQuery('[name="mep_street"]').val() + ', ' + jQuery('[name="mep_city"]').val() + ', ' + jQuery('[name="mep_state"]').val() + ', ' + jQuery('[name="mep_postcode"]').val() + ', ' + jQuery('[name="mep_country"]').val();
-               
-               // Only geocode if we have a meaningful address
-               if (address.replace(/,\s*/g, '').trim().length > 3) {
-                   geocoder.geocode({
-                    'address': address
-                   }, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK && results[0]) {
-                     var lat = results[0].geometry.location.lat();
-                     var lng = results[0].geometry.location.lng();
-                     
-                     map.setCenter(results[0].geometry.location);
-                     marker.setPosition(results[0].geometry.location);
-                     
-                     // Update coordinates with proper change triggers
-                     document.getElementById('latitude').value = lat;
-                     document.getElementById('longitude').value = lng;
-                     jQuery('#latitude').val(lat).trigger('change');
-                     jQuery('#longitude').val(lng).trigger('change');
-                    } else {
-                     // Geocoding failed
-                    }
-                   });
-               }
-           }
-          }, 800);
-
-          jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
-
+                                            });
+                                            function debounce(func, wait, immediate) {
+                                                var timeout;
+                                                return function () {
+                                                    var context = this, args = arguments;
+                                                    var later = function () {
+                                                        timeout = null;
+                                                        if (!immediate) func.apply(context, args);
+                                                    };
+                                                    var callNow = immediate && !timeout;
+                                                    clearTimeout(timeout);
+                                                    timeout = setTimeout(later, wait);
+                                                    if (callNow) func.apply(context, args);
+                                                };
+                                            };
+                                            // Enhanced function to handle both coordinates and addresses
+                                            var geocodeAddress = debounce(function () {
+                                                var geocoder = new google.maps.Geocoder();
+                                                var locationInput = jQuery('[name="mep_location_venue"]').val().trim();
+                                                // Check if input looks like coordinates (lat,lng format)
+                                                var coordinatePattern = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
+                                                var coordinateMatch = locationInput.match(coordinatePattern);
+                                                if (coordinateMatch) {
+                                                    // Handle direct coordinate input
+                                                    var lat = parseFloat(coordinateMatch[1]);
+                                                    var lng = parseFloat(coordinateMatch[2]);
+                                                    // Validate coordinate ranges
+                                                    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                                                        var position = new google.maps.LatLng(lat, lng);
+                                                        map.setCenter(position);
+                                                        marker.setPosition(position);
+                                                        map.setZoom(15); // Zoom in for coordinate-based locations
+                                                        // Update coordinate fields
+                                                        document.getElementById('latitude').value = lat;
+                                                        document.getElementById('longitude').value = lng;
+                                                        jQuery('#latitude').val(lat).trigger('change');
+                                                        jQuery('#longitude').val(lng).trigger('change');
+                                                        // Optionally reverse geocode to get address
+                                                        geocoder.geocode({'location': position}, function (results, status) {
+                                                            // Address lookup complete
+                                                        });
+                                                    } else {
+                                                        // Invalid coordinate ranges
+                                                    }
+                                                } else {
+                                                    // Handle regular address input
+                                                    var address = locationInput + ', ' + jQuery('[name="mep_street"]').val() + ', ' + jQuery('[name="mep_city"]').val() + ', ' + jQuery('[name="mep_state"]').val() + ', ' + jQuery('[name="mep_postcode"]').val() + ', ' + jQuery('[name="mep_country"]').val();
+                                                    // Only geocode if we have a meaningful address
+                                                    if (address.replace(/,\s*/g, '').trim().length > 3) {
+                                                        geocoder.geocode({
+                                                            'address': address
+                                                        }, function (results, status) {
+                                                            if (status == google.maps.GeocoderStatus.OK && results[0]) {
+                                                                var lat = results[0].geometry.location.lat();
+                                                                var lng = results[0].geometry.location.lng();
+                                                                map.setCenter(results[0].geometry.location);
+                                                                marker.setPosition(results[0].geometry.location);
+                                                                // Update coordinates with proper change triggers
+                                                                document.getElementById('latitude').value = lat;
+                                                                document.getElementById('longitude').value = lng;
+                                                                jQuery('#latitude').val(lat).trigger('change');
+                                                                jQuery('#longitude').val(lng).trigger('change');
+                                                            } else {
+                                                                // Geocoding failed
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }, 800);
+                                            jQuery('[name="mep_location_venue"], [name="mep_street"], [name="mep_city"], [name="mep_state"], [name="mep_postcode"], [name="mep_country"]').on('input', geocodeAddress);
                                         }
-                                        
-                                        (function() {
+                                        (function () {
                                             var google_map_api_key = '<?php echo $user_api; ?>';
                                             var script = document.createElement('script');
                                             script.src = 'https://maps.googleapis.com/maps/api/js?key=' + google_map_api_key + '&libraries=places&callback=initMap';
                                             script.defer = true;
                                             script.async = true;
-                                            script.onerror = function() {
+                                            script.onerror = function () {
                                                 // Failed to load Google Maps API
                                             };
                                             document.head.appendChild(script);
                                         })();
                                     </script>
-					<?php
-				}
-			?>
+									<?php
+								}
+							?>
                         </div>
                     </section>
                     <script type="text/javascript">
@@ -385,7 +363,6 @@
                                 // Check if input looks like coordinates (lat,lng format)
                                 let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
                                 let queryParam;
-                                
                                 if (coordinatePattern.test(location.trim())) {
                                     // For coordinates, use them directly without encoding the comma
                                     queryParam = location.trim();
@@ -393,21 +370,19 @@
                                     // For regular addresses, encode the entire string
                                     queryParam = encodeURIComponent(location);
                                 }
-                                
                                 jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             } else {
                                 jQuery('.mp_event_address').slideDown();
-                                jQuery('[name="mep_location_venue"]').val('<?php echo mep_event_location_item( $post_id, 'mep_location_venue' ); ?>');
-                                jQuery('[name="mep_street"]').val('<?php echo mep_event_location_item( $post_id, 'mep_street' ); ?>');
-                                jQuery('[name="mep_city"]').val('<?php echo mep_event_location_item( $post_id, 'mep_city' ); ?>');
-                                jQuery('[name="mep_state"]').val('<?php echo mep_event_location_item( $post_id, 'mep_state' ); ?>');
-                                jQuery('[name="mep_postcode"]').val('<?php echo mep_event_location_item( $post_id, 'mep_postcode' ); ?>');
-                                jQuery('[name="mep_country"]').val('<?php echo mep_event_location_item( $post_id, 'mep_country' ); ?>');
+                                jQuery('[name="mep_location_venue"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_location_venue' ) ); ?>');
+                                jQuery('[name="mep_street"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_street' ) ); ?>');
+                                jQuery('[name="mep_city"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_city' ) ); ?>');
+                                jQuery('[name="mep_state"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_state' ) ); ?>');
+                                jQuery('[name="mep_postcode"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_postcode' ) ); ?>');
+                                jQuery('[name="mep_country"]').val('<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $post_id, 'mep_country' ) ); ?>');
                                 let location = jQuery('[name="mep_location_venue"]').val();
                                 // Check if input looks like coordinates (lat,lng format)
                                 let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
                                 let queryParam;
-                                
                                 if (coordinatePattern.test(location.trim())) {
                                     // For coordinates, use them directly without encoding the comma
                                     queryParam = location.trim();
@@ -415,7 +390,6 @@
                                     // For regular addresses, encode the entire string
                                     queryParam = encodeURIComponent(location);
                                 }
-                                
                                 jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
@@ -425,7 +399,6 @@
                                 // Check if input looks like coordinates (lat,lng format)
                                 let coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
                                 let queryParam;
-                                
                                 if (coordinatePattern.test(location.trim())) {
                                     // For coordinates, use them directly without encoding the comma
                                     queryParam = location.trim();
@@ -433,7 +406,6 @@
                                     // For regular addresses, encode the entire string
                                     queryParam = encodeURIComponent(location);
                                 }
-                                
                                 jQuery('#show_gmap').html('<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam + '&t=&z=19&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>')
                             }
                         })
@@ -492,46 +464,41 @@
 				}
 				$use_block_editor = ( get_option( 'classic-editor-replace' ) === 'no-replace' );
 
-			return $use_block_editor;
-		}
-
-		/**
-		 * Custom save method for venue coordinates to preserve comma format
-		 */
-		public function save_venue_coordinates( $post_id ) {
-			// Check if this is an event post
-			if ( get_post_type( $post_id ) !== 'mep_events' ) {
-				return;
+				return $use_block_editor;
 			}
 
-			// Security checks
-			if ( ! isset( $_POST['mep_fw_nonce'] ) || ! wp_verify_nonce( $_POST['mep_fw_nonce'], 'mep_fw_nonce' ) ) {
-				return;
-			}
-
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return;
-			}
-
-			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				return;
-			}
-
-			// Handle venue location coordinates specially
-			if ( isset( $_POST['mep_location_venue'] ) ) {
-				$venue_value = $_POST['mep_location_venue'];
-				
-				// Check if it looks like coordinates (lat,lng format)
-				if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $venue_value ) ) ) {
-					// For coordinates, use sanitize_text_field to preserve the comma and format
-					$sanitized_value = sanitize_text_field( trim( $venue_value ) );
-					update_post_meta( $post_id, 'mep_location_venue', $sanitized_value );
-					// Prevent downstream sanitizers from overriding this value
-					unset( $_POST['mep_location_venue'] );
+			/**
+			 * Custom save method for venue coordinates to preserve comma format
+			 */
+			public function save_venue_coordinates( $post_id ) {
+				// Check if this is an event post
+				if ( get_post_type( $post_id ) !== 'mep_events' ) {
+					return;
 				}
-				// For non-coordinate values, let the normal save process handle it
+				// Security checks
+				if ( ! isset( $_POST['mep_fw_nonce'] ) || ! wp_verify_nonce( $_POST['mep_fw_nonce'], 'mep_fw_nonce' ) ) {
+					return;
+				}
+				if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+					return;
+				}
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					return;
+				}
+				// Handle venue location coordinates specially
+				if ( isset( $_POST['mep_location_venue'] ) ) {
+					$venue_value = $_POST['mep_location_venue'];
+					// Check if it looks like coordinates (lat,lng format)
+					if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $venue_value ) ) ) {
+						// For coordinates, use sanitize_text_field to preserve the comma and format
+						$sanitized_value = sanitize_text_field( trim( $venue_value ) );
+						update_post_meta( $post_id, 'mep_location_venue', $sanitized_value );
+						// Prevent downstream sanitizers from overriding this value
+						unset( $_POST['mep_location_venue'] );
+					}
+					// For non-coordinate values, let the normal save process handle it
+				}
 			}
 		}
+		new MPWEM_Venue_Settings();
 	}
-	new MPWEM_Venue_Settings();
-}

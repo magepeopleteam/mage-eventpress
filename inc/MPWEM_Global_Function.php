@@ -234,9 +234,9 @@
 				return $term_id;
 			}
 
-			public static function all_taxonomy_as_text( $event_id, $taxonomy ): string {
+			public static function all_taxonomy_as_text( $post_id, $taxonomy ): string {
 				$taxonomy_text = '';
-				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
+				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
 				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_text = $taxonomy_text ? $taxonomy_text . '- ' . $category->name : $category->name;
@@ -246,9 +246,9 @@
 				return $taxonomy_text;
 			}
 
-			public static function all_taxonomy_data( $event_id, $taxonomy ) {
+			public static function all_taxonomy_data( $post_id, $taxonomy ) {
 				$taxonomy_data = [];
-				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
+				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
 				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $category->name;
@@ -257,7 +257,16 @@
 
 				return $taxonomy_data;
 			}
+			public static function get_order_item_meta( $item_id, $key ): string {
+				global $wpdb;
+				$table_name = $wpdb->prefix . "woocommerce_order_itemmeta";
+				$results    = $wpdb->get_results( $wpdb->prepare( "SELECT meta_value FROM $table_name WHERE order_item_id = %d AND meta_key = %s", $item_id, $key ) );
+				foreach ( $results as $result ) {
+					$value = $result->meta_value;
+				}
 
+				return $value ?? '';
+			}
 			//=================//
 			public static function wc_product_sku( $product_id ) {
 				if ( $product_id ) {

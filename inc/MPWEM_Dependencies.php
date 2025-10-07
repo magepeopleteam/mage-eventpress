@@ -10,7 +10,6 @@
 		class MPWEM_Dependencies {
 			public function __construct() {
 				add_action( 'init', array( $this, 'language_load' ) );
-				$this->load_global_file();
 				$this->load_file();
 				add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 90 );
 				add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue' ), 90 );
@@ -23,16 +22,13 @@
 				load_plugin_textdomain( 'mage-eventpress', false, $plugin_dir );
 			}
 
-			public function load_global_file() {
+			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Layout.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
-			}
-
-			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
@@ -41,6 +37,22 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
 				require_once( dirname( __DIR__ ) . '/lib/classes/class-mep.php' );
 				require_once( dirname( __DIR__ ) . "/inc/mep_functions.php" );
+
+
+
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/google_map.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_location.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_list_tax_name_list.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_list.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_minimal.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_native.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_timeline.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_title.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_spring.php" );
+				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_winter.php" );
+
+
+
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_shortcode.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax_meta.php" );
@@ -56,6 +68,7 @@
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_script( 'jquery-ui-accordion' );
 				wp_enqueue_script( 'selectWoo' );
+				wp_enqueue_script( 'select2' );
 				wp_enqueue_style( 'select2' );
 				wp_localize_script( 'jquery', 'mep_ajax', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				wp_enqueue_style( 'mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2' );
@@ -196,6 +209,7 @@
                 </script>
 				<?php
 			}
+
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;
@@ -239,14 +253,14 @@
                             "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
                             "location"  : {
                                 "@type"         : "Place",
-                                "name"          : "<?php echo mep_get_event_location( $event_id ); ?>",
+                                "name"          : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'location')); ?>",
                                 "address"       : {
                                 "@type"         : "PostalAddress",
-                                "streetAddress" : "<?php echo mep_get_event_location_street( $event_id ); ?>",
-                                "addressLocality": "<?php echo mep_get_event_location_city( $event_id ); ?>",
-                                "postalCode"    : "<?php echo mep_get_event_location_postcode( $event_id ) ?>",
-                                "addressRegion" : "<?php echo mep_get_event_location_state( $event_id ) ?>",
-                                "addressCountry": "<?php echo mep_get_event_location_country( $event_id ) ?>"
+                                "streetAddress" : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'street'));?>",
+                                "addressLocality": "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'city')); ?>",
+                                "postalCode"    : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'zip'));?>",
+                                "addressRegion" : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'state')); ?>",
+                                "addressCountry": "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'country')); ?>"
                                 }
                             },
                             "image": [

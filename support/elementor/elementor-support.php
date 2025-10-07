@@ -38,9 +38,7 @@ class MEPPluginElementor {
 		require_once( __DIR__ . '/widget/event-add-cart-section.php' );		
 		require_once( __DIR__ . '/widget/event-list-recurring.php' );		
 		require_once( __DIR__ . '/widget/event-city-list.php' );		
-		require_once( __DIR__ . '/widget/event-title.php' );		
-		// require_once( __DIR__ . '/widget/event-thumbnail.php' );		
-		// require_once( __DIR__ . '/widget/event-details.php' );		
+		require_once( __DIR__ . '/widget/event-title.php' );
 		require_once( __DIR__ . '/widget/event-faq.php' );		
 		require_once( __DIR__ . '/widget/event-date.php' );		
 		require_once( __DIR__ . '/widget/event-location.php' );		

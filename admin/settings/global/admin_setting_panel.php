@@ -100,6 +100,8 @@
 			 * @return array settings fields
 			 */
 			function get_settings_fields() {
+				$current_date = current_time( 'Y-m-d' );
+				$lang         = get_bloginfo( "language" );
 				$settings_fields = array(
 					'general_setting_sec'      => apply_filters( 'mep_settings_general_arr', array(
 							array(
@@ -517,6 +519,28 @@
 								'options' => array(
 									'enable'  => 'Enable',
 									'disable' => 'Disable'
+								)
+							),
+							array(
+								'name'    => 'mep_datepicker_format',
+								'label'   => __( 'Date Picker Format', 'mage-eventpress' ),
+								'desc'    => __( 'If you want to change Date Picker Format, please select format. Default is yy-mm-dd. <b>Text Based Date format will not works in other language except english. Is your website is not English language please do not use any text based datepicker.</b>', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yy-mm-dd'   => $current_date,
+									'yy/mm/dd'   => date( 'Y/m/d', strtotime( $current_date ) ),
+									// 'yy-dd-mm'      => date('Y-d-m',strtotime($current_date)),
+									// 'yy/dd/mm'      => date('Y/d/m',strtotime($current_date)),
+									'dd-mm-yy'   => date( 'd-m-Y', strtotime( $current_date ) ),
+									// 'dd/mm/yy'      => date('d/m/Y',strtotime($current_date)),
+									'mm-dd-yy'   => date( 'm-d-Y', strtotime( $current_date ) ),
+									'mm/dd/yy'   => date( 'm/d/Y', strtotime( $current_date ) ),
+									'd M , yy'   => date( 'j M , Y', strtotime( $current_date ) ),
+									'D d M , yy' => date( 'D j M , Y', strtotime( $current_date ) ),
+									'M d , yy'   => date( 'M  j, Y', strtotime( $current_date ) ),
+									'D M d , yy' => date( 'D M  j, Y', strtotime( $current_date ) ),
+									$lang        => $lang,
 								)
 							)
 						)
@@ -1120,6 +1144,55 @@
 							'type'    => 'text',
 							'default' => 'Limited Availability'
 						),
+						array(
+							'name'    => 'mep_event_rec_time_slot_text',
+							'label'   => __( 'Time Slot', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Time Slot', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Time Slot'
+						),
+						array(
+							'name'    => 'mep_event_rec_select_event_date_text',
+							'label'   => __( 'Select Event Date:', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Select Event Date: Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Select Event Date:'
+						),
+						array(
+							'name'    => 'mep_event_rec_please_select_time_text',
+							'label'   => __( 'Please Select Time', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Please Select Time Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Please Select Time'
+						),
+						array(
+							'name'    => 'mep_event_rec_please_wait_ticket_loading_text',
+							'label'   => __( 'Please Wait! Ticket List is Loading......', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Please Wait! Ticket List is Loading...... Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Please Wait! Ticket List is Loading......'
+						),
+						array(
+							'name'    => 'mep_event_rec_please_wait_time_loading_text',
+							'label'   => __( 'Time List is Loading..', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Time List is Loading.. Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Time List is Loading..'
+						),
+						array(
+							'name'    => 'mep_event_rec_day_off_text',
+							'label'   => __( 'Day Off', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Day Off Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Day Off'
+						),
+						array(
+							'name'    => 'mep_event_rec_select_a_time_text',
+							'label'   => __( 'Please Select A Time', 'mage-eventpress' ),
+							'desc'    => __( 'Enter Text For Please Select A Time Text', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => 'Please Select A Time'
+						)
 					) ),
 					'style_setting_sec'        => apply_filters( 'mep_settings_styling_arr', array(
 							// Base Background & Text Color

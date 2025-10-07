@@ -252,11 +252,7 @@
 						}
 					}
 				} else {
-					$now        = current_time( 'Y-m-d' );
 					$start_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
-					if ( strtotime( $now ) >= strtotime( $start_date ) ) {
-						$start_date = $now;
-					}
 					$end_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
 					if ( strtotime( $end_date ) < strtotime( $start_date ) ) {
 						$end_date = '';
@@ -295,7 +291,9 @@
 						$all_times = MPWEM_Functions::get_times( $event_id, $all_date, $date );
 						if ( sizeof( $all_times ) > 0 ) {
 							foreach ( $all_times as $time ) {
-								$main_date    = $date . ' ' . $time['start']['time'];
+								$time_value=is_array($time) && array_key_exists( 'start', $time ) ? $time['start'] : '';
+								$time_value=is_array($time_value) && array_key_exists( 'time', $time_value ) ? $time_value['time'] : '';
+								$main_date    = $date . ' ' . $time_value;
 								$expire_check = date( 'Y-m-d H:i', strtotime( $main_date ) - $buffer_time );
 								if ( strtotime( $expire_check ) > $now ) {
 									$all_dates[] = $date;
@@ -408,12 +406,12 @@
 				if ( $address_type ) {
 					$org_arr  = get_the_terms( $event_id, 'mep_org' );
 					$org_id   = $org_arr[0]->term_id;
-					$location = get_term_meta( $org_id, 'org_location', true ) ? get_term_meta( $org_id, 'org_location', true ) : '';
-					$street   = get_term_meta( $org_id, 'org_street', true ) ? get_term_meta( $org_id, 'org_street', true ) : '';
-					$city     = get_term_meta( $org_id, 'org_city', true ) ? get_term_meta( $org_id, 'org_city', true ) : '';
-					$state    = get_term_meta( $org_id, 'org_state', true ) ? get_term_meta( $org_id, 'org_state', true ) : '';
-					$zip      = get_term_meta( $org_id, 'org_postcode', true ) ? get_term_meta( $org_id, 'org_postcode', true ) : '';
-					$country  = get_term_meta( $org_id, 'org_country', true ) ? get_term_meta( $org_id, 'org_country', true ) : '';
+					$location = get_term_meta( $org_id, 'org_location', true );
+					$street   = get_term_meta( $org_id, 'org_street', true );
+					$city     = get_term_meta( $org_id, 'org_city', true );
+					$state    = get_term_meta( $org_id, 'org_state', true );
+					$zip      = get_term_meta( $org_id, 'org_postcode', true );
+					$country  = get_term_meta( $org_id, 'org_country', true );
 				} else {
 					$location = MPWEM_Global_Function::get_post_info( $event_id, 'mep_location_venue' );
 					$street   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_street' );

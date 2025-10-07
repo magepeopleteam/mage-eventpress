@@ -299,10 +299,9 @@
 		
 			}
 			public function related_events(){
-				global $woocommerce, $post;
+				global $post;
 				$product_ids   = get_post_meta( $post->ID, 'event_list', true ) ? get_post_meta( $post->ID, 'event_list', true ) : [];
 				$section_label = get_post_meta( $post->ID, 'related_section_label', true );
-				$column_num    = get_post_meta( $post->ID, '_list_column', true );
 				$smart_theme    = get_post_meta( $post->ID, 'mep_event_template', true );
 				$related_event_status = get_post_meta( $post->ID, 'mep_related_event_status', true );
 				$related_event_status= $related_event_status ? $related_event_status:'off';
@@ -344,14 +343,8 @@
 								$loop->the_post(); 
 								$values = get_the_id();
 								$event_meta         = get_post_custom( $values );
-								$tt                 = get_the_terms( $values, 'mep_cat' );
-								$org_class          = mep_get_term_as_class( $values, 'mep_org' );
-								$torg               = get_the_terms( $values, 'mep_org' );
-								$cat_class          = mep_get_term_as_class( $values, 'mep_cat' );
-								$available_seat     = mep_get_total_available_seat( $values, $event_meta );
 								$show_price         = mep_get_option( 'mep_event_price_show', 'general_setting_sec', 'yes' );
 								$show_price_label   = mep_get_option( 'event-price-label', 'general_setting_sec', 'Price Starts from' );
-								$author_terms       = get_the_terms( $values, 'mep_org' );
 								?>
 								<div class="item">
 									<a href="<?php echo get_the_permalink( $values ); ?>">

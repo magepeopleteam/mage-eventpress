@@ -34,6 +34,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MAGE_Setting_API.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/admin_setting_panel.php';
 				//************************************//
+                require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Hidden_Product.php';
                 require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Lists.php';
                 require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Attendee_Statistics.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';

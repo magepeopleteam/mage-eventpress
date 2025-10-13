@@ -24,7 +24,7 @@
                                 <h2><?php echo get_the_title($ttbm_post_id); ?></h2>
                             </div>
                             <div class="price">
-                                <h2><?php echo wc_price(MPWEM_Functions::get_min_price($ttbm_post_id)); ?></h2>
+                                <h2><?php echo wp_kses_post(wc_price(MPWEM_Functions::get_min_price($ttbm_post_id))); ?></h2>
                                 <p><?php esc_html_e('Per Ticket', 'mage-eventpress'); ?></p>
                             </div>
                         </div>

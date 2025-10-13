@@ -194,9 +194,9 @@
 						$values = get_the_id();
 							$event_meta         = get_post_custom( $values );
 							$tt                 = get_the_terms( $values, 'mep_cat' );
-							$org_class          = mep_get_term_as_class( $values, 'mep_org' );
+							$org_class          = MPWEM_Global_Function::taxonomy_as_class( $values, 'mep_org' );
 							$torg               = get_the_terms( $values, 'mep_org' );
-							$cat_class          = mep_get_term_as_class( $values, 'mep_cat' );
+							$cat_class          = MPWEM_Global_Function::taxonomy_as_class( $values, 'mep_cat' );
 							$available_seat     = mep_get_total_available_seat( $values, $event_meta );
 							$show_price         = mep_get_option( 'mep_event_price_show', 'general_setting_sec', 'yes' );
 							$show_price_label   = mep_get_option( 'event-price-label', 'general_setting_sec', 'Price Starts from:' );
@@ -224,7 +224,7 @@
 												do_action( 'mep_show_waitlist_label' );
 											} ?>
 											<h3 class='mep_list_date'> <?php if ( $show_price == 'yes' ) {
-													echo $show_price_label . " " . mep_event_list_price( $values );
+													echo $show_price_label . " " . wc_price(MPWEM_Functions::get_min_price($values));
 												} ?><!-- <i class="far fa-calendar-alt"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
 										</div>
 										<?php
@@ -379,7 +379,7 @@
 											<p><?php echo $show_price_label   ?></p>
 											<h2 class='mep_list_date'> 
 												<?php if ( $show_price == 'yes' ) {
-														echo mep_event_list_price( $values );
+														echo wc_price(MPWEM_Functions::get_min_price($values));
 													} ?>
 											</h2>
 										</div>
@@ -471,9 +471,9 @@
 							$values = get_the_id();
 								$event_meta             = get_post_custom( $values );
 								$tt                     = get_the_terms( $values, 'mep_cat' );
-								$org_class              = mep_get_term_as_class( $values, 'mep_org' );
+								$org_class              = MPWEM_Global_Function::taxonomy_as_class( $values, 'mep_org' );
 								$torg                   = get_the_terms( $values, 'mep_org' );
-								$cat_class              = mep_get_term_as_class( $values, 'mep_cat' );
+								$cat_class              = MPWEM_Global_Function::taxonomy_as_class( $values, 'mep_cat' );
 								$available_seat         = mep_get_total_available_seat( $values, $event_meta );
 								$show_price             = mep_get_option( 'mep_event_price_show', 'general_setting_sec', 'yes' );
 								$show_price_label       = mep_get_option( 'event-price-label', 'general_setting_sec', 'Price Starts from:' );
@@ -499,7 +499,7 @@
 													do_action( 'mep_show_waitlist_label' );
 												} ?>
 												<h3 class='mep_list_date'> <?php if ( $show_price == 'yes' ) {
-														echo $show_price_label . " " . mep_event_list_price( $values );
+														echo $show_price_label . " " . wc_price(MPWEM_Functions::get_min_price($values));
 													} ?><!-- <i class="far fa-calendar-alt"></i> <?php echo date_i18n( 'h:i A', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?> - <?php echo $event_meta['mep_event_end_date'][0]; ?> --></h3>
 											</div>
 											<?php

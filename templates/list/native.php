@@ -1,8 +1,8 @@
 <?php
 $recurring = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : 'no';
 
-$taxonomy_category = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
-$taxonomy_organizer = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
+$taxonomy_category = MPWEM_Global_Function::all_taxonomy_as_text($event_id, 'mep_cat');
+$taxonomy_organizer = MPWEM_Global_Function::all_taxonomy_as_text($event_id, 'mep_org');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_location_icon = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
@@ -18,7 +18,7 @@ $event_organizer_icon = mep_get_option('mep_event_organizer_icon', 'icon_setting
     <?php do_action('mep_event_minimal_list_loop_header', $event_id); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo get_the_permalink($event_id); ?>">
-            <div class="mep_bg_thumb" data-bg-image="<?php mep_get_list_thumbnail_src($event_id, 'thumbnail'); ?>"></div>
+            <div class="mep_bg_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'thumbnail' ) );?>"></div>
         </a>
     </div>
 

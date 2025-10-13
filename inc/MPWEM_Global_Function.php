@@ -195,7 +195,7 @@
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ) {
 				if ( $post_id ) {
 					$image_id = get_post_thumbnail_id( $post_id );
-					$image_id = $image_id ?: self::get_post_info( $post_id, 'mp_thumbnail' );
+					$image_id = $image_id ?: self::get_post_info( $post_id, 'mep_list_thumbnail' );
 				}
 
 				return wp_get_attachment_image_url( $image_id, $size );
@@ -221,7 +221,7 @@
 					}
 				}
 
-				return $all_data;
+				return array_unique($all_data);
 			}
 
 			public static function get_meta_id_by_name( $taxonomy, $meta_key, $meta_value ) {
@@ -257,6 +257,21 @@
 
 				return $taxonomy_data;
 			}
+
+			public static function taxonomy_as_class( $post_id, $taxonomy, $unq_id = '' ) {
+				$class         = null;
+				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
+				$taxonomy_data = [];
+				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+					foreach ( $all_taxonomy as $category ) {
+						$taxonomy_data[] = $unq_id . 'mage-' . $category->name;
+					}
+					$class = implode( ' ', $taxonomy_data );
+				}
+
+				return $class;
+			}
+
 			public static function get_order_item_meta( $item_id, $key ): string {
 				global $wpdb;
 				$table_name = $wpdb->prefix . "woocommerce_order_itemmeta";
@@ -267,6 +282,7 @@
 
 				return $value ?? '';
 			}
+
 			//=================//
 			public static function wc_product_sku( $product_id ) {
 				if ( $product_id ) {

@@ -585,6 +585,8 @@
 			}
 
 			//==========================//
+
+			//==========================//
 			public static function get_cpt(): string {
 				return 'mep_events';
 			}

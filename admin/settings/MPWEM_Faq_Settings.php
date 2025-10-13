@@ -24,7 +24,7 @@
 				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
-                <div class="mp_tab_item mpStyle mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
+                <div class="mp_tab_item mpwem_style mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
                     <div class="_dLayout_xs_mp_zero">
                         <div class="_bgLight_padding_bB">
                             <h4><?php esc_html_e( 'FAQ Settings', 'mage-eventpress' ); ?></h4>

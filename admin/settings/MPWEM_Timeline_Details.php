@@ -22,7 +22,7 @@
 			public function timeline_tab_content( $post_id ) {
 				$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
 				?>
-                <div class="mp_tab_item mpStyle mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
+                <div class="mp_tab_item mpwem_style mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
                     <div class="_dLayout_xs_mp_zero">
                         <div class="_bgLight_padding_bB">
                             <h4><?php esc_html_e( 'Timeline Settings', 'mage-eventpress' ); ?></h4>

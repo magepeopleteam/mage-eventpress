@@ -37,12 +37,12 @@
 				if (!$GLOBALS['mpwem_icon_popup_exit']) {
 					$GLOBALS['mpwem_icon_popup_exit'] = true;
 					?>
-					<div class="mpwem_add_icon_popup mpPopup mpStyle" data-popup="#mpwem_add_icon_popup">
+					<div class="mpwem_add_icon_popup mpPopup mpwem_style" data-popup="#mpwem_add_icon_popup">
 						<div class="popupMainArea fullWidth">
 							<div class="popupHeader allCenter">
 								<h2 class="_mR"><?php esc_html_e('Select Icon', 'mage-eventpress'); ?></h2>
 								<label class="min_300">
-									<input type="text" class="formControl mp_name_validation" name="mpwem_select_icon_name" placeholder="<?php esc_attr_e('Icon/class name....', 'mage-eventpress'); ?>" />
+									<input type="text" class="formControl name_validation" name="mpwem_select_icon_name" placeholder="<?php esc_attr_e('Icon/class name....', 'mage-eventpress'); ?>" />
 								</label>
 								<span class="fas fa-times popupClose"></span>
 							</div>

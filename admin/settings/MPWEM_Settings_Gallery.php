@@ -35,7 +35,7 @@
                             </label>
                         </div>
                     </section>
-                    <div id="mep_display_slider" class="mpStyle" style="display: <?php echo esc_attr( $display_gallary == 'on' ? 'block' : 'none' ); ?>;">
+                    <div id="mep_display_slider" class="mpwem_style" style="display: <?php echo esc_attr( $display_gallary == 'on' ? 'block' : 'none' ); ?>;">
                         <section>
                             <div class="mpev-label">
                                 <h2><?php esc_html_e( 'Gallery Images ', 'mage-eventpress' ); ?></h2>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </section>
-                    <div class="mpStyle">
+                    <div class="mpwem_style">
                         <section>
                             <h2><?php esc_html_e( 'Thumbnail', 'mage-eventpress' ); ?></h2>
                             <span><?php esc_html_e( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>

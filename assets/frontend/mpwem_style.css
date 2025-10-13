@@ -1,3 +1,11 @@
+/* ************************Event Date List******************** */
+@media only screen and (min-width: 10px) {
+	div.event_date_list_area {padding: var(--dMP);}
+	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dMP_xs) 0;}
+	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
+	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
+	div.event_date_list_area .date_item a {color: inherit; display: block;}
+}
 .mep-event-faq-part .ex-sec-title.faq-title-section {
 	background: var(--color_theme);
 	color: var(--color_7);
@@ -12,12 +20,9 @@ div.item_hover_effect a:hover {
 	background-color: #FFF;
 	border: 1px solid var(--color_theme);
 }
-.mep-ev-start-date, h3.mep_list_date i, .df-ico i, button.mep-cat-control, .pagination-sec a, .mep-tem3-title-sec.mep_single_date_btn {
+.mep-ev-start-date, h3.mep_list_date i, .df-ico i, button.mep-cat-control, .pagination-sec a {
 	background: var(--color_theme);
 	color: var(--color_7);
-}
-.mep-tem3-title-sec.mep_single_date_btn {
-	padding: 10px 15px !important;
 }
 .mep-default-sidrbar-meta .fa-list-alt, .mep-list-footer ul li i {
 	background: transparent;
@@ -61,11 +66,11 @@ div.item_hover_effect a:hover {
 	color: var(--color_7);
 }
 /*FAQ Sec Style*/
-.mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 {	background: var(--color_theme);}
+.mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 { background: var(--color_theme);}
 /*Cart Button Style*/
 button.mpwemasp_get_sp,
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart, .mep-event-theme-1 .btn-mep-event-cart, .mep-template-2-hamza .btn-mep-event-cart, .mep-tem3-mid-sec .btn-mep-event-cart, .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
-	background: var(--color_theme);	border-color: var(--color_theme);}
+	background: var(--color_theme); border-color: var(--color_theme);}
 /*Calender Button Style*/
 .mep-default-sidrbar-calender-btn a, .mep-event-theme-1 .mep-add-calender, .mep-template-2-hamza .mep-add-calender, .mep-tem3-mid-sec .mep-add-calender, #mep_add_calender_button, .royal_theme #mep_add_calender_button, .royal_theme ul#mep_add_calender_links li a {
 	background: var(--color_theme);
@@ -1356,24 +1361,8 @@ button.mep-cat-control.mixitup-control-active {
 	margin: 0 auto;
 	padding: 0;
 }
-#mep_single_hide_all_date {
-	display: none;
-}
 .mep_view_all_date {
 	overflow: scroll !important;
-}
-span.mep_single_date_btn {
-	display: block;
-	text-align: center;
-	cursor: pointer;
-}
-.mep-tem3-title-sec.mep_single_date_btn {
-	text-align: center;
-	padding: 5px;
-	cursor: pointer;
-}
-.mep-tem3-title-sec.mep_single_date_btn i {
-	display: none;
 }
 .mep-default-feature-content ul {
 	margin-left: 15px !important;
@@ -2225,14 +2214,6 @@ div.three_column {
 	max-width: max-content;
 	display: block;
 }
-.mep_single_date_btn {
-	font-size: 15px;
-	width: max-content;
-	padding: 0 15px 0 15px !important;
-	margin: auto !important;
-	border-radius: 50px;
-	font-weight: 500;
-}
 .mep-social-share li:last-child {
 	margin-right: 0;
 }
@@ -2823,11 +2804,11 @@ Mobile View css update by ariful | date: 19.10.2021
 	.mep_list_event_details p {
 		font-size: 13px;
 	}
-	.mpStyle.pagination_area button[class*=defaultButton_xs] {
+	.mpwem_style.pagination_area button[class*=defaultButton_xs] {
 		width: 40px;
 	}
-	.mpStyle.pagination_area .ellipse_left,
-	.mpStyle.pagination_area .ellipse_right {
+	.mpwem_style.pagination_area .ellipse_left,
+	.mpwem_style.pagination_area .ellipse_right {
 		background-color: #DDD;
 	}
 	.mep-event-review-form input {
@@ -3854,7 +3835,7 @@ input.mpe-new-input-group-field {
 	border-color: var(--color_theme);
 	background-color: var(--color_theme);
 }
-.mpStyle .customCheckbox::before {
+.mpwem_style .customCheckbox::before {
 	border: 2px solid var(--color_theme);
 }
 .mep_event_list_item {
@@ -3986,78 +3967,6 @@ div.mpwem_timeline_area .timeline_area::before {
 	font-size: 18px;
 	font-weight: bold;
 	margin-bottom: 10px;
-}
-.mep-default-sidrbar-events-schedule #mep_event_date_sch {
-	margin-bottom: 20px;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch {
-	margin-left: 10px;
-	max-height: 315px;
-	overflow: hidden;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li {
-	border: 1px solid #CCD6E2;
-	background-color: #F8FAFC;
-	padding: 15px;
-	display: flex;
-	flex-direction: row;
-	align-items: start;
-	position: relative;
-	padding-left: 25px;
-	margin-bottom: 10px;
-	border-radius: 12px;
-	transition: all 0.3s ease;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li::before {
-	content: "";
-	width: 8px;
-	height: 8px;
-	border-radius: 50px;
-	position: absolute;
-	top: 18px;
-	left: 10px;
-	background-color: var(--color_theme);
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li:hover {
-	border-color: #CBD5E1;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-	transform: translateY(1px);
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li a {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-direction: column;
-	flex-direction: column;
-	color: #000;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span {
-	display: flex;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span.mep-more-date {
-	margin: 0;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li span.mep-more-time {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li .mep_date_scdl_start_datetime {
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-.mep-default-sidrbar-events-schedule ul.mep_event_date_sch li i {
-	background: var(--color_theme);
-	background: var(--color_7);
-	color: var(--color_theme);
-	display: inline-flex;
-	width: 20px;
-	height: 20px;
-	font-size: 11px;
-}
-#mep_event_date_sch a{
-	color:#333;
 }
 .mpwem_registration_area .section-title {
 	font-size: 25px;
@@ -4220,7 +4129,6 @@ div.mpwem_timeline_area .timeline_area::before {
 		margin: 0;
 	}
 }
-
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {
 	font-size: 18px;
@@ -4435,9 +4343,6 @@ Royal theme css by ariful | Date: 19-10-2021
 }
 .royal_theme .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart {
 	line-height: inherit;
-}
-.royal_theme .mep-tem3-title-sec.mep_single_date_btn {
-	text-transform: uppercase;
 }
 @media only screen and (max-width: 768px) {
 	.royal_theme .mep-royal-header {
@@ -4822,9 +4727,6 @@ Vanilla theme css by ariful
 .vanilla_theme .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart {
 	line-height: inherit;
 }
-.vanilla_theme .mep-tem3-title-sec.mep_single_date_btn {
-	text-transform: uppercase;
-}
 @media only screen and (max-width: 768px) {
 	.vanilla_theme .mep-default-col-wrapper {
 		display: block;
@@ -5072,36 +4974,8 @@ Vanilla theme css by ariful
 		top: 50%;
 		transform: translateY(-50%);
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul#mep_event_date_sch li span {
-		margin: 0;
-		font-size: 16px;
-	}
 	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists i {
 		display: none;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn {
-		background-color: #FFF;
-		color: var(--color_theme) !important;
-		height: auto !important;
-		padding: 5px 10px !important;
-		border-radius: var(--dBR) !important;
-		border: 1px solid var(--color_theme);
-		margin: 20px 0 !important;
-		margin-bottom: 10px !important;
-		color: var(--color_theme);
-		font-size: var(--button_fs);
-		font-weight: var(--fw-medium);
-		line-height: inherit;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn:hover {
-		background-color: var(--color_6);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists .mep_single_date_btn i {
-		font-size: 16px;
-		padding: 0;
-		background: none;
-		margin-right: 6px;
-		display: inline-block;
 	}
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets h2.share-widget-title {
 		font-size: 19px;
@@ -5393,9 +5267,9 @@ Vanilla theme css by ariful
 	.mep-related-events .mep-related-events-items {
 		margin-top: 20px;
 		height: 350px;
-    	padding-bottom: 20px;
+		padding-bottom: 20px;
 	}
-	.mep-events-wrapper .mpwem_book_now[disabled]{
+	.mep-events-wrapper .mpwem_book_now[disabled] {
 		background-color: var(--color_theme);
 		opacity: 0.6;
 	}
@@ -5610,7 +5484,6 @@ Vanilla theme css by ariful
 .mep-default-map .display-map {
 	padding: 20px 25px;
 }
-
 /* Event Tags Styling */
 .mep-event-tags-widget {
 	margin-bottom: 20px;
@@ -5630,21 +5503,20 @@ Vanilla theme css by ariful
 	display: inline-block;
 	padding: 5px 15px;
 	margin: 3px 5px 3px 0;
-	background: #f5f5f5;
+	background: #F5F5F5;
 	color: #555;
 	border-radius: 4px;
 	text-decoration: none;
 	font-size: 13px;
 	font-weight: 500;
 	transition: all 0.3s ease;
-	border: 1px solid #e0e0e0;
+	border: 1px solid #E0E0E0;
 }
 .mep-event-tags-list a.mep-tag-link:hover {
 	background: var(--color_theme);
-	color: #fff;
+	color: #FFF;
 	border-color: var(--color_theme);
 	transform: translateY(-2px);
-	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 /*# sourceMappingURL=mpwem_style.css.map */

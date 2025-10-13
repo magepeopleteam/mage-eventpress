@@ -9,12 +9,12 @@
 	if (!class_exists('MPWEM_Admin')) {
 		class MPWEM_Admin {
 			public function __construct() {
-				//if (is_admin()) {
+
 				$this->load_file();
-				add_action('init', [$this, 'add_dummy_data']);
+				add_action('admin_init', [$this, 'flush_permalink']);
 				add_filter('use_block_editor_for_post_type', [$this, 'disable_gutenberg'], 10, 2);
 				add_action('upgrader_process_complete', [$this, 'flush_rewrite'], 0);
-				//}
+
 			}
 			public function flush_rewrite() {
 				flush_rewrite_rules();
@@ -35,6 +35,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/admin_setting_panel.php';
 				//************************************//
                 require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Lists.php';
+                require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Attendee_Statistics.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_cpt.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/status.php';
@@ -59,8 +60,25 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Related_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Template_Override_Settings.php';
 			}
-			public function add_dummy_data() {
-				//new MPTBM_Dummy_Import();
+			public function flush_permalink() {
+				if ( get_option( 'mep_flash_event_permalink' ) != 'completed' ) {
+					global $wp_rewrite;
+					$wp_rewrite->flush_rules();
+					update_option( 'mep_flash_event_permalink', 'completed' );
+				}
+				if ( get_option( 'mep_event_seat_left_data_update_01' ) != 'completed' ) {
+					$args = array(
+						'post_type'      => 'mep_events',
+						'posts_per_page' => - 1
+					);
+					$qr   = new WP_Query( $args );
+					foreach ( $qr->posts as $result ) {
+						$post_id   = $result->ID;
+						$seat_left = mep_count_total_available_seat( $post_id );
+						update_post_meta( $post_id, 'mep_total_seat_left', $seat_left );
+					}
+					update_option( 'mep_event_seat_left_data_update_01', 'completed' );
+				}
 			}
 			//************Disable Gutenberg************************//
 			public function disable_gutenberg($current_status, $post_type) {

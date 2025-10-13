@@ -13,7 +13,7 @@
 		$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		if ( $date_type == 'no' || $date_type == 'yes' ) {
 			$date        = !empty($date) ?$date: current( $all_dates )['time'];
-			$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : '';
+			$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 			if ( sizeof( $all_dates ) == 1 ) {
 				?>
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>

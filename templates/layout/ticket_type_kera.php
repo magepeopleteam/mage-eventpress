@@ -60,7 +60,7 @@
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
                 <div class="mpTabs mep-kera-theme">
-                    <div class="tabLists mpStyle">
+                    <div class="tabLists mpwem_style">
 						<?php $tab_count = 0;
 							foreach ( $new_tickets as $tickets ) {
 								$meta_id = array_key_exists( 'term_id', $tickets ) ? $tickets['term_id'] : '';

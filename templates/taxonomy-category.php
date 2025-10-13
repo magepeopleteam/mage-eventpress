@@ -11,7 +11,7 @@ $term_id = get_queried_object()->term_id;
 		</div>
 		<div class='mage_grid_box'>
 		<?php
-		$loop =  mep_event_query(20, 'ASC', $term_id, '', '', '', 'upcoming');
+		$loop =  MPWEM_Query::event_query(20, 'ASC', $term_id, '', '', '', 'upcoming');
 		while ($loop->have_posts()) {
 			$loop->the_post();
 			do_action('mep_event_list_shortcode', get_the_id(), 'three_column', 'grid');

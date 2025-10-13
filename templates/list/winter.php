@@ -1,8 +1,8 @@
 <?php
 $event_type = get_post_meta(get_the_id(), 'mep_event_type', true) ? get_post_meta(get_the_id(), 'mep_event_type', true) : 'offline';
 
-$taxonomy_category = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_cat');
-$taxonomy_organizer = MPWEM_Helper::all_taxonomy_as_text($event_id, 'mep_org');
+$taxonomy_category = MPWEM_Global_Function::all_taxonomy_as_text($event_id, 'mep_cat');
+$taxonomy_organizer = MPWEM_Global_Function::all_taxonomy_as_text($event_id, 'mep_org');
 // $date = mep_get_event_upcomming_date($event_id, 'date');
 $date = get_post_meta($event_id, 'event_upcoming_datetime', true);
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
@@ -29,14 +29,14 @@ $event_organizer_icon       = mep_get_option('mep_event_organizer_icon', 'icon_s
     </div>
     <div class="mep_list_winter_thumb_wrapper">
         <a href="<?php echo get_the_permalink($event_id); ?>">
-            <div class="mep_list_winter_thumb" data-bg-image="<?php mep_get_list_thumbnail_src($event_id); ?>"></div>
+            <div class="mep_list_winter_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id) ); ?>"></div>
         </a>
     </div>
     <div class="mep_list_event_details">
         <h2 class="mep_list_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
         <h3 class="mep_price">                    
             <?php if ($show_price == 'yes') {
-                echo esc_html($show_price_label) . " " . mep_event_list_price($event_id);
+                echo esc_html($show_price_label) . " " . wc_price(MPWEM_Functions::get_min_price($event_id));
             } ?>
         </h3>
         <div class="mep_list_details_wrapper">

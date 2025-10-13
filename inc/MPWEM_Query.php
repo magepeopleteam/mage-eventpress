@@ -5,7 +5,15 @@
 	if ( ! class_exists( 'MPWEM_Query' ) ) {
 		class MPWEM_Query {
 			public function __construct() { }
-
+			public static function query_post_type($post_type, $show = -1, $page = 1): WP_Query {
+				$args = array(
+					'post_type' => $post_type,
+					'posts_per_page' => $show,
+					'paged' => $page,
+					'post_status' => 'publish'
+				);
+				return new WP_Query($args);
+			}
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
@@ -96,6 +104,7 @@
 
 				return new WP_Query( $args );
 			}
+
 		}
 		new MPWEM_Query();
 	}

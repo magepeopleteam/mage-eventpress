@@ -1,54 +1,70 @@
 <?php
-	$day                            = mep_get_event_upcomming_date( $event_id, 'day' );
-	$month                          = mep_get_event_upcomming_date( $event_id, 'month-name' );
-	$recurring                      = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-	$mep_hide_event_hover_btn       = mep_get_option( 'mep_hide_event_hover_btn', 'event_list_setting_sec', 'no' );
-	$mep_hide_event_hover_btn_text  = mep_get_option( 'mep_hide_event_hover_btn_text', 'general_setting_sec', __( 'Book Now', 'mage-eventpress' ) );
-	$sold_out_ribbon                = mep_get_option( 'mep_show_sold_out_ribbon_list_page', 'general_setting_sec', 'no' );
-	$limited_availability_ribbon    = mep_get_option( 'mep_show_limited_availability_ribbon', 'general_setting_sec', 'no' );
-	$limited_availability_threshold = (int) mep_get_option( 'mep_limited_availability_threshold', 'general_setting_sec', '5' );
-	$taxonomy_category              = MPWEM_Helper::all_taxonomy_as_text( $event_id, 'mep_cat' );
-	$taxonomy_organizer             = MPWEM_Helper::all_taxonomy_as_text( $event_id, 'mep_org' ); //
-	$date                           = get_post_meta( $event_id, 'event_upcoming_datetime', true );
-	$reg_status                     = get_post_meta( $event_id, 'mep_reg_status', true );
-	$event_location_icon  = mep_get_option( 'mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt' );
-	$event_organizer_icon = mep_get_option( 'mep_event_organizer_icon', 'icon_setting_sec', 'far fa-list-alt' );
+	/*
+* @Author 		engr.sumonazma@gmail.com
+* Copyright: 	mage-people.com
+*/
+	if ( ! defined( 'ABSPATH' ) ) {
+		die;
+	} // Cannot access pages directly.
+	$event_id                       = $event_id ?? 0;
+	$columnNumber                   = $columnNumber ?? '';
+	$class_name                     = $class_name ?? '';
+	$style                          = $style ?? '';
+	$reg_status                     = $reg_status ?? '';
+	$org_class                      = $org_class ?? '';
+	$cat_class                      = $cat_class ?? '';
+	$tag_class                      = $tag_class ?? '';
+	$taxonomy_category              = $taxonomy_category ?? '';
+	$taxonomy_organizer             = $taxonomy_organizer ?? '';
+	$upcoming_date                  = $upcoming_date ?? '';
+	$width                          = $width ?? '';
+	$show_price_label               = $show_price_label ?? '';
+	$total_left                     = $total_left ?? '';
+	$recurring                      = $recurring ?? 'no';
+	$show_price                     = $show_price ?? 'yes';
+	$event_type                     = $recurring ?? 'offline';
+	$event_multidate                = $event_multidate ?? [];
+	$author_terms                = $author_terms ?? [];
+	$mep_hide_event_hover_btn       = $mep_hide_event_hover_btn ?? 'no';
+	$sold_out_ribbon                = $sold_out_ribbon ?? 'no';
+	$limited_availability_ribbon    = $limited_availability_ribbon ?? 'no';
+	$hide_org_list                  = $hide_org_list ?? 'no';
+	$hide_location_list                  = $hide_location_list ?? 'no';
+	$hide_time_list                  = $hide_time_list ?? 'no';
+	$limited_availability_threshold = $limited_availability_threshold ?? 5;
+	$event_location_icon            = $event_location_icon ?? 'fas fa-map-marker-alt';
+	$event_organizer_icon           = $event_organizer_icon ?? 'far fa-list-alt';
 ?>
-<div class='filter_item mep-event-list-loop <?php echo esc_attr( $columnNumber );
-	echo ' ' . esc_attr( $class_name ); ?> mep_event_<?php echo esc_attr( $style ); ?>_item mix <?php echo esc_attr( $org_class ) . ' ' . esc_attr( $cat_class ) . ' ' . esc_attr( $tag_class ); ?>' data-title="<?php echo esc_attr( get_the_title( $event_id ) ); ?>" data-city-name="<?php echo esc_attr( get_post_meta( $event_id, 'mep_city', true ) ); ?>" data-state="<?php echo esc_attr( get_post_meta( $event_id, 'mep_state', true ) ); ?>" data-category="<?php echo esc_attr( $taxonomy_category ); ?>" data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>" data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $date ) ) ); ?>" style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
+<div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $columnNumber . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
+     data-title="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
+     data-city-name="<?php echo esc_attr( get_post_meta( $event_id, 'mep_city', true ) ); ?>"
+     data-state="<?php echo esc_attr( get_post_meta( $event_id, 'mep_state', true ) ); ?>"
+     data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
+     data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
+     data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $upcoming_date ) ) ); ?>" style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
 	<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
     <div class="mep_list_thumb">
         <a href="<?php echo esc_url( get_the_permalink() ); ?>">
-            <div class="mep_bg_thumb" data-bg-image="<?php mep_get_list_thumbnail_src( $event_id, 'large' ); ?>"></div>
+            <div class="mep_bg_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'large' ) ); ?>"></div>
         </a>
         <div class="mep-ev-start-date">
-            <div class="mep-day"><?php echo esc_html( apply_filters( 'mep_event_list_only_day_number', $day, $event_id ) ); ?></div>
-            <div class="mep-month"><?php echo esc_html( apply_filters( 'mep_event_list_only_month_name', $month, $event_id ) ); ?></div>
+            <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
+            <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>
         </div>
         <div class="mepev-ribbon">
 			<?php
 				if ( is_array( $event_multidate ) && sizeof( $event_multidate ) > 0 && $recurring == 'no' ) { ?>
-                    <div class='ribbon multidate'>
-                        <i class="far fa-calendar-alt"></i> <?php echo mep_get_option( 'mep_event_multidate_ribon_text', 'label_setting_sec', __( 'Multi Date', 'mage-eventpress' ) ); ?>
-                    </div>
+                    <div class='ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $recurring != 'no' ) { ?>
-                    <div class='ribbon recurring'>
-                        <i class="fas fa-history"></i> <?php echo mep_get_option( 'mep_event_recurring_ribon_text', 'label_setting_sec', __( 'Recurring', 'mage-eventpress' ) ); ?>
-                    </div>
+                    <div class='ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $event_type == 'online' ) { ?>
-                    <div class='ribbon online'>
-                        <i class="fas fa-vr-cardboard"></i> <?php echo mep_get_option( 'mep_event_virtual_label', 'label_setting_sec', __( 'Virtual', 'mage-eventpress' ) ); ?>
-                    </div>
+                    <div class='ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $total_left <= 0 ) { ?>
-                    <div class="ribbon sold-out">
-						<?php echo mep_get_option( 'mep_event_sold_out_label', 'label_setting_sec', __( 'Sold Out', 'mage-eventpress' ) ); ?>
-                    </div>
+                    <div class="ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $limited_availability_ribbon == 'yes' && $total_left > 0 && $total_left <= $limited_availability_threshold ) { ?>
-                    <div class="ribbon limited-availability">
-						<?php echo mep_get_option( 'mep_event_limited_availability_label', 'label_setting_sec', __( 'Limited Availability', 'mage-eventpress' ) ); ?>
-                    </div>
+                    <div class="ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
 				<?php } ?>
         </div>
     </div>
@@ -56,22 +72,20 @@
         <a href="<?php the_permalink(); ?>">
             <div class="mep-list-header">
                 <h2 class='mep_list_title'><?php the_title(); ?></h2>
-				<?php if ( $available_seat == 0 ) {
+				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>
                 <h3 class='mep_list_date'>
 					<?php if ( $show_price == 'yes' ) {
-						echo esc_html( $show_price_label ) . " " . mep_event_list_price( $event_id );
+						echo esc_html( $show_price_label ) . " " . wp_kses_post(wc_price(MPWEM_Functions::get_min_price($event_id))); ;
 					} ?>
                 </h3>
             </div>
-			<?php
-				if ( $style == 'list' ) {
-					?>
-                    <div class="mep-event-excerpt">
-						<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
-                    </div>
-				<?php } ?>
+			<?php if ( $style == 'list' ) { ?>
+                <div class="mep-event-excerpt">
+					<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
+                </div>
+			<?php } ?>
             <div class="mep-list-footer">
                 <ul class="mep-list-footer-ul">
 					<?php
@@ -112,7 +126,7 @@
         </a>
 		<?php if ( 'yes' == $mep_hide_event_hover_btn ) { ?>
             <div class="item_hover_effect">
-                <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( $mep_hide_event_hover_btn_text ); ?></a>
+                <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?></a>
             </div>
 		<?php } ?>
     </div>

@@ -1870,22 +1870,7 @@
 			}
 		}
 	}
-	if ( ! function_exists( 'mep_get_term_as_class' ) ) {
-		function mep_get_term_as_class( $post_id, $taxonomy, $unq_id = '' ) {
-			$tt = get_the_terms( $post_id, $taxonomy ) ? get_the_terms( $post_id, $taxonomy ) : [];
-			if ( is_array( $tt ) && sizeof( $tt ) > 0 ) {
-				$t_class = array();
-				foreach ( $tt as $tclass ) {
-					$t_class[] = $unq_id . 'mage-' . $tclass->term_id;
-				}
-				$main_class = implode( ' ', $t_class );
 
-				return $main_class;
-			} else {
-				return null;
-			}
-		}
-	}
 	if ( ! function_exists( 'mep_ticket_type_sold' ) ) {
 		function mep_ticket_type_sold( $event_id, $type = '', $date = '' ) {
 			$type             = ! empty( $type ) ? $type : '';
@@ -2161,112 +2146,7 @@
 			}
 		}
 	}
-	if ( ! function_exists( 'mep_on_post_publish' ) ) {
-		function mep_on_post_publish( $post_id, $post, $update ) {
-			if ( $post->post_type == 'mep_events' && $post->post_status == 'publish' && empty( get_post_meta( $post_id, 'check_if_run_once' ) ) ) {
-				$product_cat_ids = wp_get_post_terms( $post_id, 'product_cat', array( 'fields' => 'ids' ) );
-				// ADD THE FORM INPUT TO $new_post ARRAY
-				$new_post = array(
-					'post_title'    => $post->post_title,
-					'post_content'  => '',
-					'post_name'     => uniqid(),
-					'post_category' => array(),  // Usable for custom taxonomies too
-					'tags_input'    => array(),
-					'post_status'   => 'publish', // Choose: publish, preview, future, draft, etc.
-					'post_type'     => 'product'  //'post',page' or use a custom post type if you want to
-				);
-				//SAVE THE POST
-				$pid          = wp_insert_post( $new_post );
-				$product_type = mep_get_option( 'mep_event_product_type', 'single_event_setting_sec', 'yes' );
-				$_tax_status  = 'none';
-				update_post_meta( $pid, '_tax_status', $_tax_status );
-				update_post_meta( $post_id, '_tax_status', $_tax_status );
-				update_post_meta( $post_id, 'link_wc_product', $pid );
-				update_post_meta( $pid, 'link_mep_event', $post_id );
-				update_post_meta( $pid, '_price', 0.01 );
-				update_post_meta( $pid, '_sold_individually', 'yes' );
-				update_post_meta( $pid, '_downloadable', $product_type );
-				update_post_meta( $pid, '_virtual', $product_type );
-				$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
-				wp_set_object_terms( $pid, $terms, 'product_visibility' );
-				wp_set_post_terms( $pid, $product_cat_ids, 'product_cat' );
-				update_post_meta( $post_id, 'check_if_run_once', true );
-			}
-		}
-	}
-	add_action( 'wp_insert_post', 'mep_on_post_publish', 10, 3 );
-	if ( ! function_exists( 'mep_count_hidden_wc_product' ) ) {
-		function mep_count_hidden_wc_product( $event_id ) {
-			$args = array(
-				'post_type'      => 'product',
-				'posts_per_page' => - 1,
-				'meta_query'     => array(
-					array(
-						'key'     => 'link_mep_event',
-						'value'   => $event_id,
-						'compare' => '='
-					)
-				)
-			);
-			$loop = new WP_Query( $args );
-
-			return $loop->post_count;
-		}
-	}
-	add_action( 'save_post', 'mep_wc_link_product_on_save', 99, 1 );
-	if ( ! function_exists( 'mep_wc_link_product_on_save' ) ) {
-		function mep_wc_link_product_on_save( $post_id ) {
-			add_filter( 'wpseo_public_post_statuses', 'mepfix_sitemap_exclude_post_type', 5 );
-			if ( get_post_type( $post_id ) == 'mep_events' ) {
-				if ( ! isset( $_POST['mep_event_reg_btn_nonce'] ) ||
-				     ! wp_verify_nonce( $_POST['mep_event_reg_btn_nonce'], 'mep_event_reg_btn_nonce' ) ) {
-					return;
-				}
-				if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-					return;
-				}
-				if ( ! current_user_can( 'edit_post', $post_id ) ) {
-					return;
-				}
-				$event_name = get_the_title( $post_id );
-				if ( mep_count_hidden_wc_product( $post_id ) == 0 || empty( get_post_meta( $post_id, 'link_wc_product', true ) ) ) {
-					mep_create_hidden_event_product( $post_id, $event_name );
-				}
-				$product_cat_ids = wp_get_post_terms( $post_id, 'product_cat', array( 'fields' => 'ids' ) );
-				$product_id      = get_post_meta( $post_id, 'link_wc_product', true ) ? get_post_meta( $post_id, 'link_wc_product', true ) : $post_id;
-				set_post_thumbnail( $product_id, get_post_thumbnail_id( $post_id ) );
-				wp_publish_post( $product_id );
-				$product_type = mep_get_option( 'mep_event_product_type', 'single_event_setting_sec', 'yes' );
-				$_tax_status  = isset( $_POST['_tax_status'] ) ? sanitize_text_field( $_POST['_tax_status'] ) : 'none';
-				$_tax_class   = isset( $_POST['_tax_class'] ) ? sanitize_text_field( $_POST['_tax_class'] ) : '';
-				$sku          = isset( $_POST['mep_event_sku'] ) ? sanitize_text_field( $_POST['mep_event_sku'] ) : $product_id;
-				update_post_meta( $product_id, '_sku', $sku );
-				update_post_meta( $product_id, '_tax_status', $_tax_status );
-				update_post_meta( $product_id, '_tax_class', $_tax_class );
-				update_post_meta( $product_id, '_stock_status', 'instock' );
-				update_post_meta( $product_id, '_manage_stock', 'no' );
-				update_post_meta( $product_id, '_virtual', $product_type );
-				update_post_meta( $product_id, '_sold_individually', 'yes' );
-				update_post_meta( $product_id, '_downloadable', $product_type );
-				wp_set_post_terms( $product_id, $product_cat_ids, 'product_cat' );
-				$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
-				wp_set_object_terms( $product_id, $terms, 'product_visibility' );
-				// Update post
-				$my_post = array(
-					'ID'         => $product_id,
-					'post_title' => $event_name, // new title
-					'post_name'  => uniqid()// do your thing here
-				);
-				// unhook this function so it doesn't loop infinitely
-				remove_action( 'save_post', 'mep_wc_link_product_on_save' );
-				// update the post, which calls save_post again
-				wp_update_post( $my_post );
-				// re-hook this function
-				add_action( 'save_post', 'mep_wc_link_product_on_save' );
-				// Update the post into the database
-			}
-		}
-	}
+    
 	add_action( 'admin_head', 'mep_hide_date_from_order_page' );
 	if ( ! function_exists( 'mep_hide_date_from_order_page' ) ) {
 		function mep_hide_date_from_order_page() {
@@ -2288,87 +2168,7 @@
 			}
 		}
 	}
-	add_action( 'init', 'mep_get_all_hidden_product_id_array' );
-	function mep_get_all_hidden_product_id_array() {
-		$product_id = [];
-		$args       = array(
-			'post_type'      => 'mep_events',
-			'posts_per_page' => - 1
-		);
-		$qr         = new WP_Query( $args );
-		foreach ( $qr->posts as $result ) {
-			$post_id      = $result->ID;
-			$product_id[] = get_post_meta( $post_id, 'link_wc_product', true ) ? get_post_meta( $post_id, 'link_wc_product', true ) : '';
-		}
-		$product_id = array_filter( $product_id );
 
-		return $product_id;
-	}
-	add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', 'mep_get_all_hidden_product_id_array' );
-// add_action('parse_query', 'mep_product_tags_sorting_query');
-	if ( ! function_exists( 'mep_product_tags_sorting_query' ) ) {
-		function mep_product_tags_sorting_query( $query ) {
-			global $pagenow;
-			$taxonomy = 'product_visibility';
-			$q_vars   = &$query->query_vars;
-			if ( $pagenow == 'edit.php' && isset( $q_vars['post_type'] ) && $q_vars['post_type'] == 'product' ) {
-				$tax_query = array(
-					[
-						'taxonomy' => 'product_visibility',
-						'field'    => 'slug',
-						'terms'    => 'exclude-from-catalog',
-						'operator' => 'NOT IN',
-					],
-					[
-						'taxonomy' => 'product_cat',
-						'field'    => 'slug',
-						'terms'    => 'uncategorized	',
-						'operator' => 'NOT IN',
-					]
-				);
-				$query->set( 'tax_query', $tax_query );
-			}
-		}
-	}
-	add_action( 'wp_head', 'mep_exclude_hidden_product_from_search_engine' );
-	if ( ! function_exists( 'mep_exclude_hidden_product_from_search_engine' ) ) {
-		function mep_exclude_hidden_product_from_search_engine() {
-			global $post;
-			if ( is_single() && is_product() ) {
-				$post_id    = $post->ID;
-				$visibility = get_the_terms( $post_id, 'product_visibility' ) ? get_the_terms( $post_id, 'product_visibility' ) : [ 0 ];
-				if ( is_object( $visibility[0] ) ) {
-					if ( $visibility[0]->name == 'exclude-from-catalog' ) {
-						$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true ) ? get_post_meta( $post_id, 'link_mep_event', true ) : 0;
-						if ( $check_event_hidden > 0 ) {
-							echo '<meta name="robots" content="noindex, nofollow">';
-						}
-					}
-				}
-			}
-		}
-	}
-	add_action( 'wp', 'mep_hide_hidden_product_from_single', 90 );
-	if ( ! function_exists( 'mep_hide_hidden_product_from_single' ) ) {
-		function mep_hide_hidden_product_from_single() {
-			global $post, $wp_query;
-			if ( is_product() ) {
-				$post_id    = $post->ID;
-				$visibility = get_the_terms( $post_id, 'product_visibility' ) ? get_the_terms( $post_id, 'product_visibility' ) : [ 0 ];
-				if ( is_object( $visibility[0] ) ) {
-					if ( $visibility[0]->name == 'exclude-from-catalog' ) {
-						$check_event_hidden = get_post_meta( $post_id, 'link_mep_event', true ) ? get_post_meta( $post_id, 'link_mep_event', true ) : 0;
-						if ( $check_event_hidden > 0 ) {
-							$wp_query->set_404();
-							status_header( 404 );
-							get_template_part( 404 );
-							exit();
-						}
-					}
-				}
-			}
-		}
-	}
 	if ( ! function_exists( 'mep_set_email_content_type' ) ) {
 		function mep_set_email_content_type() {
 			return "text/html";
@@ -3499,31 +3299,7 @@
 			die();
 		}
 	}
-// Function for create hidden product for bus
-	if ( ! function_exists( 'mep_create_hidden_event_product' ) ) {
-		function mep_create_hidden_event_product( $post_id, $title ) {
-			$new_post    = array(
-				'post_title'    => $title,
-				'post_content'  => '',
-				'post_name'     => uniqid(),
-				'post_category' => array(),
-				'tags_input'    => array(),
-				'post_status'   => 'publish',
-				'post_type'     => 'product'
-			);
-			$_tax_status = 'none';
-			$pid         = wp_insert_post( $new_post );
-			update_post_meta( $post_id, 'link_wc_product', $pid );
-			update_post_meta( $pid, 'link_mep_event', $post_id );
-			update_post_meta( $pid, '_price', 0.01 );
-			update_post_meta( $pid, '_tax_status', $_tax_status );
-			update_post_meta( $pid, '_sold_individually', 'yes' );
-			update_post_meta( $pid, '_virtual', 'yes' );
-			$terms = array( 'exclude-from-catalog', 'exclude-from-search' );
-			wp_set_object_terms( $pid, $terms, 'product_visibility' );
-			update_post_meta( $post_id, 'check_if_run_once', true );
-		}
-	}
+
 	/*******************************************************************
 	 * Function: Update Value Position from Old Settings to New Settings
 	 * Developer: Ariful

@@ -1633,7 +1633,7 @@
                             let name = jQuery(this).data('name');
                             jQuery.ajax({
                                 type: 'POST',
-                                url: mp_ajax_url,
+                                url: mpwem_ajax_url,
                                 data: {
                                     "action": "mep_import_ajax_template",
                                     "nonce": '<?php echo wp_create_nonce( 'mep-ajax-import-template-nonce' ); ?>',

@@ -16,7 +16,7 @@ $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
-<div class="mpStyle mep-default-theme spring_field">
+<div class="mpwem_style mep-default-theme spring_field">
     <div class="mep_flex">
         <div class="spring_field_banner">
             <div class="_mT mpwem_slider_area">

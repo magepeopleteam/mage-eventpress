@@ -529,7 +529,7 @@ function render_mep_events_by_status( $posts ) {
 
 ?>
 <div class="wrap"></div>
-<div class="mpwem_event_list mpStyle mpwem_welcome_page">
+<div class="mpwem_event_list mpwem_style mpwem_welcome_page">
     <div class='padding'>
         <div class="container">
             <div class="header">

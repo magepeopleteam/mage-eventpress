@@ -17,7 +17,7 @@
 			public function event_settings( $event_id ) {
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				?>
-                <div class="mpStyle mp_tab_item mpwem_event_settings" data-tab-item="#mpwem_event_settings">
+                <div class="mpwem_style mp_tab_item mpwem_event_settings" data-tab-item="#mpwem_event_settings">
                     <div class="_dLayout_xs_mp_zero">
                         <div class="_bgLight_padding">
                             <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Settings', 'mage-eventpress' ); ?></h4>
@@ -43,7 +43,7 @@
                 <div class="_padding_bT">
                     <label class="justifyBetween _alignCenter">
                         <span><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
-                        <input class="formControl mp_id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
+                        <input class="formControl id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
                     </label>
                     <span class="des_info"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
                 </div>

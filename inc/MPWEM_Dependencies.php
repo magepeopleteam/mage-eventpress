@@ -29,36 +29,19 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
-				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Frontend.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';
 				require_once( dirname( __DIR__ ) . '/lib/classes/class-mep.php' );
 				require_once( dirname( __DIR__ ) . "/inc/mep_functions.php" );
-
-
-
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/google_map.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_location.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_list_tax_name_list.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_list.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_minimal.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_native.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_timeline.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_title.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_spring.php" );
-				require_once( dirname( __DIR__ ) . "/inc/template-prts/event_loop_winter.php" );
-
-
-
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax.php" );
-				require_once( dirname( __DIR__ ) . "/inc/mep_shortcode.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax_meta.php" );
-				require_once( dirname( __DIR__ ) . "/inc/mep_query.php" );
-				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/functions.php" );
-				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/recurring_attendee_stat.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 			}
 
@@ -87,8 +70,8 @@
 					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
 					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
 				}
-				wp_enqueue_style( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time() );
-				wp_enqueue_script( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
+				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
 			}
 
@@ -197,14 +180,15 @@
 			public function js_constant() {
 				?>
                 <script type="text/javascript">
-                    let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
-                    let mp_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
-                    let mp_currency_position = "<?php echo get_option( 'woocommerce_currency_pos' ); ?>";
-                    let mp_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
-                    let mp_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
-                    let mp_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
-                    let mp_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
-                    let mp_date_format = "D d M , yy";
+                    var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
+                    let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
+                    let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
+                    let mpwem_currency_position = "<?php echo get_option( 'woocommerce_currency_pos' ); ?>";
+                    let mpwem_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
+                    let mpwem_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
+                    let mpwem_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
+                    let mpwem_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
+                    let mpwem_date_format = "D d M , yy";
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
                 </script>
 				<?php
@@ -253,14 +237,14 @@
                             "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
                             "location"  : {
                                 "@type"         : "Place",
-                                "name"          : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'location')); ?>",
+                                "name"          : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ); ?>",
                                 "address"       : {
                                 "@type"         : "PostalAddress",
-                                "streetAddress" : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'street'));?>",
-                                "addressLocality": "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'city')); ?>",
-                                "postalCode"    : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'zip'));?>",
-                                "addressRegion" : "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'state')); ?>",
-                                "addressCountry": "<?php echo esc_attr(MPWEM_Functions::get_location( $event_id ,'country')); ?>"
+                                "streetAddress" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ); ?>",
+                                "addressLocality": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?>",
+                                "postalCode"    : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ); ?>",
+                                "addressRegion" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ); ?>",
+                                "addressCountry": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ); ?>"
                                 }
                             },
                             "image": [

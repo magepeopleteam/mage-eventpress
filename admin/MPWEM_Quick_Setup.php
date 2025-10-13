@@ -15,8 +15,8 @@
 				add_action('admin_menu', array($this, 'quick_setup_menu'));
 			}
 			public function add_admin_scripts() {
-				wp_enqueue_style('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time());
-				wp_enqueue_script('mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array('jquery'), time(), true);
+				wp_enqueue_style('mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time());
+				wp_enqueue_script('mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array('jquery'), time(), true);
 				wp_enqueue_style('mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time());
 				wp_enqueue_style('mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4');
 			}
@@ -128,7 +128,7 @@
 					wp_redirect(admin_url('edit.php?post_type=mep_events'));
 				}
 				?>
-				<div class="mpStyle mep-quick-setup">
+				<div class="mpwem_style mep-quick-setup">
 					<div class="_dShadow_6_adminLayout">
 						<form method="post" action="">
 							<div class="mpTabsNext">

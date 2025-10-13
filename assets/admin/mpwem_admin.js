@@ -730,3 +730,100 @@ function mpwem_load_sortable_datepicker(parent, item) {
         return false;
     });
 }(jQuery));
+//=========Attendee Statistics==============//
+(function ($) {
+    "use strict";
+    $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_post_id"]', function () {
+        let post_id = $(this).val();
+        let parent = $(this).closest('#mpwem_recurring_statistics');
+        let target = parent.find('.date_time_area');
+        if (post_id > 0) {
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_admin_var.url,
+                data: {
+                    "action": "mpwem_load_date",
+                    "post_id": post_id,
+                    "nonce": mpwem_admin_var.nonce
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                    dLoaderRemove(target);
+                }
+            });
+        } else {
+            parent.find('.statistics_list').slideUp('fast');
+        }
+    });
+    $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_date_time"]', function () {
+        let parent = $(this).closest('#mpwem_recurring_statistics');
+        const target = parent.find('.mpwem_time_area');
+        if (target.length > 0) {
+            const post_id = parent.find('[name="mpwem_post_id"]').val();
+            const dates = parent.find('[name="mpwem_date_time"]').val();
+            if (post_id > 0 && dates) {
+                jQuery.ajax({
+                    type: 'POST',
+                    url: mpwem_admin_var.url,
+                    data: {
+                        "action": "mpwem_load_time",
+                        "post_id": post_id,
+                        "dates": dates,
+                        "nonce": mpwem_admin_var.nonce
+                    },
+                    beforeSend: function () {
+                        dLoader_xs(target);
+                    },
+                    success: function (data) {
+                        target.html(data);
+                        dLoaderRemove(target);
+                    }
+                });
+            } else {
+                parent.find('.statistics_list').slideUp('fast');
+            }
+        } else {
+            parent.find('#mpwem_load_attendee_statistics').trigger('click');
+        }
+    });
+    $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_time"]', function () {
+        let parent = $(this).closest('#mpwem_recurring_statistics');
+        parent.find('#mpwem_load_attendee_statistics').trigger('click');
+    });
+    $(document).on('click', '#mpwem_load_attendee_statistics', function () {
+        let parent = $(this).closest('#mpwem_recurring_statistics');
+        let post_id = parent.find('[name="mpwem_post_id"]').val();
+        let target = parent.find('.statistics_list');
+        if (post_id > 0) {
+            let dates = parent.find('[name="mpwem_date_time"]').val();
+            let time_area = parent.find('.mpwem_time_area');
+            if (time_area.length > 0) {
+                dates = parent.find('[name="mpwem_time"]').val();
+            }
+            target.slideDown('fast');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_admin_var.url,
+                data: {
+                    "action": "mpwem_load_attendee_statistics",
+                    "post_id": post_id,
+                    "dates": dates,
+                    "nonce": mpwem_admin_var.nonce
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                    dLoaderRemove(target);
+                }
+            });
+        } else {
+            target.slideUp('fast');
+            alert('Please select event');
+        }
+    });
+}(jQuery));

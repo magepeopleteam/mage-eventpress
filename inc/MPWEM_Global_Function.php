@@ -29,7 +29,7 @@
                 <script>
                     jQuery(document).ready(function () {
                         jQuery("<?php echo esc_attr( $selector ); ?>").datepicker({
-                            dateFormat: mp_date_format,
+                            dateFormat: mpwem_date_format,
                             minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
                             maxDate: new Date(<?php echo esc_attr( $end_year ); ?>, <?php echo esc_attr( $end_month ); ?>, <?php echo esc_attr( $end_day ); ?>),
                             autoSize: true,
@@ -511,7 +511,7 @@
                 <script>
                     jQuery(document).ready(function () {
                         jQuery("<?php echo esc_attr( $selector ); ?>").datepicker({
-                            dateFormat: mp_date_format,
+                            dateFormat: mpwem_date_format,
                             minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
                             maxDate: new Date(<?php echo esc_attr( $end_year ); ?>, <?php echo esc_attr( $end_month ); ?>, <?php echo esc_attr( $end_day ); ?>),
                             autoSize: true,

@@ -169,7 +169,7 @@
 				$text_length = strlen($text);
 				if ($text && $text_length > $length) {
 					?>
-                    <div class="mp_load_more_text_area">
+                    <div class="mpwem_load_more_text_area">
                         <span data-read-close><?php echo esc_html(substr($text, 0, $length)); ?> ....</span>
                         <span data-read-open class="dNone"><?php echo esc_html($text); ?></span>
                         <div data-read data-open-text="<?php esc_attr_e('Load More', 'mage-eventpress'); ?>" data-close-text="<?php esc_attr_e('Less More', 'mage-eventpress'); ?>">
@@ -221,7 +221,7 @@
                             </div>
                             <label>
                                 <input type="text"
-                                       class="formControl inputIncDec mp_number_validation"
+                                       class="formControl inputIncDec number_validation"
                                        data-price="<?php echo esc_attr($price); ?>"
                                        name="<?php echo esc_attr($input_name); ?>"
                                        value="<?php echo esc_attr( max( $default_qty, $min_qty,0 ) ); ?>"

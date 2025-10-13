@@ -18,6 +18,8 @@
 				add_action( 'mep_after_event_details', [ $this, 'after_event_details' ] );
 				/**************************/
 				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 2 );
+				add_action( 'mep_event_list_org_names', [ $this, 'event_list_org_names' ], 10, 2 );
+				add_action( 'mep_event_list_cat_names', [ $this, 'event_list_cat_names' ], 10, 2 );
 				add_action( 'mep_event_organizer', [ $this, 'event_organizer' ] );
 				add_action( 'mep_event_organizer_name', [ $this, 'event_organizer_name' ] );
 				add_action( 'mep_event_organized_by', [ $this, 'event_organized_by' ] );
@@ -30,8 +32,8 @@
 				add_action( 'mep_event_location_postcode', [ $this, 'event_location_postcode' ] );
 				add_action( 'mep_event_location_country', [ $this, 'event_location_country' ] );
 				add_action( 'mep_event_address_list_sidebar', [ $this, 'event_address_list_sidebar' ] );
-				add_action( 'mep_event_location', [ $this, 'event_location' ],10,2 );
-				add_action( 'mep_event_location_ticket', [ $this, 'event_location' ],10,2 );
+				add_action( 'mep_event_location', [ $this, 'event_location' ], 10, 2 );
+				add_action( 'mep_event_location_ticket', [ $this, 'event_location' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_time', [ $this, 'time' ], 10, 5 );
 				add_action( 'mpwem_registration', [ $this, 'registration' ], 10, 4 );
@@ -40,14 +42,15 @@
 				add_action( 'mpwem_date_select', [ $this, 'date_select' ], 10, 4 );
 				add_action( 'mpwem_date_time', [ $this, 'date_time' ], 10, 4 );
 				add_action( 'mep_event_date', [ $this, 'event_date' ] );
-				add_action( 'mep_event_date_default_theme', [ $this, 'event_date_default_theme' ], 10, 2 );
-				add_action( 'mep_event_date_only', [ $this, 'event_date_only' ] );
-				add_action( 'mep_event_time_only', [ $this, 'event_time_only' ] );
+				add_action( 'mep_event_date_default_theme', [ $this, 'event_date_list' ], 10, 3 );
+				add_action( 'mep_event_date_only', [ $this, 'event_date_only' ], 10, 2 );
+				add_action( 'mep_event_time_only', [ $this, 'event_time_only' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_faq', [ $this, 'faq' ], 10, 4 );
 				add_action( 'mep_event_faq', [ $this, 'event_faq' ] );
 				/**************************/
 				add_action( 'mpwem_map', [ $this, 'map' ], 10, 4 );
+				add_action( 'mep_event_map', [ $this, 'event_map' ] );
 				/**************************/
 				add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
 				/**************************/
@@ -59,6 +62,10 @@
 				add_action( 'mep_event_seat', [ $this, 'event_seat' ] );
 				/**************************/
 				add_action( 'mep_event_speakers_list', [ $this, 'event_speakers_list' ] );
+				/**************************/
+				add_action( 'mep_event_tags', [ $this, 'event_tags' ] );
+				add_action( 'mep_event_tags_name', [ $this, 'event_tags_name' ] );
+				add_action( 'mep_event_list_tag_names', [ $this, 'event_list_tag_names' ], 10, 2 );
 				/**************************/
 				add_action( 'mep_event_add_calender', [ $this, 'event_add_calender' ] );
 				/**************************/
@@ -74,11 +81,65 @@
 
 			public function organizer( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
 
+			public function event_list_org_names( $org, $unq_id = '' ): void {
+				ob_start();
+				?>
+                <div class="mep-events-cats-list">
+					<?php
+						if ( $org > 0 ) {
+							$terms = get_terms( array(
+								'parent'   => $org,
+								'taxonomy' => 'mep_org'
+							) );
+						} else {
+							$terms = get_terms( array(
+								'taxonomy' => 'mep_org'
+							) );
+						}
+					?>
+                    <div class="mep-event-cat-controls">
+                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button><?php foreach ( $terms as $_terms ) { ?>
+                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button><?php } ?>
+                    </div>
+                </div>
+				<?php
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_organization_name_filter_list', $content );
+			}
+
+			public function event_list_cat_names( $cat, $unq_id = '' ): void {
+				ob_start();
+				?>
+                <div class="mep-events-cats-list">
+					<?php
+						if ( $cat > 0 ) {
+							$terms = get_terms( array(
+								'parent'   => $cat,
+								'taxonomy' => 'mep_cat'
+							) );
+						} else {
+							$terms = get_terms( array(
+								'taxonomy' => 'mep_cat'
+							) );
+						}
+					?>
+                    <div class="mep-event-cat-controls">
+                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+						<?php foreach ( $terms as $_terms ) { ?>
+                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button>
+						<?php } ?>
+                    </div>
+                </div>
+				<?php
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_category_name_filter_list', $content );
+			}
+
 			public function event_organizer( $event_id ) {
 				ob_start();
 				$org = get_the_terms( $event_id, 'mep_org' );
 				if ( ! empty( $org ) ) {
-					require( mep_template_file_path( 'single/organizer.php' ) );
+					require MPWEM_Functions::template_path( 'single/organizer.php' );
 				}
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_org_name', $content, $event_id );
@@ -103,7 +164,7 @@
 				if ( $org_terms && ! is_wp_error( $org_terms ) && count( $org_terms ) > 0 ) :?>
                     <div class="mep-org-details">
                         <div class="org-name">
-                            <div><?php echo mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) ? mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) : _e( 'Organized By:', 'mage-eventpress' ); ?></div>
+                            <div><?php echo mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) ? mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) : __( 'Organized By:', 'mage-eventpress' ); ?></div>
 							<?php foreach ( $org_terms as $index => $org ): ?>
                                 <strong><?php echo esc_html( $org->name ); ?><?php if ( $index < count( $org_terms ) - 1 ): ?>|<?php endif; ?></strong>
 							<?php endforeach; ?>
@@ -160,17 +221,18 @@
 
 			public function event_address_list_sidebar( $event_id ) {
 				ob_start();
-				require( mep_template_file_path( 'single/location_list.php' ) );
+				require MPWEM_Functions::template_path( 'single/location_list.php' );
 				echo ob_get_clean();
 			}
-public function event_location($event_id,$event_meta='') {
-	$location_info = MPWEM_Functions::get_location( $event_id);
-	ob_start();
-	echo esc_html(implode(', ', array_filter($location_info)));
-	$content = ob_get_clean();
 
-	echo apply_filters('mage_event_location_in_ticket', $content, $event_id, $event_meta, $location_info);
-}
+			public function event_location( $event_id, $event_meta = '' ) {
+				$location_info = MPWEM_Functions::get_location( $event_id );
+				ob_start();
+				echo esc_html( implode( ', ', array_filter( $location_info ) ) );
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_location_in_ticket', $content, $event_id, $event_meta, $location_info );
+			}
+
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
 
 			public function registration( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
@@ -241,146 +303,55 @@ public function event_location($event_id,$event_meta='') {
 				}
 			}
 
-			public function event_date_default_theme( $event_id, $title = 'yes' ) {
-				$event_meta              = get_post_custom( $event_id );
-				$start_datetime          = get_post_meta( $event_id, 'event_start_datetime', true ) ? get_post_meta( $event_id, 'event_start_datetime', true ) : ''; //$event_meta['event_start_datetime'][0];
-				$start_date              = get_post_meta( $event_id, 'event_start_date', true ) ? get_post_meta( $event_id, 'event_start_date', true ) : ''; //$event_meta['event_start_date'][0];
-				$start_time              = get_post_meta( $event_id, 'event_start_time', true ) ? get_post_meta( $event_id, 'event_start_time', true ) : ''; //$event_meta['event_start_time'][0];
-				$end_datetime            = get_post_meta( $event_id, 'event_end_datetime', true ) ? get_post_meta( $event_id, 'event_end_datetime', true ) : ''; //$event_meta['event_end_datetime'][0];
-				$end_date                = get_post_meta( $event_id, 'event_end_date', true ) ? get_post_meta( $event_id, 'event_end_date', true ) : ''; //$event_meta['event_end_date'][0];
-				$end_time                = get_post_meta( $event_id, 'event_end_time', true ) ? get_post_meta( $event_id, 'event_end_time', true ) : ''; //$event_meta['event_end_time'][0];
-				$cn                      = 1;
-				$recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-				$mep_show_upcoming_event = get_post_meta( $event_id, 'mep_show_upcoming_event', true ) ? get_post_meta( $event_id, 'mep_show_upcoming_event', true ) : 'no';
-				$_more_date              = get_post_meta( $event_id, 'mep_event_more_date', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_event_more_date', true ) ) : array();
-				$more_date               = apply_filters( 'mep_event_date_more_date_array', $_more_date, $event_id );
-				$show_end_date           = get_post_meta( $event_id, 'mep_show_end_datetime', true ) ? get_post_meta( $event_id, 'mep_show_end_datetime', true ) : 'yes';
-				$end_date_display_status = apply_filters( 'mep_event_datetime_status', $show_end_date, $event_id );
-				if ( $title == 'yes' ) {
-					require( mep_template_file_path( 'single/date_list_title.php' ) );
-				}
-				if ( sizeof( $more_date ) > 2 ) {
-					echo '<ul class="mep_event_date_sch" id="mep_event_date_sch">';
-				} else {
-					echo '<ul class="mep_event_date_sch">';
-				}
-				if ( $recurring == 'yes' ) {
-					if ( strtotime( current_time( 'Y-m-d H:i' ) ) < strtotime( $start_datetime ) ) {
-						require( mep_template_file_path( 'single/date_list.php' ) );
-					}
-					foreach ( $more_date as $_more_date ) {
-						$start_date     = $_more_date['event_more_start_date'];
-						$end_date       = $_more_date['event_more_end_date'];
-						$start_datetime = $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'];
-						$end_datetime   = $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'];
-						if ( strtotime( current_time( 'Y-m-d H:i' ) ) < strtotime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'] ) ) {
-							if ( $mep_show_upcoming_event == 'yes' ) {
-								$cnt = 1;
-							} else {
-								$cnt = $cn;
-							}
-							if ( $cn == $cnt ) {
-								require( mep_template_file_path( 'single/date_list.php' ) );
-								$cn ++;
-							}
-						}
-					}
-				} elseif ( $recurring == 'everyday' ) {
-					do_action( 'mep_event_everyday_date_list_display', $event_id );
-				} else {
-					if ( is_array( $more_date ) && sizeof( $more_date ) > 0 ) {
-						require( mep_template_file_path( 'single/date_list.php' ) );
-						foreach ( $more_date as $_more_date ) {
-							$start_date     = $_more_date['event_more_start_date'];
-							$end_date       = $_more_date['event_more_end_date'];
-							$start_datetime = $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'];
-							$end_datetime   = $_more_date['event_more_end_date'] . ' ' . $_more_date['event_more_end_time'];
-							require( mep_template_file_path( 'single/date_list.php' ) );
-						}
+			public function event_date_list( $event_id, $title = 'yes', $all_dates = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
+
+			public function event_date_only( $event_id, $all_dates = [] ) {
+				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+				if ( sizeof( $all_dates ) > 0 ) {
+					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+					if ( $date_type == 'no' || $date_type == 'yes' ) {
+						$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
 					} else {
-						require( mep_template_file_path( 'single/date_list.php' ) );
+						$date = current( $all_dates );
 					}
-				}
-				echo '</ul>';
-				if ( sizeof( $more_date ) > 2 ) {
-					?>
-                    <p id="mep_single_view_all_date" class="mep-tem3-title-sec mep_single_date_btn"><i class="fa fa-plus"></i><?php echo mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', __( 'View More Date', 'mage-eventpress' ) ); ?></p>
-                    <p id="mep_single_hide_all_date" class="mep-tem3-title-sec mep_single_date_btn"><i class="fa fa-minus"></i><?php echo mep_get_option( 'mep_event_hide_date_list_btn_text', 'label_setting_sec', __( 'Hide Date Lists', 'mage-eventpress' ) ); ?></p>
-					<?php
+					if ( $date ) {
+						?><p><?php echo esc_html( MPWEM_Global_Function::date_format( $date ) ); ?></p><?php
+					}
 				}
 			}
 
-			public function event_date_only( $event_id ) {
-				$start_datetime          = get_post_meta( $event_id, 'event_start_datetime', true ) ? get_post_meta( $event_id, 'event_start_datetime', true ) : ''; //$event_meta['event_start_datetime'][0];
-				$cn                      = 1;
-				$more_date               = array( get_post_meta( $event_id, 'event_start_date', true ) . ' ' . get_post_meta( $event_id, 'event_start_time', true ) );
-				$recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-				$mep_show_upcoming_event = get_post_meta( $event_id, 'mep_show_upcoming_event', true ) ? get_post_meta( $event_id, 'mep_show_upcoming_event', true ) : 'no';
-				if ( $recurring == 'yes' ) {
-					$event_more_dates = get_post_meta( $event_id, 'mep_event_more_date', true ) ? get_post_meta( $event_id, 'mep_event_more_date', true ) : [];
-					foreach ( $event_more_dates as $md ) {
-						$more_date[] = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
-					}
-					foreach ( $more_date as $ev_date ) {
-						if ( strtotime( current_time( 'Y-m-d H:i:s' ) ) < strtotime( $ev_date ) ) {
-							if ( $mep_show_upcoming_event == 'yes' ) {
-								$cnt = 1;
-							} else {
-								$cnt = $cn;
-							}
-							if ( $cn == $cnt ) {
-								?>
-                                <p><?php echo get_mep_datetime( $ev_date, 'date-text' ); ?></p>
-								<?php
-								$cn ++;
-							}
+			public function event_time_only( $event_id, $all_dates ) {
+				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+				if ( sizeof( $all_dates ) > 0 ) {
+					$time      = '';
+					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+					if ( $date_type == 'no' || $date_type == 'yes' ) {
+						$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
+						$time = MPWEM_Global_Function::check_time_exit_date( $date ) ? $date : '';
+					} else {
+						$date      = current( $all_dates );
+						$all_times = MPWEM_Functions::get_times( $event_id, $all_dates, $date );
+						if ( sizeof( $all_times ) > 0 ) {
+							$time_info = current( $all_times );
+							$time      = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
+							$time      = $date . ' ' . $time;
 						}
 					}
-				} else {
-					?>
-                    <p><?php echo apply_filters( 'mep_display_date_only', get_mep_datetime( $start_datetime, 'date-text' ), $event_id ); ?></p>
-					<?php
-				}
-			}
-
-			public function event_time_only( $event_id ) {
-				$start_datetime          = get_post_meta( $event_id, 'event_start_datetime', true ) ? get_post_meta( $event_id, 'event_start_datetime', true ) : '';
-				$cn                      = 1;
-				$more_date               = array( get_post_meta( $event_id, 'event_start_date', true ) . ' ' . get_post_meta( $event_id, 'event_start_time', true ) );
-				$recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-				$mep_show_upcoming_event = get_post_meta( $event_id, 'mep_show_upcoming_event', true ) ? get_post_meta( $event_id, 'mep_show_upcoming_event', true ) : 'no';
-				if ( $recurring == 'yes' ) {
-					$event_more_dates = get_post_meta( get_the_id(), 'mep_event_more_date', true ) ? get_post_meta( get_the_id(), 'mep_event_more_date', true ) : [];
-					foreach ( $event_more_dates as $md ) {
-						$more_date[] = $md['event_more_start_date'] . ' ' . $md['event_more_start_time'];
+					if ( $time ) {
+						?><p><?php echo esc_html( MPWEM_Global_Function::date_format( $date, 'time' ) ); ?></p><?php
 					}
-					foreach ( $more_date as $ev_date ) {
-						if ( strtotime( current_time( 'Y-m-d H:i:s' ) ) < strtotime( $ev_date ) ) {
-							if ( $mep_show_upcoming_event == 'yes' ) {
-								$cnt = 1;
-							} else {
-								$cnt = $cn;
-							}
-							if ( $cn == $cnt ) {
-								?>
-                                <p><?php echo apply_filters( 'mep_event_details_only_time', get_mep_datetime( $ev_date, 'time' ), $event_id ); ?> </p>
-								<?php
-								$cn ++;
-							}
-						}
-					}
-				} else {
-					?>
-                    <p><?php echo apply_filters( 'mep_event_details_only_time', get_mep_datetime( $start_datetime, 'time' ), $event_id ); ?></p>
-					<?php
 				}
 			}
 
 			/*************************************/
 			public function faq( $event_id ): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
 
+			/****************************************/
 			public function map( $event_id ): void { require MPWEM_Functions::template_path( 'layout/map.php' ); }
 
+			public function event_map( $event_id ): void { require MPWEM_Functions::template_path( 'layout/map_only.php' ); }
+
+			/*****************************************/
 			public function related( $event_id ): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
 
 			/**************************/
@@ -390,7 +361,7 @@ public function event_location($event_id,$event_meta='') {
 				ob_start();
 				$post_id     = $event_id;
 				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-				require( mep_template_file_path( 'single/share_btn.php' ) );
+				require MPWEM_Functions::template_path( 'single/share_btn.php' );
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_social_share', $content, $event_id );
 			}
@@ -401,14 +372,14 @@ public function event_location($event_id,$event_meta='') {
 			/**************************/
 			public function event_title( $event_id ) {
 				ob_start();
-				require( mep_template_file_path( 'single/title.php' ) );
+				require MPWEM_Functions::template_path( 'single/title.php' );
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_title', $content, $event_id );
 			}
 
 			public function event_only_title( $event_id ) {
 				ob_start();
-				require( mep_template_file_path( 'single/title_only.php' ) );
+				require MPWEM_Functions::template_path( 'single/title_only.php' );
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_title', $content, $event_id );
 			}
@@ -419,7 +390,7 @@ public function event_location($event_id,$event_meta='') {
 				$content       = $content_event->post_content;
 				$content       = apply_filters( 'the_content', $content );
 				$content       = str_replace( ']]>', ']]&gt;', $content );
-				require( mep_template_file_path( 'single/details.php' ) );
+				require MPWEM_Functions::template_path( 'single/details.php' );
 				do_action( 'mep_after_event_details', $event_id );
 			}
 
@@ -435,7 +406,7 @@ public function event_location($event_id,$event_meta='') {
 			public function after_event_details( $event_id ) {
 				$mep_event_day = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_day', [] );
 				if ( sizeof( $mep_event_day ) > 0 ) {
-					require( mep_template_file_path( 'single/daywise_details.php' ) );
+					require MPWEM_Functions::template_path( 'single/daywise_details.php' );
 				}
 			}
 
@@ -450,7 +421,7 @@ public function event_location($event_id,$event_meta='') {
 				$total_sold         = MPWEM_Functions::get_total_sold( $event_id, $date );
 				$total_left         = $total_seat - $total_sold;
 				$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
-				require mep_template_file_path( 'single/total_seat.php' );
+				require MPWEM_Functions::template_path( 'single/total_seat.php' );
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_total_seat', $content, $event_id );
 			}
@@ -459,7 +430,7 @@ public function event_location($event_id,$event_meta='') {
 				ob_start();
 				$mep_event_faq = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_faq' );
 				if ( $mep_event_faq ) {
-					require( mep_template_file_path( 'single/faq.php' ) );
+					require MPWEM_Functions::template_path( 'single/faq.php' );
 				}
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_faq_list', $content, $event_id );
@@ -470,10 +441,76 @@ public function event_location($event_id,$event_meta='') {
 				$speaker_icon  = get_post_meta( $event_id, 'mep_event_speaker_icon', true ) ? get_post_meta( $event_id, 'mep_event_speaker_icon', true ) : 'fa fa-microphone';
 				$speaker_label = get_post_meta( $event_id, 'mep_speaker_title', true ) ? get_post_meta( $event_id, 'mep_speaker_title', true ) : esc_html__( "Speaker's", "mage-eventpress" );
 				if ( is_array( $speakers_id ) && sizeof( $speakers_id ) > 0 ) {
-					require( mep_template_file_path( 'single/speaker-list.php' ) );
+					require MPWEM_Functions::template_path( 'single/speaker-list.php' );
 				}
 			}
 
+			/***********************************/
+			public function event_tags( $event_id ) {
+				ob_start();
+				$tags = get_the_terms( $event_id, 'mep_tag' );
+				if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) {
+					?>
+                    <div class="location-widgets mep-event-tags-widget">
+                        <div>
+                            <div class="location-title"><?php echo esc_html( mep_get_option( 'mep_tags_text', 'label_setting_sec', __( 'Event Tags', 'mage-eventpress' ) ) ); ?></div>
+                            <p class="mep-event-tags-list">
+								<?php
+									foreach ( $tags as $tag ) {
+										echo '<a href="' . esc_url( get_term_link( $tag->term_id, 'mep_tag' ) ) . '" rel="tag" class="mep-tag-link">' . esc_html( $tag->name ) . '</a>';
+									}
+								?>
+                            </p>
+                        </div>
+                    </div>
+					<?php
+				}
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_single_tags', $content, $event_id );
+			}
+
+			public function event_tags_name() {
+				global $post;
+				ob_start();
+				$tags  = get_the_terms( get_the_id(), 'mep_tag' );
+				$names = [];
+				if ( sizeof( $tags ) > 0 && ! is_wp_error( $tags ) ) {
+					foreach ( $tags as $key => $value ) {
+						$names[] = $value->name;
+					}
+				}
+				echo esc_html( implode( ', ', $names ) );
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_single_tags_name', $content, $post->ID );
+			}
+
+			public function event_list_tag_names( $tag, $unq_id = '' ) {
+				ob_start();
+				?>
+                <div class="mep-events-cats-list">
+					<?php
+						if ( $tag > 0 ) {
+							$terms = get_terms( array(
+								'include'  => explode( ',', $tag ),
+								'taxonomy' => 'mep_tag'
+							) );
+						} else {
+							$terms = get_terms( array(
+								'taxonomy' => 'mep_tag'
+							) );
+						}
+					?>
+                    <div class="mep-event-cat-controls">
+                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button><?php foreach ( $terms as $_terms ) { ?>
+                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button><?php } ?>
+                    </div>
+                </div>
+				<?php
+				$content = ob_get_clean();
+				echo apply_filters( 'mage_event_tag_name_filter_list', $content );
+			}
+
+			/***********************************/
 			public function event_add_calender( $event_id ) {
 				?>
                 <div class="calender-url">
@@ -531,7 +568,7 @@ public function event_location($event_id,$event_meta='') {
 				$paged  = intval( $_REQUEST['page'] ?? 1 );
 				$style  = $atts['style'];
 				$column = $style != 'grid' ? 1 : $atts['column'];
-				$loop   = mep_event_query( $atts['show'], $atts['sort'], $atts['cat'], $atts['org'], $atts['city'], $atts['country'], $atts['status'], '', $atts['year'], $paged );
+				$loop   = MPWEM_Query::event_query( $atts['show'], $atts['sort'], $atts['cat'], $atts['org'], $atts['city'], $atts['country'], $atts['status'], '', $atts['year'], $paged );
 				ob_start();
 				while ( $loop->have_posts() ) {
 					$loop->the_post();

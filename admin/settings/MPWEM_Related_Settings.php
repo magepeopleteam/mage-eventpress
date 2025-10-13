@@ -309,7 +309,7 @@
 				<?php if($related_event_status=='on'): ?>
 				<div class="<?php echo $smart_theme=='smart.php'?'mep_smart_theme':''; ?>">
 					<div class="mep-related-events">
-						<div class="related-events-header mpStyle">
+						<div class="related-events-header mpwem_style">
 							<h2><?php echo $section_label; ?></h2>
 							<div class="related-events-navigation">
 								<button class="mep-ev-prev"><i class="fas fa-chevron-left"></i></button>

@@ -24,7 +24,7 @@
 			public function welcome_page() {
 				?>
 				<div class="wrap"></div>
-				<div class="mpStyle mpwem_welcome_page">
+				<div class="mpwem_style mpwem_welcome_page">
 					<div class='padding'>
 						<div class="mpTabs tabBorder _dShadow_6">
 							<ul class="tabLists bgLight_1">

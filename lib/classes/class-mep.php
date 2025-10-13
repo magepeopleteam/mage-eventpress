@@ -12,7 +12,7 @@ if (!class_exists('MPWEM_Helper')) {
         public function list_with_filter_section($loop, $params) {
             ob_start();
             ?>
-            <div class="mpStyle">
+            <div class="mpwem_style">
                 <div class="search_sort_code_area">
                     <div class="search_sort_code">
                         <div class="sort_code_search_box defaultLayout_xs">
@@ -180,7 +180,7 @@ if (!class_exists('MPWEM_Helper')) {
             <input type="hidden" name="pagination_per_page" value="<?php echo esc_attr($per_page); ?>"/>
             <input type="hidden" name="pagination_style" value="<?php echo esc_attr($params['pagination-style']); ?>"/>
             <?php if (($params['search-filter'] == 'yes' || $params['pagination'] == 'yes') && $total_item > $per_page) { ?>
-                <div class="mpStyle pagination_area">
+                <div class="mpwem_style pagination_area">
                     <div class="allCenter">
 
                         <?php

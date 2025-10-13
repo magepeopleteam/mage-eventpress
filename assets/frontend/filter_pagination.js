@@ -285,7 +285,7 @@ function mpwem_page_scroll_to(target) {
 		mpwem_add_loader(inner);
 		jQuery.ajax({
 			type: 'POST',
-			url: typeof mp_ajax_url !== 'undefined' ? mp_ajax_url : (typeof mep_ajax !== 'undefined' ? mep_ajax.url : ''),
+			url: typeof mpwem_ajax_url !== 'undefined' ? mpwem_ajax_url : (typeof mep_ajax !== 'undefined' ? mep_ajax.url : ''),
 			data: args,
 			success: function(html){
 				inner.html(html);

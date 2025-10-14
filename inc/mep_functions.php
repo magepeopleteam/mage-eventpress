@@ -460,27 +460,49 @@
 			return $email_body;
 		}
 	}
-// Send Confirmation email to customer
+	
+	// Send Confirmation email to customer
 	if ( ! function_exists( 'mep_event_confirmation_email_sent' ) ) {
 		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0 ) {
+
+			// Global Email Settings
 			$global_email_text       = mep_get_option( 'mep_confirmation_email_text', 'email_setting_sec', '' );
 			$global_email_form_email = mep_get_option( 'mep_email_form_email', 'email_setting_sec', '' );
 			$global_email_form_name  = mep_get_option( 'mep_email_form_name', 'email_setting_sec', '' );
 			$global_email_subject    = mep_get_option( 'mep_email_subject', 'email_setting_sec', '' );
-			$admin_email             = get_option( 'admin_email' );
-			$site_name               = get_option( 'blogname' );
-			$form_email              = ! empty( $global_email_form_email ) ? $global_email_form_email : $admin_email;
-			$form_name               = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
-			$email_sub               = ! empty( $global_email_subject ) ? $global_email_subject : 'Confirmation Email';
-			$event_email_text        = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
-			$email_body              = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
-			$email_body              = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id );
-			$email_body              = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id );
-			$headers                 = array();
-			$headers[]               = "From: $form_name <$form_email>";
-			wp_mail( $sent_email, $email_sub, nl2br( $email_body ), $headers );
+
+			// Site Info
+			$admin_email = get_option( 'admin_email' );
+			$site_name   = get_option( 'blogname' );
+
+			$form_email  = ! empty( $global_email_form_email ) ? $global_email_form_email : $admin_email;
+			$form_name   = ! empty( $global_email_form_name ) ? $global_email_form_name : $site_name;
+			$email_sub   = ! empty( $global_email_subject ) ? $global_email_subject : 'Confirmation Email';
+
+			// Event Specific Text
+			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
+			$email_body       = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
+
+			// Dynamic Content Replace
+			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id );
+
+			// Allow filter
+			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id );
+
+			// ✨ Format email body properly
+			$email_body = wpautop( $email_body );        // 
+			$email_body = wp_kses_post( $email_body );   // নিরাপত্তা নিশ্চিত করবে
+
+			// Headers
+			$headers   = array();
+			$headers[] = "From: $form_name <$form_email>";
+			$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+			// Send Email
+			wp_mail( $sent_email, $email_sub, $email_body, $headers );
 		}
 	}
+
 	if ( ! function_exists( 'mep_event_get_order_meta' ) ) {
 		function mep_event_get_order_meta( $item_id, $key ) {
 			global $wpdb;

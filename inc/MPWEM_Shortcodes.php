@@ -71,7 +71,6 @@
 				$year                = $params['year'];
 				$filter              = $params['search-filter'];
 				$show                = ( $filter == 'yes' || $pagination == 'yes' && $style != 'timeline' ) && $pagination_style != 'ajax' ? - 1 : $show;
-				$main_div            = $pagination == 'carousal' ? '<div class="mage_grid_box owl-theme owl-carousel"  id="mep-carousel' . $cid . '">' : '<div class="mage_grid_box">';
 				$time_line_div_start = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
 				$time_line_div_end   = $style == 'timeline' ? '</div></div></div>' : '';
 				$unq_id              = 'abr' . uniqid();
@@ -110,32 +109,31 @@
                          data-pagination="<?php echo esc_attr( $pagination ); ?>"
                          data-pagination-style="<?php echo esc_attr( $pagination_style ); ?>"
                     >
-						<?php
-							echo wp_kses_post( $main_div );
-							echo wp_kses_post( $time_line_div_start );
-							while ( $loop->have_posts() ) {
-								$loop->the_post();
-								mep_update_event_upcoming_date( get_the_id() );
-								if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
-									$columnNumber = 'column_style';
-									$width        = 100 / (int) $column;
-								} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
-									$columnNumber = 'grid';
-									$width        = 100;
-								} else {
-									$columnNumber = 'one_column';
-									$width        = 100;
+                        <div class="mage_grid_box <?php echo esc_attr( $pagination == 'carousal' ? 'owl-theme owl-carousel' : '' ); ?>" id="<?php echo esc_attr( $pagination == 'carousal' ? 'mep-carousel' . $cid : '' ); ?>">
+							<?php
+								echo wp_kses_post( $time_line_div_start );
+								while ( $loop->have_posts() ) {
+									$loop->the_post();
+									$event_id = get_the_id();
+									mep_update_event_upcoming_date( $event_id );
+									if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
+										$columnNumber = 'column_style';
+										$width        = 100 / (int) $column;
+									} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
+										$columnNumber = 'grid';
+										$width        = 100;
+									} else {
+										$columnNumber = 'one_column';
+										$width        = 100;
+									}
+									do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
 								}
-								do_action( 'mep_event_list_shortcode', get_the_id(), $columnNumber, $style, $width, $unq_id );
-							}
-							wp_reset_postdata();
-							echo wp_kses_post( $time_line_div_end );
-						?>
+								wp_reset_postdata();
+								echo wp_kses_post( $time_line_div_end );
+							?>
+                        </div>
                     </div>
-                </div>
-				<?php
-				do_action( 'mpwem_pagination', $params, $total_item );
-				?>
+					<?php do_action( 'mpwem_pagination', $params, $total_item ); ?>
                 </div>
                 <script>
                     jQuery(document).ready(function () {

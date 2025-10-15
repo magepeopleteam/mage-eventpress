@@ -181,30 +181,21 @@
 
 			//==========================//
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
-				$date_time = '';
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : self::get_dates( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {
-					$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
+					$all_times = $all_times && sizeof($all_times) ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates );
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					if ( sizeof( $all_dates ) > 0 ) {
-						if ( $date_type == 'no' || $date_type == 'yes' ) {
-							$date       = date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
-							$start_time = '';
-							if ( sizeof( $all_times ) > 0 ) {
-								$all_times  = current( $all_times );
-								$start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
-							}
-							$date_time = $date . ' ' . $start_time;
-						} else {
-							$date       = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
-							$start_time = '';
-							if ( sizeof( $all_times ) > 0 ) {
-								$all_times  = current( $all_times );
-								$start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
-							}
-							$date_time = $date . ' ' . $start_time;
-						}
+					if ( $date_type == 'no' || $date_type == 'yes' ) {
+						$date       = date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
+					} else {
+						$date       = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 					}
+					$start_time = '';
+					if ( sizeof( $all_times ) > 0 ) {
+						$all_times  = current( $all_times );
+						$start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
+					}
+					$date_time = $date . ' ' . $start_time;
 
 					return MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
@@ -585,7 +576,6 @@
 			}
 
 			//==========================//
-
 			//==========================//
 			public static function get_cpt(): string {
 				return 'mep_events';

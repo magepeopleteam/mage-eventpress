@@ -25,7 +25,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
         public function speaker_tab(){
             ?>
             <li data-target-tabs="#mep_event_speakers_list_meta_boxes">
-            <i class="fas fa-user-tie"></i><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?>
+            <i class="mi mi-microphone-alt"></i><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?>
             </li>
             <?php
         }

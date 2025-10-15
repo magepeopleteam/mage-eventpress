@@ -18,7 +18,7 @@
 			public function event_related_tab() {
 				?>
 					<li data-target-tabs="#mep_related_event_meta">
-						<i class="fas fa-plug"></i><?php esc_html_e('Related Events', 'mage-eventpress'); ?>
+						<i class="mi mi-plug-connection"></i><?php esc_html_e('Related Events', 'mage-eventpress'); ?>
 					</li>
 				<?php
 			}

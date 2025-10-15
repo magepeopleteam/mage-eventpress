@@ -2146,7 +2146,7 @@
 			}
 		}
 	}
-    
+
 	add_action( 'admin_head', 'mep_hide_date_from_order_page' );
 	if ( ! function_exists( 'mep_hide_date_from_order_page' ) ) {
 		function mep_hide_date_from_order_page() {

@@ -72,6 +72,7 @@
 				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
 				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
+				wp_enqueue_style('mage-icons', MPWEM_PLUGIN_URL . '/assets/mage-icon/css/mage-icon.css', array(), time());
 			}
 
 			public function admin_enqueue( $hook ) {

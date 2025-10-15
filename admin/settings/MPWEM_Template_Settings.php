@@ -15,7 +15,7 @@ if(!class_exists('MPWEM_Template_Settings')){
         public function template_tab(){
             ?>
             <li data-target-tabs="#mep_event_template">
-                <i class="fas fa-pager"></i><?php esc_html_e('Template', 'mage-eventpress'); ?>
+                <i class="mi mi-table-layout"></i><?php esc_html_e('Template', 'mage-eventpress'); ?>
             </li>
             <?php
         }

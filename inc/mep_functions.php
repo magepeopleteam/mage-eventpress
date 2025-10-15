@@ -437,6 +437,7 @@
 			wp_mail( $sent_email, $email_sub, nl2br( $email_body ), $headers );
 		}
 	}
+	
 // Function to get page slug
 	if ( ! function_exists( 'mep_get_page_by_slug' ) ) {
 		function mep_get_page_by_slug( $slug ) {

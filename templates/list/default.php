@@ -32,8 +32,8 @@
 	$hide_location_list                  = $hide_location_list ?? 'no';
 	$hide_time_list                  = $hide_time_list ?? 'no';
 	$limited_availability_threshold = $limited_availability_threshold ?? 5;
-	$event_location_icon            = $event_location_icon ?? 'fas fa-map-marker-alt';
-	$event_organizer_icon           = $event_organizer_icon ?? 'far fa-list-alt';
+	$event_location_icon            = $event_location_icon ?? 'mi mi-marker';
+	$event_organizer_icon           = $event_organizer_icon ?? 'mi mi-badge';
 ?>
 <div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $columnNumber . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
      data-title="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"

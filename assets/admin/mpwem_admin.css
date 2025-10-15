@@ -1,10 +1,10 @@
 
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpStyle .formControl.date_type,
-	div.mpStyle .formControl[type=date],
-	div.mpStyle .formControl {max-width: 250px;}
-	div.mpStyle textarea.formControl {max-width: 450px;}
+	div.mpwem_style .formControl.date_type,
+	div.mpwem_style .formControl[type=date],
+	div.mpwem_style .formControl {max-width: 250px;}
+	div.mpwem_style textarea.formControl {max-width: 450px;}
 }
 /******************************************************************** Global settings ************************************************/
 @media only screen and (min-width: 10px) {
@@ -117,9 +117,9 @@
 	.mp_settings_panel table td {padding: 5px 10px;font-size: 14px;}
 	.mp_settings_panel table tr:nth-child(even) {background-color: #F2F2F2;}
 	.mp_settings_panel p.submit {text-align: right; margin: 20px 0 0 0; padding: 0;}
-	div.mpStyle .description,
+	div.mpwem_style .description,
 	.mp_settings_panel .description {display: block;font-weight: normal;font-size: var(--fs_small) !important;color: #666;}
-	div.mpStyle .description span,
+	div.mpwem_style .description span,
 	.mp_settings_panel .description span {margin: 0 var(--dMP_xs) 0 0;}
 	.mp_settings_panel .description strong {color: var(--color_theme);}
 	.mp_settings_panel p.submit input {
@@ -158,7 +158,7 @@
 	#mp_meta_box_panel table tbody th {text-align: left;}
 	#mp_meta_box_panel table tbody thead th {text-align: center;}
 	/************************************/
-	#mp_meta_box_panel .mpStyle .roundSwitch { min-width: 60px;}
+	#mp_meta_box_panel .mpwem_style .roundSwitch { min-width: 60px;}
 	#mp_meta_box_panel {margin: 15px 0;}
 	#mp_meta_box_panel .inside,
 	#mp_meta_box_panel .form-section {margin: 0;padding: 0;}
@@ -173,7 +173,7 @@
 	div.mp_multi_image_item { position: relative; width: calc(19% - 5px); min-width: 130px;margin: 0 10px 5px 0;min-height: 50px;gap: 5px;}
 	div.mp_multi_image_item img {width: 100%;height: 120px;}
 	span.mpwem_remove_single_image,
-	div.mpStyle span.mpwem_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
+	div.mpwem_style span.mpwem_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
 	div.mp_single_image_item:hover span.mpwem_remove_single_image,
 	div.mp_single_image_item:hover span.mpwem_remove_single_image:hover,
 	div.mp_multi_image_item:hover span.mpwem_remove_multi_image {opacity: 0.9;}
@@ -184,9 +184,9 @@
 @media only screen and (min-width: 10px) {
 	div.mpwem_add_icon_image_area {border: 1px solid var(--color_theme);position: relative;max-width: 120px;}
 	div.mpwem_add_icon_image_area img {max-height: 100px;}
-	div.mpStyle div.mpwem_add_icon_image_area button {padding: 5px;font-size: 12px;}
+	div.mpwem_style div.mpwem_add_icon_image_area button {padding: 5px;font-size: 12px;}
 	div.mpwem_add_icon_image_area button span {margin: 0 5px 0 0;}
-	div.mpStyle div.mpwem_add_icon_image_area img {border-radius: 0;}
+	div.mpwem_style div.mpwem_add_icon_image_area img {border-radius: 0;}
 	div.mpwem_add_icon_image_area div.mp_icon_item {padding: var(--dMP_xs);background-color: var(--color_light);font-size: 40px;}
 	div.mp_icon_item:hover .mp_remove_icon,
 	div.mp_image_item:hover .mp_remove_icon {opacity: 1;}
@@ -245,19 +245,23 @@
 		transition: 350ms ease-in-out;
 	}
 }
-/********************************************************************Admin layout ************************************************/
+/********************************************************************admin layout ************************************************/
 @media only screen and (min-width: 10px) {
-	.mpStyle .adminLayout,
-	.mpStyle [class*="_adminLayout"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--color_border);border-radius: var(--dBRL);}
-	div.mpStyle .adminLayout th,
-	div.mpStyle .adminLayout td,
-	div.mpStyle [class*="_adminLayout"] th,
-	div.mpStyle [class*="_adminLayout"] td {text-align: left;font-size: var(--fs_h5);}
+	.mpwem_style .adminLayout,
+	.mpwem_style [class*="_adminLayout"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--color_border);border-radius: var(--dBRL);}
+	div.mpwem_style .adminLayout th,
+	div.mpwem_style .adminLayout td,
+	div.mpwem_style [class*="_adminLayout"] th,
+	div.mpwem_style [class*="_adminLayout"] td {text-align: left;font-size: var(--fs_h5);}
+}
+/********************************************************************Recurring Statistics  ************************************************/
+@media only screen and (min-width: 10px) {
+	#mpwem_recurring_statistics{margin: var(--dMP) var(--dMP) 0 0;}
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpStyle .info_text {display: block;font-weight: normal;font-size: var(--fs_small);color: #666;}
-	div.mpStyle .info_text span {margin: 0 5px 0 0;}
+	div.mpwem_style .info_text {display: block;font-weight: normal;font-size: var(--fs_small);color: #666;}
+	div.mpwem_style .info_text span {margin: 0 5px 0 0;}
 }
 .mp_tab_item,
 #mp_event_all_info_in_tab {overflow: inherit !important;}
@@ -1952,8 +1956,8 @@ h3.mep_virtual_sec_title {
 }
 /******************************************************************** ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpStyle [name=event_start_time_everyday],
-	div.mpStyle [name=event_end_time_everyday] {
+	div.mpwem_style [name=event_start_time_everyday],
+	div.mpwem_style [name=event_end_time_everyday] {
 		height: 100%;
 	}
 }
@@ -2106,33 +2110,33 @@ h3.mep_virtual_sec_title {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
-div.mpStyle .formControl.date_type {
+div.mpwem_style .formControl.date_type {
 	padding: 5px 5px 5px 50px;
 	margin: 0 5px;
 }
-/* ***********mpStyle overright********** */
+/* ***********mpwem_style overright********** */
 
-.mpStyle .themeButton, .mpStyle [class*=_themeButton], .mpStyle [class*=_warningButton], #mp_event_all_info_in_tab .button {
+.mpwem_style .themeButton, .mpwem_style [class*=_themeButton], .mpwem_style [class*=_warningButton], #mp_event_all_info_in_tab .button {
 	background-color: var(--color_theme);
 	color: var(--color_theme_alter);
 	border: 2px solid var(--color_theme);
 }
-.mpStyle [class*=_navy_blueButton] {
+.mpwem_style [class*=_navy_blueButton] {
 	background-color: var(--color_orange);
 	color: var(--color_theme_alter);
 	border: 2px solid var(--color_theme);
 }
-/*.mpStyle .customCheckbox::before {*/
+/*.mpwem_style .customCheckbox::before {*/
 /*	background-color: var(--color_white);*/
 /*	border: 2px solid var(--color_theme);*/
 /*}*/
 
-.mpStyle [data-tabs-target].active {
+.mpwem_style [data-tabs-target].active {
 	background-color: var(--color_theme);
 	color: var(--color_white);
 	border: 0;
 }
-.mpStyle [data-tabs-target]:hover {
+.mpwem_style [data-tabs-target]:hover {
 	background-color: var(--color_gray);
 	border-color: var(--color_gray);
 	color: var(--color_dark);
@@ -2250,7 +2254,7 @@ div.mpPopup.mpwem_timeline_popup .popupBody {min-height: 400px;}
 	}
 }
 
-div.mpStyle.mep-quick-setup  .formControl{
+div.mpwem_style.mep-quick-setup  .formControl{
 	max-width: 100%;
 	margin:8px 0;
 	padding: 14px 16px;
@@ -2262,26 +2266,26 @@ div.mpStyle.mep-quick-setup  .formControl{
 	color: #374151;
 	font-weight: normal;
 }
-div.mpStyle.mep-quick-setup  select.formControl:focus{
+div.mpwem_style.mep-quick-setup  select.formControl:focus{
 	background-color: transparent;
 	border: 1px solid #0080F0;
 }
 
-div.mpStyle.mep-quick-setup .info_text{
+div.mpwem_style.mep-quick-setup .info_text{
 	color: #6b7280;
 	margin-bottom: 28px;
 	font-style:normal;
 }
 
-div.mpStyle.mep-quick-setup .info_text span{
+div.mpwem_style.mep-quick-setup .info_text span{
 	color: #b1b4bc;
 }
 
-div.mpStyle.mep-quick-setup .tabsContentNext{
+div.mpwem_style.mep-quick-setup .tabsContentNext{
 	padding:20px 0;
 }
 
-div.mpStyle.mep-quick-setup [class*="_adminLayout"]{
+div.mpwem_style.mep-quick-setup [class*="_adminLayout"]{
 	background-color: #f8f7fc;
 
 }

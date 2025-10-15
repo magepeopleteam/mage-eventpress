@@ -20,7 +20,7 @@
 	$date=$url_date?date( 'Y-m-d H:i', $url_date  ):$date;
 	ob_start();
 	if ( $event_id > 0 ) {
-        ?><div class="mpStyle"><?php
+        ?><div class="mpwem_style"><?php
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 		//echo '<pre>';			print_r($all_dates);			echo '</pre>';
 		if ( $reg_status == 'on' ) {

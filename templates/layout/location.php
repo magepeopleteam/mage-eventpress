@@ -8,7 +8,7 @@
 	} // Cannot access pages directly.
 	$event_id      = $event_id ?? 0;
 	$type          = $type ?? '';
-	$hide_location = MP_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_location_from_details', 'no' );
+	$hide_location = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_location_from_details', 'no' );
 	$isVirtual = get_post_meta($event_id,'mep_event_type',true);
 	$show_map   	   = get_post_meta($event_id, 'mep_sgm', true);
 	$show_map   	   = $show_map? $show_map : 0;

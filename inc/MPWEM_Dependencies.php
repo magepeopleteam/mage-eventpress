@@ -10,7 +10,6 @@
 		class MPWEM_Dependencies {
 			public function __construct() {
 				add_action( 'init', array( $this, 'language_load' ) );
-				$this->load_global_file();
 				$this->load_file();
 				add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 90 );
 				add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue' ), 90 );
@@ -23,31 +22,25 @@
 				load_plugin_textdomain( 'mage-eventpress', false, $plugin_dir );
 			}
 
-			public function load_global_file() {
+			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/global/MP_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Layout.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Custom_Slider.php';
-				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Select_Icon_image.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Select_Icon_image.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Layout.php';
-			}
-
-			private function load_file(): void {
-				require_once MPWEM_PLUGIN_DIR . '/Admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Frontend.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
-				require_once( dirname( __DIR__ ) . '/lib/classes/class-mep.php' );
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';
 				require_once( dirname( __DIR__ ) . "/inc/mep_functions.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax.php" );
-				require_once( dirname( __DIR__ ) . "/inc/mep_shortcode.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax_meta.php" );
-				require_once( dirname( __DIR__ ) . "/inc/mep_query.php" );
-				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/functions.php" );
-				require_once( dirname( __DIR__ ) . "/inc/recurring/inc/recurring_attendee_stat.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 			}
 
@@ -57,26 +50,27 @@
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_script( 'jquery-ui-accordion' );
 				wp_enqueue_script( 'selectWoo' );
+				wp_enqueue_script( 'select2' );
 				wp_enqueue_style( 'select2' );
 				wp_localize_script( 'jquery', 'mep_ajax', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				wp_enqueue_style( 'mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2' );
-				$fontAwesome = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
+				$fontAwesome = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
 				if ( $fontAwesome == 'no' ) {
 					wp_enqueue_style( 'mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0' );
 					wp_enqueue_style( 'mp_font_awesome-660', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css', array(), '6.6.0' );
 					wp_enqueue_style( 'mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4' );
 				}
-				$flatIcon = MP_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
+				$flatIcon = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_flaticon_from_theme', 'no' );
 				if ( $flatIcon == 'no' ) {
 					wp_enqueue_style( 'mp_flat_icon', MPWEM_PLUGIN_URL . '/assets/helper/flaticon/flaticon.css' );
 				}
-				$owlCarousel = MP_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
+				$owlCarousel = MPWEM_Global_Function::get_settings( 'carousel_setting_sec', 'mep_load_carousal_from_theme', 'no' );
 				if ( $owlCarousel == 'no' ) {
 					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
 					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
 				}
-				wp_enqueue_style( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_style.css', array(), time() );
-				wp_enqueue_script( 'mp_plugin_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mp_script.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
+				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
 			}
 
@@ -185,18 +179,20 @@
 			public function js_constant() {
 				?>
                 <script type="text/javascript">
-                    let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
-                    let mp_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
-                    let mp_currency_position = "<?php echo get_option( 'woocommerce_currency_pos' ); ?>";
-                    let mp_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
-                    let mp_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
-                    let mp_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
-                    let mp_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
-                    let mp_date_format = "D d M , yy";
+                    var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
+                    let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
+                    let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
+                    let mpwem_currency_position = "<?php echo get_option( 'woocommerce_currency_pos' ); ?>";
+                    let mpwem_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
+                    let mpwem_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
+                    let mpwem_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
+                    let mpwem_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
+                    let mpwem_date_format = "D d M , yy";
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
                 </script>
 				<?php
 			}
+
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;
@@ -240,14 +236,14 @@
                             "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
                             "location"  : {
                                 "@type"         : "Place",
-                                "name"          : "<?php echo mep_get_event_location( $event_id ); ?>",
+                                "name"          : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ); ?>",
                                 "address"       : {
                                 "@type"         : "PostalAddress",
-                                "streetAddress" : "<?php echo mep_get_event_location_street( $event_id ); ?>",
-                                "addressLocality": "<?php echo mep_get_event_location_city( $event_id ); ?>",
-                                "postalCode"    : "<?php echo mep_get_event_location_postcode( $event_id ) ?>",
-                                "addressRegion" : "<?php echo mep_get_event_location_state( $event_id ) ?>",
-                                "addressCountry": "<?php echo mep_get_event_location_country( $event_id ) ?>"
+                                "streetAddress" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ); ?>",
+                                "addressLocality": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?>",
+                                "postalCode"    : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ); ?>",
+                                "addressRegion" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ); ?>",
+                                "addressCountry": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ); ?>"
                                 }
                             },
                             "image": [

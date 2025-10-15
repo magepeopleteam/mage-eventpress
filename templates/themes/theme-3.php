@@ -19,7 +19,7 @@ $event_label                = mep_get_option('mep_event_label', 'general_setting
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
 ?>
-<div class="mpStyle mep-default-theme bristol">
+<div class="mpwem_style mep-default-theme bristol">
     <div class="_mT mpwem_slider_area">
 		<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
     </div>
@@ -96,6 +96,11 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <?php do_action('mep_event_add_calender',$event_id); ?>
             </div>
         <?php } ?>
+        <?php if (has_term('', 'mep_tag', $event_id)): ?>
+            <div class="mep-default-sidebar-tags">
+                <?php do_action('mep_event_tags', $event_id); ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php
             if($speaker_status == 'yes'){ ?>

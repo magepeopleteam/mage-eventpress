@@ -8,7 +8,7 @@
 	} // Cannot access pages directly.
 	$event_id = $event_id ?? 0;
 	$only = $only ?? '';
-	$hide_organizer = MP_Global_Function::get_settings('single_event_setting_sec', 'mep_event_hide_org_from_details', 'no');
+	$hide_organizer = MPWEM_Global_Function::get_settings('single_event_setting_sec', 'mep_event_hide_org_from_details', 'no');
 	if ($event_id > 0 && $hide_organizer == 'no') {
 	$org = get_the_terms($event_id, 'mep_org');
 	$names = [];
@@ -24,7 +24,7 @@
 		if ($only) {
 			echo esc_html(implode(', ', $names));
 		} else {
-			$org_title = MP_Global_Function::get_settings('label_setting_sec', 'mep_by_text', esc_html__('By:', 'mage-eventpress'));
+			$org_title = MPWEM_Global_Function::get_settings('label_setting_sec', 'mep_by_text', esc_html__('By:', 'mage-eventpress'));
 			?>
 			<div class="mpwem_organizer">
 				<span><?php echo esc_html($org_title); ?></span>&nbsp;&nbsp;

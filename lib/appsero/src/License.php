@@ -220,7 +220,7 @@ class License {
     }
 
     /**
-     * Admin Menu hook
+     * admin Menu hook
      *
      * @return void
      */

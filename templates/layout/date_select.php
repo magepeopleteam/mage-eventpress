@@ -13,7 +13,7 @@
 		$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		if ( $date_type == 'no' || $date_type == 'yes' ) {
 			$date        = !empty($date) ?$date: current( $all_dates )['time'];
-			$date_format = MP_Global_Function::check_time_exit_date( $date ) ? 'full' : '';
+			$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 			if ( sizeof( $all_dates ) == 1 ) {
 				?>
                 <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
@@ -26,7 +26,7 @@
 							<i class="far fa-calendar"></i>
 							<select class="formControl" name="mpwem_date_time" id="mpwem_date_time">
 								<?php foreach ( $all_dates as $dates ) { ?>
-									<option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>><?php echo esc_html( MP_Global_Function::date_format( $dates['time'], $date_format ) ); ?></option>
+									<option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>><?php echo esc_html( MPWEM_Global_Function::date_format( $dates['time'], $date_format ) ); ?></option>
 								<?php } ?>
 							</select>
 						</label>
@@ -36,7 +36,7 @@
 			}
 		} else {
 			$date         = $date ?: current( $all_dates );
-			$date_format  = MP_Global_Function::date_picker_format();
+			$date_format  = MPWEM_Global_Function::date_picker_format();
 			$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 			$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 			$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';

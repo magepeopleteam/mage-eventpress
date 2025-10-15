@@ -162,7 +162,7 @@ function mpwem_attendee_management(parent, total_qty) {
             const target = parent.find('.mpwem_time_area');
             jQuery.ajax({
                 type: 'POST',
-                url: mp_ajax_url,
+                url: mpwem_ajax_url,
                 data: {
                     action: "get_mpwem_time",
                     post_id: post_id,
@@ -201,7 +201,7 @@ function mpwem_attendee_management(parent, total_qty) {
         let target = parent.find('.mpwem_booking_panel');
         jQuery.ajax({
             type: 'POST',
-            url: mp_ajax_url,
+            url: mpwem_ajax_url,
             data: {
                 "action": "get_mpwem_ticket",
                 "post_id": post_id,
@@ -414,7 +414,7 @@ function mp_event_wo_commerce_price_format(price) {
                 let event_id = target.data('event-id');
                 $.ajax({
                     type: 'POST',
-                    url: mp_ajax_url,
+                    url: mpwem_ajax_url,
                     data: {"action": "mep_event_list_date_schedule", "event_id": event_id},
                     beforeSend: function () {
                         target.html('<span class="fas fa-spinner fa-pulse"></span>');

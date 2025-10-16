@@ -136,7 +136,7 @@ function mpwem_initWpEditor(id) {
     });
     $(document).on('keyup change', '.mpwem_ticket_pricing_settings [name="option_name_t[]"]', function () {
         let n = $(this).val();
-        $(this).val(n.replace(/[@%'":;&_-]/g, ''));
+        $(this).val(n.replace(/[@%'":;&_–]/g, ''));
     });
     /**************************/
     /**************************/

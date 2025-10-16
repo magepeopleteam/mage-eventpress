@@ -52,7 +52,7 @@
 			public function run_link_product_on_save( $post_id ) {
 				add_filter( 'wpseo_public_post_statuses', 'mepfix_sitemap_exclude_post_type', 5 );
 				if ( get_post_type( $post_id ) == MPWEM_Functions::get_cpt() ) {
-					if ( ! isset( $_POST['mep_event_reg_btn_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mep_event_reg_btn_nonce'] ) ), 'mep_event_reg_btn_nonce' ) ) {
+					if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mpwem_type_nonce'] ) ), 'mpwem_type_nonce' ) ) {
 						return;
 					}
 					if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {

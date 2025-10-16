@@ -5,7 +5,7 @@
 	if ( ! class_exists( 'MPWEM_Settings_Gallery' ) ) {
 		class MPWEM_Settings_Gallery {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'gallery_settings' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'gallery_settings' ] );
 			}
 
 			public function gallery_settings( $tour_id ) {

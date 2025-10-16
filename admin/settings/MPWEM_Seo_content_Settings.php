@@ -9,7 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Seo_content_Settings' ) ) {
 		class MPWEM_Seo_content_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', array( $this, 'seo_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'seo_settings' ) );
 			}
 
 			public function seo_settings( $event_id ) {

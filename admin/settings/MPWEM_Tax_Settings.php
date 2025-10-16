@@ -9,7 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Tax_Settings' ) ) {
 		class MPWEM_Tax_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', array( $this, 'tax_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'tax_settings' ) );
 			}
 
 			public function tax_settings( $event_id ) {
@@ -27,7 +27,6 @@
 
 			public function mp_event_tax( $post_id ) {
 				$values = get_post_custom( $post_id );
-				wp_nonce_field( 'mep_event_reg_btn_nonce', 'mep_event_reg_btn_nonce' );
 				if ( array_key_exists( '_tax_status', $values ) ) {
 					$tx_status = $values['_tax_status'][0];
 				} else {

@@ -53,25 +53,14 @@ function mpwem_initWpEditor(id) {
         var nextValue = toggleValues[0];
         if (currentValue === toggleValues[0]) {
             nextValue = toggleValues[1];
-            if (checkbox.attr('name') === 'mep_show_advance_col_status') {
-                $(".mep_hide_on_load").slideUp(200);
-            }
+
             if (checkbox.attr('name') === 'mep_disable_ticket_time') {
                 $(".mep-special-datetime").slideUp(200);
             }
-            if (checkbox.attr('name') === 'mep_show_category') {
-                $(".mep_hide_on_load_cat").slideUp(200);
-            }
         } else {
             nextValue = toggleValues[0];
-            if (checkbox.attr('name') === 'mep_show_advance_col_status') {
-                $(".mep_hide_on_load").slideDown(200);
-            }
             if (checkbox.attr('name') === 'mep_disable_ticket_time') {
                 $(".mep-special-datetime").slideDown(200);
-            }
-            if (checkbox.attr('name') === 'mep_show_category') {
-                $(".mep_hide_on_load_cat").slideDown(200);
             }
         }
         checkbox.val(nextValue);
@@ -109,67 +98,28 @@ function mpwem_initWpEditor(id) {
             $(".mep_event_tab_location_content").show(200);
         }
     });
-    $(document).on('click', 'label.mp_event_ticket_type_des_switch input', function () {
-        if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
-            $(".mep_ticket_type_setting_sec").slideDown(200);
-        } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
-            $(".mep_ticket_type_setting_sec").slideUp(200);
-        }
-    });
+
     $(document).on('click', 'label.mep_enable_custom_dt_format input', function () {
         if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
             $(".mep_custom_timezone_setting").slideDown(200);
         } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
             $(".mep_custom_timezone_setting").slideUp(200);
         }
     });
     $(document).on('click', 'label.mp_event_ticket_type_advance_col_switch input', function () {
         if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
             $(".mep_hide_on_load").slideDown(200);
         } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
             $(".mep_hide_on_load").slideUp(200);
         }
     });
     $(document).ready(function () {
-        $('#add-row-t').on('click', function () {
-            var row = $('.empty-row-t.screen-reader-text').clone(true);
-            row.removeClass('empty-row-t screen-reader-text');
-            row.insertBefore('#repeatable-fieldset-one-t tbody>tr:last');
-            $('#mep_ticket_type_empty option[value=inputbox]').attr('selected', 'selected');
-            $('.empty-row-t #mep_ticket_type_empty option[value=inputbox]').removeAttr('selected');
-            //return false;
-        });
-        $('.remove-row-t').on('click', function () {
-            if (confirm('Are You Sure , Remove this row ? \n\n 1. Ok : To Remove . \n 2. Cancel : To Cancel .')) {
-                $(this).parents('tr').remove();
-                $('#mep_ticket_type_empty option[value=inputbox]').removeAttr('selected');
-                $('#mep_ticket_type_empty option[value=dropdown]').removeAttr('selected');
-            } else {
-                return false;
-            }
-        });
+
+
         $(document).find('.mp_event_type_sortable').sortable({
             handle: $(this).find('.mp_event_type_sortable_button')
         });
-        $('#add-row').on('click', function () {
-            var row = $('.empty-row.screen-reader-text').clone(true);
-            row.removeClass('empty-row screen-reader-text');
-            row.insertBefore('#repeatable-fieldset-one tbody>tr:last');
-            return false;
-        });
-        $('.remove-row').on('click', function () {
-            if (confirm('Are You Sure , Remove this row ? \n\n 1. Ok : To Remove . \n 2. Cancel : To Cancel .')) {
-                $(this).parents('tr').remove();
-            } else {
-                return false;
-            }
-        });
+
         $('#add-new-date-row').on('click', function () {
             var row = $('.empty-row-d.screen-reader-text').clone(true);
             row.removeClass('empty-row-d screen-reader-text');
@@ -184,7 +134,7 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-    $(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"]', function () {
+    $(document).on('keyup change', '.mpwem_ticket_pricing_settings [name="option_name_t[]"]', function () {
         let n = $(this).val();
         $(this).val(n.replace(/[@%'":;&_–]/g, ''));
     });
@@ -195,7 +145,7 @@ function mpwem_initWpEditor(id) {
         let parent = $('#mp_event_all_info_in_tab');
         if (parent.length > 0 && parent.find('.data_required').length > 0) {
             parent.find('.data_required').each(function () {
-                if (!$(this).hasClass('screen-reader-text')) {
+                if ($(this).closest('.mpwem_hidden_content').length===0) {
                     $(this).find('[data-required]').each(function () {
                         if (!$(this).val()) {
                             let target_id = $(this).closest('.mp_tab_item').attr('data-tab-item');

@@ -10,7 +10,7 @@
 	if ( ! class_exists( 'MPWEM_Timeline_Details' ) ) {
 		class MPWEM_Timeline_Details {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'timeline_tab_content' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'timeline_tab_content' ] );
 				add_action( 'wp_ajax_mpwem_load_timeline', array( $this, 'mpwem_load_timeline' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_load_timeline', array( $this, 'mpwem_load_timeline' ) );
 				add_action( 'wp_ajax_mpwem_save_timeline', array( $this, 'mpwem_save_timeline' ) );

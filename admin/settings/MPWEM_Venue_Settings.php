@@ -9,7 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Venue_Settings' ) ) {
 		class MPWEM_Venue_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', array( $this, 'venue_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'venue_settings' ) );
 				add_action( 'save_post', array( $this, 'save_venue_coordinates' ), 1 );
 			}
 

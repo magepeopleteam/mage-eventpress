@@ -10,7 +10,7 @@
 	if ( ! class_exists( 'MPWEM_Email_Text' ) ) {
 		class MPWEM_Email_Text {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'email_text_tab_content' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'email_text_tab_content' ] );
 			}
 
 			public function email_text_tab_content( $post_id ) {

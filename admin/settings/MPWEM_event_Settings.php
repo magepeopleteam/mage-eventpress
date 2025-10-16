@@ -9,13 +9,13 @@
 	if ( ! class_exists( 'MPWEM_event_Settings' ) ) {
 		class MPWEM_event_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', array( $this, 'event_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'event_settings' ) );
 				add_action( 'wp_ajax_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_reset_booking', array( $this, 'mpwem_reset_booking' ) );
 			}
 
 			public function event_settings( $event_id ) {
-				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
+				$event_label=MPWEM_Global_Function::get_settings('general_setting_sec','mep_event_label','Events');
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_event_settings" data-tab-item="#mpwem_event_settings">
                     <div class="_dLayout_xs_mp_zero">

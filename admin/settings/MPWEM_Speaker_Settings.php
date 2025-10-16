@@ -12,7 +12,7 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
             $speaker_status = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
             if( $speaker_status == 'yes'){
                 add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'speaker_tab']);
-                add_action('mp_event_all_in_tab_item', [$this, 'speaker_tab_content']);
+                add_action('mpwem_event_tab_setting_item', [$this, 'speaker_tab_content']);
                 add_action('mep_event_speaker', [$this, 'event_speaker_frontend']);
             }
             

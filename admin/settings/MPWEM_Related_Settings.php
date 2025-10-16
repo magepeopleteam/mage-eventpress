@@ -9,18 +9,8 @@
 				add_action( 'woocommerce_process_product_meta', [ $this, 'woocom_linked_products_data_custom_field_save' ] );
 				add_action( 'woocommerce_after_single_product', [ $this, 'related_single_products' ] );
 				add_action( 'after-single-events', [ $this, 'related_events' ] );
-				add_action( 'mep_admin_event_details_before_tab_name_rich_text', [ $this, 'event_related_tab' ] );
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'event_related_content' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'event_related_content' ] );
 			}
-
-			public function event_related_tab() {
-				?>
-                <li data-target-tabs="#mep_related_event_meta">
-                    <i class="fas fa-plug"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?>
-                </li>
-				<?php
-			}
-
 			public function event_related_content( $post_id ) {
 				global $woocommerce, $post;
 				$args             = array(

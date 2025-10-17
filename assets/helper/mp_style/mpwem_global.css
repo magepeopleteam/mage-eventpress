@@ -152,9 +152,8 @@
 	.mpwem_style [class^="mpMenu"] { display: -webkit-inline-flex; display: inline-flex; }
 	.mpwem_style .mpRow,
 	.mpwem_style .flexWrap,
-	.mpwem_style .listInline,
-	.mpwem_style .mage_menu { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
-	.mpwem_style [class*="_wrap"] { -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
+	.mpwem_style .listInline{ display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
+	div.mpwem_style [class*="_wrap"] { -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
 	.mpwem_style .flexNowrap { display: -webkit-flex; display: flex; -webkit-flex-wrap: nowrap; flex-wrap: nowrap; }
 	.mpwem_style ul.list_inline_two,
 	.mpwem_style .flexWrapJustifyBetween { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; -webkit-justify-content: space-between; justify-content: space-between; }

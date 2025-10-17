@@ -69,7 +69,7 @@
                                     <th class="_min_100" title="<?php esc_attr_e( 'Available Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Default Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
-									<?php do_action( 'mep_add_extra_column', $event_id ); ?>
+									<?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
                                     <th class="_min_200" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Date', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Time', 'mage-eventpress' ); ?></th>
                                     <th class="_min_150" title="<?php esc_attr_e( 'Qty Box Type', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
@@ -128,7 +128,7 @@
                     <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
                         <label><input type="number" class="formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/></label>
                     </td>
-					<?php do_action( 'mep_add_extra_input_box', $event_id, $ticket_info ); ?>
+					<?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
                     <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
                         <label>
                             <input type="hidden" name="option_sale_end_date[]" value="<?php echo esc_attr( $hidden_sale_end ); ?>"/>
@@ -221,8 +221,8 @@
 			public function event_view_shortcode( $post_id ) {
 				?>
                 <div class="_padding_bT">
-                    <label class="justifyBetween _alignCenter">
-                        <span><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
+                    <label class=" _justifyBetween_alignCenter_wrap">
+                        <span class="_mR"><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
                         <code> [event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
                     </label>
                     <span class="des_info"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></span>
@@ -234,8 +234,8 @@
 				$checked        = $mep_reg_status == 'on' ? 'checked' : '';
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
+                    <div class=" _justifyBetween_alignCenter_wrap">
+                        <label><span class="_mR"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
@@ -246,8 +246,8 @@
 				$checked = $show_category == 'off' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
+                    <div class=" _justifyBetween_alignCenter_wrap">
+                        <label><span class="_mR"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_advance_col_status', $checked ); ?>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span>

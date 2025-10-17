@@ -41,8 +41,8 @@
 				$sku = MPWEM_Global_Function::get_post_info( $event_id, '_sku' );
 				?>
                 <div class="_padding_bT">
-                    <label class="justifyBetween _alignCenter">
-                        <span><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
+                    <label class="_justifyBetween_alignCenter_wrap ">
+                        <span class="_mR"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
                         <input class="formControl id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
                     </label>
                     <span class="des_info"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
@@ -55,8 +55,8 @@
 				$checked = $display == 'no' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Display End Datetime', 'mage-eventpress' ); ?></span></label>
+                    <div class="_justifyBetween_alignCenter_wrap ">
+                        <label><span class="_mR"><?php esc_html_e( 'Display End Datetime', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_end_datetime', $checked ); ?>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'You can ON/OFF End date  time display by going to the settings', 'mage-eventpress' ); ?></span>
@@ -69,8 +69,8 @@
 				$checked = $display == 'off' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Show Available Seat?', 'mage-eventpress' ); ?></span></label>
+                    <div class="_justifyBetween_alignCenter_wrap ">
+                        <label><span class="_mR"><?php esc_html_e( 'Show Available Seat?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_available_seat', $checked ); ?>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'You can ON/OFF available seat display by going to the settings', 'mage-eventpress' ); ?></span>
@@ -81,8 +81,8 @@
 			public function reset_booking() {
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></label>
+                    <div class="_justifyBetween_alignCenter_wrap ">
+                        <label><span class="_mR"><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></label>
                         <button type="button" class="_mpBtn_xs_primaryButton mpwem_reset_booking"><span class="fas fa-refresh _mR_xs"></span><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></button>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
@@ -98,15 +98,15 @@
 				$editable_roles = get_editable_roles();
 				?>
                 <div class="_padding_bT">
-                    <div class="justifyBetween _alignCenter">
-                        <label><span><?php esc_html_e( 'Member Only Event?', 'mage-eventpress' ); ?></span></label>
+                    <div class="_justifyBetween_alignCenter_wrap ">
+                        <label><span class="_mR"><?php esc_html_e( 'Member Only Event?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_member_only_event', $checked ); ?>
                     </div>
                     <span class="des_info"><?php esc_html_e( 'You can change event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
                 <div class="_padding_bT <?php echo esc_attr( $active ); ?>" data-collapse="#mep_member_only_event">
-                    <label class="justifyBetween _alignCenter">
-                        <span><?php esc_html_e( 'Select User Role', 'mage-eventpress' ); ?></span>
+                    <label class="_justifyBetween_alignCenter_wrap ">
+                        <span class="_mR"><?php esc_html_e( 'Select User Role', 'mage-eventpress' ); ?></span>
                         <select name='mep_member_only_user_role[]' class="fornControl mp_select2" multiple>
                             <option value="all" <?php echo esc_attr( in_array( 'all', $user_roles ) ? 'selected' : '' ); ?>><?php esc_html_e( 'For Any Logged in user', 'mage-eventpress' ); ?></option>
 							<?php foreach ( $editable_roles as $role => $details ) { ?>

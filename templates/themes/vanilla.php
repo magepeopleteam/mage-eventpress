@@ -17,7 +17,7 @@
 	$all_times               = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date           = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 ?>
-<div class="mpwem_style mep-default-theme vanilla_theme">
+<div class="mpwem_style default_theme vanilla_theme">
     <div class="mep-default-content">
         <div class="_mT mpwem_slider_area">
 			<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>

@@ -5,6 +5,9 @@
 
    // Settings Value :::::::::::::::::::::::::::::::::::::::;
 	$event_id                 = empty( $event_id ) ? get_the_id() : $event_id;
+	$all_dates          = MPWEM_Functions::get_dates( $event_id );
+	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
+	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 $hide_date_details 		    = mep_get_option( 'mep_event_hide_date_from_details', 'single_event_setting_sec', 'no');
 $hide_time_details 		    = mep_get_option( 'mep_event_hide_time_from_details', 'single_event_setting_sec', 'no');
 $hide_location_details 		= mep_get_option( 'mep_event_hide_location_from_details', 'single_event_setting_sec', 'no');
@@ -13,7 +16,6 @@ $hide_org_by_details 		= mep_get_option( 'mep_event_hide_org_from_details', 'sin
 $hide_address_details 		= mep_get_option( 'mep_event_hide_address_from_details', 'single_event_setting_sec', 'no');
 $hide_schedule_details 		= mep_get_option( 'mep_event_hide_event_schedule_details', 'single_event_setting_sec', 'no');
 $hide_share_details 		= mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
-$hide_calendar_details 		= mep_get_option( 'mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 $event_label                = mep_get_option('mep_event_label', 'general_setting_sec', 'Events');
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
@@ -91,11 +93,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                 <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
             </div>
         <?php } ?>
-        <?php if ($hide_calendar_details == 'no') { ?>
-            <div class="mep-default-sidrbar-calender-btn">
-                <?php do_action('mep_event_add_calender',$event_id); ?>
-            </div>
-        <?php } ?>
+	    <?php do_action( 'mpwem_add_calender', $event_id,$all_dates ,$upcoming_date); ?>
         <?php if (has_term('', 'mep_tag', $event_id)): ?>
             <div class="mep-default-sidebar-tags">
                 <?php do_action('mep_event_tags', $event_id); ?>
@@ -111,12 +109,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
             }
     ?>    
     <div class="mep-default-feature-cart-sec">
-	    <?php
-		    $all_dates          = MPWEM_Functions::get_dates( $event_id );
-		    $all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
-		    $upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-		    do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
-	    ?>
+	    <?php     do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );	    ?>
     </div>
     <div class="mep-default-feature-content">
         <h4 class="mep-cart-table-title"><?php esc_html_e("About The ", 'mage-eventpress'); echo esc_html($event_label); ?></h4>

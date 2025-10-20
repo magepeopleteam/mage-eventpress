@@ -9,7 +9,6 @@
 	$hide_org_by_details     = mep_get_option( 'mep_event_hide_org_from_details', 'single_event_setting_sec', 'no' );
 	$hide_address_details    = mep_get_option( 'mep_event_hide_address_from_details', 'single_event_setting_sec', 'no' );
 	$hide_share_details      = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
-	$hide_calendar_details   = mep_get_option( 'mep_event_hide_calendar_details', 'single_event_setting_sec', 'no' );
 	$speaker_status          = mep_get_option( 'mep_enable_speaker_list', 'single_event_setting_sec', 'no' );
 	$event_date_icon         = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt' );
 	$event_time_icon         = mep_get_option( 'mep_event_time_icon', 'icon_setting_sec', 'fas fa-clock' );
@@ -76,11 +75,7 @@
                         </h3>
 						<?php do_action( 'mep_event_map', $event_id ); ?>
                     </div>
-					<?php if ( $hide_calendar_details == 'no' ) { ?>
-                        <div class="mep-default-sidrbar-calender-btn">
-							<?php do_action( 'mep_event_add_calender', $event_id ); ?>
-                        </div>
-					<?php } ?>
+	                <?php do_action( 'mpwem_add_calender', $event_id,$all_dates ,$upcoming_date); ?>
                 </div>
 			<?php } ?>
             <div class="mep-default-col-2">
@@ -108,7 +103,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php do_action( 'mep_event_date_default_theme', $event_id, 'yes', $all_dates ); ?>
+				<?php do_action( 'mpwem_date_list', $event_id, 'yes', $all_dates ); ?>
 				<?php if ( $hide_total_seat_details == 'no' ) { ?>
                     <div class="mep-default-sidrbar-price-seat">
                         <div class="df-seat"><?php do_action( 'mep_event_seat', $event_id ); ?></div>

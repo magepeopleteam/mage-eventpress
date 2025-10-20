@@ -9,7 +9,7 @@
 	$hide_date_list = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
 	$date_count     = 0;
 	if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
-        <div class="event_date_list_area">
+        <div class="event_date_list_area _padding">
 			<?php if ( $title == 'yes' ) { ?>
                 <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 			<?php } ?>

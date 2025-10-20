@@ -1,6 +1,5 @@
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
-	div.event_date_list_area {padding: var(--dMP);}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dMP_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
@@ -71,17 +70,7 @@ div.item_hover_effect a:hover {
 button.mpwemasp_get_sp,
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart, .mep-event-theme-1 .btn-mep-event-cart, .mep-template-2-hamza .btn-mep-event-cart, .mep-tem3-mid-sec .btn-mep-event-cart, .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
 	background: var(--color_theme); border-color: var(--color_theme);}
-/*Calender Button Style*/
-.mep-default-sidrbar-calender-btn a, .mep-event-theme-1 .mep-add-calender, .mep-template-2-hamza .mep-add-calender, .mep-tem3-mid-sec .mep-add-calender, #mep_add_calender_button, .royal_theme #mep_add_calender_button, .royal_theme ul#mep_add_calender_links li a {
-	background: var(--color_theme);
-	color: var(--color_7) !important;
-	border-color: var(--color_theme);
-}
-#mep_add_calender_button,
-ul#mep_add_calender_links li a {
-	background: var(--color_theme);
-	color: var(--color_7) !important;
-}
+
 /**/
 .mep_list_event_details p.read-more a {
 	color: var(--color_theme);
@@ -151,12 +140,6 @@ ul#mep_add_calender_links li a {
 .mep-events-wrapper .mage_text_center {
 	text-align: center;
 }
-#mep_add_calender_button.mep-add-calender,
-ul#mep_add_calender_links,
-ul#mep_add_calender_links a {
-	-webkit-transition: 200ms ease-in-out;
-	transition: 200ms ease-in-out;
-}
 .mep_ticket_details p {
 	font-size: 12px;
 	margin: 5px 0 !important;
@@ -192,7 +175,6 @@ div.mep_flex,
 div.mep-default-sidrbar-meta,
 ul.mep-social-share,
 ul.mep-social-share a,
-#mep_add_calender_button.mep-add-calender,
 button.single_add_to_cart_button,
 div.mep_spring_date,
 div.franklin_divided,
@@ -222,7 +204,6 @@ button.single_add_to_cart_button,
 .mep-default-theme i,
 .mep-default-sidrbar-meta,
 ul.mep-social-share a,
-#mep_add_calender_button.mep-add-calender,
 .bristol_center_box .mep-default-sidrbar-price-seat,
 .mep_spring_date .mep-default-sidrbar-social,
 .bristol .mep-default-sidrbar-social,
@@ -237,7 +218,6 @@ button.single_add_to_cart_button,
 .mep-default-theme i,
 ul.mep-social-share,
 ul.mep-social-share a,
-#mep_add_calender_button.mep-add-calender,
 button.single_add_to_cart_button,
 .bristol_center_box,
 .bristol_center_box .mep-default-sidrbar-price-seat,
@@ -254,23 +234,11 @@ div.bristol_center_box {
 	-webkit-justify-content: space-around;
 	justify-content: space-around;
 }
-.spring_field #mep_add_calender_button.mep-add-calender,
-.spring_field ul#mep_add_calender_links li a,
-.bristol #mep_add_calender_button.mep-add-calender,
-.bristol ul#mep_add_calender_links li a {
-	-webkit-border-radius: 0;
-	border-radius: 0;
-}
 .mep-default-theme i,
 ul.mep-social-share a,
 .mep-list-footer ul li i {
 	-webkit-border-radius: 50%;
 	border-radius: 50%;
-}
-#mep_add_calender_button.mep-add-calender,
-ul#mep_add_calender_links li a {
-	-webkit-border-radius: 50px;
-	border-radius: 50px;
 }
 .mep-events-wrapper.wrapper {
 	margin: 20px auto;
@@ -622,41 +590,6 @@ ul.mep-social-share li a.email:hover {
 }
 ul.mep-social-share li a.email:hover i {
 	color: #FFF;
-}
-/********Add to calender ***********/
-.mep-default-sidrbar-calender-btn {
-	margin: 20px 10px;
-	position: relative;
-}
-#mep_add_calender_button.mep-add-calender {
-	height: 50px;
-	padding: 0;
-	margin: 0;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-#mep_add_calender_button.mep-add-calender:hover {
-	opacity: 0.9;
-}
-#mep_add_calender_button.mep-add-calender i {
-	margin: 0 7px 0 0;
-	font-size: 14px;
-	display: inline-block;
-}
-ul#mep_add_calender_links {
-	margin: 0 auto;
-	max-width: 200px;
-	padding: 0;
-	text-align: center;
-	list-style: none;
-}
-ul#mep_add_calender_links li a {
-	display: block;
-	margin-top: 10px;
-	width: 100%;
-	padding: 5px;
 }
 /********Default Theme***********/
 .mep-default-content {
@@ -1622,14 +1555,7 @@ div.mep-day-details-section h4 {
 	.spring_field_banner_right {
 		width: 420px;
 	}
-	.mep-default-sidrbar-calender-btn {
-		margin: 20px 10px;
-	}
-	/********frinklin**************/
-	.franklin .mep-default-sidrbar-calender-btn,
-	.bristol .mep-default-sidrbar-calender-btn {
-		margin: 20px 10px;
-	}
+
 }
 @media only screen and (max-width: 991px) {
 	.mep-default-sidrbar-meta i,
@@ -1678,12 +1604,7 @@ div.mep-day-details-section h4 {
 	.mep-event-meta {
 		padding: 15px;
 	}
-	.mep-default-sidrbar-calender-btn {
-		margin: 15px;
-	}
-	#mep_add_calender_button.mep-add-calender {
-		font-size: 12px;
-	}
+
 	/********Default Theme***********/
 	.mep-default-content,
 	.franklin_divided_left {
@@ -1712,9 +1633,7 @@ div.mep-day-details-section h4 {
 		width: 100%;
 		padding: 0;
 	}
-	.spring_field .mep-default-sidrbar-calender-btn {
-		margin: 15px 0;
-	}
+
 	/********frinklin*********/
 	/************Related***********/
 	h2.mep_list_title {
@@ -1776,9 +1695,7 @@ div.mep-day-details-section h4 {
 		border-top: 1px solid #DDD;
 		border-bottom: 1px solid #DDD;
 	}
-	.bristol_center_box #mep_add_calender_button.mep-add-calender {
-		width: 200px;
-	}
+
 	.bristol .mep-default-sidrbar-social {
 		display: -webkit-flex;
 		display: flex;
@@ -1865,9 +1782,7 @@ div.mep-day-details-section h4 {
 	.spring_field .mep-event-meta {
 		padding: 13px;
 	}
-	.mep-default-sidrbar-calender-btn {
-		margin: 13px;
-	}
+
 	button.single_add_to_cart_button {
 		width: 100%;
 		min-height: 40px;
@@ -1881,8 +1796,7 @@ div.mep-day-details-section h4 {
 		border-top: 1px solid #DDD;
 		border-bottom: 1px solid #DDD;
 	}
-	.mep_spring_date .mep-default-sidrbar-social,
-	.bristol .mep-default-sidrbar-calender-btn {
+	.mep_spring_date .mep-default-sidrbar-social{
 		display: -webkit-flex;
 		display: flex;
 		-webkit-justify-content: center;
@@ -1891,14 +1805,6 @@ div.mep-day-details-section h4 {
 	div.bristol_center_box {
 		display: block;
 		border: 1px solid #DDD;
-	}
-	.bristol .mep-default-sidrbar-calender-btn {
-		margin: 0;
-		padding: 20px 0;
-		border-top: 1px solid #DDD;
-	}
-	.bristol ul#mep_add_calender_links {
-		width: 200px;
 	}
 	.mep_event_native_list .mep_more_date_btn {
 		width: 100%;
@@ -2203,31 +2109,9 @@ div.three_column {
 .woocommerce-Price-amount {
 	font-weight: 600;
 }
-#mep_add_calender_button.mep-add-calender {
-	height: 35px;
-	line-height: 35px;
-	font-size: 15px;
-	width: auto;
-	padding: 0 15px 0 15px !important;
-	margin: auto;
-	border-radius: 50px !important;
-	max-width: max-content;
-	display: block;
-}
+
 .mep-social-share li:last-child {
 	margin-right: 0;
-}
-#mep_add_calender_links li {
-	line-height: 35px;
-	height: 35px;
-	padding: 0;
-	max-width: 162px;
-	margin: auto;
-}
-#mep_add_calender_links li a {
-	padding: 0 !important;
-	font-size: 15px;
-	font-weight: 500;
 }
 .mep-default-sidrbar-meta i {
 	background: transparent;
@@ -4304,9 +4188,7 @@ Royal theme css by ariful | Date: 19-10-2021
 	height: 25px;
 	font-size: 14px;
 }
-.royal_theme .mep-default-sidrbar-calender-btn {
-	float: left;
-}
+
 .royal_theme .mep-default-sidrbar-events-schedule {
 	border-bottom: none;
 }
@@ -4460,29 +4342,7 @@ Royal theme css by ariful | Date: 19-10-2021
 	gap: 100px;
 	text-align: center;
 }
-.spring_field .mep-default-sidrbar-calender-btn {
-	width: 100%;
-	margin-top: 20px;
-}
-.spring_field ul#mep_add_calender_links {
-	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	background-color: #F2F2F2;
-}
-.spring_field ul#mep_add_calender_links li {
-	margin: 0;
-}
-.spring_field ul#mep_add_calender_links li a {
-	background-color: #777;
-	color: #FFF;
-	margin: 2px 0 0 0;
-	font-size: 15px;
-	font-weight: 500;
-}
-.spring_field ul#mep_add_calender_links li a.mep-add-calender:hover {
-	color: #888;
-}
+
 .spring_field .mep-default-sidrbar-map {
 	margin: 20px 0;
 }
@@ -4565,28 +4425,7 @@ div.bristol div.bristol_divided div.mep-default-feature-location {
 	margin: 20px 0;
 	background-color: #F2F2F2;
 }
-.bristol_center_box #mep_add_calender_button.mep-add-calender {
-	width: 300px;
-}
-.bristol ul#mep_add_calender_links {
-	position: absolute;
-	width: 100%;
-	max-width: 100%;
-	background-color: #F2F2F2;
-}
-.bristol ul#mep_add_calender_links li {
-	margin: 0;
-}
-.bristol ul#mep_add_calender_links li a {
-	background-color: #777;
-	color: #FFF;
-	margin: 2px 0 0 0;
-	font-size: 15px;
-	font-weight: 500;
-}
-.bristol ul#mep_add_calender_links li a.mep-add-calender:hover {
-	color: #888;
-}
+
 .bristol .mep-default-sidrbar-social .mep-share-btn-title {
 	margin-bottom: 0;
 }
@@ -4686,9 +4525,6 @@ Vanilla theme css by ariful
 }
 .vanilla_theme .mep-default-sidrbar-meta .fa-list-alt {
 	font-size: 14px;
-}
-.vanilla_theme .mep-default-sidrbar-calender-btn {
-	float: left;
 }
 .vanilla_theme .mep-default-sidrbar-events-schedule {
 	border-bottom: none;
@@ -4858,7 +4694,6 @@ Vanilla theme css by ariful
 		box-shadow: 0 0 5px #DDD;
 		padding-bottom: 20px;
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets,
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets {
 		display: flex;
@@ -4869,7 +4704,6 @@ Vanilla theme css by ariful
 		padding-bottom: 10px;
 		border-bottom: 1px solid #DDD;
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets i,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets i,
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets i {
 		font-size: 25px;
@@ -4877,19 +4711,16 @@ Vanilla theme css by ariful
 		color: var(--color_theme);
 		border-radius: 10px;
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets h2,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets h2,
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets h2 {
 		font-size: 19px;
 		letter-spacing: 2px;
 		margin-bottom: 15px;
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets p,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets p {
 		font-size: 16px;
 		margin-bottom: 5px;
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets button,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets button {
 		background-color: #FFF;
 		padding: 7px 10px !important;
@@ -4897,85 +4728,14 @@ Vanilla theme css by ariful
 		margin: 15px 0;
 		color: var(--color_theme);
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets button:hover,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets button:hover {
 		background-color: var(--color_6);
 	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets button i,
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets button i {
 		font-size: 16px;
 		padding: 0;
 		background: none;
 		margin-right: 6px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets [data-read] {
-		color: var(--color_theme);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul {
-		list-style-type: none;
-		max-height: 315px;
-		overflow: hidden;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li {
-		border: 1px solid #CCD6E2;
-		background-color: #F8FAFC;
-		padding: 15px;
-		display: flex;
-		flex-direction: row;
-		align-items: start;
-		position: relative;
-		padding-left: 25px;
-		margin-bottom: 10px;
-		border-radius: 12px;
-		transition: all 0.3s ease;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li::before {
-		content: "";
-		width: 8px;
-		height: 8px;
-		border-radius: 50px;
-		position: absolute;
-		top: 18px;
-		left: 10px;
-		background-color: var(--color_theme);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li:hover {
-		border-color: #CBD5E1;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-		transform: translateY(1px);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span {
-		display: block;
-		margin: 0;
-		font-size: 16px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time {
-		display: flex;
-		flex-direction: column;
-		align-items: start;
-		justify-content: start;
-		margin-left: 25px;
-		margin-top: 10px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span {
-		margin: 5px 5px;
-		position: relative;
-		padding-left: 14px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists ul li span.mep-more-time span::before {
-		content: "";
-		width: 5px;
-		height: 5px;
-		border-radius: 50px;
-		margin-right: 5px;
-		background-color: #AAA;
-		position: absolute;
-		left: 0;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .date_widgets .date-lists i {
-		display: none;
 	}
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets h2.share-widget-title {
 		font-size: 19px;
@@ -5015,28 +4775,7 @@ Vanilla theme css by ariful
 		color: var(--color_theme);
 		border: 1px solid var(--color_theme);
 	}
-	.mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender {
-		background-color: #FFF;
-		height: auto !important;
-		padding: 5px 10px !important;
-		border-radius: var(--dBR) !important;
-		border: 1px solid var(--color_theme);
-		margin-top: 15px;
-		margin-left: 50px;
-		color: var(--color_theme);
-		font-size: var(--button_fs);
-		font-weight: var(--fw-medium);
-		line-height: inherit;
-	}
-	.mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender:hover {
-		background-color: var(--color_6);
-	}
-	.mep_smart_theme .mpwem_sidebar_content #mep_add_calender_button.mep-add-calender i {
-		font-size: 16px;
-		padding: 0;
-		background: none;
-		margin-right: 6px;
-	}
+
 	.mep_smart_theme .speaker-widget {
 		margin-top: 10px;
 	}

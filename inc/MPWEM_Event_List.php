@@ -36,13 +36,13 @@
 					$end_datetime      = '';
 					if ( $recurring == 'no' || $recurring == 'yes' ) {
 						$end_date        = current( $all_dates );
-						$end_datetime    = array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
+						$end_datetime    = is_array($end_date) && array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
 						$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_datetime ) ? $end_datetime : '';
 					} else {
 						$end_date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 						if ( sizeof( $all_times ) > 0 ) {
 							$all_times       = current( $all_times );
-							$end_time        = array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
+							$end_time        =  is_array($all_times) && array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
 							$end_datetime    = $end_time ? $end_date . ' ' . $end_time : '';
 							$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_time_format ) ? $end_time_format : '';
 						}

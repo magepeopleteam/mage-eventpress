@@ -11,10 +11,12 @@ $hide_org_by_details        = mep_get_option('mep_event_hide_org_from_details', 
 $hide_address_details       = mep_get_option('mep_event_hide_address_from_details', 'single_event_setting_sec', 'no');
 $hide_schedule_details      = mep_get_option('mep_event_hide_event_schedule_details', 'single_event_setting_sec', 'no');
 $hide_share_details         = mep_get_option('mep_event_hide_share_this_details', 'single_event_setting_sec', 'no');
-$hide_calendar_details      = mep_get_option('mep_event_hide_calendar_details', 'single_event_setting_sec', 'no');
 $speaker_status             = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
 $event_date_icon            = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt');
 $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_setting_sec', 'fas fa-map-marker-alt');
+	$all_dates          = MPWEM_Functions::get_dates( $event_id );
+	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
+	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 ?>
 <div class="mpwem_style mep-default-theme spring_field">
     <div class="mep_flex">
@@ -55,11 +57,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
                     <div class="df-seat"><?php do_action('mep_event_seat', $event_id); ?></div>
                 </div>
             <?php } ?>
-            <?php if ($hide_calendar_details == 'no') { ?>
-                <div class="mep-default-sidrbar-calender-btn">
-                    <?php do_action('mep_event_add_calender', $event_id); ?>
-                </div>
-            <?php } ?>
+	        <?php do_action( 'mpwem_add_calender', $event_id,$all_dates ,$upcoming_date); ?>
         </div>
     </div>
     <div class="mep-default-sidrbar-map">
@@ -113,12 +111,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
         </div>
     </div>
     <div class="mep-default-feature-cart-sec">
-	    <?php
-		    $all_dates          = MPWEM_Functions::get_dates( $event_id );
-		    $all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
-		    $upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-		    do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
-	    ?>
+	    <?php do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );?>
     </div>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

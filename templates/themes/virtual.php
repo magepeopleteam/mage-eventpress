@@ -9,7 +9,6 @@
 	$hide_org_by_details     = mep_get_option( 'mep_event_hide_org_from_details', 'single_event_setting_sec', 'no' );
 	$hide_address_details    = mep_get_option( 'mep_event_hide_address_from_details', 'single_event_setting_sec', 'no' );
 	$hide_share_details    = mep_get_option( 'mep_event_hide_share_this_details', 'single_event_setting_sec', 'no' );
-	$hide_calendar_details = mep_get_option( 'mep_event_hide_calendar_details', 'single_event_setting_sec', 'no' );
 	$speaker_status        = mep_get_option( 'mep_enable_speaker_list', 'single_event_setting_sec', 'no' );
 	$_the_event_id = $event_id;
 	$all_dates     = MPWEM_Functions::get_dates( $event_id );
@@ -54,7 +53,7 @@
                 </div>
 				<?php
 			}
-				do_action( 'mep_event_date_default_theme', $event_id, 'yes', $all_dates );
+				do_action( 'mpwem_date_list', $event_id, 'yes', $all_dates );
 				if ( has_term( '', 'mep_tag', $event_id ) ): ?>
                     <div class="mep-default-sidebar-tags">
 						<?php do_action( 'mep_event_tags', $event_id ); ?>
@@ -64,12 +63,8 @@
                     <div class="mep-default-sidrbar-social">
 						<?php do_action( 'mep_event_social_share', $_the_event_id ); ?>
                     </div>
-				<?php }
-				if ( $hide_calendar_details == 'no' ) { ?>
-                    <div class="mep-default-sidrbar-calender-btn">
-						<?php do_action( 'mep_event_add_calender', $_the_event_id ); ?>
-                    </div>
 				<?php } ?>
+				<?php do_action( 'mpwem_add_calender', $event_id ,$all_dates,$upcoming_date); ?>
         </div>
     </div>
 </div>

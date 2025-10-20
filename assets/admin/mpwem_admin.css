@@ -2042,30 +2042,7 @@ div.mpwem_style .formControl.date_type {
 	margin: 0 5px;
 }
 /* ***********mpwem_style overright********** */
-.mpwem_style .themeButton, .mpwem_style [class*=_themeButton], .mpwem_style [class*=_warningButton], #mp_event_all_info_in_tab .button {
-	background-color: var(--color_theme);
-	color: var(--color_theme_alter);
-	border: 2px solid var(--color_theme);
-}
-.mpwem_style [class*=_navy_blueButton] {
-	background-color: var(--color_orange);
-	color: var(--color_theme_alter);
-	border: 2px solid var(--color_theme);
-}
-/*.mpwem_style .customCheckbox::before {*/
-/*	background-color: var(--color_white);*/
-/*	border: 2px solid var(--color_theme);*/
-/*}*/
-.mpwem_style [data-tabs-target].active {
-	background-color: var(--color_theme);
-	color: var(--color_white);
-	border: 0;
-}
-.mpwem_style [data-tabs-target]:hover {
-	background-color: var(--color_gray);
-	border-color: var(--color_gray);
-	color: var(--color_dark);
-}
+
 #ui-datepicker-div {
 	border-color: var(--color_theme);
 }
@@ -2085,41 +2062,6 @@ div.mpwem_style .formControl.date_type {
 }
 #ui-datepicker-div .ui-datepicker-title {
 	background-color: var(--color_theme);
-}
-/*********Special date settings**********************/
-div.mep_special_on_dates_setting table td {
-	vertical-align: top;
-	padding: 5px;
-}
-div.mep_special_on_dates_setting table label {
-	max-width: 170px;
-}
-div.mep_special_on_dates_setting [type=time] {
-	max-width: 120px;
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table {
-	border-collapse: inherit;
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table,
-div.mep_special_on_dates_setting table.mep_special_on_dates_table th,
-div.mep_special_on_dates_setting table.mep_special_on_dates_table td {
-	border: 1px solid var(--color_border);
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table th {
-	font-size: var(--fs);
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table tr:nth-child(even),
-div.mep_special_on_dates_setting table.mep_special_on_dates_table tr:nth-child(odd) {
-	background-color: transparent;
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table thead th {
-	background-color: var(--color_2);
-	color: #333;
-}
-div.mep_special_on_dates_setting table.mep_special_on_dates_table tbody th {
-	background-color: var(--color_light);
-	padding: 5px;
-	color: #333;
 }
 /*******************************/
 div.mpPopup.mpwem_timeline_popup .popupBody {min-height: 400px;}

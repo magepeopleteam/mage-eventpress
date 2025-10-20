@@ -1161,65 +1161,6 @@
 			return $newformat;
 		}
 	}
-	if ( ! function_exists( 'mep_add_to_google_calender_link' ) ) {
-		function mep_add_to_google_calender_link( $pid ) {
-			$event       = get_post( $pid );
-			$event_meta  = get_post_custom( $pid );
-			$start_date  = ! empty( get_post_meta( $pid, 'event_start_date', true ) ) ? esc_html( get_post_meta( $pid, 'event_start_date', true ) ) : "";
-			$start_time  = ! empty( get_post_meta( $pid, 'event_start_time', true ) ) ? esc_html( get_post_meta( $pid, 'event_start_time', true ) ) : "";
-			$end_date    = ! empty( get_post_meta( $pid, 'event_end_date', true ) ) ? esc_html( get_post_meta( $pid, 'event_end_date', true ) ) : "";
-			$end_time    = ! empty( get_post_meta( $pid, 'event_end_time', true ) ) ? esc_html( get_post_meta( $pid, 'event_end_time', true ) ) : "";
-			$venue       = ! empty( get_post_meta( $pid, 'mep_location_venue', true ) ) ? esc_html( get_post_meta( $pid, 'mep_location_venue', true ) ) : "";
-			$street      = ! empty( get_post_meta( $pid, 'mep_street', true ) ) ? esc_html( get_post_meta( $pid, 'mep_street', true ) ) : "";
-			$city        = ! empty( get_post_meta( $pid, 'mep_city', true ) ) ? esc_html( get_post_meta( $pid, 'mep_city', true ) ) : "";
-			$state       = ! empty( get_post_meta( $pid, 'mep_state', true ) ) ? esc_html( get_post_meta( $pid, 'mep_state', true ) ) : "";
-			$postcode    = ! empty( get_post_meta( $pid, 'mep_postcode', true ) ) ? esc_html( get_post_meta( $pid, 'mep_postcode', true ) ) : "";
-			$country     = ! empty( get_post_meta( $pid, 'mep_country', true ) ) ? esc_html( get_post_meta( $pid, 'mep_country', true ) ) : "";
-			$event_start = $start_date . ' ' . $start_time;
-			$event_end   = $end_date . ' ' . $end_time;
-			$location    = $venue . " " . $street . " " . $city . " " . $state . " " . $postcode . " " . $country;
-			ob_start();
-			require( mep_template_file_path( 'single/add_calendar.php' ) );
-			?>
-            <script type="text/javascript">
-                jQuery(document).ready(function () {
-                    jQuery("#mep_add_calender_button").click(function () {
-                        jQuery("#mep_add_calender_links").toggle()
-                    });
-                });
-            </script>
-            <style type="text/css">
-				#mep_add_calender_links { display: none;
-					background: transparent;
-					margin-top: -7px;
-					list-style: navajowhite;
-					margin: 0;
-					padding: 0;}
-				/*  #mep_add_calender_links li{list-style: none !important; line-height: 0.2px; border:1px solid #d5d5d5; border-radius: 10px; margin-bottom: 5px;}
-    #mep_add_calender_links a{background: none !important; color: #333 !important; line-height: 0.5px !important; padding:10px; margin-bottom: 3px;}
-    #mep_add_calender_links a:hover{color:#ffbe30;}*/
-				#mep_add_calender_button {
-					/*background: #ffbe30 none repeat scroll 0 0;*/
-					border: 0 none;
-					border-radius: 50px;
-					/*color: #ffffff !important;*/
-					display: inline-flex;
-					font-size: 14px;
-					font-weight: 600;
-					overflow: hidden;
-					padding: 15px 35px;
-					position: relative;
-					text-align: center;
-					text-transform: uppercase;
-					z-index: 1;
-					cursor: pointer;
-				}
-				.mep-default-sidrbar-social .mep-event-meta {text-align: center;}
-            </style>
-			<?php
-			return ob_get_clean();
-		}
-	}
 	if ( ! function_exists( 'mep_event_template_name' ) ) {
 		function mep_event_template_name() {
 			$template_name = 'index.php';
@@ -2364,16 +2305,6 @@
 			}
 
 			return $p;
-		}
-	}
-	if ( ! function_exists( 'mep_get_extra_price_arr' ) ) {
-		function mep_get_extra_price_arr( $ticket_type, $event_id ) {
-			$price = [];
-			foreach ( $ticket_type as $ticket ) {
-				$price[] = mep_get_event_extra_price_by_name( $ticket, $event_id );
-			}
-
-			return $price;
 		}
 	}
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {

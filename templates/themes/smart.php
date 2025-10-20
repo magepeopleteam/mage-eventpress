@@ -40,7 +40,7 @@
 				<h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
 			<?php endif; ?>
             <div class="mpwem_sidebar_content">
-				<?php do_action( 'mpwem_date_time', $event_id, $all_dates, $all_times ); ?>
+				<?php do_action( 'mpwem_date_list', $event_id,'yes', $all_dates ); ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
 				<?php if (has_term('', 'mep_tag', $event_id)): ?>
 					<div class="mep-default-sidebar-tags">
@@ -48,7 +48,7 @@
 					</div>
 				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id ); ?>
-				<?php echo mep_add_to_google_calender_link( $event_id ); ?>
+				<?php do_action( 'mpwem_add_calender', $event_id,$all_dates ,$upcoming_date); ?>
             </div>
 			<!-- show speaker lists -->
 			<?php  if($speaker_status == 'yes'): ?>

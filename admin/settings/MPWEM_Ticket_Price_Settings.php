@@ -44,7 +44,6 @@
 			public function ticket_setting( $event_id ) {
 				$show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
 				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
-				echo $show_advance_column . 'gjuf' . $active_category;
 				$ticket_infos = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				$event_label  = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				?>
@@ -140,7 +139,7 @@
                             </label>
                         </div>
                     </td>
-                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+                    <td>
                         <label>
                             <select class="formControl" name="option_qty_t_type[]">
                                 <option value="inputbox" <?php echo esc_attr( $qty_t_type == 'inputbox' ? 'Selected' : '' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>

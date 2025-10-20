@@ -151,7 +151,7 @@
 	.mpwem_style [class^="mpMenu"] { display: -webkit-inline-flex; display: inline-flex; }
 	.mpwem_style .mpRow,
 	.mpwem_style .flexWrap,
-	.mpwem_style .listInline{ display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
+	.mpwem_style .listInline { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
 	div.mpwem_style [class*="_wrap"] { -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
 	.mpwem_style .flexNowrap { display: -webkit-flex; display: flex; -webkit-flex-wrap: nowrap; flex-wrap: nowrap; }
 	.mpwem_style ul.list_inline_two,
@@ -242,10 +242,10 @@
 }
 /******************************************************************** Button Section ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpwem_style a[class*="_mpBtn"]{border: 1px solid var(--color_border);background-color: var(--color_section);color: var(--color_theme);}
-	div.mpwem_style a[class*="_mpBtn"]:hover{border: 1px solid var(--color_border);background-color: var(--color_theme);color: var(--color_section);}
+	div.mpwem_style a[class*="_mpBtn"] {border: 1px solid var(--color_border);background-color: var(--color_section);color: var(--color_theme);}
+	div.mpwem_style a[class*="_mpBtn"]:hover {border: 1px solid var(--color_border);background-color: var(--color_theme);color: var(--color_section);}
 	.mpwem_style .mpBtn, .mpwem_style [class*="_mpBtn"],
-	.mpwem_style button{ position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
+	.mpwem_style button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
 	.mpwem_style button[disabled] { cursor: not-allowed; opacity: 0.8; background-color: #DDD; }
 	.mpwem_style button:hover, .mpwem_style button:focus { text-decoration: none; opacity: 0.8; background-color: var(--color_theme_cc); color: #FFF; }
 	.mpwem_style button:hover span, .mpwem_style button:focus span { color: #FFF; }
@@ -254,7 +254,7 @@
 	.mpwem_style .mpBtn.mActive, .mpwem_style [class*="_mpBtn"].mActive,
 	.mpwem_style .mpBtn.mpActive:hover, .mpwem_style [class*="_mpBtn"].mpActive:hover { background-color: var(--color_theme); color: var(--color_theme_alter); }
 	/***/
-	.mpwem_style [class*="_dButton"],div.mpwem_style a[class*="_dButton"] { padding: 0 var(--dMP); min-width: var(--button_width); height: auto; min-height: var(--button_height); color: var(--color_button); background-color: var(--button_bg); }
+	.mpwem_style [class*="_dButton"], div.mpwem_style a[class*="_dButton"] { padding: 0 var(--dMP); min-width: var(--button_width); height: auto; min-height: var(--button_height); color: var(--color_button); background-color: var(--button_bg); }
 	.mpwem_style [class*="_dButton"] span { margin: 0 var(--dMP_xs) 0 0; }
 	.mpwem_style .dButton, .mpwem_style [class*="_dButton"] { color: var(--color_button); background-color: var(--button_bg); }
 	.mpwem_style .dButton:hover, .mpwem_style [class*="_dButton"]:hover,
@@ -856,10 +856,9 @@
 	div.mpwem_style .formControl.date_type,
 	div.mpwem_style .formControl[type="date"] {
 		background-image: url("../images/calendar.png");background-repeat: no-repeat; background-position: var(--dMP_xs) center; background-size: auto;
-		-webkit-appearance: none;
-		font-size: var(--fs_h6); font-weight: var(--fw-medium);
-		padding: var(--dMP_xs) var(--dMP_xs) var(--dMP_xs) 50px;
+		-webkit-appearance: none; font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP_xs) var(--dMP_xs) 40px;
 	}
+	div.mpwem_style .formControl[type="time"] {padding: 3px 5px;}
 	div.mpwem_style textarea.formControl { height: auto; }
 	.mpwem_style .mpForm label { margin: var(--dMP_xs) 0 0 0; text-transform: capitalize; }
 	.mpwem_style .mpForm label span { width: 100%; margin: 0 0 var(--dMP_xs) 0; }

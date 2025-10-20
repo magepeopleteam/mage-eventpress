@@ -18,7 +18,7 @@ $event_location_icon        = mep_get_option('mep_event_location_icon', 'icon_se
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 ?>
-<div class="mpwem_style mep-default-theme spring_field">
+<div class="mpwem_style default_theme spring_field">
     <div class="mep_flex">
         <div class="spring_field_banner">
             <div class="_mT mpwem_slider_area">

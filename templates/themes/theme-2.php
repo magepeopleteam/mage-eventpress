@@ -15,7 +15,7 @@
 	$all_times               = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date           = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 ?>
-<div class="mpwem_style mep-default-theme franklin">
+<div class="mpwem_style default_theme franklin">
     <div class="mep-default-title">
 		<?php do_action( 'mep_event_title', $event_id ); ?>
     </div>

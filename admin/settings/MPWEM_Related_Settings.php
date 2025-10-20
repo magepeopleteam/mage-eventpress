@@ -174,7 +174,7 @@
 											?>
                                             <div class="item">
                                                 <a href="<?php echo get_the_permalink( $values ); ?>">
-                                                    <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="">
+                                                    <img src="<?php echo MPWEM_Global_Function::get_image_url($values);?>" alt="">
 													<?php if ( isset( $event_meta['mep_event_start_date'][0] ) ): ?>
                                                         <div class="mep-ev-start-date">
                                                             <div class="mep-day"><?php echo date_i18n( 'd', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>

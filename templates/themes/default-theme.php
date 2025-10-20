@@ -31,7 +31,7 @@
 <div class="mep-default-title">
 	<?php do_action( 'mep_event_title', $event_id ); ?>
 </div>
-<div class="mpwem_style mep-default-theme mep_flex default_theme">
+<div class="mpwem_style default_theme mep_flex">
     <div class="mep-default-content">
         <div class="mpwem_slider_area">
 			<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>

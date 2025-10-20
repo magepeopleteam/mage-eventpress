@@ -52,7 +52,7 @@
 				add_action( 'mpwem_map', [ $this, 'map' ], 10, 4 );
 				add_action( 'mep_event_map', [ $this, 'event_map' ] );
 				/**************************/
-				add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
+				//add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
 				/**************************/
 				add_action( 'mpwem_social', [ $this, 'social' ], 10, 4 );
 				add_action( 'mep_event_social_share', [ $this, 'event_social_share' ] );

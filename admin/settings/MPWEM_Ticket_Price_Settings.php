@@ -44,8 +44,9 @@
 			public function ticket_setting( $event_id ) {
 				$show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
 				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
-				$ticket_infos        = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
-				$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				echo $show_advance_column . 'gjuf' . $active_category;
+				$ticket_infos = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+				$event_label  = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				?>
                 <div class="_mT"></div>
                 <div class="_dLayout_xs_mp_zero ">
@@ -67,11 +68,10 @@
                                     <th class="_min_150" title="<?php esc_attr_e( 'Ticket Type Details', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Short Desc.', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" title="<?php esc_attr_e( 'Ticket Price', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" title="<?php esc_attr_e( 'Available Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Default Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Default Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
 									<?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
-                                    <th class="_min_200" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Date', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100" class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Time', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date & Time', 'mage-eventpress' ); ?></th>
                                     <th class="_min_150" title="<?php esc_attr_e( 'Qty Box Type', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
                                     <th><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                                 </tr>
@@ -130,15 +130,17 @@
                     </td>
 					<?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
                     <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
-                        <label>
-                            <input type="hidden" name="option_sale_end_date[]" value="<?php echo esc_attr( $hidden_sale_end ); ?>"/>
-                            <input value="<?php echo esc_attr( $visible_sale_end ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
-                        </label>
+                        <div class="_dFlex">
+                            <label>
+                                <input type="hidden" name="option_sale_end_date[]" value="<?php echo esc_attr( $hidden_sale_end ); ?>"/>
+                                <input value="<?php echo esc_attr( $visible_sale_end ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                            </label>
+                            <label>
+                                <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
+                            </label>
+                        </div>
                     </td>
                     <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
-                        <label> <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/> </label>
-                    </td>
-                    <td>
                         <label>
                             <select class="formControl" name="option_qty_t_type[]">
                                 <option value="inputbox" <?php echo esc_attr( $qty_t_type == 'inputbox' ? 'Selected' : '' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>

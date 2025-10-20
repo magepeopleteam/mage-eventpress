@@ -121,9 +121,9 @@
 				}
 			}
 			public static function calender_date_format( $date_time ) {
-				$time      = strtotime( $date_time );
-				$new_date   = date_i18n( 'Ymd', $time );
-				$new_time   = date( 'Hi', $time );
+				$time     = strtotime( $date_time );
+				$new_date = date_i18n( 'Ymd', $time );
+				$new_time = date( 'Hi', $time );
 				return $new_date . "T" . $new_time . "00";
 			}
 			//=================//
@@ -180,6 +180,10 @@
 				if ( $post_id ) {
 					$image_id = get_post_thumbnail_id( $post_id );
 					$image_id = $image_id ?: self::get_post_info( $post_id, 'mep_list_thumbnail' );
+					if ( ! $image_id ) {
+						$image_ids = MPWEM_Global_Function::get_post_info( $post_id, 'mep_gallery_images', array() );
+						$image_id  = sizeof( $image_ids ) > 0 ? current( $image_ids ) : $image_id;
+					}
 				}
 				return wp_get_attachment_image_url( $image_id, $size );
 			}

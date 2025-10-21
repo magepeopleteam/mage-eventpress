@@ -5,14 +5,9 @@
 	$event_id       = $event_id ?? 0;
 	$all_dates      = $all_dates ?? [];
 	$all_dates      = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-	$title          = $title ?? '';
 	$hide_date_list = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
 	$date_count     = 0;
 	if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
-        <div class="event_date_list_area _padding">
-			<?php if ( $title == 'yes' ) { ?>
-                <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
-			<?php } ?>
             <div class="date_list_area">
 				<?php
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
@@ -73,6 +68,5 @@
 			<?php if ( $date_count > 4 ) { ?>
                 <button type="button" class="_themeButton_mAuto" data-collapse-target="#mpwem_more_date" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span></button>
 			<?php } ?>
-        </div>
 		<?php
 	}

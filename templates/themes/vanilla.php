@@ -16,6 +16,7 @@
 	$all_dates               = MPWEM_Functions::get_dates( $event_id );
 	$all_times               = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date           = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$hide_date_list          = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
 ?>
 <div class="mpwem_style default_theme vanilla_theme">
     <div class="mep-default-content">
@@ -33,7 +34,7 @@
                         <h3>
 							<?php echo mep_get_option( 'mep_event_date_text', 'label_setting_sec', __( 'Event Date:', 'mage-eventpress' ) ); ?>
                         </h3>
-						<?php do_action( 'mep_event_date_only', $event_id ,$all_dates); ?>
+						<?php do_action( 'mep_event_date_only', $event_id, $all_dates ); ?>
                     </div>
                 </div>
 			<?php }
@@ -44,7 +45,7 @@
                             <h3>
 								<?php echo mep_get_option( 'mep_event_time_text', 'label_setting_sec', __( 'Event Time:', 'mage-eventpress' ) ); ?>
                             </h3>
-							<?php do_action( 'mep_event_time_only', $event_id ,$all_dates); ?>
+							<?php do_action( 'mep_event_time_only', $event_id, $all_dates ); ?>
                         </div>
                     </div>
 				<?php }
@@ -75,7 +76,7 @@
                         </h3>
 						<?php do_action( 'mep_event_map', $event_id ); ?>
                     </div>
-	                <?php do_action( 'mpwem_add_calender', $event_id,$all_dates ,$upcoming_date); ?>
+					<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
                 </div>
 			<?php } ?>
             <div class="mep-default-col-2">
@@ -103,7 +104,12 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php do_action( 'mpwem_date_list', $event_id, 'yes', $all_dates ); ?>
+				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+                    <div class="event_date_list_area">
+                        <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+						<?php do_action( 'mpwem_date_list', $event_id, $all_dates ); ?>
+                    </div>
+				<?php } ?>
 				<?php if ( $hide_total_seat_details == 'no' ) { ?>
                     <div class="mep-default-sidrbar-price-seat">
                         <div class="df-seat"><?php do_action( 'mep_event_seat', $event_id ); ?></div>

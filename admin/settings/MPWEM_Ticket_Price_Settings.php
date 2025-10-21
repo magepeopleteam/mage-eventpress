@@ -46,6 +46,7 @@
 				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
 				$ticket_infos = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 				$event_label  = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
                 <div class="_mT"></div>
                 <div class="_dLayout_xs_mp_zero ">

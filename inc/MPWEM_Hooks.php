@@ -279,7 +279,7 @@
 					<?php
 				}
 			}
-			public function event_date_list( $event_id, $title = 'yes', $all_dates = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
+			public function event_date_list( $event_id,$all_dates = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
 			public function event_date_only( $event_id, $all_dates = [] ) {
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {

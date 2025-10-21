@@ -528,9 +528,8 @@ function render_mep_events_by_status( $posts ) {
 
 
 ?>
-<div class="wrap"></div>
-<div class="mpwem_event_list mpwem_style mpwem_welcome_page">
-    <div class='padding'>
+<div class="wrap">
+    <div class="mpwem_event_list mpwem_style mpwem_welcome_page">
         <div class="container">
             <div class="header">
                 <div class="header-top">
@@ -619,7 +618,7 @@ function render_mep_events_by_status( $posts ) {
                     if( is_array( $get_all_categories ) && !empty( $get_all_categories ) ){
                         foreach ( $get_all_categories as $key => $event_categories ){ ?>
                             <option><?php echo esc_attr( $event_categories );?></option>
-                       <?php }
+                    <?php }
 
                     }
                     ?>
@@ -657,9 +656,9 @@ function render_mep_events_by_status( $posts ) {
                     </tr>
                     </thead>
                     <tbody>
-                       <?php
+                    <?php
                         echo render_mep_events_by_status( $events );
-                       ?>
+                    ?>
                     </tbody>
                 </table>
             </div>

@@ -1,12 +1,15 @@
+.mep_events_page_mep_event_lists .notice{
+    display: none;
+}
 .mpwem_event_list .container {
-    max-width: 1600px;
     margin: 0 auto;
     background: white;
     min-height: 100vh;
+    max-width: 100%;
 }
 .mpwem_event_list .header {
     background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    padding: 0px;
+    padding: 15px;
     border-bottom: 1px solid #e2e8f0;
 }
 .mpwem_event_list .header-top {
@@ -77,9 +80,8 @@
     color: #059669;
 }
 .mpwem_event_list .controls {
-    padding: 24px 32px;
+    padding:15px;
     background: #fefefe;
-    border-bottom: 1px solid #f1f5f9;
     display: flex;
     gap: 16px;
     align-items: center;
@@ -125,7 +127,7 @@
 }
 .mpwem_event_list .table-container {
     overflow-x: auto;
-    margin: 0 32px 32px;
+    margin:15px;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     background: white;

@@ -2037,10 +2037,7 @@ h3.mep_virtual_sec_title {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
-div.mpwem_style .formControl.date_type {
-	padding: 5px 5px 5px 50px;
-	margin: 0 5px;
-}
+
 /* ***********mpwem_style overright********** */
 
 #ui-datepicker-div {

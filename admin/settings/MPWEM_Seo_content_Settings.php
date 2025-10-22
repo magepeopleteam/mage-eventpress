@@ -31,8 +31,8 @@
                     <section>
                         <label class="mpev-label">
                             <div>
-                                <h2><span><?php esc_html_e( 'Rich Text Status', 'mage-eventpress' ); ?></span></h2>
-                                <span><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
+                                <h2><?php esc_html_e( 'Rich Text Status', 'mage-eventpress' ); ?></h2>
+                                <span class="label-text"><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                             </div>
                             <select id="mep_rich_text_status" name="mep_rich_text_status">
                                 <option value="enable" <?php echo $rt_status == 'eanble' ? 'selected' : ''; ?>> <?php echo esc_html__( 'Enable', 'mage-eventpress' ); ?></option>

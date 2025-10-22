@@ -48,8 +48,8 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 <section>
                     <label class="mpev-label">
                         <div>
-                            <h2><span><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></span></h2>
-                            <span><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
+                            <h2><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></h2>
+                            <span class="label-text"><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
                         </div>
                         <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speakers', 'mage-eventpress'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
                     </label>
@@ -57,8 +57,8 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 <section>
                     <label class="mpev-label">
                         <div>
-                            <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
-                            <span>
+                            <h2><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></h2>
+                            <span class="label-text">
                                 <?php
                                     printf(
                                         /* translators: %s: HTML link to add new speakers */
@@ -101,8 +101,8 @@ if( ! class_exists('MPWEM_Speaker_Settings')){
                 <section>
                     <label class="mpev-label">
                         <div>
-                            <h2><span><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></span></h2>
-                            <span><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
+                            <h2><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></h2>
+                            <span class="label-text"><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
                         </div>
                         <div class="mep-speaker-wrapper">
                             <select name="mep_event_speakers_list[]" id="" multiple>

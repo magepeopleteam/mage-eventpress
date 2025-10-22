@@ -5,8 +5,13 @@ body.single-mep_events{
 @media only screen and (min-width: 10px) {
 	div.default_theme .content_area {display: -webkit-flex;display: flex;}
 }
+/* ************************Category section******************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
+}
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
+	div.event_date_list_area {padding: var(--dMP);}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dMP_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
@@ -4002,17 +4007,6 @@ div.mpwem_timeline_area .timeline_area::before {
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-low, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining.remaining-low {
 	background-color: #FCE8E6;
 	color: #C5221F;
-}
-.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec {
-	display: flex;
-	align-items: center;
-	margin: 0 30px;
-	max-width: 200px;
-}
-@media (max-width: 1024px) {
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec, .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .quantity-control .qtyIncDec {
-		margin: 0;
-	}
 }
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
 .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price {

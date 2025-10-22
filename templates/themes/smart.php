@@ -7,6 +7,8 @@
 	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$speaker_status     = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
+	$hide_date_list = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
+	$event_location_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_location_icon', 'fas fa-map-marker-alt' );
 ?>
 <div class="mpwem_style mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
@@ -40,7 +42,12 @@
 				<h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
 			<?php endif; ?>
             <div class="mpwem_sidebar_content">
-				<?php do_action( 'mpwem_date_list', $event_id,'yes', $all_dates ); ?>
+	            <?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+                    <div class="event_date_list_area">
+                        <h5 class="_mB_xs"><span class="<?php echo esc_attr($event_location_icon);?> _mR_xs"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+			            <?php do_action( 'mpwem_date_list', $event_id, $all_dates ); ?>
+                    </div>
+	            <?php } ?>
 				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
 				<?php if (has_term('', 'mep_tag', $event_id)): ?>
 					<div class="mep-default-sidebar-tags">

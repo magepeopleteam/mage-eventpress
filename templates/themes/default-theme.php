@@ -21,12 +21,12 @@
 	$mep_enable_recurring     = $mep_enable_recurring ? $mep_enable_recurring : 'no';
 	$event_type               = get_post_meta( $event_id, 'mep_event_type', true );
 	$event_type               = $event_type ? $event_type : 'offline';
-
-	$all_dates         = MPWEM_Functions::get_dates( $event_id );
-	$all_times         = MPWEM_Functions::get_times( $event_id, $all_dates );
-    //echo '<pre>';print_r( $all_dates );echo '</pre>';
-    //echo '<pre>';print_r( $all_times );echo '</pre>';
-	$upcoming_date     = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$all_dates = MPWEM_Functions::get_dates( $event_id );
+	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
+	//echo '<pre>';print_r( $all_dates );echo '</pre>';
+	//echo '<pre>';print_r( $all_times );echo '</pre>';
+	$upcoming_date  = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$hide_date_list = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
 ?>
 <div class="mep-default-title">
 	<?php do_action( 'mep_event_title', $event_id ); ?>
@@ -48,7 +48,7 @@
 								echo mep_get_option( 'mep_event_date_text', 'label_setting_sec', __( 'Event Date:', 'mage-eventpress' ) );
 							?>
                         </h3>
-						<?php do_action( 'mep_event_date_only', $event_id ,$all_dates); ?>
+						<?php do_action( 'mep_event_date_only', $event_id, $all_dates ); ?>
                     </div>
                 </div>
 			<?php }
@@ -59,7 +59,7 @@
                             <h3>
 								<?php echo mep_get_option( 'mep_event_time_text', 'label_setting_sec', __( 'Event Time:', 'mage-eventpress' ) ); ?>
                             </h3>
-							<?php do_action( 'mep_event_time_only', $event_id,$all_dates ); ?>
+							<?php do_action( 'mep_event_time_only', $event_id, $all_dates ); ?>
                         </div>
                     </div>
 				<?php }
@@ -113,7 +113,12 @@
 					<?php do_action( 'mep_event_seat', $event_id ); ?>
 				<?php } ?>
 			<?php endif; ?>
-			<?php do_action( 'mpwem_date_list', $event_id ,'yes',$all_dates); ?>
+			<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+                <div class="event_date_list_area">
+                    <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+					<?php do_action( 'mpwem_date_list', $event_id, $all_dates ); ?>
+                </div>
+			<?php } ?>
 			<?php if ( $hide_address_details == 'no' ): ?>
                 <div class="mep-default-sidebar-address">
 					<?php do_action( 'mep_event_address_list_sidebar', $event_id ); ?>
@@ -137,9 +142,9 @@
 						<?php do_action( 'mep_event_speakers_list', $event_id ); ?>
                     </div>
 					<?php
-				}?>
-				<?php do_action( 'mpwem_add_calender', $event_id ,$all_dates,$upcoming_date); ?>
-				<?php dynamic_sidebar( 'mep_default_sidebar' );
+				} ?>
+			<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
+			<?php dynamic_sidebar( 'mep_default_sidebar' );
 			?>
         </div>
     </div>

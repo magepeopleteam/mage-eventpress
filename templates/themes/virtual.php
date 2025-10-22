@@ -14,6 +14,7 @@
 	$all_dates               = MPWEM_Functions::get_dates( $event_id );
 	$all_times               = MPWEM_Functions::get_times( $event_id, $all_dates );
 	$upcoming_date           = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$hide_date_list          = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_event_schedule_details', 'no' );
 ?>
 <div class="mpwem_style default_theme">
     <div class="content_area">
@@ -54,7 +55,14 @@
                     </div>
 					<?php
 				}
-					do_action( 'mpwem_date_list', $event_id, 'yes', $all_dates );
+				?>
+				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+                    <div class="event_date_list_area">
+                        <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+						<?php do_action( 'mpwem_date_list', $event_id, $all_dates ); ?>
+                    </div>
+				<?php } ?>
+				<?php
 					if ( has_term( '', 'mep_tag', $event_id ) ): ?>
                         <div class="mep-default-sidebar-tags">
 							<?php do_action( 'mep_event_tags', $event_id ); ?>

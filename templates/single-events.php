@@ -54,7 +54,7 @@
 		do_action( 'mep_event_single_page_after_header', $event_id );
 		?>
         <div class="mep-events-wrapper wrapper">
-            <div class="mep-events-container">
+            <div class="mpwem_container">
 				<?php
 					if ( $fatal_error_fix === 'disable' ) {
 						do_action( 'woocommerce_before_single_product' );

@@ -1,5 +1,6 @@
-body.single-mep_events{
-	color: #333;
+/* ******************************************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_container {max-width: 1320px;width: 100%;margin: 0 auto;}
 }
 /* ************************Details page******************** */
 @media only screen and (min-width: 10px) {

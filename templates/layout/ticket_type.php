@@ -27,6 +27,7 @@
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$input_data        = [];
 						$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
+						do_action('mep_ticket_type_loop_list_row_start',$event_id, $date, $ticket_type);
 						if ( $ticket_permission ) {
 							//echo '<pre>';print_r($ticket_type);echo '</pre>';
 							$ticket_name     = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
@@ -54,6 +55,8 @@
 								$input_data              = apply_filters( 'filter_mpwem_min_qty_must', $input_data, $event_id );
 								//echo '<pre>';print_r($input_data);echo '</pre>';
 								$count ++;
+
+
 								?>
                                 <div class="mep_ticket_item">
                                     <div class="ticket-data">
@@ -130,12 +133,15 @@
 								<?php
 							}
 						}
-					} ?>
+					} 
+					?>
                 </div>
             </div>
 			<?php
 			//echo '<pre>';print_r($ticket_types);echo '</pre>';
 		}
+		// update_post_meta($event_id,'ea_attendee_sync', 'yes');
+
 	} else {
 		?>
         <div class="no-ticket">
@@ -143,6 +149,7 @@
         </div>
 		<?php
 		do_action( 'mep_after_no_seat_notice', $event_id );
+
 	}
 
 //	echo '<pre>';print_r($total_ticket);echo '</pre>';

@@ -979,6 +979,29 @@
 			mep_temp_attendee_delete_for_cart( $event_id, $ticket['ticket_name'], $ticket['ticket_qty'], $ticket['event_date'] );
 		}
 	}
+	function mep_update_ticket_type_stat($event_id,$ticket_name,$date){
+			$date                = date( 'Y-m-d H:i', strtotime( $date) );
+			$_date               = date( 'YmdHi', strtotime( $date ) );
+			$name 				 = $ticket_name;
+			$total_quantity      = (int) mep_get_ticket_type_info_by_name( $name, $event_id );
+			$total_resv_quantity = (int) mep_get_ticket_type_info_by_name( $name, $event_id, 'option_rsv_t' );
+			$total_sold_type     = (int) mep_ticket_type_sold( $event_id, $name, $date );
+			$seat_left_date      = mep_get_count_total_available_seat( $event_id, $date );
+			$ticket_type_left      = (int) $total_sold_type;
+			$ticket_type_meta_name = $name . '_' . $_date;
+			$event_name            = $event_id . '_' . $_date;
+			update_post_meta( $event_id, $ticket_type_meta_name, $ticket_type_left );
+	}
+
+	add_action('mep_ticket_type_loop_list_row_start','mep_ticket_type_update_stat',10,3);
+	function mep_ticket_type_update_stat($event_id, $date, $ticket_type){
+		$ea_attendee_sync = get_post_meta( $event_id, 'ea_attendee_sync', true ) ? get_post_meta( $event_id, 'ea_attendee_sync', true ) : 'no';
+		if($ea_attendee_sync == 'no'){
+ 			mep_update_ticket_type_stat($event_id,$ticket_type['option_name_t'],$date);
+		}
+	}
+
+
 	function mep_get_ticket_type_info_by_name( $name, $event_id, $type = 'option_qty_t' ) {
 		$ticket_type_arr = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : [];
 		$p               = '';
@@ -988,7 +1011,6 @@
 				$p = array_key_exists( $type, $price ) ? $price[ $type ] : '';
 			}
 		}
-
 		return $p;
 	}
 	add_action( 'restrict_manage_posts', 'mep_filter_post_type_by_taxonomy' );

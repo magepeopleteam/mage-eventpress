@@ -222,12 +222,12 @@
 			}
 			public function event_view_shortcode( $post_id ) {
 				?>
-                <div class="_padding_bT">
+                <div class="_padding ">
                     <label class=" _justifyBetween_alignCenter_wrap">
-                        <span class="_mR"><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
+                        <span><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
                         <code> [event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
                     </label>
-                    <span class="des_info"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -240,7 +240,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -252,7 +252,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_advance_col_status', $checked ); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}

@@ -2175,3 +2175,16 @@ div.mpwem_style.mep-quick-setup [class*="_adminLayout"] {
 .mep-quick-setup .nextTab_prev:hover span, .mep-quick-setup .nextTab_prev:focus span {
 	color: #000;
 }
+
+.mpwem_welcome_page .updated{
+	display: none;
+}
+
+.label-text{
+	color:#94a3b8;
+	font-weight: normal;
+	font-size: 14px;
+}
+div.mpwem_style label{
+	font-weight: normal;
+}

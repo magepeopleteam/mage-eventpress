@@ -45,7 +45,7 @@
                         <span class="_mR"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
                         <input class="formControl id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
                     </label>
-                    <span class="des_info"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -59,7 +59,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Display End Datetime', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_end_datetime', $checked ); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'You can ON/OFF End date  time display by going to the settings', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'You can ON/OFF End date  time display by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -73,7 +73,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Show Available Seat?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_available_seat', $checked ); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'You can ON/OFF available seat display by going to the settings', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'You can ON/OFF available seat display by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -85,7 +85,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></label>
                         <button type="button" class="_mpBtn_xs_primaryButton mpwem_reset_booking"><span class="fas fa-refresh _mR_xs"></span><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></button>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}
@@ -102,7 +102,7 @@
                         <label><span class="_mR"><?php esc_html_e( 'Member Only Event?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_member_only_event', $checked ); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e( 'You can change event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'You can change event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
                 <div class="_padding_bT <?php echo esc_attr( $active ); ?>" data-collapse="#mep_member_only_event">
                     <label class="_justifyBetween_alignCenter_wrap ">
@@ -114,7 +114,7 @@
 							<?php } ?>
                         </select>
                     </label>
-                    <span class="des_info"><?php esc_html_e( 'You can select event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'You can select event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}

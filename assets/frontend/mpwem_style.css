@@ -1,3 +1,7 @@
+/* ******************************************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_container {max-width: 1320px;width: 100%;margin: 0 auto;}
+}
 /* ************************Details page******************** */
 @media only screen and (min-width: 10px) {
 	div.default_theme .content_area {display: -webkit-flex;display: flex;}

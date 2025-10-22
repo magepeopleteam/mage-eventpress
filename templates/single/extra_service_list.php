@@ -16,9 +16,6 @@
 
         $tic_price      = mep_get_price_including_tax($post_id, $service_price);
         $actual_price   = mage_array_strip(wc_price(mep_get_price_including_tax($post_id, $service_price)));
-//        $data_price     = str_replace(get_woocommerce_currency_symbol(), '', $actual_price);
-//        $data_price     = str_replace(wc_get_price_thousand_separator(), '', $data_price);
-//        $data_price     = str_replace(wc_get_price_decimal_separator(), '.', $data_price);
         $data_price     = MPWEM_Global_Function::get_wc_raw_price($tic_price);
     ?>
         <tr>

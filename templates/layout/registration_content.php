@@ -14,7 +14,6 @@
 	ob_start();
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
-		//echo '<pre>';			print_r($reg_status);			echo '</pre>';
 		if ( $reg_status == 'on' ) {
 			$full_location   = MPWEM_Functions::get_location( $event_id );
 			$total_available = MPWEM_Functions::get_total_available_seat( $event_id, $date );

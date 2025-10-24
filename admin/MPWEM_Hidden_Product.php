@@ -142,6 +142,8 @@
 
 			public function hide_wc_hidden_product_from_product_list( $query ) {
 				global $pagenow;
+				$hide_wc    = mep_get_option( 'mep_show_hidden_wc_product', 'general_setting_sec', 'no' );
+				if($hide_wc == 'no'){
 				$q_vars = &$query->query_vars;
 				if ( $pagenow == 'edit.php' && isset( $q_vars['post_type'] ) && $q_vars['post_type'] == 'product' ) {
 					$tax_query = array(
@@ -154,6 +156,8 @@
 					);
 					$query->set( 'tax_query', $tax_query );
 				}
+			}
+
 			}
 
 			public function hide_hidden_wc_product_from_frontend() {

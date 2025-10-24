@@ -258,6 +258,12 @@
 						update_post_meta( $post_id, 'event_start_time', $start_time );
 						update_post_meta( $post_id, 'event_end_date', $end_date );
 						update_post_meta( $post_id, 'event_end_time', $end_time );
+						/********************/
+						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
+						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
+						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+						update_post_meta( $post_id, 'event_expire_datetime', $event_end_datetime );
 						//*******************//
 						$periods = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_repeated_periods'] ) ) : '1';
 						update_post_meta( $post_id, 'mep_repeated_periods', $periods );
@@ -470,3 +476,4 @@
 		}
 		new MPWEM_Settings();
 	}
+

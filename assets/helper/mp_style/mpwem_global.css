@@ -1098,7 +1098,7 @@
 /******************************************************************** Popup section ************************************************/
 @media only screen and (min-width: 10px) {
 	[data-target-popup] { cursor: pointer; }
-	div.mpPopup { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 111111; overflow: hidden; background: #000C; }
+	div.mpwem_style div.mpPopup { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 111111; overflow: hidden; background: #000C; }
 	div.mpPopup .popupMainArea {
 		min-width: 500px; max-width: 700px; width: auto; min-height: 250px; max-height: 100vh; height: auto;
 		background-color: #FFF; border: 20px solid #444; position: relative;

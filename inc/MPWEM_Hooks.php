@@ -10,12 +10,6 @@
 		class MPWEM_Hooks {
 			public function __construct() {
 				add_action( 'mpwem_title', [ $this, 'title' ], 10, 2 );
-				add_action( 'mep_event_title', [ $this, 'event_title' ] );
-				add_action( 'mep_event_only_title', [ $this, 'event_only_title' ] );
-				/**************************/
-				add_action( 'mep_event_details', [ $this, 'event_details' ] );
-				add_action( 'mep_event_details_only', [ $this, 'event_details_only' ] );
-				add_action( 'mep_after_event_details', [ $this, 'after_event_details' ] );
 				/**************************/
 				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 2 );
 				add_action( 'mep_event_list_org_names', [ $this, 'event_list_org_names' ], 10, 2 );
@@ -25,7 +19,7 @@
 				add_action( 'mep_event_organized_by', [ $this, 'event_organized_by' ] );
 				/**************************/
 				add_action( 'mpwem_location', [ $this, 'location' ], 10, 2 );
-				add_action( 'mep_event_location_venue', [ $this, 'event_location_venue' ] );
+				add_action( 'mpwem_location_only', [ $this, 'location_only' ], 10, 2 );
 				add_action( 'mep_event_location_street', [ $this, 'event_location_street' ] );
 				add_action( 'mep_event_location_city', [ $this, 'event_location_city' ] );
 				add_action( 'mep_event_location_state', [ $this, 'event_location_state' ] );
@@ -43,8 +37,8 @@
 				add_action( 'mpwem_date_select', [ $this, 'date_select' ], 10, 4 );
 				add_action( 'mep_event_date', [ $this, 'event_date' ] );
 				add_action( 'mpwem_date_list', [ $this, 'event_date_list' ], 10, 3 );
-				add_action( 'mep_event_date_only', [ $this, 'event_date_only' ], 10, 2 );
-				add_action( 'mep_event_time_only', [ $this, 'event_time_only' ], 10, 2 );
+				add_action( 'mpwem_date_only', [ $this, 'date_only' ], 10, 2 );
+				add_action( 'mpwem_time_only', [ $this, 'time_only' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_faq', [ $this, 'faq' ], 10, 4 );
 				add_action( 'mep_event_faq', [ $this, 'event_faq' ] );
@@ -67,7 +61,7 @@
 				add_action( 'mep_event_tags_name', [ $this, 'event_tags_name' ] );
 				add_action( 'mep_event_list_tag_names', [ $this, 'event_list_tag_names' ], 10, 2 );
 				/**************************/
-				add_action( 'mpwem_add_calender', [ $this, 'event_add_calender' ] ,10,3);
+				add_action( 'mpwem_add_calender', [ $this, 'event_add_calender' ], 10, 3 );
 				/**************************/
 				add_action( 'wp_ajax_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
 				add_action( 'wp_ajax_nopriv_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
@@ -167,13 +161,9 @@
 					do_action( 'mep_event_organizer', $event_id );
 				endif;
 			}
+			/**********************************/
 			public function location( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
-			public function event_location_venue( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'location' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
+			public function location_only( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location_only.php' ); }
 			public function event_location_street( $event_id ) {
 				$location = MPWEM_Functions::get_location( $event_id, 'street' );
 				if ( $location ) {
@@ -216,10 +206,12 @@
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_location_in_ticket', $content, $event_id, $event_meta, $location_info );
 			}
+			/*******************************/
 			public function time( $event_id, $all_dates = [], $all_times = [], $date = '', $single = true ): void { require MPWEM_Functions::template_path( 'layout/time.php' ); }
-			public function registration( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
+			public function registration( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
 			public function registration_content( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/registration_content.php' ); }
-			public function date_select( $event_id, $all_dates = [], $all_times = [], $date = '' ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }
+			public function date_select( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }
+			/*******************************/
 			public function event_date( $event_id ) {
 				$start_datetime          = get_post_meta( get_the_id(), 'event_start_datetime', true );
 				$start_date              = get_post_meta( get_the_id(), 'event_start_date', true );
@@ -279,43 +271,9 @@
 					<?php
 				}
 			}
-			public function event_date_list( $event_id,$all_dates = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
-			public function event_date_only( $event_id, $all_dates = [] ) {
-				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-				if ( sizeof( $all_dates ) > 0 ) {
-					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
-					} else {
-						$date = current( $all_dates );
-					}
-					if ( $date ) {
-						?><p><?php echo esc_html( MPWEM_Global_Function::date_format( $date ) ); ?></p><?php
-					}
-				}
-			}
-			public function event_time_only( $event_id, $all_dates ) {
-				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-				if ( sizeof( $all_dates ) > 0 ) {
-					$time      = '';
-					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
-						$time = MPWEM_Global_Function::check_time_exit_date( $date ) ? $date : '';
-					} else {
-						$date      = current( $all_dates );
-						$all_times = MPWEM_Functions::get_times( $event_id, $all_dates, $date );
-						if ( sizeof( $all_times ) > 0 ) {
-							$time_info = current( $all_times );
-							$time      = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
-							$time      = $date . ' ' . $time;
-						}
-					}
-					if ( $time ) {
-						?><p><?php echo esc_html( MPWEM_Global_Function::date_format( $date, 'time' ) ); ?></p><?php
-					}
-				}
-			}
+			public function event_date_list( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_list.php' ); }
+			public function date_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_only.php' ); }
+			public function time_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/time_only.php' ); }
 			/*************************************/
 			public function faq( $event_id ): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
 			/****************************************/
@@ -335,42 +293,6 @@
 			}
 			/**************************/
 			public function timeline( $event_id ): void { require MPWEM_Functions::template_path( 'layout/timeline.php' ); }
-			/**************************/
-			public function event_title( $event_id ) {
-				ob_start();
-				require MPWEM_Functions::template_path( 'single/title.php' );
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_single_title', $content, $event_id );
-			}
-			public function event_only_title( $event_id ) {
-				ob_start();
-				require MPWEM_Functions::template_path( 'single/title_only.php' );
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_single_title', $content, $event_id );
-			}
-			/*************************************/
-			public function event_details( $event_id ) {
-				$content_event = get_post( $event_id );
-				$content       = $content_event->post_content;
-				$content       = apply_filters( 'the_content', $content );
-				$content       = str_replace( ']]>', ']]&gt;', $content );
-				require MPWEM_Functions::template_path( 'single/details.php' );
-				do_action( 'mep_after_event_details', $event_id );
-			}
-			public function event_details_only( $event_id ) {
-				global $post;
-				$content_event = get_post( $post->ID );
-				$content       = $content_event->post_content;
-				$content       = apply_filters( 'the_content', $content );
-				$content       = str_replace( ']]>', ']]&gt;', $content );
-				echo $content;
-			}
-			public function after_event_details( $event_id ) {
-				$mep_event_day = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_day', [] );
-				if ( sizeof( $mep_event_day ) > 0 ) {
-					require MPWEM_Functions::template_path( 'single/daywise_details.php' );
-				}
-			}
 			/*************************************/
 			public function event_seat( $event_id ) {
 				ob_start();
@@ -466,7 +388,7 @@
 				echo apply_filters( 'mage_event_tag_name_filter_list', $content );
 			}
 			/***********************************/
-			public function event_add_calender( $event_id,$all_dates=[],$upcoming_date='' ) {require MPWEM_Functions::template_path( 'layout/add_calendar.php' );}
+			public function event_add_calender( $event_id, $all_dates = [], $upcoming_date = '' ) { require MPWEM_Functions::template_path( 'layout/add_calendar.php' ); }
 			/**************************/
 			public function get_mpwem_ticket() {
 				$post_id = $_REQUEST['post_id'] ?? '';

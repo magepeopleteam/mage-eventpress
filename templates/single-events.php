@@ -40,27 +40,30 @@
 // ==============================
 	the_post();
 	global $post, $woocommerce;
-	$event_id              = get_the_ID();
-	$event_meta            = get_post_custom( $event_id );
-	if ( post_password_required() ) : ?>
+	$event_id = get_the_ID();
+	if ( post_password_required() ) { ?>
         <div class="mep-events-wrapper">
 			<?php echo get_the_password_form(); ?>
         </div>
-	<?php else:
-		$current_template = ! empty( $event_meta['mep_event_template'][0] ) ? $event_meta['mep_event_template'][0] : '';
-		$global_template   = mep_get_option( 'mep_global_single_template', 'single_event_setting_sec', 'default-theme.php' );
-		$_current_template = $current_template ?: $global_template;
-		$fatal_error_fix = mep_get_option( 'mep_fix_details_page_fatal_error', 'general_setting_sec', 'disable' );
+	<?php } else {
+		$event_infos = MPWEM_Functions::get_all_info( $event_id );
+		//echo '<pre>';print_r( $event_infos );echo '</pre>';
+		$current_template         = array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
+		$single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+		$global_template          = array_key_exists( 'mep_global_single_template', $single_event_setting_sec ) ? $single_event_setting_sec['mep_global_single_template'] : 'default-theme.php';
+		$_current_template        = $current_template ?: $global_template;
+		$general_setting_sec      = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+		$fatal_error_fix          = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
 		do_action( 'mep_event_single_page_after_header', $event_id );
 		?>
-        <div class="mep-events-wrapper wrapper">
+        <div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper">
             <div class="mpwem_container">
 				<?php
 					if ( $fatal_error_fix === 'disable' ) {
 						do_action( 'woocommerce_before_single_product' );
 					}
 					$theme_name = "/themes/$_current_template";
-					require_once MPWEM_Functions::template_path( $theme_name );
+					require_once MPWEM_Functions::details_template_path( $theme_name );
 					if ( comments_open() || get_comments_number() ) {
 						comments_template();
 					}
@@ -71,7 +74,7 @@
 		<?php
 		do_action( 'mep_event_single_template_end', $event_id );
 		do_action( 'mep_event_single_page_before_footer', $event_id );
-	endif;
+	}
 // ==============================
 // FOOTER
 // ==============================

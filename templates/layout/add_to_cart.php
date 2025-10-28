@@ -15,21 +15,17 @@
         <span class="mpwem_total"><?php echo wc_price( 0 ); ?></span>
     </div>
 	<?php if ( is_admin() && str_contains( wp_get_referer(), 'mpwem_backend_order' ) ) { ?>
-        <?php do_action('mpwem_bo_hidden',$event_id); ?>
+		<?php do_action( 'mpwem_bo_hidden', $event_id ); ?>
         <button type="submit" class="_themeButton">
 			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>
         </button>
 	<?php } else { ?>
         <button type="button" class="_themeButton mpwem_book_now">
-			<?php
-				do_action( 'mep_before_add_cart_button', $event_id );
-				esc_html_e( mep_get_label( $event_id, 'mep_cart_btn_text', __( 'Register For This Event', 'mage-eventpress' ) ), 'mage-eventpress' );
-				do_action( 'mep_after_add_cart_button', $event_id ); ?>
+            <i class='fa fa-shopping-cart _mR_xs'></i>
+			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
-		<?php if ( ! $backend_order ) { ?>
-            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
-				<?php esc_html_e( mep_get_label( $event_id, 'mep_cart_btn_text', __( 'Register For This Event', 'mage-eventpress' ) ), 'mage-eventpress' );?>
-            </button>
-		<?php } ?>
+        <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
+			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
+        </button>
 	<?php } ?>
 </div>

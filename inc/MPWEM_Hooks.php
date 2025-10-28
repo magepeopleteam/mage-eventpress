@@ -300,7 +300,8 @@
 				$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 				$date               = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 				$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
-				$total_seat         = max( $total_available, 0 );
+				$total_ticket  		= MPWEM_Functions::get_total_ticket( $event_id, $date );
+				$total_seat         = max( $total_ticket, 0 );
 				$total_sold         = MPWEM_Functions::get_total_sold( $event_id, $date );
 				$total_left         = $total_seat - $total_sold;
 				$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );

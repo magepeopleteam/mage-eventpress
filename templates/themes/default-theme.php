@@ -3,6 +3,9 @@
 	// Settings Value :::::::::::::::::::::::::::::::::::::::;
 	$event_id                 = $event_id ?? 0;
 	$event_infos              = $event_infos ?? MPWEM_Functions::get_all_info( $event_id );
+	if ( ! is_array( $event_infos ) ) {
+		$event_infos = [];
+	}
 	$all_dates                = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times                = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
@@ -18,10 +21,12 @@
 	$hide_address_details     = array_key_exists( 'mep_event_hide_address_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_address_from_details'] : 'no';
 	$hide_share_details       = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	$speaker_status           = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
-	//echo '<pre>';print_r( $event_infos );echo '</pre>';
-	$icon_setting_sec     = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
-	$event_location_icon  = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
-	$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
+
+	$icon_setting_sec     	= array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+	$icon_setting_sec 		= empty($icon_setting_sec) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
+	$event_location_icon  	= array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
+	$event_organizer_icon 	= array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
+
 ?>
 <div class="default_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>

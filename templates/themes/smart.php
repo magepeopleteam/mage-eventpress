@@ -13,6 +13,7 @@
 	$description_title        = array_key_exists( 'mep_event_hide_description_title', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_description_title'] : 'no';
 	$left_sidebar_title       = array_key_exists( 'mep_event_hide_left_sidebar_title', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_left_sidebar_title'] : 'no';
 	$icon_setting_sec         = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+	$icon_setting_sec 		  = empty($icon_setting_sec) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 	$event_location_icon      = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
 ?>
 <div class="default_theme mep_smart_theme">

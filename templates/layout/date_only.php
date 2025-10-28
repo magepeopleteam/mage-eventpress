@@ -11,6 +11,7 @@
 		$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 		if ( $hide_date_details == 'no' && $upcoming_date ) {
 			$icon_setting_sec    = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+			$icon_setting_sec = empty($icon_setting_sec) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 			$mep_event_date_icon = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
 			?>
             <div class="short_item">

@@ -11,6 +11,8 @@
 			}
 
 			public function event_list_shortcode( $event_id, $columnNumber = '', $style = '', $width = '', $unq_id = '' ) {
+				//$event_infos              =MPWEM_Functions::get_all_info( $event_id );
+
 				$event_organizer_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_organizer_icon', 'far fa-list-alt' );
 				$torg                 = get_the_terms( $event_id, 'mep_org' );
 				$org_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_org', $unq_id );

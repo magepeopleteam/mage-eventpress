@@ -332,10 +332,7 @@
 									}
 									do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width );
 									echo '<div class=event-cart-section-list>';
-									$all_dates     = MPWEM_Functions::get_dates( $event_id );
-									$all_times     = MPWEM_Functions::get_times( $event_id, $all_dates );
-									$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-									do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
+									do_action( 'mpwem_registration', $event_id);
 									echo '</div>';
 								}
 								wp_reset_postdata();
@@ -363,10 +360,7 @@
 				$event_id = $params['event'];
 				ob_start();
 				if ( $event_id > 0 ) {
-					$all_dates     = MPWEM_Functions::get_dates( $event_id );
-					$all_times     = MPWEM_Functions::get_times( $event_id, $all_dates );
-					$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-					do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date, $params );
+					do_action( 'mpwem_registration', $event_id );
 				}
 
 				return ob_get_clean();

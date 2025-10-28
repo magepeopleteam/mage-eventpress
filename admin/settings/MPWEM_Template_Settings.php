@@ -13,17 +13,16 @@
 				add_action( 'mpwem_event_tab_setting_item', [ $this, 'template_tab_content' ] );
 			}
 			public function template_tab_content( $post_id ) {
-				$values          = get_post_custom( $post_id );
-				$global_template = mep_get_option( 'mep_global_single_template', 'single_event_setting_sec', 'default-theme' );
-				if ( array_key_exists( 'mep_event_template', $values ) ) {
-					$current_template = $values['mep_event_template'][0];
-				} else {
-					$current_template = '';
-				}
-				if ( $current_template ) {
-					$_current_template = $current_template;
-				} else {
-					$_current_template = $global_template;
+				$global_template   = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_global_single_template', 'default-theme.php' );
+				$current_template  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template' );
+				$_current_template = $current_template ?: $global_template;
+				$templates         = [];
+				$themes            = mep_event_template_name();
+				foreach ( $themes as $theme_file => $theme_name ) {
+					$templates[] = [
+						'name'  => $theme_name,
+						'value' => $theme_file,
+					];
 				}
 				?>
                 <div class="mp_tab_item" data-tab-item="#mep_event_template">
@@ -36,34 +35,18 @@
                     <section>
                         <div class="mep-template-section">
                             <input type="hidden" name="mep_event_template" value="<?php echo esc_attr( $_current_template ); ?>"/>
-							<?php $templates = $this->get_template( $_current_template ); ?>
-							<?php foreach ( $templates as $template ): ?>
-								<?php
+							<?php foreach ( $templates as $template ) {
 								$image = preg_replace( '/\.php$/', '.webp', $template['value'] );
 								?>
                                 <div class="mep-template <?php echo $_current_template == $template['value'] ? 'active' : ''; ?>">
-                                    <img src="<?php echo mep_template_file_url( 'screenshot/' ) . $image; ?>" data-mep-template="<?php echo $template['value']; ?>">
+                                    <img src="<?php echo esc_attr( MPWEM_PLUGIN_URL . '/templates/screenshot/' .$image); ?>" data-mep-template="<?php echo $template['value']; ?>">
                                     <h5><?php echo $template['name']; ?></h5>
                                 </div>
-							<?php endforeach; ?>
+							<?php } ?>
                         </div>
                     </section>
                 </div>
 				<?php
-			}
-			public function get_template( $current_theme ) {
-				$themes            = mep_event_template_name();
-				$deprecated_themes = [ 'royal.php', 'theme-1.php', 'theme-2.php', 'theme-3.php', 'vanilla.php' ];
-				foreach ( $themes as $theme_file => $theme_name ) {
-					if ( in_array( $theme_file, $deprecated_themes ) && $current_theme !== $theme_file ) {
-						continue;
-					}
-					$template[] = [
-						'name'  => $theme_name,
-						'value' => $theme_file,
-					];
-				}
-				return $template;
 			}
 		}
 		new MPWEM_Template_Settings();

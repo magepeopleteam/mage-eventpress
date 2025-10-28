@@ -15,6 +15,9 @@
 				add_action( 'add_mpwem_custom_slider_icon_indicator', array( $this, 'icon_indicator' ) );
 			}
 			public function super_slider( $post_id = '', $meta_key = '' ) {
+				?>
+                <div class="mpwem_slider_area">
+				<?php
 				$type      = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
 				$post_id   = $post_id > 0 ? $post_id : get_the_id();
 				$image_ids = $this->get_slider_ids( $post_id, $meta_key );
@@ -27,13 +30,16 @@
 				} else {
 					$this->post_thumbnail();
 				}
+				?></div><?php
 			}
 			public function super_slider_only( $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					?>
-					<div class="superSlider placeholder_area">
-						<?php $this->slider_all_item( $image_ids ); ?>
-					</div>
+                    <div class="mpwem_slider_area">
+                        <div class="superSlider placeholder_area">
+							<?php $this->slider_all_item( $image_ids ); ?>
+                        </div>
+                    </div>
 					<?php
 				}
 			}
@@ -43,9 +49,9 @@
 					$column_class      = $showcase_position == 'top' || $showcase_position == 'bottom' ? 'area_column' : '';
 					$slider_style      = MPWEM_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
 					?>
-					<div class="superSlider placeholder_area fdColumn">
-                        <input type="hidden" name="slider_height_type" value="<?php echo esc_attr(MPWEM_Global_Function::get_slider_settings( 'slider_height', 'avg' )); ?>" />
-						<div class="dFlex  <?php echo esc_attr( $column_class ); ?>">
+                    <div class="superSlider placeholder_area fdColumn">
+                        <input type="hidden" name="slider_height_type" value="<?php echo esc_attr( MPWEM_Global_Function::get_slider_settings( 'slider_height', 'avg' ) ); ?>"/>
+                        <div class="dFlex  <?php echo esc_attr( $column_class ); ?>">
 							<?php
 								if ( $showcase_position == 'top' || $showcase_position == 'left' ) {
 									$this->slider_showcase( $image_ids );
@@ -56,15 +62,15 @@
 								}
 								if ( $slider_style == 'style_2' ) {
 									?>
-									<div class="abTopLeft">
-										<button type="button" class="_dButton_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
+                                    <div class="abTopLeft">
+                                        <button type="button" class="_dButton_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
 											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' MPWEM_Custom_Slider.php' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
-										</button>
-									</div>
+                                        </button>
+                                    </div>
 									<?php
 								}
 							?>
-						</div>
+                        </div>
 						<?php
 							$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
 							$icon             = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
@@ -73,7 +79,7 @@
 							}
 						?>
 						<?php $this->slider_popup( $post_id, $image_ids ); ?>
-					</div>
+                    </div>
 					<?php
 				}
 			}
@@ -81,32 +87,32 @@
 				$thumbnail = MPWEM_Global_Function::get_image_url( '', $image_id );
 				if ( $thumbnail ) {
 					?>
-					<div class="superSlider">
-						<div data-bg-image="<?php echo esc_html( $thumbnail ); ?>"></div>
-					</div>
+                    <div class="superSlider">
+                        <div data-bg-image="<?php echo esc_html( $thumbnail ); ?>"></div>
+                    </div>
 					<?php
 				}
 			}
 			public function slider_all_item( $image_ids, $popup_slider_icon = '' ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					?>
-					<div class="sliderAllItem">
+                    <div class="sliderAllItem">
 						<?php
 							$count = 1;
 							foreach ( $image_ids as $id ) {
 								$image_url = MPWEM_Global_Function::get_image_url( '', $id );
-								$image_url=$image_url?:MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ;
-								$size = getimagesize($image_url);
-								$width=0;
-								$height=0;
-								if ($size) {
-									$width = $size[0];
+								$image_url = $image_url ?: MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png';
+								$size      = getimagesize( $image_url );
+								$width     = 0;
+								$height    = 0;
+								if ( $size ) {
+									$width  = $size[0];
 									$height = $size[1];
 								}
 								?>
-								<div class="sliderItem" data-slide-index="<?php echo esc_html( $count ); ?>" data-target-popup="superSlider" data-placeholder>
-									<div data-bg-image="<?php echo esc_html( $image_url ); ?>" data-width="<?php echo esc_html( $width ); ?>" data-height="<?php echo esc_html( $height ); ?>"></div>
-								</div>
+                                <div class="sliderItem" data-slide-index="<?php echo esc_html( $count ); ?>" data-target-popup="superSlider" data-placeholder>
+                                    <div data-bg-image="<?php echo esc_html( $image_url ); ?>" data-width="<?php echo esc_html( $width ); ?>" data-height="<?php echo esc_html( $height ); ?>"></div>
+                                </div>
 								<?php
 								$count ++;
 							}
@@ -117,7 +123,7 @@
 								$this->icon_indicator( $popup_slider_icon );
 							}
 						?>
-					</div>
+                    </div>
 					<?php
 				}
 			}
@@ -127,7 +133,7 @@
 					$showcase_position = MPWEM_Global_Function::get_slider_settings( 'showcase_position', 'right' );
 					$slider_style      = MPWEM_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
 					?>
-					<div class="sliderShowcase <?php echo esc_attr( $showcase_position . ' ' . $slider_style ); ?>">
+                    <div class="sliderShowcase <?php echo esc_attr( $showcase_position . ' ' . $slider_style ); ?>">
 						<?php
 							if ( $slider_style == 'style_1' ) {
 								$this->slider_showcase_style_1( $image_ids );
@@ -135,7 +141,7 @@
 								$this->slider_showcase_style_2( $image_ids );
 							}
 						?>
-					</div>
+                    </div>
 					<?php
 				}
 			}
@@ -145,21 +151,21 @@
 					$image_url = MPWEM_Global_Function::get_image_url( '', $id );
 					if ( $count < 4 ) {
 						?>
-						<div class="sliderShowcaseItem" data-slide-target="<?php echo esc_html( $count ); ?>" data-placeholder>
-							<div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
-						</div>
+                        <div class="sliderShowcaseItem" data-slide-target="<?php echo esc_html( $count ); ?>" data-placeholder>
+                            <div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
+                        </div>
 						<?php
 					}
 					if ( $count == 4 ) {
 						?>
-						<div class="sliderShowcaseItem" data-target-popup="superSlider" data-placeholder>
-							<div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
-							<div class="sliderMoreItem">
-								<span class="fas fa-plus"></span>
+                        <div class="sliderShowcaseItem" data-target-popup="superSlider" data-placeholder>
+                            <div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
+                            <div class="sliderMoreItem">
+                                <span class="fas fa-plus"></span>
 								<?php echo sizeof( $image_ids ) - 4; ?>
-								<span class="far fa-image"></span>
-							</div>
-						</div>
+                                <span class="far fa-image"></span>
+                            </div>
+                        </div>
 						<?php
 					}
 					$count ++;
@@ -171,9 +177,9 @@
 					$image_url = MPWEM_Global_Function::get_image_url( '', $id );
 					if ( $count > 1 && $count < 5 ) {
 						?>
-						<div class="sliderShowcaseItem" data-target-popup="superSlider" data-slide-index="<?php echo esc_html( $count ); ?>" data-placeholder>
-							<div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
-						</div>
+                        <div class="sliderShowcaseItem" data-target-popup="superSlider" data-slide-index="<?php echo esc_html( $count ); ?>" data-placeholder>
+                            <div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
+                        </div>
 						<?php
 					}
 					$count ++;
@@ -182,20 +188,20 @@
 			public function image_indicator( $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					?>
-					<div class="slideIndicator">
+                    <div class="slideIndicator">
 						<?php
 							$count = 1;
 							foreach ( $image_ids as $id ) {
 								$image_url = MPWEM_Global_Function::get_image_url( '', $id, array( 150, 100 ) );
 								?>
-								<div class="slideIndicatorItem" data-slide-target="<?php echo esc_html( $count ); ?>">
-									<div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
-								</div>
+                                <div class="slideIndicatorItem" data-slide-target="<?php echo esc_html( $count ); ?>">
+                                    <div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
+                                </div>
 								<?php
 								$count ++;
 							}
 						?>
-					</div>
+                    </div>
 					<?php
 				}
 			}
@@ -203,12 +209,12 @@
 				$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
 				if ( $slider_indicator == 'on' || $popup_slider_icon == 'on' ) {
 					?>
-					<div class="iconIndicator prevItem">
-						<span class="fas fa-chevron-circle-left"></span>
-					</div>
-					<div class="iconIndicator nextItem">
-						<span class="fas fa-chevron-circle-right"></span>
-					</div>
+                    <div class="iconIndicator prevItem">
+                        <span class="fas fa-chevron-circle-left"></span>
+                    </div>
+                    <div class="iconIndicator nextItem">
+                        <span class="fas fa-chevron-circle-right"></span>
+                    </div>
 					<?php
 				}
 			}
@@ -216,25 +222,25 @@
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					$popup_icon_indicator = MPWEM_Global_Function::get_slider_settings( 'popup_icon_indicator', 'on' );
 					?>
-					<div class="sliderPopup" data-popup="superSlider">
-						<div class="superSlider">
-							<div class="popupHeader">
-								<h2><?php echo get_the_title( $post_id ); ?></h2>
-								<span class="fas fa-times popupClose"></span>
-							</div>
-							<div class="popupBody">
+                    <div class="sliderPopup" data-popup="superSlider">
+                        <div class="superSlider">
+                            <div class="popupHeader">
+                                <h2><?php echo get_the_title( $post_id ); ?></h2>
+                                <span class="fas fa-times popupClose"></span>
+                            </div>
+                            <div class="popupBody">
 								<?php $this->slider_all_item( $image_ids, $popup_icon_indicator ); ?>
-							</div>
-							<div class="popupFooter">
+                            </div>
+                            <div class="popupFooter">
 								<?php
 									$indicator = MPWEM_Global_Function::get_slider_settings( 'popup_image_indicator', 'on' );
 									if ( $indicator == 'on' ) {
 										$this->image_indicator( $image_ids );
 									}
 								?>
-							</div>
-						</div>
-					</div>
+                            </div>
+                        </div>
+                    </div>
 					<?php
 				}
 			}
@@ -242,10 +248,10 @@
 			public function get_slider_ids( $post_id, $key ) {
 				$thumb_id  = get_post_thumbnail_id( $post_id );
 				$image_ids = MPWEM_Global_Function::get_post_info( $post_id, $key, array() );
-				if ( $thumb_id  && $thumb_id>0) {
+				if ( $thumb_id && $thumb_id > 0 ) {
 					array_unshift( $image_ids, $thumb_id );
 				}
-				return array_filter(array_unique( $image_ids ));
+				return array_filter( array_unique( $image_ids ) );
 			}
 		}
 		new MPWEM_Custom_Slider();

@@ -1162,17 +1162,6 @@
 			return $the_file_path;
 		}
 	}
-	if ( ! function_exists( 'mep_template_file_url' ) ) {
-		function mep_template_file_url( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
-			$default_path  = MEP_URL . 'templates/';
-			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
-			$themedir      = $thedir . $file_name;
-			$the_file_path = locate_template( array( 'mage-events/' . $file_name ) ) ? $themedir : $default_path . $file_name;
-
-			return $the_file_path;
-		}
-	}
 	if ( ! function_exists( 'mep_calender_date' ) ) {
 		function mep_calender_date( $datetime ) {
 			$time      = strtotime( $datetime );
@@ -3435,11 +3424,7 @@
 			return 1;
 		}
 	}
-	add_action( 'mep_before_add_cart_button', 'mep_add_cart_btn_icon' );
-	function mep_add_cart_btn_icon( $event_id ) {
-		$button = apply_filters( 'mep_cart_icon', "<i class='fa fa-shopping-cart'></i>", $event_id );
-		echo '<span class="mep-cart-btn-icon">' . $button . '</span>';
-	}
+
 	add_action( 'admin_menu', 'mep_remove_cpt_list_page' );
 	function mep_remove_cpt_list_page() {
 		$user_choose_list_style = mep_get_option( 'mep_event_list_page_style', 'general_setting_sec', 'new' );

@@ -653,7 +653,7 @@
 								'label'   => __( 'Single Event Page Template', 'mage-eventpress' ),
 								'desc'    => __( 'This change will impact the template for the single event details page.', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => mep_change_global_option_section( 'mep_global_single_template', 'general_setting_sec', 'single_event_setting_sec', 'default-theme.php' ),
+								'default' => 'default-theme.php',
 								'options' => mep_event_template_name()
 							),
 							array(

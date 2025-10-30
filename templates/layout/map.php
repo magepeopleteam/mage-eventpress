@@ -11,7 +11,7 @@
 	$isVirtual = get_post_meta($event_id,'mep_event_type',true);
 	if($isVirtual!='online'){
 		if ($map_status) {
-			//echo '<pre>';print_r( $faqs );echo '</pre>';
+			// echo '<pre>';print_r( $faqs );echo '</pre>';
 			?>
 			<div class="map_location" id="mep-map-location">
 				<h2><?php esc_html_e( 'Map Location', 'mage-eventpress' ); ?></h2>

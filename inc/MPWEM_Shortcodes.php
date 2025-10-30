@@ -80,6 +80,8 @@
 				?>
                 <div class='list_with_filter_section mep_event_list'>
 					<?php
+					if($total_item > 0) {
+
 						if ( $cat_f == 'yes' ) {
 							do_action( 'mep_event_list_cat_names', $cat, $unq_id );
 						}
@@ -133,7 +135,7 @@
 							?>
                         </div>
                     </div>
-					<?php do_action( 'mpwem_pagination', $params, $total_item ); ?>
+					<?php do_action( 'mpwem_pagination', $params, $total_item ); }else{ echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' ); } ?>
                 </div>
                 <script>
                     jQuery(document).ready(function () {

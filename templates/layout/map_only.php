@@ -1,13 +1,14 @@
 <?php
 	/*
-* @Author 		engr.sumonazma@gmail.com
-* Copyright: 	mage-people.com
-*/
+	* @Author 		engr.sumonazma@gmail.com
+	* Copyright: 	mage-people.com
+	*/
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+	
 	$event_id = $event_id ?? 0;
-	global $user_api;
+	$user_api 		= mep_get_option( 'google-map-api', 'general_setting_sec', '' );
 	$map_type       = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');
 	$map_zoom       = mep_get_option('mep_google_map_zoom_level', 'general_setting_sec', '17');
 	$location_sts   = get_post_meta($event_id, 'mep_org_address', true) ? get_post_meta($event_id, 'mep_org_address', true) : '';
@@ -42,7 +43,7 @@
 			</div>
 			<?php
 		} else {
-			if ($user_api) {
+			if ($user_api) {				
 				// Set default coordinates if none exist
 				if ($lat == 0 && $lon == 0) {
 					$lat = 37.0902; // Default latitude

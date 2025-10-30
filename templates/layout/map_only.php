@@ -1,11 +1,12 @@
 <?php
 	/*
-* @Author 		engr.sumonazma@gmail.com
-* Copyright: 	mage-people.com
-*/
+	* @Author 		engr.sumonazma@gmail.com
+	* Copyright: 	mage-people.com
+	*/
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+	
 	$event_id = $event_id ?? 0;
 	$user_api 		= mep_get_option( 'google-map-api', 'general_setting_sec', '' );
 	$map_type       = mep_get_option('mep_google_map_type', 'general_setting_sec', 'iframe');

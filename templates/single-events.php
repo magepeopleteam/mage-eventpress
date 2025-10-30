@@ -49,7 +49,8 @@
 		$event_infos = MPWEM_Functions::get_all_info( $event_id );
 		//echo '<pre>';print_r( $event_infos );echo '</pre>';
 		$current_template         = array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
-		$single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+		$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+		$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
 		$global_template          = array_key_exists( 'mep_global_single_template', $single_event_setting_sec ) ? $single_event_setting_sec['mep_global_single_template'] : 'default-theme.php';
 		$_current_template        = $current_template ?: $global_template;
 		$general_setting_sec      = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];

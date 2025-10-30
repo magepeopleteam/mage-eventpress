@@ -68,7 +68,7 @@
 					$hide_time_list                 = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_time_list', 'no' );
 					$hide_only_end_time_list        = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_end_time_list', 'no' );
 					$mep_hide_event_hover_btn       = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_hide_event_hover_btn', 'no' );
-					$sold_out_ribbon                = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_show_sold_out_ribbon_list_page', 'no' );
+					$sold_out_ribbon                = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_sold_out_ribbon_list_page', 'no' );
 					$limited_availability_ribbon    = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_show_limited_availability_ribbon', 'no' );
 					$limited_availability_threshold = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_limited_availability_threshold', 5 );
 					$event_location_icon            = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_location_icon', 'fas fa-map-marker-alt' );

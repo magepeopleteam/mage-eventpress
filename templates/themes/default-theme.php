@@ -75,7 +75,7 @@
 						<?php do_action( 'mep_event_seat', $event_id ); ?>
 					<?php } ?>
 				<?php endif; ?>
-				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+				<?php if ( sizeof( $all_dates ) > 1 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
                         <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>

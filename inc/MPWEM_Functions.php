@@ -50,10 +50,10 @@
 					$event_infos['all_date']                 = $all_dates;
 					$event_infos['all_time']                 = $all_times;
 					$event_infos['upcoming_date']            = $upcoming_date;
-					$event_infos['full_address']            = self::get_location($event_id);
-					$event_infos['single_event_setting_sec'] = MPWEM_Global_Function::data_sanitize( get_option( 'single_event_setting_sec' ) );
-					$event_infos['icon_setting_sec']         = MPWEM_Global_Function::data_sanitize( get_option( 'icon_setting_sec' ) );
-					$event_infos['general_setting_sec']      = MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) );
+					$event_infos['full_address']             = self::get_location($event_id);
+					$event_infos['single_event_setting_sec'] = !empty(MPWEM_Global_Function::data_sanitize( get_option( 'single_event_setting_sec' ) )) ? MPWEM_Global_Function::data_sanitize( get_option( 'single_event_setting_sec' ) ) : [];
+					$event_infos['icon_setting_sec']         = !empty(MPWEM_Global_Function::data_sanitize( get_option( 'icon_setting_sec' ) )) ? MPWEM_Global_Function::data_sanitize( get_option( 'icon_setting_sec' ) ) : [];
+					$event_infos['general_setting_sec']      = !empty(MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) )) ? MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) ) : [];
 					$event_meta                              = MPWEM_Global_Function::data_sanitize( $event_meta );
 					foreach ( $event_meta as $key => $value ) {
 						$event_infos[ $key ] = current( $value );

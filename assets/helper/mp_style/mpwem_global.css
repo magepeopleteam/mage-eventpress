@@ -167,7 +167,8 @@
 	.mpwem_style [class*="slideIndicator"],
 	.mpwem_style [class*="circleIcon"],
 	div[class*="dLoader"], div[class*="simpleSpinner"],
-	div.mpPopup.in,
+	div.mpwem_style div.mpPopup.in,
+	div.mpwem_style.mpPopup.in,
 	div.mpPopup .popupClose { display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; }
 	/************/
 	.mpwem_style [class*="_flexAuto"], .mpwem_style .flexAuto { -webkit-flex: auto; flex: auto; }

@@ -10,8 +10,9 @@
 		$hide_time_details        = array_key_exists( 'mep_event_hide_time_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_time_from_details'] : 'no';
 		$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 		if ( $hide_time_details == 'no' && $upcoming_date && MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ) {
-			$icon_setting_sec    = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
-			$mep_event_time_icon = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
+			$icon_setting_sec    	= array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+			$icon_setting_sec 		= empty($icon_setting_sec) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
+			$mep_event_time_icon 	= array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 			?>
             <div class="short_item">
                 <h4 class="_circleIcon_mR"><span class="<?php echo esc_attr( $mep_event_time_icon ); ?>"></span></h4>

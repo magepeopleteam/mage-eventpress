@@ -11,7 +11,7 @@
 			public function __construct() { }
 			public static function details_template_path( $file_name ): string {
 				$template_path       = get_stylesheet_directory() . '/mage-events/';
-				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/';
+				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
 				$default_path        = $default_dir . $file_name;
 				$theme_template_path = $template_path . $file_name;
 				if ( file_exists( $theme_template_path ) ) {

@@ -15,9 +15,10 @@
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 
 	$total_sold    		= mep_ticket_type_sold( $event_id, '', $date );
-	$total_ticket  = MPWEM_Functions::get_total_ticket( $event_id, $date );
-	$total_reserve = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
-	$total_available=  $total_ticket - ( $total_sold + $total_reserve );
+	$total_ticket  		= MPWEM_Functions::get_total_ticket( $event_id, $date );
+	$total_reserve 		= MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+	$total_available	=  $total_ticket - ( $total_sold + $total_reserve );
+	$total_available 	= max( $total_available, 0 );
 
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );

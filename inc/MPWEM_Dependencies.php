@@ -179,6 +179,7 @@
 			public function js_constant() {
 				?>
                 <script type="text/javascript">
+					let mp_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
                     var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";

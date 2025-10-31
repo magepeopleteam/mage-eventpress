@@ -48,37 +48,36 @@
 	<?php } else {
 		$event_infos = MPWEM_Functions::get_all_info( $event_id );
 		//echo '<pre>';print_r( $event_infos );echo '</pre>';
-		$current_template         = array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
+		$current_template          = array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
 		$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-		$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
-		$global_template          = array_key_exists( 'mep_global_single_template', $single_event_setting_sec ) ? $single_event_setting_sec['mep_global_single_template'] : 'default-theme.php';
-		$_current_template        = $current_template ?: $global_template;
-		$general_setting_sec      = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
-		$fatal_error_fix          = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
+		$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
+		$global_template           = array_key_exists( 'mep_global_single_template', $single_event_setting_sec ) ? $single_event_setting_sec['mep_global_single_template'] : 'default-theme.php';
+		$_current_template         = $current_template ?: $global_template;
+		$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+		$fatal_error_fix           = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
 		do_action( 'mep_event_single_page_after_header', $event_id );
 		?>
         <div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper">
             <div class="mpwem_container">
 				<?php
 					if ( $fatal_error_fix === 'disable' ) {
-						if (!class_exists('WC_Bundles')) {
-							if (!class_exists('WEPOF_Extra_Product_Options')) {	
-								if (!class_exists('WC_Advanced_Country_Restrictions_Dist')) {						
-									if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {							
+						if ( ! class_exists( 'WC_Bundles' ) ) {
+							if ( ! class_exists( 'WEPOF_Extra_Product_Options' ) ) {
+								if ( ! class_exists( 'WC_Advanced_Country_Restrictions_Dist' ) ) {
+									if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
 										if ( ! class_exists( 'Xoo_Wl_Core' ) ) {
 											if ( ! class_exists( 'Ultimate_Woocommerce_Gift_Card_Public' ) ) {
-												if ( ! class_exists( 'WC_Google_Analytics' ) ) {												
-													do_action('woocommerce_before_single_product');
+												if ( ! class_exists( 'WC_Google_Analytics' ) ) {
+													do_action( 'woocommerce_before_single_product' );
 												}
 											}
 										}
 									}
 								}
 							}
-						}						
+						}
 					}
-					$theme_name = "/themes/$_current_template";
-					require_once MPWEM_Functions::details_template_path( $theme_name );
+					require_once MPWEM_Functions::details_template_path( $_current_template );
 					if ( comments_open() || get_comments_number() ) {
 						comments_template();
 					}

@@ -33,6 +33,14 @@
 					$all_dates         = MPWEM_Functions::get_dates( $event_id );
 					$all_times         = MPWEM_Functions::get_times( $event_id, $all_dates );
 					$upcoming_date     = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+					// If there is no upcoming date (likely expired-only item), fall back to last past date
+					if ( empty( $upcoming_date ) ) {
+						$all_dates_full = MPWEM_Functions::get_all_dates( $event_id );
+						if ( is_array( $all_dates_full ) && sizeof( $all_dates_full ) > 0 ) {
+							$last = end( $all_dates_full );
+							$upcoming_date = is_array( $last ) && array_key_exists( 'time', $last ) ? $last['time'] : ( is_string( $last ) ? $last : '' );
+						}
+					}
 					$start_time_format = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? $upcoming_date : '';
 					$end_time_format   = '';
 					$end_datetime      = '';

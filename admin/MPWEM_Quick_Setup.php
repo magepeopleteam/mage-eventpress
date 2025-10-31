@@ -57,51 +57,9 @@
 					<?php
 				}
 				if (isset($_POST['install_and_active_woo_btn'])) {
-					echo '<div style="display:none">';
-					include_once(ABSPATH . 'wp-admin/includes/plugin-install.php');
-					include_once(ABSPATH . 'wp-admin/includes/file.php');
-					include_once(ABSPATH . 'wp-admin/includes/misc.php');
-					include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-					$plugin = 'woocommerce';
-					$api = plugins_api('plugin_information', array(
-						'slug' => $plugin,
-						'fields' => array(
-							'short_description' => false,
-							'sections' => false,
-							'requires' => false,
-							'rating' => false,
-							'ratings' => false,
-							'downloaded' => false,
-							'last_updated' => false,
-							'added' => false,
-							'tags' => false,
-							'compatibility' => false,
-							'homepage' => false,
-							'donate_link' => false,
-						),
-					));
-					$title = 'title';
-					$url = 'url';
-					$nonce = 'nonce';
-					$woocommerce_plugin = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('title', 'url', 'nonce', 'plugin', 'api')));
-					$woocommerce_plugin->install($api->download_link);
-					activate_plugin('woocommerce/woocommerce.php');
-					//MPTBM_Plugin::on_activation_page_create();
-					echo '</div>';
-					?>
-					<script>
-						(function ($) {
-							"use strict";
-							$(document).ready(function () {
-								let mpwem_admin_location = window.location.href;
-								mpwem_admin_location = mpwem_admin_location.replace('admin.php?post_type=mep_events&page=mpwem_quick_setup', 'edit.php?post_type=mep_events&page=mpwem_quick_setup');
-								mpwem_admin_location = mpwem_admin_location.replace('admin.php?page=mep_events', 'edit.php?post_type=mep_events&page=mpwem_quick_setup');
-								mpwem_admin_location = mpwem_admin_location.replace('admin.php?page=mpwem_quick_setup', 'edit.php?post_type=mep_events&page=mpwem_quick_setup');
-								window.location.href = mpwem_admin_location;
-							});
-						}(jQuery));
-					</script>
-					<?php
+					// Redirect to the Plugins → Add New screen with WooCommerce pre-searched
+					wp_safe_redirect( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) );
+					exit;
 				}
 				if (isset($_POST['finish_quick_setup'])) {
 					$label = isset($_POST['event_label']) ? sanitize_text_field($_POST['event_label']) : 'Events';

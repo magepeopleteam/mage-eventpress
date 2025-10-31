@@ -81,7 +81,10 @@
 			'menu_icon' 		=> $event_icon,
 			'supports' 			=> apply_filters('mep_events_post_type_support', array('title', 'editor', 'thumbnail', 'excerpt')),
 			'rewrite' 			=> $rewrite,
-			'show_in_rest' 		=> apply_filters('mep_events_post_type_show_in_rest', true)
+			'show_in_rest' 		=> apply_filters('mep_events_post_type_show_in_rest', true),
+			// Ensure predictable REST route and controller
+			'rest_base' 			=> 'mep_events',
+			'rest_controller_class' => 'WP_REST_Posts_Controller'
 		);
 		register_post_type('mep_events', $args);
 

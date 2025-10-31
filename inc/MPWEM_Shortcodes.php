@@ -117,7 +117,9 @@
 								while ( $loop->have_posts() ) {
 									$loop->the_post();
 									$event_id = get_the_id();
-									mep_update_event_upcoming_date( $event_id );
+									if ( strtolower( $status ) !== 'expired' ) {
+										mep_update_event_upcoming_date( $event_id );
+									}
 									if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
 										$columnNumber = 'column_style';
 										$width        = 100 / (int) $column;

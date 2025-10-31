@@ -97,7 +97,9 @@
 					'posts_per_page' => $show,
 					'order'          => $sort,
 					'orderby'        => $event_order_by,
-					'meta_key'       => 'event_upcoming_datetime',
+					// Use a meta key that exists for the targeted event set to avoid excluding posts via INNER JOIN
+					// For expired events, default to the same key used in the expiration filter
+					'meta_key'       => ( $evnt_type === 'expired' ? $event_expire_on : 'event_upcoming_datetime' ),
 					'meta_query'     => array_filter( $meta_query ),
 					'tax_query'      => array_filter( $tax_query )
 				);

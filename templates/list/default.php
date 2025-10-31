@@ -103,7 +103,14 @@
                                     <div class="evl-ico"><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i></div>
                                     <div class="evl-cc">
                                         <h5> <?php esc_html_e( 'Location:', 'mage-eventpress' ); ?> </h5>
-                                        <h6><?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?></h6>
+										<?php
+											$__city = MPWEM_Functions::get_location( $event_id, 'city' );
+											if ( ! $__city ) {
+												$__addr = MPWEM_Functions::get_location( $event_id );
+												$__city = implode( ', ', array_filter( $__addr ) );
+											}
+										?>
+										<h6><?php echo esc_html( $__city ); ?></h6>
                                     </div>
                                 </li>
 							<?php }

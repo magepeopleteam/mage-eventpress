@@ -438,7 +438,9 @@
 				ob_start();
 				while ( $loop->have_posts() ) {
 					$loop->the_post();
-					mep_update_event_upcoming_date( get_the_id() );
+					if ( strtolower( $atts['status'] ?? '' ) !== 'expired' ) {
+						mep_update_event_upcoming_date( get_the_id() );
+					}
 					if ( $style == 'grid' && (int) $column > 0 ) {
 						$columnNumber = 'column_style';
 						$width        = 100 / (int) $column;

@@ -43,10 +43,8 @@
      data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
      data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $upcoming_date ) ) ); ?>" style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
 	<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
-    <div class="mep_list_thumb">
-        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-            <div class="mep_bg_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'large' ) ); ?>"></div>
-        </a>
+    <div class="mep_list_thumb mpwem_style">
+        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'large' ) ); ?>"></div>
         <div class="mep-ev-start-date">
             <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
             <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>

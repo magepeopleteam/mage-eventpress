@@ -334,28 +334,25 @@ function mpwem_all_content_change($this) {
         let current = $(this);
         let target = current.closest('.qtyIncDec').find('input');
         let currentValue = parseInt(target.val()) || 0;
-        // Get attribute values with proper fallbacks
         let min = parseInt(target.attr('min')) || 0;
         let max = parseInt(target.attr('max')) || Infinity;
-        let minQty = parseInt(target.attr('data-min-qty')) || min; // Default to min if not specified
-        // Calculate new value based on button click
+        let minQty = parseInt(target.attr('data-min-qty'))|| 0;
         let newValue = currentValue;
         if (current.hasClass('incQty')) {
             newValue = currentValue + 1;
+            if(newValue<min){
+                newValue=min;
+            }
         } else if (current.hasClass('decQty')) {
             newValue = currentValue - 1;
+            if(newValue<min){
+                newValue=0;
+            }
         }
-        // Apply constraints in the correct order
-        // 1. First respect data-min-qty (if it exists)
-        if (minQty > min) {
-            newValue = Math.max(newValue, minQty);
-        } else {
-            // 2. Otherwise use regular min constraint
+        if (minQty > 0) {
             newValue = Math.max(newValue, min);
         }
-        // 3. Apply max constraint
         newValue = Math.min(newValue, max);
-        // Update button states
         target.parents('.qtyIncDec').find('.incQty, .decQty').removeClass('mpDisabled');
         if (newValue >= max) {
             target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');

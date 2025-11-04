@@ -55,13 +55,13 @@
 				/**************************/
 				add_action( 'mep_event_seat', [ $this, 'event_seat' ] );
 				/**************************/
-				add_action( 'mep_event_speakers_list', [ $this, 'event_speakers_list' ] );
-				/**************************/
 				add_action( 'mep_event_tags', [ $this, 'event_tags' ] );
 				add_action( 'mep_event_tags_name', [ $this, 'event_tags_name' ] );
 				add_action( 'mep_event_list_tag_names', [ $this, 'event_list_tag_names' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_add_calender', [ $this, 'event_add_calender' ], 10, 3 );
+				/**************************/
+				add_action( 'mpwem_speaker', [ $this, 'speakers' ], 10, 2 );
 				/**************************/
 				add_action( 'wp_ajax_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
 				add_action( 'wp_ajax_nopriv_get_mpwem_ticket', array( $this, 'get_mpwem_ticket' ) );
@@ -296,14 +296,14 @@
 			/*************************************/
 			public function event_seat( $event_id ) {
 				ob_start();
-				$all_dates          = MPWEM_Functions::get_dates( $event_id );
-				$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
-				$date               = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-				$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
-				$total_ticket  		= MPWEM_Functions::get_total_ticket( $event_id, $date );
-				$total_seat         = max( $total_ticket, 0 );
+				$all_dates       = MPWEM_Functions::get_dates( $event_id );
+				$all_times       = MPWEM_Functions::get_times( $event_id, $all_dates );
+				$date            = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+				$total_available = MPWEM_Functions::get_total_available_seat( $event_id, $date );
+				$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $date );
+				$total_seat      = max( $total_ticket, 0 );
 				// $total_sold         = MPWEM_Functions::get_total_sold( $event_id, $date );
-				$total_sold    		= mep_ticket_type_sold( $event_id, '', $date );
+				$total_sold         = mep_ticket_type_sold( $event_id, '', $date );
 				$total_left         = $total_seat - $total_sold;
 				$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 				require MPWEM_Functions::template_path( 'single/total_seat.php' );
@@ -318,14 +318,6 @@
 				}
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_faq_list', $content, $event_id );
-			}
-			public function event_speakers_list( $event_id ) {
-				$speakers_id   = get_post_meta( $event_id, 'mep_event_speakers_list', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_event_speakers_list', true ) ) : array();
-				$speaker_icon  = get_post_meta( $event_id, 'mep_event_speaker_icon', true ) ? get_post_meta( $event_id, 'mep_event_speaker_icon', true ) : 'fa fa-microphone';
-				$speaker_label = get_post_meta( $event_id, 'mep_speaker_title', true ) ? get_post_meta( $event_id, 'mep_speaker_title', true ) : esc_html__( "Speaker's", "mage-eventpress" );
-				if ( is_array( $speakers_id ) && sizeof( $speakers_id ) > 0 ) {
-					require MPWEM_Functions::template_path( 'single/speaker-list.php' );
-				}
 			}
 			/***********************************/
 			public function event_tags( $event_id ) {
@@ -391,6 +383,8 @@
 			}
 			/***********************************/
 			public function event_add_calender( $event_id, $all_dates = [], $upcoming_date = '' ) { require MPWEM_Functions::template_path( 'layout/add_calendar.php' ); }
+			/**************************/
+			public function speakers( $event_id, $event_infos ) { require MPWEM_Functions::template_path( 'layout/speaker_list.php' ); }
 			/**************************/
 			public function get_mpwem_ticket() {
 				$post_id = $_REQUEST['post_id'] ?? '';

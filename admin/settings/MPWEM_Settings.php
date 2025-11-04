@@ -13,7 +13,7 @@
 				add_action( 'save_post', array( $this, 'save_settings' ) );
 			}
 			public function event_meta_tab() {
-				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', __( 'Events', 'mage-eventpress' ) );
 				add_meta_box( 'mp_event_all_info_in_tab',
 					sprintf( __( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', 'mage-eventpress' ), esc_html( $event_label ), esc_html( get_the_title( get_the_ID() ) ) ),
 					array( $this, 'event_tab' ), 'mep_events', 'normal', 'high' );
@@ -21,28 +21,28 @@
 			public function event_tab() {
 				$post_id = get_the_id();
 				wp_nonce_field( 'mpwem_type_nonce', 'mpwem_type_nonce' );
+				$event_infos              = MPWEM_Functions::get_all_info( $post_id );
+				$single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$speaker_status           = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
 				?>
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                     <div class="mp_tab_menu">
                         <ul>
-							<?php do_action( 'mep_admin_event_details_before_tab_name_location', $post_id ); ?>
                             <li data-target-tabs="#mp_event_venue"><i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Venue/Location', 'mage-eventpress' ); ?> </li>
-							<?php do_action( 'mep_admin_event_details_after_tab_name_location', $post_id ); ?>
                             <li data-target-tabs="#mpwem_ticket_pricing_settings"><i class="fas fa-file-invoice-dollar"></i><?php esc_html_e( 'Ticket & Pricing', 'mage-eventpress' ); ?> </li>
-							<?php do_action( 'mep_admin_event_details_before_tab_name_ticket_type', $post_id ); ?>
                             <li data-target-tabs="#mpwem_date_settings"><i class="far fa-calendar-alt"></i><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?> </li>
-							<?php do_action( 'mep_admin_event_details_before_tab_name_date_time', $post_id ); ?>
                             <li data-target-tabs="#mpwem_event_settings"><i class="fas fa-cogs"></i><?php esc_html_e( 'Settings', 'mage-eventpress' ); ?></li>
-							<?php do_action( 'mep_admin_event_details_before_tab_name_settings', $post_id ); ?>
                             <li data-target-tabs="#mep_event_faq_meta"><i class="far fa-question-circle"></i><?php esc_html_e( 'F.A.Q', 'mage-eventpress' ); ?></li>
 							<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
                                 <li data-target-tabs="#mp_event_tax_settings"><i class="fas fa-hand-holding-usd"></i><?php esc_html_e( 'Tax', 'mage-eventpress' ); ?></li>
 							<?php } ?>
-							<?php do_action( 'mep_admin_event_details_before_tab_name_tax', $post_id ); ?>
                             <li data-target-tabs="#mp_event_rich_text"><i class="fas fa-search-location"></i><?php esc_html_e( 'SEO Content', 'mage-eventpress' ); ?>  </li>
                             <li data-target-tabs="#mpwem_email_text_settings"><i class="far fa-envelope-open"></i><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></li>
                             <li data-target-tabs="#mep_event_template"><i class="fas fa-pager"></i><?php esc_html_e( 'Template', 'mage-eventpress' ); ?></li>
                             <li data-target-tabs="#mep_related_event_meta"><i class="fas fa-plug"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?></li>
+	                        <?php if ( $speaker_status == 'yes' ) { ?>
+                                <li data-target-tabs="#mpwem_speaker_settings"><i class="fas fa-user-tie"></i><?php esc_html_e( 'Speaker Information', 'mage-eventpress' ); ?></li>
+	                        <?php } ?>
 							<?php do_action( 'mep_admin_event_details_before_tab_name_rich_text', $post_id ); ?>
                             <li data-target-tabs="#mep_event_timeline_meta"><i class="far fa-newspaper"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?> </li>
 							<?php do_action( 'mp_event_all_in_tab_menu' ); ?>
@@ -51,19 +51,10 @@
                         </ul>
                     </div>
                     <div class="mp_tab_details">
-						<?php
-							do_action( 'mpwem_event_tab_setting_item', $post_id );
-						?>
+						<?php do_action( 'mpwem_event_tab_setting_item', $post_id,$event_infos ); ?>
                         <!-- ==================================  -->
 						<?php do_action( 'mep_admin_event_details_before_tab_details_location', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_after_tab_details_location', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_after_tab_details_ticket_type', $post_id ); ?>
-						<?php do_action( 'add_mep_date_time_tab', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_after_tab_details_date_time', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_after_tab_details_rich_text', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_after_tab_details_settings', $post_id ); ?>
 						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
-						<?php do_action( 'mep_admin_event_details_end_of_tab_details', $post_id ); ?>
                         <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
                     </div>
                 </div>
@@ -151,7 +142,7 @@
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
 						}
 					}
-                   // echo '<pre>';print_r($new_ticket_type);echo '</pre>';
+					// echo '<pre>';print_r($new_ticket_type);echo '</pre>';
 					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
 					//echo '<pre>';print_r($ticket_type_list);echo '</pre>';die();
 					update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
@@ -215,7 +206,7 @@
 						$md                    = sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
 						$event_expire_datetime = sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
-					}elseif ( $date_type == 'yes' ) {
+					} elseif ( $date_type == 'yes' ) {
 						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
 						$start_time = isset( $_POST['event_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time'] ) ) : '';
 						$end_date   = isset( $_POST['event_end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date'] ) ) : '';
@@ -401,12 +392,11 @@
 					update_post_meta( $post_id, 'related_section_label', $section_label );
 					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
 				}
-
-				/********Speker************/
+				/********Speaker************/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
 					$speaker_title = isset( $_POST['mep_speaker_title'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_speaker_title'] ) ) : '';
 					$speaker_icon  = isset( $_POST['mep_event_speaker_icon'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speaker_icon'] ) ) : '';
-					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speakers_list'] ) ) : '';
+					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_speakers_list'] ) ) : [];
 					update_post_meta( $post_id, 'mep_speaker_title', $speaker_title );
 					update_post_meta( $post_id, 'mep_event_speaker_icon', $speaker_icon );
 					update_post_meta( $post_id, 'mep_event_speakers_list', $speakers );

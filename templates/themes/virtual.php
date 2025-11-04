@@ -6,6 +6,10 @@
 	$all_dates                = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times                = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$speaker_title             = array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : __( "Speaker", "mage-eventpress" );
+	$speaker_icon              = array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
+	$speaker_lists             = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
+	$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
 	$speakers_id              = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
@@ -44,14 +48,12 @@
 				<?php if ( $hide_total_seat_details == 'no' ) { ?>
 					<?php do_action( 'mep_event_seat', $event_id ); ?>
 				<?php } ?>
-
-				<?php if ( $speaker_status == 'yes' ) { ?>
-                    <div class="mep-default-sidebar-speaker-list">
-						<?php do_action( 'mep_event_speakers_list', $event_id ); ?>
+	            <?php if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
+                    <div class="event_speaker_list_area">
+                        <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mR_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
+			            <?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
                     </div>
-					<?php
-				}
-				?>
+	            <?php } ?>
 				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
                         <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>

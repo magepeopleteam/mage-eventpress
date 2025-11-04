@@ -1,206 +1,68 @@
 <?php
-/**
- * @author Sahahdat Hossain <raselsha@gmail.com>
- * @license mage-people.com
- * @var 1.0.0
- */
-if( ! defined('ABSPATH') ) die;
-
-if( ! class_exists('MPWEM_Speaker_Settings')){
-    class MPWEM_Speaker_Settings{
-        public function __construct() {
-            $speaker_status = mep_get_option('mep_enable_speaker_list', 'single_event_setting_sec', 'no');
-            if( $speaker_status == 'yes'){
-                add_action('mep_admin_event_details_before_tab_name_rich_text', [$this, 'speaker_tab']);
-                add_action('mpwem_event_tab_setting_item', [$this, 'speaker_tab_content']);
-                add_action('mep_event_speaker', [$this, 'event_speaker_frontend']);
-            }
-            
-            //ajax icon loader
-            add_action('wp_ajax_mep_pick_icon',[$this,'pick_icon']);
-            add_action('wp_ajax_nopriv_mep_pick_icon',[$this,'pick_icon']);
-
-
-        }
-        public function speaker_tab(){
-            ?>
-            <li data-target-tabs="#mep_event_speakers_list_meta_boxes">
-            <i class="fas fa-user-tie"></i><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?>
-            </li>
-            <?php
-        }
-        public function speaker_tab_content($post_id) {
-            $speakers_label = get_post_meta($post_id, 'mep_speaker_title', true);
-            $speaker_icon = get_post_meta($post_id, 'mep_event_speaker_icon', true);
-            //$speaker_lists = get_post_meta($post_id, 'mep_event_speakers_list', true);
-            $speaker_lists =MPWEM_Global_Function::get_post_info($post_id,'mep_event_speakers_list',[]);
-            $speakers = $this->get_speakers();
-            ?>
-            <div class="mp_tab_item" data-tab-item="#mep_event_speakers_list_meta_boxes">
-                
-                <h3><?php esc_html_e('Speaker Settings', 'mage-eventpress'); ?></h3>
-                <p><?php esc_html_e('Speaker Settings will be here.', 'mage-eventpress'); ?></p>
-                
-                <section class="bg-light">
-                    <h2><?php esc_html_e('Speaker Settings', 'mage-eventpress'); ?></h2>
-                    <span><?php esc_html_e('Speaker Settings', 'mage-eventpress'); ?></span>
-                </section>
-                <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><?php echo esc_html__('Speaker Section\'s Label','mage-eventpress'); ?></h2>
-                            <span class="label-text"><?php echo esc_html__('This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."','mage-eventpress'); ?></span>
+	/**
+	 * @author Sahahdat Hossain <raselsha@gmail.com>
+	 * @license mage-people.com
+	 * @var 1.0.0
+	 */
+	if ( ! defined( 'ABSPATH' ) ) {
+		die;
+	}
+	if ( ! class_exists( 'MPWEM_Speaker_Settings' ) ) {
+		class MPWEM_Speaker_Settings {
+			public function __construct() {
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'speaker_tab_setting_item' ], 10, 2 );
+			}
+			public function speaker_tab_setting_item( $event_id, $event_infos ) {
+				$speaker_title       = array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : '';
+				$speaker_icon        = array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
+				$speaker_lists       = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
+				$speaker_lists       = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
+				$general_setting_sec = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+				$event_label         = array_key_exists( 'mep_event_label', $general_setting_sec ) ? $general_setting_sec['mep_event_label'] : __( 'Events', 'mage-eventpress' );
+				$all_speakers        = MPWEM_Global_Function::get_all_post_id( 'mep_event_speaker' );
+				?>
+                <div class="mpwem_style mp_tab_item mpwem_speaker_settings" data-tab-item="#mpwem_speaker_settings">
+                    <div class="_dLayout_xs_mp_zero">
+                        <div class="_bgLight_padding">
+                            <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Speaker Settings', 'mage-eventpress' ); ?></h4>
+                            <span class="_mp_zero"><?php esc_html_e( 'Speaker Settings will be here.', 'mage-eventpress' ); ?></span>
                         </div>
-                        <input type="text" name="mep_speaker_title" id="mep_speaker_title" placeholder="<?php _e('Speakers', 'mage-eventpress'); ?>" value="<?php echo esc_attr($speakers_label); ?>">
-                    </label>
-                </section>
-                <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></h2>
-                            <span class="label-text">
-                                <?php
-                                    printf(
-                                        /* translators: %s: HTML link to add new speakers */
-                                        __( 'Please select Speakers. You can add new speakers from %s.', 'mage-eventpress' ),
-                                        '<a href="' . esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) . '">' . esc_html__( 'here', 'mage-eventpress' ) . '</a>'
-                                    );
-                                ?>
-                            </span>                            
+                        <div class="_padding_bT">
+                            <label class="_justifyBetween_alignCenter_wrap ">
+                                <span class="_mR"><?php esc_html_e( 'Speaker Section\'s Label', 'mage-eventpress' ); ?></span>
+                                <input type="text" class="formControl" name="mep_speaker_title" value="<?php echo esc_attr( $speaker_title ); ?>" placeholder="<?php esc_attr_e( 'Speakers', 'mage-eventpress' ); ?>"/>
+                            </label>
+                            <span class="info_text"><?php esc_html_e( 'This is the heading for the Speaker List that will be displayed on the frontend. The default heading is "Speakers."', 'mage-eventpress' ); ?></span>
                         </div>
-                        <div class="mep-icon-wrapper">
-                            <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
-                            <input type="hidden" name="mep_event_speaker_icon"  value="<?php echo esc_attr($speaker_icon); ?>">
-                            <button class="button mep-pick-icon" data-modal="mep-pick-icon-new"  type="button"><?php _e('Choose Icon','mage-eventpress') ?></button>
-                        </div>
-                    </label>
-                </section>
-                <!-- sidebar collapse open -->
-                <div class="mep-modal-container" data-modal-target="mep-pick-icon-new">
-                    <div class="mep-modal-content">
-                        <span class="mep-modal-close"><i class="fas fa-times"></i></span>
-                        <div class="title">
-                            <h3><?php _e('Select Icon','mage-eventpress'); ?></h3>
-                            <div class="mep-icon-search-box">
-                                <div class="mep-icon-preview">
-                                    <i class="<?php echo esc_attr($speaker_icon); ?>"></i>
-                                </div>
-                                <input class="search-box" type="text" name="mep_icon_search_box" placeholder="search">
+                        <div class="_padding_bT">
+                            <div class="_justifyBetween_alignCenter_wrap ">
+                                <label><span class="_mR"><?php esc_html_e( 'Speaker Icon', 'mage-eventpress' ); ?></span></label>
+								<?php do_action( 'mpwem_input_add_icon', 'mep_event_speaker_icon', $speaker_icon ); ?>
                             </div>
+                            <span class="info_text">
+                                <?php printf(
+	                                __( 'Please select Speakers. You can add new speakers from %s.', 'mage-eventpress' ),
+	                                '<a href="' . esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) . '">' . esc_html__( 'here', 'mage-eventpress' ) . '</a>'
+                                ); ?>
+                            </span>
                         </div>
-                        <div class="content">
-                            <div class="fa-icon-lists">
-                                <?php 
-                                    $this->show_all_icons();
-                                ?>
-                            </div>
+                        <div class="_padding_bT">
+                            <label class="_justifyBetween_alignCenter_wrap ">
+                                <span class="_mR"><?php esc_html_e( 'Speaker Icon', 'mage-eventpress' ); ?></span>
+                                <select name="mep_event_speakers_list[]" id="" multiple>
+									<?php foreach ( $all_speakers as $value ) { ?>
+                                        <option value="<?php echo esc_attr( $value ); ?>" <?php echo in_array( $value, $speaker_lists ) ? 'selected' : ''; ?>>
+											<?php echo esc_html( get_the_title( $value ) ); ?>
+                                        </option>
+									<?php } ?>
+                                </select>
+                            </label>
+                            <span class="info_text"><?php esc_html_e( 'Please select the icon that will be used for the speaker icon.', 'mage-eventpress' ); ?></span>
                         </div>
                     </div>
                 </div>
-
-                <section>
-                    <label class="mpev-label">
-                        <div>
-                            <h2><?php echo esc_html__('Speaker Icon','mage-eventpress'); ?></h2>
-                            <span class="label-text"><?php echo esc_html__('Please select the icon that will be used for the speaker icon.','mage-eventpress'); ?></span>
-                        </div>
-                        <div class="mep-speaker-wrapper">
-                            <select name="mep_event_speakers_list[]" id="" multiple>
-                                <?php
-                                $speaker_lists = is_array($speaker_lists) ? $speaker_lists : explode(',', $speaker_lists);
-                                foreach($speakers as $value): ?>
-                                    <option value="<?php echo $value['id']; ?>" <?php echo in_array($value['id'], $speaker_lists) ? 'selected' : ''; ?>>
-                                        <?php echo $value['title']; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </label>
-                </section>
-            </div>
-            <?php
-        }
-        public function get_speakers() {
-            $args = array(
-                'post_type'      => 'mep_event_speaker',
-                'posts_per_page' => -1,       
-                'post_status'    => 'publish',
-            );
-            $speakers = [];
-            $query = new WP_Query($args);
-            
-            if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    
-                    $speakers[] = [
-                        'id'    => get_the_ID(),    
-                        'title' => get_the_title(),
-                    ];
-                }
-                wp_reset_postdata();
-            } else {
-                $speakers=[];
-            }
-            return $speakers;
-        }
-        public function get_icons(){
-            $FormFieldsGenerator = new FormFieldsGenerator();
-            $icons = $FormFieldsGenerator->get_font_aws_array();
-            return $icons;
-        }
-        public function event_speaker_frontend($event_id){
-        $speakers_id     = get_post_meta($event_id, 'mep_event_speakers_list', true) ? maybe_unserialize(get_post_meta($event_id, 'mep_event_speakers_list', true)) : array();
-        $speaker_icon    = get_post_meta($event_id, 'mep_event_speaker_icon', true) ? get_post_meta($event_id, 'mep_event_speaker_icon', true) : 'fa fa-microphone';
-        $speaker_label   = get_post_meta($event_id, 'mep_speaker_title', true) ? get_post_meta($event_id, 'mep_speaker_title', true) : esc_html__("Speaker", "mage-eventpress");
-        if($speakers_id):
-        ?>
-        <div class="speaker-widget">
-            <h2 class="_mB"><i class="<?php echo esc_attr($speaker_icon); ?>"></i> <?php echo esc_html($speaker_label); ?></h2>
-            <div class="speaker-lists">
-                <?php
-                foreach ($speakers_id as $speakers) {
-                    $default = MPWEM_PLUGIN_URL . '/assets/helper/images/no-photo.jpg';
-                    $thumbnail = has_post_thumbnail($speakers)? get_the_post_thumbnail_url($speakers):$default;
-                ?>
-                    <a href="<?php echo get_the_permalink($speakers); ?>" class="items">
-                        <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo get_the_title($speakers); ?>"/>
-                        <h2><?php echo get_the_title($speakers); ?></h2>
-                    </a>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-        <?php
-        endif;
-        }
-        public function show_all_icons() {
-            $icons = $this->get_icons();
-            if(!empty($icons)):
-                foreach ($icons as $iconindex=>$iconTitle):
-                    ?>
-                    <div class="icon" title="<?php echo esc_attr($iconTitle); ?>" data-icon="<?php echo esc_attr($iconindex); ?>"><i class="<?php echo esc_attr($iconindex); ?>"></i></div>
-                    <?php
-                endforeach;
-            endif;
-        }
-        public function pick_icon() {
-            $query = isset($_POST['query']) ? sanitize_text_field($_POST['query']) : '';
-            $all_icons = $this->get_icons();
-            if($query!=''){
-                $filtered_icons = array_filter($all_icons, function ($name, $class) use ($query) {
-                    return stripos($name, $query) !== false; // Case-insensitive search
-                }, ARRAY_FILTER_USE_BOTH);
-                wp_send_json($filtered_icons);
-                die;
-            }
-            else{
-                wp_send_json($all_icons);
-                die;
-            }
-            
-        }
-    }
-    new MPWEM_Speaker_Settings();
-}
+				<?php
+			}
+		}
+		new MPWEM_Speaker_Settings();
+	}

@@ -186,14 +186,11 @@
 }
 /******************************************************************** add Icon image ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpwem_add_icon_image_area {border: 1px solid var(--color_theme);position: relative;max-width: 120px;}
+	div.mpwem_add_icon_image_area {position: relative;}
 	div.mpwem_add_icon_image_area img {max-height: 100px;}
-	div.mpwem_style div.mpwem_add_icon_image_area button {padding: 5px;font-size: 12px;}
-	div.mpwem_add_icon_image_area button span {margin: 0 5px 0 0;}
-	div.mpwem_style div.mpwem_add_icon_image_area img {border-radius: 0;}
-	div.mpwem_add_icon_image_area div.mp_icon_item {padding: var(--dMP_xs);background-color: var(--color_light);font-size: 40px;}
-	div.mp_icon_item:hover .mp_remove_icon,
-	div.mp_image_item:hover .mp_remove_icon {opacity: 1;}
+	div.mpwem_add_icon_image_area button{padding:5px 10px;}
+	div.mpwem_icon_item:hover .mpwem_icon_remove,
+	div.mpwem_image_item:hover .mpwem_icon_remove {opacity: 1;}
 	div.mpwem_add_icon_popup .popupHeader {
 		color: #FFF;height: 60px;
 		margin: 0 auto;width: 100%;background-color: #222;position: relative;
@@ -264,12 +261,10 @@
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
-	div.mpwem_style .info_text {display: block;font-weight: normal;font-size: var(--fs_small);color: #666;}
+	div.mpwem_style span.info_text,
+	div.mpwem_style .info_text { display: block;font-weight: normal;font-size: var(--fs_small);color: #94A3B8; }
 	div.mpwem_style .info_text span {margin: 0 5px 0 0;}
 }
-
-
-
 #mp_event_all_info_in_tab .mp_formControl {
 	font-size: 12px !important;
 	background: #F5F8FF;
@@ -460,24 +455,8 @@
 	gap: 7px;
 	margin: 15px 0;
 }
-.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area {
-	position: relative;
-	max-width: 202px;
-	margin: 10px 0;
-}
-.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area {
-	display: flex;
-	flex-direction: row;
-	justify-content: start;
-	border: 1px solid #8C8F94;
-	width: 100%;
-	border-radius: 3px;
-}
-.mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area .mpwem_image_add, .mep-modal-container .mep-modal-content .mpwem_add_icon_image_area .mpwem_add_icon_image_button_area .mpwem_icon_add {
-	padding: 10px 26px;
-	border-radius: 0;
-	margin: 1px;
-}
+
+
 #mp_event_all_info_in_tab .mep-faq-section .mep-faq-items {
 	margin-bottom: 20px;
 }
@@ -573,14 +552,7 @@
 	border: 1px solid var(--color_theme);
 	background-color: var(--color_white);
 }
-.mep-speaker-wrapper {
-	width: 200px;
-}
-.mep-speaker-wrapper select {
-	width: 99%;
-	height: 80px;
-	overflow-y: scroll;
-}
+
 .mep-icon-search-box {
 	display: flex;
 	justify-content: space-between;
@@ -1033,7 +1005,6 @@ iframe#gmap_canvas {
 	width: 100%;
 	border-collapse: collapse;
 }
-
 #mp_event_all_info_in_tab table td {
 	padding: 5px;
 }
@@ -1098,7 +1069,6 @@ iframe#gmap_canvas {
 	font-weight: 500;
 	margin: 0 0 5px 0;
 }
-
 .mp_event_all_meta_in_tab label {
 	position: relative;
 	margin-bottom: 10px;
@@ -1662,7 +1632,6 @@ table.wc_status_table.widefat {
 	border-color: #0A5BB1;
 	transition: 0.2s;
 }
-
 .wp-core-ui .button.remove-row,
 .wp-core-ui .button.remove-row-d {
 	color: var(--color_white);
@@ -2032,14 +2001,11 @@ h3.mep_virtual_sec_title {
 }
 /********************Round toggle switch****************/
 /********************ticketype table****************/
-
 .table-responsive {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
-
 /* ***********mpwem_style overright********** */
-
 #ui-datepicker-div {
 	border-color: var(--color_theme);
 }
@@ -2175,16 +2141,11 @@ div.mpwem_style.mep-quick-setup [class*="_adminLayout"] {
 .mep-quick-setup .nextTab_prev:hover span, .mep-quick-setup .nextTab_prev:focus span {
 	color: #000;
 }
-
-.mpwem_welcome_page .updated{
+.mpwem_welcome_page .updated {
 	display: none;
 }
-
-.label-text{
-	color:#94a3b8;
+.label-text {
+	color: #94A3B8;
 	font-weight: normal;
 	font-size: 14px;
-}
-div.mpwem_style label{
-	font-weight: normal;
 }

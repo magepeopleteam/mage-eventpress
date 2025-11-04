@@ -107,7 +107,7 @@
                 <div class="_padding_bT <?php echo esc_attr( $active ); ?>" data-collapse="#mep_member_only_event">
                     <label class="_justifyBetween_alignCenter_wrap ">
                         <span class="_mR"><?php esc_html_e( 'Select User Role', 'mage-eventpress' ); ?></span>
-                        <select name='mep_member_only_user_role[]' class="fornControl mp_select2" multiple>
+                        <select name='mep_member_only_user_role[]' class="formControl mp_select2" multiple>
                             <option value="all" <?php echo esc_attr( in_array( 'all', $user_roles ) ? 'selected' : '' ); ?>><?php esc_html_e( 'For Any Logged in user', 'mage-eventpress' ); ?></option>
 							<?php foreach ( $editable_roles as $role => $details ) { ?>
                                 <option value="<?php echo esc_attr( $role ); ?>" <?php echo esc_attr( in_array( $role, $user_roles ) ? 'selected' : '' ); ?>><?php echo translate_user_role( $details['name'] ); ?></option>

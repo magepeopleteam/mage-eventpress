@@ -91,7 +91,6 @@
 				$this->global_enqueue();
 				//********//
 				$user_api = mep_get_option( 'google-map-api', 'general_setting_sec', '' );
-				wp_enqueue_script( 'mkb-admin', MPWEM_PLUGIN_URL . '/assets/admin/mkb-admin.js', array( 'jquery', 'jquery-ui-core' ), time(), true );
 				if ( $user_api ) {
 					wp_enqueue_script( 'gmap-libs', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $user_api ) . '&libraries=places&callback=initMap', array( 'jquery', 'gmap-scripts' ), 1, true );
 				}

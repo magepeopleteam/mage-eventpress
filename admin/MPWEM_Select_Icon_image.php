@@ -15,21 +15,25 @@
 				add_action('mpwem_add_multi_image', array($this, 'add_multi_image'), 10, 2);
 				add_action('mpwem_add_icon_image', array($this, 'add_icon_image'), 10, 3);
 			}
-			public function load_icon($name, $value = '') {
+			public function load_icon($name, $icon = '') {
+				$icon_class = $icon ? '' : 'dNone';
+				$button_active_class = $icon ? 'dNone' : '';
 				?>
-				<div class="mp_add_icon_area">
-					<button type="button" class="mp_add_icon dButton_xs ">
-						<input type="hidden" name="<?php echo esc_html($name); ?>" placeholder="" value="<?php echo esc_html($value); ?>"/>
-						<span class="<?php echo esc_html($value); ?>" data-empty-text="<?php esc_html_e('Add Icon', 'mage-eventpress'); ?>">
-			                    <?php
-				                    if (!$value) {
-					                    esc_html_e('Add Icon', 'mage-eventpress');
-				                    }
-			                    ?>
-			                </span>
-						<span class="fas fa-times remove_input_icon <?php echo esc_html($value ? 'active' : ''); ?> " title="<?php esc_html_e('Remove Icon', 'mage-eventpress'); ?>"></span>
-					</button>
-				</div>
+                <div class="mpwem_add_icon_image_area">
+                    <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($icon); ?>"/>
+                    <div class="mpwem_icon_item <?php echo esc_attr($icon_class); ?>">
+                        <button type="button" class="_themeButton">
+                            <span class="<?php echo esc_attr($icon); ?>" data-add-icon></span>
+                            <span class="fas fa-times remove_icon mpwem_icon_remove" title="<?php esc_attr_e('Remove Icon', 'mage-eventpress'); ?>"></span>
+                        </button>
+                    </div>
+                    <div class="add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">
+                        <button class="_themeButton mpwem_icon_add" type="button" data-target-popup="#mpwem_add_icon_popup">
+                            <span class="fas fa-plus _mR_xs"></span><?php esc_html_e('Add Icon', 'mage-eventpress'); ?>
+                        </button>
+                    </div>
+                </div>
+
 				<?php
 				add_action('admin_footer', array($this, 'icon_popup'));
 			}
@@ -143,17 +147,17 @@
 				?>
 				<div class="mpwem_add_icon_image_area fdColumn">
 					<input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>"/>
-					<div class="mp_icon_item <?php echo esc_attr($icon_class); ?>">
-						<div class="allCenter">
+					<div class="mpwem_icon_item <?php echo esc_attr($icon_class); ?>">
+						<button type="button" class="_themeButton">
 							<span class="<?php echo esc_attr($icon); ?>" data-add-icon></span>
-						</div>
-						<span class="fas fa-times mp_remove_icon mpwem_icon_remove" title="<?php esc_html_e('Remove Icon', 'mage-eventpress'); ?>"></span>
+						</button>
+						<span class="fas fa-times remove_icon mpwem_icon_remove" title="<?php esc_html_e('Remove Icon', 'mage-eventpress'); ?>"></span>
 					</div>
-					<div class="mp_image_item <?php echo esc_attr($image_class); ?>">
+					<div class="mpwem_image_item <?php echo esc_attr($image_class); ?>">
 						<img class="" src="<?php echo esc_attr(MPWEM_Global_Function::get_image_url('', $image, 'medium')); ?>" alt="">
-						<span class="fas fa-times mp_remove_icon mpwem_image_remove" title="<?php esc_html_e('Remove Image', 'mage-eventpress'); ?>"></span>
+						<span class="fas fa-times remove_icon mpwem_image_remove" title="<?php esc_html_e('Remove Image', 'mage-eventpress'); ?>"></span>
 					</div>
-					<div class="mpwem_add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">
+					<div class="add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">
 						<div class="flexEqual">
 							<button class="_mpBtn_xs mpwem_image_add" type="button">
 								<span class="fas fa-images"></span><?php esc_html_e('Image', 'mage-eventpress'); ?></button>

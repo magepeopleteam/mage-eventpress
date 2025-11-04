@@ -159,7 +159,7 @@
 	[data-bg-image],
 	div[data-bg-image],
 	.mpwem_style .allCenter, .mpwem_style [class*="_allCenter"],
-	.mpwem_style .mp_remove_icon,
+	.mpwem_style .remove_icon,
 	.mpwem_style [class*="mage_qty"],
 	.mpwem_style .mpMenu li a,
 	.mpTabs.tabBorder > .tabLists li,
@@ -236,7 +236,7 @@
 	.mpwem_style [class*="_dBRL_R"] { -webkit-border-radius: 0 var(--dBRL) var(--dBRL) 0; border-radius: 0 var(--dBRL) var(--dBRL) 0; }
 	.mpwem_style [class*="_dBRL_B"] { -webkit-border-radius: 0 0 var(--dBRL) var(--dBRL); border-radius: 0 0 var(--dBRL) var(--dBRL); }
 	.mpwem_style [class*="_bB_50"] { -webkit-border-radius: 50px; border-radius: 50px; }
-	.mpwem_style .mp_remove_icon,
+	.mpwem_style .remove_icon,
 	.mpwem_style [class*="circle"] { -webkit-border-radius: 50%; border-radius: 50%; }
 	.mpwem_style .buttonGroup > *,
 	.mpwem_style .groupContent .formControl,
@@ -529,7 +529,7 @@
 	.mpwem_style .circleIcon_xs, .mpwem_style [class*="_circleIcon_xs"] { width: 25px; height: 25px; min-width: 25px; font-size: var(--fs_small); margin: 0 var(--dMP_xs) 0 0; }
 	/*****Remove icon******/
 	.mpwem_style .mpwem_remove_area { position: relative; }
-	.mpwem_style .mp_remove_icon { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer; opacity: 0; font-size: var(--fs); background-color: var(--color_danger); color: var(--color_theme_alter); }
+	.mpwem_style .remove_icon { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer; opacity: 0; font-size: var(--fs); background-color: var(--color_danger); color: var(--color_theme_alter); }
 	/**************Default************************/
 	.mpwem_style .dLayout, .mpwem_style [class*="_dLayout"] { padding: var(--dMP); margin-bottom: var(--dMP); background-color: var(--color_white); border: 1px solid var(--color_border); }
 	.mpwem_style .dLayout_xs, .mpwem_style [class*="_dLayout_xs"] { padding: var(--dMP_xs); background-color: var(--color_white); border: 1px solid var(--color_border); margin-bottom: var(--dMP_xs); }

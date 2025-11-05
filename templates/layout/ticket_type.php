@@ -152,6 +152,8 @@
 		<?php
 		do_action( 'mep_after_no_seat_notice', $event_id );
 	}
+// Show waitlist form after ticket types if waitlist is enabled (even when tickets are available)
+do_action( 'mep_after_ticket_types', $event_id );
 
 //	echo '<pre>';print_r($total_ticket);echo '</pre>';
 //	echo '<pre>';print_r($total_reserve);echo '</pre>';

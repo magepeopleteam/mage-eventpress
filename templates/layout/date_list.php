@@ -12,7 +12,7 @@
 	$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
 	$hide_date_list           = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$date_count               = 0;
-	if ( sizeof( $all_dates ) > 1 && $hide_date_list == 'no' ) { ?>
+	if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
         <div class="date_list_area">
 			<?php
 				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';

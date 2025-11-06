@@ -61,7 +61,7 @@
                     <h3 class='mep_list_date'>  <?php do_action( 'mep_event_list_date_li', $event_id, 'minimal' ); ?>
                         <span class='mep_minimal_list_location'>
                         <i class="<?php echo esc_attr( $event_location_icon ); ?>"></i>
-                       <?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?>
+                       <?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'location' ) ); ?>
                     </span>
 						<?php if ( $hide_org_list == 'no' && sizeof( $author_terms ) > 0 ) { ?>
                             <span class='mep_minimal_list_organizer'>

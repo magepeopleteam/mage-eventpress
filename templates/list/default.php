@@ -96,12 +96,34 @@
                         </li>
 					<?php }
 						if ( $event_type != 'online' ) {
-							if ( $hide_location_list == 'no' ) { ?>
+							if ( $hide_location_list == 'no' ) { 
+								$location_data = MPWEM_Functions::get_location( $event_id );
+								$location_display = '';
+								
+								// Get location/venue first
+								if ( ! empty( $location_data['location'] ) ) {
+									$location_display = $location_data['location'];
+								} else {
+									// If no location/venue, build from street + city
+									$location_parts = array();
+									if ( ! empty( $location_data['street'] ) ) {
+										$location_parts[] = $location_data['street'];
+									}
+									if ( ! empty( $location_data['city'] ) ) {
+										$location_parts[] = $location_data['city'];
+									}
+									if ( ! empty( $location_parts ) ) {
+										$location_display = implode( ' ', $location_parts );
+									}
+								}
+								
+								// Always show location section to avoid gaps
+								?>
                                 <li class="mep_list_location_name">
                                     <div class="evl-ico"><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i></div>
                                     <div class="evl-cc">
                                         <h5> <?php esc_html_e( 'Location:', 'mage-eventpress' ); ?> </h5>
-                                        <h6><?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?></h6>
+                                        <h6><?php echo esc_html( $location_display ); ?></h6>
                                     </div>
                                 </li>
 							<?php }

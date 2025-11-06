@@ -72,34 +72,60 @@
 					);
 				}
 				$expire_filter = ! empty( $event_expire_on ) ? array(
-					'key'     => $event_expire_on,
-					'value'   => $now,
-					'compare' => $etype,
-					'type'    => 'DATETIME'
-				) : '';
-				$meta_query    = array(
-					'relation' => 'AND',
-					$expire_filter,
-					$city_filter,
-					$state_filter,
-					$country_filter,
-					$year_filter
-				);
-				$tax_query     = array(
-					'relation' => 'AND',
-					$cat_filter,
-					$org_filter,
-					$tag_filter
-				);
+				'key'     => $event_expire_on,
+				'value'   => $now,
+				'compare' => $etype,
+				'type'    => 'DATETIME'
+			) : '';
+			
+			// Build meta_query with only non-empty filters
+			$meta_query_parts = array();
+			if (!empty($expire_filter)) $meta_query_parts[] = $expire_filter;
+			if (!empty($city_filter)) $meta_query_parts[] = $city_filter;
+			if (!empty($state_filter)) $meta_query_parts[] = $state_filter;
+			if (!empty($country_filter)) $meta_query_parts[] = $country_filter;
+			if (!empty($year_filter)) $meta_query_parts[] = $year_filter;
+			
+			// Only add relation if we have actual query parts
+			if (count($meta_query_parts) > 1) {
+				$meta_query = array('relation' => 'AND');
+				foreach ($meta_query_parts as $part) {
+					$meta_query[] = $part;
+				}
+			} elseif (count($meta_query_parts) === 1) {
+				$meta_query = $meta_query_parts[0];
+			} else {
+				$meta_query = '';
+			}
+				// Build tax_query with only non-empty filters
+			$tax_query_parts = array();
+			if (!empty($cat_filter)) $tax_query_parts[] = $cat_filter;
+			if (!empty($org_filter)) $tax_query_parts[] = $org_filter;
+			if (!empty($tag_filter)) $tax_query_parts[] = $tag_filter;
+			
+			// Only add relation if we have actual query parts
+			if (count($tax_query_parts) > 1) {
+				$tax_query = array('relation' => 'AND');
+				foreach ($tax_query_parts as $part) {
+					$tax_query[] = $part;
+				}
+			} elseif (count($tax_query_parts) === 1) {
+				$tax_query = $tax_query_parts[0];
+			} else {
+				$tax_query = '';
+			}
+				
+
+				
 				$args          = array(
 					'post_type'      => array( 'mep_events' ),
 					'paged'          => $paged,
 					'posts_per_page' => $show,
 					'order'          => $sort,
 					'orderby'        => $event_order_by,
-					'meta_key'       => 'event_upcoming_datetime',
-					'meta_query'     => array_filter( $meta_query ),
-					'tax_query'      => array_filter( $tax_query )
+					'meta_key'       => 'event_start_datetime',
+					'meta_query'     => $meta_query,
+					'tax_query'      => $tax_query
 				);
 
 				return new WP_Query( $args );

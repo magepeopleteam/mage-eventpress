@@ -13,13 +13,10 @@
 				add_action( 'wp_ajax_mpwem_load_attendee_statistics', array( $this, 'mpwem_load_attendee_statistics' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_load_attendee_statistics', array( $this, 'mpwem_load_attendee_statistics' ) );
 			}
-
 			public function attendee_statistics_menu() {
 				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Attendee Statistics ', 'mage-eventpress' ), __( 'Attendee Statistics', 'mage-eventpress' ), 'manage_woocommerce', 'attendee_statistics', [ $this, 'attendee_statistics' ] );
 			}
-
 			public function attendee_statistics() {
-				$post_ids = MPWEM_Global_Function::get_all_post_id( 'mep_events' );
 				?>
                 <div class="wrap"></div>
                 <div id="mpwem_recurring_statistics">
@@ -28,20 +25,11 @@
                             <div class="dLayout _pRelative">
                                 <h4><?php esc_html_e( 'Event Attendee Statistics List', 'mage-eventpress' ); ?></h4>
                                 <div class="_divider"></div>
-								<?php if ( $post_ids && sizeof( $post_ids ) > 0 ) { ?>
-                                    <div class="_dFlex">
-                                        <label>
-                                            <select class="formControl _min_400" name="mpwem_post_id">
-                                                <option value="0" selected><?php esc_html_e( 'Select Event', 'mage-eventpress' ); ?></option>
-												<?php foreach ( $post_ids as $post_id ) { ?>
-                                                    <option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></option>
-												<?php } ?>
-                                            </select>
-                                        </label>
-                                        <div class="date_time_area"></div>
-                                    </div>
-                                    <button type="button" class="themeButton _min_100_mT" id="mpwem_load_attendee_statistics"><?php esc_html_e( 'Filter', 'mage-eventpress' ); ?></button>
-								<?php } ?>
+                                <div class="_dFlex">
+									<?php MPWEM_Layout::select_post_id(); ?>
+                                    <div class="date_time_area"></div>
+                                </div>
+                                <button type="button" class="themeButton _min_100_mT" id="mpwem_load_attendee_statistics"><?php esc_html_e( 'Filter', 'mage-eventpress' ); ?></button>
                             </div>
                         </div>
                         <div class="statistics_list">
@@ -50,7 +38,6 @@
                 </div>
 				<?php
 			}
-
 			public function mpwem_load_date() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
@@ -65,7 +52,6 @@
 				//echo '<pre>';print_r(MPWEM_Functions::get_all_dates($post_id));echo '</pre>';
 				die();
 			}
-
 			public function mpwem_load_time() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
@@ -81,7 +67,6 @@
 				//echo '<pre>';print_r(MPWEM_Functions::get_all_dates($post_id));echo '</pre>';
 				die();
 			}
-
 			public function mpwem_load_attendee_statistics() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access

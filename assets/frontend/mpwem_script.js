@@ -218,6 +218,50 @@ function mpwem_attendee_management(parent, total_qty) {
             }
         });
     }
+    $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
+        let parent = $(this).closest('.mpwem_registration_area');
+        let current = $(this);
+        if (!current.hasClass('mpDisabled')) {
+            let target = current.closest('.qtyIncDec').find('input');
+            let newValue = parseInt(target.val()) || 0;
+            let min = parseInt(target.attr('min')) || 0;
+            let max = parseInt(target.attr('max')) || Infinity;
+            let minQty = parseInt(target.attr('data-min-qty')) || 0;
+            if (current.hasClass('incQty')) {
+                newValue = newValue + 1;
+                if (newValue < min) {
+                    newValue = min;
+                }
+            } else {
+                newValue = newValue - 1;
+                if (newValue < min) {
+                    newValue = 0;
+                }
+            }
+            if (minQty > 0) {
+                newValue = Math.max(newValue, min);
+            }
+            newValue = Math.min(newValue, max);
+            target.val(newValue);
+            parent.find('.qtyIncDec').each(function (){
+                let $this=$(this);
+                $this.find('.incQty, .decQty').removeClass('mpDisabled');
+                let loop_target=$(this).find('input');
+                let loop_value = parseInt(loop_target.val()) || 0;
+                //let loop_min = parseInt(loop_target.attr('min')) || 0;
+                let loop_max = parseInt(loop_target.attr('max')) || Infinity;
+                let loop_minQty = parseInt(loop_target.attr('data-min-qty')) || 0;
+                if (loop_value >= loop_max) {
+                    $this.find('.incQty').addClass('mpDisabled');
+                }
+                if (loop_value <= loop_minQty) {
+                    $this.find('.decQty').addClass('mpDisabled');
+                }
+            }).promise().done(function (){
+                target.trigger('change').trigger('input');
+            });
+        }
+    });
     $(document).on('change', '.mpwem_registration_area [name="option_qty[]"]', function () {
         let parent = $(this).closest('.mpwem_registration_area');
         let qty = $(this).val();

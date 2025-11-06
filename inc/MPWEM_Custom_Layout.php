@@ -23,7 +23,7 @@
                 </div>
 				<?php
 			}
-			public function pagination($params, $total_item, $active_page = 0) {
+			public function pagination($params, $total_item, $active_page = 1) {
 				ob_start();
 				$per_page = $params['show'] > 1 ? $params['show'] : $total_item;
 				?>
@@ -42,25 +42,27 @@
 							} else {
 								$page_mod = $total_item % $per_page;
 								$total_page = (int)($total_item / $per_page) + ($page_mod > 0 ? 1 : 0);
+								$current_page = $active_page < 5 ? 1 : $active_page - 4;
+								$last_page = $active_page < 5 ? min(9,$total_page) : $active_page + 5;
 								?>
                                 <div class="buttonGroup">
 									<?php if ($total_page > 2) { ?>
-                                        <button class="_mpBtn_xs page_prev" type="button" title="<?php esc_html_e('GoTO Previous Page', 'mage-eventpress'); ?>" disabled>
+                                        <button class="_mpBtn_xs page_prev" type="button" title="<?php esc_html_e('GoTO Previous Page', 'mage-eventpress'); ?>">
                                             <span class="fas fa-chevron-left mp_zero"></span>
                                         </button>
 									<?php } ?>
 
-									<?php if ($total_page > 5) { ?>
+									<?php if ($total_page > 9 && $active_page>5) { ?>
                                         <button class="_mpBtn_xs ellipse_left" type="button" disabled>
                                             <span class="fas fa-ellipsis-h mp_zero"></span>
                                         </button>
 									<?php } ?>
 
-									<?php for ($i = 0; $i < $total_page; $i++) { ?>
-                                        <button class="_mpBtn_xs <?php echo esc_html($i) == $active_page ? 'active_pagination' : ''; ?>" type="button" data-pagination="<?php echo esc_html($i); ?>"><?php echo esc_html($i + 1); ?></button>
-									<?php } ?>
+	                                <?php for ($i = $current_page; $i <= $last_page; $i++) { ?>
+                                        <button class="_mpBtn_xs <?php echo esc_html($i) == $active_page ? 'active_pagination' : ''; ?>" type="button" data-pagination="<?php echo esc_html($i); ?>"><?php echo esc_html($i ); ?></button>
+	                                <?php } ?>
 
-									<?php if ($total_page > 5) { ?>
+									<?php if ($total_page > 9 && $active_page<($total_page-5)) { ?>
                                         <button class="_mpBtn_xs ellipse_right" type="button" disabled>
                                             <span class="fas fa-ellipsis-h mp_zero"></span>
                                         </button>

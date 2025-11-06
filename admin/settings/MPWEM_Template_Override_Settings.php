@@ -48,7 +48,7 @@
                     <div class="mpwem-template-override-notice">
                         <p><strong><?php esc_html_e( 'Important:', 'mage-eventpress' ); ?></strong></p>
                         <ul>
-                            <li><?php esc_html_e( 'Templates will be copied to: ', 'mage-eventpress' ); ?><code><?php echo esc_html( get_stylesheet_directory() ); ?>/mage-events/</code></li>
+                            <li><?php esc_html_e( 'Templates will be copied to: ', 'mage-eventpress' ); ?><code><?php echo esc_html( get_stylesheet_directory() ); ?>/mage-event/</code></li>
                             <li><?php esc_html_e( 'Always backup your theme before making changes', 'mage-eventpress' ); ?></li>
                             <li><?php esc_html_e( 'Template overrides will persist through plugin updates', 'mage-eventpress' ); ?></li>
                         </ul>
@@ -71,7 +71,7 @@
 			 */
 			private function render_template_category( $category, $title, $template_dir ) {
 				$plugin_template_dir = MPWEM_PLUGIN_DIR . '/' . $template_dir;
-				$theme_template_dir  = get_stylesheet_directory() . '/mage-events/' . str_replace( 'templates/', '', $template_dir );
+				$theme_template_dir  = get_stylesheet_directory() . '/mage-event/' . str_replace( 'templates/', '', $template_dir );
 				if ( ! is_dir( $plugin_template_dir ) ) {
 					return;
 				}
@@ -107,7 +107,7 @@
                                             data-template="<?php echo esc_attr( $template_path ); ?>">
 										<?php esc_html_e( 'Remove Override', 'mage-eventpress' ); ?>
                                     </button>
-                                    <a href="<?php echo esc_url( admin_url( 'theme-editor.php?file=mage-events/' . str_replace( 'templates/', '', $template_path ) . '&theme=' . get_stylesheet() ) ); ?>"
+                                    <a href="<?php echo esc_url( admin_url( 'theme-editor.php?file=mage-event/' . str_replace( 'templates/', '', $template_path ) . '&theme=' . get_stylesheet() ) ); ?>"
                                        class="mpwem-btn mpwem-btn-secondary mpwem-edit-template<?php echo ! $is_overridden ? ' mpwem-hidden' : ''; ?>"
                                        target="_blank">
 										<?php esc_html_e( 'Edit in Theme Editor', 'mage-eventpress' ); ?>
@@ -163,7 +163,7 @@
 			 * Check if a template is overridden in the theme
 			 */
 			private function is_template_overridden( $template_path ) {
-				$theme_template_path = get_stylesheet_directory() . '/mage-events/' . str_replace( 'templates/', '', $template_path );
+				$theme_template_path = get_stylesheet_directory() . '/mage-event/' . str_replace( 'templates/', '', $template_path );
 				return file_exists( $theme_template_path );
 			}
 			/**
@@ -227,7 +227,7 @@
 					wp_send_json_error( esc_html__( 'Invalid source file path', 'mage-eventpress' ) );
 				}
 				// Create destination directory structure
-				$theme_dir        = get_stylesheet_directory() . '/mage-events/';
+				$theme_dir        = get_stylesheet_directory() . '/mage-event/';
 				$relative_path    = str_replace( 'templates/', '', $template_path );
 				$destination_file = $theme_dir . $relative_path;
 				$destination_dir  = dirname( $destination_file );
@@ -283,7 +283,7 @@
 				if ( ! $this->is_valid_template_path( $template_path ) ) {
 					wp_send_json_error( esc_html__( 'Invalid template path', 'mage-eventpress' ) );
 				}
-				$theme_dir      = get_stylesheet_directory() . '/mage-events/';
+				$theme_dir      = get_stylesheet_directory() . '/mage-event/';
 				$relative_path  = str_replace( 'templates/', '', $template_path );
 				$file_to_remove = $theme_dir . $relative_path;
 				// Enhanced security validation

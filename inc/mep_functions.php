@@ -1153,11 +1153,11 @@
 	}
 	if ( ! function_exists( 'mep_template_file_path' ) ) {
 		function mep_template_file_path( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
+			$template_path = get_stylesheet_directory() . '/mage-event/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
 			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
 			$themedir      = $thedir . $file_name;
-			$the_file_path = locate_template( array( 'mage-events/' . $file_name ) ) ? $themedir : $default_path . $file_name;
+			$the_file_path = locate_template( array( 'mage-event/' . $file_name ) ) ? $themedir : $default_path . $file_name;
 
 			return $the_file_path;
 		}
@@ -1175,7 +1175,7 @@
 	if ( ! function_exists( 'mep_event_template_name' ) ) {
 		function mep_event_template_name() {
 			$template_name = 'index.php';
-			$template_path = get_stylesheet_directory() . '/mage-events/themes/';
+			$template_path = get_stylesheet_directory() . '/mage-event/themes/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/themes/';
 			$template      = locate_template( array( $template_path . $template_name ) );
 			if ( ! $template ) :
@@ -1434,7 +1434,7 @@
 	}
 	if ( ! function_exists( 'mep_template_file_validate' ) ) {
 		function mep_template_file_validate( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
+			$template_path = get_stylesheet_directory() . '/mage-event/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
 			// Check theme directory first
 			$_themedir = $template_path . "themes/" . $file_name;

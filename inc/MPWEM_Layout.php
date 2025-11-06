@@ -12,7 +12,6 @@
 				add_action( 'mep_event_expire_text', [ $this, 'event_expire_text' ] );
 				add_action( 'mep_event_no_seat_text', [ $this, 'event_no_seat_text' ] );
 			}
-
 			public function event_expire_text() {
 				ob_start();
 				?>
@@ -20,7 +19,6 @@
 				<?php
 				echo ob_get_clean();
 			}
-
 			public function event_no_seat_text() {
 				ob_start();
 				?>
@@ -28,7 +26,6 @@
 				<?php
 				echo ob_get_clean();
 			}
-
 			public static function msg( $msg, $class = '' ): void {
 				?>
                 <div class="_mZero_textCenter <?php echo esc_attr( $class ); ?>">
@@ -36,7 +33,6 @@
                 </div>
 				<?php
 			}
-
 			public static function select_post_id() {
 				$post_ids = MPWEM_Global_Function::get_all_post_id( 'mep_events' );
 				if ( $post_ids && sizeof( $post_ids ) > 0 ) {
@@ -50,9 +46,24 @@
                         </select>
                     </label>
 					<?php
+				} else {
+					MPWEM_Layout::msg( __( 'Event Not Found !', 'mage-eventpress' ) );
 				}
 			}
-
+			public static function select_category() {
+				$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
+				if ( $category_lists && sizeof( $category_lists ) > 0 ) {
+					?>
+                    <label>
+                        <select class="formControl" name="filter_with_category">
+                            <option selected value=""><?php esc_html_e( 'Select Category', 'mage-eventpress' ); ?></option>
+							<?php foreach ( $category_lists as $category ) { ?>
+                                <option value="<?php echo esc_attr( $category ); ?>"><?php echo esc_html( $category ); ?></option>
+							<?php } ?>
+                        </select>
+                    </label>
+				<?php }
+			}
 			public static function load_date( $event_id, $all_dates ) {
 				$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {
@@ -92,7 +103,7 @@
                             </label>
 							<?php if ( $display_time != 'no' && sizeof( $all_times ) > 0 ) { ?>
                                 <div class="mpwem_time_area">
-                                    <?php self::load_time($all_times,$date); ?>
+									<?php self::load_time( $all_times, $date ); ?>
                                 </div>
 							<?php } ?>
                         </div>
@@ -102,18 +113,18 @@
 					}
 				}
 			}
-            public static function load_time($all_times,$date) {
-	            $hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
-	            ?>
+			public static function load_time( $all_times, $date ) {
+				$hidden_date = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
+				?>
                 <label>
                     <select class="formControl _min_200" name="mpwem_time" id="mpwem_time">
-			            <?php foreach ( $all_times as $times ) { ?>
+						<?php foreach ( $all_times as $times ) { ?>
                             <option value="<?php echo esc_attr( $hidden_date . ' ' . $times['start']['time'] ); ?>"><?php echo esc_html( $times['start']['label'] ?: $times['start']['time'] ); ?></option>
-			            <?php } ?>
+						<?php } ?>
                     </select>
                 </label>
-                <?php
-            }
+				<?php
+			}
 		}
 		new MPWEM_Layout();
 	}

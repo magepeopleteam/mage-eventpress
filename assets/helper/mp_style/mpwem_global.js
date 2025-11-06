@@ -207,7 +207,12 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     $(document).on('click', 'div.mpwem_style [data-href]', function () {
         let href = $(this).data('href');
         if (href) {
-            window.location.href = href;
+            let blank=$(this).data('blank');
+            if(blank){
+                window.open(href, '_blank');
+            }else {
+                window.location.href = href;
+            }
         }
     });
     $(window).on('load , resize', function () {
@@ -325,43 +330,6 @@ function mpwem_all_content_change($this) {
         $("[data-same-input='" + input_id + "']").each(function () {
             $(this).val(input_value);
         });
-    });
-}(jQuery));
-//==============================================================================Qty inc dec================//
-(function ($) {
-    "use strict";
-    $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
-        let current = $(this);
-        let target = current.closest('.qtyIncDec').find('input');
-        let currentValue = parseInt(target.val()) || 0;
-        let min = parseInt(target.attr('min')) || 0;
-        let max = parseInt(target.attr('max')) || Infinity;
-        let minQty = parseInt(target.attr('data-min-qty'))|| 0;
-        let newValue = currentValue;
-        if (current.hasClass('incQty')) {
-            newValue = currentValue + 1;
-            if(newValue<min){
-                newValue=min;
-            }
-        } else if (current.hasClass('decQty')) {
-            newValue = currentValue - 1;
-            if(newValue<min){
-                newValue=0;
-            }
-        }
-        if (minQty > 0) {
-            newValue = Math.max(newValue, min);
-        }
-        newValue = Math.min(newValue, max);
-        target.parents('.qtyIncDec').find('.incQty, .decQty').removeClass('mpDisabled');
-        if (newValue >= max) {
-            target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
-        }
-        if (newValue <= minQty) {
-            target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
-        }
-        // Set the final value
-        target.val(newValue).trigger('change').trigger('input');
     });
 }(jQuery));
 //==============================================================================Input use as select================//

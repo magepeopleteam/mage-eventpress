@@ -867,8 +867,7 @@
 	div.mpwem_pagination_main_area .ribbon {left: var(--dMP_xs_negative);}
 	div.pagination_area { margin: var(--dMP_xs) 0 0 0; }
 	div.pagination_area button[class*="dButton_xs"] { min-width: 50px; }
-	div.pagination_area button.active_pagination { color: var(--color_theme_alter); background-color: var(--color_active); min-width: 75px; font-size: var(--fs_h4); }
-	div.pagination_area button.ellipse_left { display: none; }
+	div.pagination_area button.active_pagination { color: var(--color_theme_alter); background-color: var(--color_active); min-width: 50px; font-size: var(--fs_h6); }
 	div.pagination_area button.ellipse_left,
 	div.pagination_area button.ellipse_right { color: var(--color_theme); background-color: transparent; }
 }

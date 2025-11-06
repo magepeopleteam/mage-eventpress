@@ -91,11 +91,11 @@
 						'post_name'  => uniqid()// do your thing here
 					);
 					// unhook this function so it doesn't loop infinitely
-					remove_action( 'save_post', 'mep_wc_link_product_on_save' );
+					remove_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99 );
 					// update the post, which calls save_post again
 					wp_update_post( $my_post );
 					// re-hook this function
-					add_action( 'save_post', 'mep_wc_link_product_on_save' );
+					add_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99 );
 					// Update the post into the database
 				}
 			}

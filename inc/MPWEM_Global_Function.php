@@ -239,7 +239,7 @@
 				$taxonomy_data = [];
 				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
-						$taxonomy_data[] = $unq_id . 'mage-' . $category->name;
+						$taxonomy_data[] = $unq_id . 'mage-' . $category->term_id;
 					}
 					$class = implode( ' ', $taxonomy_data );
 				}

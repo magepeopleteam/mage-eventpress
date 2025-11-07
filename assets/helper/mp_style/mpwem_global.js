@@ -159,18 +159,18 @@ function mpwem_slider_resize(target) {
             let height_content = totalHeight / imgCount;
             if (slider_height_type === 'min') {
                 height_content = Math.min(...all_height);
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
+                target.find('.sliderItem').css({ "min-height": height_content });
+                target.find('.sliderItem').css({ "max-height": height_content });
             } else if (slider_height_type === 'max') {
                 height_content = Math.max(...all_height);
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
+                target.find('.sliderItem').css({ "min-height": height_content });
+                target.find('.sliderItem').css({ "max-height": height_content });
             } else {
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
+                target.find('.sliderItem').css({ "min-height": height_content });
+                target.find('.sliderItem').css({ "max-height": height_content });
             }
-            target.css({"max-height": height_content});
-            target.siblings('.sliderShowcase').css({"max-height": height_content});
+            target.css({ "max-height": height_content });
+            target.siblings('.sliderShowcase').css({ "max-height": height_content });
         }
         jQuery(this).css('background-image', 'url("' + bg_url + '")').promise().done(function () {
             dLoaderRemove(jQuery(this));
@@ -185,7 +185,7 @@ function mpwem_resize_bg_image_area(target, bg_url) {
         let imgWidth = tmpImg.width;
         let imgHeight = tmpImg.height;
         let height = target.outerWidth() * imgHeight / imgWidth;
-        target.css({"min-height": height});
+        target.css({ "min-height": height });
     });
 }
 (function ($) {
@@ -207,12 +207,7 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     $(document).on('click', 'div.mpwem_style [data-href]', function () {
         let href = $(this).data('href');
         if (href) {
-            let blank=$(this).data('blank');
-            if(blank){
-                window.open(href, '_blank');
-            }else {
-                window.location.href = href;
-            }
+            window.location.href = href;
         }
     });
     $(window).on('load , resize', function () {
@@ -330,6 +325,43 @@ function mpwem_all_content_change($this) {
         $("[data-same-input='" + input_id + "']").each(function () {
             $(this).val(input_value);
         });
+    });
+}(jQuery));
+//==============================================================================Qty inc dec================//
+(function ($) {
+    "use strict";
+    $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
+        let current = $(this);
+        let target = current.closest('.qtyIncDec').find('input');
+        let currentValue = parseInt(target.val()) || 0;
+        let min = parseInt(target.attr('min')) || 0;
+        let max = parseInt(target.attr('max')) || Infinity;
+        let minQty = parseInt(target.attr('data-min-qty')) || 0;
+        let newValue = currentValue;
+        if (current.hasClass('incQty')) {
+            newValue = currentValue + 1;
+            if (newValue < min) {
+                newValue = min;
+            }
+        } else if (current.hasClass('decQty')) {
+            newValue = currentValue - 1;
+            if (newValue < min) {
+                newValue = 0;
+            }
+        }
+        if (minQty > 0) {
+            newValue = Math.max(newValue, min);
+        }
+        newValue = Math.min(newValue, max);
+        target.parents('.qtyIncDec').find('.incQty, .decQty').removeClass('mpDisabled');
+        if (newValue >= max) {
+            target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
+        }
+        if (newValue <= minQty) {
+            target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
+        }
+        // Set the final value
+        target.val(newValue).trigger('change').trigger('input');
     });
 }(jQuery));
 //==============================================================================Input use as select================//
@@ -605,17 +637,17 @@ function mpwem_sticky_management() {
 //=====================================================================Group Check box==========//
 (function ($) {
     "use strict";
-    $(document).on('click', 'div.mpwem_style .groupCheckBox .customCheckboxLabel', function () {
-        let parent = $(this).closest('.groupCheckBox');
+    $(document).on('click', 'div.mpwem_style .customCheckboxLabel input[type="checkbox"]', function () {
+        let parent = $(this).closest('._justifyBetween_alignCenter_wrap, .groupCheckBox');
         let value = '';
         let separator = ',';
-        parent.find(' input[type="checkbox"]').each(function () {
+        parent.find('input[type="checkbox"]').each(function () {
             if ($(this).is(":checked")) {
                 let currentValue = $(this).attr('data-checked');
                 value = value + (value ? separator : '') + currentValue;
             }
         }).promise().done(function () {
-            parent.find('input[type="hidden"]').val(value);
+            parent.find('input[type="hidden"]').val(value).trigger('change');
         });
     });
     // radio

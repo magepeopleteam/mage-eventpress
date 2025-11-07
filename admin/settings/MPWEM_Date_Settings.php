@@ -274,7 +274,7 @@
                 <div class="_padding_bT">
                     <div class=" _justifyBetween_alignCenter_wrap">
                         <label><span class="_mR"><?php esc_html_e( 'Ticket Off days Setting', 'mage-eventpress' ); ?></span></label>
-                        <div class="_dFlex">
+                        <div class="_dFlex groupCheckBox">
                             <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
 							<?php foreach ( $days as $key => $day ) { ?>
                                 <label class="customCheckboxLabel ">

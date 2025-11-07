@@ -718,6 +718,15 @@ div.mep_event_list a {
 	content: "";
 	height: 100%;
 }
+p.mep_list_title {
+	font-size: 18px;
+	font-weight: 700 !important;
+	padding: 0 0 5px 0;
+}
+p.mep_list_title:before {
+	display: none;
+}
+
 h2.mep_list_title {
 	font-size: 18px;
 	font-weight: 700;

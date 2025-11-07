@@ -61,7 +61,7 @@
         </a>
     </div>
     <div class="mep_list_event_details">
-        <h2 class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( get_the_title( $event_id ) ); ?></a></h2>
+        <p class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( get_the_title( $event_id ) ); ?></a></p>
         <h3 class="mep_price">
 			<?php if ( $show_price == 'yes' ) {
 				echo esc_html( $show_price_label ) . " " . wc_price( MPWEM_Functions::get_min_price( $event_id ) );

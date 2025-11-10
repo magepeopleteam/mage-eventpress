@@ -523,11 +523,25 @@
 			// Getting an instance of the order object
 			$order             = wc_get_order( $order_id );
 			$order_meta        = get_post_meta( $order_id );
-			$order_status      = $order instanceof WC_Order ? $order->get_status() : '';
-			$payment_method    = $order->get_payment_method_title();
-			$user_id           = $order->get_customer_id();
-			$first_name        = $order->get_billing_first_name();
-			$last_name         = $order->get_billing_last_name();
+			// Get order status - try from order object first, then from post status, then default to 'completed'
+			if ( $order instanceof WC_Order ) {
+				$order_status = $order->get_status();
+			} else {
+				// Try to get status from post status (WooCommerce stores as wc-{status})
+				$post_status = get_post_status( $order_id );
+				if ( $post_status && strpos( $post_status, 'wc-' ) === 0 ) {
+					$order_status = str_replace( 'wc-', '', $post_status );
+				} elseif ( $post_status ) {
+					$order_status = $post_status;
+				} else {
+					// Default to 'completed' if order doesn't exist - this ensures attendee shows in list
+					$order_status = 'completed';
+				}
+			}
+			$payment_method    = $order instanceof WC_Order ? $order->get_payment_method_title() : '';
+			$user_id           = $order instanceof WC_Order ? $order->get_customer_id() : 0;
+			$first_name        = $order instanceof WC_Order ? $order->get_billing_first_name() : '';
+			$last_name         = $order instanceof WC_Order ? $order->get_billing_last_name() : '';
 			$billing_full_name = $first_name . ' ' . $last_name;
 			if ( $type == 'billing' ) {
 				// Billing Information
@@ -626,7 +640,7 @@
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {
 		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service ) {
 			$order        = wc_get_order( $order_id );
-			$order_status = $order->get_status();
+			$order_status = $order instanceof WC_Order ? $order->get_status() : '';
 			if ( is_array( $_event_extra_service ) && sizeof( $_event_extra_service ) > 0 ) {
 				foreach ( $_event_extra_service as $extra_serive ) {
 					if ( $extra_serive['service_name'] ) {
@@ -857,7 +871,7 @@
 			$post_status = get_post_status( $post_id );
 			if ( $post_type == 'shop_order' ) {
 				$order        = wc_get_order( $post_id );
-				$order_status = $order->get_status();
+				$order_status = $order instanceof WC_Order ? $order->get_status() : '';
 				change_attandee_order_status( $post_id, 'publish', 'trash', '' );
 				change_extra_service_status( $post_id, 'publish', 'trash', '' );
 			}
@@ -4206,6 +4220,9 @@
 	add_filter( 'mep_event_attendee_dynamic_data', 'mep_re_event_attendee_data_save', 15, 6 );
 	function mep_re_event_attendee_data_save( $the_array, $pid, $type, $order_id, $event_id, $_user_info ) {
 		$order = wc_get_order( $order_id );
+		if ( ! $order instanceof WC_Order ) {
+			return $the_array;
+		}
 		foreach ( $order->get_items() as $item_id => $item_values ) {
 			$item_id = $item_id;
 		}

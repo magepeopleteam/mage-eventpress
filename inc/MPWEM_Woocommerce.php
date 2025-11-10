@@ -465,10 +465,12 @@
 				$total_price  = 0;
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
-						$current_qty = array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
-						if ( $name && $current_qty > 0 ) {
-							$ticket_info[ $key ]['ticket_name']  = $name;
-							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id, $ticket_types );
+						// Decode HTML entities and URL encoding to handle special characters
+						$decoded_name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
+						if ( $decoded_name && $current_qty > 0 ) {
+							$ticket_info[ $key ]['ticket_name']  = $decoded_name;
+							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $decoded_name, $post_id, $ticket_types );
 							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
 							$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
 							$ticket_info[ $key ]['event_date']   = $start_date;

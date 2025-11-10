@@ -107,6 +107,9 @@ function mpwem_alert($this, attr = 'alert') {
     "use strict";
     $(document).ready(function () {
         mpwem_load_date_picker();
+        $("div.mpwem_style .date_type").on("keydown", function(e) {
+            e.preventDefault();
+        });
     });
 }(jQuery));
 //====================================================================Load Bg Image=================//

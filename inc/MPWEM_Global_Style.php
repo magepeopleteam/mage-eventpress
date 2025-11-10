@@ -18,7 +18,7 @@
 				$secondary       = MPWEM_Global_Function::get_style_settings( 'mpev_secondary_color', '#F1F5FF' );
 				$default_color   = MPWEM_Global_Function::get_style_settings( 'default_text_color', '#303030' );
 				$alternate_color = MPWEM_Global_Function::get_style_settings( 'theme_alternate_color', '#fff' );
-				$warning_color   = MPWEM_Global_Function::get_style_settings( 'warning_color', '#E67C30' );
+				$warning_color   = MPWEM_Global_Function::get_style_settings( 'warning_color', '#ffc107' );
 				$default_fs      = MPWEM_Global_Function::get_style_settings( 'default_font_size', '14' ) . 'px';
 				$fs_h1           = MPWEM_Global_Function::get_style_settings( 'font_size_h1', '35' ) . 'px';
 				$fs_h2           = MPWEM_Global_Function::get_style_settings( 'font_size_h2', '30' ) . 'px';
@@ -88,9 +88,11 @@
 						--color_theme_77: <?php echo esc_attr($theme_color).'77'; ?>;
 						--color_theme_alter: <?php echo esc_attr($alternate_color); ?>;
 						--color_warning: <?php echo esc_attr($warning_color); ?>;
+						--color_primary: #007bff;
+						--color_secondary: #6c757d;
 						--color_black: #000;
 						--color_success: #006607;
-						--color_danger: #C00;
+						--color_danger: #dc3545;
 						--color_required: #C00;
 						--color_white: #FFFFFF;
 						--color_light: #F2F2F2;

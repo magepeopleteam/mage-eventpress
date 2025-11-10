@@ -250,7 +250,6 @@
 	.mpwem_style button { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dMP_xs) var(--dMP); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
 	.mpwem_style button[disabled] { cursor: not-allowed; opacity: 0.8; background-color: #DDD; }
 	.mpwem_style button:hover, .mpwem_style button:focus { text-decoration: none; opacity: 0.8; background-color: var(--color_theme_cc); color: #FFF; }
-	.mpwem_style button:hover span, .mpwem_style button:focus span { color: #FFF; }
 	.mpwem_style .mpBtn_xs, .mpwem_style [class*="_mpBtn_xs"] { padding: 7px var(--dMP_xs); font-size: var(--fs);}
 	.mpwem_style .mpBtn.mpActive, .mpwem_style [class*="_mpBtn"].mpActive { border-color: var(--color_theme); color: var(--color_theme); }
 	.mpwem_style .mpBtn.mActive, .mpwem_style [class*="_mpBtn"].mActive,
@@ -267,11 +266,6 @@
 	.mpwem_style .themeButton span, .mpwem_style [class*="_themeButton"] span { color: var(--color_theme_alter); }
 	.mpwem_style .themeButton:hover, .mpwem_style [class*="_themeButton"]:hover { background-color: var(--color_theme_cc); color: var(--color_theme_alter); border-color: var(--color_theme_cc); }
 	.mpwem_style .themeButton:hover span, .mpwem_style [class*="_themeButton"]:hover span { color: var(--color_theme_alter); }
-	/****/
-	.mpwem_style .warningButton, .mpwem_style [class*="_warningButton"] { background-color: var(--color_warning); color: var(--color_theme_alter); padding: var(--dMP_xs) var(--dMP); border: 2px solid var(--color_warning); }
-	.mpwem_style .warningButton span, .mpwem_style [class*="_warningButton"] span { color: var(--color_theme_alter); }
-	.mpwem_style .warningButton:hover, .mpwem_style [class*="_warningButton"]:hover { background-color: var(--color_light); color: var(--color_warning); }
-	.mpwem_style .warningButton:hover span, .mpwem_style [class*="_warningButton"]:hover span { color: var(--color_warning); }
 	/*********/
 	.mpwem_style .successButton, .mpwem_style [class*="_successButton"] { background-color: var(--color_success); color: var(--color_theme_alter); padding: var(--dMP_xs) var(--dMP); border: 2px solid var(--color_success); }
 	.mpwem_style .successButton span, .mpwem_style [class*="_successButton"] span { color: var(--color_theme_alter); }
@@ -282,15 +276,18 @@
 	.mpwem_style .navy_blueButton span, .mpwem_style [class*="_navy_blueButton"] span { color: var(--color_theme_alter); }
 	.mpwem_style .navy_blueButton:hover, .mpwem_style [class*="_navy_blueButton"]:hover { background-color: var(--color_theme_alter); color: var(--color_navy_blue); border-color: var(--color_navy_blue); }
 	.mpwem_style .navy_blueButton:hover span, .mpwem_style [class*="_navy_blueButton"]:hover span { color: var(--color_navy_blue); }
-	/*********/
-	.mpwem_style .primaryButton, .mpwem_style [class*="_primaryButton"] {}
-	.mpwem_style .primaryButton, .mpwem_style [class*="_primaryButton"] { background-color: var(--color_theme); color: var(--color_theme_alter); border: 2px solid var(--color_theme); }
-	.mpwem_style .primaryButton span, .mpwem_style [class*="_primaryButton"] span { color: var(--color_theme_alter); }
-	.mpwem_style .primaryButton:hover, .mpwem_style [class*="_primaryButton"]:hover { background-color: var(--color_theme); color: var(--color_theme_alter); border-color: var(--color_theme_alter); opacity: 0.8; }
 	/****/
-	.mpwem_style [class*="Button_xs"] { min-width: auto; min-height: var(--button_height_xs); font-size: var(--fs); }
+	.mpwem_style .warningButton, .mpwem_style [class*="_warningButton"] { background-color: var(--color_warning); color: var(--color_light);  border: 2px solid var(--color_warning); }
+	.mpwem_style .warningButton:hover, .mpwem_style [class*="_warningButton"]:hover { background-color: var(--color_light); color: var(--color_warning); }
+	/*********/
+	.mpwem_style .primaryButton, .mpwem_style [class*="_primaryButton"] { background-color: var(--color_primary); color: var(--color_white); border: 2px solid var(--color_primary); }
+	.mpwem_style .primaryButton:hover, .mpwem_style [class*="_primaryButton"]:hover { background-color: var(--color_white); color: var(--color_primary); border-color: var(--color_primary); opacity: 0.8; }
 	/*************************/
-	.mpwem_style [class*="dButton"].mpActive { background-color: var(--color_theme); color: var(--color_theme_alter); }
+	.mpwem_style .secondaryButton, .mpwem_style [class*="_secondaryButton"] { background-color: var(--color_secondary); color: var(--color_white); border: 2px solid var(--color_secondary); }
+	.mpwem_style .secondaryButton:hover, .mpwem_style [class*="_secondaryButton"]:hover { background-color: var(--color_white); color: var(--color_secondary); border-color: var(--color_secondary); opacity: 0.8; }
+	/*************************/
+	div.mpwem_style [class*="Button"][class*="_xs"]{min-width: auto; min-height: var(--button_height_xs); font-size: var(--fs);}
+	div.mpwem_style [class*="Button"][class*="_xxs"]{padding: 5px;font-size: var(--fs);min-height: auto;min-width: auto;}
 }
 /******************************************************************** Helper Section************************************************/
 @media only screen and (min-width: 10px) {

@@ -13,11 +13,11 @@
 	$total_available    = $total_available ?? MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available    = max( $total_available, 0 );
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
-	$total_sold      = mep_ticket_type_sold( $event_id, '', $date );
-	$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $date );
-	$total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
-	$total_available = $total_ticket - ( $total_sold + $total_reserve );
-	$total_available = max( $total_available, 0 );
+	$total_sold         = mep_ticket_type_sold( $event_id, '', $date );
+	$total_ticket       = MPWEM_Functions::get_total_ticket( $event_id, $date );
+	$total_reserve      = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+	$total_available    = $total_ticket - ( $total_sold + $total_reserve );
+	$total_available    = max( $total_available, 0 );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -141,21 +141,11 @@
                 </div>
             </div>
 			<?php
-			//echo '<pre>';print_r($ticket_types);echo '</pre>';
 		}
-		// update_post_meta($event_id,'ea_attendee_sync', 'yes');
 	} else {
-		?>
-        <div class="no-ticket">
-			<?php _e( 'Sorry, no ticket available', 'mage-eventpress' ); ?>
-        </div>
-		<?php
+		MPWEM_Layout::msg( __( 'Sorry, no ticket available', 'mage-eventpress' ), '_dLayout_bgWarning' );
 		do_action( 'mep_after_no_seat_notice', $event_id );
 	}
 // Show waitlist form after ticket types if waitlist is enabled (even when tickets are available)
-do_action( 'mep_after_ticket_types', $event_id );
-
-//	echo '<pre>';print_r($total_ticket);echo '</pre>';
-//	echo '<pre>';print_r($total_reserve);echo '</pre>';
-//	echo '<pre>';print_r($total_sold);echo '</pre>';
+	do_action( 'mep_after_ticket_types', $event_id );
 //	echo '<pre>';print_r($all_dates);echo '</pre>';

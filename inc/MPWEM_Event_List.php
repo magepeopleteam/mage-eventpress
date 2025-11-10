@@ -15,8 +15,30 @@
 
 				$event_organizer_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_organizer_icon', 'far fa-list-alt' );
 				$torg                 = get_the_terms( $event_id, 'mep_org' );
+				$tcat                 = get_the_terms( $event_id, 'mep_cat' );
 				$org_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_org', $unq_id );
 				$cat_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_cat', $unq_id );
+				
+				// Get category names for data attribute
+				$taxonomy_category = '';
+				if ( $tcat && ! is_wp_error( $tcat ) && count( $tcat ) > 0 ) {
+					$cat_names = array();
+					foreach ( $tcat as $cat ) {
+						$cat_names[] = $cat->name;
+					}
+					$taxonomy_category = implode( ', ', $cat_names );
+				}
+				
+				// Get organizer names for data attribute
+				$taxonomy_organizer = '';
+				if ( $torg && ! is_wp_error( $torg ) && count( $torg ) > 0 ) {
+					$org_names = array();
+					foreach ( $torg as $org ) {
+						$org_names[] = $org->name;
+					}
+					$taxonomy_organizer = implode( ', ', $org_names );
+				}
+				
 				ob_start();
 				if ( $style == 'title' ) {
 					?>

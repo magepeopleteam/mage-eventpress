@@ -314,7 +314,7 @@
                                         <div class="mep_list_event_details"><a
                                                 href="<?php echo get_the_permalink( $values ); ?>">
                                                 <div class="mep-list-header">
-                                                    <h2 class='mep_list_title'><?php echo get_the_title( $values ); ?></h2>
+                                                    <p class='mep_list_title'><?php echo get_the_title( $values ); ?></p>
 													<?php if ( $available_seat == 0 ) {
 														do_action( 'mep_show_waitlist_label' );
 													} ?>

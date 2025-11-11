@@ -59,7 +59,7 @@
 				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>
-                <h3 class='mep_list_date'>
+                <p class='mep_list_date'>
 					<?php do_action( 'mep_event_list_date_li', $event_id, 'minimal' ); ?>
                     <span class='mep_minimal_list_location'>
                         <i class='<?php echo esc_attr( $event_location_icon ); ?>'></i>
@@ -71,7 +71,7 @@
                        <?php echo esc_html( $author_terms[0]->name ); ?>
                     </span>
 					<?php } ?>
-                </h3>
+					</p>
         </a>
 		<?php do_action( 'mep_event_list_loop_footer', $event_id ); ?>
     </div>

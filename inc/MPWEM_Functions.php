@@ -159,15 +159,27 @@
 			public static function get_ticket_price_by_name( $ticket_name, $post_id, $ticket_types = [] ) {
 				$ticket_types = sizeof( $ticket_types ) > 0 ? $ticket_types : MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
 				$price        = 0;
-				$ticket_name  = explode( '_', $ticket_name )[0];
+				// Decode HTML entities and URL encoding to handle special characters
+				$decoded_name = html_entity_decode( urldecode( $ticket_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				// Only split by underscore if it's a compound key (e.g., "name_123"), otherwise use the full name
+				if ( preg_match( '/^(.+)_\d+$/', $decoded_name, $matches ) ) {
+					$ticket_name = $matches[1];
+				} else {
+					$ticket_name = $decoded_name;
+				}
 				$ticket_name  = str_replace( "'", "", $ticket_name );
+				$ticket_name  = trim( $ticket_name );
 				if ( sizeof( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
 						$ticket_price = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 						$name         = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 						$name         = str_replace( "'", "", $name );
-						if ( $ticket_name == $name ) {
+						$name         = trim( $name );
+						// Use normalized comparison to handle encoding differences
+						$name_normalized = trim( html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+						if ( $ticket_name == $name || $ticket_name == $name_normalized ) {
 							$price = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $post_id, $ticket_type );
+							break; // Found match, exit loop
 						}
 					}
 				}

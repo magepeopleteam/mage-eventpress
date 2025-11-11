@@ -2241,10 +2241,16 @@
 		function mep_get_ticket_type_price_by_name( $name, $event_id ) {
 			$ticket_type_arr = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : [];
 			$p               = '';
+			// Decode and normalize the input name to handle special characters
+			$normalized_name = trim( html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+			$normalized_name = str_replace( "'", "", $normalized_name );
 			foreach ( $ticket_type_arr as $price ) {
 				$TicketName = str_replace( "'", "", $price['option_name_t'] );
-				if ( $TicketName === $name ) {
+				// Use normalized comparison to handle encoding differences
+				$TicketName_normalized = trim( html_entity_decode( urldecode( $TicketName ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+				if ( $TicketName_normalized === $normalized_name || $TicketName === $normalized_name ) {
 					$p = array_key_exists( 'option_price_t', $price ) ? esc_html( $price['option_price_t'] ) : 0;
+					break; // Found match, exit loop
 				}
 			}
 
@@ -2265,7 +2271,15 @@
 		function mep_get_orginal_ticket_name( $names ) {
 			$name = [];
 			foreach ( $names as $_names ) {
-				$name[] = explode( '_', $_names )[0];
+				// Decode HTML entities and URL encoding to handle special characters properly
+				$decoded_name = html_entity_decode( urldecode( $_names ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				// Only split by underscore if it's a compound key (e.g., "name_123"), otherwise use the full name
+				// Check if the name contains an underscore followed by digits (likely an index suffix)
+				if ( preg_match( '/^(.+)_\d+$/', $decoded_name, $matches ) ) {
+					$name[] = $matches[1];
+				} else {
+					$name[] = $decoded_name;
+				}
 			}
 
 			return $name;
@@ -2277,21 +2291,30 @@
 			$names                = isset( $_POST['option_name'] ) ? mage_array_strip( $_POST['option_name'] ) : array();
 			$qty                  = isset( $_POST['option_qty'] ) ? mage_array_strip( $_POST['option_qty'] ) : array();
 			$max_qty              = isset( $_POST['max_qty'] ) ? mage_array_strip( $_POST['max_qty'] ) : array();
-			$price                = mep_get_ticket_type_price_arr( mep_get_orginal_ticket_name( $names ), $product_id );
-			$count                = count( $names );
+			
+			// Decode HTML entities and URL encoding in names to handle special characters
+			$decoded_names = array();
+			foreach ( $names as $key => $name ) {
+				$decoded_names[ $key ] = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			}
+			
+			$price                = mep_get_ticket_type_price_arr( mep_get_orginal_ticket_name( $decoded_names ), $product_id );
+			$count                = count( $decoded_names );
 			$ticket_type_arr      = [];
 			$vald                 = 0;
-			if ( sizeof( $names ) > 0 ) {
+			if ( sizeof( $decoded_names ) > 0 ) {
 				for ( $i = 0; $i < $count; $i ++ ) {
-					if ( $qty[ $i ] > 0 ) {
-						$ticket_type_arr[ $i ]['ticket_name']    = ! empty( $names[ $i ] ) ? stripslashes( strip_tags( $names[ $i ] ) ) : '';
+					// Ensure we have valid quantity - handle cases where qty might be empty or invalid
+					$current_qty = isset( $qty[ $i ] ) ? (int) $qty[ $i ] : 0;
+					if ( $current_qty > 0 ) {
+						$ticket_type_arr[ $i ]['ticket_name']    = ! empty( $decoded_names[ $i ] ) ? stripslashes( strip_tags( $decoded_names[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['ticket_price']   = ! empty( $price[ $i ] ) ? stripslashes( strip_tags( $price[ $i ] ) ) : '';
-						$ticket_type_arr[ $i ]['ticket_qty']     = ! empty( $qty[ $i ] ) ? stripslashes( strip_tags( $qty[ $i ] ) ) : '';
+						$ticket_type_arr[ $i ]['ticket_qty']     = $current_qty;
 						$ticket_type_arr[ $i ]['max_qty']        = ! empty( $max_qty[ $i ] ) ? stripslashes( strip_tags( $max_qty[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['event_date']     = current( $mep_event_start_date );
-						$opttprice                               = ( (float) $price[ $i ] * (float) $qty[ $i ] );
+						$opttprice                               = ( (float) $price[ $i ] * (float) $current_qty );
 						$total_price                             = ( (float) $total_price + (float) $opttprice );
-						$validate[ $i ]['validation_ticket_qty'] = $vald + stripslashes( strip_tags( $qty[ $i ] ) );
+						$validate[ $i ]['validation_ticket_qty'] = $vald + $current_qty;
 						$validate[ $i ]['event_id']              = stripslashes( strip_tags( $product_id ) );
 					}
 				}

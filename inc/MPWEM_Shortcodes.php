@@ -199,20 +199,115 @@
                         });
                         // Handle city filter change
                         jQuery('select[name="filter_with_city"]').on('change', function () {
-                            var city = jQuery(this).val();
-                            var items = jQuery('.mep-event-list-loop');
-                            if (city === '') {
-                                items.show();
-                            } else {
-                                items.each(function () {
-                                    var itemCity = jQuery(this).data('city-name');
-                                    if (itemCity === city) {
-                                        jQuery(this).show();
-                                    } else {
-                                        jQuery(this).hide();
+                            applyAllFilters();
+                        });
+                        // Handle category filter change
+                        jQuery('select[name="filter_with_category"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Handle organizer filter change
+                        jQuery('select[name="filter_with_organizer"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Combined filter function that applies all filters
+                        function applyAllFilters() {
+                            var titleFilter = jQuery('input[name="filter_with_title"]').val().toLowerCase();
+                            var dateFilter = jQuery('input[name="filter_with_date"]').val();
+                            var stateFilter = jQuery('select[name="filter_with_state"]').val();
+                            var cityFilter = jQuery('select[name="filter_with_city"]').val();
+                            var categoryFilter = jQuery('select[name="filter_with_category"]').val();
+                            var organizerFilter = jQuery('select[name="filter_with_organizer"]').val();
+                            var visibleCount = 0;
+                            
+                            jQuery('.mep-event-list-loop').each(function () {
+                                var $item = jQuery(this);
+                                var show = true;
+                                
+                                // Title filter
+                                if (titleFilter) {
+                                    var itemTitle = ($item.data('title') || '').toLowerCase();
+                                    if (itemTitle.indexOf(titleFilter) === -1) {
+                                        show = false;
                                     }
-                                });
-                            }
+                                }
+                                
+                                // Date filter
+                                if (show && dateFilter) {
+                                    var itemDate = $item.data('date');
+                                    if (itemDate) {
+                                        var filterDate = new Date(dateFilter);
+                                        filterDate.setHours(0, 0, 0, 0);
+                                        var itemDateObj = new Date(itemDate);
+                                        itemDateObj.setHours(0, 0, 0, 0);
+                                        if (itemDateObj.getTime() !== filterDate.getTime()) {
+                                            show = false;
+                                        }
+                                    } else {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // State filter
+                                if (show && stateFilter) {
+                                    var itemState = $item.data('state') || '';
+                                    if (itemState !== stateFilter) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // City filter
+                                if (show && cityFilter) {
+                                    var itemCity = $item.data('city-name') || '';
+                                    if (itemCity !== cityFilter) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // Category filter
+                                if (show && categoryFilter) {
+                                    var itemCategory = $item.data('category') || '';
+                                    // Check if category matches (can be comma-separated)
+                                    var itemCategories = itemCategory.split(',').map(function(c) { return c.trim(); });
+                                    if (itemCategories.indexOf(categoryFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // Organizer filter
+                                if (show && organizerFilter) {
+                                    var itemOrganizer = $item.data('organizer') || '';
+                                    // Check if organizer matches (can be comma-separated)
+                                    var itemOrganizers = itemOrganizer.split(',').map(function(o) { return o.trim(); });
+                                    if (itemOrganizers.indexOf(organizerFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                if (show) {
+                                    $item.show();
+                                    visibleCount++;
+                                } else {
+                                    $item.hide();
+                                }
+                            });
+                            
+                            // Update count display
+                            jQuery('.qty_count').text(visibleCount);
+                        }
+                        
+                        // Update title filter to use combined function
+                        jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
+                            applyAllFilters();
+                        });
+                        
+                        // Update date filter to use combined function
+                        jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        
+                        // Update state filter to use combined function
+                        jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
+                            applyAllFilters();
                         });
 						<?php if ($pagination == 'carousal') { ?>
                         // Initialize Owl Carousel

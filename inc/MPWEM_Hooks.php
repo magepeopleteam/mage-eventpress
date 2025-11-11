@@ -12,6 +12,7 @@
 				add_action( 'mpwem_title', [ $this, 'title' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 3 );
+				add_action( 'mep_event_organized_by', [ $this, 'organizer' ], 10, 3 );
 				add_action( 'mep_event_list_org_names', [ $this, 'event_list_org_names' ], 10, 2 );
 				add_action( 'mep_event_list_cat_names', [ $this, 'event_list_cat_names' ], 10, 2 );
 				/**************************/

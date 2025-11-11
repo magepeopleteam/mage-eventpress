@@ -46,6 +46,9 @@
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
+	div.event_date_list_area .date-list-item{
+		border-radius: 10px;
+	}
 }
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
@@ -3891,6 +3894,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		flex-direction: column;
 		justify-content: start;
 		gap: 10px;
+		margin-bottom: 10px;
 	}
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {

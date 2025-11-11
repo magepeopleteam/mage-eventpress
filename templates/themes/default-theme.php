@@ -63,7 +63,7 @@
 			<?php } ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
-        <div class="mep-default-sidebar <?php echo esc_attr( $event_type == 'online' ? 'margin' : '' ); ?>">
+        <div class="mep-default-sidebar">
             <div class="df-sidebar-part">
 	            <?php do_action( 'mpwem_organizer', $event_id ,$event_infos); ?>
 				<?php if ( $mep_enable_recurring == 'no' ): ?>

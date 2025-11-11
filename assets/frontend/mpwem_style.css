@@ -602,9 +602,6 @@ ul.mep-social-share li a.email:hover i {
 	color: var(--color_7);
 	font-weight: normal;
 }
-.mep-default-sidebar.margin {
-	margin-top: 42px;
-}
 .default_theme .mep-default-sidrbar-price-seat,
 .mep-default-sidebar-address,
 .mep-default-sidrbar-social {

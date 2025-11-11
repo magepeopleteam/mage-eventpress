@@ -16,7 +16,6 @@
 				add_shortcode( 'event-speaker-list', array( $this, 'speaker_list' ) );
 				add_shortcode( 'event-calendar', array( $this, 'calender' ) );
 			}
-
 			public function event_list( $atts, $content = null ) {
 				$defaults            = array(
 					"cat"              => "0",
@@ -80,60 +79,64 @@
 				?>
                 <div class='list_with_filter_section mep_event_list'>
 					<?php
-						if ( $cat_f == 'yes' ) {
-							do_action( 'mep_event_list_cat_names', $cat, $unq_id );
-						}
-						if ( $org_f == 'yes' ) {
-							do_action( 'mep_event_list_org_names', $org, $unq_id );
-						}
-						if ( $tag_f == 'yes' ) {
-							do_action( 'mep_event_list_tag_names', $tag, $unq_id );
-						}
-						if ( $filter == 'yes' && $style != 'timeline' ) {
-							do_action( 'mpwem_list_with_filter_section', $loop, $params );
-						}
-					?>
-                    <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
-                         data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
-                         data-style="<?php echo esc_attr( $style ); ?>"
-                         data-column="<?php echo esc_attr( $column ); ?>"
-                         data-cat="<?php echo esc_attr( $cat ); ?>"
-                         data-org="<?php echo esc_attr( $org ); ?>"
-                         data-tag="<?php echo esc_attr( $tag ); ?>"
-                         data-city="<?php echo esc_attr( $city ); ?>"
-                         data-country="<?php echo esc_attr( $country ); ?>"
-                         data-status="<?php echo esc_attr( $status ); ?>"
-                         data-year="<?php echo esc_attr( $year ); ?>"
-                         data-sort="<?php echo esc_attr( $sort ); ?>"
-                         data-show="<?php echo esc_attr( $show ); ?>"
-                         data-pagination="<?php echo esc_attr( $pagination ); ?>"
-                         data-pagination-style="<?php echo esc_attr( $pagination_style ); ?>"
-                    >
-                        <div class="mage_grid_box <?php echo esc_attr( $pagination == 'carousal' ? 'owl-theme owl-carousel' : '' ); ?>" id="<?php echo esc_attr( $pagination == 'carousal' ? 'mep-carousel' . $cid : '' ); ?>">
-							<?php
-								echo wp_kses_post( $time_line_div_start );
-								while ( $loop->have_posts() ) {
-									$loop->the_post();
-									$event_id = get_the_id();
-									mep_update_event_upcoming_date( $event_id );
-									if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
-										$columnNumber = 'column_style';
-										$width        = 100 / (int) $column;
-									} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
-										$columnNumber = 'grid';
-										$width        = 100;
-									} else {
-										$columnNumber = 'one_column';
-										$width        = 100;
-									}
-									do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
-								}
-								wp_reset_postdata();
-								echo wp_kses_post( $time_line_div_end );
+						if ( $total_item > 0 ) {
+							if ( $cat_f == 'yes' ) {
+								do_action( 'mep_event_list_cat_names', $cat, $unq_id );
+							}
+							if ( $org_f == 'yes' ) {
+								do_action( 'mep_event_list_org_names', $org, $unq_id );
+							}
+							if ( $tag_f == 'yes' ) {
+								do_action( 'mep_event_list_tag_names', $tag, $unq_id );
+							}
+							if ( $filter == 'yes' && $style != 'timeline' ) {
+								do_action( 'mpwem_list_with_filter_section', $loop, $params );
+							}
 							?>
-                        </div>
-                    </div>
-					<?php do_action( 'mpwem_pagination', $params, $total_item ); ?>
+                            <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
+                                 data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
+                                 data-style="<?php echo esc_attr( $style ); ?>"
+                                 data-column="<?php echo esc_attr( $column ); ?>"
+                                 data-cat="<?php echo esc_attr( $cat ); ?>"
+                                 data-org="<?php echo esc_attr( $org ); ?>"
+                                 data-tag="<?php echo esc_attr( $tag ); ?>"
+                                 data-city="<?php echo esc_attr( $city ); ?>"
+                                 data-country="<?php echo esc_attr( $country ); ?>"
+                                 data-status="<?php echo esc_attr( $status ); ?>"
+                                 data-year="<?php echo esc_attr( $year ); ?>"
+                                 data-sort="<?php echo esc_attr( $sort ); ?>"
+                                 data-show="<?php echo esc_attr( $show ); ?>"
+                                 data-pagination="<?php echo esc_attr( $pagination ); ?>"
+                                 data-pagination-style="<?php echo esc_attr( $pagination_style ); ?>"
+                            >
+                                <div class="mage_grid_box <?php echo esc_attr( $pagination == 'carousal' ? 'owl-theme owl-carousel' : '' ); ?>" id="<?php echo esc_attr( $pagination == 'carousal' ? 'mep-carousel' . $cid : '' ); ?>">
+									<?php
+										echo wp_kses_post( $time_line_div_start );
+										while ( $loop->have_posts() ) {
+											$loop->the_post();
+											$event_id = get_the_id();
+											mep_update_event_upcoming_date( $event_id );
+											if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
+												$columnNumber = 'column_style';
+												$width        = 100 / (int) $column;
+											} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
+												$columnNumber = 'grid';
+												$width        = 100;
+											} else {
+												$columnNumber = 'one_column';
+												$width        = 100;
+											}
+											do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
+										}
+										wp_reset_postdata();
+										echo wp_kses_post( $time_line_div_end );
+									?>
+                                </div>
+                            </div>
+							<?php do_action( 'mpwem_pagination', $params, $total_item );
+						} else {
+							echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
+						} ?>
                 </div>
                 <script>
                     jQuery(document).ready(function () {
@@ -196,20 +199,115 @@
                         });
                         // Handle city filter change
                         jQuery('select[name="filter_with_city"]').on('change', function () {
-                            var city = jQuery(this).val();
-                            var items = jQuery('.mep-event-list-loop');
-                            if (city === '') {
-                                items.show();
-                            } else {
-                                items.each(function () {
-                                    var itemCity = jQuery(this).data('city-name');
-                                    if (itemCity === city) {
-                                        jQuery(this).show();
-                                    } else {
-                                        jQuery(this).hide();
+                            applyAllFilters();
+                        });
+                        // Handle category filter change
+                        jQuery('select[name="filter_with_category"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Handle organizer filter change
+                        jQuery('select[name="filter_with_organizer"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Combined filter function that applies all filters
+                        function applyAllFilters() {
+                            var titleFilter = jQuery('input[name="filter_with_title"]').val().toLowerCase();
+                            var dateFilter = jQuery('input[name="filter_with_date"]').val();
+                            var stateFilter = jQuery('select[name="filter_with_state"]').val();
+                            var cityFilter = jQuery('select[name="filter_with_city"]').val();
+                            var categoryFilter = jQuery('select[name="filter_with_category"]').val();
+                            var organizerFilter = jQuery('select[name="filter_with_organizer"]').val();
+                            var visibleCount = 0;
+                            
+                            jQuery('.mep-event-list-loop').each(function () {
+                                var $item = jQuery(this);
+                                var show = true;
+                                
+                                // Title filter
+                                if (titleFilter) {
+                                    var itemTitle = ($item.data('title') || '').toLowerCase();
+                                    if (itemTitle.indexOf(titleFilter) === -1) {
+                                        show = false;
                                     }
-                                });
-                            }
+                                }
+                                
+                                // Date filter
+                                if (show && dateFilter) {
+                                    var itemDate = $item.data('date');
+                                    if (itemDate) {
+                                        var filterDate = new Date(dateFilter);
+                                        filterDate.setHours(0, 0, 0, 0);
+                                        var itemDateObj = new Date(itemDate);
+                                        itemDateObj.setHours(0, 0, 0, 0);
+                                        if (itemDateObj.getTime() !== filterDate.getTime()) {
+                                            show = false;
+                                        }
+                                    } else {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // State filter
+                                if (show && stateFilter) {
+                                    var itemState = $item.data('state') || '';
+                                    if (itemState !== stateFilter) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // City filter
+                                if (show && cityFilter) {
+                                    var itemCity = $item.data('city-name') || '';
+                                    if (itemCity !== cityFilter) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // Category filter
+                                if (show && categoryFilter) {
+                                    var itemCategory = $item.data('category') || '';
+                                    // Check if category matches (can be comma-separated)
+                                    var itemCategories = itemCategory.split(',').map(function(c) { return c.trim(); });
+                                    if (itemCategories.indexOf(categoryFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                // Organizer filter
+                                if (show && organizerFilter) {
+                                    var itemOrganizer = $item.data('organizer') || '';
+                                    // Check if organizer matches (can be comma-separated)
+                                    var itemOrganizers = itemOrganizer.split(',').map(function(o) { return o.trim(); });
+                                    if (itemOrganizers.indexOf(organizerFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                
+                                if (show) {
+                                    $item.show();
+                                    visibleCount++;
+                                } else {
+                                    $item.hide();
+                                }
+                            });
+                            
+                            // Update count display
+                            jQuery('.qty_count').text(visibleCount);
+                        }
+                        
+                        // Update title filter to use combined function
+                        jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
+                            applyAllFilters();
+                        });
+                        
+                        // Update date filter to use combined function
+                        jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        
+                        // Update state filter to use combined function
+                        jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
+                            applyAllFilters();
                         });
 						<?php if ($pagination == 'carousal') { ?>
                         // Initialize Owl Carousel
@@ -250,10 +348,8 @@
                     });
                 </script><?php
 				$content = ob_get_clean();
-
 				return $content;
 			}
-
 			public function event_city_list() {
 				global $wpdb;
 				$table_name = $wpdb->prefix . "postmeta";
@@ -271,7 +367,6 @@
 				<?php
 				return ob_get_clean();
 			}
-
 			public function event_list_one_page( $atts ) {
 				$defaults   = array(
 					"cat"           => "0",
@@ -332,10 +427,7 @@
 									}
 									do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width );
 									echo '<div class=event-cart-section-list>';
-									$all_dates     = MPWEM_Functions::get_dates( $event_id );
-									$all_times     = MPWEM_Functions::get_times( $event_id, $all_dates );
-									$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-									do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date );
+									do_action( 'mpwem_registration', $event_id );
 									echo '</div>';
 								}
 								wp_reset_postdata();
@@ -348,10 +440,8 @@
                 </div>
 				<?php
 				$content = ob_get_clean();
-
 				return $content;
 			}
-
 			public function add_to_cart_section( $atts, $content = null ) {
 				$defaults = array(
 					"event"               => "0",
@@ -363,15 +453,10 @@
 				$event_id = $params['event'];
 				ob_start();
 				if ( $event_id > 0 ) {
-					$all_dates     = MPWEM_Functions::get_dates( $event_id );
-					$all_times     = MPWEM_Functions::get_times( $event_id, $all_dates );
-					$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-					do_action( 'mpwem_registration', $event_id, $all_dates, $all_times, $upcoming_date, $params );
+					do_action( 'mpwem_registration', $event_id );
 				}
-
 				return ob_get_clean();
 			}
-
 			public function speaker_list( $atts ) {
 				$defaults = array(
 					"event" => "0"
@@ -380,45 +465,42 @@
 				$event_id = $params['event'];
 				ob_start();
 				if ( $event_id > 0 ) {
-					?>
-                    <div class="mep-default-sidebar-speaker-list">
-						<?php do_action( 'mep_event_speakers_list', $event_id ); ?>
-                    </div>
-					<?php
+					$event_infos               = MPWEM_Functions::get_all_info( $event_id );
+					$speaker_lists             = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
+					$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
+					$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+					$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
+					$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+					if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
+                        <div class="default_theme mpwem_style">
+                            <div class="event_speaker_list_area">
+								<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
+                            </div>
+                        </div>
+					<?php }
 				} else {
-					$args = array(
-						'post_type'      => array( 'mep_event_speaker' ),
-						'posts_per_page' => - 1
-					);
-					$loop = new WP_Query( $args );
-					?>
-                    <div class="mep-default-sidebar-speaker-list">
-                        <ul>
-							<?php
-								foreach ( $loop->posts as $speaker ) {
-									$speakers = $speaker->ID;
-									?>
-                                    <li>
-                                        <a href='<?php echo get_the_permalink( $speakers ); ?>'>
-											<?php if ( has_post_thumbnail( $speakers ) ) {
-												echo get_the_post_thumbnail( $speakers, 'medium' );
-											} else { ?>
-                                                <img src="<?php echo esc_url( MPWEM_PLUGIN_URL . '/assets/helper/images/no-photo.jpg' ); ?>" alt=""/>;
-											<?php } ?>
-                                            <h6><?php echo get_the_title( $speakers ); ?></h6>
+					$speaker_lists = MPWEM_Global_Function::get_all_post_id( 'mep_event_speaker' );
+					if ( sizeof( $speaker_lists ) > 0 ) {
+						?>
+                        <div class="default_theme mpwem_style">
+                            <div class="event_speaker_list_area">
+                                <div class="speaker_list">
+									<?php foreach ( $speaker_lists as $speaker_id ) {
+										$thumbnail = MPWEM_Global_Function::get_image_url( $speaker_id );
+										?>
+                                        <a href="<?php echo esc_url( get_the_permalink( $speaker_id ) ); ?>">
+                                            <div data-bg-image="<?php echo esc_html( $thumbnail ); ?>"></div>
+                                            <h6><?php echo esc_html( get_the_title( $speaker_id ) ); ?></h6>
                                         </a>
-                                    </li>
-									<?php
-								}
-							?>
-                        </ul>
-                    </div>
-					<?php
+									<?php } ?>
+                                </div>
+                            </div>
+                        </div>
+						<?php
+					}
 				}
-
 				return ob_get_clean();
 			}
-
 			public function calender() {
 				ob_start();
 				?>

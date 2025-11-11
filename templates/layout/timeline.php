@@ -3,9 +3,9 @@
 		die;
 	}
 	$event_id        = $event_id ?? get_the_id();
-	$time_line_infos = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_day', [] );
-	//echo '<pre>';print_r($time_line_infos);echo '</pre>';
-	if ( sizeof( $time_line_infos ) > 0 ) {
+//	$time_line_infos = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_day', [] );
+	$time_line_infos = get_post_meta($event_id,'mep_event_day',true);
+	if ( is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 ) {
 		$counter = 0;
 		?>
         <div class="mpwem_timeline_area _mB">

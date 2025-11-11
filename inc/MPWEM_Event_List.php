@@ -11,10 +11,34 @@
 			}
 
 			public function event_list_shortcode( $event_id, $columnNumber = '', $style = '', $width = '', $unq_id = '' ) {
+				//$event_infos              =MPWEM_Functions::get_all_info( $event_id );
+
 				$event_organizer_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_organizer_icon', 'far fa-list-alt' );
 				$torg                 = get_the_terms( $event_id, 'mep_org' );
+				$tcat                 = get_the_terms( $event_id, 'mep_cat' );
 				$org_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_org', $unq_id );
 				$cat_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_cat', $unq_id );
+				
+				// Get category names for data attribute
+				$taxonomy_category = '';
+				if ( $tcat && ! is_wp_error( $tcat ) && count( $tcat ) > 0 ) {
+					$cat_names = array();
+					foreach ( $tcat as $cat ) {
+						$cat_names[] = $cat->name;
+					}
+					$taxonomy_category = implode( ', ', $cat_names );
+				}
+				
+				// Get organizer names for data attribute
+				$taxonomy_organizer = '';
+				if ( $torg && ! is_wp_error( $torg ) && count( $torg ) > 0 ) {
+					$org_names = array();
+					foreach ( $torg as $org ) {
+						$org_names[] = $org->name;
+					}
+					$taxonomy_organizer = implode( ', ', $org_names );
+				}
+				
 				ob_start();
 				if ( $style == 'title' ) {
 					?>
@@ -36,13 +60,13 @@
 					$end_datetime      = '';
 					if ( $recurring == 'no' || $recurring == 'yes' ) {
 						$end_date        = current( $all_dates );
-						$end_datetime    = array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
+						$end_datetime    = is_array($end_date) && array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
 						$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_datetime ) ? $end_datetime : '';
 					} else {
 						$end_date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 						if ( sizeof( $all_times ) > 0 ) {
 							$all_times       = current( $all_times );
-							$end_time        = array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
+							$end_time        =  is_array($all_times) && array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
 							$end_datetime    = $end_time ? $end_date . ' ' . $end_time : '';
 							$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_time_format ) ? $end_time_format : '';
 						}
@@ -66,7 +90,7 @@
 					$hide_time_list                 = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_time_list', 'no' );
 					$hide_only_end_time_list        = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_end_time_list', 'no' );
 					$mep_hide_event_hover_btn       = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_hide_event_hover_btn', 'no' );
-					$sold_out_ribbon                = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_show_sold_out_ribbon_list_page', 'no' );
+					$sold_out_ribbon                = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_sold_out_ribbon_list_page', 'no' );
 					$limited_availability_ribbon    = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_show_limited_availability_ribbon', 'no' );
 					$limited_availability_threshold = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_limited_availability_threshold', 5 );
 					$event_location_icon            = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_location_icon', 'fas fa-map-marker-alt' );

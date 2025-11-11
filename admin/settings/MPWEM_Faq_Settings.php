@@ -10,7 +10,7 @@
 	if ( ! class_exists( 'MPWEM_Faq_Settings' ) ) {
 		class MPWEM_Faq_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'faq_tab_content' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'faq_tab_content' ] );
 				add_action( 'wp_ajax_mpwem_load_faq', array( $this, 'mpwem_load_faq' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_load_faq', array( $this, 'mpwem_load_faq' ) );
 				add_action( 'wp_ajax_mpwem_save_faq', array( $this, 'mpwem_save_faq' ) );

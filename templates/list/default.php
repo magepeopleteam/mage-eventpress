@@ -43,43 +43,41 @@
      data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
      data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $upcoming_date ) ) ); ?>" style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
 	<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
-    <div class="mep_list_thumb">
-        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-            <div class="mep_bg_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'large' ) ); ?>"></div>
-        </a>
+    <div class="mep_list_thumb mpwem_style">
+        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'large' ) ); ?>"></div>
         <div class="mep-ev-start-date">
             <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
             <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>
         </div>
-        <div class="mepev-ribbon">
+        <div class="mepev-ribbons">
 			<?php
 				if ( is_array( $event_multidate ) && sizeof( $event_multidate ) > 0 && $recurring == 'no' ) { ?>
-                    <div class='ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $recurring != 'no' ) { ?>
-                    <div class='ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $event_type == 'online' ) { ?>
-                    <div class='ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $total_left <= 0 ) { ?>
-                    <div class="ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
+                    <div class="mepev-ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $limited_availability_ribbon == 'yes' && $total_left > 0 && $total_left <= $limited_availability_threshold ) { ?>
-                    <div class="ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
+                    <div class="mepev-ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
 				<?php } ?>
         </div>
     </div>
     <div class="mep_list_event_details">
         <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
             <div class="mep-list-header">
-                <h2 class='mep_list_title'><?php echo esc_html( get_the_title( $event_id ) ); ?></h2>
+                <p class='mep_list_title'><?php echo esc_html( get_the_title( $event_id ) ); ?></p>
 				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>
-                <h3 class='mep_list_date'>
+                <p class='mep_list_date'>
 					<?php if ( $show_price == 'yes' ) {
 						echo esc_html( $show_price_label ) . " " . wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) );;
 					} ?>
-                </h3>
+                </p>
             </div>
 			<?php if ( $style == 'list' ) { ?>
                 <div class="mep-event-excerpt">
@@ -92,18 +90,40 @@
                         <li class="mep_list_org_name">
                             <div class="evl-ico"><i class="<?php echo esc_attr( $event_organizer_icon ); ?>"></i></div>
                             <div class="evl-cc">
-                                <h5><?php esc_html_e( 'Organized By:', 'mage-eventpress' ) ?></h5>
-                                <h6><?php echo esc_html( $author_terms[0]->name ); ?></h6>
+                                <p><?php esc_html_e( 'Organized By:', 'mage-eventpress' ) ?></p>
+                                <p><?php echo esc_html( $author_terms[0]->name ); ?></p>
                             </div>
                         </li>
 					<?php }
 						if ( $event_type != 'online' ) {
-							if ( $hide_location_list == 'no' ) { ?>
+							if ( $hide_location_list == 'no' ) { 
+								$location_data = MPWEM_Functions::get_location( $event_id );
+								$location_display = '';
+								
+								// Get location/venue first
+								if ( ! empty( $location_data['location'] ) ) {
+									$location_display = $location_data['location'];
+								} else {
+									// If no location/venue, build from street + city
+									$location_parts = array();
+									if ( ! empty( $location_data['street'] ) ) {
+										$location_parts[] = $location_data['street'];
+									}
+									if ( ! empty( $location_data['city'] ) ) {
+										$location_parts[] = $location_data['city'];
+									}
+									if ( ! empty( $location_parts ) ) {
+										$location_display = implode( ' ', $location_parts );
+									}
+								}
+								
+								// Always show location section to avoid gaps
+								?>
                                 <li class="mep_list_location_name">
                                     <div class="evl-ico"><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i></div>
                                     <div class="evl-cc">
-                                        <h5> <?php esc_html_e( 'Location:', 'mage-eventpress' ); ?> </h5>
-                                        <h6><?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?></h6>
+                                        <p><?php esc_html_e( 'Location:', 'mage-eventpress' ); ?></p>
+                                        <p><?php echo esc_html( $location_display ); ?></p>
                                     </div>
                                 </li>
 							<?php }

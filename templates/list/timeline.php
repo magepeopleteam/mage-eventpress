@@ -54,20 +54,20 @@
             <div class="mep_list_event_details">
                 <a href="<?php the_permalink(); ?>">
                     <div class="mep-list-header">
-                        <h2 class='mep_list_title'><?php the_title(); ?></h2>
+                        <p class='mep_list_title'><?php the_title(); ?></p>
 						<?php if ( $total_left == 0 ) {
 							do_action( 'mep_show_waitlist_label' );
 						} ?>
-                        <h3 class='mep_list_date'>
+                        <p class='mep_list_date'>
                             <span class='mep_minimal_list_date'>
                                 <i class="<?php echo $event_date_icon; ?>"></i>
                                 <?php echo esc_html( MPWEM_Global_Function::date_format( $start_time_format, 'time' ) . ' ' . ( $end_time_format ? ' - ' . MPWEM_Global_Function::date_format( $end_time_format, 'time' ) : '' ) ); ?>
                             </span>
-                            <span class='mep_minimal_list_location'><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i> <?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?></span>
+                            <span class='mep_minimal_list_location'><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i> <?php echo esc_html( MPWEM_Functions::get_location( $event_id, 'location' ) ); ?></span>
 							<?php if ( $hide_org_list == 'no' && sizeof( $author_terms ) > 0 ) { ?>
                                 <span class='mep_minimal_list_organizer'><i class="<?php echo esc_attr( $event_organizer_icon ); ?>>"></i> <?php echo esc_html( $author_terms[0]->name ); ?></span>
 							<?php } ?>
-                        </h3>
+							</p>
                 </a>
 				<?php do_action( 'mep_event_list_loop_footer', $event_id ); ?>
             </div>

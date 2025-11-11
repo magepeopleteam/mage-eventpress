@@ -92,7 +92,6 @@
 				$this->global_enqueue();
 				//********//
 				$user_api = mep_get_option( 'google-map-api', 'general_setting_sec', '' );
-				wp_enqueue_script( 'mkb-admin', MPWEM_PLUGIN_URL . '/assets/admin/mkb-admin.js', array( 'jquery', 'jquery-ui-core' ), time(), true );
 				if ( $user_api ) {
 					wp_enqueue_script( 'gmap-libs', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $user_api ) . '&libraries=places&callback=initMap', array( 'jquery', 'gmap-scripts' ), 1, true );
 				}
@@ -180,6 +179,7 @@
 			public function js_constant() {
 				?>
                 <script type="text/javascript">
+					let mp_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
                     var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";

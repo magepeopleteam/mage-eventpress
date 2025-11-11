@@ -50,10 +50,10 @@
 >
 	<?php do_action( 'mep_event_winter_list_loop_header', $event_id ); ?>
     <div class="mep_list_date_wrapper">
-        <h4 class='mep_winter_list_date'>
+        <p class='mep_winter_list_date'>
             <span class="mep_winter_list_dd"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></span>
             <span class="mep_winter_list_mm_yy"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'M,Y' ) ); ?></span>
-        </h4>
+        </p>
     </div>
     <div class="mep_list_winter_thumb_wrapper">
         <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
@@ -61,12 +61,12 @@
         </a>
     </div>
     <div class="mep_list_event_details">
-        <h2 class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( get_the_title( $event_id ) ); ?></a></h2>
-        <h3 class="mep_price">
+        <p class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php echo esc_html( get_the_title( $event_id ) ); ?></a></p>
+        <p class="mep_price">
 			<?php if ( $show_price == 'yes' ) {
 				echo esc_html( $show_price_label ) . " " . wc_price( MPWEM_Functions::get_min_price( $event_id ) );
 			} ?>
-        </h3>
+        </p>
         <div class="mep_list_details_wrapper">
             <div class="mep_list_details_col_one">
 				<?php if ($start_time_format ){ ?>

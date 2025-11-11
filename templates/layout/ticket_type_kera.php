@@ -59,8 +59,8 @@
 			//echo '<pre>';print_r($new_tickets);echo '</pre>';
 			if ( sizeof( $new_tickets ) > 0 ) {
 				?>
-                <div class="mpTabs mep-kera-theme">
-                    <div class="tabLists mpwem_style">
+                <div class="mpTabs kera_ticket_area">
+                    <div class="tabLists">
 						<?php $tab_count = 0;
 							foreach ( $new_tickets as $tickets ) {
 								$meta_id = array_key_exists( 'term_id', $tickets ) ? $tickets['term_id'] : '';

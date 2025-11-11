@@ -13,6 +13,11 @@
 	$total_available    = $total_available ?? MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available    = max( $total_available, 0 );
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
+	$total_sold         = mep_ticket_type_sold( $event_id, '', $date );
+	$total_ticket       = MPWEM_Functions::get_total_ticket( $event_id, $date );
+	$total_reserve      = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+	$total_available    = $total_ticket - ( $total_sold + $total_reserve );
+	$total_available    = max( $total_available, 0 );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -27,19 +32,20 @@
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$input_data        = [];
 						$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
+						do_action( 'mep_ticket_type_loop_list_row_start', $event_id, $date, $ticket_type );
 						if ( $ticket_permission ) {
 							//echo '<pre>';print_r($ticket_type);echo '</pre>';
-							$ticket_name     = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-							$ticket_details  = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
-							$ticket_price    = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
-							$ticket_price_   = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
-							$ticket_price_wc = wc_price( $ticket_price_ );
-							$ticket_price    = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
-							$ticket_qty      = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
-							$ticket_qty      = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_available, $event_id );
-							$ticket_d_qty    = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
-							$ticket_min_qty = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
-							$ticket_max_qty = apply_filters( 'filter_mpwem_max_ticket', '', $event_id, $ticket_type );
+							$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+							$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
+							$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
+							$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
+							$ticket_price_wc   = wc_price( $ticket_price_ );
+							$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
+							$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+							$ticket_qty        = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_available, $event_id );
+							$ticket_d_qty      = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
+							$ticket_min_qty    = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
+							$ticket_max_qty    = apply_filters( 'filter_mpwem_max_ticket', '', $event_id, $ticket_type );
 							$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 							$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 							$available         = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
@@ -130,22 +136,16 @@
 								<?php
 							}
 						}
-					} ?>
+					}
+					?>
                 </div>
             </div>
 			<?php
-			//echo '<pre>';print_r($ticket_types);echo '</pre>';
 		}
 	} else {
-		?>
-        <div class="no-ticket">
-			<?php _e( 'Sorry, no ticket available', 'mage-eventpress' ); ?>
-        </div>
-		<?php
+		MPWEM_Layout::msg( __( 'Sorry, no ticket available', 'mage-eventpress' ), '_dLayout_bgWarning' );
 		do_action( 'mep_after_no_seat_notice', $event_id );
 	}
-
-//	echo '<pre>';print_r($total_ticket);echo '</pre>';
-//	echo '<pre>';print_r($total_reserve);echo '</pre>';
-//	echo '<pre>';print_r($total_sold);echo '</pre>';
+// Show waitlist form after ticket types if waitlist is enabled (even when tickets are available)
+	do_action( 'mep_after_ticket_types', $event_id );
 //	echo '<pre>';print_r($all_dates);echo '</pre>';

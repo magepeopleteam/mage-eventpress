@@ -9,35 +9,74 @@
 	if ( ! class_exists( 'MPWEM_Functions' ) ) {
 		class MPWEM_Functions {
 			public function __construct() { }
-
+			public static function details_template_path( $file_name ): string {
+				$template_path       = get_stylesheet_directory() . '/mage-event/';
+				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
+				$default_path        = $default_dir . $file_name;
+				$theme_template_path = $template_path . $file_name;
+				if ( file_exists( $theme_template_path ) ) {
+					return $theme_template_path;
+				} elseif ( file_exists( $default_path ) ) {
+					return $default_path;
+				} else {
+					return $default_dir . 'default-theme.php';
+				}
+			}
 			public static function template_path( $file_name ): string {
-				$template_path       = get_stylesheet_directory() . '/mage-events/';
+				$template_path       = get_stylesheet_directory() . '/mage-event/';
 				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/';
 				$theme_template_path = $template_path . $file_name;
 				if ( file_exists( $theme_template_path ) ) {
 					return $theme_template_path;
 				}
-
 				return $default_dir . $file_name;
 			}
-
+			//==========================//
+			public static function get_all_info( $event_id ) {
+				$event_infos = [];
+				$event_meta  = get_post_custom( $event_id );
+				if ( $event_meta ) {
+					$url_date = '';
+					if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mpwem_date_' . $event_id ) ) {
+						$url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
+					}
+					$url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
+					$date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
+					$url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+					$all_dates   = MPWEM_Functions::get_dates( $event_id );
+					$all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
+					$upcoming_date                           = $url_date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+					$single_event_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'single_event_setting_sec' ) );
+					$icon_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'icon_setting_sec' ) );
+					$general_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) );
+					$event_infos['event_id']                 = $event_id;
+					$event_infos['all_date']                 = $all_dates;
+					$event_infos['all_time']                 = $all_times;
+					$event_infos['upcoming_date']            = $upcoming_date;
+					$event_infos['full_address']             = self::get_location($event_id);
+					$event_infos['single_event_setting_sec'] = $single_event_setting_sec ? : [];
+					$event_infos['icon_setting_sec'] = $icon_setting_sec ? : [];
+					$event_infos['general_setting_sec'] = $general_setting_sec ? : [];
+					$event_meta                              = MPWEM_Global_Function::data_sanitize( $event_meta );
+					foreach ( $event_meta as $key => $value ) {
+						$event_infos[ $key ] = current( $value );
+					}
+				}
+				return $event_infos;
+			}
 			//==========================//
 			public static function get_total_available_seat( $event_id, $date = '' ) {
 				$total_sold    = self::get_total_sold( $event_id, $date );
 				$total_ticket  = self::get_total_ticket( $event_id, $date );
 				$total_reserve = self::get_reserve_ticket( $event_id, $date );
-
 				return $total_ticket - ( $total_sold + $total_reserve );
 			}
-
 			public static function get_total_sold( $event_id, $date = '' ) {
 				$date       = ! empty( $date ) ? date( 'YmdHi', strtotime( $date ) ) : 0;
 				$meta_name  = $date > 0 ? $event_id . '_' . $date : 'mep_total_seat_left';
 				$total_sold = MPWEM_Global_Function::get_post_info( $event_id, $meta_name );
-
 				return ! empty( $total_sold ) ? $total_sold : mep_update_event_total_seat( $event_id, $date );
 			}
-
 			public static function get_total_ticket( $event_id, $date ) {
 				$total_ticket = 0;
 				$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -46,10 +85,8 @@
 						$total_ticket += array_key_exists( 'option_qty_t', $ticket_type ) ? (int) $ticket_type['option_qty_t'] : 0;
 					}
 				}
-
 				return max( apply_filters( 'mpwem_event_total_seat_counts', $total_ticket, $event_id, $date ), 0 );
 			}
-
 			public static function get_reserve_ticket( $event_id, $date ) {
 				$reserve_ticket = 0;
 				$ticket_types   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
@@ -58,10 +95,8 @@
 						$reserve_ticket += array_key_exists( 'option_rsv_t', $ticket_type ) ? (int) $ticket_type['option_rsv_t'] : 0;
 					}
 				}
-
 				return max( apply_filters( 'mpwem_event_total_resv_seat_count', $reserve_ticket, $event_id, $date ), 0 );
 			}
-
 			public static function get_available_ticket( $event_id, $ticket_name, $date, $ticket_type = [] ) {
 				$available_ticket = 0;
 				if ( sizeof( $ticket_type ) == 0 ) {
@@ -81,10 +116,8 @@
 					$total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
 					$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
 				}
-
 				return $available_ticket;
 			}
-
 			public static function get_total_available_ex( $event_id, $date = '' ) {
 				$total_sold     = 0;
 				$total_ticket   = 0;
@@ -100,10 +133,8 @@
 				}
 				$total_ticket  = max( apply_filters( 'mpwem_event_total_ex_counts', $total_ticket, $event_id, $date ), 0 );
 				$total_reserve = max( apply_filters( 'mpwem_event_total_resv_ex_count', $reserve_ticket, $event_id, $date ), 0 );
-
 				return $total_ticket - ( $total_sold + $total_reserve );
 			}
-
 			public static function get_available_ex_service( $event_id, $ticket_name, $date, $ticket_type = [] ) {
 				$available_ticket = 0;
 				if ( sizeof( $ticket_type ) == 0 ) {
@@ -122,30 +153,38 @@
 					$total_sold       = (int) mep_extra_service_sold( $event_id, $ticket_name, $date );
 					$available_ticket = $ticket_qty - $total_sold;
 				}
-
 				return $available_ticket;
 			}
-
 			//==========================//
 			public static function get_ticket_price_by_name( $ticket_name, $post_id, $ticket_types = [] ) {
 				$ticket_types = sizeof( $ticket_types ) > 0 ? $ticket_types : MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
 				$price        = 0;
-				$ticket_name  = explode( '_', $ticket_name )[0];
+				// Decode HTML entities and URL encoding to handle special characters
+				$decoded_name = html_entity_decode( urldecode( $ticket_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				// Only split by underscore if it's a compound key (e.g., "name_123"), otherwise use the full name
+				if ( preg_match( '/^(.+)_\d+$/', $decoded_name, $matches ) ) {
+					$ticket_name = $matches[1];
+				} else {
+					$ticket_name = $decoded_name;
+				}
 				$ticket_name  = str_replace( "'", "", $ticket_name );
+				$ticket_name  = trim( $ticket_name );
 				if ( sizeof( $ticket_types ) > 0 ) {
 					foreach ( $ticket_types as $ticket_type ) {
 						$ticket_price = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 						$name         = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 						$name         = str_replace( "'", "", $name );
-						if ( $ticket_name == $name ) {
+						$name         = trim( $name );
+						// Use normalized comparison to handle encoding differences
+						$name_normalized = trim( html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+						if ( $ticket_name == $name || $ticket_name == $name_normalized ) {
 							$price = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $post_id, $ticket_type );
+							break; // Found match, exit loop
 						}
 					}
 				}
-
 				return MPWEM_Global_Function::get_wc_raw_price( $price );
 			}
-
 			public static function get_ex_price_by_name( $ticket_name, $post_id, $ticket_types = [] ) {
 				$ticket_types = sizeof( $ticket_types ) > 0 ? $ticket_types : MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
 				$price        = 0;
@@ -160,10 +199,8 @@
 						}
 					}
 				}
-
 				return MPWEM_Global_Function::get_wc_raw_price( $price );
 			}
-
 			public static function get_min_price( $post_id ) {
 				$price        = 0;
 				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
@@ -175,20 +212,18 @@
 						$price        = $price > 0 ? min( $price, $ticket_price ) : $ticket_price;
 					}
 				}
-
 				return $price;
 			}
-
 			//==========================//
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : self::get_dates( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {
-					$all_times = $all_times && sizeof($all_times) ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates );
+					$all_times = $all_times && sizeof( $all_times ) ? $all_times : MPWEM_Functions::get_times( $event_id, $all_dates );
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date       = date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
+						$date = date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
 					} else {
-						$date       = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
+						$date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 					}
 					$start_time = '';
 					if ( sizeof( $all_times ) > 0 ) {
@@ -196,13 +231,10 @@
 						$start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
 					}
 					$date_time = $date . ' ' . $start_time;
-
 					return MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
-
 				return null;
 			}
-
 			public static function get_all_dates( $event_id ) {
 				$all_dates = [];
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
@@ -218,26 +250,25 @@
 						$all_dates[ $count ]['time'] = $start_date_time;
 						$all_dates[ $count ]['end']  = $end_date_time;
 					}
-					if ( $date_type == 'yes' ) {
-						$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
-						if ( sizeof( $more_dates ) > 0 ) {
-							foreach ( $more_dates as $more_date ) {
-								$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
-								$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
-								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
-								$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
-								$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
-								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
-								if ( $more_start_date_time && $more_end_date_time && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
-									$count ++;
-									$all_dates[ $count ]['time'] = $more_start_date_time;
-									$all_dates[ $count ]['end']  = $more_end_date_time;
-								}
+					// Process additional dates for both 'yes' (recurring) and 'no' (single event with multiple dates)
+					$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+					if ( sizeof( $more_dates ) > 0 ) {
+						foreach ( $more_dates as $more_date ) {
+							$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+							$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+							$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+							$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
+							$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
+							$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
+							if ( $more_start_date_time && $more_end_date_time && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
+								$count ++;
+								$all_dates[ $count ]['time'] = $more_start_date_time;
+								$all_dates[ $count ]['end']  = $more_end_date_time;
 							}
 						}
-						if ( sizeof( $all_dates ) ) {
-							usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
-						}
+					}
+					if ( sizeof( $all_dates ) ) {
+						usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 					}
 				} else {
 					$start_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
@@ -280,10 +311,8 @@
 						}
 					}
 				}
-
 				return $all_dates;
 			}
-
 			public static function get_all_times( $event_id, $date ) {
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$times     = [];
@@ -337,10 +366,8 @@
 						}
 					}
 				}
-
 				return $times;
 			}
-
 			public static function get_dates( $event_id ) {
 				$all_dates   = [];
 				$date_type   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
@@ -361,28 +388,27 @@
 						$all_dates[ $count ]['time'] = $start_date_time;
 						$all_dates[ $count ]['end']  = $end_date_time;
 					}
-					if ( $date_type == 'yes' ) {
-						$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
-						if ( sizeof( $more_dates ) > 0 ) {
-							foreach ( $more_dates as $more_date ) {
-								$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
-								$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
-								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
-								$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
-								$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
-								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
-								$expire_check         = $expire_on == 'event_start_datetime' ? $more_start_date_time : $more_end_date_time;
-								$expire_check         = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
-								if ( $more_start_date_time && $more_end_date_time && strtotime( $expire_check ) > $now && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
-									$count ++;
-									$all_dates[ $count ]['time'] = $more_start_date_time;
-									$all_dates[ $count ]['end']  = $more_end_date_time;
-								}
+					// Process additional dates for both 'yes' (recurring) and 'no' (single event with multiple dates)
+					$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+					if ( sizeof( $more_dates ) > 0 ) {
+						foreach ( $more_dates as $more_date ) {
+							$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+							$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+							$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+							$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
+							$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
+							$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
+							$expire_check         = $expire_on == 'event_start_datetime' ? $more_start_date_time : $more_end_date_time;
+							$expire_check         = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
+							if ( $more_start_date_time && $more_end_date_time && strtotime( $expire_check ) > $now && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
+								$count ++;
+								$all_dates[ $count ]['time'] = $more_start_date_time;
+								$all_dates[ $count ]['end']  = $more_end_date_time;
 							}
 						}
-						if ( sizeof( $all_dates ) ) {
-							usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
-						}
+					}
+					if ( sizeof( $all_dates ) ) {
+						usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 					}
 				} else {
 					$start_date = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
@@ -439,18 +465,17 @@
 							}
 						}
 					}
+					$all_dates  = array_unique( $all_dates );
 				}
-
 				return $all_dates;
 			}
-
 			public static function get_times( $event_id, $all_dates = [], $date = '' ) {
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : self::get_dates( $event_id );
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$times     = [];
 				if ( sizeof( $all_dates ) > 0 ) {
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date = $date ?: date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
+						$date = $date ?date( 'Y-m-d', strtotime( $date ) ): date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
 						foreach ( $all_dates as $dates ) {
 							$current_date = date( 'Y-m-d', strtotime( $dates['time'] ) );
 							if ( strtotime( $current_date ) == strtotime( $date ) ) {
@@ -462,7 +487,7 @@
 						}
 					} else {
 						$count       = 0;
-						$date        = $date ?: date( 'Y-m-d', strtotime( current( $all_dates ) ) );
+						$date        = $date ?date( 'Y-m-d', strtotime( $date ) ): date( 'Y-m-d', strtotime( current( $all_dates ) ) );
 						$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
 						$now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
 						if ( in_array( $date, $all_dates ) ) {
@@ -528,10 +553,8 @@
 						}
 					}
 				}
-
 				return $times;
 			}
-
 			//==========================//
 			public static function get_location( $event_id, $key = '' ) {
 				$address_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_org_address' );
@@ -571,7 +594,6 @@
 				if ( $country ) {
 					$address['country'] = $country;
 				}
-
 				return $key ? ( array_key_exists( $key, $address ) ? $address[ $key ] : '' ) : $address;
 			}
 

@@ -3,7 +3,7 @@
 		die;
 	}
 	$event_id           = $event_id ?? get_the_id();
-	$related_tours      = MPWEM_Global_Function::get_post_info( $event_id, 'related_event', array() );
+	$related_tours      = MPWEM_Global_Function::get_post_info( $event_id, 'event_list', array() );
 	$related_tour_count = sizeof( $related_tours );
    // echo '<pre>';print_r($related_tours);echo '</pre>';
 	$num_of_tour        = $num_of_tour ?? '';

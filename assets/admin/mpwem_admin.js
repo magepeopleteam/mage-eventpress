@@ -53,25 +53,14 @@ function mpwem_initWpEditor(id) {
         var nextValue = toggleValues[0];
         if (currentValue === toggleValues[0]) {
             nextValue = toggleValues[1];
-            if (checkbox.attr('name') === 'mep_show_advance_col_status') {
-                $(".mep_hide_on_load").slideUp(200);
-            }
+
             if (checkbox.attr('name') === 'mep_disable_ticket_time') {
                 $(".mep-special-datetime").slideUp(200);
             }
-            if (checkbox.attr('name') === 'mep_show_category') {
-                $(".mep_hide_on_load_cat").slideUp(200);
-            }
         } else {
             nextValue = toggleValues[0];
-            if (checkbox.attr('name') === 'mep_show_advance_col_status') {
-                $(".mep_hide_on_load").slideDown(200);
-            }
             if (checkbox.attr('name') === 'mep_disable_ticket_time') {
                 $(".mep-special-datetime").slideDown(200);
-            }
-            if (checkbox.attr('name') === 'mep_show_category') {
-                $(".mep_hide_on_load_cat").slideDown(200);
             }
         }
         checkbox.val(nextValue);
@@ -109,67 +98,28 @@ function mpwem_initWpEditor(id) {
             $(".mep_event_tab_location_content").show(200);
         }
     });
-    $(document).on('click', 'label.mp_event_ticket_type_des_switch input', function () {
-        if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
-            $(".mep_ticket_type_setting_sec").slideDown(200);
-        } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
-            $(".mep_ticket_type_setting_sec").slideUp(200);
-        }
-    });
+
     $(document).on('click', 'label.mep_enable_custom_dt_format input', function () {
         if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
             $(".mep_custom_timezone_setting").slideDown(200);
         } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
             $(".mep_custom_timezone_setting").slideUp(200);
         }
     });
     $(document).on('click', 'label.mp_event_ticket_type_advance_col_switch input', function () {
         if ($(this).is(":checked")) {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').slideDown(200);
             $(".mep_hide_on_load").slideDown(200);
         } else {
-            // $(this).parents('label.mp_event_ticket_type_des_switch').siblings('label.mep_ticket_type_setting_sec').val('').slideUp(200);
             $(".mep_hide_on_load").slideUp(200);
         }
     });
     $(document).ready(function () {
-        $('#add-row-t').on('click', function () {
-            var row = $('.empty-row-t.screen-reader-text').clone(true);
-            row.removeClass('empty-row-t screen-reader-text');
-            row.insertBefore('#repeatable-fieldset-one-t tbody>tr:last');
-            $('#mep_ticket_type_empty option[value=inputbox]').attr('selected', 'selected');
-            $('.empty-row-t #mep_ticket_type_empty option[value=inputbox]').removeAttr('selected');
-            //return false;
-        });
-        $('.remove-row-t').on('click', function () {
-            if (confirm('Are You Sure , Remove this row ? \n\n 1. Ok : To Remove . \n 2. Cancel : To Cancel .')) {
-                $(this).parents('tr').remove();
-                $('#mep_ticket_type_empty option[value=inputbox]').removeAttr('selected');
-                $('#mep_ticket_type_empty option[value=dropdown]').removeAttr('selected');
-            } else {
-                return false;
-            }
-        });
+
+
         $(document).find('.mp_event_type_sortable').sortable({
             handle: $(this).find('.mp_event_type_sortable_button')
         });
-        $('#add-row').on('click', function () {
-            var row = $('.empty-row.screen-reader-text').clone(true);
-            row.removeClass('empty-row screen-reader-text');
-            row.insertBefore('#repeatable-fieldset-one tbody>tr:last');
-            return false;
-        });
-        $('.remove-row').on('click', function () {
-            if (confirm('Are You Sure , Remove this row ? \n\n 1. Ok : To Remove . \n 2. Cancel : To Cancel .')) {
-                $(this).parents('tr').remove();
-            } else {
-                return false;
-            }
-        });
+
         $('#add-new-date-row').on('click', function () {
             var row = $('.empty-row-d.screen-reader-text').clone(true);
             row.removeClass('empty-row-d screen-reader-text');
@@ -184,9 +134,9 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-    $(document).on('keyup change', '.mp_ticket_type_table [name="option_name_t[]"]', function () {
+    $(document).on('keyup change', '.mpwem_ticket_pricing_settings [name="option_name_t[]"]', function () {
         let n = $(this).val();
-        $(this).val(n.replace(/[@%'":;&_]/g, ''));
+        $(this).val(n.replace(/[@%'":;&_–]/g, ''));
     });
     /**************************/
     /**************************/
@@ -195,7 +145,7 @@ function mpwem_initWpEditor(id) {
         let parent = $('#mp_event_all_info_in_tab');
         if (parent.length > 0 && parent.find('.data_required').length > 0) {
             parent.find('.data_required').each(function () {
-                if (!$(this).hasClass('screen-reader-text')) {
+                if ($(this).closest('.mpwem_hidden_content').length===0) {
                     $(this).find('[data-required]').each(function () {
                         if (!$(this).val()) {
                             let target_id = $(this).closest('.mp_tab_item').attr('data-tab-item');
@@ -567,10 +517,10 @@ function mpwem_load_sortable_datepicker(parent, item) {
             let attachment_id = attachment.id;
             let attachment_url = attachment.url;
             parent.find('input[type="hidden"]').val(attachment_id);
-            parent.find('.mp_icon_item').slideUp('fast');
+            parent.find('.mpwem_icon_item').slideUp('fast');
             parent.find('img').attr('src', attachment_url);
-            parent.find('.mp_image_item').slideDown('fast');
-            parent.find('.mpwem_add_icon_image_button_area').slideUp('fast');
+            parent.find('.mpwem_image_item').slideDown('fast');
+            parent.find('.add_icon_image_button_area').slideUp('fast');
         }
         wp.media.editor.open($this);
         return false;
@@ -579,8 +529,8 @@ function mpwem_load_sortable_datepicker(parent, item) {
         let parent = $(this).closest('.mpwem_add_icon_image_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('img').attr('src', '');
-        parent.find('.mp_image_item').slideUp('fast');
-        parent.find('.mpwem_add_icon_image_button_area').slideDown('fast');
+        parent.find('.mpwem_image_item').slideUp('fast');
+        parent.find('.add_icon_image_button_area').slideDown('fast');
     });
     $(document).on('click', '.mpwem_add_icon_image_area button.mpwem_icon_add', function () {
         let target_popup = $('.mpwem_add_icon_popup');
@@ -589,9 +539,9 @@ function mpwem_load_sortable_datepicker(parent, item) {
             let icon_class = $(this).data('icon-class');
             if (icon_class) {
                 parent.find('input[type="hidden"]').val(icon_class);
-                parent.find('.mpwem_add_icon_image_button_area').slideUp('fast');
-                parent.find('.mp_image_item').slideUp('fast');
-                parent.find('.mp_icon_item').slideDown('fast');
+                parent.find('.add_icon_image_button_area').slideUp('fast');
+                parent.find('.mpwem_image_item').slideUp('fast');
+                parent.find('.mpwem_icon_item').slideDown('fast');
                 parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class);
                 target_popup.find('.iconItem').removeClass('active');
                 target_popup.find('.popupClose').trigger('click');
@@ -627,8 +577,8 @@ function mpwem_load_sortable_datepicker(parent, item) {
         let parent = $(this).closest('.mpwem_add_icon_image_area');
         parent.find('input[type="hidden"]').val('');
         parent.find('[data-add-icon]').removeAttr('class');
-        parent.find('.mp_icon_item').slideUp('fast');
-        parent.find('.mpwem_add_icon_image_button_area').slideDown('fast');
+        parent.find('.mpwem_icon_item').slideUp('fast');
+        parent.find('.add_icon_image_button_area').slideDown('fast');
     });
     $(document).on('keyup change', '.mpwem_add_icon_popup [name="mpwem_select_icon_name"]', function () {
         let parent = $(this).closest('.mpwem_add_icon_popup');
@@ -730,20 +680,42 @@ function mpwem_load_sortable_datepicker(parent, item) {
         return false;
     });
 }(jQuery));
-//=========Attendee Statistics==============//
-(function ($) {
-    "use strict";
-    $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_post_id"]', function () {
-        let post_id = $(this).val();
-        let parent = $(this).closest('#mpwem_recurring_statistics');
-        let target = parent.find('.date_time_area');
-        if (post_id > 0) {
+//=======================//
+function mpwem_load_post_date(parent){
+    let post_id = parent.find('[name="mpwem_post_id"]').val();
+    let target = parent.find('.date_time_area');
+    if (post_id > 0) {
+        jQuery.ajax({
+            type: 'POST',
+            url: mpwem_admin_var.url,
+            data: {
+                "action": "mpwem_load_date",
+                "post_id": post_id,
+                "nonce": mpwem_admin_var.nonce
+            },
+            beforeSend: function () {
+                dLoader_xs(target);
+            },
+            success: function (data) {
+                target.html(data);
+                dLoaderRemove(target);
+            }
+        });
+    }
+}
+function mpwem_load_past_date_time(parent){
+    let target = parent.find('.mpwem_time_area');
+    if (target.length > 0) {
+        let post_id = parent.find('[name="mpwem_post_id"]').val();
+        let dates = parent.find('[name="mpwem_date_time"]').val();
+        if (post_id > 0 && dates) {
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_admin_var.url,
                 data: {
-                    "action": "mpwem_load_date",
+                    "action": "mpwem_load_time",
                     "post_id": post_id,
+                    "dates": dates,
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
@@ -754,37 +726,26 @@ function mpwem_load_sortable_datepicker(parent, item) {
                     dLoaderRemove(target);
                 }
             });
+        }
+    }
+}
+//=========Attendee Statistics==============//
+(function ($) {
+    "use strict";
+    $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_post_id"]', function () {
+        let post_id = $(this).val();
+        let parent = $(this).closest('#mpwem_recurring_statistics');
+        if (post_id > 0) {
+            mpwem_load_post_date(parent);
         } else {
             parent.find('.statistics_list').slideUp('fast');
         }
     });
     $(document).on('change', '#mpwem_recurring_statistics [name="mpwem_date_time"]', function () {
         let parent = $(this).closest('#mpwem_recurring_statistics');
-        const target = parent.find('.mpwem_time_area');
+        let target = parent.find('.mpwem_time_area');
         if (target.length > 0) {
-            const post_id = parent.find('[name="mpwem_post_id"]').val();
-            const dates = parent.find('[name="mpwem_date_time"]').val();
-            if (post_id > 0 && dates) {
-                jQuery.ajax({
-                    type: 'POST',
-                    url: mpwem_admin_var.url,
-                    data: {
-                        "action": "mpwem_load_time",
-                        "post_id": post_id,
-                        "dates": dates,
-                        "nonce": mpwem_admin_var.nonce
-                    },
-                    beforeSend: function () {
-                        dLoader_xs(target);
-                    },
-                    success: function (data) {
-                        target.html(data);
-                        dLoaderRemove(target);
-                    }
-                });
-            } else {
-                parent.find('.statistics_list').slideUp('fast');
-            }
+            mpwem_load_past_date_time(parent);
         } else {
             parent.find('#mpwem_load_attendee_statistics').trigger('click');
         }

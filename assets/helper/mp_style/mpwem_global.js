@@ -107,6 +107,9 @@ function mpwem_alert($this, attr = 'alert') {
     "use strict";
     $(document).ready(function () {
         mpwem_load_date_picker();
+        $("div.mpwem_style .date_type").on("keydown", function(e) {
+            e.preventDefault();
+        });
     });
 }(jQuery));
 //====================================================================Load Bg Image=================//
@@ -207,7 +210,12 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     $(document).on('click', 'div.mpwem_style [data-href]', function () {
         let href = $(this).data('href');
         if (href) {
-            window.location.href = href;
+            let blank=$(this).data('blank');
+            if(blank){
+                window.open(href, '_blank');
+            }else {
+                window.location.href = href;
+            }
         }
     });
     $(window).on('load , resize', function () {
@@ -325,46 +333,6 @@ function mpwem_all_content_change($this) {
         $("[data-same-input='" + input_id + "']").each(function () {
             $(this).val(input_value);
         });
-    });
-}(jQuery));
-//==============================================================================Qty inc dec================//
-(function ($) {
-    "use strict";
-    $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
-        let current = $(this);
-        let target = current.closest('.qtyIncDec').find('input');
-        let currentValue = parseInt(target.val()) || 0;
-        // Get attribute values with proper fallbacks
-        let min = parseInt(target.attr('min')) || 0;
-        let max = parseInt(target.attr('max')) || Infinity;
-        let minQty = parseInt(target.attr('data-min-qty')) || min; // Default to min if not specified
-        // Calculate new value based on button click
-        let newValue = currentValue;
-        if (current.hasClass('incQty')) {
-            newValue = currentValue + 1;
-        } else if (current.hasClass('decQty')) {
-            newValue = currentValue - 1;
-        }
-        // Apply constraints in the correct order
-        // 1. First respect data-min-qty (if it exists)
-        if (minQty > min) {
-            newValue = Math.max(newValue, minQty);
-        } else {
-            // 2. Otherwise use regular min constraint
-            newValue = Math.max(newValue, min);
-        }
-        // 3. Apply max constraint
-        newValue = Math.min(newValue, max);
-        // Update button states
-        target.parents('.qtyIncDec').find('.incQty, .decQty').removeClass('mpDisabled');
-        if (newValue >= max) {
-            target.parents('.qtyIncDec').find('.incQty').addClass('mpDisabled');
-        }
-        if (newValue <= minQty) {
-            target.parents('.qtyIncDec').find('.decQty').addClass('mpDisabled');
-        }
-        // Set the final value
-        target.val(newValue).trigger('change').trigger('input');
     });
 }(jQuery));
 //==============================================================================Input use as select================//

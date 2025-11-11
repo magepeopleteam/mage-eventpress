@@ -49,19 +49,17 @@
      data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $upcoming_date ) ) ); ?>"
 >
 	<?php do_action( 'mep_event_minimal_list_loop_header', $event_id ); ?>
-    <div class="mep_list_thumb">
-        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-            <div class="mep_bg_thumb" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'thumbnail' ) ); ?>"></div>
-        </a>
+    <div class="mep_list_thumb mpwem_style">
+        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'thumbnail' ) ); ?>"></div>
     </div>
     <div class="mep_list_event_details">
         <a href="<?php the_permalink(); ?>">
             <div class="mep-list-header">
-                <h2 class='mep_list_title'><?php the_title(); ?></h2>
+                <p class='mep_list_title'><?php the_title(); ?></p>
 				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>
-                <h3 class='mep_list_date'>
+                <p class='mep_list_date'>
 					<?php do_action( 'mep_event_list_date_li', $event_id, 'minimal' ); ?>
                     <span class='mep_minimal_list_location'>
                         <i class='<?php echo esc_attr( $event_location_icon ); ?>'></i>
@@ -73,7 +71,7 @@
                        <?php echo esc_html( $author_terms[0]->name ); ?>
                     </span>
 					<?php } ?>
-                </h3>
+					</p>
         </a>
 		<?php do_action( 'mep_event_list_loop_footer', $event_id ); ?>
     </div>

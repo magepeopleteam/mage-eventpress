@@ -9,20 +9,8 @@
 				add_action( 'woocommerce_process_product_meta', [ $this, 'woocom_linked_products_data_custom_field_save' ] );
 				add_action( 'woocommerce_after_single_product', [ $this, 'related_single_products' ] );
 				add_action( 'after-single-events', [ $this, 'related_events' ] );
-				add_action( 'mep_admin_event_details_before_tab_name_rich_text', [ $this, 'event_related_tab' ] );
-				add_action( 'mp_event_all_in_tab_item', [ $this, 'event_related_content' ] );
+				add_action( 'mpwem_event_tab_setting_item', [ $this, 'event_related_content' ] );
 			}
-
-			public function event_related_tab() {
-				?>
-
-					<li data-target-tabs="#mep_related_event_meta">
-						<i class="mi mi-plug-connection"></i><?php esc_html_e('Related Events', 'mage-eventpress'); ?>
-					</li>
-
-				<?php
-			}
-
 			public function event_related_content( $post_id ) {
 				global $woocommerce, $post;
 				$args             = array(
@@ -52,8 +40,8 @@
                     <section>
                         <div class="mpev-label">
                             <div>
-                                <h2><span><?php esc_html_e( 'Show Related Events', 'mage-eventpress' ); ?></span></h2>
-                                <span><?php esc_html_e( 'Show/hide releated events in frontend template', 'mage-eventpress' ); ?></span>
+                                <h2><?php esc_html_e( 'Show Related Events', 'mage-eventpress' ); ?></h2>
+                                <span class="label-text"><?php esc_html_e( 'Show/hide releated events in frontend template', 'mage-eventpress' ); ?></span>
                             </div>
                             <label class="mpev-switch">
                                 <input type="checkbox" name="mep_related_event_status" value="<?php echo esc_attr( $related_event_status ); ?>" <?php echo esc_attr( $related_event_status == 'on' ? 'checked' : '' ); ?> data-collapse-target="#mpev-related-event-display" data-toggle-values="on,off">
@@ -65,8 +53,8 @@
                         <section>
                             <label class="mpev-label">
                                 <div>
-                                    <h2><span><?php esc_html_e( 'Related Events Section Label', 'mage-eventpress' ); ?></span></h2>
-                                    <span><?php esc_html_e( 'Add a title above the releated events', 'mage-eventpress' ); ?></span>
+                                    <h2><?php esc_html_e( 'Related Events Section Label', 'mage-eventpress' ); ?></h2>
+                                    <span class="label-text"><?php esc_html_e( 'Add a title above the releated events', 'mage-eventpress' ); ?></span>
                                 </div>
                                 <input type="text" max="4" min="2" name="related_section_label" class="related_section_label"
                                        id="related_section_label" value="<?php echo $section_label; ?>" placeholder="Label text">
@@ -75,8 +63,8 @@
                         <section>
                             <label class="mpev-label">
                                 <div>
-                                    <h2><span><?php esc_html_e( 'Event List', 'mage-eventpress' ); ?></span></h2>
-                                    <span><?php esc_html_e( 'Event List', 'mage-eventpress' ); ?></span>
+                                    <h2><?php esc_html_e( 'Event List', 'mage-eventpress' ); ?></h2>
+                                    <span class="label-text"><?php esc_html_e( 'Event List', 'mage-eventpress' ); ?></span>
                                 </div>
                                 <div>
                                     <select class="chosen-select" multiple="multiple" id="upsizing_products"
@@ -186,7 +174,7 @@
 											?>
                                             <div class="item">
                                                 <a href="<?php echo get_the_permalink( $values ); ?>">
-                                                    <img src="<?php echo get_the_post_thumbnail_url(); ?>" alt="">
+                                                    <img src="<?php echo MPWEM_Global_Function::get_image_url($values);?>" alt="">
 													<?php if ( isset( $event_meta['mep_event_start_date'][0] ) ): ?>
                                                         <div class="mep-ev-start-date">
                                                             <div class="mep-day"><?php echo date_i18n( 'd', strtotime( $event_meta['mep_event_start_date'][0] ) ); ?></div>
@@ -326,7 +314,7 @@
                                         <div class="mep_list_event_details"><a
                                                 href="<?php echo get_the_permalink( $values ); ?>">
                                                 <div class="mep-list-header">
-                                                    <h2 class='mep_list_title'><?php echo get_the_title( $values ); ?></h2>
+                                                    <p class='mep_list_title'><?php echo get_the_title( $values ); ?></p>
 													<?php if ( $available_seat == 0 ) {
 														do_action( 'mep_show_waitlist_label' );
 													} ?>

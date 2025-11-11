@@ -979,6 +979,29 @@
 			mep_temp_attendee_delete_for_cart( $event_id, $ticket['ticket_name'], $ticket['ticket_qty'], $ticket['event_date'] );
 		}
 	}
+	function mep_update_ticket_type_stat($event_id,$ticket_name,$date){
+			$date                = date( 'Y-m-d H:i', strtotime( $date) );
+			$_date               = date( 'YmdHi', strtotime( $date ) );
+			$name 				 = $ticket_name;
+			$total_quantity      = (int) mep_get_ticket_type_info_by_name( $name, $event_id );
+			$total_resv_quantity = (int) mep_get_ticket_type_info_by_name( $name, $event_id, 'option_rsv_t' );
+			$total_sold_type     = (int) mep_ticket_type_sold( $event_id, $name, $date );
+			$seat_left_date      = mep_get_count_total_available_seat( $event_id, $date );
+			$ticket_type_left      = (int) $total_sold_type;
+			$ticket_type_meta_name = $name . '_' . $_date;
+			$event_name            = $event_id . '_' . $_date;
+			update_post_meta( $event_id, $ticket_type_meta_name, $ticket_type_left );
+	}
+
+	add_action('mep_ticket_type_loop_list_row_start','mep_ticket_type_update_stat',10,3);
+	function mep_ticket_type_update_stat($event_id, $date, $ticket_type){
+		$ea_attendee_sync = get_post_meta( $event_id, 'ea_attendee_sync', true ) ? get_post_meta( $event_id, 'ea_attendee_sync', true ) : 'no';
+		if($ea_attendee_sync == 'no'){
+ 			mep_update_ticket_type_stat($event_id,$ticket_type['option_name_t'],$date);
+		}
+	}
+
+
 	function mep_get_ticket_type_info_by_name( $name, $event_id, $type = 'option_qty_t' ) {
 		$ticket_type_arr = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : [];
 		$p               = '';
@@ -988,7 +1011,6 @@
 				$p = array_key_exists( $type, $price ) ? $price[ $type ] : '';
 			}
 		}
-
 		return $p;
 	}
 	add_action( 'restrict_manage_posts', 'mep_filter_post_type_by_taxonomy' );
@@ -1131,22 +1153,11 @@
 	}
 	if ( ! function_exists( 'mep_template_file_path' ) ) {
 		function mep_template_file_path( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
+			$template_path = get_stylesheet_directory() . '/mage-event/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
 			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
 			$themedir      = $thedir . $file_name;
-			$the_file_path = locate_template( array( 'mage-events/' . $file_name ) ) ? $themedir : $default_path . $file_name;
-
-			return $the_file_path;
-		}
-	}
-	if ( ! function_exists( 'mep_template_file_url' ) ) {
-		function mep_template_file_url( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
-			$default_path  = MEP_URL . 'templates/';
-			$thedir        = is_dir( $template_path ) ? $template_path : $default_path;
-			$themedir      = $thedir . $file_name;
-			$the_file_path = locate_template( array( 'mage-events/' . $file_name ) ) ? $themedir : $default_path . $file_name;
+			$the_file_path = locate_template( array( 'mage-event/' . $file_name ) ) ? $themedir : $default_path . $file_name;
 
 			return $the_file_path;
 		}
@@ -1161,69 +1172,10 @@
 			return $newformat;
 		}
 	}
-	if ( ! function_exists( 'mep_add_to_google_calender_link' ) ) {
-		function mep_add_to_google_calender_link( $pid ) {
-			$event       = get_post( $pid );
-			$event_meta  = get_post_custom( $pid );
-			$start_date  = ! empty( get_post_meta( $pid, 'event_start_date', true ) ) ? esc_html( get_post_meta( $pid, 'event_start_date', true ) ) : "";
-			$start_time  = ! empty( get_post_meta( $pid, 'event_start_time', true ) ) ? esc_html( get_post_meta( $pid, 'event_start_time', true ) ) : "";
-			$end_date    = ! empty( get_post_meta( $pid, 'event_end_date', true ) ) ? esc_html( get_post_meta( $pid, 'event_end_date', true ) ) : "";
-			$end_time    = ! empty( get_post_meta( $pid, 'event_end_time', true ) ) ? esc_html( get_post_meta( $pid, 'event_end_time', true ) ) : "";
-			$venue       = ! empty( get_post_meta( $pid, 'mep_location_venue', true ) ) ? esc_html( get_post_meta( $pid, 'mep_location_venue', true ) ) : "";
-			$street      = ! empty( get_post_meta( $pid, 'mep_street', true ) ) ? esc_html( get_post_meta( $pid, 'mep_street', true ) ) : "";
-			$city        = ! empty( get_post_meta( $pid, 'mep_city', true ) ) ? esc_html( get_post_meta( $pid, 'mep_city', true ) ) : "";
-			$state       = ! empty( get_post_meta( $pid, 'mep_state', true ) ) ? esc_html( get_post_meta( $pid, 'mep_state', true ) ) : "";
-			$postcode    = ! empty( get_post_meta( $pid, 'mep_postcode', true ) ) ? esc_html( get_post_meta( $pid, 'mep_postcode', true ) ) : "";
-			$country     = ! empty( get_post_meta( $pid, 'mep_country', true ) ) ? esc_html( get_post_meta( $pid, 'mep_country', true ) ) : "";
-			$event_start = $start_date . ' ' . $start_time;
-			$event_end   = $end_date . ' ' . $end_time;
-			$location    = $venue . " " . $street . " " . $city . " " . $state . " " . $postcode . " " . $country;
-			ob_start();
-			require( mep_template_file_path( 'single/add_calendar.php' ) );
-			?>
-            <script type="text/javascript">
-                jQuery(document).ready(function () {
-                    jQuery("#mep_add_calender_button").click(function () {
-                        jQuery("#mep_add_calender_links").toggle()
-                    });
-                });
-            </script>
-            <style type="text/css">
-				#mep_add_calender_links { display: none;
-					background: transparent;
-					margin-top: -7px;
-					list-style: navajowhite;
-					margin: 0;
-					padding: 0;}
-				/*  #mep_add_calender_links li{list-style: none !important; line-height: 0.2px; border:1px solid #d5d5d5; border-radius: 10px; margin-bottom: 5px;}
-    #mep_add_calender_links a{background: none !important; color: #333 !important; line-height: 0.5px !important; padding:10px; margin-bottom: 3px;}
-    #mep_add_calender_links a:hover{color:#ffbe30;}*/
-				#mep_add_calender_button {
-					/*background: #ffbe30 none repeat scroll 0 0;*/
-					border: 0 none;
-					border-radius: 50px;
-					/*color: #ffffff !important;*/
-					display: inline-flex;
-					font-size: 14px;
-					font-weight: 600;
-					overflow: hidden;
-					padding: 15px 35px;
-					position: relative;
-					text-align: center;
-					text-transform: uppercase;
-					z-index: 1;
-					cursor: pointer;
-				}
-				.mep-default-sidrbar-social .mep-event-meta {text-align: center;}
-            </style>
-			<?php
-			return ob_get_clean();
-		}
-	}
 	if ( ! function_exists( 'mep_event_template_name' ) ) {
 		function mep_event_template_name() {
 			$template_name = 'index.php';
-			$template_path = get_stylesheet_directory() . '/mage-events/themes/';
+			$template_path = get_stylesheet_directory() . '/mage-event/themes/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/themes/';
 			$template      = locate_template( array( $template_path . $template_name ) );
 			if ( ! $template ) :
@@ -1482,7 +1434,7 @@
 	}
 	if ( ! function_exists( 'mep_template_file_validate' ) ) {
 		function mep_template_file_validate( $file_name ) {
-			$template_path = get_stylesheet_directory() . '/mage-events/';
+			$template_path = get_stylesheet_directory() . '/mage-event/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
 			// Check theme directory first
 			$_themedir = $template_path . "themes/" . $file_name;
@@ -2289,10 +2241,16 @@
 		function mep_get_ticket_type_price_by_name( $name, $event_id ) {
 			$ticket_type_arr = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : [];
 			$p               = '';
+			// Decode and normalize the input name to handle special characters
+			$normalized_name = trim( html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+			$normalized_name = str_replace( "'", "", $normalized_name );
 			foreach ( $ticket_type_arr as $price ) {
 				$TicketName = str_replace( "'", "", $price['option_name_t'] );
-				if ( $TicketName === $name ) {
+				// Use normalized comparison to handle encoding differences
+				$TicketName_normalized = trim( html_entity_decode( urldecode( $TicketName ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+				if ( $TicketName_normalized === $normalized_name || $TicketName === $normalized_name ) {
 					$p = array_key_exists( 'option_price_t', $price ) ? esc_html( $price['option_price_t'] ) : 0;
+					break; // Found match, exit loop
 				}
 			}
 
@@ -2313,7 +2271,15 @@
 		function mep_get_orginal_ticket_name( $names ) {
 			$name = [];
 			foreach ( $names as $_names ) {
-				$name[] = explode( '_', $_names )[0];
+				// Decode HTML entities and URL encoding to handle special characters properly
+				$decoded_name = html_entity_decode( urldecode( $_names ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				// Only split by underscore if it's a compound key (e.g., "name_123"), otherwise use the full name
+				// Check if the name contains an underscore followed by digits (likely an index suffix)
+				if ( preg_match( '/^(.+)_\d+$/', $decoded_name, $matches ) ) {
+					$name[] = $matches[1];
+				} else {
+					$name[] = $decoded_name;
+				}
 			}
 
 			return $name;
@@ -2325,21 +2291,30 @@
 			$names                = isset( $_POST['option_name'] ) ? mage_array_strip( $_POST['option_name'] ) : array();
 			$qty                  = isset( $_POST['option_qty'] ) ? mage_array_strip( $_POST['option_qty'] ) : array();
 			$max_qty              = isset( $_POST['max_qty'] ) ? mage_array_strip( $_POST['max_qty'] ) : array();
-			$price                = mep_get_ticket_type_price_arr( mep_get_orginal_ticket_name( $names ), $product_id );
-			$count                = count( $names );
+			
+			// Decode HTML entities and URL encoding in names to handle special characters
+			$decoded_names = array();
+			foreach ( $names as $key => $name ) {
+				$decoded_names[ $key ] = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			}
+			
+			$price                = mep_get_ticket_type_price_arr( mep_get_orginal_ticket_name( $decoded_names ), $product_id );
+			$count                = count( $decoded_names );
 			$ticket_type_arr      = [];
 			$vald                 = 0;
-			if ( sizeof( $names ) > 0 ) {
+			if ( sizeof( $decoded_names ) > 0 ) {
 				for ( $i = 0; $i < $count; $i ++ ) {
-					if ( $qty[ $i ] > 0 ) {
-						$ticket_type_arr[ $i ]['ticket_name']    = ! empty( $names[ $i ] ) ? stripslashes( strip_tags( $names[ $i ] ) ) : '';
+					// Ensure we have valid quantity - handle cases where qty might be empty or invalid
+					$current_qty = isset( $qty[ $i ] ) ? (int) $qty[ $i ] : 0;
+					if ( $current_qty > 0 ) {
+						$ticket_type_arr[ $i ]['ticket_name']    = ! empty( $decoded_names[ $i ] ) ? stripslashes( strip_tags( $decoded_names[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['ticket_price']   = ! empty( $price[ $i ] ) ? stripslashes( strip_tags( $price[ $i ] ) ) : '';
-						$ticket_type_arr[ $i ]['ticket_qty']     = ! empty( $qty[ $i ] ) ? stripslashes( strip_tags( $qty[ $i ] ) ) : '';
+						$ticket_type_arr[ $i ]['ticket_qty']     = $current_qty;
 						$ticket_type_arr[ $i ]['max_qty']        = ! empty( $max_qty[ $i ] ) ? stripslashes( strip_tags( $max_qty[ $i ] ) ) : '';
 						$ticket_type_arr[ $i ]['event_date']     = current( $mep_event_start_date );
-						$opttprice                               = ( (float) $price[ $i ] * (float) $qty[ $i ] );
+						$opttprice                               = ( (float) $price[ $i ] * (float) $current_qty );
 						$total_price                             = ( (float) $total_price + (float) $opttprice );
-						$validate[ $i ]['validation_ticket_qty'] = $vald + stripslashes( strip_tags( $qty[ $i ] ) );
+						$validate[ $i ]['validation_ticket_qty'] = $vald + $current_qty;
 						$validate[ $i ]['event_id']              = stripslashes( strip_tags( $product_id ) );
 					}
 				}
@@ -2364,16 +2339,6 @@
 			}
 
 			return $p;
-		}
-	}
-	if ( ! function_exists( 'mep_get_extra_price_arr' ) ) {
-		function mep_get_extra_price_arr( $ticket_type, $event_id ) {
-			$price = [];
-			foreach ( $ticket_type as $ticket ) {
-				$price[] = mep_get_event_extra_price_by_name( $ticket, $event_id );
-			}
-
-			return $price;
 		}
 	}
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {
@@ -3482,11 +3447,7 @@
 			return 1;
 		}
 	}
-	add_action( 'mep_before_add_cart_button', 'mep_add_cart_btn_icon' );
-	function mep_add_cart_btn_icon( $event_id ) {
-		$button = apply_filters( 'mep_cart_icon', "<i class='fa fa-shopping-cart'></i>", $event_id );
-		echo '<span class="mep-cart-btn-icon">' . $button . '</span>';
-	}
+
 	add_action( 'admin_menu', 'mep_remove_cpt_list_page' );
 	function mep_remove_cpt_list_page() {
 		$user_choose_list_style = mep_get_option( 'mep_event_list_page_style', 'general_setting_sec', 'new' );

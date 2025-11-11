@@ -9,7 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Venue_Settings' ) ) {
 		class MPWEM_Venue_Settings {
 			public function __construct() {
-				add_action( 'mp_event_all_in_tab_item', array( $this, 'venue_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'venue_settings' ) );
 				add_action( 'save_post', array( $this, 'save_venue_coordinates' ), 1 );
 			}
 
@@ -54,7 +54,7 @@
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( " Location Source:", "mage-eventpress" ); ?></h2>
-                                <span><?php esc_html_e( 'If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress' ); ?></span>
+                                <span class="label-text"><?php esc_html_e( 'If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
 								<?php foreach ( $organizer as $key => $value ): ?>
@@ -115,7 +115,7 @@
                         <div class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Show Google Map', 'mage-eventpress' ); ?></h2>
-                                <span><?php esc_html_e( 'Show an interactive Google Map on your website, letting users easily explore and find locations.', 'mage-eventpress' ); ?></span>
+                                <span class="label-text"><?php esc_html_e( 'Show an interactive Google Map on your website, letting users easily explore and find locations.', 'mage-eventpress' ); ?></span>
                             </div>
                             <label class="mpev-switch">
                                 <input type="checkbox" name="mep_sgm" value="<?php echo esc_attr( $map_visible ); ?>" <?php echo esc_attr( ( $map_visible == 1 ) ? 'checked' : '' ); ?> data-collapse-target="#mpev-show-map" data-close-target="#mpev-close-map" data-toggle-values="1,0">
@@ -424,9 +424,9 @@
                 <section>
                     <div class="mpev-label">
                         <div>
-                            <h2><span><?php esc_html_e( 'Online/Virtual ', 'mage-eventpress' );
+                            <h2><?php esc_html_e( 'Online/Virtual ', 'mage-eventpress' );
 										echo esc_html( $event_label . '?' ); ?> (No/Yes)</span></h2>
-                            <span><?php _e( 'If your event is online or virtual, please ensure that this option is enabled.', 'mage-eventpress' ); ?></span>
+                            <span class="label-text"><?php _e( 'If your event is online or virtual, please ensure that this option is enabled.', 'mage-eventpress' ); ?>
                         </div>
                         <label class="mpev-switch">
                             <input type="checkbox" name="mep_event_type" value="<?php echo esc_attr( $checked ); ?>" <?php echo esc_attr( ( $checked == 'online' ) ? 'checked' : '' ); ?> data-collapse-target="#mpev-online-event" data-close-target="#mpev-close-online-event" data-toggle-values="online,offline">
@@ -436,7 +436,14 @@
                 </section>
 				<?php do_action( 'mep_event_details_before_virtual_event_info_text_box', $post_id ); ?>
                 <section class="mp_event_virtual_type_des" id='mpev-online-event' style="display:<?php echo ( $event_type == 'online' ) ? esc_attr( 'block' ) : esc_attr( 'none' ); ?>">
-                    <p><?php esc_html_e( 'Please enter your virtual event joining details in the form below. This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress' ) ?></p>
+                    <div class="mpev-label">
+                        <div>
+                            <h2>
+                                <?php esc_html_e( 'Virtual event details', 'mage-eventpress' ) ?>
+                            </h2>
+                            <span class="label-text"><?php esc_html_e( 'This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress' ) ?></span>
+                        </div>
+                    </div>
                     <br>
 					<?php wp_editor( html_entity_decode( nl2br( $description ) ), 'mp_event_virtual_type_des' ); ?>
                 </section>

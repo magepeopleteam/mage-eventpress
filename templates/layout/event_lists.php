@@ -378,7 +378,7 @@ function render_mep_events_by_status( $posts ) {
 
                     <td>
                         <div class="location">
-                            📍 <?php echo esc_attr( $location );?>
+                            <i class="mi mi-marker"></i> <?php echo esc_attr( $location );?>
                         </div>
                     </td>
                     <td>
@@ -427,10 +427,10 @@ function render_mep_events_by_status( $posts ) {
                     <td>
                         <div class="actions">
                         <?php do_action('mep_before_dashboard_event_list',$id); ?>
-                            <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event"><span class="dashicons dashicons-visibility"></span></button></a>
-                            <a href="#"><button class="action-btn quick-edit" title="Quick Edit" data-event-id="<?php echo esc_attr($id); ?>"><span class="dashicons dashicons-edit-page"></span></button></a>
-                            <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event"><span class="dashicons dashicons-edit"></span></button></a>
-                            <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event"><span class="dashicons dashicons-trash"></span></button></a>
+                            <a href="<?php echo esc_url( $view_link );?>"><button class="action-btn view" title="View Event"><span class="mi mi-eye"></span></button></a>
+                            <a href="#"><button class="action-btn quick-edit" title="Quick Edit" data-event-id="<?php echo esc_attr($id); ?>"><span class="mi mi-file-edit"></span></button></a>
+                            <a href="<?php echo esc_url( $edit_link );?>"><button class="action-btn edit" title="Edit Event"><span class="mi mi-pencil"></span></button></a>
+                            <a href="<?php echo esc_url( $delete_link );?>"><button class="action-btn delete" title="Delete Event"><span class="mi mi-trash"></span></button></a>
                             <?php do_action('mep_after_dashboard_event_list',$id); ?>
                         </div>
                     </td>

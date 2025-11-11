@@ -28,26 +28,26 @@
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                     <div class="mp_tab_menu">
                         <ul>
-                            <li data-target-tabs="#mp_event_venue"><i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Venue/Location', 'mage-eventpress' ); ?> </li>
-                            <li data-target-tabs="#mpwem_ticket_pricing_settings"><i class="fas fa-file-invoice-dollar"></i><?php esc_html_e( 'Ticket & Pricing', 'mage-eventpress' ); ?> </li>
-                            <li data-target-tabs="#mpwem_date_settings"><i class="far fa-calendar-alt"></i><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?> </li>
-                            <li data-target-tabs="#mpwem_event_settings"><i class="fas fa-cogs"></i><?php esc_html_e( 'Settings', 'mage-eventpress' ); ?></li>
-                            <li data-target-tabs="#mep_event_faq_meta"><i class="far fa-question-circle"></i><?php esc_html_e( 'F.A.Q', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mp_event_venue"><i class="mi mi-marker"></i><?php esc_html_e( 'Venue/Location', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_ticket_pricing_settings"><i class="mi mi-coins"></i><?php esc_html_e( 'Ticket & Pricing', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_date_settings"><i class="mi mi-calendar-clock"></i><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_event_settings"><i class="mi mi-settings"></i><?php esc_html_e( 'Settings', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_event_faq_meta"><i class="mi mi-messages-question"></i><?php esc_html_e( 'F.A.Q', 'mage-eventpress' ); ?></li>
 							<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
-                                <li data-target-tabs="#mp_event_tax_settings"><i class="fas fa-hand-holding-usd"></i><?php esc_html_e( 'Tax', 'mage-eventpress' ); ?></li>
+                                <li data-target-tabs="#mp_event_tax_settings"><i class="mi mi-calendar-event-tax"></i><?php esc_html_e( 'Tax', 'mage-eventpress' ); ?></li>
 							<?php } ?>
-                            <li data-target-tabs="#mp_event_rich_text"><i class="fas fa-search-location"></i><?php esc_html_e( 'SEO Content', 'mage-eventpress' ); ?>  </li>
-                            <li data-target-tabs="#mpwem_email_text_settings"><i class="far fa-envelope-open"></i><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></li>
-                            <li data-target-tabs="#mep_event_template"><i class="fas fa-pager"></i><?php esc_html_e( 'Template', 'mage-eventpress' ); ?></li>
-                            <li data-target-tabs="#mep_related_event_meta"><i class="fas fa-plug"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mp_event_rich_text"><i class="mi mi-analyse"></i><?php esc_html_e( 'SEO Content', 'mage-eventpress' ); ?>  </li>
+                            <li data-target-tabs="#mpwem_email_text_settings"><i class="mi mi-envelope-open-text"></i><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_event_template"><i class="mi mi-table-layout"></i><?php esc_html_e( 'Template', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_related_event_meta"><i class="mi mi-plug-connection"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?></li>
 	                        <?php if ( $speaker_status == 'yes' ) { ?>
-                                <li data-target-tabs="#mpwem_speaker_settings"><i class="fas fa-user-tie"></i><?php esc_html_e( 'Speaker Information', 'mage-eventpress' ); ?></li>
+                                <li data-target-tabs="#mpwem_speaker_settings"><i class="mi mi-microphone"></i><?php esc_html_e( 'Speaker Information', 'mage-eventpress' ); ?></li>
 	                        <?php } ?>
 							<?php do_action( 'mep_admin_event_details_before_tab_name_rich_text', $post_id ); ?>
-                            <li data-target-tabs="#mep_event_timeline_meta"><i class="far fa-newspaper"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mep_event_timeline_meta"><i class="mi mi-list-timeline"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?> </li>
 							<?php do_action( 'mp_event_all_in_tab_menu' ); ?>
 							<?php do_action( 'mep_admin_event_details_end_of_tab_name', $post_id ); ?>
-                            <li data-target-tabs="#ttbm_settings_gallery"><i class="fas fa-images"></i><?php esc_html_e( 'Gallery ', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#ttbm_settings_gallery"><i class="mi mi-gallery"></i><?php esc_html_e( 'Gallery ', 'mage-eventpress' ); ?></li>
                         </ul>
                     </div>
                     <div class="mp_tab_details">

@@ -12,6 +12,6 @@ $event_template   	   = get_post_meta($event_id, 'mep_event_template', true);
 </div>
 <?php if($show_map): ?>
     <button type="button" class="mep-location-btn" onclick="window.location.href = '#mep-map-location'">
-        <i class="fas fa-map-marker-alt"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+        <i class="mi mi-marker"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
     </button>
 <?php endif; ?>

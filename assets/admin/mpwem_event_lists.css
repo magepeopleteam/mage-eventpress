@@ -587,7 +587,7 @@
     cursor: pointer;
     font-size: 1rem;
     transition: all 0.2s ease;
-    color: #374151;
+    color: #3b82f6;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -598,7 +598,7 @@
     color: #3b82f6;
 }
 .mpwem_event_list .action-btn.edit {
-    color: #059669;
+    color: #3b82f6;
 }
 .mpwem_event_list .action-btn.delete {
     color: #dc2626;

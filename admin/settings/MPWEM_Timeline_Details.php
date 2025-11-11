@@ -20,7 +20,8 @@
 			}
 
 			public function timeline_tab_content( $post_id ) {
-				$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
+				//$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
+				$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
                     <div class="_dLayout_xs_mp_zero">
@@ -55,7 +56,7 @@
 			}
 
 			public function timeline_item( $time_line_infos ) {
-				if ( sizeof( $time_line_infos ) > 0 ) {
+				if (is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 ) {
 					foreach ( $time_line_infos as $key => $time_line_info ) {
 						if ( is_array( $time_line_info ) && sizeof( $time_line_info ) > 0 ) {
 							$title       = array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
@@ -98,8 +99,9 @@
 				$key            = isset( $_REQUEST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$time_line_info = [];
 				if ( $post_id ) {
-					$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
-					if ( sizeof( $time_line_infos ) > 0 && array_key_exists( $key, $time_line_infos ) ) {
+					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
+					//$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
+					if (is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 && array_key_exists( $key, $time_line_infos ) ) {
 						$time_line_info = $time_line_infos[ $key ];
 					}
 				}
@@ -147,8 +149,8 @@
 				}
 				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
-					$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
-					if ( sizeof( $time_line_infos ) > 0 && array_key_exists( $key, $time_line_infos ) ) {
+					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
+					if (is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 && array_key_exists( $key, $time_line_infos ) ) {
 						unset( $time_line_infos[ $key ] );
 						$time_line_infos = array_values( $time_line_infos );
 						update_post_meta( $post_id, 'mep_event_day', $time_line_infos );
@@ -172,8 +174,8 @@
 				$time    = isset( $_POST['time'] ) ? sanitize_text_field( wp_unslash( $_POST['time'] ) ) : '';
 				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
-					$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
-					if ( ! array_key_exists( $key, $time_line_infos ) ) {
+					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);;
+					if (is_array($time_line_infos) && ! array_key_exists( $key, $time_line_infos ) ) {
 						$key = sizeof( $time_line_infos );
 					}
 					$time_line_infos[ $key ]['mep_day_title']   = $title;

@@ -1055,7 +1055,7 @@
 									'mep_state' => '',
 									'mep_postcode' => '',
 									'mep_country' => '',
-									'mep_sgm' => '',
+									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
 									'mep_show_advance_col_status' => 'off',
@@ -1251,7 +1251,7 @@
 									'mep_state' => '',
 									'mep_postcode' => 'TX 76051',
 									'mep_country' => 'United States',
-									'mep_sgm' => '',
+									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
 									'mep_show_advance_col_status' => 'off',

@@ -2933,16 +2933,16 @@
                         <li class="mep_list_event_date">
                             <div class="evl-ico"><i class="<?php echo $event_date_icon; ?>"></i></div>
                             <div class="evl-cc">
-                                <h5>
+                                <p>
 									<?php echo get_mep_datetime( $std, 'date-text' ); ?>
-                                </h5>
-                                <h5><?php echo get_mep_datetime( $_event_std['event_std'], 'time' );
+                                </p>
+                                <p><?php echo get_mep_datetime( $_event_std['event_std'], 'time' );
 										if ( $hide_only_end_time_list == 'no' ) { ?> - <?php if ( $start_date == $end_date ) {
 											echo get_mep_datetime( $_event_std['event_etd'], 'time' );
 										} else {
 											echo get_mep_datetime( $_event_std['event_etd'], 'date-time-text' );
 										}
-										} ?></h5>
+										} ?></p>
                             </div>
                         </li>
 						<?php

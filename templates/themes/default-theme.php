@@ -21,7 +21,6 @@
 	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
 	$hide_total_seat_details   = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
-	$hide_org_by_details       = array_key_exists( 'mep_event_hide_org_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_org_from_details'] : 'no';
 	$hide_address_details      = array_key_exists( 'mep_event_hide_address_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_address_from_details'] : 'no';
 	$hide_share_details        = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
@@ -66,12 +65,7 @@
         </div>
         <div class="mep-default-sidebar <?php echo esc_attr( $event_type == 'online' ? 'margin' : '' ); ?>">
             <div class="df-sidebar-part">
-				<?php if ( $hide_org_by_details == 'no' && has_term( '', 'mep_org', $event_id ) ) : ?>
-                    <div class="mep-default-sidrbar-meta">
-						<?php do_action( 'mep_event_organized_by', $event_id ); ?>
-                    </div>
-				<?php endif; ?>
-
+	            <?php do_action( 'mpwem_organizer', $event_id ,$event_infos); ?>
 				<?php if ( $mep_enable_recurring == 'no' ): ?>
 					<?php if ( $hide_total_seat_details == 'no' ) { ?>
 						<?php do_action( 'mep_event_seat', $event_id ); ?>

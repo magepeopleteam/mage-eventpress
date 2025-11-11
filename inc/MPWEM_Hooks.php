@@ -11,12 +11,9 @@
 			public function __construct() {
 				add_action( 'mpwem_title', [ $this, 'title' ], 10, 2 );
 				/**************************/
-				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 2 );
+				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 3 );
 				add_action( 'mep_event_list_org_names', [ $this, 'event_list_org_names' ], 10, 2 );
 				add_action( 'mep_event_list_cat_names', [ $this, 'event_list_cat_names' ], 10, 2 );
-				add_action( 'mep_event_organizer', [ $this, 'event_organizer' ] );
-				add_action( 'mep_event_organizer_name', [ $this, 'event_organizer_name' ] );
-				add_action( 'mep_event_organized_by', [ $this, 'event_organized_by' ] );
 				/**************************/
 				add_action( 'mpwem_location', [ $this, 'location' ], 10, 2 );
 				add_action( 'mpwem_location_only', [ $this, 'location_only' ], 10, 2 );
@@ -71,7 +68,7 @@
 				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 			}
 			public function title( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/title.php' ); }
-			public function organizer( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
+			public function organizer( $event_id, $event_infos=[],$only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
 			public function event_list_org_names( $org, $unq_id = '' ): void {
 				ob_start();
 				?>
@@ -123,43 +120,6 @@
 				<?php
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_category_name_filter_list', $content );
-			}
-			public function event_organizer( $event_id ) {
-				ob_start();
-				$org = get_the_terms( $event_id, 'mep_org' );
-				if ( ! empty( $org ) ) {
-					require MPWEM_Functions::template_path( 'single/organizer.php' );
-				}
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_single_org_name', $content, $event_id );
-			}
-			public function event_organizer_name( $event_id ) {
-				ob_start();
-				$org   = get_the_terms( get_the_id(), 'mep_org' );
-				$names = [];
-				if ( sizeof( $org ) > 0 ) {
-					foreach ( $org as $value ) {
-						$names[] = $value->name;
-					}
-				}
-				echo esc_html( implode( ', ', $names ) );
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_single_org_name', $content, $event_id );
-			}
-			public function event_organized_by( $event_id ) {
-				$org_terms = get_the_terms( $event_id, 'mep_org' );
-				if ( $org_terms && ! is_wp_error( $org_terms ) && count( $org_terms ) > 0 ) :?>
-                    <div class="mep-org-details">
-                        <div class="org-name">
-                            <div><?php echo mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) ? mep_get_option( 'mep_organized_by_text', 'label_setting_sec' ) : __( 'Organized By:', 'mage-eventpress' ); ?></div>
-							<?php foreach ( $org_terms as $index => $org ): ?>
-                                <strong><?php echo esc_html( $org->name ); ?><?php if ( $index < count( $org_terms ) - 1 ): ?>|<?php endif; ?></strong>
-							<?php endforeach; ?>
-                        </div>
-                    </div>
-				<?php else :
-					do_action( 'mep_event_organizer', $event_id );
-				endif;
 			}
 			/**********************************/
 			public function location( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }

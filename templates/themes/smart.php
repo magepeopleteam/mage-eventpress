@@ -23,7 +23,7 @@
 ?>
 <div class="default_theme mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
-	<?php do_action( 'mpwem_organizer', $event_id ); ?>
+	<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
     <div class="mpwem_location_time">
 		<?php do_action( 'mpwem_location', $event_id ); ?>
 		<?php

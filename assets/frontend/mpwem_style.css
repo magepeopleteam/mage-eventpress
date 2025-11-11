@@ -38,6 +38,16 @@
 @media only screen and (min-width: 10px) {
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 }
+/* ************************organizer section******************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_organizer {padding: var(--dMP); background: var(--color_theme); border-radius: var(--dBR) var(--dBR) 0 0; }
+	div.mpwem_organizer,
+	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
+	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
+	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
+	div.mep_smart_theme .mpwem_organizer,
+	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
+}
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
 	div.event_date_list_area {padding: var(--dMP);}
@@ -46,9 +56,7 @@
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
-	div.event_date_list_area .date-list-item{
-		border-radius: 10px;
-	}
+	div.event_date_list_area .date-list-item { border-radius: 10px; }
 }
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
@@ -79,13 +87,6 @@ div.item_hover_effect a:hover {
 .mep-ev-start-date, h3.mep_list_date i, button.mep-cat-control, .pagination-sec a {
 	background: var(--color_theme);
 	color: var(--color_7);
-}
-.mep-default-sidrbar-meta .fa-list-alt, .mep-list-footer ul li i {
-	background: transparent;
-	color: var(--color_theme);
-}
-.mep-default-sidrbar-meta p a {
-	color: var(--color_theme);
 }
 .mep_more_date_btn:before {
 	background: var(--color_theme);
@@ -217,7 +218,6 @@ label.mep-show,
 }
 div.mep_flex,
 .default_theme i,
-div.mep-default-sidrbar-meta,
 ul.mep-social-share,
 ul.mep-social-share a,
 button.single_add_to_cart_button,
@@ -231,7 +231,6 @@ button.single_add_to_cart_button,
 	display: flex;
 }
 .default_theme i,
-.mep-default-sidrbar-meta,
 ul.mep-social-share a,
 .mep_spring_date .mep-default-sidrbar-social,
 .mep-list-footer ul li,
@@ -481,23 +480,8 @@ button.single_add_to_cart_button[disabled]:hover {
 	font-size: 16px;
 	font-weight: 500;
 }
-/********Organizer ***********/
-.mep-default-sidrbar-meta {
-	padding: 20px 15px;
-}
-.mep-default-sidrbar-meta p {
-	padding: 0 0 0 10px;
-	font-size: 16px;
-	font-weight: 700;
-}
-.mep-default-sidrbar-meta p a {
-	font-size: 16px;
-	font-weight: bold;
-	color: #6D7982;
-}
 /********venue place ***********/
 /********circle icon box ***********/
-.mep-default-sidrbar-meta i,
 ul.mep-social-share a {
 	color: var(--color_7);
 	font-size: 20px;
@@ -510,7 +494,6 @@ ul.mep-social-share a {
 	font-size: 14px;
 }
 /********default background ***********/
-.mep-default-sidrbar-meta i,
 .mep-social-share a {
 	background: var(--color_theme);
 }
@@ -594,11 +577,6 @@ ul.mep-social-share li a.email:hover i {
 	overflow: hidden;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 	border-radius: 12px;
-}
-.mep-default-sidrbar-meta {
-	padding: 15px;
-	background: var(--color_theme);
-	border-radius: 12px 12px 0 0;
 }
 .default_theme .mep-org-details {
 	font-size: 18px;
@@ -729,7 +707,6 @@ p.mep_list_title {
 p.mep_list_title:before {
 	display: none;
 }
-
 h2.mep_list_title {
 	font-size: 18px;
 	font-weight: 700;
@@ -1213,7 +1190,6 @@ button.mep-cat-control.mixitup-control-active {
 	background: var(--color_theme);
 	color: var(--color_7);
 }
-
 .mep_speaker_thumbnail {
 	display: block;
 	text-align: center;
@@ -1486,7 +1462,6 @@ div.mep-day-details-section h4 {
 	}
 }
 @media only screen and (max-width: 991px) {
-	.mep-default-sidrbar-meta i,
 	ul.mep-social-share a {
 		width: 40px;
 		height: 40px;
@@ -1677,9 +1652,6 @@ div.mep-day-details-section h4 {
 	div.column_style {
 		min-width: calc(100% - 14px) !important;
 	}
-}
-.mep-default-sidrbar-meta i {
-	margin: 0 7px 0 0;
 }
 /****************************************
 CSS by Ariful
@@ -1930,22 +1902,6 @@ div.three_column {
 }
 .mep-social-share li:last-child {
 	margin-right: 0;
-}
-.mep-default-sidrbar-meta i {
-	background: transparent;
-	color: var(--color_theme);
-	font-size: 18px;
-	width: auto;
-	height: auto;
-}
-.mep-default-sidrbar-meta p,
-.mep-default-sidrbar-meta p a {
-	font-weight: 600;
-	color: #444444;
-	font-size: 16px;
-}
-.mep-default-sidrbar-meta p a {
-	color: var(--color_theme);
 }
 .mep-default-feature-image .mep-event-thumbnail img {
 	border-radius: 0;
@@ -3888,9 +3844,6 @@ div.mpwem_timeline_area .timeline_area::before {
 	padding: 20px;
 }
 @media only screen and (min-width: 10px) {
-	.mep_smart_theme .mpwem_organizer {
-		margin: 5px 0;
-	}
 	.mep_smart_theme .mpwem_location_time {
 		display: flex;
 		flex-direction: column;
@@ -4428,16 +4381,6 @@ div.mpwem_timeline_area .timeline_area::before {
 	.mep_attendee_info .mp_form_item > label > span {
 		min-width: 200px;
 		font-weight: normal;
-	}
-	div.mpwem_organizer {
-		display: -webkit-flex;
-		display: flex;
-	}
-	div.mpwem_organizer,
-	div.mpwem_organizer a {
-		font-size: 24px;
-		color: #878787 !important;
-		font-weight: 400;
 	}
 	div.mpwem_location,
 	div.mpwem_time {

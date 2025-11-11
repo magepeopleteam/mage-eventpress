@@ -1,6 +1,6 @@
 /* ******************************************** */
 @media only screen and (min-width: 10px) {
-	div.mpwem_wrapper { display: block; max-width: 1320px; margin: var(--dMP) auto; background: #FFF; padding: var(--dMP); width: 100%; }
+	div.mpwem_wrapper { display: block; max-width: 1320px; margin: var(--dmp) auto; background: #FFF; padding: var(--dmp); width: 100%; }
 	div.mpwem_container {max-width: 1320px;width: 100%;margin: 0 auto;}
 	div.default_theme .content_area {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	.mep-default-content { width: calc(100% - 300px); padding: 0 20px 0 0; }
@@ -8,24 +8,24 @@
 }
 /* ************************title******************** */
 @media only screen and (min-width: 10px) {
-	div.default_theme .mpwem_tile {margin: 0 0 var(--dMP_xs) 0;color: var(--color_black);}
+	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
 }
 /* ************************Speaker******************** */
 @media only screen and (min-width: 10px) {
-	div.event_speaker_list_area {padding: var(--dMP);}
+	div.event_speaker_list_area {padding: var(--dmp);}
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dMP_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
+	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
 	div.default_theme .speaker_list a [data-bg-image] {width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
-	div.default_theme .speaker_list a h6 {margin: var(--dMP_xs) 0 0 0;}
+	div.default_theme .speaker_list a h6 {margin: var(--dmp_xs) 0 0 0;}
 	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
 	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
 	div.mep_smart_theme .speaker_list a [data-bg-image] {width: 70px;height: auto;border-radius: 0;}
-	div.mep_smart_theme .speaker_list a h6 {margin: 0;padding: var(--dMP);font-size: var(--fs_h4);}
+	div.mep_smart_theme .speaker_list a h6 {margin: 0;padding: var(--dmp);font-size: var(--fs_h4);}
 }
 /* ****************Date time location short area in default theme**************************** */
 @media only screen and (min-width: 10px) {
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
-	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dMP_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dBRL);}
+	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
 	div.date_time_location_short .short_item p {color: #878787;margin: 5px 0 0 0;}
 	@media only screen and (max-width: 1199px) {
 		div.date_time_location_short .short_item {max-width: calc(50% - 8px);}
@@ -40,7 +40,7 @@
 }
 /* ************************organizer section******************** */
 @media only screen and (min-width: 10px) {
-	div.mpwem_organizer {padding: var(--dMP); background: var(--color_theme); border-radius: var(--dBR) var(--dBR) 0 0; }
+	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
 	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
@@ -50,8 +50,8 @@
 }
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
-	div.event_date_list_area {padding: var(--dMP);}
-	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dMP_xs) 0;}
+	div.event_date_list_area {padding: var(--dmp);}
+	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dmp_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
@@ -3570,7 +3570,7 @@ div.timeline_item .timeline_counter {
 }
 div.timeline_item div.timeline_content {
 	background-color: #FFFFFF;
-	padding: var(--dMP);
+	padding: var(--dmp);
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 div.mpwem_timeline_area .timeline_time {

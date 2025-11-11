@@ -31,7 +31,7 @@
 				<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
 			<?php endif; ?>
     </div>
-	<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+	<?php do_action( 'add_mpwem_custom_slider', $event_id,$event_infos ); ?>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">
             <div class="mpwem_details">

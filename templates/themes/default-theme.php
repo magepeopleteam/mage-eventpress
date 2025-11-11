@@ -33,7 +33,7 @@
 	<?php do_action( 'mpwem_title', $event_id ); ?>
     <div class="content_area">
         <div class="mep-default-content">
-			<?php do_action( 'add_mpwem_custom_slider', $event_id, 'mep_gallery_images' ); ?>
+			<?php do_action( 'add_mpwem_custom_slider', $event_id,$event_infos ); ?>
             <div class="date_time_location_short _mT">
 				<?php do_action( 'mpwem_date_only', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_time_only', $event_id, $event_infos ); ?>

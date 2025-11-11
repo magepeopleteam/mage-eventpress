@@ -46,6 +46,9 @@
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
+	div.event_date_list_area .date-list-item{
+		border-radius: 10px;
+	}
 }
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
@@ -1060,7 +1063,7 @@ ul.event-custom-price li ul {
 	border: 1px solid #DDD;
 	background: #FBFBFB;
 }
-.mep_event_list .mepev-ribbon {
+.mep_event_list .mepev-ribbons {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -1068,7 +1071,7 @@ ul.event-custom-price li ul {
 	flex-direction: column;
 	gap: 5px;
 }
-.mep_event_list .mepev-ribbon .ribbon {
+.mep_event_list .mepev-ribbons .mepev-ribbon {
 	padding: 5px 10px;
 	color: var(--color_6);
 	background: rgba(0, 0, 0, 0.6666666667);
@@ -1078,10 +1081,10 @@ ul.event-custom-price li ul {
 	font-size: 14px;
 	font-weight: 500;
 }
-.mep_event_list .mepev-ribbon .ribbon:nth-child(2) {
+.mep_event_list .mepev-ribbons .mepev-ribbon:nth-child(2) {
 	background: rgba(96, 70, 255, 0.6666666667);
 }
-.mep_event_list .mepev-ribbon .ribbon.sold-out {
+.mep_event_list .mepev-ribbons .mepev-ribbon.sold-out {
 	background: rgba(255, 70, 70, 0.6666666667);
 }
 .mp_event_more_date_list {
@@ -3893,6 +3896,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		flex-direction: column;
 		justify-content: start;
 		gap: 10px;
+		margin-bottom: 10px;
 	}
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {

@@ -49,20 +49,20 @@
             <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
             <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>
         </div>
-        <div class="mepev-ribbon">
+        <div class="mepev-ribbons">
 			<?php
 				if ( is_array( $event_multidate ) && sizeof( $event_multidate ) > 0 && $recurring == 'no' ) { ?>
-                    <div class='ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $recurring != 'no' ) { ?>
-                    <div class='ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $event_type == 'online' ) { ?>
-                    <div class='ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
+                    <div class='mepev-ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
 				<?php }
 				if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $total_left <= 0 ) { ?>
-                    <div class="ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
+                    <div class="mepev-ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
 				<?php } elseif ( $limited_availability_ribbon == 'yes' && $total_left > 0 && $total_left <= $limited_availability_threshold ) { ?>
-                    <div class="ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
+                    <div class="mepev-ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
 				<?php } ?>
         </div>
     </div>

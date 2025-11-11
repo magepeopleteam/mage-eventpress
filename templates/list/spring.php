@@ -50,7 +50,7 @@
 >
 <?php do_action( 'mep_event_spring_list_loop_header', $event_id ); ?>
     <div class="mep_list_date_wrapper">
-        <h4 class='mep_spring_list_date'> <?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) ); ?></h4>
+        <p class='mep_spring_list_date'> <?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) ); ?></p>
     </div>
     <div class="mep_list_event_details mep_list_details_col_one">
         <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
@@ -64,7 +64,7 @@
 		<?php do_action( 'mep_event_list_loop_footer', $event_id ); ?>
     </div>
     <div class="mep_list_event_details mep_list_details_col_two">
-        <h4 class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php the_title(); ?></a></h4>
+        <p class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php the_title(); ?></a></p>
 		<?php if ( $total_left == 0 ) {
 			do_action( 'mep_show_waitlist_label' );
 		} ?>

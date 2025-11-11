@@ -735,7 +735,7 @@ h2.mep_list_title {
 h2.mep_list_title:before {
 	display: none;
 }
-h3.mep_list_date {
+h3.mep_list_date, p.mep_list_date {
 	font-size: 16px;
 	font-style: italic;
 	font-weight: bold;
@@ -764,12 +764,13 @@ h3.mep_list_date {
 	color: #FFF;
 }
 .mep-list-footer ul li h5,
-.mep-list-footer ul li h6 {
+.mep-list-footer ul li h6,
+.mep-list-footer ul li p {
 	font-size: 15px;
 	font-weight: 700;
 	display: inline;
 }
-.mep-list-footer ul li h5 {
+.mep-list-footer ul li h5, .mep-list-footer ul li p {
 	font-size: 14px;
 	font-weight: 600;
 	padding: 0 5px 0 0;
@@ -1701,7 +1702,7 @@ ul.mp_event_more_date_list li {
 	white-space: inherit;
 	font-weight: 400;
 }
-h3.mep_list_date {
+h3.mep_list_date, p.mep_list_date {
 	font-style: normal;
 }
 .mep-event-excerpt {
@@ -1712,7 +1713,8 @@ h3.mep_list_date {
 	padding-bottom: 0;
 }
 .mep-list-footer ul li h5,
-.mep-list-footer ul li h6 {
+.mep-list-footer ul li h6,
+.mep-list-footer ul li p {
 	font-weight: 400;
 	margin: 0;
 }
@@ -1954,10 +1956,10 @@ span.mep_waitlist_label.mep-tem3-title-sec {
 	width: max-content;
 	padding: 0 15px 0 15px !important;
 }
-h3.mep_list_date {
+h3.mep_list_date, p.mep_list_date {
 	line-height: 25px;
 }
-h3.mep_list_date i {
+h3.mep_list_date i, p.mep_list_date i {
 	color: var(--color_theme);
 }
 .mep_event_native_list .mep_list_thumb img,
@@ -3573,7 +3575,7 @@ input.mpe-new-input-group-field {
 .mep_event_grid_item .mep_list_org_name, .mep_event_grid_item .mep_list_location_name, .mep_event_grid_item .mep_list_event_date {
 	gap: 10px;
 }
-.mep_event_grid_item .mep_list_event_date h5 {
+.mep_event_grid_item .mep_list_event_date h5, .mep_event_grid_item .mep_list_event_date p {
 	display: block;
 }
 .mep_event_grid_item .mep_list_thumb {

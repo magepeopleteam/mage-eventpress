@@ -73,11 +73,11 @@
 				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>
-                <h3 class='mep_list_date'>
+                <p class='mep_list_date'>
 					<?php if ( $show_price == 'yes' ) {
 						echo esc_html( $show_price_label ) . " " . wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) );;
 					} ?>
-                </h3>
+                </p>
             </div>
 			<?php if ( $style == 'list' ) { ?>
                 <div class="mep-event-excerpt">
@@ -90,8 +90,8 @@
                         <li class="mep_list_org_name">
                             <div class="evl-ico"><i class="<?php echo esc_attr( $event_organizer_icon ); ?>"></i></div>
                             <div class="evl-cc">
-                                <h5><?php esc_html_e( 'Organized By:', 'mage-eventpress' ) ?></h5>
-                                <h6><?php echo esc_html( $author_terms[0]->name ); ?></h6>
+                                <p><?php esc_html_e( 'Organized By:', 'mage-eventpress' ) ?></p>
+                                <p><?php echo esc_html( $author_terms[0]->name ); ?></p>
                             </div>
                         </li>
 					<?php }
@@ -122,8 +122,8 @@
                                 <li class="mep_list_location_name">
                                     <div class="evl-ico"><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i></div>
                                     <div class="evl-cc">
-                                        <h5> <?php esc_html_e( 'Location:', 'mage-eventpress' ); ?> </h5>
-                                        <h6><?php echo esc_html( $location_display ); ?></h6>
+                                        <p><?php esc_html_e( 'Location:', 'mage-eventpress' ); ?></p>
+                                        <p><?php echo esc_html( $location_display ); ?></p>
                                     </div>
                                 </li>
 							<?php }

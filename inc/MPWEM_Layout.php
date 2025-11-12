@@ -125,6 +125,59 @@
                 </label>
 				<?php
 			}
+			public static function elapsed_time_status( $date ) {
+				?>
+                <div class="mpwem_style">
+					<?php
+						if ( $date ) {
+							$current = current_time( 'Y-m-d H:i:s' );
+							if ( strtotime( $current ) >= strtotime( $date ) ) {
+								?>
+                                <button type="button" class="_successButton_xxs"><?php esc_html_e( "Event Running", "mage-eventpress" ); ?></button>
+								<?php
+							} else {
+								$newformat = date( 'Y-m-d H:i:s', strtotime( $date ) );
+								$start     = new DateTime( $newformat );
+								$end       = new DateTime( $current );
+								$diff      = $start->diff( $end );
+								?>
+                                <button type="button" class="_themeButton_xxs"><?php echo esc_html( $diff->format( '%a days, %h hours, %i minutes' ) ); ?></button>
+								<?php
+							}
+						} else {
+							?>
+                            <button type="button" class="_warningButton_xxs"><?php esc_html_e( "Already Expired", "mage-eventpress" ); ?></button>
+						<?php } ?>
+                </div>
+				<?php
+			}
+			public static function seat_status( $post_id, $date ) {
+				$admin_url = get_admin_url();
+				?>
+                <div class="mpwem_style">
+					<?php
+						if ( $date ) {
+							$total_sold      = mep_ticket_type_sold( $post_id, '', $date );
+							$total_ticket    = MPWEM_Functions::get_total_ticket( $post_id, $date );
+							$total_reserve   = MPWEM_Functions::get_reserve_ticket( $post_id, $date );
+							$total_available = $total_ticket - ( $total_sold + $total_reserve );
+							$total_available = max( $total_available, 0 );
+							?>
+                            <div class="buttonGroup status_action">
+                                <button type="button" class="_themeButton_xxs seat_status_area"><?php echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available ); ?></button>
+                                <button type="button" class="_secondaryButton_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr($date); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
+                                <button class="_primaryButton_xxs" type="button" data-blank="yes" data-href="<?php echo esc_url( $admin_url ); ?>edit.php?post_type=mep_events&page=attendee_statistics&event_id=<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream mp_zero"></span></button>
+                            </div>
+							<?php
+						} else {
+							?>
+                            <button class="_primaryButton_xxs" type="button" data-blank="yes" data-href="<?php echo esc_url( $admin_url ); ?>edit.php?post_type=mep_events&page=attendee_statistics&event_id=<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><?php esc_html_e( "View Statistics", "mage-eventpress" ); ?></button>
+							<?php
+						}
+					?>
+                </div>
+				<?php
+			}
 		}
 		new MPWEM_Layout();
 	}

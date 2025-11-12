@@ -37,7 +37,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Lists.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Attendee_Statistics.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';
-				require_once MPWEM_PLUGIN_DIR . '/admin/mep_cpt.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_CPT.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/status.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';

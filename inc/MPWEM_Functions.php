@@ -596,8 +596,6 @@
 				}
 				return $key ? ( array_key_exists( $key, $address ) ? $address[ $key ] : '' ) : $address;
 			}
-
-			//==========================//
 			//==========================//
 			public static function get_cpt(): string {
 				return 'mep_events';

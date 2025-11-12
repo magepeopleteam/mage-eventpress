@@ -42,9 +42,9 @@
 				return;
 			}
 			$low_stock_threshold = (int) mep_get_option( 'mep_low_stock_threshold', 'general_setting_sec', 3 );
-			$low_stock_text      = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
+			$low_stock_text = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
 			if ( $available_seats <= $low_stock_threshold && $available_seats > 0 ) {
-				$warning_text = sprintf( $low_stock_text, $available_seats );
+				$warning_text = $this->format_low_stock_message( $low_stock_text, $available_seats );
 				echo '<div class="mep-low-stock-warning">' . esc_html( $warning_text ) . '</div>';
 				// Trigger email notification
 				do_action( 'mep_low_stock_detected', $post_id, $ticket_type_name, $available_seats, $low_stock_threshold );
@@ -117,7 +117,7 @@
 		 */
 		private function get_low_stock_email_content( $post_id, $ticket_type_name, $available_seats, $threshold, $event_title, $event_url ) {
 			$low_stock_text  = mep_get_option( 'mep_low_stock_text', 'general_setting_sec', 'Hurry! Only %s seats left' );
-			$warning_message = sprintf( $low_stock_text, $available_seats );
+			$warning_message = $this->format_low_stock_message( $low_stock_text, $available_seats );
 			$message = '
         <!DOCTYPE html>
         <html>
@@ -154,6 +154,91 @@
         </html>';
 
 			return $message;
+		}
+
+		/**
+		 * Prepare low stock message safely regardless of custom formatting.
+		 *
+		 * @param string $template
+		 * @param int    $available_seats
+		 *
+		 * @return string
+		 */
+		private function format_low_stock_message( $template, $available_seats ) {
+			$template = (string) $template;
+
+			if ( strpos( $template, '{seats}' ) !== false ) {
+				return str_replace( '{seats}', $available_seats, $template );
+			}
+
+			if ( ! $this->has_supported_placeholder( $template ) ) {
+				// Handle cases like "Only % places left!" where %s was truncated
+				if ( strpos( $template, '%' ) !== false && strpos( $template, '%%' ) === false ) {
+					$attempt = preg_replace('/%(?![%0-9bcdeEfFgGosuxX])/','%s',$template,1);
+					if ( is_string( $attempt ) && $attempt !== $template ) {
+						try {
+							return sprintf( $attempt, $available_seats );
+						} catch ( ValueError $ignored ) {
+							// fall through to final fallback
+						}
+					}
+				}
+
+				return trim( $template . ' ' . $available_seats );
+			}
+
+			try {
+				return sprintf( $template, $available_seats );
+			} catch ( ValueError $e ) {
+				$sanitized_template = $this->sanitize_low_stock_template( $template );
+
+				if ( ! $this->has_supported_placeholder( $sanitized_template ) ) {
+					return trim( $template . ' ' . $available_seats );
+				}
+
+				try {
+					return sprintf( $sanitized_template, $available_seats );
+				} catch ( ValueError $ignored ) {
+					return trim( $template . ' ' . $available_seats );
+				}
+			}
+		}
+
+		/**
+		 * Determine if template contains a supported sprintf placeholder.
+		 *
+		 * @param string $template
+		 *
+		 * @return bool
+		 */
+		private function has_supported_placeholder( $template ) {
+			return (bool) preg_match( '/%(?:\d+\$)?[-+]?[\x20\'0#]*(?:\d+)?(?:\.\d+)?[disu]/i', $template );
+		}
+
+		/**
+		 * Sanitize unsupported sprintf placeholders to prevent runtime errors.
+		 *
+		 * @param string $template
+		 *
+		 * @return string
+		 */
+		private function sanitize_low_stock_template( $template ) {
+			$pattern           = '/%((?:\d+\$)?[-+]?[\x20\'0#]*(?:\d+)?(?:\.\d+)?)([a-zA-Z])/';
+			$valid_specifiers  = array( 'd', 'i', 's', 'u' );
+
+			return preg_replace_callback(
+				$pattern,
+				function ( $matches ) use ( $valid_specifiers ) {
+					$specifier = strtolower( $matches[2] );
+
+					if ( in_array( $specifier, $valid_specifiers, true ) ) {
+						return '%' . $matches[1] . $matches[2];
+					}
+
+					return '%%' . $matches[1] . $matches[2];
+				},
+				$template
+			);
 		}
 
 		/**

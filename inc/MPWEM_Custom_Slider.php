@@ -14,23 +14,27 @@
 				add_action( 'add_mpwem_custom_slider_only', array( $this, 'super_slider_only' ) );
 				add_action( 'add_mpwem_custom_slider_icon_indicator', array( $this, 'icon_indicator' ) );
 			}
-			public function super_slider( $post_id = '', $meta_key = '' ) {
-				?>
-                <div class="mpwem_slider_area">
-				<?php
-				$type      = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
-				$post_id   = $post_id > 0 ? $post_id : get_the_id();
-				$image_ids = $this->get_slider_ids( $post_id, $meta_key );
-				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
-					if ( $type == 'slider' && sizeof( $image_ids ) > 1 ) {
-						$this->slider( $post_id, $image_ids );
+			public function super_slider( $post_id = '', $event_infos = [] ) {
+				$event_infos = is_array( $event_infos ) && sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $post_id );
+				$display     = array_key_exists( 'mep_display_slider', $event_infos ) ? $event_infos['mep_display_slider'] : 'on';
+				if ( $display=='on' ) {
+					?>
+                    <div class="mpwem_slider_area">
+					<?php
+					$type      = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
+					$post_id   = $post_id > 0 ? $post_id : get_the_id();
+					$image_ids = $this->get_slider_ids( $post_id, 'mep_gallery_images' );
+					if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
+						if ( $type == 'slider' && sizeof( $image_ids ) > 1 ) {
+							$this->slider( $post_id, $image_ids );
+						} else {
+							$this->post_thumbnail( $image_ids[0] );
+						}
 					} else {
-						$this->post_thumbnail( $image_ids[0] );
+						$this->post_thumbnail();
 					}
-				} else {
-					$this->post_thumbnail();
+					?></div><?php
 				}
-				?></div><?php
 			}
 			public function super_slider_only( $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {

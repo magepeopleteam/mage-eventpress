@@ -21,13 +21,9 @@
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
-		$date_type    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 		$count        = 0;
 		if ( sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
-				<?php if ( $date_type == 'no' ) { ?>
-                    <div class="card-header"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
-				<?php } ?>
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$input_data        = [];

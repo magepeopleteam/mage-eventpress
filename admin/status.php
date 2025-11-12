@@ -133,18 +133,28 @@
 		<?php
 	}
 
-	/**
+/**
  * AJAX Callback Function to Empty WooCommerce Cart
  */
 add_action( 'wp_ajax_empty_woocommerce_cart', 'mep_empty_woocommerce_cart_ajax' );
 function mep_empty_woocommerce_cart_ajax() {
     // Check if WooCommerce is active
-    if ( class_exists( 'WooCommerce' ) ) {
-        // Empty the cart
-        WC()->cart->empty_cart();
-		mep_temp_event_cart_empty();
-        wp_send_json_success( 'Cart emptied successfully.' );
-    } else {
+    if ( ! class_exists( 'WooCommerce' ) ) {
         wp_send_json_error( 'WooCommerce is not active.' );
     }
+
+    // Check if current user is administrator
+    if ( ! current_user_can( 'administrator' ) ) {
+        wp_send_json_error( 'You do not have permission to perform this action.' );
+    }
+
+    // Empty the cart
+    WC()->cart->empty_cart();
+
+    // Call your custom function
+    if ( function_exists( 'mep_temp_event_cart_empty' ) ) {
+        mep_temp_event_cart_empty();
+    }
+
+    wp_send_json_success( 'Cart emptied successfully.' );
 }

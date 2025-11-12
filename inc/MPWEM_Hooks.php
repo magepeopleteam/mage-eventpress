@@ -67,6 +67,9 @@
 				add_action( 'wp_ajax_nopriv_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
 				add_action( 'wp_ajax_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
+                /***********************/
+				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
+				add_action( 'wp_ajax_nopriv_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 			}
 			public function title( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/title.php' ); }
 			public function organizer( $event_id, $event_infos=[],$only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
@@ -405,6 +408,28 @@
 				}
 				wp_reset_postdata();
 				echo ob_get_clean();
+				die();
+			}
+            /***********************/
+			public function mpwem_reload_seat_status() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					die;
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$date = isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( $_POST['date'] ) ) : '';
+				if ( $post_id && $date ) {
+					$total_sold      = mep_ticket_type_sold( $post_id, '', $date );
+					$total_ticket    = MPWEM_Functions::get_total_ticket( $post_id, $date );
+					$total_reserve   = MPWEM_Functions::get_reserve_ticket( $post_id, $date );
+					$total_available = $total_ticket - ( $total_sold + $total_reserve );
+					$total_available = max( $total_available, 0 );
+					echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available );
+				}
 				die();
 			}
 		}

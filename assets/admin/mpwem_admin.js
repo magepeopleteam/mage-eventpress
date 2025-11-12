@@ -787,4 +787,37 @@ function mpwem_load_past_date_time(parent){
             alert('Please select event');
         }
     });
+
+}(jQuery));
+//=========Seat status==============//
+(function ($) {
+    "use strict";
+    $(document).on('click', '.mpwem_reload_seat_status', function () {
+        let current=$(this);
+        let parent = $(this).closest('.status_action');
+        let post_id = current.attr('data-post_id');
+        let date = current.attr('data-date');
+        let target = parent.find('.seat_status_area');
+        if (post_id > 0) {
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_admin_var.url,
+                data: {
+                    "action": "mpwem_reload_seat_status",
+                    "post_id": post_id,
+                    "date": date,
+                    "nonce": mpwem_admin_var.nonce
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                    dLoaderRemove(target);
+                }
+            });
+        } else {
+            alert('Something Wrong!');
+        }
+    });
 }(jQuery));

@@ -277,8 +277,8 @@
 	.mpwem_style .navy_blueButton:hover, .mpwem_style [class*="_navy_blueButton"]:hover { background-color: var(--color_theme_alter); color: var(--color_navy_blue); border-color: var(--color_navy_blue); }
 	.mpwem_style .navy_blueButton:hover span, .mpwem_style [class*="_navy_blueButton"]:hover span { color: var(--color_navy_blue); }
 	/****/
-	.mpwem_style .warningButton, .mpwem_style [class*="_warningButton"] { background-color: var(--color_warning); color: var(--color_light);  border: 2px solid var(--color_warning); }
-	.mpwem_style .warningButton:hover, .mpwem_style [class*="_warningButton"]:hover { background-color: var(--color_light); color: var(--color_warning); }
+	.mpwem_style .warningButton, .mpwem_style [class*="_warningButton"] { background-color: var(--color_warning); color: var(--color_theme_alter);  border: 2px solid var(--color_warning); }
+	.mpwem_style .warningButton:hover, .mpwem_style [class*="_warningButton"]:hover { background-color: var(--color_theme_alter); color: var(--color_warning); }
 	/*********/
 	.mpwem_style .primaryButton, .mpwem_style [class*="_primaryButton"] { background-color: var(--color_primary); color: var(--color_white); border: 2px solid var(--color_primary); }
 	.mpwem_style .primaryButton:hover, .mpwem_style [class*="_primaryButton"]:hover { background-color: var(--color_white); color: var(--color_primary); border-color: var(--color_primary); opacity: 0.8; }

@@ -1931,15 +1931,16 @@ h3.mep_virtual_sec_title {
 /*******************Tab general settings****************/
 .mep-template-section {
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: start;
 	align-items: start;
+	flex-wrap: wrap;
 	gap: 50px;
 }
 .mep-template-section .mep-template {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 25%;
+	width: 21.15%;
 	gap: 20px;
 }
 .mep-template-section .mep-template img {

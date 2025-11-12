@@ -108,11 +108,7 @@
 				$option_qty         = array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
 				$option_default_qty = array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
 				$option_rsv_qty     = array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
-				$date_format        = MPWEM_Global_Function::date_picker_format();
-				$now                = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 				$sale_end           = array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
-				$hidden_sale_end    = $sale_end ? date_i18n( 'Y-m-d', strtotime( $sale_end ) ) : '';
-				$visible_sale_end   = $sale_end ? date_i18n( $date_format, strtotime( $sale_end ) ) : '';
 				?>
                 <tr class="mpwem_remove_area data_required">
                     <td>
@@ -131,10 +127,7 @@
 					<?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
                     <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
                         <div class="_dFlex">
-                            <label>
-                                <input type="hidden" name="option_sale_end_date[]" value="<?php echo esc_attr( $hidden_sale_end ); ?>"/>
-                                <input value="<?php echo esc_attr( $visible_sale_end ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
-                            </label>
+	                        <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
                             <label>
                                 <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
                             </label>

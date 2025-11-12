@@ -110,6 +110,11 @@ function mpwem_alert($this, attr = 'alert') {
         $("div.mpwem_style .date_type").on("keydown", function(e) {
             e.preventDefault();
         });
+        $("div.mpwem_style .mpwem_date_reset").on("click", function() {
+           let parent= $(this).closest('label');
+           parent.find('input').val('');
+            parent.find('.date_type.hasDatepicker').datepicker('setDate', null);
+        });
     });
 }(jQuery));
 //====================================================================Load Bg Image=================//

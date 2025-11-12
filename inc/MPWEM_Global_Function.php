@@ -69,25 +69,27 @@
 				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
 			}
 			public static function date_format( $date, $format = 'date' ) {
-				$date_format = get_option( 'date_format' );
-				$time_format = get_option( 'time_format' );
-				$wp_settings = $date_format . '  ' . $time_format;
-				//$timezone = wp_timezone_string();
-				$timestamp = strtotime( $date );
-				if ( $format == 'date' ) {
-					$date = date_i18n( $date_format, $timestamp );
-				} elseif ( $format == 'time' ) {
-					$date = date_i18n( $time_format, $timestamp );
-				} elseif ( $format == 'full' ) {
-					$date = date_i18n( $wp_settings, $timestamp );
-				} elseif ( $format == 'day' ) {
-					$date = date_i18n( 'd', $timestamp );
-				} elseif ( $format == 'month' ) {
-					$date = date_i18n( 'M', $timestamp );
-				} elseif ( $format == 'year' ) {
-					$date = date_i18n( 'Y', $timestamp );
-				} else {
-					$date = date_i18n( $format, $timestamp );
+				if ( $date ) {
+					$date_format = get_option( 'date_format' );
+					$time_format = get_option( 'time_format' );
+					$wp_settings = $date_format . '  ' . $time_format;
+					//$timezone = wp_timezone_string();
+					$timestamp = strtotime( $date );
+					if ( $format == 'date' ) {
+						$date = date_i18n( $date_format, $timestamp );
+					} elseif ( $format == 'time' ) {
+						$date = date_i18n( $time_format, $timestamp );
+					} elseif ( $format == 'full' ) {
+						$date = date_i18n( $wp_settings, $timestamp );
+					} elseif ( $format == 'day' ) {
+						$date = date_i18n( 'd', $timestamp );
+					} elseif ( $format == 'month' ) {
+						$date = date_i18n( 'M', $timestamp );
+					} elseif ( $format == 'year' ) {
+						$date = date_i18n( 'Y', $timestamp );
+					} else {
+						$date = date_i18n( $format, $timestamp );
+					}
 				}
 				return $date;
 			}

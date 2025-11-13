@@ -64,7 +64,7 @@
 		<?php do_action( 'mep_event_list_loop_footer', $event_id ); ?>
     </div>
     <div class="mep_list_event_details mep_list_details_col_two">
-        <p class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php the_title(); ?></a></p>
+        <h2 class="mep_list_title"><a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php the_title(); ?></a></h2>
 		<?php if ( $total_left == 0 ) {
 			do_action( 'mep_show_waitlist_label' );
 		} ?>

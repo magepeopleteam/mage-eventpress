@@ -62,13 +62,12 @@
 										<div class="dFlex">
 											<ul class="popupIconMenu">
 												<li class="active" data-icon-menu="all_item" data-icon-title="all_item">
-													<?php esc_html_e('All Icon', 'mage-eventpress'); ?>&nbsp;(
+													<?php esc_html_e('All Icon', 'mage-eventpress'); ?>&nbsp;
 													<strong><?php echo esc_html($total_icon); ?></strong>
-													)
 												</li>
 												<?php foreach ($icons as $key => $icon) { ?>
 													<li data-icon-menu="<?php echo esc_attr($key); ?>">
-														<?php echo esc_html($icon['title']) . '&nbsp;(<strong>' . sizeof($icon['icon']) . '</strong>)'; ?>
+														<?php echo esc_html($icon['title']) . '&nbsp;<strong>' . sizeof($icon['icon']) . '</strong>'; ?>
 													</li>
 												<?php } ?>
 											</ul>

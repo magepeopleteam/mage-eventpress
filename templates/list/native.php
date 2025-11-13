@@ -55,7 +55,7 @@
     <div class="mep_list_event_details">
         <a href="<?php the_permalink(); ?>">
             <div class="mep-list-header">
-                <p class='mep_list_title'><?php the_title(); ?></p>
+                <h2 class='mep_list_title'><?php the_title(); ?></h2>
 				<?php if ( $total_left == 0 ) {
 					do_action( 'mep_show_waitlist_label' );
 				} ?>

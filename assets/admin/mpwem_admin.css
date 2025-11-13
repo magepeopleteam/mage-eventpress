@@ -193,8 +193,11 @@
 	div.mpwem_image_item:hover .mpwem_icon_remove {opacity: 1;}
 	div.mpwem_add_icon_popup .popupHeader {
 		color: #FFF;height: 60px;
-		margin: 0 auto;width: 100%;background-color: #222;position: relative;
+		margin: 0 auto;width: 100%;
+		background-color: #222;
+		position: relative;
 		border-bottom: 1px solid #FFF;
+		flex-direction: row;
 	}
 	div.mpwem_add_icon_popup .popupHeader h2 {
 		color: #FFF;text-align: center;
@@ -229,10 +232,14 @@
 		-webkit-flex-wrap: wrap;flex-wrap: wrap;
 	}
 	div.mpwem_add_icon_popup .iconItem {
-		width: 60px;height: 60px;font-size: 30px;margin: 7px;cursor: pointer;
-		border: 2px solid #FFF;background-color: #F2F2F2;
-		-webkit-box-shadow: 0 1px 4px 1px #DBDBDB;
-		box-shadow: 0 1px 4px 1px #DBDBDB;
+		width: 51px;
+		height: 51px;
+		font-size: 25px;
+		margin: 5px;
+		cursor: pointer;
+		color: #777777;
+		border: 1px solid #DBDBDB;
+		border-radius: 5px;
 	}
 	div.mpwem_add_icon_popup .iconItem.active,
 	div.mpwem_add_icon_popup .iconItem:hover {border-color: var(--color_theme);color: var(--color_theme);border-radius: 5px;}
@@ -2143,3 +2150,15 @@ div.mpwem_add_icon_popup .popup_all_icon .itemIconArea { width: 100%; display: -
 div.mpwem_add_icon_popup .iconItem { width: 51px; height: 51px; font-size: 25px; margin: 5px; cursor: pointer; color: #777777; border: 1px solid #DBDBDB; border-radius: 5px; }
 div.mpwem_add_icon_popup .iconItem.active,
 div.mpwem_add_icon_popup .iconItem:hover { background-color: var(--color_theme); color: var(--color_theme_alter); border: 1px solid var(--color_theme); }
+div.mpPopup .popupClose {
+    position: absolute;
+    z-index: 1111;
+    cursor: pointer;
+    top: 2px;
+    right: 1px;
+    width: 32px;
+    height: 32px;
+    background-color: #444;
+    color: #FFF;
+    font-size: 20px;
+  }

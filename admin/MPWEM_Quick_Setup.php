@@ -125,8 +125,18 @@
 					update_option('general_setting_sec', $new_general_settings_data);
 					update_option('email_setting_sec', $new_email_settings_data);
 					update_option('mep_quick_setup', 'done');
-					wp_redirect(admin_url('edit.php?post_type=mep_events&page=mep_event_lists'));
-				}
+					wp_redirect(
+						add_query_arg(
+							[
+								'post_type'        => 'mep_events',
+								'page'             => 'mep_event_lists',
+								'_mep_flush_nonce' => wp_create_nonce( 'mep_flush_rules_action' ),
+							],
+							admin_url( 'edit.php' )
+						)
+					);
+					exit;				
+}
 				?>
 				<div class="mpwem_style mep-quick-setup">
 					<div class="_dShadow_6_adminLayout">

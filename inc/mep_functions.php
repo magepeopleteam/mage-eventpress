@@ -41,12 +41,24 @@
 		$status               = $user_settings_status == 'enable' ? true : false;
 		return $status;
 	}
+
 	add_action( 'admin_init', 'mep_flush_rules_event_list_page' );
 	function mep_flush_rules_event_list_page() {
-		if ( isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) == 'mep_events' ) {
+		// Only allow logged-in admins
+		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Check if this is your specific page
+		if ( isset( $_GET['post_type'], $_GET['page'], $_GET['_mep_flush_nonce'] )
+			&& sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) === 'mep_events'
+			&& sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'mep_event_lists'
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_mep_flush_nonce'] ) ), 'mep_flush_rules_action' )
+		) {
 			flush_rewrite_rules();
 		}
 	}
+
 	if ( ! function_exists( 'mep_isValidFilename' ) ) {
 		function mep_isValidFilename( $filename ) {
 			// Define the allowed pattern: lowercase letters, numbers, hyphens, and must end with .php

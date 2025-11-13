@@ -526,7 +526,8 @@
 	.mpwem_style .circleIcon_xs, .mpwem_style [class*="_circleIcon_xs"] { width: 25px; height: 25px; min-width: 25px; font-size: var(--fs_small); margin: 0 var(--dmp_xs) 0 0; }
 	/*****Remove icon******/
 	.mpwem_style .mpwem_remove_area { position: relative; }
-	.mpwem_style .remove_icon { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer; opacity: 0; font-size: var(--fs); background-color: var(--color_danger); color: var(--color_theme_alter); }
+	.mpwem_style .remove_icon { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer; opacity: 0; font-size: var(--fs); background-color: var(--color_danger); color: var(--color_theme_alter); z-index: 1111;}
+	.mpwem_style label:hover .remove_icon{opacity: 1;}
 	/**************Default************************/
 	.mpwem_style .dLayout, .mpwem_style [class*="_dLayout"] { padding: var(--dmp); margin-bottom: var(--dmp); background-color: var(--color_white); border: 1px solid var(--color_border); }
 	.mpwem_style .dLayout_xs, .mpwem_style [class*="_dLayout_xs"] { padding: var(--dmp_xs); background-color: var(--color_white); border: 1px solid var(--color_border); margin-bottom: var(--dmp_xs); }

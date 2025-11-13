@@ -462,6 +462,7 @@
                 <label>
                     <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $hidden_date ); ?>"/>
                     <input type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                    <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_html_e('Remove Image', 'mage-eventpress'); ?>"></span>
                 </label>
 				<?php
 			}

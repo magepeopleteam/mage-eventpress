@@ -350,12 +350,23 @@
 			/**************************/
 			public function speakers( $event_id, $event_infos ) { require MPWEM_Functions::template_path( 'layout/speaker_list.php' ); }
 			/**************************/
+			
 			public function get_mpwem_ticket() {
-				$post_id = $_REQUEST['post_id'] ?? '';
-				$dates   = $_REQUEST['dates'] ?? '';
+				// Sanitize and validate input
+				$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
+				$dates   = isset($_REQUEST['dates']) ? sanitize_text_field($_REQUEST['dates']) : '';
+				
+				// Check if post exists and is published
+				if ( ! $post_id || get_post_status( $post_id ) !== 'publish' ) {
+					wp_send_json_error( 'Invalid or unpublished Event.','mage-eventpress' );
+					wp_die();
+				}
+				
+				// Trigger your action safely
 				do_action( 'mpwem_registration_content', $post_id, [], [], $dates );
-				die();
+				wp_die(); // Always use wp_die() instead of die() in WordPress
 			}
+
 			public function get_mpwem_time() {
 				$event_id    = $_REQUEST['post_id'] ?? '';
 				$date        = $_REQUEST['dates'] ?? '';

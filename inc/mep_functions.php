@@ -44,16 +44,17 @@
 
 	add_action( 'admin_init', 'mep_flush_rules_event_list_page' );
 	function mep_flush_rules_event_list_page() {
-		// Ensure user is logged in and has proper capability
+		// Only allow logged-in admins
 		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
-			return; // Abort if not an admin
+			return;
 		}
-		// Verify nonce to prevent CSRF
-		if ( ! isset( $_GET['_mep_flush_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_mep_flush_nonce'] ) ), 'mep_flush_rules_action' ) ) {
-			return; // Invalid or missing nonce
-		}
-		// Check post type
-		if ( isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) === 'mep_events' ) {
+
+		// Check if this is your specific page
+		if ( isset( $_GET['post_type'], $_GET['page'], $_GET['_mep_flush_nonce'] )
+			&& sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) === 'mep_events'
+			&& sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'mep_event_lists'
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_mep_flush_nonce'] ) ), 'mep_flush_rules_action' )
+		) {
 			flush_rewrite_rules();
 		}
 	}

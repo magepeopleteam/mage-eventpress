@@ -755,9 +755,6 @@ h3.mep_list_date, p.mep_list_date {
 .evl-cc {
 	margin: 0 0 0 10px;
 }
-.mep_list_location_name .evl-cc {
-	line-height: 0;
-}
 /*******Grid Style******/
 .mep_event_grid_item {
 	border: 1px solid #DDD;
@@ -2043,9 +2040,7 @@ span.mep-more-time i {
 .mep-event-countdown-timer .wrapper {
 	min-height: 100px;
 	vertical-align: middle;
-	/* background: #00000014; */
 	margin: 0 10px;
-	/* border: 1px solid #CAC2C2; */
 	padding-top: 14px;
 }
 .mep-event-countdown-timer .wrapper .time {

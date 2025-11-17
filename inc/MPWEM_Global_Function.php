@@ -10,6 +10,7 @@
 		class MPWEM_Global_Function {
 			public function __construct() {
 				add_action( 'mpwem_load_date_picker_js', [ $this, 'date_picker_js' ], 10, 2 );
+				add_filter( 'wc_price', [ $this, 'wc_price_free_text' ], 10, 4 );
 			}
 			public function date_picker_js( $selector, $dates ) {
 				$start_date  = $dates[0];
@@ -176,6 +177,13 @@
 			public static function get_wc_raw_price( $price ) {
 				$price = wc_price( $price );
 				return self::price_convert_raw( $price );
+			}
+			public function wc_price_free_text( $return, $price, $args, $unformatted_price ) {
+				$show_free_text = self::get_settings( 'general_setting_sec', 'mep_show_zero_as_free', 'yes' );
+				if ( $unformatted_price == 0 && $show_free_text == 'yes' ) {
+					$return = __( 'Free', 'mage-eventpress' );
+				}
+				return $return;
 			}
 			//=================//
 			public static function get_image_url( $post_id = '', $image_id = '', $size = 'full' ) {

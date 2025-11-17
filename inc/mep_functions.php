@@ -41,24 +41,21 @@
 		$status               = $user_settings_status == 'enable' ? true : false;
 		return $status;
 	}
-
 	add_action( 'admin_init', 'mep_flush_rules_event_list_page' );
 	function mep_flush_rules_event_list_page() {
 		// Only allow logged-in admins
 		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-
 		// Check if this is your specific page
 		if ( isset( $_GET['post_type'], $_GET['page'], $_GET['_mep_flush_nonce'] )
-			&& sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) === 'mep_events'
-			&& sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'mep_event_lists'
-			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_mep_flush_nonce'] ) ), 'mep_flush_rules_action' )
+		     && sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) === 'mep_events'
+		     && sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'mep_event_lists'
+		     && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_mep_flush_nonce'] ) ), 'mep_flush_rules_action' )
 		) {
 			flush_rewrite_rules();
 		}
 	}
-
 	if ( ! function_exists( 'mep_isValidFilename' ) ) {
 		function mep_isValidFilename( $filename ) {
 			// Define the allowed pattern: lowercase letters, numbers, hyphens, and must end with .php
@@ -1090,15 +1087,7 @@
 			}
 		}
 	}
-	if ( ! function_exists( 'mep_merge_saved_array' ) ) {
-		function mep_merge_saved_array( $arr1, $arr2 ) {
-			$output = [];
-			for ( $i = 0; $i < count( $arr1 ); $i ++ ) {
-				$output[ $i ] = array_merge( $arr1[ $i ], $arr2[ $i ] );
-			}
-			return $output;
-		}
-	}
+
 	if ( ! function_exists( 'mep_template_file_path' ) ) {
 		function mep_template_file_path( $file_name ) {
 			$template_path = get_stylesheet_directory() . '/mage-event/';
@@ -2681,16 +2670,6 @@
 			}
 			// return 0;
 			return apply_filters( 'woocommerce_get_price_including_tax', $return_price, $qty, $product );
-		}
-	}
-	add_filter( 'wc_price', 'mep_show_custom_text_for_zero_price', 10, 4 );
-	if ( ! function_exists( 'mep_show_custom_text_for_zero_price' ) ) {
-		function mep_show_custom_text_for_zero_price( $return, $price, $args, $unformatted_price ) {
-			$show_free_text = mep_get_option( 'mep_show_zero_as_free', 'general_setting_sec', 'yes' );
-			if ( $unformatted_price == 0 && $show_free_text == 'yes' ) {
-				$return = mep_get_option( 'mep_free_price_text', 'label_setting_sec', esc_html__( 'Free', 'mage-eventpress' ) );
-			}
-			return $return;
 		}
 	}
 	if ( ! function_exists( 'mep_get_list_thumbnail' ) ) {
@@ -4345,3 +4324,14 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
         </div>
 		<?php
 	}
+    /******************** Remove below function after 2025**********************/
+	if ( ! function_exists( 'mep_merge_saved_array' ) ) {
+		function mep_merge_saved_array( $arr1, $arr2 ) {
+			$output = [];
+			for ( $i = 0; $i < count( $arr1 ); $i ++ ) {
+				$output[ $i ] = array_merge( $arr1[ $i ], $arr2[ $i ] );
+			}
+			return $output;
+		}
+	}
+/******************** Remove upper function after 2025**********************/

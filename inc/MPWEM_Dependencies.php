@@ -123,9 +123,7 @@
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				// Only load event lists scripts on relevant pages
-				if ( $hook == 'mep_events_page_mep_event_lists' ||
-				     ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&
-				       ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
+				if ( $hook == 'mep_events_page_mep_event_lists' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&  ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
 					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
 					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
 						'url'   => admin_url( 'admin-ajax.php' ),

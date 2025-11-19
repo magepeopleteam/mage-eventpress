@@ -86,7 +86,6 @@
 			<?php do_action( 'after-single-events' ); ?>
         </div>
 		<?php
-		do_action( 'mep_event_single_template_end', $event_id );
 		do_action( 'mep_event_single_page_before_footer', $event_id );
 	}
 // ==============================

@@ -169,6 +169,13 @@
 						'compare' => '='
 					);
 				}
+				if ( array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
+					$meta_query[] = array(
+						'key'     => 'ea_seat_name',
+						'value'   => $filter_args['ea_seat_name'],
+						'compare' => '='
+					);
+				}
 				if ( array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
 					$meta_query[] = array(
 						'key'     => 'mep_checkin',

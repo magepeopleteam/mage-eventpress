@@ -24,7 +24,6 @@
 				add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
 				add_filter( 'woocommerce_cart_item_price', array( $this, 'cart_item_price' ), 10, 4 );
 			}
-
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
@@ -59,14 +58,12 @@
 					do_action( 'mep_event_cart_data_reg' );
 					$cart_item_data['event_id'] = $product_id;
 					mep_temp_attendee_create_for_cart_ticket_array( $product_id, $ticket_info );
-
 					//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
-					return apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_info, $ex_infos );
-				} else {
-					return $cart_item_data;
+					$cart_item_data = apply_filters( 'mep_event_cart_item_data', $cart_item_data, $product_id, $total_price, $user, $ticket_info, $ex_infos );
 				}
+				//echo '<pre>';print_r( $cart_item_data );echo '</pre>';die();
+				return $cart_item_data;
 			}
-
 			public function before_calculate_totals( $cart_object ) {
 				foreach ( $cart_object->cart_contents as $key => $value ) {
 					$event_id = array_key_exists( 'event_id', $value ) ? $value['event_id'] : 0;
@@ -80,7 +77,6 @@
 					}
 				}
 			}
-
 			public function get_item_data( $item_data, $cart_item ) {
 				ob_start();
 				$eid = array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
@@ -118,10 +114,8 @@
 					echo "</ul>";
 				}
 				$item_data[] = array( 'key' => __( 'Details Information', 'mage-eventpress' ), 'value' => ob_get_clean() );
-
 				return $item_data;
 			}
-
 			public function after_checkout_validation( $posted ) {
 				global $woocommerce;
 				$items = $woocommerce->cart->get_cart();
@@ -148,7 +142,6 @@
 					}
 				}
 			}
-
 			public function add_to_cart_validation( $passed ) {
 				$wc_product_id   = isset( $_REQUEST['add-to-cart'] ) ? sanitize_text_field( $_REQUEST['add-to-cart'] ) : '';
 				$product_id      = isset( $_REQUEST['add-to-cart'] ) ? sanitize_text_field( $_REQUEST['add-to-cart'] ) : '';
@@ -162,19 +155,15 @@
 						$passed = false;
 					}
 				}
-
 				return $passed;
 			}
-
 			public function add_to_cart_redirect( $wc_get_cart_url ) {
 				$redirect_status = mep_get_option( 'mep_event_direct_checkout', 'general_setting_sec', 'yes' );
 				if ( $redirect_status == 'yes' ) {
 					$wc_get_cart_url = wc_get_checkout_url();
 				}
-
 				return $wc_get_cart_url;
 			}
-
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
 				$eid           = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
 				$location_text = mep_get_option( 'mep_location_text', 'label_setting_sec', esc_html__( 'Location', 'mage-eventpress' ) );
@@ -263,7 +252,6 @@
 					do_action( 'mep_event_cart_order_data_add', $values, $item );
 				}
 			}
-
 			public function order_status_changed( $order_id, $from_status, $to_status, $order ) {
 				// Getting an instance of the order object
 				$order                = wc_get_order( $order_id );
@@ -342,7 +330,6 @@
 					$cn ++;
 				} // End order item foreach
 			} // End Function
-
 			public function checkout_order_processed( $order_id ) {
 				global $woocommerce;
 				$result   = ! is_numeric( $order_id ) ? json_decode( $order_id ) : [ 0 ];
@@ -453,34 +440,30 @@
 					do_action( 'mep_after_event_booking', $order_id, $order->get_status() );
 				}
 			}
-
 			public static function get_cart_ticket_info( $post_id ) {
-				$ticket_info  = [];
-				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
-				$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
-				$start_date   = current( $start_date );
-				$names        = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
-				$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
-				$max_qty      = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
-				$total_price  = 0;
+				$ticket_info = [];
+				$start_date  = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+				$start_date  = current( $start_date );
+				$names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
+				$qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
+				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
+				$total_price = 0;
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
-						// Decode HTML entities and URL encoding to handle special characters
-						$decoded_name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+						;
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
-						if ( $decoded_name && $current_qty > 0 ) {
-							$ticket_info[ $key ]['ticket_name']  = $decoded_name;
-							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $decoded_name, $post_id, $ticket_types );
+						if ( $name && $current_qty > 0 ) {
+							$ticket_info[ $key ]['ticket_name']  = $name;
+							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id );
 							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
 							$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
 							$ticket_info[ $key ]['event_date']   = $start_date;
+							$ticket_info[ $key ]['event_id']     = $post_id;
 						}
 					}
 				}
-
 				return apply_filters( 'mep_cart_ticket_type_data_prepare', $ticket_info, 'ticket_type', $total_price, $post_id );
 			}
-
 			public static function get_cart_ticket_price( $ticket_infos ) {
 				$price = 0;
 				if ( sizeof( $ticket_infos ) > 0 ) {
@@ -490,10 +473,8 @@
 						$price         = $price + $current_price * $qty;
 					}
 				}
-
 				return $price;
 			}
-
 			public static function get_cart_ex_info( $post_id ) {
 				$ticket_info  = [];
 				$ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_events_extra_prices', [] );
@@ -512,10 +493,8 @@
 						}
 					}
 				}
-
 				return $ticket_info;
 			}
-
 			public static function get_cart_ex_price( $ticket_infos ) {
 				$price = 0;
 				if ( sizeof( $ticket_infos ) > 0 ) {
@@ -525,10 +504,8 @@
 						$price         = $price + $current_price * $qty;
 					}
 				}
-
 				return $price;
 			}
-
 			public function account_dashboard() {
 				ob_start();
 				?>
@@ -599,12 +576,10 @@
 				$content = ob_get_clean();
 				echo wp_kses_post( html_entity_decode( $content ) );
 			}
-
 			public function cart_item_price( $price, $cart_item, $r ) {
 				if ( array_key_exists( 'event_id', $cart_item ) && get_post_type( $cart_item['event_id'] ) == 'mep_events' ) {
 					$price = wc_price( mep_get_price_including_tax( $cart_item['event_id'], $cart_item['event_tp'] ) );
 				}
-
 				return $price;
 			}
 		}

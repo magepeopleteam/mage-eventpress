@@ -927,7 +927,7 @@ div.mep_event_native_list {
 	padding: 1px;
 }
 .mep_event_native_list .mep_list_thumb {
-	width: 90px;
+	width: 150px;
 }
 .mep_list_thumb a {
 	height: 100%;
@@ -938,6 +938,10 @@ div.mep_event_native_list .mep-list-header {
 .mep_event_native_list .mep-list-header::before {
 	border-left: 2px solid;
 }
+  div.mpwem_style [data-bg-image] {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 .mep_event_native_list h3.mep_list_date i {
 	background: transparent;
 }

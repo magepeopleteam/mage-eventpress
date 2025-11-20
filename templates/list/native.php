@@ -50,7 +50,7 @@
 >
 	<?php do_action( 'mep_event_minimal_list_loop_header', $event_id ); ?>
     <div class="mep_list_thumb mpwem_style">
-        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'thumbnail' ) ); ?>"></div>
+        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'full' ) ); ?>"></div>
     </div>
     <div class="mep_list_event_details">
         <a href="<?php the_permalink(); ?>">

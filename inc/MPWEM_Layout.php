@@ -40,8 +40,24 @@
                     <label>
                         <select class="formControl" name="mpwem_post_id">
                             <option value="0" selected><?php esc_html_e( 'Select Event', 'mage-eventpress' ); ?></option>
-							<?php foreach ( $post_ids as $post_id ) { ?>
-                                <option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></option>
+							<?php foreach ( $post_ids as $post_id ) {
+								// Get event title
+								$event_title = get_the_title( $post_id );
+								
+								// Get event start date
+								$all_dates = MPWEM_Functions::get_all_dates( $post_id );
+								$event_date = MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates );
+								
+								// Format the date if available
+								$date_display = '';
+								if ( $event_date ) {
+									$date_display = ' - ' . date_i18n( get_option( 'date_format' ), strtotime( $event_date ) );
+								}
+								
+								// Create the display text: "Event Name - Date (ID: XXX)"
+								$display_text = $event_title . $date_display . ' (ID: ' . $post_id . ')';
+								?>
+                                <option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( $display_text ); ?></option>
 							<?php } ?>
                         </select>
                     </label>

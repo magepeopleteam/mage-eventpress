@@ -14,7 +14,7 @@
     <div class="total"><?php esc_html_e( 'Total Price : ', 'mage-eventpress' ); ?>
         <span class="mpwem_total"><?php echo wc_price( 0 ); ?></span>
     </div>
-	<?php if ( is_admin() && str_contains( wp_get_referer(), 'mpwem_backend_order' ) ) { ?>
+	<?php if ( is_admin() && str_contains( wp_get_referer(), 'backend_order' ) ) { ?>
 		<?php do_action( 'mpwem_bo_hidden', $event_id ); ?>
         <button type="submit" class="_themeButton">
 			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>

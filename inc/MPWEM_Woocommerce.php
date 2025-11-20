@@ -81,24 +81,27 @@
 				ob_start();
 				$eid = array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 				if ( get_post_type( $eid ) == 'mep_events' ) {
-					$hide_location_status = mep_get_option( 'mep_hide_location_from_order_page', 'general_setting_sec', 'no' );
-					$hide_date_status     = mep_get_option( 'mep_hide_date_from_order_page', 'general_setting_sec', 'no' );
-					$user_info            = $cart_item['event_user_info'];
-					$ticket_type_arr      = $cart_item['event_ticket_info'];
-					$event_extra_service  = $cart_item['event_extra_service'];
-					$event_date           = $cart_item['event_cart_date'];
-					//echo '<pre>';print_r($cart_item);echo '</pre>';
+					$general_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) );
+					$hide_location_status=array_key_exists('mep_hide_location_from_order_page',$general_setting_sec)?$general_setting_sec['mep_hide_location_from_order_page']:'no';
+					$hide_date_status=array_key_exists('mep_hide_date_from_order_page',$general_setting_sec)?$general_setting_sec['mep_hide_date_from_order_page']:'no';
+					$user_info=array_key_exists('event_user_info',$cart_item)?$cart_item['event_user_info']:[];
+					$ticket_type_arr=array_key_exists('event_ticket_info',$cart_item)?$cart_item['event_ticket_info']:[];
+					$event_extra_service=array_key_exists('event_extra_service',$cart_item)?$cart_item['event_extra_service']:[];
+					$event_date=array_key_exists('event_cart_date',$cart_item)?$cart_item['event_cart_date']:'';
+					$date_format = MPWEM_Global_Function::check_time_exit_date( $event_date ) ? 'full' : 'date';
+					$location=array_key_exists('event_cart_location',$cart_item)?$cart_item['event_cart_location']:'';
+                   // echo '<pre>';print_r(MPWEM_Form_Builder::get_form_array($eid));echo '</pre>';
+                    ?>
+                    <div class="mpwem_style">
+                        <?php if ( $hide_date_status == 'no' ) { ?>
+                            <h6><?php echo esc_html__( " Date : ", 'mage-eventpress' ).' '.MPWEM_Global_Function::date_format($event_date,$date_format); ?></h6>
+                        <?php } ?>
+                        <?php if ( $location && $hide_location_status == 'no' ) { ?>
+                            <h6><?php echo esc_html__( " Location : ", 'mage-eventpress' ).' '.esc_html($location); ?></h6>
+                        <?php } ?>
+                    </div>
+                    <?php
 					echo "<ul class='event-custom-price'>";
-					if ( $hide_date_status == 'no' ) {
-						?>
-                        <li><?php esc_html_e( " Date", 'mage-eventpress' ); ?>: <?php echo esc_html( get_mep_datetime( $event_date, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) ); ?></li>
-						<?php
-					}
-					if ( $hide_location_status == 'no' ) {
-						?>
-                        <li><?php esc_html_e( " Location", 'mage-eventpress' ); ?>: <?php echo esc_html( $cart_item['event_cart_location'] ); ?></li>
-						<?php
-					}
 					if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 						echo '<li>' . mep_cart_display_user_list( $user_info, $eid ) . '</li>';
 					}

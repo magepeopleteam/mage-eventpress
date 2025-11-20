@@ -206,7 +206,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 "action": "get_mpwem_ticket",
                 "post_id": post_id,
                 "dates": dates,
-                "backend_order": window.location.href.search("mpwem_backend_order"),
+                "backend_order": window.location.href.search("backend_order"),
             },
             beforeSend: function () {
                 dLoader_xs(target);

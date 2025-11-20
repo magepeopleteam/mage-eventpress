@@ -29,23 +29,24 @@
 					$paged = 1;
 				}
 				$etype          = $evnt_type == 'expired' ? '<' : '>';
-				$cat_id         = explode( ',', $cat );
-				$org_id         = explode( ',', $org );
-				$tag_id         = explode( ',', $tag );
-				$cat_filter     = ! empty( $cat ) ? array(
+				$cat_ids = array_filter( array_map( 'intval', explode( ',', $cat ) ) );
+				$org_ids = array_filter( array_map( 'intval', explode( ',', $org ) ) );
+				$tag_ids = array_filter( array_map( 'intval', explode( ',', $tag ) ) );
+
+				$cat_filter = ! empty( $cat_ids ) ? array(
 					'taxonomy' => 'mep_cat',
 					'field'    => 'term_id',
-					'terms'    => $cat_id
+					'terms'    => $cat_ids
 				) : '';
-				$org_filter     = ! empty( $org ) ? array(
+				$org_filter = ! empty( $org_ids ) ? array(
 					'taxonomy' => 'mep_org',
 					'field'    => 'term_id',
-					'terms'    => $org_id
+					'terms'    => $org_ids
 				) : '';
-				$tag_filter     = ! empty( $tag ) ? array(
+				$tag_filter = ! empty( $tag_ids ) ? array(
 					'taxonomy' => 'mep_tag',
 					'field'    => 'term_id',
-					'terms'    => $tag_id
+					'terms'    => $tag_ids
 				) : '';
 				$city_filter    = ! empty( $city ) ? array(
 					'key'     => 'mep_city',
@@ -78,54 +79,41 @@
 					'type'    => 'DATETIME'
 				) : '';
 				// Build meta_query with only non-empty filters
-				$meta_query_parts = array();
+				$meta_query = array();
 				if ( ! empty( $expire_filter ) ) {
-					$meta_query_parts[] = $expire_filter;
+					$meta_query[] = $expire_filter;
 				}
 				if ( ! empty( $city_filter ) ) {
-					$meta_query_parts[] = $city_filter;
+					$meta_query[] = $city_filter;
 				}
 				if ( ! empty( $state_filter ) ) {
-					$meta_query_parts[] = $state_filter;
+					$meta_query[] = $state_filter;
 				}
 				if ( ! empty( $country_filter ) ) {
-					$meta_query_parts[] = $country_filter;
+					$meta_query[] = $country_filter;
 				}
 				if ( ! empty( $year_filter ) ) {
-					$meta_query_parts[] = $year_filter;
+					$meta_query[] = $year_filter;
 				}
 				// Only add relation if we have actual query parts
-				if ( count( $meta_query_parts ) > 1 ) {
-					$meta_query = array( 'relation' => 'AND' );
-					foreach ( $meta_query_parts as $part ) {
-						$meta_query[] = $part;
-					}
-				} elseif ( count( $meta_query_parts ) === 1 ) {
-					$meta_query = $meta_query_parts[0];
-				} else {
-					$meta_query = '';
+				if ( count( $meta_query ) > 1 ) {
+					$meta_query['relation'] = 'AND';
 				}
+
 				// Build tax_query with only non-empty filters
-				$tax_query_parts = array();
+				$tax_query = array();
 				if ( ! empty( $cat_filter ) ) {
-					$tax_query_parts[] = $cat_filter;
+					$tax_query[] = $cat_filter;
 				}
 				if ( ! empty( $org_filter ) ) {
-					$tax_query_parts[] = $org_filter;
+					$tax_query[] = $org_filter;
 				}
 				if ( ! empty( $tag_filter ) ) {
-					$tax_query_parts[] = $tag_filter;
+					$tax_query[] = $tag_filter;
 				}
 				// Only add relation if we have actual query parts
-				if ( count( $tax_query_parts ) > 1 ) {
-					$tax_query = array( 'relation' => 'AND' );
-					foreach ( $tax_query_parts as $part ) {
-						$tax_query[] = $part;
-					}
-				} elseif ( count( $tax_query_parts ) === 1 ) {
-					$tax_query = $tax_query_parts[0];
-				} else {
-					$tax_query = '';
+				if ( count( $tax_query ) > 1 ) {
+					$tax_query['relation'] = 'AND';
 				}
 				$args = array(
 					'post_type'      => array( 'mep_events' ),

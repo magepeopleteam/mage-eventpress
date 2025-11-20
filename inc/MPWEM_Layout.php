@@ -178,6 +178,122 @@
                 </div>
 				<?php
 			}
+			public static function get_form_array( $event_id ) {
+				$form_id    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
+				$form_id    = $form_id == 'custom_form' ? $event_id : $form_id;
+				$form_array = [];
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_full_name' ) ) {
+					$form_array['user_name'] = [
+						'type'     => 'text',
+						'name'     => 'user_name',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_name_label', esc_html__( 'Enter Your Name', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_email' ) ) {
+					$form_array['user_email'] = [
+						'type'     => 'email',
+						'name'     => 'user_email',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_email_label', esc_html__( 'Enter Your Email', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_phone' ) ) {
+					$form_array['user_phone'] = [
+						'type'     => 'text',
+						'name'     => 'user_phone',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_phone_label', esc_html__( 'Enter Your Phone', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_address' ) ) {
+					$form_array['user_address'] = [
+						'type'     => 'textarea',
+						'name'     => 'user_address',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_address_label', esc_html__( 'Enter Your address', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_tshirtsize' ) ) {
+					$form_array['tshirtsize'] = [
+						'type'     => 'select',
+						'name'     => 'user_tshirtsize',
+						'required' => 1,
+						'data'     => MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_tshirtsize_list' ),
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_tshirt_label', esc_html__( 'T-Shirt Size', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_gender' ) ) {
+					$form_array['gender'] = [
+						'type'     => 'gender',
+						'name'     => 'user_gender',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_gender_label', esc_html__( 'Gender', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_company' ) ) {
+					$form_array['user_company'] = [
+						'type'     => 'text',
+						'name'     => 'user_company',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_company_label', esc_html__( 'Company', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_designation' ) ) {
+					$form_array['user_designation'] = [
+						'type'     => 'text',
+						'name'     => 'user_designation',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_desg_label', esc_html__( 'Designation', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_website' ) ) {
+					$form_array['user_website'] = [
+						'type'     => 'text',
+						'name'     => 'user_website',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_website_label', esc_html__( 'Website', 'mage-eventpress' ) ),
+					];
+				}
+				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_veg' ) ) {
+					$form_array['vegetarian'] = [
+						'type'     => 'vegetarian',
+						'name'     => 'user_vegetarian',
+						'required' => 1,
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_veg_label', esc_html__( 'Vegetarian', 'mage-eventpress' ) ),
+					];
+				}
+				$custom_forms = MPWEM_Global_Function::get_post_info( $form_id, 'mep_form_builder_data', [] );
+				if ( sizeof( $custom_forms ) > 0 ) {
+					$conditional_infos = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_infos', [] );
+					$conditional_check = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_form_check', 'off' );
+					foreach ( $custom_forms as $custom_form ) {
+						$type  = array_key_exists( 'mep_fbc_type', $custom_form ) ? $custom_form['mep_fbc_type'] : '';
+						$id    = array_key_exists( 'mep_fbc_id', $custom_form ) ? $custom_form['mep_fbc_id'] : '';
+						$label = array_key_exists( 'mep_fbc_label', $custom_form ) ? $custom_form['mep_fbc_label'] : '';
+						if ( $type && $id && $label ) {
+							$form_array[ $id ]['type']     = $type;
+							$form_array[ $id ]['name']     = $id;
+							$form_array[ $id ]['label']    = $label;
+							$form_array[ $id ]['required'] = array_key_exists( 'mep_fbc_required', $custom_form ) ? $custom_form['mep_fbc_required'] : '';
+							$form_array[ $id ]['data']     = array_key_exists( 'mep_fbc_dp_data', $custom_form ) ? $custom_form['mep_fbc_dp_data'] : '';
+							$form_array[ $id ]['tag']      = array_key_exists( 'mep_title_type', $custom_form ) ? $custom_form['mep_title_type'] : '';
+							$active_condition              = array_key_exists( 'mep_active_conditional', $custom_form ) ? $custom_form['mep_active_conditional'] : 0;
+							if ( $conditional_check == 'on' && $active_condition > 0 && sizeof( $conditional_infos ) > 0 ) {
+								foreach ( $conditional_infos as $conditional_info ) {
+									$type_id = array_key_exists( 'child_id', $conditional_info ) ? $conditional_info['child_id'] : '';
+									if ( $id == $type_id ) {
+										$form_array[ $id ]['depend']       = array_key_exists( 'type', $conditional_info ) ? $conditional_info['type'] : '';
+										$form_array[ $id ]['parent_id']    = array_key_exists( 'parent_id', $conditional_info ) ? $conditional_info['parent_id'] : '';
+										$form_array[ $id ]['parent_value'] = array_key_exists( 'parent_value', $conditional_info ) ? $conditional_info['parent_value'] : '';
+									}
+								}
+							}
+						}
+					}
+				}
+				return $form_array;
+			}
 		}
 		new MPWEM_Layout();
 	}

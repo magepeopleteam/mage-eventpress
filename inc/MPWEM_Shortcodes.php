@@ -76,6 +76,7 @@
 				ob_start();
 				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, '', $year, 0, $tag );
 				$total_item = $loop->found_posts;
+                echo $cat;
 				?>
                 <div class='list_with_filter_section mep_event_list'>
 					<?php

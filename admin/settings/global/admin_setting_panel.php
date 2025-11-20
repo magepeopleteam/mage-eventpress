@@ -313,6 +313,14 @@
 								'placeholder' => '15'
 							),
 							array(
+								'name'        => 'mep_ticket_expire_time_on_cart',
+								'label'       => __( 'Event Expire Time on Cart', 'mage-eventpress' ),
+								'desc'        => __( 'Please enter the number of minutes after that the event will removed from the cart', 'mage-eventpress' ),
+								'type'        => 'text',
+								'default'     => '10',
+								'placeholder' => '10'
+							),							
+							array(
 								'name'    => 'mep_load_fontawesome_from_theme',
 								'label'   => __( 'Load Font Awesome From Theme?', 'mage-eventpress' ),
 								'desc'    => __( 'If the icons are not working and you want to disable Font Awesome loading from the plugin, select Yes.', 'mage-eventpress' ),

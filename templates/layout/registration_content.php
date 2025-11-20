@@ -15,18 +15,14 @@
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 		if ( $reg_status == 'on' ) {
-			$full_location   = MPWEM_Functions::get_location( $event_id );
-			// $total_available = MPWEM_Functions::get_total_available_seat( $event_id, $date );
+			$full_location = MPWEM_Functions::get_location( $event_id );
+			 //$total_available = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 			// $total_available = max( $total_available, 0 );
-
-
-
-	$total_sold    		= mep_ticket_type_sold( $event_id, '', $date );
-	$total_ticket  = MPWEM_Functions::get_total_ticket( $event_id, $date );
-	$total_reserve = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
-	$total_available=  $total_ticket - ( $total_sold + $total_reserve );
-	$total_available = max( $total_available, 0 );
-
+			$total_sold      = mep_ticket_type_sold( $event_id, '', $date );
+			$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $date );
+			$total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+			$total_available = $total_ticket - ( $total_sold + $total_reserve );
+			$total_available = max( $total_available, 0 );
 			?>
             <div class="mpwem_booking_panel">
                 <input type="hidden" name='mpwem_post_id' value='<?php echo esc_attr( $event_id ); ?>'/>
@@ -39,7 +35,7 @@
                 <div class="mpwem_form_submit_area">
 					<?php do_action( 'mep_add_term_condition', $event_id ); ?>
 					<?php
-						if ( $total_available > 0 ) { 
+						if ( $total_available > 0 ) {
 							require MPWEM_Functions::template_path( 'layout/add_to_cart.php' );
 						}
 					?>

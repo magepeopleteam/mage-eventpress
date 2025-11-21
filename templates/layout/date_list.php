@@ -8,6 +8,7 @@
 	$all_dates                = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_dates                = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
 	$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$mep_show_end_datetime            = array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
 	$hide_date_list           = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
@@ -28,7 +29,7 @@
                             <div class="_infoLayout_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                 <div class="date_item">
                                     <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
-									<?php if ( $end_time ) { ?>
+									<?php if ( $end_time && $mep_show_end_datetime=='yes') { ?>
                                         <p>-</p>
                                         <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
 									<?php } ?>
@@ -73,7 +74,7 @@
                                         <div class="_infoLayout_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                             <div class="date_item">
                                                 <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>
-							                    <?php if ( $end_time ) { ?>
+							                    <?php if ( $end_time && $mep_show_end_datetime=='yes') { ?>
                                                     <p>-</p>
                                                     <span><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></span>
 							                    <?php } ?>

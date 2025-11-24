@@ -16,7 +16,19 @@
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
 	div.default_theme .speaker_list a [data-bg-image] {width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
-	div.default_theme .speaker_list a h6 {margin: var(--dmp_xs) 0 0 0;}
+	div.default_theme .speaker_list a h6 {
+		margin: var(--dmp_xs) 0 0 0;
+		font-size: 16px;
+    	font-weight: 500;
+		text-transform: capitalize;
+	}
+	.default_theme .mep-default-sidebar h5{
+		font-size: 18px;
+    	font-weight: 600;
+		text-transform: capitalize;
+		margin: 0;
+		margin-bottom: 10px;
+	}
 	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
 	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
 	div.mep_smart_theme .speaker_list a [data-bg-image] {width: 70px;height: auto;border-radius: 0;}
@@ -26,6 +38,15 @@
 @media only screen and (min-width: 10px) {
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
+	div.date_time_location_short .short_item h4{
+		font-size: 22px;
+	}
+	div.date_time_location_short .short_item h6 {
+		font-size: 16px;
+    	font-weight: 500;
+		text-transform: capitalize;
+		margin: 0;
+	}
 	div.date_time_location_short .short_item p {color: #878787;margin: 5px 0 0 0;}
 	@media only screen and (max-width: 1199px) {
 		div.date_time_location_short .short_item {max-width: calc(50% - 8px);}
@@ -47,6 +68,9 @@
 	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
 	div.mep_smart_theme .mpwem_organizer,
 	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
+	div.mep_smart_theme .mpwem_organizer h5{
+		margin: 0;
+	}
 }
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
@@ -387,7 +411,6 @@ span.mep_warning {
 }
 .mep-events-wrapper strong {
 	font-weight: bold;
-	font-size: 16px;
 }
 .mep-events-wrapper .mage_input_group {
 	max-width: 102px;
@@ -1123,6 +1146,7 @@ ul.event-custom-price li ul {
 	padding: 10px 5px;
 	text-align: left;
 }
+
 div.mep-default-feature-content p,
 div.mep-default-feature-content ul,
 div.mep-default-feature-content ul li {
@@ -1130,12 +1154,15 @@ div.mep-default-feature-content ul li {
 	margin: 15px 0;
 	list-style: inherit;
 }
-.mep-events-wrapper p:not(.mep-events-wrapper .mep-default-feature-content p, .ui-accordion .ui-accordion-content, .mep-event-review-form .label) {
-	line-height: 1.2;
-	margin: 0;
-	padding: 0;
-	letter-spacing: inherit;
+
+div.mpwem_details_content p,
+div.mpwem_details_content ul,
+div.mpwem_details_content ul li {
+	padding: inherit;
+	margin: 15px 0;
+	list-style: inherit;
 }
+
 ul.mep-more-date-lists li span i {
 	display: inline-block;
 	text-align: center;
@@ -3568,6 +3595,12 @@ div.timeline_item div.timeline_content {
 	padding: var(--dmp);
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
+div.timeline_item div.timeline_content h6{
+	font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+	margin: 0;
+}
 div.mpwem_timeline_area .timeline_time {
 	font-size: 14px;
 	color: var(--color_theme);
@@ -3919,6 +3952,7 @@ div.mpwem_timeline_area .timeline_area::before {
 	.mep_smart_theme .mpwem_left_content h2 {
 		font-size: 24px;
 		color: #333;
+		font-weight: bold;
 	}
 }
 @media only screen and (min-width: 10px) and (min-width: 1024px) {
@@ -3943,6 +3977,13 @@ div.mpwem_timeline_area .timeline_area::before {
 	.mep_smart_theme .mpwem_right_content h2 {
 		font-size: 24px;
 		color: #333;
+		font-weight: bold;
+		margin:0;
+		margin-bottom: 20px;
+	}
+	.mep_smart_theme .mpwem_sidebar_content h5{
+		margin: 0;
+		margin-bottom: 20px;
 	}
 	.mep_smart_theme .mpwem_sidebar_content .location_widgets,
 	.mep_smart_theme .mpwem_sidebar_content .share_widgets {
@@ -3950,8 +3991,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		justify-content: start;
 		align-items: start;
 		gap: 10px;
-		padding: 25px 15px;
-		padding-bottom: 10px;
+		padding:20px;
 		border-bottom: 1px solid #DDD;
 		color:#333;
 	}
@@ -4318,12 +4358,14 @@ div.mpwem_timeline_area .timeline_area::before {
 	.mep-related-events .mep-related-events-items .item .item-info {
 		display: flex;
 		justify-content: space-between;
+		align-items: stretch;
 		padding: 0 20px;
 		margin: 10px 0;
 	}
 	.mep-related-events .mep-related-events-items .item .item-info .title {
 		text-align: left;
 		color: #999;
+		width: 70%;
 	}
 	.mep-related-events .mep-related-events-items .item .item-info .title h2 {
 		font-size: 15px;
@@ -4333,6 +4375,7 @@ div.mpwem_timeline_area .timeline_area::before {
 	.mep-related-events .mep-related-events-items .item .item-info .price {
 		text-align: right;
 		color: #999;
+		width: 30%;
 	}
 	.mep-related-events .mep-related-events-items .item .item-info .price h2 {
 		font-size: 30px;

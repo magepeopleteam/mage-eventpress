@@ -27,6 +27,7 @@
     	font-weight: 600;
 		text-transform: capitalize;
 		margin: 0;
+		margin-bottom: 10px;
 	}
 	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
 	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
@@ -44,6 +45,7 @@
 		font-size: 16px;
     	font-weight: 500;
 		text-transform: capitalize;
+		margin: 0;
 	}
 	div.date_time_location_short .short_item p {color: #878787;margin: 5px 0 0 0;}
 	@media only screen and (max-width: 1199px) {
@@ -409,7 +411,6 @@ span.mep_warning {
 }
 .mep-events-wrapper strong {
 	font-weight: bold;
-	font-size: 16px;
 }
 .mep-events-wrapper .mage_input_group {
 	max-width: 102px;

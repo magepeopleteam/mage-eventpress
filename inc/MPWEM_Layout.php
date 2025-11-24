@@ -202,6 +202,7 @@
 					$form_array['user_name'] = [
 						'type'     => 'text',
 						'name'     => 'user_name',
+						'd_name'     => 'ea_name',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_name_label', esc_html__( 'Enter Your Name', 'mage-eventpress' ) ),
 					];
@@ -210,6 +211,7 @@
 					$form_array['user_email'] = [
 						'type'     => 'email',
 						'name'     => 'user_email',
+						'd_name'     => 'ea_email',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_email_label', esc_html__( 'Enter Your Email', 'mage-eventpress' ) ),
 					];
@@ -218,6 +220,7 @@
 					$form_array['user_phone'] = [
 						'type'     => 'text',
 						'name'     => 'user_phone',
+						'd_name'     => 'ea_phone',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_phone_label', esc_html__( 'Enter Your Phone', 'mage-eventpress' ) ),
 					];
@@ -226,6 +229,7 @@
 					$form_array['user_address'] = [
 						'type'     => 'textarea',
 						'name'     => 'user_address',
+						'd_name'     => 'ea_address_1',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_address_label', esc_html__( 'Enter Your address', 'mage-eventpress' ) ),
 					];
@@ -234,6 +238,7 @@
 					$form_array['tshirtsize'] = [
 						'type'     => 'select',
 						'name'     => 'user_tshirtsize',
+						'd_name'     => 'ea_tshirtsize',
 						'required' => 1,
 						'data'     => MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_tshirtsize_list' ),
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_tshirt_label', esc_html__( 'T-Shirt Size', 'mage-eventpress' ) ),
@@ -243,6 +248,7 @@
 					$form_array['gender'] = [
 						'type'     => 'gender',
 						'name'     => 'user_gender',
+						'd_name'     => 'ea_gender',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_gender_label', esc_html__( 'Gender', 'mage-eventpress' ) ),
 					];
@@ -251,6 +257,7 @@
 					$form_array['user_company'] = [
 						'type'     => 'text',
 						'name'     => 'user_company',
+						'd_name'     => 'ea_company',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_company_label', esc_html__( 'Company', 'mage-eventpress' ) ),
 					];
@@ -259,6 +266,7 @@
 					$form_array['user_designation'] = [
 						'type'     => 'text',
 						'name'     => 'user_designation',
+						'd_name'     => 'ea_desg',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_desg_label', esc_html__( 'Designation', 'mage-eventpress' ) ),
 					];
@@ -267,6 +275,7 @@
 					$form_array['user_website'] = [
 						'type'     => 'text',
 						'name'     => 'user_website',
+						'd_name'     => 'ea_website',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_website_label', esc_html__( 'Website', 'mage-eventpress' ) ),
 					];
@@ -275,6 +284,7 @@
 					$form_array['vegetarian'] = [
 						'type'     => 'vegetarian',
 						'name'     => 'user_vegetarian',
+						'd_name'     => 'ea_vegetarian',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_veg_label', esc_html__( 'Vegetarian', 'mage-eventpress' ) ),
 					];
@@ -290,6 +300,7 @@
 						if ( $type && $id && $label ) {
 							$form_array[ $id ]['type']     = $type;
 							$form_array[ $id ]['name']     = $id;
+							$form_array[ $id ]['d_name']     ='ea_'. $id;
 							$form_array[ $id ]['label']    = $label;
 							$form_array[ $id ]['required'] = array_key_exists( 'mep_fbc_required', $custom_form ) ? $custom_form['mep_fbc_required'] : '';
 							$form_array[ $id ]['data']     = array_key_exists( 'mep_fbc_dp_data', $custom_form ) ? $custom_form['mep_fbc_dp_data'] : '';

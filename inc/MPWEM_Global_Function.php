@@ -283,6 +283,10 @@
 				}
 			}
 			//=================//
+			public static function get_setting( $section, $default = [] ) {
+				$options = get_option( $section );
+				return $options ? self::data_sanitize( $options ) : $default;
+			}
 			public static function get_settings( $section, $key, $default = '' ) {
 				$options = get_option( $section );
 				if ( isset( $options[ $key ] ) && $options[ $key ] ) {

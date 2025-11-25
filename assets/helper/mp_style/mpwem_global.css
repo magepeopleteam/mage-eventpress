@@ -421,7 +421,7 @@
 	/***********Bg Image****************/
 	div.mpwem_style div.bg_image_area { width: 100%; overflow: hidden; position: relative; height: 200px; }
 	div.mpwem_style [data-bg-image] { background-size: 100% 100%; background-position: center center; position: relative; height: 100%; width: 100%; min-height: inherit; }
-	div.mpwem_style [data-bg-image]:before { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-image: linear-gradient(170deg, transparent, Black); opacity: .4; }
+	div.mpwem_style [data-bg-image]:before { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%;  opacity: .4; }
 	div.mpwem_style [data-bg-image] > * { color: #FFF; }
 	div.mpwem_style div.bg_image_area:hover [data-bg-image],
 	div.mpwem_style [data-bg-image]:hover { -ms-transform: scale(1.1); transform: scale(1.1); -webkit-transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; }

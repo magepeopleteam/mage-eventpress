@@ -95,7 +95,7 @@
 					$mep_country   = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_country'] ) ) : "";
 					$latitude      = isset( $_POST['latitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['latitude'] ) ) : "";
 					$longitude     = isset( $_POST['longitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['longitude'] ) ) : "";
-					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : "";
+					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
 					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
 					update_post_meta( $post_id, 'mep_org_address', $mep_org_address );

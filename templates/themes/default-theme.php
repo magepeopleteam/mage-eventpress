@@ -11,7 +11,7 @@
 	$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$event_type                = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
 	$mep_enable_recurring      = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-	$show_google_map_location  = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : 'no';
+	$show_google_map_location  = isset($event_infos['mep_sgm']) ? $event_infos['mep_sgm'] : 0;
 	$speaker_title             = array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : __( "Speaker", "mage-eventpress" );
 	$speaker_icon              = array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 	$speaker_lists             = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
@@ -54,7 +54,7 @@
 				$location_venue = get_post_meta( $event_id, 'mep_location_venue', true );
 				if (! empty( $location_venue ) ):
 			?>
-			<?php if ( $hide_location_details == 'no' && $show_google_map_location != 'no' ) { ?>
+			<?php if ( $hide_location_details == 'no' && $show_google_map_location != 0 ) { ?>
 				<?php if ( $event_type != 'online' ): ?>
                     <div class="mep-default-map" id="mep-map-location">
                         <div class="map-title">

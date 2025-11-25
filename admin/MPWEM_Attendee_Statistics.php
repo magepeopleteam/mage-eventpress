@@ -7,11 +7,8 @@
 			public function __construct() {
 				add_action( 'admin_menu', array( $this, 'attendee_statistics_menu' ) );
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				add_action( 'wp_ajax_mpwem_load_time', array( $this, 'mpwem_load_time' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_time', array( $this, 'mpwem_load_time' ) );
 				add_action( 'wp_ajax_mpwem_load_attendee_statistics', array( $this, 'mpwem_load_attendee_statistics' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_attendee_statistics', array( $this, 'mpwem_load_attendee_statistics' ) );
 			}
 			public function attendee_statistics_menu() {
 				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Attendee Statistics ', 'mage-eventpress' ), __( 'Attendee Statistics', 'mage-eventpress' ), 'manage_woocommerce', 'attendee_statistics', [ $this, 'attendee_statistics' ] );
@@ -49,7 +46,6 @@
 				}
 				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
 				MPWEM_Layout::load_date( $post_id, $all_dates );
-				//echo '<pre>';print_r(MPWEM_Functions::get_all_dates($post_id));echo '</pre>';
 				die();
 			}
 			public function mpwem_load_time() {

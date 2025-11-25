@@ -43,17 +43,14 @@
 							<?php foreach ( $post_ids as $post_id ) {
 								// Get event title
 								$event_title = get_the_title( $post_id );
-								
 								// Get event start date
-								$all_dates = MPWEM_Functions::get_all_dates( $post_id );
+								$all_dates  = MPWEM_Functions::get_all_dates( $post_id );
 								$event_date = MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates );
-								
 								// Format the date if available
 								$date_display = '';
 								if ( $event_date ) {
 									$date_display = ' - ' . date_i18n( get_option( 'date_format' ), strtotime( $event_date ) );
 								}
-								
 								// Create the display text: "Event Name - Date (ID: XXX)"
 								$display_text = $event_title . $date_display . ' (ID: ' . $post_id . ')';
 								?>
@@ -81,20 +78,22 @@
 				<?php }
 			}
 			public static function load_date( $event_id, $all_dates ) {
-				$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
-						$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : '';
 						if ( sizeof( $all_dates ) == 1 ) {
+							$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
+							$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
 							?>
                             <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 						<?php } else { ?>
                             <label>
                                 <select class="formControl _min_250" name="mpwem_date_time">
-									<?php foreach ( $all_dates as $dates ) { ?>
-                                        <option value="<?php echo esc_attr( $dates['time'] ); ?>" <?php echo esc_attr( strtotime( $date ) == strtotime( $dates['time'] ) ? 'selected' : '' ); ?>>
+                                    <option value="" selected><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></option>
+									<?php foreach ( $all_dates as $dates ) {
+										$date_format = MPWEM_Global_Function::check_time_exit_date( $dates['time'] ) ? 'full' : '';
+										?>
+                                        <option value="<?php echo esc_attr( $dates['time'] ); ?>">
 											<?php echo esc_html( MPWEM_Global_Function::date_format( $dates['time'], $date_format ) ); ?>
                                         </option>
 									<?php } ?>
@@ -103,23 +102,20 @@
 							<?php
 						}
 					} else {
-						$date         = $date ?: current( $all_dates );
+						$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
 						$date_format  = MPWEM_Global_Function::date_picker_format();
 						$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
-						$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
-						$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
 						$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
 						$display_time = get_post_meta( $event_id, 'mep_disable_ticket_time', true );
 						$display_time = $display_time ?: 'no';
 						?>
                         <div class="_dFlex">
                             <label>
-                                <input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
-                                <input id="mpwem_date_time" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
+                                <input type="hidden" name="mpwem_date_time" value="" required/>
+                                <input id="mpwem_date_time" type="text" value="" class="formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
                             </label>
 							<?php if ( $display_time != 'no' && sizeof( $all_times ) > 0 ) { ?>
                                 <div class="mpwem_time_area">
-									<?php self::load_time( $all_times, $date ); ?>
                                 </div>
 							<?php } ?>
                         </div>
@@ -181,7 +177,7 @@
 							?>
                             <div class="buttonGroup status_action">
                                 <button type="button" class="_themeButton_xxs seat_status_area"><?php echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available ); ?></button>
-                                <button type="button" class="_secondaryButton_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr($date); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
+                                <button type="button" class="_secondaryButton_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr( $date ); ?>" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
                                 <button class="_primaryButton_xxs" type="button" data-blank="yes" data-href="<?php echo esc_url( $admin_url ); ?>edit.php?post_type=mep_events&page=attendee_statistics&event_id=<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream mp_zero"></span></button>
                             </div>
 							<?php
@@ -202,7 +198,7 @@
 					$form_array['user_name'] = [
 						'type'     => 'text',
 						'name'     => 'user_name',
-						'd_name'     => 'ea_name',
+						'd_name'   => 'ea_name',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_name_label', esc_html__( 'Enter Your Name', 'mage-eventpress' ) ),
 					];
@@ -211,7 +207,7 @@
 					$form_array['user_email'] = [
 						'type'     => 'email',
 						'name'     => 'user_email',
-						'd_name'     => 'ea_email',
+						'd_name'   => 'ea_email',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_email_label', esc_html__( 'Enter Your Email', 'mage-eventpress' ) ),
 					];
@@ -220,7 +216,7 @@
 					$form_array['user_phone'] = [
 						'type'     => 'text',
 						'name'     => 'user_phone',
-						'd_name'     => 'ea_phone',
+						'd_name'   => 'ea_phone',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_phone_label', esc_html__( 'Enter Your Phone', 'mage-eventpress' ) ),
 					];
@@ -229,7 +225,7 @@
 					$form_array['user_address'] = [
 						'type'     => 'textarea',
 						'name'     => 'user_address',
-						'd_name'     => 'ea_address_1',
+						'd_name'   => 'ea_address_1',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_address_label', esc_html__( 'Enter Your address', 'mage-eventpress' ) ),
 					];
@@ -238,7 +234,7 @@
 					$form_array['tshirtsize'] = [
 						'type'     => 'select',
 						'name'     => 'user_tshirtsize',
-						'd_name'     => 'ea_tshirtsize',
+						'd_name'   => 'ea_tshirtsize',
 						'required' => 1,
 						'data'     => MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_tshirtsize_list' ),
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_tshirt_label', esc_html__( 'T-Shirt Size', 'mage-eventpress' ) ),
@@ -248,7 +244,7 @@
 					$form_array['gender'] = [
 						'type'     => 'gender',
 						'name'     => 'user_gender',
-						'd_name'     => 'ea_gender',
+						'd_name'   => 'ea_gender',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_gender_label', esc_html__( 'Gender', 'mage-eventpress' ) ),
 					];
@@ -257,7 +253,7 @@
 					$form_array['user_company'] = [
 						'type'     => 'text',
 						'name'     => 'user_company',
-						'd_name'     => 'ea_company',
+						'd_name'   => 'ea_company',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_company_label', esc_html__( 'Company', 'mage-eventpress' ) ),
 					];
@@ -266,7 +262,7 @@
 					$form_array['user_designation'] = [
 						'type'     => 'text',
 						'name'     => 'user_designation',
-						'd_name'     => 'ea_desg',
+						'd_name'   => 'ea_desg',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_desg_label', esc_html__( 'Designation', 'mage-eventpress' ) ),
 					];
@@ -275,7 +271,7 @@
 					$form_array['user_website'] = [
 						'type'     => 'text',
 						'name'     => 'user_website',
-						'd_name'     => 'ea_website',
+						'd_name'   => 'ea_website',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_website_label', esc_html__( 'Website', 'mage-eventpress' ) ),
 					];
@@ -284,7 +280,7 @@
 					$form_array['vegetarian'] = [
 						'type'     => 'vegetarian',
 						'name'     => 'user_vegetarian',
-						'd_name'     => 'ea_vegetarian',
+						'd_name'   => 'ea_vegetarian',
 						'required' => 1,
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_veg_label', esc_html__( 'Vegetarian', 'mage-eventpress' ) ),
 					];
@@ -300,7 +296,7 @@
 						if ( $type && $id && $label ) {
 							$form_array[ $id ]['type']     = $type;
 							$form_array[ $id ]['name']     = $id;
-							$form_array[ $id ]['d_name']     ='ea_'. $id;
+							$form_array[ $id ]['d_name']   = 'ea_' . $id;
 							$form_array[ $id ]['label']    = $label;
 							$form_array[ $id ]['required'] = array_key_exists( 'mep_fbc_required', $custom_form ) ? $custom_form['mep_fbc_required'] : '';
 							$form_array[ $id ]['data']     = array_key_exists( 'mep_fbc_dp_data', $custom_form ) ? $custom_form['mep_fbc_dp_data'] : '';

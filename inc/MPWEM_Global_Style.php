@@ -42,6 +42,7 @@
 						--dmp: 20px;
 						--dmp_negetive: -20px;
 						--dmp_xs: 10px;
+						--dmp_xxs: 5px;
 						--dmp_xs_negative: -10px;
 						--dbrl: 10px;
 						--dbr: 5px;

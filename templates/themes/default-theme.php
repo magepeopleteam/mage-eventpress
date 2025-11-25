@@ -49,6 +49,11 @@
             <div class="mep-default-feature-faq-sec">
 				<?php do_action( 'mep_event_faq', $event_id ); ?>
             </div>
+			<?php 
+				
+				$location_venue = get_post_meta( $event_id, 'mep_location_venue', true );
+				if (! empty( $location_venue ) ):
+			?>
 			<?php if ( $hide_location_details == 'no' && $show_google_map_location != 'no' ) { ?>
 				<?php if ( $event_type != 'online' ): ?>
                     <div class="mep-default-map" id="mep-map-location">
@@ -61,6 +66,7 @@
                     </div>
 				<?php endif; ?>
 			<?php } ?>
+			<?php endif; ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">

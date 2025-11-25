@@ -288,6 +288,10 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_timeline_settings').find('.mpwem_timeline_area');
         let popup_target = parent.find('.timeline_input');
+        if(title===''){
+            alert('Timeline Title is required');
+            exit;
+        }
         jQuery.ajax({
             type: 'POST',
             url: mpwem_admin_var.url,
@@ -383,6 +387,10 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_faq_settings').find('.mpwem_faq_area');
         let popup_target = parent.find('.faq_input');
+        if(title===''){
+            alert('FAQ Title is required');
+            exit;
+        }
         jQuery.ajax({
             type: 'POST',
             url: mpwem_admin_var.url,

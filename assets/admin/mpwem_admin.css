@@ -2030,7 +2030,17 @@ h3.mep_virtual_sec_title {
 	background-color: var(--color_theme);
 }
 /*******************************/
-div.mpPopup.mpwem_timeline_popup .popupBody {min-height: 400px;}
+div.mpPopup.mpwem_timeline_popup .popupBody {
+	min-height: 400px;
+}
+div.mpwem_faq_popup .formControl,
+div.mpwem_timeline_popup .timeline_input .formControl{
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 20px;
+  	padding: 10px 5px;
+}
+
 /* Date Filter Styles */
 .date-filter-container {
 	display: flex;

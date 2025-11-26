@@ -13,7 +13,7 @@
 			public function load_events_templates( $template ) {
 				global $post;
 				if ( $post->post_type == "mep_events" ) {
-					$template = MPWEM_Functions::template_path( 'single-events.php' );
+					 $template = MPWEM_Functions::template_path( 'single-events.php' );
 				}
 				if ( $post->post_type == "mep_event_speaker" ) {
 					$template = MPWEM_Functions::template_path( 'single-speaker.php' );

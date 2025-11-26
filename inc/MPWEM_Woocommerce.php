@@ -39,7 +39,7 @@
 					$ticket_price   = self::get_cart_ticket_price( $ticket_info );
 					$ex_infos       = self::get_cart_ex_info( $product_id );
 					$ex_price       = self::get_cart_ex_price( $ex_infos );
-					$user           = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();;
+					$user           = $form_position == 'details_page' ? mep_save_attendee_info_into_cart( $product_id ) : array();
 					$total_price = $ticket_price + $ex_price;
 					if ( ! empty( $time_slot_text ) ) {
 						$cart_item_data['event_everyday_time_slot'] = $time_slot_text;
@@ -453,7 +453,6 @@
 				$total_price = 0;
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
-						;
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
 						if ( $name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;

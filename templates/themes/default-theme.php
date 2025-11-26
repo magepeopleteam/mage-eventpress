@@ -54,7 +54,7 @@
 				$location_venue = get_post_meta( $event_id, 'mep_location_venue', true );
 				if (! empty( $location_venue ) ):
 			?>
-			<?php if ( $hide_location_details == 'no' && $show_google_map_location != 0 ) { ?>
+			<?php if ( $hide_location_details == 'no' && $show_google_map_location == 1 ) { ?>
 				<?php if ( $event_type != 'online' ): ?>
                     <div class="mep-default-map" id="mep-map-location">
                         <div class="map-title">

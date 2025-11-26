@@ -10,7 +10,7 @@
 		class MPWEM_Functions {
 			public function __construct() { }
 			public static function details_template_path( $file_name ): string {
-				$template_path       = get_stylesheet_directory() . '/mage-event/';
+				$template_path       = get_stylesheet_directory() . '/mage-event/themes/';
 				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
 				$default_path        = $default_dir . $file_name;
 				$theme_template_path = $template_path . $file_name;

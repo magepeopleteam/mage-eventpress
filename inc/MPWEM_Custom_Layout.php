@@ -230,6 +230,7 @@
                                        min="<?php echo esc_attr($min_qty); ?>"
                                        max="<?php echo esc_attr($max_qty); ?>"
                                        data-min-qty="<?php echo esc_attr($must_min =='off'?0:$min_qty); ?>"
+                                       readonly
                                 />
                             </label>
                             <div class="incQty">

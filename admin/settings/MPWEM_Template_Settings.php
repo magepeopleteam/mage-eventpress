@@ -13,9 +13,7 @@
 				add_action( 'mpwem_event_tab_setting_item', [ $this, 'template_tab_content' ] );
 			}
 			public function template_tab_content( $post_id ) {
-				$global_template   = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_global_single_template', 'default-theme.php' );
-				$current_template  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template' );
-				$_current_template = $current_template ?: $global_template;
+				$_current_template = MPWEM_Functions::get_details_template_name($post_id);
 				$templates         = [];
 				$themes            = mep_event_template_name();
 				foreach ( $themes as $theme_file => $theme_name ) {

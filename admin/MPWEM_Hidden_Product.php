@@ -8,6 +8,7 @@
 				add_action( 'wp_insert_post', array( $this, 'create_hidden_wc_product_on_publish' ), 10, 3 );
 				add_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99, 1 );
 				add_action( 'parse_query', array( $this, 'hide_wc_hidden_product_from_product_list' ) );
+				add_action( 'pre_get_posts', array( $this, 'hide_wc_hidden_product') );
 				add_action( 'wp', array( $this, 'hide_hidden_wc_product_from_frontend' ) );
 				//******************//
 				add_action( 'admin_init', [ $this, 'mep_create_old_event_product' ] );
@@ -140,6 +141,19 @@
 				return $loop->post_count;
 			}
 
+			public function hide_wc_hidden_product( $query ) {
+				if ( $query->is_search && ! is_admin() ) {
+					$query->set( 'tax_query', array(
+						array(
+							'taxonomy' => 'product_visibility',
+							'field'    => 'name',
+							'terms'    => 'exclude-from-search',
+							'operator' => 'NOT IN',
+						)
+					) );
+				}
+				return $query;
+			}
 			public function hide_wc_hidden_product_from_product_list( $query ) {
 				global $pagenow;
 				$q_vars = &$query->query_vars;

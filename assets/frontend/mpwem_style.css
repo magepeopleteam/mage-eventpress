@@ -1053,13 +1053,7 @@ div.mep_event_native_list .mep-list-header {
 	padding: 5px 0;
 }
 /* Code By Mahin */
-ul.event-custom-price li ul {
-	padding: 10px;
-	margin: 10px 0;
-	list-style: none;
-	border: 1px solid #DDD;
-	background: #FBFBFB;
-}
+
 .mep_event_list .mepev-ribbons {
 	position: absolute;
 	top: 10px;

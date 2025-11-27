@@ -31,6 +31,11 @@
 				}
 				return $default_dir . $file_name;
 			}
+			public static function get_details_template_name($post_id) {
+				$global_template   = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_global_single_template', 'default-theme.php' );
+				$current_template  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template' );
+				return $current_template ?: $global_template;
+			}
 			//==========================//
 			public static function get_all_info( $event_id ) {
 				$event_infos = [];

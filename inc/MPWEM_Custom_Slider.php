@@ -17,24 +17,23 @@
 			public function super_slider( $post_id = '', $event_infos = [] ) {
 				$event_infos = is_array( $event_infos ) && sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $post_id );
 				$display     = array_key_exists( 'mep_display_slider', $event_infos ) ? $event_infos['mep_display_slider'] : 'on';
-				if ( $display=='on' ) {
 					?>
                     <div class="mpwem_slider_area">
 					<?php
 					$type      = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
 					$post_id   = $post_id > 0 ? $post_id : get_the_id();
 					$image_ids = $this->get_slider_ids( $post_id, 'mep_gallery_images' );
-					if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
+					if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 && $display == 'on' ) {
 						if ( $type == 'slider' && sizeof( $image_ids ) > 1 ) {
 							$this->slider( $post_id, $image_ids );
 						} else {
 							$this->post_thumbnail( $image_ids[0] );
 						}
 					} else {
-						$this->post_thumbnail();
+						$thumb_id  = get_post_thumbnail_id( $post_id );
+						$this->post_thumbnail($thumb_id);
 					}
 					?></div><?php
-				}
 			}
 			public function super_slider_only( $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
@@ -91,8 +90,9 @@
 				$thumbnail = MPWEM_Global_Function::get_image_url( '', $image_id );
 				if ( $thumbnail ) {
 					?>
-                    <div class="superSlider">
-                        <div data-bg-image="<?php echo esc_html( $thumbnail ); ?>"></div>
+                    <div class="post_thumb">
+	                    <?php //MPWEM_Custom_Layout::bg_image( '', $image_id ); ?>
+                        <img src="<?php echo esc_url($thumbnail); ?>" class="img" alt="">
                     </div>
 					<?php
 				}
@@ -104,18 +104,9 @@
 						<?php
 							$count = 1;
 							foreach ( $image_ids as $id ) {
-								$image_url = MPWEM_Global_Function::get_image_url( '', $id );
-								$image_url = $image_url ?: MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png';
-								$size      = getimagesize( $image_url );
-								$width     = 0;
-								$height    = 0;
-								if ( $size ) {
-									$width  = $size[0];
-									$height = $size[1];
-								}
 								?>
                                 <div class="sliderItem" data-slide-index="<?php echo esc_html( $count ); ?>" data-target-popup="superSlider" data-placeholder>
-                                    <div data-bg-image="<?php echo esc_html( $image_url ); ?>" data-width="<?php echo esc_html( $width ); ?>" data-height="<?php echo esc_html( $height ); ?>"></div>
+									<?php MPWEM_Custom_Layout::bg_image( '', $id ); ?>
                                 </div>
 								<?php
 								$count ++;

@@ -80,7 +80,7 @@
 				ob_start();
 				$eid = array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 				if ( get_post_type( $eid ) == 'mep_events' ) {
-					$general_setting_sec  = MPWEM_Global_Function::data_sanitize( get_option( 'general_setting_sec' ) );
+					$general_setting_sec  = MPWEM_Global_Function::data_sanitize( MPWEM_Global_Function::get_setting('general_setting_sec') );
 					$hide_location_status = array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
 					$hide_date_status     = array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
 					$user_info            = array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];

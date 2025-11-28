@@ -964,6 +964,7 @@ div.mep_event_native_list .mep-list-header {
   div.mpwem_style [data-bg-image] {
     background-size: cover;
     background-repeat: no-repeat;
+	  margin: 0 auto;
   }
 .mep_event_native_list h3.mep_list_date i {
 	background: transparent;
@@ -4445,6 +4446,8 @@ div.mpwem_timeline_area .timeline_area::before {
 		font-size: 25px;
 	}
 }
+.mpwem_slider_area div.post_thumb{overflow: hidden;}
+.mpwem_slider_area div.post_thumb img{width: auto;height: auto;max-width: 100%;margin: 0 auto;}
 .mpwem_slider_area {
 	margin-top: 0;
 }

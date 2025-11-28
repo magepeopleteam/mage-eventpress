@@ -169,7 +169,7 @@
 							$available_seat    = (int) $total_seats_count - ( (int) $total_resv + (int) $total_sold );
 						}
 						if ( $ticket_qty > $available_seat ) {
-							wc_add_notice( "Sorry, $type not availabe. Total available $type is $available_seat of $event_name on $event_date_txt but you select $ticket_qty . Please Try Again", 'error' );
+							wc_add_notice( "Sorry, $type not available. Total available $type is $available_seat of $event_name on $event_date_txt but you select $ticket_qty . Please Try Again", 'error' );
 						}
 					}
 				}

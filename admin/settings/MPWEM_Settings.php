@@ -129,11 +129,11 @@
 					$sale_end_time   = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
 					$count           = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
-						if ( $names[ $i ] && $ticket_price[ $i ] >= 0 && $qty[ $i ] >= 0 ) {
+						if ( $names[ $i ]) {
 							$new_ticket_type[ $i ]['option_name_t']          = $names[ $i ];
 							$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
-							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ];
-							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ];
+							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ]??0;
+							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ]??0;
 							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';

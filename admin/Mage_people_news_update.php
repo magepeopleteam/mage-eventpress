@@ -23,7 +23,7 @@
             }
 
             public function render_dashboard_widget() {
-                $rss_url = 'https://mage-people.com/blog/feed/';
+                $rss_url = 'https://mage-people.com/category/news/feed/';
 
                 $response = wp_remote_get($rss_url);
 
@@ -40,8 +40,6 @@
                     echo "<p>RSS feed not loaded.</p>";
                     return;
                 }
-
-                echo "<h3>Latest Posts from MagePeople Blog</h3>";
                 echo "<ul>";
 
                 $count = 0;
@@ -64,21 +62,28 @@
             }
             
             public function footer_buttons() {
-                echo '<div style="margin-top:20px; padding-top:12px; border-top:1px solid #ddd;">';
-
-                echo '<a href="https://mage-people.com" target="_blank" class="button button-primary" style="margin-right:8px;">
+                ?>
+                <div style="margin-top:20px; padding-top:12px; border-top:1px solid #ddd;">
+                    <a href="https://mage-people.com" target="_blank" class="button button-primary" style="margin-right:8px;">
                         Website
-                    </a>';
+                    </a>
+                    <a href="https://mage-people.com/our-products/" target="_blank" class="button button-secondary" style="margin-right:8px;">
+                        Plugins
+                    </a>
 
-                echo '<a href="https://mage-people.com/blog" target="_blank" class="button button-secondary" style="margin-right:8px;">
+                    <a href="https://mage-people.com/blog" target="_blank" class="button button-secondary" style="margin-right:8px;">
                         Blog
-                    </a>';
+                    </a>
 
-                echo '<a href="https://mage-people.com/support" target="_blank" class="button" style="margin-right:8px;">
+                    <a href="https://docs.mage-people.com/" target="_blank" class="button button-secondary" style="margin-right:8px;">
+                        Docs
+                    </a>
+
+                    <a href="https://support.mage-people.com/portal/en/newticket" target="_blank" class="button" style="margin-right:8px;">
                         Support
-                    </a>';
-
-                echo '</div>';
+                    </a>
+                </div>
+                <?php
 
             }
 

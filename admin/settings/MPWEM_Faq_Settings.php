@@ -12,15 +12,12 @@
 			public function __construct() {
 				add_action( 'mpwem_event_tab_setting_item', [ $this, 'faq_tab_content' ] );
 				add_action( 'wp_ajax_mpwem_load_faq', array( $this, 'mpwem_load_faq' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_faq', array( $this, 'mpwem_load_faq' ) );
 				add_action( 'wp_ajax_mpwem_save_faq', array( $this, 'mpwem_save_faq' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_save_faq', array( $this, 'mpwem_save_faq' ) );
 				add_action( 'wp_ajax_mpwem_remove_faq', array( $this, 'mpwem_remove_faq' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_remove_faq', array( $this, 'mpwem_remove_faq' ) );
 			}
 
 			public function faq_tab_content( $post_id ) {
-				$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+				$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
 				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
@@ -102,7 +99,7 @@
 				$key      = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$faq_info = [];
 				if ( $post_id ) {
-					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
 					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						$faq_info = $faq_infos[ $key ];
 					}
@@ -151,7 +148,7 @@
 				}
 				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
-					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
 					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						unset( $faq_infos[ $key ] );
 						$faq_infos = array_values( $faq_infos );
@@ -174,9 +171,9 @@
 				$key     = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
 				$des     = isset( $_POST['des'] ) ? sanitize_text_field( wp_unslash( $_POST['des'] ) ) : '';
-				$content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
+				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
-					$faq_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_faq', [] );
+					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
 					if ( ! array_key_exists( $key, $faq_infos ) ) {
 						$key = sizeof( $faq_infos );
 					}

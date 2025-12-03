@@ -834,7 +834,7 @@
 	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
 	/****************************/
 	div.mpPopup.right_popup {-webkit-justify-content: flex-end;justify-content: flex-end;}
-	div.mpPopup.right_popup .popupMainArea {min-height: 100vh;border: 0; border-radius: 0; padding: 50px 20px;}
+	div.mpPopup.right_popup .popupMainArea {border: 0; border-radius: 0; padding: 50px 20px;}
 	div.mpPopup.right_popup .popupClose {top: 0;right: 0;border-radius: 0;background-color: transparent;color: var(--color_danger);}
 }
 /******************************************************************** Pagination section ************************************************/

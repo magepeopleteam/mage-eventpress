@@ -56,6 +56,9 @@
 					MPWEM_Dashboard.closeModal();
 				}
 			});
+			
+			// Cancel request button
+			$(document).on('click', '.mpwem-btn-cancel:not(.mpwem-btn-disabled)', this.openCancelModal.bind(this));
 		},
 		
 		/**
@@ -172,7 +175,120 @@
 		 * Close modal
 		 */
 		closeModal: function() {
-			$('#mpwem-booking-details-modal').fadeOut(300);
+			$('.mpwem-modal').fadeOut(300);
+		},
+			
+		/**
+		 * Open cancel request modal
+		 */
+		openCancelModal: function(e) {
+			e.preventDefault();
+				
+			const cancelUrl = $(e.currentTarget).attr('href');
+			if (!cancelUrl || cancelUrl === '#') {
+				return;
+			}
+				
+			// Parse URL to get order details
+			const urlParams = new URLSearchParams(cancelUrl.split('?')[1]);
+			const orderId = urlParams.get('serial');
+				
+			if (!orderId) {
+				this.showNotification('error', 'Invalid order ID');
+				return;
+			}
+				
+			// Build modal content
+			const modalContent = `
+				<div class="mpwem-cancel-request-form">
+					<h3>Order Cancellation Request</h3>
+					<form id="mpwem-cancel-form" method="post">
+						<div class="mpwem-form-group">
+							<label><strong>Order No:</strong> #${orderId}</label>
+						</div>
+						<div class="mpwem-form-group">
+							<label for="mpwem_order_cancel_reason">
+								<strong>Cancel Reason</strong>
+								<p style="margin: 5px 0; color: #666; font-size: 13px;">Please write details about why you want to cancel.</p>
+							</label>
+							<textarea 
+								name="mep_order_cancel_reason" 
+								id="mpwem_order_cancel_reason" 
+								class="mpwem-textarea" 
+								rows="6" 
+								required
+								placeholder="Enter your reason for cancellation..."
+							></textarea>
+						</div>
+						<input type="hidden" name="action" value="mep_cancel_req_submit">
+						<input type="hidden" name="order_id" value="${orderId}">
+						<div class="mpwem-form-actions">
+							<button type="submit" class="mpwem-btn mpwem-btn-primary" id="mpwem-submit-cancel">
+								<span class="dashicons dashicons-yes"></span>
+								Send Request
+							</button>
+							<button type="button" class="mpwem-btn mpwem-btn-secondary mpwem-modal-close">
+								<span class="dashicons dashicons-no"></span>
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
+			`;
+				
+			// Show modal
+			$('#mpwem-cancel-modal-content').html(modalContent);
+			$('#mpwem-cancel-modal').fadeIn(300);
+				
+			// Focus on textarea
+			setTimeout(function() {
+				$('#mpwem_order_cancel_reason').focus();
+			}, 350);
+				
+			// Handle form submission
+			$('#mpwem-cancel-form').off('submit').on('submit', function(e) {
+				e.preventDefault();
+				MPWEM_Dashboard.submitCancelRequest($(this));
+			});
+		},
+			
+		/**
+		 * Submit cancel request
+		 */
+		submitCancelRequest: function($form) {
+			const reason = $('#mpwem_order_cancel_reason').val().trim();
+				
+			if (!reason) {
+				this.showNotification('error', 'Please provide a reason for cancellation');
+				return;
+			}
+				
+			const $submitBtn = $('#mpwem-submit-cancel');
+			const originalText = $submitBtn.html();
+				
+			$submitBtn.prop('disabled', true).html('<span class="spinner is-active" style="float:none; margin:0;"></span> Sending...');
+				
+			$.ajax({
+				url: window.location.href.split('?')[0],
+				type: 'POST',
+				data: $form.serialize(),
+				success: function(response) {
+					// Close modal
+					MPWEM_Dashboard.closeModal();
+						
+					// Show success message
+					MPWEM_Dashboard.showNotification('success', 'Your cancellation request has been received');
+						
+					// Reload page after a short delay
+					setTimeout(function() {
+						window.location.href = window.location.href.split('?')[0];
+					}, 2000);
+				},
+				error: function() {
+					$submitBtn.prop('disabled', false).html(originalText);
+					MPWEM_Dashboard.showNotification('error', 'Failed to submit request. Please try again.');
+				}
+			});
 		},
 		
 		/**
@@ -243,6 +359,18 @@
 		
 		// Set default active state for "Total Bookings"
 		$('.mpwem-stat-clickable[data-filter="all"]').addClass('active');
+		
+		// Check if cancel request was triggered from URL
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get('action') === 'mep_order_cancel_req') {
+			// Find the cancel button for this order and trigger click
+			const orderId = urlParams.get('serial');
+			if (orderId) {
+				setTimeout(function() {
+					$('.mpwem-btn-cancel[href*="serial=' + orderId + '"]').trigger('click');
+				}, 500);
+			}
+		}
 	});
 	
 	// Add CSS animation

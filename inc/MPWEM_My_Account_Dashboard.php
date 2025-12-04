@@ -150,6 +150,16 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 						</div>
 					</div>
 				</div>
+				
+				<!-- Cancel Request Modal -->
+				<div id="mpwem-cancel-modal" class="mpwem-modal" style="display:none;">
+					<div class="mpwem-modal-content mpwem-modal-small">
+						<span class="mpwem-modal-close">&times;</span>
+						<div id="mpwem-cancel-modal-content">
+							<!-- Content will be loaded by JavaScript -->
+						</div>
+					</div>
+				</div>
 			</div>
 			<?php
 		}

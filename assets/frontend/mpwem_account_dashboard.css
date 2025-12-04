@@ -164,6 +164,30 @@
         color: white;
 }
 
+.mpwem-btn-cancel {
+	background: #dc3232;
+	color: #fff;
+	font-size: 13px;
+	padding: 0px 5px;
+}
+
+.mpwem-btn-cancel:hover {
+	background: #a00;
+	color: #fff;
+}
+
+.mpwem-btn-cancel.mpwem-btn-disabled {
+	background: #ccc;
+	color: #666;
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+.mpwem-btn-cancel.mpwem-btn-disabled:hover {
+	background: #ccc;
+	color: #666;
+}
+
 /* Statistics */
 .mpwem-filter-stats {
 	border-top: 1px solid #e0e0e0;
@@ -517,6 +541,70 @@
 	color: #000;
 }
 
+/* Smaller modal for forms */
+.mpwem-modal-small {
+	max-width: 600px;
+}
+
+/* Cancel Request Form */
+.mpwem-cancel-request-form {
+	padding: 20px 30px 30px;
+}
+
+.mpwem-cancel-request-form h3 {
+	margin: 0 0 20px 0;
+	font-size: 22px;
+	color: #333;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #e0e0e0;
+}
+
+.mpwem-form-group {
+	margin-bottom: 20px;
+}
+
+.mpwem-form-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 14px;
+	color: #333;
+}
+
+.mpwem-form-group strong {
+	font-weight: 600;
+	color: #333;
+}
+
+.mpwem-textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	font-family: inherit;
+	resize: vertical;
+	transition: border-color 0.3s ease;
+}
+
+.mpwem-textarea:focus {
+	outline: none;
+	border-color: var(--color_theme, #007cba);
+	box-shadow: 0 0 0 1px var(--color_theme, #007cba);
+}
+
+.mpwem-form-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 25px;
+	padding-top: 20px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.mpwem-form-actions .mpwem-btn {
+	flex: 1;
+	justify-content: center;
+}
+
 /* Booking Details */
 .mpwem-booking-details {
 	padding: 20px 30px 30px;
@@ -754,5 +842,21 @@
 	.mpwem-booking-meta {
 		flex-direction: column;
 		gap: 10px;
+	}
+	
+	.mpwem-cancel-request-form {
+		padding: 15px 20px 20px;
+	}
+	
+	.mpwem-cancel-request-form h3 {
+		font-size: 18px;
+	}
+	
+	.mpwem-form-actions {
+		flex-direction: column;
+	}
+	
+	.mpwem-form-actions .mpwem-btn {
+		width: 100%;
 	}
 }

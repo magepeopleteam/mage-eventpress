@@ -2,17 +2,17 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-	$event_id                 = $event_id ?? 0;
-	$event_infos                 = $event_infos ?? [];
-	$event_infos              =sizeof($event_infos)>0 ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
-	$all_dates                = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-	$all_dates                = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-	$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-	$mep_show_end_datetime            = array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
+	$event_id                  = $event_id ?? 0;
+	$event_infos               = $event_infos ?? [];
+	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$all_dates                 = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+	$all_dates                 = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+	$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$mep_show_end_datetime     = array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-	$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
-	$hide_date_list           = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
-	$date_count               = 0;
+	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
+	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
+	$date_count                = 0;
 	if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
         <div class="date_list_area">
 			<?php
@@ -28,10 +28,18 @@
 							?>
                             <div class="_infoLayout_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                 <div class="date_item">
-                                    <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
-									<?php if ( $end_time && $mep_show_end_datetime=='yes') { ?>
-                                        <span>-</span>
-                                        <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
+									<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) {
+										if ( strtotime( gmdate( 'Y-m-d', strtotime( $start_time ) ) ) == strtotime( gmdate( 'Y-m-d', strtotime( $end_time ) ) ) ) { ?>
+                                            <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
+										<?php } else { ?>
+                                            <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
+											<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) { ?>
+                                                <span>-</span>
+                                                <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
+											<?php }
+										}
+									} else { ?>
+                                        <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
 									<?php } ?>
                                 </div>
                             </div>
@@ -39,55 +47,62 @@
 							$date_count ++;
 						}
 					}
-                    if($date_type=='no'){
-	                    $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
-	                    if ( sizeof( $more_dates ) > 0 ) {
-		                    $count=0;
-		                    $all_dates=[];
-		                    $buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
-		                    $now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
-		                    $expire_on   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_expire_on_datetimes', 'event_start_datetime' );
-		                    foreach ( $more_dates as $more_date ) {
-			                    $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
-			                    $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
-			                    $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
-			                    $more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
-			                    $more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
-			                    $more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
-			                    $expire_check         = $expire_on == 'event_start_datetime' ? $more_start_date_time : $more_end_date_time;
-			                    $expire_check         = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
-			                    if ( $more_start_date_time && $more_end_date_time && strtotime( $expire_check ) > $now && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
-				                    $count ++;
-				                    $all_dates[ $count ]['time'] = $more_start_date_time;
-				                    $all_dates[ $count ]['end']  = $more_end_date_time;
-			                    }
-		                    }
-		                    if ( sizeof( $all_dates ) >1 ) {
-			                    usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
-		                    }
-		                    if ( sizeof( $all_dates ) > 0){
-			                    foreach ( $all_dates as $dates ) {
-				                    $start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
-				                    $end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
-				                    if ( $start_time ) {
-					                    ?>
+					if ( $date_type == 'no' ) {
+						$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+						if ( sizeof( $more_dates ) > 0 ) {
+							$count       = 0;
+							$all_dates   = [];
+							$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
+							$now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
+							$expire_on   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_expire_on_datetimes', 'event_start_datetime' );
+							foreach ( $more_dates as $more_date ) {
+								$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+								$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+								$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
+								$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
+								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
+								$expire_check         = $expire_on == 'event_start_datetime' ? $more_start_date_time : $more_end_date_time;
+								$expire_check         = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
+								if ( $more_start_date_time && $more_end_date_time && strtotime( $expire_check ) > $now && strtotime( $more_start_date_time ) < strtotime( $more_end_date_time ) ) {
+									$count ++;
+									$all_dates[ $count ]['time'] = $more_start_date_time;
+									$all_dates[ $count ]['end']  = $more_end_date_time;
+								}
+							}
+							if ( sizeof( $all_dates ) > 1 ) {
+								usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
+							}
+							if ( sizeof( $all_dates ) > 0 ) {
+								foreach ( $all_dates as $dates ) {
+									$start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
+									$end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+									if ( $start_time ) {
+										?>
                                         <div class="_infoLayout_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                                             <div class="date_item">
-                                                <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>
-							                    <?php if ( $end_time && $mep_show_end_datetime=='yes') { ?>
-                                                    <span>-</span>
-                                                    <span><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></span>
-							                    <?php } ?>
+												<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) {
+													if ( strtotime( gmdate( 'Y-m-d', strtotime( $start_time ) ) ) == strtotime( gmdate( 'Y-m-d', strtotime( $end_time ) ) ) ) { ?>
+                                                        <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></span>
+													<?php } else { ?>
+                                                        <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>
+														<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) { ?>
+                                                            <span>-</span>
+                                                            <span><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></span>
+														<?php }
+													}
+												} else { ?>
+                                                    <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>
+												<?php } ?>
                                             </div>
                                         </div>
-					                    <?php
-					                    $date_count ++;
-				                    }
-			                    }
-                            }
-	                    }
-
-                    }
+										<?php
+										$date_count ++;
+									}
+								}
+							}
+						}
+					}
 				} else {
 					$only_upcoming_date = date( 'Y-m-d', strtotime( $upcoming_date ) );
 					foreach ( $all_dates as $date ) {

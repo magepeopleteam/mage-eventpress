@@ -4373,7 +4373,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		width: 30%;
 	}
 	.mep-related-events .mep-related-events-items .item .item-info .price h2 {
-		font-size: 30px;
+		font-size: 25px;
 		color: var(--color_theme);
 		margin: 0;
 	}

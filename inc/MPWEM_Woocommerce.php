@@ -21,7 +21,8 @@
 				add_action( 'woocommerce_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
 				add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
 				/**********************************************/
-				add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
+				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
+				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
 				add_filter( 'woocommerce_cart_item_price', array( $this, 'cart_item_price' ), 10, 4 );
 			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {

@@ -191,15 +191,15 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 			ob_start();
 			?>
 			<div class="mpwem-stats">
-				<div class="mpwem-stat-item">
+				<div class="mpwem-stat-item mpwem-stat-clickable" data-filter="all">
 					<span class="mpwem-stat-number"><?php echo esc_html( $total_bookings ); ?></span>
 					<span class="mpwem-stat-label"><?php esc_html_e( 'Total Bookings', 'mage-eventpress' ); ?></span>
 				</div>
-				<div class="mpwem-stat-item">
+				<div class="mpwem-stat-item mpwem-stat-clickable" data-filter="upcoming">
 					<span class="mpwem-stat-number"><?php echo esc_html( $upcoming ); ?></span>
 					<span class="mpwem-stat-label"><?php esc_html_e( 'Upcoming', 'mage-eventpress' ); ?></span>
 				</div>
-				<div class="mpwem-stat-item">
+				<div class="mpwem-stat-item mpwem-stat-clickable" data-filter="completed">
 					<span class="mpwem-stat-number"><?php echo esc_html( $completed ); ?></span>
 					<span class="mpwem-stat-label"><?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></span>
 				</div>
@@ -211,7 +211,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 		/**
 		 * Get bookings list HTML
 		 */
-		private function get_bookings_list( $user_id, $order_search = '' ) {
+		private function get_bookings_list( $user_id, $order_search = '', $filter = 'all' ) {
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
 			$order_status     = array_values( $_order_status );
@@ -275,6 +275,23 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 				$event_date        = get_post_meta( $event_id, 'event_start_datetime', true );
 				$ticket_count      = count( $attendee_ids );
 				$order_status      = $order->get_status();
+				
+				// Filter logic
+				if ( $filter !== 'all' ) {
+					$time = get_post_meta( $event_id, 'event_expire_datetime', true ) 
+						? strtotime( get_post_meta( $event_id, 'event_expire_datetime', true ) ) 
+						: strtotime( $event_date );
+					
+					$is_upcoming = strtotime( current_time( 'Y-m-d H:i:s' ) ) < $time;
+					
+					if ( $filter === 'upcoming' && ! $is_upcoming ) {
+						continue;
+					}
+					
+					if ( $filter === 'completed' && $is_upcoming ) {
+						continue;
+					}
+				}
 				
 				// Get event featured image
 				$event_thumbnail = get_the_post_thumbnail_url( $event_id, 'thumbnail' );
@@ -576,9 +593,10 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 			check_ajax_referer( 'mpwem_account_nonce', 'nonce' );
 			
 			$search = isset( $_POST['search'] ) ? sanitize_text_field( $_POST['search'] ) : '';
+			$filter = isset( $_POST['filter'] ) ? sanitize_text_field( $_POST['filter'] ) : 'all';
 			$user_id = get_current_user_id();
 			
-			$html = $this->get_bookings_list( $user_id, $search );
+			$html = $this->get_bookings_list( $user_id, $search, $filter );
 			
 			wp_send_json_success( array( 'html' => $html ) );
 		}

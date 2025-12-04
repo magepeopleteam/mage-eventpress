@@ -8,6 +8,9 @@
 	
 	const MPWEM_Dashboard = {
 		
+		// Current filter state
+		currentFilter: 'all',
+		
 		/**
 		 * Initialize
 		 */
@@ -33,6 +36,9 @@
 				}
 			});
 			
+			// Stats filter click
+			$(document).on('click', '.mpwem-stat-clickable', this.filterByStats.bind(this));
+			
 			// View booking details
 			$(document).on('click', '.mpwem-btn-view', this.viewBookingDetails.bind(this));
 			
@@ -53,6 +59,23 @@
 		},
 		
 		/**
+		 * Filter bookings by stats
+		 */
+		filterByStats: function(e) {
+			const filter = $(e.currentTarget).data('filter');
+			
+			// Update active state
+			$('.mpwem-stat-clickable').removeClass('active');
+			$(e.currentTarget).addClass('active');
+			
+			// Update current filter
+			this.currentFilter = filter;
+			
+			// Load filtered bookings
+			this.searchBookings();
+		},
+		
+		/**
 		 * Search bookings
 		 */
 		searchBookings: function() {
@@ -67,7 +90,8 @@
 				data: {
 					action: 'mpwem_search_bookings',
 					nonce: mpwem_account_vars.nonce,
-					search: searchValue
+					search: searchValue,
+					filter: this.currentFilter
 				},
 				success: function(response) {
 					if (response.success) {
@@ -88,6 +112,9 @@
 		 */
 		resetSearch: function() {
 			$('#mpwem-search-order').val('');
+			$('.mpwem-stat-clickable').removeClass('active');
+			$('.mpwem-stat-clickable[data-filter="all"]').addClass('active');
+			this.currentFilter = 'all';
 			this.searchBookings();
 		},
 		
@@ -213,6 +240,9 @@
 	// Initialize when document is ready
 	$(document).ready(function() {
 		MPWEM_Dashboard.init();
+		
+		// Set default active state for "Total Bookings"
+		$('.mpwem-stat-clickable[data-filter="all"]').addClass('active');
 	});
 	
 	// Add CSS animation

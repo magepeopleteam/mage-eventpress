@@ -183,6 +183,37 @@
 	text-align: center;
 }
 
+/* Clickable stats */
+.mpwem-stat-clickable {
+	cursor: pointer;
+	padding: 15px;
+	border-radius: 8px;
+	transition: all 0.3s ease;
+	background: #fff;
+	border: 2px solid transparent;
+}
+
+.mpwem-stat-clickable:hover {
+	background: #f0f8ff;
+	border-color: var(--color_theme, #007cba);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 124, 186, 0.15);
+}
+
+.mpwem-stat-clickable.active {
+	background: var(--color_theme, #007cba);
+	border-color: var(--color_theme, #007cba);
+	box-shadow: 0 4px 12px rgba(0, 124, 186, 0.25);
+}
+
+.mpwem-stat-clickable.active .mpwem-stat-number {
+	color: #fff;
+}
+
+.mpwem-stat-clickable.active .mpwem-stat-label {
+	color: rgba(255, 255, 255, 0.9);
+}
+
 .mpwem-stat-number {
 	display: block;
 	font-size: 32px;
@@ -190,6 +221,7 @@
 	color: var(--color_theme, #007cba);
 	line-height: 1;
 	margin-bottom: 5px;
+	transition: color 0.3s ease;
 }
 
 .mpwem-stat-label {
@@ -198,6 +230,7 @@
 	color: #666;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
+	transition: color 0.3s ease;
 }
 
 /* Bookings Table */

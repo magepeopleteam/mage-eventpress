@@ -129,6 +129,13 @@
 							'textarea_name' => 'mep_faq_content',
 							'media_buttons' => true,
 							'textarea_rows' => 10,
+							'tinymce' => array(
+								'toolbar1' => 'formatselect | fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link unlink | removeformat | undo redo | code',
+								'toolbar2' => '',
+								'fontsize_formats' => '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 48pt 60pt 72pt',
+								'plugins' => 'link,lists,textcolor,colorpicker,wordpress,wpeditimage,wplink,wpview',
+							),
+							'quicktags' => true,
 						);
 						wp_editor( $content, $editor_id, $settings );
 					?>

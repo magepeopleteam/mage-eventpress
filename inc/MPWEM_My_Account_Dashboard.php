@@ -452,45 +452,55 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 										</div>
 										<div class="mpwem-attendee-info">
 											<?php
-											$attendee_data = array(
-												'ea_name'       => __( 'Name', 'mage-eventpress' ),
-												'ea_email'      => __( 'Email', 'mage-eventpress' ),
-												'ea_phone'      => __( 'Phone', 'mage-eventpress' ),
-												'ea_ticket_type' => __( 'Ticket Type', 'mage-eventpress' ),
-												'ea_address_1'  => __( 'Address', 'mage-eventpress' ),
-												'ea_company'    => __( 'Company', 'mage-eventpress' ),
-											);
-											
-											foreach ( $attendee_data as $meta_key => $label ) {
-												$value = get_post_meta( $attendee_id, $meta_key, true );
-												if ( ! empty( $value ) ) {
-													?>
-													<div class="mpwem-info-row">
-														<span class="mpwem-info-label"><?php echo esc_html( $label ); ?>:</span>
-														<span class="mpwem-info-value"><?php echo esc_html( $value ); ?></span>
-													</div>
-													<?php
+											// Only show attendee details if Form Builder addon is active
+											if ( class_exists( 'MPWEM_Addon_Pro' ) ) {
+												$attendee_data = array(
+													'ea_name'       => __( 'Name', 'mage-eventpress' ),
+													'ea_email'      => __( 'Email', 'mage-eventpress' ),
+													'ea_phone'      => __( 'Phone', 'mage-eventpress' ),
+													'ea_ticket_type' => __( 'Ticket Type', 'mage-eventpress' ),
+													'ea_address_1'  => __( 'Address', 'mage-eventpress' ),
+													'ea_company'    => __( 'Company', 'mage-eventpress' ),
+												);
+												
+												foreach ( $attendee_data as $meta_key => $label ) {
+													$value = get_post_meta( $attendee_id, $meta_key, true );
+													if ( ! empty( $value ) ) {
+														?>
+														<div class="mpwem-info-row">
+															<span class="mpwem-info-label"><?php echo esc_html( $label ); ?>:</span>
+															<span class="mpwem-info-value"><?php echo esc_html( $value ); ?></span>
+														</div>
+														<?php
+													}
 												}
-											}
-											
-											// Custom form fields
-											if ( function_exists( 'mep_get_event_form_data' ) ) {
-												$form_data = get_post_meta( $event_id, 'mep_event_form_builder', true );
-												if ( is_array( $form_data ) ) {
-													foreach ( $form_data as $field ) {
-														if ( isset( $field['name'] ) && isset( $field['label'] ) ) {
-															$field_value = get_post_meta( $attendee_id, $field['name'], true );
-															if ( ! empty( $field_value ) ) {
-																?>
-																<div class="mpwem-info-row">
-																	<span class="mpwem-info-label"><?php echo esc_html( $field['label'] ); ?>:</span>
-																	<span class="mpwem-info-value"><?php echo esc_html( $field_value ); ?></span>
-																</div>
-																<?php
+												
+												// Custom form fields
+												if ( function_exists( 'mep_get_event_form_data' ) ) {
+													$form_data = get_post_meta( $event_id, 'mep_event_form_builder', true );
+													if ( is_array( $form_data ) ) {
+														foreach ( $form_data as $field ) {
+															if ( isset( $field['name'] ) && isset( $field['label'] ) ) {
+																$field_value = get_post_meta( $attendee_id, $field['name'], true );
+																if ( ! empty( $field_value ) ) {
+																	?>
+																	<div class="mpwem-info-row">
+																		<span class="mpwem-info-label"><?php echo esc_html( $field['label'] ); ?>:</span>
+																		<span class="mpwem-info-value"><?php echo esc_html( $field_value ); ?></span>
+																	</div>
+																	<?php
+																}
 															}
 														}
 													}
 												}
+											} else {
+												// Form Builder not active - show message
+												?>
+												<div class="mpwem-info-row">
+													<p style="color: #666; font-style: italic;"><?php esc_html_e( 'Attendee information requires Form Builder addon to be active.', 'mage-eventpress' ); ?></p>
+												</div>
+												<?php
 											}
 											?>
 										</div>
@@ -537,7 +547,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 				
 				<div class="mpwem-booking-footer">
 					<?php
-					// PDF Download
+					// PDF Download - only show if PDF plugin is active
 					if ( class_exists( 'MPWEM_PDF' ) ) {
 						$pdf_url = MPWEM_PDF::get_pdf_url( array( 'order_id' => $order_id ) );
 						if ( $pdf_url ) {

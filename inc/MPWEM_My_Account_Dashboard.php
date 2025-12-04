@@ -292,9 +292,6 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 					</td>
 					<td class="mpwem-col-event" data-label="<?php esc_attr_e( 'Event Details', 'mage-eventpress' ); ?>">
 						<div class="mpwem-event-info">
-							<?php if ( $event_thumbnail ) : ?>
-								<img src="<?php echo esc_url( $event_thumbnail ); ?>" alt="<?php echo esc_attr( $event_name ); ?>" class="mpwem-event-thumb">
-							<?php endif; ?>
 							<div class="mpwem-event-details">
 								<a href="<?php echo esc_url( $event_link ); ?>" target="_blank" class="mpwem-event-name">
 									<?php echo esc_html( $event_name ); ?>
@@ -440,13 +437,16 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 										<div class="mpwem-attendee-header">
 											<h5><?php printf( esc_html__( 'Attendee #%d', 'mage-eventpress' ), $count++ ); ?></h5>
 											<?php
-											$ticket_url = get_permalink( $attendee_id );
-											if ( $ticket_url ) {
-												?>
-												<a href="<?php echo esc_url( $ticket_url ); ?>" class="mpwem-btn mpwem-btn-small" target="_blank">
-													<?php esc_html_e( 'View Ticket', 'mage-eventpress' ); ?>
-												</a>
-												<?php
+											// Only show View Ticket button if Form Builder addon is active
+											if ( class_exists( 'MPWEM_Addon_Pro' ) ) {
+												$ticket_url = get_permalink( $attendee_id );
+												if ( $ticket_url ) {
+													?>
+													<a href="<?php echo esc_url( $ticket_url ); ?>" class="mpwem-btn mpwem-btn-small" target="_blank">
+														<?php esc_html_e( 'View Ticket', 'mage-eventpress' ); ?>
+													</a>
+													<?php
+												}
 											}
 											?>
 										</div>

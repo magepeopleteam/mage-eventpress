@@ -235,7 +235,6 @@
 
 /* Bookings Table */
 .mpwem-bookings-table-wrapper {
-	overflow-x: auto;
 	background: #fff;
 	border: 1px solid #e0e0e0;
 	border-radius: 8px;
@@ -299,8 +298,8 @@
 }
 
 .mpwem-bookings-table td {
-	padding: 15px 20px;
-	vertical-align: middle;
+	padding: 0.55em !important;
+	vertical-align: middle !important;
 }
 
 .mpwem-col-tickets td,

@@ -99,14 +99,7 @@
                                         <h3><?php echo $currency_symbol . ' ' . $current_month_revenue ?></h3>
                                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' ); ?></p>
                                         <div class="trend up">
-											<?php
-												printf(
-												// translators: %1$s is the sign (+/-), %2$s is the percentage change.
-													esc_html__( '↗ %1$s%2$s%% vs last month', 'mage-eventpress' ),
-													esc_html( $revenue_percent_change['inc_dec_sign'] ),
-													esc_html( $revenue_percent_change['percent_change'] )
-												);
-											?>
+											<?php printf( __( '↗ %1$s%2$s%% vs last month'), esc_html( $revenue_percent_change['inc_dec_sign'] ),esc_html( $revenue_percent_change['percent_change'] )); ?>
                                         </div>
                                     </div>
                                 </div>

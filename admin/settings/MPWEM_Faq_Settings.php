@@ -18,6 +18,10 @@
 
 			public function faq_tab_content( $post_id ) {
 				$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
+				// Ensure $faq_infos is an array to prevent sizeof() error
+				if ( ! is_array( $faq_infos ) ) {
+					$faq_infos = array();
+				}
 				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
@@ -60,7 +64,7 @@
 			}
 
 			public function faq_item( $faq_infos ) {
-				if ( sizeof( $faq_infos ) > 0 ) {
+				if ( is_array( $faq_infos ) && sizeof( $faq_infos ) > 0 ) {
 					foreach ( $faq_infos as $key => $faq_info ) {
 						if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
 							$title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
@@ -100,7 +104,11 @@
 				$faq_info = [];
 				if ( $post_id ) {
 					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
-					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
+					// Ensure $faq_infos is an array to prevent sizeof() error
+					if ( ! is_array( $faq_infos ) ) {
+						$faq_infos = array();
+					}
+					if ( is_array( $faq_infos ) && sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						$faq_info = $faq_infos[ $key ];
 					}
 				}
@@ -156,7 +164,7 @@
 				$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				if ( $post_id ) {
 					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
-					if ( sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
+					if ( is_array( $faq_infos ) && sizeof( $faq_infos ) > 0 && array_key_exists( $key, $faq_infos ) ) {
 						unset( $faq_infos[ $key ] );
 						$faq_infos = array_values( $faq_infos );
 						update_post_meta( $post_id, 'mep_event_faq', $faq_infos );
@@ -181,6 +189,10 @@
 				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
 					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
+					// Ensure $faq_infos is an array to prevent sizeof() error
+					if ( ! is_array( $faq_infos ) ) {
+						$faq_infos = array();
+					}
 					if ( ! array_key_exists( $key, $faq_infos ) ) {
 						$key = sizeof( $faq_infos );
 					}

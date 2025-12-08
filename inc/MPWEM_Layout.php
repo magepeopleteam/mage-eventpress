@@ -200,7 +200,7 @@
 						'name'     => 'user_name',
 						'd_name'   => 'ea_name',
 						'required' => 1,
-						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_name_label', esc_html__( 'Enter Your Name', 'mage-eventpress' ) ),
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_name_label', esc_html__( 'Name', 'mage-eventpress' ) ),
 					];
 				}
 				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_email' ) ) {
@@ -209,7 +209,7 @@
 						'name'     => 'user_email',
 						'd_name'   => 'ea_email',
 						'required' => 1,
-						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_email_label', esc_html__( 'Enter Your Email', 'mage-eventpress' ) ),
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_email_label', esc_html__( 'Email', 'mage-eventpress' ) ),
 					];
 				}
 				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_phone' ) ) {
@@ -218,7 +218,7 @@
 						'name'     => 'user_phone',
 						'd_name'   => 'ea_phone',
 						'required' => 1,
-						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_phone_label', esc_html__( 'Enter Your Phone', 'mage-eventpress' ) ),
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_phone_label', esc_html__( 'Phone', 'mage-eventpress' ) ),
 					];
 				}
 				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_address' ) ) {
@@ -227,7 +227,7 @@
 						'name'     => 'user_address',
 						'd_name'   => 'ea_address_1',
 						'required' => 1,
-						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_address_label', esc_html__( 'Enter Your address', 'mage-eventpress' ) ),
+						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_address_label', esc_html__( 'Address', 'mage-eventpress' ) ),
 					];
 				}
 				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_reg_tshirtsize' ) ) {

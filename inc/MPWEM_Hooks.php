@@ -276,7 +276,7 @@
 			}
 			public function event_faq( $event_id ) {
 				ob_start();
-				$mep_event_faq = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_faq' );
+				$mep_event_faq = get_post_meta($event_id,'mep_event_faq',true);
 				if ( $mep_event_faq ) {
 					require MPWEM_Functions::template_path( 'single/faq.php' );
 				}

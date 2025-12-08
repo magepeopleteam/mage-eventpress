@@ -4,7 +4,34 @@ function mpwem_initWpEditor(id) {
             if (tinymce.get(id)) {
                 tinymce.get(id).remove();
             }
-            tinymce.init({selector: '#' + id});
+            // Enhanced settings for FAQ editor
+            if (id === 'mep_faq_content') {
+                tinymce.init({
+                    selector: '#' + id,
+                    toolbar1: 'formatselect | fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link unlink | removeformat | undo redo | code',
+                    toolbar2: '',
+                    fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 48pt 60pt 72pt',
+                    plugins: 'link,lists,textcolor,colorpicker,wordpress,wpeditimage,wplink,wpview',
+                    menubar: false,
+                    statusbar: true,
+                    setup: function(editor) {
+                        // Initialize WordPress link dialog when editor is ready
+                        editor.on('init', function() {
+                            // Wait a bit for WordPress scripts to be ready
+                            setTimeout(function() {
+                                // Ensure WordPress link dialog is initialized
+                                if (typeof wp !== 'undefined' && wp.link && typeof wp.link.init === 'function') {
+                                    wp.link.init();
+                                } else if (typeof wpLink !== 'undefined' && typeof wpLink.init === 'function') {
+                                    wpLink.init();
+                                }
+                            }, 100);
+                        });
+                    }
+                });
+            } else {
+                tinymce.init({selector: '#' + id});
+            }
         }
         if (typeof QTags !== 'undefined') {
             QTags({id: id});
@@ -435,7 +462,33 @@ function mpwem_initWpEditor(id) {
                 },
                 success: function (data) {
                     target.html(data).promise().done(function () {
-                        mpwem_initWpEditor('mep_faq_content');
+                        // Wait a bit for WordPress to potentially initialize, then ensure our enhanced settings are applied
+                        setTimeout(function() {
+                            mpwem_initWpEditor('mep_faq_content');
+                            // Ensure WordPress link scripts are loaded and initialized after editor is ready
+                            setTimeout(function() {
+                                var editor = tinymce.get('mep_faq_content');
+                                if (editor) {
+                                    // Initialize WordPress link dialog
+                                    if (typeof wp !== 'undefined' && wp.link) {
+                                        if (typeof wp.link.init === 'function') {
+                                            wp.link.init();
+                                        }
+                                    } else if (typeof wpLink !== 'undefined' && typeof wpLink.init === 'function') {
+                                        wpLink.init();
+                                    }
+                                    
+                                    // Ensure link button triggers WordPress dialog
+                                    editor.on('ExecCommand', function(e) {
+                                        if (e.command === 'mceLink' || e.command === 'WP_Link') {
+                                            if (typeof wp !== 'undefined' && wp.link) {
+                                                wp.link.init();
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 300);
+                        }, 100);
                     });
                 }
             });

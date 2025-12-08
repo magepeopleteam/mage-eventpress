@@ -10,7 +10,7 @@
 		class MPWEM_Functions {
 			public function __construct() { }
 			public static function details_template_path( $file_name ): string {
-				$template_path       = get_stylesheet_directory() . '/mage-event/';
+				$template_path       = get_stylesheet_directory() . '/mage-event/themes/';
 				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
 				$default_path        = $default_dir . $file_name;
 				$theme_template_path = $template_path . $file_name;
@@ -30,6 +30,11 @@
 					return $theme_template_path;
 				}
 				return $default_dir . $file_name;
+			}
+			public static function get_details_template_name($post_id) {
+				$global_template   = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_global_single_template', 'default-theme.php' );
+				$current_template  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template' );
+				return $current_template ?: $global_template;
 			}
 			//==========================//
 			public static function get_all_info( $event_id ) {

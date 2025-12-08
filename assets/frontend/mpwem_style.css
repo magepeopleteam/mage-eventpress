@@ -964,6 +964,7 @@ div.mep_event_native_list .mep-list-header {
   div.mpwem_style [data-bg-image] {
     background-size: cover;
     background-repeat: no-repeat;
+	  margin: 0 auto;
   }
 .mep_event_native_list h3.mep_list_date i {
 	background: transparent;
@@ -1053,13 +1054,7 @@ div.mep_event_native_list .mep-list-header {
 	padding: 5px 0;
 }
 /* Code By Mahin */
-ul.event-custom-price li ul {
-	padding: 10px;
-	margin: 10px 0;
-	list-style: none;
-	border: 1px solid #DDD;
-	background: #FBFBFB;
-}
+
 .mep_event_list .mepev-ribbons {
 	position: absolute;
 	top: 10px;
@@ -4378,7 +4373,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		width: 30%;
 	}
 	.mep-related-events .mep-related-events-items .item .item-info .price h2 {
-		font-size: 30px;
+		font-size: 25px;
 		color: var(--color_theme);
 		margin: 0;
 	}
@@ -4451,6 +4446,8 @@ div.mpwem_timeline_area .timeline_area::before {
 		font-size: 25px;
 	}
 }
+.mpwem_slider_area div.post_thumb{overflow: hidden;}
+.mpwem_slider_area div.post_thumb img{width: auto;height: auto;max-width: 100%;margin: 0 auto;}
 .mpwem_slider_area {
 	margin-top: 0;
 }

@@ -268,9 +268,10 @@
 @media only screen and (min-width: 10px) {
 	.mpwem_style small { font-size: var(--fs_small); }
 	/********Helper Class***********/
-	.mpwem_style .divider, .mpwem_style [class*="_divider"], .mpwem_style hr { margin: var(--dmp_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
-	.mpwem_style .divider_3, .mpwem_style [class*="_divider_3"] { margin: var(--dmp_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 3px; background-color: var(--color_border); width: 100%; }
-	.mpwem_style .dividerL, .mpwem_style [class*="_dividerL"] { margin: var(--dmp) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
+	.mpwem_style ._divider, .mpwem_style [class*="_divider"], .mpwem_style hr { margin: var(--dmp_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
+	.mpwem_style ._divider_xs, .mpwem_style [class*="_divider_xs"]{ margin: var(--dmp_xxs) 0;}
+	.mpwem_style ._divider_3, .mpwem_style [class*="_divider_3"] { margin: var(--dmp_xs) 0; line-height: 1; border-color: var(--color_border); display: block; height: 3px; background-color: var(--color_border); width: 100%; }
+	.mpwem_style ._dividerL, .mpwem_style [class*="_dividerL"] { margin: var(--dmp) 0; line-height: 1; border-color: var(--color_border); display: block; height: 1px; background-color: var(--color_border); width: 100%; }
 	.mpwem_style .separatorRight > *, .mpwem_style [class*="_separatorRight"] > * { border-right: 2px solid var(--color_border); }
 	.mpwem_style .separatorRight > *, .mpwem_style [class*="_separatorRight"] > :last-child { border-right: none; }
 	div.mpwem_style .mpDisabled { cursor: no-drop; opacity: 0.7; pointer-events: none; }
@@ -833,7 +834,7 @@
 	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
 	/****************************/
 	div.mpPopup.right_popup {-webkit-justify-content: flex-end;justify-content: flex-end;}
-	div.mpPopup.right_popup .popupMainArea {min-height: 100vh;border: 0; border-radius: 0; padding: 50px 20px;}
+	div.mpPopup.right_popup .popupMainArea {border: 0; border-radius: 0; padding: 50px 20px;}
 	div.mpPopup.right_popup .popupClose {top: 0;right: 0;border-radius: 0;background-color: transparent;color: var(--color_danger);}
 }
 /******************************************************************** Pagination section ************************************************/
@@ -1211,7 +1212,7 @@
 	div.woocommerce .dLayout { background-color: transparent; }
 	div.woocommerce ul.cart_list { list-style-type: none; line-height: 1.25; font-size: var(--fs); color: var(--d_color); }
 	div.woocommerce ul.cart_list li { padding: 3px 0; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-flex-wrap: wrap; flex-wrap: wrap; }
-	div.woocommerce ul.cart_list li span { margin: 0 var(--dmp_xs) 0 0; }
+	div.woocommerce ul.cart_list li span {}
 	div.woocommerce .cart_product_item { border: 1px solid var(--color_border); margin: var(--dmp_xs) 0 0 0; padding: var(--dmp_xs); border-radius: var(--dbr); }
 	div.woocommerce td.product-name { font-size: var(--fs_h5); font-weight: 500; color: var(--color_theme); }
 	div.woocommerce td.product-name dl.variation { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; color: var(--d_color); margin: 0;}

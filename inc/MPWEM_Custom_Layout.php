@@ -167,6 +167,22 @@
 				<?php
 			}
 			/*****************************/
+            public static function bg_image($post_id='',$image_id='',$size='full') {
+	            $image_url = MPWEM_Global_Function::get_image_url( $post_id, $image_id,$size );
+	            $image_url = $image_url ?: MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png';
+	            $size      = getimagesize( $image_url );
+	            $width     = 0;
+	            $height    = 0;
+	            if ( $size ) {
+		            $width  = $size[0];
+		            $height = $size[1];
+	            }
+	            ?>
+                <div data-bg-image="<?php echo esc_html( $image_url ); ?>"  data-width="<?php echo esc_attr( $width ); ?>" data-height="<?php echo esc_attr( $height ); ?>"></div>
+<!--                style="max-width:--><?php ////echo esc_attr( $width ); ?><!--px;max-height:  --><?php ////echo esc_attr( $height ); ?><!--px;"-->
+                <?php
+            }
+			/*****************************/
 			public static function load_more_text($text = '', $length = 150) {
 				$text_length = strlen($text);
 				if ($text && $text_length > $length) {
@@ -230,6 +246,7 @@
                                        min="<?php echo esc_attr($min_qty); ?>"
                                        max="<?php echo esc_attr($max_qty); ?>"
                                        data-min-qty="<?php echo esc_attr($must_min =='off'?0:$min_qty); ?>"
+                                       readonly
                                 />
                             </label>
                             <div class="incQty">

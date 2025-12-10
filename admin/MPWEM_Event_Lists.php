@@ -305,28 +305,39 @@
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
 				}
 				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				$dates   = isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
 					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
 					wp_die();
 				}
 				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
 				$date      = MPWEM_Functions::get_upcoming_date_time( $post_id );
-                $date=$date?:end($all_dates)
-				?>
-                <div class="popupMainArea min_1000">
-                    <div class="popupHeader allCenter">
-                        <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
-                        <h2 class="_mR"><?php echo esc_html( get_the_title( $post_id ) ); ?></h2>
-                        <div class="date_time_area">
-							<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+				$date      = $dates ?: $date;
+				if ( ! $date && sizeof( $all_dates ) > 0 ) {
+					$date_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+					if ( $date_type == 'no' || $date_type == 'yes' ) {
+						$date = date( 'Y-m-d', strtotime( end( $all_dates )['time'] ) );
+					} else {
+						$date = date( 'Y-m-d', strtotime( end( $all_dates ) ) );
+					}
+				}
+				if ( $date ) {
+					?>
+                    <div class="popupMainArea min_1000">
+                        <div class="popupHeader allCenter">
+                            <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
+                            <h2 class="_mR"><?php echo esc_html( get_the_title( $post_id ) ); ?></h2>
+                            <div class="date_time_area">
+								<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+                            </div>
+                            <span class="fas fa-times popupClose"></span>
                         </div>
-                        <span class="fas fa-times popupClose"></span>
+                        <div class="popupBody mpwem_popup_attendee_statistic_body ">
+							<?php $this->popup_static_list( $post_id, $date ); ?>
+                        </div>
                     </div>
-                    <div class="popupBody mpwem_popup_attendee_statistic_body ">
-						<?php $this->popup_static_list( $post_id, $date ); ?>
-                    </div>
-                </div>
-				<?php
+					<?php
+				}
 				wp_die();
 			}
 			public function mpwem_load_popup_attendee_statistics() {

@@ -18,6 +18,22 @@
 			echo $custom_action['custom_meta'];
 		}
 	}
+
+	if(!function_exists('mep_prevent_serialized_input')){
+	function mep_prevent_serialized_input($value) {
+		// Blocks serialized PHP objects
+		if (is_serialized($value)) {
+			return '';
+		}
+		
+		// Also block patterns like O:12:"ClassName"
+		if (preg_match('/O:\d+:"[A-Za-z0-9_]+"/', $value)) {
+			return '';
+		}
+
+		return $value;
+	}
+	}
 	if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
 			if ( $post->post_type === 'mep_events' ) {
@@ -507,7 +523,7 @@
 			$user_id           = $order->get_customer_id();
 			$first_name        = $order->get_billing_first_name();
 			$last_name         = $order->get_billing_last_name();
-			$billing_full_name = $first_name . ' ' . $last_name;
+			$billing_full_name = mep_prevent_serialized_input($first_name . ' ' . $last_name);
 			if ( $type == 'billing' ) {
 				// Billing Information
 				$company     = isset( $order_meta['_billing_company'][0] ) ? sanitize_text_field( $order_meta['_billing_company'][0] ) : '';
@@ -553,17 +569,17 @@
 			//SAVE THE POST
 			$pid = wp_insert_post( $new_post );
 			$pin = $user_id . $order_id . $event_id . $pid;
-			update_post_meta( $pid, 'ea_name', $uname );
-			update_post_meta( $pid, 'ea_address_1', $address );
-			update_post_meta( $pid, 'ea_email', $email );
-			update_post_meta( $pid, 'ea_phone', $phone );
-			update_post_meta( $pid, 'ea_gender', $gender );
-			update_post_meta( $pid, 'ea_company', $company );
-			update_post_meta( $pid, 'ea_desg', $designation );
-			update_post_meta( $pid, 'ea_website', $website );
-			update_post_meta( $pid, 'ea_vegetarian', $vegetarian );
-			update_post_meta( $pid, 'ea_tshirtsize', $tshirtsize );
-			update_post_meta( $pid, 'ea_ticket_type', $ticket_type );
+			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input($uname) );
+			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input($address) );
+			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input($email) );
+			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input($phone) );
+			update_post_meta( $pid, 'ea_gender', mep_prevent_serialized_input($gender) );
+			update_post_meta( $pid, 'ea_company', mep_prevent_serialized_input($company) );
+			update_post_meta( $pid, 'ea_desg', mep_prevent_serialized_input($designation) );
+			update_post_meta( $pid, 'ea_website', mep_prevent_serialized_input($website) );
+			update_post_meta( $pid, 'ea_vegetarian', mep_prevent_serialized_input($vegetarian) );
+			update_post_meta( $pid, 'ea_tshirtsize', mep_prevent_serialized_input($tshirtsize) );
+			update_post_meta( $pid, 'ea_ticket_type', $ticket_type);
 			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
 			update_post_meta( $pid, 'ea_ticket_price', mep_get_ticket_price_by_event( $event_id, $ticket_type, 0 ) );
 			update_post_meta( $pid, 'ea_ticket_order_amount', $ticket_total_price );

@@ -13,6 +13,8 @@
 				add_action( 'admin_action_mpwem_duplicate_post', [ $this, 'mpwem_duplicate_post_function' ] );
 				add_action( 'wp_ajax_mpwem_trash_multiple_posts', [ $this, 'mpwem_trash_multiple_posts' ] );
 				add_action( 'wp_ajax_mpwem_quick_edit_event', array( $this, 'mpwem_quick_edit_event' ) );
+				add_action( 'wp_ajax_mpwem_popup_attendee_statistic', array( $this, 'mpwem_popup_attendee_statistic' ) );
+				add_action( 'wp_ajax_mpwem_load_popup_attendee_statistics', array( $this, 'mpwem_load_popup_attendee_statistics' ) );
 			}
 			public function event_list_menu() {
 				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Event Lists', 'mage-eventpress' ), __( 'Event Lists', 'mage-eventpress' ), 'manage_woocommerce', 'mep_event_lists', array( $this, 'display_event_list' ) );
@@ -99,7 +101,7 @@
                                         <h3><?php echo $currency_symbol . ' ' . $current_month_revenue ?></h3>
                                         <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' ); ?></p>
                                         <div class="trend up">
-											<?php printf( __( '↗ %1$s%2$s%% vs last month'), esc_html( $revenue_percent_change['inc_dec_sign'] ),esc_html( $revenue_percent_change['percent_change'] )); ?>
+											<?php printf( __( '↗ %1$s%2$s%% vs last month' ), esc_html( $revenue_percent_change['inc_dec_sign'] ), esc_html( $revenue_percent_change['percent_change'] ) ); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -202,6 +204,7 @@
                                     <span>↓</span>
                                 </button>
                             </div>
+                            <div class="mpPopup mpwem_popup_attendee_statistic" data-popup="mpwem_popup_attendee_statistic"></div>
                         </div>
                     </div>
                 </div>
@@ -296,6 +299,58 @@
 					wp_set_post_terms( $post_id, $categories, 'mep_cat' );
 				}
 				wp_send_json_success( array( 'message' => 'Event updated successfully' ) );
+			}
+			public function mpwem_popup_attendee_statistic() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					wp_die();
+				}
+				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
+				$date      = MPWEM_Functions::get_upcoming_date_time( $post_id );
+                $date=$date?:end($all_dates)
+				?>
+                <div class="popupMainArea min_1000">
+                    <div class="popupHeader allCenter">
+                        <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
+                        <h2 class="_mR"><?php echo esc_html( get_the_title( $post_id ) ); ?></h2>
+                        <div class="date_time_area">
+							<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+                        </div>
+                        <span class="fas fa-times popupClose"></span>
+                    </div>
+                    <div class="popupBody mpwem_popup_attendee_statistic_body ">
+						<?php $this->popup_static_list( $post_id, $date ); ?>
+                    </div>
+                </div>
+				<?php
+				wp_die();
+			}
+			public function mpwem_load_popup_attendee_statistics() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					wp_die();
+				}
+				$date = isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
+				if ( $post_id && $date ) {
+					$this->popup_static_list( $post_id, $date );
+				}
+				wp_die();
+			}
+			public function popup_static_list( $post_id, $date ) {
+				$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
+				?>
+                <h4 class="_textCenter"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ) ); ?></h4>
+                <div class="_divider"></div>
+				<?php MPWEM_Attendee_Statistics::attendee_statistic_list( $post_id, $date ); ?>
+				<?php
 			}
 		}
 		new MPWEM_Event_Lists();
@@ -625,6 +680,9 @@
                             </a>
                             <a href="<?php echo esc_url( $edit_link ); ?>">
                                 <button class="action-btn edit" title="Edit Event"><span class="mi mi-pencil"></span></button>
+                            </a>
+                            <a href="#" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $id ); ?>">
+                                <button class="action-btn"><i class="mi mi-stats"></i></button>
                             </a>
                             <a href="<?php echo esc_url( $delete_link ); ?>">
                                 <button class="action-btn delete" title="Delete Event"><span class="mi mi-trash"></span></button>

@@ -142,7 +142,7 @@
 	.mpwem_style button, .mpwem_style .mpBtn, .mpwem_style [class*="_mpBtn"],
 	.mpwem_style [class*="slideIndicator"],
 	.mpwem_style [class*="circleIcon"],
-	div[class*="dLoader"], div[class*="simpleSpinner"],
+	div.mpwem_style div[class*="dLoader"], div.mpwem_style div[class*="simpleSpinner"],
 	div.mpwem_style div.mpPopup.in,
 	div.mpwem_style.mpPopup.in,
 	div.mpPopup .popupClose { display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center; }
@@ -326,6 +326,7 @@
 	.mpwem_style .pTB_xs, .mpwem_style [class*="pTB_xs"] { padding: var(--dmp_xs) 0; }
 	/**************/
 	div.mpwem_style .margin, div.mpwem_style [class*="_margin"] { margin: var(--dmp); }
+	div.mpwem_style .margin, div.mpwem_style [class*="_margin_xs"] { margin: var(--dmp_xs); }
 	div.mpwem_style .mZero, div.mpwem_style [class*="_mZero"], .mpwem_style span[class*="_icon"] { margin: 0; }
 	div.mpwem_style .mAuto, div.mpwem_style [class*="_mAuto"] { margin: 0 auto; }
 	div.mpwem_style .fullAuto, div.mpwem_style [class*="_fullAuto"] { margin: auto; }

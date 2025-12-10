@@ -72,9 +72,13 @@
 		margin: 0;
 	}
 }
+/* ************************organizer section******************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_seat_status {margin: var(--dmp) var(--dmp) 0 var(--dmp); }
+}
 /* ************************Event Date List******************** */
 @media only screen and (min-width: 10px) {
-	div.event_date_list_area {padding: var(--dmp);}
+	div.event_date_list_area {padding: var(--dmp_xs) var(--dmp) ;}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dmp_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
@@ -492,15 +496,7 @@ button.single_add_to_cart_button[disabled]:hover {
 	-webkit-border-radius: 50px;
 	border-radius: 50px;
 }
-/********Total seat ***********/
-.mep-default-sidrbar-price-seat {
-	text-align: center;
-	padding: 15px;
-}
-.mep-default-sidrbar-price-seat h5 {
-	font-size: 16px;
-	font-weight: 500;
-}
+
 /********venue place ***********/
 /********circle icon box ***********/
 ul.mep-social-share a {
@@ -623,21 +619,9 @@ ul.mep-social-share li a.email:hover i {
 	color: var(--color_7);
 	font-weight: normal;
 }
-.default_theme .mep-default-sidrbar-price-seat,
 .mep-default-sidebar-address,
 .mep-default-sidrbar-social {
 	border-bottom: 1px solid #F0F2F5;
-}
-.default_theme .mep-default-sidrbar-price-seat .setas-info {
-	padding: 14px;
-	background-color: #F7F7F7;
-	border-radius: 10px;
-	display: flex;
-	justify-content: space-between;
-}
-.default_theme .mep-default-sidrbar-price-seat .setas-info .total-seats, .default_theme .mep-default-sidrbar-price-seat .setas-info .available-seats {
-	display: flex;
-	flex-direction: column;
 }
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;

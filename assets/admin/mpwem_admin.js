@@ -80,7 +80,6 @@ function mpwem_initWpEditor(id) {
         var nextValue = toggleValues[0];
         if (currentValue === toggleValues[0]) {
             nextValue = toggleValues[1];
-
             if (checkbox.attr('name') === 'mep_disable_ticket_time') {
                 $(".mep-special-datetime").slideUp(200);
             }
@@ -125,7 +124,6 @@ function mpwem_initWpEditor(id) {
             $(".mep_event_tab_location_content").show(200);
         }
     });
-
     $(document).on('click', 'label.mep_enable_custom_dt_format input', function () {
         if ($(this).is(":checked")) {
             $(".mep_custom_timezone_setting").slideDown(200);
@@ -141,12 +139,9 @@ function mpwem_initWpEditor(id) {
         }
     });
     $(document).ready(function () {
-
-
         $(document).find('.mp_event_type_sortable').sortable({
             handle: $(this).find('.mp_event_type_sortable_button')
         });
-
         $('#add-new-date-row').on('click', function () {
             var row = $('.empty-row-d.screen-reader-text').clone(true);
             row.removeClass('empty-row-d screen-reader-text');
@@ -172,7 +167,7 @@ function mpwem_initWpEditor(id) {
         let parent = $('#mp_event_all_info_in_tab');
         if (parent.length > 0 && parent.find('.data_required').length > 0) {
             parent.find('.data_required').each(function () {
-                if ($(this).closest('.mpwem_hidden_content').length===0) {
+                if ($(this).closest('.mpwem_hidden_content').length === 0) {
                     $(this).find('[data-required]').each(function () {
                         if (!$(this).val()) {
                             let target_id = $(this).closest('.mp_tab_item').attr('data-tab-item');
@@ -315,7 +310,7 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_timeline_settings').find('.mpwem_timeline_area');
         let popup_target = parent.find('.timeline_input');
-        if(title===''){
+        if (title === '') {
             alert('Timeline Title is required');
             exit;
         }
@@ -414,7 +409,7 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_faq_settings').find('.mpwem_faq_area');
         let popup_target = parent.find('.faq_input');
-        if(title===''){
+        if (title === '') {
             alert('FAQ Title is required');
             exit;
         }
@@ -742,7 +737,7 @@ function mpwem_load_sortable_datepicker(parent, item) {
     });
 }(jQuery));
 //=======================//
-function mpwem_load_post_date(parent){
+function mpwem_load_post_date(parent) {
     let post_id = parent.find('[name="mpwem_post_id"]').val();
     let target = parent.find('.date_time_area');
     if (post_id > 0) {
@@ -764,7 +759,7 @@ function mpwem_load_post_date(parent){
         });
     }
 }
-function mpwem_load_past_date_time(parent){
+function mpwem_load_past_date_time(parent) {
     let target = parent.find('.mpwem_time_area');
     if (target.length > 0) {
         let post_id = parent.find('[name="mpwem_post_id"]').val();
@@ -848,13 +843,12 @@ function mpwem_load_past_date_time(parent){
             alert('Please select event');
         }
     });
-
 }(jQuery));
 //=========Seat status==============//
 (function ($) {
     "use strict";
     $(document).on('click', '.mpwem_reload_seat_status', function () {
-        let current=$(this);
+        let current = $(this);
         let parent = $(this).closest('.status_action');
         let post_id = current.attr('data-post_id');
         let date = current.attr('data-date');
@@ -879,6 +873,80 @@ function mpwem_load_past_date_time(parent){
             });
         } else {
             alert('Something Wrong!');
+        }
+    });
+}(jQuery));
+//=========event list Statistics==============//
+(function ($) {
+    "use strict";
+    $(document).on('change', '.mpwem_popup_attendee_statistic [name="mpwem_date_time"]', function () {
+        let parent = $(this).closest('.mpwem_popup_attendee_statistic');
+        let target = parent.find('.mpwem_time_area');
+        if (target.length > 0) {
+            mpwem_load_past_date_time(parent);
+        } else {
+            load_mpwem_popup_attendee_statistic(parent);
+        }
+    });
+    $(document).on('change', '.mpwem_popup_attendee_statistic [name="mpwem_time"]', function () {
+        let parent = $(this).closest('.mpwem_popup_attendee_statistic');
+        load_mpwem_popup_attendee_statistic(parent);
+    });
+    function load_mpwem_popup_attendee_statistic(parent) {
+        let post_id = parent.find('[name="mpwem_post_id"]').val();
+        if (post_id > 0) {
+            let target = parent.find('.mpwem_popup_attendee_statistic_body');
+            let dates = parent.find('[name="mpwem_date_time"]').val();
+            let time_area = parent.find('.mpwem_time_area');
+            if (time_area.length > 0) {
+                dates = parent.find('[name="mpwem_time"]').val();
+            }
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_admin_var.url,
+                data: {
+                    "action": "mpwem_load_popup_attendee_statistics",
+                    "post_id": post_id,
+                    "dates": dates,
+                    "nonce": mpwem_admin_var.nonce
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                    dLoaderRemove(target);
+                }
+            });
+        }
+    }
+    $(document).on('click', '[data-mpwem_popup_attendee_statistic]', function () {
+        let post_id = $(this).data('event-id');
+        if (post_id) {
+            let target_id = $(this).attr('data-active-popup', '').data('mpwem_popup_attendee_statistic');
+            let target = $('body').addClass('noScroll').find('[data-popup="' + target_id + '"]');
+            target.addClass('in').promise().done(function () {
+                jQuery.ajax({
+                    type: 'POST',
+                    url: mpwem_admin_var.url,
+                    data: {
+                        "action": "mpwem_popup_attendee_statistic",
+                        "post_id": post_id,
+                        "nonce": mpwem_admin_var.nonce
+                    },
+                    beforeSend: function () {
+                        dLoader(target);
+                    },
+                    success: function (data) {
+                        target.html(data);
+                        mpwem_load_date_picker(target);
+                        dLoaderRemove(target);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            });
         }
     });
 }(jQuery));

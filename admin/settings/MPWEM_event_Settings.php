@@ -65,7 +65,7 @@
 			}
 
 			public function display_available_seat( $event_id ) {
-				$display = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'off' );
+				$display = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 				$checked = $display == 'off' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">

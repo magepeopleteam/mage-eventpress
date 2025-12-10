@@ -213,10 +213,34 @@ function mpwem_attendee_management(parent, total_qty) {
             },
             success: function (data) {
                 target.html(data).slideDown('fast').promise().done(function () {
+                    mpwem_load_seat_status(parent.closest('.mpwem_wrapper'));
                     mpwem_price_calculation(parent);
                 });
             }
         });
+    }
+    function mpwem_load_seat_status(parent) {
+        let target = parent.find('.mpwem_seat_status');
+        if (target.length > 0) {
+            let post_id = parent.find('[name="mpwem_post_id"]').val();
+            let dates = parent.find('[name="mpwem_date_time"]').val();
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mpwem_load_seat_status",
+                    "post_id": post_id,
+                    "dates": dates,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    dLoader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                }
+            });
+        }
     }
     $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
         let parent = $(this).closest('.mpwem_registration_area');
@@ -243,10 +267,10 @@ function mpwem_attendee_management(parent, total_qty) {
             }
             newValue = Math.min(newValue, max);
             target.val(newValue);
-            parent.find('.qtyIncDec').each(function (){
-                let $this=$(this);
+            parent.find('.qtyIncDec').each(function () {
+                let $this = $(this);
                 $this.find('.incQty, .decQty').removeClass('mpDisabled');
-                let loop_target=$(this).find('input');
+                let loop_target = $(this).find('input');
                 let loop_value = parseInt(loop_target.val()) || 0;
                 //let loop_min = parseInt(loop_target.attr('min')) || 0;
                 let loop_max = parseInt(loop_target.attr('max')) || Infinity;
@@ -257,7 +281,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 if (loop_value <= loop_minQty) {
                     $this.find('.decQty').addClass('mpDisabled');
                 }
-            }).promise().done(function (){
+            }).promise().done(function () {
                 target.trigger('change').trigger('input');
             });
         }
@@ -268,7 +292,7 @@ function mpwem_attendee_management(parent, total_qty) {
         let total_qty = mpwem_qty(parent);
         if (parent.find('[name="mepgq_max_qty"]').length > 0) {
             let max_qty_gq = parseInt(parent.find('[name="mepgq_max_qty"]').val());
-            if ( max_qty_gq>0 && total_qty > max_qty_gq) {
+            if (max_qty_gq > 0 && total_qty > max_qty_gq) {
                 qty = qty - total_qty + max_qty_gq;
                 $(this).val(qty);
                 mpwem_price_calculation(parent);
@@ -277,7 +301,7 @@ function mpwem_attendee_management(parent, total_qty) {
             }
         } else if (parent.find('[name="mepmm_min_qty"]').length > 0) {
             let max_qty = parseInt(parent.find('[name="mepmm_max_qty"]').val());
-            if (max_qty>0 && total_qty > max_qty) {
+            if (max_qty > 0 && total_qty > max_qty) {
                 qty = qty - total_qty + max_qty;
                 $(this).val(qty);
                 mpwem_price_calculation(parent);
@@ -403,10 +427,6 @@ function mpwem_attendee_management(parent, total_qty) {
             current.siblings(".mep-event-faq-content").slideDown(200);
         }
     });
-    //****************************************************************//
-    //****************************************************************//
-    //****************************************************************//
-    //****************************************************************//
 }(jQuery));
 function mp_event_wo_commerce_price_format(price) {
     let currency_position = jQuery('input[name="currency_position"]').val();

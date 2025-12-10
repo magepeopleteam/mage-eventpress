@@ -154,10 +154,12 @@
 				}
 				return $query;
 			}
-			public function hide_wc_hidden_product_from_product_list( $query ) {
-				global $pagenow;
-				$q_vars = &$query->query_vars;
-				if ( $pagenow == 'edit.php' && isset( $q_vars['post_type'] ) && $q_vars['post_type'] == 'product' ) {
+		public function hide_wc_hidden_product_from_product_list( $query ) {
+			global $pagenow;
+			$q_vars = &$query->query_vars;
+			if ( $pagenow == 'edit.php' && isset( $q_vars['post_type'] ) && $q_vars['post_type'] == 'product' ) {
+				$show_hidden = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_hidden_wc_product', 'no' );
+				if ( $show_hidden !== 'yes' ) {
 					$tax_query = array(
 						[
 							'taxonomy' => 'product_visibility',
@@ -169,6 +171,7 @@
 					$query->set( 'tax_query', $tax_query );
 				}
 			}
+		}
 
 			public function hide_hidden_wc_product_from_frontend() {
 				global $post, $wp_query;

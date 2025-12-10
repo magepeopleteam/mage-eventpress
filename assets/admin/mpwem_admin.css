@@ -17,19 +17,19 @@
 	div.mpwem_style strong { font-weight: normal; }
 	div.mpwem_style .extraBold { font-weight: 900; }
 	div.mpwem_style h1,
-	div.mpwem_style [class*="_fs_h1"] { font-size: var(--fs_h1); font-weight: var(--fw-bold); }
+	div.mpwem_style [class*="_fs_h1"] { font-size: var(--fs_h1); font-weight: normal; }
 	div.mpwem_style h2,
-	div.mpwem_style [class*="_fs_h2"] { font-size: var(--fs_h2); font-weight: var(--fw-bold); }
+	div.mpwem_style [class*="_fs_h2"] { font-size: var(--fs_h2); font-weight: normal; }
 	div.mpwem_style h3,
-	div.mpwem_style [class*="_fs_h3"] { font-size: var(--fs_h3); font-weight: var(--fw-medium); }
+	div.mpwem_style [class*="_fs_h3"] { font-size: var(--fs_h3); font-weight: normal; }
 	div.mpwem_style h4,
-	div.mpwem_style [class*="_fs_h4"] { font-size: var(--fs_h4); font-weight: var(--fw-medium); text-transform: inherit;}
+	div.mpwem_style [class*="_fs_h4"] { font-size: var(--fs_h4); font-weight: normal; text-transform: inherit;}
 	div.mpwem_style h5,
-	div.mpwem_style [class*="_fs_h5"] { font-size: var(--fs_h5); font-weight: var(--fw-medium); text-transform: inherit;}
+	div.mpwem_style [class*="_fs_h5"] { font-size: var(--fs_h5); font-weight: normal; text-transform: inherit;}
 	div.mpwem_style h6,
-	div.mpwem_style [class*="_fs_h6"] { font-size: var(--fs_h6); font-weight: var(--fw-normal); text-transform: inherit;}
-	div.mpwem_style label, div.mpwem_style [class*="_fs_label"] { font-size: var(--fs_label); font-weight: var(--fw-medium); }
-	div.mpwem_style .fs_50, div.mpwem_style [class*="_fs_50"] {font-size: 50px;font-weight: var(--fw-medium);}
+	div.mpwem_style [class*="_fs_h6"] { font-size: var(--fs_h6); font-weight: normal; text-transform: inherit;}
+	div.mpwem_style label, div.mpwem_style [class*="_fs_label"] { font-size: var(--fs_label); font-weight: normal; }
+	div.mpwem_style .fs_50, div.mpwem_style [class*="_fs_50"] {font-size: 50px;font-weight: normal;}
 }
 /******************************************************************** Global settings ************************************************/
 @media only screen and (min-width: 10px) {

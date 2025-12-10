@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Plugin Name: Event Booking Manager for WooCommerce – WpEvently	
+	 * Plugin Name: Event Booking Manager for WooCommerce
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
 	 * Version: 5.0.8

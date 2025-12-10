@@ -98,7 +98,7 @@
 					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
 					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
-					update_post_meta( $post_id, 'mep_org_address', $mep_org_address );
+					update_post_meta( $post_id, 'mep_org_address', mep_letters_numbers_spaces_only(mep_prevent_serialized_input($mep_org_address)) );
 					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
 					update_post_meta( $post_id, 'mep_street', $mep_street );
 					update_post_meta( $post_id, 'mep_city', $mep_city );

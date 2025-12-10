@@ -56,11 +56,12 @@
 							<td class="help">
 								<span class="woocommerce-help-tip"></span>
 							</td>
-							<td><?php if ($wc_v > 4.8) {
-									echo '<span class="mep_success"> <span class="dashicons dashicons-saved"></span>' . esc_html($wc_v) . '</span>';
-								} else {
-									echo '<span class="mep_warning"> <span class="dashicons dashicons-no-alt"></span>' . esc_html($wc_v) . '</span>';
-								} ?></td>
+							<td><?php if ( version_compare( $wc_v, '4.8', '>' ) ) {
+										echo '<span class="mep_success"> <span class="dashicons dashicons-saved"></span>' . esc_html($wc_v) . '</span>';
+									} else {
+										echo '<span class="mep_warning"> <span class="dashicons dashicons-no-alt"></span>' . esc_html($wc_v) . '</span>';
+									} ?>
+							</td>
 						</tr>
 						<tr>
 							<td data-export-label="WC Version">Email From Name:</td>
@@ -90,7 +91,7 @@
 						<td class="help">
 							<span class="woocommerce-help-tip"></span> 
 						</td>
-						<td>
+						<td>	
 						<span class="mep_success"> <?php echo mep_event_cart_temp_count(); ?></span>
 						<?php if(mep_event_cart_temp_count() > 0){ ?>
 							<div id="empty-cart-message"></div>

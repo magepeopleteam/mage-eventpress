@@ -36,6 +36,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
+				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';
 				require_once( dirname( __DIR__ ) . "/inc/mep_functions.php" );

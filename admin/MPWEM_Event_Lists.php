@@ -324,12 +324,15 @@
 				if ( $date ) {
 					?>
                     <div class="popupMainArea min_1000">
-                        <div class="popupHeader allCenter">
+                        <div class="popupHeader">
                             <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
-                            <h2 class="_mR"><?php echo esc_html( get_the_title( $post_id ) ); ?></h2>
-                            <div class="date_time_area">
-								<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+                            <div class="_dFlex_fdColumn_alignCenter">
+                                <h4 class="_mB_xs"><?php echo esc_html( get_the_title( $post_id ) ); ?></h4>
+                                <div class="date_time_area">
+		                            <?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+                                </div>
                             </div>
+
                             <span class="fas fa-times popupClose"></span>
                         </div>
                         <div class="popupBody mpwem_popup_attendee_statistic_body ">

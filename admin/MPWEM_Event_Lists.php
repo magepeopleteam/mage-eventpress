@@ -15,6 +15,7 @@
 				add_action( 'wp_ajax_mpwem_quick_edit_event', array( $this, 'mpwem_quick_edit_event' ) );
 				add_action( 'wp_ajax_mpwem_popup_attendee_statistic', array( $this, 'mpwem_popup_attendee_statistic' ) );
 				add_action( 'wp_ajax_mpwem_load_popup_attendee_statistics', array( $this, 'mpwem_load_popup_attendee_statistics' ) );
+				add_action( 'wp_ajax_mpwem_load_time', array( $this, 'mpwem_load_time' ) );
 			}
 			public function event_list_menu() {
 				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Event Lists', 'mage-eventpress' ), __( 'Event Lists', 'mage-eventpress' ), 'manage_woocommerce', 'mep_event_lists', array( $this, 'display_event_list' ) );
@@ -363,8 +364,62 @@
 				?>
                 <h4 class="_textCenter"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ) ); ?></h4>
                 <div class="_divider"></div>
-				<?php MPWEM_Attendee_Statistics::attendee_statistic_list( $post_id, $date ); ?>
+				<?php $this->attendee_statistic_list( $post_id, $date ); ?>
 				<?php
+			}
+			public static function attendee_statistic_list( $event_id, $date ) {
+				if ( $event_id && $date ) {
+					$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+					?>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th><?php esc_html_e( 'Ticket Type Name', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Total Seat', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Total Reserved', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Ticket Sold', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Available Seat', 'mage-eventpress' ); ?></th>
+                        </tr>
+                        </thead>
+						<?php if ( sizeof( $ticket_types ) > 0 ) { ?>
+                            <tbody>
+							<?php
+								do_action( 'mpwem_gq_statistics', $event_id, $date );
+								foreach ( $ticket_types as $ticket_type ) {
+									$ticket_name      = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+									$ticket_qty       = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+									$ticket_r_qty     = array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
+									$total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
+									$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
+									?>
+                                    <tr>
+                                        <th><?php echo esc_html( $ticket_name ); ?></th>
+                                        <th><?php echo esc_html( apply_filters( 'mpwem_gq_qty_statistics', $ticket_qty, $event_id ) ); ?></th>
+                                        <th><?php echo esc_html( apply_filters( 'mpwem_gq_qty_statistics', $ticket_r_qty, $event_id ) ); ?></th>
+                                        <th><?php echo esc_html( $total_sold ); ?></th>
+                                        <th><?php echo esc_html( apply_filters( 'mpwem_gq_qty_statistics', $available_ticket, $event_id ) ); ?></th>
+                                    </tr>
+								<?php } ?>
+                            </tbody>
+						<?php } ?>
+                    </table>
+					<?php
+				}
+			}
+			public function mpwem_load_time() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$date      = isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
+				$all_times = MPWEM_Functions::get_all_times( $post_id, $date );
+				MPWEM_Layout::load_time( $all_times, $date );
+				//echo '<pre>';print_r(MPWEM_Functions::get_all_dates($post_id));echo '</pre>';
+				die();
 			}
 		}
 		new MPWEM_Event_Lists();

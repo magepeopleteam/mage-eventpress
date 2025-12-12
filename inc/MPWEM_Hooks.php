@@ -69,6 +69,7 @@
 				add_action( 'wp_ajax_nopriv_get_mpwem_time', array( $this, 'get_mpwem_time' ) );
 				add_action( 'wp_ajax_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
+				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				/***********************/
 				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
@@ -427,6 +428,19 @@
 				}
 				wp_reset_postdata();
 				echo ob_get_clean();
+				die();
+			}
+			public function mpwem_load_date() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+				}
+				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					die;
+				}
+				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
+				MPWEM_Layout::load_date( $post_id, $all_dates );
 				die();
 			}
 			/***********************/

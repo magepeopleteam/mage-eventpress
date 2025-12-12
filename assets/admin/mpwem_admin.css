@@ -259,10 +259,6 @@
 	div.mpwem_style [class*="_adminLayout"] th,
 	div.mpwem_style [class*="_adminLayout"] td {text-align: left;font-size: var(--fs_h5);}
 }
-/********************************************************************Recurring Statistics  ************************************************/
-@media only screen and (min-width: 10px) {
-	#mpwem_recurring_statistics {margin: var(--dmp) var(--dmp) 0 0;}
-}
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
 	div.mpwem_style span.info_text,

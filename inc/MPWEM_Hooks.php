@@ -39,7 +39,6 @@
 				add_action( 'mpwem_time_only', [ $this, 'time_only' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_faq', [ $this, 'faq' ], 10, 4 );
-				add_action( 'mep_event_faq', [ $this, 'event_faq' ] );
 				/**************************/
 				add_action( 'mpwem_map', [ $this, 'map' ], 10, 4 );
 				add_action( 'mep_event_map', [ $this, 'event_map' ] );
@@ -287,15 +286,7 @@
 				wp_die();
 			}
 			/*************************************/
-			public function event_faq( $event_id ) {
-				ob_start();
-				$mep_event_faq = get_post_meta( $event_id, 'mep_event_faq', true );
-				if ( $mep_event_faq ) {
-					require MPWEM_Functions::template_path( 'single/faq.php' );
-				}
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_faq_list', $content, $event_id );
-			}
+
 			/***********************************/
 			public function event_tags( $event_id ) {
 				ob_start();

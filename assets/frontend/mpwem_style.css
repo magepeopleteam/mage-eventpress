@@ -144,7 +144,6 @@ div.item_hover_effect a:hover {
 	color: var(--color_7);
 }
 /*FAQ Sec Style*/
-.mep-default-feature-faq-sec h4, .tmep-emplate-3-faq-sec .mep-event-faq-part h4 { background: var(--color_theme);}
 .mep-default-feature-cart-sec button.single_add_to_cart_button.button.alt.btn-mep-event-cart, .mep-event-theme-1 .btn-mep-event-cart, .mep-template-2-hamza .btn-mep-event-cart, .mep-tem3-mid-sec .btn-mep-event-cart, .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
 	background: var(--color_theme); border-color: var(--color_theme);}
 /**/

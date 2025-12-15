@@ -142,8 +142,8 @@
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
 						}
 					}
-					// echo '<pre>';print_r($new_ticket_type);echo '</pre>';
 					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
+					$ticket_type_list = apply_filters( 'mpwem_ticket_type_arr_save', $ticket_type_list );
 					//echo '<pre>';print_r($ticket_type_list);echo '</pre>';die();
 					update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
 					/**********Extra service**********/

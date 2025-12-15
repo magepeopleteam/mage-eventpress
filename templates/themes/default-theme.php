@@ -45,9 +45,7 @@
             <div class="mep-default-feature-cart-sec _mT">
 				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
             </div>
-            <div class="mep-default-feature-faq-sec">
-				<?php do_action( 'mep_event_faq', $event_id ); ?>
-            </div>
+	        <?php do_action( 'mpwem_faq', $event_id ); ?>
 			<?php 
 				
 				$location_venue = get_post_meta( $event_id, 'mep_location_venue', true );

@@ -226,7 +226,7 @@
 			public static function all_taxonomy_as_text( $post_id, $taxonomy ): string {
 				$taxonomy_text = '';
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
-				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_text = $taxonomy_text ? $taxonomy_text . '- ' . $category->name : $category->name;
 					}
@@ -236,7 +236,7 @@
 			public static function all_taxonomy_data( $post_id, $taxonomy ) {
 				$taxonomy_data = [];
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
-				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $category->name;
 					}
@@ -247,7 +247,7 @@
 				$class         = null;
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
 				$taxonomy_data = [];
-				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $unq_id . 'mage-' . $category->term_id;
 					}
@@ -388,7 +388,7 @@
 			public static function all_taxonomy_as_text( $event_id, $taxonomy ): string {
 				$taxonomy_text = '';
 				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
-				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_text = $taxonomy_text ? $taxonomy_text . '- ' . $category->name : $category->name;
 					}
@@ -398,7 +398,7 @@
 			public static function all_taxonomy_data( $event_id, $taxonomy ) {
 				$taxonomy_data = [];
 				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
-				if ( $all_taxonomy && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $category->name;
 					}

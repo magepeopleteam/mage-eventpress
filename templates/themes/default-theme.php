@@ -20,7 +20,6 @@
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
-	$hide_total_seat_details   = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
 	$hide_address_details      = array_key_exists( 'mep_event_hide_address_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_address_from_details'] : 'no';
 	$hide_share_details        = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
@@ -46,9 +45,7 @@
             <div class="mep-default-feature-cart-sec _mT">
 				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
             </div>
-            <div class="mep-default-feature-faq-sec">
-				<?php do_action( 'mep_event_faq', $event_id ); ?>
-            </div>
+	        <?php do_action( 'mpwem_faq', $event_id ); ?>
 			<?php 
 				
 				$location_venue = get_post_meta( $event_id, 'mep_location_venue', true );
@@ -72,11 +69,7 @@
         <div class="mep-default-sidebar">
             <div class="df-sidebar-part">
 	            <?php do_action( 'mpwem_organizer', $event_id ,$event_infos); ?>
-				<?php if ( $mep_enable_recurring == 'no' ): ?>
-					<?php if ( $hide_total_seat_details == 'no' ) { ?>
-						<?php do_action( 'mep_event_seat', $event_id ); ?>
-					<?php } ?>
-				<?php endif; ?>
+	            <?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
 				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
                         <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>

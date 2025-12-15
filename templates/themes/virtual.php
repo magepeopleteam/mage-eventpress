@@ -10,11 +10,9 @@
 	$speaker_icon              = array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 	$speaker_lists             = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
-	$speakers_id               = array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
-	$hide_total_seat_details   = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
 	$hide_share_details        = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
 	//echo '<pre>';print_r( $event_infos );echo '</pre>';
@@ -31,17 +29,13 @@
             <div class="mep-default-feature-cart-sec">
 				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
             </div>
-            <div class="mep-default-feature-faq-sec">
-				<?php do_action( 'mep_event_faq', $event_id ); ?>
-            </div>
+	        <?php do_action( 'mpwem_faq', $event_id ); ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">
             <div class="df-sidebar-part">
 				<?php do_action( 'mpwem_organizer', $event_id, $event_infos ); ?>
-				<?php if ( $hide_total_seat_details == 'no' ) { ?>
-					<?php do_action( 'mep_event_seat', $event_id ); ?>
-				<?php } ?>
+				<?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
 				<?php if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mR_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>

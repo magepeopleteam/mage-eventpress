@@ -98,7 +98,7 @@
 					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
 					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
-					update_post_meta( $post_id, 'mep_org_address', $mep_org_address );
+					update_post_meta( $post_id, 'mep_org_address', mep_letters_numbers_spaces_only(mep_prevent_serialized_input($mep_org_address)) );
 					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
 					update_post_meta( $post_id, 'mep_street', $mep_street );
 					update_post_meta( $post_id, 'mep_city', $mep_city );
@@ -142,8 +142,8 @@
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
 						}
 					}
-					// echo '<pre>';print_r($new_ticket_type);echo '</pre>';
 					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
+					$ticket_type_list = apply_filters( 'mpwem_ticket_type_arr_save', $ticket_type_list );
 					//echo '<pre>';print_r($ticket_type_list);echo '</pre>';die();
 					update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
 					/**********Extra service**********/

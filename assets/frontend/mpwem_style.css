@@ -4544,24 +4544,34 @@ div.mpwem_timeline_area .timeline_area::before {
 	border-radius: 12px 12px 0 0;
 }
 .faq_area .item {
-	padding: 15px;
-	border-radius: 5px;
-	margin-bottom: 10px;
-	text-align: left;
+	background-color: white;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #333;
+	border-bottom: 1px solid #f0f0f0;
+  	margin: 10px;
+	transition: all .5s;
 }
+.faq_area .item:hover {
+	background-color: #f0f0f0;
+}
+
 .faq_area .item .title{
+	padding: 15px;
 	display: flex;
 	justify-content: space-between;
+	
 }
 .faq_area .item .title i{
 	color: var(--color_theme);
 }
 .faq_area .item .title h3{
 	font-size:14px;
+
 }
 
 .faq_area .item .content{
-	margin-top: 10px;
-	border: 1px solid #EAEAEA;
+	text-align: left;
+	margin: 10px;
 	padding: 10px;
 }

@@ -494,4 +494,9 @@ function mp_event_wo_commerce_price_format(price) {
     $(document).on('click', 'button.mep_view_vr_btn', function () {
         $(this).closest('tr').next('tr.mep_virtual_event_info_sec').slideToggle('fast');
     });
+
+    $(document).on('click', '.faq_items [data-collapse-target]', function () {
+        $(this).find('i').toggleClass('fa-chevron-right fa-chevron-down');
+    });
+
 }(jQuery));

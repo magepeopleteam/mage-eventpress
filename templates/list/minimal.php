@@ -22,7 +22,7 @@
 	$total_left                     = $total_left ?? '';
 	$recurring                      = $recurring ?? 'no';
 	$show_price                     = $show_price ?? 'yes';
-	$event_type                     = $recurring ?? 'offline';
+	$event_type                     = $event_type ?? 'offline';
 	$event_multidate                = $event_multidate ?? [];
 	$author_terms                   = $author_terms ?? [];
 	$mep_hide_event_hover_btn       = $mep_hide_event_hover_btn ?? 'no';

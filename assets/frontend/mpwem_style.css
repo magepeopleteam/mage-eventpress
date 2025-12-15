@@ -4163,7 +4163,7 @@ div.mpwem_timeline_area .timeline_area::before {
 		align-items: center;
 		padding: 20px;
 	}
-	.mep_smart_theme .faq_area .faq_items .item .title h2 {
+	.mep_smart_theme .faq_area .faq_items .item .title h3 {
 		font-size: 16px;
 		margin: 0;
 	}
@@ -4526,4 +4526,42 @@ div.mpwem_timeline_area .timeline_area::before {
 	transform: translateY(-2px);
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-/*# sourceMappingURL=mpwem_style.css.map */
+/* --- default theme ---- */
+.faq_area {
+	background-color: #fff;
+	border: 1px solid #F7F7F7;
+	text-align: center;
+	border-radius: 12px;
+	margin-bottom: 20px;
+}
+.faq_area h2{
+	background: linear-gradient(135deg, #F7F7F7, #F7F7F7);
+	color: #333;
+	padding: 20px 25px;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: left;
+	border-radius: 12px 12px 0 0;
+}
+.faq_area .item {
+	padding: 15px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	text-align: left;
+}
+.faq_area .item .title{
+	display: flex;
+	justify-content: space-between;
+}
+.faq_area .item .title i{
+	color: var(--color_theme);
+}
+.faq_area .item .title h3{
+	font-size:14px;
+}
+
+.faq_area .item .content{
+	margin-top: 10px;
+	border: 1px solid #EAEAEA;
+	padding: 10px;
+}

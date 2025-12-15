@@ -22,7 +22,7 @@
 	$total_left                     = $total_left ?? '';
 	$recurring                      = $recurring ?? 'no';
 	$show_price                     = $show_price ?? 'yes';
-	$event_type                     = $recurring ?? 'offline';
+	$event_type                     = $event_type ?? 'offline';
 	$event_multidate                = $event_multidate ?? [];
 	$author_terms                   = $author_terms ?? [];
 	$mep_hide_event_hover_btn       = $mep_hide_event_hover_btn ?? 'no';
@@ -34,6 +34,32 @@
 	$limited_availability_threshold = $limited_availability_threshold ?? 5;
 	$event_location_icon            = $event_location_icon ?? 'mi mi-marker';
 	$event_organizer_icon           = $event_organizer_icon ?? 'mi mi-badge';
+
+	// Location Calculation
+	$location_data = MPWEM_Functions::get_location( $event_id );
+	$location_display = '';
+	
+	// Get location/venue first
+	if ( ! empty( $location_data['location'] ) ) {
+		$location_display = $location_data['location'];
+	} else {
+		// If no location/venue, build from street + city
+		$location_parts = array();
+		if ( ! empty( $location_data['street'] ) ) {
+			$location_parts[] = $location_data['street'];
+		}
+		if ( ! empty( $location_data['city'] ) ) {
+			$location_parts[] = $location_data['city'];
+		}
+		if ( ! empty( $location_parts ) ) {
+			$location_display = implode( ' ', $location_parts );
+		}
+	}
+
+	// Virtual event override
+	if ( ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false ) {
+		$event_type = 'online';
+	}
 ?>
 <div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $columnNumber . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
      data-title="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
@@ -97,26 +123,6 @@
 					<?php }
 						if ( $event_type != 'online' ) {
 							if ( $hide_location_list == 'no' ) { 
-								$location_data = MPWEM_Functions::get_location( $event_id );
-								$location_display = '';
-								
-								// Get location/venue first
-								if ( ! empty( $location_data['location'] ) ) {
-									$location_display = $location_data['location'];
-								} else {
-									// If no location/venue, build from street + city
-									$location_parts = array();
-									if ( ! empty( $location_data['street'] ) ) {
-										$location_parts[] = $location_data['street'];
-									}
-									if ( ! empty( $location_data['city'] ) ) {
-										$location_parts[] = $location_data['city'];
-									}
-									if ( ! empty( $location_parts ) ) {
-										$location_display = implode( ' ', $location_parts );
-									}
-								}
-								
 								// Always show location section to avoid gaps
 								?>
                                 <li class="mep_list_location_name">

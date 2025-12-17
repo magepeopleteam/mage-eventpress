@@ -3671,6 +3671,7 @@ div.mpwem_timeline_area .timeline_area::before {
 .mpwem_registration_area .date-time-area .formControl {
 	border-radius: 5px;
 	padding: 10px 15px;
+	padding-right: 30px;
 }
 @media (max-width: 600px) {
 	.mpwem_registration_area .date-time-area .formControl {

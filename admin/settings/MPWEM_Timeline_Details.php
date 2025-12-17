@@ -174,8 +174,11 @@
 				$time    = isset( $_POST['time'] ) ? sanitize_text_field( wp_unslash( $_POST['time'] ) ) : '';
 				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
-					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);;
-					if (is_array($time_line_infos) && ! array_key_exists( $key, $time_line_infos ) ) {
+					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
+					if ( ! is_array( $time_line_infos ) ) {
+						$time_line_infos = [];
+					}
+					if ( ! array_key_exists( $key, $time_line_infos ) ) {
 						$key = sizeof( $time_line_infos );
 					}
 					$time_line_infos[ $key ]['mep_day_title']   = $title;

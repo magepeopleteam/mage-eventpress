@@ -16,12 +16,12 @@
 		?>
         <div class="faq_area">
             <h2><?php esc_html_e( 'Frequently asked questions', 'mage-eventpress' ); ?></h2>
-			<p><?php echo wp_kses_post($faq_description); ?></p>
+			<div><?php echo wp_kses_post($faq_description); ?></div>
             <div class="faq_items">
 	            <?php foreach ($faqs as $key => $faq){ ?>
                 <div class="item">
                     <div class="title" data-collapse-target="faq-content-<?php echo esc_attr($key); ?>">
-                        <h2><?php echo esc_html($faq['mep_faq_title']); ?></h2>
+                        <h3><?php echo esc_html($faq['mep_faq_title']); ?></h3>
                         <i class="fa fa-chevron-right"></i>
                     </div>
                     <div class="content" data-collapse="faq-content-<?php echo esc_attr($key); ?>">

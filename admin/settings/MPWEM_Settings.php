@@ -117,35 +117,46 @@
 					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
 					update_post_meta( $post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status );
 					/********************************/
-					$new_ticket_type = array();
-					$names           = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];
-					$details         = isset( $_POST['option_details_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_details_t'] ) ) : [];
-					$ticket_price    = isset( $_POST['option_price_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price_t'] ) ) : [];
-					$qty             = isset( $_POST['option_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t'] ) ) : [];
-					$dflt_qty        = isset( $_POST['option_default_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_default_qty_t'] ) ) : [];
-					$rsv             = isset( $_POST['option_rsv_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_rsv_t'] ) ) : [];
-					$qty_type        = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
-					$sale_end_date   = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
-					$sale_end_time   = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
-					$count           = count( $names );
-					for ( $i = 0; $i < $count; $i ++ ) {
-						if ( $names[ $i ]) {
-							$new_ticket_type[ $i ]['option_name_t']          = $names[ $i ];
-							$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
-							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ]??0;
-							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ]??0;
-							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
-							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
-							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';
-							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
-							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
-							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
+					// Only process tickets if registration is ON
+					if ( $mep_reg_status == 'on' ) {
+						$new_ticket_type = array();
+						$names           = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];
+						$details         = isset( $_POST['option_details_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_details_t'] ) ) : [];
+						$ticket_price    = isset( $_POST['option_price_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price_t'] ) ) : [];
+						$qty             = isset( $_POST['option_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t'] ) ) : [];
+						$dflt_qty        = isset( $_POST['option_default_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_default_qty_t'] ) ) : [];
+						$rsv             = isset( $_POST['option_rsv_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_rsv_t'] ) ) : [];
+						$qty_type        = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
+						$sale_end_date   = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
+						$sale_end_time   = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
+						$count           = count( $names );
+						for ( $i = 0; $i < $count; $i ++ ) {
+							if ( $names[ $i ]) {
+								$new_ticket_type[ $i ]['option_name_t']          = $names[ $i ];
+								$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
+								$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ]??0;
+								$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ]??0;
+								$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
+								$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
+								$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';
+								$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
+								$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
+								$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
+							}
 						}
+						$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
+						$ticket_type_list = apply_filters( 'mpwem_ticket_type_arr_save', $ticket_type_list );
+						//echo '<pre>';print_r($ticket_type_list);echo '</pre>';die();
+						update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
+					} else {
+						// If registration is OFF, preserve existing tickets or keep empty array
+						$existing_tickets = get_post_meta( $post_id, 'mep_event_ticket_type', true );
+						if ( empty( $existing_tickets ) || ! is_array( $existing_tickets ) ) {
+							// Ensure empty array is saved when registration is OFF and no existing tickets
+							update_post_meta( $post_id, 'mep_event_ticket_type', [] );
+						}
+						// Do not update tickets when registration is OFF to preserve user intent
 					}
-					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
-					$ticket_type_list = apply_filters( 'mpwem_ticket_type_arr_save', $ticket_type_list );
-					//echo '<pre>';print_r($ticket_type_list);echo '</pre>';die();
-					update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
 					/**********Extra service**********/
 					$new_extra_service = array();
 					$extra_names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];

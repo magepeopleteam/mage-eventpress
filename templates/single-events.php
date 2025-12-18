@@ -10,7 +10,10 @@
 // ==============================
 // HEADER
 // ==============================
-	if ( wp_is_block_theme() ) {
+	// Compatibility check for wp_is_block_theme() (WordPress 5.9+)
+	$is_block_theme = function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
+	
+	if ( $is_block_theme ) {
 		if ( function_exists( 'block_header_area' ) ) {
 			// Try rendering block header
 			ob_start();
@@ -90,7 +93,7 @@
 // ==============================
 // FOOTER
 // ==============================
-	if ( function_exists( 'block_footer_area' ) && wp_is_block_theme() ) {
+	if ( function_exists( 'block_footer_area' ) && $is_block_theme ) {
 		echo '<footer class="wp-block-template-part mep-site-footer">';
 		block_footer_area();
 		echo '</footer>';

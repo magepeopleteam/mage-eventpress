@@ -43,6 +43,7 @@
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_tax_meta.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
+				require_once( dirname( __DIR__ ) . "/inc/mep_noindex_expired_events.php" );
 			}
 
 			public function global_enqueue() {

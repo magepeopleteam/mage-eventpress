@@ -170,11 +170,14 @@
 			}
 			//========Mage Icon library get Icon names======//
 			public static function mi_icon($icon_type = "fi") {
-				$mi_icon_json = file_get_contents(MPWEM_PLUGIN_URL . '/assets/mage-icon/data.json');
-				$mi_icons = json_decode($mi_icon_json, true);
+				$json_file = MPWEM_PLUGIN_DIR . '/assets/mage-icon/data.json';
+				$mi_icon_json = file_exists($json_file) ? file_get_contents($json_file) : false;
+				$mi_icons = $mi_icon_json ? json_decode($mi_icon_json, true) : [];
 				$all_icon = [];
-				foreach ($mi_icons as $mi_icon) {
-					$all_icon["{$icon_type} mi-{$mi_icon}"] = $mi_icon;
+				if (is_array($mi_icons)) {
+					foreach ($mi_icons as $mi_icon) {
+						$all_icon["{$icon_type} mi-{$mi_icon}"] = $mi_icon;
+					}
 				}
 				return $all_icon;
 			}

@@ -426,6 +426,15 @@
 	// Send Confirmation email to customer
 	if ( ! function_exists( 'mep_event_confirmation_email_sent' ) ) {
 		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0 ) {
+			// Prevent duplicate email sends within 30 seconds for the same order
+			$transient_key = 'mep_email_sent_' . $order_id . '_' . $event_id;
+			if ( get_transient( $transient_key ) ) {
+				// Email already sent recently, skip to prevent duplicates
+				return;
+			}
+			// Set transient to prevent duplicate sends (expires in 30 seconds)
+			set_transient( $transient_key, true, 30 );
+			
 			// Global Email Settings
 			$global_email_text       = mep_get_option( 'mep_confirmation_email_text', 'email_setting_sec', '' );
 			$global_email_form_email = mep_get_option( 'mep_email_form_email', 'email_setting_sec', '' );
@@ -519,10 +528,10 @@
 			$order             = wc_get_order( $order_id );
 			$order_meta        = get_post_meta( $order_id );
 			$order_status      = $order instanceof WC_Order ? $order->get_status() : '';
-			$payment_method    = $order->get_payment_method_title();
-			$user_id           = $order->get_customer_id();
-			$first_name        = $order->get_billing_first_name();
-			$last_name         = $order->get_billing_last_name();
+			$payment_method    = $order instanceof WC_Order ? $order->get_payment_method_title() : '';
+			$user_id           = $order instanceof WC_Order ? $order->get_customer_id() : 0;
+			$first_name        = $order instanceof WC_Order ? $order->get_billing_first_name() : '';
+			$last_name         = $order instanceof WC_Order ? $order->get_billing_last_name() : '';
 			$billing_full_name = mep_prevent_serialized_input($first_name . ' ' . $last_name);
 			if ( $type == 'billing' ) {
 				// Billing Information
@@ -3528,6 +3537,9 @@
 	add_filter( 'mep_event_attendee_dynamic_data', 'mep_re_event_attendee_data_save', 15, 6 );
 	function mep_re_event_attendee_data_save( $the_array, $pid, $type, $order_id, $event_id, $_user_info ) {
 		$order = wc_get_order( $order_id );
+		if ( ! $order instanceof WC_Order ) {
+			return $the_array;
+		}
 		foreach ( $order->get_items() as $item_id => $item_values ) {
 			$item_id = $item_id;
 		}

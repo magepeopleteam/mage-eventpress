@@ -6,6 +6,16 @@
 	.mep-default-content { width: calc(100% - 300px); padding: 0 20px 0 0; }
 	div.mep_smart_theme .mpwem_sidebar_content { background-color: #FFF; border-radius: 20px; box-shadow: 0 0 5px #DDD; }
 }
+
+.mpwem_style h1,
+.mpwem_style h2,
+.mpwem_style h3,
+.mpwem_style h4,
+.mpwem_style h5,
+.mpwem_style h6{
+	color:#000;
+}
+
 /* ************************title******************** */
 @media only screen and (min-width: 10px) {
 	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
@@ -15,7 +25,7 @@
 	div.event_speaker_list_area {padding: var(--dmp);}
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
-	div.default_theme .speaker_list a [data-bg-image] {width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
+	div.default_theme .speaker_list a img{width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
 	div.default_theme .speaker_list a h6 {
 		margin: var(--dmp_xs) 0 0 0;
 		font-size: 16px;
@@ -29,10 +39,28 @@
 		margin: 0;
 		margin-bottom: 10px;
 	}
-	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
-	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
-	div.mep_smart_theme .speaker_list a [data-bg-image] {width: 70px;height: auto;border-radius: 0;}
-	div.mep_smart_theme .speaker_list a h6 {margin: 0;padding: var(--dmp);font-size: var(--fs_h4);}
+	div.mep_smart_theme .speaker_list {
+		-webkit-flex-direction: column;
+		flex-direction: column;
+		-webkit-flex-wrap: initial;
+		flex-wrap: initial;
+	}
+	div.mep_smart_theme .speaker_list a {
+		max-width: 100%;
+		width: 100%;
+		-webkit-flex-direction: initial;
+		flex-direction: initial;
+	}
+	div.mep_smart_theme .speaker_list a img{
+		width: 100px;
+		height: auto;
+		border-radius: 10px;
+	}
+	div.mep_smart_theme .speaker_list a h6 {
+		margin: 0;
+		padding: var(--dmp);
+		font-size: var(--fs_h4);
+	}
 }
 /* ****************Date time location short area in default theme**************************** */
 @media only screen and (min-width: 10px) {
@@ -4086,7 +4114,12 @@ div.mpwem_timeline_area .timeline_area::before {
 		font-size: 24px;
 		color: #333;
 	}
-	.mpwem_organizer h5,
+	.mpwem_organizer h5{
+		color: var(--color_theme_alter);
+	}
+	.mep_smart_theme .mpwem_organizer h5{
+		color: #333;
+	}
 	.mpwem_sidebar_content h5{
 		color: #333;
 	 }

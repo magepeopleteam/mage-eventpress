@@ -76,6 +76,7 @@
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
+				
 				<?php if ( $hide_address_details == 'no' ): ?>
                     <div class="mep-default-sidebar-address">
 						<?php do_action( 'mep_event_address_list_sidebar', $event_id ); ?>

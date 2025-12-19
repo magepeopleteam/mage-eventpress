@@ -556,7 +556,12 @@
 				$event_date  = array_key_exists( 'user_event_date', $_user_info ) ? sanitize_text_field( $_user_info['user_event_date'] ) : "";
 				$event_id    = $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
 			}
-			$ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
+			// $ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
+			$price = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
+			$price = (float) preg_replace( '/[^0-9.]/', '', $price );
+			$qty   = (int) $ticket_qty;
+			$ticket_total_price = (int) ( $price * $qty );	
+					
 			$uname              = isset( $_uname ) && ! empty( $_uname ) ? $_uname : $billing_full_name;
 			$new_post           = array(
 				'post_title'    => $uname,

@@ -455,6 +455,7 @@
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
 						if ( $name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;
 							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id );
@@ -532,7 +533,9 @@
 					$same_attendee = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$count         = 0;
 					foreach ( $names as $key => $name ) {
-						if ( $qty[ $key ] > 0 && $name ) {
+						$current_qty=$qty[ $key ];
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
+						if ( $current_qty > 0 && $name ) {
 							for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
 								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $attendee_info ) > 0 ) {
 									$attendee_info[ $count ] = current( $attendee_info );

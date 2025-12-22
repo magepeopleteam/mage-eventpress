@@ -35,6 +35,7 @@
 							$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 							$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 							$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
+							$ticket_price_ = apply_filters('mpwem_group_ticket_price', $ticket_price_,$event_id,$ticket_name);
 							$ticket_price_wc   = wc_price( $ticket_price_ );
 							$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
 							$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
@@ -45,6 +46,8 @@
 							$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 							$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 							$available         = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
+							$available = apply_filters('mpwem_group_ticket_qty', $available,$event_id,$ticket_name);
+							$available = max(0, floor($available));
 							if ( $ticket_name ) {
 								$input_data['name']      = 'option_qty[]';
 								$input_data['price']     = $ticket_price;
@@ -88,6 +91,7 @@
                                         <div class="quantity-control">
                                             <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                             <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
+                                            <?php do_action('mpwem_hidden_item_ticket',$ticket_name,$event_id); ?>
 											<?php
 												$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
 												if ( $early_date ) {

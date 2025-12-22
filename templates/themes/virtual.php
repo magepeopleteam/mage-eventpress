@@ -13,7 +13,6 @@
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
-	$hide_share_details        = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
 	//echo '<pre>';print_r( $event_infos );echo '</pre>';
 ?>
@@ -21,7 +20,7 @@
 	<?php do_action( 'mpwem_title', $event_id ); ?>
     <div class="content_area">
         <div class="mep-default-content">
-	        <?php do_action( 'add_mpwem_custom_slider', $event_id,$event_infos ); ?>
+			<?php do_action( 'add_mpwem_custom_slider', $event_id, $event_infos ); ?>
             <div class="mep-default-feature-content">
                 <div class="mpwem_details_content mp_wp_editor"><?php the_content(); ?></div>
 				<?php do_action( 'mpwem_timeline', $event_id ); ?>
@@ -29,7 +28,7 @@
             <div class="mep-default-feature-cart-sec">
 				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
             </div>
-	        <?php do_action( 'mpwem_faq', $event_id ); ?>
+			<?php do_action( 'mpwem_faq', $event_id ); ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">
@@ -53,12 +52,8 @@
                         <div class="mep-default-sidebar-tags">
 							<?php do_action( 'mep_event_tags', $event_id ); ?>
                         </div>
-					<?php endif;
-					if ( $hide_share_details == 'no' ) { ?>
-                        <div class="mep-default-sidrbar-social">
-							<?php do_action( 'mep_event_social_share', $event_id ); ?>
-                        </div>
-					<?php } ?>
+					<?php endif; ?>
+				<?php do_action( 'mpwem_social', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>
         </div>

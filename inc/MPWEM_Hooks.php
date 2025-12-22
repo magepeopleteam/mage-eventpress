@@ -46,13 +46,9 @@
 				//add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
 				/**************************/
 				add_action( 'mpwem_social', [ $this, 'social' ], 10, 4 );
-				add_action( 'mep_event_social_share', [ $this, 'event_social_share' ] );
+				add_action( 'mep_event_social_share', [ $this, 'social' ], 10, 4 );
 				/**************************/
 				add_action( 'mpwem_timeline', [ $this, 'timeline' ], 10, 4 );
-				/**************************/
-				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
-				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
 				/**************************/
 				add_action( 'mep_event_tags', [ $this, 'event_tags' ] );
 				add_action( 'mep_event_tags_name', [ $this, 'event_tags_name' ] );
@@ -70,6 +66,9 @@
 				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				/***********************/
+				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
+				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
+				add_action( 'wp_ajax_nopriv_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
 				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 			}
@@ -248,46 +247,10 @@
 			/*****************************************/
 			public function related( $event_id ): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
 			/**************************/
-			public function social( $event_id ): void { require MPWEM_Functions::template_path( 'layout/social.php' ); }
-			public function event_social_share( $event_id ) {
-				ob_start();
-				$post_id     = $event_id;
-				$event_label = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
-				require MPWEM_Functions::template_path( 'single/share_btn.php' );
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_single_social_share', $content, $event_id );
-			}
+			public function social( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/social.php' ); }
 			/**************************/
 			public function timeline( $event_id ): void { require MPWEM_Functions::template_path( 'layout/timeline.php' ); }
 			/*************************************/
-			public function seat_status( $event_id, $event_infos = [], $date = '' ) {
-				$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-				$show_available_seat       = array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
-				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-				$hide_seat_status          = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
-				$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-				$date                      = $date != '' ? $date : $upcoming_date;
-				if ( $hide_seat_status == 'no' && $date ) { ?>
-                    <div class="mpwem_seat_status">
-						<?php require MPWEM_Functions::template_path( 'layout/seat_status.php' ); ?>
-                    </div>
-					<?php
-				}
-			}
-			public function mpwem_load_seat_status() {
-				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
-					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
-					wp_die();
-				}
-				$event_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
-				$date     = isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
-				require MPWEM_Functions::template_path( 'layout/seat_status.php' );
-				wp_die();
-			}
-			/*************************************/
-
-			/***********************************/
 			public function event_tags( $event_id ) {
 				ob_start();
 				$tags = get_the_terms( $event_id, 'mep_tag' );
@@ -435,6 +398,31 @@
 				die();
 			}
 			/***********************/
+			public function seat_status( $event_id, $event_infos = [], $date = '' ) {
+				$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+				$show_available_seat       = array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
+				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
+				$hide_seat_status          = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
+				$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$date                      = $date != '' ? $date : $upcoming_date;
+				if ( $hide_seat_status == 'no' && $date ) { ?>
+                    <div class="mpwem_seat_status">
+						<?php require MPWEM_Functions::template_path( 'layout/seat_status.php' ); ?>
+                    </div>
+					<?php
+				}
+			}
+			public function mpwem_load_seat_status() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
+					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					wp_die();
+				}
+				$event_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+				$date     = isset( $_POST['dates'] ) ? sanitize_text_field( wp_unslash( $_POST['dates'] ) ) : '';
+				require MPWEM_Functions::template_path( 'layout/seat_status.php' );
+				wp_die();
+			}
 			public function mpwem_reload_seat_status() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access

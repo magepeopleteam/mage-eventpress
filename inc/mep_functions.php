@@ -18,21 +18,18 @@
 			echo $custom_action['custom_meta'];
 		}
 	}
-
-	if(!function_exists('mep_prevent_serialized_input')){
-	function mep_prevent_serialized_input($value) {
-		// Blocks serialized PHP objects
-		if (is_serialized($value)) {
-			return '';
+	if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
+		function mep_prevent_serialized_input( $value ) {
+			// Blocks serialized PHP objects
+			if ( is_serialized( $value ) ) {
+				return '';
+			}
+			// Also block patterns like O:12:"ClassName"
+			if ( preg_match( '/O:\d+:"[A-Za-z0-9_]+"/', $value ) ) {
+				return '';
+			}
+			return $value;
 		}
-		
-		// Also block patterns like O:12:"ClassName"
-		if (preg_match('/O:\d+:"[A-Za-z0-9_]+"/', $value)) {
-			return '';
-		}
-
-		return $value;
-	}
 	}
 	if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
@@ -523,7 +520,7 @@
 			$user_id           = $order->get_customer_id();
 			$first_name        = $order->get_billing_first_name();
 			$last_name         = $order->get_billing_last_name();
-			$billing_full_name = mep_prevent_serialized_input($first_name . ' ' . $last_name);
+			$billing_full_name = mep_prevent_serialized_input( $first_name . ' ' . $last_name );
 			if ( $type == 'billing' ) {
 				// Billing Information
 				$company     = isset( $order_meta['_billing_company'][0] ) ? sanitize_text_field( $order_meta['_billing_company'][0] ) : '';
@@ -569,17 +566,17 @@
 			//SAVE THE POST
 			$pid = wp_insert_post( $new_post );
 			$pin = $user_id . $order_id . $event_id . $pid;
-			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input($uname) );
-			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input($address) );
-			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input($email) );
-			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input($phone) );
-			update_post_meta( $pid, 'ea_gender', mep_prevent_serialized_input($gender) );
-			update_post_meta( $pid, 'ea_company', mep_prevent_serialized_input($company) );
-			update_post_meta( $pid, 'ea_desg', mep_prevent_serialized_input($designation) );
-			update_post_meta( $pid, 'ea_website', mep_prevent_serialized_input($website) );
-			update_post_meta( $pid, 'ea_vegetarian', mep_prevent_serialized_input($vegetarian) );
-			update_post_meta( $pid, 'ea_tshirtsize', mep_prevent_serialized_input($tshirtsize) );
-			update_post_meta( $pid, 'ea_ticket_type', $ticket_type);
+			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
+			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input( $address ) );
+			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input( $email ) );
+			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input( $phone ) );
+			update_post_meta( $pid, 'ea_gender', mep_prevent_serialized_input( $gender ) );
+			update_post_meta( $pid, 'ea_company', mep_prevent_serialized_input( $company ) );
+			update_post_meta( $pid, 'ea_desg', mep_prevent_serialized_input( $designation ) );
+			update_post_meta( $pid, 'ea_website', mep_prevent_serialized_input( $website ) );
+			update_post_meta( $pid, 'ea_vegetarian', mep_prevent_serialized_input( $vegetarian ) );
+			update_post_meta( $pid, 'ea_tshirtsize', mep_prevent_serialized_input( $tshirtsize ) );
+			update_post_meta( $pid, 'ea_ticket_type', $ticket_type );
 			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
 			update_post_meta( $pid, 'ea_ticket_price', mep_get_ticket_price_by_event( $event_id, $ticket_type, 0 ) );
 			update_post_meta( $pid, 'ea_ticket_order_amount', $ticket_total_price );
@@ -1997,7 +1994,6 @@
 			return $price;
 		}
 	}
-
 	if ( ! function_exists( 'mep_get_user_custom_field_ids' ) ) {
 		function mep_get_user_custom_field_ids( $event_id ) {
 			$reg_form_id           = mep_fb_get_reg_form_id( $event_id );
@@ -2410,32 +2406,6 @@
 		$replace = [ 'and', '' ];
 		return html_entity_decode( str_replace( $find, $replace, $string ) );
 		// return str_replace("&","pink",'Test & Time Event');
-	}
-//********************Share button*************//
-	add_action( 'mep_after_social_share_list', 'mep_custom_share_btn', 10, 1 );
-	if ( ! function_exists( 'mep_custom_share_btn' ) ) {
-		function mep_custom_share_btn( $event_id ) {
-			$event_ss_linkedin_icon = mep_get_option( 'mep_event_ss_linkedin_icon', 'icon_setting_sec', 'fab fa-linkedin' );
-			$event_ss_whatsapp_icon = mep_get_option( 'mep_event_ss_whatsapp_icon', 'icon_setting_sec', 'fab fa-whatsapp' );
-			$event_ss_email_icon    = mep_get_option( 'mep_event_ss_email_icon', 'icon_setting_sec', 'fa fa-envelope' );
-			?>
-            <li>
-                <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo get_the_permalink( $event_id ); ?>&title=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?>&summary=<?php echo esc_html( get_the_excerpt( $event_id ) ); ?>&source=web" target="_blank">
-                    <i class="<?php echo $event_ss_linkedin_icon; ?>"></i>
-                </a>
-            </li>
-            <li>
-                <a class="whatsapp" href="https://api.whatsapp.com/send?text=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" target="_blank">
-                    <i class="<?php echo $event_ss_whatsapp_icon; ?>"></i>
-                </a>
-            </li>
-            <li>
-                <a class="email" href="mailto:?subject=I wanted you to see this site&amp;body=<?php echo mep_esc_html( get_the_title( $event_id ) ) . ' '; ?><?php echo get_the_permalink( $event_id ); ?>" title="Share by Email">
-                    <i class="<?php echo $event_ss_email_icon; ?>"></i>
-                </a>
-            </li>
-			<?php
-		}
 	}
 	add_filter( 'mep_ticket_current_time', 'mep_add_expire_min_in_current_date', 10, 3 );
 	if ( ! function_exists( 'mep_add_expire_min_in_current_date' ) ) {
@@ -3913,7 +3883,9 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
 				$global_template   = mep_get_option( 'mep_global_single_template', 'single_event_setting_sec', 'default-theme.php' );
 				$_current_template = $current_template ?: $global_template;
 				foreach ( $names as $key => $name ) {
-					if ( $qty[ $key ] > 0 && $name ) {
+					$current_qty = $qty[ $key ];
+					$current_qty = apply_filters( 'mpwem_group_actual_qty', $current_qty, $product_id, $name );
+					if ( $current_qty > 0 && $name ) {
 						for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && $iu > 0 && $_current_template == 'smart.php' ) {
 								$user[ $iu ]                     = current( $user );

@@ -553,7 +553,12 @@
 				$event_date  = array_key_exists( 'user_event_date', $_user_info ) ? sanitize_text_field( $_user_info['user_event_date'] ) : "";
 				$event_id    = $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
 			}
-			$ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
+			// $ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
+			$price = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
+			$price = (float) preg_replace( '/[^0-9.]/', '', $price );
+			$qty   = (int) $ticket_qty;
+			$ticket_total_price = (int) ( $price * $qty );	
+					
 			$uname              = isset( $_uname ) && ! empty( $_uname ) ? $_uname : $billing_full_name;
 			$new_post           = array(
 				'post_title'    => $uname,
@@ -980,14 +985,17 @@
 	function mep_ticket_type_update_stat( $event_id, $date, $ticket_type ) {
 		$ea_attendee_sync = get_post_meta( $event_id, 'ea_attendee_sync', true ) ? get_post_meta( $event_id, 'ea_attendee_sync', true ) : 'no';
 		if ( $ea_attendee_sync == 'no' ) {
-			mep_update_ticket_type_stat( $event_id, $ticket_type['option_name_t'], $date );
+			$ticket_name = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+			if ( $ticket_name ) {
+				mep_update_ticket_type_stat( $event_id, $ticket_name, $date );
+			}
 		}
 	}
 	function mep_get_ticket_type_info_by_name( $name, $event_id, $type = 'option_qty_t' ) {
 		$ticket_type_arr = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : [];
 		$p               = '';
 		foreach ( $ticket_type_arr as $price ) {
-			$TicketName = str_replace( "'", "", $price['option_name_t'] );
+			$TicketName = array_key_exists( 'option_name_t', $price ) ? str_replace( "'", "", $price['option_name_t'] ) : '';
 			if ( $TicketName === $name ) {
 				$p = array_key_exists( $type, $price ) ? $price[ $type ] : '';
 			}

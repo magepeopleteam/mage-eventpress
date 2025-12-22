@@ -16,7 +16,7 @@
 				$thumbnail = MPWEM_Global_Function::get_image_url( $speaker_id );
 				?>
                 <a href="<?php echo esc_url( get_the_permalink( $speaker_id ) ); ?>">
-                    <div data-bg-image="<?php echo esc_html( $thumbnail ); ?>"></div>
+					<img src="<?php echo esc_html( $thumbnail ); ?>" alt="">
                     <h6><?php echo esc_html( get_the_title( $speaker_id ) ); ?></h6>
                 </a>
 			<?php } ?>

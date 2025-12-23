@@ -81,7 +81,7 @@
 				ob_start();
 				$eid = array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 				if ( get_post_type( $eid ) == 'mep_events' ) {
-					$general_setting_sec  = MPWEM_Global_Function::data_sanitize( MPWEM_Global_Function::get_setting('general_setting_sec') );
+					$general_setting_sec  =  MPWEM_Global_Function::get_setting('general_setting_sec') ;
 					$hide_location_status = array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
 					$hide_date_status     = array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
 					$user_info            = array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];
@@ -455,6 +455,7 @@
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
 						if ( $name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;
 							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id );
@@ -532,7 +533,9 @@
 					$same_attendee = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$count         = 0;
 					foreach ( $names as $key => $name ) {
-						if ( $qty[ $key ] > 0 && $name ) {
+						$current_qty=$qty[ $key ];
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
+						if ( $current_qty > 0 && $name ) {
 							for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
 								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $attendee_info ) > 0 ) {
 									$attendee_info[ $count ] = current( $attendee_info );
@@ -569,7 +572,7 @@
 				return apply_filters( 'mep_cart_user_data_prepare', $attendee_info, $post_id );
 			}
 			public static function show_attendee( $user, $form_array, $same_attendee = 'yes' ) {
-				if ( sizeof( $user ) ) {
+				if ( sizeof( $user ) >0) {
 					$post_id = array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
 					?>
                     <div class="_infoLayout_xs_mT_xs">
@@ -580,7 +583,10 @@
                         <ul class="cart_list">
 							<?php
 								if ( $same_attendee == 'no' ) {
-									$ticket_text = '<li>' . esc_attr( $user['ticket_name'] ) . " - " . wc_price( (float) $user['ticket_price'] ) . ' x ' . esc_attr( $user['ticket_qty'] ) . ' = ' . wc_price( (float) $user['ticket_price'] * (float) $user['ticket_qty'] ) . '</li>';
+									$ticket_name = array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
+									$ticket_price = array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
+									$ticket_qty = array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
+									$ticket_text = '<li>' . esc_attr( $ticket_name) . " - " . wc_price( (float) $ticket_price) . ' x ' . esc_attr( $ticket_qty ) . ' = ' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
 									echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
 									do_action( 'mep_cart_after_ticket_type', $user );
 								}

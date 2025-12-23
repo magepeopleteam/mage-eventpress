@@ -19,7 +19,7 @@
 				$speaker_lists       = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
 				$general_setting_sec = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 				$event_label         = array_key_exists( 'mep_event_label', $general_setting_sec ) ? $general_setting_sec['mep_event_label'] : __( 'Events', 'mage-eventpress' );
-				$all_speakers        = MPWEM_Global_Function::get_all_post_id( 'mep_event_speaker' );
+				$all_speakers        = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_speaker_settings" data-tab-item="#mpwem_speaker_settings">
                     <div class="_dLayout_xs_mp_zero">
@@ -40,10 +40,8 @@
 								<?php do_action( 'mpwem_input_add_icon', 'mep_event_speaker_icon', $speaker_icon ); ?>
                             </div>
                             <span class="info_text">
-                                <?php printf(
-	                                __( 'Please select Speakers. You can add new speakers from %s.', 'mage-eventpress' ),
-	                                '<a href="' . esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) . '">' . esc_html__( 'here', 'mage-eventpress' ) . '</a>'
-                                ); ?>
+                                <?php esc_html_e( 'Please select Speakers. You can add new speakers from ', 'mage-eventpress' ); ?>
+                                    <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) ?>"><?php esc_html_e( 'here', 'mage-eventpress' ); ?></a>
                             </span>
                         </div>
                         <div class="_padding_bT">

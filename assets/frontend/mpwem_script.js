@@ -107,6 +107,9 @@ function mpwem_attendee_management(parent, total_qty) {
                 parent.find('[name="option_qty[]"]').each(function () {
                     let current_parent = jQuery(this).closest('.mep_ticket_item');
                     let qty = parseInt(jQuery(this).val());
+                    if(current_parent.find('[name="ticket_group_qty"]').length>0){
+                        qty=qty*parseInt(current_parent.find('[name="ticket_group_qty"]').val());
+                    }
                     let form_length = current_parent.find('.mep_form_item').length;
                     form_target = current_parent.find('.mep_attendee_info');
                     form_target.slideDown('fast');

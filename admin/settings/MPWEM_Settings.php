@@ -15,7 +15,7 @@
 			public function event_meta_tab() {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', __( 'Events', 'mage-eventpress' ) );
 				add_meta_box( 'mp_event_all_info_in_tab',
-					sprintf( __( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', 'mage-eventpress' ), esc_html( $event_label ), esc_html( get_the_title( get_the_ID() ) ) ),
+					sprintf( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', esc_html( $event_label ), esc_html( get_the_title( get_the_ID() ) ) ),
 					array( $this, 'event_tab' ), 'mep_events', 'normal', 'high' );
 			}
 			public function event_tab() {
@@ -40,9 +40,9 @@
                             <li data-target-tabs="#mpwem_email_text_settings"><i class="mi mi-envelope-open-text"></i><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></li>
                             <li data-target-tabs="#mep_event_template"><i class="mi mi-table-layout"></i><?php esc_html_e( 'Template', 'mage-eventpress' ); ?></li>
                             <li data-target-tabs="#mep_related_event_meta"><i class="mi mi-plug-connection"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?></li>
-	                        <?php if ( $speaker_status == 'yes' ) { ?>
+							<?php if ( $speaker_status == 'yes' ) { ?>
                                 <li data-target-tabs="#mpwem_speaker_settings"><i class="mi mi-microphone"></i><?php esc_html_e( 'Speaker Information', 'mage-eventpress' ); ?></li>
-	                        <?php } ?>
+							<?php } ?>
 							<?php do_action( 'mep_admin_event_details_before_tab_name_rich_text', $post_id ); ?>
                             <li data-target-tabs="#mep_event_timeline_meta"><i class="mi mi-list-timeline"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?> </li>
 							<?php do_action( 'mp_event_all_in_tab_menu' ); ?>
@@ -51,7 +51,7 @@
                         </ul>
                     </div>
                     <div class="mp_tab_details">
-						<?php do_action( 'mpwem_event_tab_setting_item', $post_id,$event_infos ); ?>
+						<?php do_action( 'mpwem_event_tab_setting_item', $post_id, $event_infos ); ?>
                         <!-- ==================================  -->
 						<?php do_action( 'mep_admin_event_details_before_tab_details_location', $post_id ); ?>
 						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
@@ -98,7 +98,7 @@
 					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
 					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
-					update_post_meta( $post_id, 'mep_org_address', mep_letters_numbers_spaces_only(mep_prevent_serialized_input($mep_org_address)) );
+					update_post_meta( $post_id, 'mep_org_address', mep_letters_numbers_spaces_only( mep_prevent_serialized_input( $mep_org_address ) ) );
 					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
 					update_post_meta( $post_id, 'mep_street', $mep_street );
 					update_post_meta( $post_id, 'mep_city', $mep_city );
@@ -129,11 +129,11 @@
 					$sale_end_time   = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
 					$count           = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
-						if ( $names[ $i ]) {
+						if ( $names[ $i ] ) {
 							$new_ticket_type[ $i ]['option_name_t']          = $names[ $i ];
 							$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
-							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ]??0;
-							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ]??0;
+							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';

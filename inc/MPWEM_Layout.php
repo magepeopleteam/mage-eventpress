@@ -34,7 +34,7 @@
 				<?php
 			}
 			public static function select_post_id() {
-				$post_ids = MPWEM_Global_Function::get_all_post_id( 'mep_events' );
+				$post_ids = MPWEM_Query::get_all_post_ids( 'mep_events' );
 				if ( $post_ids && sizeof( $post_ids ) > 0 ) {
 					?>
                     <label>

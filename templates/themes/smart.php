@@ -61,7 +61,7 @@
 						<?php do_action( 'mep_event_tags', $event_id ); ?>
                     </div>
 				<?php endif; ?>
-				<?php do_action( 'mpwem_social', $event_id ); ?>
+				<?php do_action( 'mpwem_social', $event_id ,$event_infos); ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>
 			<?php if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>

@@ -40,10 +40,8 @@
 								<?php do_action( 'mpwem_input_add_icon', 'mep_event_speaker_icon', $speaker_icon ); ?>
                             </div>
                             <span class="info_text">
-                                <?php printf(
-	                                __( 'Please select Speakers. You can add new speakers from %s.', 'mage-eventpress' ),
-	                                '<a href="' . esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) . '">' . esc_html__( 'here', 'mage-eventpress' ) . '</a>'
-                                ); ?>
+                                <?php esc_html_e( 'Please select Speakers. You can add new speakers from ', 'mage-eventpress' ); ?>
+                                    <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) ?>"><?php esc_html_e( 'here', 'mage-eventpress' ); ?></a>
                             </span>
                         </div>
                         <div class="_padding_bT">

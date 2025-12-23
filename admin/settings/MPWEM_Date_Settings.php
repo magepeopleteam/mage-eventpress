@@ -252,7 +252,7 @@
                 <div class="_padding_bT">
                     <label class="_justifyBetween_alignCenter_wrap ">
                         <span class="_mR"><?php esc_html_e( 'After Repeated Days', 'mage-eventpress' ); ?></span>
-                        <input type="number" class="formControl max_100 number_validation" name='mep_repeated_periods' value='<?php echo $periods; ?>'/>
+                        <input type="number" class="formControl max_100 number_validation" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/>
                     </label>
                     <span class="label-text"><?php esc_html_e( 'Select After Repeated Days', 'mage-eventpress' ); ?></span>
                 </div>
@@ -348,7 +348,7 @@
                     <div class="mpev-label">
                         <div>
                             <h2><span><?php esc_html_e( 'Display Time?', 'mage-eventpress' ); ?> </span></h2>
-                            <span class="label-text"><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
+                            <span class="label-text"><?php esc_html_e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                         </div>
                         <label class="mpev-switch">
                             <input type="checkbox" name="mep_disable_ticket_time" value="<?php echo esc_attr( $display_time ); ?>" <?php echo esc_attr( ( $display_time == 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_disable_ticket_time" data-toggle-values="yes,no">
@@ -462,7 +462,7 @@
                 <label>
                     <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $hidden_date ); ?>"/>
                     <input type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>"/>
-                    <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_html_e('Remove Image', 'mage-eventpress'); ?>"></span>
+                    <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                 </label>
 				<?php
 			}
@@ -481,8 +481,8 @@
                 <div class="mpwem_style mep-special-datetime" style="display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
                         <div>
-                            <h2><?php _e( 'Special  Dates Time Settings', 'mage-eventpress' ); ?></h2>
-                            <span class="text"><?php _e( 'Here you can set special date and time for event.', 'mage-eventpress' ); ?></span>
+                            <h2><?php esc_html_e( 'Special  Dates Time Settings', 'mage-eventpress' ); ?></h2>
+                            <span class="text"><?php esc_html_e( 'Here you can set special date and time for event.', 'mage-eventpress' ); ?></span>
                         </div>
                     </section>
                     <section>
@@ -490,11 +490,11 @@
                             <table class="mep_special_on_dates_table">
                                 <thead>
                                 <tr>
-                                    <th class="w-20"><?php _e( 'Label', 'mage-eventpress' ); ?></th>
-                                    <th class="w-20"><?php _e( 'Start Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-20"><?php _e( 'End Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-30"><?php _e( 'Times', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-10"><?php _e( 'Action', 'mage-eventpress' ); ?></th>
+                                    <th class="w-20"><?php esc_html_e( 'Label', 'mage-eventpress' ); ?></th>
+                                    <th class="w-20"><?php esc_html_e( 'Start Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                    <th class="w-20"><?php esc_html_e( 'End Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                    <th class="w-30"><?php esc_html_e( 'Times', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                    <th class="w-10"><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                                 </tr>
                                 </thead>
                                 <tbody class="mpwem_sortable_area mpwem_item_insert">
@@ -535,7 +535,7 @@
                     <td>
                         <label>
                             <input type="hidden" name="mep_special_date_hidden_name[]" value="<?php echo esc_attr( $unique_name ); ?>"/>
-                            <input type="text" name="mep_special_date_name[]" class="name_validation" value="<?php echo $date_name; ?>" placeholder="<?php esc_attr_e( 'Date Label ', 'mage-eventpress' ); ?>" style="width:180px"/>
+                            <input type="text" name="mep_special_date_name[]" class="name_validation" value="<?php echo esc_attr( $date_name ); ?>" placeholder="<?php esc_attr_e( 'Date Label ', 'mage-eventpress' ); ?>" style="width:180px"/>
                         </label>
                     </td>
                     <td>
@@ -574,9 +574,9 @@
                     <table>
                         <thead>
                         <tr>
-                            <th style="width:30%"><?php _e( 'Label', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                            <th style="width:40%"><?php _e( 'Time', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                            <th style="width:30%"><?php _e( 'Action', 'mage-eventpress' ); ?></th>
+                            <th style="width:30%"><?php esc_html_e( 'Label', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                            <th style="width:40%"><?php esc_html_e( 'Time', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                            <th style="width:30%"><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                         </tr>
                         </thead>
                         <tbody class="mpwem_sortable_area mpwem_item_insert">
@@ -602,12 +602,12 @@
                 <tr class="mpwem_remove_area">
                     <td>
                         <label>
-                            <input type="text" name="<?php echo $slot_name; ?>" class="formControl name_validation" value="<?php echo $slot_label; ?>" placeholder="<?php _e( 'Time Label', 'mage-eventpress' ); ?>" style="width:70px;"/>
+                            <input type="text" name="<?php echo esc_attr( $slot_name ); ?>" class="formControl name_validation" value="<?php echo esc_attr( $slot_label ); ?>" placeholder="<?php esc_attr_e( 'Time Label', 'mage-eventpress' ); ?>" style="width:70px;"/>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <input type="time" name="<?php echo $time_name; ?>" class="formControl" value="<?php echo $slot_time; ?>" style="width:100px;"/>
+                            <input type="time" name="<?php echo esc_attr( $time_name ); ?>" class="formControl" value="<?php echo esc_attr( $slot_time ); ?>" style="width:100px;"/>
                         </label>
                     </td>
                     <td>
@@ -649,7 +649,7 @@
                     <div class="mpev-label">
                         <div>
                             <h2><span><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></span></h2>
-                            <span class="label-text"><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
+                            <span class="label-text"><?php esc_html_e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                         </div>
                         <label class="mpev-switch">
                             <input type="checkbox" name="mep_enable_custom_dt_format" value="<?php echo esc_attr( $date_format ); ?>" <?php echo esc_attr( ( $date_format == 'on' ) ? 'checked' : '' ); ?> data-collapse-target="#mep_custom_timezone_setting" data-toggle-values="on,off">
@@ -662,15 +662,12 @@
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Date Format', 'mage-eventpress' ); ?></h2>
-                                <span class="label-text"><?php _e( 'Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events.', 'mage-eventpress' ); ?></span>
+                                <span class="label-text"><?php esc_html_e( 'Please select your preferred date format from the options below. If you wish to use a custom date format, select the Custom option and enter your desired date format. Please note that this date format will only apply to events.', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="regular mep_global_date_format" name="mep_event_date_format" id="datetime_setting_sec[mep_global_date_format]">
-								<?php
-									foreach ( $date_format_arr as $key => $date ) { ?>
-                                        <option value='<?php echo $key; ?>' <?php if ( $saved_date_format == $key ) {
-											echo 'Selected';
-										} ?>><?php echo $date; ?></option>
-									<?php } ?>
+								<?php foreach ( $date_format_arr as $key => $date ) { ?>
+                                    <option value='<?php echo esc_attr( $key ); ?>' <?php echo esc_attr( $saved_date_format == $key ? 'Selected' : '' ); ?>><?php echo esc_html( $date ); ?></option>
+								<?php } ?>
                             </select>
                         </label>
                     </section>
@@ -678,24 +675,21 @@
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Custom Date Format', 'mage-eventpress' ); ?></h2>
-                                <span class="label-text"><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
+                                <span class="label-text"><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php esc_html_e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
                             </div>
-                            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_date_format]" name="mep_event_custom_date_format" value="<?php echo $saved_custom_date_format; ?>">
+                            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_date_format]" name="mep_event_custom_date_format" value="<?php echo esc_attr( $saved_custom_date_format ); ?>">
                         </label>
                     </section>
                     <section class="mep_global_time_format">
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Time Format', 'mage-eventpress' ); ?></h2>
-                                <span class="label-text"><?php _e( 'Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events. ', 'mage-eventpress' ); ?></span>
+                                <span class="label-text"><?php esc_html_e( 'Please select the time format from the list. If you want to use a custom time format, select Custom and write your desired time format. This time format will only apply to events. ', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="regular mep_global_time_format" name="mep_event_time_format" id="datetime_setting_sec[mep_global_time_format]">
-								<?php
-									foreach ( $time_format_arr as $key => $date ) { ?>
-                                        <option value='<?php echo $key; ?>' <?php if ( $saved_time_format == $key ) {
-											echo 'Selected';
-										} ?>><?php echo $date; ?></option>
-									<?php } ?>
+								<?php foreach ( $time_format_arr as $key => $date ) { ?>
+                                    <option value='<?php echo $key; ?>' <?php echo esc_attr( $saved_time_format == $key ? 'Selected' : '' ); ?>><?php echo esc_html( $date ); ?></option>
+								<?php } ?>
                             </select>
                         </label>
                     </section>
@@ -703,24 +697,20 @@
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Custom Time Format', 'mage-eventpress' ); ?></h2>
-                                <span class="label-text"><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php _e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
+                                <span class="label-text"><a href="https://wordpress.org/support/article/formatting-date-and-time/"><?php esc_html_e( 'Documentation on date and time formatting.', 'mage-eventpress' ); ?></a></span>
                             </div>
-                            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_time_format]" name="mep_custom_event_time_format" value="<?php echo $saved_custom_time_format; ?>">
+                            <input type="text" class="regular-text" id="datetime_setting_sec[mep_global_custom_time_format]" name="mep_custom_event_time_format" value="<?php echo esc_attr( $saved_custom_time_format ); ?>">
                         </label>
                     </section>
                     <section class="mep_global_timezone_display">
                         <label class="mpev-label">
                             <div>
                                 <h2><?php esc_html_e( 'Show Timezone', 'mage-eventpress' ); ?></h2>
-                                <span class="label-text"><?php _e( 'If you want to show the date and time in your local timezone, please select Yes.', 'mage-eventpress' ); ?></span>
+                                <span class="label-text"><?php esc_html_e( 'If you want to show the date and time in your local timezone, please select Yes.', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="regular mep_global_timezone_display" name="mep_time_zone_display" id="datetime_setting_sec[mep_global_timezone_display]">
-                                <option value="yes" <?php if ( $saved_time_zone_display == 'yes' ) {
-									echo 'Selected';
-								} ?>><?php _e( 'Yes', 'mage-eventpress' ); ?></option>
-                                <option value="no" <?php if ( $saved_time_zone_display == 'no' ) {
-									echo 'Selected';
-								} ?>><?php _e( 'No', 'mage-eventpress' ); ?></option>
+                                <option value="yes" <?php echo esc_attr( $saved_time_zone_display == 'yes' ? 'Selected' : '' ); ?>><?php esc_html_e( 'Yes', 'mage-eventpress' ); ?></option>
+                                <option value="no" <?php echo esc_attr( $saved_time_zone_display == 'no' ? 'Selected' : '' ); ?>><?php esc_html_e( 'No', 'mage-eventpress' ); ?></option>
                             </select>
                         </label>
                     </section>

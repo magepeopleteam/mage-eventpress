@@ -84,57 +84,57 @@
                                 </div>
                                 <div class="analytics">
                                     <div class="analytics-card">
-                                        <h3><?php echo esc_attr( $total_event ); ?></h3>
-                                        <p><?php esc_attr_e( 'Total Events', 'mage-eventpress' ); ?></p>
+                                        <h3><?php echo esc_html( $total_event ); ?></h3>
+                                        <p><?php esc_html_e( 'Total Events', 'mage-eventpress' ); ?></p>
                                         <div class="trend up">↗ +12% this month</div>
                                     </div>
                                     <div class="analytics-card">
-                                        <h3><?php echo esc_attr( $event_status_count['active_count'] ); ?></h3>
-                                        <p><?php esc_attr_e( 'Active Events', 'mage-eventpress' ); ?></p>
-                                        <div class="trend neutral">→ <?php esc_attr_e( 'Same as last week', 'mage-eventpress' ); ?></div>
+                                        <h3><?php echo esc_html( $event_status_count['active_count'] ); ?></h3>
+                                        <p><?php esc_html_e( 'Active Events', 'mage-eventpress' ); ?></p>
+                                        <div class="trend neutral">→ <?php esc_html_e( 'Same as last week', 'mage-eventpress' ); ?></div>
                                     </div>
                                     <div class="analytics-card">
-                                        <h3><?php echo esc_attr( $total_registration ); ?></h3>
-                                        <p><?php esc_attr_e( 'Total Registrations', 'mage-eventpress' ); ?></p>
-                                        <div class="trend up">↗ <?php echo esc_attr( $reg_percent_change['inc_dec_sign'] . '%' . $reg_percent_change['percent_change'] . ' vs last month' ); ?></div>
+                                        <h3><?php echo esc_html( $total_registration ); ?></h3>
+                                        <p><?php esc_html_e( 'Total Registrations', 'mage-eventpress' ); ?></p>
+                                        <div class="trend up">↗ <?php echo esc_html( $reg_percent_change['inc_dec_sign'] . '%' . $reg_percent_change['percent_change'] . ' vs last month' ); ?></div>
                                     </div>
                                     <div class="analytics-card">
-                                        <h3><?php echo $currency_symbol . ' ' . $current_month_revenue ?></h3>
-                                        <p><?php esc_attr_e( 'Revenue This Month', 'mage-eventpress' ); ?></p>
+                                        <h3><?php echo esc_html( $currency_symbol . ' ' . $current_month_revenue ); ?></h3>
+                                        <p><?php esc_html_e( 'Revenue This Month', 'mage-eventpress' ); ?></p>
                                         <div class="trend up">
-											<?php printf( __( '↗ %1$s%2$s%% vs last month' ), esc_html( $revenue_percent_change['inc_dec_sign'] ), esc_html( $revenue_percent_change['percent_change'] ) ); ?>
+											<?php printf( '↗ %1$s%2$s%% vs last month', esc_html( $revenue_percent_change['inc_dec_sign'] ), esc_html( $revenue_percent_change['percent_change'] ) ); ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="stats-summary">
                                     <div class="stat-item mpwem_filter_by_status mpwem_filter_btn_active_bg_color" data-by-filter="all">
-                                        <span><?php esc_attr_e( 'All Events', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $total_event ); ?>)</span>
+                                        <span><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $total_event ); ?>)</span>
                                     </div>
                                     <div class="stat-item mpwem_filter_by_status" data-by-filter="publish">
-                                        <span><?php esc_attr_e( 'Published', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $post_counts['publish'] ); ?>)</span>
+                                        <span><?php esc_html_e( 'Published', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $post_counts['publish'] ); ?>)</span>
                                     </div>
                                     <div class="stat-item mpwem_filter_by_status" data-by-filter="draft">
-                                        <span><?php esc_attr_e( 'Draft', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $post_counts['draft'] ); ?>)</span>
+                                        <span><?php esc_html_e( 'Draft', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $post_counts['draft'] ); ?>)</span>
                                     </div>
                                     <div class="stat-item mpwem_filter_by_status" data-by-filter="private">
-                                        <span><?php esc_attr_e( 'Private', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $post_counts['private'] ); ?>)</span>
+                                        <span><?php esc_html_e( 'Private', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $post_counts['private'] ); ?>)</span>
                                     </div>
                                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="active">
-                                        <span><?php esc_attr_e( 'Active', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $event_status_count['active_count'] ); ?>)</span>
+                                        <span><?php esc_html_e( 'Active', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $event_status_count['active_count'] ); ?>)</span>
                                     </div>
                                     <div class="stat-item mpwem_filter_by_active_status" data-by-filter="expired">
-                                        <span><?php esc_attr_e( 'Expired', 'mage-eventpress' ); ?></span>
-                                        <span class="stat-number">(<?php echo esc_attr( $event_status_count['expire_count'] ); ?>)</span>
+                                        <span><?php esc_html_e( 'Expired', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number">(<?php echo esc_html( $event_status_count['expire_count'] ); ?>)</span>
                                     </div>
                                     <a href="<?php echo esc_url( $trash_url ); ?>">
                                         <div class="stat-item">
-                                            <span><?php esc_attr_e( 'Trash', 'mage-eventpress' ); ?></span>
-                                            <span class="stat-number">(<?php echo esc_attr( $post_counts['trash'] ); ?>)</span>
+                                            <span><?php esc_html_e( 'Trash', 'mage-eventpress' ); ?></span>
+                                            <span class="stat-number">(<?php echo esc_html( $post_counts['trash'] ); ?>)</span>
                                         </div>
                                     </a>
                                 </div>
@@ -149,59 +149,49 @@
                                     <input id="mpwem_search_event_list" type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' ); ?>">
                                 </div>
                                 <select class="category-select" id="mpwem_event_filter_by_category">
-                                    <option><?php esc_attr_e( 'All Categories', 'mage-eventpress' ); ?></option>
+                                    <option><?php esc_html_e( 'All Categories', 'mage-eventpress' ); ?></option>
 									<?php
 										if ( is_array( $get_all_categories ) && ! empty( $get_all_categories ) ) {
 											foreach ( $get_all_categories as $key => $event_categories ) { ?>
-                                                <option><?php echo esc_attr( $event_categories ); ?></option>
+                                                <option><?php echo esc_html( $event_categories ); ?></option>
 											<?php }
 										}
 									?>
                                 </select>
                                 <div class="date-filter-container">
-                                    <label for="mpwem_date_from"><?php esc_attr_e( 'From:', 'mage-eventpress' ); ?></label>
+                                    <label for="mpwem_date_from"><?php esc_html_e( 'From:', 'mage-eventpress' ); ?></label>
                                     <input type="date" id="mpwem_date_from" class="date-filter">
-                                    <label for="mpwem_date_to"><?php esc_attr_e( 'To:', 'mage-eventpress' ); ?></label>
+                                    <label for="mpwem_date_to"><?php esc_html_e( 'To:', 'mage-eventpress' ); ?></label>
                                     <input type="date" id="mpwem_date_to" class="date-filter">
-                                    <button type="button" id="mpwem_clear_date_filter" class="clear-date-btn"><?php esc_attr_e( 'Clear', 'mage-eventpress' ); ?></button>
+                                    <button type="button" id="mpwem_clear_date_filter" class="clear-date-btn"><?php esc_html_e( 'Clear', 'mage-eventpress' ); ?></button>
                                 </div>
                             </div>
                             <div class="table-container">
                                 <table class="event-table">
                                     <thead>
                                     <tr>
-                                        <th width="40">
-                                            <input type="checkbox" class="checkbox" id="mpwem_select_all_post">
-                                        </th>
-                                        <th><?php esc_attr_e( 'Image', 'mage-eventpress' ); ?></th>
-                                        <th class="sortable" data-sort="title">
-											<?php esc_attr_e( 'Event Name', 'mage-eventpress' ); ?>
-                                            <span class="sort-indicator"></span>
-                                        </th>
-                                        <th><?php esc_attr_e( 'Location', 'mage-eventpress' ); ?></th>
-                                        <th class="sortable" data-sort="date">
-											<?php esc_attr_e( 'Event Date', 'mage-eventpress' ); ?>
-                                            <span class="sort-indicator"></span>
-                                        </th>
-                                        <th><?php esc_attr_e( 'Event Starts In', 'mage-eventpress' ); ?></th>
-                                        <th><?php esc_attr_e( 'Ticket Types', 'mage-eventpress' ); ?></th>
-                                        <th><?php esc_attr_e( 'Capacity', 'mage-eventpress' ); ?></th>
-                                        <th><?php esc_attr_e( 'Actions', 'mage-eventpress' ); ?></th>
+                                        <th><input type="checkbox" class="checkbox" id="mpwem_select_all_post"></th>
+                                        <th><?php esc_html_e( 'Image', 'mage-eventpress' ); ?></th>
+                                        <th class="sortable" data-sort="title"><?php esc_html_e( 'Event Name', 'mage-eventpress' ); ?> <span class="sort-indicator"></span></th>
+                                        <th><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></th>
+                                        <th class="sortable" data-sort="date"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?> <span class="sort-indicator"></span></th>
+                                        <th><?php esc_html_e( 'Event Starts In', 'mage-eventpress' ); ?></th>
+                                        <th><?php esc_html_e( 'Ticket Types', 'mage-eventpress' ); ?></th>
+                                        <th><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
+                                        <th><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-									<?php
-										echo render_mep_events_by_status( $events );
-									?>
+									<?php render_mep_events_by_status( $events ); ?>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="pagination">
                                 <div class="pagination-info">
-									<?php esc_attr_e( 'Showing', 'mage-eventpress' ); ?> <span id="visibleCount">0</span> of <span id="totalCount">0</span> <?php esc_attr_e( ' Events', 'mage-eventpress' ); ?>
+									<?php esc_html_e( 'Showing', 'mage-eventpress' ); ?> <span id="visibleCount">0</span> of <span id="totalCount">0</span> <?php esc_html_e( ' Events', 'mage-eventpress' ); ?>
                                 </div>
                                 <button class="load-more-btn" id="loadMoreBtn">
-                                    <span><?php esc_attr_e( 'Load More Events', 'mage-eventpress' ); ?></span>
+                                    <span><?php esc_html_e( 'Load More Events', 'mage-eventpress' ); ?></span>
                                     <span>↓</span>
                                 </button>
                             </div>
@@ -330,10 +320,9 @@
                             <div class="_dFlex_fdColumn_alignCenter">
                                 <h4 class="_mB_xs"><?php echo esc_html( get_the_title( $post_id ) ); ?></h4>
                                 <div class="date_time_area">
-		                            <?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
+									<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
                                 </div>
                             </div>
-
                             <span class="fas fa-times popupClose"></span>
                         </div>
                         <div class="popupBody mpwem_popup_attendee_statistic_body ">
@@ -560,7 +549,6 @@
 		return 'Expired!';
 	}
 	function render_mep_events_by_status( $posts ) {
-		ob_start();
 		if ( ! empty( $posts ) ) {
 			foreach ( $posts as $post ) {
 				$id             = $post->ID;
@@ -571,7 +559,6 @@
 				$delete_link    = get_delete_post_link( $id ); // Moves to Trash
 				$view_link      = get_permalink( $id );
 				$start_date     = get_post_meta( $id, 'event_start_datetime', true );
-				$remaining_date = $start_date;
 				$start_date     = date( 'F j, Y', strtotime( $start_date ) );
 				$start_time     = get_post_meta( $id, 'event_start_time', true );
 				$end_date       = get_post_meta( $id, 'event_end_datetime', true );
@@ -656,7 +643,7 @@
                     </td>
                     <td>
                         <div class="mpwem_event-image-placeholder">
-                            <img class="mpwem_event_feature_image" src="<?php echo esc_url( ! empty( $thumbnail_url ) ? $thumbnail_url : 'https://placehold.co/300x300?text=No+Event+Image+Found' ); ?>">
+                            <img class="mpwem_event_feature_image" src="<?php echo esc_url( ! empty( $thumbnail_url ) ? $thumbnail_url : 'https://placehold.co/300x300?text=No+Event+Image+Found' ); ?>" alt="">
                         </div>
                     </td>
                     <td class="mpwem_event_title">
@@ -668,20 +655,20 @@
 								<?php if ( $status === 'publish' ) { ?>
                                     <div class="status-live-inline">
                                         <div class="live-indicator-inline"></div>
-										<?php _e( 'Published', 'mage-eventpress' ); ?>
+										<?php esc_html_e( 'Published', 'mage-eventpress' ); ?>
                                     </div>
 								<?php } else if ( $status === 'draft' ) { ?>
                                     <div class="event-status-inline">
-                                        <div class="status-draft-inline"><?php _e( 'Draft', 'mage-eventpress' ); ?></div>
+                                        <div class="status-draft-inline"><?php esc_html_e( 'Draft', 'mage-eventpress' ); ?></div>
                                     </div>
 								<?php } else if ( $status === 'private' ) { ?>
                                     <div class="status-private-inline">
                                         <div class="private-indicator-inline"></div>
-										<?php _e( 'Private', 'mage-eventpress' ); ?>
+										<?php esc_html_e( 'Private', 'mage-eventpress' ); ?>
                                     </div>
 								<?php } else { ?>
                                     <div class="event-status-inline">
-                                        <div class="status-draft-inline"><?php _e( 'Trash', 'mage-eventpress' ); ?></div>
+                                        <div class="status-draft-inline"><?php esc_html_e( 'Trash', 'mage-eventpress' ); ?></div>
                                     </div>
 								<?php } ?>
                             </div>
@@ -689,21 +676,21 @@
                         <div class='mep_after_event_title'>
 							<?php do_action( 'mep_dashboard_event_list_after_event_title', $id ); ?>
                         </div>
-                        <div class="event-category" style='margin:10px 0;'><?php echo esc_attr( $category ); ?></div>
+                        <div class="event-category" style='margin:10px 0;'><?php echo esc_html( $category ); ?></div>
                     </td>
                     <td>
                         <div class="location">
-                            <i class="mi mi-marker"></i> <?php echo esc_attr( $location ); ?>
+                            <i class="mi mi-marker"></i> <?php echo esc_html( $location ); ?>
                         </div>
                     </td>
                     <td>
                         <div class="date-time">
-                            <span><?php echo esc_attr( $start_date ); ?></span>
-                            <span class="time"><?php echo esc_attr( $time ); ?></span>
+                            <span><?php echo esc_html( $start_date ); ?></span>
+                            <span class="time"><?php echo esc_html( $time ); ?></span>
                         </div>
                     </td>
                     <td>
-                        <div class="status-badge mpwem_remaining_days <?php echo esc_attr( $event_status_class ); ?>"><?php echo esc_attr( $time_remaining ); ?></div>
+                        <div class="status-badge mpwem_remaining_days <?php echo esc_attr( $event_status_class ); ?>"><?php echo esc_html( $time_remaining ); ?></div>
                     </td>
                     <td>
                         <div class="ticket-types">
@@ -764,28 +751,28 @@
                 <tr class="quick-edit-row quick-edit-row-post inline-edit-row" style="display: none;" data-event-id="<?php echo esc_attr( $id ); ?>">
                     <td colspan="9" class="colspanchange">
                         <fieldset class="inline-edit-col-left">
-                            <legend class="inline-edit-legend"><?php _e( 'Quick Edit', 'mage-eventpress' ); ?></legend>
+                            <legend class="inline-edit-legend"><?php esc_html_e( 'Quick Edit', 'mage-eventpress' ); ?></legend>
                             <div class="inline-edit-col">
                                 <label>
-                                    <span class="title"><?php _e( 'Title', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Title', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
                                         <input type="text" name="post_title" class="ptitle" value="<?php echo esc_attr( $title ); ?>">
                                     </span>
                                 </label>
                                 <label>
-                                    <span class="title"><?php _e( 'Event Start Date', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Event Start Date', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
                                         <input type="datetime-local" name="event_start_datetime" class="event-start-date" value="<?php echo esc_attr( date( 'Y-m-d\TH:i', strtotime( $start_date . ' ' . $start_time ) ) ); ?>">
                                     </span>
                                 </label>
                                 <label>
-                                    <span class="title"><?php _e( 'Event End Date', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Event End Date', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
                                         <input type="datetime-local" name="event_end_datetime" class="event-end-date" value="<?php echo esc_attr( date( 'Y-m-d\TH:i', strtotime( $end_date ) ) ); ?>">
                                     </span>
                                 </label>
                                 <label>
-                                    <span class="title"><?php _e( 'Location', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
                                         <input type="text" name="mep_location_venue" class="event-location" value="<?php echo esc_attr( $location ); ?>">
                                     </span>
@@ -795,16 +782,16 @@
                         <fieldset class="inline-edit-col-right">
                             <div class="inline-edit-col">
                                 <label class="inline-edit-status">
-                                    <span class="title"><?php _e( 'Status', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></span>
                                     <select name="_status">
 										<?php $current_status = get_post_status( $id ); ?>
-                                        <option value="publish" <?php selected( $current_status, 'publish' ); ?>><?php _e( 'Published', 'mage-eventpress' ); ?></option>
-                                        <option value="draft" <?php selected( $current_status, 'draft' ); ?>><?php _e( 'Draft', 'mage-eventpress' ); ?></option>
-                                        <option value="private" <?php selected( $current_status, 'private' ); ?>><?php _e( 'Private', 'mage-eventpress' ); ?></option>
+                                        <option value="publish" <?php selected( $current_status, 'publish' ); ?>><?php esc_html_e( 'Published', 'mage-eventpress' ); ?></option>
+                                        <option value="draft" <?php selected( $current_status, 'draft' ); ?>><?php esc_html_e( 'Draft', 'mage-eventpress' ); ?></option>
+                                        <option value="private" <?php selected( $current_status, 'private' ); ?>><?php esc_html_e( 'Private', 'mage-eventpress' ); ?></option>
                                     </select>
                                 </label>
                                 <label>
-                                    <span class="title"><?php _e( 'Categories', 'mage-eventpress' ); ?></span>
+                                    <span class="title"><?php esc_html_e( 'Categories', 'mage-eventpress' ); ?></span>
                                     <select name="mep_cat[]" multiple class="event-categories">
 										<?php
 											$event_categories = get_the_terms( $id, 'mep_cat' );
@@ -814,15 +801,12 @@
 													$selected_cats[] = $cat->term_id;
 												}
 											}
-											// Get all categories
-											$all_categories = get_terms( array(
-												'taxonomy'   => 'mep_cat',
-												'hide_empty' => false,
-											) );
+											$all_categories=MPWEM_Global_Function::get_taxonomy('mep_cat');
 											if ( $all_categories && ! is_wp_error( $all_categories ) ) {
 												foreach ( $all_categories as $cat_term ) {
-													$selected = in_array( $cat_term->term_id, $selected_cats ) ? 'selected' : '';
-													echo '<option value="' . esc_attr( $cat_term->term_id ) . '" ' . $selected . '>' . esc_html( $cat_term->name ) . '</option>';
+													?>
+                                                    <option value="<?php echo esc_attr( $cat_term->term_id ); ?>" <?php echo esc_attr( in_array( $cat_term->term_id, $selected_cats ) ? 'selected' : '' ); ?>><?php echo esc_html( $cat_term->name ); ?></option>
+													<?php
 												}
 											}
 										?>
@@ -832,8 +816,8 @@
                         </fieldset>
                         <input type="hidden" class="mep-quick-edit-nonce" value="<?php echo esc_attr( wp_create_nonce( 'mep_nonce' ) ); ?>"/>
                         <div class="submit inline-edit-save">
-                            <button type="button" class="button cancel alignleft"><?php _e( 'Cancel', 'mage-eventpress' ); ?></button>
-                            <button type="button" class="button button-primary save alignright"><?php _e( 'Update', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="button cancel alignleft"><?php esc_html_e( 'Cancel', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="button button-primary save alignright"><?php esc_html_e( 'Update', 'mage-eventpress' ); ?></button>
                             <span class="spinner"></span>
                             <br class="clear">
                         </div>
@@ -843,5 +827,4 @@
 		} else {
 			echo '<p>No posts found.</p>';
 		}
-		return ob_get_clean(); // return the entire buffered content
 	}

@@ -57,9 +57,9 @@
                                 <span class="label-text"><?php esc_html_e( 'If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
-								<?php foreach ( $organizer as $key => $value ): ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php esc_html_e( $value ); ?> </option>
-								<?php endforeach; ?>
+								<?php foreach ( $organizer as $key => $value ){ ?>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php echo esc_html( $value ); ?> </option>
+								<?php }?>
                             </select>
                         </label>
                     </section>

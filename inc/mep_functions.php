@@ -554,11 +554,10 @@
 				$event_id    = $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
 			}
 			// $ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
-			$price = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
-			$price = (float) preg_replace( '/[^0-9.]/', '', $price );
-			$qty   = (int) $ticket_qty;
-			$ticket_total_price = (int) ( $price * $qty );	
-					
+			$price              = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
+			$price              = (float) preg_replace( '/[^0-9.]/', '', $price );
+			$qty                = (int) $ticket_qty;
+			$ticket_total_price = (int) ( $price * $qty );
 			$uname              = isset( $_uname ) && ! empty( $_uname ) ? $_uname : $billing_full_name;
 			$new_post           = array(
 				'post_title'    => $uname,
@@ -2409,12 +2408,7 @@
 		}
 	}
 	add_action( 'widgets_init', 'mep_default_sidebar_reg' );
-	function mep_html_chr( $string ) {
-		$find    = [ '&', '#038;' ];
-		$replace = [ 'and', '' ];
-		return html_entity_decode( str_replace( $find, $replace, $string ) );
-		// return str_replace("&","pink",'Test & Time Event');
-	}
+
 	add_filter( 'mep_ticket_current_time', 'mep_add_expire_min_in_current_date', 10, 3 );
 	if ( ! function_exists( 'mep_add_expire_min_in_current_date' ) ) {
 		function mep_add_expire_min_in_current_date( $current_date, $event_date, $event_id ) {
@@ -3819,10 +3813,6 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
 	<?php
 }
 }
-	add_filter( 'mep_check_product_into_cart', 'mep_rq_disable_add_to_cart_if_product_is_in_cart', 90, 2 );
-	function mep_rq_disable_add_to_cart_if_product_is_in_cart( $is_purchasable, $product ) {
-		return true;
-	}
 // from main file
 	add_filter( 'mep_event_total_seat_count', 'mep_update_total_seat_count', 10, 2 );
 	function mep_update_total_seat_count( $total, $event_id ) {
@@ -4085,5 +4075,46 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
 			}
 			return $name;
 		}
+	}
+	add_action( 'mep_event_location_street', 'mep_event_location_street' );
+	add_action( 'mep_event_location_city', 'mep_event_location_city' );
+	add_action( 'mep_event_location_state', 'mep_event_location_state' );
+	add_action( 'mep_event_location_postcode', 'mep_event_location_postcode' );
+	add_action( 'mep_event_location_country', 'mep_event_location_country' );
+	function mep_event_location_street( $event_id ) {
+		$location = MPWEM_Functions::get_location( $event_id, 'street' );
+		if ( $location ) {
+			?><span><?php echo esc_html( $location ); ?></span><?php
+		}
+	}
+	function mep_event_location_city( $event_id ) {
+		$location = MPWEM_Functions::get_location( $event_id, 'city' );
+		if ( $location ) {
+			?><span><?php echo esc_html( $location ); ?></span><?php
+		}
+	}
+	function mep_event_location_state( $event_id ) {
+		$location = MPWEM_Functions::get_location( $event_id, 'state' );
+		if ( $location ) {
+			?><span><?php echo esc_html( $location ); ?></span><?php
+		}
+	}
+	function mep_event_location_postcode( $event_id ) {
+		$location = MPWEM_Functions::get_location( $event_id, 'zip' );
+		if ( $location ) {
+			?><span><?php echo esc_html( $location ); ?></span><?php
+		}
+	}
+	function mep_event_location_country( $event_id ) {
+		$location = MPWEM_Functions::get_location( $event_id, 'country' );
+		if ( $location ) {
+			?><span><?php echo esc_html( $location ); ?></span><?php
+		}
+	}
+	function mep_html_chr( $string ) {
+		$find    = [ '&', '#038;' ];
+		$replace = [ 'and', '' ];
+		return html_entity_decode( str_replace( $find, $replace, $string ) );
+		// return str_replace("&","pink",'Test & Time Event');
 	}
 /******************** Remove upper function after 2025**********************/

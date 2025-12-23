@@ -28,30 +28,30 @@
 		) );
 		?>
         <div class="wrap">
-            <h1><?php _e( 'Event Analytics Dashboard', 'mage-eventpress' ); ?></h1>
+            <h1><?php esc_html_e( 'Event Analytics Dashboard', 'mage-eventpress' ); ?></h1>
             <div class="mep-analytics-filters">
                 <div class="mep-filter-group">
-                    <label for="mep-date-range"><?php _e( 'Date Range:', 'mage-eventpress' ); ?></label>
+                    <label for="mep-date-range"><?php esc_html_e( 'Date Range:', 'mage-eventpress' ); ?></label>
                     <select id="mep-date-range" class="mep-filter">
-                        <option value="7"><?php _e( 'Last 7 Days', 'mage-eventpress' ); ?></option>
-                        <option value="30" selected><?php _e( 'Last 30 Days', 'mage-eventpress' ); ?></option>
-                        <option value="90"><?php _e( 'Last 90 Days', 'mage-eventpress' ); ?></option>
-                        <option value="365"><?php _e( 'Last Year', 'mage-eventpress' ); ?></option>
-                        <option value="custom"><?php _e( 'Custom Range', 'mage-eventpress' ); ?></option>
+                        <option value="7"><?php esc_html_e( 'Last 7 Days', 'mage-eventpress' ); ?></option>
+                        <option value="30" selected><?php esc_html_e( 'Last 30 Days', 'mage-eventpress' ); ?></option>
+                        <option value="90"><?php esc_html_e( 'Last 90 Days', 'mage-eventpress' ); ?></option>
+                        <option value="365"><?php esc_html_e( 'Last Year', 'mage-eventpress' ); ?></option>
+                        <option value="custom"><?php esc_html_e( 'Custom Range', 'mage-eventpress' ); ?></option>
                     </select>
                     <div id="mep-custom-date-range" style="display: none;">
-                        <label for="mep-start-date"><?php _e( 'From:', 'mage-eventpress' ); ?></label>
-                        <input type="date" id="mep-start-date" value="<?php echo $start_date; ?>" class="mep-filter">
-                        <label for="mep-end-date"><?php _e( 'To:', 'mage-eventpress' ); ?></label>
-                        <input type="date" id="mep-end-date" value="<?php echo $end_date; ?>" class="mep-filter">
+                        <label for="mep-start-date"><?php esc_html_e( 'From:', 'mage-eventpress' ); ?></label>
+                        <input type="date" id="mep-start-date" value="<?php echo esc_attr($start_date); ?>" class="mep-filter">
+                        <label for="mep-end-date"><?php esc_html_e( 'To:', 'mage-eventpress' ); ?></label>
+                        <input type="date" id="mep-end-date" value="<?php echo esc_attr($end_date); ?>" class="mep-filter">
                     </div>
                 </div>
                 <div class="mep-filter-group">
-                    <label for="mep-event-filter"><?php _e( 'Event:', 'mage-eventpress' ); ?></label>
+                    <label for="mep-event-filter"><?php esc_html_e( 'Event:', 'mage-eventpress' ); ?></label>
                     <select id="mep-event-filter" class="mep-filter">
-                        <option value="all"><?php _e( 'All Events', 'mage-eventpress' ); ?></option>
+                        <option value="all"><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
 						<?php foreach ( $events as $event ) : ?>
-                            <option value="<?php echo $event->ID; ?>"><?php echo $event->post_title; ?></option>
+                            <option value="<?php echo esc_attr($event->ID); ?>"><?php echo esc_html($event->post_title); ?></option>
 						<?php endforeach; ?>
                     </select>
                 </div>
@@ -69,8 +69,8 @@
                             </select>
                         </label>
 		            <?php } ?>
-                <button id="mep-apply-filters" class="button button-primary"><?php _e( 'Apply Filters', 'mage-eventpress' ); ?></button>
-                <button id="mep-export-csv" class="button"><?php _e( 'Export to CSV', 'mage-eventpress' ); ?></button>
+                <button id="mep-apply-filters" class="button button-primary"><?php esc_html_e( 'Apply Filters', 'mage-eventpress' ); ?></button>
+                <button id="mep-export-csv" class="button"><?php esc_html_e( 'Export to CSV', 'mage-eventpress' ); ?></button>
             </div>
             <div class="mep-analytics-dashboard">
                 <!-- Summary Cards -->
@@ -80,7 +80,7 @@
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <div class="mep-card-content">
-                            <h3><?php _e( 'Total Sales', 'mage-eventpress' ); ?></h3>
+                            <h3><?php esc_html_e( 'Total Sales', 'mage-eventpress' ); ?></h3>
                             <p class="mep-card-value">0</p>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                             <i class="fas fa-ticket-alt"></i>
                         </div>
                         <div class="mep-card-content">
-                            <h3><?php _e( 'Tickets Sold', 'mage-eventpress' ); ?></h3>
+                            <h3><?php esc_html_e( 'Tickets Sold', 'mage-eventpress' ); ?></h3>
                             <p class="mep-card-value">0</p>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             <i class="fas fa-calendar-alt"></i>
                         </div>
                         <div class="mep-card-content">
-                            <h3><?php _e( 'Total Events', 'mage-eventpress' ); ?></h3>
+                            <h3><?php esc_html_e( 'Total Events', 'mage-eventpress' ); ?></h3>
                             <p class="mep-card-value">0</p>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="mep-card-content">
-                            <h3><?php _e( 'Avg. Ticket Price', 'mage-eventpress' ); ?></h3>
+                            <h3><?php esc_html_e( 'Avg. Ticket Price', 'mage-eventpress' ); ?></h3>
                             <p class="mep-card-value">0</p>
                         </div>
                     </div>
@@ -115,13 +115,13 @@
                 <!-- Charts -->
                 <div class="mep-charts-container">
                     <div class="mep-chart-wrapper">
-                        <h2><?php _e( 'Sales Over Time', 'mage-eventpress' ); ?></h2>
+                        <h2><?php esc_html_e( 'Sales Over Time', 'mage-eventpress' ); ?></h2>
                         <div class="mep-chart-container">
                             <canvas id="mep-sales-chart"></canvas>
                         </div>
                     </div>
                     <div class="mep-chart-wrapper">
-                        <h2><?php _e( 'Tickets Sold by Event', 'mage-eventpress' ); ?></h2>
+                        <h2><?php esc_html_e( 'Tickets Sold by Event', 'mage-eventpress' ); ?></h2>
                         <div class="mep-chart-container">
                             <canvas id="mep-events-chart"></canvas>
                         </div>
@@ -129,13 +129,13 @@
                 </div>
                 <div class="mep-charts-container">
                     <div class="mep-chart-wrapper">
-                        <h2><?php _e( 'Ticket Types Distribution', 'mage-eventpress' ); ?></h2>
+                        <h2><?php esc_html_e( 'Ticket Types Distribution', 'mage-eventpress' ); ?></h2>
                         <div class="mep-chart-container">
                             <canvas id="mep-ticket-types-chart"></canvas>
                         </div>
                     </div>
                     <div class="mep-chart-wrapper">
-                        <h2><?php _e( 'Sales by Day of Week', 'mage-eventpress' ); ?></h2>
+                        <h2><?php esc_html_e( 'Sales by Day of Week', 'mage-eventpress' ); ?></h2>
                         <div class="mep-chart-container">
                             <canvas id="mep-weekday-chart"></canvas>
                         </div>
@@ -143,21 +143,21 @@
                 </div>
                 <!-- Detailed Data Table -->
                 <div class="mep-data-table-wrapper">
-                    <h2><?php _e( 'Detailed Event Data', 'mage-eventpress' ); ?></h2>
+                    <h2><?php esc_html_e( 'Detailed Event Data', 'mage-eventpress' ); ?></h2>
                     <table class="mep-data-table widefat striped">
                         <thead>
                         <tr>
-                            <th><?php _e( 'Event', 'mage-eventpress' ); ?></th>
-                            <th><?php _e( 'Date', 'mage-eventpress' ); ?></th>
-                            <th><?php _e( 'Tickets Sold', 'mage-eventpress' ); ?></th>
-                            <th><?php _e( 'Total Sales', 'mage-eventpress' ); ?></th>
-                            <th><?php _e( 'Available Seats', 'mage-eventpress' ); ?></th>
-                            <th><?php _e( 'Occupancy Rate', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Date', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Tickets Sold', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Total Sales', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Available Seats', 'mage-eventpress' ); ?></th>
+                            <th><?php esc_html_e( 'Occupancy Rate', 'mage-eventpress' ); ?></th>
                         </tr>
                         </thead>
                         <tbody id="mep-data-table-body">
                         <tr>
-                            <td colspan="6"><?php _e( 'Loading data...', 'mage-eventpress' ); ?></td>
+                            <td colspan="6"><?php esc_html_e( 'Loading data...', 'mage-eventpress' ); ?></td>
                         </tr>
                         </tbody>
                     </table>

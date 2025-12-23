@@ -432,7 +432,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 			?>
 			<div class="mpwem-booking-details">
 				<div class="mpwem-booking-header">
-					<h3><?php printf( esc_html__( 'Booking Details - Order #%s', 'mage-eventpress' ), $order_id ); ?></h3>
+					<h3><?php echo esc_html__( 'Booking Details - Order ', 'mage-eventpress' ).' #'. $order_id ; ?></h3>
 					<div class="mpwem-booking-meta">
 						<span class="mpwem-booking-date">
 							<strong><?php esc_html_e( 'Order Date:', 'mage-eventpress' ); ?></strong>
@@ -459,10 +459,11 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 									$attendees->the_post();
 									$attendee_id = get_the_ID();
 									$event_id    = get_post_meta( $attendee_id, 'ea_event_id', true );
+									$count++;
 									?>
 									<div class="mpwem-attendee-card">
 										<div class="mpwem-attendee-header">
-											<h5><?php printf( esc_html__( 'Attendee #%d', 'mage-eventpress' ), $count++ ); ?></h5>
+											<h5><?php echo esc_html__( 'Attendee ', 'mage-eventpress' ).'#'. $count ; ?></h5>
 											<?php
 											// Only show View Ticket button if Form Builder addon is active
 											if ( class_exists( 'MPWEM_Addon_Pro' ) ) {

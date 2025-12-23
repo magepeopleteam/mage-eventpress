@@ -95,7 +95,7 @@
 			// Set transient to prevent duplicate emails (valid for 1 hour)
 			set_transient( $email_key, true, HOUR_IN_SECONDS );
 			// Email subject
-			$subject = sprintf( __( '[%s] Low Stock Alert - %s', 'mage-eventpress' ), get_bloginfo( 'name' ), $event_title );
+			$subject = sprintf(  '[%s] Low Stock Alert - %s' , get_bloginfo( 'name' ), $event_title );
 			// Email body
 			$message = $this->get_low_stock_email_content( $post_id, $ticket_type_name, $available_seats, $threshold, $event_title, $event_url );
 			// Email headers

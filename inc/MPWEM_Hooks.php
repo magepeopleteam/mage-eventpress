@@ -18,11 +18,7 @@
 				/**************************/
 				add_action( 'mpwem_location', [ $this, 'location' ], 10, 2 );
 				add_action( 'mpwem_location_only', [ $this, 'location_only' ], 10, 2 );
-				add_action( 'mep_event_location_street', [ $this, 'event_location_street' ] );
-				add_action( 'mep_event_location_city', [ $this, 'event_location_city' ] );
-				add_action( 'mep_event_location_state', [ $this, 'event_location_state' ] );
-				add_action( 'mep_event_location_postcode', [ $this, 'event_location_postcode' ] );
-				add_action( 'mep_event_location_country', [ $this, 'event_location_country' ] );
+
 				add_action( 'mep_event_address_list_sidebar', [ $this, 'event_address_list_sidebar' ] );
 				add_action( 'mep_event_location', [ $this, 'event_location' ], 10, 2 );
 				add_action( 'mep_event_location_ticket', [ $this, 'event_location' ], 10, 2 );
@@ -129,36 +125,7 @@
 			/**********************************/
 			public function location( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
 			public function location_only( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location_only.php' ); }
-			public function event_location_street( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'street' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
-			public function event_location_city( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'city' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
-			public function event_location_state( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'state' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
-			public function event_location_postcode( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'zip' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
-			public function event_location_country( $event_id ) {
-				$location = MPWEM_Functions::get_location( $event_id, 'country' );
-				if ( $location ) {
-					?><span><?php echo esc_html( $location ); ?></span><?php
-				}
-			}
+
 			public function event_address_list_sidebar( $event_id ) {
 				ob_start();
 				require MPWEM_Functions::template_path( 'single/location_list.php' );

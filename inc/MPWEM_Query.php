@@ -14,6 +14,30 @@
 				);
 				return new WP_Query( $args );
 			}
+			public static function get_all_post_ids( $post_type, $show = - 1, $page = 1, $status = 'publish' ): array {
+				$all_data = get_posts( array(
+					'fields'         => 'ids',
+					'post_type'      => $post_type,
+					'posts_per_page' => $show,
+					'paged'          => $page,
+					'post_status'    => $status
+				) );
+				$all_data = array_unique( $all_data );
+				sort( $all_data );
+				return $all_data;
+			}
+			public static function get_all_post_meta_value( $meta_key, $post_type = 'mep_events', $status = 'publish' ) {
+				global $wpdb;
+				$sql         = $wpdb->prepare(
+					"    SELECT DISTINCT pm.meta_value    FROM {$wpdb->postmeta} pm    INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id    WHERE pm.meta_key = %s      AND p.post_status = %s      AND p.post_type = %s    ",
+					$meta_key, $status, $post_type
+				);
+				$meta_values = $wpdb->get_col( $sql );
+				$meta_values = array_values( array_filter( $meta_values, 'strlen' ) );
+				$meta_values = array_unique( $meta_values );
+				sort( $meta_values, SORT_NATURAL );
+				return $meta_values;
+			}
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
@@ -29,21 +53,20 @@
 					$paged = 1;
 				}
 				$etype          = $evnt_type == 'expired' ? '<' : '>';
-				$cat_ids = array_filter( array_map( 'intval', explode( ',', $cat ) ) );
-				$org_ids = array_filter( array_map( 'intval', explode( ',', $org ) ) );
-				$tag_ids = array_filter( array_map( 'intval', explode( ',', $tag ) ) );
-
-				$cat_filter = ! empty( $cat_ids ) ? array(
+				$cat_ids        = array_filter( array_map( 'intval', explode( ',', $cat ) ) );
+				$org_ids        = array_filter( array_map( 'intval', explode( ',', $org ) ) );
+				$tag_ids        = array_filter( array_map( 'intval', explode( ',', $tag ) ) );
+				$cat_filter     = ! empty( $cat_ids ) ? array(
 					'taxonomy' => 'mep_cat',
 					'field'    => 'term_id',
 					'terms'    => $cat_ids
 				) : '';
-				$org_filter = ! empty( $org_ids ) ? array(
+				$org_filter     = ! empty( $org_ids ) ? array(
 					'taxonomy' => 'mep_org',
 					'field'    => 'term_id',
 					'terms'    => $org_ids
 				) : '';
-				$tag_filter = ! empty( $tag_ids ) ? array(
+				$tag_filter     = ! empty( $tag_ids ) ? array(
 					'taxonomy' => 'mep_tag',
 					'field'    => 'term_id',
 					'terms'    => $tag_ids
@@ -99,7 +122,6 @@
 				if ( count( $meta_query ) > 1 ) {
 					$meta_query['relation'] = 'AND';
 				}
-
 				// Build tax_query with only non-empty filters
 				$tax_query = array();
 				if ( ! empty( $cat_filter ) ) {

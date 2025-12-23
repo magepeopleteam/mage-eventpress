@@ -218,11 +218,9 @@
                             var categoryFilter = jQuery('select[name="filter_with_category"]').val();
                             var organizerFilter = jQuery('select[name="filter_with_organizer"]').val();
                             var visibleCount = 0;
-                            
                             jQuery('.mep-event-list-loop').each(function () {
                                 var $item = jQuery(this);
                                 var show = true;
-                                
                                 // Title filter
                                 if (titleFilter) {
                                     var itemTitle = ($item.data('title') || '').toLowerCase();
@@ -230,7 +228,6 @@
                                         show = false;
                                     }
                                 }
-                                
                                 // Date filter
                                 if (show && dateFilter) {
                                     var itemDate = $item.data('date');
@@ -246,7 +243,6 @@
                                         show = false;
                                     }
                                 }
-                                
                                 // State filter
                                 if (show && stateFilter) {
                                     var itemState = $item.data('state') || '';
@@ -254,7 +250,6 @@
                                         show = false;
                                     }
                                 }
-                                
                                 // City filter
                                 if (show && cityFilter) {
                                     var itemCity = $item.data('city-name') || '';
@@ -262,27 +257,28 @@
                                         show = false;
                                     }
                                 }
-                                
                                 // Category filter
                                 if (show && categoryFilter) {
                                     var itemCategory = $item.data('category') || '';
                                     // Check if category matches (can be comma-separated)
-                                    var itemCategories = itemCategory.split(',').map(function(c) { return c.trim(); });
+                                    var itemCategories = itemCategory.split(',').map(function (c) {
+                                        return c.trim();
+                                    });
                                     if (itemCategories.indexOf(categoryFilter) === -1) {
                                         show = false;
                                     }
                                 }
-                                
                                 // Organizer filter
                                 if (show && organizerFilter) {
                                     var itemOrganizer = $item.data('organizer') || '';
                                     // Check if organizer matches (can be comma-separated)
-                                    var itemOrganizers = itemOrganizer.split(',').map(function(o) { return o.trim(); });
+                                    var itemOrganizers = itemOrganizer.split(',').map(function (o) {
+                                        return o.trim();
+                                    });
                                     if (itemOrganizers.indexOf(organizerFilter) === -1) {
                                         show = false;
                                     }
                                 }
-                                
                                 if (show) {
                                     $item.show();
                                     visibleCount++;
@@ -290,21 +286,17 @@
                                     $item.hide();
                                 }
                             });
-                            
                             // Update count display
                             jQuery('.qty_count').text(visibleCount);
                         }
-                        
                         // Update title filter to use combined function
                         jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
                             applyAllFilters();
                         });
-                        
                         // Update date filter to use combined function
                         jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
-                        
                         // Update state filter to use combined function
                         jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
                             applyAllFilters();
@@ -351,20 +343,19 @@
 				return $content;
 			}
 			public function event_city_list() {
-				global $wpdb;
-				$table_name = $wpdb->prefix . "postmeta";
-				$sql        = "SELECT meta_value FROM $table_name WHERE meta_key ='mep_city' GROUP BY meta_value";
-				$results    = $wpdb->get_results( $sql ); //or die(mysql_error());
 				ob_start();
-				?>
-                <div class='mep-city-list'>
-                    <ul>
-						<?php foreach ( $results as $result ) { ?>
-                            <li><a href='<?php echo get_site_url(); ?>/event-by-city-name/<?php echo esc_attr( $result->meta_value ); ?>/'><?php echo esc_html( $result->meta_value ); ?></a></li>
-						<?php } ?>
-                    </ul>
-                </div>
-				<?php
+				$city_lists = MPWEM_Query::get_all_post_meta_value( 'mep_city' );
+				if ( sizeof( $city_lists ) > 0 ) {
+					?>
+                    <div class='mep-city-list'>
+                        <ul>
+							<?php foreach ( $city_lists as $city_name ) { ?>
+                                <li><a href='<?php echo esc_url(get_site_url()); ?>/event-by-city-name/<?php echo esc_attr( $city_name ); ?>/'><?php echo esc_html($city_name ); ?></a></li>
+							<?php } ?>
+                        </ul>
+                    </div>
+					<?php
+				}
 				return ob_get_clean();
 			}
 			public function event_list_one_page( $atts ) {
@@ -479,7 +470,7 @@
                         </div>
 					<?php }
 				} else {
-					$speaker_lists = MPWEM_Global_Function::get_all_post_id( 'mep_event_speaker' );
+					$speaker_lists = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
 					if ( sizeof( $speaker_lists ) > 0 ) {
 						?>
                         <div class="default_theme mpwem_style">

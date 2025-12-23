@@ -98,6 +98,13 @@
 	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
 	div.event_date_list_area .date-list-item { border-radius: 10px; }
 }
+/* ************************Short code city list******************** */
+@media only screen and (min-width: 10px) {
+	.mep-city-list { display: block; overflow: hidden; width: 100%; }
+	.mep-city-list ul { margin: 0; padding: 0; list-style: none; }
+	.mep-city-list ul li a { display: block; width: 100%; border-bottom: 1px dashed #DDD; font-size: 18px; color: #333; padding: 5px 0; }
+	.mep-city-list li i { margin-right: 5px; }
+}
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
 	.mep-default-content { width: calc(100% - 275px); }
@@ -938,25 +945,6 @@ div.mpwem_style [data-bg-image] {
 	border-bottom: 1px dashed #DDD !important;
 	padding: 10px 0;
 	color: #333 !important;
-}
-/* Event City List */
-.mep-city-list {
-	display: block;
-	overflow: hidden;
-	width: 100%;
-}
-.mep-city-list ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.mep-city-list ul li a {
-	display: block;
-	width: 100%;
-	border-bottom: 1px dashed #DDD;
-	font-size: 18px;
-	color: #333;
-	padding: 5px 0;
 }
 /* Code By Mahin */
 .mep_event_list .mepev-ribbons {
@@ -1929,9 +1917,6 @@ span.mep-more-time i {
 .mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec {
 	max-width: 50%;
 	border-radius: 0 0 0 25px;
-}
-.mep-city-list li i {
-	margin-right: 5px;
 }
 .wp-core-ui .quicktags-toolbar input.button.button-small {
 	width: max-content;

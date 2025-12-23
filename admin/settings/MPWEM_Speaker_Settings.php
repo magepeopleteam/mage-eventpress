@@ -19,7 +19,7 @@
 				$speaker_lists       = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
 				$general_setting_sec = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 				$event_label         = array_key_exists( 'mep_event_label', $general_setting_sec ) ? $general_setting_sec['mep_event_label'] : __( 'Events', 'mage-eventpress' );
-				$all_speakers        = MPWEM_Global_Function::get_all_post_id( 'mep_event_speaker' );
+				$all_speakers        = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_speaker_settings" data-tab-item="#mpwem_speaker_settings">
                     <div class="_dLayout_xs_mp_zero">

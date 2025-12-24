@@ -6,9 +6,68 @@
 	.mep-default-content { width: calc(100% - 300px); padding: 0 20px 0 0; }
 	div.mep_smart_theme .mpwem_sidebar_content { background-color: #FFF; border-radius: 20px; box-shadow: 0 0 5px #DDD; }
 }
-/* ************************title******************** */
+/* ************************title & description******************** */
 @media only screen and (min-width: 10px) {
 	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
+	div.mpwem_details {margin: var(--dmp) 0 0 0;}
+	div.mpwem_details_content p,
+	div.mpwem_details_content ul,
+	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
+}
+/* ************************title & description******************** */
+@media only screen and (min-width: 10px) {
+	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
+	div.timeline_item { padding: 0 0 0 40px; position: relative; transition: transform 0.3s ease; }
+	div.timeline_item:hover { transform: translateY(-5px); }
+	div.timeline_item .timeline_counter {
+		position: absolute;
+		left: 0;
+		top: 15px;
+		width: 30px;
+		height: 30px;
+		background-color: #FFFFFF;
+		border: 2px solid var(--color_theme);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		color: var(--color_theme);
+		font-size: 14px;
+		z-index: 2;
+	}
+	div.timeline_item div.timeline_content {
+		background-color: #FFFFFF;
+		padding: var(--dmp);
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	}
+	div.timeline_item div.timeline_content h6 {
+		font-size: 16px;
+		font-weight: 500;
+		text-transform: capitalize;
+		margin: 0;
+	}
+	div.mpwem_timeline_area .timeline_time {
+		font-size: 14px;
+		color: var(--color_theme);
+		font-weight: 500;
+		padding: 6px 12px;
+		background-color: var(--color_6);
+		border-radius: 20px;
+	}
+	div.mpwem_timeline_area .timeline_area {
+		position: relative;
+	}
+	div.mpwem_timeline_area .timeline_area::before {
+		content: "";
+		position: absolute;
+		left: 15px;
+		top: 15px;
+		height: calc(100% - 15px);
+		width: 2px;
+		background-color: #E0E0E0;
+		z-index: 0;
+	}
 }
 /* ************************Speaker******************** */
 @media only screen and (min-width: 10px) {
@@ -44,7 +103,7 @@
 		div.date_time_location_short .short_item {max-width: 100%;}
 	}
 }
-/* ************************Category section******************** */
+/* ************************Ticket section******************** */
 @media only screen and (min-width: 10px) {
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 }
@@ -53,13 +112,12 @@
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
+	div.mpwem_organizer h5 { color: #333; }
 	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
 	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
 	div.mep_smart_theme .mpwem_organizer,
 	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
-	div.mep_smart_theme .mpwem_organizer h5 {
-		margin: 0;
-	}
+	div.mep_smart_theme .mpwem_organizer h5 { margin: 0; }
 }
 /* ************************seat status  section******************** */
 @media only screen and (min-width: 10px) {
@@ -97,6 +155,18 @@
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
 	div.event_date_list_area .date-list-item { border-radius: 10px; }
+}
+/* ************************Map******************** */
+@media only screen and (min-width: 10px) {
+	#mpwem_map_area {margin: var(--dmp) 0 0;background: white; border-radius: 12px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); overflow: hidden;}
+	#mpwem_map,
+	#mpwem_map_area iframe {width: 100%;height: 100%;min-height: 300px;max-height: 300px;border-radius: 8px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
+	#mpwem_map_area .map_title {background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-weight: 600;margin: 0;text-transform: capitalize;font-size: var(--fs_h5);}
+	#mpwem_map_area .map_section {padding: var(--dmp);}
+	div.mpwem_location_sidebar {padding: var(--dmp); border-top: 1px solid var(--color_border); color: #333; }
+	div.mpwem_location_sidebar .widgets_title {margin: 0 0 var(--dmp_xs) 0;text-transform: capitalize;font-weight: 600;}
+	div.mpwem_location_sidebar p {margin: 0 0 var(--dmp_xs) 0;padding: 0; }
+	div.mpwem_location_sidebar #mpwem_map_area {margin: 0;}
 }
 /* ************************Short code city list******************** */
 @media only screen and (min-width: 10px) {
@@ -332,9 +402,6 @@ h3.ex-sec-title {
 }
 /********Event date + time + Location***********/
 /********Paragraph ***********/
-div.mep-default-feature-content p {
-	font-size: 16px;
-}
 .mep-event-details p {
 	font-size: 16px;
 	margin: 0;
@@ -364,9 +431,6 @@ span.mep_warning {
 	text-align: left;
 	border-bottom: 1px solid #DDD;
 	padding-bottom: 15px;
-}
-.mep_google_map {
-	height: 300px;
 }
 .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart {
 	background: var(--color_theme);
@@ -547,9 +611,6 @@ button.single_add_to_cart_button[disabled]:hover {
 .default_theme .mep-org-details .org-name {
 	color: var(--color_7);
 	font-weight: normal;
-}
-.mep-default-sidebar-address {
-	border-bottom: 1px solid #F0F2F5;
 }
 .mep-theme1-faq-sec {
 	margin: 20px 0 0 0;
@@ -1033,20 +1094,6 @@ div.mpwem_style [data-bg-image] {
 	padding: 10px 5px;
 	text-align: left;
 }
-div.mep-default-feature-content p,
-div.mep-default-feature-content ul,
-div.mep-default-feature-content ul li {
-	padding: inherit;
-	margin: 15px 0;
-	list-style: inherit;
-}
-div.mpwem_details_content p,
-div.mpwem_details_content ul,
-div.mpwem_details_content ul li {
-	padding: inherit;
-	margin: 15px 0;
-	list-style: inherit;
-}
 ul.mep-more-date-lists li span i {
 	display: inline-block;
 	text-align: center;
@@ -1119,9 +1166,6 @@ button.mep-cat-control.mixitup-control-active {
 }
 .mep_view_all_date {
 	overflow: scroll !important;
-}
-.mep-default-feature-content ul {
-	margin-left: 15px !important;
 }
 /******Style added by sumon*******/
 .mep_list_thumb,
@@ -1320,48 +1364,6 @@ div.mep-day-details-section h4 {
 	color: #FFF;
 	font-size: 18px;
 }
-.mep-default-sidebar-address {
-	padding: 15px;
-}
-.mep-default-sidebar-address .location-widgets {
-	display: flex;
-	flex-direction: row;
-}
-.mep-default-sidebar-address .location-widgets .location-icon i {
-	background-color: var(--color_theme);
-	width: 18px;
-	height: 18px;
-	border-radius: 10px;
-	padding: 10px;
-	margin-right: 10px;
-	color: #FFF;
-}
-.mep-default-sidebar-address .location-widgets .location-title {
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-.mep-default-sidebar-address .mep-location-btn {
-	height: 35px;
-	line-height: 35px;
-	border: 0;
-	font-size: 15px;
-	padding: 0 15px;
-	margin: 20px auto;
-	margin-bottom: 5px;
-	border-radius: 50px;
-	max-width: max-content;
-	background: var(--color_theme);
-	color: var(--color_7);
-	display: flex;
-	gap: 10px;
-	font-weight: 500;
-	cursor: pointer;
-}
-.mep-default-sidebar-address .mep-location-btn:hover {
-	background: var(--color_theme);
-	color: var(--color_7);
-}
 /******Responsive*******/
 @media only screen and (max-width: 1199px) {
 	/********Default Theme***********/
@@ -1375,7 +1377,6 @@ div.mep-day-details-section h4 {
 		height: 20px;
 		font-size: 11px;
 	}
-	div.mep-default-feature-content p,
 	.mep-events-wrapper p#mep_btn_notice {
 		font-size: 14px;
 	}
@@ -1491,11 +1492,6 @@ div.mep-day-details-section h4 {
 	h3.ex-sec-title {
 		font-size: 18px;
 	}
-	div.mep-default-feature-content p,
-	.mep-events-wrapper p#mep_btn_notice {
-		font-size: 12px;
-	}
-	div.mep-default-feature-content p,
 	.mep-events-wrapper p#mep_btn_notice {
 		font-size: 12px;
 	}
@@ -1827,10 +1823,6 @@ h3.mep_list_date i, p.mep_list_date i {
 .mep_event_list .owl-item .mep_more_date_btn {
 	margin-top: 10px;
 	margin-bottom: 10px;
-}
-div.mep-default-feature-content p {
-	/*     margin-top: 0 !important;
-     margin-bottom: 10px !important; */
 }
 /***********************
 * Event List Caraousel Nav CSS
@@ -3426,66 +3418,6 @@ input.mpe-new-input-group-field {
 .mep_event_grid_item .mep_list_thumb {
 	border-radius: 5px 5px 0 0;
 }
-div.mpwem_timeline_area {
-	margin: 20px 0;
-}
-div.timeline_item {
-	padding: 0 0 0 40px;
-	position: relative;
-	transition: transform 0.3s ease;
-}
-div.timeline_item:hover {
-	transform: translateY(-5px);
-}
-div.timeline_item .timeline_counter {
-	position: absolute;
-	left: 0;
-	top: 15px;
-	width: 30px;
-	height: 30px;
-	background-color: #FFFFFF;
-	border: 2px solid var(--color_theme);
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-weight: 600;
-	color: var(--color_theme);
-	font-size: 14px;
-	z-index: 2;
-}
-div.timeline_item div.timeline_content {
-	background-color: #FFFFFF;
-	padding: var(--dmp);
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-div.timeline_item div.timeline_content h6 {
-	font-size: 16px;
-	font-weight: 500;
-	text-transform: capitalize;
-	margin: 0;
-}
-div.mpwem_timeline_area .timeline_time {
-	font-size: 14px;
-	color: var(--color_theme);
-	font-weight: 500;
-	padding: 6px 12px;
-	background-color: var(--color_6);
-	border-radius: 20px;
-}
-div.mpwem_timeline_area .timeline_area {
-	position: relative;
-}
-div.mpwem_timeline_area .timeline_area::before {
-	content: "";
-	position: absolute;
-	left: 15px;
-	top: 15px;
-	height: calc(100% - 15px);
-	width: 2px;
-	background-color: #E0E0E0;
-	z-index: 0;
-}
 .mep-default-sidrbar-events-schedule {
 	padding: 15px;
 }
@@ -3846,50 +3778,6 @@ div.mpwem_timeline_area .timeline_area::before {
 		margin: 0;
 		margin-bottom: 20px;
 	}
-	.mep_smart_theme .mpwem_sidebar_content h5 {
-		margin: 0;
-		margin-bottom: 20px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets {
-		display: flex;
-		justify-content: start;
-		align-items: start;
-		gap: 10px;
-		padding: 20px;
-		border-bottom: 1px solid #DDD;
-		color: #333;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets i {
-		font-size: 25px;
-		padding: 0;
-		color: var(--color_theme);
-		border-radius: 10px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets h2 {
-		font-size: 19px;
-		letter-spacing: 2px;
-		margin-bottom: 15px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets p {
-		font-size: 16px;
-		margin-bottom: 5px;
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets button {
-		background-color: #FFF;
-		padding: 7px 10px !important;
-		border: 1px solid var(--color_theme);
-		margin: 15px 0;
-		color: var(--color_theme);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets button:hover {
-		background-color: var(--color_6);
-	}
-	.mep_smart_theme .mpwem_sidebar_content .location_widgets button i {
-		font-size: 16px;
-		padding: 0;
-		background: none;
-		margin-right: 6px;
-	}
 	.mep_smart_theme .speaker-widget {
 		margin-top: 10px;
 	}
@@ -3924,21 +3812,8 @@ div.mpwem_timeline_area .timeline_area::before {
 		letter-spacing: 0.04em;
 		color: #333;
 	}
-	.mep_smart_theme .map_location {
-		margin: 50px 0;
-	}
-	.mep_smart_theme .map_location h2 {
-		font-size: 24px;
-		color: #333;
-	}
-	.mpwem_organizer h5,
 	.mpwem_sidebar_content h5 {
 		color: #333;
-	}
-	.mep_smart_theme .map_location iframe {
-		margin-top: 20px;
-		border-radius: 15px;
-		height: 450px;
 	}
 	.mep_smart_theme .faq_area {
 		background-color: #F8FAFC;
@@ -4319,23 +4194,6 @@ div.mpwem_timeline_area .timeline_area::before {
 }
 .mep-event-faq-part .faq-body .mep-event-faq-set .mep-event-faq-content {
 	padding: 18px 25px;
-}
-.mep-default-map {
-	background: white;
-	border-radius: 12px;
-	box-shadow: 0 0px 1px rgba(0, 0, 0, 0.08);
-	overflow: hidden;
-	margin-bottom: 20px;
-}
-.mep-default-map .map-title {
-	background: linear-gradient(135deg, #F7F7F7, #F7F7F7);
-	color: #333;
-	padding: 20px 25px;
-	font-size: 18px;
-	font-weight: 600;
-}
-.mep-default-map .display-map {
-	padding: 20px 25px;
 }
 /* Event Tags Styling */
 .mep-event-tags-widget {

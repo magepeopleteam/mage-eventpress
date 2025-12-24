@@ -831,6 +831,7 @@
 	div.mpPopup .popupClose:hover { color: #FFF; background-color: #6B003E; }
 	div.mpPopup .popupHeader { border-bottom: 4px double var(--color_border); padding: var(--dmp_xs); }
 	div.mpPopup .popupBody { padding: var(--dmp); overflow: auto; }
+	div.mpPopup .popupBody.mp_zero{margin: 0;padding: 0;}
 	div.mpPopup .popupFooter { border-top: 4px double var(--color_border); padding: var(--dmp_xs); }
 	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
 	/****************************/

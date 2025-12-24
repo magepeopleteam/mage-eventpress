@@ -94,7 +94,7 @@ class MEPEventDetailstWidget extends Widget_Base {
 		$content            = str_replace(']]>', ']]&gt;', $content);    
 		if (get_post_type($event_id) == 'mep_events') {    
 	?>	
-        <div class="mep-default-feature-content mep-elementor-widget-details">
+        <div class="mep-elementor-widget-details">
            <?php echo wp_kses_post($content); ?>
         </div>
 	<?php

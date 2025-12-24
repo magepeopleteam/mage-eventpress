@@ -12,13 +12,14 @@
 	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-	$date        = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$date        = $date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	if ( sizeof( $all_dates ) > 0 ) {
 		?>
         <div class="date-time-header">
             <div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
 			<?php
 				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$date_type=$date_type?:'no';
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
@@ -45,7 +46,7 @@
 					$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 					$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 					$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
-					$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
+					$all_times    = $all_times && sizeof($all_times)>0 ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates, $date );
 					$display_time = array_key_exists( 'mep_disable_ticket_time', $event_infos ) ? $event_infos['mep_disable_ticket_time'] : 'no';
 					?>
                     <div class="date-time-area">

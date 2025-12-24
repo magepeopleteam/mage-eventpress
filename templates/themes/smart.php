@@ -25,21 +25,16 @@
 	<?php do_action( 'mpwem_title', $event_id ); ?>
 	<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
     <div class="mpwem_location_time">
-		<?php do_action( 'mpwem_location', $event_id ); ?>
+		<?php do_action( 'mpwem_location', $event_id,$event_infos,'sort' ); ?>
 		<?php
 			if ( $hide_time == 'no' ): ?>
 				<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
 			<?php endif; ?>
     </div>
-	<?php do_action( 'add_mpwem_custom_slider', $event_id,$event_infos ); ?>
+	<?php do_action( 'mpwem_custom_slider', $event_id,$event_infos ); ?>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">
-            <div class="mpwem_details">
-				<?php if ( $description_title == 'no' ): ?>
-                    <h2 class="_mB"><?php esc_html_e( 'Event  Description', 'mage-eventpress' ); ?></h2>
-				<?php endif; ?>
-                <div class="mpwem_details_content mp_wp_editor"><?php the_content(); ?></div>
-            </div>
+	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_timeline', $event_id ); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_faq', $event_id ); ?>
@@ -55,7 +50,7 @@
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
-				<?php do_action( 'mpwem_location', $event_id, 'sidebar' ); ?>
+				<?php do_action( 'mpwem_location', $event_id,$event_infos, 'sidebar' ); ?>
 				<?php if ( has_term( '', 'mep_tag', $event_id ) ): ?>
                     <div class="mep-default-sidebar-tags">
 						<?php do_action( 'mep_event_tags', $event_id ); ?>
@@ -74,7 +69,7 @@
 			<?php } ?>
         </div>
     </div>
-	<?php do_action( 'mpwem_map', $event_id ); ?>
+	<?php do_action( 'mpwem_map', $event_id,$event_infos ); ?>
 	<?php do_action( 'mpwem_related', $event_id ); ?>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

@@ -10,9 +10,9 @@
 	if ( ! class_exists( 'MPWEM_Custom_Slider' ) ) {
 		class MPWEM_Custom_Slider {
 			public function __construct() {
-				add_action( 'add_mpwem_custom_slider', array( $this, 'super_slider' ), 10, 2 );
-				add_action( 'add_mpwem_custom_slider_only', array( $this, 'super_slider_only' ) );
-				add_action( 'add_mpwem_custom_slider_icon_indicator', array( $this, 'icon_indicator' ) );
+				add_action( 'mpwem_custom_slider', array( $this, 'super_slider' ), 10, 2 );
+				add_action( 'mpwem_custom_slider_only', array( $this, 'super_slider_only' ) );
+				add_action( 'mpwem_custom_slider_icon_indicator', array( $this, 'icon_indicator' ) );
 			}
 			public function super_slider( $post_id = '', $event_infos = [] ) {
 				$event_infos = is_array( $event_infos ) && sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $post_id );

@@ -20,11 +20,9 @@
 	<?php do_action( 'mpwem_title', $event_id ); ?>
     <div class="content_area">
         <div class="mep-default-content">
-			<?php do_action( 'add_mpwem_custom_slider', $event_id, $event_infos ); ?>
-            <div class="mep-default-feature-content">
-                <div class="mpwem_details_content mp_wp_editor"><?php the_content(); ?></div>
-				<?php do_action( 'mpwem_timeline', $event_id ); ?>
-            </div>
+			<?php do_action( 'mpwem_custom_slider', $event_id, $event_infos ); ?>
+	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
+	        <?php do_action( 'mpwem_timeline', $event_id ); ?>
             <div class="mep-default-feature-cart-sec">
 				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
             </div>

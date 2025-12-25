@@ -14,7 +14,7 @@
 	div.mpwem_details_content ul,
 	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
 }
-/* ************************title & description******************** */
+/* ************************timeline******************** */
 @media only screen and (min-width: 10px) {
 	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
 	div.timeline_item { padding: 0 0 0 40px; position: relative; transition: transform 0.3s ease; }

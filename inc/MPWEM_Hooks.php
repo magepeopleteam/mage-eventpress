@@ -10,17 +10,15 @@
 		class MPWEM_Hooks {
 			public function __construct() {
 				add_action( 'mpwem_title', [ $this, 'title' ], 10, 2 );
+				add_action( 'mpwem_description', [ $this, 'description' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_organizer', [ $this, 'organizer' ], 10, 3 );
-				add_action( 'mep_event_organized_by', [ $this, 'organizer' ], 10, 3 );
-				add_action( 'mep_event_list_org_names', [ $this, 'event_list_org_names' ], 10, 2 );
-				add_action( 'mep_event_list_cat_names', [ $this, 'event_list_cat_names' ], 10, 2 );
+				add_action( 'mpwem_taxonomy_filter', [ $this, 'taxonomy_filter' ], 10, 2 );
 				/**************************/
-				add_action( 'mpwem_location', [ $this, 'location' ], 10, 2 );
-				add_action( 'mpwem_location_only', [ $this, 'location_only' ], 10, 2 );
-
-				add_action( 'mep_event_address_list_sidebar', [ $this, 'event_address_list_sidebar' ] );
-				add_action( 'mep_event_location', [ $this, 'event_location' ], 10, 2 );
+				add_action( 'mpwem_location', [ $this, 'location' ], 10, 3 );
+				add_action( 'mep_event_address_list_sidebar', [ $this, 'location' ], 10, 3 );
+				add_action( 'mpwem_location_only', [ $this, 'location' ], 10, 3 );
+				add_action( 'mep_event_location', [ $this, 'location' ], 10, 3 );
 				add_action( 'mep_event_location_ticket', [ $this, 'event_location' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_time', [ $this, 'time' ], 10, 5 );
@@ -37,7 +35,7 @@
 				add_action( 'mpwem_faq', [ $this, 'faq' ], 10, 4 );
 				/**************************/
 				add_action( 'mpwem_map', [ $this, 'map' ], 10, 4 );
-				add_action( 'mep_event_map', [ $this, 'event_map' ] );
+				add_action( 'mep_event_map', [ $this, 'map' ], 10, 4 );
 				/**************************/
 				//add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
 				/**************************/
@@ -48,7 +46,6 @@
 				/**************************/
 				add_action( 'mep_event_tags', [ $this, 'event_tags' ] );
 				add_action( 'mep_event_tags_name', [ $this, 'event_tags_name' ] );
-				add_action( 'mep_event_list_tag_names', [ $this, 'event_list_tag_names' ], 10, 2 );
 				/**************************/
 				add_action( 'mpwem_add_calender', [ $this, 'event_add_calender' ], 10, 3 );
 				/**************************/
@@ -69,68 +66,25 @@
 				add_action( 'wp_ajax_nopriv_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 			}
 			public function title( $event_id, $only = '' ): void { require MPWEM_Functions::template_path( 'layout/title.php' ); }
+			public function description( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/description.php' ); }
 			public function organizer( $event_id, $event_infos = [], $only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
-			public function event_list_org_names( $org, $unq_id = '' ): void {
-				ob_start();
-				?>
-                <div class="mep-events-cats-list">
-					<?php
-						if ( $org > 0 ) {
-							$terms = get_terms( array(
-								'parent'   => $org,
-								'taxonomy' => 'mep_org'
-							) );
-						} else {
-							$terms = get_terms( array(
-								'taxonomy' => 'mep_org'
-							) );
-						}
+			public function taxonomy_filter( $taxonomy_name, $unq_id = '' ): void {
+				$taxonomies = MPWEM_Global_Function::get_taxonomy( $taxonomy_name );
+				if ( $taxonomies ) {
 					?>
-                    <div class="mep-event-cat-controls">
-                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button><?php foreach ( $terms as $_terms ) { ?>
-                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button><?php } ?>
+                    <div class="mep-events-cats-list">
+                        <div class="mep-event-cat-controls">
+                            <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+							<?php foreach ( $taxonomies as $_terms ) { ?>
+                                <button type="button" class="mep-cat-control" data-mixitup-control data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button>
+							<?php } ?>
+                        </div>
                     </div>
-                </div>
-				<?php
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_organization_name_filter_list', $content );
-			}
-			public function event_list_cat_names( $cat, $unq_id = '' ): void {
-				ob_start();
-				?>
-                <div class="mep-events-cats-list">
 					<?php
-						if ( $cat > 0 ) {
-							$terms = get_terms( array(
-								'parent'   => $cat,
-								'taxonomy' => 'mep_cat'
-							) );
-						} else {
-							$terms = get_terms( array(
-								'taxonomy' => 'mep_cat'
-							) );
-						}
-					?>
-                    <div class="mep-event-cat-controls">
-                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
-						<?php foreach ( $terms as $_terms ) { ?>
-                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button>
-						<?php } ?>
-                    </div>
-                </div>
-				<?php
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_category_name_filter_list', $content );
+				}
 			}
 			/**********************************/
-			public function location( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
-			public function location_only( $event_id, $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location_only.php' ); }
-
-			public function event_address_list_sidebar( $event_id ) {
-				ob_start();
-				require MPWEM_Functions::template_path( 'single/location_list.php' );
-				echo ob_get_clean();
-			}
+			public function location( $event_id, $event_infos = [], $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
 			public function event_location( $event_id, $event_meta = '' ) {
 				$location_info = MPWEM_Functions::get_location( $event_id );
 				ob_start();
@@ -209,8 +163,7 @@
 			/*************************************/
 			public function faq( $event_id ): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
 			/****************************************/
-			public function map( $event_id ): void { require MPWEM_Functions::template_path( 'layout/map.php' ); }
-			public function event_map( $event_id ): void { require MPWEM_Functions::template_path( 'layout/map_only.php' ); }
+			public function map( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/map.php' ); }
 			/*****************************************/
 			public function related( $event_id ): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
 			/**************************/
@@ -254,35 +207,10 @@
 				$content = ob_get_clean();
 				echo apply_filters( 'mage_event_single_tags_name', $content, $post->ID );
 			}
-			public function event_list_tag_names( $tag, $unq_id = '' ) {
-				ob_start();
-				?>
-                <div class="mep-events-cats-list">
-					<?php
-						if ( $tag > 0 ) {
-							$terms = get_terms( array(
-								'include'  => explode( ',', $tag ),
-								'taxonomy' => 'mep_tag'
-							) );
-						} else {
-							$terms = get_terms( array(
-								'taxonomy' => 'mep_tag'
-							) );
-						}
-					?>
-                    <div class="mep-event-cat-controls">
-                        <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button><?php foreach ( $terms as $_terms ) { ?>
-                            <button type="button" class="mep-cat-control" data-mixitup-control data data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button><?php } ?>
-                    </div>
-                </div>
-				<?php
-				$content = ob_get_clean();
-				echo apply_filters( 'mage_event_tag_name_filter_list', $content );
-			}
 			/***********************************/
 			public function event_add_calender( $event_id, $all_dates = [], $upcoming_date = '' ) { require MPWEM_Functions::template_path( 'layout/add_calendar.php' ); }
 			/**************************/
-			public function speakers( $event_id, $event_infos ) { require MPWEM_Functions::template_path( 'layout/speaker_list.php' ); }
+			public function speakers( $event_id, $event_infos=[] ) { require MPWEM_Functions::template_path( 'layout/speaker_list.php' ); }
 			/**************************/
 			public function get_mpwem_ticket() {
 				// Sanitize and validate input

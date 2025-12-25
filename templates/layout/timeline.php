@@ -8,7 +8,7 @@
 	if ( is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 ) {
 		$counter = 0;
 		?>
-        <div class="mpwem_timeline_area _mB">
+        <div class="mpwem_timeline_area">
             <h3><?php esc_html_e( 'Event Timelines', 'mage-eventpress' ); ?></h3>
 	        <div class="timeline_area">
 			<?php

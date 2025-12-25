@@ -9,7 +9,7 @@
 	$event_id = $event_id ?? 0;
 	$faqs     = get_post_meta( $event_id, 'mep_event_faq', true);
 	$faq_description = get_post_meta($event_id,'mep_faq_description',true);
-	$faq_description = $faq_description? $faq_description : '';
+	$faq_description = $faq_description?: '';
 
 	if ( $faqs && sizeof( $faqs ) > 0 ) {
 		//echo '<pre>';print_r( $faqs );echo '</pre>';

@@ -10,9 +10,8 @@
 		class MPWEM_Shortcodes {
 			public function __construct() {
 				add_shortcode( 'event-list', array( $this, 'event_list' ) );
-				add_shortcode( 'event-city-list', array( $this, 'event_city_list' ) );
-				add_shortcode( 'event-list-onepage', array( $this, 'event_list_one_page' ) );
 				add_shortcode( 'event-add-cart-section', array( $this, 'add_to_cart_section' ) );
+				add_shortcode( 'event-city-list', array( $this, 'event_city_list' ) );
 				add_shortcode( 'event-speaker-list', array( $this, 'speaker_list' ) );
 				add_shortcode( 'event-calendar', array( $this, 'calender' ) );
 			}
@@ -80,14 +79,14 @@
                 <div class='list_with_filter_section mep_event_list'>
 					<?php
 						if ( $total_item > 0 ) {
-							if ( $cat_f == 'yes' ) {
-								do_action( 'mep_event_list_cat_names', $cat, $unq_id );
+							if ( $cat_f == 'yes'  && $cat<1) {
+								do_action( 'mpwem_taxonomy_filter', 'mep_cat', $unq_id );
 							}
-							if ( $org_f == 'yes' ) {
-								do_action( 'mep_event_list_org_names', $org, $unq_id );
+							if ( $org_f == 'yes' && $org <1 ) {
+								do_action( 'mpwem_taxonomy_filter', 'mep_org', $unq_id );
 							}
-							if ( $tag_f == 'yes' ) {
-								do_action( 'mep_event_list_tag_names', $tag, $unq_id );
+							if ( $tag_f == 'yes'  && $tag<1) {
+								do_action( 'mpwem_taxonomy_filter', 'mep_tag', $unq_id );
 							}
 							if ( $filter == 'yes' && $style != 'timeline' ) {
 								do_action( 'mpwem_list_with_filter_section', $loop, $params );
@@ -342,6 +341,16 @@
 				$content = ob_get_clean();
 				return $content;
 			}
+			public function add_to_cart_section( $atts, $content = null ) {
+				$defaults = array( "event" => "0" );
+				$params   = shortcode_atts( $defaults, $atts );
+				$event_id = $params['event'];
+				ob_start();
+				if ( $event_id > 0 ) {
+					do_action( 'mpwem_registration', $event_id );
+				}
+				return ob_get_clean();
+			}
 			public function event_city_list() {
 				ob_start();
 				$city_lists = MPWEM_Query::get_all_post_meta_value( 'mep_city' );
@@ -350,101 +359,11 @@
                     <div class='mep-city-list'>
                         <ul>
 							<?php foreach ( $city_lists as $city_name ) { ?>
-                                <li><a href='<?php echo esc_url(get_site_url()); ?>/event-by-city-name/<?php echo esc_attr( $city_name ); ?>/'><?php echo esc_html($city_name ); ?></a></li>
+                                <li><a href='<?php echo esc_url( get_site_url() ); ?>/event-by-city-name/<?php echo esc_attr( $city_name ); ?>/'><?php echo esc_html( $city_name ); ?></a></li>
 							<?php } ?>
                         </ul>
                     </div>
 					<?php
-				}
-				return ob_get_clean();
-			}
-			public function event_list_one_page( $atts ) {
-				$defaults   = array(
-					"cat"           => "0",
-					"org"           => "0",
-					"style"         => "grid",
-					"column"        => 3,
-					"cat-filter"    => "no",
-					"org-filter"    => "no",
-					"show"          => "-1",
-					"pagination"    => "no",
-					"city"          => "",
-					"country"       => "",
-					"carousal-nav"  => "no",
-					"carousal-dots" => "yes",
-					"carousal-id"   => "102448",
-					"timeline-mode" => "vertical",
-					'sort'          => 'ASC',
-					'status'        => 'upcoming'
-				);
-				$params     = shortcode_atts( $defaults, $atts );
-				$cat        = $params['cat'];
-				$org        = $params['org'];
-				$style      = $params['style'];
-				$cat_f      = $params['cat-filter'];
-				$org_f      = $params['org-filter'];
-				$show       = $params['show'];
-				$pagination = $params['pagination'];
-				$sort       = $params['sort'];
-				$column     = $style != 'grid' ? 1 : $params['column'];
-				$city       = $params['city'];
-				$country    = $params['country'];
-				$status     = $params['status'];
-				ob_start();
-				do_action( 'woocommerce_before_single_product' );
-				?>
-                <div class='mep_event_list'>
-					<?php if ( $cat_f == 'yes' ) {
-						do_action( 'mep_event_list_cat_names', $cat );
-					}
-						if ( $org_f == 'yes' ) {
-							do_action( 'mep_event_list_org_names', $org );
-						} ?>
-                    <div class="mep_event_list_sec">
-                        <div class="mep_event_list_sec">
-							<?php
-								$loop = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status );
-								$loop->the_post();
-								echo '<div class="mage_grid_box">';
-								while ( $loop->have_posts() ) {
-									$loop->the_post();
-									$event_id = get_the_id();
-									if ( $style == 'grid' && (int) $column > 0 ) {
-										$columnNumber = 'column_style';
-										$width        = 100 / (int) $column;
-									} else {
-										$columnNumber = 'one_column';
-										$width        = 100;
-									}
-									do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width );
-									echo '<div class=event-cart-section-list>';
-									do_action( 'mpwem_registration', $event_id );
-									echo '</div>';
-								}
-								wp_reset_postdata();
-								echo '</div>';
-								if ( $pagination == 'yes' ) {
-									mep_event_pagination( $loop->max_num_pages );
-								} ?>
-                        </div>
-                    </div>
-                </div>
-				<?php
-				$content = ob_get_clean();
-				return $content;
-			}
-			public function add_to_cart_section( $atts, $content = null ) {
-				$defaults = array(
-					"event"               => "0",
-					"cart-btn-label"      => __( 'Register For This Event', 'mage-eventpress' ),
-					"ticket-label"        => __( 'Ticket Type', 'mage-eventpress' ),
-					"extra-service-label" => __( 'Extra Service', 'mage-eventpress' )
-				);
-				$params   = shortcode_atts( $defaults, $atts );
-				$event_id = $params['event'];
-				ob_start();
-				if ( $event_id > 0 ) {
-					do_action( 'mpwem_registration', $event_id );
 				}
 				return ob_get_clean();
 			}

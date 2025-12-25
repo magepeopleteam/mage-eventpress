@@ -17,7 +17,6 @@ class MEP_GoogleMaps_Fix {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
         add_action('admin_footer', array($this, 'add_admin_inline_styles'));
-        add_action('wp_footer', array($this, 'add_frontend_inline_styles'));
         
         // Fix coordinate saving
         add_action('save_post', array($this, 'ensure_coordinate_save'), 20, 2);
@@ -115,35 +114,7 @@ class MEP_GoogleMaps_Fix {
             <?php
         }
     }
-    
-    /**
-     * Add frontend inline styles
-     */
-    public function add_frontend_inline_styles() {
-        if (is_singular('mep_events') || is_post_type_archive('mep_events')) {
-            ?>
-            <style>
-                /* Frontend map styling */
-                .mep-gmap-sec {
-                    margin: 20px 0;
-                }
-                
-                .mep_google_map {
-                    width: 100% !important;
-                    height: 400px !important;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                }
-                
-                .mep-gmap-sec iframe {
-                    border-radius: 8px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                }
-            </style>
-            <?php
-        }
-    }
-    
+
     /**
      * Ensure coordinates are properly saved
      */

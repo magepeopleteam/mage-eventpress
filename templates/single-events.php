@@ -67,7 +67,9 @@
 										if ( ! class_exists( 'Xoo_Wl_Core' ) ) {
 											if ( ! class_exists( 'Ultimate_Woocommerce_Gift_Card_Public' ) ) {
 												if ( ! class_exists( 'WC_Google_Analytics' ) ) {
-													do_action( 'woocommerce_before_single_product' );
+													if ( ! class_exists( 'WooCommerce_Variations_Table_Public' ) ) {
+														do_action( 'woocommerce_before_single_product' );
+													}	
 												}
 											}
 										}

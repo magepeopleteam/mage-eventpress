@@ -1,7 +1,6 @@
 <?php
 get_header();
 the_post();
-do_action('mep_event_single_page_after_header',get_the_id());
 ?>
 <div class="mep-events-wrapper">
         <div class='mep_event_list'>

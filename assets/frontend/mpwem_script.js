@@ -107,8 +107,8 @@ function mpwem_attendee_management(parent, total_qty) {
                 parent.find('[name="option_qty[]"]').each(function () {
                     let current_parent = jQuery(this).closest('.mep_ticket_item');
                     let qty = parseInt(jQuery(this).val());
-                    if(current_parent.find('[name="ticket_group_qty"]').length>0){
-                        qty=qty*parseInt(current_parent.find('[name="ticket_group_qty"]').val());
+                    if (current_parent.find('[name="ticket_group_qty"]').length > 0) {
+                        qty = qty * parseInt(current_parent.find('[name="ticket_group_qty"]').val());
                     }
                     let form_length = current_parent.find('.mep_form_item').length;
                     form_target = current_parent.find('.mep_attendee_info');
@@ -172,7 +172,7 @@ function mpwem_attendee_management(parent, total_qty) {
                     dates: dates,
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data).slideDown('fast').promise().done(function () {
@@ -185,7 +185,7 @@ function mpwem_attendee_management(parent, total_qty) {
                     target.html('<p class="error">Error loading time slots. Please try again.</p>');
                 },
                 complete: function () {
-                    dLoaderRemove(target);
+                    mpwem_loader_remove(target);
                 }
             });
         } else {
@@ -212,7 +212,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 "backend_order": window.location.href.search("backend_order"),
             },
             beforeSend: function () {
-                dLoader_xs(target);
+                mpwem_loader_xs(target);
             },
             success: function (data) {
                 target.html(data).slideDown('fast').promise().done(function () {
@@ -237,7 +237,7 @@ function mpwem_attendee_management(parent, total_qty) {
                     "nonce": mpwem_script_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data);
@@ -412,6 +412,35 @@ function mpwem_attendee_management(parent, total_qty) {
         }
     });
 }(jQuery));
+//*****************************Event list***********************************//
+(function ($) {
+    "use strict";
+    $(document).on('click', 'button.mpwem_get_date_list', function () {
+        let $this = $(this);
+        let parent = $this.closest('.mpwem_list_date_list');
+        let target = parent.find('.date_list_area');
+        if (target.find('.date_item').length === 0) {
+            let event_id = $this.data('event-id');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mpwem_get_date_list",
+                    "post_id": event_id,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    mpwem_loader_xs($this);
+                },
+                success: function (data) {
+                    target.html(data);
+                    target.addClass('open_list');
+                    mpwem_loader_remove($this);
+                }
+            });
+        }
+    });
+}(jQuery));
 (function ($) {
     "use strict";
     //*****************************Faq***********************************//
@@ -431,32 +460,17 @@ function mpwem_attendee_management(parent, total_qty) {
         }
     });
 }(jQuery));
-function mp_event_wo_commerce_price_format(price) {
-    let currency_position = jQuery('input[name="currency_position"]').val();
-    let currency_symbol = jQuery('input[name="currency_symbol"]').val();
-    let currency_decimal = jQuery('input[name="currency_decimal"]').val();
-    let currency_thousands_separator = jQuery('input[name="currency_thousands_separator"]').val();
-    let currency_number_of_decimal = jQuery('input[name="currency_number_of_decimal"]').val();
-    let price_text = '';
-    price = price.toFixed(currency_number_of_decimal);
-// console.log('price= '+ price);
-    let total_part = price.toString().split(".");
-    total_part[0] = total_part[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency_thousands_separator);
-    price = total_part.join(currency_decimal);
-    if (currency_position === 'right') {
-        price_text = price + currency_symbol;
-    } else if (currency_position === 'right_space') {
-        price_text = price + '&nbsp;' + currency_symbol;
-    } else if (currency_position === 'left') {
-        price_text = currency_symbol + price;
-    } else {
-        price_text = currency_symbol + '&nbsp;' + price;
-    }
-    // console.log('price= '+ price_text);
-    return price_text;
-}
 (function ($) {
-//added by sumon
+    $(document).on('click', 'button.mep_view_vr_btn', function () {
+        $(this).closest('tr').next('tr.mep_virtual_event_info_sec').slideToggle('fast');
+    });
+    $(document).on('click', '.faq_items [data-collapse-target]', function () {
+        $(this).find('i').toggleClass('fa-chevron-right fa-chevron-down');
+    });
+}(jQuery));
+/******************** Remove below function after 2025**********************/
+(function ($) {
+    "use strict";
     $(document).on('click', '.mep-event-list-loop .mp_event_visible_event_time', function (e) {
         e.preventDefault();
         let target = $(this);
@@ -494,12 +508,4 @@ function mp_event_wo_commerce_price_format(price) {
             }
         });
     });
-    $(document).on('click', 'button.mep_view_vr_btn', function () {
-        $(this).closest('tr').next('tr.mep_virtual_event_info_sec').slideToggle('fast');
-    });
-
-    $(document).on('click', '.faq_items [data-collapse-target]', function () {
-        $(this).find('i').toggleClass('fa-chevron-right fa-chevron-down');
-    });
-
 }(jQuery));

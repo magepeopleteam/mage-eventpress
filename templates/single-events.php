@@ -54,7 +54,6 @@
         $template=MPWEM_Functions::get_details_template_name($event_id);
 		$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 		$fatal_error_fix           = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
-		do_action( 'mep_event_single_page_after_header', $event_id );
 		?>
         <div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper">
             <div class="mpwem_container">

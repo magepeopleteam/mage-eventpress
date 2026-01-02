@@ -159,7 +159,6 @@
 				wp_enqueue_style( 'mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array() );
 				wp_enqueue_script( 'mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array( 'jquery', 'mep-moment-js' ), 1, true );
 				//custom
-				wp_enqueue_style( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.css', array(), time() );
 				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), time(), true );
 				wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time() );
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), time(), true );

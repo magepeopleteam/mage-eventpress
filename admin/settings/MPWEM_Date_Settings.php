@@ -19,7 +19,7 @@
 					<?php $this->particular_section( $event_id ); ?>
 					<?php $this->repeat_section( $event_id ); ?>
 					<?php $this->mep_event_date_format( $event_id ); ?>
-					<?php do_action( 'mp_event_recurring_every_day_setting', $event_id ); ?>
+					<?php //do_action( 'mp_event_recurring_every_day_setting', $event_id ); ?>
                 </div>
 				<?php
 				//echo '<pre>';print_r($meta_values);echo'</pre>';

@@ -9,16 +9,24 @@
 				add_action( 'mpwem_list_with_filter_section', array( $this, 'list_with_filter_section' ), 10, 2 );
 				add_action( 'mpwem_pagination', array( $this, 'pagination' ), 10, 2 );
 			}
-
 			public function event_list_shortcode( $event_id, $columnNumber = '', $style = '', $width = '', $unq_id = '' ) {
-				//$event_infos              =MPWEM_Functions::get_all_info( $event_id );
-
-				$event_organizer_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_organizer_icon', 'far fa-list-alt' );
+				$event_infos          = MPWEM_Functions::get_all_info( $event_id );
+				$icon_setting_sec     = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
+				$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
+				$event_location_icon  = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
+				$event_date_icon      = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
+				$event_time_icon      = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 				$torg                 = get_the_terms( $event_id, 'mep_org' );
 				$tcat                 = get_the_terms( $event_id, 'mep_cat' );
+				$author_terms         = get_the_terms( $event_id, 'mep_org' ) ? get_the_terms( $event_id, 'mep_org' ) : [];
+				$organizer_name='';
+                if(sizeof( $author_terms ) > 0 && $author_terms[0]->name){
+                    $organizer_name=$author_terms[0]->name;
+                }
 				$org_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_org', $unq_id );
 				$cat_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_cat', $unq_id );
-				
+				$tag_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_tag', $unq_id );
 				// Get category names for data attribute
 				$taxonomy_category = '';
 				if ( $tcat && ! is_wp_error( $tcat ) && count( $tcat ) > 0 ) {
@@ -28,7 +36,6 @@
 					}
 					$taxonomy_category = implode( ', ', $cat_names );
 				}
-				
 				// Get organizer names for data attribute
 				$taxonomy_organizer = '';
 				if ( $torg && ! is_wp_error( $torg ) && count( $torg ) > 0 ) {
@@ -38,8 +45,6 @@
 					}
 					$taxonomy_organizer = implode( ', ', $org_names );
 				}
-				
-				ob_start();
 				if ( $style == 'title' ) {
 					?>
                     <div class='mep_event_title_list_item mix <?php echo esc_attr( $org_class . ' ' . $cat_class ); ?>'>
@@ -50,53 +55,62 @@
                     </div>
 					<?php
 				} else {
-					$now               = current_time( 'Y-m-d H:i:s' );
-					$recurring         = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					$all_dates         = MPWEM_Functions::get_dates( $event_id );
-					$all_times         = MPWEM_Functions::get_times( $event_id, $all_dates );
-					$upcoming_date     = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-					$start_time_format = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? $upcoming_date : '';
-					$end_time_format   = '';
-					$end_datetime      = '';
-					if ( $recurring == 'no' || $recurring == 'yes' ) {
-						$end_date        = current( $all_dates );
-						$end_datetime    = is_array($end_date) && array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
-						$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_datetime ) ? $end_datetime : '';
-					} else {
-						$end_date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
-						if ( sizeof( $all_times ) > 0 ) {
-							$all_times       = current( $all_times );
-							$end_time        =  is_array($all_times) && array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
-							$end_datetime    = $end_time ? $end_date . ' ' . $end_time : '';
-							$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_time_format ) ? $end_time_format : '';
+					$event_list_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'event_list_setting_sec' ) );
+					$show_price                     = array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
+					$hide_org_list                  = array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
+					$hide_location_list             = array_key_exists( 'mep_event_hide_location_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_location_list'] : 'no';
+					$hide_time_list                 = array_key_exists( 'mep_event_hide_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_time_list'] : 'no';
+					$hide_only_end_time_list        = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$mep_hide_event_hover_btn       = array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
+					$general_setting_sec            = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+					$general_setting_sec            = empty( $general_setting_sec ) && ! is_array( $general_setting_sec ) ? [] : $general_setting_sec;
+					$sold_out_ribbon                = array_key_exists( 'mep_show_sold_out_ribbon_list_page', $general_setting_sec ) ? $general_setting_sec['mep_show_sold_out_ribbon_list_page'] : 'no';
+					$limited_availability_ribbon    = array_key_exists( 'mep_show_limited_availability_ribbon', $general_setting_sec ) ? $general_setting_sec['mep_show_limited_availability_ribbon'] : 'no';
+					$limited_availability_threshold = array_key_exists( 'mep_limited_availability_threshold', $general_setting_sec ) ? $general_setting_sec['mep_limited_availability_threshold'] : 5;
+					$now                            = current_time( 'Y-m-d H:i:s' );
+					$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+					$all_times                      = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
+					$upcoming_date                  = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+					$event_type                     = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
+					$recurring                      = array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
+					$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : '';
+					$ticket_types                   = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
+					$event_multidate                = array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
+					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );
+					$class_name                     = $total_left > 0 ? 'event-availabe-seat' : 'event-no-availabe-seat';
+					$show_price_label               = sizeof( $ticket_types ) > 1 ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
+					$start_time_format              = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? $upcoming_date : '';
+					$end_time_format                = '';
+					$end_datetime                   = '';
+					if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
+						if ( $recurring == 'no' || $recurring == 'yes' ) {
+							$end_date        = current( $all_dates );
+							$end_datetime    = is_array( $end_date ) && array_key_exists( 'end', $end_date ) ? $end_date['end'] : '';
+							$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_datetime ) ? $end_datetime : '';
+						} else {
+							$end_date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
+							if ( sizeof( $all_times ) > 0 ) {
+								$all_times       = current( $all_times );
+								$end_time        = is_array( $all_times ) && array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
+								$end_datetime    = $end_time ? $end_date . ' ' . $end_time : '';
+								$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_time_format ) ? $end_time_format : '';
+							}
 						}
 					}
-					if ( strtotime( date( 'Y-m-d', strtotime( $upcoming_date ) ) ) == strtotime( date( 'Y-m-d', strtotime( $end_datetime ) ) ) ) {
-						$end_datetime = '';
-					}
-					$total_left = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );
-					$class_name = $total_left > 0 ? 'event-availabe-seat' : 'event-no-availabe-seat';;
-					$tag_class                      = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_tag', $unq_id );
-					$event_multidate                = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
-					$recurring                      = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-					$event_type                     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_type', 'offline' );
-					$reg_status                     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status' );
-					$ticket_types                   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
-					$show_price_label               = sizeof( $ticket_types ) > 1 ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
-					$author_terms                   = get_the_terms( $event_id, 'mep_org' ) ? get_the_terms( $event_id, 'mep_org' ) : [];
-					$show_price                     = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_price_show', 'yes' );
-					$hide_org_list                  = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_organizer_list', 'no' );
-					$hide_location_list             = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_location_list', 'no' );
-					$hide_time_list                 = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_time_list', 'no' );
-					$hide_only_end_time_list        = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_event_hide_end_time_list', 'no' );
-					$mep_hide_event_hover_btn       = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_hide_event_hover_btn', 'no' );
-					$sold_out_ribbon                = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_show_sold_out_ribbon_list_page', 'no' );
-					$limited_availability_ribbon    = MPWEM_Global_Function::get_settings( 'event_list_setting_sec', 'mep_show_limited_availability_ribbon', 'no' );
-					$limited_availability_threshold = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_limited_availability_threshold', 5 );
-					$event_location_icon            = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_location_icon', 'fas fa-map-marker-alt' );
-					$event_organizer_icon           = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_organizer_icon', 'far fa-list-alt' );
-					$event_date_icon                = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_date_icon', 'far fa-calendar-alt' );
-					$event_time_icon                = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_time_icon', 'fas fa-clock' );
+					$event_infos[ 'available_seat' ] = $available_seat;
+					$event_infos[ 'end_time' ] = $end_datetime;
+					$event_infos[ 'event_list_setting_sec' ] = $event_list_setting_sec;
+					$event_infos[ 'organizer_name' ] = $organizer_name;
+					$event_infos[ 'category_tax' ] = $taxonomy_category;
+					$event_infos[ 'organizer_tax' ] = $taxonomy_organizer;
+					$event_infos[ 'width' ] = $width;
+					$event_infos[ 'column_number' ] = $columnNumber;
+					$event_infos[ 'class_name' ] = $class_name;
+					$event_infos[ 'style' ] = $style;
+					$event_infos[ 'org_class' ] = $org_class;
+					$event_infos[ 'cat_class' ] = $cat_class;
+					$event_infos[ 'tag_class' ] = $tag_class;
+					//echo '<pre>';print_r($end_datetime);echo '</pre>';
 					if ( $style == 'minimal' ) {
 						require MPWEM_Functions::template_path( 'list/minimal.php' );
 					} else if ( $style == 'native' ) {
@@ -112,13 +126,7 @@
 					}
 				}
 				do_action( 'mep_event_list_loop_end', $event_id );
-				?>
-                </div>
-				<?php
-				$content = ob_get_clean();
-				echo $content;
 			}
-
 			public function list_with_filter_section( $loop, $params ) {
 				ob_start();
 				?>
@@ -236,7 +244,6 @@
 				<?php
 				echo ob_get_clean();
 			}
-
 			public function pagination( $params, $total_item ) {
 				ob_start();
 				$per_page = $params['show'] > 1 ? $params['show'] : $total_item;

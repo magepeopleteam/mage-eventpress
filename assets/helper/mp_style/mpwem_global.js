@@ -20,61 +20,72 @@ function mpwem_price_format(price) {
     return price_text;
 }
 //=======================================================Loader==============//
-function dLoader(target) {
+function mpwem_loader(target) {
     if (target.find('div[class*="dLoader"]').length < 1) {
         target.addClass('pRelative').append('<div class="dLoader"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
-function dLoader_xs(target) {
+function mpwem_loader_xs(target) {
     if (target.find('div[class*="dLoader"]').length < 1) {
         target.addClass('pRelative').append('<div class="dLoader_xs"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
-function simpleSpinner(target) {
+function mpwem_loader_spin(target) {
+    target.css('position', 'relative');
+    target.append('<div class="spinner_loading"><div class="icon_loader"><span class="fas fa-spinner fa-pulse"></span></div></div>');
+}
+function mpwem_loader_spin_xs(target) {
+    target.css('position', 'relative');
+    target.append('<div class="spinner_loading"><div class="icon_loader_xs"><span class="fas fa-spinner fa-pulse"></span></div></div>');
+}
+function mpwem_loader_spin_remove(target) {
+    target.find('.spinner_loading').remove();
+}
+function mpwem_loader_simple(target) {
     if (target.find('div[class*="simpleSpinner"]').length < 1) {
         target.addClass('pRelative').append('<div class="simpleSpinner"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
-function simpleSpinnerRemove(target = jQuery('body')) {
+function mpwem_loader_simple_remove(target = jQuery('body')) {
     target.removeClass('noScroll');
     target.removeClass('pRelative').find('div[class*="simpleSpinner"]').remove();
 }
-function dLoaderBody() {
+function mpwem_loader_body() {
     let body = jQuery('body');
     if (body.find('div[class*="dLoader"]').length < 1) {
         body.addClass('noScroll').append('<div class="dLoader pFixed"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
-function dLoaderBody_xs() {
+function mpwem_loader_body_xs() {
     let body = jQuery('body');
     if (body.find('div[class*="dLoader"]').length < 1) {
         body.addClass('noScroll').append('<div class="dLoader_xs pFixed"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
-function dLoader_circle(target) {
+function mpwem_loader_circle(target) {
     if (target.find('div[class*="dLoader"]').length < 1) {
         target.addClass('pRelative').append('<div class="dLoader border_spin_loader"><span class="circle"></span></div>');
     }
 }
-function dLoader_xs_circle(target) {
+function mpwem_loader_circle_xs_circle(target) {
     if (target.find('div[class*="dLoader"]').length < 1) {
         target.addClass('pRelative').append('<div class="dLoader_xs border_spin_loader"><span class="circle"></span></div>');
     }
 }
-function dLoaderRemove(target = jQuery('body')) {
+function mpwem_loader_remove(target = jQuery('body')) {
     target.removeClass('noScroll');
     target.removeClass('pRelative').find('div[class*="dLoader"]').remove();
 }
-function placeholderLoader(target) {
-    target.addClass('placeholderLoader');
+function mpwem_loader_placeholder(target) {
+    target.addClass('mpwem_loader_placeholder');
 }
-function placeholderLoaderRemove(target) {
+function mpwem_loader_placeholder_remove(target) {
     target.each(function () {
-        target.removeClass('placeholderLoader');
+        target.removeClass('mpwem_loader_placeholder');
     })
 }
 //======================================================Page Scroll==============//
-function pageScrollTo(target) {
+function mpwem_page_scroll_to(target) {
     jQuery('html, body').animate({
         scrollTop: target.offset().top -= 150
     }, 1000);
@@ -107,18 +118,18 @@ function mpwem_alert($this, attr = 'alert') {
     "use strict";
     $(document).ready(function () {
         mpwem_load_date_picker();
-        $("div.mpwem_style .date_type").on("keydown", function(e) {
+        $("div.mpwem_style .date_type").on("keydown", function (e) {
             e.preventDefault();
         });
-        $("div.mpwem_style .mpwem_date_reset").on("click", function() {
-           let parent= $(this).closest('label');
-           parent.find('input').val('');
+        $("div.mpwem_style .mpwem_date_reset").on("click", function () {
+            let parent = $(this).closest('label');
+            parent.find('input').val('');
             parent.find('.date_type.hasDatepicker').datepicker('setDate', null);
         });
     });
 }(jQuery));
 //====================================================================Load Bg Image=================//
-function loadBgImage() {
+function mpwem_load_bg_image() {
     jQuery('body').find('div.mpwem_style [data-bg-image]:visible').each(function () {
         let target = jQuery(this);
         if (target.closest('.sliderAllItem').length === 0) {
@@ -131,7 +142,7 @@ function loadBgImage() {
                 }
                 mpwem_resize_bg_image_area(target, bg_url);
                 target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
-                    dLoaderRemove(jQuery(this));
+                    mpwem_loader_remove(jQuery(this));
                 });
             }
         }
@@ -181,7 +192,7 @@ function mpwem_slider_resize(target) {
             target.siblings('.sliderShowcase').css({"max-height": height_content});
         }
         jQuery(this).css('background-image', 'url("' + bg_url + '")').promise().done(function () {
-            dLoaderRemove(jQuery(this));
+            mpwem_loader_remove(jQuery(this));
         });
         // }
     });
@@ -200,7 +211,7 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     let bg_image_load = false;
     $(document).ready(function () {
         $('body').find('div.mpwem_style [data-bg-image]').each(function () {
-            dLoader($(this));
+            mpwem_loader($(this));
         });
         $(window).on('load', function () {
             load_initial();
@@ -215,10 +226,10 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     $(document).on('click', 'div.mpwem_style [data-href]', function () {
         let href = $(this).data('href');
         if (href) {
-            let blank=$(this).data('blank');
-            if(blank){
+            let blank = $(this).data('blank');
+            if (blank) {
                 window.open(href, '_blank');
-            }else {
+            } else {
                 window.location.href = href;
             }
         }
@@ -241,22 +252,22 @@ function mpwem_resize_bg_image_area(target, bg_url) {
     });
     function load_initial() {
         if (!bg_image_load) {
-            if (loadBgImage()) {
+            if (mpwem_load_bg_image()) {
                 bg_image_load = true;
-                placeholderLoaderRemove($('.mpwem_style.placeholderLoader'))
+                mpwem_loader_placeholder_remove($('.mpwem_style.mpwem_loader_placeholder'))
             }
         }
     }
 }(jQuery));
 //=============================================================================Change icon and text=================//
-function content_icon_change(currentTarget) {
+function mpwem_content_icon_change(currentTarget) {
     let openIcon = currentTarget.data('open-icon');
     let closeIcon = currentTarget.data('close-icon');
     if (openIcon || closeIcon) {
         currentTarget.find('[data-icon]').toggleClass(closeIcon).toggleClass(openIcon);
     }
 }
-function content_text_change(currentTarget) {
+function mpwem_content_text_change(currentTarget) {
     let openText = currentTarget.data('open-text');
     openText = openText ? openText.toString() : '';
     let closeText = currentTarget.data('close-text');
@@ -271,7 +282,7 @@ function content_text_change(currentTarget) {
         }
     }
 }
-function content_class_change(currentTarget) {
+function mpwem_content_class_change(currentTarget) {
     let clsName = currentTarget.data('add-class');
     if (clsName) {
         if (currentTarget.find('[data-class]').length > 0) {
@@ -281,7 +292,7 @@ function content_class_change(currentTarget) {
         }
     }
 }
-function content_input_value_change(currentTarget) {
+function mpwem_content_input_value_change(currentTarget) {
     currentTarget.find('[data-value]').each(function () {
         let value = jQuery(this).val();
         if (value) {
@@ -293,11 +304,11 @@ function content_input_value_change(currentTarget) {
     });
 }
 function mpwem_all_content_change($this) {
-    loadBgImage();
-    content_class_change($this);
-    content_icon_change($this);
-    content_text_change($this);
-    content_input_value_change($this);
+    mpwem_load_bg_image();
+    mpwem_content_class_change($this);
+    mpwem_content_icon_change($this);
+    mpwem_content_text_change($this);
+    mpwem_content_input_value_change($this);
 }
 (function ($) {
     "use strict";
@@ -308,22 +319,22 @@ function mpwem_all_content_change($this) {
         let close_text = parent.find('[data-read-close]').html();
         parent.find('[data-read-close]').html(open_text);
         parent.find('[data-read-open]').html(close_text);
-        content_text_change($(this));
+        mpwem_content_text_change($(this));
     });
     $(document).on('click', 'div.mpwem_style [data-all-change]', function () {
         mpwem_all_content_change($(this));
     });
     $(document).on('click', 'div.mpwem_style [data-icon-change]', function () {
-        content_icon_change($(this));
+        mpwem_content_icon_change($(this));
     });
     $(document).on('click', 'div.mpwem_style [data-text-change]', function () {
-        content_text_change($(this));
+        mpwem_content_text_change($(this));
     });
     $(document).on('click', 'div.mpwem_style [data-class-change]', function () {
-        content_class_change($(this));
+        mpwem_content_class_change($(this));
     });
     $(document).on('click', 'div.mpwem_style [data-value-change]', function () {
-        content_input_value_change($(this));
+        mpwem_content_input_value_change($(this));
     });
     $(document).on('keyup change', '.mpwem_style [data-input-text]', function () {
         let input_value = $(this).val();
@@ -454,11 +465,11 @@ function mpwem_sticky_management() {
         target_tabContent.slideDown(350);
         tabsContent.children('[data-tabs-next].active').slideUp(350).removeClass('active').promise().done(function () {
             target_tabContent.addClass('active').promise().done(function () {
-                pageScrollTo(tabsContent);
+                mpwem_page_scroll_to(tabsContent);
                 parent.height('auto').promise().done(function () {
-                    loadBgImage();
+                    mpwem_load_bg_image();
                     mpwem_sticky_management();
-                    dLoaderRemove(parent);
+                    mpwem_loader_remove(parent);
                 });
             });
         });
@@ -493,7 +504,7 @@ function mpwem_sticky_management() {
         $('.mpwem_style .mpTabsNext').each(function () {
             let parent = $(this);
             if (parent.find('[data-tabs-target-next].active').length < 1) {
-                dLoader(parent);
+                mpwem_loader(parent);
                 let tabLists = parent.find('.tabListsNext:first');
                 let targetTab = tabLists.find('[data-tabs-target-next]').first().data('tabs-target-next')
                 active_next_tab(parent, targetTab);
@@ -519,7 +530,7 @@ function mpwem_sticky_management() {
             tabsContent.children('[data-tabs].active').slideUp(350).removeClass('active').promise().done(function () {
                 tabsContent.children('[data-tabs="' + tabsTarget + '"]').addClass('active').promise().done(function () {
                     //dLoaderRemove(tabsContent);
-                    loadBgImage();
+                    mpwem_load_bg_image();
                     parent.height('auto');
                 });
             });
@@ -601,8 +612,8 @@ function mpwem_sticky_management() {
                         if (clsName) {
                             target_collapse.removeClass(clsName);
                         }
-                        content_text_change(target_collapse);
-                        content_icon_change(target_collapse);
+                        mpwem_content_text_change(target_collapse);
+                        mpwem_content_icon_change(target_collapse);
                     }
                 }
             })
@@ -736,6 +747,12 @@ function mpwem_pagination_page_management(parent, pagination_page, total_item) {
     }
     return true;
 }
+function mpwem_load_more_scroll(parent, pagination_page) {
+    let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
+    let start_item = pagination_page > 0 ? pagination_page * per_page_item : 0;
+    let target = parent.find('.pagination_item:nth-child(' + (start_item + 1) + ')');
+    mpwem_page_scroll_to(target);
+}
 (function ($) {
     "use strict";
     $(document).on('click', 'div.mpwem_style .pagination_area .page_prev', function (e) {
@@ -751,14 +768,14 @@ function mpwem_pagination_page_management(parent, pagination_page, total_item) {
         parent.find('[data-pagination="' + page_no + '"]').trigger('click');
     });
     //*************** Pagination Load More ***************//
-    $(document).on('click', 'div.mpwem_pagination_main_area  .pagination_load_more', function () {
+    $(document).on('click', 'div.mpwem_pagination_area  .pagination_load_more', function () {
         let pagination_page = parseInt($(this).attr('data-load-more')) + 1;
-        let parent = $(this).closest('div.mpwem_pagination_main_area');
+        let parent = $(this).closest('div.mpwem_pagination_area');
         let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
         let count = 0;
         let end_item = per_page_item * pagination_page + per_page_item;
         $(this).attr('data-load-more', pagination_page).promise().done(function () {
-            parent.find('.mpwem_pagination_item').each(function () {
+            parent.find('.pagination_item').each(function () {
                 if (count < end_item) {
                     $(this).slideDown(250);
                 }
@@ -767,21 +784,15 @@ function mpwem_pagination_page_management(parent, pagination_page, total_item) {
         }).promise().done(function () {
             lode_more_init(parent);
         }).promise().done(function () {
-            loadBgImage();
+            mpwem_load_bg_image();
         });
     });
     function lode_more_init(parent) {
-        if (parent.find('.mpwem_pagination_item:hidden').length === 0) {
+        if (parent.find('.pagination_item:hidden').length === 0) {
             parent.find('[data-load-more]').attr('disabled', 'disabled');
         } else {
             parent.find('[data-load-more]').removeAttr('disabled');
         }
-    }
-    function load_more_scroll(parent, pagination_page) {
-        let per_page_item = parseInt(parent.find('input[name="pagination_per_page"]').val());
-        let start_item = pagination_page > 0 ? pagination_page * per_page_item : 0;
-        let target = parent.find('.mpwem_pagination_item:nth-child(' + (start_item + 1) + ')');
-        pageScrollTo(target);
     }
 }(jQuery));
 //==============================================================Modal / Popup==========//
@@ -790,7 +801,7 @@ function mpwem_pagination_page_management(parent, pagination_page, total_item) {
     $(document).on('click', '.mpwem_style [data-target-popup]', function () {
         let target = $(this).attr('data-active-popup', '').data('target-popup');
         $('body').addClass('noScroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
-            loadBgImage();
+            mpwem_load_bg_image();
             return true;
         });
     });

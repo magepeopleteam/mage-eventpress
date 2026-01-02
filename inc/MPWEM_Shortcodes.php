@@ -16,7 +16,7 @@
 				add_shortcode( 'event-calendar', array( $this, 'calender' ) );
 			}
 			public function event_list( $atts, $content = null ) {
-				$defaults            = array(
+				$defaults         = array(
 					"cat"              => "0",
 					"org"              => "0",
 					"tag"              => "0",
@@ -46,46 +46,44 @@
 					'date-filter'      => 'yes',
 					'year'             => '',
 				);
-				$params              = shortcode_atts( $defaults, $atts );
-				$tmode               = $params['timeline-mode'];
-				$cat                 = $params['cat'];
-				$org                 = $params['org'];
-				$tag                 = $params['tag'];
-				$style               = $params['style'];
-				$cat_f               = $params['cat-filter'];
-				$org_f               = $params['org-filter'];
-				$tag_f               = $params['tag-filter'];
-				$show                = $params['show'];
-				$pagination          = $params['pagination'];
-				$pagination_style    = $params['pagination-style'];
-				$sort                = $params['sort'];
-				$column              = $style != 'grid' ? 1 : $params['column'];
-				$nav                 = $params['carousal-nav'] == 'yes' ? 1 : 0;
-				$dot                 = $params['carousal-dots'] == 'yes' ? 1 : 0;
-				$city                = $params['city'];
-				$country             = $params['country'];
-				$cid                 = $params['carousal-id'];
-				$status              = $params['status'];
-				$year                = $params['year'];
-				$filter              = $params['search-filter'];
-				$show                = ( $filter == 'yes' || $pagination == 'yes' && $style != 'timeline' ) && $pagination_style != 'ajax' ? - 1 : $show;
-				$time_line_div_start = $style == 'timeline' ? '<div class="timeline"><div class="timeline__wrap"><div class="timeline__items">' : '';
-				$time_line_div_end   = $style == 'timeline' ? '</div></div></div>' : '';
-				$unq_id              = 'abr' . uniqid();
+				$params           = shortcode_atts( $defaults, $atts );
+				$tmode            = $params['timeline-mode'];
+				$cat              = $params['cat'];
+				$org              = $params['org'];
+				$tag              = $params['tag'];
+				$style            = $params['style'];
+				$cat_f            = $params['cat-filter'];
+				$org_f            = $params['org-filter'];
+				$tag_f            = $params['tag-filter'];
+				$show             = $params['show'];
+				$pagination       = $params['pagination'];
+				$pagination_style = $params['pagination-style'];
+				$sort             = $params['sort'];
+				$column           = $style != 'grid' ? 1 : $params['column'];
+				$nav              = $params['carousal-nav'] == 'yes' ? 1 : 0;
+				$dot              = $params['carousal-dots'] == 'yes' ? 1 : 0;
+				$city             = $params['city'];
+				$country          = $params['country'];
+				$cid              = $params['carousal-id'];
+				$status           = $params['status'];
+				$year             = $params['year'];
+				$filter           = $params['search-filter'];
+				$show             = ( $filter == 'yes' || $pagination == 'yes' && $style != 'timeline' ) && $pagination_style != 'ajax' ? - 1 : $show;
+				$unq_id           = 'abr' . uniqid();
 				ob_start();
 				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, '', $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
-                <div class='list_with_filter_section mep_event_list'>
+                <div class=' list_with_filter_section mep_event_list'>
 					<?php
 						if ( $total_item > 0 ) {
-							if ( $cat_f == 'yes'  && $cat<1) {
+							if ( $cat_f == 'yes' && $cat < 1 ) {
 								do_action( 'mpwem_taxonomy_filter', 'mep_cat', $unq_id );
 							}
-							if ( $org_f == 'yes' && $org <1 ) {
+							if ( $org_f == 'yes' && $org < 1 ) {
 								do_action( 'mpwem_taxonomy_filter', 'mep_org', $unq_id );
 							}
-							if ( $tag_f == 'yes'  && $tag<1) {
+							if ( $tag_f == 'yes' && $tag < 1 ) {
 								do_action( 'mpwem_taxonomy_filter', 'mep_tag', $unq_id );
 							}
 							if ( $filter == 'yes' && $style != 'timeline' ) {
@@ -109,30 +107,37 @@
                                  data-pagination-style="<?php echo esc_attr( $pagination_style ); ?>"
                             >
                                 <div class="mage_grid_box <?php echo esc_attr( $pagination == 'carousal' ? 'owl-theme owl-carousel' : '' ); ?>" id="<?php echo esc_attr( $pagination == 'carousal' ? 'mep-carousel' . $cid : '' ); ?>">
-									<?php
-										echo wp_kses_post( $time_line_div_start );
-										while ( $loop->have_posts() ) {
-											$loop->the_post();
-											$event_id = get_the_id();
-											mep_update_event_upcoming_date( $event_id );
-											if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
-												$columnNumber = 'column_style';
-												$width        = 100 / (int) $column;
-											} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
-												$columnNumber = 'grid';
-												$width        = 100;
-											} else {
-												$columnNumber = 'one_column';
-												$width        = 100;
-											}
-											do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
-										}
-										wp_reset_postdata();
-										echo wp_kses_post( $time_line_div_end );
-									?>
+									<?php if ( $style == 'timeline' ){ ?>
+                                    <div class="timeline">
+                                        <div class="timeline__wrap">
+                                            <div class="timeline__items">
+												<?php } ?>
+												<?php while ( $loop->have_posts() ) {
+													$loop->the_post();
+													$event_id = get_the_id();
+													if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
+														$columnNumber = 'column_style';
+														$width        = 100 / (int) $column;
+													} elseif ( $pagination == 'carousal' && $style == 'grid' ) {
+														$columnNumber = 'grid';
+														$width        = 100;
+													} else {
+														$columnNumber = 'one_column';
+														$width        = 100;
+													}
+													do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
+												}
+													wp_reset_postdata(); ?>
+												<?php if ( $style == 'timeline' ){ ?>
+                                            </div>
+                                        </div>
+                                    </div>
+								<?php } ?>
                                 </div>
                             </div>
-							<?php do_action( 'mpwem_pagination', $params, $total_item );
+							<?php
+							//do_action( 'add_mpwem_pagination_section', $params, $total_item );
+							do_action( 'mpwem_pagination', $params, $total_item );
 						} else {
 							echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
 						} ?>
@@ -337,7 +342,8 @@
                         });
 						<?php  } ?>
                     });
-                </script><?php
+                </script>
+                <?php
 				$content = ob_get_clean();
 				return $content;
 			}

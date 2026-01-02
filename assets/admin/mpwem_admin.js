@@ -276,11 +276,11 @@ function mpwem_initWpEditor(id) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
+                mpwem_loader_xs(target);
             },
             success: function (data) {
                 alert(data);
-                dLoaderRemove(target);
+                mpwem_loader_remove(target);
             }
         });
     });
@@ -327,12 +327,12 @@ function mpwem_initWpEditor(id) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
-                dLoader_xs(popup_target);
+                mpwem_loader_xs(target);
+                mpwem_loader_xs(popup_target);
             },
             success: function (data) {
                 target.html(data).promise().done(function () {
-                    dLoaderRemove();
+                    mpwem_loader_remove();
                 });
             }
         });
@@ -354,7 +354,7 @@ function mpwem_initWpEditor(id) {
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data).promise().done(function () {
@@ -390,7 +390,7 @@ function mpwem_initWpEditor(id) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
+                mpwem_loader_xs(target);
             },
             success: function (data) {
                 target.html(data);
@@ -426,12 +426,12 @@ function mpwem_initWpEditor(id) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
-                dLoader_xs(popup_target);
+                mpwem_loader_xs(target);
+                mpwem_loader_xs(popup_target);
             },
             success: function (data) {
                 target.html(data).promise().done(function () {
-                    dLoaderRemove();
+                    mpwem_loader_remove();
                 });
             }
         });
@@ -453,7 +453,7 @@ function mpwem_initWpEditor(id) {
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data).promise().done(function () {
@@ -515,7 +515,7 @@ function mpwem_initWpEditor(id) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
+                mpwem_loader_xs(target);
             },
             success: function (data) {
                 target.html(data);
@@ -750,11 +750,11 @@ function mpwem_load_post_date(parent) {
                 "nonce": mpwem_admin_var.nonce
             },
             beforeSend: function () {
-                dLoader_xs(target);
+                mpwem_loader_xs(target);
             },
             success: function (data) {
                 target.html(data);
-                dLoaderRemove(target);
+                mpwem_loader_remove(target);
             }
         });
     }
@@ -775,11 +775,11 @@ function mpwem_load_past_date_time(parent) {
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data);
-                    dLoaderRemove(target);
+                    mpwem_loader_remove(target);
                 }
             });
         }
@@ -806,11 +806,11 @@ function mpwem_load_past_date_time(parent) {
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data);
-                    dLoaderRemove(target);
+                    mpwem_loader_remove(target);
                 }
             });
         } else {
@@ -853,11 +853,11 @@ function mpwem_load_past_date_time(parent) {
                     "nonce": mpwem_admin_var.nonce
                 },
                 beforeSend: function () {
-                    dLoader_xs(target);
+                    mpwem_loader_xs(target);
                 },
                 success: function (data) {
                     target.html(data);
-                    dLoaderRemove(target);
+                    mpwem_loader_remove(target);
                 }
             });
         }
@@ -877,12 +877,12 @@ function mpwem_load_past_date_time(parent) {
                         "nonce": mpwem_admin_var.nonce
                     },
                     beforeSend: function () {
-                        dLoader(target);
+                        mpwem_loader(target);
                     },
                     success: function (data) {
                         target.html(data);
                         mpwem_load_date_picker(target);
-                        dLoaderRemove(target);
+                        mpwem_loader_remove(target);
                     },
                     error: function (response) {
                         console.log(response);

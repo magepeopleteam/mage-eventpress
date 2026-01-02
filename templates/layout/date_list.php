@@ -33,10 +33,9 @@
                                             <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
 										<?php } else { ?>
                                             <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
-											<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) { ?>
-                                                <span>-</span>
-                                                <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
-											<?php }
+                                            <span>-</span>
+                                            <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
+											<?php
 										}
 									} else { ?>
                                         <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
@@ -86,10 +85,9 @@
                                                         <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></span>
 													<?php } else { ?>
                                                         <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>
-														<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) { ?>
-                                                            <span>-</span>
-                                                            <span><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></span>
-														<?php }
+                                                        <span>-</span>
+                                                        <span><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></span>
+														<?php
 													}
 												} else { ?>
                                                     <span><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></span>

@@ -455,10 +455,12 @@
 				if ( sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
-						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
-						if ( $name && $current_qty > 0 ) {
+						$ticket_name               = explode( '_', $name );
+                        $_name=$ticket_name[0];
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
+						if ( $_name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;
-							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id );
+							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
 							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
 							$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
 							$ticket_info[ $key ]['event_date']   = $start_date;
@@ -534,7 +536,9 @@
 					$count         = 0;
 					foreach ( $names as $key => $name ) {
 						$current_qty=$qty[ $key ];
-						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $name);
+						$ticket_name               = explode( '_', $name );
+						$_name=$ticket_name[0];
+						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
 						if ( $current_qty > 0 && $name ) {
 							for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
 								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $attendee_info ) > 0 ) {
@@ -557,11 +561,11 @@
 										}
 									}
 								}
-								$attendee_info[ $count ]['user_ticket_type'] = $name;
-								$attendee_info[ $count ]['ticket_name']      = $name;
+								$attendee_info[ $count ]['user_ticket_type'] = $_name;
+								$attendee_info[ $count ]['ticket_name']      = $_name;
 								$attendee_info[ $count ]['user_ticket_qty']  = 1;
 								$attendee_info[ $count ]['ticket_qty']       = 1;
-								$attendee_info[ $count ]['ticket_price']     = MPWEM_Functions::get_ticket_price_by_name( $name, $post_id );
+								$attendee_info[ $count ]['ticket_price']     = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
 								$attendee_info[ $count ]['user_event_date']  = $start_date;
 								$attendee_info[ $count ]['user_event_id']    = $post_id;
 								$count ++;
@@ -587,6 +591,7 @@
 									$ticket_price = array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
 									$ticket_qty = array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
 									$ticket_text = '<li>' . esc_attr( $ticket_name) . " - " . wc_price( (float) $ticket_price) . ' x ' . esc_attr( $ticket_qty ) . ' = ' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
+                                    //echo '<li><pre>'.print_r($user).'</pre></li>';
 									echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
 									do_action( 'mep_cart_after_ticket_type', $user );
 								}

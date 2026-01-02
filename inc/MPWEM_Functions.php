@@ -171,7 +171,7 @@
 						$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 						if ( $ticket_name == $name ) {
 							$price = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $post_id, $ticket_type );
-							break; // Found match, exit loop
+							//break; // Found match, exit loop
 						}
 					}
 				}
@@ -208,6 +208,7 @@
 			}
 			//==========================//
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
+				$up_coming_date='';
 				$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : self::get_dates( $event_id );
 				if ( sizeof( $all_dates ) > 0 ) {
 					$all_times = $all_times && sizeof( $all_times ) ? $all_times : MPWEM_Functions::get_times( $event_id, $all_dates );
@@ -223,9 +224,10 @@
 						$start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
 					}
 					$date_time = $date . ' ' . $start_time;
-					return MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
+					$up_coming_date= MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
-				return null;
+				update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+				return $up_coming_date;
 			}
 			public static function get_all_dates( $event_id ) {
 				$all_dates = [];
@@ -517,7 +519,7 @@
 									$time_lists   = sizeof( $day_times ) > 0 ? $day_times : $global_times;
 									if ( sizeof( $time_lists ) > 0 ) {
 										foreach ( $time_lists as $time_list ) {
-											$time = array_key_exists( 'mep_ticket_time', $time_list ) ? $time_list['mep_ticket_time'] : '';;
+											$time = array_key_exists( 'mep_ticket_time', $time_list ) ? $time_list['mep_ticket_time'] : '';
 											$full_date    = $date . ' ' . $time;
 											$expire_check = date( 'Y-m-d H:i', strtotime( $full_date ) - $buffer_time );
 											if ( strtotime( $expire_check ) > $now ) {

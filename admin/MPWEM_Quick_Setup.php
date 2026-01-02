@@ -35,7 +35,7 @@
 				if ( isset( $_POST['active_woo_btn'] ) ) {
 					?>
                     <script>
-                        dLoaderBody();
+                        mpwem_loader_body();
                     </script>
 					<?php
 					activate_plugin( 'woocommerce/woocommerce.php' );

@@ -6,146 +6,58 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
-	$event_id                       = $event_id ?? 0;
-	$columnNumber                   = $columnNumber ?? '';
-	$class_name                     = $class_name ?? '';
-	$style                          = $style ?? '';
-	$reg_status                     = $reg_status ?? '';
-	$org_class                      = $org_class ?? '';
-	$cat_class                      = $cat_class ?? '';
-	$tag_class                      = $tag_class ?? '';
-	$taxonomy_category              = $taxonomy_category ?? '';
-	$taxonomy_organizer             = $taxonomy_organizer ?? '';
-	$upcoming_date                  = $upcoming_date ?? '';
-	$width                          = $width ?? '';
-	$show_price_label               = $show_price_label ?? '';
-	$total_left                     = $total_left ?? '';
-	$recurring                      = $recurring ?? 'no';
-	$show_price                     = $show_price ?? 'yes';
-	$event_type                     = $event_type ?? 'offline';
-	$event_multidate                = $event_multidate ?? [];
-	$author_terms                   = $author_terms ?? [];
-	$mep_hide_event_hover_btn       = $mep_hide_event_hover_btn ?? 'no';
-	$sold_out_ribbon                = $sold_out_ribbon ?? 'no';
-	$limited_availability_ribbon    = $limited_availability_ribbon ?? 'no';
-	$hide_org_list                  = $hide_org_list ?? 'no';
-	$hide_location_list             = $hide_location_list ?? 'no';
-	$hide_time_list                 = $hide_time_list ?? 'no';
-	$limited_availability_threshold = $limited_availability_threshold ?? 5;
-	$event_location_icon            = $event_location_icon ?? 'mi mi-marker';
-	$event_organizer_icon           = $event_organizer_icon ?? 'mi mi-badge';
-
-	// Location Calculation
-	$location_data = MPWEM_Functions::get_location( $event_id );
-	$location_display = '';
-	
-	// Get location/venue first
-	if ( ! empty( $location_data['location'] ) ) {
-		$location_display = $location_data['location'];
-	} else {
-		// If no location/venue, build from street + city
-		$location_parts = array();
-		if ( ! empty( $location_data['street'] ) ) {
-			$location_parts[] = $location_data['street'];
-		}
-		if ( ! empty( $location_data['city'] ) ) {
-			$location_parts[] = $location_data['city'];
-		}
-		if ( ! empty( $location_parts ) ) {
-			$location_display = implode( ' ', $location_parts );
-		}
-	}
-
-	// Virtual event override
-	if ( ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false ) {
-		$event_type = 'online';
-	}
+	$event_id = $event_id ?? 0;
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$event_infos = $event_infos ?? [];
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$event_infos                    = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$upcoming_date                  = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$available_seat                 = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
+	$taxonomy_category              = array_key_exists( 'category_tax', $event_infos ) ? $event_infos['category_tax'] : '';
+	$taxonomy_organizer             = array_key_exists( 'organizer_tax', $event_infos ) ? $event_infos['organizer_tax'] : '';
+	$width                          = array_key_exists( 'width', $event_infos ) ? $event_infos['width'] : '';
+	$column_number                  = array_key_exists( 'column_number', $event_infos ) ? $event_infos['column_number'] : '';
+	$class_name                     = array_key_exists( 'class_name', $event_infos ) ? $event_infos['class_name'] : '';
+	$style                          = array_key_exists( 'style', $event_infos ) ? $event_infos['style'] : '';
+	$org_class                      = array_key_exists( 'org_class', $event_infos ) ? $event_infos['org_class'] : '';
+	$cat_class                      = array_key_exists( 'cat_class', $event_infos ) ? $event_infos['cat_class'] : '';
+	$tag_class                      = array_key_exists( 'tag_class', $event_infos ) ? $event_infos['tag_class'] : '';
+	$title                          = get_the_title( $event_id );
+	$event_infos['organizer_title'] = __( 'Organized By:', 'mage-eventpress' );
+	$event_infos['location_title']  = __( 'Location : ', 'mage-eventpress' );
 ?>
-<div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $columnNumber . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
-     data-title="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
-     data-city-name="<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $event_id, 'mep_city' ) ); ?>"
-     data-state="<?php echo esc_attr( MPWEM_Global_Function::get_post_info( $event_id, 'mep_state' ) ); ?>"
-     data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
-     data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
-     data-date="<?php echo esc_attr( date( 'Y-m-d', strtotime( $upcoming_date ) ) ); ?>" style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
-	<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
-    <div class="mep_list_thumb mpwem_style">
-        <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'full' ) ); ?>"></div>
-        <div class="mep-ev-start-date">
-            <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
-            <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>
-        </div>
-        <div class="mepev-ribbons">
-			<?php
-				if ( is_array( $event_multidate ) && sizeof( $event_multidate ) > 0 && $recurring == 'no' ) { ?>
-                    <div class='mepev-ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
-				<?php } elseif ( $recurring != 'no' ) { ?>
-                    <div class='mepev-ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
-				<?php }
-				if ( $event_type == 'online' ) { ?>
-                    <div class='mepev-ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div>
-				<?php }
-				if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $total_left <= 0 ) { ?>
-                    <div class="mepev-ribbon sold-out">                        <?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div>
-				<?php } elseif ( $limited_availability_ribbon == 'yes' && $total_left > 0 && $total_left <= $limited_availability_threshold ) { ?>
-                    <div class="mepev-ribbon limited-availability"><?php esc_html_e( 'Limited Availability', 'mage-eventpress' ); ?></div>
-				<?php } ?>
-        </div>
-    </div>
-    <div class="mep_list_event_details">
-        <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-            <div class="mep-list-header">
-                <h2 class='mep_list_title'><?php echo esc_html( get_the_title( $event_id ) ); ?></h2>
-				<?php if ( $total_left == 0 ) {
-					do_action( 'mep_show_waitlist_label' );
-				} ?>
-                <p class='mep_list_date'>
-					<?php if ( $show_price == 'yes' ) {
-						echo esc_html( $show_price_label ) . " " . wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) );;
-					} ?>
-                </p>
-            </div>
-			<?php if ( $style == 'list' ) { ?>
-                <div class="mep-event-excerpt">
-					<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
-                </div>
-			<?php } ?>
-            <div class="mep-list-footer">
-                <ul class="mep-list-footer-ul">
-					<?php if ( $hide_org_list == 'no' && sizeof( $author_terms ) > 0 ) { ?>
-                        <li class="mep_list_org_name">
-                            <div class="evl-ico"><i class="<?php echo esc_attr( $event_organizer_icon ); ?>"></i></div>
-                            <div class="evl-cc">
-                                <p><?php esc_html_e( 'Organized By:', 'mage-eventpress' ) ?></p>
-                                <p><?php echo esc_html( $author_terms[0]->name ); ?></p>
-                            </div>
-                        </li>
+    <div class='filter_item mep-event-list-loop mix <?php echo esc_attr( $column_number . ' ' . $class_name . '  mep_event_' . $style . '_item  ' . $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>'
+         data-title="<?php echo esc_attr( $title ); ?>"
+         data-city-name="<?php echo esc_attr( array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '' ); ?>"
+         data-state="<?php echo esc_attr( array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '' ); ?>"
+         data-date="<?php echo esc_attr( $upcoming_date ? date( 'Y-m-d', strtotime( $upcoming_date ) ) : '' ); ?>"
+         data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
+         data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
+         style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
+		<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
+		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
+		<?php do_action( 'mpwem_list_ribbon', $event_infos ); ?>
+		<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
+        <div class="mep_list_event_details">
+            <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
+                <h5 class='mep_list_title'><?php echo esc_html( $title ); ?></h5>
+				<?php
+					if ( $available_seat == 0 ) {
+						do_action( 'mep_show_waitlist_label' );
+					}
+					do_action( 'mpwem_list_price', $event_infos );
+					if ( $style == 'list' ) { ?>
+                        <div class="mep-event-excerpt">
+							<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
+                        </div>
 					<?php }
-						if ( $event_type != 'online' ) {
-							if ( $hide_location_list == 'no' ) { 
-								// Always show location section to avoid gaps
-								?>
-                                <li class="mep_list_location_name">
-                                    <div class="evl-ico"><i class="<?php echo esc_attr( $event_location_icon ); ?>"></i></div>
-                                    <div class="evl-cc">
-                                        <p><?php esc_html_e( 'Location:', 'mage-eventpress' ); ?></p>
-                                        <p><?php echo esc_html( $location_display ); ?></p>
-                                    </div>
-                                </li>
-							<?php }
-						}
-						if ( $hide_time_list == 'no' && $recurring == 'no' ) {
-							do_action( 'mep_event_list_date_li', $event_id, 'grid' );
-						} elseif ( $hide_time_list == 'no' && $recurring != 'no' ) {
-							do_action( 'mep_event_list_upcoming_date_li', $event_id );
-						} ?>
-                </ul>
-            </div>
-        </a>
-		<?php if ( 'yes' == $mep_hide_event_hover_btn ) { ?>
-            <div class="item_hover_effect">
-                <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?></a>
-            </div>
-		<?php } ?>
+					do_action( 'mpwem_list_organizer', $event_infos );
+					do_action( 'mpwem_list_location', $event_infos );
+					do_action( 'mpwem_list_upcoming_date', $event_infos );
+				?>
+            </a>
+			<?php do_action( 'mpwem_list_more_date_button', $event_infos ); ?>
+        </div>
+		<?php do_action( 'mpwem_list_hover', $event_infos ); ?>
     </div>
-	<?php //} ?>
+<?php

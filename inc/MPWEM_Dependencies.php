@@ -235,18 +235,54 @@
                             "eventStatus"           : "https://schema.org/<?php echo esc_attr( $event_rt_status ); ?>",
                             "eventAttendanceMode"   : "https://schema.org/<?php echo esc_attr( $event_rt_atdnce_mode ); ?>",
                             "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
-                            "location"  : {
-                                "@type"         : "Place",
-                                "name"          : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ); ?>",
-                                "address"       : {
-                                "@type"         : "PostalAddress",
-                                "streetAddress" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ); ?>",
-                                "addressLocality": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ); ?>",
-                                "postalCode"    : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ); ?>",
-                                "addressRegion" : "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ); ?>",
-                                "addressCountry": "<?php echo esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ); ?>"
+
+                            "location"  : <?php 
+                                // Determine if this is an online/virtual event
+                                $location_data = MPWEM_Functions::get_location( $event_id );
+                                $location_display = '';
+                                
+                                // Get location/venue first
+                                if ( ! empty( $location_data['location'] ) ) {
+                                    $location_display = $location_data['location'];
+                                } else {
+                                    // If no location/venue, build from street + city
+                                    $location_parts = array();
+                                    if ( ! empty( $location_data['street'] ) ) {
+                                        $location_parts[] = $location_data['street'];
+                                    }
+                                    if ( ! empty( $location_data['city'] ) ) {
+                                        $location_parts[] = $location_data['city'];
+                                    }
+                                    if ( ! empty( $location_parts ) ) {
+                                        $location_display = implode( ' ', $location_parts );
+                                    }
                                 }
-                            },
+                                
+                                // Check if event is virtual/online
+                                $is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
+                                
+                                if ( $is_online_event || $event_rt_atdnce_mode === 'OnlineEventAttendanceMode' ) {
+                                    // Output VirtualLocation for online events
+                                    echo '{
+                                        "@type"         : "VirtualLocation",
+                                        "url"           : "' . esc_url( get_the_permalink( $event_id ) ) . '"
+                                    }';
+                                } else {
+                                    // Output Place for physical events
+                                    echo '{
+                                        "@type"         : "Place",
+                                        "name"          : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ) . '",
+                                        "address"       : {
+                                        "@type"         : "PostalAddress",
+                                        "streetAddress" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'street' ) ) . '",
+                                        "addressLocality": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'city' ) ) . '",
+                                        "postalCode"    : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'zip' ) ) . '",
+                                        "addressRegion" : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'state' ) ) . '",
+                                        "addressCountry": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ) . '"
+                                        }
+                                    }';
+                                }
+                            ?>,
                             "image": [
                                 "<?php echo get_the_post_thumbnail_url( $event_id, 'full' ); ?>"
                             ],

@@ -171,7 +171,7 @@
 						$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 						if ( $ticket_name == $name ) {
 							$price = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $post_id, $ticket_type );
-							//break; // Found match, exit loop
+							break; // Found match, exit loop
 						}
 					}
 				}

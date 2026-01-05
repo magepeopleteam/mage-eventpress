@@ -138,9 +138,9 @@
 				}
 				?>
                 <div class="mpwem_style mep-quick-setup">
-                    <div class="_dShadow_6_adminLayout">
+                    <div class="_dShadow_6_admin_layout">
                         <form method="post" action="">
-                            <div class="mpTabsNext">
+                            <div class="tabs_next">
                                 <div class="tabListsNext _mAuto">
                                     <div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
                                         <h4 class="circleIcon" data-class>

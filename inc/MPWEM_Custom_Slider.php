@@ -221,7 +221,7 @@
                         <div class="superSlider">
                             <div class="popupHeader">
                                 <h2><?php echo get_the_title( $post_id ); ?></h2>
-                                <span class="fas fa-times popupClose"></span>
+                                <span class="fas fa-times popup_close"></span>
                             </div>
                             <div class="popupBody">
 								<?php $this->slider_all_item( $image_ids, $popup_icon_indicator ); ?>

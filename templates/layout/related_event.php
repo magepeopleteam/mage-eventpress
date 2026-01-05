@@ -2,13 +2,19 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	}
-	$event_id           = $event_id ?? get_the_id();
-	$related_tours      = MPWEM_Global_Function::get_post_info( $event_id, 'event_list', array() );
+	$event_id = $event_id ?? 0;
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$event_infos = $event_infos ?? [];
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$related_tours                = array_key_exists( 'event_list', $event_infos ) ? $event_infos['event_list'] : [];
+	$display_related                = array_key_exists( 'display_related', $event_infos ) ? $event_infos['display_related'] :'on';
+
 	$related_tour_count = sizeof( $related_tours );
    // echo '<pre>';print_r($related_tours);echo '</pre>';
 	$num_of_tour        = $num_of_tour ?? '';
-	if ( $related_tour_count > 0 && ( MPWEM_Global_Function::get_post_info( $event_id, 'display_related', 'on' ) != 'off' || $num_of_tour > 0 ) ) {
-		$num_of_tour = $num_of_tour > 0 ? $num_of_tour : 4;
+	if ( is_array($related_tours) && sizeof($related_tours)>0 && $display_related== 'on') {
+		$num_of_tour = sizeof( $related_tours );
 		$num_of_tour = min( $num_of_tour, $related_tour_count );
 		$grid_class  = $related_tour_count <= $num_of_tour ? 'grid_' . $num_of_tour : '';
 		$div_class   = $related_tour_count == 1 ? 'flexWrap modern' : 'flexWrap grid';

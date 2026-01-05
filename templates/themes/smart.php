@@ -37,7 +37,7 @@
 	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_timeline', $event_id ); ?>
 			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
-			<?php do_action( 'mpwem_faq', $event_id ); ?>
+			<?php do_action( 'mpwem_faq', $event_id,$event_infos ); ?>
         </div>
         <div class="mpwem_right_content">
 			<?php if ( $left_sidebar_title == 'no' ): ?>
@@ -70,6 +70,6 @@
         </div>
     </div>
 	<?php do_action( 'mpwem_map', $event_id,$event_infos ); ?>
-	<?php do_action( 'mpwem_related', $event_id ); ?>
+	<?php do_action( 'mpwem_related', $event_id,$event_infos ); ?>
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

@@ -175,9 +175,9 @@
 			public function date_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_only.php' ); }
 			public function time_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/time_only.php' ); }
 			/*************************************/
-			public function faq( $event_id ): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
+			public function faq( $event_id ,$event_infos=[]): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
 			/****************************************/
-			public function related( $event_id ): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
+			public function related( $event_id ,$event_infos=[]): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
 			/**************************/
 			public function social( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/social.php' ); }
 			/**************************/

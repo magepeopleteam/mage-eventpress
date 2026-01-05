@@ -46,7 +46,7 @@
                             </button>
                             <div class="mpPopup" data-popup="mpwem_popup_map">
                                 <div class="popupMainArea _max_1000">
-                                    <span class="fas fa-times popupClose"></span>
+                                    <span class="fas fa-times popup_close"></span>
                                     <div class="popupBody mp_zero">
 										<?php do_action( 'mpwem_map', $event_id ); ?>
                                     </div>

@@ -36,7 +36,7 @@
                     </div>
                     <div class="mpPopup right_popup mpwem_timeline_popup" data-popup="#mpwem_timeline_popup">
                         <div class="popupMainArea">
-                            <span class="fas fa-times popupClose"></span>
+                            <span class="fas fa-times popup_close"></span>
                             <div class="popupBody timeline_input">
 								<?php //$this->mpwem_load_timeline(); ?>
                             </div>

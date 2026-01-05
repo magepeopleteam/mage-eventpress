@@ -15,7 +15,7 @@
 	div.mpwem_style h5,
 	div.mpwem_style h6 { margin: 0; padding: 0; line-height: 1.25; }
 	div.mpwem_style strong { font-weight: normal; }
-	div.mpwem_style .extraBold { font-weight: 900; }
+	div.mpwem_style .extra_bold { font-weight: 900; }
 	div.mpwem_style h1,
 	div.mpwem_style [class*="_fs_h1"] { font-size: var(--fs_h1); font-weight: normal; }
 	div.mpwem_style h2,
@@ -237,7 +237,7 @@
 	div.mpwem_add_icon_popup .iconItem,
 	div.mpwem_add_icon_popup .popupIconMenu li { -webkit-transition: 350ms ease-in-out; -moz-transition: 350ms ease-in-out; -o-transition: 350ms ease-in-out; transition: 350ms ease-in-out; }
 	/******************/
-	div.mpPopup .popupClose {
+	div.mpPopup .popup_close {
 		position: absolute;
 		z-index: 1111;
 		cursor: pointer;
@@ -252,12 +252,12 @@
 }
 /********************************************************************admin layout ************************************************/
 @media only screen and (min-width: 10px) {
-	.mpwem_style .adminLayout,
-	.mpwem_style [class*="_adminLayout"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--color_border);border-radius: var(--dbrl);}
-	div.mpwem_style .adminLayout th,
-	div.mpwem_style .adminLayout td,
-	div.mpwem_style [class*="_adminLayout"] th,
-	div.mpwem_style [class*="_adminLayout"] td {text-align: left;font-size: var(--fs_h5);}
+	.mpwem_style .admin_layout,
+	.mpwem_style [class*="_admin_layout"] {padding: 50px;max-width: 1000px;margin: 100px auto;background-color: #FFF;border: 1px solid var(--color_border);border-radius: var(--dbrl);}
+	div.mpwem_style .admin_layout th,
+	div.mpwem_style .admin_layout td,
+	div.mpwem_style [class*="_admin_layout"] th,
+	div.mpwem_style [class*="_admin_layout"] td {text-align: left;font-size: var(--fs_h5);}
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
@@ -2077,20 +2077,20 @@ div.mpwem_style.mep-quick-setup .info_text span {
 div.mpwem_style.mep-quick-setup .tabsContentNext {
 	padding: 20px 0;
 }
-div.mpwem_style.mep-quick-setup [class*="_adminLayout"] {
+div.mpwem_style.mep-quick-setup [class*="_admin_layout"] {
 	background-color: #F8F7FC;
 }
-.mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"]::after {
+.mep-quick-setup .tabs_next .tabItemNext.active [class*="circleIcon"]::after {
 	border-color: var(--color_theme);
 }
-.mep-quick-setup .mpTabsNext .tabItemNext.active [class*="circleIcon"] {
+.mep-quick-setup .tabs_next .tabItemNext.active [class*="circleIcon"] {
 	background-color: var(--color_theme);
 	border: 1px solid var(--color_theme);
 }
-.mep-quick-setup .mpTabsNext .tabItemNext [class*="circleIcon"] {
+.mep-quick-setup .tabs_next .tabItemNext [class*="circleIcon"] {
 	border: 1px solid #D6D6D6;
 }
-.mep-quick-setup .mpTabsNext .tabItemNext.active .circleTitle {
+.mep-quick-setup .tabs_next .tabItemNext.active .circleTitle {
 	color: var(--color_theme);
 }
 .mep-quick-setup .nextTab_prev {

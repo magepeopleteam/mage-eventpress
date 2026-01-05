@@ -29,17 +29,15 @@
     <div class="content_area">
         <div class="mep-default-content">
 			<?php do_action( 'mpwem_custom_slider', $event_id, $event_infos ); ?>
-            <div class="date_time_location_short _mT">
+            <div class="date_time_location_short">
 				<?php do_action( 'mpwem_date_only', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_time_only', $event_id, $event_infos ); ?>
-				<?php do_action( 'mpwem_location', $event_id, $event_infos,'only' ); ?>
+				<?php do_action( 'mpwem_location', $event_id, $event_infos, 'only' ); ?>
             </div>
-	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
-	        <?php do_action( 'mpwem_timeline', $event_id ); ?>
-            <div class="mep-default-feature-cart-sec _mT">
-				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
-            </div>
-			<?php do_action( 'mpwem_faq', $event_id ); ?>
+			<?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
+			<?php do_action( 'mpwem_timeline', $event_id ); ?>
+			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
+			<?php do_action( 'mpwem_faq', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">
@@ -70,4 +68,6 @@
             </div>
         </div>
     </div>
+	<?php do_action( 'mpwem_related', $event_id,$event_infos ); ?>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

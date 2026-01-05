@@ -38,26 +38,24 @@
 }
 /* **************************************************************Date time location short area in default theme**************************** */
 @media only screen and (min-width: 10px) {
-	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
+	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;margin: var(--dmp) 0 0 0;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
 	div.date_time_location_short .short_item h4 { font-size: 22px; }
 	div.date_time_location_short .short_item h6 { font-size: 16px; font-weight: 500; text-transform: capitalize; margin: 0; }
 	div.date_time_location_short .short_item p {color: #878787;margin: 5px 0 0 0;}
-	.mep_smart_theme .mpwem_location_time { display: flex; flex-direction: column; justify-content: start; gap: 10px; margin-bottom: 10px; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location, .mep_smart_theme .mpwem_location_time .mpwem_time { flex-wrap: wrap; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location i, .mep_smart_theme .mpwem_location_time .mpwem_time i { width: 55px; height: 55px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location { align-items: start; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location div { width: 80%; }
 	div.mpwem_location,
-	div.mpwem_time { color: #393332; font-size: 16px; display: flex; -webkit-align-items: center; align-items: center; }
+	div.mpwem_time { color: #393332; font-size: 16px; display: flex; -webkit-align-items: center; align-items: center;}
 	div.mpwem_location span,
 	div.mpwem_time span { width: 55px; height: 55px; background-color: #F1F5FF; color: #6046FF; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; font-size: 25px; }
+	.mep_smart_theme .mpwem_location_time { display: flex; flex-direction: column; justify-content: start; gap: 10px; margin-bottom: 10px; }
+	.mep_smart_theme .mpwem_location_time .mpwem_location,
+	.mep_smart_theme .mpwem_location_time .mpwem_time { flex-wrap: wrap; align-items: center; }
 	.mep_smart_theme .mpwem_location_time .mpwem_location i,
-	.mep_smart_theme .mpwem_location_time .mpwem_time i {width: 30px !important; height: 30px !important;}
-	.mep_smart_theme div.mpwem_location, div.mpwem_time {margin: 0px !important;}
+	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
 }
 /* *************************************************************Registration section******************** */
 @media only screen and (min-width: 10px) {
+	div.mpwem_registration_area {margin: var(--dmp) 0 0 0;}
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 	.mpwem_registration_area .section-title { font-size: 25px; font-weight: bold; margin: 10px 0; }
 	.mpwem_registration_area .date-time-header { padding: 10px 25px; background: var(--color_theme); border-radius: 12px 12px 0 0; margin-bottom: -10px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px; border: 1px solid var(--color_theme); position: relative; z-index: 1; flex-direction: column; }
@@ -102,12 +100,6 @@
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label .formControl { width: 100%; margin-top: 5px; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label select.formControl { width: 100%; max-width: 100%; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service { margin-top: 30px; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area { padding: 25px; background-color: #F8F9FA; border-top: 1px solid #EAEAEA; margin-top: -20px; margin-bottom: 50px; border-radius: 0 0 12px 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area { background: none; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .term_condition_area a { color: #333; font-weight: normal; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .mpwem_summery { display: flex; justify-content: space-between; align-items: center; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area .total { font-size: 18px; font-weight: 600; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: 20px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body { padding: 0 20px 20px 20px; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label { flex-direction: row; }
@@ -118,16 +110,9 @@
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info { flex: 0 0 48%; }
 	.mpwem_registration_area .date-time-header { flex-direction: row; }
 	.mpwem_registration_area .date-time-area { flex-direction: row; justify-content: end; align-items: center; }
-	.mep_smart_theme .mpwem_location_time { flex-direction: row; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location { align-items: center; }
-	.mep_smart_theme .mpwem_location_time .mpwem_location div { width: auto; }
 	.mep_smart_theme .mpwem_content_area { margin: 40px 0 0 0; flex-direction: row; }
 	.mep_smart_theme .mpwem_left_content { max-width: 70%; margin-right: 2%; }
 	.mep_smart_theme .mpwem_right_content { max-width: 30%; width: 100%; }
-	.mep_smart_theme .faq_area { padding: 40px; margin: 40px auto; }
-	.mep_smart_theme .faq_area .desc { width: 36vw; margin: auto; }
-	.mep_smart_theme .faq_area .faq_items { margin-top: 40px; flex-direction: row; }
-	.mep_smart_theme .faq_area .faq_items .item { width: 49%; }
 	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;}
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 12px 0 !important; margin: 0 !important; gap: 8px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item { margin: 0 !important; padding: 0 !important; }
@@ -138,6 +123,13 @@
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name { margin-bottom: 4px !important; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description { margin-bottom: 4px !important; font-size: 13px !important; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining { margin: 2px 0 !important; padding: 2px 6px !important; font-size: 11px !important; }
+	/**********************************/
+	div.mpwem_form_submit_area { padding: var(--dmp); background-color: #F8F9FA; margin: var(--dmp) 0 0 0; border-radius: 0 0 12px 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
+	div.mpwem_form_submit_area .term_condition_area { background: none; }
+	div.mpwem_form_submit_area .term_condition_area a { color: #333; font-weight: normal; }
+	div.mpwem_form_submit_area .mpwem_summery { display: flex; justify-content: space-between; align-items: center; }
+	div.mpwem_form_submit_area .total { font-size: 18px; font-weight: 600; }
+	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
 }
 /* ********************************************************* Attendee area******************** */
 @media only screen and (min-width: 10px) {
@@ -168,7 +160,7 @@
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
-	div.mpwem_organizer h5 { color: #333; }
+	div.mpwem_organizer h5 { color: var(--color_white) !important;}
 	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
 	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
 	div.mep_smart_theme .mpwem_organizer,
@@ -277,14 +269,22 @@
 }
 /* **********************************************************F.A.Q******************** */
 @media only screen and (min-width: 10px) {
-	.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; text-align: center; border-radius: 12px; margin-bottom: 20px; }
-	.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: 20px 25px; font-size: 18px; font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
-	.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; margin: 10px; transition: all .5s; }
-	.faq_area .item:hover { background-color: #F0F0F0; }
-	.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between; }
-	.faq_area .item .title i { color: var(--color_theme); }
-	.faq_area .item .title h3 { font-size: 14px; }
-	.faq_area .item .content { text-align: left; margin: 10px; padding: 10px; }
+	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
+	div.faq_area .description{padding: var(--dmp_xs) var(--dmp);}
+	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
+	div.faq_area .faq_items { padding: 0 var(--dmp); }
+	div.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; transition: all .5s; }
+	div.faq_area .item:hover { background-color: #F0F0F0; }
+	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between; }
+	div.faq_area .item .title i { color: var(--color_theme); }
+	div.faq_area .item .title h3 { font-size: var(--fs); }
+	div.faq_area .item .content { padding: var(--dmp_xs) var(--dmp); }
+	.mep_smart_theme .faq_area { background-color: #F8FAFC; padding: var(--dmp); border-radius: 10px; }
+	.mep_smart_theme .faq_area h2 { font-size: var(--fs_h3);background: transparent; }
+	.mep_smart_theme .faq_area .faq_items { margin-top: var(--dmp); padding: 0;}
+	.mep_smart_theme .faq_area .faq_items .item { padding: var(--dmp_xs); margin: var(--dmp) 0 0 0;box-shadow: 0 0 5px #DDDDDD; border-radius: 10px; }
+	.mep_smart_theme .faq_area .faq_items .item .title h3 { font-size: var(--fs_h6); }
+	/****************/
 	.mep-event-faq-part { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 0px 1px rgba(0, 0, 0, 0.08); }
 	.mep-event-faq-part .faq-body .mep-event-faq-set { margin-bottom: 10px; border-radius: 8px; overflow: hidden; border-bottom: 1px solid #EAEAEA; }
 	.mep-event-faq-part .faq-body .mep-event-faq-set:last-child { border-bottom: 0; }
@@ -297,15 +297,6 @@
 	.mep-event-faq-part .mep-event-faq-set > a i { float: right; margin-top: 2px; }
 	.mep-event-faq-part .mep-event-faq-set > a.active { background-color: #F5F5F5; color: #000; }
 	.mep-event-faq-part .mep-event-faq-content { background-color: #FFF; border: 1px solid #F5F5F5; padding: 10px; display: none; }
-	.mep_smart_theme .faq_area { background-color: #F8FAFC; text-align: center; margin: 40px auto; padding: 10px; border-radius: 10px; }
-	.mep_smart_theme .faq_area h2 { font-size: 24px; }
-	.mep_smart_theme .faq_area .desc { width: auto; color: #666; font-size: 18px; line-height: 30px; }
-	.mep_smart_theme .faq_area .faq_items { margin-top: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px; }
-	.mep_smart_theme .faq_area .faq_items .item { width: 100%; background-color: #FFF; padding: 10px; box-shadow: 0 0 5px #DDDDDD; border-radius: 10px; }
-	.mep_smart_theme .faq_area .faq_items .item .title { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
-	.mep_smart_theme .faq_area .faq_items .item .title h3 { font-size: 16px; margin: 0; }
-	.mep_smart_theme .faq_area .faq_items .item .title i { color: var(--color_theme); }
-	.mep_smart_theme .faq_area .faq_items .item .content { display: none; text-align: left; padding: 20px; }
 }
 /* **********************************************************TAG******************** */
 @media only screen and (min-width: 10px) {
@@ -758,7 +749,6 @@
 button.mep-cat-control,
 .pagination-sec a { background: var(--color_theme); color: var(--color_7);}
 .mep_more_date_btn:before { background: var(--color_theme); border-color: var(--color_theme);}
-.mep-default-feature-cart-sec h3,
 .mep-tem3-title-sec,
 .ex-sec-title { background: var(--color_theme); color: var(--color_7);}
 .button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border-color: var(--color_theme);}

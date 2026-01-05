@@ -109,7 +109,7 @@
 						?>
                         <div class="_infoLayout_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                             <div class="date_item">
-                                <a class="<?php echo esc_attr( strtotime( $date ) == strtotime( $only_upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $date ) ); ?></a>
+                                <a class="_fw_500 <?php echo esc_attr( strtotime( $date ) == strtotime( $only_upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $date ) ); ?></a>
 								<?php if ( sizeof( $all_times ) ) {
 									foreach ( $all_times as $times ) {
 										$time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
@@ -121,7 +121,7 @@
 												$time      = MPWEM_Global_Function::date_format( $full_date, 'time' );
 												$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $full_date ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 												?>
-                                                <a class="<?php echo esc_attr( strtotime( $full_date ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( $label ? $label . '(' . $time . ')' : $time ) ?></a>
+                                                <a class="_ml <?php echo esc_attr( strtotime( $full_date ) == strtotime( $upcoming_date ) ? '_textTheme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( $label ? $label . '(' . $time . ')' : $time ) ?></a>
 												<?php
 											}
 										}

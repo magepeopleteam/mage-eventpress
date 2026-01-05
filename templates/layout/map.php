@@ -10,16 +10,16 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$event_infos         = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$map_status          = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
-	$mep_org_address     = array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
-	$venue_value         = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
-	$is_virtual          = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
-	$general_setting_sec = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
-	$general_setting_sec = is_array( $general_setting_sec ) && ! empty( $general_setting_sec ) ? $general_setting_sec : [];
-	$map_api             = array_key_exists( 'google-map-api', $general_setting_sec ) ? $general_setting_sec['google-map-api'] : '';
-	$map_type            = array_key_exists( 'mep_google_map_type', $general_setting_sec ) ? $general_setting_sec['mep_google_map_type'] : 'iframe';
-	$map_zoom            = array_key_exists( 'mep_google_map_zoom_level', $general_setting_sec ) ? $general_setting_sec['mep_google_map_zoom_level'] : '17';
+	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$map_status                = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
+	$mep_org_address           = array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
+	$venue_value               = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
+	$is_virtual                = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
+	$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+	$general_setting_sec       = is_array( $general_setting_sec ) && ! empty( $general_setting_sec ) ? $general_setting_sec : [];
+	$map_api                   = array_key_exists( 'google-map-api', $general_setting_sec ) ? $general_setting_sec['google-map-api'] : '';
+	$map_type                  = array_key_exists( 'mep_google_map_type', $general_setting_sec ) ? $general_setting_sec['mep_google_map_type'] : 'iframe';
+	$map_zoom                  = array_key_exists( 'mep_google_map_zoom_level', $general_setting_sec ) ? $general_setting_sec['mep_google_map_zoom_level'] : '17';
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';

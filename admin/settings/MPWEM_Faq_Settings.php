@@ -47,7 +47,7 @@
                     </div>
                     <div class="mpPopup right_popup mpwem_faq_popup" data-popup="#mpwem_faq_popup">
                         <div class="popupMainArea">
-                            <span class="fas fa-times popupClose"></span>
+                            <span class="fas fa-times popup_close"></span>
                             <div class="popupBody faq_input">
 								<?php //$this->mpwem_load_timeline(); ?>
                             </div>

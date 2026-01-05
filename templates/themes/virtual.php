@@ -21,19 +21,16 @@
     <div class="content_area">
         <div class="mep-default-content">
 			<?php do_action( 'mpwem_custom_slider', $event_id, $event_infos ); ?>
-	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
-	        <?php do_action( 'mpwem_timeline', $event_id ); ?>
-            <div class="mep-default-feature-cart-sec">
-				<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
-            </div>
-			<?php do_action( 'mpwem_faq', $event_id ); ?>
+			<?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
+			<?php do_action( 'mpwem_timeline', $event_id ); ?>
+			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
+			<?php do_action( 'mpwem_faq', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_template_footer', $event_id ); ?>
         </div>
         <div class="mep-default-sidebar">
             <div class="df-sidebar-part">
 				<?php do_action( 'mpwem_organizer', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
-				
 				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
                         <h5 class="_mB_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
@@ -57,5 +54,6 @@
             </div>
         </div>
     </div>
-	<?php do_action( 'mpwem_related', $event_id ); ?>
+	<?php do_action( 'mpwem_related', $event_id,$event_infos ); ?>
+	<?php do_action( 'mpwem_template_footer', $event_id ); ?>
 </div>

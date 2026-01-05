@@ -48,7 +48,7 @@
 								<label class="min_300">
 									<input type="text" class="formControl name_validation" name="mpwem_select_icon_name" placeholder="<?php esc_attr_e('Icon/class name....', 'mage-eventpress'); ?>" />
 								</label>
-								<span class="fas fa-times popupClose"></span>
+								<span class="fas fa-times popup_close"></span>
 							</div>
 							<div class="popupBody">
 								<?php

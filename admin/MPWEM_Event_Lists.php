@@ -323,7 +323,7 @@
 									<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
                                 </div>
                             </div>
-                            <span class="fas fa-times popupClose"></span>
+                            <span class="fas fa-times popup_close"></span>
                         </div>
                         <div class="popupBody mpwem_popup_attendee_statistic_body ">
 							<?php $this->popup_static_list( $post_id, $date ); ?>

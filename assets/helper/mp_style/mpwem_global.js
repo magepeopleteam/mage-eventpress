@@ -474,21 +474,21 @@ function mpwem_sticky_management() {
             });
         });
     }
-    $(document).on('click', '.mpwem_style .mpTabsNext .nextTab_prev_link', function () {
-        let parent = $(this).closest('.mpTabsNext');
+    $(document).on('click', '.mpwem_style .tabs_next .nextTab_prev_link', function () {
+        let parent = $(this).closest('.tabs_next');
         if (parent.find('[data-tabs-target-next].active').length > 1) {
             parent.find('.nextTab_prev').trigger('click');
         }
     });
-    $(document).on('click', '.mpwem_style .mpTabsNext .nextTab_next', function () {
-        let parent = $(this).closest('.mpTabsNext');
+    $(document).on('click', '.mpwem_style .tabs_next .nextTab_next', function () {
+        let parent = $(this).closest('.tabs_next');
         let target = parent.find('.tabListsNext:first');
         let num_of_tab = target.children('[data-tabs-target-next].active').length + 1;
         let targetTab = target.children('[data-tabs-target-next]:nth-child(' + num_of_tab + ')').data('tabs-target-next');
         active_next_tab(parent, targetTab);
     });
-    $(document).on('click', '.mpwem_style .mpTabsNext .nextTab_prev', function () {
-        let parent = $(this).closest('.mpTabsNext');
+    $(document).on('click', '.mpwem_style .tabs_next .nextTab_prev', function () {
+        let parent = $(this).closest('.tabs_next');
         let target = parent.find('.tabListsNext:first');
         let num_of_tab = target.children('[data-tabs-target-next].active').length - 1;
         let targetTab = target.children('[data-tabs-target-next]:nth-child(' + num_of_tab + ')').data('tabs-target-next');
@@ -501,7 +501,7 @@ function mpwem_sticky_management() {
             let targetTab = activeTab.length > 0 ? activeTab : tabLists.find('[data-tabs-target]').first();
             targetTab.trigger('click');
         });
-        $('.mpwem_style .mpTabsNext').each(function () {
+        $('.mpwem_style .tabs_next').each(function () {
             let parent = $(this);
             if (parent.find('[data-tabs-target-next].active').length < 1) {
                 mpwem_loader(parent);
@@ -805,7 +805,7 @@ function mpwem_load_more_scroll(parent, pagination_page) {
             return true;
         });
     });
-    $(document).on('click', 'div.mpPopup  .popupClose', function () {
+    $(document).on('click', 'div.mpPopup  .popup_close', function () {
         $(this).closest('[data-popup]').removeClass('in');
         $('body').removeClass('noScroll').find('[data-active-popup]').removeAttr('data-active-popup');
         return true;
@@ -896,7 +896,7 @@ function mpwem_load_more_scroll(parent, pagination_page) {
             loadBgImage();
         });
     });
-    $(document).on('click', '.superSlider .popupClose', function () {
+    $(document).on('click', '.superSlider .popup_close', function () {
         $(this).closest('[data-popup]').removeClass('in');
         $('body').removeClass('noScroll');
     });

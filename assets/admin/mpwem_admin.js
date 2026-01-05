@@ -373,7 +373,7 @@ function mpwem_initWpEditor(id) {
         e.preventDefault();
         let parent = $(this).closest('.mpwem_timeline_popup');
         mpwem_timeline_save(parent);
-        parent.find('.popupClose').trigger('click');
+        parent.find('.popup_close').trigger('click');
     });
     $(document).on('click', 'div.mpwem_timeline_settings .mpwem_timeline_remove', function (e) {
         e.preventDefault();
@@ -498,7 +498,7 @@ function mpwem_initWpEditor(id) {
         e.preventDefault();
         let parent = $(this).closest('.mpwem_faq_popup');
         mpwem_faq_save(parent);
-        parent.find('.popupClose').trigger('click');
+        parent.find('.popup_close').trigger('click');
     });
     $(document).on('click', 'div.mpwem_faq_settings .mpwem_faq_remove', function (e) {
         e.preventDefault();
@@ -600,7 +600,7 @@ function mpwem_load_sortable_datepicker(parent, item) {
                 parent.find('.mpwem_icon_item').slideDown('fast');
                 parent.find('[data-add-icon]').removeAttr('class').addClass(icon_class);
                 target_popup.find('.iconItem').removeClass('active');
-                target_popup.find('.popupClose').trigger('click');
+                target_popup.find('.popup_close').trigger('click');
             }
         });
         target_popup.find('[data-icon-menu]').click(function () {
@@ -624,7 +624,7 @@ function mpwem_load_sortable_datepicker(parent, item) {
             }
             return false;
         });
-        target_popup.find('.popupClose').click(function () {
+        target_popup.find('.popup_close').click(function () {
             target_popup.find('[data-icon-menu="all_item"]').trigger('click');
             target_popup.find('.iconItem').removeClass('active');
         });

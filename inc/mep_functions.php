@@ -2921,96 +2921,7 @@
 		}
 		return $more_date;
 	}
-	add_action( 'mep_event_everyday_date_list_display', 'mep_re_event_everyday_date_list_display' );
-	function mep_re_event_everyday_date_list_display( $event_id, $type = 'display' ) {
-		$time_status             = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
-		$global_time_slots       = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
-		$global_off_days         = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
-		$global_off_dates        = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
-		$event_start_date        = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
-		$event_end_date          = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
-		$interval                = get_post_meta( $event_id, 'mep_repeated_periods', true ) ? get_post_meta( $event_id, 'mep_repeated_periods', true ) : 1;
-		$period                  = mep_re_get_repeted_event_period_date_arr( $event_start_date, $event_end_date, $interval );
-		$global_on_days_arr      = [];
-		$show_end_date           = get_post_meta( $event_id, 'mep_show_end_datetime', true ) ? get_post_meta( $event_id, 'mep_show_end_datetime', true ) : 'yes';
-		$end_date_display_status = apply_filters( 'mep_event_datetime_status', $show_end_date, $event_id );
-		$the_recurring_dates     = [];
-		foreach ( $period as $key => $value ) {
-			//  print_r($value);
-			$global_on_days_arr[] = $value->format( 'Y-m-d' );
-		}
-		$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
-		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
-		// code by user
-		$special_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
-		// print_r($special_dates);
-		if ( is_array( $special_dates ) ) {
-			$now = strtotime( current_time( 'Y-m-d' ) );
-			foreach ( $special_dates as $special_date ) {
-				if ( empty( $special_date['start_date'] ) || $now > strtotime( $special_date['start_date'] ) ) {
-					continue;
-				}
-				// Not today
-				if ( $now < strtotime( $special_date['start_date'] ) ) {
-					$global_on_days_arr[] = date( 'Y-m-d', strtotime( $special_date['start_date'] ) );
-					continue;
-				}
-				// Today, check time
-				if ( isset( $special_date['time'] ) && is_array( $special_date['time'] ) ) {
-					foreach ( $special_date['time'] as $sd_time ) {
-						if ( empty( $sd_time['mep_ticket_time'] ) ) {
-							continue;
-						}
-						$time_str       = $special_date['start_date'] . ' ' . $sd_time['mep_ticket_time'] . ' ' . wp_timezone_string();
-						$event_php_time = strtotime( $time_str );
-						if ( time() < $event_php_time ) {
-							$global_on_days_arr[] = date( 'Y-m-d', strtotime( $special_date['start_date'] ) );
-						}
-					}
-				}
-			}
-		}
-		sort( $global_on_days_arr );
-		$event_date_display_list = mep_re_get_the_upcomming_date_arr( $event_id );
-		foreach ( $event_date_display_list as $every_day ) {
-			$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
-			if ( ! in_array( $event_day, $global_off_days ) ) {
-				$the_recurring_dates[] = $every_day;
-				if ( $type == 'display' ) {
-					if ( $time_status == 'no' ) {
-						$start_date     = $every_day;
-						$end_date       = $every_day;
-						$start_time     = get_post_meta( $event_id, 'event_start_time', true ) ? get_post_meta( $event_id, 'event_start_time', true ) : '';
-						$end_time       = get_post_meta( $event_id, 'event_end_time', true ) ? get_post_meta( $event_id, 'event_end_time', true ) : '';
-						$start_datetime = $every_day . ' ' . $start_time;
-						$end_datetime   = $every_day . ' ' . $end_time;
-						require( mep_template_file_path( 'single/date_list.php' ) );
-					} elseif ( $time_status == 'yes' ) {
-						?>
-                        <li>
-                            <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $every_day ) ); ?>">
-                                <span class="mep-more-date"><?php echo get_mep_datetime( $every_day, 'date-text' ); ?></span>
-                                <span class='mep-more-time'>
-                            <?php
-	                            $calender_day = strtolower( date( 'D', strtotime( $every_day ) ) );
-	                            $day_name     = 'mep_ticket_times_' . $calender_day;
-	                            $time         = get_post_meta( $event_id, $day_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : maybe_unserialize( $global_time_slots );
-	                            $time_list    = [];
-	                            foreach ( $time as $_time ) { ?>
-                                    <span class="time"><?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime( $_time['mep_ticket_time'], 'time' ) . ')'; ?></span>
-	                            <?php } ?>
-                        </span>
-                            </a>
-                        </li>
-						<?php
-					}
-				}
-			}
-		}
-		if ( $type == 'array' ) {
-			return $the_recurring_dates;
-		}
-	}
+
 	function mep_re_get_the_upcomming_date_arr( $event_id ) {
 		$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
@@ -4122,6 +4033,131 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
 				<?php
 			}
 			die();
+		}
+	}
+	add_action( 'mep_event_everyday_date_list_display', 'mep_re_event_everyday_date_list_display' );
+	function mep_re_event_everyday_date_list_display( $event_id, $type = 'display' ) {
+		$time_status             = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
+		$global_time_slots       = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
+		$global_off_days         = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : [];
+		$global_off_dates        = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
+		$event_start_date        = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
+		$event_end_date          = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
+		$interval                = get_post_meta( $event_id, 'mep_repeated_periods', true ) ? get_post_meta( $event_id, 'mep_repeated_periods', true ) : 1;
+		$period                  = mep_re_get_repeted_event_period_date_arr( $event_start_date, $event_end_date, $interval );
+		$global_on_days_arr      = [];
+		$show_end_date           = get_post_meta( $event_id, 'mep_show_end_datetime', true ) ? get_post_meta( $event_id, 'mep_show_end_datetime', true ) : 'yes';
+		$end_date_display_status = apply_filters( 'mep_event_datetime_status', $show_end_date, $event_id );
+		$the_recurring_dates     = [];
+		foreach ( $period as $key => $value ) {
+			//  print_r($value);
+			$global_on_days_arr[] = $value->format( 'Y-m-d' );
+		}
+		$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
+		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
+		// code by user
+		$special_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_special_date_info', [] );
+		// print_r($special_dates);
+		if ( is_array( $special_dates ) ) {
+			$now = strtotime( current_time( 'Y-m-d' ) );
+			foreach ( $special_dates as $special_date ) {
+				if ( empty( $special_date['start_date'] ) || $now > strtotime( $special_date['start_date'] ) ) {
+					continue;
+				}
+				// Not today
+				if ( $now < strtotime( $special_date['start_date'] ) ) {
+					$global_on_days_arr[] = date( 'Y-m-d', strtotime( $special_date['start_date'] ) );
+					continue;
+				}
+				// Today, check time
+				if ( isset( $special_date['time'] ) && is_array( $special_date['time'] ) ) {
+					foreach ( $special_date['time'] as $sd_time ) {
+						if ( empty( $sd_time['mep_ticket_time'] ) ) {
+							continue;
+						}
+						$time_str       = $special_date['start_date'] . ' ' . $sd_time['mep_ticket_time'] . ' ' . wp_timezone_string();
+						$event_php_time = strtotime( $time_str );
+						if ( time() < $event_php_time ) {
+							$global_on_days_arr[] = date( 'Y-m-d', strtotime( $special_date['start_date'] ) );
+						}
+					}
+				}
+			}
+		}
+		sort( $global_on_days_arr );
+		$event_date_display_list = mep_re_get_the_upcomming_date_arr( $event_id );
+		foreach ( $event_date_display_list as $every_day ) {
+			$event_day = strtolower( date( 'D', strtotime( $every_day ) ) );
+			if ( ! in_array( $event_day, $global_off_days ) ) {
+				$the_recurring_dates[] = $every_day;
+				if ( $type == 'display' ) {
+					if ( $time_status == 'no' ) {
+						$start_date     = $every_day;
+						$end_date       = $every_day;
+						$start_time     = get_post_meta( $event_id, 'event_start_time', true ) ? get_post_meta( $event_id, 'event_start_time', true ) : '';
+						$end_time       = get_post_meta( $event_id, 'event_end_time', true ) ? get_post_meta( $event_id, 'event_end_time', true ) : '';
+						$start_datetime = $every_day . ' ' . $start_time;
+						$end_datetime   = $every_day . ' ' . $end_time;
+						$theme = get_post_meta($event_id,'mep_event_template',true);
+						$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt'); ?>
+						<?php if ($start_date != $end_date) : ?>
+                            <li>
+								<?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>
+                                <div class="mep-more-date">
+                                    <p class='mep_date_scdl_start_datetime'>
+										<?php echo esc_html(get_mep_datetime($start_datetime, 'date-text')); ?>
+										<?php echo esc_html('-'.get_mep_datetime($start_datetime, 'time')); ?>
+                                    </p>
+                                    <p>
+										<?php echo esc_html(get_mep_datetime($end_datetime, 'date-text')); ?>
+										<?php if ($end_date_display_status == 'yes') { ?>
+											<?php echo esc_html('-'.get_mep_datetime($end_datetime, 'time')); ?>
+										<?php } ?>
+                                    </p>
+                                </div>
+								<?php do_action('mep_single_after_event_date_list_item',$event_id,$start_datetime); ?>
+                            </li>
+						<?php else: ?>
+                            <li>
+								<?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>
+                                <div class="mep-more-date">
+                                    <p class='mep_date_scdl_start_datetime'>
+										<?php echo esc_html(get_mep_datetime($start_datetime, 'date-text')); ?>
+                                    </p>
+                                    <p>
+										<?php echo esc_html(get_mep_datetime($start_datetime, 'time')); ?>
+										<?php if ($end_date_display_status == 'yes') { ?>
+											<?php echo esc_html('-'.get_mep_datetime($end_datetime, 'time')); ?>
+										<?php } ?>
+                                    </p>
+                                </div>
+								<?php do_action('mep_single_after_event_date_list_item',$event_id,$start_datetime); ?>
+                            </li>
+						<?php endif;
+					} elseif ( $time_status == 'yes' ) {
+						?>
+                        <li>
+                            <a href="<?php echo get_the_permalink( $event_id ) . esc_attr( '?date=' . strtotime( $every_day ) ); ?>">
+                                <span class="mep-more-date"><?php echo get_mep_datetime( $every_day, 'date-text' ); ?></span>
+                                <span class='mep-more-time'>
+                            <?php
+	                            $calender_day = strtolower( date( 'D', strtotime( $every_day ) ) );
+	                            $day_name     = 'mep_ticket_times_' . $calender_day;
+	                            $time         = get_post_meta( $event_id, $day_name, true ) ? maybe_unserialize( get_post_meta( $event_id, $day_name, true ) ) : maybe_unserialize( $global_time_slots );
+	                            $time_list    = [];
+	                            foreach ( $time as $_time ) { ?>
+                                    <span class="time"><?php echo $_time['mep_ticket_time_name'] . '( ' . get_mep_datetime( $_time['mep_ticket_time'], 'time' ) . ')'; ?></span>
+	                            <?php } ?>
+                        </span>
+                            </a>
+                        </li>
+						<?php
+					}
+				}
+			}
+		}
+		if ( $type == 'array' ) {
+			return $the_recurring_dates;
 		}
 	}
 /******************** Remove upper function after 2025**********************/

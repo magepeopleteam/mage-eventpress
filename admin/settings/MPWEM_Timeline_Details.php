@@ -12,11 +12,8 @@
 			public function __construct() {
 				add_action( 'mpwem_event_tab_setting_item', [ $this, 'timeline_tab_content' ] );
 				add_action( 'wp_ajax_mpwem_load_timeline', array( $this, 'mpwem_load_timeline' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_timeline', array( $this, 'mpwem_load_timeline' ) );
 				add_action( 'wp_ajax_mpwem_save_timeline', array( $this, 'mpwem_save_timeline' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_save_timeline', array( $this, 'mpwem_save_timeline' ) );
 				add_action( 'wp_ajax_mpwem_remove_timeline', array( $this, 'mpwem_remove_timeline' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_remove_timeline', array( $this, 'mpwem_remove_timeline' ) );
 			}
 
 			public function timeline_tab_content( $post_id ) {

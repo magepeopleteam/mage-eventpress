@@ -413,7 +413,6 @@
 				}
 				/********************/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$pid                          = $post_id;
 					$event_rt_status              = sanitize_text_field( $_POST['mep_rt_event_status'] );
 					$event_rt_atdnce_mode         = sanitize_text_field( $_POST['mep_rt_event_attandence_mode'] );
 					$event_rt_prv_date            = sanitize_text_field( $_POST['mep_rt_event_prvdate'] );
@@ -425,10 +424,10 @@
 					update_post_meta( $post_id, 'mep_rt_event_status', $event_rt_status );
 					update_post_meta( $post_id, 'mep_rt_event_attandence_mode', $event_rt_atdnce_mode );
 					update_post_meta( $post_id, 'mep_rt_event_prvdate', $event_rt_prv_date );
-					update_post_meta( $pid, 'mep_event_template', $mep_event_template );
-					update_post_meta( $pid, '_stock', $seat );
+					update_post_meta( $post_id, 'mep_event_template', $mep_event_template );
+					update_post_meta( $post_id, '_stock', $seat );
 					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? htmlspecialchars( mage_array_strip( $_POST['mp_event_virtual_type_des'] ) ) : "";
-					update_post_meta( $pid, 'mp_event_virtual_type_des', $mp_event_virtual_type_des );
+					update_post_meta( $post_id, 'mp_event_virtual_type_des', $mp_event_virtual_type_des );
 				}
 				$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_show_upcoming_event'] ) ) : '';
 				update_post_meta( $post_id, 'mep_show_upcoming_event', $mep_show_upcoming_event );

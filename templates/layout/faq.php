@@ -11,7 +11,7 @@
 	$faq_description = get_post_meta($event_id,'mep_faq_description',true);
 	$faq_description = $faq_description?: '';
 
-	if ( $faqs && sizeof( $faqs ) > 0 ) {
+	if ( $faqs && is_array($faqs) && sizeof( $faqs ) > 0 ) {
 		//echo '<pre>';print_r( $faqs );echo '</pre>';
 		?>
         <div class="faq_area">

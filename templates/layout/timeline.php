@@ -23,7 +23,7 @@
                         <div class="timeline_item _mT">
                             <span class="timeline_counter"><?php echo esc_html( $counter ); ?></span>
                             <div class="timeline_content">
-                                <h6 class="_fullWidth justifyBetween alignCenter" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
+                                <h6 class="_fullWidth justify_between alignCenter" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
                                     <span><?php echo esc_html( $title ); ?></span>
                                     <span class="timeline_time"><?php echo esc_html( $time ); ?>
                                 </h6>

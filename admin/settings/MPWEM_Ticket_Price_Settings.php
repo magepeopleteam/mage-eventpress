@@ -216,7 +216,7 @@
 			public function event_view_shortcode( $post_id ) {
 				?>
                 <div class="_padding ">
-                    <label class=" _justifyBetween_alignCenter_wrap">
+                    <label class=" _justify_between_alignCenter_wrap">
                         <span><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
                         <code> [event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
                     </label>
@@ -229,7 +229,7 @@
 				$checked        = $mep_reg_status == 'on' ? 'checked' : '';
 				?>
                 <div class="_padding_bT">
-                    <div class=" _justifyBetween_alignCenter_wrap">
+                    <div class=" _justify_between_alignCenter_wrap">
                         <label><span class="_mR"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
                     </div>
@@ -241,7 +241,7 @@
 				$checked = $show_category == 'off' ? '' : 'checked';
 				?>
                 <div class="_padding_bT">
-                    <div class=" _justifyBetween_alignCenter_wrap">
+                    <div class=" _justify_between_alignCenter_wrap">
                         <label><span class="_mR"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_advance_col_status', $checked ); ?>
                     </div>

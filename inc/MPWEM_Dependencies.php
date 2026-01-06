@@ -16,12 +16,10 @@
 				add_action( 'admin_head', array( $this, 'add_admin_head' ), 5 );
 				add_action( 'wp_head', array( $this, 'add_frontend_head' ), 5 );
 			}
-
 			public function language_load(): void {
 				$plugin_dir = basename( dirname( __DIR__ ) ) . "/languages/";
 				load_plugin_textdomain( 'mage-eventpress', false, $plugin_dir );
 			}
-
 			private function load_file(): void {
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
@@ -45,7 +43,6 @@
 				require_once( dirname( __DIR__ ) . "/inc/mep_low_stock_display.php" );
 				require_once( dirname( __DIR__ ) . "/inc/mep-expired-event-noindex.php" );
 			}
-
 			public function global_enqueue() {
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'jquery-ui-core' );
@@ -71,12 +68,15 @@
 					wp_enqueue_style( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.css', array(), '2.3.4' );
 					wp_enqueue_script( 'mp_owl_carousel', MPWEM_PLUGIN_URL . '/assets/helper/owl_carousel/owl.carousel.min.js', array( 'jquery' ), '2.3.4', true );
 				}
+				//slick
+				wp_enqueue_style( 'mpwem_slick', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick.css', array(), '1.8.1', 'all' );
+				wp_enqueue_script( 'mpwem_slick', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick.min.js', array( 'jquery' ), '1.8.1', false );
+				wp_enqueue_style( 'mpwem_slick_theme', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick_theme.css', array( 'mpwem_slick' ), '1.8.1' );
 				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
 				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
 				do_action( 'add_mpwem_common_script' );
-				wp_enqueue_style('mage-icons', MPWEM_PLUGIN_URL . '/assets/mage-icon/css/mage-icon.css', array(), time());
+				wp_enqueue_style( 'mage-icons', MPWEM_PLUGIN_URL . '/assets/mage-icon/css/mage-icon.css', array(), time() );
 			}
-
 			public function admin_enqueue( $hook ) {
 				wp_enqueue_editor();
 				wp_enqueue_script( 'jquery-ui-sortable' );
@@ -97,7 +97,7 @@
 				if ( $user_api ) {
 					wp_enqueue_script( 'gmap-libs', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $user_api ) . '&libraries=places&callback=initMap', array( 'jquery', 'gmap-scripts' ), 1, true );
 				}
-				//******************/
+
 				//loading pick plugin
 				wp_enqueue_style( 'mage-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.css' );
 				wp_enqueue_script( 'magepeople-options-framework', MPWEM_PLUGIN_URL . '/assets/helper/pick_plugin/mage-options-framework.js', array( 'jquery', 'wp-color-picker' ) );
@@ -125,7 +125,7 @@
 				//******************/
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				// Only load event lists scripts on relevant pages
-				if ( $hook == 'mep_events_page_mep_event_lists' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' &&  ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
+				if ( $hook == 'mep_events_page_mep_event_lists' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
 					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
 					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
 						'url'   => admin_url( 'admin-ajax.php' ),
@@ -141,19 +141,14 @@
 				/******************************/
 				do_action( 'add_mpwem_admin_script' );
 			}
-
 			public function frontend_enqueue() {
 				$this->global_enqueue();
-				//wp_enqueue_script('wc-checkout');
-				wp_enqueue_style( 'slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css', array(), '1.8.1' );
-				wp_enqueue_style( 'slick-carousel-theme', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css', array( 'slick-carousel' ), '1.8.1' );
-				wp_enqueue_script( 'slick-carousel', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array( 'jquery' ), '1.8.1', false );
 				//
 				wp_enqueue_script( 'mep-mixitup-min-js', 'https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.0/mixitup.min.js', array(), '3.3.0', true );
 				wp_enqueue_script( 'mep-countdown-js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js', array( 'jquery' ), 1, true );
 				wp_enqueue_script( 'mep-moment-js', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js', array(), 1, true );
 				//timeline
-				wp_enqueue_style( 'mep-event-timeline-min-style', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(), '1.0.0', 'all' );
+				wp_enqueue_style( 'mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.css', array(), '1.0.0', 'all' );
 				wp_enqueue_script( 'mep-timeline-min', MPWEM_PLUGIN_URL . '/assets/helper/timeline/timeline.min.js', array( 'jquery' ), 1, true );
 				//calender
 				wp_enqueue_style( 'mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array() );
@@ -165,21 +160,18 @@
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_nonce' ) ) );
 				do_action( 'add_mpwem_frontend_script' );
 			}
-
 			public function add_admin_head() {
 				$this->js_constant();
 			}
-
 			public function add_frontend_head() {
 				$this->js_constant();
 				$this->event_rich_text_data();
 				$this->add_open_graph_tags();
 			}
-
 			public function js_constant() {
 				?>
                 <script type="text/javascript">
-					let mp_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+                    let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
@@ -193,7 +185,6 @@
                 </script>
 				<?php
 			}
-
 			//This the function which will create the Rich Text Schema For each event into the <head></head> section.
 			public function event_rich_text_data() {
 				global $post;
@@ -236,40 +227,37 @@
                             "eventAttendanceMode"   : "https://schema.org/<?php echo esc_attr( $event_rt_atdnce_mode ); ?>",
                             "previousStartDate"     : "<?php echo esc_attr( $event_rt_prv_date ); ?>",
 
-                            "location"  : <?php 
-                                // Determine if this is an online/virtual event
-                                $location_data = MPWEM_Functions::get_location( $event_id );
-                                $location_display = '';
-                                
-                                // Get location/venue first
-                                if ( ! empty( $location_data['location'] ) ) {
-                                    $location_display = $location_data['location'];
-                                } else {
-                                    // If no location/venue, build from street + city
-                                    $location_parts = array();
-                                    if ( ! empty( $location_data['street'] ) ) {
-                                        $location_parts[] = $location_data['street'];
-                                    }
-                                    if ( ! empty( $location_data['city'] ) ) {
-                                        $location_parts[] = $location_data['city'];
-                                    }
-                                    if ( ! empty( $location_parts ) ) {
-                                        $location_display = implode( ' ', $location_parts );
-                                    }
-                                }
-                                
-                                // Check if event is virtual/online
-                                $is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
-                                
-                                if ( $is_online_event || $event_rt_atdnce_mode === 'OnlineEventAttendanceMode' ) {
-                                    // Output VirtualLocation for online events
-                                    echo '{
+                            "location"  : <?php
+									// Determine if this is an online/virtual event
+									$location_data    = MPWEM_Functions::get_location( $event_id );
+									$location_display = '';
+									// Get location/venue first
+									if ( ! empty( $location_data['location'] ) ) {
+										$location_display = $location_data['location'];
+									} else {
+										// If no location/venue, build from street + city
+										$location_parts = array();
+										if ( ! empty( $location_data['street'] ) ) {
+											$location_parts[] = $location_data['street'];
+										}
+										if ( ! empty( $location_data['city'] ) ) {
+											$location_parts[] = $location_data['city'];
+										}
+										if ( ! empty( $location_parts ) ) {
+											$location_display = implode( ' ', $location_parts );
+										}
+									}
+									// Check if event is virtual/online
+									$is_online_event = ! empty( $location_display ) && stripos( $location_display, 'virtual' ) !== false;
+									if ( $is_online_event || $event_rt_atdnce_mode === 'OnlineEventAttendanceMode' ) {
+										// Output VirtualLocation for online events
+										echo '{
                                         "@type"         : "VirtualLocation",
                                         "url"           : "' . esc_url( get_the_permalink( $event_id ) ) . '"
                                     }';
-                                } else {
-                                    // Output Place for physical events
-                                    echo '{
+									} else {
+										// Output Place for physical events
+										echo '{
                                         "@type"         : "Place",
                                         "name"          : "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'location' ) ) . '",
                                         "address"       : {
@@ -281,8 +269,8 @@
                                         "addressCountry": "' . esc_attr( MPWEM_Functions::get_location( $event_id, 'country' ) ) . '"
                                         }
                                     }';
-                                }
-                            ?>,
+									}
+								?>,
                             "image": [
                                 "<?php echo get_the_post_thumbnail_url( $event_id, 'full' ); ?>"
                             ],
@@ -299,7 +287,6 @@
 					}
 				}
 			}
-
 			// Add Open Graph meta tags for better social sharing
 			public function add_open_graph_tags() {
 				global $post;

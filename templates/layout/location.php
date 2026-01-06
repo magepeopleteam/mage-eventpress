@@ -37,11 +37,11 @@
                     <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
 					<?php if ( $map_status ) { ?>
 						<?php if ( $event_template == 'smart.php' ) { ?>
-                            <button type="button" class="_themeButton_mAuto" onclick="window.location.href = '#mpwem_map_area'">
+                            <button type="button" class="_button_theme_mAuto" onclick="window.location.href = '#mpwem_map_area'">
                                 <i class="<?php echo esc_attr( $location_icon ); ?> _mR_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
                             </button>
 						<?php } else { ?>
-                            <button type="button" class="_themeButton_mAuto" data-target-popup="mpwem_popup_map">
+                            <button type="button" class="_button_theme_mAuto" data-target-popup="mpwem_popup_map">
                                 <i class="<?php echo esc_attr( $location_icon ); ?> _mR_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
                             </button>
                             <div class="mpPopup" data-popup="mpwem_popup_map">

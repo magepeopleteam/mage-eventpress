@@ -62,8 +62,8 @@
 							$collapse_id = uniqid( 'mpwem_time_line' );
 							?>
                             <div class="_padding_border_mB_xs">
-                                <div class="justifyBetween alignCenter">
-                                    <h6 class="_fullWidth justifyBetween" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
+                                <div class="justify_between alignCenter">
+                                    <h6 class="_fullWidth justify_between" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
                                         <span><?php echo esc_html( $title ); ?></span>
                                         <span class="_pR_pL"><?php echo esc_html( $time ); ?>
                                     </h6>

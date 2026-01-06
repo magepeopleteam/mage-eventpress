@@ -16,11 +16,11 @@
     </div>
 	<?php if ( is_admin() && str_contains( wp_get_referer(), 'backend_order' ) ) { ?>
 		<?php do_action( 'mpwem_bo_hidden', $event_id ); ?>
-        <button type="submit" class="_themeButton">
+        <button type="submit" class="_button_theme">
 			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>
         </button>
 	<?php } else { ?>
-        <button type="button" class="_themeButton mpwem_book_now">
+        <button type="button" class="_button_theme mpwem_book_now">
             <i class='fa fa-shopping-cart _mR_xs'></i>
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>

@@ -405,7 +405,14 @@ function mpwem_initWpEditor(id) {
         let key = parent.find('[name="faq_item_key"]').val();
         let title = parent.find('[name="mep_faq_title"]').val();
         let des = $('body').find('[name="mep_faq_description"]').val();
-        let content = tinyMCE.get('mep_faq_content').getContent();
+
+        let content = '';
+
+        if (typeof tinyMCE !== 'undefined' && tinyMCE.get('custom_editor')) {
+            content = tinyMCE.get('mep_faq_content').getContent();
+        } else {
+            content = $('#mep_faq_content').val(); // fallback
+        }
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_faq_settings').find('.mpwem_faq_area');
         let popup_target = parent.find('.faq_input');

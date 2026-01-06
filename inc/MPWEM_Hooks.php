@@ -36,7 +36,7 @@
 				/**************************/
 				add_action( 'mpwem_faq', [ $this, 'faq' ], 10, 4 );
 				/**************************/
-				//add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
+				add_action( 'mpwem_related', [ $this, 'related' ], 10, 4 );
 				/**************************/
 				add_action( 'mpwem_social', [ $this, 'social' ], 10, 4 );
 				add_action( 'mep_event_social_share', [ $this, 'social' ], 10, 4 );

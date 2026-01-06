@@ -32,7 +32,7 @@
                             <span class="_mp_zero"><?php esc_html_e( 'FAQ Settings will be here.', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bB">
-                            <label class="justifyBetween">
+                            <label class="justify_between">
                                 <span class="_mR"><?php esc_html_e( 'FAQ Description', 'mage-eventpress' ); ?></span>
                                 <textarea class="formControl" name="mep_faq_description" rows="6" placeholder="Explore essential details and clear up any doubts about the event."><?php echo esc_textarea( $faq_des ); ?></textarea>
                             </label>
@@ -72,7 +72,7 @@
 							$collapse_id = uniqid( 'mpwem_faq' );
 							?>
                             <div class="_padding_border_mB_xs">
-                                <div class="justifyBetween alignCenter">
+                                <div class="justify_between alignCenter">
                                     <h6 class="_fullWidth" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>"><span><?php echo esc_html( $title ); ?></span></h6>
                                     <div class="buttonGroup">
                                         <button type="button" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" class="_mpBtn_xs_bgLight"><span class="fas fa-eye"></span></button>

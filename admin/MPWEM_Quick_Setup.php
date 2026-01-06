@@ -172,12 +172,12 @@
 									?>
                                 </div>
 								<?php if ( $status == 1 ) { ?>
-                                    <div class="justifyBetween">
+                                    <div class="justify_between">
                                         <button type="button" class="mpBtn nextTab_prev">
                                             <span>&longleftarrow;<?php esc_html_e( 'Previous', 'mage-eventpress' ); ?></span>
                                         </button>
                                         <div></div>
-                                        <button type="button" class="themeButton nextTab_next">
+                                        <button type="button" class="_button_theme nextTab_next">
                                             <span><?php esc_html_e( 'Next', 'mage-eventpress' ); ?>&longrightarrow;</span>
                                         </button>
                                     </div>
@@ -195,7 +195,7 @@
                     <h2><?php esc_html_e( 'Event Manager and Tickets Selling Plugin', 'mage-eventpress' ); ?></h2>
                     <p class="mTB_xs"><?php esc_html_e( 'Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
 ', 'mage-eventpress' ); ?></p>
-                    <div class="_dLayout_mT_alignCenter justifyBetween">
+                    <div class="_dLayout_mT_alignCenter justify_between">
                         <h5>
 							<?php if ( $status == 1 ) {
 								esc_html_e( 'Woocommerce already installed and activated', 'mage-eventpress' );
@@ -212,7 +212,7 @@
 						<?php } elseif ( $status == 0 ) { ?>
                             <button class="warningButton" type="submit" name="install_and_active_woo_btn"><?php esc_html_e( 'Install & Active Now', 'mage-eventpress' ); ?></button>
 						<?php } else { ?>
-                            <button class="themeButton" type="submit" name="active_woo_btn"><?php esc_html_e( 'Active Now', 'mage-eventpress' ); ?></button>
+                            <button class="_button_theme" type="submit" name="active_woo_btn"><?php esc_html_e( 'Active Now', 'mage-eventpress' ); ?></button>
 						<?php } ?>
                     </div>
                 </div>
@@ -285,7 +285,7 @@
                     <h2><?php esc_html_e( 'Finalize Setup', 'mage-eventpress' ); ?></h2>
                     <p class="mTB_xs"><?php esc_html_e( 'You are about to Finish & Save Events Booking Manager For Woocommerce Plugin setup process', 'mage-eventpress' ); ?></p>
                     <div class="mT allCenter">
-                        <button type="submit" name="finish_quick_setup" class="themeButton"><?php esc_html_e( 'Finish & Save', 'mage-eventpress' ); ?></button>
+                        <button type="submit" name="finish_quick_setup" class="_button_theme"><?php esc_html_e( 'Finish & Save', 'mage-eventpress' ); ?></button>
                     </div>
                 </div>
 				<?php

@@ -4161,3 +4161,29 @@ if ( $recurring == 'everyday' || $recurring == 'yes' ) {
 		}
 	}
 /******************** Remove upper function after 2025**********************/
+
+add_action('mpwem_expired_event_notice_after','mpwem_expired_event_notice_after');
+function mpwem_expired_event_notice_after($event_id){
+
+    $end_date   = get_post_meta($event_id,'event_expire_datetime',true);
+    $total_sold = MPWEM_Functions::get_total_sold( $event_id );
+    $formatted  = MPWEM_Global_Function::date_format( $end_date );
+    ?>
+    <div class="mpwem-expired-card">
+        <div class="mpwem-expired-title">
+            ❌ <?php _e('Event Expired','mage-eventpress'); ?>
+        </div>
+        <div class="mpwem-expired-date">
+            <?php _e('This event expired on','mage-eventpress'); ?>
+            <span class="mpwem-date-highlight">
+                <?php echo esc_html($formatted); ?>
+            </span>
+        </div>
+
+        <div class="mpwem-total-sold-badge">
+            🎟 <?php _e('Total tickets sold','mage-eventpress'); ?>:
+            <?php echo esc_html($total_sold); ?>
+        </div>
+    </div>
+    <?php
+}

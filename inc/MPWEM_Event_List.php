@@ -56,6 +56,10 @@
 					<?php
 				} else {
 					$event_list_setting_sec=MPWEM_Global_Function::data_sanitize( get_option( 'event_list_setting_sec' ) );
+					// PHP 8+ compatibility: ensure $event_list_setting_sec is an array
+					if ( ! is_array( $event_list_setting_sec ) ) {
+						$event_list_setting_sec = [];
+					}
 					$show_price                     = array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
 					$hide_org_list                  = array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
 					$hide_location_list             = array_key_exists( 'mep_event_hide_location_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_location_list'] : 'no';

@@ -35,7 +35,7 @@
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Date and Time Settings Here', 'mage-eventpress' ); ?></span>
                     </div>
                     <div class="_padding_bT">
-                        <label class="_justifyBetween_alignCenter_wrap ">
+                        <label class="_justify_between_alignCenter_wrap ">
                             <span class="_mR"><?php esc_html_e( 'Event Date Type', 'mage-eventpress' ); ?></span>
                             <select class="formControl" name="mep_enable_recurring" data-collapse-target required>
                                 <option disabled selected><?php esc_html_e( 'Please select ...', 'mage-eventpress' ); ?></option>
@@ -47,7 +47,7 @@
                         <span class="label-text"><?php esc_html_e( 'Select your event Date type', 'mage-eventpress' ); ?></span>
                     </div>
                     <div class="_padding_bT">
-                        <label class="_justifyBetween_alignCenter_wrap">
+                        <label class="_justify_between_alignCenter_wrap">
                             <span class="_mR"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
                             <input type="number" class="formControl max_100 number_validation" name='mep_buffer_time' value='<?php echo esc_attr( $buffer_time ); ?>'/>
                         </label>
@@ -230,7 +230,7 @@
 				$periods    = MPWEM_Global_Function::get_post_info( $post_id, 'mep_repeated_periods', 1 );
 				?>
                 <div class="_padding_bT">
-                    <div class="_justifyBetween_alignCenter_wrap ">
+                    <div class="_justify_between_alignCenter_wrap ">
                         <label><span class="_mR"><?php esc_html_e( 'Start Date & Time', 'mage-eventpress' ); ?></span></label>
                         <div class="dFlex">
 							<?php self::date_item( 'event_start_date_everyday', $start_date ); ?>
@@ -240,7 +240,7 @@
                     <span class="label-text"><?php esc_html_e( 'Select Start Date & Time', 'mage-eventpress' ); ?></span>
                 </div>
                 <div class="_padding_bT">
-                    <div class="_justifyBetween_alignCenter_wrap ">
+                    <div class="_justify_between_alignCenter_wrap ">
                         <label><span class="_mR"><?php esc_html_e( 'End Date & Time', 'mage-eventpress' ); ?></span></label>
                         <div class="dFlex">
 							<?php self::date_item( 'event_end_date_everyday', $end_date ); ?>
@@ -250,7 +250,7 @@
                     <span class="label-text"><?php esc_html_e( 'Select End Date & Time', 'mage-eventpress' ); ?></span>
                 </div>
                 <div class="_padding_bT">
-                    <label class="_justifyBetween_alignCenter_wrap ">
+                    <label class="_justify_between_alignCenter_wrap ">
                         <span class="_mR"><?php esc_html_e( 'After Repeated Days', 'mage-eventpress' ); ?></span>
                         <input type="number" class="formControl max_100 number_validation" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/>
                     </label>
@@ -272,7 +272,7 @@
 				$days     = MPWEM_Global_Function::week_day();
 				?>
                 <div class="_padding_bT">
-                    <div class=" _justifyBetween_alignCenter_wrap">
+                    <div class=" _justify_between_alignCenter_wrap">
                         <label><span class="_mR"><?php esc_html_e( 'Ticket Off days Setting', 'mage-eventpress' ); ?></span></label>
                         <div class="_dFlex groupCheckBox">
                             <input type="hidden" name="mep_ticket_offdays" value="<?php echo esc_attr( $off_days ); ?>"/>
@@ -287,7 +287,7 @@
                     <span class="label-text"><?php esc_html_e( 'Select Off days', 'mage-eventpress' ); ?></span>
                 </div>
                 <div class="_padding_bT">
-                    <div class="justifyBetween">
+                    <div class="justify_between">
                         <div class="fdColumn">
                             <label><span><?php esc_html_e( 'Ticket Off Dates Setting', 'mage-eventpress' ); ?></span></label>
                             <span class="label-text"><?php esc_html_e( 'Configure Tour Off Dates', 'mage-eventpress' ); ?></span>

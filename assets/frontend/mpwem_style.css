@@ -160,12 +160,12 @@
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
-	div.mpwem_organizer h5 { color: var(--color_white) !important;}
+	div.mpwem_organizer h5 { color: var(--color_white);}
 	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
 	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
 	div.mep_smart_theme .mpwem_organizer,
 	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
-	div.mep_smart_theme .mpwem_organizer h5 { margin: 0; }
+	div.mep_smart_theme .mpwem_organizer h5 { margin: 0;color: var(--color_theme); }
 }
 /* **************************************************************timeline******************** */
 @media only screen and (min-width: 10px) {
@@ -270,14 +270,14 @@
 /* **********************************************************F.A.Q******************** */
 @media only screen and (min-width: 10px) {
 	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
-	div.faq_area .description{padding: var(--dmp_xs) var(--dmp);}
+	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
 	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
 	div.faq_area .faq_items { padding: 0 var(--dmp); }
 	div.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; transition: all .5s; }
 	div.faq_area .item:hover { background-color: #F0F0F0; }
 	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between; }
 	div.faq_area .item .title i { color: var(--color_theme); }
-	div.faq_area .item .title h3 { font-size: var(--fs); }
+	div.faq_area .item .title h3 { font-size: var(--fs);margin: 0; }
 	div.faq_area .item .content { padding: var(--dmp_xs) var(--dmp); }
 	.mep_smart_theme .faq_area { background-color: #F8FAFC; padding: var(--dmp); border-radius: 10px; }
 	.mep_smart_theme .faq_area h2 { font-size: var(--fs_h3);background: transparent; }
@@ -285,7 +285,7 @@
 	.mep_smart_theme .faq_area .faq_items .item { padding: var(--dmp_xs); margin: var(--dmp) 0 0 0;box-shadow: 0 0 5px #DDDDDD; border-radius: 10px; }
 	.mep_smart_theme .faq_area .faq_items .item .title h3 { font-size: var(--fs_h6); }
 	/****************/
-	.mep-event-faq-part { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 0px 1px rgba(0, 0, 0, 0.08); }
+	.mep-event-faq-part { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); }
 	.mep-event-faq-part .faq-body .mep-event-faq-set { margin-bottom: 10px; border-radius: 8px; overflow: hidden; border-bottom: 1px solid #EAEAEA; }
 	.mep-event-faq-part .faq-body .mep-event-faq-set:last-child { border-bottom: 0; }
 	.mep-event-faq-part .faq-body .mep-event-faq-set .faq-question { padding: 18px 25px; background-color: white; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; color: #333; }
@@ -318,30 +318,13 @@
 }
 /* ******************************************************************Related Product******************** */
 @media only screen and (min-width: 10px) {
-	.mep-related-events { margin: 20px 0; position: relative; }
-	.mep-related-events h2 { font-size: 24px; }
-	.mep-related-events .related-events-header { display: flex; justify-content: space-between; align-items: center; }
-	.mep-related-events .related-events-header h2 { margin: 0; }
-	.mep-related-events .related-events-header .related-events-navigation { display: flex; flex-direction: row; gap: 5px; }
-	.mep-related-events .related-events-header .related-events-navigation button { border-radius: 5px; background-color: var(--color_theme); color: var(--color_6); padding: 14px; }
-	.mep-related-events .mep-related-events-items { margin-top: 20px; height: 350px; padding-bottom: 20px; }
-	.mep-related-events .mep-related-events-items .item { width: 100%; background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD; }
-	.mep-related-events .mep-related-events-items .item a { position: relative; display: block; }
-	.mep-related-events .mep-related-events-items .item img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0; }
-	.mep-related-events .mep-related-events-items .item .mep-ev-start-date { position: absolute; top: 10px; left: 10px; line-height: 1.8; background: var(--color_6); text-align: center; width: 50px; color: var(--color_theme); font-size: 18px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.05); }
-	.mep-related-events .mep-related-events-items .item .mep-ev-start-date .mep-month { background: var(--color_theme); color: var(--color_6); text-transform: uppercase; }
-	.mep-related-events .mep-related-events-items .item .item-info { display: flex; justify-content: space-between; align-items: stretch; padding: 0 20px; margin: 10px 0; }
-	.mep-related-events .mep-related-events-items .item .item-info .title { text-align: left; color: #999; width: 70%; }
-	.mep-related-events .mep-related-events-items .item .item-info .title h2 { font-size: 15px; font-weight: bold; color: #333; }
-	.mep-related-events .mep-related-events-items .item .item-info .price { text-align: right; color: #999; width: 30%; }
-	.mep-related-events .mep-related-events-items .item .item-info .price h2 { font-size: 25px; color: var(--color_theme); margin: 0; }
-	.mep-related-events .mep-related-events-items .slick-slide { margin: 10px 10px; box-sizing: border-box; display: flex; align-items: stretch; flex-direction: column; }
-	.mep-related-events-items .slick-slide > div { flex: 1; min-height: 100px; display: flex; justify-content: center; align-items: center; }
-	.mep-related-events-items .slick-dots li.slick-active button::before { color: var(--color_theme); }
-	.mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price { text-align: right; color: #999; }
-	.mep_smart_theme .mep-related-events .mep-related-events-items .item .item-info .price h2 { font-size: 30px; color: var(--color_theme); margin: 0; }
-	.mep-related-events .mep-related-events-items { gap: 50px; }
-	.mep-related-events .mep-related-events-items .item { width: 30%; }
+	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
+	div.mpwem_related_area div.related_item,
+	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
+	div.mpwem_related_area .related_title {padding: var(--dmp_xs);}
+	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
+	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}
+	div.mpwem_related_area div.mep-event-list-loop {background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD;height: auto;}
 }
 /* ******************************************************************Filter Pagination******************** */
 @media only screen and (min-width: 10px) {
@@ -482,7 +465,7 @@
 	.mp_event_more_date_list li .mep-more-time { display: flex; flex-direction: column; justify-content: start; align-items: start; padding-left: 30px;}
 	.mp_event_more_date_list li .mep-more-time .time { position: relative; padding-left: 10px;}
 	.mp_event_more_date_list li .mep-more-time .time::before { content: ""; width: 5px; height: 5px; border-radius: 50px; margin-right: 5px; background-color: #AAA; position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
-	ul.mp_event_more_date_list { position: absolute; top: 99%; left: 0; right: 0; z-index: 111111; background-color: #FFF; padding: 10px; border-radius: 0 0 10px 10px; max-height: 250px; overflow: auto; box-shadow: 0px 4px 5px #AAA;}
+	ul.mp_event_more_date_list { position: absolute; top: 99%; left: 0; right: 0; z-index: 111111; background-color: #FFF; padding: 10px; border-radius: 0 0 10px 10px; max-height: 250px; overflow: auto; box-shadow: 0 4px 5px #AAA;}
 	ul.mp_event_more_date_list li { border-bottom-color: #D3D3D3;display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: flex-start; align-items: flex-start; border-bottom: 1px solid rgba(0, 0, 0, 0.6);}
 	ul.mp_event_more_date_list li:hover i { color: var(--color_theme);}
 	ul.mp_event_more_date_list li span i {margin: 0 7px 0 0; padding: 0;}
@@ -798,7 +781,7 @@ span.mep_date_scdl_start_datetime { color: #333; font-size: 14px; font-weight: b
 span.mep-cal-icon { position: absolute; left: -100px; z-index: 9; top: 12px;}
 thead.ex-sec-title.mep_ticket_type_title tr th { padding: 15px 15px 3px;}
 span.mep-cal-icon i { color: #000;}
-span#mep_everyday_event_time_list select { border-color: #FFF; margin-top: 0px; display: block; border-radius: 5px; vertical-align: top; border: 0; height: 30px; padding: 0 7px; font-size: 14px; color: #495057;}
+span#mep_everyday_event_time_list select { margin-top: 0; display: block; border-radius: 5px; vertical-align: top; border:none; height: 30px; padding: 0 7px; font-size: 14px; color: #495057;}
 span#mep_everyday_event_time_list { padding: 0;}
 span.mep_recurring_datepicker_section { position: relative;}
 span.mep-datepicker-input-box { position: relative;}
@@ -961,7 +944,7 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-limited-availability-ribbon { background: linear-gradient(135deg, #F57C00, #EF6C00); box-shadow: 0 1px 3px rgba(245, 124, 0, 0.3); }
 }
 /* High contrast mode */
-@media (prefers-contrast: high) {
+@media (prefers-contrast) {
 	.mep-low-stock-warning,
 	.mep-limited-availability-ribbon { border: 2px solid #FFFFFF; }
 }

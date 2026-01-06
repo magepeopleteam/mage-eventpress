@@ -127,7 +127,7 @@
                                                                 <div class="_divider"></div>
 															<?php } ?>
                                                             <div class="mep_ticket_item">
-                                                                <div class="justifyBetween">
+                                                                <div class="justify_between">
                                                                     <div class="">
                                                                         <h6><?php echo esc_html( $ticket_name ); ?></h6>
 																		<?php if ( $ticket_details ) { ?>

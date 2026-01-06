@@ -48,7 +48,6 @@
 		color: var(--color_white);
 		font-size: 18px;
 		font-weight: 700;
-		color: var(--color_white);
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -70,13 +69,10 @@
 		padding: 12px 15px;
 		margin: 0;
 		cursor: pointer;
-		color: var(--color_dark);
 		position: relative;
 		font-size: 16px;
-		font-weight: normal;
 		border-left: 2px solid transparent;
 		transition: all 350ms ease-in-out;
-		position: relative;
 	}
 	.mp_settings_panel ul.nav-tab-wrapper li::after {
 		width: 90%;
@@ -116,7 +112,6 @@
 		width: 100%;
 	}
 	.mp_settings_panel .metabox-holder {
-		background: #FFF;
 		margin: 0;
 		width: calc(100% - 300px);
 		background-color: var(--color_white);
@@ -2100,7 +2095,7 @@ div.mpwem_style.mep-quick-setup [class*="_admin_layout"] {
 	background-color: #DDD;
 	color: #000;
 }
-.mep-quick-setup .themeButton:hover, .mep-quick-setup .themeButton:focus {
+.mep-quick-setup .button_theme:hover, .mep-quick-setup .button_theme:focus {
 	opacity: .8;
 	background-color: var(--color_theme);
 	border: 2px solid transparent

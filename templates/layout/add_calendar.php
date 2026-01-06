@@ -27,7 +27,7 @@
 			$location    = implode( '  ', $location );
 			?>
             <div class="mpwem_calender_area">
-                <button type="button" class="_themeButton_mAuto_min_150" data-collapse-target="#mpwem_calender_area" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add Calendar', 'mage-eventpress' ); ?>">
+                <button type="button" class="_button_theme_mAuto_min_150" data-collapse-target="#mpwem_calender_area" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add Calendar', 'mage-eventpress' ); ?>">
                     <span data-text><?php esc_html_e( 'Add Calendar', 'mage-eventpress' ); ?></span>
                 </button>
                 <div data-collapse="#mpwem_calender_area">

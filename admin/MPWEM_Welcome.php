@@ -62,7 +62,7 @@
 									<button class="_navy_blueButton_mR_xs" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/#mage_product_price">
 										<?php esc_html_e('Buy Now', 'mage-eventpress'); ?>
 									</button>
-									<button class="_themeButton_mR_xs" type="button" data-href="https://event.mage-people.com/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+									<button class="_button_theme_mR_xs" type="button" data-href="https://event.mage-people.com/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 									<button class="_dButton_mR_xs" type="button" data-href="https://docs.mage-people.com/woocommerce-event-manager/"><?php esc_html_e('Documentation', 'mage-eventpress'); ?></button>
 								</div>
 							</div>
@@ -985,7 +985,7 @@
 				<div class="_bgBlack_padding_mT_40">
 					<div class="allCenter">
 						<h3 class="textWhite"><?php esc_html_e('Get Pro and Others Available Addon to get all these exciting features', 'mage-eventpress'); ?></h3>
-						<button class="_themeButton_mL" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/">
+						<button class="_button_theme_mL" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/">
 							<?php esc_html_e('Buy Now', 'mage-eventpress'); ?>
 						</button>
 					</div>

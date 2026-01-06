@@ -106,7 +106,7 @@
 				<?php
 			}
 			/*****************************/
-			public static function add_new_button($button_text, $class = 'mpwem_add_item', $button_class = '_themeButton_xs_mT_xs', $icon_class = 'fas fa-plus-square') {
+			public static function add_new_button($button_text, $class = 'mpwem_add_item', $button_class = '_button_theme_xs_mT_xs', $icon_class = 'fas fa-plus-square') {
 				?>
                 <button class="<?php echo esc_attr($button_class . ' ' . $class); ?>" type="button">
                     <span class="<?php echo esc_attr($icon_class); ?>"></span>

@@ -808,6 +808,49 @@ tr.mep_virtual_event_info_sec { display: none;}
 .groupRadioCheck [data-radio-check]:hover { border-color: var(--color_theme); background-color: var(--color_theme);}
 .mpwem_style .customCheckbox::before { border: 2px solid var(--color_theme);}
 div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-repeat; margin: 0 auto;}
+
+
+.mpwem-expired-card {
+    margin-top: 15px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ff6b6b, #ff9f43);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.mpwem-expired-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.mpwem-expired-date {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.mpwem-date-highlight {
+    font-weight: 800;
+}
+
+.mpwem-total-sold-badge {
+    margin-top: 12px;
+    display: inline-block !important;
+    padding: 6px 14px;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #ff3b3b;
+    font-weight: 800;
+}
+
+
+
+
+
+
+
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
 	.mep-default-content { width: calc(100% - 275px); }

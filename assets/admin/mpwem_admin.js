@@ -98,7 +98,34 @@ function mpwem_initWpEditor(id) {
     /**************************/
     $(window).load(function () {
         $('.mp_tab_menu').each(function () {
-            $(this).find('ul li:first-child').trigger('click');
+            // Get post-specific storage key for better security and isolation
+            const postId = $('body').find('[name="post_ID"]').val();
+            const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
+            
+            // Check if there's a saved active tab in localStorage
+            let savedTab = null;
+            try {
+                savedTab = localStorage.getItem(storageKey);
+                // Validate saved tab ID format for security
+                if (savedTab && !/^#[a-zA-Z_\-0-9]+$/.test(savedTab)) {
+                    savedTab = null; // Invalid format, ignore it
+                }
+            } catch (e) {
+                // localStorage not available, continue without persistence
+            }
+            
+            if (savedTab) {
+                const savedTabElement = $(this).find('ul li[data-target-tabs="' + savedTab + '"]');
+                if (savedTabElement.length) {
+                    savedTabElement.trigger('click');
+                } else {
+                    // If saved tab doesn't exist, trigger first tab
+                    $(this).find('ul li:first-child').trigger('click');
+                }
+            } else {
+                // No saved tab, trigger first tab
+                $(this).find('ul li:first-child').trigger('click');
+            }
         });
         if ($('[name="mep_org_address"]').val() > 0) {
             $('.mp_event_address').slideUp(250);
@@ -107,6 +134,21 @@ function mpwem_initWpEditor(id) {
     $(document).on('click', '[data-target-tabs]', function () {
         if (!$(this).hasClass('active')) {
             let tabsTarget = $(this).attr('data-target-tabs');
+            
+            // Sanitize tab ID to prevent any potential issues
+            if (tabsTarget && /^#[a-zA-Z_\-0-9]+$/.test(tabsTarget)) {
+                // Save the active tab to localStorage with post-specific key
+                const postId = $('body').find('[name="post_ID"]').val();
+                const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
+                
+                try {
+                    localStorage.setItem(storageKey, tabsTarget);
+                } catch (e) {
+                    // Silently fail if localStorage is not available or quota exceeded
+                    // This ensures the tab switching still works even without persistence
+                }
+            }
+            
             let targetParent = $(this).closest('.mp_event_tab_area').find('.mp_tab_details').first();
             targetParent.children('.mp_tab_item:visible').slideUp('fast');
             targetParent.children('.mp_tab_item[data-tab-item="' + tabsTarget + '"]').slideDown(250);
@@ -161,6 +203,68 @@ function mpwem_initWpEditor(id) {
         $(this).val(n.replace(/[@%'":;&_–]/g, ''));
     });
     /**************************/
+    // Clear localStorage when form is saved or updated
+    function mpwem_clear_tab_storage() {
+        try {
+            const postId = $('body').find('[name="post_ID"]').val();
+            if (postId) {
+                localStorage.removeItem('mpwem_active_tab_' + postId);
+            }
+            localStorage.removeItem('mpwem_active_tab');
+        } catch (e) {
+            // localStorage not available, no action needed
+        }
+    }
+    
+    // Track if user is saving/updating to prevent clearing on reload
+    let isSaving = false;
+    
+    // Clear on save/update
+    $(document).on('click', '#publish,#save-post', function (e) {
+        isSaving = true;
+        // Clear tab storage after successful save (only after form submission completes)
+        setTimeout(function() {
+            mpwem_clear_tab_storage();
+            isSaving = false;
+        }, 1500);
+    });
+    
+    // Clear when navigating away from the page (but NOT on reload)
+    $(window).on('beforeunload', function(e) {
+        // Check if this is a page reload or actual navigation
+        const isReload = (e.currentTarget.performance && e.currentTarget.performance.navigation.type === 1);
+        
+        if (!isReload && !isSaving) {
+            // Get current page info
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentAction = urlParams.get('action');
+            const currentPost = urlParams.get('post');
+            
+            // Only clear if we're leaving the edit page
+            if (currentAction === 'edit' && currentPost) {
+                mpwem_clear_tab_storage();
+            }
+        }
+    });
+    
+    // Additional cleanup for link navigation (when clicking away from edit page)
+    $(document).on('click', 'a:not([data-target-tabs]):not([target="_blank"])', function(e) {
+        const href = $(this).attr('href');
+        if (href && href !== '#' && href !== 'javascript:void(0)') {
+            // Clear storage if navigating away from current post edit page
+            const isEditPageLink = href.indexOf('post.php') !== -1 && href.indexOf('action=edit') !== -1;
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentPostId = urlParams.get('post');
+            const targetPostMatch = href.match(/[?&]post=(\d+)/);
+            const targetPostId = targetPostMatch ? targetPostMatch[1] : null;
+            
+            // Clear if going to different page or different post
+            if (!isEditPageLink || (currentPostId && targetPostId && currentPostId !== targetPostId)) {
+                mpwem_clear_tab_storage();
+            }
+        }
+    });
+    
     /**************************/
     $(document).on('click', '#publish,#save-post', function (e) {
         let exit = 1;

@@ -35,9 +35,12 @@
 					<?php
 				}
 			} else {
-				MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );
+				// do_action( 'mpwem_expired_event_notice_before', $event_id );
+					// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );
+				do_action( 'mpwem_expired_event_notice_after', $event_id );	
 			}
 		} else {
+			do_action( 'mpwem_hidden_content', $event_id );
 			MPWEM_Layout::msg( esc_html__( 'Sorry, this event is  no longer available', 'mage-eventpress' ) );
 		}
 		?></div><?php

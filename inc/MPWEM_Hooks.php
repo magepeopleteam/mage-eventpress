@@ -427,9 +427,18 @@
 			/*********************************/
 			public function list_thumb( $event_infos ) {
 				$event_id = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				// Check for custom list thumbnail first (from Gallery Settings)
+				$custom_thumbnail_id = get_post_meta( $event_id, 'mep_list_thumbnail', true );
+				if ( $custom_thumbnail_id ) {
+					// Use custom thumbnail from Gallery Settings
+					$thumbnail_url = wp_get_attachment_image_url( $custom_thumbnail_id, 'full' );
+				} else {
+					// Fall back to featured image
+					$thumbnail_url = MPWEM_Global_Function::get_image_url( $event_id, '', 'full' );
+				}
 				?>
                 <div class="mep_list_thumb mpwem_style">
-                    <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( MPWEM_Global_Function::get_image_url( $event_id, '', 'full' ) ); ?>"></div>
+                    <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
                 </div>
 				<?php
 			}

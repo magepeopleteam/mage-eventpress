@@ -16,7 +16,7 @@
 			public function email_text_tab_content( $post_id ) {
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_email_text_settings" data-tab-item="#mpwem_email_text_settings">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding_bB">
                             <h4><?php esc_html_e( 'Email Text settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Configure email template text', 'mage-eventpress' ); ?></span>

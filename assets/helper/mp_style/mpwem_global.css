@@ -32,6 +32,7 @@
 	div.mpPopup,
 	div.mpPopup .popup_close,
 	div.mpwem_style .customCheckbox,
+	div.mpwem_style .checkbox_custom,
 	div.mpwem_style .mp_transition,
 	div.mpwem_style [class*="_mp_transition"] { -webkit-transition: all 350ms ease-in-out; -moz-transition: all 350ms ease-in-out; -o-transition: all 350ms ease-in-out; transition: all 350ms ease-in-out; }
 }
@@ -106,11 +107,11 @@
 	.mpwem_style .formControl:focus,
 	div.mpwem_style .dShadow_9,
 	div.mpwem_style [class*="_dShadow_9"] {-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);}
-	div.mpwem_style .selectCheckbox input:focus ~ .customCheckbox::before,
+	div.mpwem_style .checkbox_item input:focus ~ .checkbox_custom::before,
 	div.mpwem_style .dShadow_10,
 	div.mpwem_style [class*="_dShadow_10"] {-webkit-box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.3); box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.3);}
-	.mpwem_style .groupContent input[type="radio"],
-	.mpwem_style .groupContent input[type="radio"] ~ input:focus,
+	.mpwem_style [class*="_group_content"] input[type="radio"],
+	.mpwem_style [class*="_group_content"] input[type="radio"] ~ input:focus,
 	div.mpwem_style [class*="noShadow"] { -webkit-box-shadow: none; -moz-box-shadow: none; -o-box-shadow: none; box-shadow: none; }
 }
 /******************************************************************** Flex Section ************************************************/
@@ -118,7 +119,7 @@
 	.mpwem_style [class*="_equalChild"], .mpwem_style .equalChild, .mpwem_style .flexEqual, .mpwem_style [class*="listEqual"],
 	.mpwem_style [class*="_dFlex"], .mpwem_style .dFlex,
 	.mpwem_style .mpMenu li { display: -webkit-flex; display: flex; }
-	.mpwem_style .groupContent,
+	.mpwem_style [class*="_group_content"],
 	.mpwem_style .buttonGroup,
 	.mpwem_style .inputGroup,
 	.mpwem_style .inputInline .mpForm,
@@ -138,7 +139,7 @@
 	.mpwem_style [class*="mage_qty"],
 	.mpwem_style .mpMenu li a,
 	.mpTabs.tabBorder > .tabLists li,
-	.mpwem_style [class*="addonGroupContent"],
+	.mpwem_style [class*="_group_addon"],
 	.mpwem_style button, .mpwem_style .mpBtn, .mpwem_style [class*="_mpBtn"],
 	.mpwem_style [class*="slideIndicator"],
 	.mpwem_style [class*="circleIcon"],
@@ -189,8 +190,8 @@
 	div.mpPopup .popupMainArea, div.mpPopup .popup_close,
 	.mpwem_style [class*="clickSlide"],
 	.mpwem_style [class*="slideIndicatorItem"],
-	.mpwem_style [class*="dLayout"],
-	.mpwem_style .groupContent,
+	.mpwem_style [class*="dLayout"], .mpwem_style [class*="_layout_default"],
+	.mpwem_style [class*="_group_content"],
 	.mpwem_style [class*="_dBR"] { -webkit-border-radius: var(--dbr); border-radius: var(--dbr); }
 	.mpwem_style div.mpwem_input_select .formControl:focus,
 	.mpwem_style [class*="_dBR_T"] { -webkit-border-radius: var(--dbr) var(--dbr) 0 0; border-radius: var(--dbr) var(--dbr) 0 0; }
@@ -208,7 +209,7 @@
 	.mpwem_style .remove_icon,
 	.mpwem_style [class*="circle"] { -webkit-border-radius: 50%; border-radius: 50%; }
 	.mpwem_style .buttonGroup > *,
-	.mpwem_style .groupContent .formControl,
+	.mpwem_style [class*="_group_content"] .formControl,
 	.mpwem_style .zeroRadius, .mpwem_style [class*="_zeroRadius"] { -webkit-border-radius: 0; border-radius: 0; }
 }
 /******************************************************************** Button Section ************************************************/
@@ -519,8 +520,8 @@
 	.mpwem_style .remove_icon { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer; opacity: 0; font-size: var(--fs); background-color: var(--color_danger); color: var(--color_theme_alter); z-index: 1111;}
 	.mpwem_style label:hover .remove_icon {opacity: 1;}
 	/**************Default************************/
-	.mpwem_style .dLayout, .mpwem_style [class*="_dLayout"] { padding: var(--dmp); margin-bottom: var(--dmp); background-color: var(--color_white); border: 1px solid var(--color_border); }
-	.mpwem_style .dLayout_xs, .mpwem_style [class*="_dLayout_xs"] { padding: var(--dmp_xs); background-color: var(--color_white); border: 1px solid var(--color_border); margin-bottom: var(--dmp_xs); }
+	.mpwem_style .dLayout, .mpwem_style [class*="_dLayout"], div.mpwem_style [class*="layout_default"] { padding: var(--dmp); margin-bottom: var(--dmp); background-color: var(--color_white); border: 1px solid var(--color_border); }
+	.mpwem_style .dLayout_xs, .mpwem_style [class*="_dLayout_xs"], div.mpwem_style [class*="layout_default_xs"] { padding: var(--dmp_xs); background-color: var(--color_white); border: 1px solid var(--color_border); margin-bottom: var(--dmp_xs); }
 	/***********info***********/
 	.mpwem_style .infoLayout, .mpwem_style [class*="_infoLayout"] { padding: var(--dmp); background-color: var(--color_light); margin-bottom: var(--dmp); }
 	.mpwem_style .infoLayout_xs, .mpwem_style [class*="_infoLayout_xs"] { padding: var(--dmp_xs); margin-bottom: var(--dmp_xs); }
@@ -639,26 +640,20 @@
 	.mpwem_style .customRadio.button_type::before,
 	.mpwem_style .customRadio.button_type::after { display: none; }
 	/**********Checkbox Custom*********/
-	.mpwem_style .customCheckbox { padding: 1px 0 0 28px; position: relative; line-height: 1; min-width: auto; white-space: wrap; }
-	.mpwem_style .customCheckbox::before { content: ""; position: absolute; left: 0; top: 0; height: 18px; width: 18px; background-color: var(--color_theme_alter); border: 2px solid var(--color_theme); border-radius: 2px; }
-	.mpwem_style .customCheckboxLabel { margin: 0 var(--dmp_xs) var(--dmp_xs) 0; cursor: pointer; font-weight: var(--fw-medium); }
-	.mpwem_style .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--color_theme); border: 2px solid var(--color_theme); }
-	/*******************/
-	div.mpwem_style .selectCheckbox { min-width: 150px; padding: var(--dmp_xs); width: auto; border: 1px solid var(--color_border); cursor: pointer; }
-	div.mpwem_style .customCheckboxLabel input[type="checkbox"],
-	div.mpwem_style .selectCheckbox input[type="checkbox"] { display: none; }
-	div.mpwem_style .selectCheckbox .customCheckbox::before { border: none; background-color: transparent; }
-	div.mpwem_style .customCheckboxLabel input:focus ~ .customCheckbox::before,
-	div.mpwem_style .selectCheckbox input:focus ~ .customCheckbox::before { outline: 0; }
-	div.mpwem_style .customCheckboxLabel input:checked ~ .customCheckbox::after,
-	div.mpwem_style .selectCheckbox input:checked ~ .customCheckbox::after {
-		content: ""; position: absolute; left: 2px; top: 4px; height: 7px; width: 14px;
-		border: 2px solid var(--color_theme_alter); border-top: none; border-right: none;
-		z-index: 11; background-color: transparent; -ms-transform: rotate(-45deg); transform: rotate(-45deg);
-	}
-	div.mpwem_style .active_select { background-color: var(--color_theme); color: var(--color_theme_alter); }
+	div.mpwem_style .customCheckboxLabel { margin: 0 var(--dmp_xs) var(--dmp_xs) 0; cursor: pointer; font-weight: var(--fw-medium); }
+	div.mpwem_style .customCheckboxLabel input[type="checkbox"] { display: none; }
+	div.mpwem_style .customCheckboxLabel input:checked ~ .customCheckbox::before { background: var(--color_theme); border: 2px solid var(--color_theme); }
+	div.mpwem_style .customCheckboxLabel input:checked ~ .customCheckbox::after { content: ""; position: absolute; left: 2px; top: 4px; height: 7px; width: 14px; border: 2px solid var(--color_theme_alter); border-top: none; border-right: none; z-index: 11; background-color: transparent; -ms-transform: rotate(-45deg); transform: rotate(-45deg); }
 	div.mpwem_style .customCheckboxLabel.only_checkbox {width: 20px;margin: 0;}
 	div.mpwem_style .customCheckboxLabel.only_checkbox span {padding: 0;}
+	div.mpwem_style .customCheckboxLabel input:focus ~ .customCheckbox::before { outline: 0; }
+	.mpwem_style .customCheckbox { padding: 1px 0 0 28px; position: relative; line-height: 1; min-width: auto; white-space: wrap; }
+	.mpwem_style .customCheckbox::before { content: ""; position: absolute; left: 0; top: 0; height: 18px; width: 18px; background-color: var(--color_theme_alter); border: 2px solid var(--color_theme); border-radius: 2px; }
+	/*******************/
+	div.mpwem_style .checkbox_item { white-space: wrap;width: auto; cursor: pointer; font-weight: var(--fw-medium);display: -webkit-inline-flex;display: inline-flex;-webkit-align-items: center;align-items: center; }
+	div.mpwem_style .checkbox_item .checkbox_custom { position: relative;width: 20px;height: 20px;background-color: var(--color_white); border: 2px solid var(--color_theme); border-radius: 2px; margin: 0 var(--dmp_xs) 0 0;}
+	div.mpwem_style .checkbox_item.on .checkbox_custom { background: var(--color_theme);}
+	div.mpwem_style .checkbox_item.on .checkbox_custom::after { content: ""; position: absolute; left: 1px; top: 2px; height: 7px; width: 15px; border: 2px solid var(--color_theme_alter); border-top: none; border-right: none; z-index: 11; background-color: transparent; -ms-transform: rotate(-50deg); transform: rotate(-50deg); }
 	/*********Input Switch*******/
 	.mpwem_style .roundSwitchLabel input[type="checkbox"] { display: none; }
 	.mpwem_style .roundSwitch { width: 50px; height: 22px; min-width: auto; position: relative; background-color: #CCC; border-radius: 30px; -webkit-transition: .4s; transition: .4s; }
@@ -672,28 +667,18 @@
 	.groupRadioCheck [data-radio-check]:hover { border-color: var(--color_theme_88); }
 	.groupRadioCheck [data-radio-check].mpActive { border-color: var(--color_theme); }
 	/*********Group Content*******/
-	.mpwem_style .groupContent {
-		font-size: var(--fs); border: 1px solid var(--color_border);
-		background-color: var(--color_light); color: var(--color_theme_alter);
-		text-align: center; position: relative;
-	}
-	div.mpwem_style div.groupContent > * { border-left: 1px solid var(--color_border); margin: 0; }
-	div.mpwem_style div.groupContent > *:first-child { border: none; }
-	div.mpwem_style div.groupContent .formControl { text-align: center; border: none; background-color: var(--color_white); height: 100%; border-radius: 0; }
-	.mpwem_style .groupContent textarea.formControl { text-align: left; }
-	.mpwem_style .groupContent input[type="radio"] { }
-	.mpwem_style .groupContent input[type="radio"]::after {
-		position: absolute; content: ""; width: 20px; height: 20px; left: 0; top: 0;
-		border: 1px solid var(--color_border); border-radius: 50%;margin: 10px;
-	}
-	div.mpwem_style .groupContent input[type="radio"]:checked::after { border-color: var(--color_theme); }
-	.mpwem_style .groupContent input[type="radio"]:checked::before {
-		position: absolute; content: ""; width: 14px; height: 14px; left: 3px; top: 3px;
-		border: 1px solid var(--color_theme); border-radius: 50%; background-color: var(--color_theme);margin: 10px;
-	}
-	.mpwem_style .addonGroupContent { min-width: 30px; cursor: pointer; background-color: #FFF; color: var(--color_theme_88); }
-	.mpwem_style .addonGroupContent:hover { background-color: #555; color: #F2F2F2; }
-	.mpwem_style .groupContent .select2-container--default .select2-selection--single {border: none;border-radius: 0;}
+	.mpwem_style [class*="_group_content"] { font-size: var(--fs); border: 1px solid var(--color_border); background-color: var(--color_light); color: var(--color_theme_alter); text-align: center; position: relative; }
+	div.mpwem_style div[class*="_group_content"] > * { border-left: 1px solid var(--color_border); margin: 0; }
+	div.mpwem_style div[class*="_group_content"] > *:first-child { border: none; }
+	div.mpwem_style div[class*="_group_content"] .formControl { text-align: center; border: none; background-color: var(--color_white); height: 100%; border-radius: 0; }
+	.mpwem_style [class*="_group_content"] textarea.formControl { text-align: left; }
+	.mpwem_style [class*="_group_content"] input[type="radio"] { }
+	.mpwem_style [class*="_group_content"] input[type="radio"]::after { position: absolute; content: ""; width: 20px; height: 20px; left: 0; top: 0; border: 1px solid var(--color_border); border-radius: 50%;margin: 10px; }
+	div.mpwem_style [class*="_group_content"] input[type="radio"]:checked::after { border-color: var(--color_theme); }
+	.mpwem_style [class*="_group_content"] input[type="radio"]:checked::before { position: absolute; content: ""; width: 14px; height: 14px; left: 3px; top: 3px; border: 1px solid var(--color_theme); border-radius: 50%; background-color: var(--color_theme);margin: 10px; }
+	.mpwem_style [class*="_group_addon"] { min-width: 30px; cursor: pointer; background-color: #FFF; color: var(--color_theme_88); }
+	.mpwem_style [class*="_group_addon"]:hover { background-color: #555; color: #F2F2F2; }
+	.mpwem_style [class*="_group_content"] .select2-container--default .select2-selection--single {border: none;border-radius: 0;}
 	/*****Form Qty inc dec*******/
 	div.mpwem_style .qtyIncDec { display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;max-width: 200px; }
 	div.mpwem_style .inputIncDec {width: 50px; height: 36px; border: none; text-align: center; font-size: 16px; margin: 0 10px; pointer-events: none;user-select: none;cursor: not-allowed;}
@@ -714,7 +699,7 @@
 		.mpwem_style .inputInline .inputList { max-width: 100%; min-width: 100%; }
 	}
 	@media only screen and (max-width: 450px) {
-		.mpwem_style .addonGroupContent { min-width: 25px; }
+		.mpwem_style [class*="_group_addon"] { min-width: 25px; }
 	}
 }
 /******************************************************************** List section ************************************************/
@@ -844,7 +829,7 @@
 	div.mpPopup .popupBody { padding: var(--dmp); overflow: auto; }
 	div.mpPopup .popupBody.mp_zero {margin: 0;padding: 0;}
 	div.mpPopup .popupFooter { border-top: 4px double var(--color_border); padding: var(--dmp_xs); }
-	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"] { margin: 0; }
+	div.mpPopup .dLayout, div.mpPopup [class*="_dLayout"], div.mpPopup div.mpwem_style [class*="layout_default"] { margin: 0; }
 	/****************************/
 	div.mpPopup.right_popup {-webkit-justify-content: flex-end;justify-content: flex-end;}
 	div.mpPopup.right_popup .popupMainArea {border: 0; border-radius: 0; padding: 50px 20px;}
@@ -1221,8 +1206,7 @@
 	.woocommerce-cart table.cart .product-remove { vertical-align: top; padding: var(--dmp_xs); width: 50px; }
 	.woocommerce-cart table.cart .product-remove a:hover { color: var(--color_danger); border-color: var(--color_danger); }
 	.woocommerce-cart table.cart .product-thumbnail { min-width: 20%; vertical-align: top; padding: var(--dmp_xs); }
-	div.woocommerce .dLayout_xs,
-	div.woocommerce .dLayout { background-color: transparent; }
+	div.woocommerce .dLayout_xs, div.woocommerce [class*="layout_default"], div.woocommerce .dLayout { background-color: transparent; }
 	div.woocommerce ul.cart_list { list-style-type: none; line-height: 1.25; font-size: var(--fs); color: var(--d_color); }
 	div.woocommerce ul.cart_list li { padding: 3px 0; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-flex-wrap: wrap; flex-wrap: wrap; }
 	div.woocommerce ul.cart_list li span {}

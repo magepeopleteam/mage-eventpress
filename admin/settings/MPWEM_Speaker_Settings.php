@@ -22,7 +22,7 @@
 				$all_speakers        = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_speaker_settings" data-tab-item="#mpwem_speaker_settings">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding">
                             <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Speaker Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Speaker Settings will be here.', 'mage-eventpress' ); ?></span>

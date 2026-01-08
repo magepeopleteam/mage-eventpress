@@ -28,7 +28,7 @@
 			public function setting_head( $event_id ) {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				?>
-                <div class="_dLayout_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero">
                     <div class="_bgLight_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
@@ -49,7 +49,7 @@
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
                 <div class="_mT"></div>
-                <div class="_dLayout_xs_mp_zero ">
+                <div class="_layout_default_xs_mp_zero ">
                     <div class="_bgLight_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket Type Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Ticket Type', 'mage-eventpress' ); ?></span>
@@ -150,7 +150,7 @@
 				$ex_infos    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_events_extra_prices', [] );
 				?>
                 <div class="_mT"></div>
-                <div class="_dLayout_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero">
                     <div class="_bgLight_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Extra Service Area', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Extra Service Here. Extra Service as Product that you can sell and it is not included on event package', 'mage-eventpress' ); ?></span>

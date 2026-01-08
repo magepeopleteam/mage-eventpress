@@ -195,7 +195,7 @@
                     <h2><?php esc_html_e( 'Event Manager and Tickets Selling Plugin', 'mage-eventpress' ); ?></h2>
                     <p class="mTB_xs"><?php esc_html_e( 'Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
 ', 'mage-eventpress' ); ?></p>
-                    <div class="_dLayout_mT_alignCenter justify_between">
+                    <div class="_layout_default_mT_alignCenter justify_between">
                         <h5>
 							<?php if ( $status == 1 ) {
 								esc_html_e( 'Woocommerce already installed and activated', 'mage-eventpress' );

@@ -26,7 +26,7 @@
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding_bB">
                             <h4><?php esc_html_e( 'FAQ Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'FAQ Settings will be here.', 'mage-eventpress' ); ?></span>

@@ -529,7 +529,7 @@ function mpwem_sticky_management() {
             tabsContent.children('[data-tabs="' + tabsTarget + '"]').slideDown(350);
             tabsContent.children('[data-tabs].active').slideUp(350).removeClass('active').promise().done(function () {
                 tabsContent.children('[data-tabs="' + tabsTarget + '"]').addClass('active').promise().done(function () {
-                    //dLoaderRemove(tabsContent);
+                    //mpwem_loader_remove(tabsContent);
                     mpwem_load_bg_image();
                     parent.height('auto');
                 });
@@ -643,6 +643,18 @@ function mpwem_sticky_management() {
         let value = $(this).attr('data-radio');
         target.find('.customRadio').removeClass('active');
         $(this).addClass('active');
+        target.find('input').val(value).trigger('change');
+    });
+    $(document).on('click', 'div.mpwem_style .checkbox_item', function () {
+        let target = $(this);
+        let value = '';
+        if (target.hasClass('on')) {
+            value = 'off';
+            target.removeClass('on').addClass('off');
+        } else {
+            value = 'on';
+            target.removeClass('off').addClass('on');
+        }
         target.find('input').val(value).trigger('change');
     });
     $(document).on('click', 'div.mpwem_style .groupRadioBox [data-group-radio]', function () {

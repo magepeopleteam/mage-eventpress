@@ -806,7 +806,7 @@ tr.mep_virtual_event_info_sec { display: none;}
 #owl-demo .item { background: #FFFFFF; margin: 10px; color: #FFF; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; text-align: Left;}
 .groupRadioCheck [data-radio-check].mpActive { border-color: var(--color_theme); background-color: var(--color_theme); color: var(--color_7);}
 .groupRadioCheck [data-radio-check]:hover { border-color: var(--color_theme); background-color: var(--color_theme);}
-.mpwem_style .customCheckbox::before { border: 2px solid var(--color_theme);}
+
 div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-repeat; margin: 0 auto;}
 
 

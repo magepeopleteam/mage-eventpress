@@ -29,7 +29,7 @@
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>
-                <div class="_dLayout_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero">
                     <div class="_bgLight_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Date & Time Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Date and Time Settings Here', 'mage-eventpress' ); ?></span>
@@ -66,7 +66,7 @@
 				$more_dates  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
 				?>
                 <div class="_mT <?php echo esc_attr( $event_type == 'no' ? 'mActive' : '' ); ?>" data-collapse="#mep_normal_event">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding">
                             <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Single Date & Time Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Configure Your Single Date and Time Settings Here', 'mage-eventpress' ); ?></span>
@@ -138,7 +138,7 @@
 				$more_dates  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_more_date', [] );
 				?>
                 <div class="_mT <?php echo esc_attr( $event_type == 'yes' ? 'mActive' : '' ); ?>" data-collapse="#mep_particular_event">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding">
                             <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Particular Date & Time Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Configure Your Particular Date and Time Settings Here', 'mage-eventpress' ); ?></span>
@@ -209,7 +209,7 @@
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				?>
                 <div class="_mT <?php echo esc_attr( $event_type == 'everyday' ? 'mActive' : '' ); ?>" data-collapse="#mep_everyday_event">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding">
                             <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Repeated Date & Time Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Configure Your Repeated Date and Time Settings Here', 'mage-eventpress' ); ?></span>

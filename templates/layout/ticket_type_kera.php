@@ -78,7 +78,7 @@
                                 </div>
 							<?php } ?>
                     </div>
-                    <div class="tabsContent dLayout">
+                    <div class="tabsContent _layout_default">
 						<?php $tab_count = 0;
 							foreach ( $new_tickets as $tickets ) { ?>
                                 <div class="tabsItem" data-tabs="#category_name_<?php echo esc_attr( $tab_count ); ?>">

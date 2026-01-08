@@ -79,56 +79,56 @@
 								<h2><?php esc_html_e("Pro Features You'll Love", 'mage-eventpress'); ?></h2>
 								<div class="divider"></div>
 								<div class="flexWrap">
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-tasks"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Management', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fab fa-wpforms"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Custom Form', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-file-pdf"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('PDF Ticketing', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="far fa-envelope"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Custom Emailing', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-user-edit"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Edit Feature', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-file-alt"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee CSV Export', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="far fa-file-alt"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Report Overview', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-palette"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Custom Style Settings', 'mage-eventpress'); ?></h5>
 									</div>
-									<div class="groupContent mpwem_pro_feature">
-										<h5 class="_bgInfo_textLight_padding_xs_min_50 addonGroupContent">
+									<div class="_group_content mpwem_pro_feature">
+										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-language"></span>
 										</h5>
 										<h5 class="_textInfo_bgLight_padding_xs_textLeft_fullWidth"><?php esc_html_e('Translation Settings', 'mage-eventpress'); ?></h5>

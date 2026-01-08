@@ -21,7 +21,7 @@
 				$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
-                    <div class="_dLayout_xs_mp_zero">
+                    <div class="_layout_default_xs_mp_zero">
                         <div class="_bgLight_padding_bB">
                             <h4><?php esc_html_e( 'Timeline Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Timeline Settings is an activity display system, designed to showcase event activities in a structured timeline format in event details page.', 'mage-eventpress' ); ?></span>

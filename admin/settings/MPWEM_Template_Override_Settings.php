@@ -56,7 +56,7 @@
                     <div class="mpwem-template-categories">
 						<?php $this->render_template_category( 'themes', __( 'Event Themes', 'mage-eventpress' ), 'templates/themes/' ); ?>
 						<?php $this->render_template_category( 'layout', __( 'Layout Templates', 'mage-eventpress' ), 'templates/layout/' ); ?>
-						<?php $this->render_template_category( 'single', __( 'Single Event Templates', 'mage-eventpress' ), 'templates/single/' ); ?>
+						<?php //$this->render_template_category( 'single', __( 'Single Event Templates', 'mage-eventpress' ), 'templates/single/' ); ?>
 						<?php $this->render_template_category( 'list', __( 'Event List Templates', 'mage-eventpress' ), 'templates/list/' ); ?>
                     </div>
                 </div>

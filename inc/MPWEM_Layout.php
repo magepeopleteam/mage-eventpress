@@ -102,7 +102,7 @@
 							<?php
 						}
 					} else {
-						$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
+						$date         = MPWEM_Functions::get_upcoming_date_time( $event_id );
 						$date_format  = MPWEM_Global_Function::date_picker_format();
 						$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 						$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
@@ -285,6 +285,15 @@
 						'label'    => MPWEM_Global_Function::get_post_info( $form_id, 'mep_veg_label', esc_html__( 'Vegetarian', 'mage-eventpress' ) ),
 					];
 				}
+				$custom_forms = self::get_custom_form_array( $event_id, $form_id );
+				return array_merge( $form_array, $custom_forms );
+			}
+			public static function get_custom_form_array( $event_id, $form_id = '' ) {
+				if ( ! $form_id ) {
+					$form_id = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
+					$form_id = $form_id == 'custom_form' ? $event_id : $form_id;
+				}
+				$form_array   = [];
 				$custom_forms = MPWEM_Global_Function::get_post_info( $form_id, 'mep_form_builder_data', [] );
 				if ( sizeof( $custom_forms ) > 0 ) {
 					$conditional_infos = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_infos', [] );

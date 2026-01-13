@@ -317,8 +317,8 @@
                     <div class="popupMainArea min_1000">
                         <div class="popupHeader">
                             <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
-                            <div class="_dFlex_fdColumn_alignCenter">
-                                <h4 class="_mB_xs"><?php echo esc_html( get_the_title( $post_id ) ); ?></h4>
+                            <div class="_dFlex_fdColumn_align_center">
+                                <h4 class="_mb_xs"><?php echo esc_html( get_the_title( $post_id ) ); ?></h4>
                                 <div class="date_time_area">
 									<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
                                 </div>
@@ -351,7 +351,7 @@
 			public function popup_static_list( $post_id, $date ) {
 				$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 				?>
-                <h4 class="_textCenter"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ) ); ?></h4>
+                <h4 class="_textCenter"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ,$post_id) ); ?></h4>
                 <div class="_divider"></div>
 				<?php $this->attendee_statistic_list( $post_id, $date ); ?>
 				<?php
@@ -674,7 +674,12 @@
                             </div>
                         </div>
                         <div class='mep_after_event_title'>
-							<?php do_action( 'mep_dashboard_event_list_after_event_title', $id ); ?>
+							<?php
+								$custom_meta_value = get_post_meta( $id, '_sku', true ) ? 'SKU: ' . get_post_meta( $id, '_sku', true ) : 'ID: ' . $id;
+								if ( ! empty( $custom_meta_value ) ) {
+									echo '<span style="color:rgb(117, 111, 111); font-weight: bold;font-size: 12px;">' . esc_html( $custom_meta_value ) . '</span>';
+								}
+							?>
                         </div>
                         <div class="event-category" style='margin:10px 0;'><?php echo esc_html( $category ); ?></div>
                     </td>
@@ -801,7 +806,7 @@
 													$selected_cats[] = $cat->term_id;
 												}
 											}
-											$all_categories=MPWEM_Global_Function::get_taxonomy('mep_cat');
+											$all_categories = MPWEM_Global_Function::get_taxonomy( 'mep_cat' );
 											if ( $all_categories && ! is_wp_error( $all_categories ) ) {
 												foreach ( $all_categories as $cat_term ) {
 													?>

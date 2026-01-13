@@ -17,7 +17,7 @@
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_email_text_settings" data-tab-item="#mpwem_email_text_settings">
                     <div class="_layout_default_xs_mp_zero">
-                        <div class="_bgLight_padding_bB">
+                        <div class="_bg_light_padding_bB">
                             <h4><?php esc_html_e( 'Email Text settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Configure email template text', 'mage-eventpress' ); ?></span>
                         </div>
@@ -32,7 +32,7 @@
                                 <li><span class="_min_200"><?php esc_html_e( 'Start Time', 'mage-eventpress' ); ?></span><code>{event_time}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Full DateTime', 'mage-eventpress' ); ?></span><code>{event_datetime}</code></li>
                             </ul>
-                            <div class="_mT">
+                            <div class="_mt">
 								<?php
 									$content   = get_post_meta( $post_id, 'mep_event_cc_email_text', true ) ?: '';
 									//echo '<pre>';print_r($content);echo '</pre>';

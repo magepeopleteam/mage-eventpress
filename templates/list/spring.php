@@ -51,7 +51,7 @@
 >
 	<?php do_action( 'mep_event_spring_list_loop_header', $event_id ); ?>
     <div class="mpwem_style spring_area mep_list_event_details">
-        <div class="spring_item_1 _all_center"><h5><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) ); ?></h5></div>
+        <div class="spring_item_1 _all_center"><h5><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ,'',$event_id) ); ?></h5></div>
         <div class="spring_item_2">
             <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
 				<?php

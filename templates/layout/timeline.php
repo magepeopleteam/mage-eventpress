@@ -20,7 +20,7 @@
 						$active_class = $counter == 0 ? 'mActive' : '';
 						$counter ++;
 						?>
-                        <div class="timeline_item _mT">
+                        <div class="timeline_item _mt">
                             <span class="timeline_counter"><?php echo esc_html( $counter ); ?></span>
                             <div class="timeline_content">
                                 <h6 class="_fullWidth justify_between alignCenter" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">

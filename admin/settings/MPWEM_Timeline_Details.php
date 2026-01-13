@@ -22,7 +22,7 @@
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
                     <div class="_layout_default_xs_mp_zero">
-                        <div class="_bgLight_padding_bB">
+                        <div class="_bg_light_padding_bB">
                             <h4><?php esc_html_e( 'Timeline Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Timeline Settings is an activity display system, designed to showcase event activities in a structured timeline format in event details page.', 'mage-eventpress' ); ?></span>
                         </div>
@@ -42,8 +42,8 @@
                             </div>
                             <div class="popupFooter">
                                 <div class="buttonGroup">
-                                    <button type="button" class="_mpBtn_xs_bgLight mpwem_timeline_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
-                                    <button type="button" class="_mpBtn_xs_bgLight mpwem_timeline_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
+                                    <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
+                                    <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
                                 </div>
                             </div>
                         </div>
@@ -61,16 +61,16 @@
 							$content     = array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
 							$collapse_id = uniqid( 'mpwem_time_line' );
 							?>
-                            <div class="_padding_border_mB_xs">
+                            <div class="_padding_border_mb_xs">
                                 <div class="justify_between alignCenter">
                                     <h6 class="_fullWidth justify_between" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
                                         <span><?php echo esc_html( $title ); ?></span>
-                                        <span class="_pR_pL"><?php echo esc_html( $time ); ?>
+                                        <span class="_pr_pl"><?php echo esc_html( $time ); ?>
                                     </h6>
                                     <div class="buttonGroup">
-                                        <button type="button" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" class="_mpBtn_xs_bgLight"><span class="fas fa-eye"></span></button>
-                                        <button type="button" data-target-popup="#mpwem_timeline_popup" data-key="<?php echo esc_attr( $key ); ?>" class="_mpBtn_xs_bgLight"><span class="fas fa-edit"></span></button>
-                                        <button type="button" class="_mpBtn_xs_bgLight mpwem_timeline_remove" data-key="<?php echo esc_attr( $key ); ?>"><span class="fas fa-trash"></span></button>
+                                        <button type="button" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" class="_mpBtn_xs_bg_light"><span class="fas fa-eye"></span></button>
+                                        <button type="button" data-target-popup="#mpwem_timeline_popup" data-key="<?php echo esc_attr( $key ); ?>" class="_mpBtn_xs_bg_light"><span class="fas fa-edit"></span></button>
+                                        <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_remove" data-key="<?php echo esc_attr( $key ); ?>"><span class="fas fa-trash"></span></button>
                                     </div>
                                 </div>
                                 <div class="mp_wp_editor" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
@@ -106,9 +106,9 @@
 				$time    = array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
 				$content = html_entity_decode( array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '' );
 				if ( $title ) { ?>
-                    <h4 class="_mB"><?php echo esc_html__( 'Edit Timeline Info : ', 'mage-eventpress' ) . esc_html( $title ); ?></h4>
+                    <h4 class="_mb"><?php echo esc_html__( 'Edit Timeline Info : ', 'mage-eventpress' ) . esc_html( $title ); ?></h4>
 				<?php } else { ?>
-                    <h4 class="_mB"><?php esc_html_e( 'Add New Timeline Info', 'mage-eventpress' ); ?></h4>
+                    <h4 class="_mb"><?php esc_html_e( 'Add New Timeline Info', 'mage-eventpress' ); ?></h4>
 				<?php } ?>
                 <input type="hidden" name="timeline_item_key" value="<?php echo esc_attr( $key ); ?>">
                 <label>

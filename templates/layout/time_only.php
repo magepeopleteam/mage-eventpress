@@ -18,7 +18,7 @@
 			$mep_event_time_icon 	= array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 			?>
             <div class="short_item">
-                <h4 class="_circleIcon_mR"><span class="<?php echo esc_attr( $mep_event_time_icon ); ?>"></span></h4>
+                <h4 class="_circleIcon_mr"><span class="<?php echo esc_attr( $mep_event_time_icon ); ?>"></span></h4>
                 <div class="_fdColumn">
                     <h6><?php esc_html_e( 'Event Time:', 'mage-eventpress' ); ?></h6>
                     <p><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date,'time' ) ); ?></p>

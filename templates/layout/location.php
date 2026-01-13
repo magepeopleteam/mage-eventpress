@@ -30,19 +30,19 @@
                 <div class="mpwem_location_sidebar">
                     <h5 class="widgets_title ">
 						<?php if ( $event_template == 'smart.php' ) { ?>
-                            <span class="<?php echo esc_attr( $location_icon ); ?> _mR_xs"></span>
+                            <span class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></span>
 						<?php } ?>
 						<?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?>
                     </h5>
                     <p><?php echo esc_html( implode( ', ', $location ) ); ?> </p>
 					<?php if ( $map_status ) { ?>
 						<?php if ( $event_template == 'smart.php' ) { ?>
-                            <button type="button" class="_button_theme_mAuto" onclick="window.location.href = '#mpwem_map_area'">
-                                <i class="<?php echo esc_attr( $location_icon ); ?> _mR_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+                            <button type="button" class="_button_theme_margin_auto" onclick="window.location.href = '#mpwem_map_area'">
+                                <i class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
                             </button>
 						<?php } else { ?>
-                            <button type="button" class="_button_theme_mAuto" data-target-popup="mpwem_popup_map">
-                                <i class="<?php echo esc_attr( $location_icon ); ?> _mR_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
+                            <button type="button" class="_button_theme_margin_auto" data-target-popup="mpwem_popup_map">
+                                <i class="<?php echo esc_attr( $location_icon ); ?> _mr_xs"></i><?php esc_html_e( 'Find In Map', 'mage-eventpress' ); ?>
                             </button>
                             <div class="mpPopup" data-popup="mpwem_popup_map">
                                 <div class="popupMainArea _max_1000">
@@ -62,7 +62,7 @@
                 </div>
 			<?php } elseif ( $type == 'only' ) { ?>
                 <div class="short_item">
-                    <h4 class="_circleIcon_mR"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
+                    <h4 class="_circleIcon_mr"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
                     <div class="_fdColumn">
                         <h6><?php esc_html_e( 'Event Location:', 'mage-eventpress' ); ?></h6>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?></p>

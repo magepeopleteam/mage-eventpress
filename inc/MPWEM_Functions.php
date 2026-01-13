@@ -102,23 +102,28 @@
 				return max( apply_filters( 'mpwem_event_total_resv_seat_count', $reserve_ticket, $event_id, $date ), 0 );
 			}
 			public static function get_available_ticket( $event_id, $ticket_name, $date, $ticket_type = [] ) {
+				$ticket_name_ = html_entity_decode( urldecode( $ticket_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 				$available_ticket = 0;
 				if ( sizeof( $ticket_type ) == 0 ) {
 					$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 					if ( sizeof( $ticket_types ) > 0 ) {
 						foreach ( $ticket_types as $type ) {
 							$name = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-							if ( $name == $ticket_name ) {
+							$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+							if ( $name == $ticket_name_ ) {
 								$ticket_type = $type;
 							}
 						}
 					}
 				}
 				if ( sizeof( $ticket_type ) > 0 ) {
+					$filter_args['post_id']    = $event_id;
+					$filter_args['event_date'] = $date;
+					$filter_args['ea_ticket_type'] = $ticket_name;
 					$ticket_qty       = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 					$ticket_r_qty     = array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
-					$total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
-					$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
+					$total_sold       = MPWEM_Query::attendee_query( $filter_args )->post_count;
+					$available_ticket = (int) $ticket_qty - ( $total_sold + (int) $ticket_r_qty );
 				}
 				return $available_ticket;
 			}

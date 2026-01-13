@@ -41,12 +41,12 @@
         </div>
         <div class="mpwem_right_content">
 			<?php if ( $left_sidebar_title == 'no' ): ?>
-                <h2 class="_mB"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
+                <h2 class="_mb"><?php esc_html_e( 'When and where', 'mage-eventpress' ); ?></h2>
 			<?php endif; ?>
             <div class="mpwem_sidebar_content">
 				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
-                        <h5 class="_mB_xs"><span class="<?php echo esc_attr( $event_location_icon ); ?> _mR_xs"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+                        <h5 class="_mb_xs"><span class="<?php echo esc_attr( $event_location_icon ); ?> _mr_xs"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
@@ -60,9 +60,9 @@
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>
 			<?php if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
-                <div class="mpwem_sidebar_content _mT">
+                <div class="mpwem_sidebar_content _mt">
                     <div class="event_speaker_list_area">
-                        <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mR_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
+                        <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
 						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
                     </div>
                 </div>

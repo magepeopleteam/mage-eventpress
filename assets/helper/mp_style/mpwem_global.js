@@ -905,7 +905,7 @@ function mpwem_load_more_scroll(parent, pagination_page) {
         let activeItem = $(this).data('slide-index');
         $('body').addClass('noScroll').find('[data-popup="' + target + '"]').addClass('in').promise().done(function () {
             sliderItemActive($(this), activeItem);
-            loadBgImage();
+            mpwem_load_bg_image();
         });
     });
     $(document).on('click', '.superSlider .popup_close', function () {

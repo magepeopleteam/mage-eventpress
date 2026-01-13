@@ -62,10 +62,6 @@
 						'title' => '<i class="fas fa-envelope"></i>' . __( 'Email Settings', 'mage-eventpress' )
 					),
 					array(
-						'id'    => 'datetime_setting_sec',
-						'title' => '<i class="fas fa-clock"></i>' . __( 'Date & Time Format Settings', 'mage-eventpress' )
-					),
-					array(
 						'id'    => 'style_setting_sec',
 						'title' => '<i class="fas fa-palette"></i>' . __( 'Style Settings', 'mage-eventpress' )
 					),
@@ -1103,52 +1099,6 @@
 							)
 						)
 					),
-					'datetime_setting_sec'     => apply_filters( 'mep_settings_datetime_arr', array(
-							array(
-								'name'    => 'mep_global_date_format',
-								'label'   => __( 'Date Format', 'mage-eventpress' ),
-								'desc'    => __( 'Please select your desired date format from the list below. If you wish to use a custom date format, select the "Custom" option and write your format in the box provided. Note that this date format will apply to all events.', 'mage-eventpress' ),
-								'type'    => 'select',
-								'default' => get_option( 'date_format' ),
-								'class'   => 'mep_global_date_format',
-								'options' => mep_date_format_list()
-							),
-							array(
-								'name'    => 'mep_global_custom_date_format',
-								'label'   => __( 'Custom Date Format', 'mage-eventpress' ),
-								'desc'    => __( '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">Documentation on date and time formatting</a>', 'mage-eventpress' ),
-								'type'    => 'text',
-								'default' => 'F j, Y'
-							),
-							array(
-								'name'    => 'mep_global_time_format',
-								'label'   => __( 'Time Format', 'mage-eventpress' ),
-								'desc'    => __( 'Please select the time format you want to use from the list. If you want to use a custom time format, select Custom and write your custom time format. This time format will apply to all events.', 'mage-eventpress' ),
-								'type'    => 'select',
-								'class'   => 'mep_global_time_format',
-								'default' => get_option( 'time_format' ),
-								'options' => mep_time_format_list()
-							),
-							array(
-								'name'    => 'mep_global_custom_time_format',
-								'label'   => __( 'Custom Time Format', 'mage-eventpress' ),
-								'desc'    => __( '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">Documentation on date and time formatting</a>', 'mage-eventpress' ),
-								'type'    => 'text',
-								'default' => 'g:i a'
-							),
-							array(
-								'name'    => 'mep_global_timezone_display',
-								'label'   => __( 'Show Timezone', 'mage-eventpress' ),
-								'desc'    => __( 'If you want to show the time zone with the date and time, please select "Yes".', 'mage-eventpress' ),
-								'type'    => 'select',
-								'default' => 'no',
-								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
-								)
-							),
-						)
-					)
 				);
 
 				return apply_filters( 'mep_settings_sec_fields', $settings_fields );

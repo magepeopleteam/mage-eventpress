@@ -175,9 +175,9 @@
 			public function date_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/date_only.php' ); }
 			public function time_only( $event_id, $event_infos = [] ) { require MPWEM_Functions::template_path( 'layout/time_only.php' ); }
 			/*************************************/
-			public function faq( $event_id ,$event_infos=[]): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
+			public function faq( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/faq.php' ); }
 			/****************************************/
-			public function related( $event_id ,$event_infos=[]): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
+			public function related( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/related_event.php' ); }
 			/**************************/
 			public function social( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/social.php' ); }
 			/**************************/
@@ -329,15 +329,15 @@
                                         <div class="date_item">
 											<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) {
 												if ( strtotime( gmdate( 'Y-m-d', strtotime( $start_time ) ) ) == strtotime( gmdate( 'Y-m-d', strtotime( $end_time ) ) ) ) { ?>
-                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
+                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time', $event_id ) ); ?></a>
 												<?php } else { ?>
-                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
+                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id ) ); ?></a>
                                                     <span>-</span>
-                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format ) ); ?></a>
+                                                    <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format, $event_id ) ); ?></a>
 													<?php
 												}
 											} else { ?>
-                                                <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
+                                                <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id ) ); ?></a>
 											<?php } ?>
                                         </div>
 										<?php
@@ -349,7 +349,7 @@
 									$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $date ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 									?>
                                     <div class="date_item">
-                                        <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $date ) ); ?></a>
+                                        <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, '', $event_id ) ); ?></a>
 										<?php if ( sizeof( $all_times ) ) {
 											foreach ( $all_times as $times ) {
 												$time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
@@ -358,7 +358,7 @@
 													$time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 													if ( $time ) {
 														$full_date = $date . ' ' . $time;
-														$time      = MPWEM_Global_Function::date_format( $full_date, 'time' );
+														$time      = MPWEM_Global_Function::date_format( $full_date, 'time', $event_id );
 														$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $full_date ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 														?>
                                                         <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( $label ? $label . '(' . $time . ')' : $time ) ?></a>
@@ -502,17 +502,18 @@
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? 'full' : 'date';
 					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
 					?>
                     <div class="list_content">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
-							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, $date_format ) );
+							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, $date_format, $event_id ) );
 							if ( $end_time && $hide_only_end_time_list == 'no' ) {
 								if ( strtotime( date( 'Y-m-d', strtotime( $upcoming_date ) ) ) == strtotime( date( 'Y-m-d', strtotime( $end_time ) ) ) ) {
 									$end_date_format = 'time';
 								} else {
 									$end_date_format = MPWEM_Global_Function::check_time_exit_date( $end_time ) ? 'full' : 'date';
 								}
-								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, $end_date_format ) );
+								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, $end_date_format, $event_id ) );
 							}
 						?>
                     </div>

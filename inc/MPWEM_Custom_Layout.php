@@ -83,9 +83,9 @@
 			/*****************************/
 			public static function switch_button( $name, $checked = '' ) {
 				?>
-                <label class="roundSwitchLabel">
+                <label class="round_switch_label">
                     <input type="checkbox" name="<?php echo esc_attr( $name ); ?>" <?php echo esc_attr( $checked ); ?>>
-                    <span class="roundSwitch" data-collapse-target="#<?php echo esc_attr( $name ); ?>"></span>
+                    <span class="round_switch" data-collapse-target="#<?php echo esc_attr( $name ); ?>"></span>
                 </label>
 				<?php
 			}
@@ -117,7 +117,7 @@
 				<?php
 			}
 			/*****************************/
-			public static function add_new_button( $button_text, $class = 'mpwem_add_item', $button_class = '_button_theme_xs_mT_xs', $icon_class = 'fas fa-plus-square' ) {
+			public static function add_new_button( $button_text, $class = 'mpwem_add_item', $button_class = '_button_theme_xs_mt_xs', $icon_class = 'fas fa-plus-square' ) {
 				?>
                 <button class="<?php echo esc_attr( $button_class . ' ' . $class ); ?>" type="button">
                     <span class="<?php echo esc_attr( $icon_class ); ?>"></span>

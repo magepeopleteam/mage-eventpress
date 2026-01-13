@@ -170,7 +170,7 @@
 						if ( $date ) {
 							?>
                             <div class="mpwem_style">
-                                <button type="button" class="_warningButton_xxs"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, 'full' ) ); ?></button>
+                                <button type="button" class="_warningButton_xxs"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, 'full' ,$post_id) ); ?></button>
                             </div>
 							<?php
 						}

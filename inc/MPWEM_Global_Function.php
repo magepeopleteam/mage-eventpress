@@ -71,12 +71,38 @@
 				$date_format = $format == 'M d , yy' ? 'M  j, Y' : $date_format;
 				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
 			}
-			public static function date_format( $date, $format = 'date' ) {
+			public static function date_format( $date, $format = 'date', $post_id = '' ) {
 				if ( $date ) {
+                    $format=$format?:'date';
 					$date_format = get_option( 'date_format' );
 					$time_format = get_option( 'time_format' );
+					$time_zone   = '';
+					if ( $post_id ) {
+						$display_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_custom_dt_format' );
+						if ( $display_format == 'on' ) {
+							$custom_date_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_date_format' );
+							if ( $custom_date_format ) {
+								if ( $custom_date_format == 'custom' ) {
+									$custom_date_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_custom_date_format' );
+								}
+								$date_format = $custom_date_format ?: $date_format;
+							}
+							$custom_time_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_time_format' );
+							if ( $custom_time_format ) {
+								if ( $custom_time_format == 'custom' ) {
+									$custom_time_format = MPWEM_Global_Function::get_post_info( $post_id, 'mep_custom_event_time_format' );
+								}
+								$time_format = $custom_time_format ?: $time_format;
+							}
+							$time_zone = MPWEM_Global_Function::get_post_info( $post_id, 'mep_time_zone_display' );
+						}
+					}
 					$wp_settings = $date_format . '  ' . $time_format;
-					//$timezone = wp_timezone_string();
+					if ( $time_zone=='yes' ) {
+						$wp_settings = $wp_settings .' '.'T';
+						$date_format = $date_format .' '.'T';
+						$time_format = $time_format .' '.'T';
+					}
 					$timestamp = strtotime( $date );
 					if ( $format == 'date' ) {
 						$date = date_i18n( $date_format, $timestamp );
@@ -91,6 +117,9 @@
 					} elseif ( $format == 'year' ) {
 						$date = date_i18n( 'Y', $timestamp );
 					} else {
+						if ( $time_zone ) {
+							$format = $format . ' ' . 'T';
+						}
 						$date = date_i18n( $format, $timestamp );
 					}
 				}
@@ -316,6 +345,25 @@
 					'fri' => esc_html__( 'Friday', 'mage-eventpress' ),
 					'sat' => esc_html__( 'Saturday', 'mage-eventpress' ),
 					'sun' => esc_html__( 'Sunday', 'mage-eventpress' ),
+				];
+			}
+			public static function date_format_list(): array {
+				return [
+					'F j, Y'    => date( 'F j, Y' ),
+					'j F, Y'    => date( 'j F, Y' ),
+					'D, F j, Y' => date( 'D, F j, Y' ),
+					'l, F j, Y' => date( 'l, F j, Y' ),
+					'Y-m-d'     => date( 'Y-m-d' ),
+					'm/d/Y'     => date( 'm/d/Y' ),
+					'd/m/Y'     => date( 'd/m/Y' ),
+				];
+			}
+			public static function time_format_list(): array {
+				return [
+					'g:i a'       => date( 'g:i a' ),
+					'g:i A'       => date( 'g:i A' ),
+					'H:i'         => date( 'H:i' ),
+					'H\H i\m\i\n' => date( 'H\H i\m\i\n' ),
 				];
 			}
 		}

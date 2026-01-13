@@ -162,9 +162,6 @@
 						}
 					}
 					update_post_meta( $post_id, 'mep_events_extra_prices', $new_extra_service );
-					/********************/
-					$mep_enable_custom_dt_format = isset( $_POST['mep_enable_custom_dt_format'] ) ? sanitize_text_field( $_POST['mep_enable_custom_dt_format'] ) : 'off';
-					update_post_meta( $post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format );
 				}
 				/**********Date**********/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
@@ -314,23 +311,18 @@
 					}
 					$buffer_time = isset( $_POST['mep_buffer_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_buffer_time'] ) ) : 0;
 					update_post_meta( $post_id, 'mep_buffer_time', $buffer_time );
-					//**********************//
-					$date_format                       = get_option( 'date_format' );
-					$time_format                       = get_option( 'time_format' );
-					$current_global_date_format        = mep_get_option( 'mep_global_date_format', 'datetime_setting_sec', $date_format );
-					$current_global_time_format        = mep_get_option( 'mep_global_time_format', 'datetime_setting_sec', $time_format );
-					$current_global_custom_date_format = mep_get_option( 'mep_global_custom_date_format', 'datetime_setting_sec', $date_format );
-					$current_global_custom_time_format = mep_get_option( 'mep_global_custom_time_format', 'datetime_setting_sec', $time_format );
-					$current_global_timezone_display   = mep_get_option( 'mep_global_timezone_display', 'datetime_setting_sec', 'no' );
-					$mep_event_date_format             = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_date_format'] ) ) : $current_global_date_format;
-					$mep_event_time_format             = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_time_format'] ) ) : $current_global_time_format;
-					$mep_event_custom_date_format      = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_custom_date_format'] ) ) : $current_global_custom_date_format;
-					$mep_custom_event_time_format      = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_custom_event_time_format'] ) ) : $current_global_custom_time_format;
-					$mep_time_zone_display             = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : $current_global_timezone_display;
+					/********************/
+					$mep_enable_custom_dt_format = isset( $_POST['mep_enable_custom_dt_format'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_custom_dt_format'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format );
+					$mep_event_date_format = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_date_format'] ) ) : '';
 					update_post_meta( $post_id, 'mep_event_date_format', $mep_event_date_format );
-					update_post_meta( $post_id, 'mep_event_time_format', $mep_event_time_format );
+					$mep_event_custom_date_format = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_custom_date_format'] ) ) : '';
 					update_post_meta( $post_id, 'mep_event_custom_date_format', $mep_event_custom_date_format );
+					$mep_event_time_format = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_time_format'] ) ) : '';
+					update_post_meta( $post_id, 'mep_event_time_format', $mep_event_time_format );
+					$mep_custom_event_time_format = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_custom_event_time_format'] ) ) : '';
 					update_post_meta( $post_id, 'mep_custom_event_time_format', $mep_custom_event_time_format );
+					$mep_time_zone_display = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : 'no';
 					update_post_meta( $post_id, 'mep_time_zone_display', $mep_time_zone_display );
 				}
 				/**********Form empty data Setting**********/

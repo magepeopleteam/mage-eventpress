@@ -29,7 +29,7 @@
                     </div>
                     <div class="add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">
                         <button class="_button_theme mpwem_icon_add" type="button" data-target-popup="#mpwem_add_icon_popup">
-                            <span class="fas fa-plus _mR_xs"></span><?php esc_html_e('Add Icon', 'mage-eventpress'); ?>
+                            <span class="fas fa-plus _mr_xs"></span><?php esc_html_e('Add Icon', 'mage-eventpress'); ?>
                         </button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
 					<div class="mpwem_add_icon_popup mpPopup mpwem_style" data-popup="#mpwem_add_icon_popup">
 						<div class="popupMainArea fullWidth">
 							<div class="popupHeader allCenter">
-								<h2 class="_mR"><?php esc_html_e('Select Icon', 'mage-eventpress'); ?></h2>
+								<h2 class="_mr"><?php esc_html_e('Select Icon', 'mage-eventpress'); ?></h2>
 								<label class="min_300">
 									<input type="text" class="formControl name_validation" name="mpwem_select_icon_name" placeholder="<?php esc_attr_e('Icon/class name....', 'mage-eventpress'); ?>" />
 								</label>
@@ -106,7 +106,7 @@
 						</div>
 					<?php } ?>
 					<button type="button" class="_dButton_xs_bgColor_1_fullWidth <?php echo esc_attr($image_id ? 'dNone' : ''); ?>">
-						<span class="fas fa-images mR_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
+						<span class="fas fa-images _mr_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
 					</button>
 				</div>
 				<?php
@@ -132,7 +132,7 @@
 						?>
 					</div>
 					<button type="button" class="_dButton_bgColor_1 mpwem_add_multi_image">
-						<span class="fas fa-images mR_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
+						<span class="fas fa-images _mr_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
 					</button>
 				</div>
 				<?php

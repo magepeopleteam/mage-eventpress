@@ -184,12 +184,6 @@ function mpwem_initWpEditor(id) {
         $(document).find('.mp_event_type_sortable').sortable({
             handle: $(this).find('.mp_event_type_sortable_button')
         });
-        $('#add-new-date-row').on('click', function () {
-            var row = $('.empty-row-d.screen-reader-text').clone(true);
-            row.removeClass('empty-row-d screen-reader-text');
-            row.insertBefore('#repeatable-fieldset-one-d tbody>tr:last');
-            return false;
-        });
         $('.remove-row-d').on('click', function () {
             if (confirm('Are You Sure , Remove this row ? \n\n 1. Ok : To Remove . \n 2. Cancel : To Cancel .')) {
                 $(this).parents('tr').remove();
@@ -198,10 +192,7 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-    $(document).on('keyup change', '.mpwem_ticket_pricing_settings [name="option_name_t[]"]', function () {
-        let n = $(this).val();
-        $(this).val(n.replace(/[@%'":;&_–]/g, ''));
-    });
+
     /**************************/
     // Clear localStorage when form is saved or updated
     function mpwem_clear_tab_storage() {

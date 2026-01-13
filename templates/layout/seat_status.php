@@ -12,12 +12,12 @@
 		$total_available     = $total_ticket - ( $total_sold + $total_reserve );
 		?>
         <div class="_infoLayout_xs_dBRL_equalChild">
-            <div class="_fdColumn_alignCenter">
+            <div class="_fdColumn_align_center">
                 <span><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></span>
                 <h6 class="_mp_zero"><?php echo esc_html( $total_ticket ); ?></h6>
             </div>
 			<?php if ( $show_available_seat == 'on' ) { ?>
-                <div class="_fdColumn_alignCenter">
+                <div class="_fdColumn_align_center">
                     <span><?php esc_html_e( 'Available', 'mage-eventpress' ); ?></span>
                     <h6 class="_mp_zero"><?php echo esc_html( $total_available ); ?></h6>
                 </div>

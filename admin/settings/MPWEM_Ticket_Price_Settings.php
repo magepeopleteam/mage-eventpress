@@ -29,7 +29,7 @@
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				?>
                 <div class="_layout_default_xs_mp_zero">
-                    <div class="_bgLight_padding">
+                    <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
                     </div>
@@ -48,9 +48,9 @@
 				$event_label  = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
-                <div class="_mT"></div>
+                <div class="_mt"></div>
                 <div class="_layout_default_xs_mp_zero ">
-                    <div class="_bgLight_padding">
+                    <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket Type Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Ticket Type', 'mage-eventpress' ); ?></span>
                     </div>
@@ -59,7 +59,7 @@
 						do_action( 'mep_add_category_display', $event_id );
 						$this->show_advance_column( $show_advance_column );
 					?>
-                    <div class="_padding_bT mpwem_settings_area">
+                    <div class="_padding_bt mpwem_settings_area">
                         <div class="_ovAuto">
                             <table>
                                 <thead>
@@ -113,7 +113,7 @@
                 <tr class="mpwem_remove_area data_required">
                     <td>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
-                        <label> <input data-required="" type="text" class="formControl" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr( $option_name ); ?>"/> </label>
+                        <label> <input data-required="" type="text" class="formControl name_validation" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr( $option_name ); ?>"/> </label>
                     </td>
                     <td><label><input type="text" class="formControl" name="option_details_t[]" placeholder="" value="<?php echo esc_attr( $option_details ); ?>"/></label></td>
                     <td><label><input type="number" size="4" pattern="[0-9]*" step="0.001" class="formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php echo esc_attr( $option_price ); ?>"/></label></td>
@@ -149,14 +149,14 @@
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				$ex_infos    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_events_extra_prices', [] );
 				?>
-                <div class="_mT"></div>
+                <div class="_mt"></div>
                 <div class="_layout_default_xs_mp_zero">
-                    <div class="_bgLight_padding">
+                    <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Extra Service Area', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Extra Service Here. Extra Service as Product that you can sell and it is not included on event package', 'mage-eventpress' ); ?></span>
                     </div>
 					<?php do_action( 'mpwem_before_ex_service', $event_id ); ?>
-                    <div class="_padding_bT mpwem_settings_area">
+                    <div class="_padding_bt mpwem_settings_area">
                         <div class="_ovAuto">
                             <table>
                                 <thead>
@@ -216,7 +216,7 @@
 			public function event_view_shortcode( $post_id ) {
 				?>
                 <div class="_padding ">
-                    <label class=" _justify_between_alignCenter_wrap">
+                    <label class=" _justify_between_align_center_wrap">
                         <span><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
                         <code> [event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
                     </label>
@@ -228,9 +228,9 @@
 				$mep_reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
 				$checked        = $mep_reg_status == 'on' ? 'checked' : '';
 				?>
-                <div class="_padding_bT">
-                    <div class=" _justify_between_alignCenter_wrap">
-                        <label><span class="_mR"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
+                <div class="_padding_bt">
+                    <div class=" _justify_between_align_center_wrap">
+                        <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
                     </div>
                     <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
@@ -240,9 +240,9 @@
 			public function show_advance_column( $show_category ) {
 				$checked = $show_category == 'off' ? '' : 'checked';
 				?>
-                <div class="_padding_bT">
-                    <div class=" _justify_between_alignCenter_wrap">
-                        <label><span class="_mR"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
+                <div class="_padding_bt">
+                    <div class=" _justify_between_align_center_wrap">
+                        <label><span class="_mr"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_advance_col_status', $checked ); ?>
                     </div>
                     <span class="label-text"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span>

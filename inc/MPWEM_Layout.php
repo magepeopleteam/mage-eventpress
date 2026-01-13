@@ -28,7 +28,7 @@
 			}
 			public static function msg( $msg, $class = '' ): void {
 				?>
-                <div class="_mZero_textCenter <?php echo esc_attr( $class ); ?>">
+                <div class="_margin_zero_textCenter <?php echo esc_attr( $class ); ?>">
                     <label class="_textTheme"><?php echo esc_html( $msg ); ?></label>
                 </div>
 				<?php
@@ -94,7 +94,7 @@
 										$date_format = MPWEM_Global_Function::check_time_exit_date( $dates['time'] ) ? 'full' : '';
 										?>
                                         <option value="<?php echo esc_attr( $dates['time'] ); ?>">
-											<?php echo esc_html( MPWEM_Global_Function::date_format( $dates['time'], $date_format ) ); ?>
+											<?php echo esc_html( MPWEM_Global_Function::date_format( $dates['time'], $date_format ,$event_id) ); ?>
                                         </option>
 									<?php } ?>
                                 </select>

@@ -35,8 +35,8 @@
                                 <span class="label-text"><?php _e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>
                             </div>
                             <select id="mep_rich_text_status" name="mep_rich_text_status">
-                                <option value="enable" <?php echo $rt_status == 'eanble' ? 'selected' : ''; ?>> <?php echo esc_html__( 'Enable', 'mage-eventpress' ); ?></option>
-                                <option value="disable" <?php echo $rt_status == 'disable' ? 'selected' : ''; ?>> <?php echo esc_html__( 'Disable', 'mage-eventpress' ); ?></option>
+                                <option value="enable" <?php echo $rt_status == 'eanble' ? 'selected' : ''; ?>> <?php  esc_html_e( 'Enable', 'mage-eventpress' ); ?></option>
+                                <option value="disable" <?php echo $rt_status == 'disable' ? 'selected' : ''; ?>> <?php esc_html_e( 'Disable', 'mage-eventpress' ); ?></option>
                             </select>
                         </label>
                     </section>

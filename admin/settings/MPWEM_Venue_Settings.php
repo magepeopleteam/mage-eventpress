@@ -9,11 +9,10 @@
 	if ( ! class_exists( 'MPWEM_Venue_Settings' ) ) {
 		class MPWEM_Venue_Settings {
 			public function __construct() {
-				add_action( 'mpwem_event_tab_setting_item', array( $this, 'venue_settings' ) );
+				add_action( 'mpwem_event_tab_setting_item', array( $this, 'venue_settings' ),10,2 );
 				add_action( 'save_post', array( $this, 'save_venue_coordinates' ), 1 );
 			}
-
-			public function venue_settings( $event_id ) {
+			public function venue_settings( $event_id ,$event_infos) {
 				?>
                 <div class="mp_tab_item active" data-tab-item="#mp_event_venue">
                     <h3><?php esc_html_e( 'Venue/Location Settings', 'mage-eventpress' ) ?></h3>
@@ -31,7 +30,6 @@
                 </div>
 				<?php
 			}
-
 			public function event_venue( $post_id ) {
 				$event_label     = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				$values          = get_post_custom( $post_id );
@@ -57,9 +55,9 @@
                                 <span class="label-text"><?php esc_html_e( 'If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress' ); ?></span>
                             </div>
                             <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
-								<?php foreach ( $organizer as $key => $value ){ ?>
+								<?php foreach ( $organizer as $key => $value ) { ?>
                                     <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php echo esc_html( $value ); ?> </option>
-								<?php }?>
+								<?php } ?>
                             </select>
                         </label>
                     </section>
@@ -413,7 +411,6 @@
                 </div>
 				<?php
 			}
-
 			public function event_online_enable( $post_id ) {
 				$event_label       = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				$event_type        = get_post_meta( $post_id, 'mep_event_type', true );
@@ -425,7 +422,7 @@
                     <div class="mpev-label">
                         <div>
                             <h2><?php esc_html_e( 'Online/Virtual ', 'mage-eventpress' );
-										echo esc_html( $event_label . '?' ); ?> (No/Yes)</span></h2>
+									echo esc_html( $event_label . '?' ); ?> (No/Yes)</span></h2>
                             <span class="label-text"><?php _e( 'If your event is online or virtual, please ensure that this option is enabled.', 'mage-eventpress' ); ?>
                         </div>
                         <label class="mpev-switch">
@@ -439,7 +436,7 @@
                     <div class="mpev-label">
                         <div>
                             <h2>
-                                <?php esc_html_e( 'Virtual event details', 'mage-eventpress' ) ?>
+								<?php esc_html_e( 'Virtual event details', 'mage-eventpress' ) ?>
                             </h2>
                             <span class="label-text"><?php esc_html_e( 'This information will be sent to the buyer along with a confirmation email.', 'mage-eventpress' ) ?></span>
                         </div>
@@ -450,7 +447,6 @@
 				<?php do_action( 'mep_event_details_after_virtual_event_info_text_box', $post_id ); ?>
 				<?php
 			}
-
 			public function is_gutenberg_active() {
 				$gutenberg    = false;
 				$block_editor = false;
@@ -470,10 +466,8 @@
 					return true;
 				}
 				$use_block_editor = ( get_option( 'classic-editor-replace' ) === 'no-replace' );
-
 				return $use_block_editor;
 			}
-
 			/**
 			 * Custom save method for venue coordinates to preserve comma format
 			 */

@@ -141,7 +141,7 @@
                     <div class="_dShadow_6_admin_layout">
                         <form method="post" action="">
                             <div class="tabs_next">
-                                <div class="tabListsNext _mAuto">
+                                <div class="tabListsNext _margin_auto">
                                     <div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
                                         <h4 class="circleIcon" data-class>
                                             <span class="mp_zero" data-icon></span>
@@ -164,7 +164,7 @@
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'Done', 'mage-eventpress' ); ?></h6>
                                     </div>
                                 </div>
-                                <div class="tabsContentNext _mT">
+                                <div class="tabsContentNext _mt">
 									<?php
 										$this->setup_welcome_content();
 										$this->setup_general_content();
@@ -195,7 +195,7 @@
                     <h2><?php esc_html_e( 'Event Manager and Tickets Selling Plugin', 'mage-eventpress' ); ?></h2>
                     <p class="mTB_xs"><?php esc_html_e( 'Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
 ', 'mage-eventpress' ); ?></p>
-                    <div class="_layout_default_mT_alignCenter justify_between">
+                    <div class="_layout_default_mt_align_center justify_between">
                         <h5>
 							<?php if ( $status == 1 ) {
 								esc_html_e( 'Woocommerce already installed and activated', 'mage-eventpress' );
@@ -230,7 +230,7 @@
                     <div class="section">
                         <h2><?php esc_html_e( 'General settings', 'mage-eventpress' ); ?></h2>
                         <p class="mTB_xs"><?php esc_html_e( 'Choose some general option.', 'mage-eventpress' ); ?></p>
-                        <div class="_mT">
+                        <div class="_mt">
                             <label class="_fullWidth">
                                 <span class="min_200"><?php esc_html_e( 'Events Label:', 'mage-eventpress' ); ?></span>
                                 <input type="text" class="formControl" name="event_label" value='<?php echo esc_attr( $label ); ?>'/>

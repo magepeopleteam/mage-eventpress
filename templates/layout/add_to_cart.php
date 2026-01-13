@@ -21,7 +21,7 @@
         </button>
 	<?php } else { ?>
         <button type="button" class="_button_theme mpwem_book_now">
-            <i class='fa fa-shopping-cart _mR_xs'></i>
+            <i class='fa fa-shopping-cart _mr_xs'></i>
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
         <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">

@@ -48,7 +48,7 @@
                                 <div class="popupMainArea _max_1000">
                                     <span class="fas fa-times popup_close"></span>
                                     <div class="popupBody mp_zero">
-										<?php do_action( 'mpwem_map', $event_id ); ?>
+										<?php do_action( 'mpwem_map', $event_id,$event_infos ); ?>
                                     </div>
                                 </div>
                             </div>

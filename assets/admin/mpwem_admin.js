@@ -994,3 +994,39 @@ function mpwem_load_past_date_time(parent) {
         }
     });
 }(jQuery));
+
+
+jQuery(function ($) {
+
+	$('#empty-cart-btn').on('click', function (e) {
+		e.preventDefault();
+
+		$.ajax({
+			url: mepAjax.ajax_url,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'empty_woocommerce_cart',
+				nonce: mepAjax.nonce
+			},
+			success: function (response) {
+
+				if (response.success) {
+					$('#empty-cart-message').html(
+						'<div class="notice notice-success"><p>' + response.data + '</p></div>'
+					);
+				} else {
+					$('#empty-cart-message').html(
+						'<div class="notice notice-error"><p>' + response.data + '</p></div>'
+					);
+				}
+			},
+			error: function () {
+				$('#empty-cart-message').html(
+					'<div class="notice notice-error"><p>Unauthorized or invalid request.</p></div>'
+				);
+			}
+		});
+	});
+
+});

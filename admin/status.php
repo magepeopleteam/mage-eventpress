@@ -92,9 +92,9 @@
 							<span class="woocommerce-help-tip"></span> 
 						</td>
 						<td>	
+						<div id="empty-cart-message"></div>
 						<span class="mep_success"> <?php echo mep_event_cart_temp_count(); ?></span>
 						<?php if(mep_event_cart_temp_count() > 0){ ?>
-							<div id="empty-cart-message"></div>
 								<?php wp_nonce_field( 'delete-event-temp-cart'); ?>
 								<input type="hidden" name='empty_event_cart_temp' value='yes'/>
 								<button id="empty-cart-btn" class="button button-primary"><?php _e('Empty Cart','mage-eventpress'); ?></button>								
@@ -112,24 +112,8 @@
 			</div>
 		</div>
 		<script>
-			jQuery(function($) {
-				$('#empty-cart-btn').on('click', function() {
-					// Perform AJAX request to empty the cart
-					$.ajax({
-						url: ajaxurl, // WordPress AJAX URL
-						type: 'POST',
-						data: {
-							'action': 'empty_woocommerce_cart'
-						},
-						success: function(response) {
-							$('#empty-cart-message').html('<div class="notice notice-success"><p>Cart emptied successfully.</p></div>');
-						},
-						error: function(error) {
-							$('#empty-cart-message').html('<div class="notice notice-error"><p>Error emptying cart.</p></div>');
-						}
-					});
-				});
-			});
+
+
 		</script>
 		<?php
 	}
@@ -137,25 +121,34 @@
 /**
  * AJAX Callback Function to Empty WooCommerce Cart
  */
+/**
+ * Secure AJAX handler to empty WooCommerce cart
+ */
 add_action( 'wp_ajax_empty_woocommerce_cart', 'mep_empty_woocommerce_cart_ajax' );
 function mep_empty_woocommerce_cart_ajax() {
-    // Check if WooCommerce is active
-    if ( ! class_exists( 'WooCommerce' ) ) {
-        wp_send_json_error( 'WooCommerce is not active.' );
-    }
 
-    // Check if current user is administrator
-    if ( ! current_user_can( 'administrator' ) ) {
-        wp_send_json_error( 'You do not have permission to perform this action.' );
-    }
+	// WooCommerce active check
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		wp_send_json_error( 'WooCommerce is not active.', 400 );
+	}
 
-    // Empty the cart
-    WC()->cart->empty_cart();
+	// Capability check (Admin + Shop Manager)
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_send_json_error( 'Unauthorized request.', 403 );
+	}
 
-    // Call your custom function
-    if ( function_exists( 'mep_temp_event_cart_empty' ) ) {
-        mep_temp_event_cart_empty();
-    }
+	// CSRF protection
+	check_ajax_referer( 'mep_admin_nonce', 'nonce' );
 
-    wp_send_json_success( 'Cart emptied successfully.' );
+	// Empty WooCommerce cart
+	if ( WC()->cart ) {
+		WC()->cart->empty_cart();
+	}
+
+	// Clear temporary event holds
+	if ( function_exists( 'mep_temp_event_cart_empty' ) ) {
+		mep_temp_event_cart_empty();
+	}
+
+	wp_send_json_success( 'Cart emptied successfully.' );
 }

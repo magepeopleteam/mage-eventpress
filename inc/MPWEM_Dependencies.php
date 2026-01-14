@@ -139,6 +139,11 @@
 				wp_enqueue_script( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.js', array( 'jquery' ), time(), true );
 				wp_localize_script( 'mpwem_admin', 'mpwem_admin_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_admin_nonce' ) ) );
 				/******************************/
+				
+				wp_localize_script('mpwem_admin', 'mepAjax', ['ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep_admin_nonce' ),]);
+
+
+
 				do_action( 'add_mpwem_admin_script' );
 			}
 			public function frontend_enqueue() {

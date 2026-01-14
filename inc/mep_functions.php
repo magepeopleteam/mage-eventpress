@@ -3,25 +3,31 @@
 		die;
 	}
 	appsero_init_tracker_mage_eventpress();
-	if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
-		function mep_prevent_serialized_input( $value ) {
-			// Blocks serialized PHP objects
-			if ( is_serialized( $value ) ) {
-				return '';
-			}
-			// Also block patterns like O:12:"ClassName"
-			if ( preg_match( '/O:\d+:"[A-Za-z0-9_]+"/', $value ) ) {
-				return '';
-			}
+
+
+if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
+	function mep_prevent_serialized_input( $value ) {
+		if ( ! is_string( $value ) ) {
 			return $value;
 		}
+		// Block any serialized data
+		if ( is_serialized( $value ) || preg_match( '/(^|;)O:\d+:"/m', $value ) ) {
+			return '';
+		}
+		return sanitize_text_field( $value );
 	}
-	if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
-		function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
-			if ( $post->post_type === 'mep_events' ) {
-				$custom_meta_value = get_post_meta( $post->ID, '_sku', true ) ? 'SKU: ' . get_post_meta( $post->ID, '_sku', true ) : 'ID: ' . $post->ID;
-				if ( ! empty( $custom_meta_value ) ) {
-					$custom_action = [
+}
+
+
+
+
+
+if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
+	function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
+		if ( $post->post_type === 'mep_events' ) {
+			$custom_meta_value = get_post_meta( $post->ID, '_sku', true ) ? 'SKU: ' . get_post_meta( $post->ID, '_sku', true ) : 'ID: ' . $post->ID;
+			if ( ! empty( $custom_meta_value ) ) {
+				$custom_action = [
 						'custom_meta' => '<span style="color:rgb(117, 111, 111); font-weight: bold;">' . esc_html( $custom_meta_value ) . '</span>'
 					];
 					$actions       = array_merge( $custom_action, $actions );

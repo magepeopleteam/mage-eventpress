@@ -42,7 +42,7 @@
 			$lat       = $latitude ? floatval( $latitude ) : 0;
 			$lon       = $longitude ? floatval( $longitude ) : 0;
 		}
-		if ( $map_type == 'iframe' ) {
+		if ( $map_type == 'iframe' || ! $map_api ) {
 			if ( $lat != 0 && $lon != 0 ) {
 				$location_query = $lat . ',' . $lon;
 			} else {
@@ -59,51 +59,49 @@
 				<?php
 			}
 		} else {
-			if ( $map_api ) {
-				if ( $lat == 0 && $lon == 0 ) {
-					$lat = 37.0902; // Default latitude
-					$lon = - 95.7129; // Default longitude
-				}
-				?>
-                <div id="mpwem_map_area">
-                    <h5 class="map_title"><?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?></h5>
-                    <div class="map_section">
-                        <div id="mpwem_map"></div>
-                    </div>
+			if ( $lat == 0 && $lon == 0 ) {
+				$lat = 37.0902; // Default latitude
+				$lon = - 95.7129; // Default longitude
+			}
+			?>
+            <div id="mpwem_map_area">
+                <h5 class="map_title"><?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?></h5>
+                <div class="map_section">
+                    <div id="mpwem_map"></div>
                 </div>
-                <script>
-                    var map;
-                    function initMap() {
-                        var mapCenter = {
+            </div>
+            <script>
+                var map;
+                function initMap() {
+                    var mapCenter = {
+                        lat: <?php echo esc_attr( $lat ); ?>,
+                        lng: <?php echo esc_attr( $lon ); ?>
+                    };
+                    map = new google.maps.Map(document.getElementById('mpwem_map'), {
+                        center: mapCenter,
+                        zoom: <?php echo $map_zoom; ?>
+                    });
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        position: {
                             lat: <?php echo esc_attr( $lat ); ?>,
                             lng: <?php echo esc_attr( $lon ); ?>
-                        };
-                        map = new google.maps.Map(document.getElementById('mpwem_map'), {
-                            center: mapCenter,
-                            zoom: <?php echo $map_zoom; ?>
-                        });
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            draggable: false,
-                            animation: google.maps.Animation.DROP,
-                            position: {
-                                lat: <?php echo esc_attr( $lat ); ?>,
-                                lng: <?php echo esc_attr( $lon ); ?>
-                            }
-                        });
-                        marker.addListener('click', toggleBounce);
-                    }
-                    function toggleBounce() {
-                        if (marker.getAnimation() !== null) {
-                            marker.setAnimation(null);
-                        } else {
-                            marker.setAnimation(google.maps.Animation.BOUNCE);
                         }
+                    });
+                    marker.addListener('click', toggleBounce);
+                }
+                function toggleBounce() {
+                    if (marker.getAnimation() !== null) {
+                        marker.setAnimation(null);
+                    } else {
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
-                </script>
-                <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( $map_api ); ?>&callback=initMap" async defer></script>
-				<?php
-			}
+                }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( $map_api ); ?>&callback=initMap" async defer></script>
+			<?php
 		}
 	}
 

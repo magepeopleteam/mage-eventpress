@@ -4,6 +4,7 @@
 	}
 	appsero_init_tracker_mage_eventpress();
 
+
 if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
 	function mep_prevent_serialized_input( $value ) {
 		if ( ! is_string( $value ) ) {
@@ -901,7 +902,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_reset_event_booking( $event_id ) {
 			add_filter( 'wpseo_public_post_statuses', 'mepfix_sitemap_exclude_post_type', 5 );
 			$mep_event_ticket_type = get_post_meta( $event_id, 'mep_event_ticket_type', true );
-			$date                  = MPWEM_Functions::get_upcoming_date_time($event_id);
+			$date                  = MPWEM_Functions::get_upcoming_date_time( $event_id );
 			$args_search_qqq       = array(
 				'post_type'      => array( 'mep_events_attendees' ),
 				'posts_per_page' => - 1,
@@ -1058,7 +1059,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
-
 	if ( ! function_exists( 'mep_template_file_path' ) ) {
 		function mep_template_file_path( $file_name ) {
 			$template_path = get_stylesheet_directory() . '/mage-event/';
@@ -2247,7 +2247,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
-
 	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 3 );
 	if ( ! function_exists( 'mep_virtual_join_info_event_email_text' ) ) {
 		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id ) {
@@ -2305,7 +2304,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 	add_action( 'widgets_init', 'mep_default_sidebar_reg' );
-
 	add_filter( 'mep_ticket_current_time', 'mep_add_expire_min_in_current_date', 10, 3 );
 	if ( ! function_exists( 'mep_add_expire_min_in_current_date' ) ) {
 		function mep_add_expire_min_in_current_date( $current_date, $event_date, $event_id ) {
@@ -2329,7 +2327,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return apply_filters( 'mep_event_upcoming_date', $upcoming_date, $event_id );
 		}
 	}
-
 	if ( ! function_exists( 'mep_license_error_code' ) ) {
 		function mep_license_error_code( $license_data, $item_name = 'this Plugin' ) {
 			switch ( $license_data->error ) {
@@ -2444,7 +2441,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $event_id;
 		}
 	}
-
 	/*******************************************************************
 	 * Function: Update Value Position from Old Settings to New Settings
 	 * Developer: Ariful
@@ -2519,7 +2515,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $date_format;
 		}
 	}
-
 	add_filter( 'mep_event_loop_list_available_seat', 'mep_speed_up_list_page', 5, 2 );
 	if ( ! function_exists( 'mep_speed_up_list_page' ) ) {
 		function mep_speed_up_list_page( $available, $event_id ) {
@@ -2676,7 +2671,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 		return $dt;
 	}
-
 	add_filter( 'mep_event_upcoming_date', 'mep_re_event_upcoming_date', 10, 2 );
 	function mep_re_event_upcoming_date( $date, $event_id ) {
 // print_r(mep_re_event_upcoming_date_filter($date, $event_id));
@@ -2850,7 +2844,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 		return $more_date;
 	}
-
 	function mep_re_get_the_upcomming_date_arr( $event_id ) {
 		$time_status        = get_post_meta( $event_id, 'mep_disable_ticket_time', true ) ? get_post_meta( $event_id, 'mep_disable_ticket_time', true ) : 'no';
 		$global_time_slots  = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
@@ -3292,7 +3285,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $date_arr;
 		}
 	}
-
 	add_filter( 'display_post_states', 'mep_re_event_state_text', 10, 2 );
 	function mep_re_event_state_text( $post_states, $post ) {
 		$eid       = $post->ID;
@@ -3308,8 +3300,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		$post_states   = array_filter( $post_states );
 		return $post_states;
 	}
-
-
 // from main file
 	add_filter( 'mep_event_total_seat_count', 'mep_update_total_seat_count', 10, 2 );
 	function mep_update_total_seat_count( $total, $event_id ) {
@@ -3936,46 +3926,46 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$the_recurring_dates[] = $every_day;
 				if ( $type == 'display' ) {
 					if ( $time_status == 'no' ) {
-						$start_date     = $every_day;
-						$end_date       = $every_day;
-						$start_time     = get_post_meta( $event_id, 'event_start_time', true ) ? get_post_meta( $event_id, 'event_start_time', true ) : '';
-						$end_time       = get_post_meta( $event_id, 'event_end_time', true ) ? get_post_meta( $event_id, 'event_end_time', true ) : '';
-						$start_datetime = $every_day . ' ' . $start_time;
-						$end_datetime   = $every_day . ' ' . $end_time;
-						$theme = get_post_meta($event_id,'mep_event_template',true);
-						$event_date_icon = mep_get_option('mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt'); ?>
-						<?php if ($start_date != $end_date) : ?>
+						$start_date      = $every_day;
+						$end_date        = $every_day;
+						$start_time      = get_post_meta( $event_id, 'event_start_time', true ) ? get_post_meta( $event_id, 'event_start_time', true ) : '';
+						$end_time        = get_post_meta( $event_id, 'event_end_time', true ) ? get_post_meta( $event_id, 'event_end_time', true ) : '';
+						$start_datetime  = $every_day . ' ' . $start_time;
+						$end_datetime    = $every_day . ' ' . $end_time;
+						$theme           = get_post_meta( $event_id, 'mep_event_template', true );
+						$event_date_icon = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt' ); ?>
+						<?php if ( $start_date != $end_date ) : ?>
                             <li>
-								<?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>
+								<?php do_action( 'mep_single_before_event_date_list_item', $event_id, $start_datetime ); ?>
                                 <div class="mep-more-date">
                                     <p class='mep_date_scdl_start_datetime'>
-										<?php echo esc_html(get_mep_datetime($start_datetime, 'date-text')); ?>
-										<?php echo esc_html('-'.get_mep_datetime($start_datetime, 'time')); ?>
+										<?php echo esc_html( get_mep_datetime( $start_datetime, 'date-text' ) ); ?>
+										<?php echo esc_html( '-' . get_mep_datetime( $start_datetime, 'time' ) ); ?>
                                     </p>
                                     <p>
-										<?php echo esc_html(get_mep_datetime($end_datetime, 'date-text')); ?>
-										<?php if ($end_date_display_status == 'yes') { ?>
-											<?php echo esc_html('-'.get_mep_datetime($end_datetime, 'time')); ?>
+										<?php echo esc_html( get_mep_datetime( $end_datetime, 'date-text' ) ); ?>
+										<?php if ( $end_date_display_status == 'yes' ) { ?>
+											<?php echo esc_html( '-' . get_mep_datetime( $end_datetime, 'time' ) ); ?>
 										<?php } ?>
                                     </p>
                                 </div>
-								<?php do_action('mep_single_after_event_date_list_item',$event_id,$start_datetime); ?>
+								<?php do_action( 'mep_single_after_event_date_list_item', $event_id, $start_datetime ); ?>
                             </li>
 						<?php else: ?>
                             <li>
-								<?php do_action('mep_single_before_event_date_list_item',$event_id,$start_datetime); ?>
+								<?php do_action( 'mep_single_before_event_date_list_item', $event_id, $start_datetime ); ?>
                                 <div class="mep-more-date">
                                     <p class='mep_date_scdl_start_datetime'>
-										<?php echo esc_html(get_mep_datetime($start_datetime, 'date-text')); ?>
+										<?php echo esc_html( get_mep_datetime( $start_datetime, 'date-text' ) ); ?>
                                     </p>
                                     <p>
-										<?php echo esc_html(get_mep_datetime($start_datetime, 'time')); ?>
-										<?php if ($end_date_display_status == 'yes') { ?>
-											<?php echo esc_html('-'.get_mep_datetime($end_datetime, 'time')); ?>
+										<?php echo esc_html( get_mep_datetime( $start_datetime, 'time' ) ); ?>
+										<?php if ( $end_date_display_status == 'yes' ) { ?>
+											<?php echo esc_html( '-' . get_mep_datetime( $end_datetime, 'time' ) ); ?>
 										<?php } ?>
                                     </p>
                                 </div>
-								<?php do_action('mep_single_after_event_date_list_item',$event_id,$start_datetime); ?>
+								<?php do_action( 'mep_single_after_event_date_list_item', $event_id, $start_datetime ); ?>
                             </li>
 						<?php endif;
 					} elseif ( $time_status == 'yes' ) {
@@ -4004,25 +3994,40 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $the_recurring_dates;
 		}
 	}
-    add_action( 'mep_single_before_event_date_list_item', 'mep_re_add_link_to_date_list_item', 10, 2 );
-function mep_re_add_link_to_date_list_item( $event_id, $start_datetime ) {
-$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-if ( $recurring == 'everyday' || $recurring == 'yes' ) {
-$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_datetime ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
-?>
-<a href="<?php echo esc_url( $event_url ); ?>">
-<?php
-}
-}
+	add_action( 'mep_single_before_event_date_list_item', 'mep_re_add_link_to_date_list_item', 10, 2 );
+	function mep_re_add_link_to_date_list_item( $event_id, $start_datetime ) {
+		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
+		if ( $recurring == 'everyday' || $recurring == 'yes' ) {
+			$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_datetime ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
+			?>
+            <a href="<?php echo esc_url( $event_url ); ?>">
+			<?php
+		}
+	}
 	add_action( 'mep_single_after_event_date_list_item', 'mep_re_add_link_to_date_list_item_after', 10, 2 );
 	function mep_re_add_link_to_date_list_item_after( $event_id, $start_datetime ) {
-	$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
-	if ( $recurring == 'everyday' || $recurring == 'yes' ) {
-?>
-</a>
-	<?php
-}
-}
+		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
+		if ( $recurring == 'everyday' || $recurring == 'yes' ) {
+			?>
+            </a>
+			<?php
+		}
+	}
+	add_action( 'mep_event_tags_name', 'old_event_tags_name' );
+	function old_event_tags_name() {
+		global $post;
+		ob_start();
+		$tags  = get_the_terms( get_the_id(), 'mep_tag' );
+		$names = [];
+		if ( sizeof( $tags ) > 0 && ! is_wp_error( $tags ) ) {
+			foreach ( $tags as $key => $value ) {
+				$names[] = $value->name;
+			}
+		}
+		echo esc_html( implode( ', ', $names ) );
+		$content = ob_get_clean();
+		echo apply_filters( 'mage_event_single_tags_name', $content, $post->ID );
+	}
 	add_action( 'mep_event_list_only_date_show', 'mep_event_list_only_date_show_html' );
 	function mep_event_list_only_date_show_html( $event_id ) {
 		$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
@@ -4092,32 +4097,99 @@ $event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => s
         </div>
 		<?php
 	}
+	add_action( 'mep_event_map', 'mep_event_map_location', 10, 3 );
+	function mep_event_map_location( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/map.php' ); }
+	add_action( 'mep_add_to_cart', 'old_mep_add_to_cart', 10, 3 );
+	function old_mep_add_to_cart( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/registration.php' ); }
+	add_action( 'mep_event_social_share', 'old_mep_event_social_share', 10, 3 );
+	function old_mep_event_social_share( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/social.php' ); }
+	add_action( 'mep_event_location_ticket', 'old_mep__list_location', 10, 3 );
+	add_action( 'mep_event_location', 'old_mep__list_location', 10, 3 );
+	add_action( 'mep_event_address_list_sidebar', 'old_mep__list_location', 10, 3 );
+	function old_mep__list_location( $event_id, $event_infos = [], $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
+	add_action( 'mep_event_date', 'old_mep_event_date' );
+	function old_mep_event_date( $event_id ) {
+		$start_datetime          = get_post_meta( get_the_id(), 'event_start_datetime', true );
+		$start_date              = get_post_meta( get_the_id(), 'event_start_date', true );
+		$end_datetime            = get_post_meta( get_the_id(), 'event_end_datetime', true );
+		$end_date                = get_post_meta( get_the_id(), 'event_end_date', true );
+		$more_date               = get_post_meta( get_the_id(), 'mep_event_more_date', true ) ? maybe_unserialize( get_post_meta( get_the_id(), 'mep_event_more_date', true ) ) : [];
+		$recurring               = get_post_meta( get_the_id(), 'mep_enable_recurring', true ) ? get_post_meta( get_the_id(), 'mep_enable_recurring', true ) : 'no';
+		$mep_show_upcoming_event = get_post_meta( get_the_id(), 'mep_show_upcoming_event', true ) ? get_post_meta( get_the_id(), 'mep_show_upcoming_event', true ) : 'no';
+		$cn                      = 1;
+		if ( $recurring == 'yes' ) {
+			if ( strtotime( current_time( 'Y-m-d H:i' ) ) < strtotime( $start_datetime ) ) {
+				?>
+                <p><?php echo get_mep_datetime( $start_datetime, 'date-text' ) . ' ' . get_mep_datetime( $start_datetime, 'time' ); ?> - <?php if ( $start_date != $end_date ) {
+						echo get_mep_datetime( $end_datetime, 'date-text' ) . ' - ';
+					}
+						echo get_mep_datetime( $end_datetime, 'time' ); ?></p>,
+				<?php
+			}
+			foreach ( $more_date as $_more_date ) {
+				if ( strtotime( current_time( 'Y-m-d H:i' ) ) < strtotime( $_more_date['event_more_start_date'] . ' ' . $_more_date['event_more_start_time'] ) ) {
+					if ( $mep_show_upcoming_event == 'yes' ) {
+						$cnt = 1;
+					} else {
+						$cnt = $cn;
+					}
+					if ( $cn == $cnt ) {
+						?>
+                        <p><?php echo get_mep_datetime( $_more_date['event_more_start_date'], 'date-text' ) . ' ' . get_mep_datetime( $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
+								echo get_mep_datetime( $_more_date['event_more_end_date'], 'date-text' ) . ' - ';
+							}
+								echo get_mep_datetime( $_more_date['event_more_end_time'], 'time' ); ?></p>
+						<?php
+						$cn ++;
+					}
+				}
+			}
+		} elseif ( is_array( $more_date ) && sizeof( $more_date ) > 0 ) {
+			?>
+            <p><?php echo get_mep_datetime( $start_datetime, 'date-text' ) . ' ' . get_mep_datetime( $start_datetime, 'time' ); ?> - <?php if ( $start_date != $end_date ) {
+					echo get_mep_datetime( $end_datetime, 'date-text' ) . ' - ';
+				}
+					echo get_mep_datetime( $end_datetime, 'time' ); ?></p>
+			<?php foreach ( $more_date as $_more_date ) {
+				?>
+                <p><?php echo get_mep_datetime( $_more_date['event_more_start_date'], 'date-text' ) . ' ' . get_mep_datetime( $_more_date['event_more_start_time'], 'time' ); ?> - <?php if ( $_more_date['event_more_start_date'] != $_more_date['event_more_end_date'] ) {
+						echo get_mep_datetime( $_more_date['event_more_end_date'], 'date-text' ) . ' - ';
+					}
+						echo get_mep_datetime( $_more_date['event_more_end_time'], 'time' ); ?></p>
+				<?php
+			}
+		} else {
+			?>
+            <p><?php echo get_mep_datetime( $start_datetime, 'date-text' ) . ' ' . get_mep_datetime( $start_datetime, 'time' ); ?> - <?php if ( $start_date != $end_date ) {
+					echo get_mep_datetime( $end_datetime, 'date-text' ) . ' - ';
+				}
+					echo get_mep_datetime( $end_datetime, 'time' ); ?></p>
+			<?php
+		}
+	}
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
-/******************** Remove upper function after 2025**********************/
-
-add_action('mpwem_expired_event_notice_after','mpwem_expired_event_notice_after');
-function mpwem_expired_event_notice_after($event_id){
-
-    $end_date   = get_post_meta($event_id,'event_expire_datetime',true);
-    $total_sold = MPWEM_Functions::get_total_sold( $event_id );
-    $formatted  = MPWEM_Global_Function::date_format( $end_date,'',$event_id );
-    ?>
-    <div class="mpwem-expired-card">
-        <div class="mpwem-expired-title">
-            ❌ <?php _e('Event Expired','mage-eventpress'); ?>
-        </div>
-        <div class="mpwem-expired-date">
-            <?php _e('This event expired on','mage-eventpress'); ?>
-            <span class="mpwem-date-highlight">
-                <?php echo esc_html($formatted); ?>
+	/******************** Remove upper function after 2025**********************/
+	add_action( 'mpwem_expired_event_notice_after', 'mpwem_expired_event_notice_after' );
+	function mpwem_expired_event_notice_after( $event_id ) {
+		$end_date   = get_post_meta( $event_id, 'event_expire_datetime', true );
+		$total_sold = MPWEM_Functions::get_total_sold( $event_id );
+		$formatted  = MPWEM_Global_Function::date_format( $end_date, '', $event_id );
+		?>
+        <div class="mpwem-expired-card">
+            <div class="mpwem-expired-title">
+                ❌ <?php _e( 'Event Expired', 'mage-eventpress' ); ?>
+            </div>
+            <div class="mpwem-expired-date">
+				<?php _e( 'This event expired on', 'mage-eventpress' ); ?>
+                <span class="mpwem-date-highlight">
+                <?php echo esc_html( $formatted ); ?>
             </span>
+            </div>
+            <div class="mpwem-total-sold-badge">
+                🎟 <?php _e( 'Total tickets sold', 'mage-eventpress' ); ?>:
+				<?php echo esc_html( $total_sold ); ?>
+            </div>
         </div>
-
-        <div class="mpwem-total-sold-badge">
-            🎟 <?php _e('Total tickets sold','mage-eventpress'); ?>:
-            <?php echo esc_html($total_sold); ?>
-        </div>
-    </div>
-    <?php
-}
+		<?php
+	}

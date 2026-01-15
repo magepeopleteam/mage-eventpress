@@ -585,9 +585,9 @@ div.mpwem_style.mep-quick-setup select.formControl:focus { background-color: tra
 div.mpwem_style.mep-quick-setup .info_text { color: #6B7280; margin-bottom: 28px; font-style: normal;}
 div.mpwem_style.mep-quick-setup .info_text span { color: #B1B4BC;}
 div.mpwem_style.mep-quick-setup .tabsContentNext { padding: 20px 0;}
-.mep-quick-setup .tabs_next .tabItemNext.active [class*="circleIcon"]::after { border-color: var(--color_theme);}
-.mep-quick-setup .tabs_next .tabItemNext.active [class*="circleIcon"] { background-color: var(--color_theme); border: 1px solid var(--color_theme);}
-.mep-quick-setup .tabs_next .tabItemNext [class*="circleIcon"] { border: 1px solid #D6D6D6;}
+.mep-quick-setup .tabs_next .tabItemNext.active [class*="_icon_circle"]::after { border-color: var(--color_theme);}
+.mep-quick-setup .tabs_next .tabItemNext.active [class*="_icon_circle"] { background-color: var(--color_theme); border: 1px solid var(--color_theme);}
+.mep-quick-setup .tabs_next .tabItemNext [class*="_icon_circle"] { border: 1px solid #D6D6D6;}
 .mep-quick-setup .tabs_next .tabItemNext.active .circleTitle { color: var(--color_theme);}
 .mep-quick-setup .nextTab_prev { border: 1px solid #333;}
 .mep-quick-setup .nextTab_prev:hover,

@@ -163,7 +163,7 @@
 								foreach ( $all_images as $image ) {
 									?>
                                     <div class="mp_multi_image_item" data-image-id="<?php echo esc_attr( $image ); ?>">
-                                        <span class="fas fa-times circleIcon_xs mpwem_remove_multi_image"></span>
+                                        <span class="fas fa-times _icon_circle_xs mpwem_remove_multi_image"></span>
                                         <img src="<?php echo MPWEM_Global_Function::get_image_url( '', $image, 'medium' ); ?>" alt="<?php echo esc_attr( $image ); ?>"/>
                                     </div>
 									<?php

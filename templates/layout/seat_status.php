@@ -11,7 +11,7 @@
 		$total_reserve       = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
 		$total_available     = $total_ticket - ( $total_sold + $total_reserve );
 		?>
-        <div class="_infoLayout_xs_dBRL_equalChild">
+        <div class="_layout_info_xs_dBRL_equalChild">
             <div class="_fdColumn_align_center">
                 <span><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></span>
                 <h6 class="_mp_zero"><?php echo esc_html( $total_ticket ); ?></h6>

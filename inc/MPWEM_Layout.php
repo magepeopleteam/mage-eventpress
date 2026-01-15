@@ -30,7 +30,7 @@
 			public static function msg( $msg, $class = '' ): void {
 				?>
                 <div class="_margin_zero_textCenter <?php echo esc_attr( $class ); ?>">
-                    <label class="_textTheme"><?php echo esc_html( $msg ); ?></label>
+                    <label class="_text_theme"><?php echo esc_html( $msg ); ?></label>
                 </div>
 				<?php
 			}

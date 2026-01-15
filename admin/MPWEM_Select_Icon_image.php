@@ -74,7 +74,7 @@
 											<div class="popup_all_icon">
 												<?php foreach ($icons as $key => $icon) { ?>
 													<div class="popupTabItem" data-icon-list="<?php echo esc_attr($key); ?>" data-icon-title="<?php echo esc_attr($icon['title']); ?>">
-														<h5 class="textTheme"><?php echo esc_html($icon['title']) . '&nbsp;(<strong>' . esc_html(sizeof($icon['icon'])) . '</strong>)'; ?></h5>
+														<h5 class="_text_theme"><?php echo esc_html($icon['title']) . '&nbsp;(<strong>' . esc_html(sizeof($icon['icon'])) . '</strong>)'; ?></h5>
 														<div class="divider"></div>
 														<div class="itemIconArea">
 															<?php foreach ($icon['icon'] as $icon => $item) { ?>
@@ -101,7 +101,7 @@
 					<input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($image_id); ?>"/>
 					<?php if ($image_id) { ?>
 						<div class="mp_single_image_item" data-image-id="<?php echo esc_attr($image_id); ?>'">
-							<span class="fas fa-times circleIcon_xs mpwem_remove_single_image"></span>
+							<span class="fas fa-times _icon_circle_xs mpwem_remove_single_image"></span>
 							<img src="<?php echo esc_url(wp_get_attachment_image_url($image_id, 'medium')); ?>" alt="<?php echo esc_attr($image_id); ?>"/>
 						</div>
 					<?php } ?>
@@ -123,7 +123,7 @@
 								foreach ($all_images as $image) {
 									?>
 									<div class="mp_multi_image_item" data-image-id="<?php echo esc_attr($image); ?>">
-										<span class="fas fa-times circleIcon_xs mpwem_remove_multi_image"></span>
+										<span class="fas fa-times _icon_circle_xs mpwem_remove_multi_image"></span>
 										<img src="<?php echo esc_url(MPWEM_Global_Function::get_image_url('', $image, 'medium')); ?>" alt="<?php echo esc_attr($image); ?>"/>
 									</div>
 									<?php

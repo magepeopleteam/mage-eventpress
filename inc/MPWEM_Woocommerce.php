@@ -104,7 +104,7 @@
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $user_info ) > 0 && sizeof( $form_array ) > 0 ) {
 								if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
 									?>
-                                    <div class="_infoLayout_xs_mt_xs">
+                                    <div class="_layout_info_xs_mt_xs">
                                         <h6 class="_mp_zero"><?php esc_html_e( 'Ticket Information', 'mage-eventpress' ); ?></h6>
                                         <div class="_divider_xs"></div>
                                         <ul class="cart_list">
@@ -130,7 +130,7 @@
 							}
 							if ( is_array( $event_extra_service ) && sizeof( $event_extra_service ) > 0 ) {
 								?>
-                                <div class="_infoLayout_xs_mt_xs">
+                                <div class="_layout_info_xs_mt_xs">
                                     <h6 class="_mp_zero"><?php esc_html_e( 'Extra Service', 'mage-eventpress' ); ?></h6>
                                     <div class="_divider_xs"></div>
                                     <ul class="cart_list">
@@ -579,7 +579,7 @@
 				if ( sizeof( $user ) >0) {
 					$post_id = array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
 					?>
-                    <div class="_infoLayout_xs_mt_xs">
+                    <div class="_layout_info_xs_mt_xs">
 						<?php if ( $same_attendee == 'yes' ) { ?>
                             <h6 class="_mp_zero"><?php esc_html_e( 'Attendee Information', 'mage-eventpress' ); ?></h6>
                             <div class="_divider_xs"></div>

@@ -7,6 +7,7 @@
 		die;
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Layout' ) ) {
+		$GLOBALS['mpwem_event_statistics_exit'] = false;
 		class MPWEM_Layout {
 			public function __construct() {
 				add_action( 'mep_event_expire_text', [ $this, 'event_expire_text' ] );
@@ -164,7 +165,6 @@
 				<?php
 			}
 			public static function seat_status( $post_id, $date ) {
-				$admin_url = get_admin_url();
 				?>
                 <div class="mpwem_style">
 					<?php

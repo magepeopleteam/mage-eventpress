@@ -197,7 +197,6 @@
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
-	div.event_date_list_area .date_item a._textTheme {color: var(--color_theme);}
 	div.event_date_list_area .date-list-item { border-radius: 10px; }
 }
 /* *************************************************************Speaker******************** */
@@ -367,7 +366,7 @@
 	.list_with_filter_section .flexEqual {display: -webkit-flex;display: flex;}
 	div.buttonGroup > *,
 	.list_with_filter_section .flexEqual > * { -webkit-flex: 1;-ms-flex: 1;flex: 1;}
-	.list_with_filter_section .circleIcon_xs { width: 25px;height: 25px;min-width: 25px; background-color: #FF5959; color: #FFF; display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center; -webkit-align-items: center;align-items: center;}
+	.list_with_filter_section ._icon_circle_xs { width: 25px;height: 25px;min-width: 25px; background-color: #FF5959; color: #FFF; display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center; -webkit-align-items: center;align-items: center;}
 	.list_with_filter_section .sort_code_search_box { display: -webkit-flex; display: flex; border: 1px solid #DDD; -webkit-flex-wrap: wrap;flex-wrap: wrap; padding: 5px;}
 	.list_with_filter_section .sort_code_search_box label {display: block; margin: 0;}
 	.list_with_filter_section [class*="defaultButton"] { color: #FFF;}

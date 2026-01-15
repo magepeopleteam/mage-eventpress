@@ -143,21 +143,21 @@
                             <div class="tabs_next">
                                 <div class="tabListsNext _margin_auto">
                                     <div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
-                                        <h4 class="circleIcon" data-class>
+                                        <h4 class="_icon_circle" data-class>
                                             <span class="mp_zero" data-icon></span>
                                             <span class="mp_zero" data-text>1</span>
                                         </h4>
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'Welcome', 'mage-eventpress' ); ?></h6>
                                     </div>
                                     <div data-tabs-target-next="#mpwem_qs_general" class="tabItemNext" data-open-text="2" data-close-text="" data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
-                                        <h4 class="circleIcon" data-class>
+                                        <h4 class="_icon_circle" data-class>
                                             <span class="mp_zero" data-icon></span>
                                             <span class="mp_zero" data-text>2</span>
                                         </h4>
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'General', 'mage-eventpress' ); ?></h6>
                                     </div>
                                     <div data-tabs-target-next="#mpwem_qs_done" class="tabItemNext" data-open-text="3" data-close-text="" data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
-                                        <h4 class="circleIcon" data-class>
+                                        <h4 class="_icon_circle" data-class>
                                             <span class="mp_zero" data-icon></span>
                                             <span class="mp_zero" data-text>3</span>
                                         </h4>

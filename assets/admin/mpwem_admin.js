@@ -4,37 +4,22 @@ function mpwem_initWpEditor(id) {
             if (tinymce.get(id)) {
                 tinymce.get(id).remove();
             }
-            // Enhanced settings for FAQ editor
-            if (id === 'mep_faq_content') {
-                tinymce.init({
-                    selector: '#' + id,
-                    toolbar1: 'formatselect | fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link unlink | removeformat | undo redo | code',
-                    toolbar2: '',
-                    fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 48pt 60pt 72pt',
-                    plugins: 'link,lists,textcolor,colorpicker,wordpress,wpeditimage,wplink,wpview',
-                    menubar: false,
-                    statusbar: true,
-                    setup: function(editor) {
-                        // Initialize WordPress link dialog when editor is ready
-                        editor.on('init', function() {
-                            // Wait a bit for WordPress scripts to be ready
-                            setTimeout(function() {
-                                // Ensure WordPress link dialog is initialized
-                                if (typeof wp !== 'undefined' && wp.link && typeof wp.link.init === 'function') {
-                                    wp.link.init();
-                                } else if (typeof wpLink !== 'undefined' && typeof wpLink.init === 'function') {
-                                    wpLink.init();
-                                }
-                            }, 100);
-                        });
-                    }
-                });
-            } else {
-                tinymce.init({selector: '#' + id});
-            }
-        }
-        if (typeof QTags !== 'undefined') {
-            QTags({id: id});
+            tinymce.init({
+                selector: '#' + id, toolbar1: 'formatselect | fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | link unlink | removeformat | undo redo | code', toolbar2: '', fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 28pt 32pt 36pt 48pt 60pt 72pt', plugins: 'link,lists,textcolor,colorpicker,wordpress,wpeditimage,wplink,wpview', menubar: false, statusbar: true, setup: function (editor) {
+                    // Initialize WordPress link dialog when editor is ready
+                    editor.on('init', function () {
+                        // Wait a bit for WordPress scripts to be ready
+                        setTimeout(function () {
+                            // Ensure WordPress link dialog is initialized
+                            if (typeof wp !== 'undefined' && wp.link && typeof wp.link.init === 'function') {
+                                wp.link.init();
+                            } else if (typeof wpLink !== 'undefined' && typeof wpLink.init === 'function') {
+                                wpLink.init();
+                            }
+                        }, 100);
+                    });
+                }
+            });
         }
     } catch (error) {
         console.error('Error initializing WordPress editor:', error);
@@ -101,7 +86,6 @@ function mpwem_initWpEditor(id) {
             // Get post-specific storage key for better security and isolation
             const postId = $('body').find('[name="post_ID"]').val();
             const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
-            
             // Check if there's a saved active tab in localStorage
             let savedTab = null;
             try {
@@ -113,7 +97,6 @@ function mpwem_initWpEditor(id) {
             } catch (e) {
                 // localStorage not available, continue without persistence
             }
-            
             if (savedTab) {
                 const savedTabElement = $(this).find('ul li[data-target-tabs="' + savedTab + '"]');
                 if (savedTabElement.length) {
@@ -134,13 +117,11 @@ function mpwem_initWpEditor(id) {
     $(document).on('click', '[data-target-tabs]', function () {
         if (!$(this).hasClass('active')) {
             let tabsTarget = $(this).attr('data-target-tabs');
-            
             // Sanitize tab ID to prevent any potential issues
             if (tabsTarget && /^#[a-zA-Z_\-0-9]+$/.test(tabsTarget)) {
                 // Save the active tab to localStorage with post-specific key
                 const postId = $('body').find('[name="post_ID"]').val();
                 const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
-                
                 try {
                     localStorage.setItem(storageKey, tabsTarget);
                 } catch (e) {
@@ -148,7 +129,6 @@ function mpwem_initWpEditor(id) {
                     // This ensures the tab switching still works even without persistence
                 }
             }
-            
             let targetParent = $(this).closest('.mp_event_tab_area').find('.mp_tab_details').first();
             targetParent.children('.mp_tab_item:visible').slideUp('fast');
             targetParent.children('.mp_tab_item[data-tab-item="' + tabsTarget + '"]').slideDown(250);
@@ -192,7 +172,6 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-
     /**************************/
     // Clear localStorage when form is saved or updated
     function mpwem_clear_tab_storage() {
@@ -206,40 +185,34 @@ function mpwem_initWpEditor(id) {
             // localStorage not available, no action needed
         }
     }
-    
     // Track if user is saving/updating to prevent clearing on reload
     let isSaving = false;
-    
     // Clear on save/update
     $(document).on('click', '#publish,#save-post', function (e) {
         isSaving = true;
         // Clear tab storage after successful save (only after form submission completes)
-        setTimeout(function() {
+        setTimeout(function () {
             mpwem_clear_tab_storage();
             isSaving = false;
         }, 1500);
     });
-    
     // Clear when navigating away from the page (but NOT on reload)
-    $(window).on('beforeunload', function(e) {
+    $(window).on('beforeunload', function (e) {
         // Check if this is a page reload or actual navigation
         const isReload = (e.currentTarget.performance && e.currentTarget.performance.navigation.type === 1);
-        
         if (!isReload && !isSaving) {
             // Get current page info
             const urlParams = new URLSearchParams(window.location.search);
             const currentAction = urlParams.get('action');
             const currentPost = urlParams.get('post');
-            
             // Only clear if we're leaving the edit page
             if (currentAction === 'edit' && currentPost) {
                 mpwem_clear_tab_storage();
             }
         }
     });
-    
     // Additional cleanup for link navigation (when clicking away from edit page)
-    $(document).on('click', 'a:not([data-target-tabs]):not([target="_blank"])', function(e) {
+    $(document).on('click', 'a:not([data-target-tabs]):not([target="_blank"])', function (e) {
         const href = $(this).attr('href');
         if (href && href !== '#' && href !== 'javascript:void(0)') {
             // Clear storage if navigating away from current post edit page
@@ -248,14 +221,12 @@ function mpwem_initWpEditor(id) {
             const currentPostId = urlParams.get('post');
             const targetPostMatch = href.match(/[?&]post=(\d+)/);
             const targetPostId = targetPostMatch ? targetPostMatch[1] : null;
-            
             // Clear if going to different page or different post
             if (!isEditPageLink || (currentPostId && targetPostId && currentPostId !== targetPostId)) {
                 mpwem_clear_tab_storage();
             }
         }
     });
-    
     /**************************/
     $(document).on('click', '#publish,#save-post', function (e) {
         let exit = 1;
@@ -288,14 +259,9 @@ function mpwem_initWpEditor(id) {
         var templateItem = button.closest('.mpwem-template-item');
         templateItem.addClass('mpwem-loading');
         $.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'mep_copy_template_to_theme',
-                template_path: templatePath,
-                nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
-            },
-            success: function (response) {
+            url: ajaxurl, type: 'POST', data: {
+                action: 'mep_copy_template_to_theme', template_path: templatePath, nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
+            }, success: function (response) {
                 if (response.success) {
                     templateItem.addClass('overridden');
                     templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-overridden">Overridden</span>');
@@ -305,12 +271,10 @@ function mpwem_initWpEditor(id) {
                 } else {
                     alert('Error: ' + response.data);
                 }
-            },
-            error: function (xhr, status, error) {
+            }, error: function (xhr, status, error) {
                 console.log('AJAX Error:', xhr, status, error);
                 alert('An error occurred while copying the template. Check browser console for details.');
-            },
-            complete: function () {
+            }, complete: function () {
                 templateItem.removeClass('mpwem-loading');
             }
         });
@@ -326,14 +290,9 @@ function mpwem_initWpEditor(id) {
         var templateItem = button.closest('.mpwem-template-item');
         templateItem.addClass('mpwem-loading');
         $.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'mep_remove_template_from_theme',
-                template_path: templatePath,
-                nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
-            },
-            success: function (response) {
+            url: ajaxurl, type: 'POST', data: {
+                action: 'mep_remove_template_from_theme', template_path: templatePath, nonce: typeof mpwem_template_override_nonce !== 'undefined' ? mpwem_template_override_nonce : ''
+            }, success: function (response) {
                 if (response.success) {
                     templateItem.removeClass('overridden');
                     templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-default">Default</span>');
@@ -344,12 +303,10 @@ function mpwem_initWpEditor(id) {
                 } else {
                     alert('Error: ' + response.data);
                 }
-            },
-            error: function (xhr, status, error) {
+            }, error: function (xhr, status, error) {
                 console.log('AJAX Error:', xhr, status, error);
                 alert('An error occurred while removing the template. Check browser console for details.');
-            },
-            complete: function () {
+            }, complete: function () {
                 templateItem.removeClass('mpwem-loading');
             }
         });
@@ -363,17 +320,11 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = $(this);
         jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_reset_booking",
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
+            type: 'POST', url: mpwem_admin_var.url, data: {
+                "action": "mpwem_reset_booking", "post_id": post_id, "nonce": mpwem_admin_var.nonce
+            }, beforeSend: function () {
                 mpwem_loader_xs(target);
-            },
-            success: function (data) {
+            }, success: function (data) {
                 alert(data);
                 mpwem_loader_remove(target);
             }
@@ -405,32 +356,22 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_timeline_settings').find('.mpwem_timeline_area');
         let popup_target = parent.find('.timeline_input');
-        if (title === '') {
+        if (title) {
+            jQuery.ajax({
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_save_timeline", "key": key, "title": title, "time": time, "content": content, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
+                    mpwem_loader_xs(target);
+                    mpwem_loader_xs(popup_target);
+                }, success: function (data) {
+                    target.html(data).promise().done(function () {
+                        mpwem_loader_remove();
+                    });
+                }
+            });
+        } else {
             alert('Timeline Title is required');
-            exit;
         }
-        jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_save_timeline",
-                "key": key,
-                "title": title,
-                "time": time,
-                "content": content,
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
-                mpwem_loader_xs(target);
-                mpwem_loader_xs(popup_target);
-            },
-            success: function (data) {
-                target.html(data).promise().done(function () {
-                    mpwem_loader_remove();
-                });
-            }
-        });
     }
     $(document).on('click', 'div.mpwem_timeline_settings [data-target-popup]', function (e) {
         e.preventDefault();
@@ -440,18 +381,11 @@ function mpwem_initWpEditor(id) {
         let target = $(this).closest('.mpwem_timeline_settings').find('.timeline_input');
         $('body').addClass('noScroll').find('[data-popup="' + popup_id + '"]').addClass('in').promise().done(function () {
             jQuery.ajax({
-                type: 'POST',
-                url: mpwem_admin_var.url,
-                data: {
-                    "action": "mpwem_load_timeline",
-                    "key": key,
-                    "post_id": post_id,
-                    "nonce": mpwem_admin_var.nonce
-                },
-                beforeSend: function () {
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_load_timeline", "key": key, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
                     mpwem_loader_xs(target);
-                },
-                success: function (data) {
+                }, success: function (data) {
                     target.html(data).promise().done(function () {
                         mpwem_initWpEditor('mep_timeline_content');
                     });
@@ -476,18 +410,11 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = $(this).closest('.mpwem_timeline_settings').find('.mpwem_timeline_area');
         jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_remove_timeline",
-                "key": key,
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
+            type: 'POST', url: mpwem_admin_var.url, data: {
+                "action": "mpwem_remove_timeline", "key": key, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+            }, beforeSend: function () {
                 mpwem_loader_xs(target);
-            },
-            success: function (data) {
+            }, success: function (data) {
                 target.html(data);
             }
         });
@@ -500,43 +427,26 @@ function mpwem_initWpEditor(id) {
         let key = parent.find('[name="faq_item_key"]').val();
         let title = parent.find('[name="mep_faq_title"]').val();
         let des = $('body').find('[name="mep_faq_description"]').val();
-
-        let content = '';
-
-        if (typeof tinyMCE !== 'undefined' && tinyMCE.get('custom_editor')) {
-            content = tinyMCE.get('mep_faq_content').getContent();
-        } else {
-            content = $('#mep_faq_content').val(); // fallback
-        }
+        let content = tinyMCE.get('mep_faq_content').getContent();
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = parent.closest('.mpwem_faq_settings').find('.mpwem_faq_area');
         let popup_target = parent.find('.faq_input');
-        if (title === '') {
+        if (title) {
+            jQuery.ajax({
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_save_faq", "key": key, "title": title, "des": des, "content": content, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
+                    mpwem_loader_xs(target);
+                    mpwem_loader_xs(popup_target);
+                }, success: function (data) {
+                    target.html(data).promise().done(function () {
+                        mpwem_loader_remove();
+                    });
+                }
+            });
+        } else {
             alert('FAQ Title is required');
-            exit;
         }
-        jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_save_faq",
-                "key": key,
-                "title": title,
-                "des": des,
-                "content": content,
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
-                mpwem_loader_xs(target);
-                mpwem_loader_xs(popup_target);
-            },
-            success: function (data) {
-                target.html(data).promise().done(function () {
-                    mpwem_loader_remove();
-                });
-            }
-        });
     }
     $(document).on('click', 'div.mpwem_faq_settings [data-target-popup]', function (e) {
         e.preventDefault();
@@ -546,46 +456,13 @@ function mpwem_initWpEditor(id) {
         let target = $(this).closest('.mpwem_faq_settings').find('.faq_input');
         $('body').addClass('noScroll').find('[data-popup="' + popup_id + '"]').addClass('in').promise().done(function () {
             jQuery.ajax({
-                type: 'POST',
-                url: mpwem_admin_var.url,
-                data: {
-                    "action": "mpwem_load_faq",
-                    "key": key,
-                    "post_id": post_id,
-                    "nonce": mpwem_admin_var.nonce
-                },
-                beforeSend: function () {
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_load_faq", "key": key, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
                     mpwem_loader_xs(target);
-                },
-                success: function (data) {
+                }, success: function (data) {
                     target.html(data).promise().done(function () {
-                        // Wait a bit for WordPress to potentially initialize, then ensure our enhanced settings are applied
-                        setTimeout(function() {
-                            mpwem_initWpEditor('mep_faq_content');
-                            // Ensure WordPress link scripts are loaded and initialized after editor is ready
-                            setTimeout(function() {
-                                var editor = tinymce.get('mep_faq_content');
-                                if (editor) {
-                                    // Initialize WordPress link dialog
-                                    if (typeof wp !== 'undefined' && wp.link) {
-                                        if (typeof wp.link.init === 'function') {
-                                            wp.link.init();
-                                        }
-                                    } else if (typeof wpLink !== 'undefined' && typeof wpLink.init === 'function') {
-                                        wpLink.init();
-                                    }
-                                    
-                                    // Ensure link button triggers WordPress dialog
-                                    editor.on('ExecCommand', function(e) {
-                                        if (e.command === 'mceLink' || e.command === 'WP_Link') {
-                                            if (typeof wp !== 'undefined' && wp.link) {
-                                                wp.link.init();
-                                            }
-                                        }
-                                    });
-                                }
-                            }, 300);
-                        }, 100);
+                        mpwem_initWpEditor('mep_faq_content');
                     });
                 }
             });
@@ -608,18 +485,11 @@ function mpwem_initWpEditor(id) {
         let post_id = $('body').find('[name="post_ID"]').val();
         let target = $(this).closest('.mpwem_faq_settings').find('.mpwem_faq_area');
         jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_remove_faq",
-                "key": key,
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
+            type: 'POST', url: mpwem_admin_var.url, data: {
+                "action": "mpwem_remove_faq", "key": key, "post_id": post_id, "nonce": mpwem_admin_var.nonce
+            }, beforeSend: function () {
                 mpwem_loader_xs(target);
-            },
-            success: function (data) {
+            }, success: function (data) {
                 target.html(data);
             }
         });
@@ -793,7 +663,7 @@ function mpwem_load_sortable_datepicker(parent, item) {
         wp.media.editor.send.attachment = function (props, attachment) {
             let attachment_id = attachment.id;
             let attachment_url = attachment.url;
-            let html = '<div class="mp_single_image_item" data-image-id="' + attachment_id + '"><span class="fas fa-times circleIcon_xs mpwem_remove_single_image"></span>';
+            let html = '<div class="mp_single_image_item" data-image-id="' + attachment_id + '"><span class="fas fa-times _icon_circle_xs mpwem_remove_single_image"></span>';
             html += '<img src="' + attachment_url + '" alt="' + attachment_id + '"/>';
             html += '</div>';
             parent.append(html);
@@ -844,17 +714,11 @@ function mpwem_load_post_date(parent) {
     let target = parent.find('.date_time_area');
     if (post_id > 0) {
         jQuery.ajax({
-            type: 'POST',
-            url: mpwem_admin_var.url,
-            data: {
-                "action": "mpwem_load_date",
-                "post_id": post_id,
-                "nonce": mpwem_admin_var.nonce
-            },
-            beforeSend: function () {
+            type: 'POST', url: mpwem_admin_var.url, data: {
+                "action": "mpwem_load_date", "post_id": post_id, "nonce": mpwem_admin_var.nonce
+            }, beforeSend: function () {
                 mpwem_loader_xs(target);
-            },
-            success: function (data) {
+            }, success: function (data) {
                 target.html(data);
                 mpwem_loader_remove(target);
             }
@@ -868,18 +732,11 @@ function mpwem_load_past_date_time(parent) {
         let dates = parent.find('[name="mpwem_date_time"]').val();
         if (post_id > 0 && dates) {
             jQuery.ajax({
-                type: 'POST',
-                url: mpwem_admin_var.url,
-                data: {
-                    "action": "mpwem_load_time",
-                    "post_id": post_id,
-                    "dates": dates,
-                    "nonce": mpwem_admin_var.nonce
-                },
-                beforeSend: function () {
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_load_time", "post_id": post_id, "dates": dates, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
                     mpwem_loader_xs(target);
-                },
-                success: function (data) {
+                }, success: function (data) {
                     target.html(data);
                     mpwem_loader_remove(target);
                 }
@@ -887,7 +744,6 @@ function mpwem_load_past_date_time(parent) {
         }
     }
 }
-
 //=========Seat status==============//
 (function ($) {
     "use strict";
@@ -899,18 +755,11 @@ function mpwem_load_past_date_time(parent) {
         let target = parent.find('.seat_status_area');
         if (post_id > 0) {
             jQuery.ajax({
-                type: 'POST',
-                url: mpwem_admin_var.url,
-                data: {
-                    "action": "mpwem_reload_seat_status",
-                    "post_id": post_id,
-                    "date": date,
-                    "nonce": mpwem_admin_var.nonce
-                },
-                beforeSend: function () {
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_reload_seat_status", "post_id": post_id, "date": date, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
                     mpwem_loader_xs(target);
-                },
-                success: function (data) {
+                }, success: function (data) {
                     target.html(data);
                     mpwem_loader_remove(target);
                 }
@@ -946,18 +795,11 @@ function mpwem_load_past_date_time(parent) {
                 dates = parent.find('[name="mpwem_time"]').val();
             }
             jQuery.ajax({
-                type: 'POST',
-                url: mpwem_admin_var.url,
-                data: {
-                    "action": "mpwem_load_popup_attendee_statistics",
-                    "post_id": post_id,
-                    "dates": dates,
-                    "nonce": mpwem_admin_var.nonce
-                },
-                beforeSend: function () {
+                type: 'POST', url: mpwem_admin_var.url, data: {
+                    "action": "mpwem_load_popup_attendee_statistics", "post_id": post_id, "dates": dates, "nonce": mpwem_admin_var.nonce
+                }, beforeSend: function () {
                     mpwem_loader_xs(target);
-                },
-                success: function (data) {
+                }, success: function (data) {
                     target.html(data);
                     mpwem_loader_remove(target);
                 }
@@ -971,22 +813,15 @@ function mpwem_load_past_date_time(parent) {
             let target = $('body').addClass('noScroll').find('[data-popup="' + target_id + '"]');
             target.addClass('in').promise().done(function () {
                 jQuery.ajax({
-                    type: 'POST',
-                    url: mpwem_admin_var.url,
-                    data: {
-                        "action": "mpwem_popup_attendee_statistic",
-                        "post_id": post_id,
-                        "nonce": mpwem_admin_var.nonce
-                    },
-                    beforeSend: function () {
+                    type: 'POST', url: mpwem_admin_var.url, data: {
+                        "action": "mpwem_popup_attendee_statistic", "post_id": post_id, "nonce": mpwem_admin_var.nonce
+                    }, beforeSend: function () {
                         mpwem_loader(target);
-                    },
-                    success: function (data) {
+                    }, success: function (data) {
                         target.html(data);
                         mpwem_load_date_picker(target);
                         mpwem_loader_remove(target);
-                    },
-                    error: function (response) {
+                    }, error: function (response) {
                         console.log(response);
                     }
                 });
@@ -994,39 +829,21 @@ function mpwem_load_past_date_time(parent) {
         }
     });
 }(jQuery));
-
-
 jQuery(function ($) {
-
-	$('#empty-cart-btn').on('click', function (e) {
-		e.preventDefault();
-
-		$.ajax({
-			url: mepAjax.ajax_url,
-			type: 'POST',
-			dataType: 'json',
-			data: {
-				action: 'empty_woocommerce_cart',
-				nonce: mepAjax.nonce
-			},
-			success: function (response) {
-
-				if (response.success) {
-					$('#empty-cart-message').html(
-						'<div class="notice notice-success"><p>' + response.data + '</p></div>'
-					);
-				} else {
-					$('#empty-cart-message').html(
-						'<div class="notice notice-error"><p>' + response.data + '</p></div>'
-					);
-				}
-			},
-			error: function () {
-				$('#empty-cart-message').html(
-					'<div class="notice notice-error"><p>Unauthorized or invalid request.</p></div>'
-				);
-			}
-		});
-	});
-
+    $('#empty-cart-btn').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', dataType: 'json', data: {
+                action: 'empty_woocommerce_cart', nonce: mepAjax.nonce
+            }, success: function (response) {
+                if (response.success) {
+                    $('#empty-cart-message').html('<div class="notice notice-success"><p>' + response.data + '</p></div>');
+                } else {
+                    $('#empty-cart-message').html('<div class="notice notice-error"><p>' + response.data + '</p></div>');
+                }
+            }, error: function () {
+                $('#empty-cart-message').html('<div class="notice notice-error"><p>Unauthorized or invalid request.</p></div>');
+            }
+        });
+    });
 });

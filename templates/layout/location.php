@@ -62,7 +62,7 @@
                 </div>
 			<?php } elseif ( $type == 'only' ) { ?>
                 <div class="short_item">
-                    <h4 class="_circleIcon_mr"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
+                    <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
                     <div class="_fdColumn">
                         <h6><?php esc_html_e( 'Event Location:', 'mage-eventpress' ); ?></h6>
                         <p><?php echo esc_html( implode( ', ', $location ) ); ?></p>

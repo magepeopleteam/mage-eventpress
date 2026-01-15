@@ -83,7 +83,7 @@
                 <div class="_padding_bt">
                     <div class="_justify_between_align_center_wrap ">
                         <label><span class="_mr"><?php esc_html_e( 'Reset Booking Count', 'mage-eventpress' ); ?></span></label>
-                        <button type="button" class="_mpBtn_xs_primaryButton mpwem_reset_booking"><span class="fas fa-refresh _mr_xs"></span><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></button>
+                        <button type="button" class="_button_general_xs_button_primary mpwem_reset_booking"><span class="fas fa-refresh _mr_xs"></span><?php esc_html_e( 'Reset Booking', 'mage-eventpress' ); ?></button>
                     </div>
                     <span class="label-text"><?php esc_html_e( 'If you reset this count, all booking information will be removed, including the attendee list. This action is irreversible, so please be sure before you proceed.', 'mage-eventpress' ); ?></span>
                 </div>

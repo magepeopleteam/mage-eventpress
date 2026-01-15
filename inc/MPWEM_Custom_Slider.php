@@ -66,7 +66,7 @@
 								if ( $slider_style == 'style_2' ) {
 									?>
                                     <div class="abTopLeft">
-                                        <button type="button" class="_dButton_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
+                                        <button type="button" class="_button_default_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
 											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' MPWEM_Custom_Slider.php' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
                                         </button>
                                     </div>

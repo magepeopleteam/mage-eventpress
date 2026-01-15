@@ -105,7 +105,7 @@
 							<img src="<?php echo esc_url(wp_get_attachment_image_url($image_id, 'medium')); ?>" alt="<?php echo esc_attr($image_id); ?>"/>
 						</div>
 					<?php } ?>
-					<button type="button" class="_dButton_xs_bgColor_1_fullWidth <?php echo esc_attr($image_id ? 'dNone' : ''); ?>">
+					<button type="button" class="_button_default_xs_bgColor_1_fullWidth <?php echo esc_attr($image_id ? 'dNone' : ''); ?>">
 						<span class="fas fa-images _mr_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
 					</button>
 				</div>
@@ -131,7 +131,7 @@
 							}
 						?>
 					</div>
-					<button type="button" class="_dButton_bgColor_1 mpwem_add_multi_image">
+					<button type="button" class="_button_default_bgColor_1 mpwem_add_multi_image">
 						<span class="fas fa-images _mr_xs"></span><?php esc_html_e('Image', 'mage-eventpress'); ?>
 					</button>
 				</div>
@@ -158,9 +158,9 @@
 					</div>
 					<div class="add_icon_image_button_area <?php echo esc_attr($button_active_class); ?>">
 						<div class="flexEqual">
-							<button class="_mpBtn_xs mpwem_image_add" type="button">
+							<button class="_button_general_xs mpwem_image_add" type="button">
 								<span class="fas fa-images"></span><?php esc_html_e('Image', 'mage-eventpress'); ?></button>
-							<button class="_mpBtn_xs mpwem_icon_add" type="button" data-target-popup="#mpwem_add_icon_popup">
+							<button class="_button_general_xs mpwem_icon_add" type="button" data-target-popup="#mpwem_add_icon_popup">
 								<span class="fas fa-plus"></span><?php esc_html_e('Icon', 'mage-eventpress'); ?></button>
 						</div>
 					</div>

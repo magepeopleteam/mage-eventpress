@@ -35,7 +35,7 @@
 						<?php
 							if ( $params['pagination-style'] == 'load_more' ) {
 								?>
-                                <button type="button" class="_mpBtn_xs_min_200 pagination_load_more" data-load-more="0">
+                                <button type="button" class="_button_general_xs_min_200 pagination_load_more" data-load-more="0">
 									<?php esc_html_e( 'Load More', 'mage-eventpress' ); ?>
                                 </button>
 								<?php
@@ -47,29 +47,29 @@
 								?>
                                 <div class="buttonGroup">
 									<?php if ( $total_page > 2 ) { ?>
-                                        <button class="_mpBtn_xs page_prev" type="button" title="<?php esc_html_e( 'GoTO Previous Page', 'mage-eventpress' ); ?>">
+                                        <button class="_button_general_xs page_prev" type="button" title="<?php esc_html_e( 'GoTO Previous Page', 'mage-eventpress' ); ?>">
                                             <span class="fas fa-chevron-left mp_zero"></span>
                                         </button>
 									<?php } ?>
 
 									<?php if ( $total_page > 9 && $active_page > 5 ) { ?>
-                                        <button class="_mpBtn_xs ellipse_left" type="button" disabled>
+                                        <button class="_button_general_xs ellipse_left" type="button" disabled>
                                             <span class="fas fa-ellipsis-h mp_zero"></span>
                                         </button>
 									<?php } ?>
 
 									<?php for ( $i = $current_page; $i <= $last_page; $i ++ ) { ?>
-                                        <button class="_mpBtn_xs <?php echo esc_html( $i ) == $active_page ? 'active_pagination' : ''; ?>" type="button" data-pagination="<?php echo esc_html( $i ); ?>"><?php echo esc_html( $i ); ?></button>
+                                        <button class="_button_general_xs <?php echo esc_html( $i ) == $active_page ? 'active_pagination' : ''; ?>" type="button" data-pagination="<?php echo esc_html( $i ); ?>"><?php echo esc_html( $i ); ?></button>
 									<?php } ?>
 
 									<?php if ( $total_page > 9 && $active_page < ( $total_page - 5 ) ) { ?>
-                                        <button class="_mpBtn_xs ellipse_right" type="button" disabled>
+                                        <button class="_button_general_xs ellipse_right" type="button" disabled>
                                             <span class="fas fa-ellipsis-h mp_zero"></span>
                                         </button>
 									<?php } ?>
 
 									<?php if ( $total_page > 2 ) { ?>
-                                        <button class="_mpBtn_xs page_next" type="button" title="<?php esc_html_e( 'GoTO Next Page', 'mage-eventpress' ); ?>">
+                                        <button class="_button_general_xs page_next" type="button" title="<?php esc_html_e( 'GoTO Next Page', 'mage-eventpress' ); ?>">
                                             <span class="fas fa-chevron-right mp_zero"></span>
                                         </button>
 									<?php } ?>
@@ -102,7 +102,7 @@
 			}
 			public static function popup_button( $target_popup_id, $text ) {
 				?>
-                <button type="button" class="_dButton_bgBlue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>">
+                <button type="button" class="_button_default_bgBlue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>">
                     <span class="fas fa-plus-square"></span>
 					<?php echo esc_html( $text ); ?>
                 </button>
@@ -110,7 +110,7 @@
 			}
 			public static function popup_button_xs( $target_popup_id, $text ) {
 				?>
-                <button type="button" class="_dButton_xs_bgBlue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>">
+                <button type="button" class="_button_default_xs_bgBlue" data-target-popup="<?php echo esc_attr( $target_popup_id ); ?>">
                     <span class="fas fa-plus-square"></span>
 					<?php echo esc_html( $text ); ?>
                 </button>
@@ -139,14 +139,14 @@
 			}
 			public static function remove_button() {
 				?>
-                <button class="_warningButton_xs mpwem_item_remove" type="button">
+                <button class="_button_warning_xs mpwem_item_remove" type="button">
                     <span class="fas fa-trash-alt mp_zero"></span>
                 </button>
 				<?php
 			}
 			public static function move_button() {
 				?>
-                <div class="_mpBtn_navy_blueButton_xs mpwem_sortable_button" type="">
+                <div class="_button_general_button_navy_blue_xs mpwem_sortable_button" type="">
                     <span class="fas fa-expand-arrows-alt mp_zero"></span>
                 </div>
 				<?php
@@ -172,7 +172,7 @@
 						?>
                     </div>
                     <div class="">
-						<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Image', 'mage-eventpress' ), 'mpwem_add_multi_image', '_dButton_xs_bgColor_1' ); ?>
+						<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Image', 'mage-eventpress' ), 'mpwem_add_multi_image', '_button_default_xs_bgColor_1' ); ?>
                     </div>
                 </div>
 				<?php

@@ -52,7 +52,7 @@
 					:root {
 						--fs: <?php echo esc_attr($default_fs); ?>;
 						--fw: normal;
-						--fs_small: 13px;
+						--fs_small: 12px;
 						--fs_label: <?php echo esc_attr($fs_label); ?>;
 						--fs_h6: <?php echo esc_attr($fs_h6); ?>;
 						--fs_h5: <?php echo esc_attr($fs_h5); ?>;

@@ -484,7 +484,7 @@ table.wc_status_table.widefat { border: none;}
 #mep_global_icon_list_wrapper input[type=radio] { visibility: hidden; width: 0; height: 0; position: absolute; margin: 0;}
 #mep_global_icon_list_wrapper { top: 40px;}
 #mep_global_icon_list_wrapper label.selected { background: #239108; color: var(--color_white);}
-.mep_global_icon_list_header {	display: -webkit-flex; display: flex;}
+.mep_global_icon_list_header { display: -webkit-flex; display: flex;}
 .mep_global_icon_list_header .mep_global_icon_list_header_group:first-child { margin-right: 20px;}
 .mep_global_icon_list_header .mep_global_icon_list_header_group:last-child { padding-top: 5px;}
 input#mep_search_icon { padding: 3px 12px; border-color: #D3D3D3;}
@@ -512,17 +512,16 @@ h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {
-	table.mpwem_time_setting_table{table-layout: fixed;}
+	table.mpwem_time_setting_table {table-layout: fixed;}
 	table.mpwem_time_setting_table,
 	table.mpwem_time_setting_table th,
 	table.mpwem_time_setting_table td { padding: 0 !important; border: 0 !important; }
 	div.mpwem_style [name=event_start_time_everyday],
 	div.mpwem_style [name=event_end_time_everyday] { height: 100%; }
-	div.mpwem_style div.mpwem_date_format_settings{margin: var(--dmp) 0 0 0;padding: 0;}
+	div.mpwem_style div.mpwem_date_format_settings {margin: var(--dmp) 0 0 0;padding: 0;}
 }
 /******************************************************************** ************************************************/
 @media only screen and (min-width: 10px) {
-
 }
 /**
 * @author shahadat hossain <raselsha@gmail.com>
@@ -555,7 +554,7 @@ h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
 #mp_event_all_info_in_tab label.mpev-switch input:focus + .mpev-slider { box-shadow: inset 0 0 1px var(--color_dark);}
 /********************Round toggle switch****************/
 /********************ticketype table****************/
-.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */}
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 /* ***********mpwem_style overright********** */
 #ui-datepicker-div { border-color: var(--color_theme);}
 #ui-datepicker-div .ui-datepicker-header { background-color: var(--color_theme); border-color: var(--color_theme);}
@@ -593,8 +592,6 @@ div.mpwem_style.mep-quick-setup .tabsContentNext { padding: 20px 0;}
 .mep-quick-setup .nextTab_prev { border: 1px solid #333;}
 .mep-quick-setup .nextTab_prev:hover,
 .mep-quick-setup .nextTab_prev:focus { background-color: #DDD; color: #000;}
-.mep-quick-setup .button_theme:hover,
-.mep-quick-setup .button_theme:focus { opacity: .8; background-color: var(--color_theme); border: 2px solid transparent;}
 .mep-quick-setup .nextTab_prev:hover span,
 .mep-quick-setup .nextTab_prev:focus span { color: #000;}
 .mpwem_welcome_page .updated { display: none;}

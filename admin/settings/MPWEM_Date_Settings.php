@@ -589,7 +589,7 @@
 						?>
                         </tbody>
                     </table>
-					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mpwem_add_item', '_dButton_xs_mt_xs' ); ?>
+					<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Time', 'mage-eventpress' ), 'mpwem_add_item', '_button_default_xs_mt_xs' ); ?>
 					<?php $this->hidden_time_slot_item( $slot_name, $time_name ); ?>
                 </div>
 				<?php

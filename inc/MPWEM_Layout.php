@@ -145,7 +145,7 @@
 							$current = current_time( 'Y-m-d H:i:s' );
 							if ( strtotime( $current ) >= strtotime( $date ) ) {
 								?>
-                                <button type="button" class="_successButton_xxs"><?php esc_html_e( "Event Running", "mage-eventpress" ); ?></button>
+                                <button type="button" class="_button_success_xxs"><?php esc_html_e( "Event Running", "mage-eventpress" ); ?></button>
 								<?php
 							} else {
 								$newformat = date( 'Y-m-d H:i:s', strtotime( $date ) );
@@ -158,7 +158,7 @@
 							}
 						} else {
 							?>
-                            <button type="button" class="_warningButton_xxs"><?php esc_html_e( "Already Expired", "mage-eventpress" ); ?></button>
+                            <button type="button" class="_button_warning_xxs"><?php esc_html_e( "Already Expired", "mage-eventpress" ); ?></button>
 						<?php } ?>
                 </div>
 				<?php
@@ -177,18 +177,24 @@
 							?>
                             <div class="buttonGroup status_action">
                                 <button type="button" class="_button_theme_xxs seat_status_area"><?php echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available ); ?></button>
-                                <button type="button" class="_secondaryButton_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr( $date ); ?>" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
-                                <button class="_primaryButton_xxs" type="button" data-blank="yes" data-href="<?php echo esc_url( $admin_url ); ?>edit.php?post_type=mep_events&page=attendee_statistics&event_id=<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream mp_zero"></span></button>
+                                <button type="button" class="_button_secondary_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr( $date ); ?>" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
+                                <button class="_button_primary_xxs" type="button" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream mp_zero"></span></button>
                             </div>
 							<?php
 						} else {
 							?>
-                            <button class="_primaryButton_xxs" type="button" data-blank="yes" data-href="<?php echo esc_url( $admin_url ); ?>edit.php?post_type=mep_events&page=attendee_statistics&event_id=<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><?php esc_html_e( "View Statistics", "mage-eventpress" ); ?></button>
+                            <button class="_button_primary_xxs" type="button" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><?php esc_html_e( "View Statistics", "mage-eventpress" ); ?></button>
 							<?php
 						}
 					?>
                 </div>
 				<?php
+				if (!$GLOBALS['mpwem_event_statistics_exit']) {
+					$GLOBALS['mpwem_event_statistics_exit'] = true;
+                    ?>
+                    <div class="mpPopup mpwem_style mpwem_popup_attendee_statistic" data-popup="mpwem_popup_attendee_statistic"></div>
+                    <?php
+                }
 			}
 			public static function get_form_array( $event_id ) {
 				$form_id    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );

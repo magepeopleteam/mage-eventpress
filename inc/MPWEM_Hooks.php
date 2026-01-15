@@ -48,9 +48,8 @@
 				/***********************/
 				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
 				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
-				add_action( 'wp_ajax_nopriv_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
+
 				/*************************************/
 				add_action( 'mpwem_list_thumb', [ $this, 'list_thumb' ], 10, 3 );
 				add_action( 'mpwem_list_location', [ $this, 'list_location' ], 10, 3 );

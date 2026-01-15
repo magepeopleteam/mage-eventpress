@@ -30,7 +30,7 @@
                             <div class="mpwem_timeline_area">
 								<?php $this->timeline_item( $time_line_infos ); ?>
                             </div>
-                            <button type="button" class="_dButton_xs_bgBlue" data-key="" data-target-popup="#mpwem_timeline_popup"> <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_timeline_popup"> <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?></button>
 							<?php //echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
                         </div>
                     </div>
@@ -42,8 +42,8 @@
                             </div>
                             <div class="popupFooter">
                                 <div class="buttonGroup">
-                                    <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
-                                    <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
+                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
+                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
                                 </div>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
                                         <span class="_pr_pl"><?php echo esc_html( $time ); ?>
                                     </h6>
                                     <div class="buttonGroup">
-                                        <button type="button" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" class="_mpBtn_xs_bg_light"><span class="fas fa-eye"></span></button>
-                                        <button type="button" data-target-popup="#mpwem_timeline_popup" data-key="<?php echo esc_attr( $key ); ?>" class="_mpBtn_xs_bg_light"><span class="fas fa-edit"></span></button>
-                                        <button type="button" class="_mpBtn_xs_bg_light mpwem_timeline_remove" data-key="<?php echo esc_attr( $key ); ?>"><span class="fas fa-trash"></span></button>
+                                        <button type="button" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" class="_button_general_xs_bg_light"><span class="fas fa-eye"></span></button>
+                                        <button type="button" data-target-popup="#mpwem_timeline_popup" data-key="<?php echo esc_attr( $key ); ?>" class="_button_general_xs_bg_light"><span class="fas fa-edit"></span></button>
+                                        <button type="button" class="_button_general_xs_bg_light mpwem_timeline_remove" data-key="<?php echo esc_attr( $key ); ?>"><span class="fas fa-trash"></span></button>
                                     </div>
                                 </div>
                                 <div class="mp_wp_editor" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">

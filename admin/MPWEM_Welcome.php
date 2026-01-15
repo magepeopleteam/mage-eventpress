@@ -26,7 +26,7 @@
 				<div class="wrap"></div>
 				<div class="mpwem_style mpwem_welcome_page">
 					<div class='padding'>
-						<div class="mpTabs tabBorder _dShadow_6">
+						<div class="mpTabs tabBorder _shadow_6">
 							<ul class="tabLists _bg_light_1">
 								<li data-tabs-target="#mpwem_welcome">
 									<h4><?php esc_html_e('Welcome', 'mage-eventpress'); ?></h4>
@@ -59,11 +59,11 @@
 								<h6 class="_mt_textInfo"><?php esc_html_e('WooCommerce Event Manager Plugin for WordPress is the complete event solution. All major functions are available in this plugin which is needed in an Event booking website.', 'mage-eventpress'); ?></h6>
 								<h6 class="_mt_textInfo"><?php esc_html_e('It uses WooCommerce to take payment, which provides freedom for using popular payment getaway via WooCommerce. This plugin supports all WordPress version and can be used to create any types of any types of events.', 'mage-eventpress'); ?></h6>
 								<div class="_mt_40_dFlex">
-									<button class="_navy_blueButton_mr_xs" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/#mage_product_price">
+									<button class="_button_navy_blue_mr_xs" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/#mage_product_price">
 										<?php esc_html_e('Buy Now', 'mage-eventpress'); ?>
 									</button>
 									<button class="_button_theme_mr_xs" type="button" data-href="https://event.mage-people.com/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
-									<button class="_dButton_mr_xs" type="button" data-href="https://docs.mage-people.com/woocommerce-event-manager/"><?php esc_html_e('Documentation', 'mage-eventpress'); ?></button>
+									<button class="_button_default_mr_xs" type="button" data-href="https://docs.mage-people.com/woocommerce-event-manager/"><?php esc_html_e('Documentation', 'mage-eventpress'); ?></button>
 								</div>
 							</div>
 							<div class="col_4">
@@ -161,7 +161,7 @@
 									<tr>
 										<th>
 											Events – List Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-list-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-list-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-list show='2' pagination='yes']</code>
@@ -187,7 +187,7 @@
 									<tr>
 										<th>
 											Events – List Style with Search Box
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-list-style-with-search-box/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-list-style-with-search-box/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-list column=4 search-filter='yes']</code>
@@ -214,7 +214,7 @@
 									<tr>
 										<td>
 											Events – Grid Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-grid-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-grid-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='3' style='grid']</code>
@@ -252,7 +252,7 @@
 									<tr>
 										<td>
 											Events – Minimal Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-minimal-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-minimal-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='2' style='minimal']</code>
@@ -290,7 +290,7 @@
 									<tr>
 										<td>
 											Events – Winter Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-winter-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-winter-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='2' style='winter']</code>
@@ -328,7 +328,7 @@
 									<tr>
 										<td>
 											Events – Native Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-native-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-native-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='2' style='native']</code>
@@ -366,7 +366,7 @@
 									<tr>
 										<td>
 											Events – Vertical Timeline Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-vertical-timeline-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-vertical-timeline-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='5' style='timeline' timeline-mode='vertical']</code>
@@ -412,7 +412,7 @@
 									<tr>
 										<td>
 											Events – Horizontal Timeline Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-horizontal-timeline-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-horizontal-timeline-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='5' style='timeline' timeline-mode='horizontal']</code>
@@ -458,7 +458,7 @@
 									<tr>
 										<td>
 											Events list with search filter
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-list-with-search-filter/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-list-with-search-filter/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list show='8' style='grid' column='3' search-filter='yes']</code>
@@ -513,7 +513,7 @@
 									<tr>
 										<td>
 											Events – Title Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-title-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-title-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='title']</code>
@@ -545,7 +545,7 @@
 									<tr>
 										<td>
 											Events – Carousel Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-carousel-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-carousel-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='grid' pagination='carousal' carousal-dots='yes' carousal-nav='yes' column=3]</code>
@@ -611,7 +611,7 @@
 									<tr>
 										<td>
 											Events – Spring Style
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-spring-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-spring-style/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='spring']</code>
@@ -643,7 +643,7 @@
 									<tr>
 										<td>
 											Event Speakers
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/speakers/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/speakers/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-speaker-list event=14829]</code>
@@ -659,7 +659,7 @@
 									<tr>
 										<td>
 											Recurring Events
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/recurring-events/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/recurring-events/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list-recurring column='3']</code>
@@ -678,7 +678,7 @@
 									<tr>
 										<td>
 											Events City List
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-city-list/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-city-list/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-city-list]</code>
@@ -688,7 +688,7 @@
 									<tr>
 										<td>
 											Events With Pagination
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-with-pagination/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-with-pagination/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='grid' pagination='yes']</code>
@@ -730,7 +730,7 @@
 									<tr>
 										<td>
 											Events by Single Organizer
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-by-single-organizer/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-by-single-organizer/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='grid' org='15']</code>
@@ -767,7 +767,7 @@
 									<tr>
 										<td>
 											Events Filter by Organization
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-filter-by-organization/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-filter-by-organization/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list style='grid' org-filter='yes']</code>
@@ -807,7 +807,7 @@
 									<tr>
 										<td>
 											Events by Single Category
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-by-single-category/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-by-single-category/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list cat='44']</code>
@@ -823,7 +823,7 @@
 									<tr>
 										<td>
 											Events Filter by Category
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-filter-by-category/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-filter-by-category/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</td>
 										<td>
 											<code>[event-list cat-filter='yes']</code>
@@ -842,7 +842,7 @@
 									<tr>
 										<th>
 											Events by Country
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-by-country/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-by-country/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-list country='US']</code>
@@ -858,7 +858,7 @@
 									<tr>
 										<th>
 											Events by City
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-by-city/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-by-city/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-list city='Texas']</code>
@@ -874,7 +874,7 @@
 									<tr>
 										<th>
 											Expired Events
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/expired-events/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/expired-events/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[expire-event-list]</code>
@@ -884,7 +884,7 @@
 									<tr>
 										<th>
 											Single Event Registration
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/single-event-registration/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/single-event-registration/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-add-cart-section event=10408]</code>
@@ -900,7 +900,7 @@
 									<tr>
 										<th>
 											Events Calendar
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-calendar/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-calendar/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<code>[event-calendar]</code>
@@ -911,7 +911,7 @@
 										<th>
 											Events Calendar Pro
 											<span class="mep_welcome_pro_badge">Addon</span>
-											<button type="button" class="dButton_xs" data-href="https://event.mage-people.com/events-calendar-pro/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
+											<button type="button" class="_button_default_xs" data-href="https://event.mage-people.com/events-calendar-pro/"><?php esc_html_e('View Demo', 'mage-eventpress'); ?></button>
 										</th>
 										<th>
 											<p>

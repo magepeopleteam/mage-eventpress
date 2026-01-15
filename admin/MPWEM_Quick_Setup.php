@@ -138,7 +138,7 @@
 				}
 				?>
                 <div class="mpwem_style mep-quick-setup">
-                    <div class="_dShadow_6_admin_layout">
+                    <div class="_shadow_6_admin_layout">
                         <form method="post" action="">
                             <div class="tabs_next">
                                 <div class="tabListsNext _margin_auto">
@@ -173,7 +173,7 @@
                                 </div>
 								<?php if ( $status == 1 ) { ?>
                                     <div class="justify_between">
-                                        <button type="button" class="mpBtn nextTab_prev">
+                                        <button type="button" class="_button_general nextTab_prev">
                                             <span>&longleftarrow;<?php esc_html_e( 'Previous', 'mage-eventpress' ); ?></span>
                                         </button>
                                         <div></div>
@@ -210,7 +210,7 @@
                                 <span class="fas fa-check-circle textSuccess"></span>
                             </h5>
 						<?php } elseif ( $status == 0 ) { ?>
-                            <button class="warningButton" type="submit" name="install_and_active_woo_btn"><?php esc_html_e( 'Install & Active Now', 'mage-eventpress' ); ?></button>
+                            <button class="_button_warning" type="submit" name="install_and_active_woo_btn"><?php esc_html_e( 'Install & Active Now', 'mage-eventpress' ); ?></button>
 						<?php } else { ?>
                             <button class="_button_theme" type="submit" name="active_woo_btn"><?php esc_html_e( 'Active Now', 'mage-eventpress' ); ?></button>
 						<?php } ?>

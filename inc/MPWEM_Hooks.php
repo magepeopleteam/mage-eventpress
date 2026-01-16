@@ -480,7 +480,7 @@
 				$show_date_list            = array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
 				if ( sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
                     <div class="mpwem_style mpwem_list_date_list">
-                        <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class="_button_theme_light_xs_mt_xs mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span></button>
+                        <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class="_button_theme_light_mt_xs mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span></button>
                         <div class="date_list_area" data-collapse="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>"></div>
                     </div>
 				<?php }

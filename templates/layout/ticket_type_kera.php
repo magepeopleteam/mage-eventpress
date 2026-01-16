@@ -140,7 +140,7 @@
 	                                                                    <?php } ?>
                                                                     </div>
                                                                     <div class="">
-                                                                        <h6 class="_textCenter"><?php echo wc_price( $ticket_price_ ); ?></h6>
+                                                                        <h6 class="_text_center"><?php echo wc_price( $ticket_price_ ); ?></h6>
                                                                         <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>

@@ -53,13 +53,13 @@ function mpwem_loader_simple_remove(target = jQuery('body')) {
 function mpwem_loader_body() {
     let body = jQuery('body');
     if (body.find('div[class*="dLoader"]').length < 1) {
-        body.addClass('noScroll').append('<div class="dLoader pFixed"><span class="fas fa-spinner fa-pulse"></span></div>');
+        body.addClass('noScroll').append('<div class="dLoader _p_fixed"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
 function mpwem_loader_body_xs() {
     let body = jQuery('body');
     if (body.find('div[class*="dLoader"]').length < 1) {
-        body.addClass('noScroll').append('<div class="dLoader_xs pFixed"><span class="fas fa-spinner fa-pulse"></span></div>');
+        body.addClass('noScroll').append('<div class="dLoader_xs _p_fixed"><span class="fas fa-spinner fa-pulse"></span></div>');
     }
 }
 function mpwem_loader_circle(target) {

@@ -238,7 +238,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="textGray textCenter search_sort_code_counts">
+                    <p class="textGray _text_center search_sort_code_counts">
 						<?php esc_html_e( 'Showing', 'mage-eventpress' ); ?>
                         <strong class="qty_count"><?php echo esc_html( $params['show'] ); ?></strong>
 						<?php esc_html_e( 'of', 'mage-eventpress' ); ?>

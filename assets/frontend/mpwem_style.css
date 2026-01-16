@@ -198,6 +198,7 @@
 	div.event_date_list_area .date_item::before {content: ""; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: 8px; left: 0; background-color: var(--color_theme);}
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date-list-item { border-radius: 10px; }
+	button.mpwem_get_date_list{border-radius: 20px;}
 }
 /* *************************************************************Speaker******************** */
 @media only screen and (min-width: 10px) {

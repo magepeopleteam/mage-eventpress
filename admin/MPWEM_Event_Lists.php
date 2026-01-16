@@ -351,7 +351,7 @@
 			public function popup_static_list( $post_id, $date ) {
 				$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 				?>
-                <h4 class="_textCenter"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ,$post_id) ); ?></h4>
+                <h4 class="_text_center"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, $date_format ,$post_id) ); ?></h4>
                 <div class="_divider"></div>
 				<?php $this->attendee_statistic_list( $post_id, $date ); ?>
 				<?php

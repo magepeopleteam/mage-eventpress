@@ -29,7 +29,7 @@
 			}
 			public static function msg( $msg, $class = '' ): void {
 				?>
-                <div class="_margin_zero_textCenter <?php echo esc_attr( $class ); ?>">
+                <div class="_margin_zero_text_center <?php echo esc_attr( $class ); ?>">
                     <label class="_text_theme"><?php echo esc_html( $msg ); ?></label>
                 </div>
 				<?php

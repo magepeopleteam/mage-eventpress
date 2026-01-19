@@ -181,7 +181,7 @@
 			public static function bg_image( $post_id = '', $image_id = '', $size = 'full' ) {
 				$image_url = MPWEM_Global_Function::get_image_url( $post_id, $image_id, $size );
 				$image_url = $image_url ?: MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png';
-				$size      = getimagesize( $image_url );
+				$size      = wp_getimagesize( $image_url );
 				$width     = 0;
 				$height    = 0;
 				if ( $size ) {

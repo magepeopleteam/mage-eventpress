@@ -177,8 +177,8 @@
 							?>
                             <div class="buttonGroup status_action">
                                 <button type="button" class="_button_theme_xxs seat_status_area"><?php echo esc_html( $total_ticket . '-' . $total_sold . '-' . $total_reserve . '=' . $total_available ); ?></button>
-                                <button type="button" class="_button_secondary_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr( $date ); ?>" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh mp_zero"></span></button>
-                                <button class="_button_primary_xxs" type="button" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream mp_zero"></span></button>
+                                <button type="button" class="_button_secondary_xxs mpwem_reload_seat_status" data-date="<?php echo esc_attr( $date ); ?>" data-post_id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Reload Seat Status", "mage-eventpress" ); ?>"><span class="fas fa-refresh _mp_zero"></span></button>
+                                <button class="_button_primary_xxs" type="button" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $post_id ); ?>" title="<?php esc_attr_e( "Click To View Statistics", "mage-eventpress" ); ?>"><span class="fas fa-stream _mp_zero"></span></button>
                             </div>
 							<?php
 						} else {

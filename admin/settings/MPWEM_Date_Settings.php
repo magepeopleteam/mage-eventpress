@@ -48,7 +48,7 @@
                     <div class="_padding_bt">
                         <label class="_justify_between_align_center_wrap">
                             <span class="_mr"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
-                            <input type="number" class="formControl max_100 number_validation" name='mep_buffer_time' value='<?php echo esc_attr( $buffer_time ); ?>'/>
+                            <input type="number" class="formControl _max_100 number_validation" name='mep_buffer_time' value='<?php echo esc_attr( $buffer_time ); ?>'/>
                         </label>
                         <span class="label-text"><?php esc_html_e( 'Ticket sales close X minutes before the event starts.', 'mage-eventpress' ); ?></span>
                     </div>
@@ -71,7 +71,7 @@
                             <span class="_mp_zero"><?php esc_html_e( 'Configure Your Single Date and Time Settings Here', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bt mpwem_settings_area">
-                            <div class="_ovAuto">
+                            <div class="_ov_auto">
                                 <table>
                                     <thead>
                                     <tr>
@@ -143,7 +143,7 @@
                             <span class="_mp_zero"><?php esc_html_e( 'Configure Your Particular Date and Time Settings Here', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bt mpwem_settings_area">
-                            <div class="_ovAuto">
+                            <div class="_ov_auto">
                                 <table>
                                     <thead>
                                     <tr>
@@ -251,7 +251,7 @@
                 <div class="_padding_bt">
                     <label class="_justify_between_align_center_wrap ">
                         <span class="_mr"><?php esc_html_e( 'After Repeated Days', 'mage-eventpress' ); ?></span>
-                        <input type="number" class="formControl max_100 number_validation" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/>
+                        <input type="number" class="formControl _max_100 number_validation" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/>
                     </label>
                     <span class="label-text"><?php esc_html_e( 'Select After Repeated Days', 'mage-eventpress' ); ?></span>
                 </div>

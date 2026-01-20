@@ -127,6 +127,7 @@
 					$qty_type        = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
 					$sale_end_date   = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
 					$sale_end_time   = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
+					$option_ticket_enable   = isset( $_POST['option_ticket_enable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_enable'] ) ) : [];
 					$count           = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
 						if ( $names[ $i ] ) {
@@ -137,6 +138,7 @@
 							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_ticket_enable']      = $option_ticket_enable[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];

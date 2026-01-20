@@ -48,13 +48,13 @@
                                 <div class="buttonGroup">
 									<?php if ( $total_page > 2 ) { ?>
                                         <button class="_button_general_xs page_prev" type="button" title="<?php esc_html_e( 'GoTO Previous Page', 'mage-eventpress' ); ?>">
-                                            <span class="fas fa-chevron-left mp_zero"></span>
+                                            <span class="fas fa-chevron-left _mp_zero"></span>
                                         </button>
 									<?php } ?>
 
 									<?php if ( $total_page > 9 && $active_page > 5 ) { ?>
                                         <button class="_button_general_xs ellipse_left" type="button" disabled>
-                                            <span class="fas fa-ellipsis-h mp_zero"></span>
+                                            <span class="fas fa-ellipsis-h _mp_zero"></span>
                                         </button>
 									<?php } ?>
 
@@ -64,13 +64,13 @@
 
 									<?php if ( $total_page > 9 && $active_page < ( $total_page - 5 ) ) { ?>
                                         <button class="_button_general_xs ellipse_right" type="button" disabled>
-                                            <span class="fas fa-ellipsis-h mp_zero"></span>
+                                            <span class="fas fa-ellipsis-h _mp_zero"></span>
                                         </button>
 									<?php } ?>
 
 									<?php if ( $total_page > 2 ) { ?>
                                         <button class="_button_general_xs page_next" type="button" title="<?php esc_html_e( 'GoTO Next Page', 'mage-eventpress' ); ?>">
-                                            <span class="fas fa-chevron-right mp_zero"></span>
+                                            <span class="fas fa-chevron-right _mp_zero"></span>
                                         </button>
 									<?php } ?>
                                 </div>
@@ -121,16 +121,18 @@
 				?>
                 <button class="<?php echo esc_attr( $button_class . ' ' . $class ); ?>" type="button">
                     <span class="<?php echo esc_attr( $icon_class ); ?>"></span>
-                    <span class="mL_xs"><?php echo esc_html( $button_text ); ?></span>
+                    <span class="_ml_xs"><?php echo esc_html( $button_text ); ?></span>
                 </button>
 				<?php
 			}
-			public static function move_remove_button() {
+			public static function move_remove_button( $ticket_sold = 0 ) {
 				?>
                 <div class="allCenter">
-                    <div class="buttonGroup max_100">
+                    <div class="buttonGroup">
 						<?php
-							self::remove_button();
+							if ( ! $ticket_sold || $ticket_sold == 0 ) {
+								self::remove_button();
+							}
 							self::move_button();
 						?>
                     </div>
@@ -140,14 +142,14 @@
 			public static function remove_button() {
 				?>
                 <button class="_button_warning_xs mpwem_item_remove" type="button">
-                    <span class="fas fa-trash-alt mp_zero"></span>
+                    <span class="fas fa-trash-alt _mp_zero"></span>
                 </button>
 				<?php
 			}
 			public static function move_button() {
 				?>
-                <div class="_button_general_button_navy_blue_xs mpwem_sortable_button" type="">
-                    <span class="fas fa-expand-arrows-alt mp_zero"></span>
+                <div class="_button_navy_blue_xs mpwem_sortable_button" type="button">
+                    <span class="fas fa-expand-arrows-alt _mp_zero"></span>
                 </div>
 				<?php
 			}

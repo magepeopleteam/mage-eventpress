@@ -83,55 +83,55 @@
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-tasks"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Management', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Attendee Management', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fab fa-wpforms"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Custom Form', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Attendee Custom Form', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-file-pdf"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('PDF Ticketing', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('PDF Ticketing', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="far fa-envelope"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Custom Emailing', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Custom Emailing', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-user-edit"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee Edit Feature', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Attendee Edit Feature', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-file-alt"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Attendee CSV Export', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Attendee CSV Export', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="far fa-file-alt"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Report Overview', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Report Overview', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-palette"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Custom Style Settings', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Custom Style Settings', 'mage-eventpress'); ?></h5>
 									</div>
 									<div class="_group_content mpwem_pro_feature">
 										<h5 class="_bgInfo_textLight_padding_xs_min_50 _group_addon">
 											<span class="fas fa-language"></span>
 										</h5>
-										<h5 class="_textInfo_bg_light_padding_xs_textLeft_fullWidth"><?php esc_html_e('Translation Settings', 'mage-eventpress'); ?></h5>
+										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Translation Settings', 'mage-eventpress'); ?></h5>
 									</div>
 								</div>
 							</div>
@@ -985,7 +985,7 @@
 				<div class="_bgBlack_padding_mt_40">
 					<div class="allCenter">
 						<h3 class="textWhite"><?php esc_html_e('Get Pro and Others Available Addon to get all these exciting features', 'mage-eventpress'); ?></h3>
-						<button class="_button_theme_mL" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/">
+						<button class="_button_theme_ml" type="button" data-href="https://mage-people.com/product/mage-woo-event-booking-manager-pro/">
 							<?php esc_html_e('Buy Now', 'mage-eventpress'); ?>
 						</button>
 					</div>

@@ -77,7 +77,7 @@
 					$upcoming_date                  = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 					$event_type                     = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
 					$recurring                      = array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
-					$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : '';
+					$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 					$ticket_types                   = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$event_multidate                = array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
 					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );

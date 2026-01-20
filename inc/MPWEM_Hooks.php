@@ -499,7 +499,7 @@
 			public function list_ribbon( $event_infos ) {
 				$available                      = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
 				$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-				$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : '';
+				$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$event_type                     = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
 				$recurring                      = array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
 				$general_setting_sec            = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];

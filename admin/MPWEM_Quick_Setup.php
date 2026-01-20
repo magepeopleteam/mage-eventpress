@@ -144,22 +144,22 @@
                                 <div class="tabListsNext _margin_auto">
                                     <div data-tabs-target-next="#mpwem_qs_welcome" class="tabItemNext" data-open-text="1" data-close-text=" " data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
                                         <h4 class="_icon_circle" data-class>
-                                            <span class="mp_zero" data-icon></span>
-                                            <span class="mp_zero" data-text>1</span>
+                                            <span class="_mp_zero" data-icon></span>
+                                            <span class="_mp_zero" data-text>1</span>
                                         </h4>
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'Welcome', 'mage-eventpress' ); ?></h6>
                                     </div>
                                     <div data-tabs-target-next="#mpwem_qs_general" class="tabItemNext" data-open-text="2" data-close-text="" data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
                                         <h4 class="_icon_circle" data-class>
-                                            <span class="mp_zero" data-icon></span>
-                                            <span class="mp_zero" data-text>2</span>
+                                            <span class="_mp_zero" data-icon></span>
+                                            <span class="_mp_zero" data-text>2</span>
                                         </h4>
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'General', 'mage-eventpress' ); ?></h6>
                                     </div>
                                     <div data-tabs-target-next="#mpwem_qs_done" class="tabItemNext" data-open-text="3" data-close-text="" data-open-icon="" data-close-icon="fas fa-check" data-add-class="success">
                                         <h4 class="_icon_circle" data-class>
-                                            <span class="mp_zero" data-icon></span>
-                                            <span class="mp_zero" data-text>3</span>
+                                            <span class="_mp_zero" data-icon></span>
+                                            <span class="_mp_zero" data-text>3</span>
                                         </h4>
                                         <h6 class="circleTitle" data-class><?php esc_html_e( 'Done', 'mage-eventpress' ); ?></h6>
                                     </div>
@@ -193,7 +193,7 @@
 				?>
                 <div data-tabs-next="#mpwem_qs_welcome">
                     <h2><?php esc_html_e( 'Event Manager and Tickets Selling Plugin', 'mage-eventpress' ); ?></h2>
-                    <p class="mTB_xs"><?php esc_html_e( 'Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
+                    <p class="_mtb_xs"><?php esc_html_e( 'Thanks for choosing the Event Manager & Tickets Plugin for WooCommerce! Follow the steps below to get started.
 ', 'mage-eventpress' ); ?></p>
                     <div class="_layout_default_mt_align_center justify_between">
                         <h5>
@@ -229,7 +229,7 @@
                 <div data-tabs-next="#mpwem_qs_general">
                     <div class="section">
                         <h2><?php esc_html_e( 'General settings', 'mage-eventpress' ); ?></h2>
-                        <p class="mTB_xs"><?php esc_html_e( 'Choose some general option.', 'mage-eventpress' ); ?></p>
+                        <p class="_mtb_xs"><?php esc_html_e( 'Choose some general option.', 'mage-eventpress' ); ?></p>
                         <div class="_mt">
                             <label class="_fullWidth">
                                 <span class="min_200"><?php esc_html_e( 'Events Label:', 'mage-eventpress' ); ?></span>
@@ -283,8 +283,8 @@
 				?>
                 <div data-tabs-next="#mpwem_qs_done">
                     <h2><?php esc_html_e( 'Finalize Setup', 'mage-eventpress' ); ?></h2>
-                    <p class="mTB_xs"><?php esc_html_e( 'You are about to Finish & Save Events Booking Manager For Woocommerce Plugin setup process', 'mage-eventpress' ); ?></p>
-                    <div class="mT allCenter">
+                    <p class="_mtb_xs"><?php esc_html_e( 'You are about to Finish & Save Events Booking Manager For Woocommerce Plugin setup process', 'mage-eventpress' ); ?></p>
+                    <div class="_mt allCenter">
                         <button type="submit" name="finish_quick_setup" class="_button_theme"><?php esc_html_e( 'Finish & Save', 'mage-eventpress' ); ?></button>
                     </div>
                 </div>

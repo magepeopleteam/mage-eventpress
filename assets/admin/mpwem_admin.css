@@ -4,6 +4,10 @@
 	div.mpwem_style .formControl[type=date],
 	div.mpwem_style .formControl {max-width: 250px;}
 	div.mpwem_style textarea.formControl {max-width: 450px;}
+	tr.disable_row{background-color: #f0f0f0;opacity: 0.85;}
+	tr.disable_row .formControl{pointer-events: none;		background: #f3f3f3;}
+	tr.disable_row span.ticket_status{display: inline-block;		padding: 4px 8px;		border-radius: 4px;		font-size: 11px;		font-weight: 600;}
+	tr.disable_row span.ticket_info{display: block;		padding: 4px 8px;		border-radius: 4px;		font-size: 11px;		font-weight: 500;width: 100%;margin: 5px 0 0 0;}
 }
 /******************************************************************** Font Size & Font weight ************************************************/
 @media only screen and (min-width: 10px) {

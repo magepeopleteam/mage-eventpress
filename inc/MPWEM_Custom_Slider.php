@@ -66,7 +66,7 @@
 								if ( $slider_style == 'style_2' ) {
 									?>
                                     <div class="_pab_top_left">
-                                        <button type="button" class="_button_default_bgWhite_textDefault" data-target-popup="superSlider" data-slide-index="1">
+                                        <button type="button" class="_button_default_bgWhite_text_default" data-target-popup="superSlider" data-slide-index="1">
 											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
                                         </button>
                                     </div>

@@ -62,7 +62,7 @@
                     <div class="_padding_bt mpwem_settings_area">
                         <p><?php esc_html_e( 'Once a ticket is sold, it cannot be edited anymore.', 'mage-eventpress' ); ?></p>
                         <div class="_ov_auto">
-                            <table>
+                            <table class="mpwem_ticket_table">
                                 <thead>
                                 <tr>
                                     <th class="_min_150" title="<?php esc_attr_e( 'Ticket Type Name', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Ticket', 'mage-eventpress' ); ?></th>
@@ -73,7 +73,6 @@
                                     <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
 									<?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
                                     <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date & Time', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'ON/Off ticket sale', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Ticket Enable', 'mage-eventpress' ); ?></th>
                                     <th class="_min_150" title="<?php esc_attr_e( 'Qty Box Type', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
                                     <th><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                                 </tr>
@@ -102,35 +101,48 @@
 				<?php
 			}
 			public function ticket_info( $event_id, $active_category, $ticket_info = [] ) {
-				$qty_t_type         = array_key_exists( 'option_qty_t_type', $ticket_info ) ? $ticket_info['option_qty_t_type'] : 'inputbox';
-				$option_details     = array_key_exists( 'option_details_t', $ticket_info ) ? $ticket_info['option_details_t'] : '';
-				$option_name        = array_key_exists( 'option_name_t', $ticket_info ) ? $ticket_info['option_name_t'] : '';
-				$option_name_text   = preg_replace( "/[{}()<>+ ]/", '_', $option_name ) . '_' . $event_id;
-				$option_price       = array_key_exists( 'option_price_t', $ticket_info ) ? $ticket_info['option_price_t'] : '';
-				$option_qty         = array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
-				$option_default_qty = array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
-				$option_rsv_qty     = array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
-				$sale_end           = array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
-				$option_ticket_enable           = array_key_exists( 'option_ticket_enable', $ticket_info ) ? $ticket_info['option_ticket_enable'] : 'yes';
-				$ticket_sold        = 0;
+				$qty_t_type           = array_key_exists( 'option_qty_t_type', $ticket_info ) ? $ticket_info['option_qty_t_type'] : 'inputbox';
+				$option_details       = array_key_exists( 'option_details_t', $ticket_info ) ? $ticket_info['option_details_t'] : '';
+				$option_name          = array_key_exists( 'option_name_t', $ticket_info ) ? $ticket_info['option_name_t'] : '';
+				$option_name_text     = preg_replace( "/[{}()<>+ ]/", '_', $option_name ) . '_' . $event_id;
+				$option_price         = array_key_exists( 'option_price_t', $ticket_info ) ? $ticket_info['option_price_t'] : '';
+				$option_qty           = array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
+				$option_default_qty   = array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
+				$option_rsv_qty       = array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
+				$sale_end             = array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
+				$option_ticket_enable = array_key_exists( 'option_ticket_enable', $ticket_info ) && $ticket_info['option_ticket_enable'] ? $ticket_info['option_ticket_enable'] : 'yes';
+				$checked              = $option_ticket_enable == 'yes' ? 'checked' : '';
+				$ticket_sold          = 0;
 				if ( $option_name ) {
 					$filter_args['post_id']        = $event_id;
 					$filter_args['ea_ticket_type'] = $option_name;
-					$ticket_sold                    = MPWEM_Query::attendee_query( $filter_args )->post_count;
+					$ticket_sold                   = MPWEM_Query::attendee_query( $filter_args )->post_count;
 				}
 				?>
-                <tr class="mpwem_remove_area data_required">
-                    <td>
-                        <?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
+                <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable == 'yes'  && $ticket_sold>0? '' : 'disable_row' ); ?>">
+                    <td class="ticket_name">
+						<?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
-                        <label>
-                            <?php if($ticket_sold>0){ ?>
-                                <input data-required=""  type="hidden" class="formControl name_validation" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr( $option_name ); ?>"/>
-                                <?php echo esc_html($option_name); ?>
-                            <?php }else{ ?>
-                            <input data-required=""  type="text" class="formControl name_validation" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr( $option_name ); ?>"/>
-                    <?php } ?>
-                        </label>
+						<?php if ( $ticket_sold > 0 ) {
+                            $open_text=$option_ticket_enable == 'yes' ? __( 'SALES ACTIVE', 'mage-eventpress' ) : __( 'SALES DISABLED', 'mage-eventpress' );
+
+                            $close_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
+                            $ticket_class=$option_ticket_enable == 'yes'?'_button_success_xxs':'_button_danger_xxs';
+							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
+							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
+                            $info_class=$option_ticket_enable == 'yes'?'_button_warning_xxs':'_button_danger_xxs';
+                            ?>
+                            <input type="hidden" class="" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
+                            <div class="_flex_wrap"><span class="_mr_xxs"><?php echo esc_html( $option_name ); ?></span>
+                                <span class="<?php echo esc_attr($ticket_class); ?> ticket_status" data-open-text="<?php echo esc_attr($open_text); ?>" data-close-text="<?php echo esc_attr($close_text); ?>"><span data-text><?php echo esc_html($open_text); ?></span></span>
+                            </div>
+                            <span class="<?php echo esc_attr($info_class); ?> ticket_info" data-open-text="<?php echo esc_attr($open_text_info); ?>" data-close-text="<?php echo esc_attr($close_text_info); ?>"><span data-text><?php echo esc_html($open_text_info); ?></span></span>
+
+						<?php } else { ?>
+                            <label>
+                                <input data-required="" type="text" class="formControl name_validation" name="option_name_t[]" placeholder="Ex: Adult" value="<?php echo esc_attr( $option_name ); ?>"/>
+                            </label>
+						<?php } ?>
                     </td>
                     <td><label><input type="text" class="formControl" name="option_details_t[]" placeholder="" value="<?php echo esc_attr( $option_details ); ?>"/></label></td>
                     <td><label><input type="number" size="4" pattern="[0-9]*" step="0.001" class="formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php echo esc_attr( $option_price ); ?>"/></label></td>
@@ -150,14 +162,6 @@
                             </label>
                         </div>
                     </td>
-                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
-                        <label>
-                            <select class="formControl" name="option_ticket_enable[]">
-                                <option value="yes" <?php echo esc_attr( $option_ticket_enable == 'yes' ? 'selected' : '' ); ?>><?php esc_html_e( 'Enable', 'mage-eventpress' ); ?></option>
-                                <option value="no" <?php echo esc_attr( $option_ticket_enable == 'no' ? 'selected' : '' ); ?>><?php esc_html_e( 'Disable', 'mage-eventpress' ); ?></option>
-                            </select>
-                        </label>
-                    </td>
                     <td>
                         <label>
                             <select class="formControl" name="option_qty_t_type[]">
@@ -166,7 +170,13 @@
                             </select>
                         </label>
                     </td>
-                    <td><?php MPWEM_Custom_Layout::move_remove_button($ticket_sold); ?></td>
+                    <td>
+						<?php if ( $ticket_sold > 0 ) { ?>
+                            <?php MPWEM_Custom_Layout::switch_button( 'option_ticket_enable[]', $checked ); ?>
+						<?php } else { ?>
+                            <label class="_d_none"><input type="checkbox" class="_n_none" name="option_ticket_enable[]" checked /></label>
+							<?php MPWEM_Custom_Layout::move_remove_button(); ?>
+						<?php } ?></td>
                 </tr>
 				<?php
 			}

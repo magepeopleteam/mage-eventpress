@@ -18,7 +18,7 @@
 				$secondary       = MPWEM_Global_Function::get_style_settings( 'mpev_secondary_color', '#F1F5FF' );
 				$default_color   = MPWEM_Global_Function::get_style_settings( 'default_text_color', '#303030' );
 				$alternate_color = MPWEM_Global_Function::get_style_settings( 'theme_alternate_color', '#fff' );
-				$warning_color   = MPWEM_Global_Function::get_style_settings( 'warning_color', '#ffc107' );
+				$warning_color   = MPWEM_Global_Function::get_style_settings( 'warning_color', '#f8d7da' );
 				$default_fs      = MPWEM_Global_Function::get_style_settings( 'default_font_size', '14' ) . 'px';
 				$fs_h1           = MPWEM_Global_Function::get_style_settings( 'font_size_h1', '35' ) . 'px';
 				$fs_h2           = MPWEM_Global_Function::get_style_settings( 'font_size_h2', '30' ) . 'px';
@@ -52,7 +52,7 @@
 					:root {
 						--fs: <?php echo esc_attr($default_fs); ?>;
 						--fw: normal;
-						--fs_small: 12px;
+						--fs_small: 11px;
 						--fs_label: <?php echo esc_attr($fs_label); ?>;
 						--fs_h6: <?php echo esc_attr($fs_h6); ?>;
 						--fs_h5: <?php echo esc_attr($fs_h5); ?>;

@@ -82,7 +82,7 @@
 				}
 			}
 			/**********************************/
-			public function location( $event_id, $event_infos = [], $type = '' ): void { require MPWEM_Functions::template_path( 'layout/location.php' ); }
+			public function location( $event_id, $event_infos = [], $type = '' ): void {  require MPWEM_Functions::template_path( 'layout/location.php' ); }
 			public function map( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/map.php' ); }
 			/*******************************/
 			public function date_select( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/date_select.php' ); }

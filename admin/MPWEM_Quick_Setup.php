@@ -207,7 +207,7 @@
                         </h5>
 						<?php if ( $status == 1 ) { ?>
                             <h5>
-                                <span class="fas fa-check-circle textSuccess"></span>
+                                <span class="fas fa-check-circle _text_success"></span>
                             </h5>
 						<?php } elseif ( $status == 0 ) { ?>
                             <button class="_button_warning" type="submit" name="install_and_active_woo_btn"><?php esc_html_e( 'Install & Active Now', 'mage-eventpress' ); ?></button>

@@ -146,7 +146,7 @@
 			<?php
 		}
 	} else {
-		MPWEM_Layout::msg( __( 'Sorry, no ticket available', 'mage-eventpress' ), '_layout_default_bgWarning' );
+		MPWEM_Layout::msg( __( 'Sorry, no ticket available', 'mage-eventpress' ), '_layout_default_bg_warning' );
 		do_action( 'mep_after_no_seat_notice', $event_id );
 	}
 // Show waitlist form after ticket types if waitlist is enabled (even when tickets are available)

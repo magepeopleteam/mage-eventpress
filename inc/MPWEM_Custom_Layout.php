@@ -125,14 +125,12 @@
                 </button>
 				<?php
 			}
-			public static function move_remove_button( $ticket_sold = 0 ) {
+			public static function move_remove_button() {
 				?>
                 <div class="allCenter">
                     <div class="buttonGroup">
 						<?php
-							if ( ! $ticket_sold || $ticket_sold == 0 ) {
-								self::remove_button();
-							}
+							self::remove_button();
 							self::move_button();
 						?>
                     </div>

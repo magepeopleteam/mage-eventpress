@@ -14,7 +14,7 @@
 				add_action( 'admin_init', [ $this, 'mep_create_old_event_product' ] );
 				//******************//
 				add_action( 'wp_head', [ $this, 'url_exclude_search_engine' ] );
-				add_action( 'init', [ $this, 'get_all_hidden_product_id' ] );
+				//add_action( 'init', [ $this, 'get_all_hidden_product_id' ] );
 				add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', [ $this, 'get_all_hidden_product_id' ] );
 			}
 

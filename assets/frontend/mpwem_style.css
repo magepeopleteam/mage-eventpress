@@ -598,7 +598,7 @@
 	.mep_spring_event_location,
 	.mep_spring_event_date { display: flex; align-items: start; margin-bottom: 10px;}
 	div.mep_event_list_item div.spring_area {display: -webkit-flex;display: flex;width: 100%;padding: 0;}
-	div.spring_area .spring_item_1 {background-image: linear-gradient(var(--color_theme), #FE7541);border-radius: var(--dbr) 0 0 var(--dbr);width: 25%;}
+	div.spring_area .spring_item_1 {background-color: var(--color_theme);border-radius: var(--dbr) 0 0 var(--dbr);width: 25%;}
 	div.spring_area .spring_item_1 h5 {margin: 0;color: #FFF;}
 	div.spring_area .spring_item_2 {padding: var(--dmp_xs);width: 25%;}
 	div.spring_area .spring_item_3 {padding: var(--dmp_xs);width: 30%;}

@@ -58,13 +58,23 @@
 					$event_infos['all_date']                 = $all_dates;
 					$event_infos['all_time']                 = $all_times;
 					$event_infos['upcoming_date']            = $upcoming_date;
-					$event_infos['full_address']             = self::get_location($event_id);
-					$event_infos['single_event_setting_sec'] = $single_event_setting_sec ? : [];
-					$event_infos['icon_setting_sec'] = $icon_setting_sec ? : [];
-					$event_infos['general_setting_sec'] = $general_setting_sec ? : [];
+					$location                                = self::get_location( $event_id );
+					$event_infos['full_address']             = $location;
+					$event_infos['mep_city']                 = is_array( $location ) && array_key_exists( 'city', $location ) ? $location['city'] : '';
+					$event_infos['mep_state']                = is_array( $location ) && array_key_exists( 'state', $location ) ? $location['state'] : '';
+					$event_infos['mep_country']              = is_array( $location ) && array_key_exists( 'country', $location ) ? $location['country'] : '';
+					$event_infos['mep_postcode']             = is_array( $location ) && array_key_exists( 'zip', $location ) ? $location['zip'] : '';
+					$event_infos['mep_street']               = is_array( $location ) && array_key_exists( 'street', $location ) ? $location['street'] : '';
+					$event_infos['mep_location_venue']       = is_array( $location ) && array_key_exists( 'location', $location ) ? $location['location'] : '';
+					$event_infos['single_event_setting_sec'] = $single_event_setting_sec ?: [];
+					$event_infos['icon_setting_sec']         = $icon_setting_sec ?: [];
+					$event_infos['general_setting_sec']      = $general_setting_sec ?: [];
 					$event_meta                              = MPWEM_Global_Function::data_sanitize( $event_meta );
 					foreach ( $event_meta as $key => $value ) {
-						$event_infos[ $key ] = current( $value );
+						$val = current( $value );
+						if ( ! empty( $val ) || ! isset( $event_infos[ $key ] ) ) {
+							$event_infos[ $key ] = $val;
+						}
 					}
 				}
 				return $event_infos;

@@ -46,32 +46,39 @@
 					'date-filter'      => 'yes',
 					'year'             => '',
 				);
-				$params           = shortcode_atts( $defaults, $atts );
-				$tmode            = $params['timeline-mode'];
-				$cat              = $params['cat'];
-				$org              = $params['org'];
-				$tag              = $params['tag'];
-				$style            = $params['style'];
-				$cat_f            = $params['cat-filter'];
-				$org_f            = $params['org-filter'];
-				$tag_f            = $params['tag-filter'];
-				$show             = $params['show'];
-				$pagination       = $params['pagination'];
-				$pagination_style = $params['pagination-style'];
-				$sort             = $params['sort'];
-				$column           = $style != 'grid' ? 1 : $params['column'];
-				$nav              = $params['carousal-nav'] == 'yes' ? 1 : 0;
-				$dot              = $params['carousal-dots'] == 'yes' ? 1 : 0;
-				$city             = $params['city'];
-				$country          = $params['country'];
-				$cid              = $params['carousal-id'];
-				$status           = $params['status'];
-				$year             = $params['year'];
-				$filter           = $params['search-filter'];
+			$params           = shortcode_atts( $defaults, $atts );
+			
+			// Sanitize all customer-provided shortcode attributes to prevent XSS and injection attacks
+			$tmode            = sanitize_text_field( $params['timeline-mode'] );
+			$cat              = sanitize_text_field( $params['cat'] );
+			$org              = sanitize_text_field( $params['org'] );
+			$tag              = sanitize_text_field( $params['tag'] );
+			$style            = sanitize_text_field( $params['style'] );
+			$cat_f            = sanitize_text_field( $params['cat-filter'] );
+			$org_f            = sanitize_text_field( $params['org-filter'] );
+			$tag_f            = sanitize_text_field( $params['tag-filter'] );
+			$show             = ( ! empty( $params['show'] ) && $params['show'] != 0 ) ? absint( $params['show'] ) : - 1;
+			$pagination       = sanitize_text_field( $params['pagination'] );
+			$pagination_style = sanitize_text_field( $params['pagination-style'] );
+			$sort             = sanitize_text_field( $params['sort'] );
+			$column           = $style != 'grid' ? 1 : absint( $params['column'] );
+			$nav              = sanitize_text_field( $params['carousal-nav'] ) == 'yes' ? 1 : 0;
+			$dot              = sanitize_text_field( $params['carousal-dots'] ) == 'yes' ? 1 : 0;
+			// Sanitize location parameters - remove dangerous characters that could break queries
+			$city             = sanitize_text_field( $params['city'] );
+			$city             = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $city );
+			$state            = sanitize_text_field( $params['state'] );
+			$state            = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $state );
+			$country          = sanitize_text_field( $params['country'] );
+			$country          = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $country );
+			$cid              = sanitize_text_field( $params['carousal-id'] );
+			$status           = sanitize_text_field( $params['status'] );
+			$year             = sanitize_text_field( $params['year'] );
+			$filter           = sanitize_text_field( $params['search-filter'] );
 				$show             = ( $filter == 'yes' || $pagination == 'yes' && $style != 'timeline' ) && $pagination_style != 'ajax' ? - 1 : $show;
 				$unq_id           = 'abr' . uniqid();
 				ob_start();
-				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, '', $year, 0, $tag );
+				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
                 <div class=' list_with_filter_section mep_event_list'>

@@ -834,7 +834,11 @@ class MEPEventListWidget extends Widget_Base {
 
 ?>
 <div class="mep-elementor-event-list-widget">
-		<?php echo do_shortcode("[event-list cat='$cat' org='$org' style='$style' column='$column' cat-filter='$cat_filter' org-filter='$org_filter' show='$show' pagination='$pagination' carousal-nav='$carousal_nav' carousal-dots='$carousal_dot' carousal-id='$carousal_id' timeline-mode='$timeline_style' sort='$sort' status='$status']"); ?>
+		<?php 
+		// Build shortcode with properly escaped and quoted attributes to prevent XSS
+		$shortcode = '[event-list cat="' . esc_attr( $cat ) . '" org="' . esc_attr( $org ) . '" style="' . esc_attr( $style ) . '" column="' . esc_attr( $column ) . '" cat-filter="' . esc_attr( $cat_filter ) . '" org-filter="' . esc_attr( $org_filter ) . '" show="' . esc_attr( $show ) . '" pagination="' . esc_attr( $pagination ) . '" carousal-nav="' . esc_attr( $carousal_nav ) . '" carousal-dots="' . esc_attr( $carousal_dot ) . '" carousal-id="' . esc_attr( $carousal_id ) . '" timeline-mode="' . esc_attr( $timeline_style ) . '" sort="' . esc_attr( $sort ) . '" status="' . esc_attr( $status ) . '"]';
+		echo do_shortcode( $shortcode ); 
+		?>
 </div>
 <?php
 }

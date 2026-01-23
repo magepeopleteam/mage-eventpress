@@ -38,7 +38,7 @@
 			}
 		} else {
 			$latitude  = array_key_exists( 'latitude', $event_infos ) ? $event_infos['latitude'] : '';
-			$longitude = array_key_exists( 'latitude', $event_infos ) ? $event_infos['latitude'] : '';
+			$longitude = array_key_exists( 'longitude', $event_infos ) ? $event_infos['longitude'] : '';
 			$lat       = $latitude ? floatval( $latitude ) : 0;
 			$lon       = $longitude ? floatval( $longitude ) : 0;
 		}
@@ -72,33 +72,49 @@
             </div>
             <script>
                 var map;
+                var marker;
                 function initMap() {
+                    var mapElement = document.getElementById('mpwem_map');
+                    if (!mapElement) {
+                        console.error('Map container not found');
+                        return;
+                    }
                     var mapCenter = {
-                        lat: <?php echo esc_attr( $lat ); ?>,
-                        lng: <?php echo esc_attr( $lon ); ?>
+                        lat: <?php echo esc_js( $lat ); ?>,
+                        lng: <?php echo esc_js( $lon ); ?>
                     };
-                    map = new google.maps.Map(document.getElementById('mpwem_map'), {
+                    var zoomLevel = <?php echo absint( $map_zoom ); ?>;
+                    if (zoomLevel < 1 || zoomLevel > 20) {
+                        zoomLevel = 17;
+                    }
+                    map = new google.maps.Map(mapElement, {
                         center: mapCenter,
-                        zoom: <?php echo $map_zoom; ?>
+                        zoom: zoomLevel
                     });
-                    var marker = new google.maps.Marker({
+                    marker = new google.maps.Marker({
                         map: map,
                         draggable: false,
                         animation: google.maps.Animation.DROP,
                         position: {
-                            lat: <?php echo esc_attr( $lat ); ?>,
-                            lng: <?php echo esc_attr( $lon ); ?>
+                            lat: <?php echo esc_js( $lat ); ?>,
+                            lng: <?php echo esc_js( $lon ); ?>
                         }
                     });
                     marker.addListener('click', toggleBounce);
                 }
                 function toggleBounce() {
-                    if (marker.getAnimation() !== null) {
+                    if (marker && marker.getAnimation() !== null) {
                         marker.setAnimation(null);
-                    } else {
+                    } else if (marker) {
                         marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
                 }
+                // Fallback if Google Maps API fails to load
+                window.addEventListener('load', function() {
+                    if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                        console.error('Google Maps API failed to load');
+                    }
+                });
             </script>
             <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( $map_api ); ?>&callback=initMap" async defer></script>
 			<?php

@@ -10,7 +10,7 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-echo	$type = $type ?? '';
+	$type = $type ?? '';
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$map_status                = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';

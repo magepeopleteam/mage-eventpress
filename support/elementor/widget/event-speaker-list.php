@@ -81,7 +81,11 @@ class MEPSpeakerListWidget extends Widget_Base {
 		$mep_event_list = $settings['mep_event_list'] > 0 ? esc_attr($settings['mep_event_list']) : '';
 	?>
 	<div class="mep-elementor-event-speaker-list-widget">
-		<?php echo do_shortcode('[event-speaker-list event="'.$mep_event_list.'"]'); ?>
+		<?php 
+		// Build shortcode with properly escaped and quoted attributes to prevent XSS
+		$shortcode = '[event-speaker-list event="' . esc_attr( $mep_event_list ) . '"]';
+		echo do_shortcode( $shortcode ); 
+		?>
 	</div>
 	<?php
 }

@@ -987,7 +987,11 @@ class MEPExpiredEventWidget extends Widget_Base {
 
 	?>
 	<div class="mep-elementor-expired-event-widget">
-		<?php echo do_shortcode('[expire-event-list cat='.$cat.' org='.$org.' show='.$show.' style='.$style.' timeline-mode='.$timeline_style.' column='.$column.' cat-filter='.$cat_filter.' org-filter='.$org_filter.' sort='.$sort.' pagination='.$pagination.' carousal-id='.$carousel_id.' carousal-nav='.$carousel_nav.' carousal-dots='.$carousel_dot.']'); ?>
+		<?php 
+		// Build shortcode with properly escaped and quoted attributes to prevent XSS
+		$shortcode = '[expire-event-list cat="' . esc_attr( $cat ) . '" org="' . esc_attr( $org ) . '" show="' . esc_attr( $show ) . '" style="' . esc_attr( $style ) . '" timeline-mode="' . esc_attr( $timeline_style ) . '" column="' . esc_attr( $column ) . '" cat-filter="' . esc_attr( $cat_filter ) . '" org-filter="' . esc_attr( $org_filter ) . '" sort="' . esc_attr( $sort ) . '" pagination="' . esc_attr( $pagination ) . '" carousal-id="' . esc_attr( $carousel_id ) . '" carousal-nav="' . esc_attr( $carousel_nav ) . '" carousal-dots="' . esc_attr( $carousel_dot ) . '"]';
+		echo do_shortcode( $shortcode ); 
+		?>
 	</div>
 	<?php
 }

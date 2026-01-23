@@ -228,7 +228,11 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 		if (get_post_type($event_id) == 'mep_events') {
 		?>
 		<div class="mep-elementor-event-add-to-cart-section-widget">
-			<?php echo do_shortcode('[event-add-cart-section ticket-label="'.$ticket_table.'" cart-btn-label="'.$cart_label.'" extra-service-label="'.$ex_service_table.'" event="'.$event_id.'"]'); ?>
+			<?php 
+			// Build shortcode with properly escaped and quoted attributes to prevent XSS
+			$shortcode = '[event-add-cart-section ticket-label="' . esc_attr( $ticket_table ) . '" cart-btn-label="' . esc_attr( $cart_label ) . '" extra-service-label="' . esc_attr( $ex_service_table ) . '" event="' . esc_attr( $event_id ) . '"]';
+			echo do_shortcode( $shortcode ); 
+			?>
 		</div>
 		<?php
 		}

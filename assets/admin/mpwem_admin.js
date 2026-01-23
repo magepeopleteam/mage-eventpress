@@ -330,13 +330,18 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-    $(document).on('change', 'table.mpwem_ticket_table [name*="option_ticket_enable[]"]', function () {
+    $(document).on('click', 'table.mpwem_ticket_table .mpwem_show_hide_button', function () {
+        $(this).toggleClass('_button_warning_xxs _button_danger_xxs');
+        mpwem_content_text_change($(this));
+        mpwem_content_icon_change($(this));
+        let value = $(this).find('input').val();
+        let new_value = value === 'yes' ? 'no' : 'yes';
+        $(this).find('input').val(new_value);
         let parent = $(this).closest('tr');
         parent.toggleClass('disable_row');
         let target = parent.find('span.ticket_status');
         target.toggleClass('_button_danger_xxs _button_success_xxs');
         mpwem_content_text_change(target);
-
         let target_info = parent.find('span.ticket_info');
         target_info.toggleClass('_button_warning_xxs _button_danger_xxs');
         mpwem_content_text_change(target_info);

@@ -173,7 +173,8 @@
 											$states = array();
 											while ( $loop->have_posts() ) {
 												$loop->the_post();
-												$state = get_post_meta( get_the_ID(), 'mep_state', true );
+												$event_infos = MPWEM_Functions::get_all_info( get_the_ID() );
+												$state       = isset( $event_infos['mep_state'] ) ? $event_infos['mep_state'] : '';
 												if ( ! empty( $state ) ) {
 													$states[] = $state;
 												}
@@ -198,8 +199,9 @@
 											$cities = array();
 											while ( $loop->have_posts() ) {
 												$loop->the_post();
-												$city  = get_post_meta( get_the_ID(), 'mep_city', true );
-												$state = get_post_meta( get_the_ID(), 'mep_state', true );
+												$event_infos = MPWEM_Functions::get_all_info( get_the_ID() );
+												$city        = isset( $event_infos['mep_city'] ) ? $event_infos['mep_city'] : '';
+												$state       = isset( $event_infos['mep_state'] ) ? $event_infos['mep_state'] : '';
 												if ( ! empty( $city ) ) {
 													$cities[] = array(
 														'city'     => $city,
@@ -240,9 +242,9 @@
                     </div>
                     <p class="textGray _text_center search_sort_code_counts">
 						<?php esc_html_e( 'Showing', 'mage-eventpress' ); ?>
-                        <strong class="qty_count"><?php echo esc_html( $params['show'] ); ?></strong>
+                        <strong class="qty_count"><?php echo esc_html( $params['show'] == - 1 ? $loop->post_count : $params['show'] ); ?></strong>
 						<?php esc_html_e( 'of', 'mage-eventpress' ); ?>
-                        <strong class="total_filter_qty"><?php echo esc_html( $loop->post_count ); ?></strong>
+                        <strong class="total_filter_qty"><?php echo esc_html( $loop->found_posts ); ?></strong>
                     </p>
                 </div>
 				<?php

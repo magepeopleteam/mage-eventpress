@@ -52,8 +52,13 @@
 								if ( $event_date ) {
 									$date_display = ' - ' . date_i18n( get_option( 'date_format' ), strtotime( $event_date ) );
 								}
-								// Create the display text: "Event Name - Date (ID: XXX)"
-								$display_text = $event_title . $date_display . ' (ID: ' . $post_id . ')';
+
+								// Check if expired
+								$active_dates  = MPWEM_Functions::get_dates( $post_id );
+								$expired_label = empty( $active_dates ) ? ' (' . __( 'Expired', 'mage-eventpress' ) . ')' : '';
+
+								// Create the display text: "Event Name - Date (Expired) (ID: XXX)"
+								$display_text = $event_title . $date_display . $expired_label . ' (ID: ' . $post_id . ')';
 								?>
                                 <option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( $display_text ); ?></option>
 							<?php } ?>

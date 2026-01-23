@@ -38,12 +38,28 @@
 			<?php echo get_the_password_form(); ?>
         </div>
 	<?php } else {
+		// Sanitize the cityname parameter to prevent XSS attacks
 		$city = get_query_var( 'cityname' );
+		$city = sanitize_text_field( $city );
+		
+		// Remove any potentially dangerous characters that could break shortcode syntax
+		// Remove brackets, quotes, and script tags to prevent injection
+		$city = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $city );
+		$city = trim( $city );
+		
+		// Build the shortcode with properly escaped and quoted attribute value
+		if ( ! empty( $city ) ) {
+			// Use esc_attr() to escape the value and wrap in quotes to prevent shortcode injection
+			$shortcode = '[event-list city="' . esc_attr( $city ) . '"]';
+		} else {
+			// If city is empty, show all events
+			$shortcode = '[event-list]';
+		}
 		?>
         <div class="mpwem_style mpwem_wrapper">
             <div class="mpwem_container">
                 <div class='mep_city_filter_page'>
-					<?php echo do_shortcode( '[event-list city=' . $city . ']' ); ?>
+					<?php echo do_shortcode( $shortcode ); ?>
                 </div>
             </div>
         </div>

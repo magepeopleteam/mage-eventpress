@@ -2005,7 +2005,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	if ( ! function_exists( 'mep_cart_order_data_save_ticket_type' ) ) {
 		function mep_cart_order_data_save_ticket_type( $item, $ticket_type_arr, $eid ) {
 			foreach ( $ticket_type_arr as $ticket ) {
-				$ticket_type_name = $ticket['ticket_name'] . " - " . wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) . ' x ' . $ticket['ticket_qty'] . ' = ';
+				$ticket_type_name = $ticket['ticket_name'] . " - " . wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] ) ) . ' x ' . $ticket['ticket_qty'] . '  ';
 				$ticket_type_val  = wc_price( mep_get_price_including_tax( $eid, (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) );
 				$ticket_name_meta = apply_filters( 'mep_event_order_meta_ticket_name_filter', $ticket_type_name, $ticket, $eid );
 				$item->add_meta_data( $ticket_name_meta, $ticket_type_val );

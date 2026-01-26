@@ -55,6 +55,7 @@
 		$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 		$fatal_error_fix           = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
 		?>
+		<div id="mage-container" class="mage-container">
         <div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" style="max-width: 100%;">
             <div class="mpwem_container">
 				<?php
@@ -83,8 +84,9 @@
             </div>
 			<?php do_action( 'after-single-events' ); ?>
         </div>
+		<?php do_action( 'mep_event_single_page_before_footer', $event_id ); ?>
+		</div>
 		<?php
-		do_action( 'mep_event_single_page_before_footer', $event_id );
 	}
 // ==============================
 // FOOTER

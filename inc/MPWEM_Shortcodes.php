@@ -82,7 +82,7 @@
 				$loop       = MPWEM_Query::event_query( $show, $sort, $cat, $org, $city, $country, $status, $state, $year, 0, $tag );
 				$total_item = $loop->found_posts;
 				?>
-                <div class=' list_with_filter_section mep_event_list'>
+                <div class=' list_with_filter_section mep_event_list mage-container' id='mage-container'>
 					<?php
 						if ( $total_item > 0 ) {
 							if ( $cat_f == 'yes' && $cat < 1 ) {

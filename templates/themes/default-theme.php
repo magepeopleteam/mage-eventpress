@@ -32,7 +32,7 @@
             <div class="date_time_location_short">
 				<?php do_action( 'mpwem_date_only', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_time_only', $event_id, $event_infos ); ?>
-				<?php do_action( 'mpwem_location', $event_id, $event_infos, 'only' ); ?>
+				<?php do_action( 'mpwem_location', $event_id, $event_infos,'only' ); ?>
             </div>
 			<?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
 			<?php do_action( 'mpwem_timeline', $event_id ); ?>

@@ -219,10 +219,10 @@ class MEPAddToCartSectionWidget extends Widget_Base {
 	protected function render() {
 		global $post;
 		$settings 			= $this->get_settings_for_display();
-		$user_select_event 	= $settings['mep_event_list'] > 0 ? esc_attr($settings['mep_event_list']) : 0;
-		$ticket_table 		= $settings['mep_ticket_label'] ? esc_attr($settings['mep_ticket_label']) : __( 'Ticket Type:', 'mage-eventpress' );
-		$cart_label 		= $settings['mep_cart_btn_label'] ? esc_attr($settings['mep_cart_btn_label']) : __( 'Register For This Event', 'mage-eventpress' );
-		$ex_service_table 	= $settings['mep_ex_service_label'] ? esc_attr($settings['mep_ex_service_label']) : __( 'Extra Service:', 'mage-eventpress' );
+		$user_select_event 	= !empty($settings['mep_event_list']) && $settings['mep_event_list'] > 0 ? esc_attr($settings['mep_event_list']) : 0;
+		$ticket_table 		= !empty($settings['mep_ticket_label']) ? esc_attr($settings['mep_ticket_label']) : __( 'Ticket Type:', 'mage-eventpress' );
+		$cart_label 		= !empty($settings['mep_cart_btn_label']) ? esc_attr($settings['mep_cart_btn_label']) : __( 'Register For This Event', 'mage-eventpress' );
+		$ex_service_table 	= !empty($settings['mep_ex_service_label']) ? esc_attr($settings['mep_ex_service_label']) : __( 'Extra Service:', 'mage-eventpress' );
 		
 		$event_id           = $user_select_event > 0 ? $user_select_event : $post->ID;
 		if (get_post_type($event_id) == 'mep_events') {

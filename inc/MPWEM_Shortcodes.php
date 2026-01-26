@@ -57,7 +57,8 @@
 			$cat_f            = sanitize_text_field( $params['cat-filter'] );
 			$org_f            = sanitize_text_field( $params['org-filter'] );
 			$tag_f            = sanitize_text_field( $params['tag-filter'] );
-			$show             = ( ! empty( $params['show'] ) && $params['show'] != 0 ) ? absint( $params['show'] ) : - 1;
+			// $show          = ( ! empty( $params['show'] ) && $params['show'] != 0 ) ? absint( $params['show'] ) : - 1;
+            $show             = isset( $atts['show'] ) && $atts['show'] !== '' ? intval( $atts['show'] ) : -1;
 			$pagination       = sanitize_text_field( $params['pagination'] );
 			$pagination_style = sanitize_text_field( $params['pagination-style'] );
 			$sort             = sanitize_text_field( $params['sort'] );

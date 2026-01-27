@@ -330,7 +330,7 @@
 @media only screen and (min-width: 10px) {
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
-	.list_with_filter_section.mep_event_list { max-width: 1270px; }
+	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }
 	.list_with_filter_section [class*=defaultButton] { background-color: var(--color_theme);}
 	/****************************************/
 	div.search_result_empty { display: none;font-weight: 500; font-size: 22px; color: #6B003E;}

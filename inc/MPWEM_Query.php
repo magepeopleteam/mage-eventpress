@@ -269,7 +269,7 @@
 					$meta_query[] = array(
 						'key'     => $filter_args['filter_key'],
 						'value'   => $filter_args['filter_value'],
-						'compare' => '='
+						'compare' => 'LIKE'
 					);
 				}
 				$booked_status   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'seat_reserved_order_status', [ 'processing', 'completed' ] );

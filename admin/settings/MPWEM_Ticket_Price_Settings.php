@@ -119,17 +119,17 @@
 					$ticket_sold                   = MPWEM_Query::attendee_query( $filter_args )->post_count;
 				}
 				?>
-                <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable == 'yes'  && $ticket_sold>0? '' : 'disable_row' ); ?>">
+                <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable == 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
                     <td class="ticket_name">
 						<?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
 						<?php if ( $ticket_sold > 0 ) {
-                            $open_text=$option_ticket_enable == 'yes' ? __( 'SALES ACTIVE', 'mage-eventpress' ) : __( 'SALES DISABLED', 'mage-eventpress' );
+							$close_text=$option_ticket_enable == 'yes' ? __( 'SALES ACTIVE', 'mage-eventpress' ) : __( 'SALES DISABLED', 'mage-eventpress' );
 
-                            $close_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
-                            $ticket_class=$option_ticket_enable == 'yes'?'_button_success_xxs':'_button_danger_xxs';
-							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
-							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
+							$open_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
+                            $ticket_class=$option_ticket_enable == 'yes'?'_button_danger_xxs':'_button_success_xxs';
+							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
+							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
                             $info_class=$option_ticket_enable == 'yes'?'_button_warning_xxs':'_button_danger_xxs';
                             ?>
                             <input type="hidden" class="" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
@@ -171,12 +171,27 @@
                         </label>
                     </td>
                     <td>
-						<?php if ( $ticket_sold > 0 ) { ?>
-                            <?php MPWEM_Custom_Layout::switch_button( 'option_ticket_enable[]', $checked ); ?>
-						<?php } else { ?>
-                            <label class="_d_none"><input type="checkbox" class="_n_none" name="option_ticket_enable[]" checked /></label>
-							<?php MPWEM_Custom_Layout::move_remove_button(); ?>
-						<?php } ?></td>
+                        <div class="allCenter">
+                            <div class="buttonGroup">
+                                <button class="_button_warning_xs mpwem_item_remove" type="button">
+                                    <span class="fas fa-trash-alt _mp_zero"></span>
+                                </button>
+                                <div class="_button_navy_blue_xs mpwem_sortable_button" type="button">
+                                    <span class="fas fa-expand-arrows-alt _mp_zero"></span>
+                                </div>
+	                            <?php
+		                            if($ticket_sold>0) {
+			                            MPWEM_Custom_Layout::show_hide_button( 'option_ticket_enable[]', $option_ticket_enable );
+		                            }else{
+			                            ?>
+                                        <input type="hidden" name="option_ticket_enable[]" value="no>">
+			                            <?php
+		                            }
+	                            ?>
+                            </div>
+                        </div>
+
+                    </td>
                 </tr>
 				<?php
 			}

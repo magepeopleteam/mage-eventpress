@@ -171,12 +171,9 @@
                         </label>
                     </td>
                     <td>
-						<?php if ( $ticket_sold > 0 ) { ?>
-                            <?php MPWEM_Custom_Layout::switch_button( 'option_ticket_enable[]', $checked ); ?>
-						<?php } else { ?>
-                            <label class="_d_none"><input type="checkbox" class="_n_none" name="option_ticket_enable[]" checked /></label>
-							<?php MPWEM_Custom_Layout::move_remove_button(); ?>
-						<?php } ?></td>
+	                    <?php MPWEM_Custom_Layout::move_remove_button(); ?>
+	                    <?php MPWEM_Custom_Layout::show_hide_button('option_ticket_enable[]',$option_ticket_enable); ?>
+                    </td>
                 </tr>
 				<?php
 			}

@@ -330,13 +330,18 @@ function mpwem_initWpEditor(id) {
             }
         });
     });
-    $(document).on('change', 'table.mpwem_ticket_table [name*="option_ticket_enable[]"]', function () {
+    $(document).on('click', 'table.mpwem_ticket_table .mpwem_show_hide_button', function () {
+        $(this).toggleClass('_button_warning_xxs _button_danger_xxs');
+        mpwem_content_text_change($(this));
+        mpwem_content_icon_change($(this));
+        let value = $(this).find('input').val();
+        let new_value = value === 'yes' ? 'no' : 'yes';
+        $(this).find('input').val(new_value);
         let parent = $(this).closest('tr');
         parent.toggleClass('disable_row');
         let target = parent.find('span.ticket_status');
         target.toggleClass('_button_danger_xxs _button_success_xxs');
         mpwem_content_text_change(target);
-
         let target_info = parent.find('span.ticket_info');
         target_info.toggleClass('_button_warning_xxs _button_danger_xxs');
         mpwem_content_text_change(target_info);
@@ -854,6 +859,20 @@ jQuery(function ($) {
                 }
             }, error: function () {
                 $('#empty-cart-message').html('<div class="notice notice-error"><p>Unauthorized or invalid request.</p></div>');
+            }
+        });
+    });
+});
+jQuery(function ($) {
+    $('[name="event_start_date_normal"]').on('change', function (e) {
+        e.preventDefault();
+        let start_date=$('[name="event_start_date_normal"]').val();
+        let end_date=$('[name="event_end_date_normal"]').val();
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_end_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, success: function (data) {
+$('td.event_end_date_normal-td').html(data);
             }
         });
     });

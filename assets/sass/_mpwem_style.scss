@@ -1,5 +1,5 @@
 /* ******************************************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mp_wp_editor ul,
 	.mp_wp_editor ol { list-style-type: inherit; margin-left: 20px; padding-left: 20px;}
 	.mp_wp_editor ol { list-style-type: decimal;}
@@ -29,7 +29,7 @@
 	.mep-events-wrapper .mpwem_book_now[disabled] { background-color: var(--color_theme); opacity: 0.6; }
 }
 /* **************************************************************title & description******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
 	div.mpwem_details {margin: var(--dmp) 0 0 0;}
 	div.mpwem_details_content p,
@@ -37,7 +37,7 @@
 	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
 }
 /* **************************************************************Date time location short area in default theme**************************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;margin: var(--dmp) 0 0 0;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
 	div.date_time_location_short .short_item h4 { font-size: 22px; }
@@ -54,7 +54,7 @@
 	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
 }
 /* *************************************************************Registration section******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.mpwem_registration_area {margin: var(--dmp) 0 0 0;}
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 	.mpwem_registration_area .section-title { font-size: 25px; font-weight: bold; margin: 10px 0; }
@@ -132,7 +132,7 @@
 	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
 }
 /* ********************************************************* Attendee area******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep_smart_theme .attendee_area { margin: 10px 0; }
 	.mep_smart_theme .attendee_area h2 { font-size: var(--fs_h2); font-weight: var(--fw-bold); }
 	.attendee_area { margin: 10px 0; }
@@ -156,7 +156,7 @@
 	.mep_same_attendee input { min-width: 40px; height: 20px; margin: 5px 10px 10px 0;}
 }
 /* *************************************************************organizer section******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
@@ -168,7 +168,7 @@
 	div.mep_smart_theme .mpwem_organizer h5 { margin: 0;color: var(--color_theme); }
 }
 /* **************************************************************timeline******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
 	div.timeline_item { padding: 0 0 0 40px; position: relative; transition: transform 0.3s ease; }
 	div.timeline_item:hover { transform: translateY(-5px); }
@@ -180,7 +180,7 @@
 	div.mpwem_timeline_area .timeline_area::before { content: ""; position: absolute; left: 15px; top: 15px; height: calc(100% - 15px); width: 2px; background-color: #E0E0E0; z-index: 0; }
 }
 /* **************************************************************Sidebar******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mpwem_sidebar_content h5 { color: #333; }
 	.mep-default-sidebar { width: 300px; }
 	.mep-default-sidebar .df-sidebar-part { background: #FFF; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; }
@@ -191,7 +191,7 @@
 	div.mpwem_calender_area {padding: var(--dmp); border-top: 1px solid var(--color_border); }
 }
 /* ************************************************************Event Date List******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.event_date_list_area {padding: var(--dmp_xs) var(--dmp);}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dmp_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
@@ -201,7 +201,7 @@
 	button.mpwem_get_date_list{border-radius: 20px;}
 }
 /* *************************************************************Speaker******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.event_speaker_list_area {padding: var(--dmp);}
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
@@ -222,7 +222,7 @@
 	.mep_smart_theme .speaker-widget .speaker-lists .items h2 { font-size: 19px; letter-spacing: 0.04em; color: #333; }
 }
 /* ************************************************************Social Share section******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.share_widgets { padding: var(--dmp); border-top: 1px solid var(--color_border); color: #333; }
 	div.share_widgets .share_widgets_title {margin: 0 0 var(--dmp) 0;text-align: center;text-transform: capitalize;}
 	div.share_widgets .share_widgets_list {display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;gap: var(--dmp_xs);}
@@ -241,7 +241,7 @@
 	div.share_widgets .share_widgets_list a.email:hover i {background-color: #DD4B39;color: #FFF;}
 }
 /* **********************************************************Map******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	#mpwem_map_area {margin: var(--dmp) 0 0;background: white; border-radius: 12px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); overflow: hidden;}
 	#mpwem_map,
 	#mpwem_map_area iframe {width: 100%;height: 100%;min-height: 300px;max-height: 300px;border-radius: 8px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
@@ -253,7 +253,7 @@
 	div.mpwem_location_sidebar #mpwem_map_area {margin: 0;}
 }
 /* **********************************************************Speaker******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep_speaker_thumbnail { display: block; text-align: center;}
 	.mep_speaker_name { text-align: center;}
 	.mep_speaker_thumbnail img { display: inline-block; border-radius: 100%; height: 280px; border: 5px solid #DDD; padding: 3px; width: 280px;}
@@ -269,7 +269,7 @@
 	.mep_events_speaker_wraper .mage_grid_box > *:hover { box-shadow: 0 8px 32px rgba(26, 115, 232, 0.13); transform: translateY(-4px) scale(1.025);}
 }
 /* **********************************************************F.A.Q******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
 	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
 	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
@@ -300,7 +300,7 @@
 	.mep-event-faq-part .mep-event-faq-content { background-color: #FFF; border: 1px solid #F5F5F5; padding: 10px; display: none; }
 }
 /* **********************************************************TAG******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep-event-tags-widget { margin-bottom: 20px;}
 	.mep-event-tags-widget .location-title { font-size: 16px; font-weight: 600; margin: 10px; margin-left: 9%;}
 	.mep-event-tags-list { margin: 14px !important; padding: 0; line-height: 2;}
@@ -308,7 +308,7 @@
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
 }
 /* *************************************************************Slider******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mpwem_slider_area div.post_thumb {overflow: hidden;}
 	.mpwem_slider_area div.post_thumb img {width: auto;height: auto;max-width: 100%;margin: 0 auto;}
 	.mpwem_slider_area { margin-top: 0; }
@@ -318,7 +318,7 @@
 	.mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator { color: var(--color_theme); }
 }
 /* ******************************************************************Related Product******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
 	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
@@ -328,7 +328,7 @@
 	div.mpwem_related_area div.mep-event-list-loop {background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD;height: auto;}
 }
 /* ******************************************************************Filter Pagination******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
 	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }
@@ -351,6 +351,8 @@
 	.pagination_area .ellipse_left > div,
 	.pagination_area .ellipse_right > div { width: 100%;height: 100%; display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center; -webkit-align-items: center;align-items: center;}
 	.pagination_area [class*="Button"] {
+		background: var(--color_theme);
+  		color: var(--color_theme_alter);
 		padding: 0 15px; font-size: 18px; cursor: pointer; min-width: 150px; height: auto; min-height: 40px;border-radius: 5px; font-weight: 500;
 		-webkit-appearance: button; overflow: visible; display: -webkit-flex;display: flex; -webkit-justify-content: center;justify-content: center; -webkit-align-items: center;align-items: center; }
 	.pagination_area [class*="Button"]:hover {opacity: 0.8;}
@@ -388,7 +390,7 @@
 	.list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
 }
 /* *********************************************************Event List******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep_list_event_details { min-height: 100px;width: 60%;}
 	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: 700; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25;}
 	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
@@ -487,7 +489,7 @@
 	.mep_list_event_details h3,
 	.mep_list_event_details h4,
 	.mep_list_event_details h6 { padding: 0; margin: 0; color: inherit;}
-	.mep_list_event_details a { color: #000; overflow: hidden;}
+	.mep_list_event_details a { color: #000; overflow: hidden;text-decoration: none;}
 	.mep_list_event_details p { white-space: nowrap; font-size: 15px; font-weight: 500; overflow: hidden;}
 	.mep_list_event_details p.read-more a { color: var(--color_theme);}
 	.mep_list_event_details p.read-more a:hover { color: #DDD;}
@@ -547,8 +549,12 @@
 	.mep_event_list_item .mep_list_event_date { display: flex; align-items: center; margin: 0; }
 	.mep_event_list_item .mep-list-footer-ul { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 5px 10px; }
 	/*******************/
-	.mage_grid_box { margin: 0; }
-	.mage_grid_box { margin: 0 -7px 20px -7px; }
+	.mage_grid_box { 
+		 margin: 0;
+		margin: 0 -7px 20px -7px;display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap; 
+	}
 	.mage_grid_box .blank_div { margin: 0 20px 0 0; }
 	.mage_grid_box .blank_div:last-child { margin: 0 0 15px 0; }
 	div.mep_event_list div.mage_grid_box img { min-height: auto; }
@@ -640,7 +646,11 @@
 	div.mep_event_native_list { display: -webkit-flex; display: flex; width: 100%;}
 	div.mep_event_native_list .mep_list_event_details { width: calc(100% - 150px);min-height: auto;}
 	div.mep_event_native_list .mep_list_thumb { width: 150px;min-height: auto;}
-	div.mep_event_native_list .mep_list_event_details a {border-left: 2px solid var(--color_theme);padding: 0 0 0 var(--dmp_xs);}
+	div.mep_event_native_list .mep_list_event_details a {
+		border-left: 2px solid var(--color_theme);padding: 0 0 0 var(--dmp_xs);
+		display: flex;
+  		flex-direction: column;
+	}
 	.mep_event_native_list .mep_list_thumb img,
 	.owl-carousel .owl-item .mep_event_native_list .mep_list_thumb img { border: 3px solid #DDD; padding: 1px;border-radius: inherit; height: auto; width: auto;}
 	.mep_event_native_list h2 { color: #000; font-weight: bold;}
@@ -653,14 +663,14 @@
 	/***********************************/
 }
 /* *********************************************************Short code city list******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep-city-list { display: block; overflow: hidden; width: 100%; }
 	.mep-city-list ul { margin: 0; padding: 0; list-style: none; }
 	.mep-city-list ul li a { display: block; width: 100%; border-bottom: 1px dashed #DDD; font-size: 18px; color: #333; padding: 5px 0; }
 	.mep-city-list li i { margin-right: 5px; }
 }
 /* *********************************************************Helper******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep-hidden { display: none !important; }
 	span.mep_warning { text-align: center; display: block; border: 1px solid #005373; color: #005373; font-weight: bold; font-size: 15px; padding: 20px 0; text-transform: capitalize;}
 	.mep-low-stock-warning { background: linear-gradient(135deg, #FF6B6B, #EE5A52); color: #FFFFFF; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-align: center; margin: 3px 0; box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3); position: relative; overflow: hidden; animation: pulse-warning 2s infinite; width: 40%; }
@@ -684,7 +694,7 @@
 	.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border: 1px solid var(--color_theme); line-height: 1.2; font-weight: bold; height: auto; min-width: auto; outline: 0; padding: 15px; margin: 10px auto; display: block; text-align: center; font-size: 16px; cursor: pointer; max-width: 100%; border-radius: 10px; }
 }
 /* *********************************************************Other******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.mep-event-countdown-timer .wrapper div span { display: block; padding: 10px;}
 	.mep-event-countdown-timer .wrapper div span span.label { border: 0 !important;}
 	.mep-event-countdown-timer { width: 100%; overflow: hidden;}
@@ -712,7 +722,7 @@
 	/***********************************************************************************************/
 }
 /* *********************************************************User Dashboard******************** */
-@media only screen and (min-width: 10px) {
+#mage-container.mage-container {
 	.my_account_orders.account-orders-table .wbtm-download { display: none;}
 	.mep-user-ticket-list table { width: 100%; border: 1px solid #DDD;}
 	.mep-user-ticket-list table tr { border-bottom: 1px solid #DDD; padding: 10px 0;}
@@ -721,281 +731,302 @@
 	/***********************************************************************************************/
 }
 /***********************************************************************************************/
-.default_theme form { display: block;}
-.default_theme i { display: -webkit-flex; display: flex;-webkit-align-items: center; align-items: center;-webkit-justify-content: center; justify-content: center; -webkit-border-radius: 50%; border-radius: 50%;}
-.default_theme .mep-more-date { display: flex; flex-direction: column; align-items: start; justify-content: start;}
-.default_theme .mep-more-date .mep-more-date { margin: 2px 5px; position: relative; padding-left: 14px;}
-.default_theme .mep-more-date .mep-more-date::before { content: ""; width: 5px; height: 5px; border-radius: 50px; margin-right: 5px; background-color: var(--color_theme); position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
-.default_theme .event-expire-btn { border: 1px solid #F5F5F5; padding: 20px; overflow: hidden; display: block; margin-top: 10px; margin-bottom: 10px;}
-.default_theme .mep_checkbox_item ._fs_label { margin-bottom: 15px; display: block;}
-.default_theme .groupRadioCheck { margin-top: 5px;}
+#mage-container.mage-container{
+	.default_theme form { display: block;}
+	.default_theme i { display: -webkit-flex; display: flex;-webkit-align-items: center; align-items: center;-webkit-justify-content: center; justify-content: center; -webkit-border-radius: 50%; border-radius: 50%;}
+	.default_theme .mep-more-date { display: flex; flex-direction: column; align-items: start; justify-content: start;}
+	.default_theme .mep-more-date .mep-more-date { margin: 2px 5px; position: relative; padding-left: 14px;}
+	.default_theme .mep-more-date .mep-more-date::before { content: ""; width: 5px; height: 5px; border-radius: 50px; margin-right: 5px; background-color: var(--color_theme); position: absolute; left: 0; top: 50%; transform: translateY(-50%);}
+	.default_theme .event-expire-btn { border: 1px solid #F5F5F5; padding: 20px; overflow: hidden; display: block; margin-top: 10px; margin-bottom: 10px;}
+	.default_theme .mep_checkbox_item ._fs_label { margin-bottom: 15px; display: block;}
+	.default_theme .groupRadioCheck { margin-top: 5px;}
+}
 /***********************************************************************************************/
-button.mep-cat-control,
-.pagination-sec a { background: var(--color_theme); color: var(--color_7);}
-.mep_more_date_btn:before { background: var(--color_theme); border-color: var(--color_theme);}
-.mep-tem3-title-sec,
-.ex-sec-title { background: var(--color_theme); color: var(--color_7);}
-.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border-color: var(--color_theme);}
+#mage-container.mage-container{
+	button.mep-cat-control,
+	.pagination-sec a { background: var(--color_theme); color: var(--color_7);}
+	.mep_more_date_btn:before { background: var(--color_theme); border-color: var(--color_theme);}
+	.mep-tem3-title-sec,
+	.ex-sec-title { background: var(--color_theme); color: var(--color_7);}
+	.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border-color: var(--color_theme);}
+}
 /*****************************************************/
-.mep-vr-vs-content { color: #084298; background-color: #CFE2FF; border-color: #B6D4FE; border-radius: 0.25rem; padding: 8px;}
-.mep-vr-vs-content h3 { font-size: 16px; font-weight: bold; border-bottom: 1px dashed #084298; padding: 0 0 5px 0; margin: 0 0 10px 0;}
-.mep_ticket_details p { font-size: 12px; margin: 5px 0 !important; padding: 5px 0; display: block; line-height: 20px !important;}
-tr.ex-sec-title.mep_ticket_type_title th { font-weight: bold; display: table-cell; padding: 15px 15px 5px;}
+#mage-container.mage-container{
+	.mep-vr-vs-content { color: #084298; background-color: #CFE2FF; border-color: #B6D4FE; border-radius: 0.25rem; padding: 8px;}
+	.mep-vr-vs-content h3 { font-size: 16px; font-weight: bold; border-bottom: 1px dashed #084298; padding: 0 0 5px 0; margin: 0 0 10px 0;}
+	.mep_ticket_details p { font-size: 12px; margin: 5px 0 !important; padding: 5px 0; display: block; line-height: 20px !important;}
+	tr.ex-sec-title.mep_ticket_type_title th { font-weight: bold; display: table-cell; padding: 15px 15px 5px;}
+}
 /********************************/
-span.tkt-qty,
-span.tkt-pric,
-label.mep-show { display: block;}
-div.mep_flex,
-.mep_event_list .mep_event_list_sec div.mep_event_list_item,
-div.mep_event_list div.mage_grid_box { display: -webkit-flex; display: flex;}
-.mep_event_list div.evl-cc { -webkit-align-items: center; align-items: center;}
-.mep-default-title h2,
-.section-heading h2 { font-size: 25px; margin: 0 0 15px 0; color: #3A3A3A; font-weight: bold;}
-h4.mep-cart-table-title { margin: 10px 0; font-size: 22px; font-weight: 600;}
-h3.ex-sec-title { font-size: 14px; color: var(--color_7); background: var(--color_theme); padding: 15px;}
-.mep-event-details p { font-size: 16px; margin: 0; font-weight: 400; line-height: 1.5;}
-label.mep-show { line-height: 1.4;}
-[name="option_qty[]"].mage_error { background-color: red; color: #FFF;}
-.evl-cc { margin: 0 0 0 10px;}
-.owl-theme .owl-nav [class*=owl-]:hover { background: transparent; color: #000; text-decoration: none;}
-.mep-wailist-form input { display: block; overflow: hidden; margin: 20px auto !important; width: 100%; padding: 10px !important; background: #FFF !important;}
-.pagination-sec a { display: inline-block; background: #81D742; color: #FFF; padding: 10px 15px;}
-.pagination-sec span.page-numbers.current { padding: 15px 20px; background: #DDD;}
-span#hide_event_schdule { position: relative; left: 0; bottom: 0; display: block; width: 100%; text-align: center; margin: 0 auto;}
-.mep-event-list-loop { position: relative;}
-button.mep-cat-control { border: 1px solid var(--color_theme); background-color: var(--color_7); padding: 10px 20px; font-size: 16px; margin-right: 5px; margin-bottom: 10px; cursor: pointer; color: var(--color_theme); outline-width: 0;}
-button.mep-cat-control.mixitup-control-active { background: var(--color_theme); color: var(--color_7);}
-.mep_view_all_date { overflow: scroll !important;}
-.ui-accordion .ui-accordion-header { background-image: none; margin: 10px 0 0 0;}
-.ui-accordion .ui-accordion-header.ui-state-active { background-image: none; background-color: #1D4A68; color: #FFF; font-size: 18px;}
-.evl-cc { margin-left: 0;}
-.mep_more_date_btn { border: 1px solid var(--color_theme); color: var(--color_theme); border-radius: 20px; padding: 0 8px; transform: perspective(1px) translateZ(0); position: relative; font-size: 14px; cursor: pointer;}
-.mep_re_datelist_label { width: auto !important; font-weight: 500;}
-h3.ex-sec-title { color: #FFFFFF;}
-.tkt-pric,
-.tkt-qty { margin-bottom: 10px;}
-#mep_everyday_datepicker,
-#mep-event-review-form--title { display: block; padding: 0 15px 0 38px; font-size: 14px; line-height: 1.5; color: #495057; background-color: #F9F9F9; background-clip: padding-box; border: 0px solid #CED4DA !important; border-radius: 5px; min-width: 100px; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; max-width: 225px; min-height: 100%; height: 30px; margin: 5px 0;}
-span.mep-cart-btn-icon { display: inline-block; margin-right: 10px;}
-span.mep_date_scdl_start_datetime { display: inline-flex; font-size: 13px;}
-span.mep_date_scdl_start_datetime { color: #333; font-size: 14px; font-weight: bold;}
-span.mep-cal-icon { position: absolute; left: -100px; z-index: 9; top: 12px;}
-thead.ex-sec-title.mep_ticket_type_title tr th { padding: 15px 15px 3px;}
-span.mep-cal-icon i { color: #000;}
-span#mep_everyday_event_time_list select { margin-top: 0; display: block; border-radius: 5px; vertical-align: top; border:none; height: 30px; padding: 0 7px; font-size: 14px; color: #495057;}
-span#mep_everyday_event_time_list { padding: 0;}
-span.mep_recurring_datepicker_section { position: relative;}
-span.mep-datepicker-input-box { position: relative;}
-.mep-event-review-list-wrapper { padding: 0; margin: 20px;}
-.mep-event-review-list-wrapper #give-review-btn { font-weight: 500; font-size: 15px; border-radius: 50px; line-height: 35px; height: 35px; padding: 0 15px 0 15px; cursor: pointer; margin-bottom: 60px;}
-.mep-event-review-form .label { font-weight: 600; margin-bottom: 10px; border-bottom: 1px solid #D3D3D3; padding-bottom: 5px;}
-.mep-event-review-form input[type=submit],
-.mep-event-review-form button[type=submit] { font-weight: 500; font-size: 15px; border-radius: 50px; line-height: 35px; height: 35px; padding: 0 15px 0 15px; cursor: pointer; background: var(--color_theme);}
-.woocommerce-Price-amount { font-weight: 600;}
-span.mep_waitlist_label.mep-tem3-title-sec { right: 0; top: 0;}
-.timeline .mep_more_date_btn { margin-top: 0;}
-span.mep-more-date i,
-span.mep-more-time i { min-width: 25px;}
-.wp-core-ui .quicktags-toolbar input.button.button-small { width: max-content;}
-table.table.table-bordered.mep_event_add_cart_table { background: var(--color_6);}
-.mep_events-template-default table.table.table-bordered.mep_event_add_cart_table { background: hsla(0, 0%, 50.2%, 0.0705882353);}
-.mep-elementor-event-list-widget .row { width: 100%;}
-.mep-elementor-event-list-widget .pagination-sec { margin-top: 20px; margin-bottom: 20px; text-align: center;}
-tr.mep_virtual_event_info_sec { display: none;}
-.impe-new-nput-group-field::-webkit-inner-spin-button,
-.impe-new-nput-group-field ::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none;}
-#owl-demo .item { background: #FFFFFF; margin: 10px; color: #FFF; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; text-align: Left;}
-.groupRadioCheck [data-radio-check].mpActive { border-color: var(--color_theme); background-color: var(--color_theme); color: var(--color_7);}
-.groupRadioCheck [data-radio-check]:hover { border-color: var(--color_theme); background-color: var(--color_theme);}
+#mage-container.mage-container{
+	span.tkt-qty,
+	span.tkt-pric,
+	label.mep-show { display: block;}
+	div.mep_flex,
+	.mep_event_list .mep_event_list_sec div.mep_event_list_item,
+	div.mep_event_list div.mage_grid_box { display: -webkit-flex; display: flex;}
+	.mep_event_list div.evl-cc { -webkit-align-items: center; align-items: center;}
+	.mep-default-title h2,
+	.section-heading h2 { font-size: 25px; margin: 0 0 15px 0; color: #3A3A3A; font-weight: bold;}
+	h4.mep-cart-table-title { margin: 10px 0; font-size: 22px; font-weight: 600;}
+	h3.ex-sec-title { font-size: 14px; color: var(--color_7); background: var(--color_theme); padding: 15px;}
+	.mep-event-details p { font-size: 16px; margin: 0; font-weight: 400; line-height: 1.5;}
+	label.mep-show { line-height: 1.4;}
+	[name="option_qty[]"].mage_error { background-color: red; color: #FFF;}
+	.evl-cc { margin: 0 0 0 10px;}
+	.owl-theme .owl-nav [class*=owl-]:hover { background: transparent; color: #000; text-decoration: none;}
+	.mep-wailist-form input { display: block; overflow: hidden; margin: 20px auto !important; width: 100%; padding: 10px !important; background: #FFF !important;}
+	.pagination-sec a { display: inline-block; background: #81D742; color: #FFF; padding: 10px 15px;}
+	.pagination-sec span.page-numbers.current { padding: 15px 20px; background: #DDD;}
+	span#hide_event_schdule { position: relative; left: 0; bottom: 0; display: block; width: 100%; text-align: center; margin: 0 auto;}
+	.mep-event-list-loop { position: relative;}
+	button.mep-cat-control { border: 1px solid var(--color_theme); background-color: var(--color_7); padding: 10px 20px; font-size: 16px; margin-right: 5px; margin-bottom: 10px; cursor: pointer; color: var(--color_theme); outline-width: 0;}
+	button.mep-cat-control.mixitup-control-active { background: var(--color_theme); color: var(--color_7);}
+	.mep_view_all_date { overflow: scroll !important;}
+	.ui-accordion .ui-accordion-header { background-image: none; margin: 10px 0 0 0;}
+	.ui-accordion .ui-accordion-header.ui-state-active { background-image: none; background-color: #1D4A68; color: #FFF; font-size: 18px;}
+	.evl-cc { margin-left: 0;}
+	.mep_more_date_btn { border: 1px solid var(--color_theme); color: var(--color_theme); border-radius: 20px; padding: 0 8px; transform: perspective(1px) translateZ(0); position: relative; font-size: 14px; cursor: pointer;}
+	.mep_re_datelist_label { width: auto !important; font-weight: 500;}
+	h3.ex-sec-title { color: #FFFFFF;}
+	.tkt-pric,
+	.tkt-qty { margin-bottom: 10px;}
+	#mep_everyday_datepicker,
+	#mep-event-review-form--title { display: block; padding: 0 15px 0 38px; font-size: 14px; line-height: 1.5; color: #495057; background-color: #F9F9F9; background-clip: padding-box; border: 0px solid #CED4DA !important; border-radius: 5px; min-width: 100px; transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; max-width: 225px; min-height: 100%; height: 30px; margin: 5px 0;}
+	span.mep-cart-btn-icon { display: inline-block; margin-right: 10px;}
+	span.mep_date_scdl_start_datetime { display: inline-flex; font-size: 13px;}
+	span.mep_date_scdl_start_datetime { color: #333; font-size: 14px; font-weight: bold;}
+	span.mep-cal-icon { position: absolute; left: -100px; z-index: 9; top: 12px;}
+	thead.ex-sec-title.mep_ticket_type_title tr th { padding: 15px 15px 3px;}
+	span.mep-cal-icon i { color: #000;}
+	span#mep_everyday_event_time_list select { margin-top: 0; display: block; border-radius: 5px; vertical-align: top; border:none; height: 30px; padding: 0 7px; font-size: 14px; color: #495057;}
+	span#mep_everyday_event_time_list { padding: 0;}
+	span.mep_recurring_datepicker_section { position: relative;}
+	span.mep-datepicker-input-box { position: relative;}
+	.mep-event-review-list-wrapper { padding: 0; margin: 20px;}
+	.mep-event-review-list-wrapper #give-review-btn { font-weight: 500; font-size: 15px; border-radius: 50px; line-height: 35px; height: 35px; padding: 0 15px 0 15px; cursor: pointer; margin-bottom: 60px;}
+	.mep-event-review-form .label { font-weight: 600; margin-bottom: 10px; border-bottom: 1px solid #D3D3D3; padding-bottom: 5px;}
+	.mep-event-review-form input[type=submit],
+	.mep-event-review-form button[type=submit] { font-weight: 500; font-size: 15px; border-radius: 50px; line-height: 35px; height: 35px; padding: 0 15px 0 15px; cursor: pointer; background: var(--color_theme);}
+	.woocommerce-Price-amount { font-weight: 600;}
+	span.mep_waitlist_label.mep-tem3-title-sec { right: 0; top: 0;}
+	.timeline .mep_more_date_btn { margin-top: 0;}
+	span.mep-more-date i,
+	span.mep-more-time i { min-width: 25px;}
+	.wp-core-ui .quicktags-toolbar input.button.button-small { width: max-content;}
+	table.table.table-bordered.mep_event_add_cart_table { background: var(--color_6);}
+	.mep_events-template-default table.table.table-bordered.mep_event_add_cart_table { background: hsla(0, 0%, 50.2%, 0.0705882353);}
+	.mep-elementor-event-list-widget .row { width: 100%;}
+	.mep-elementor-event-list-widget .pagination-sec { margin-top: 20px; margin-bottom: 20px; text-align: center;}
+	tr.mep_virtual_event_info_sec { display: none;}
+	.impe-new-nput-group-field::-webkit-inner-spin-button,
+	.impe-new-nput-group-field ::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none;}
+	#owl-demo .item { background: #FFFFFF; margin: 10px; color: #FFF; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; text-align: Left;}
+	.groupRadioCheck [data-radio-check].mpActive { border-color: var(--color_theme); background-color: var(--color_theme); color: var(--color_7);}
+	.groupRadioCheck [data-radio-check]:hover { border-color: var(--color_theme); background-color: var(--color_theme);}
 
-div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-repeat; margin: 0 auto;}
+	div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-repeat; margin: 0 auto;}
 
 
-.mpwem-expired-card {
-    margin-top: 15px;
-    padding: 18px 20px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #ff6b6b, #ff9f43);
-    color: #ffffff;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  text-align: center;
+	.mpwem-expired-card {
+		margin-top: 15px;
+		padding: 18px 20px;
+		border-radius: 14px;
+		background: linear-gradient(135deg, #ff6b6b, #ff9f43);
+		color: #ffffff;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+	text-align: center;
+	}
+
+	.mpwem-expired-title {
+		font-size: 18px;
+		font-weight: 700;
+		letter-spacing: 0.3px;
+	}
+
+	.mpwem-expired-date {
+		margin-top: 10px;
+		font-size: 15px;
+	}
+
+	.mpwem-date-highlight {
+		font-weight: 800;
+	}
+
+	.mpwem-total-sold-badge {
+		margin-top: 12px;
+		display: inline-block !important;
+		padding: 6px 14px;
+		border-radius: 30px;
+		background: #ffffff;
+		color: #ff3b3b;
+		font-weight: 800;
+	}
 }
-
-.mpwem-expired-title {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-}
-
-.mpwem-expired-date {
-    margin-top: 10px;
-    font-size: 15px;
-}
-
-.mpwem-date-highlight {
-    font-weight: 800;
-}
-
-.mpwem-total-sold-badge {
-    margin-top: 12px;
-    display: inline-block !important;
-    padding: 6px 14px;
-    border-radius: 30px;
-    background: #ffffff;
-    color: #ff3b3b;
-    font-weight: 800;
-}
-
-
-
-
-
-
 
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
-	.mep-default-content { width: calc(100% - 275px); }
-	.mep-default-sidebar { width: 275px; }
-	div.date_time_location_short .short_item {max-width: calc(50% - 8px);}
+	#mage-container.mage-container{
+		.mep-default-content { width: calc(100% - 275px); }
+		.mep-default-sidebar { width: 275px; }
+		div.date_time_location_short .short_item {max-width: calc(50% - 8px);}
+	}
 }
+
 @media only screen and (max-width: 1024px) {
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data { flex-direction: row; align-items: start; flex-wrap: wrap; gap: 10px; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price { text-align: left; flex: 0 0 100%; }
-	.mep_event_winter_list .mep_list_date_wrapper,
-	div.spring_area .spring_item_1 {display: none;}
-	div.spring_area .spring_item_2 {width: 30%;}
-	div.spring_area .spring_item_3 {width: 45%;}
-	div.spring_area .spring_item_4 {width: 25%;}
-	div.mep_event_winter_list div.spring_area .spring_item_2 {width: 75%;}
+	#mage-container.mage-container{
+		.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
+		.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data { flex-direction: row; align-items: start; flex-wrap: wrap; gap: 10px; }
+		.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
+		.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price { text-align: left; flex: 0 0 100%; }
+		.mep_event_winter_list .mep_list_date_wrapper,
+		div.spring_area .spring_item_1 {display: none;}
+		div.spring_area .spring_item_2 {width: 30%;}
+		div.spring_area .spring_item_3 {width: 45%;}
+		div.spring_area .spring_item_4 {width: 25%;}
+		div.mep_event_winter_list div.spring_area .spring_item_2 {width: 75%;}
+	}
 }
 @media only screen and (max-width: 991px) {
-	.mep-default-content { width: calc(100% - 250px); }
-	.mep-default-sidebar { width: 250px; }
-	.mep-list-footer ul li i { width: 20px; height: 20px; font-size: 11px; }
-	.mep-events-wrapper p#mep_btn_notice { font-size: 14px; }
-	.mep-events-wrapper table td { font-size: 14px; padding: 5px; }
-	button.single_add_to_cart_button { min-width: 200px; height: 40px; font-size: 14px !important; }
-	.ui-accordion .ui-accordion-content { font-size: 12px; }
-	h2.mep_list_title { font-size: 15px !important; }
-	h3.mep_list_date,
-	.mep-list-footer ul li h6 { font-size: 13px !important; }
-	.mep-list-footer ul li h5 { font-size: 12px !important; }
-	div.item_hover_effect a { font-size: 16px; padding: 10px 20px; }
-	div.column_style { min-width: calc(33.333333% - 14px) !important; }
-	h2.mep_list_title { margin-top: 10px; }
+	#mage-container.mage-container{
+		.mep-default-content { width: calc(100% - 250px); }
+		.mep-default-sidebar { width: 250px; }
+		.mep-list-footer ul li i { width: 20px; height: 20px; font-size: 11px; }
+		.mep-events-wrapper p#mep_btn_notice { font-size: 14px; }
+		.mep-events-wrapper table td { font-size: 14px; padding: 5px; }
+		button.single_add_to_cart_button { min-width: 200px; height: 40px; font-size: 14px !important; }
+		.ui-accordion .ui-accordion-content { font-size: 12px; }
+		h2.mep_list_title { font-size: 15px !important; }
+		h3.mep_list_date,
+		.mep-list-footer ul li h6 { font-size: 13px !important; }
+		.mep-list-footer ul li h5 { font-size: 12px !important; }
+		div.item_hover_effect a { font-size: 16px; padding: 10px 20px; }
+		div.column_style { min-width: calc(33.333333% - 14px) !important; }
+		h2.mep_list_title { margin-top: 10px; }
+	}
 }
 @media only screen and (max-width: 767px) {
-	div.mep_event_native_list .mep_list_event_details,
-	div.mep_event_native_list .mep_list_thumb { width: 100%;}
-	/********************/
-	div.default_theme .content_area {display: block;}
-	div.mep_flex.default_theme { display: block; }
-	.mep-default-content { width: 100%; margin: 0; padding: 0; }
-	.mep_event_list .mep_event_list_sec div.mep_event_list_item { display: block; }
-	.mep-default-sidebar { width: 100%; margin: 0; padding: 0; }
-	.mep_event_grid_item .mep_list_thumb img { height: auto; }
-	.mep-events-wrapper { margin: 15px auto; }
-	.mep-default-title h2,
-	.section-heading h2,
-	h4.mep-cart-table-title,
-	h3.ex-sec-title { font-size: 20px; }
-	.mep_event_list .mep_event_list_sec div.mep_event_list_item .mep_list_event_details { margin: 0; }
-	.mep_event_list .mep_event_list_sec div.mep_event_list_item img { top: -5px; }
-	span.mep_minimal_list_location { margin-left: 0; display: block; }
-	div.column_style { min-width: calc(50% - 14px) !important; }
-	div.two_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
-	div.three_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
-	div.four_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
-	.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_one { margin-bottom: 20px; margin-left: 20px; margin-right: 20px; }
-	.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_two { margin-top: 20px; margin-left: 20px; margin-right: 20px; }
-	.mep_event_winter_list .mep_list_winter_thumb_wrapper { margin: 0; width: 100%; height: 200px; border-radius: 0; }
-	.mep_event_winter_list .mep_list_winter_thumb { width: auto; height: 200px; border-radius: 0; object-fit: cover; }
-	.mep_event_spring_list .mep_list_date_wrapper,
-	.mep_event_spring_list .mep_list_event_details,
-	.mep_event_winter_list .mep_list_event_details,
-	.mep_event_spring_list .mep_list_spring_thumb_wrapper { display: flex; width: auto; flex-flow: column; min-height: auto; }
-	.mep_event_spring_list .mep_list_date_wrapper { height: 200px; }
-	.mep_event_spring_list .mep_list_event_details { margin-top: 20px; }
-	.mep_event_spring_list h4 { font-size: 20px; }
-	.mep_event_spring_list .mep_list_spring_thumb { width: 100%; height: 200px; border-radius: 0; }
-	.mep_event_spring_list { display: flex !important; flex-flow: column; }
-	.mep_event_spring_list .mep_list_spring_thumb_wrapper { order: 1; }
-	.mep_event_spring_list .mep_list_event_details.mep_list_details_col_one { order: 3; margin-bottom: 20px; }
-	.mep_event_spring_list .mep_list_event_details.mep_list_details_col_two { order: 2; }
-	.mep_event_spring_list .mep_list_date_wrapper { display: none; }
-	.mep_event_list button.owl-next { right: 0; }
-	.mep_event_list button.owl-prev { left: 0; }
-	.mep_event_spring_list .mep_list_date_wrapper { float: left; width: 24%; display: flex; justify-content: center; flex-direction: column; padding: 10px; }
-	.mep_event_spring_list .mep_list_spring_thumb_wrapper { float: left; width: 24%; display: flex; justify-content: flex-start; flex-direction: column; padding: 20px; }
-	.mep_event_spring_list .mep_list_date_wrapper { height: 100%; }
-	.mep_event_list_item .mep_list_thumb { border-radius: 5px 5px 0 0; }
-	.mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date { align-items: start; }
-	.mep-low-stock-warning,
-	.mep-limited-availability-ribbon { font-size: 10px; padding: 4px 8px; }
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 8px 0 !important; gap: 6px; }
-	div.date_time_location_short .short_item {max-width: 100%;}
-	div.spring_area .spring_item_2 {width: 100%;order: 3;}
-	div.spring_area .spring_item_3 {width: 100%;order: 2;}
-	div.spring_area .spring_item_4 {width: 100%;order: 1;}
-	div.mep-event-list-loop div.spring_area .mepev-ribbons {position: absolute;}
-	div.spring_area .spring_item_4 {width: 100%;}
-	div.mep_event_winter_list div.spring_area .spring_item_2 {width: 100%;}
+	#mage-container.mage-container{
+		div.mep_event_native_list .mep_list_event_details,
+		div.mep_event_native_list .mep_list_thumb { width: 100%;}
+		/********************/
+		div.default_theme .content_area {display: block;}
+		div.mep_flex.default_theme { display: block; }
+		.mep-default-content { width: 100%; margin: 0; padding: 0; }
+		.mep_event_list .mep_event_list_sec div.mep_event_list_item { display: block; }
+		.mep-default-sidebar { width: 100%; margin: 0; padding: 0; }
+		.mep_event_grid_item .mep_list_thumb img { height: auto; }
+		.mep-events-wrapper { margin: 15px auto; }
+		.mep-default-title h2,
+		.section-heading h2,
+		h4.mep-cart-table-title,
+		h3.ex-sec-title { font-size: 20px; }
+		.mep_event_list .mep_event_list_sec div.mep_event_list_item .mep_list_event_details { margin: 0; }
+		.mep_event_list .mep_event_list_sec div.mep_event_list_item img { top: -5px; }
+		span.mep_minimal_list_location { margin-left: 0; display: block; }
+		div.column_style { min-width: calc(50% - 14px) !important; }
+		div.two_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
+		div.three_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
+		div.four_column { width: calc(50% - 15px); margin: 0 15px 15px 0; }
+		.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_one { margin-bottom: 20px; margin-left: 20px; margin-right: 20px; }
+		.mep_event_list .mep_event_list_sec .mep_event_list_item.mep_event_spring_list .mep_list_details_col_two { margin-top: 20px; margin-left: 20px; margin-right: 20px; }
+		.mep_event_winter_list .mep_list_winter_thumb_wrapper { margin: 0; width: 100%; height: 200px; border-radius: 0; }
+		.mep_event_winter_list .mep_list_winter_thumb { width: auto; height: 200px; border-radius: 0; object-fit: cover; }
+		.mep_event_spring_list .mep_list_date_wrapper,
+		.mep_event_spring_list .mep_list_event_details,
+		.mep_event_winter_list .mep_list_event_details,
+		.mep_event_spring_list .mep_list_spring_thumb_wrapper { display: flex; width: auto; flex-flow: column; min-height: auto; }
+		.mep_event_spring_list .mep_list_date_wrapper { height: 200px; }
+		.mep_event_spring_list .mep_list_event_details { margin-top: 20px; }
+		.mep_event_spring_list h4 { font-size: 20px; }
+		.mep_event_spring_list .mep_list_spring_thumb { width: 100%; height: 200px; border-radius: 0; }
+		.mep_event_spring_list { display: flex !important; flex-flow: column; }
+		.mep_event_spring_list .mep_list_spring_thumb_wrapper { order: 1; }
+		.mep_event_spring_list .mep_list_event_details.mep_list_details_col_one { order: 3; margin-bottom: 20px; }
+		.mep_event_spring_list .mep_list_event_details.mep_list_details_col_two { order: 2; }
+		.mep_event_spring_list .mep_list_date_wrapper { display: none; }
+		.mep_event_list button.owl-next { right: 0; }
+		.mep_event_list button.owl-prev { left: 0; }
+		.mep_event_spring_list .mep_list_date_wrapper { float: left; width: 24%; display: flex; justify-content: center; flex-direction: column; padding: 10px; }
+		.mep_event_spring_list .mep_list_spring_thumb_wrapper { float: left; width: 24%; display: flex; justify-content: flex-start; flex-direction: column; padding: 20px; }
+		.mep_event_spring_list .mep_list_date_wrapper { height: 100%; }
+		.mep_event_list_item .mep_list_thumb { border-radius: 5px 5px 0 0; }
+		.mep_event_list_item .mep_list_location_name, .mep_event_list_item .mep_list_event_date { align-items: start; }
+		.mep-low-stock-warning,
+		.mep-limited-availability-ribbon { font-size: 10px; padding: 4px 8px; }
+		.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 8px 0 !important; gap: 6px; }
+		div.date_time_location_short .short_item {max-width: 100%;}
+		div.spring_area .spring_item_2 {width: 100%;order: 3;}
+		div.spring_area .spring_item_3 {width: 100%;order: 2;}
+		div.spring_area .spring_item_4 {width: 100%;order: 1;}
+		div.mep-event-list-loop div.spring_area .mepev-ribbons {position: absolute;}
+		div.spring_area .spring_item_4 {width: 100%;}
+		div.mep_event_winter_list div.spring_area .spring_item_2 {width: 100%;}
+	}
 }
 @media only screen and (max-width: 650px) {
-	.mep_speaker_thumbnail { padding-top: 50px; }
-	.mep_speaker_name { padding: 50px 0; }
-	.mep_speaker_name { padding: 20px 0; }
-	.mep_event_native_list .mep-list-header { padding: 15px; }
-	span.mep_minimal_list_date,
-	span.mep_minimal_list_location { line-height: 25px; }
-	.mep_list_event_details p { font-size: 13px; }
-	.mpwem_style.pagination_area button[class*=defaultButton_xs] { width: 40px; }
-	.mpwem_style.pagination_area .ellipse_left,
-	.mpwem_style.pagination_area .ellipse_right { background-color: #DDD; }
-	.mep-event-review-form input { padding: 8px; }
-	span.mep-more-date i,
-	span.mep-more-time i { min-width: 20px; }
-	.mep_everyday_date_secs ul li { margin-bottom: 10px; }
-	.mep-event-review-list-wrapper { margin: 0; }
-	.mep_list_thumb,
-	.mep_list_event_details { width: 100%; min-height: 100px; }
-	div.one_column { -webkit-flex-direction: column; flex-direction: column; }
-	.mpwem_registration_area .date-time-area .formControl { width: 100%; }
+	#mage-container.mage-container{
+		.mep_speaker_thumbnail { padding-top: 50px; }
+		.mep_speaker_name { padding: 50px 0; }
+		.mep_speaker_name { padding: 20px 0; }
+		.mep_event_native_list .mep-list-header { padding: 15px; }
+		span.mep_minimal_list_date,
+		span.mep_minimal_list_location { line-height: 25px; }
+		.mep_list_event_details p { font-size: 13px; }
+		.mpwem_style.pagination_area button[class*=defaultButton_xs] { width: 40px; }
+		.mpwem_style.pagination_area .ellipse_left,
+		.mpwem_style.pagination_area .ellipse_right { background-color: #DDD; }
+		.mep-event-review-form input { padding: 8px; }
+		span.mep-more-date i,
+		span.mep-more-time i { min-width: 20px; }
+		.mep_everyday_date_secs ul li { margin-bottom: 10px; }
+		.mep-event-review-list-wrapper { margin: 0; }
+		.mep_list_thumb,
+		.mep_list_event_details { width: 100%; min-height: 100px; }
+		div.one_column { -webkit-flex-direction: column; flex-direction: column; }
+		.mpwem_registration_area .date-time-area .formControl { width: 100%; }
+	}
 }
 @media only screen and (max-width: 500px) {
-	.mep-events-wrapper p#mep_btn_notice { font-size: 12px; }
-	.mep-events-wrapper table td { font-size: 12px; }
-	.mep-default-title h2,
-	.section-heading h2,
-	h4.mep-cart-table-title,
-	h3.ex-sec-title { font-size: 18px; }
-	button.single_add_to_cart_button { font-size: 12px !important; }
-	.ui-accordion .ui-accordion-content { font-size: 12px; }
-	button.single_add_to_cart_button { width: 100%; min-height: 40px; height: auto; min-width: auto; }
-	.mep_event_native_list .mep_more_date_btn { width: 100%; position: relative; }
-	.mep_event_minimal_list .mep-ev-start-date { top: -5px; }
-	div.two_column,
-	div.three_column,
-	div.four_column { width: 100%; margin: 0 0 15px 0; }
-	div.column_style { min-width: calc(100% - 14px) !important; }
+	#mage-container.mage-container{
+		.mep-events-wrapper p#mep_btn_notice { font-size: 12px; }
+		.mep-events-wrapper table td { font-size: 12px; }
+		.mep-default-title h2,
+		.section-heading h2,
+		h4.mep-cart-table-title,
+		h3.ex-sec-title { font-size: 18px; }
+		button.single_add_to_cart_button { font-size: 12px !important; }
+		.ui-accordion .ui-accordion-content { font-size: 12px; }
+		button.single_add_to_cart_button { width: 100%; min-height: 40px; height: auto; min-width: auto; }
+		.mep_event_native_list .mep_more_date_btn { width: 100%; position: relative; }
+		.mep_event_minimal_list .mep-ev-start-date { top: -5px; }
+		div.two_column,
+		div.three_column,
+		div.four_column { width: 100%; margin: 0 0 15px 0; }
+		div.column_style { min-width: calc(100% - 14px) !important; }
+	}
 }
 /********************************************************************************************************************************************/
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
-	.mep-low-stock-warning { background: linear-gradient(135deg, #D32F2F, #C62828); box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3); }
-	.mep-limited-availability-ribbon { background: linear-gradient(135deg, #F57C00, #EF6C00); box-shadow: 0 1px 3px rgba(245, 124, 0, 0.3); }
+	#mage-container.mage-container{
+		.mep-low-stock-warning { background: linear-gradient(135deg, #D32F2F, #C62828); box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3); }
+		.mep-limited-availability-ribbon { background: linear-gradient(135deg, #F57C00, #EF6C00); box-shadow: 0 1px 3px rgba(245, 124, 0, 0.3); }
+	}
 }
 /* High contrast mode */
 @media (prefers-contrast) {
-	.mep-low-stock-warning,
-	.mep-limited-availability-ribbon { border: 2px solid #FFFFFF; }
+	#mage-container.mage-container{
+		.mep-low-stock-warning,
+		.mep-limited-availability-ribbon { border: 2px solid #FFFFFF; }
+	}
 }
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-	.mep-low-stock-warning,
-	.mep-limited-availability-ribbon { animation: none; }
-	.mep-low-stock-warning::before,
-	.mep-limited-availability-ribbon::before { animation: none; }
+	#mage-container.mage-container{
+		.mep-low-stock-warning,
+		.mep-limited-availability-ribbon { animation: none; }
+		.mep-low-stock-warning::before,
+		.mep-limited-availability-ribbon::before { animation: none; }
+	}
 }

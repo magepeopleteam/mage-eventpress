@@ -876,4 +876,7 @@ $('td.event_end_date_normal-td').html(data);
             }
         });
     });
+    $('tr.disable_row .formControl').on('keydown keypress keyup paste drop', function(e){
+        e.preventDefault();
+    });
 });

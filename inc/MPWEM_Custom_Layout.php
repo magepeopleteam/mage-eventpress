@@ -90,15 +90,16 @@
 				<?php
 			}
 			public static function show_hide_button( $name, $value = 'yes') {
-				$open_text = $value == 'yes' ? __( 'Hide', 'mage-eventpress' ) : __( 'Show', 'mage-eventpress' );
-				$close_text   = $value == 'yes' ? __( 'Show', 'mage-eventpress' ) : __( 'Hide', 'mage-eventpress' );
-				$ticket_class = $value == 'yes' ? '_button_success_xxs' : '_button_danger_xxs';
+				$close_text = $value == 'yes' ? __( 'Hide', 'mage-eventpress' ) : __( 'Show', 'mage-eventpress' );
+				$open_text   = $value == 'yes' ? __( 'Show', 'mage-eventpress' ) : __( 'Hide', 'mage-eventpress' );
+				$ticket_class = $value == 'yes' ? '_button_danger_xxs' : '_button_success_xxs';
 				$open_icon = $value == 'yes' ? 'fa-eye' : 'fa-eye-slash';
 				$close_icon = $value == 'yes' ? 'fa-eye-slash' : 'fa-eye';
 				?>
                 <button type="button" class="<?php echo esc_attr( $ticket_class ); ?> mpwem_show_hide_button" data-open-text="<?php echo esc_attr( $open_text ); ?>" data-close-text="<?php echo esc_attr( $close_text ); ?>" data-open-icon="<?php echo esc_attr( $open_icon ); ?>" data-close-icon="<?php echo esc_attr( $close_icon ); ?>">
                     <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-                    <span data-icon="" class="fas  <?php echo esc_attr( $open_icon ); ?> _mr_xxs"></span><?php echo esc_html( $open_text ); ?>
+                    <span data-icon="" class="fas  <?php echo esc_attr( $open_icon ); ?> _mr_xxs"></span>
+                    <span data-text><?php echo esc_html( $open_text ); ?></span>
                 </button>
 				<?php
 			}

@@ -124,13 +124,12 @@
 						<?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
 						<?php if ( $ticket_sold > 0 ) {
-							$close_text=$option_ticket_enable == 'yes' ? __( 'SALES ACTIVE', 'mage-eventpress' ) : __( 'SALES DISABLED', 'mage-eventpress' );
-
+							$close_text=$option_ticket_enable == 'yes' ? __( 'Sales on', 'mage-eventpress' ) : __( 'Sales off', 'mage-eventpress' );
 							$open_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
-                            $ticket_class=$option_ticket_enable == 'yes'?'_button_danger_xxs':'_button_success_xxs';
+                            $ticket_class=$option_ticket_enable == 'yes'?'_danger_xxs':'_button_success_xxs';
 							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
 							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
-                            $info_class=$option_ticket_enable == 'yes'?'_button_warning_xxs':'_button_danger_xxs';
+                            $info_class=$option_ticket_enable == 'yes'?'_warning_xxs':'_button_danger_xxs';
                             ?>
                             <input type="hidden" class="" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
                             <div class="_flex_wrap"><span class="_mr_xxs"><?php echo esc_html( $option_name ); ?></span>

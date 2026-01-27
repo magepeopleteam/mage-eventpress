@@ -56,11 +56,13 @@
 				<?php
 			}
 			public function normal_date( $event_id ) {
+				$now          = current_time( 'Y-m-d' );
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$start_date  = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
 				$start_time  = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
 				$end_date    = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
+				$end_date=strtotime( $end_date )<strtotime($start_date)?$start_date:$end_date;
 				$end_time    = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_time' );
 				$more_dates  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
 				?>
@@ -84,9 +86,72 @@
                                     </thead>
                                     <tbody class="mpwem_sortable_area mpwem_item_insert">
                                     <tr>
-                                        <td><?php self::date_item( 'event_start_date_normal', $start_date ); ?></td>
+                                        <td><?php
+
+		                                        $date_format  = MPWEM_Global_Function::date_picker_format();
+		                                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                        $now_current          = current_time( 'Y-m-d' );
+		                                        $hidden_start_date  = $start_date ? date( 'Y-m-d', strtotime( $start_date ) ) : '';
+		                                        $visible_start_date = $start_date ? date_i18n( $date_format, strtotime( $start_date ) ) : '';
+		                                        $start_year  = date( 'Y', strtotime( $now_current ) );
+		                                        $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
+		                                        $start_day   = date( 'j', strtotime( $now_current ) );
+	                                        ?>
+                                            <label>
+                                                <input type="hidden" name="event_start_date_normal" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
+                                                <input type="text" value="<?php echo esc_attr( $visible_start_date ); ?>" class="formControl" id="event_start_date_normal" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                                            </label>
+                                            <script>
+                                                jQuery(document).ready(function () {
+                                                    jQuery("#event_start_date_normal").datepicker({
+                                                        dateFormat: mpwem_date_format,
+                                                        minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                                        autoSize: true,
+                                                        changeMonth: true,
+                                                        changeYear: true,
+                                                        onSelect: function (dateString, data) {
+                                                            let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                                            jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+	                                        </td>
                                         <td><?php self::time_item( 'event_start_time_normal', $start_time ); ?></td>
-                                        <td><?php self::date_item( 'event_end_date_normal', $end_date ); ?></td>
+                                        <td class="event_end_date_normal-td"><?php
+
+
+		                                        $date_format  = MPWEM_Global_Function::date_picker_format();
+		                                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                        $hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
+		                                        $visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
+		                                        $start_year  = date( 'Y', strtotime( $start_date ) );
+		                                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
+		                                        $start_day   = date( 'j', strtotime( $start_date ) );
+	                                        ?>
+                                            <label>
+                                                <input type="hidden" name="event_end_date_normal" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
+                                                <input type="text" value="<?php echo esc_attr( $visible_end_date ); ?>" class="formControl" id="event_end_date_normal" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                                            </label>
+                                            <script>
+                                                jQuery(document).ready(function () {
+                                                    jQuery("#event_end_date_normal").datepicker({
+                                                        dateFormat: mpwem_date_format,
+                                                        minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                                        autoSize: true,
+                                                        changeMonth: true,
+                                                        changeYear: true,
+                                                        onSelect: function (dateString, data) {
+                                                            let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                                            jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </td>
+
                                         <td><?php self::time_item( 'event_end_time_normal', $end_time ); ?></td>
                                         <td></td>
                                     </tr>

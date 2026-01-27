@@ -863,3 +863,17 @@ jQuery(function ($) {
         });
     });
 });
+jQuery(function ($) {
+    $('[name="event_start_date_normal"]').on('change', function (e) {
+        e.preventDefault();
+        let start_date=$('[name="event_start_date_normal"]').val();
+        let end_date=$('[name="event_end_date_normal"]').val();
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_end_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, success: function (data) {
+$('td.event_end_date_normal-td').html(data);
+            }
+        });
+    });
+});

@@ -1966,10 +1966,11 @@
   margin: 0;
   color: inherit;
 }
-#mage-container.mage-container .mep_list_event_details a {
+#mage-container.mage-container .mage_grid_box .filter_item .mep_list_event_details a {
   color: #000;
   overflow: hidden;
   text-decoration: none;
+  line-height: inherit;
 }
 #mage-container.mage-container .mep_list_event_details p {
   white-space: nowrap;

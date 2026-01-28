@@ -3,10 +3,8 @@ get_header();
 the_post();
 do_action('mep_before_events_speaker_wrapper');
 ?>
+<div id="mage-container" class="mage">
 <div class="mep_events_speaker_wraper">
-    <style>
-     
-    </style>
     <div class="mep_speaker_thumbnail">
         <?php the_post_thumbnail('full'); ?>
     </div>
@@ -44,10 +42,12 @@ do_action('mep_before_events_speaker_wrapper');
                 do_action('mep_event_list_shortcode', get_the_id(), 'three_column', 'grid');
             }
             wp_reset_postdata();
-            mep_event_pagination($loop->max_num_pages);
             ?>
+            
         </div>
+        <?php mep_event_pagination($loop->max_num_pages); ?>
     </div>
+</div>
 </div>
 <?php
 do_action('mep_after_events_speaker_wrapper');

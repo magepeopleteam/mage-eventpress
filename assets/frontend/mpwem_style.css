@@ -2202,9 +2202,7 @@
 #mage-container.mage div.mep_event_list div.mage_grid_box img {
   min-height: auto;
 }
-#mage-container.mage div.mep_event_list div.mage_grid_box > div {
-  width: 100%;
-}
+
 #mage-container.mage .mep_event_grid_item .mep-list-footer-ul {
   display: flex;
   flex-direction: column;
@@ -3067,8 +3065,8 @@
 }
 #mage-container.mage .pagination-sec a {
   display: inline-block;
-  background: #81D742;
-  color: #FFF;
+  background: var(--color_theme);
+  color: var(--color_theme_alter);
   padding: 10px 15px;
 }
 #mage-container.mage .pagination-sec span.page-numbers.current {
@@ -3700,6 +3698,9 @@
   }
   #mage-container.mage div.column_style {
     min-width: calc(100% - 14px) !important;
+  }
+  #mage-container.mage div.mep_event_list div.mage_grid_box > div {
+    width: 100%;
   }
 }
 /********************************************************************************************************************************************/

@@ -121,7 +121,7 @@
 				?>
                 <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable !== 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
                     <td class="ticket_name">
-						<?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
+						<?php  //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
 						<?php if ( $ticket_sold > 0 ) {
 							$close_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
@@ -134,7 +134,7 @@
                             <div class="_flex_wrap"><span class="_mr_xxs"><?php echo esc_html( $option_name ); ?></span>
                                 <span class="<?php echo esc_attr($ticket_class); ?> ticket_status" data-open-text="<?php echo esc_attr($open_text); ?>" data-close-text="<?php echo esc_attr($close_text); ?>"><span data-text><?php echo esc_html($open_text); ?></span></span>
                             </div>
-                            <span class="_button_danger_xxs ticket_info" title="<?php _e( 'Ticket type is locked because sales have already started.', 'mage-eventpress' )?>"><span data-text><?php esc_html_e( 'Ticket type locked', 'mage-eventpress' ); ?></span></span>
+                            <span class="_button_danger_xxs ticket_info" title="<?php _e( 'Ticket type is locked because it already has  ', 'mage-eventpress' );echo $ticket_sold; _e( ' bookings', 'mage-eventpress' )?>"><span data-text><?php esc_html_e( 'Ticket type locked', 'mage-eventpress' ); ?></span></span>
 
 						<?php } else { ?>
                             <label>

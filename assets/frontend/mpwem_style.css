@@ -794,7 +794,7 @@
   text-transform: capitalize;
 }
 #mage-container.mage div.default_theme .speaker_list img {
-  width: auto;
+  width: 100px;
 }
 #mage-container.mage div.mep_smart_theme .speaker_list {
   -webkit-flex-direction: column;
@@ -816,7 +816,7 @@
 #mage-container.mage div.mep_smart_theme .speaker_list a h6 {
   margin: 0;
   padding: var(--dmp);
-  font-size: var(--fs_h4);
+  font-size:16px;
 }
 #mage-container.mage .mep_smart_theme .speaker-widget {
   margin-top: 10px;

@@ -129,15 +129,12 @@
 
                             $ticket_class=$option_ticket_enable == 'yes'?'_button_success_xxs':'_button_danger_xxs';
 
-							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
-							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
-                            $info_class=$option_ticket_enable == 'yes'?'_warning_xxs':'_button_danger_xxs';
                             ?>
                             <input type="hidden" class="" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
                             <div class="_flex_wrap"><span class="_mr_xxs"><?php echo esc_html( $option_name ); ?></span>
                                 <span class="<?php echo esc_attr($ticket_class); ?> ticket_status" data-open-text="<?php echo esc_attr($open_text); ?>" data-close-text="<?php echo esc_attr($close_text); ?>"><span data-text><?php echo esc_html($open_text); ?></span></span>
                             </div>
-                            <span class="<?php echo esc_attr($info_class); ?> ticket_info" data-open-text="<?php echo esc_attr($open_text_info); ?>" data-close-text="<?php echo esc_attr($close_text_info); ?>"><span data-text><?php echo esc_html($open_text_info); ?></span></span>
+                            <span class="_button_danger_xxs ticket_info" title="<?php _e( 'Ticket type is locked because sales have already started.', 'mage-eventpress' )?>"><span data-text><?php esc_html_e( 'Ticket type locked', 'mage-eventpress' ); ?></span></span>
 
 						<?php } else { ?>
                             <label>

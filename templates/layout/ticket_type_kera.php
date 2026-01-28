@@ -21,7 +21,7 @@
 			$group_name  = '';
 			foreach ( $ticket_types as $ticket_type ) {
 				$option_ticket_enable = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
-				if ( $option_ticket_enable !== 'yes' ) {
+				if ( $option_ticket_enable == 'yes' ) {
 					$ticket_name  = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 					$ticket_group = array_key_exists( 'group_category', $ticket_type ) ? $ticket_type['group_category'] : '';
 					$available    = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );

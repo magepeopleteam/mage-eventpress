@@ -92,7 +92,7 @@
 			public static function show_hide_button( $name, $value = 'yes') {
 				$close_text = $value == 'yes' ? __( 'Hide', 'mage-eventpress' ) : __( 'Show', 'mage-eventpress' );
 				$open_text   = $value == 'yes' ? __( 'Show', 'mage-eventpress' ) : __( 'Hide', 'mage-eventpress' );
-				$ticket_class = $value == 'yes' ? '_button_danger_xxs' : '_button_success_xxs';
+				$ticket_class = $value == 'yes' ? '_button_success_xxs' : '_button_danger_xxs';
 				$open_icon = $value == 'yes' ? 'mi-unlock' : 'mi-lock';
 				$close_icon = $value == 'yes' ? 'mi-lock' : 'mi-unlock';
 				?>

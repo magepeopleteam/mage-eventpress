@@ -2211,7 +2211,6 @@
   margin: 0;
   margin: 0 -7px 20px -7px;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
 }
 #mage-container.mage-container .mage_grid_box .blank_div {

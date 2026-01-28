@@ -1535,42 +1535,19 @@
 }
 
 /* *********************************************************Event List******************** */
-#mage-container.mage {
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*************************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /*********************/
-  /***********************/
-  /*******************/
-  /*******************************/
-  /***********************************/
-  /********************************************/
-  /***********************************/
-  /***********************************/
-  /***********************************/
-  /***********************************/
+#mage-container.mage .mpwem_style button,
+#mage-container.mage div.mpwem_style [class*="_button"]{
+	font-weight: normal;
+  box-shadow: none;
 }
 #mage-container.mage .mep_list_event_details {
   min-height: 100px;
   width: 60%;
 }
 #mage-container.mage div.mep_list_event_details .mep_list_title {
-  font-size: var(--fs_h5);
-  font-weight: 700;
-  padding: 0 0 var(--dmp_xxs) 0;
+  font-size: 18px;
+  font-weight:normal;
+  padding: 0 0 5px 0;
   margin: 0;
   line-height: 1.25;
 }
@@ -1975,7 +1952,7 @@
 #mage-container.mage .mep_list_event_details p {
   white-space: nowrap;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: normal;
   overflow: hidden;
 }
 #mage-container.mage .mep_list_event_details p.read-more a {

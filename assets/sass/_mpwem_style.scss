@@ -1,5 +1,5 @@
 /* ******************************************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mp_wp_editor ul,
 	.mp_wp_editor ol { list-style-type: inherit; margin-left: 20px; padding-left: 20px;}
 	.mp_wp_editor ol { list-style-type: decimal;}
@@ -29,7 +29,7 @@
 	.mep-events-wrapper .mpwem_book_now[disabled] { background-color: var(--color_theme); opacity: 0.6; }
 }
 /* **************************************************************title & description******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
 	div.mpwem_details {margin: var(--dmp) 0 0 0;}
 	div.mpwem_details_content p,
@@ -37,7 +37,7 @@
 	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
 }
 /* **************************************************************Date time location short area in default theme**************************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;margin: var(--dmp) 0 0 0;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
 	div.date_time_location_short .short_item h4 { font-size: 22px; }
@@ -54,7 +54,7 @@
 	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
 }
 /* *************************************************************Registration section******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.mpwem_registration_area {margin: var(--dmp) 0 0 0;}
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 	.mpwem_registration_area .section-title { font-size: 25px; font-weight: bold; margin: 10px 0; }
@@ -132,7 +132,7 @@
 	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
 }
 /* ********************************************************* Attendee area******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep_smart_theme .attendee_area { margin: 10px 0; }
 	.mep_smart_theme .attendee_area h2 { font-size: var(--fs_h2); font-weight: var(--fw-bold); }
 	.attendee_area { margin: 10px 0; }
@@ -156,7 +156,7 @@
 	.mep_same_attendee input { min-width: 40px; height: 20px; margin: 5px 10px 10px 0;}
 }
 /* *************************************************************organizer section******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
@@ -168,7 +168,7 @@
 	div.mep_smart_theme .mpwem_organizer h5 { margin: 0;color: var(--color_theme); }
 }
 /* **************************************************************timeline******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
 	div.timeline_item { padding: 0 0 0 40px; position: relative; transition: transform 0.3s ease; }
 	div.timeline_item:hover { transform: translateY(-5px); }
@@ -180,7 +180,7 @@
 	div.mpwem_timeline_area .timeline_area::before { content: ""; position: absolute; left: 15px; top: 15px; height: calc(100% - 15px); width: 2px; background-color: #E0E0E0; z-index: 0; }
 }
 /* **************************************************************Sidebar******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mpwem_sidebar_content h5 { color: #333; }
 	.mep-default-sidebar { width: 300px; }
 	.mep-default-sidebar .df-sidebar-part { background: #FFF; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; }
@@ -191,7 +191,7 @@
 	div.mpwem_calender_area {padding: var(--dmp); border-top: 1px solid var(--color_border); }
 }
 /* ************************************************************Event Date List******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.event_date_list_area {padding: var(--dmp_xs) var(--dmp);}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dmp_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
@@ -201,7 +201,7 @@
 	button.mpwem_get_date_list{border-radius: 20px;}
 }
 /* *************************************************************Speaker******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.event_speaker_list_area {padding: var(--dmp);}
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
@@ -222,7 +222,7 @@
 	.mep_smart_theme .speaker-widget .speaker-lists .items h2 { font-size: 19px; letter-spacing: 0.04em; color: #333; }
 }
 /* ************************************************************Social Share section******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.share_widgets { padding: var(--dmp); border-top: 1px solid var(--color_border); color: #333; }
 	div.share_widgets .share_widgets_title {margin: 0 0 var(--dmp) 0;text-align: center;text-transform: capitalize;}
 	div.share_widgets .share_widgets_list {display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;gap: var(--dmp_xs);}
@@ -241,7 +241,7 @@
 	div.share_widgets .share_widgets_list a.email:hover i {background-color: #DD4B39;color: #FFF;}
 }
 /* **********************************************************Map******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	#mpwem_map_area {margin: var(--dmp) 0 0;background: white; border-radius: 12px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); overflow: hidden;}
 	#mpwem_map,
 	#mpwem_map_area iframe {width: 100%;height: 100%;min-height: 300px;max-height: 300px;border-radius: 8px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
@@ -253,7 +253,7 @@
 	div.mpwem_location_sidebar #mpwem_map_area {margin: 0;}
 }
 /* **********************************************************Speaker******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep_speaker_thumbnail { display: block; text-align: center;}
 	.mep_speaker_name { text-align: center;}
 	.mep_speaker_thumbnail img { display: inline-block; border-radius: 100%; height: 280px; border: 5px solid #DDD; padding: 3px; width: 280px;}
@@ -269,7 +269,7 @@
 	.mep_events_speaker_wraper .mage_grid_box > *:hover { box-shadow: 0 8px 32px rgba(26, 115, 232, 0.13); transform: translateY(-4px) scale(1.025);}
 }
 /* **********************************************************F.A.Q******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
 	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
 	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
@@ -300,7 +300,7 @@
 	.mep-event-faq-part .mep-event-faq-content { background-color: #FFF; border: 1px solid #F5F5F5; padding: 10px; display: none; }
 }
 /* **********************************************************TAG******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep-event-tags-widget { margin-bottom: 20px;}
 	.mep-event-tags-widget .location-title { font-size: 16px; font-weight: 600; margin: 10px; margin-left: 9%;}
 	.mep-event-tags-list { margin: 14px !important; padding: 0; line-height: 2;}
@@ -308,7 +308,7 @@
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
 }
 /* *************************************************************Slider******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mpwem_slider_area div.post_thumb {overflow: hidden;}
 	.mpwem_slider_area div.post_thumb img {width: auto;height: auto;max-width: 100%;margin: 0 auto;}
 	.mpwem_slider_area { margin-top: 0; }
@@ -318,7 +318,7 @@
 	.mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator { color: var(--color_theme); }
 }
 /* ******************************************************************Related Product******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
 	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
@@ -328,7 +328,7 @@
 	div.mpwem_related_area div.mep-event-list-loop {background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD;height: auto;}
 }
 /* ******************************************************************Filter Pagination******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
 	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }
@@ -390,7 +390,7 @@
 	.list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
 }
 /* *********************************************************Event List******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep_list_event_details { min-height: 100px;width: 60%;}
 	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: 700; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25;}
 	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
@@ -662,14 +662,14 @@
 	/***********************************/
 }
 /* *********************************************************Short code city list******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep-city-list { display: block; overflow: hidden; width: 100%; }
 	.mep-city-list ul { margin: 0; padding: 0; list-style: none; }
 	.mep-city-list ul li a { display: block; width: 100%; border-bottom: 1px dashed #DDD; font-size: 18px; color: #333; padding: 5px 0; }
 	.mep-city-list li i { margin-right: 5px; }
 }
 /* *********************************************************Helper******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep-hidden { display: none !important; }
 	span.mep_warning { text-align: center; display: block; border: 1px solid #005373; color: #005373; font-weight: bold; font-size: 15px; padding: 20px 0; text-transform: capitalize;}
 	.mep-low-stock-warning { background: linear-gradient(135deg, #FF6B6B, #EE5A52); color: #FFFFFF; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-align: center; margin: 3px 0; box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3); position: relative; overflow: hidden; animation: pulse-warning 2s infinite; width: 40%; }
@@ -693,7 +693,7 @@
 	.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border: 1px solid var(--color_theme); line-height: 1.2; font-weight: bold; height: auto; min-width: auto; outline: 0; padding: 15px; margin: 10px auto; display: block; text-align: center; font-size: 16px; cursor: pointer; max-width: 100%; border-radius: 10px; }
 }
 /* *********************************************************Other******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.mep-event-countdown-timer .wrapper div span { display: block; padding: 10px;}
 	.mep-event-countdown-timer .wrapper div span span.label { border: 0 !important;}
 	.mep-event-countdown-timer { width: 100%; overflow: hidden;}
@@ -721,7 +721,7 @@
 	/***********************************************************************************************/
 }
 /* *********************************************************User Dashboard******************** */
-#mage-container.mage-container {
+#mage-container.mage {
 	.my_account_orders.account-orders-table .wbtm-download { display: none;}
 	.mep-user-ticket-list table { width: 100%; border: 1px solid #DDD;}
 	.mep-user-ticket-list table tr { border-bottom: 1px solid #DDD; padding: 10px 0;}
@@ -730,7 +730,7 @@
 	/***********************************************************************************************/
 }
 /***********************************************************************************************/
-#mage-container.mage-container{
+#mage-container.mage{
 	.default_theme form { display: block;}
 	.default_theme i { display: -webkit-flex; display: flex;-webkit-align-items: center; align-items: center;-webkit-justify-content: center; justify-content: center; -webkit-border-radius: 50%; border-radius: 50%;}
 	.default_theme .mep-more-date { display: flex; flex-direction: column; align-items: start; justify-content: start;}
@@ -741,7 +741,7 @@
 	.default_theme .groupRadioCheck { margin-top: 5px;}
 }
 /***********************************************************************************************/
-#mage-container.mage-container{
+#mage-container.mage{
 	button.mep-cat-control,
 	.pagination-sec a { background: var(--color_theme); color: var(--color_7);}
 	.mep_more_date_btn:before { background: var(--color_theme); border-color: var(--color_theme);}
@@ -750,14 +750,14 @@
 	.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border-color: var(--color_theme);}
 }
 /*****************************************************/
-#mage-container.mage-container{
+#mage-container.mage{
 	.mep-vr-vs-content { color: #084298; background-color: #CFE2FF; border-color: #B6D4FE; border-radius: 0.25rem; padding: 8px;}
 	.mep-vr-vs-content h3 { font-size: 16px; font-weight: bold; border-bottom: 1px dashed #084298; padding: 0 0 5px 0; margin: 0 0 10px 0;}
 	.mep_ticket_details p { font-size: 12px; margin: 5px 0 !important; padding: 5px 0; display: block; line-height: 20px !important;}
 	tr.ex-sec-title.mep_ticket_type_title th { font-weight: bold; display: table-cell; padding: 15px 15px 5px;}
 }
 /********************************/
-#mage-container.mage-container{
+#mage-container.mage{
 	span.tkt-qty,
 	span.tkt-pric,
 	label.mep-show { display: block;}
@@ -865,7 +865,7 @@
 
 /***************************************************************************Responsive*****************************************************************/
 @media only screen and (max-width: 1199px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-default-content { width: calc(100% - 275px); }
 		.mep-default-sidebar { width: 275px; }
 		div.date_time_location_short .short_item {max-width: calc(50% - 8px);}
@@ -873,7 +873,7 @@
 }
 
 @media only screen and (max-width: 1024px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
 		.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data { flex-direction: row; align-items: start; flex-wrap: wrap; gap: 10px; }
 		.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-price,
@@ -887,7 +887,7 @@
 	}
 }
 @media only screen and (max-width: 991px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-default-content { width: calc(100% - 250px); }
 		.mep-default-sidebar { width: 250px; }
 		.mep-list-footer ul li i { width: 20px; height: 20px; font-size: 11px; }
@@ -905,7 +905,7 @@
 	}
 }
 @media only screen and (max-width: 767px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		div.mep_event_native_list .mep_list_event_details,
 		div.mep_event_native_list .mep_list_thumb { width: 100%;}
 		/********************/
@@ -964,7 +964,7 @@
 	}
 }
 @media only screen and (max-width: 650px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep_speaker_thumbnail { padding-top: 50px; }
 		.mep_speaker_name { padding: 50px 0; }
 		.mep_speaker_name { padding: 20px 0; }
@@ -987,7 +987,7 @@
 	}
 }
 @media only screen and (max-width: 500px) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-events-wrapper p#mep_btn_notice { font-size: 12px; }
 		.mep-events-wrapper table td { font-size: 12px; }
 		.mep-default-title h2,
@@ -1008,21 +1008,21 @@
 /********************************************************************************************************************************************/
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-low-stock-warning { background: linear-gradient(135deg, #D32F2F, #C62828); box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3); }
 		.mep-limited-availability-ribbon { background: linear-gradient(135deg, #F57C00, #EF6C00); box-shadow: 0 1px 3px rgba(245, 124, 0, 0.3); }
 	}
 }
 /* High contrast mode */
 @media (prefers-contrast) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-low-stock-warning,
 		.mep-limited-availability-ribbon { border: 2px solid #FFFFFF; }
 	}
 }
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-	#mage-container.mage-container{
+	#mage-container.mage{
 		.mep-low-stock-warning,
 		.mep-limited-availability-ribbon { animation: none; }
 		.mep-low-stock-warning::before,

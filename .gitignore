@@ -1,0 +1,9 @@
+# ignore css source maps
+*.css.map
+
+# ignore scss directory
+scss/
+
+# ignore all scss files (optional)
+*.scss
+# 

@@ -56,12 +56,14 @@
 			$shortcode = '[event-list]';
 		}
 		?>
-        <div class="mpwem_style mpwem_wrapper">
-            <div class="mpwem_container">
-                <div class='mep_city_filter_page'>
-					<?php echo do_shortcode( $shortcode ); ?>
-                </div>
-            </div>
+		<div id="mage-container" class="mage">
+			<div class="mpwem_style mpwem_wrapper">
+				<div class="mpwem_container">
+					<div class='mep_city_filter_page'>
+						<?php echo do_shortcode( $shortcode ); ?>
+					</div>
+				</div>
+			</div>
         </div>
 		<?php
 	}

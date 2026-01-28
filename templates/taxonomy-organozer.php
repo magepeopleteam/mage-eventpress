@@ -3,6 +3,7 @@ get_header();
 the_post();
 $term_id = get_queried_object()->term_id;
 ?>
+<div id="mage-container" class="mage" style="width: 100%;">
     <div class="mep-events-wrapper">
         <div class='mep_event_list'>
             <div class="mep_cat-details">
@@ -17,10 +18,11 @@ $term_id = get_queried_object()->term_id;
                     do_action('mep_event_list_shortcode', get_the_id(), 'three_column', 'grid');
                 }
                 wp_reset_postdata();
-                mep_event_pagination($loop->max_num_pages);
                 ?>
             </div>
+            <?php mep_event_pagination($loop->max_num_pages); ?>
         </div>
     </div>
+</div>
 <?php
 get_footer();

@@ -338,7 +338,8 @@
 				?>
                 <div class="mep_list_thumb mpwem_style">
                     <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
-                </div>
+					<?php do_action( 'mpwem_list_ribbon', $event_infos ); ?>
+				</div>
 				<?php
 			}
 			public function list_location( $event_infos ) {

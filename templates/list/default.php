@@ -36,7 +36,7 @@
          style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
 		<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
 		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
-		<?php do_action( 'mpwem_list_ribbon', $event_infos ); ?>
+		
 		<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
         <div class="mep_list_event_details">
             <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">

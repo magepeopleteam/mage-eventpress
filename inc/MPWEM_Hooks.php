@@ -357,7 +357,7 @@
 					$icon_setting_sec    = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_location_icon = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
 					?>
-                    <div class="list_content">
+                    <div class="list_content upcomming_location">
                         <span class="<?php echo esc_attr( $event_location_icon ); ?>"></span>
 						<?php echo esc_html( $location_title . ' ' . $location ); ?>
                     </div>
@@ -371,7 +371,7 @@
 					$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
 					?>
-                    <div class="list_content">
+                    <div class="list_content upcomming_organizer">
                         <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span>
 						<?php echo esc_html( $organizer_title . ' ' . $organizer_name ); ?>
                     </div>
@@ -403,7 +403,7 @@
 					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					$event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
 					?>
-                    <div class="list_content">
+                    <div class="list_content upcomming_date_only_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, $date_format, $event_id ) );
 							if ( $end_time && $hide_only_end_time_list == 'no' ) {
@@ -429,7 +429,7 @@
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
-                    <div class="list_content">
+                    <div class="list_content upcomming_date_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) );
 							if ( $end_time && $hide_only_end_time_list == 'no' ) {
@@ -449,7 +449,7 @@
 					$time_icon        = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 					$end_time         = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
-                    <div class="list_content">
+                    <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'time' ) );
 							if ( $end_time && MPWEM_Global_Function::check_time_exit_date( $end_time ) ) {

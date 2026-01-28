@@ -600,3 +600,11 @@ div.mpwem_style.mep-quick-setup .tabsContentNext { padding: 20px 0;}
 .mep-quick-setup .nextTab_prev:focus span { color: #000;}
 .mpwem_welcome_page .updated { display: none;}
 .label-text { color: #94A3B8; font-weight: normal; font-size: 14px;}
+
+.mpwem_ticket_table .ticket_status,
+.mpwem_ticket_table .ticket_info{
+	border-radius: 5px;
+	font-size: 10px;
+	width: 100%;
+	margin: 2px;
+}

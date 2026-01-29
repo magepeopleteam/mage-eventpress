@@ -110,7 +110,7 @@
                                         <ul class="cart_list">
 											<?php
 												foreach ( $ticket_type_arr as $ticket ) {
-													$ticket_text = '<li>' . esc_attr( $ticket['ticket_name'] ) . "&nbsp;-&nbsp;" . wc_price( (float) $ticket['ticket_price'] ) . '&nbsp;x&nbsp;' . esc_attr( $ticket['ticket_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) . '</li>';
+													$ticket_text = '<li>' . esc_attr( $ticket['ticket_name'] ) . "&nbsp;&nbsp;" . wc_price( (float) $ticket['ticket_price'] ) . '&nbsp;x&nbsp;' . esc_attr( $ticket['ticket_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) . '</li>';
 													echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $ticket, $eid );
 													do_action( 'mep_cart_after_ticket_type', $ticket );
 												}
@@ -590,7 +590,7 @@
 									$ticket_name = array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
 									$ticket_price = array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
 									$ticket_qty = array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
-									$ticket_text = '<li>' . esc_attr( $ticket_name) . " - " . wc_price( (float) $ticket_price) . ' x ' . esc_attr( $ticket_qty ) . ' = ' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
+									$ticket_text = '<li>' . esc_attr( $ticket_name) . " &nbsp;&nbsp;" . wc_price( (float) $ticket_price) . '&nbsp;x&nbsp;' . esc_attr( $ticket_qty ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
                                     //echo '<li><pre>'.print_r($user).'</pre></li>';
 									echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
 									do_action( 'mep_cart_after_ticket_type', $user );

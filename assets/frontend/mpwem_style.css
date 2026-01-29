@@ -1,4 +1,12 @@
 /* ******************************************** */
+#mage-container.mage h1,
+#mage-container.mage h2,
+#mage-container.mage h3,
+#mage-container.mage h4,
+#mage-container.mage h5,
+#mage-container.mage h6 {
+  color: #333;
+}
 #mage-container.mage .mp_wp_editor ul,
 #mage-container.mage .mp_wp_editor ol {
   list-style-type: inherit;
@@ -133,6 +141,10 @@
 #mage-container.mage div.mpwem_details {
   margin: var(--dmp) 0 0 0;
 }
+
+#mage-container.mage div.mpwem_details h2{
+  color: #333;
+}
 #mage-container.mage div.mpwem_details_content p,
 #mage-container.mage div.mpwem_details_content ul,
 #mage-container.mage div.mpwem_details_content ul li {
@@ -161,6 +173,7 @@
 }
 #mage-container.mage div.date_time_location_short .short_item h4 {
   font-size: 22px;
+  color: var(--color_theme_alter);
 }
 #mage-container.mage div.date_time_location_short .short_item h6 {
   font-size: 16px;
@@ -636,6 +649,9 @@
 /* **************************************************************timeline******************** */
 #mage-container.mage div.mpwem_timeline_area {
   margin: var(--dmp) 0 0 0;
+}
+#mage-container.mage div.mpwem_timeline_area h3{
+  color: #333;
 }
 #mage-container.mage div.timeline_item {
   padding: 0 0 0 40px;

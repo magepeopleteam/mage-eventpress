@@ -167,6 +167,7 @@
   font-weight: 500;
   text-transform: capitalize;
   margin: 0;
+  color: #333;
 }
 #mage-container.mage div.date_time_location_short .short_item p {
   color: #878787;
@@ -671,6 +672,7 @@
   font-weight: 500;
   text-transform: capitalize;
   margin: 0;
+  color:#333;
 }
 #mage-container.mage div.mpwem_timeline_area .timeline_time {
   font-size: 14px;
@@ -719,6 +721,9 @@
 }
 #mage-container.mage div.mpwem_seat_status {
   margin: var(--dmp) var(--dmp) 0 var(--dmp);
+}
+#mage-container.mage div.mpwem_seat_status h6{
+  color: var(--color_theme);
 }
 #mage-container.mage div.mpwem_calender_area {
   padding: var(--dmp);
@@ -1095,6 +1100,7 @@
 #mage-container.mage div.faq_area .item .title h3 {
   font-size: var(--fs);
   margin: 0;
+  color: #333;
 }
 #mage-container.mage div.faq_area .item .content {
   padding: var(--dmp_xs) var(--dmp);

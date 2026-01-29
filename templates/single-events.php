@@ -56,18 +56,19 @@
 		$fatal_error_fix           = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
 		?>
 		<div id="mage-container" class="mage">
-        <div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" style="max-width: 100%;">
-            <div class="mpwem_container">
-				<?php
-					if ( $fatal_error_fix === 'disable' ) {
-						if ( ! class_exists( 'WC_Bundles' ) ) {
-							if ( ! class_exists( 'WEPOF_Extra_Product_Options' ) ) {
-								if ( ! class_exists( 'WC_Advanced_Country_Restrictions_Dist' ) ) {
-									if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
-										if ( ! class_exists( 'Xoo_Wl_Core' ) ) {
-											if ( ! class_exists( 'Ultimate_Woocommerce_Gift_Card_Public' ) ) {
-												if ( ! class_exists( 'WC_Google_Analytics' ) ) {
-													do_action( 'woocommerce_before_single_product' );
+			<div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" style="max-width: 100%;">
+				<div class="mpwem_container">
+					<?php
+						if ( $fatal_error_fix === 'disable' ) {
+							if ( ! class_exists( 'WC_Bundles' ) ) {
+								if ( ! class_exists( 'WEPOF_Extra_Product_Options' ) ) {
+									if ( ! class_exists( 'WC_Advanced_Country_Restrictions_Dist' ) ) {
+										if ( ! class_exists( 'WC_Google_Analytics_Integration' ) ) {
+											if ( ! class_exists( 'Xoo_Wl_Core' ) ) {
+												if ( ! class_exists( 'Ultimate_Woocommerce_Gift_Card_Public' ) ) {
+													if ( ! class_exists( 'WC_Google_Analytics' ) ) {
+														do_action( 'woocommerce_before_single_product' );
+													}
 												}
 											}
 										}
@@ -75,16 +76,15 @@
 								}
 							}
 						}
-					}
-					require_once MPWEM_Functions::details_template_path( $template );
-					if ( comments_open() || get_comments_number() ) {
-						comments_template();
-					}
-				?>
-            </div>
-			<?php do_action( 'after-single-events' ); ?>
-        </div>
-		<?php do_action( 'mep_event_single_page_before_footer', $event_id ); ?>
+						require_once MPWEM_Functions::details_template_path( $template );
+						if ( comments_open() || get_comments_number() ) {
+							comments_template();
+						}
+					?>
+				</div>
+				<?php do_action( 'after-single-events' ); ?>
+			</div>
+			<?php do_action( 'mep_event_single_page_before_footer', $event_id ); ?>
 		</div>
 		<?php
 	}

@@ -70,7 +70,6 @@
 					do_action( 'mep_show_waitlist_label' );
 				}
 				do_action( 'mpwem_list_price', $event_infos );
-				do_action( 'mpwem_list_ribbon', $event_infos );
 			?>
         </a>
         <a class="spring_item_4" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">

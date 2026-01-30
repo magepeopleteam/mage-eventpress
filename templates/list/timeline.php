@@ -17,7 +17,7 @@
 	$taxonomy_organizer = array_key_exists( 'organizer_tax', $event_infos ) ? $event_infos['organizer_tax'] : '';
 	$title              = get_the_title( $event_id );
 ?>
-<div class="timeline__item">
+<div class="timeline__item mep-event-list-loop">
     <div class="timeline__content">
         <div class='mep_event_timeline_list'>
 			<?php do_action( 'mep_event_minimal_list_loop_header', $event_id ); ?>

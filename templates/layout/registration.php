@@ -16,6 +16,9 @@
 	//echo '<pre>';			print_r($event_id);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {
+		//  $saved_user_role 	          = get_post_meta($event_id, 'mep_member_only_user_role', true) ? get_post_meta($event_id, 'mep_member_only_user_role', true) : [];
+        // echo $event_member_type 	          = get_post_meta($event_id, 'mep_member_only_event', true) ? get_post_meta($event_id, 'mep_member_only_event', true) : 'for_all';
+
 		?>
         <div class="mpwem_style"><?php
 		$reg_status = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
@@ -23,8 +26,9 @@
 			if ( sizeof( $all_dates ) > 0 ) {
 				$event_member_type = array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
 				$saved_user_role   = array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];
-				if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {
-					?>
+				// if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {
+				if( $event_member_type == 'for_all' || ($event_member_type != 'for_all'  && is_user_logged_in() && ( in_array(wp_get_current_user()->roles[0],$saved_user_role) || in_array('all',$saved_user_role) ) )){
+				 ?>
                     <div class="mpwem_registration_area">
 						<?php do_action( 'mpwem_date_select', $event_id, $event_infos); ?>
                         <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
@@ -33,6 +37,8 @@
 						<?php do_action( 'mpwem_hidden_content', $event_id ); ?>
                     </div>
 					<?php
+				}else{
+					MPWEM_Layout::msg( esc_html__( 'This event is available for our members. Please log in to continue. Not a member yet? You can easily join and enjoy full access.', 'mage-eventpress' ) );
 				}
 			} else {
 				// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );

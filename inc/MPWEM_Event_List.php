@@ -175,7 +175,8 @@
 												$loop->the_post();
 												$event_infos = MPWEM_Functions::get_all_info( get_the_ID() );
 												$state       = isset( $event_infos['mep_state'] ) ? $event_infos['mep_state'] : '';
-												if ( ! empty( $state ) ) {
+												$state_type       = isset( $event_infos['mep_org_address'] ) ? $event_infos['mep_org_address'] : '';
+												if ( ! empty( $state )  && $state_type==0) {
 													$states[] = $state;
 												}
 											}

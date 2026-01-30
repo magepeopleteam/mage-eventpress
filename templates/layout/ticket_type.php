@@ -27,7 +27,7 @@
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$option_ticket_enable = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
-						if ( $option_ticket_enable !== 'yes' ) {
+						if ( $option_ticket_enable == 'yes' ) {
 							$input_data        = [];
 							$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 							do_action( 'mep_ticket_type_loop_list_row_start', $event_id, $date, $ticket_type );

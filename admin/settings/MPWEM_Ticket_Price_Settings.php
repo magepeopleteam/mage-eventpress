@@ -119,23 +119,22 @@
 					$ticket_sold                   = MPWEM_Query::attendee_query( $filter_args )->post_count;
 				}
 				?>
-                <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable == 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
+                <tr class="mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable !== 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
                     <td class="ticket_name">
-						<?php //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
+						<?php  //echo '<pre>';print_r($ticket_sold);echo '</pre>'; ?>
                         <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
 						<?php if ( $ticket_sold > 0 ) {
-							$close_text=$option_ticket_enable == 'yes' ? __( 'Sales on', 'mage-eventpress' ) : __( 'Sales off', 'mage-eventpress' );
-							$open_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
-                            $ticket_class=$option_ticket_enable == 'yes'?'_danger_xxs':'_button_success_xxs';
-							$close_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type locked', 'mage-eventpress' ) : __( 'Ticket type disabled', 'mage-eventpress' );
-							$open_text_info=$option_ticket_enable == 'yes' ? __( 'Ticket type disabled', 'mage-eventpress' ) : __( 'Ticket type locked', 'mage-eventpress' );
-                            $info_class=$option_ticket_enable == 'yes'?'_warning_xxs':'_button_danger_xxs';
+							$close_text=$option_ticket_enable == 'yes' ? __( 'SALES DISABLED', 'mage-eventpress' ) : __( 'SALES ACTIVE', 'mage-eventpress' );
+							$open_text=$option_ticket_enable == 'yes' ? __( 'SALES ACTIVE', 'mage-eventpress' ) : __( 'SALES DISABLED', 'mage-eventpress' );
+
+                            $ticket_class=$option_ticket_enable == 'yes'?'_button_success_xxs':'_button_danger_xxs';
+
                             ?>
                             <input type="hidden" class="" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
                             <div class="_flex_wrap"><span class="_mr_xxs"><?php echo esc_html( $option_name ); ?></span>
                                 <span class="<?php echo esc_attr($ticket_class); ?> ticket_status" data-open-text="<?php echo esc_attr($open_text); ?>" data-close-text="<?php echo esc_attr($close_text); ?>"><span data-text><?php echo esc_html($open_text); ?></span></span>
                             </div>
-                            <span class="<?php echo esc_attr($info_class); ?> ticket_info" data-open-text="<?php echo esc_attr($open_text_info); ?>" data-close-text="<?php echo esc_attr($close_text_info); ?>"><span data-text><?php echo esc_html($open_text_info); ?></span></span>
+                            <span class="_button_danger_xxs ticket_info" title="<?php _e( 'Ticket type is locked because it already has  ', 'mage-eventpress' );echo $ticket_sold; _e( ' bookings', 'mage-eventpress' )?>"><span data-text><?php esc_html_e( 'Ticket type locked', 'mage-eventpress' ); ?></span></span>
 
 						<?php } else { ?>
                             <label>
@@ -183,7 +182,7 @@
 			                            MPWEM_Custom_Layout::show_hide_button( 'option_ticket_enable[]', $option_ticket_enable );
 		                            }else{
 			                            ?>
-                                        <input type="hidden" name="option_ticket_enable[]" value="no>">
+                                        <input type="hidden" name="option_ticket_enable[]" value="yes">
 			                            <?php
 		                            }
 	                            ?>

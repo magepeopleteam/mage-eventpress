@@ -395,9 +395,38 @@
 					$count           = 0;
 					$expire_check    = $expire_on == 'event_start_datetime' ? $start_date_time : $end_date_time;
 					$expire_check    = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
-					if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
-						$all_dates[ $count ]['time'] = $start_date_time;
-						$all_dates[ $count ]['end']  = $end_date_time;
+					if($date_type=='no'){
+						if($expire_on =='event_start_datetime'){
+							if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
+								$all_dates[ $count ]['time'] = $start_date_time;
+								$all_dates[ $count ]['end']  = $end_date_time;
+							}
+						}else{
+							$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+							if(sizeof($more_dates) > 0){
+								$last_date=end( $more_dates );
+								$more_start_date      = array_key_exists( 'event_more_start_date', $last_date ) ? $last_date['event_more_start_date'] : '';
+								$more_start_time      = array_key_exists( 'event_more_start_time', $last_date ) ? $last_date['event_more_start_time'] : '';
+								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+								$more_end_date        = array_key_exists( 'event_more_end_date', $last_date ) ? $last_date['event_more_end_date'] : '';
+								$more_end_time        = array_key_exists( 'event_more_end_time', $last_date ) ? $last_date['event_more_end_time'] : '';
+								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
+								if ( $start_date_time && $more_end_date_time && strtotime( $more_end_date_time ) > $now ) {
+									$all_dates[ $count ]['time'] = $start_date_time;
+									$all_dates[ $count ]['end']  = $more_end_date_time;
+								}
+							}else{
+								if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
+									$all_dates[ $count ]['time'] = $start_date_time;
+									$all_dates[ $count ]['end']  = $end_date_time;
+								}
+							}
+						}
+					}else {
+						if ( $start_date_time && $end_date_time && strtotime( $expire_check ) > $now ) {
+							$all_dates[ $count ]['time'] = $start_date_time;
+							$all_dates[ $count ]['end']  = $end_date_time;
+						}
 					}
 					if($date_type=='yes') {
 						$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );

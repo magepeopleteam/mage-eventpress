@@ -1,5 +1,13 @@
 /* ******************************************** */
 @media only screen and (min-width: 10px) {
+	.mpwem_style h1,
+	.mpwem_style h2,
+	.mpwem_style h3,
+	.mpwem_style h4,
+	.mpwem_style h5,
+	.mpwem_style h6 {
+		color: #333;
+	}
 	.mp_wp_editor ul,
 	.mp_wp_editor ol { list-style-type: inherit; margin-left: 20px; padding-left: 20px;}
 	.mp_wp_editor ol { list-style-type: decimal;}
@@ -187,6 +195,7 @@
 	div.default_theme .mep-default-sidebar h5 { font-size: 18px; font-weight: 600; text-transform: capitalize; margin-bottom: 10px; }
 	/* ************************seat status  section******************** */
 	div.mpwem_seat_status {margin: var(--dmp) var(--dmp) 0 var(--dmp); }
+	div.mpwem_seat_status h6{color: var(--color_theme); }
 	/* ************************calender  section******************** */
 	div.mpwem_calender_area {padding: var(--dmp); border-top: 1px solid var(--color_border); }
 }
@@ -276,7 +285,7 @@
 	div.faq_area .faq_items { padding: 0 var(--dmp); }
 	div.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; transition: all .5s; }
 	div.faq_area .item:hover { background-color: #F0F0F0; }
-	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between; }
+	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between;color: #333; }
 	div.faq_area .item .title i { color: var(--color_theme); }
 	div.faq_area .item .title h3 { font-size: var(--fs);margin: 0; }
 	div.faq_area .item .content { padding: var(--dmp_xs) var(--dmp); }

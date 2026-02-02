@@ -880,3 +880,43 @@ $('td.event_end_date_normal-td').html(data);
         e.preventDefault();
     });
 });
+jQuery(function ($) {
+    $(document).on('change', '[name="event_more_start_date_normal[]"]', function (e) {
+        e.preventDefault();
+        let parent=$(this).closest('tr');
+        let start_date=parent.find('[name="event_more_start_date_normal[]"]').val();
+        let end_date=parent.find('[name="event_more_end_date_normal[]"]').val();
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_more_start_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, success: function (data) {
+                //$('td.event_end_date_normal-td').html(data);
+                parent.find('[name="event_more_end_date_normal[]"]').closest('td').html(data);
+            }
+        });
+    });
+});
+// jQuery(document).ready(function () {
+//     jQuery("#event_more_start_date_normal").datepicker({
+//         dateFormat: mpwem_date_format,
+//         minDate: 0,
+//         autoSize: true,
+//         changeMonth: true,
+//         changeYear: true,
+//         onSelect: function (dateString, data) {
+//             let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+//             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+//         }
+//     });
+//     jQuery("#event_more_end_date_normal").datepicker({
+//         dateFormat: mpwem_date_format,
+//         minDate: 0,
+//         autoSize: true,
+//         changeMonth: true,
+//         changeYear: true,
+//         onSelect: function (dateString, data) {
+//             let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+//             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+//         }
+//     });
+// });

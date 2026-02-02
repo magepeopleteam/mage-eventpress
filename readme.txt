@@ -28,6 +28,7 @@ Accelerate your physical or virtual event management and offer attendees a smoot
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 ###  Explore The Demo:
 🌐 [Live Demo](https://wpevently.com/)
+🌐 [Backend Demo[(https://app.instawp.io/launch?s=eventadmindemo&d=v2)
 📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
@@ -684,4 +685,5 @@ Added custom excerpt option into event, Fix zero amount add to cart issue, Showi
 *Quantity Manage Added - 14 February 2018*
 
 = 1.0.0 =
+
 *Initial Release Date - 02 February 2018*

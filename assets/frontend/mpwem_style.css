@@ -1,5 +1,4 @@
-/* ******************************************** */
-@media only screen and (min-width: 10px) {
+
 	.mpwem_style h1,
 	.mpwem_style h2,
 	.mpwem_style h3,
@@ -35,17 +34,13 @@
 	.mep-events-wrapper strong { font-weight: bold; }
 	.mep-events-wrapper button[disabled=disabled] { opacity: 0.5; cursor: no-drop; }
 	.mep-events-wrapper .mpwem_book_now[disabled] { background-color: var(--color_theme); opacity: 0.6; }
-}
-/* **************************************************************title & description******************** */
-@media only screen and (min-width: 10px) {
+
 	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
 	div.mpwem_details {margin: var(--dmp) 0 0 0;}
 	div.mpwem_details_content p,
 	div.mpwem_details_content ul,
 	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
-}
-/* **************************************************************Date time location short area in default theme**************************** */
-@media only screen and (min-width: 10px) {
+
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;margin: var(--dmp) 0 0 0;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}
 	div.date_time_location_short .short_item h4 { font-size: 22px; }
@@ -60,9 +55,7 @@
 	.mep_smart_theme .mpwem_location_time .mpwem_time { flex-wrap: wrap; align-items: center; }
 	.mep_smart_theme .mpwem_location_time .mpwem_location i,
 	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
-}
-/* *************************************************************Registration section******************** */
-@media only screen and (min-width: 10px) {
+
 	div.mpwem_registration_area {margin: var(--dmp) 0 0 0;}
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 	.mpwem_registration_area .section-title { font-size: 25px; font-weight: bold; margin: 10px 0; }
@@ -138,9 +131,7 @@
 	div.mpwem_form_submit_area .mpwem_summery { display: flex; justify-content: space-between; align-items: center; }
 	div.mpwem_form_submit_area .total { font-size: 18px; font-weight: 600; }
 	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
-}
-/* ********************************************************* Attendee area******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep_smart_theme .attendee_area { margin: 10px 0; }
 	.mep_smart_theme .attendee_area h2 { font-size: var(--fs_h2); font-weight: var(--fw-bold); }
 	.attendee_area { margin: 10px 0; }
@@ -162,9 +153,7 @@
 	div.mep_file_item img { height: 100%; width: auto; cursor: pointer; display: none; max-height: 100px; }
 	div.mep_file_item iframe { height: 100%; width: auto; cursor: pointer; display: none; max-height: 300px; }
 	.mep_same_attendee input { min-width: 40px; height: 20px; margin: 5px 10px 10px 0;}
-}
-/* *************************************************************organizer section******************** */
-@media only screen and (min-width: 10px) {
+
 	div.mpwem_organizer {padding: var(--dmp); background: var(--color_theme); border-radius: var(--dbr) var(--dbr) 0 0; }
 	div.mpwem_organizer,
 	div.mpwem_organizer a { font-size: var(--fs_h6);font-weight: 400;color: var(--color_white) !important;}
@@ -174,9 +163,7 @@
 	div.mep_smart_theme .mpwem_organizer,
 	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
 	div.mep_smart_theme .mpwem_organizer h5 { margin: 0;color: var(--color_theme); }
-}
-/* **************************************************************timeline******************** */
-@media only screen and (min-width: 10px) {
+
 	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
 	div.timeline_item { padding: 0 0 0 40px; position: relative; transition: transform 0.3s ease; }
 	div.timeline_item:hover { transform: translateY(-5px); }
@@ -186,9 +173,7 @@
 	div.mpwem_timeline_area .timeline_time { font-size: 14px; color: var(--color_theme); font-weight: 500; padding: 6px 12px; background-color: var(--color_6); border-radius: 20px; }
 	div.mpwem_timeline_area .timeline_area { position: relative; }
 	div.mpwem_timeline_area .timeline_area::before { content: ""; position: absolute; left: 15px; top: 15px; height: calc(100% - 15px); width: 2px; background-color: #E0E0E0; z-index: 0; }
-}
-/* **************************************************************Sidebar******************** */
-@media only screen and (min-width: 10px) {
+
 	.mpwem_sidebar_content h5 { color: #333; }
 	.mep-default-sidebar { width: 300px; }
 	.mep-default-sidebar .df-sidebar-part { background: #FFF; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; }
@@ -198,9 +183,7 @@
 	div.mpwem_seat_status h6{color: var(--color_theme); }
 	/* ************************calender  section******************** */
 	div.mpwem_calender_area {padding: var(--dmp); border-top: 1px solid var(--color_border); }
-}
-/* ************************************************************Event Date List******************** */
-@media only screen and (min-width: 10px) {
+
 	div.event_date_list_area {padding: var(--dmp_xs) var(--dmp);}
 	div.event_date_list_area .date_list_area {max-height: 500px; overflow: auto; margin: 0 0 var(--dmp_xs) 0;}
 	div.event_date_list_area .date_item {padding: 0 0 0 15px;position: relative;}
@@ -208,9 +191,7 @@
 	div.event_date_list_area .date_item a {color: inherit; display: block;}
 	div.event_date_list_area .date-list-item { border-radius: 10px; }
 	button.mpwem_get_date_list{border-radius: 20px;}
-}
-/* *************************************************************Speaker******************** */
-@media only screen and (min-width: 10px) {
+
 	div.event_speaker_list_area {padding: var(--dmp);}
 	div.default_theme .speaker_list {display: -webkit-flex;display: flex;-webkit-flex-wrap: wrap;flex-wrap: wrap;}
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
@@ -229,9 +210,7 @@
 	.mep_smart_theme .speaker-widget .speaker-lists .items:last-child { border-bottom: 0; }
 	.mep_smart_theme .speaker-widget .speaker-lists .items img { width: 70px; }
 	.mep_smart_theme .speaker-widget .speaker-lists .items h2 { font-size: 19px; letter-spacing: 0.04em; color: #333; }
-}
-/* ************************************************************Social Share section******************** */
-@media only screen and (min-width: 10px) {
+
 	div.share_widgets { padding: var(--dmp); border-top: 1px solid var(--color_border); color: #333; }
 	div.share_widgets .share_widgets_title {margin: 0 0 var(--dmp) 0;text-align: center;text-transform: capitalize;}
 	div.share_widgets .share_widgets_list {display: -webkit-flex;display: flex;-webkit-justify-content: center;justify-content: center;gap: var(--dmp_xs);}
@@ -248,9 +227,7 @@
 	div.share_widgets .share_widgets_list a.whatsapp:hover i {background-color: #25D366;color: #FFF;}
 	div.share_widgets .share_widgets_list a.email i {color: #DD4B39;}
 	div.share_widgets .share_widgets_list a.email:hover i {background-color: #DD4B39;color: #FFF;}
-}
-/* **********************************************************Map******************** */
-@media only screen and (min-width: 10px) {
+
 	#mpwem_map_area {margin: var(--dmp) 0 0;background: white; border-radius: 12px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); overflow: hidden;}
 	#mpwem_map,
 	#mpwem_map_area iframe {width: 100%;height: 100%;min-height: 300px;max-height: 300px;border-radius: 8px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
@@ -260,9 +237,7 @@
 	div.mpwem_location_sidebar .widgets_title {margin: 0 0 var(--dmp_xs) 0;text-transform: capitalize;font-weight: 600;}
 	div.mpwem_location_sidebar p {margin: 0 0 var(--dmp_xs) 0;padding: 0; }
 	div.mpwem_location_sidebar #mpwem_map_area {margin: 0;}
-}
-/* **********************************************************Speaker******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep_speaker_thumbnail { display: block; text-align: center;}
 	.mep_speaker_name { text-align: center;}
 	.mep_speaker_thumbnail img { display: inline-block; border-radius: 100%; height: 280px; border: 5px solid #DDD; padding: 3px; width: 280px;}
@@ -276,9 +251,7 @@
 	.mep_events_speaker_wraper .mage_grid_box { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 auto;}
 	.mep_events_speaker_wraper .mage_grid_box > * { background: #FFF; border-radius: 14px; box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07); transition: box-shadow 0.2s, transform 0.2s; padding: 0; min-width: 0;}
 	.mep_events_speaker_wraper .mage_grid_box > *:hover { box-shadow: 0 8px 32px rgba(26, 115, 232, 0.13); transform: translateY(-4px) scale(1.025);}
-}
-/* **********************************************************F.A.Q******************** */
-@media only screen and (min-width: 10px) {
+
 	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
 	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
 	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
@@ -307,17 +280,13 @@
 	.mep-event-faq-part .mep-event-faq-set > a i { float: right; margin-top: 2px; }
 	.mep-event-faq-part .mep-event-faq-set > a.active { background-color: #F5F5F5; color: #000; }
 	.mep-event-faq-part .mep-event-faq-content { background-color: #FFF; border: 1px solid #F5F5F5; padding: 10px; display: none; }
-}
-/* **********************************************************TAG******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep-event-tags-widget { margin-bottom: 20px;}
 	.mep-event-tags-widget .location-title { font-size: 16px; font-weight: 600; margin: 10px; margin-left: 9%;}
 	.mep-event-tags-list { margin: 14px !important; padding: 0; line-height: 2;}
 	.mep-event-tags-list a.mep-tag-link { display: inline-block; padding: 5px 15px; margin: 3px 5px 3px 0; background: #F5F5F5; color: #555; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.3s ease; border: 1px solid #E0E0E0;}
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
-}
-/* *************************************************************Slider******************** */
-@media only screen and (min-width: 10px) {
+
 	.mpwem_slider_area div.post_thumb {overflow: hidden;}
 	.mpwem_slider_area div.post_thumb img {width: auto;height: auto;max-width: 100%;margin: 0 auto;}
 	.mpwem_slider_area { margin-top: 0; }
@@ -325,9 +294,7 @@
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcaseItem { border-radius: 15px; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator { color: var(--color_6); }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .iconIndicator { color: var(--color_theme); }
-}
-/* ******************************************************************Related Product******************** */
-@media only screen and (min-width: 10px) {
+
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
 	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
@@ -335,9 +302,7 @@
 	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
 	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}
 	div.mpwem_related_area div.mep-event-list-loop {background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD;height: auto;}
-}
-/* ******************************************************************Filter Pagination******************** */
-@media only screen and (min-width: 10px) {
+
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
 	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }
@@ -395,9 +360,7 @@
 	.list_with_filter_section .allCenter { display: -webkit-flex !important; display: flex !important; -webkit-justify-content: flex-start; justify-content: flex-start; -webkit-align-items: center; align-items: center; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column;}
 	.list_with_filter_section label {position: relative;}
 	.list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
-}
-/* *********************************************************Event List******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep_list_event_details { min-height: 100px;width: 60%;}
 	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: 700; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25; text-transform:none; }
 	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
@@ -659,17 +622,12 @@
 	.mep_event_native_list .mep_more_date_btn { width: max-content; padding: 0 15px 0 15px !important;}
 	div.mep_event_native_list .mep-list-header { padding-left: 10px;}
 	.mep_event_native_list .mep-list-header::before { border-left: 2px solid;}
-	/***********************************/
-}
-/* *********************************************************Short code city list******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep-city-list { display: block; overflow: hidden; width: 100%; }
 	.mep-city-list ul { margin: 0; padding: 0; list-style: none; }
 	.mep-city-list ul li a { display: block; width: 100%; border-bottom: 1px dashed #DDD; font-size: 18px; color: #333; padding: 5px 0; }
 	.mep-city-list li i { margin-right: 5px; }
-}
-/* *********************************************************Helper******************** */
-@media only screen and (min-width: 10px) {
+
 	.mep-hidden { display: none !important; }
 	span.mep_warning { text-align: center; display: block; border: 1px solid #005373; color: #005373; font-weight: bold; font-size: 15px; padding: 20px 0; text-transform: capitalize;}
 	.mep-low-stock-warning { background: linear-gradient(135deg, #FF6B6B, #EE5A52); color: #FFFFFF; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-align: center; margin: 3px 0; box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3); position: relative; overflow: hidden; animation: pulse-warning 2s infinite; width: 40%; }
@@ -691,9 +649,7 @@
 	}
 	.woocommerce-cart td.product-name dl dt { display: block !important; float: none !important; margin-top: 20px; }
 	.button.button-default.woocommerce.button.alt.button.alt.btn-mep-event-cart { background: var(--color_theme); border: 1px solid var(--color_theme); line-height: 1.2; font-weight: bold; height: auto; min-width: auto; outline: 0; padding: 15px; margin: 10px auto; display: block; text-align: center; font-size: 16px; cursor: pointer; max-width: 100%; border-radius: 10px; }
-}
-/* *********************************************************Other******************** */
-@media only screen and (min-width: 10px) {
+div.slick-list{width: 100% !important;}
 	.mep-event-countdown-timer .wrapper div span { display: block; padding: 10px;}
 	.mep-event-countdown-timer .wrapper div span span.label { border: 0 !important;}
 	.mep-event-countdown-timer { width: 100%; overflow: hidden;}
@@ -718,9 +674,7 @@
 	.mep-elementor-event-add-to-cart-section-widget h4.mep-cart-table-title { display: none;}
 	.mep_sidebar { padding: 10px;}
 	.mep_sidebar h3 { text-align: left; border-bottom: 1px solid #DDD; padding-bottom: 15px;}
-	/***********************************************************************************************/
-}
-/* *********************************************************User Dashboard******************** */
+
 @media only screen and (min-width: 10px) {
 	.my_account_orders.account-orders-table .wbtm-download { display: none;}
 	.mep-user-ticket-list table { width: 100%; border: 1px solid #DDD;}

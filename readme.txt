@@ -20,7 +20,7 @@ The Event Manager plugin for WooCommerce simplifies the complicated event regist
 Whether you're hosting conferences, classes, concerts, or workshops, WpEvently is your all-in-one **WordPress event solution**.
 
 ## LET'S SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
-https://www.youtube.com/watch?v=zP2ADxzUrYw
+https://www.youtube.com/watch?v=6eu3MowK8CQ
 
 
 ## Event Manager: #1 WooCommerce Event Management Plugin
@@ -687,3 +687,4 @@ Added custom excerpt option into event, Fix zero amount add to cart issue, Showi
 = 1.0.0 =
 
 *Initial Release Date - 02 February 2018*
+

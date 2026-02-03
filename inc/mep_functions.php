@@ -1928,6 +1928,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
         </script><?php
 die();
 	}
+
 	add_action( 'wp_ajax_load_event_start_date', 'load_event_start_date' );
 	function load_event_start_date() {
 

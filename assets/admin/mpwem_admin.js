@@ -892,9 +892,9 @@ jQuery(document).ready(function($) {
         var isChecked = $('input[name="mep_reg_status"]').is(':checked');
         // Logic: Show if NOT checked, Hide if checked
         if (!isChecked) {
-            $('.reg_close_msg').show();
+            $('.reg_close_msg_dash').show();
         } else {
-            $('.reg_close_msg').hide();
+            $('.reg_close_msg_dash').hide();
         }
     }
 

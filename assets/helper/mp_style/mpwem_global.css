@@ -1,8 +1,10 @@
 @charset "utf-8";
 :root {
 }
+
 /******************************************************************** General ************************************************/
 @media only screen and (min-width: 10px) {
+
 	.mpwem_style *,
 	.mpwem_style *::after,
 	.mpwem_style *::before { -webkit-box-sizing: border-box; box-sizing: border-box; }
@@ -35,6 +37,11 @@
 	div.mpwem_style .checkbox_custom,
 	div.mpwem_style .mp_transition,
 	div.mpwem_style [class*="_mp_transition"] { -webkit-transition: all 350ms ease-in-out; -moz-transition: all 350ms ease-in-out; -o-transition: all 350ms ease-in-out; transition: all 350ms ease-in-out; }
+.mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn {
+    background: #005497;
+    color: #fff;
+    margin: 20px 0;
+}
 }
 /******************************************************************** Shadow content ************************************************/
 @media only screen and (min-width: 10px) {

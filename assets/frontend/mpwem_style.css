@@ -7,7 +7,6 @@
 	.mpwem_style h5,
 	.mpwem_style h6 {
 		color: #333;
-		font-size:32px;
 	}
 	.reg_close_msg {background-color: #fffaec; color: #d32f2f; border-left: 5px solid #d32f2f; padding: 15px 20px; margin: 20px 0; border-radius: 4px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; font-weight: 500; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 	.reg_close_msg { animation: fadeIn 0.5s ease-in-out; }

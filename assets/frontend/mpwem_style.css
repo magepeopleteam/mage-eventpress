@@ -6,6 +6,7 @@
 	.mpwem_style h5,
 	.mpwem_style h6 {
 		color: #333;
+		font-size:32px;
 	}
 	.mp_wp_editor ul,
 	.mp_wp_editor ol { list-style-type: inherit; margin-left: 20px; padding-left: 20px;}
@@ -35,7 +36,7 @@
 	.mep-events-wrapper button[disabled=disabled] { opacity: 0.5; cursor: no-drop; }
 	.mep-events-wrapper .mpwem_book_now[disabled] { background-color: var(--color_theme); opacity: 0.6; }
 
-	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black);}
+	div.default_theme .mpwem_tile {margin: 0 0 var(--dmp_xs) 0;color: var(--color_black); font-size:36px;}
 	div.mpwem_details {margin: var(--dmp) 0 0 0;}
 	div.mpwem_details_content p,
 	div.mpwem_details_content ul,

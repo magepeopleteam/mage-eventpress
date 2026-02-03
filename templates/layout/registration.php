@@ -21,7 +21,10 @@
 
 		?>
         <div class="mpwem_style"><?php
-		$reg_status = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+		$reg_status 					= array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+		$reg_status_msg_status 	= array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : 'off';
+		$reg_status_msg_txt 		= array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
+		$reg_off_msg 				= $reg_status_msg_status == 'on' ? $reg_status_msg_txt : '';
 		if ( $reg_status == 'on' ) {
 			if ( sizeof( $all_dates ) > 0 ) {
 				$event_member_type = array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
@@ -45,7 +48,7 @@
 				do_action('mpwem_expired_event_notice_after',$event_id);
 			}
 		} else {
-			MPWEM_Layout::msg( esc_html__( 'Sorry, this event is  no longer available', 'mage-eventpress' ) );
+			echo esc_html($reg_off_msg);
 		}
 		?></div><?php
 	}

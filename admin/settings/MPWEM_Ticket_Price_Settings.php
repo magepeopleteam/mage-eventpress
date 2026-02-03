@@ -274,7 +274,12 @@
 			}
 			public function registration_on_off( $event_id, $event_infos ) {
 				$reg_status = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+                $reg_status_msg_status = array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : '';
+                $reg_status_msg_txt = array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
+
 				$checked    = $reg_status == 'on' ? 'checked' : '';
+                $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
+
 				?>
                 <div class="_padding_bt">
                     <div class=" _justify_between_align_center_wrap">
@@ -282,6 +287,16 @@
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
                     </div>
                     <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+                </div>
+                <div class="_padding_bt reg_close_msg">
+                    <div class=" _justify_between_align_center_wrap">
+                        <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status_show_msg', $reg_msg_checked ); ?>
+                        <div class="mep_reg_status_show_msg_txt_sec">
+                            <textarea name="mep_reg_status_show_msg_txt" id="mep_reg_status_show_msg_txt" class="formControl" placeholder="<?php _e( 'Registration for this event is currently closed.', 'mage-eventpress' ); ?>"><?php echo esc_html( $reg_status_msg_txt ); ?></textarea>
+                        </div>
+                    </div>
+                    <span class="label-text"><?php esc_html_e( 'Show Message Off/On', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}

@@ -883,6 +883,45 @@ jQuery(function ($) {
         e.preventDefault();
     });
 });
+
+
+jQuery(document).ready(function($) {
+    
+    // Function for Registration Status (Unchecked = Show)
+    function checkRegStatus() {
+        var isChecked = $('input[name="mep_reg_status"]').is(':checked');
+        // Logic: Show if NOT checked, Hide if checked
+        if (!isChecked) {
+            $('.reg_close_msg').show();
+        } else {
+            $('.reg_close_msg').hide();
+        }
+    }
+
+    // Function for Message Text (Checked = Show)
+    function checkMsgVisibility() {
+        var isChecked = $('input[name="mep_reg_status_show_msg"]').is(':checked');
+        if (isChecked) {
+            $('.mep_reg_status_show_msg_txt_sec').show();
+        } else {
+            $('.mep_reg_status_show_msg_txt_sec').hide();
+        }
+    }
+
+    // Trigger on Change
+    $('input[name="mep_reg_status"]').on('change', function() {
+        checkRegStatus();
+    });
+
+    $('input[name="mep_reg_status_show_msg"]').on('change', function() {
+        checkMsgVisibility();
+    });
+
+    // Run on Page Load to check current saved values
+    checkRegStatus();
+    checkMsgVisibility();
+});
+
 jQuery(function ($) {
     $(document).on('change', '[name="event_more_start_date_normal[]"]', function (e) {
         e.preventDefault();

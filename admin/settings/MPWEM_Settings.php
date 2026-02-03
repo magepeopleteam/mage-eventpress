@@ -114,8 +114,17 @@
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
 					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
 					$mep_show_advance_col_status = isset( $_POST['mep_show_advance_col_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advance_col_status'] ) ) ? 'on' : 'off';
+					
+					$mep_reg_status_msg              = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
+					$mep_reg_status_msg_txt 		 = isset( $_POST['mep_reg_status_show_msg_txt'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg_txt'] ) ) : '';
+					
+					
 					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
 					update_post_meta( $post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status );
+
+					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
+					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
+
 					/********************************/
 					$new_ticket_type = array();
 					$names           = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];

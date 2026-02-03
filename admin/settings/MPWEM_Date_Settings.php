@@ -155,16 +155,86 @@
                                         <td><?php self::time_item( 'event_end_time_normal', $end_time ); ?></td>
                                         <td></td>
                                     </tr>
-									<?php if ( sizeof( $more_dates ) > 0 ) { ?>
+									<?php if ( sizeof( $more_dates ) > 0 ) {
+                                        $count=0;
+                                        ?>
 										<?php foreach ( $more_dates as $more_date ) { ?>
 											<?php $more_start_date = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : ''; ?>
 											<?php $more_start_time = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
 											<?php $more_end_date = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
 											<?php $more_end_time = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
                                             <tr class="mpwem_remove_area">
-                                                <td><?php self::date_item( 'event_more_start_date_normal[]', $more_start_date ); ?></td>
+                                                <td><?php
+                                                        //self::date_item( 'event_more_start_date_normal[]', $more_start_date );
+
+		                                                $date_format  = MPWEM_Global_Function::date_picker_format();
+		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                                $hidden_more_start_date   = $more_start_date ? date( 'Y-m-d', strtotime( $more_start_date ) ) : '';
+		                                                $visible_more_start_date = $more_start_date ? date_i18n( $date_format, strtotime( $more_start_date ) ) : '';
+		                                                $_more_start_date=strtotime( $more_start_date )<strtotime(current_time( 'Y-m-d' ) )?current_time( 'Y-m-d' ) :$more_start_date;
+		                                                $start_year  = date( 'Y', strtotime( $_more_start_date ) );
+		                                                $start_month = ( date( 'n', strtotime( $_more_start_date ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $_more_start_date ) );
+                                                        $id='event_more_start_date_normal_'.$count;
+
+	                                                ?>
+                                                    <label>
+                                                        <input type="hidden" name="event_more_start_date_normal[]" value="<?php echo esc_attr( $hidden_more_start_date ); ?>"/>
+                                                        <input type="text" value="<?php echo esc_attr( $visible_more_start_date ); ?>" class="formControl" id="<?php echo esc_attr($id); ?>"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                                                    </label>
+                                                    <script>
+                                                        jQuery(document).ready(function () {
+                                                            jQuery("#<?php echo esc_attr($id); ?>").datepicker({
+                                                                dateFormat: mpwem_date_format,
+                                                                minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                                                autoSize: true,
+                                                                changeMonth: true,
+                                                                changeYear: true,
+                                                                onSelect: function (dateString, data) {
+                                                                    let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                                                    jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </td>
                                                 <td><?php self::time_item( 'event_more_start_time_normal[]', $more_start_time ); ?></td>
-                                                <td><?php self::date_item( 'event_more_end_date_normal[]', $more_end_date ); ?></td>
+                                                <td><?php
+                                                        //self::date_item( 'event_more_end_date_normal[]', $more_end_date );
+
+                                                        $date_format  = MPWEM_Global_Function::date_picker_format();
+		                                                $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                                                $hidden_more_end_date   = $more_end_date ? date( 'Y-m-d', strtotime( $more_end_date ) ) : '';
+		                                                $visible_more_end_date = $more_end_date ? date_i18n( $date_format, strtotime( $more_end_date ) ) : '';
+		                                                $_more_end_date=strtotime( $more_end_date )<strtotime($_more_start_date )?$_more_start_date :$more_end_date;
+		                                                $start_year  = date( 'Y', strtotime( $_more_end_date ) );
+		                                                $start_month = ( date( 'n', strtotime( $_more_end_date ) ) - 1 );
+		                                                $start_day   = date( 'j', strtotime( $_more_end_date ) );
+                                                        $id='event_more_end_date_normal_'.$count;
+                                                        $count++;
+	                                                ?>
+                                                    <label>
+                                                        <input type="hidden" name="event_more_end_date_normal[]" value="<?php echo esc_attr( $hidden_more_end_date ); ?>"/>
+                                                        <input type="text" value="<?php echo esc_attr( $visible_more_end_date ); ?>" class="formControl" id="<?php echo esc_attr($id); ?>"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                                                    </label>
+                                                    <script>
+                                                        jQuery(document).ready(function () {
+                                                            jQuery("#<?php echo esc_attr($id); ?>").datepicker({
+                                                                dateFormat: mpwem_date_format,
+                                                                minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                                                autoSize: true,
+                                                                changeMonth: true,
+                                                                changeYear: true,
+                                                                onSelect: function (dateString, data) {
+                                                                    let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                                                    jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </td>
                                                 <td><?php self::time_item( 'event_more_end_time_normal[]', $more_end_time ); ?></td>
                                                 <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                             </tr>
@@ -178,9 +248,18 @@
                                 <table>
                                     <tbody class="mpwem_hidden_item">
                                     <tr class="mpwem_remove_area">
-                                        <td><?php self::date_item( 'event_more_start_date_normal[]', '' ); ?></td>
+                                        <td><?php
+                                                self::date_item( 'event_more_start_date_normal[]', '' );
+
+                                                ?>
+                                        </td>
                                         <td><?php self::time_item( 'event_more_start_time_normal[]', '' ); ?></td>
-                                        <td><?php self::date_item( 'event_more_end_date_normal[]', '' ); ?></td>
+                                        <td><?php
+
+                                                self::date_item( 'event_more_end_date_normal[]', '' );
+
+                                                ?>
+                                        </td>
                                         <td><?php self::time_item( 'event_more_end_time_normal[]', '' ); ?></td>
                                         <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
                                     </tr>
@@ -236,7 +315,11 @@
 											<?php $more_end_date = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
 											<?php $more_end_time = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
                                             <tr class="mpwem_remove_area">
-                                                <td><?php self::date_item( 'event_more_start_date[]', $more_start_date ); ?></td>
+                                                <td><?php
+                                                        self::date_item( 'event_more_start_date[]', $more_start_date );
+
+
+                                                        ?></td>
                                                 <td><?php self::time_item( 'event_more_start_time[]', $more_start_time ); ?></td>
                                                 <td><?php self::date_item( 'event_more_end_date[]', $more_end_date ); ?></td>
                                                 <td><?php self::time_item( 'event_more_end_time[]', $more_end_time ); ?></td>
@@ -297,7 +380,39 @@
                     <div class="_justify_between_align_center_wrap ">
                         <label><span class="_mr"><?php esc_html_e( 'Start Date & Time', 'mage-eventpress' ); ?></span></label>
                         <div class="dFlex">
-							<?php self::date_item( 'event_start_date_everyday', $start_date ); ?>
+							<?php //self::date_item( 'event_start_date_everyday', $start_date ); ?>
+	                        <?php
+
+		                        $date_format  = MPWEM_Global_Function::date_picker_format();
+		                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                        $now_current          = current_time( 'Y-m-d' );
+		                        $hidden_start_date  = $start_date ? date( 'Y-m-d', strtotime( $start_date ) ) : '';
+		                        $visible_start_date = $start_date ? date_i18n( $date_format, strtotime( $start_date ) ) : '';
+		                        $start_year  = date( 'Y', strtotime( $now_current ) );
+		                        $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
+		                        $start_day   = date( 'j', strtotime( $now_current ) );
+	                        ?>
+                            <label>
+                                <input type="hidden" name="event_start_date_everyday" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
+                                <input type="text" value="<?php echo esc_attr( $visible_start_date ); ?>" class="formControl" id="event_start_date_everyday" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                            </label>
+                            <script>
+                                jQuery(document).ready(function () {
+                                    jQuery("#event_start_date_everyday").datepicker({
+                                        dateFormat: mpwem_date_format,
+                                        minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                        autoSize: true,
+                                        changeMonth: true,
+                                        changeYear: true,
+                                        onSelect: function (dateString, data) {
+                                            let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                            jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                        }
+                                    });
+                                });
+                            </script>
+
 							<?php self::time_item( 'event_start_time_everyday', $start_time ); ?>
                         </div>
                     </div>
@@ -307,7 +422,40 @@
                     <div class="_justify_between_align_center_wrap ">
                         <label><span class="_mr"><?php esc_html_e( 'End Date & Time', 'mage-eventpress' ); ?></span></label>
                         <div class="dFlex">
-							<?php self::date_item( 'event_end_date_everyday', $end_date ); ?>
+							<?php //self::date_item( 'event_end_date_everyday', $end_date ); ?>
+<div class="mep_load_every_day">
+	                        <?php
+
+		                        $end_date=strtotime( $end_date )<strtotime($start_date)?$start_date:$end_date;
+		                        $date_format  = MPWEM_Global_Function::date_picker_format();
+		                        $now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		                        $hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
+		                        $visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
+		                        $start_year  = date( 'Y', strtotime( $start_date ) );
+		                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
+		                        $start_day   = date( 'j', strtotime( $start_date ) );
+	                        ?>
+                            <label>
+                                <input type="hidden" name="event_end_date_everyday" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
+                                <input type="text" value="<?php echo esc_attr( $visible_end_date ); ?>" class="formControl" id="event_end_date_everyday" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                            </label>
+                            <script>
+                                jQuery(document).ready(function () {
+                                    jQuery("#event_end_date_everyday").datepicker({
+                                        dateFormat: mpwem_date_format,
+                                        minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                                        autoSize: true,
+                                        changeMonth: true,
+                                        changeYear: true,
+                                        onSelect: function (dateString, data) {
+                                            let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                            jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                                        }
+                                    });
+                                });
+                            </script>
+</div>
 							<?php self::time_item( 'event_end_time_everyday', $end_time ); ?>
                         </div>
                     </div>

@@ -868,11 +868,14 @@ jQuery(function ($) {
         e.preventDefault();
         let start_date=$('[name="event_start_date_normal"]').val();
         let end_date=$('[name="event_end_date_normal"]').val();
+        let target=$('td.event_end_date_normal-td');
         $.ajax({
             url: mepAjax.ajax_url, type: 'POST', data: {
                 action: 'load_event_end_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
             }, success: function (data) {
-$('td.event_end_date_normal-td').html(data);
+                target.html(data);
             }
         });
     });
@@ -880,3 +883,62 @@ $('td.event_end_date_normal-td').html(data);
         e.preventDefault();
     });
 });
+jQuery(function ($) {
+    $(document).on('change', '[name="event_more_start_date_normal[]"]', function (e) {
+        e.preventDefault();
+        let parent=$(this).closest('tr');
+        let start_date=parent.find('[name="event_more_start_date_normal[]"]').val();
+        let end_date=parent.find('[name="event_more_end_date_normal[]"]').val();
+        let target=parent.find('[name="event_more_end_date_normal[]"]').closest('td');
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_more_start_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
+            }, success: function (data) {
+                target.html(data);
+            }
+        });
+    });
+});
+jQuery(function ($) {
+    $(document).on('change', '[name="event_start_date_everyday"]', function (e) {
+        e.preventDefault();
+        let start_date=$('[name="event_start_date_everyday"]').val();
+        let end_date=$('[name="event_end_date_everyday"]').val();
+        let target=$('.mep_load_every_day');
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_start_date_everyday',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
+            }, success: function (data) {
+                target.html(data);
+            }
+        });
+    });
+});
+// jQuery(document).ready(function () {
+//     jQuery("#event_more_start_date_normal").datepicker({
+//         dateFormat: mpwem_date_format,
+//         minDate: 0,
+//         autoSize: true,
+//         changeMonth: true,
+//         changeYear: true,
+//         onSelect: function (dateString, data) {
+//             let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+//             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+//         }
+//     });
+//     jQuery("#event_more_end_date_normal").datepicker({
+//         dateFormat: mpwem_date_format,
+//         minDate: 0,
+//         autoSize: true,
+//         changeMonth: true,
+//         changeYear: true,
+//         onSelect: function (dateString, data) {
+//             let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+//             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+//         }
+//     });
+// });

@@ -868,11 +868,14 @@ jQuery(function ($) {
         e.preventDefault();
         let start_date=$('[name="event_start_date_normal"]').val();
         let end_date=$('[name="event_end_date_normal"]').val();
+        let target=$('td.event_end_date_normal-td');
         $.ajax({
             url: mepAjax.ajax_url, type: 'POST', data: {
                 action: 'load_event_end_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
             }, success: function (data) {
-$('td.event_end_date_normal-td').html(data);
+                target.html(data);
             }
         });
     });
@@ -886,12 +889,31 @@ jQuery(function ($) {
         let parent=$(this).closest('tr');
         let start_date=parent.find('[name="event_more_start_date_normal[]"]').val();
         let end_date=parent.find('[name="event_more_end_date_normal[]"]').val();
+        let target=parent.find('[name="event_more_end_date_normal[]"]').closest('td');
         $.ajax({
             url: mepAjax.ajax_url, type: 'POST', data: {
                 action: 'load_event_more_start_date_normal',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
             }, success: function (data) {
-                //$('td.event_end_date_normal-td').html(data);
-                parent.find('[name="event_more_end_date_normal[]"]').closest('td').html(data);
+                target.html(data);
+            }
+        });
+    });
+});
+jQuery(function ($) {
+    $(document).on('change', '[name="event_start_date_everyday"]', function (e) {
+        e.preventDefault();
+        let start_date=$('[name="event_start_date_everyday"]').val();
+        let end_date=$('[name="event_end_date_everyday"]').val();
+        let target=$('.mep_load_every_day');
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_start_date_everyday',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
+            }, success: function (data) {
+                target.html(data);
             }
         });
     });

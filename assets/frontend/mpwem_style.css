@@ -43,7 +43,7 @@
 	div.mpwem_details {margin: var(--dmp) 0 0 0;}
 	div.mpwem_details_content p,
 	div.mpwem_details_content ul,
-	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; }
+	div.mpwem_details_content ul li { padding: inherit; margin: 15px 0; list-style: inherit; margin-left:15px; }
 
 	div.mpwem_style div.date_time_location_short {display: -webkit-flex;display: flex;gap: 15px;-webkit-flex-wrap: wrap;flex-wrap: wrap;margin: var(--dmp) 0 0 0;}
 	div.date_time_location_short .short_item {width: 100%;max-width: calc(33.333% - 10px);padding: var(--dmp_xs);background: #F7F7F7;display: -webkit-flex;display: flex;border-radius: var(--dbrl);}

@@ -48,7 +48,7 @@
 				do_action('mpwem_expired_event_notice_after',$event_id);
 			}
 		} else {
-			echo esc_html($reg_off_msg);
+			echo '<div class="reg_close_msg">'.esc_html($reg_off_msg).'</div>';
 		}
 		?></div><?php
 	}

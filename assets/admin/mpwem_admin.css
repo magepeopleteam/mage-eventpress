@@ -165,6 +165,8 @@
 	div.mpwem_style .admin_layout td,
 	div.mpwem_style [class*="_admin_layout"] th,
 	div.mpwem_style [class*="_admin_layout"] td {text-align: left;font-size: var(--fs_h5);}
+	.mep_reg_status_show_msg_txt_sec {display: block;width: 100%;text-align: right;}
+	.mep_reg_status_show_msg_txt_sec textarea {float: right;}
 }
 /********************************************************************  ************************************************/
 @media only screen and (min-width: 10px) {

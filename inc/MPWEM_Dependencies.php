@@ -160,7 +160,7 @@
 				wp_enqueue_script( 'mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array( 'jquery', 'mep-moment-js' ), 1, true );
 				//custom
 				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), time(), true );
-				echo $is_divi;
+
 				if ($is_divi) {
 					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), time() );
 				} else {

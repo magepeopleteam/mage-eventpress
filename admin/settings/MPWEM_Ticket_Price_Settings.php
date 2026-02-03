@@ -288,7 +288,7 @@
                     </div>
                     <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
                 </div>
-                <div class="_padding_bt reg_close_msg">
+                <div class="_padding_bt reg_close_msg_dash">
                     <div class=" _justify_between_align_center_wrap">
                         <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status_show_msg', $reg_msg_checked ); ?>

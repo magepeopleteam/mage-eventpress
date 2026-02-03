@@ -980,6 +980,7 @@ jQuery(function ($) {
 //             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
 //         }
 //     });
+// });
 jQuery(function ($) {
     $('[name="event_start_date"]').on('change', function (e) {
         e.preventDefault();
@@ -989,6 +990,25 @@ jQuery(function ($) {
         $.ajax({
             url: mepAjax.ajax_url, type: 'POST', data: {
                 action: 'load_event_start_date',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
+            }, success: function (data) {
+                target.html(data);
+            }
+        });
+    });
+});
+
+jQuery(function ($) {
+    $(document).on('change', '[name="event_more_start_date[]"]', function (e) {
+        e.preventDefault();
+        let parent=$(this).closest('tr');
+        let start_date=parent.find('[name="event_more_start_date[]"]').val();
+        let end_date=parent.find('[name="event_more_end_date[]"]').val();
+        let target=parent.find('[name="event_more_end_date[]"]').closest('td');
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_more_start_date',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
             }, beforeSend: function () {
                 mpwem_loader_xs(target);
             }, success: function (data) {

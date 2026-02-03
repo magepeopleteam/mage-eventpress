@@ -417,7 +417,7 @@ function mpwem_attendee_management(parent, total_qty) {
     "use strict";
     $(document).ready(function () {
         $('.mpwem_related_area .related_item').slick({
-            dots: true,
+            dots: false,
             arrows: true,
             prevArrow: '.related_prev',
             nextArrow: '.related_next',
@@ -435,7 +435,7 @@ function mpwem_attendee_management(parent, total_qty) {
                         slidesToShow: 3,
                         slidesToScroll: 1,
                         infinite: true,
-                        dots: true,
+                        dots: false,
                         centerMode: false // Ensure left alignment on responsive
                     }
                 },
@@ -445,7 +445,7 @@ function mpwem_attendee_management(parent, total_qty) {
                         slidesToShow: 2,
                         slidesToScroll: 1,
                         infinite: true,
-                        dots: true,
+                        dots: false,
                         centerMode: false // Ensure left alignment on responsive
                     }
                 },

@@ -942,3 +942,20 @@ jQuery(function ($) {
 //         }
 //     });
 // });
+jQuery(function ($) {
+    $('[name="event_start_date"]').on('change', function (e) {
+        e.preventDefault();
+        let start_date=$('[name="event_start_date"]').val();
+        let end_date=$('[name="event_end_date"]').val();
+        let target=$('td.event_end_date-td');
+        $.ajax({
+            url: mepAjax.ajax_url, type: 'POST', data: {
+                action: 'load_event_start_date',start_date:start_date, nonce: mepAjax.nonce,end_date:end_date
+            }, beforeSend: function () {
+                mpwem_loader_xs(target);
+            }, success: function (data) {
+                target.html(data);
+            }
+        });
+    });
+});

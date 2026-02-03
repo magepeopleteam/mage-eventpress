@@ -302,7 +302,14 @@
 	div.mpwem_related_area .related_title {padding: var(--dmp_xs);}
 	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
 	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}
-	div.mpwem_related_area div.mep-event-list-loop {background-color: #FFF; padding: 0; border-radius: 10px; box-shadow: 0 0 5px #DDD;height: auto;}
+	div.mpwem_related_area div.mep-event-list-loop {
+		background-color: #FFF;
+		padding: 0;
+		border-radius: 10px;
+		box-shadow: 0 0 5px #DDD;
+		height: auto;
+		min-width: auto !important;
+	}
 
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}

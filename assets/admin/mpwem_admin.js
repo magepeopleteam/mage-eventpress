@@ -941,7 +941,6 @@ jQuery(function ($) {
 //             jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
 //         }
 //     });
-// });
 jQuery(function ($) {
     $('[name="event_start_date"]').on('change', function (e) {
         e.preventDefault();

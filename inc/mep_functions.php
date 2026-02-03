@@ -1928,6 +1928,48 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
         </script><?php
 die();
 	}
+
+	add_action( 'wp_ajax_load_event_start_date', 'load_event_start_date' );
+	function load_event_start_date() {
+
+
+
+		// CSRF protection
+		check_ajax_referer( 'mep_admin_nonce', 'nonce' );
+		$start_date = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : '';
+		$end_date = isset( $_POST['end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['end_date'] ) ) : '';
+		$end_date=strtotime( $end_date )<strtotime($start_date)?$start_date:$end_date;
+
+		$date_format  = MPWEM_Global_Function::date_picker_format();
+		$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+		$hidden_end_date  = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
+		$visible_end_date = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
+		$start_year  = date( 'Y', strtotime( $start_date ) );
+		$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
+		$start_day   = date( 'j', strtotime( $start_date ) );
+		?>
+        <label>
+            <input type="hidden" name="event_end_date" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
+            <input type="text" value="<?php echo esc_attr( $visible_end_date ); ?>" class="formControl" id="event_end_date" placeholder="<?php echo esc_attr( $now ); ?>"/>
+            <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+        </label>
+        <script>
+            jQuery(document).ready(function () {
+                jQuery("#event_end_date").datepicker({
+                    dateFormat: mpwem_date_format,
+                    minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+                    autoSize: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    onSelect: function (dateString, data) {
+                        let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                        jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+                    }
+                });
+            });
+        </script><?php
+die();
+	}
     add_action( 'wp_ajax_load_event_start_date_everyday', 'load_event_start_date_everyday' );
 	function load_event_start_date_everyday() {
 

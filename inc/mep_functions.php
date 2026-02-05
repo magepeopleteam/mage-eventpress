@@ -4403,3 +4403,42 @@ die();
         </div>
 		<?php
 	}
+
+	add_action( 'pre_get_posts', 'mep_fix_taxonomy_pagination' );
+	function mep_fix_taxonomy_pagination( $query ) {
+		if ( is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		if ( is_tax( 'mep_cat' ) || is_tax( 'mep_org' ) ) {
+			$query->set( 'posts_per_page', 20 );
+			
+			// Only set post_type if it's not already correct, though taxonomy archives should handle this.
+			// But ensures we don't pick up other post types if something is wrong.
+			$query->set( 'post_type', 'mep_events' );
+			$query->set( 'post_status', 'publish' );
+			
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'meta_key', 'event_start_datetime' );
+			$query->set( 'order', 'ASC' );
+
+			$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+			$event_expire_on     = $event_expire_on_old == 'event_end_datetime' ? 'event_end_datetime' : $event_expire_on_old;
+			$now                 = current_time( 'Y-m-d H:i:s' );
+			
+			$meta_query = $query->get( 'meta_query' );
+			if ( ! is_array( $meta_query ) ) {
+				$meta_query = array();
+			}
+
+			// Add upcoming filter
+			$meta_query[] = array(
+				'key'     => $event_expire_on,
+				'value'   => $now,
+				'compare' => '>',
+				'type'    => 'DATETIME'
+			);
+			
+			$query->set( 'meta_query', $meta_query );
+		}
+	}

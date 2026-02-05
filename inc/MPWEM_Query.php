@@ -224,9 +224,13 @@
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
 				$meta_query = [];
 				if ( array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
+					$event_id = absint( $filter_args['post_id'] );
+					if ( $event_id && function_exists( 'mep_get_default_lang_event_id' ) ) {
+						$event_id = mep_get_default_lang_event_id( $event_id );
+					}
 					$meta_query[] = array(
 						'key'     => 'ea_event_id',
-						'value'   => $filter_args['post_id'],
+						'value'   => $event_id,
 						'compare' => '='
 					);
 				}

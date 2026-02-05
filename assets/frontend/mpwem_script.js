@@ -390,26 +390,72 @@ function mpwem_attendee_management(parent, total_qty) {
         }
     });
     /************conditional form*************/
-    $(document).on('change', '.mep_form_item [data-target-condition-id]', function () {
-        let condition_id = $(this).attr('data-target-condition-id');
-        //alert(condition_id);
-        if (condition_id) {
-            //alert(condition_id);
-            let child_id = $(this).find('option:selected').attr('data-target-child-id');
-            let parent = $(this).closest('.mep_form_item');
-            $(this).find('option').each(function () {
-                parent.find('[data-condition-id="' + condition_id + '"]').each(function () {
-                    let condition_value = $(this).attr('data-condition-value');
-                    if (condition_value) {
-                        if (condition_value === child_id) {
-                            $(this).removeClass('dNone').slideDown('fast');
-                        } else {
-                            $(this).slideUp('fast')
-                        }
-                    }
-                });
-            });
+    function mpwem_normalize_condition_value(value) {
+        if (typeof value === 'undefined' || value === null) {
+            return '';
         }
+        return String(value).replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+    function mpwem_split_condition_values(value) {
+        if (typeof value === 'undefined' || value === null) {
+            return [];
+        }
+        return String(value)
+            .split(',')
+            .map(function (val) {
+                return mpwem_normalize_condition_value(val);
+            })
+            .filter(function (val) {
+                return val !== '';
+            });
+    }
+    function mpwem_condition_matches(conditionValue, selectedValue) {
+        if (typeof conditionValue === 'undefined' || conditionValue === null) {
+            return false;
+        }
+        let selectedValues = mpwem_split_condition_values(selectedValue);
+        if (selectedValues.length === 0) {
+            return false;
+        }
+        let conditionValues = mpwem_split_condition_values(conditionValue);
+        if (conditionValues.length === 0) {
+            return false;
+        }
+        return conditionValues.some(function (val) {
+            return selectedValues.indexOf(val) !== -1;
+        });
+    }
+    function mpwem_apply_conditional_fields($control) {
+        let condition_id = $control.attr('data-target-condition-id');
+        if (!condition_id) {
+            return;
+        }
+        let parent = $control.closest('.mep_form_item');
+        let selected = '';
+        if ($control.is('select')) {
+            selected = $control.find('option:selected').attr('data-target-child-id');
+            if (typeof selected === 'undefined' || selected === null || selected === '') {
+                selected = $control.val();
+            }
+        } else {
+            selected = $control.val();
+        }
+        parent.find('[data-condition-id="' + condition_id + '"]').each(function () {
+            let condition_value = $(this).attr('data-condition-value');
+            if (mpwem_condition_matches(condition_value, selected)) {
+                $(this).removeClass('dNone').slideDown('fast');
+            } else {
+                $(this).addClass('dNone').slideUp('fast');
+            }
+        });
+    }
+    $(document).on('keyup change', '.mep_form_item [data-target-condition-id]', function () {
+        mpwem_apply_conditional_fields($(this));
+    });
+    $(document).ready(function () {
+        $('.mep_form_item [data-target-condition-id]').each(function () {
+            mpwem_apply_conditional_fields($(this));
+        });
     });
 }(jQuery));
 //*****************************Related Event***********************************//

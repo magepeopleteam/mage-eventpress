@@ -529,11 +529,14 @@
 						if ( sizeof( $all_dates ) > 0 ) {
 							if ( $recurring == 'yes' ) {
 								?>
-                                <div class='mepev-ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div><?php
+                                <div class='mepev-ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div>
+                                <?php
 							}
 							if ( $recurring == 'everyday' ) {
 								?>
-                                <div class='mepev-ribbon multidate'><i class="far fa-calendar-alt"></i> <?php esc_html_e( 'Multi Date', 'mage-eventpress' ); ?></div><?php
+                                <div class='mepev-ribbon recurring'><i class="fas fa-history"></i> <?php esc_html_e( 'Recurring', 'mage-eventpress' ); ?></div>
+
+                                <?php
 							}
 						}
 						if ( $event_type == 'online' ) {

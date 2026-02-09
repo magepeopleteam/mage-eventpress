@@ -254,7 +254,7 @@
                                                 ?>
                                             <label>
                                                 <input type="hidden" name="event_more_start_date_normal[]" value=""/>
-                                                <input type="text" value="" class="formControl date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
+                                                <input type="text" value="" class="formControl new-date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
                                         </td>

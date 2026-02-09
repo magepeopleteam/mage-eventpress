@@ -41,7 +41,9 @@
                     </div>
 					<?php
 				}else{
-					MPWEM_Layout::msg( esc_html__( 'This event is available for our members. Please log in to continue. Not a member yet? You can easily join and enjoy full access.', 'mage-eventpress' ) );
+					echo '<div class="mpwem_registration_area_show_msg">';
+						MPWEM_Layout::msg( esc_html__( 'This event is available for our members. Please log in to continue. Not a member yet? You can easily join and enjoy full access.', 'mage-eventpress' ) );
+					echo '</div>';
 				}
 			} else {
 				// MPWEM_Layout::msg( esc_html__( 'Sorry, this event is expired and no longer available', 'mage-eventpress' ) );

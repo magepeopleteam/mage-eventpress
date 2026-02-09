@@ -120,6 +120,23 @@ function mpwem_load_date_picker(parent = jQuery('.mpwem_style')) {
         //     },
         // });
     });
+    parent.find(".new-date_type.hasDatepicker").each(function () {
+        jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
+    }).promise().done(function () {
+        parent.find(".new-date_type").datepicker({
+            dateFormat: mpwem_date_format,
+            //showButtonPanel: true,
+            minDate: new Date(),
+            autoSize: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:' + (new Date().getFullYear() + 10), // from 1900 to 10 years ahead
+            onSelect: function (dateString, data) {
+                let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+            },
+        });
+    });
 }
 //========================================================Alert==============//
 function mpwem_alert($this, attr = 'alert') {

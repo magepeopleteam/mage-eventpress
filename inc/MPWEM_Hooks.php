@@ -141,10 +141,13 @@
 		                $all_times  = current( $all_times );
 		                $start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
 	                }
-                    if($start_time != ''){
-	                    $dates=$dates . ' ' . $start_time;
+	                $event_type  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+                    if($event_type=='everyday') {
+	                    if ( $start_time != '' ) {
+		                    $dates = $dates . ' ' . $start_time;
+	                    }
+	                    $dates = MPWEM_Global_Function::check_time_exit_date( $dates ) ? date( 'Y-m-d H:i', strtotime( $dates ) ) : date( 'Y-m-d', strtotime( $dates ) );
                     }
-	                $dates= MPWEM_Global_Function::check_time_exit_date( $dates ) ? date( 'Y-m-d H:i', strtotime( $dates ) ) : date( 'Y-m-d', strtotime( $dates ) );
                 }
 
 				//echo '<pre>';			print_r($all_times);			echo '</pre>';

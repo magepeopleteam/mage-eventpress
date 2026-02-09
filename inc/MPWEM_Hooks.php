@@ -133,7 +133,22 @@
 					wp_die();
 				}
 				// Trigger your action safely
-				do_action( 'mpwem_registration_content', $post_id, [], [], $dates );
+				$all_dates   = MPWEM_Functions::get_dates( $post_id );
+				$all_times   = MPWEM_Functions::get_times( $post_id, $all_dates, $dates );
+                if(sizeof($all_times)>0){
+	                $start_time = '';
+	                if ( sizeof( $all_times ) > 0 ) {
+		                $all_times  = current( $all_times );
+		                $start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
+	                }
+                    if($start_time != ''){
+	                    $dates=$dates . ' ' . $start_time;
+                    }
+	                $dates= MPWEM_Global_Function::check_time_exit_date( $dates ) ? date( 'Y-m-d H:i', strtotime( $dates ) ) : date( 'Y-m-d', strtotime( $dates ) );
+                }
+
+				//echo '<pre>';			print_r($all_times);			echo '</pre>';
+				do_action( 'mpwem_registration_content', $post_id, $all_dates, $all_times, $dates );
 				wp_die(); // Always use wp_die() instead of die() in WordPress
 			}
 			public function get_mpwem_time() {

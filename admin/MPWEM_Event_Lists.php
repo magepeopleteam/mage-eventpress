@@ -581,17 +581,20 @@
 					$time = $start_time;
 				}
 				$total_ticket = MPWEM_Functions::get_total_ticket( $id, $date );
-				$total_sold   = mep_get_event_total_seat_left( $id );
+				// $total_sold   = mep_get_event_total_seat_left( $id );
+				$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				if ( $event_type === 'everyday' ) {
 					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Repeated)';
-					$total_sold        = mep_get_event_total_seat_left( $id, $date );
+					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
+					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else if ( $event_type === 'yes' ) {
 					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Selected Dates)';
-					$total_sold        = mep_get_event_total_seat_left( $id, $date );
+					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
+					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else {
 					$event_type_status = '';
 				}

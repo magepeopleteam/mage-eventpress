@@ -24,7 +24,12 @@
                             <i class="fa fa-chevron-right"></i>
                         </div>
                         <div class="content" data-collapse="faq-content-<?php echo esc_attr( $key ); ?>">
-							<?php echo wpautop( wp_kses_post( $faq['mep_faq_content'] ) ); ?>
+                            <?php
+                                $content = $faq['mep_faq_content'] ?? '';
+                                $content = preg_replace('/href\s*=\s*"wp-content\//i', 'href="/wp-content/', $content);
+                                $content = preg_replace("/href\s*=\s*'wp-content\//i", "href='/wp-content/", $content);
+                                echo wpautop( wp_kses_post( $content ) );
+                            ?>
                         </div>
                     </div>
 				<?php } ?>

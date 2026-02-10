@@ -82,7 +82,11 @@
                                 </div>
                                 <div class="mp_wp_editor" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
                                     <div class="_divider_xs"></div>
-									<?php echo apply_filters( 'the_content', $content ); ?>
+                                    <?php
+                                        $content = preg_replace('/href\s*=\s*"wp-content\//i', 'href="/wp-content/', $content);
+                                        $content = preg_replace("/href\s*=\s*'wp-content\//i", "href='/wp-content/", $content);
+                                        echo apply_filters( 'the_content', $content );
+                                    ?>
                                 </div>
                             </div>
 							<?php

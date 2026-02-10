@@ -368,11 +368,11 @@
 						$start_time = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
 						$end_time   = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_time' );
 						if ( $start_time ) {
-							$times[0]['start']['label'] = date( 'H:i', strtotime( $start_time ) );
+							$times[0]['start']['label'] = '';
 							$times[0]['start']['time']  = date( 'H:i', strtotime( $start_time ) );
 						}
 						if ( $end_time ) {
-							$times[0]['end']['label'] = date( 'H:i', strtotime( $end_time ) );
+							$times[0]['end']['label'] = '';
 							$times[0]['end']['time']  = date( 'H:i', strtotime( $end_time ) );
 						}
 					}
@@ -582,11 +582,11 @@
 								$expire_check = date( 'Y-m-d H:i', strtotime( $full_date ) - $buffer_time );
 								if ( strtotime( $expire_check ) > $now ) {
 									if ( $start_time ) {
-										$times[0]['start']['label'] = date( 'H:i', strtotime( $start_time ) );
+										$times[0]['start']['label'] = '';
 										$times[0]['start']['time']  = date( 'H:i', strtotime( $start_time ) );
 									}
 									if ( $end_time ) {
-										$times[0]['end']['label'] = date( 'H:i', strtotime( $end_time ) );
+										$times[0]['end']['label'] ='';
 										$times[0]['end']['time']  = date( 'H:i', strtotime( $end_time ) );
 									}
 								}

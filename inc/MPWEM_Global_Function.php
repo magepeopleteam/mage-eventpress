@@ -58,6 +58,7 @@
 			}
 			public static function date_picker_format( $key = 'mep_datepicker_format' ): string {
 				$format      = self::get_settings( 'general_setting_sec', $key, 'D d M , yy' );
+				//$format      = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_datepicker_format', 'D d M , yy' );
 				$date_format = 'Y-m-d';
 				$date_format = $format == 'yy/mm/dd' ? 'Y/m/d' : $date_format;
 				$date_format = $format == 'yy-dd-mm' ? 'Y-d-m' : $date_format;

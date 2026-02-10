@@ -11,6 +11,19 @@
 	.reg_close_msg { animation: fadeIn 0.5s ease-in-out; }
 	@keyframes fadeIn {from { opacity: 0; transform: translateY(-10px); }to { opacity: 1; transform: translateY(0); }}
 
+
+
+	.mpwem_registration_area_show_msg {display: flex;justify-content: center;margin: 40px 0;}
+	.mpwem_registration_area_show_msg ._margin_zero_text_center {max-width: 620px;padding: 28px 32px;text-align: center;background: linear-gradient(135deg, #f8fafc, #ffffff);border-radius: 14px;border: 1px solid rgba(0, 0, 0, 0.06);box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);position: relative;overflow: hidden;}
+	.mpwem_registration_area_show_msg ._margin_zero_text_center::before {content: "";position: absolute;top: 0;left: 0;width: 100%;height: 4px;background: linear-gradient(90deg, #4f46e5, #06b6d4);}
+	.mpwem_registration_area_show_msg ._text_theme {font-size: 17px;line-height: 1.7;color: #1f2937;font-weight: 500;}
+	.mpwem_registration_area_show_msg strong {color: #4f46e5;font-weight: 600;}
+	.mpwem_registration_area_show_msg ._margin_zero_text_center:hover {transform: translateY(-2px);box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);transition: all 0.25s ease;}
+
+	.mep-default-content h2._mb, .mep-default-content h3, .mep-default-content h4, .mep-default-content h5, .mep-default-content h6 {font-size: 22px;font-weight: bold;}
+	div.mpwem_related_area .related_title h3 {padding: 0;margin: 0;font-size: 22px;font-weight: bold;}
+	div.mpwem_related_area .related_title {padding: 10px;background: linear-gradient(135deg, #F7F7F7, #F7F7F7); border-radius: 5px;margin: 10px 0;}
+
 	.mp_wp_editor ul,
 	.mp_wp_editor ol { list-style-type: inherit; margin-left: 20px; padding-left: 20px;}
 	.mp_wp_editor ol { list-style-type: decimal;}
@@ -181,7 +194,7 @@
 	.mpwem_sidebar_content h5 { color: #333; }
 	.mep-default-sidebar { width: 300px; }
 	.mep-default-sidebar .df-sidebar-part { background: #FFF; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; }
-	div.default_theme .mep-default-sidebar h5 { font-size: 18px; font-weight: 600; text-transform: capitalize; margin-bottom: 10px; }
+	div.default_theme .mep-default-sidebar h5 { font-size: 18px; font-weight: 600; text-transform: capitalize; margin-bottom: 10px; margin-top: 0; }
 	/* ************************seat status  section******************** */
 	div.mpwem_seat_status {margin: var(--dmp) var(--dmp) 0 var(--dmp); }
 	div.mpwem_seat_status h6{color: var(--color_theme); }

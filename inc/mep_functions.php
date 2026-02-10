@@ -4379,12 +4379,15 @@ die();
 	}
 	define( 'MEP_URL', plugin_dir_url( __DIR__ ) );
 	define( 'MEP_PATH', plugin_dir_path( __DIR__ ) );
-	/******************** Remove upper function after 2025**********************/
+	/******************** Remove upper function after 2025********************** event_start_datetime*/
 	add_action( 'mpwem_expired_event_notice_after', 'mpwem_expired_event_notice_after' );
 	function mpwem_expired_event_notice_after( $event_id ) {
+		$start_datetime   = get_post_meta( $event_id, 'event_start_datetime', true );
 		$end_date   = get_post_meta( $event_id, 'event_expire_datetime', true );
 		$total_sold = MPWEM_Functions::get_total_sold( $event_id );
-		$formatted  = MPWEM_Global_Function::date_format( $end_date, '', $event_id );
+		$event_expire_on   = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+		$expired_datetime = $event_expire_on == 'event_start_datetime' ? $start_datetime : $end_date;
+		$formatted  = MPWEM_Global_Function::date_format( $expired_datetime, 'full', $event_id );
 		?>
         <div class="mpwem-expired-card">
             <div class="mpwem-expired-title">

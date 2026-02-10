@@ -491,7 +491,7 @@
                                             <?php //self::date_item( 'event_more_start_date[]', '' ); ?>
                                             <label>
                                                 <input type="hidden" name="event_more_start_date[]" value=""/>
-                                                <input type="text" value="" class="formControl  date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
+                                                <input type="text" value="" class="formControl  new-particular-date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
                                         </td>

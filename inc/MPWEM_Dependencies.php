@@ -190,7 +190,7 @@
                     let mpwem_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
                     let mpwem_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
                     let mpwem_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
-                    let mpwem_date_format = "D d M , yy";
+                    let mpwem_date_format = "<?php echo  MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_datepicker_format', 'D d M , yy' );?>";
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
                 </script>
 				<?php

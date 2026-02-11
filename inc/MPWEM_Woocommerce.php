@@ -199,8 +199,8 @@
 			}
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
 				$eid           = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
-				$location_text = mep_get_option( 'mep_location_text', 'label_setting_sec', esc_html__( 'Location', 'mage-eventpress' ) );
-				$date_text     = mep_get_option( 'mep_event_date_text', 'label_setting_sec', esc_html__( 'Date', 'mage-eventpress' ) );
+				$location_text = mep_get_option( 'mep_location_text_x', 'label_setting_sec', esc_html__( 'Location', 'mage-eventpress' ) );
+				$date_text     = mep_get_option( 'mep_event_date_text_x', 'label_setting_sec', esc_html__( 'Date', 'mage-eventpress' ) );
 				if ( get_post_type( $eid ) == 'mep_events' ) {
 					$event_id                = $eid;
 					$mep_events_extra_prices = array_key_exists( 'event_extra_option', $values ) ? $values['event_extra_option'] : [];

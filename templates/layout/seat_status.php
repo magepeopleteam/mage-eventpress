@@ -11,18 +11,20 @@
 		$total_reserve       = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
 		$total_available     = $total_ticket - ( $total_sold + $total_reserve );
 		?>
-        <div class="_layout_info_xs_dBRL_equalChild">
-            <div class="_fdColumn_align_center">
-                <span><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></span>
-                <h6 class="_mp_zero"><?php echo esc_html( $total_ticket ); ?></h6>
-            </div>
-			<?php if ( $show_available_seat == 'on' ) { ?>
-                <div class="_fdColumn_align_center">
-                    <span><?php esc_html_e( 'Available', 'mage-eventpress' ); ?></span>
-                    <h6 class="_mp_zero"><?php echo esc_html( $total_available ); ?></h6>
-                </div>
-			<?php } ?>
-        </div>
+		<div class="mep-default-sidrbar-price-seat">
+			<div class="setas-info">
+				<div class="total-seats">
+					<div><?php esc_html_e( 'Total Seats', 'mage-eventpress' ); ?></div>
+					<strong><?php echo esc_html( $total_ticket ); ?></strong>
+				</div>
+				<?php if ( $show_available_seat == 'on' ) { ?>
+					<div class="available-seats">
+						<div><?php esc_html_e( 'Available Seats', 'mage-eventpress' ); ?></div>
+						<strong><?php echo esc_html( $total_available ); ?></strong>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
 		<?php
 	}
 

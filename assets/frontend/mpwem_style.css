@@ -21,7 +21,7 @@
 	.mpwem_registration_area_show_msg ._margin_zero_text_center:hover {transform: translateY(-2px);box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);transition: all 0.25s ease;}
 
 	.mep-default-content h2._mb, .mep-default-content h3, .mep-default-content h4, .mep-default-content h5, .mep-default-content h6 {font-size: 22px;font-weight: normal;}
-	div.mpwem_related_area .related_title h3 {padding: 0;margin: 0;font-size: 22px;font-weight: bold;}
+	div.mpwem_related_area .related_title h3 {padding: 0;margin: 0;font-size: 22px;font-weight: normal;}
 	div.mpwem_related_area .related_title {padding: 10px;background: linear-gradient(135deg, #F7F7F7, #F7F7F7); border-radius: 5px;margin: 10px 0;}
 
 	.mp_wp_editor ul,

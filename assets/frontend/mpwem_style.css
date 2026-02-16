@@ -194,7 +194,7 @@
 	.mpwem_sidebar_content h5 { color: #333; }
 	.mep-default-sidebar { width: 300px; }
 	.mep-default-sidebar .df-sidebar-part { background: #FFF; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; }
-	div.default_theme .mep-default-sidebar h5 { font-size: 18px; font-weight: 600; text-transform: capitalize; margin-bottom: 10px; margin-top: 0; }
+	div.default_theme .mep-default-sidebar h5 { font-size: 18px; font-weight: normal; text-transform: capitalize; margin-bottom: 10px; margin-top: 0; }
 	/* ************************seat status  section******************** */
 	
 	/* ************************calender  section******************** */

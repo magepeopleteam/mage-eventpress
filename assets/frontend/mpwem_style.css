@@ -187,7 +187,7 @@
 	div.timeline_item .timeline_counter { position: absolute; left: 0; top: 15px; width: 30px; height: 30px; background-color: #FFFFFF; border: 2px solid var(--color_theme); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--color_theme); font-size: 14px; z-index: 2; }
 	div.timeline_item div.timeline_content { background-color: #FFFFFF; padding: var(--dmp); box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
 	div.timeline_item div.timeline_content h6 { font-size: 16px; font-weight: normal; text-transform: capitalize; margin: 0; }
-	div.mpwem_timeline_area .timeline_time { font-size: 14px; color: var(--color_theme); font-weight: 500; padding: 6px 12px; background-color: var(--color_6); border-radius: 20px; }
+	div.mpwem_timeline_area .timeline_time { font-size: 14px; color: var(--color_theme); font-weight: normal; padding: 6px 12px; background-color: var(--color_6); border-radius: 20px; }
 	div.mpwem_timeline_area .timeline_area { position: relative; }
 	div.mpwem_timeline_area .timeline_area::before { content: ""; position: absolute; left: 15px; top: 15px; height: calc(100% - 15px); width: 2px; background-color: #E0E0E0; z-index: 0; }
 

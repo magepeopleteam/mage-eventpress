@@ -53,6 +53,18 @@
 				wp_enqueue_style( 'select2' );
 				wp_localize_script( 'jquery', 'mep_ajax', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				wp_enqueue_style( 'mp_jquery_ui', MPWEM_PLUGIN_URL . '/assets/helper/jquery-ui.min.css', array(), '1.13.2' );
+//				wp_enqueue_script(
+//					'fecha',
+//					'https://cdn.jsdelivr.net/npm/fecha@4.2.3/dist/fecha.min.js',
+//					array('jquery','jquery-ui-datepicker'),
+//					'4.2.3',
+//					true
+//				);
+//
+//				wp_add_inline_script(
+//					'fecha',
+//					'window.Fecha = fecha;'
+//				);
 				$fontAwesome = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_load_fontawesome_from_theme', 'no' );
 				if ( $fontAwesome == 'no' ) {
 					wp_enqueue_style( 'mp_font_awesome-430', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css', array(), '4.3.0' );
@@ -169,6 +181,7 @@
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), time(), true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_nonce' ) ) );
 				do_action( 'add_mpwem_frontend_script' );
+
 			}
 			public function add_admin_head() {
 				$this->js_constant();

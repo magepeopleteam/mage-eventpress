@@ -77,7 +77,7 @@
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
 	.mpwem_registration_area .section-title { font-size: 25px; font-weight: bold; margin: 10px 0; }
 	.mpwem_registration_area .date-time-header { padding: 10px 25px; background: var(--color_theme); border-radius: 12px 12px 0 0; margin-bottom: -10px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px; border: 1px solid var(--color_theme); position: relative; z-index: 1; flex-direction: column; }
-	.mpwem_registration_area .date-time-header .ticket-title { margin: 0; padding: 0; font-size: 18px; font-weight: 600; color: var(--color_7); }
+	.mpwem_registration_area .date-time-header .ticket-title { margin: 0; padding: 0; font-size: 18px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area { display: flex; flex-direction: column; align-items: start; gap: 20px; }
 	.mpwem_registration_area .date-time-area label { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; }
 	.mpwem_registration_area .date-time-area label span { font-size: 16px; font-weight: normal; color: var(--color_7); }
@@ -146,7 +146,7 @@
 	div.mpwem_form_submit_area .term_condition_area { background: none; }
 	div.mpwem_form_submit_area .term_condition_area a { color: #333; font-weight: normal; }
 	div.mpwem_form_submit_area .mpwem_summery { display: flex; justify-content: space-between; align-items: center; }
-	div.mpwem_form_submit_area .total { font-size: 18px; font-weight: 600; }
+	div.mpwem_form_submit_area .total { font-size: 18px; font-weight: normal; }
 	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
 
 	.mep_smart_theme .attendee_area { margin: 10px 0; }

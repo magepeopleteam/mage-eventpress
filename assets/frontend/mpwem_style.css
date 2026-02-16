@@ -20,7 +20,7 @@
 	.mpwem_registration_area_show_msg strong {color: #4f46e5;font-weight: 600;}
 	.mpwem_registration_area_show_msg ._margin_zero_text_center:hover {transform: translateY(-2px);box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);transition: all 0.25s ease;}
 
-	.mep-default-content h2._mb, .mep-default-content h3, .mep-default-content h4, .mep-default-content h5, .mep-default-content h6 {font-size: 22px;font-weight: bold;}
+	.mep-default-content h2._mb, .mep-default-content h3, .mep-default-content h4, .mep-default-content h5, .mep-default-content h6 {font-size: 22px;font-weight: normal;}
 	div.mpwem_related_area .related_title h3 {padding: 0;margin: 0;font-size: 22px;font-weight: bold;}
 	div.mpwem_related_area .related_title {padding: 10px;background: linear-gradient(135deg, #F7F7F7, #F7F7F7); border-radius: 5px;margin: 10px 0;}
 
@@ -99,7 +99,7 @@
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info { flex: 0 0 100%; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name,
-	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name { font-size: 16px; font-weight: normal; margin-bottom: 6px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-description { font-size: 14px; color: #6C757D; margin-bottom: 6px; line-height: 1.4; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-remaining,
@@ -186,7 +186,7 @@
 	div.timeline_item:hover { transform: translateY(-5px); }
 	div.timeline_item .timeline_counter { position: absolute; left: 0; top: 15px; width: 30px; height: 30px; background-color: #FFFFFF; border: 2px solid var(--color_theme); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--color_theme); font-size: 14px; z-index: 2; }
 	div.timeline_item div.timeline_content { background-color: #FFFFFF; padding: var(--dmp); box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); }
-	div.timeline_item div.timeline_content h6 { font-size: 16px; font-weight: 500; text-transform: capitalize; margin: 0; }
+	div.timeline_item div.timeline_content h6 { font-size: 16px; font-weight: normal; text-transform: capitalize; margin: 0; }
 	div.mpwem_timeline_area .timeline_time { font-size: 14px; color: var(--color_theme); font-weight: 500; padding: 6px 12px; background-color: var(--color_6); border-radius: 20px; }
 	div.mpwem_timeline_area .timeline_area { position: relative; }
 	div.mpwem_timeline_area .timeline_area::before { content: ""; position: absolute; left: 15px; top: 15px; height: calc(100% - 15px); width: 2px; background-color: #E0E0E0; z-index: 0; }

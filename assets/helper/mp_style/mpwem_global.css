@@ -169,7 +169,7 @@
 /******************************************************************** Button Section ************************************************/
 @media only screen and (min-width: 10px) {
 	.mpwem_style button,
-	div.mpwem_style [class*="_button"] { position: relative; font-size: var(--button_fs); font-weight: var(--fw-medium); padding: var(--dmp_xs) var(--dmp); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
+	div.mpwem_style [class*="_button"] { position: relative; font-size: var(--button_fs); font-weight: normal; padding: var(--dmp_xs) var(--dmp); color: var(--d_color); background-color: transparent; line-height: 1; cursor: pointer; overflow: visible; border: none; -webkit-appearance: button; text-transform: capitalize; }
 	.mpwem_style button[disabled] { cursor: not-allowed; opacity: 0.8; background-color: #DDD; }
 	.mpwem_style button:hover, .mpwem_style button:focus { text-decoration: none; opacity: 0.8; background-color: var(--color_theme_cc); color: #FFF; }
 	/***/

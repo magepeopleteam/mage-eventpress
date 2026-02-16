@@ -304,7 +304,7 @@
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
 
 	.mpwem_slider_area div.post_thumb {overflow: hidden;}
-	.mpwem_slider_area div.post_thumb img {width: auto;height: auto;max-width: 100%;margin: 0 auto;}
+	.mpwem_slider_area div.post_thumb img {width: 100%;height: auto;max-width: 100%;margin: 0 auto;}
 	.mpwem_slider_area { margin-top: 0; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem { border-radius: 15px; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcaseItem { border-radius: 15px; }
@@ -337,6 +337,12 @@
 	.search_sort_code .search_result_empty { display: none;}
 	div.search_sort_code .filter_input_area .formControl {border: none;border-radius: 0;height: 100%;}
 	div.search_sort_code span.fa {margin: 0 7px 0 0;font-size: 12px;}
+	div.mpwem_related_area div.mpwem_list_date_list .date_list_area.open_list::before{
+		display: none;
+	}
+	div.mpwem_related_area div.mpwem_list_date_list .list_date_list{
+		top:-340px;
+	}
 	div.filter_input_area {position: relative;width: 100%;height: 50%;margin: 0 auto;border: 4px solid #DDD;}
 	div.filter_input_area:first-child {border-bottom-width: 2px;}
 	div.filter_input_area:last-child {border-top-width: 2px;}
@@ -428,7 +434,7 @@
 	.mep_event_grid_item .mep-list-header:before { border-color: var(--color_theme);}
 	/*********************/
 	div.one_column { display: -webkit-flex; display: flex; width: 100%; margin: 0 0 18px 0;}
-	div.three_column { width: calc(33.33% - 18px); margin: 0 15px 15px 0; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column;}
+	div.three_column { width: calc(33.33% - 18px) !important; margin: 0 15px 15px 0; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column;}
 	div.column_style { display: -webkit-flex; display: flex; flex-direction: column; justify-content: start; -webkit-flex-wrap: wrap; flex-wrap: wrap;}
 	div.two_column { width: calc(50% - 18px); margin: 0 15px 15px 0;}
 	div.four_column { width: calc(25% - 18px); margin: 0 15px 15px 0;}

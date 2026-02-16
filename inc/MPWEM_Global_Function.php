@@ -29,30 +29,66 @@
 					?>
                     <script>
                         jQuery(document).ready(function () {
+
                             jQuery("<?php echo esc_attr( $selector ); ?>").datepicker({
+
                                 dateFormat: mpwem_date_format,
+
                                 minDate: new Date(<?php echo esc_attr( $start_year ); ?>, <?php echo esc_attr( $start_month ); ?>, <?php echo esc_attr( $start_day ); ?>),
+
                                 maxDate: new Date(<?php echo esc_attr( $end_year ); ?>, <?php echo esc_attr( $end_month ); ?>, <?php echo esc_attr( $end_day ); ?>),
+
                                 autoSize: true,
                                 changeMonth: true,
                                 changeYear: true,
+
                                 beforeShowDay: WorkingDates,
-                                onSelect: function (dateString, data) {
-                                    let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
-                                    jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+
+                                onSelect: function (dateString, inst) {
+
+                                    let selectedDate = jQuery(this).datepicker("getDate");
+
+                                    if (typeof Fecha !== "undefined") {
+
+                                        let formattedDate = Fecha.format(selectedDate, 'YYYY-MM-DD');
+
+                                        jQuery(this)
+                                            .closest('label')
+                                            .find('input[type="hidden"]')
+                                            .val(formattedDate)
+                                            .trigger('change');
+
+                                        console.log(formattedDate);
+
+                                    } else {
+
+                                        let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+                                        jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+
+                                    }
+
                                 }
+
                             });
+
                             function WorkingDates(date) {
+
                                 let availableDates = [<?php echo implode( ',', $all_date ); ?>];
+
                                 let dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+
                                 if (jQuery.inArray(dmy, availableDates) !== -1) {
                                     return [true, "", "Available"];
                                 } else {
                                     return [false, "", "unAvailable"];
                                 }
+
                             }
+
                         });
                     </script>
+
+
 					<?php
 				}
 			}

@@ -385,10 +385,10 @@
 	.list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
 
 	.mep_list_event_details { min-height: 100px;width: 60%;}
-	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: 700; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25; text-transform:none; }
+	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: normal; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25; text-transform:none; }
 	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
 	div.mep_list_event_details p.list_price,
-	div.mep_list_event_details div.list_content span {color: var(--color_theme); margin: 0 var(--dmp_xs) 0 0;}
+	div.mep_list_event_details div.list_content span {color: var(--color_theme); margin: 0 var(--dmp_xs) 0 0; font-weight:normal; }
 	div.mep_list_event_details div.mep_minimal_list_organizer,
 	div.mep_list_event_details div.mep_minimal_list_location,
 	div.mep_list_event_details div.mep_list_event_date {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}

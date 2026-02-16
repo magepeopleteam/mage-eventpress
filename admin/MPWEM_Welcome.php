@@ -196,7 +196,7 @@
 												<h4 class="_textInfo_padding_xs_text_center"><?php echo esc_html($addon['name']); ?></h4>
 												<p class="_padding_xs" style="min-height: 80px; color: #333;"><?php echo esc_html($addon['description']); ?></p>
 												<div class="_padding_xs allCenter">
-													<button class="_button_theme_xs" type="button" data-href="<?php echo esc_url($addon['link']); ?>" onclick="window.open('<?php echo esc_url($addon['link']); ?>', '_blank');">
+													<button class="_button_theme_xs" type="button" onclick="window.open('<?php echo esc_url($addon['link']); ?>', '_blank'); return false;">
 														<?php esc_html_e('View Details', 'mage-eventpress'); ?>
 													</button>
 												</div>

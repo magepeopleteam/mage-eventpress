@@ -31,6 +31,9 @@
 								<li data-tabs-target="#mpwem_welcome">
 									<h4><?php esc_html_e('Welcome', 'mage-eventpress'); ?></h4>
 								</li>
+								<li data-tabs-target="#mpwem_addons">
+									<h4><?php esc_html_e('Addons', 'mage-eventpress'); ?></h4>
+								</li>
 								<li data-tabs-target="#mpwem_support">
 									<h4><?php esc_html_e('Support & Knowledge Base', 'mage-eventpress'); ?></h4>
 								</li>
@@ -40,6 +43,7 @@
 							</ul>
 							<div class="tabsContent bgWhite">
 								<?php $this->welcome_content(); ?>
+								<?php $this->addons_content(); ?>
 								<?php $this->support_content(); ?>
 								<?php $this->faq(); ?>
 							</div>
@@ -133,6 +137,72 @@
 										</h5>
 										<h5 class="_textInfo_bg_light_padding_xs_text_left_fullWidth"><?php esc_html_e('Translation Settings', 'mage-eventpress'); ?></h5>
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php $this->bottom_info(); ?>
+				</div>
+				<?php
+			}
+			public function addons_content() {
+				$addons = $this->get_addons_list();
+				?>
+				<style>
+					.mpwem_addon_item {
+						width: calc(33.33% - 20px);
+						margin: 10px;
+						box-sizing: border-box;
+					}
+					
+					@media screen and (max-width: 1024px) {
+						.mpwem_addon_item {
+							width: calc(50% - 20px) !important;
+						}
+					}
+					
+					@media screen and (max-width: 768px) {
+						.mpwem_addon_item {
+							width: calc(100% - 20px) !important;
+							margin: 10px auto !important;
+						}
+						
+						.mpwem_addon_item p {
+							min-height: auto !important;
+						}
+					}
+					
+					@media screen and (max-width: 480px) {
+						.mpwem_addon_item {
+							width: 100% !important;
+							margin: 10px 0 !important;
+						}
+					}
+				</style>
+				<div class="tabsItem" data-tabs="#mpwem_addons">
+					<div class="mpContainer">
+						<div class="mpRow">
+							<div class="col_12">
+								<h2><?php esc_html_e('Available Addons', 'mage-eventpress'); ?></h2>
+								<p><?php esc_html_e('Extend your Event Manager with these powerful addons', 'mage-eventpress'); ?></p>
+								<div class="divider"></div>
+								<div class="flexWrap">
+									<?php foreach ($addons as $addon) : ?>
+										<div class="_group_content mpwem_addon_item">
+											<div class="_bg_light_padding_xs">
+												<div class="_bgInfo_textLight_padding_xs_min_50 _group_addon allCenter">
+													<span class="<?php echo esc_attr($addon['icon']); ?>" style="font-size: 32px;"></span>
+												</div>
+												<h4 class="_textInfo_padding_xs_text_center"><?php echo esc_html($addon['name']); ?></h4>
+												<p class="_padding_xs" style="min-height: 80px; color: #333;"><?php echo esc_html($addon['description']); ?></p>
+												<div class="_padding_xs allCenter">
+													<button class="_button_theme_xs" type="button" data-href="<?php echo esc_url($addon['link']); ?>" onclick="window.open('<?php echo esc_url($addon['link']); ?>', '_blank');">
+														<?php esc_html_e('View Details', 'mage-eventpress'); ?>
+													</button>
+												</div>
+											</div>
+										</div>
+									<?php endforeach; ?>
 								</div>
 							</div>
 						</div>
@@ -991,6 +1061,100 @@
 					</div>
 				</div>
 				<?php
+			}
+			public function get_addons_list() {
+				return array(
+					array(
+						'name' => esc_html__('Global/Common Qty Addon', 'mage-eventpress'),
+						'description' => esc_html__('Global Qty Addon is an excellent solution for managing qty as total available quantity. It\'s a smart idea that you don\'t want to manage qty as common qty from this addon useful.', 'mage-eventpress'),
+						'icon' => 'fas fa-layer-group',
+						'link' => 'https://mage-people.com/product/global-common-qty-addon-for-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Event Max-Min Quantity Limiting Addon', 'mage-eventpress'),
+						'description' => esc_html__('This event max-min addon is necessary for limiting the amount of tickets sold. Organizers can set a minimum buying quantity or minimum purchase quantity.', 'mage-eventpress'),
+						'icon' => 'fas fa-sort-numeric-up',
+						'link' => 'https://mage-people.com/product/event-max-min-quantity-limiting-addon-for-woocommerce-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Marketplace / Event Frontend Submit Addon', 'mage-eventpress'),
+						'description' => esc_html__('This is a marketplace addon that is needed to allow event submit from frontend, multiple organizer can see ticket. Together in a same website.', 'mage-eventpress'),
+						'icon' => 'fas fa-store',
+						'link' => 'https://mage-people.com/product/event-frontend-submit-addon-for-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Event QR Code Addon', 'mage-eventpress'),
+						'description' => esc_html__('QR code addon is necessary for the ticket. If you have a large event then this addon must need to check ticket validity by scanning by QR scanner or mobile.', 'mage-eventpress'),
+						'icon' => 'fas fa-qrcode',
+						'link' => 'https://mage-people.com/product/woocommerce-event-qr-code-addon/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Event Calendar Addon', 'mage-eventpress'),
+						'description' => esc_html__('Event Calendar addon is nice addon that can list display in calendar view. Customer can easily understand event date.', 'mage-eventpress'),
+						'icon' => 'fas fa-calendar-alt',
+						'link' => 'https://mage-people.com/product/woocommerce-event-calendar-addon/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Event: Book an Event From Dashboard', 'mage-eventpress'),
+						'description' => esc_html__('This Addon is mainly used for admin, if anyone want to get order offline like phone order then after taking order admin can add attendee from dashboard.', 'mage-eventpress'),
+						'icon' => 'fas fa-user-plus',
+						'link' => 'https://mage-people.com/product/woocommerce-event-book-an-event-from-dashboard/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Email Reminder Addon', 'mage-eventpress'),
+						'description' => esc_html__('This Addon is mainly used for addon, if anyone want to get order offline like phone order then after taking order admin can add attendee from dashboard.', 'mage-eventpress'),
+						'icon' => 'fas fa-envelope',
+						'link' => 'https://mage-people.com/product/event-email-reminder-addon/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Early Bird Ticketing Discount Addon', 'mage-eventpress'),
+						'description' => esc_html__('Early bird addon is marketing addon, if someone wants to give discount based on date then this addon is very useful.', 'mage-eventpress'),
+						'icon' => 'fas fa-percentage',
+						'link' => 'https://mage-people.com/product/early-bird-pricing-addon-for-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Event Waitlist Addon', 'mage-eventpress'),
+						'description' => esc_html__('Waitlist addon is very useful, if any ticket become sold out organizer can get subscription for next available ticket.', 'mage-eventpress'),
+						'icon' => 'fas fa-clock',
+						'link' => 'https://mage-people.com/product/woocommerce-event-waitlist-addon/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Event Seat Plan Addon', 'mage-eventpress'),
+						'description' => esc_html__('A seat plan addon is needed for that organizer who wants to display a seat plan for customers to choose seat during event ticket buying. Seat plan needed for movie ticket, concert ticket booking.', 'mage-eventpress'),
+						'icon' => 'fas fa-chair',
+						'link' => 'https://mage-people.com/product/seat-plan-addon-for-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Membership Price Addon', 'mage-eventpress'),
+						'description' => esc_html__('Membership pricing addon for the event is needed for that organizer who wants to offer different pricing based on the role. one of a wordpress website.', 'mage-eventpress'),
+						'icon' => 'fas fa-users',
+						'link' => 'https://mage-people.com/product/membership-pricing-for-event-manager-plugin/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Events: Duplicator Addon', 'mage-eventpress'),
+						'description' => esc_html__('Duplication addon mainly needed to save time while event creating, if you have an existing event then just you can re-create event with all setting needed.', 'mage-eventpress'),
+						'icon' => 'fas fa-copy',
+						'link' => 'https://mage-people.com/product/woocommerce-event-duplicator-addon/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('WooCommerce Event Coupon Code Addon', 'mage-eventpress'),
+						'description' => esc_html__('Event coupon addon that is used for marketing purpose and giving discount to customer for boosting sell.', 'mage-eventpress'),
+						'icon' => 'fas fa-ticket-alt',
+						'link' => 'https://mage-people.com/product/woocommerce-event-coupon-code-addon/'
+					),
+					array(
+						'name' => esc_html__('Review and Rating Addon', 'mage-eventpress'),
+						'description' => esc_html__('It is a feature of adding addon designed to help added offering feedback from customers about their events.', 'mage-eventpress'),
+						'icon' => 'fas fa-star',
+						'link' => 'https://mage-people.com/product/review-and-rating-addon-for-event-manager/#mage_product_price'
+					),
+					array(
+						'name' => esc_html__('Mage WP Login Page Designer', 'mage-eventpress'),
+						'description' => esc_html__('This plugin that will design a nice and login panel. It will look more professional than the wordpress default login panel.', 'mage-eventpress'),
+						'icon' => 'fas fa-sign-in-alt',
+						'link' => 'https://mage-people.com/product/mage-wp-login-page-designer/'
+					)
+				);
 			}
 			public function faq_array() {
 				return array(

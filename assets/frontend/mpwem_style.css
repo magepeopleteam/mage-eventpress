@@ -271,10 +271,10 @@
 	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
 	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
 	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
-	div.faq_area .faq_items { padding: 0 var(--dmp); }
+	div.faq_area .faq_items { padding: 0; }
 	div.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; transition: all .5s; }
 	div.faq_area .item:hover { background-color: #F0F0F0; }
-	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between;color: #333; }
+	div.faq_area .item .title { padding: 15px 20px; display: flex; justify-content: space-between;color: #333; }
 	div.faq_area .item .title i { color: var(--color_theme); }
 	div.faq_area .item .title h3 { font-size: var(--fs);margin: 0; }
 	div.faq_area .item .content { padding: var(--dmp_xs) var(--dmp); }

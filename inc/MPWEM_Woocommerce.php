@@ -9,6 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Woocommerce' ) ) {
 		class MPWEM_Woocommerce {
 			public function __construct() {
+				add_filter( 'woocommerce_is_purchasable', array( $this, 'make_event_product_purchasable' ), 10, 2 );
 				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 90, 3 );
 				add_action( 'woocommerce_before_calculate_totals', array( $this, 'before_calculate_totals' ) );
 				add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 20, 2 );
@@ -24,6 +25,25 @@
 				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
 				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
 				add_filter( 'woocommerce_cart_item_price', array( $this, 'cart_item_price' ), 10, 4 );
+			}
+			/**
+			 * Make event-linked WooCommerce products purchasable.
+			 * Hidden products (exclude-from-catalog) fail WooCommerce's default is_purchasable check.
+			 * Event products must remain purchasable when adding to cart from the event page.
+			 *
+			 * @param bool       $is_purchasable Whether the product is purchasable.
+			 * @param WC_Product $product       The product object.
+			 * @return bool
+			 */
+			public function make_event_product_purchasable( $is_purchasable, $product ) {
+				if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+					return $is_purchasable;
+				}
+				$linked_event_id = get_post_meta( $product->get_id(), 'link_mep_event', true );
+				if ( ! empty( $linked_event_id ) && get_post_type( $linked_event_id ) === 'mep_events' && get_post_status( $linked_event_id ) === 'publish' ) {
+					return true;
+				}
+				return $is_purchasable;
 			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
@@ -396,11 +416,11 @@
 								foreach ( $user_info_arr as $_user_info ) {
 									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_user_info['user_event_date'] );
 									if ( function_exists( 'mep_re_language_load' ) ) {
-										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'no' );
+										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 									} else {
 										if ( $check_before_create < count( $user_info_arr ) ) {
 											if ( $check_before_create_date == 0 ) {
-												mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'no' );
+												mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 											}
 										}
 									}
@@ -410,11 +430,11 @@
 									for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
 										$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $tinfo['event_date'] );
 										if ( function_exists( 'mep_re_language_load' ) ) {
-											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'no' );
+											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 										} else {
 											if ( $check_before_create < count( $event_ticket_info_arr ) ) {
 												if ( $check_before_create_date == 0 ) {
-													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'no' );
+													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 												}
 											}
 										}

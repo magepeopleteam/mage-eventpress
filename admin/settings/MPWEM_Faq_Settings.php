@@ -23,7 +23,10 @@
 					$faq_infos = array();
 				}
 				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
+                $reg_status=get_post_meta($post_id,'mep_faq_status',true)?get_post_meta($post_id,'mep_faq_status',true):'on';
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
+				$checked    = $reg_status == 'on' ? 'checked' : '';
+                $active_reg_status    = $reg_status == 'on' ? 'mActive' : '';
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_faq_settings" data-tab-item="#mep_event_faq_meta">
                     <div class="_layout_default_xs_mp_zero">
@@ -31,6 +34,14 @@
                             <h4><?php esc_html_e( 'FAQ Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'FAQ Settings will be here.', 'mage-eventpress' ); ?></span>
                         </div>
+                        <div class="_padding_bt">
+                    <div class=" _justify_between_align_center_wrap">
+                        <label><span class="_mr"><?php esc_html_e( 'FAQ Off/On', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_faq_status', $checked ); ?>
+                    </div>
+                    <span class="label-text"><?php esc_html_e( 'FAQ Off/On', 'mage-eventpress' ); ?></span>
+                </div>
+                <div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_faq_status">
                         <div class="_padding_bB">
                             <label class="justify_between">
                                 <span class="_mr"><?php esc_html_e( 'FAQ Description', 'mage-eventpress' ); ?></span>
@@ -38,26 +49,93 @@
                             </label>
                         </div>
                         <div class="_padding_bB">
-                            <div class="mpwem_faq_area">
-								<?php $this->faq_item( $faq_infos ); ?>
+                            <div class="mpwem_faq_area_new" id="faq-items-container">
+			                    <?php if ( is_array( $faq_infos ) && sizeof( $faq_infos ) > 0 ) {
+
+					foreach ( $faq_infos as $index => $faq_info ) {
+						if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
+							$title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+							$content     = array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '';
+							$this->render_faq_item($index, $faq_info);
+						}
+
+                    }
+                                }?>
                             </div>
-                            <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_faq_popup"> <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?></button>
-							<?php //echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
+                            <button type="button" id="add-faq-item" class="button button-primary">
+	                            <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?>
+                            </button>
+                            <template id="faq-item-template">
+		                        <?php $this->render_faq_item('new'); ?>
+                            </template>
+		                    <?php //echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
+                        </div>
                         </div>
                     </div>
-                    <div class="mpPopup right_popup mpwem_faq_popup" data-popup="#mpwem_faq_popup">
-                        <div class="popupMainArea">
-                            <span class="fas fa-times popup_close"></span>
-                            <div class="popupBody faq_input">
-								<?php //$this->mpwem_load_timeline(); ?>
-                            </div>
-                            <div class="popupFooter">
-                                <div class="buttonGroup">
-                                    <button type="button" class="_button_general_xs_bg_light mpwem_faq_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
-                                    <button type="button" class="_button_general_xs_bg_light mpwem_faq_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+<!--                        <div class="_padding_bB">-->
+<!--                            <div class="mpwem_faq_area">-->
+<!--								--><?php //$this->faq_item( $faq_infos ); ?>
+<!--                            </div>-->
+<!--                            <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_faq_popup"> --><?php //esc_html_e( 'Add New', 'mage-eventpress' ); ?><!--</button>-->
+<!--							--><?php ////echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="mpPopup right_popup mpwem_faq_popup" data-popup="#mpwem_faq_popup">-->
+<!--                        <div class="popupMainArea">-->
+<!--                            <span class="fas fa-times popup_close"></span>-->
+<!--                            <div class="popupBody faq_input">-->
+<!--								--><?php ////$this->mpwem_load_timeline(); ?>
+<!--                            </div>-->
+<!--                            <div class="popupFooter">-->
+<!--                                <div class="buttonGroup">-->
+<!--                                    <button type="button" class="_button_general_xs_bg_light mpwem_faq_save">--><?php //esc_html_e( 'Save', 'mage-eventpress' ); ?><!--</button>-->
+<!--                                    <button type="button" class="_button_general_xs_bg_light mpwem_faq_save_close">--><?php //esc_html_e( 'Save & Close', 'mage-eventpress' ); ?><!--</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+				<?php
+			}
+			public function render_faq_item($index, $item = array('mep_faq_title' => '', 'mep_faq_content' => '')) {
+				$title = isset($item['mep_faq_title']) ? $item['mep_faq_title'] : '';
+				$description = isset($item['mep_faq_content']) ? $item['mep_faq_content'] : '';
+				$editor_id = 'faq_description_' . ($index === 'new' ? 'index' : $index);
+				?>
+                <div class="faq-item" data-index="<?php echo esc_attr($index); ?>">
+                    <h3 class="faq-item-header">
+                        FAQ Item <?php echo is_numeric($index) ? intval($index) + 1 : 'index_plus_one'; ?>
+                        <button type="button" class="button remove-faq-item">Remove</button>
+                    </h3>
+
+                    <div class="faq-item-content">
+                        <p>
+                            <label for="faq_title_<?php echo esc_attr($index); ?>"><?php esc_html_e( 'Title', 'mage-eventpress' ); ?></label>
+                            <input type="text"
+                                   id="faq_title_<?php echo esc_attr($index); ?>"
+                                   name="mep_faq_title[]"
+                                   value="<?php echo esc_attr($title); ?>"
+                                   class="regular-text"
+                            />
+                        </p>
+
+                        <p>
+                            <label><?php esc_html_e( 'Content', 'mage-eventpress' ); ?></label>
+                        </p>
+						<?php
+							wp_editor(
+								$description,
+								$editor_id,
+								array(
+									'textarea_name' => 'mep_faq_content[]',
+									'textarea_rows' => 10,
+									'media_buttons' => true,
+									'teeny' => false,
+									'quicktags' => true
+								)
+							);
+						?>
                     </div>
                 </div>
 				<?php

@@ -437,6 +437,25 @@
 				$mep_event_cc_email_text = isset( $_POST['mep_event_cc_email_text'] ) ? wp_kses_post( wp_unslash( $_POST['mep_event_cc_email_text'] ) ) : '';
 				update_post_meta( $post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text );
 				do_action( 'mpwem_settings_save', $post_id );
+				$mep_faq_title             = isset( $_POST['mep_faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_title'] ) ) : [];
+				$mep_faq_content             = isset( $_POST['mep_faq_content'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_content'] ) ) : [];
+                $faqs=[];
+				if ( sizeof( $mep_faq_title ) > 0) {
+                    foreach ($mep_faq_title as $key=>$title){
+                        if($title){
+	                        $faqs[$key]['mep_faq_title']=$title;
+	                        $faqs[$key]['mep_faq_content']=$mep_faq_content[$key];
+                        }
+                    }
+                }
+				update_post_meta( $post_id, 'mep_event_faq', $faqs );
+				$des = isset( $_POST['mep_faq_description'] ) ? wp_kses_post( wp_unslash( $_POST['mep_faq_description'] ) ) : '';
+				update_post_meta( $post_id, 'mep_faq_description', $des );
+
+				$mep_faq_status              = isset( $_POST['mep_faq_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_faq_status'] ) ) ? 'on' : 'off';
+				update_post_meta( $post_id, 'mep_faq_status', $mep_faq_status );
+				$mep_faq_status              = isset( $_POST['mep_timeline_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_timeline_status'] ) ) ? 'on' : 'off';
+				update_post_meta( $post_id, 'mep_timeline_status', $mep_faq_status );
 			}
 			public function day_wise_slot_save( $post_id, $name ) {
 				$all_global   = [];

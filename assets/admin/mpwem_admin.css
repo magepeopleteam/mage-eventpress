@@ -610,3 +610,56 @@ div.mpwem_style.mep-quick-setup .tabsContentNext { padding: 20px 0;}
 	width: 100%;
 	margin: 2px;
 }
+.faq-item {
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	margin-bottom: 20px;
+	padding: 15px;
+	border-radius: 4px;
+}
+
+.faq-item-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 0;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+.faq-item-header h3 {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.remove-faq-item {
+	color: #a00;
+}
+
+.remove-faq-item:hover {
+	color: #dc3232;
+}
+
+#add-faq-item {
+	margin-bottom: 20px;
+}
+
+.faq-item-content {
+	margin-top: 15px;
+}
+
+.faq-item-content label {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 5px;
+}
+
+.faq-item-content input[type="text"] {
+	width: 100%;
+	max-width: 600px;
+}
+#faq-items-container .ed_button{
+	display: inline-block !important;
+}

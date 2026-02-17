@@ -35,9 +35,21 @@
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">
 	        <?php do_action( 'mpwem_description', $event_id, $event_infos ); ?>
-			<?php do_action( 'mpwem_timeline', $event_id ); ?>
+	        <?php
+		        $reg_status=get_post_meta($event_id,'mep_timeline_status',true)?get_post_meta($event_id,'mep_timeline_status',true):'on';
+		        if($reg_status=='on') {
+			        do_action( 'mpwem_timeline', $event_id );
+		        }
+
+	        ?>
 			<?php do_action( 'mpwem_registration', $event_id, $event_infos ); ?>
-			<?php do_action( 'mpwem_faq', $event_id,$event_infos ); ?>
+	        <?php
+		        $reg_status=get_post_meta($event_id,'mep_faq_status',true)?get_post_meta($event_id,'mep_faq_status',true):'on';
+		        if($reg_status=='on') {
+			        do_action( 'mpwem_faq', $event_id, $event_infos );
+		        }
+
+	        ?>
         </div>
         <div class="mpwem_right_content">
 			<?php if ( $left_sidebar_title == 'no' ): ?>

@@ -246,6 +246,28 @@
 								)
 							),
 							array(
+								'name'    => 'mep_hide_old_date',
+								'label'   => __( 'Hide old date from date picker', 'mage-eventpress' ),
+								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
+								'name'    => 'mep_hide_expire_ticket',
+								'label'   => __( 'Hide expire ticket type', 'mage-eventpress' ),
+								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'no',
+								'options' => array(
+									'yes' => 'Yes',
+									'no'  => 'No'
+								)
+							),
+							array(
 								'name'    => 'mep_hide_location_from_order_page',
 								'label'   => __( 'Hide Location From Order Details & Email Section', 'mage-eventpress' ),
 								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),

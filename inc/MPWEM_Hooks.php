@@ -155,8 +155,15 @@
 				wp_die(); // Always use wp_die() instead of die() in WordPress
 			}
 			public function get_mpwem_time() {
-				$event_id    = $_REQUEST['post_id'] ?? '';
-				$date        = $_REQUEST['dates'] ?? '';
+				$event_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+				$date     = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
+
+				// Check if post exists and is published
+				if ( ! $event_id || get_post_status( $event_id ) !== 'publish' ) {
+					wp_send_json_error( 'Invalid or unpublished Event.', 'mage-eventpress' );
+					wp_die();
+				}
+
 				$hidden_date = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 				$all_dates   = MPWEM_Functions::get_dates( $event_id );
 				$all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $hidden_date );

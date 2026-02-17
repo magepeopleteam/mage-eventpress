@@ -1017,3 +1017,49 @@ jQuery(function ($) {
         });
     });
 });
+jQuery(document).ready(function($) {
+    // Add new FAQ item
+    $('#add-faq-item').on('click', function() {
+        var template = $('#faq-item-template').html();
+        var container = $('#faq-items-container');
+        var itemCount = container.children('.faq-item').length;
+
+        // Replace template placeholders
+        var newItem = template
+            .replace(/{{index}}/g, 'new_' + Date.now())
+            .replace(/{{index_plus_one}}/g, itemCount + 1);
+
+        container.append(newItem);
+
+        // Initialize wp_editor for the new item
+        if (typeof tinyMCE !== 'undefined') {
+            var editorId = 'faq_description_new_' + Date.now();
+            setTimeout(function() {
+                tinyMCE.execCommand('mceAddEditor', false, editorId);
+            }, 100);
+        }
+    });
+
+    // Remove FAQ item
+    $(document).on('click', '.remove-faq-item', function() {
+        if (confirm('Are you sure you want to remove this FAQ item?')) {
+            var item = $(this).closest('.faq-item');
+
+            // Remove tinyMCE editor if exists
+            var editorId = item.find('.wp-editor-area').attr('id');
+            if (editorId && typeof tinyMCE !== 'undefined') {
+                tinyMCE.execCommand('mceRemoveEditor', false, editorId);
+            }
+
+            item.remove();
+            updateFaqIndices();
+        }
+    });
+
+    // Update indices after removal
+    function updateFaqIndices() {
+        $('.faq-item').each(function(index) {
+            $(this).find('.faq-item-header h3').contents().first().replaceWith('FAQ Item ' + (index + 1) + ' ');
+        });
+    }
+});

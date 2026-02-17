@@ -19,6 +19,10 @@
 			public function timeline_tab_content( $post_id ) {
 				//$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
 				$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
+				$reg_status=get_post_meta($post_id,'mep_timeline_status',true)?get_post_meta($post_id,'mep_timeline_status',true):'on';
+				//echo '<pre>';print_r($faq_infos);echo '</pre>';
+				$checked    = $reg_status == 'on' ? 'checked' : '';
+				$active_reg_status    = $reg_status == 'on' ? 'mActive' : '';
 				?>
                 <div class="mp_tab_item mpwem_style mpwem_timeline_settings" data-tab-item="#mep_event_timeline_meta">
                     <div class="_layout_default_xs_mp_zero">
@@ -26,12 +30,21 @@
                             <h4><?php esc_html_e( 'Timeline Settings', 'mage-eventpress' ); ?></h4>
                             <span class="_mp_zero"><?php esc_html_e( 'Timeline Settings is an activity display system, designed to showcase event activities in a structured timeline format in event details page.', 'mage-eventpress' ); ?></span>
                         </div>
+                        <div class="_padding_bt">
+                            <div class=" _justify_between_align_center_wrap">
+                                <label><span class="_mr"><?php esc_html_e( 'Timeline Off/On', 'mage-eventpress' ); ?></span></label>
+			                    <?php MPWEM_Custom_Layout::switch_button( 'mep_timeline_status', $checked ); ?>
+                            </div>
+                            <span class="label-text"><?php esc_html_e( 'Timeline Off/On', 'mage-eventpress' ); ?></span>
+                        </div>
+                        <div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_timeline_status">
                         <div class="_padding_bB">
                             <div class="mpwem_timeline_area">
 								<?php $this->timeline_item( $time_line_infos ); ?>
                             </div>
                             <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_timeline_popup"> <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?></button>
 							<?php //echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
+                        </div>
                         </div>
                     </div>
                     <div class="mpPopup right_popup mpwem_timeline_popup" data-popup="#mpwem_timeline_popup">

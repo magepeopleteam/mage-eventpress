@@ -1026,8 +1026,8 @@ jQuery(document).ready(function($) {
 
         // Replace template placeholders
         var newItem = template
-            .replace(/{{index}}/g, 'new_' + Date.now())
-            .replace(/{{index_plus_one}}/g, itemCount + 1);
+            .replace(/index/g, 'new_' + Date.now())
+            .replace(/index_plus_one/g, itemCount + 1);
 
         container.append(newItem);
 

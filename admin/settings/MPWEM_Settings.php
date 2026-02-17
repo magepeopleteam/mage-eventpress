@@ -454,6 +454,8 @@
 
 				$mep_faq_status              = isset( $_POST['mep_faq_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_faq_status'] ) ) ? 'on' : 'off';
 				update_post_meta( $post_id, 'mep_faq_status', $mep_faq_status );
+				$mep_faq_status              = isset( $_POST['mep_timeline_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_timeline_status'] ) ) ? 'on' : 'off';
+				update_post_meta( $post_id, 'mep_timeline_status', $mep_faq_status );
 			}
 			public function day_wise_slot_save( $post_id, $name ) {
 				$all_global   = [];

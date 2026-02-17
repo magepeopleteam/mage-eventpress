@@ -72,6 +72,7 @@
                         </div>
                         </div>
                     </div>
+                </div>
 <!--                        <div class="_padding_bB">-->
 <!--                            <div class="mpwem_faq_area">-->
 <!--								--><?php //$this->faq_item( $faq_infos ); ?>
@@ -100,11 +101,11 @@
 			public function render_faq_item($index, $item = array('mep_faq_title' => '', 'mep_faq_content' => '')) {
 				$title = isset($item['mep_faq_title']) ? $item['mep_faq_title'] : '';
 				$description = isset($item['mep_faq_content']) ? $item['mep_faq_content'] : '';
-				$editor_id = 'faq_description_' . ($index === 'new' ? '{{index}}' : $index);
+				$editor_id = 'faq_description_' . ($index === 'new' ? 'index' : $index);
 				?>
                 <div class="faq-item" data-index="<?php echo esc_attr($index); ?>">
                     <h3 class="faq-item-header">
-                        FAQ Item <?php echo is_numeric($index) ? intval($index) + 1 : '{{index_plus_one}}'; ?>
+                        FAQ Item <?php echo is_numeric($index) ? intval($index) + 1 : 'index_plus_one'; ?>
                         <button type="button" class="button remove-faq-item">Remove</button>
                     </h3>
 

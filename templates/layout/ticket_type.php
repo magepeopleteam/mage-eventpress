@@ -7,10 +7,10 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id           = $event_id ?? 0;
-	$all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-	$all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
+	$all_dates          = MPWEM_Functions::get_dates( $event_id );
+	$all_times          =MPWEM_Functions::get_times( $event_id, $all_dates );
 	$date               = empty( $date ) ? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ) : $date;
-	$total_available    = $total_available ?? MPWEM_Functions::get_total_available_seat( $event_id, $date );
+	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available    = max( $total_available, 0 );
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	$total_sold         = mep_ticket_type_sold( $event_id, '', $date );
@@ -61,6 +61,19 @@
 									$input_data              = apply_filters( 'filter_mpwem_min_qty_must', $input_data, $event_id );
 									//echo '<pre>';print_r($input_data);echo '</pre>';
 									$count ++;
+                                    $early_msg='yes';
+									$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
+									$mep_hide_expire_ticket=mep_get_option( 'mep_hide_expire_ticket', 'general_setting_sec', 'no' );
+									if ( $early_date ) {
+										$sale_end_datetime = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+										if ( $sale_end_datetime ) {
+											$current_time = current_time( 'Y-m-d H:i' );
+											if ( strtotime( $current_time ) > strtotime( $sale_end_datetime ) && $mep_hide_expire_ticket=='no' ) {
+												$early_msg='no';
+                                            }
+                                        }
+                                    }
+                                    if($early_msg == 'yes'){
 									?>
                                     <div class="mep_ticket_item">
                                         <div class="ticket-data">
@@ -136,6 +149,7 @@
 										<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>
                                     </div>
 									<?php
+                                    }
 								}
 							}
 						}

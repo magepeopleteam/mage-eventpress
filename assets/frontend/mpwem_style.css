@@ -304,7 +304,7 @@
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
 
 	.mpwem_slider_area div.post_thumb {overflow: hidden;}
-	.mpwem_slider_area div.post_thumb img {width: 100%;height: auto;max-width: 100%;margin: 0 auto;}
+	.mpwem_slider_area div.post_thumb img {width: 100%;height: auto;max-width: 100%;margin: 0 auto; max-height:420px; }
 	.mpwem_slider_area { margin-top: 0; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem { border-radius: 15px; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcaseItem { border-radius: 15px; }

@@ -663,3 +663,30 @@ div.mpwem_style.mep-quick-setup .tabsContentNext { padding: 20px 0;}
 #faq-items-container .ed_button{
 	display: inline-block !important;
 }
+div.faq-item  .faq-item-content{
+	display: none;
+}
+div.faq-item .faq-item-header{
+	border: none !important;
+}
+#mp_event_all_info_in_tab .mp_tab_details #faq-items-container h3{
+	margin: 0;
+}
+#mp_event_all_info_in_tab .mp_tab_details #faq-items-container .faq-item-header{
+	margin: 0;
+	padding: 0;
+}
+
+.faq-item-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+	background-color: #ffffff;
+}
+
+.faq-item.open .faq-item-content {
+	max-height: 500px;
+	border-top: 1px solid #ddd;
+	padding: 15px;
+	display: block;
+}

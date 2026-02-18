@@ -96,6 +96,8 @@
 		                                        $start_year  = date( 'Y', strtotime( $now_current ) );
 		                                        $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
 		                                        $start_day   = date( 'j', strtotime( $now_current ) );
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
 	                                        ?>
                                             <label>
                                                 <input type="hidden" name="event_start_date_normal" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
@@ -117,6 +119,13 @@
                                                     });
                                                 });
                                             </script>
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_start_date_normal" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_start_date ); ?>" class="formControl new-date_type-new"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php } ?>
 	                                        </td>
                                         <td><?php self::time_item( 'event_start_time_normal', $start_time ); ?></td>
                                         <td class="event_end_date_normal-td"><?php
@@ -129,6 +138,8 @@
 		                                        $start_year  = date( 'Y', strtotime( $start_date ) );
 		                                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
 		                                        $start_day   = date( 'j', strtotime( $start_date ) );
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
 	                                        ?>
                                             <label>
                                                 <input type="hidden" name="event_end_date_normal" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
@@ -150,6 +161,13 @@
                                                     });
                                                 });
                                             </script>
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_end_date_normal" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_end_date ); ?>" class="formControl new-date_type-new"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php } ?>
                                         </td>
 
                                         <td><?php self::time_item( 'event_end_time_normal', $end_time ); ?></td>
@@ -176,13 +194,21 @@
 		                                                $start_month = ( date( 'n', strtotime( $_more_start_date ) ) - 1 );
 		                                                $start_day   = date( 'j', strtotime( $_more_start_date ) );
                                                         $id='event_more_start_date_normal_'.$count;
-
+		                                                $mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+                                                        if($mep_hide_old_date=='yes'){
 	                                                ?>
                                                     <label>
                                                         <input type="hidden" name="event_more_start_date_normal[]" value="<?php echo esc_attr( $hidden_more_start_date ); ?>"/>
                                                         <input type="text" value="<?php echo esc_attr( $visible_more_start_date ); ?>" class="formControl" id="<?php echo esc_attr($id); ?>"  placeholder="<?php echo esc_attr( $now ); ?>"/>
                                                         <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                                     </label>
+                                                            <?php }else{ ?>
+                                                            <label>
+                                                                <input type="hidden" name="event_more_start_date_normal[]" value="<?php echo esc_attr( $hidden_more_start_date ); ?>"/>
+                                                                <input type="text" value="<?php echo esc_attr( $visible_more_start_date ); ?>" class="formControl new-date_type-new"   placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                                                            </label>
+                                                            <?php } ?>
                                                     <script>
                                                         jQuery(document).ready(function () {
                                                             jQuery("#<?php echo esc_attr($id); ?>").datepicker({
@@ -213,6 +239,8 @@
 		                                                $start_day   = date( 'j', strtotime( $_more_end_date ) );
                                                         $id='event_more_end_date_normal_'.$count;
                                                         $count++;
+						$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+						if($mep_hide_old_date=='yes'){
 	                                                ?>
                                                     <label>
                                                         <input type="hidden" name="event_more_end_date_normal[]" value="<?php echo esc_attr( $hidden_more_end_date ); ?>"/>
@@ -234,6 +262,13 @@
                                                             });
                                                         });
                                                     </script>
+						<?php }else{ ?>
+                            <label>
+                                <input type="hidden" name="event_more_end_date_normal[]" value="<?php echo esc_attr( $hidden_more_end_date ); ?>"/>
+                                <input type="text" value="<?php echo esc_attr( $visible_more_end_date ); ?>" class="formControl new-date_type-new"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                            </label>
+						<?php } ?>
                                                 </td>
                                                 <td><?php self::time_item( 'event_more_end_time_normal[]', $more_end_time ); ?></td>
                                                 <td><?php MPWEM_Custom_Layout::move_remove_button(); ?></td>
@@ -250,13 +285,21 @@
                                     <tr class="mpwem_remove_area">
                                         <td><?php
                                                 //self::date_item( 'event_more_start_date_normal[]', '' );
-
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
                                                 ?>
                                             <label>
                                                 <input type="hidden" name="event_more_start_date_normal[]" value=""/>
                                                 <input type="text" value="" class="formControl new-date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_more_start_date_normal[]" value=""/>
+                        <input type="text" value="" class="formControl new-date_type-new" placeholder="<?php echo esc_attr( $now ); ?>" />
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php } ?>
                                         </td>
                                         <td><?php self::time_item( 'event_more_start_time_normal[]', '' ); ?></td>
                                         <td><?php
@@ -322,7 +365,8 @@
 		                                        $start_year  = date( 'Y', strtotime( $now_current ) );
 		                                        $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
 		                                        $start_day   = date( 'j', strtotime( $now_current ) );
-
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
                                                 ?>
                                             <label>
                                                 <input type="hidden" name="event_start_date" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
@@ -344,6 +388,13 @@
                                                     });
                                                 });
                                             </script>
+                    <?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_start_date" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_start_date ); ?>" class="formControl new-date_type-new"  placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+                    <?php } ?>
                                         </td>
                                         <td><?php self::time_item( 'event_start_time', $start_time ); ?></td>
                                         <td class="event_end_date-td"><?php
@@ -358,7 +409,8 @@
 		                                        $start_year  = date( 'Y', strtotime( $start_date ) );
 		                                        $start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
 		                                        $start_day   = date( 'j', strtotime( $start_date ) );
-
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
                                                 ?>
 
                                             <label>
@@ -381,7 +433,13 @@
                                                     });
                                                 });
                                             </script>
-
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_end_date" value="<?php echo esc_attr( $hidden_end_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_end_date ); ?>" class="formControl new-date_type-new" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php } ?>
                                         </td>
                                         <td><?php self::time_item( 'event_end_time', $end_time ); ?></td>
 										<?php do_action( 'mep_date_table_body_default_date', $post_id ); ?>
@@ -410,7 +468,8 @@
 		                                                $start_month = ( date( 'n', strtotime( $_more_start_date ) ) - 1 );
 		                                                $start_day   = date( 'j', strtotime( $_more_start_date ) );
 		                                                $id='event_more_start_date_'.$count;
-
+					$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
                                                         ?>
 
                                                     <label>
@@ -433,6 +492,13 @@
                                                             });
                                                         });
                                                     </script>
+                    <?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_more_start_date[]" value="<?php echo esc_attr( $hidden_more_start_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_more_start_date ); ?>" class="formControl new-date_type-new" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+                    <?php } ?>
                                                 </td>
                                                 <td><?php self::time_item( 'event_more_start_time[]', $more_start_time ); ?></td>
                                                 <td><?php
@@ -450,6 +516,8 @@
 		                                                $start_day   = date( 'j', strtotime( $_more_end_date ) );
 		                                                $id='event_more_end_date_'.$count;
 		                                                $count++;
+					$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
                                                         ?>
 
                                                     <label>
@@ -472,6 +540,13 @@
                                                             });
                                                         });
                                                     </script>
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_more_end_date[]" value="<?php echo esc_attr( $hidden_more_end_date ); ?>"/>
+                        <input type="text" value="<?php echo esc_attr( $visible_more_end_date ); ?>" class="formControl new-date_type-new"   placeholder="<?php echo esc_attr( $now ); ?>"/>
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php }?>
                                                 </td>
                                                 <td><?php self::time_item( 'event_more_end_time[]', $more_end_time ); ?></td>
 												<?php do_action( 'mep_date_table_body_more_date', $post_id, $more_date ); ?>
@@ -488,12 +563,23 @@
                                     <tbody class="mpwem_hidden_item">
                                     <tr class="mpwem_remove_area">
                                         <td>
-                                            <?php //self::date_item( 'event_more_start_date[]', '' ); ?>
+                                            <?php //self::date_item( 'event_more_start_date[]', '' );
+                                                //
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
+                                                 ?>
                                             <label>
                                                 <input type="hidden" name="event_more_start_date[]" value=""/>
                                                 <input type="text" value="" class="formControl  new-particular-date_type" placeholder="<?php echo esc_attr( $now ); ?>" />
                                                 <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
                                             </label>
+				<?php }else{ ?>
+                    <label>
+                        <input type="hidden" name="event_more_start_date[]" value=""/>
+                        <input type="text" value="" class="formControl  new-date_type-new" placeholder="<?php echo esc_attr( $now ); ?>" />
+                        <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                    </label>
+				<?php } ?>
                                         </td>
                                         <td><?php self::time_item( 'event_more_start_time[]', '' ); ?></td>
                                         <td>
@@ -584,6 +670,8 @@
 		                        $start_year  = date( 'Y', strtotime( $now_current ) );
 		                        $start_month = ( date( 'n', strtotime( $now_current ) ) - 1 );
 		                        $start_day   = date( 'j', strtotime( $now_current ) );
+				$mep_hide_old_date = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_hide_old_date', 'yes' );
+				if($mep_hide_old_date=='yes'){
 	                        ?>
                             <label>
                                 <input type="hidden" name="event_start_date_everyday" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
@@ -605,7 +693,13 @@
                                     });
                                 });
                             </script>
-
+<?php }else{ ?>
+<label>
+                                <input type="hidden" name="event_start_date_everyday" value="<?php echo esc_attr( $hidden_start_date ); ?>"/>
+                                <input type="text" value="<?php echo esc_attr( $visible_start_date ); ?>" class="formControl  new-date_type-new" placeholder="<?php echo esc_attr( $now ); ?>"/>
+                                <span class="fas fa-times remove_icon mpwem_date_reset" title="<?php esc_attr_e( 'Remove Image', 'mage-eventpress' ); ?>"></span>
+                            </label>
+<?php } ?>
 							<?php self::time_item( 'event_start_time_everyday', $start_time ); ?>
                         </div>
                     </div>

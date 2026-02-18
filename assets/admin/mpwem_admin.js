@@ -1022,21 +1022,35 @@ jQuery(document).ready(function($) {
     $('#add-faq-item').on('click', function() {
         var template = $('#faq-item-template').html();
         var container = $('#faq-items-container');
-        var itemCount = container.children('.faq-item').length;
 
-        // Replace template placeholders
-        var newItem = template
-            .replace(/index/g, 'new_' + Date.now())
-            .replace(/index_plus_one/g, itemCount + 1);
+        // ইউনিক আইডি তৈরি (একবার জেনারেট করে সব জায়গায় ব্যবহার করতে হবে)
+        var uniqueId = 'faq_description_' + Date.now();
+
+        // টেমপ্লেটের প্লেসহোল্ডার রিপ্লেস করা
+        // নিশ্চিত করুন আপনার টেমপ্লেটে textarea-র ID এবং Name-এ 'index' শব্দটি আছে
+        var newItem = template.replace(/faq_description_new/g, uniqueId);
 
         container.append(newItem);
 
-        // Initialize wp_editor for the new item
+        // ১. TinyMCE (Visual Editor) ইনিশিয়ালাইজ করা
         if (typeof tinyMCE !== 'undefined') {
-            var editorId = 'faq_description_new_' + Date.now();
             setTimeout(function() {
-                tinyMCE.execCommand('mceAddEditor', false, editorId);
-            }, 100);
+                // ডিফল্ট সেটিংস কপি করা (যাতে টুলবার বাটনগুলো ঠিকঠাক আসে)
+                var settings = tinyMCEPreInit.mceInit['faq-item-template'] || {}; // আপনার টেমপ্লেট এডিটরের আইডি দিন
+                settings.selector = '#' + uniqueId;
+
+                tinyMCE.init(settings);
+                tinyMCE.execCommand('mceAddEditor', false, uniqueId);
+            }, 200);
+        }
+
+        // ২. Quicktags (Text/Code Buttons) ইনিশিয়ালাইজ করা
+        if (typeof quicktags !== 'undefined') {
+            setTimeout(function() {
+                quicktags({id: uniqueId});
+                // কুইক ট্যাগ বাটনগুলোকে ভিজিবল করা
+                QTags._buttonsInit();
+            }, 300);
         }
     });
 
@@ -1052,7 +1066,6 @@ jQuery(document).ready(function($) {
             }
 
             item.remove();
-            updateFaqIndices();
         }
     });
 

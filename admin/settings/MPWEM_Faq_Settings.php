@@ -101,7 +101,7 @@
 			public function render_faq_item($index, $item = array('mep_faq_title' => '', 'mep_faq_content' => '')) {
 				$title = isset($item['mep_faq_title']) ? $item['mep_faq_title'] : '';
 				$description = isset($item['mep_faq_content']) ? $item['mep_faq_content'] : '';
-				$editor_id = 'faq_description_' . ($index === 'new' ? 'index' : $index);
+				$editor_id = 'faq_description_' . ($index === 'new' ? 'new' : $index);
 				?>
                 <div class="faq-item" data-index="<?php echo esc_attr($index); ?>">
                     <div class="faq-item-header">

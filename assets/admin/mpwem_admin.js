@@ -1062,4 +1062,32 @@ jQuery(document).ready(function($) {
             $(this).find('.faq-item-header h3').contents().first().replaceWith('FAQ Item ' + (index + 1) + ' ');
         });
     }
+
+});
+
+document.addEventListener('click', function (e) {
+    // চেক করা হচ্ছে ক্লিক করা এলিমেন্টটি .edit-faq-item কি না
+    // অথবা এর ভেতরে থাকা কোনো আইকন কি না
+    const editBtn = e.target.closest('.edit-faq-item');
+
+    if (editBtn) {
+        e.preventDefault();
+
+        // ক্লিক করা বাটনের প্যারেন্ট .faq-item খুঁজে বের করা
+        const parentItem = editBtn.closest('.faq-item');
+
+        // 'open' ক্লাসটি টগল করা (CSS এর মাধ্যমে স্লাইড হবে)
+        if (parentItem) {
+            parentItem.classList.toggle('open');
+        }
+
+        // (ঐচ্ছিক) একটি ওপেন করলে বাকিগুলো বন্ধ করতে চাইলে নিচের কোডটি আনকমেন্ট করুন
+        /*
+        document.querySelectorAll('.faq-item').forEach(item => {
+            if (item !== parentItem) {
+                item.classList.remove('open');
+            }
+        });
+        */
+    }
 });

@@ -104,10 +104,20 @@
 				$editor_id = 'faq_description_' . ($index === 'new' ? 'index' : $index);
 				?>
                 <div class="faq-item" data-index="<?php echo esc_attr($index); ?>">
-                    <h3 class="faq-item-header">
-                        FAQ Item <?php echo is_numeric($index) ? intval($index) + 1 : 'index_plus_one'; ?>
-                        <button type="button" class="button remove-faq-item">Remove</button>
-                    </h3>
+                    <div class="faq-item-header">
+
+	                    <h3 class="edit-faq-item">
+                            <?php echo esc_attr($title); ?> <?php echo is_numeric($index) ? '' : 'NEW'; ?>
+                        </h3>
+
+
+                        <div class="allCenter">
+                            <div class="buttonGroup max_200">
+                                <button type="button" class="_whiteButton_xs edit-faq-item"><span class="far fa-edit mp_zero"></span></button>
+                                <button type="button" class="_whiteButton_xs remove-faq-item"><span class="fas fa-trash-alt mp_zero"></span></button>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="faq-item-content">
                         <p>

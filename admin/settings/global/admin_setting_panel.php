@@ -250,7 +250,7 @@
 								'label'   => __( 'Hide old date from date picker', 'mage-eventpress' ),
 								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
 								'type'    => 'select',
-								'default' => 'no',
+								'default' => 'yes',
 								'options' => array(
 									'yes' => 'Yes',
 									'no'  => 'No'

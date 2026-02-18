@@ -558,3 +558,70 @@ function mpwem_attendee_management(parent, total_qty) {
         });
     });
 }(jQuery));
+
+
+
+
+
+// DatePicker Function
+jQuery(document).ready(function ($) {
+
+    if (typeof mpwemDateData === 'undefined') {
+        return;
+    }
+
+    let selector       = mpwemDateData.selector;
+    let availableDates = mpwemDateData.availableDates;
+    let minDateData    = mpwemDateData.minDate;
+    let maxDateData    = mpwemDateData.maxDate;
+
+    $(selector).datepicker({
+
+        dateFormat: mpwem_date_format,
+
+        minDate: new window.Date(
+            minDateData.year,
+            minDateData.month,
+            minDateData.day
+        ),
+
+        maxDate: new window.Date(
+            maxDateData.year,
+            maxDateData.month,
+            maxDateData.day
+        ),
+
+        autoSize: true,
+        changeMonth: true,
+        changeYear: true,
+
+        beforeShowDay: function (date) {
+
+            let d = date.getDate();
+            let m = date.getMonth() + 1;
+            let y = date.getFullYear();
+
+            let dmy = d + "-" + m + "-" + y;
+
+            if ($.inArray(dmy, availableDates) !== -1) {
+                return [true, "", "Available"];
+            }
+
+            return [false, "", "Unavailable"];
+        },
+        onSelect: function (dateText, data) {
+
+            let date = data.selectedYear + '-' +
+                ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' +
+                ('0' + parseInt(data.selectedDay)).slice(-2);
+
+            $(this)
+                .closest('label')
+                .find('input[type="hidden"]')
+                .val(date)
+                .trigger('change');
+        }
+
+    });
+
+});

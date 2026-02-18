@@ -9,9 +9,51 @@
 	if ( ! class_exists( 'MPWEM_Global_Function' ) ) {
 		class MPWEM_Global_Function {
 			public function __construct() {
-				add_action( 'mpwem_load_date_picker_js', [ $this, 'date_picker_js' ], 10, 2 );
+				add_action( 'mpwem_load_date_picker_js', [ $this, 'enqueue_date_picker' ], 10, 2 );
 				add_filter( 'wc_price', [ $this, 'wc_price_free_text' ], 10, 4 );
 			}
+			public static function enqueue_date_picker( $selector, $dates ) {
+
+				if ( empty( $dates ) ) {
+					return;
+				}
+
+				$start_date = current( $dates );
+				$end_date   = end( $dates );
+
+				$available_dates = [];
+
+				foreach ( $dates as $date ) {
+					$available_dates[] = date( 'j-n-Y', strtotime( $date ) );
+				}
+
+				wp_enqueue_script(
+					'mpwem-datepicker',
+					plugin_dir_url( __FILE__ ) . '../assets/js/mpwem-datepicker.js',
+					array( 'jquery', 'jquery-ui-datepicker' ),
+					'1.0',
+					true
+				);
+
+				wp_localize_script(
+					'mpwem-datepicker',
+					'mpwemDateData',
+					array(
+						'selector'       => $selector,
+						'availableDates' => $available_dates,
+						'minDate'        => array(
+							'year'  => (int) date( 'Y', strtotime( $start_date ) ),
+							'month' => (int) date( 'n', strtotime( $start_date ) ) - 1,
+							'day'   => (int) date( 'j', strtotime( $start_date ) ),
+						),
+						'maxDate'        => array(
+							'year'  => (int) date( 'Y', strtotime( $end_date ) ),
+							'month' => (int) date( 'n', strtotime( $end_date ) ) - 1,
+							'day'   => (int) date( 'j', strtotime( $end_date ) ),
+						),
+					)
+				);
+			}			
 			public function date_picker_js( $selector, $dates ) {
 				if ( sizeof( $dates ) > 0 ) {
 					$start_date  = current( $dates );

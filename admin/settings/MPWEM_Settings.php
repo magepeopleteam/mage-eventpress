@@ -438,7 +438,7 @@
 				update_post_meta( $post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text );
 				do_action( 'mpwem_settings_save', $post_id );
 				$mep_faq_title             = isset( $_POST['mep_faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_title'] ) ) : [];
-				$mep_faq_content             = isset( $_POST['mep_faq_content'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_content'] ) ) : [];
+				$mep_faq_content             = isset( $_POST['mep_faq_content'] ) ? wp_unslash( $_POST['mep_faq_content'] ) : [];
                 $faqs=[];
 				if ( sizeof( $mep_faq_title ) > 0) {
                     foreach ($mep_faq_title as $key=>$title){

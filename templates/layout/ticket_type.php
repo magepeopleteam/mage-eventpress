@@ -155,6 +155,67 @@
 						}
 					}
 					?>
+					<?php
+						$pp_enabled = get_post_meta( $event_id, 'mep_pp_enable', true ) === 'on';
+						if ( $pp_enabled ) {
+							$pp_mode       = get_post_meta( $event_id, 'mep_pp_mode', true );
+							$pp_mode       = in_array( $pp_mode, array( 'fixed', 'percentage', 'plan' ), true ) ? $pp_mode : 'fixed';
+							$pp_fixed      = (float) get_post_meta( $event_id, 'mep_pp_fixed_amount', true );
+							$pp_percentage = (float) get_post_meta( $event_id, 'mep_pp_percentage', true );
+							$pp_due_date   = get_post_meta( $event_id, 'mep_pp_remaining_due_date', true );
+							$pp_due_date   = $pp_due_date ? gmdate( 'Y-m-d', strtotime( $pp_due_date ) ) : '';
+							$event_start   = get_post_meta( $event_id, 'event_start_date', true );
+							$event_start   = $event_start ? gmdate( 'Y-m-d', strtotime( $event_start ) ) : current_time( 'Y-m-d' );
+							$pp_due_date   = $pp_due_date ?: $event_start;
+
+							$pp_plan_raw  = get_post_meta( $event_id, 'mep_pp_payment_plan', true );
+							$pp_plan_data = array();
+							if ( is_array( $pp_plan_raw ) ) {
+								foreach ( $pp_plan_raw as $pp_item ) {
+									$type  = array_key_exists( 'type', $pp_item ) ? sanitize_text_field( $pp_item['type'] ) : '';
+									$value = array_key_exists( 'value', $pp_item ) ? (float) $pp_item['value'] : 0;
+									if ( ! in_array( $type, array( 'fixed', 'percentage' ), true ) || $value <= 0 ) {
+										continue;
+									}
+									$label = array_key_exists( 'label', $pp_item ) ? sanitize_text_field( $pp_item['label'] ) : '';
+									$date  = array_key_exists( 'due_date', $pp_item ) ? sanitize_text_field( $pp_item['due_date'] ) : '';
+									$date  = $date ? gmdate( 'Y-m-d', strtotime( $date ) ) : $pp_due_date;
+									$pp_plan_data[] = array(
+										'label'    => $label,
+										'type'     => $type,
+										'value'    => $value,
+										'due_date' => $date,
+									);
+								}
+							}
+							?>
+                            <div class="mpwem_partial_payment_front_data dNone"
+                                 data-pp-enable="on"
+                                 data-pp-mode="<?php echo esc_attr( $pp_mode ); ?>"
+                                 data-pp-fixed="<?php echo esc_attr( $pp_fixed ); ?>"
+                                 data-pp-percentage="<?php echo esc_attr( $pp_percentage ); ?>"
+                                 data-pp-due-date="<?php echo esc_attr( $pp_due_date ); ?>"
+                                 data-pp-plan="<?php echo esc_attr( wp_json_encode( $pp_plan_data ) ); ?>"></div>
+                            <div class="mpwem_partial_payment_box dNone"
+                                 data-label-total="<?php echo esc_attr__( 'Total Amount', 'mage-eventpress' ); ?>"
+                                 data-label-pay-now="<?php echo esc_attr__( 'Pay Now', 'mage-eventpress' ); ?>"
+                                 data-label-due-later="<?php echo esc_attr__( 'Remaining Balance', 'mage-eventpress' ); ?>"
+                                 data-label-plan="<?php echo esc_attr__( 'Payment Plan', 'mage-eventpress' ); ?>"
+                                 data-label-now-tag="<?php echo esc_attr__( 'Now', 'mage-eventpress' ); ?>"
+                                 data-label-later-tag="<?php echo esc_attr__( 'Later', 'mage-eventpress' ); ?>">
+                                <h6><?php esc_html_e( 'Partial Payment Details', 'mage-eventpress' ); ?></h6>
+                                <div class="mep-pp-row"><span><?php esc_html_e( 'Total Amount', 'mage-eventpress' ); ?></span><strong class="mep-pp-total"><?php echo wp_kses_post( wc_price( 0 ) ); ?></strong></div>
+                                <div class="mep-pp-row"><span><?php esc_html_e( 'Pay Now', 'mage-eventpress' ); ?></span><strong class="mep-pp-now"><?php echo wp_kses_post( wc_price( 0 ) ); ?></strong></div>
+                                <div class="mep-pp-row"><span><?php esc_html_e( 'Remaining Balance', 'mage-eventpress' ); ?></span><strong class="mep-pp-due"><?php echo wp_kses_post( wc_price( 0 ) ); ?></strong></div>
+                                <div class="mep-pp-plan dNone">
+                                    <span class="mep-pp-plan-title"><?php esc_html_e( 'Payment Plan', 'mage-eventpress' ); ?></span>
+                                    <ul class="mep-pp-plan-list"></ul>
+                                </div>
+                                <p class="mep-pp-note"><?php esc_html_e( 'Remaining amount will be due on plan dates.', 'mage-eventpress' ); ?></p>
+                            </div>
+							<?php
+						}
+					?>
                 </div>
             </div>
 			<?php

@@ -354,7 +354,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_get_attendee_info_query( $event_id, $order_id ) {
 			$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status        = array_values( $_order_status );
+			$_order_status[]     = 'partially-paid';
+			$order_status        = array_values( array_unique( $_order_status ) );
 			$order_status_filter = array(
 				'key'     => 'ea_order_status',
 				'value'   => $order_status,
@@ -1574,7 +1575,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$type             = ! empty( $type ) ? $type : '';
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status     = array_values( $_order_status );
+			$_order_status[]  = 'partially-paid';
+			$order_status     = array_values( array_unique( $_order_status ) );
 			if ( count( $order_status ) > 1 ) { // check if more then one tag
 				$order_status_filter['relation'] = 'OR';
 				foreach ( $order_status as $tag ) { // create a LIKE-comparison for every single tag

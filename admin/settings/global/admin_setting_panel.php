@@ -101,10 +101,11 @@
 								'label'   => __( 'Seat Reserved Order Status', 'mage-eventpress' ),
 								'desc'    => __( 'Please select in which order status seat will mark as reserved/booked. By Default is Processing & Completed.', 'mage-eventpress' ),
 								'type'    => 'multicheck',
-								'default' => array( 'processing' => 'processing', 'completed' => 'completed' ),
+								'default' => array( 'processing' => 'processing', 'completed' => 'completed', 'partially-paid' => 'partially-paid' ),
 								'options' => array(
 									'on-hold'    => 'On Hold',
 									'pending'    => 'Pending',
+									'partially-paid' => 'Partially Paid',
 									'processing' => 'Processing',
 									'completed'  => 'Completed'
 									// 'cancelled'     => 'Cancelled'

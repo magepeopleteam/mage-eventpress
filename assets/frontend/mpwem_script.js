@@ -13,6 +13,7 @@ function mpwem_price_calculation(parent) {
             parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');
         }
         target_summary.html(mpwem_price_format(total));
+        mpwem_partial_payment_calculation(parent, total, total_qty);
     } catch (error) {
         console.error('Error in price calculation:', error);
     }
@@ -64,6 +65,175 @@ function mpwem_ex_price(parent) {
         total += ex_price * ex_qty;
     });
     return total;
+}
+function mpwem_get_partial_front_data(parent) {
+    const source = parent.find('.mpwem_partial_payment_front_data').first();
+    if (source.length === 0) {
+        return null;
+    }
+    const enabled = source.attr('data-pp-enable') === 'on';
+    if (!enabled) {
+        return null;
+    }
+    const mode = (source.attr('data-pp-mode') || 'fixed').toLowerCase();
+    const fixedAmount = parseFloat(source.attr('data-pp-fixed')) || 0;
+    const percentage = parseFloat(source.attr('data-pp-percentage')) || 0;
+    const defaultDueDate = source.attr('data-pp-due-date') || '';
+    let plan = [];
+    const rawPlan = source.attr('data-pp-plan');
+    if (rawPlan) {
+        try {
+            plan = JSON.parse(rawPlan);
+            if (!Array.isArray(plan)) {
+                plan = [];
+            }
+        } catch (error) {
+            plan = [];
+        }
+    }
+    return {
+        mode: mode,
+        fixedAmount: fixedAmount,
+        percentage: percentage,
+        dueDate: defaultDueDate,
+        plan: plan
+    };
+}
+function mpwem_plan_row_amount(fullTotal, row) {
+    const type = (row.type || '').toLowerCase();
+    const value = parseFloat(row.value) || 0;
+    if (value <= 0) {
+        return 0;
+    }
+    if (type === 'percentage') {
+        const validPercent = Math.max(0, Math.min(100, value));
+        return (fullTotal * validPercent) / 100;
+    }
+    return value;
+}
+function mpwem_escape_html(value) {
+    return jQuery('<div/>').text(value).html();
+}
+function mpwem_get_partial_payload(total, config) {
+    if (!config || total <= 0) {
+        return null;
+    }
+    const mode = config.mode;
+    let payNow = total;
+    let dueLater = 0;
+    const schedule = [];
+    if (mode === 'fixed') {
+        payNow = Math.min(total, Math.max(0, config.fixedAmount));
+        dueLater = total - payNow;
+        if (dueLater > 0) {
+            schedule.push({
+                label: 'Remaining Balance',
+                amount: dueLater,
+                dueDate: config.dueDate,
+                payableAt: 'later'
+            });
+        }
+    } else if (mode === 'percentage') {
+        const validPercent = Math.max(0, Math.min(100, config.percentage));
+        payNow = (total * validPercent) / 100;
+        dueLater = total - payNow;
+        if (dueLater > 0) {
+            schedule.push({
+                label: 'Remaining Balance',
+                amount: dueLater,
+                dueDate: config.dueDate,
+                payableAt: 'later'
+            });
+        }
+    } else {
+        let remaining = total;
+        if (Array.isArray(config.plan)) {
+            config.plan.forEach(function (row, index) {
+                if (remaining <= 0) {
+                    return;
+                }
+                let amount = mpwem_plan_row_amount(total, row);
+                amount = Math.max(0, amount);
+                if (amount <= 0) {
+                    return;
+                }
+                if (amount > remaining) {
+                    amount = remaining;
+                }
+                remaining = remaining - amount;
+                schedule.push({
+                    label: row.label || ('Installment ' + (index + 1)),
+                    amount: amount,
+                    dueDate: row.due_date || config.dueDate,
+                    payableAt: 'later'
+                });
+            });
+        }
+        if (remaining > 0) {
+            schedule.push({
+                label: 'Remaining Balance',
+                amount: remaining,
+                dueDate: config.dueDate,
+                payableAt: 'later'
+            });
+        }
+        if (schedule.length > 0) {
+            payNow = schedule[0].amount;
+            schedule[0].payableAt = 'now';
+            dueLater = total - payNow;
+        }
+    }
+    payNow = Math.max(0, Math.min(total, payNow));
+    dueLater = Math.max(0, total - payNow);
+    if (dueLater <= 0) {
+        return null;
+    }
+    return {
+        total: total,
+        payNow: payNow,
+        dueLater: dueLater,
+        schedule: schedule
+    };
+}
+function mpwem_partial_payment_calculation(parent, total, totalQty) {
+    const box = parent.find('.mpwem_partial_payment_box').first();
+    if (box.length === 0) {
+        return;
+    }
+    if (totalQty <= 0 || total <= 0) {
+        box.addClass('dNone');
+        return;
+    }
+    const config = mpwem_get_partial_front_data(parent);
+    const payload = mpwem_get_partial_payload(total, config);
+    if (!payload) {
+        box.addClass('dNone');
+        return;
+    }
+    box.removeClass('dNone');
+    box.find('.mep-pp-total').html(mpwem_price_format(payload.total));
+    box.find('.mep-pp-now').html(mpwem_price_format(payload.payNow));
+    box.find('.mep-pp-due').html(mpwem_price_format(payload.dueLater));
+
+    const planWrap = box.find('.mep-pp-plan');
+    const planList = box.find('.mep-pp-plan-list');
+    const labelNow = box.attr('data-label-now-tag') || 'Now';
+    const labelLater = box.attr('data-label-later-tag') || 'Later';
+
+    if (Array.isArray(payload.schedule) && payload.schedule.length > 0) {
+        let html = '';
+        payload.schedule.forEach(function (row) {
+            const label = mpwem_escape_html(row.label || 'Installment');
+            const when = row.payableAt === 'now' ? labelNow : labelLater;
+            const dueText = row.dueDate ? ' (' + mpwem_escape_html(row.dueDate) + ')' : '';
+            html += '<li><span>' + label + '</span><strong>' + mpwem_price_format(row.amount) + ' - ' + mpwem_escape_html(when) + dueText + '</strong></li>';
+        });
+        planList.html(html);
+        planWrap.removeClass('dNone');
+    } else {
+        planList.html('');
+        planWrap.addClass('dNone');
+    }
 }
 function mpwem_attendee_management(parent, total_qty) {
     let form_target = parent.find('.mep_attendee_info');

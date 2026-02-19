@@ -179,6 +179,8 @@
 		// Define variables used throughout the function
 		$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 		$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
+		$_order_status[]  = 'partially-paid';
+		$_order_status    = array_values( array_unique( $_order_status ) );
 		$order_status     = array_values( $_order_status );
 		// Convert dates to timestamp for comparison
 		$start_timestamp = strtotime( $start_date );
@@ -382,6 +384,8 @@
 		// Define variables used throughout the function
 		$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 		$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
+		$_order_status[]  = 'partially-paid';
+		$_order_status    = array_values( array_unique( $_order_status ) );
 		$order_status     = array_values( $_order_status );
 		// Convert dates to timestamp for comparison
 		$start_timestamp = strtotime( $start_date );

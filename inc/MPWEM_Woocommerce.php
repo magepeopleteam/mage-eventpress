@@ -365,6 +365,13 @@
 								}
 							}
 						}
+						if ( $order->has_status( 'partially-paid' ) ) {
+							change_attandee_order_status( $order_id, 'publish', 'trash', 'partially-paid' );
+							change_attandee_order_status( $order_id, 'publish', 'publish', 'partially-paid' );
+							change_extra_service_status( $order_id, 'publish', 'trash', 'partially-paid' );
+							change_extra_service_status( $order_id, 'publish', 'publish', 'partially-paid' );
+							do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
+						}
 						if ( $order->has_status( 'cancelled' ) ) {
 							change_attandee_order_status( $order_id, 'trash', 'publish', 'cancelled' );
 							change_extra_service_status( $order_id, 'trash', 'publish', 'cancelled' );
@@ -651,7 +658,8 @@
 						<?php
 							$_user_set_status    = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 							$_order_status       = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-							$order_status        = array_values( $_order_status );
+							$_order_status[]     = 'partially-paid';
+							$order_status        = array_values( array_unique( $_order_status ) );
 							$order_status_filter = array(
 								'key'     => 'ea_order_status',
 								'value'   => $order_status,

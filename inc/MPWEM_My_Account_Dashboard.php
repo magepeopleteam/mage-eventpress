@@ -170,6 +170,8 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 		private function get_booking_stats( $user_id ) {
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
+			$_order_status[]  = 'partially-paid';
+			$_order_status    = array_values( array_unique( $_order_status ) );
 			
 			$args = array(
 				'post_type'      => 'mep_events_attendees',
@@ -224,7 +226,8 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 		private function get_bookings_list( $user_id, $order_search = '', $filter = 'all' ) {
 			$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 			$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
-			$order_status     = array_values( $_order_status );
+			$_order_status[]  = 'partially-paid';
+			$order_status     = array_values( array_unique( $_order_status ) );
 			
 			$meta_query = array(
 				'relation' => 'AND',

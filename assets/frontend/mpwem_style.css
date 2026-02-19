@@ -148,6 +148,15 @@
 	div.mpwem_form_submit_area .mpwem_summery { display: flex; justify-content: space-between; align-items: center; }
 	div.mpwem_form_submit_area .total { font-size: 18px; font-weight: normal; }
 	div.mpwem_form_submit_area button[type=submit] { background-color: var(--color_theme); border: 1px solid var(--color_theme); padding: var(--dmp); }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box { margin-top: 12px; padding: 12px 14px; border: 1px solid #d8e6ff; background: #f6faff; border-radius: 8px; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box h6 { margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #2b3a55; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-row { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px 0; font-size: 13px; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-row strong { color: #102a43; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-plan { margin-top: 8px; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-plan-title { display: block; font-size: 12px; color: #2b3a55; margin-bottom: 4px; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-plan-list { margin: 0; padding: 0; list-style: none; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-plan-list li { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; margin: 0 0 4px 0; }
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_partial_payment_box .mep-pp-note { margin: 8px 0 0 0; font-size: 11px; color: #486581; }
 
 	.mep_smart_theme .attendee_area { margin: 10px 0; }
 	.mep_smart_theme .attendee_area h2 { font-size: var(--fs_h2); font-weight: var(--fw-bold); }

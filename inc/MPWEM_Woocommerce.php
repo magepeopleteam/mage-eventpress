@@ -243,8 +243,12 @@
 						}
 					} elseif ( $recurring == 'yes' ) {
 						if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
+							$count = 1;
 							foreach ( $ticket_type_arr as $_event_recurring_date ) {
-								$item->add_meta_data( $date_text, get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+								if($count == 1){
+									$item->add_meta_data( $date_text, get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+								}
+							$count++;
 							}
 						}
 					} else {

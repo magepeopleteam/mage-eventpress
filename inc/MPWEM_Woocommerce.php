@@ -419,9 +419,7 @@
 										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 									} else {
 										if ( $check_before_create < count( $user_info_arr ) ) {
-											if ( $check_before_create_date == 0 ) {
-												mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
-											}
+											mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 										}
 									}
 								}
@@ -433,9 +431,7 @@
 											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 										} else {
 											if ( $check_before_create < count( $event_ticket_info_arr ) ) {
-												if ( $check_before_create_date == 0 ) {
-													mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
-												}
+												mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 											}
 										}
 									}

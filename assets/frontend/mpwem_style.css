@@ -1012,3 +1012,10 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-low-stock-warning::before,
 	.mep-limited-availability-ribbon::before { animation: none; }
 }
+	.mpwem_registration_area .date-time-area .formControl{
+		min-width: 200px;
+	}
+
+	.woocommerce-order-details ul.wc-item-meta li > p {
+		padding: 0; !important;
+	}

@@ -75,26 +75,33 @@
 					$mep_org_address = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					// Handle venue location with coordinate detection
 					if ( isset( $_POST['mep_location_venue'] ) ) {
-						$raw_venue_value = $_POST['mep_location_venue'];
+						$raw_venue_value = sanitize_text_field( wp_unslash( $_POST['mep_location_venue'] ) );
 						// Check if it looks like coordinates (lat,lng format)
 						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $raw_venue_value ) ) ) {
 							// For coordinates, preserve comma, decimal point, and minus sign
 							$mep_location_venue = sanitize_text_field( trim( $raw_venue_value ) );
 						} else {
-							// For regular location names, use the filter
-							$after_filter       = mep_letters_numbers_spaces_only( $raw_venue_value );
-							$mep_location_venue = sanitize_text_field( $after_filter );
+							// For regular location names, preserve punctuation like commas.
+							$mep_location_venue = sanitize_text_field( $raw_venue_value );
 						}
 					} else {
-						$mep_location_venue = "";
+						$mep_location_venue = get_post_meta( $post_id, 'mep_location_venue', true );
 					}
 					$mep_street    = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_street'] ) ) : "";
 					$mep_city      = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_city'] ) ) : "";
 					$mep_state     = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_state'] ) ) : "";
 					$mep_postcode  = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_postcode'] ) ) : "";
 					$mep_country   = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_country'] ) ) : "";
-					$latitude      = isset( $_POST['latitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['latitude'] ) ) : "";
-					$longitude     = isset( $_POST['longitude'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['longitude'] ) ) : "";
+					$latitude      = isset( $_POST['latitude'] ) ? sanitize_text_field( trim( $_POST['latitude'] ) ) : get_post_meta( $post_id, 'latitude', true );
+					$longitude     = isset( $_POST['longitude'] ) ? sanitize_text_field( trim( $_POST['longitude'] ) ) : get_post_meta( $post_id, 'longitude', true );
+					if ( is_numeric( $latitude ) && is_numeric( $longitude ) ) {
+						$latitude  = (string) floatval( str_replace( ',', '.', $latitude ) );
+						$longitude = (string) floatval( str_replace( ',', '.', $longitude ) );
+						if ( floatval( $latitude ) < - 90 || floatval( $latitude ) > 90 || floatval( $longitude ) < - 180 || floatval( $longitude ) > 180 ) {
+							$latitude  = '';
+							$longitude = '';
+						}
+					}
 					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
 					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
 					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );

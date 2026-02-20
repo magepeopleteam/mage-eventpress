@@ -488,14 +488,12 @@
 				}
 				// Handle venue location coordinates specially
 				if ( isset( $_POST['mep_location_venue'] ) ) {
-					$venue_value = $_POST['mep_location_venue'];
+					$venue_value = sanitize_text_field( wp_unslash( $_POST['mep_location_venue'] ) );
 					// Check if it looks like coordinates (lat,lng format)
 					if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $venue_value ) ) ) {
 						// For coordinates, use sanitize_text_field to preserve the comma and format
 						$sanitized_value = sanitize_text_field( trim( $venue_value ) );
 						update_post_meta( $post_id, 'mep_location_venue', $sanitized_value );
-						// Prevent downstream sanitizers from overriding this value
-						unset( $_POST['mep_location_venue'] );
 					}
 					// For non-coordinate values, let the normal save process handle it
 				}

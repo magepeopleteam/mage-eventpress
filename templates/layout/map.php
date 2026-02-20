@@ -32,22 +32,45 @@
 				$org_id      = $org_arr[0]->term_id;
 				$venue_value = get_term_meta( $org_id, 'org_location', true );
 				$latitude    = get_term_meta( $org_id, 'latitude', true );
-				$lat         = $latitude ? floatval( $latitude ) : 0;
+				$lat         = $latitude ? floatval( str_replace( ',', '.', $latitude ) ) : 0;
 				$longitude   = get_term_meta( $org_id, 'longitude', true );
-				$lon         = $longitude ? floatval( $longitude ) : 0;
+				$lon         = $longitude ? floatval( str_replace( ',', '.', $longitude ) ) : 0;
 			}
 		} else {
 			$latitude  = array_key_exists( 'latitude', $event_infos ) ? $event_infos['latitude'] : '';
 			$longitude = array_key_exists( 'longitude', $event_infos ) ? $event_infos['longitude'] : '';
-			$lat       = $latitude ? floatval( $latitude ) : 0;
-			$lon       = $longitude ? floatval( $longitude ) : 0;
+			$lat       = $latitude ? floatval( str_replace( ',', '.', $latitude ) ) : 0;
+			$lon       = $longitude ? floatval( str_replace( ',', '.', $longitude ) ) : 0;
 		}
-		if ( $map_type == 'iframe' || ! $map_api ) {
-			if ( $lat != 0 && $lon != 0 ) {
-				$location_query = $lat . ',' . $lon;
-			} else {
-				$location_query = urlencode( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $venue_value ) ? sanitize_text_field( $venue_value ) : $venue_value );
+		$location_parts = [];
+		if ( is_array( $event_infos ) ) {
+			$location_parts[] = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
+			$location_parts[] = array_key_exists( 'mep_street', $event_infos ) ? $event_infos['mep_street'] : '';
+			$location_parts[] = array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '';
+			$location_parts[] = array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '';
+			$location_parts[] = array_key_exists( 'mep_postcode', $event_infos ) ? $event_infos['mep_postcode'] : '';
+			$location_parts[] = array_key_exists( 'mep_country', $event_infos ) ? $event_infos['mep_country'] : '';
+		}
+		$location_parts = array_filter( array_map( 'trim', $location_parts ) );
+		$address_query  = implode( ', ', $location_parts );
+		if ( ! $address_query ) {
+			$address_query = $venue_value;
+		}
+		if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( (string) $venue_value ) ) ) {
+			$parsed_coordinates = array_map( 'trim', explode( ',', (string) $venue_value ) );
+			if ( count( $parsed_coordinates ) === 2 ) {
+				$lat = floatval( str_replace( ',', '.', $parsed_coordinates[0] ) );
+				$lon = floatval( str_replace( ',', '.', $parsed_coordinates[1] ) );
 			}
+		}
+		$has_valid_coordinates = ( $lat >= - 90 && $lat <= 90 && $lon >= - 180 && $lon <= 180 && ! ( $lat == 0 && $lon == 0 ) );
+		if ( $has_valid_coordinates ) {
+			$location_query = $lat . ',' . $lon;
+		} else {
+			$location_query = urlencode( $address_query );
+		}
+		$use_iframe_map = ( $map_type == 'iframe' || ! $map_api || ! $has_valid_coordinates );
+		if ( $use_iframe_map ) {
 			if ( $location_query ) {
 				?>
                 <div id="mpwem_map_area">
@@ -59,10 +82,6 @@
 				<?php
 			}
 		} else {
-			if ( $lat == 0 && $lon == 0 ) {
-				$lat = 37.0902; // Default latitude
-				$lon = - 95.7129; // Default longitude
-			}
 			?>
             <div id="mpwem_map_area">
                 <h5 class="map_title"><?php esc_html_e( 'Event Location', 'mage-eventpress' ); ?></h5>

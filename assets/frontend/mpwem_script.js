@@ -625,3 +625,23 @@ jQuery(document).ready(function ($) {
     });
 
 });
+
+
+document.querySelectorAll('li').forEach(function(li) {
+
+    // check if this li contains price
+    if (li.querySelector('.woocommerce-Price-amount')) {
+
+        let strong = li.querySelector('.wc-item-meta-label');
+
+        if (strong) {
+            let lastNode = strong.lastChild;
+
+            // if last node is text (where ":" exists)
+            if (lastNode && lastNode.nodeType === Node.TEXT_NODE) {
+                lastNode.textContent = lastNode.textContent.replace(':', '');
+            }
+        }
+    }
+
+});

@@ -152,7 +152,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$time_diff = mep_diff_two_datetime( $post_date, current_time( 'Y-m-d H:i:s' ) );
 					if ( $time_diff > $cart_clear_time_sec ) {
 						wp_delete_post( $post_id, true );
-						$woocommerce->cart->empty_cart();
+							if ( ! empty( $woocommerce ) && ! empty( $woocommerce->cart ) ) {
+							$woocommerce->cart->empty_cart();
+						}
 					}
 				}
 			}
@@ -175,7 +177,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 	add_action( 'init', 'mep_auto_load' );
 	function mep_auto_load() {
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && ! ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 			mep_temp_attendee_auto_delete_for_cart();
 		}
 	}

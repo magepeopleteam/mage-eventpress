@@ -189,7 +189,7 @@
 						$time_line_infos = [];
 					}
 					if ( ! array_key_exists( $key, $time_line_infos ) ) {
-						$key = sizeof( $time_line_infos );
+						$key = is_array($time_line_infos) ? sizeof( $time_line_infos ) : 0;
 					}
 					$time_line_infos[ $key ]['mep_day_title']   = $title;
 					$time_line_infos[ $key ]['mep_day_time']    = $time;

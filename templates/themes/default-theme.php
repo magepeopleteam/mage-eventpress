@@ -57,7 +57,7 @@
             <div class="df-sidebar-part">
 				<?php do_action( 'mpwem_organizer', $event_id, $event_infos ); ?>
 				<?php do_action( 'mpwem_seat_status', $event_id, $event_infos ); ?>
-				<?php if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+				<?php if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
                         <h5 class="_mb_xs"><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
@@ -70,7 +70,7 @@
                     </div>
 				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id, $event_infos ); ?>
-				<?php if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
+				<?php if ( $speaker_status == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
 						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>

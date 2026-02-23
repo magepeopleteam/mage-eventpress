@@ -286,7 +286,7 @@
 						$faq_infos = array();
 					}
 					if ( ! array_key_exists( $key, $faq_infos ) ) {
-						$key = sizeof( $faq_infos );
+						$key = is_array($faq_infos) ? sizeof( $faq_infos ) : 0;
 					}
 					$faq_infos[ $key ]['mep_faq_title']   = $title;
 					$faq_infos[ $key ]['mep_faq_content'] = $content;

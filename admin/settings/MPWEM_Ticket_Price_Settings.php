@@ -79,7 +79,7 @@
                                 </thead>
                                 <tbody class="mpwem_item_insert mpwem_sortable_area">
 								<?php
-									if ( sizeof( $ticket_infos ) > 0 ) {
+									if ( is_array($ticket_infos) && sizeof( $ticket_infos ) > 0 ) {
 										foreach ( $ticket_infos as $ticket_info ) {
 											$this->ticket_info( $event_id, $active_category, $ticket_info );
 										}
@@ -218,7 +218,7 @@
                                 </thead>
                                 <tbody class="mpwem_item_insert mpwem_sortable_area">
 								<?php
-									if ( sizeof( $ex_infos ) > 0 ) {
+									if ( is_array($ex_infos) && sizeof( $ex_infos ) > 0 ) {
 										foreach ( $ex_infos as $ticket_info ) {
 											$this->ex_info( $ticket_info );
 										}

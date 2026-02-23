@@ -121,7 +121,7 @@
 						<?php if ( $location && $hide_location_status == 'no' ) { ?>
                             <h6 class="_mp_zero"><?php echo esc_html__( " Location : ", 'mage-eventpress' ) . ' ' . esc_html( $location ); ?></h6>
 						<?php }
-							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $user_info ) > 0 && sizeof( $form_array ) > 0 ) {
+							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $user_info ) && sizeof( $user_info ) > 0 && is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
 								if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
 									?>
                                     <div class="_layout_info_xs_mt_xs">
@@ -142,7 +142,7 @@
 								$user = current( $user_info );
 								self::show_attendee( $user, $form_array );
 							} else {
-								if ( sizeof( $user_info ) > 0 ) {
+								if ( is_array( $user_info ) && sizeof( $user_info ) > 0 ) {
 									foreach ( $user_info as $user ) {
 										self::show_attendee( $user, $form_array, 'no' );
 									}
@@ -175,7 +175,7 @@
 				foreach ( $items as $item => $values ) {
 					$event_id        = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; // $values['event_id'];
 					$check_seat_plan = get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) ? get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) : array();
-					if ( get_post_type( $event_id ) == 'mep_events' && sizeof( $check_seat_plan ) == 0 ) {
+					if ( get_post_type( $event_id ) == 'mep_events' && is_array( $check_seat_plan ) && sizeof( $check_seat_plan ) == 0 ) {
 						$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
 						$total_resv = apply_filters( 'mep_event_total_resv_seat_count', mep_event_total_seat( $event_id, 'resv' ), $event_id );
 						$ticket_arr = $values['event_ticket_info'];
@@ -289,7 +289,7 @@
 						if ( array_key_exists( 'user_vegetarian', $userinf ) && ! empty( $userinf['user_vegetarian'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Vegetarian' ), $userinf['user_vegetarian'] );
 						}
-						if ( sizeof( $custom_forms_id ) > 0 ) {
+						if ( is_array( $custom_forms_id ) && sizeof( $custom_forms_id ) > 0 ) {
 							foreach ( $custom_forms_id as $key => $value ) {
 								$item->add_meta_data( $key, $userinf[ $value ] );
 							}
@@ -416,7 +416,7 @@
 									$item_quantity = $item_quantity + $field['ticket_qty'];
 								}
 							}
-							if ( is_array( $user_info_arr ) & sizeof( $user_info_arr ) > 0 ) {
+							if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
 								foreach ( $user_info_arr as $_user_info ) {
 									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_user_info['user_event_date'] );
 									if ( function_exists( 'mep_re_language_load' ) ) {
@@ -476,7 +476,7 @@
 				$qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
 				$total_price = 0;
-				if ( sizeof( $names ) > 0 ) {
+				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
 						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
 						$ticket_name               = explode( '_', $name );
@@ -496,7 +496,7 @@
 			}
 			public static function get_cart_ticket_price( $ticket_infos ) {
 				$price = 0;
-				if ( sizeof( $ticket_infos ) > 0 ) {
+				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
 						$qty           = array_key_exists( 'ticket_qty', $ticket_info ) ? $ticket_info['ticket_qty'] : 0;
 						$current_price = array_key_exists( 'ticket_price', $ticket_info ) ? $ticket_info['ticket_price'] : 0;
@@ -512,7 +512,7 @@
 				$start_date   = current( $start_date );
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
-				if ( sizeof( $names ) > 0 ) {
+				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
 						$current_qty = array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
 						if ( $name && $current_qty > 0 ) {
@@ -527,7 +527,7 @@
 			}
 			public static function get_cart_ex_price( $ticket_infos ) {
 				$price = 0;
-				if ( sizeof( $ticket_infos ) > 0 ) {
+				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
 						$qty           = array_key_exists( 'service_qty', $ticket_info ) ? $ticket_info['service_qty'] : 0;
 						$current_price = array_key_exists( 'service_price', $ticket_info ) ? $ticket_info['service_price'] : 0;
@@ -539,15 +539,15 @@
 			public static function get_attendee_info( $post_id ) {
 				$attendee_info = [];
 				$names         = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
-				if ( sizeof( $names ) > 0 ) {
+				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					$start_date   = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
 					$start_date   = current( $start_date );
 					$qty          = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
 					$submit_infos = [];
 					$form_array   = MPWEM_Layout::get_form_array( $post_id );
-					if ( sizeof( $form_array ) > 0 ) {
+					if ( is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
 						foreach ( $form_array as $form ) {
-							if ( sizeof( $form ) > 0 ) {
+							if ( is_array( $form ) && sizeof( $form ) > 0 ) {
 								$type = array_key_exists( 'type', $form ) ? $form['type'] : '';
 								$name = array_key_exists( 'name', $form ) ? $form['name'] : '';
 								if ( $type && $name && $type != 'title' ) {
@@ -565,12 +565,12 @@
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
 						if ( $current_qty > 0 && $name ) {
 							for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
-								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && sizeof( $attendee_info ) > 0 ) {
+								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $attendee_info ) && sizeof( $attendee_info ) > 0 ) {
 									$attendee_info[ $count ] = current( $attendee_info );
 								} else {
-									if ( sizeof( $form_array ) > 0 && sizeof( $submit_infos ) > 0 ) {
+									if ( is_array( $form_array ) && sizeof( $form_array ) > 0 && is_array( $submit_infos ) && sizeof( $submit_infos ) > 0 ) {
 										foreach ( $form_array as $form ) {
-											if ( sizeof( $form ) > 0 ) {
+											if ( is_array( $form ) && sizeof( $form ) > 0 ) {
 												$type       = array_key_exists( 'type', $form ) ? $form['type'] : '';
 												$input_name = array_key_exists( 'name', $form ) ? $form['name'] : '';
 												if ( $type && $input_name && $type != 'title' ) {
@@ -600,7 +600,7 @@
 				return apply_filters( 'mep_cart_user_data_prepare', $attendee_info, $post_id );
 			}
 			public static function show_attendee( $user, $form_array, $same_attendee = 'yes' ) {
-				if ( sizeof( $user ) >0) {
+				if ( is_array( $user ) && sizeof( $user ) >0) {
 					$post_id = array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
 					?>
                     <div class="_layout_info_xs_mt_xs">
@@ -620,7 +620,7 @@
 									do_action( 'mep_cart_after_ticket_type', $user );
 								}
 								foreach ( $form_array as $form ) {
-									if ( sizeof( $form ) > 0 ) {
+									if ( is_array( $form ) && sizeof( $form ) > 0 ) {
 										$type = array_key_exists( 'type', $form ) ? $form['type'] : '';
 										$name = array_key_exists( 'name', $form ) ? $form['name'] : '';
 										if ( $type && $name && $type != 'title' && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {

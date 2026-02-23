@@ -57,7 +57,7 @@
                 </div>
 	            <?php
 		            $category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
-		            if ( $category_lists && sizeof( $category_lists ) > 0 ) {
+		            if ( is_array( $category_lists ) && sizeof( $category_lists ) > 0 ) {
 			            ?>
                         <label>
                             <span>Category Filter</span>

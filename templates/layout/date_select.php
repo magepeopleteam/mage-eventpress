@@ -8,12 +8,12 @@
 	} // Cannot access pages directly.
 	$event_id    = $event_id ?? 0;
 	$event_infos = $event_infos ?? [];
-	$event_infos = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$event_infos = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-	if ( sizeof( $all_dates ) > 0 ) {
+	if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 		?>
         <div class="date-time-header">
             <div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
@@ -23,7 +23,7 @@
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
-					if ( sizeof( $all_dates ) == 1 ) {
+					if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {
 						?>
                         <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 					<?php } else { ?>
@@ -46,7 +46,7 @@
 					$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
 					$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 					$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
-					$all_times    = $all_times && sizeof($all_times)>0 ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates, $date );
+					$all_times    = $all_times && is_array($all_times) && sizeof($all_times)>0 ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates, $date );
 					$display_time = array_key_exists( 'mep_disable_ticket_time', $event_infos ) ? $event_infos['mep_disable_ticket_time'] : 'no';
 					?>
                     <div class="date-time-area">

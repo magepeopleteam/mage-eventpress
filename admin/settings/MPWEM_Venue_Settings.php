@@ -415,7 +415,7 @@
 				$event_label       = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				$event_type        = get_post_meta( $post_id, 'mep_event_type', true );
 				$event_member_type = get_post_meta( $post_id, 'mep_member_only_event', true );
-				$description       = html_entity_decode( get_post_meta( $post_id, 'mp_event_virtual_type_des', true ) );
+				$description       = get_post_meta( $post_id, 'mp_event_virtual_type_des', true );
 				$checked           = ( $event_type == 'online' ) ? 'online' : '';
 				?>
                 <section>
@@ -442,7 +442,9 @@
                         </div>
                     </div>
                     <br>
-					<?php wp_editor( html_entity_decode( nl2br( $description ) ), 'mp_event_virtual_type_des' ); ?>
+					<?php 
+                    // wp_editor( html_entity_decode( nl2br( $description ) ), 'mp_event_virtual_type_des' );
+                    wp_editor($description,'mp_event_virtual_type_des',array('textarea_name' => 'mp_event_virtual_type_des','media_buttons' => true,'textarea_rows' => 10,)); ?>
                 </section>
 				<?php do_action( 'mep_event_details_after_virtual_event_info_text_box', $post_id ); ?>
 				<?php

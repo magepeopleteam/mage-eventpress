@@ -21,7 +21,7 @@
 				$tcat                 = get_the_terms( $event_id, 'mep_cat' );
 				$author_terms         = get_the_terms( $event_id, 'mep_org' ) ? get_the_terms( $event_id, 'mep_org' ) : [];
 				$organizer_name='';
-                if(sizeof( $author_terms ) > 0 && $author_terms[0]->name){
+                if(is_array( $author_terms ) && sizeof( $author_terms ) > 0 && $author_terms[0]->name){
                     $organizer_name=$author_terms[0]->name;
                 }
 				$org_class            = MPWEM_Global_Function::taxonomy_as_class( $event_id, 'mep_org', $unq_id );
@@ -82,7 +82,7 @@
 					$event_multidate                = array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
 					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );
 					$class_name                     = $total_left > 0 ? 'event-availabe-seat' : 'event-no-availabe-seat';
-					$show_price_label               = sizeof( $ticket_types ) > 1 ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
+					$show_price_label               = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					$start_time_format              = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? $upcoming_date : '';
 					$end_time_format                = '';
 					$end_datetime                   = '';
@@ -93,7 +93,7 @@
 							$end_time_format = MPWEM_Global_Function::check_time_exit_date( $end_datetime ) ? $end_datetime : '';
 						} else {
 							$end_date = date( 'Y-m-d', strtotime( current( $all_dates ) ) );
-							if ( sizeof( $all_times ) > 0 ) {
+							if ( is_array( $all_times ) && sizeof( $all_times ) > 0 ) {
 								$all_times       = current( $all_times );
 								$end_time        = is_array( $all_times ) && array_key_exists( 'end', $all_times ) ? $all_times['end']['time'] : '';
 								$end_datetime    = $end_time ? $end_date . ' ' . $end_time : '';
@@ -146,7 +146,7 @@
                                             </label>
 										<?php }
 										$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
-										if ( $params['category-filter'] == 'yes' && $category_lists && sizeof( $category_lists ) > 0 ) {
+										if ( $params['category-filter'] == 'yes' && is_array( $category_lists ) && sizeof( $category_lists ) > 0 ) {
 											?>
                                             <label>
                                                 <select class="formControl" name="filter_with_category">
@@ -158,7 +158,7 @@
                                             </label>
 										<?php }
 										$organizer_lists = MPWEM_Global_Function::get_all_term_data( 'mep_org' );
-										if ( $params['organizer-filter'] == 'yes' && $organizer_lists && sizeof( $organizer_lists ) > 0 ) {
+										if ( $params['organizer-filter'] == 'yes' && is_array( $organizer_lists ) && sizeof( $organizer_lists ) > 0 ) {
 											?>
                                             <label>
                                                 <select class="formControl" name="filter_with_organizer">

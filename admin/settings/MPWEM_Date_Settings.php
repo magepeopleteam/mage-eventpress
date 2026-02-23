@@ -173,7 +173,7 @@
                                         <td><?php self::time_item( 'event_end_time_normal', $end_time ); ?></td>
                                         <td></td>
                                     </tr>
-									<?php if ( sizeof( $more_dates ) > 0 ) {
+									<?php if ( is_array($more_dates) && sizeof( $more_dates ) > 0 ) {
                                         $count=0;
                                         ?>
 										<?php foreach ( $more_dates as $more_date ) { ?>
@@ -445,7 +445,7 @@
 										<?php do_action( 'mep_date_table_body_default_date', $post_id ); ?>
                                         <td></td>
                                     </tr>
-									<?php if ( sizeof( $more_dates ) > 0 ) {
+									<?php if ( is_array($more_dates) && sizeof( $more_dates ) > 0 ) {
 										$count=0;
                                         ?>
 										<?php foreach ( $more_dates as $more_date ) { ?>
@@ -794,18 +794,26 @@
                         <div class="mpwem_settings_area">
                             <div class="mpwem_item_insert mpwem_sortable_area">
 								<?php
-									$all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
-									$off_dates     = array();
-									foreach ( $all_off_dates as $off_date ) {
-										$off_dates[] = $off_date['mep_ticket_off_date'];
-									}
-									if ( sizeof( $off_dates ) ) {
-										foreach ( $off_dates as $off_date ) {
-											if ( $off_date ) {
-												self::off_date_item( $off_date );
-											}
-										}
-									}
+                                    $all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
+                                    $off_dates = array();
+                                    if ( is_array( $all_off_dates ) ) {
+                                        foreach ( $all_off_dates as $off_date ) {
+                                            if ( is_array( $off_date ) && isset( $off_date['mep_ticket_off_date'] ) ) {
+                                                $off_dates[] = $off_date['mep_ticket_off_date'];
+                                            }
+                                            // যদি string হয় (backward compatibility)
+                                            elseif ( is_string( $off_date ) ) {
+                                                $off_dates[] = $off_date;
+                                            }
+                                        }
+                                    }
+                                    if ( ! empty( $off_dates ) ) {
+                                        foreach ( $off_dates as $off_date ) {
+                                            if ( ! empty( $off_date ) ) {
+                                                self::off_date_item( $off_date );
+                                            }
+                                        }
+                                    }
 								?>
                             </div>
 							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
@@ -998,7 +1006,7 @@
                                 </thead>
                                 <tbody class="mpwem_sortable_area mpwem_item_insert">
 								<?php
-									if ( sizeof( $special_dates ) > 0 ) {
+									if ( is_array( $special_dates ) && sizeof( $special_dates ) > 0 ) {
 										foreach ( $special_dates as $special_date ) {
 											$this->special_on_day_item( $special_date );
 										}
@@ -1080,8 +1088,8 @@
                         </thead>
                         <tbody class="mpwem_sortable_area mpwem_item_insert">
 						<?php
-							$time_slots = sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
-							if ( sizeof( $time_slots ) > 0 ) {
+							$time_slots = is_array($time_slots) && sizeof( $time_slots ) > 0 ? $time_slots : maybe_unserialize( MPWEM_Global_Function::get_post_info( $tour_id, $key, array() ) );
+							if ( is_array($time_slots) && sizeof( $time_slots ) > 0 ) {
 								foreach ( $time_slots as $time_slot ) {
 									$this->time_slot_item( $slot_name, $time_name, $time_slot );
 								}

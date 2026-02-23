@@ -368,7 +368,7 @@
 			public function event_city_list() {
 				ob_start();
 				$city_lists = MPWEM_Query::get_all_post_meta_value( 'mep_city' );
-				if ( sizeof( $city_lists ) > 0 ) {
+				if ( is_array( $city_lists ) && sizeof( $city_lists ) > 0 ) {
 					?>
                     <div class='mep-city-list'>
                         <ul>
@@ -395,7 +395,7 @@
 					$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 					$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 					$speaker_status            = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
-					if ( $speaker_status == 'yes' && sizeof( $speaker_lists ) > 0 ) { ?>
+					if ( $speaker_status == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                         <div class="default_theme mpwem_style">
                             <div class="event_speaker_list_area">
 								<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
@@ -404,7 +404,7 @@
 					<?php }
 				} else {
 					$speaker_lists = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
-					if ( sizeof( $speaker_lists ) > 0 ) {
+					if ( is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) {
 						?>
                         <div class="default_theme mpwem_style">
                             <div class="event_speaker_list_area">

@@ -24,7 +24,7 @@
 					$post_id   = $post_id > 0 ? $post_id : get_the_id();
 					$image_ids = $this->get_slider_ids( $post_id, 'mep_gallery_images' );
 					if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 && $display == 'on' ) {
-						if ( $type == 'slider' && sizeof( $image_ids ) > 1 ) {
+						if ( $type == 'slider' && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
 							$this->slider( $post_id, $image_ids );
 						} else {
 							$this->post_thumbnail( $image_ids[0] );
@@ -67,7 +67,7 @@
 									?>
                                     <div class="_pab_top_left">
                                         <button type="button" class="_button_default_bgWhite_text_default" data-target-popup="superSlider" data-slide-index="1">
-											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . sizeof( $image_ids ) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
+											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . (is_array( $image_ids ) ? sizeof( $image_ids ) : 0) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
                                         </button>
                                     </div>
 									<?php
@@ -114,7 +114,7 @@
 						?>
 						<?php
 							$icon = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
-							if ( ( $icon == 'icon' || $popup_slider_icon == 'on' ) && sizeof( $image_ids ) > 1 ) {
+							if ( ( $icon == 'icon' || $popup_slider_icon == 'on' ) && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
 								$this->icon_indicator( $popup_slider_icon );
 							}
 						?>
@@ -157,7 +157,7 @@
                             <div data-bg-image="<?php echo esc_html( $image_url ); ?>"></div>
                             <div class="sliderMoreItem">
                                 <span class="fas fa-plus"></span>
-								<?php echo sizeof( $image_ids ) - 4; ?>
+								<?php echo (is_array( $image_ids ) ? sizeof( $image_ids ) : 0) - 4; ?>
                                 <span class="far fa-image"></span>
                             </div>
                         </div>

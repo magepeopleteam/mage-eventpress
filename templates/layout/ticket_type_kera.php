@@ -15,7 +15,7 @@
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ), $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
-		if ( sizeof( $ticket_types ) > 0 ) {
+		if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
 			$categories  = MPWEM_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
 			$group_name  = '';
@@ -28,7 +28,7 @@
 					if ( $ticket_group && in_array( $ticket_group, $categories ) ) {
 						$meta_id            = MPWEM_Global_Function::get_meta_id_by_name( 'mep_tic_cat', 'name', $ticket_group );
 						$ticket_group_order = '';
-						if ( sizeof( $new_tickets ) > 0 ) {
+						if ( is_array( $new_tickets ) && sizeof( $new_tickets ) > 0 ) {
 							$exit = 0;
 							foreach ( $new_tickets as $key => $new_ticket ) {
 								if ( $new_ticket['group'] == $ticket_group ) {
@@ -59,7 +59,7 @@
 			}
 			ksort( $new_tickets );
 			//echo '<pre>';print_r($new_tickets);echo '</pre>';
-			if ( sizeof( $new_tickets ) > 0 ) {
+			if ( is_array( $new_tickets ) && sizeof( $new_tickets ) > 0 ) {
 				?>
                 <div class="mpTabs kera_ticket_area">
                     <div class="tabLists">
@@ -89,7 +89,7 @@
 										$exit_avail   = 0;
 										$ticket_types = $tickets['info'];
 										$count        = 0;
-										if ( sizeof( $ticket_types ) > 0 ) { ?>
+										if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) { ?>
                                             <div class="data-label">
                                                 <p><?php echo esc_html( $tickets['group'] ); ?></p>
                                                 <p><?php echo esc_html__( 'Price', 'mage-eventpress' ); ?></p>

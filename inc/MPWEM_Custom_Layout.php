@@ -173,7 +173,7 @@
                     <div class="mp_multi_image">
 						<?php
 							$all_images = explode( ',', $images );
-							if ( $images && sizeof( $all_images ) > 0 ) {
+							if ( $images && is_array( $all_images ) && sizeof( $all_images ) > 0 ) {
 								foreach ( $all_images as $image ) {
 									?>
                                     <div class="mp_multi_image_item" data-image-id="<?php echo esc_attr( $image ); ?>">

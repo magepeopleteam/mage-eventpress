@@ -53,10 +53,10 @@
 							<div class="popupBody">
 								<?php
 									$icons = $this->all_icon_array();
-									if (sizeof($icons) > 0) {
+									if (is_array($icons) && sizeof($icons) > 0) {
 										$total_icon = 0;
 										foreach ($icons as $icon) {
-											$total_icon += sizeof($icon['icon']);
+											$total_icon += (is_array($icon['icon']) ? sizeof($icon['icon']) : 0);
 										}
 										?>
 										<div class="dFlex">
@@ -67,14 +67,14 @@
 												</li>
 												<?php foreach ($icons as $key => $icon) { ?>
 													<li data-icon-menu="<?php echo esc_attr($key); ?>">
-														<?php echo esc_html($icon['title']) . '&nbsp;<strong>' . esc_html(sizeof($icon['icon'])) . '</strong>'; ?>
+														<?php echo esc_html($icon['title']) . '&nbsp;<strong>' . esc_html(is_array($icon['icon']) ? sizeof($icon['icon']) : 0) . '</strong>'; ?>
 													</li>
 												<?php } ?>
 											</ul>
 											<div class="popup_all_icon">
 												<?php foreach ($icons as $key => $icon) { ?>
 													<div class="popupTabItem" data-icon-list="<?php echo esc_attr($key); ?>" data-icon-title="<?php echo esc_attr($icon['title']); ?>">
-														<h5 class="_text_theme"><?php echo esc_html($icon['title']) . '&nbsp;(<strong>' . esc_html(sizeof($icon['icon'])) . '</strong>)'; ?></h5>
+														<h5 class="_text_theme"><?php echo esc_html($icon['title']) . '&nbsp;(<strong>' . esc_html(is_array($icon['icon']) ? sizeof($icon['icon']) : 0) . '</strong>)'; ?></h5>
 														<div class="divider"></div>
 														<div class="itemIconArea">
 															<?php foreach ($icon['icon'] as $icon => $item) { ?>
@@ -119,7 +119,7 @@
 					<div class="mp_multi_image">
 						<?php
 							$all_images = explode(',', $images);
-							if ($images && sizeof($all_images) > 0) {
+							if ($images && is_array($all_images) && sizeof($all_images) > 0) {
 								foreach ($all_images as $image) {
 									?>
 									<div class="mp_multi_image_item" data-image-id="<?php echo esc_attr($image); ?>">

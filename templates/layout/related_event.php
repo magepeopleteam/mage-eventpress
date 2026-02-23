@@ -6,7 +6,7 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$event_infos     = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$event_infos     = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$related_tours   = array_key_exists( 'event_list', $event_infos ) ? $event_infos['event_list'] : [];
 
 	$display_related = array_key_exists( 'display_related', $event_infos ) ? $event_infos['display_related'] : 'on';

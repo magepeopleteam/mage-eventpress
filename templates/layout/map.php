@@ -10,7 +10,7 @@
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$map_status                = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
 	$mep_org_address           = array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
 	$venue_value               = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';

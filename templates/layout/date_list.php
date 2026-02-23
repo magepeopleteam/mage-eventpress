@@ -4,16 +4,16 @@
 	} // Cannot access pages directly.
 	$event_id                  = $event_id ?? 0;
 	$event_infos               = $event_infos ?? [];
-	$event_infos               = sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
 	$all_dates                 = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-	$all_dates                 = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+	$all_dates                 = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
 	$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$mep_show_end_datetime     = array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
 	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$date_count                = 0;
-	if ( sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
+	if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
         <div class="date_list_area">
 			<?php
 				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
@@ -46,7 +46,7 @@
 					}
 					if ( $date_type == 'no' ) {
 						$more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
-						if ( sizeof( $more_dates ) > 0 ) {
+						if ( is_array( $more_dates ) && sizeof( $more_dates ) > 0 ) {
 							$count       = 0;
 							$all_dates   = [];
 							$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 ) * 60;
@@ -67,10 +67,10 @@
 									$all_dates[ $count ]['end']  = $more_end_date_time;
 								}
 							}
-							if ( sizeof( $all_dates ) > 1 ) {
+							if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 ) {
 								usort( $all_dates, "MPWEM_Global_Function::sort_date_array" );
 							}
-							if ( sizeof( $all_dates ) > 0 ) {
+							if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 								foreach ( $all_dates as $dates ) {
 									$start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
 									$end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
@@ -108,11 +108,11 @@
                         <div class="_layout_info_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
                             <div class="date_item">
                                 <?php
-						if ( sizeof( $all_times )>0 ) {
-                            if(sizeof($all_times)==1){
+						if ( is_array( $all_times ) && sizeof( $all_times )>0 ) {
+                            if(is_array($all_times) && sizeof($all_times)==1){
 	                            foreach ( $all_times as $times ) {
 		                            $time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
-		                            if ( sizeof( $time_info ) > 0 ) {
+		                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
 			                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
 			                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 			                            if ( $time ) {
@@ -128,7 +128,7 @@
                             }else{
                                 $fist_time=current($all_times);
 	                            $time_info = array_key_exists( 'start', $fist_time ) ? $fist_time['start'] : [];
-	                            if ( sizeof( $time_info ) > 0 ) {
+	                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
 		                            $label = array_key_exists( 'label', $fist_time ) ? $fist_time['label'] : '';
 		                            $time  = array_key_exists( 'time', $fist_time ) ? $fist_time['time'] : '';
 		                            if ( $time ) {
@@ -140,10 +140,10 @@
 			                            <?php
 		                            }
 	                            }
-	                            if ( sizeof( $all_times ) ) {
+	                            if ( is_array( $all_times ) && sizeof( $all_times ) ) {
 		                            foreach ( $all_times as $times ) {
 			                            $time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
-			                            if ( sizeof( $time_info ) > 0 ) {
+			                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
 				                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
 				                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 				                            if ( $time ) {

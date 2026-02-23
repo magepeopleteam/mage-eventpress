@@ -22,7 +22,7 @@
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 		$count        = 0;
-		if ( sizeof( $ticket_types ) > 0 ) { ?>
+		if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {

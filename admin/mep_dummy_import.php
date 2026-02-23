@@ -75,7 +75,7 @@
 							foreach ($dummy as $taxonomy => $dummy_taxonomy) {
 								if (taxonomy_exists($taxonomy)) {
 									$check_terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false));
-									if (is_string($check_terms) || sizeof($check_terms) == 0) {
+									if (is_string($check_terms) || (is_array($check_terms) && sizeof($check_terms) == 0)) {
 										foreach ($dummy_taxonomy as $taxonomy_data) {
 											$term = wp_insert_term($taxonomy_data['name'], $taxonomy);
 											if (array_key_exists('tax_data', $taxonomy_data)) {

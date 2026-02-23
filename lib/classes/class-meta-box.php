@@ -63,11 +63,14 @@ if (!class_exists('AddMetaBox')) {
 			}
 
 
-			if (!empty($get_option_name)) :
-				$option_value = serialize(stripslashes_deep(mage_array_strip($_POST[$get_option_name])));
-				update_post_meta($post_id, $get_option_name, $option_value);
-			else :
-
+if ( ! empty( $get_option_name ) ) {
+    if ( isset( $_POST[ $get_option_name ] ) ) {
+        $option_value = mage_array_strip(
+            wp_unslash( $_POST[ $get_option_name ] )
+        );
+        update_post_meta( $post_id, $get_option_name, $option_value );
+    }
+}else{
 				foreach ($this->get_panels() as $panelsIndex => $panel) :
 					foreach ($panel['sections'] as $sectionIndex => $section) :
 						foreach ($section['options'] as $option) :
@@ -85,7 +88,7 @@ if (!class_exists('AddMetaBox')) {
 						endforeach;
 					endforeach;
 				endforeach;
-			endif;
+			}
 		}
 
 		public function mp_event_all_in_tab_menu_list()

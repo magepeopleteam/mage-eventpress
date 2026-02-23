@@ -55,7 +55,7 @@
 				);
 			}			
 			public function date_picker_js( $selector, $dates ) {
-				if ( sizeof( $dates ) > 0 ) {
+				if ( is_array( $dates ) && sizeof( $dates ) > 0 ) {
 					$start_date  = current( $dates );
 					$start_year  = date( 'Y', strtotime( $start_date ) );
 					$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );
@@ -292,7 +292,7 @@
 					$image_id = $image_id ?: self::get_post_info( $post_id, 'mep_list_thumbnail' );
 					if ( ! $image_id ) {
 						$image_ids = MPWEM_Global_Function::get_post_info( $post_id, 'mep_gallery_images', array() );
-						$image_id  = sizeof( $image_ids ) > 0 ? current( $image_ids ) : $image_id;
+						$image_id  = (is_array( $image_ids ) && sizeof( $image_ids ) > 0) ? current( $image_ids ) : $image_id;
 					}
 				}
 				return wp_get_attachment_image_url( $image_id, $size );
@@ -326,7 +326,7 @@
 			public static function all_taxonomy_as_text( $post_id, $taxonomy ): string {
 				$taxonomy_text = '';
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
-				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && is_array( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_text = $taxonomy_text ? $taxonomy_text . '- ' . $category->name : $category->name;
 					}
@@ -336,7 +336,7 @@
 			public static function all_taxonomy_data( $post_id, $taxonomy ) {
 				$taxonomy_data = [];
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
-				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && is_array( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $category->name;
 					}
@@ -347,7 +347,7 @@
 				$class         = null;
 				$all_taxonomy  = get_the_terms( $post_id, $taxonomy );
 				$taxonomy_data = [];
-				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && is_array( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $unq_id . 'mage-' . $category->term_id;
 					}
@@ -406,7 +406,7 @@
 			//=================//
 			public static function array_to_string( $array ) {
 				$ids = '';
-				if ( sizeof( $array ) > 0 ) {
+				if ( is_array( $array ) && sizeof( $array ) > 0 ) {
 					foreach ( $array as $data ) {
 						if ( $data ) {
 							$ids = $ids ? $ids . ',' . $data : $data;
@@ -507,7 +507,7 @@
 			public static function all_taxonomy_as_text( $event_id, $taxonomy ): string {
 				$taxonomy_text = '';
 				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
-				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && is_array( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_text = $taxonomy_text ? $taxonomy_text . '- ' . $category->name : $category->name;
 					}
@@ -517,7 +517,7 @@
 			public static function all_taxonomy_data( $event_id, $taxonomy ) {
 				$taxonomy_data = [];
 				$all_taxonomy  = get_the_terms( $event_id, $taxonomy );
-				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
+				if ( $all_taxonomy && ! is_wp_error( $all_taxonomy ) && is_array( $all_taxonomy ) && sizeof( $all_taxonomy ) > 0 ) {
 					foreach ( $all_taxonomy as $category ) {
 						$taxonomy_data[] = $category->name;
 					}
@@ -877,7 +877,7 @@
 			}
 			public static function array_to_string( $array ) {
 				$ids = '';
-				if ( sizeof( $array ) > 0 ) {
+				if ( is_array( $array ) && sizeof( $array ) > 0 ) {
 					foreach ( $array as $data ) {
 						if ( $data ) {
 							$ids = $ids ? $ids . ',' . $data : $data;

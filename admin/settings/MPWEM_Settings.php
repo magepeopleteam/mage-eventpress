@@ -205,7 +205,7 @@
 						$end_date_more   = isset( $_POST['event_more_end_date_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_date_normal'] ) ) : [];
 						$end_time_more   = isset( $_POST['event_more_end_time_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_time_normal'] ) ) : [];
 						$more_dates      = [];
-						if ( sizeof( $start_date_more ) > 0 && sizeof( $end_date_more ) ) {
+						if ( is_array($start_date_more) && sizeof( $start_date_more ) > 0 && is_array($end_date_more) && sizeof( $end_date_more ) ) {
 							foreach ( $start_date_more as $key => $start_date ) {
 								if ( $start_date && $end_date_more[ $key ] ) {
 									$more_dates[ $key ]['event_more_start_date'] = $start_date;
@@ -217,8 +217,8 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-						$md                    = sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						$md                    = is_array($more_dates) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
+						$event_expire_datetime = is_array($md) && sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} elseif ( $date_type == 'yes' ) {
 						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
@@ -239,7 +239,7 @@
 						$end_date_more   = isset( $_POST['event_more_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_date'] ) ) : [];
 						$end_time_more   = isset( $_POST['event_more_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_time'] ) ) : [];
 						$more_dates      = [];
-						if ( sizeof( $start_date_more ) > 0 && sizeof( $end_date_more ) ) {
+						if ( is_array($start_date_more) && sizeof( $start_date_more ) > 0 && is_array($end_date_more) && sizeof( $end_date_more ) ) {
 							foreach ( $start_date_more as $key => $start_date ) {
 								if ( $start_date && $end_date_more[ $key ] ) {
 									$more_dates[ $key ]['event_more_start_date'] = $start_date;
@@ -251,8 +251,8 @@
 						}
 						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
 						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
-						$md                    = sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
-						$event_expire_datetime = sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						$md                    = is_array($more_dates) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
+						$event_expire_datetime = (is_array($md) && sizeof( $md ) > 0) ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
 						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
 					} else {
 						$start_date = isset( $_POST['event_start_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_everyday'] ) ) : '';
@@ -277,7 +277,7 @@
 						update_post_meta( $post_id, 'mep_ticket_offdays', $off_days );
 						$all_off_dates = [];
 						$off_dates     = isset( $_POST['mep_ticket_off_dates'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_ticket_off_dates'] ) ) : [];
-						if ( sizeof( $off_dates ) > 0 ) {
+						if ( is_array($off_dates) && sizeof( $off_dates ) > 0 ) {
 							foreach ( $off_dates as $key => $off_date ) {
 								if ( $off_date ) {
 									$all_off_dates[ $key ]['mep_ticket_off_date'] = $off_date;
@@ -308,7 +308,7 @@
 							for ( $i = 0; $i < count( $start_date ); $i ++ ) {
 								$time_labels = isset( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ) : [];
 								$times       = isset( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ) : [];
-								if ( $start_date[ $i ] != '' && $end_date[ $i ] != '' && sizeof( $time_labels ) > 0 && sizeof( $times ) > 0 ) {
+								if ( $start_date[ $i ] != '' && $end_date[ $i ] != '' && is_array($time_labels) && sizeof( $time_labels ) > 0 && is_array($times) && sizeof( $times ) > 0 ) {
 									$special_dates[ $i ]['date_label'] = $date_labels[ $i ];
 									$special_dates[ $i ]['start_date'] = date( 'Y-m-d', strtotime( $start_date[ $i ] ) );
 									$special_dates[ $i ]['end_date']   = date( 'Y-m-d', strtotime( $end_date[ $i ] ) );
@@ -422,9 +422,9 @@
 				}
 				/********************/
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$event_rt_status              = sanitize_text_field( $_POST['mep_rt_event_status'] );
-					$event_rt_atdnce_mode         = sanitize_text_field( $_POST['mep_rt_event_attandence_mode'] );
-					$event_rt_prv_date            = sanitize_text_field( $_POST['mep_rt_event_prvdate'] );
+					$event_rt_status 			  = isset( $_POST['mep_rt_event_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_status'] ) ): '';
+					$event_rt_atdnce_mode 		  = isset( $_POST['mep_rt_event_attandence_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_attandence_mode'] ) ): '';
+					$event_rt_prv_date 			  = isset( $_POST['mep_rt_event_prvdate'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_prvdate'] ) ): '';
 					$seat                         = 0;
 					$mep_event_template_file_name = isset( $_POST['mep_event_template'] ) && mep_isValidFilename( $_POST['mep_event_template'] ) ? sanitize_file_name( $_POST['mep_event_template'] ) : "default-theme.php";
 					$mep_event_template           = mep_template_file_validate( $mep_event_template_file_name );
@@ -435,7 +435,7 @@
 					update_post_meta( $post_id, 'mep_rt_event_prvdate', $event_rt_prv_date );
 					update_post_meta( $post_id, 'mep_event_template', $mep_event_template );
 					update_post_meta( $post_id, '_stock', $seat );
-					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? htmlspecialchars( mage_array_strip( $_POST['mp_event_virtual_type_des'] ) ) : "";
+					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? wp_kses_post( wp_unslash( $_POST['mp_event_virtual_type_des'] ) ) : '';					
 					update_post_meta( $post_id, 'mp_event_virtual_type_des', $mp_event_virtual_type_des );
 				}
 				$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_show_upcoming_event'] ) ) : '';
@@ -447,7 +447,7 @@
 				$mep_faq_title             = isset( $_POST['mep_faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_title'] ) ) : [];
 				$mep_faq_content             = isset( $_POST['mep_faq_content'] ) ? wp_unslash( $_POST['mep_faq_content'] ) : [];
                 $faqs=[];
-				if ( sizeof( $mep_faq_title ) > 0) {
+				if ( is_array($mep_faq_title) && sizeof( $mep_faq_title ) > 0) {
                     foreach ($mep_faq_title as $key=>$title){
                         if($title){
 	                        $faqs[$key]['mep_faq_title']=$title;
@@ -468,7 +468,7 @@
 				$all_global   = [];
 				$global_label = isset( $_POST[ $name . '_label' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_label' ] ) ) : [];
 				$global_time  = isset( $_POST[ $name . '_time' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_time' ] ) ) : [];
-				if ( sizeof( $global_time ) > 0 && sizeof( $global_label ) ) {
+				if ( is_array($global_time) && sizeof( $global_time ) > 0 && is_array($global_label) && sizeof( $global_label ) ) {
 					foreach ( $global_time as $key => $time ) {
 						if ( $time && $global_label[ $key ] ) {
 							$all_global[ $key ]['mep_ticket_time_name'] = $global_label[ $key ];

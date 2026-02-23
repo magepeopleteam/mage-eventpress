@@ -36,7 +36,7 @@
 			}
 			public static function select_post_id() {
 				$post_ids = MPWEM_Query::get_all_post_ids( 'mep_events' );
-				if ( $post_ids && sizeof( $post_ids ) > 0 ) {
+				if ( is_array( $post_ids ) && sizeof( $post_ids ) > 0 ) {
 					?>
                     <label>
                         <select class="formControl" name="mpwem_post_id">
@@ -71,7 +71,7 @@
 			}
 			public static function select_category() {
 				$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
-				if ( $category_lists && sizeof( $category_lists ) > 0 ) {
+				if ( is_array( $category_lists ) && sizeof( $category_lists ) > 0 ) {
 					?>
                     <label>
                         <select class="formControl" name="filter_with_category">
@@ -84,10 +84,10 @@
 				<?php }
 			}
 			public static function load_date( $event_id, $all_dates ) {
-				if ( sizeof( $all_dates ) > 0 ) {
+				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
-						if ( sizeof( $all_dates ) == 1 ) {
+						if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {
 							$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
 							$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
 							?>
@@ -120,7 +120,7 @@
                                 <input type="hidden" name="mpwem_date_time" value="" required/>
                                 <input id="mpwem_date_time" type="text" value="" class="formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
                             </label>
-							<?php if ( $display_time != 'no' && sizeof( $all_times ) > 0 ) { ?>
+							<?php if ( $display_time != 'no' && is_array( $all_times ) && sizeof( $all_times ) > 0 ) { ?>
                                 <div class="mpwem_time_area">
                                 </div>
 							<?php } ?>
@@ -306,7 +306,7 @@
 				}
 				$form_array   = [];
 				$custom_forms = MPWEM_Global_Function::get_post_info( $form_id, 'mep_form_builder_data', [] );
-				if ( sizeof( $custom_forms ) > 0 ) {
+				if ( is_array( $custom_forms ) && sizeof( $custom_forms ) > 0 ) {
 					$conditional_infos = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_infos', [] );
 					$conditional_check = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_form_check', 'off' );
 					foreach ( $custom_forms as $custom_form ) {
@@ -322,7 +322,7 @@
 							$form_array[ $id ]['data']     = array_key_exists( 'mep_fbc_dp_data', $custom_form ) ? $custom_form['mep_fbc_dp_data'] : '';
 							$form_array[ $id ]['tag']      = array_key_exists( 'mep_title_type', $custom_form ) ? $custom_form['mep_title_type'] : '';
 							$active_condition              = array_key_exists( 'mep_active_conditional', $custom_form ) ? $custom_form['mep_active_conditional'] : 0;
-							if ( $conditional_check == 'on' && $active_condition > 0 && sizeof( $conditional_infos ) > 0 ) {
+							if ( $conditional_check == 'on' && $active_condition > 0 && is_array( $conditional_infos ) && sizeof( $conditional_infos ) > 0 ) {
 								foreach ( $conditional_infos as $conditional_info ) {
 									$type_id = array_key_exists( 'child_id', $conditional_info ) ? $conditional_info['child_id'] : '';
 									if ( $id == $type_id ) {

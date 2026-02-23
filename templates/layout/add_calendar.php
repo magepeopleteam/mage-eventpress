@@ -6,8 +6,8 @@
 	if ( $hide_calendar_details == 'no' ) {
 		$event_id  = $event_id ?? 0;
 		$all_dates = $all_dates ?? [];
-		$all_dates = sizeof( $all_dates ) > 0 ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-		if ( sizeof( $all_dates ) > 0 ) {
+		$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+		if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 			$upcoming_date = $upcoming_date ?? '';
 			$date_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 			$end_time      = '';

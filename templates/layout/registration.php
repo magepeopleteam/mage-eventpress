@@ -8,7 +8,7 @@
 	} // Cannot access pages directly.
 	$event_id    = $event_id ?? 0;
 	$event_infos                 = $event_infos ?? [];
-	$event_infos              =sizeof($event_infos)>0 ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
+	$event_infos              = (is_array($event_infos) && sizeof($event_infos)>0) ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
 	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
@@ -26,7 +26,7 @@
 		$reg_status_msg_txt 		= array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
 		$reg_off_msg 				= $reg_status_msg_status == 'on' ? $reg_status_msg_txt : '';
 		if ( $reg_status == 'on' ) {
-			if ( sizeof( $all_dates ) > 0 ) {
+			if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 				$event_member_type = array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
 				$saved_user_role   = array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];
 				// if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {

@@ -25,7 +25,7 @@
 		$ex_services = MPWEM_Global_Function::get_post_info($event_id, 'mep_events_extra_prices', []);
 		//echo '<pre>'; print_r($ex_services); echo '</pre>';
 		$count = 0;
-		if (sizeof($ex_services) > 0) { ?>
+		if (is_array($ex_services) && sizeof($ex_services) > 0) { ?>
             <div class="mpwem_ex_service ">
 				<div class="card-header"><?php esc_html_e('Extra Service', 'mage-eventpress'); ?></div>
                 <div class="card-body">

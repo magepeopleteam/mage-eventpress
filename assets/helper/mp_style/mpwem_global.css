@@ -525,11 +525,11 @@
 	.mpwem_style .formControl::placeholder { color: #0005; }
 	.mpwem_style .formControl:disabled { background-color: #DDD5; }
 	/***************************/
-	div.mpwem_style .formControl { width: 100%; height: auto; min-width: auto; max-width: inherit; min-height: 34px; border: 1px solid var(--color_border); padding: 5px var(--dmp_xs); font-size: var(--fs); color: var(--d_color); background-color: #F5F8FF; }
+	div.mpwem_style .formControl { width: auto; height: auto; min-width: auto; max-width: inherit; min-height: 34px; border: 1px solid var(--color_border); padding: 5px var(--dmp_xs); font-size: var(--fs); color: var(--d_color); background-color: #F5F8FF; }
 	.mpwem_style .formControl:focus { outline: 0; background-color: #FFF; border-color: #80BDFF; }
 	div.mpwem_style select.formControl {
 		background-image: url("../images/arrow_down.png");background-repeat: no-repeat;background-position: calc(100% - var(--dmp_xs));background-size: auto;
-		-webkit-appearance: none; padding: var(--dmp_xs) 35px var(--dmp_xs) var(--dmp_xs);max-width: 250px;
+		-webkit-appearance: none; padding: var(--dmp_xs) 35px var(--dmp_xs) var(--dmp_xs) !important;max-width: 250px;
 	}
 	div.mpwem_style select.formControl:focus { background-color: var(--color_theme_aa); }
 	div.mpwem_style .formControl.date_type_without_year,

@@ -79,10 +79,10 @@
 	.mpwem_registration_area .date-time-header { padding: 10px 25px; background: var(--color_theme); border-radius: 12px 12px 0 0; margin-bottom: -10px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px; border: 1px solid var(--color_theme); position: relative; z-index: 1; flex-direction: column; }
 	.mpwem_registration_area .date-time-header .ticket-title { margin: 0; padding: 0; font-size: 18px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area { display: flex; flex-direction: column; align-items: start; gap: 20px; }
-	.mpwem_registration_area .date-time-area label { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; }
+	.mpwem_registration_area .date-time-area label { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; width: 100%; }
 	.mpwem_registration_area .date-time-area label span { font-size: 16px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area label i { color: var(--color_7); }
-	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px; }
+	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px; width: 100%; max-width: 100%; box-sizing: border-box; }
 	.mpwem_registration_area .mpwem_booking_panel { margin-bottom: 20px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); overflow: hidden; }
@@ -132,6 +132,7 @@
 	.mep_smart_theme .mpwem_left_content { max-width: 70%; margin-right: 2%; }
 	.mep_smart_theme .mpwem_right_content { max-width: 30%; width: 100%; }
 	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;}
+	.mpwem_registration_area input#mpwem_date_time { width: 100%; max-width: 100%; box-sizing: border-box; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 12px 0 !important; margin: 0 !important; gap: 8px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item { margin: 0 !important; padding: 0 !important; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body { padding: 15px 20px 20px 20px !important; }
@@ -948,15 +949,6 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-low-stock-warning,
 	.mep-limited-availability-ribbon { font-size: 10px; padding: 4px 8px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 8px 0 !important; gap: 6px; }
-	.mpwem_registration_area .date-time-header { padding: 10px 14px; flex-direction: column; align-items: flex-start; gap: 10px; }
-	.mpwem_registration_area .date-time-header .ticket-title { width: 100%; font-size: 16px; line-height: 1.35; }
-	.mpwem_registration_area .date-time-area { width: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 10px; }
-	.mpwem_registration_area .date-time-area label { width: 100%; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
-	.mpwem_registration_area .date-time-area label span { flex: 1 1 auto; min-width: 0; }
-	.mpwem_registration_area .date-time-area .formControl { width: 100%; min-width: 0; flex: 1 1 100%; }
-	div.mpwem_form_submit_area .mpwem_summery { flex-direction: column; align-items: stretch; gap: 10px; }
-	div.mpwem_form_submit_area .mpwem_summery .total { width: 100%; }
-	div.mpwem_form_submit_area .mpwem_summery button { width: 100%; max-width: 100%; text-align: center; white-space: normal; line-height: 1.3; }
 	div.date_time_location_short .short_item {max-width: 100%;}
 	div.spring_area .spring_item_2 {width: 100%;order: 3;}
 	div.spring_area .spring_item_3 {width: 100%;order: 2;}
@@ -964,6 +956,101 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.mep-event-list-loop div.spring_area .mepev-ribbons {position: absolute;}
 	div.spring_area .spring_item_4 {width: 100%;}
 	div.mep_event_winter_list div.spring_area .spring_item_2 {width: 100%;}
+	/* Mobile responsive for Ticket Options section */
+	.mpwem_registration_area .date-time-header { 
+		padding: 15px 20px !important; 
+		flex-direction: column !important; 
+		gap: 15px !important; 
+		align-items: stretch !important;
+	}
+	.mpwem_registration_area .date-time-header .ticket-title { 
+		font-size: 17px !important; 
+		text-align: center !important; 
+		width: 100% !important;
+	}
+	.mpwem_registration_area .date-time-area { 
+		flex-direction: row !important; 
+		align-items: center !important; 
+		justify-content: space-between !important;
+		gap: 12px !important; 
+		width: 100% !important;
+		flex-wrap: wrap !important;
+	}
+	.mpwem_registration_area .date-time-area label { 
+		flex-direction: row !important; 
+		align-items: center !important; 
+		gap: 8px !important; 
+		width: calc(70% - 6px) !important;
+		position: relative !important;
+		flex: 0 0 calc(70% - 6px) !important;
+	}
+	.mpwem_registration_area .date-time-area label span { 
+		width: auto !important; 
+		text-align: left !important; 
+		font-size: 15px !important;
+		display: inline-block !important;
+		white-space: nowrap !important;
+		flex-shrink: 0 !important;
+	}
+	.mpwem_registration_area .date-time-area label i { 
+		position: absolute !important;
+		right: 12px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		pointer-events: none !important;
+	}
+	.mpwem_registration_area .date-time-area .formControl { 
+		width: 100% !important; 
+		min-width: 0 !important; 
+		max-width: 100% !important; 
+		box-sizing: border-box !important;
+		padding-right: 40px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area input#mpwem_date_time { 
+		width: 100% !important; 
+		min-width: 0 !important; 
+		max-width: 100% !important;
+		box-sizing: border-box !important;
+		padding-right: 40px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area .date-time-area select.formControl {
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+		box-sizing: border-box !important;
+		padding-right: 40px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area .mpwem_time_area {
+		width: calc(30% - 6px) !important;
+		flex: 0 0 calc(30% - 6px) !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label {
+		width: 100% !important;
+		flex-direction: row !important;
+		align-items: center !important;
+		position: relative !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label span {
+		width: auto !important;
+		display: inline-block !important;
+		white-space: nowrap !important;
+		flex-shrink: 0 !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label i {
+		position: absolute !important;
+		right: 12px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		pointer-events: none !important;
+	}
+	.mpwem_registration_area .mpwem_time_area select.formControl {
+		width: 100% !important;
+		padding-right: 40px !important;
+		flex: 1 !important;
+	}
 }
 @media only screen and (max-width: 650px) {
 	.mep_speaker_thumbnail { padding-top: 50px; }
@@ -984,7 +1071,94 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep_list_thumb,
 	.mep_list_event_details { width: 100%; min-height: 100px; }
 	div.one_column { -webkit-flex-direction: column; flex-direction: column; }
-	.mpwem_registration_area .date-time-area .formControl { width: 100%; }
+	/* Mobile responsive for Ticket Options section - 650px */
+	.mpwem_registration_area .date-time-header { 
+		padding: 12px 15px !important; 
+		flex-direction: column !important; 
+		gap: 10px !important;
+	}
+	.mpwem_registration_area .date-time-header .ticket-title { 
+		font-size: 16px !important; 
+		text-align: center !important; 
+		width: 100% !important;
+	}
+	.mpwem_registration_area .date-time-area { 
+		flex-direction: row !important; 
+		align-items: center !important; 
+		justify-content: space-between !important;
+		gap: 10px !important; 
+		width: 100% !important;
+		flex-wrap: wrap !important;
+	}
+	.mpwem_registration_area .date-time-area label { 
+		flex-direction: row !important; 
+		align-items: center !important; 
+		gap: 6px !important; 
+		width: calc(70% - 5px) !important;
+		position: relative !important;
+		flex: 0 0 calc(70% - 5px) !important;
+	}
+	.mpwem_registration_area .date-time-area label span { 
+		font-size: 14px !important; 
+		width: auto !important; 
+		text-align: left !important;
+		display: inline-block !important;
+		white-space: nowrap !important;
+		flex-shrink: 0 !important;
+	}
+	.mpwem_registration_area .date-time-area label i { 
+		position: absolute !important;
+		right: 10px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		pointer-events: none !important;
+		font-size: 14px !important;
+	}
+	.mpwem_registration_area .date-time-area .formControl { 
+		width: 100% !important; 
+		min-width: 0 !important; 
+		max-width: 100% !important; 
+		box-sizing: border-box !important;
+		padding: 10px 35px 10px 12px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area input#mpwem_date_time { 
+		width: 100% !important; 
+		min-width: 0 !important; 
+		max-width: 100% !important;
+		box-sizing: border-box !important;
+		padding: 10px 35px 10px 12px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area .date-time-area select.formControl {
+		width: 100% !important;
+		padding: 10px 35px 10px 12px !important;
+		flex: 1 !important;
+	}
+	.mpwem_registration_area .mpwem_time_area {
+		width: calc(30% - 5px) !important;
+		flex: 0 0 calc(30% - 5px) !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label {
+		flex-direction: row !important;
+		align-items: center !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label span {
+		width: auto !important;
+		white-space: nowrap !important;
+		flex-shrink: 0 !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label i {
+		position: absolute !important;
+		right: 10px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		font-size: 14px !important;
+	}
+	.mpwem_registration_area .mpwem_time_area select.formControl {
+		padding: 10px 35px 10px 12px !important;
+		flex: 1 !important;
+	}
 }
 @media only screen and (max-width: 500px) {
 	.mep-events-wrapper p#mep_btn_notice { font-size: 12px; }
@@ -1002,6 +1176,71 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.three_column,
 	div.four_column { width: 100%; margin: 0 0 15px 0; }
 	div.column_style { min-width: calc(100% - 14px) !important; }
+	/* Mobile responsive for Ticket Options section - 500px */
+	.mpwem_registration_area .date-time-header { 
+		padding: 10px 12px !important;
+	}
+	.mpwem_registration_area .date-time-header .ticket-title { 
+		font-size: 15px !important;
+	}
+	.mpwem_registration_area .date-time-area {
+		gap: 8px !important;
+	}
+	.mpwem_registration_area .date-time-area label {
+		width: calc(70% - 4px) !important;
+		flex: 0 0 calc(70% - 4px) !important;
+		gap: 4px !important;
+	}
+	.mpwem_registration_area .date-time-area label span { 
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .date-time-area label i { 
+		font-size: 13px !important;
+		right: 8px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+	}
+	.mpwem_registration_area .date-time-area .formControl { 
+		padding: 8px 32px 8px 8px !important; 
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area input#mpwem_date_time {
+		padding: 8px 32px 8px 8px !important;
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .date-time-area select.formControl {
+		padding: 8px 32px 8px 8px !important;
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .mpwem_time_area {
+		width: calc(30% - 4px) !important;
+		flex: 0 0 calc(30% - 4px) !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label {
+		gap: 4px !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label span {
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .mpwem_time_area label i {
+		right: 8px !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .mpwem_time_area select.formControl {
+		padding: 8px 32px 8px 8px !important;
+		font-size: 13px !important;
+	}
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header,
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-header { 
+		padding: 15px 18px; 
+		font-size: 16px; 
+	}
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name,
+	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-info .ticket-name { 
+		font-size: 15px; 
+	}
 }
 /********************************************************************************************************************************************/
 /* Dark theme compatibility */
@@ -1021,10 +1260,12 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-low-stock-warning::before,
 	.mep-limited-availability-ribbon::before { animation: none; }
 }
+
 	.mpwem_registration_area .date-time-area .formControl{
 		min-width: min(75px, 100%);
 	}
 
+
 	.woocommerce-order-details ul.wc-item-meta li > p {
-		padding: 0; !important;
+		padding: 0px !important;
 	}

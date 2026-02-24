@@ -1022,7 +1022,7 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-limited-availability-ribbon::before { animation: none; }
 }
 	.mpwem_registration_area .date-time-area .formControl{
-		min-width: min(200px, 100%);
+		min-width: min(75px, 100%);
 	}
 
 	.woocommerce-order-details ul.wc-item-meta li > p {

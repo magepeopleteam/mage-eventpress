@@ -83,6 +83,7 @@
 	.mpwem_registration_area .date-time-area label span { font-size: 16px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area label i { color: var(--color_7); }
 	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px;  max-width: 100%; box-sizing: border-box; }
+	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px; width: 100%; max-width: 100%; box-sizing: border-box; }
 	.mpwem_registration_area .mpwem_booking_panel { margin-bottom: 20px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); overflow: hidden; }
@@ -304,8 +305,8 @@
 	.mep-event-tags-list a.mep-tag-link { display: inline-block; padding: 5px 15px; margin: 3px 5px 3px 0; background: #F5F5F5; color: #555; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.3s ease; border: 1px solid #E0E0E0;}
 	.mep-event-tags-list a.mep-tag-link:hover { background: var(--color_theme); color: #FFF; border-color: var(--color_theme); transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
 
-	.mpwem_slider_area div.post_thumb {overflow: hidden; aspect-ratio: 4 / 3;}
-	.mpwem_slider_area div.post_thumb img {width: 100%;height: 100%;max-width: 100%;margin: 0 auto; max-height: none; object-fit: cover; display: block; }
+	.mpwem_slider_area div.post_thumb {overflow: hidden;}
+	.mpwem_slider_area div.post_thumb img {width: 100%;height: auto;max-width: 100%;margin: 0 auto; max-height:420px; }
 	.mpwem_slider_area { margin-top: 0; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderAllItem { border-radius: 15px; }
 	.mep_smart_theme .mpwem_slider_area div.superSlider .sliderShowcaseItem { border-radius: 15px; }
@@ -1300,6 +1301,11 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-low-stock-warning::before,
 	.mep-limited-availability-ribbon::before { animation: none; }
 }
+
+	.mpwem_registration_area .date-time-area .formControl{
+		min-width: min(75px, 100%);
+	}
+
 
 	.woocommerce-order-details ul.wc-item-meta li > p {
 		padding: 0px !important;

@@ -79,10 +79,10 @@
 	.mpwem_registration_area .date-time-header { padding: 10px 25px; background: var(--color_theme); border-radius: 12px 12px 0 0; margin-bottom: -10px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px; border: 1px solid var(--color_theme); position: relative; z-index: 1; flex-direction: column; }
 	.mpwem_registration_area .date-time-header .ticket-title { margin: 0; padding: 0; font-size: 18px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area { display: flex; flex-direction: column; align-items: start; gap: 20px; }
-	.mpwem_registration_area .date-time-area label { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; }
+	.mpwem_registration_area .date-time-area label { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; width: 100%; }
 	.mpwem_registration_area .date-time-area label span { font-size: 16px; font-weight: normal; color: var(--color_7); }
 	.mpwem_registration_area .date-time-area label i { color: var(--color_7); }
-	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px; }
+	.mpwem_registration_area .date-time-area .formControl { border-radius: 5px; padding: 10px 15px; width: 100%; max-width: 100%; box-sizing: border-box; }
 	.mpwem_registration_area .mpwem_booking_panel { margin-bottom: 20px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type,
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); overflow: hidden; }
@@ -1022,7 +1022,7 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mep-limited-availability-ribbon::before { animation: none; }
 }
 	.mpwem_registration_area .date-time-area .formControl{
-		min-width: min(75px, 100%);
+		min-width: min(200px, 100%);
 	}
 
 	.woocommerce-order-details ul.wc-item-meta li > p {

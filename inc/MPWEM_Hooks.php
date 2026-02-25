@@ -126,34 +126,48 @@
 			public function get_mpwem_ticket() {
 				// Sanitize and validate input
 				$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-
-                $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
+$dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
 				// Check if post exists and is published
 				if ( ! $post_id || get_post_status( $post_id ) !== 'publish' ) {
 					wp_send_json_error( 'Invalid or unpublished Event.', 'mage-eventpress' );
 					wp_die();
 				}
-				// Trigger your action safely
+				
+				// Get dates and times
 				$all_dates   = MPWEM_Functions::get_dates( $post_id );
 				$all_times   = MPWEM_Functions::get_times( $post_id, $all_dates, $dates );
-                if(is_array($all_times) && sizeof($all_times)>0){
+				
+				// If dates is empty, get the upcoming date
+				if ( empty( $dates ) ) {
+					$dates = MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates, $all_times );
+				}
+				
+				// Process for everyday events with time slots
+                if( is_array($all_times) && sizeof($all_times) > 0 ) {
 	                $start_time = '';
 	                if ( is_array($all_times) && sizeof( $all_times ) > 0 ) {
-		                $all_times  = current( $all_times );
-		                $start_time = array_key_exists( 'start', $all_times ) ? $all_times['start']['time'] : '';
+		                $all_times_current = current( $all_times );
+		                $start_time = array_key_exists( 'start', $all_times_current ) ? $all_times_current['start']['time'] : '';
 	                }
-	                $event_type  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
-                    if($event_type=='everyday') {
-	                    if ( $start_time != '' ) {
+	                
+	                $event_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+	                
+                    if( $event_type == 'everyday' && ! empty( $start_time ) ) {
+	                    // For everyday events, ensure we have both date and time
+	                    if ( ! MPWEM_Global_Function::check_time_exit_date( $dates ) ) {
+		                    // Date doesn't have time, append it
 		                    $dates = $dates . ' ' . $start_time;
 	                    }
-	                    $dates = MPWEM_Global_Function::check_time_exit_date( $dates ) ? date( 'Y-m-d H:i', strtotime( $dates ) ) : date( 'Y-m-d', strtotime( $dates ) );
+	                    // Format the date properly
+	                    $timestamp = strtotime( $dates );
+	                    if ( $timestamp !== false && $timestamp > 0 ) {
+		                    $dates = date( 'Y-m-d H:i', $timestamp );
+	                    }
                     }
                 }
 
-				//echo '<pre>';			print_r($all_times);			echo '</pre>';
 				do_action( 'mpwem_registration_content', $post_id, $all_dates, $all_times, $dates );
-				wp_die(); // Always use wp_die() instead of die() in WordPress
+				wp_die();
 			}
 			public function get_mpwem_time() {
 				$event_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;

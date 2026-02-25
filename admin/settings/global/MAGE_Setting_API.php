@@ -119,6 +119,9 @@
 						$type           = isset( $option['type'] ) ? $option['type'] : 'text';
 						$label          = isset( $option['label'] ) ? $option['label'] : '';
 						$callback       = isset( $option['callback'] ) ? $option['callback'] : array( $this, 'callback_' . $type );
+						if ( ! is_callable( $callback ) ) {
+							$callback = array( $this, 'callback_html' );
+						}
 						
 						$args = array(
 							'id'                => $name,
@@ -320,6 +323,22 @@
 			 */
 			function callback_html( $args ) {
 				echo mep_esc_html($this->get_field_description( $args ));
+			}
+
+			/**
+			 * Displays a section title/heading style field.
+			 *
+			 * @param array $args settings field args
+			 */
+			function callback_title( $args ) {
+				$html = '';
+				if ( ! empty( $args['name'] ) ) {
+					$html .= sprintf( '<h2>%s</h2>', $args['name'] );
+				}
+				if ( ! empty( $args['desc'] ) ) {
+					$html .= sprintf( '<div class="description">%s</div>', $args['desc'] );
+				}
+				echo mep_esc_html( $html );
 			}
 			
 			/**

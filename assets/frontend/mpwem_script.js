@@ -628,20 +628,22 @@ jQuery(document).ready(function ($) {
 
 
 document.querySelectorAll('li').forEach(function(li) {
-
-    // check if this li contains price
+    // চেক করুন এই li তে price আছে কিনা
     if (li.querySelector('.woocommerce-Price-amount')) {
-
         let strong = li.querySelector('.wc-item-meta-label');
 
         if (strong) {
-            let lastNode = strong.lastChild;
+            // strong element এর ভিতরের সব child nodes চেক করুন
+            strong.childNodes.forEach(function(node) {
+                // চেক করুন এটি text node কিনা
+                if (node.nodeType === Node.TEXT_NODE) {
+                    // সব text node থেকে : এবং - রিমুভ করে স্পেস দিন
+                    node.textContent = node.textContent.replace(/[:-]/g, '  ');
 
-            // if last node is text (where ":" exists)
-            if (lastNode && lastNode.nodeType === Node.TEXT_NODE) {
-                lastNode.textContent = lastNode.textContent.replace(':', '');
-            }
+                    // অতিরিক্ত স্পেস কমাতে চাইলে (optional)
+                    //node.textContent = node.textContent.replace(/\s+/g, ' ').trim();
+                }
+            });
         }
     }
-
 });

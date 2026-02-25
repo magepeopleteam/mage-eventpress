@@ -1310,3 +1310,6 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.woocommerce-order-details ul.wc-item-meta li > p {
 		padding: 0px !important;
 	}
+	.mpwem_registration_area .date-time-area label{
+		width: max-content;
+	}

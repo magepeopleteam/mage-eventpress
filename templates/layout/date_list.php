@@ -30,13 +30,13 @@
                                 <div class="date_item">
 									<?php if ( $end_time && $mep_show_end_datetime == 'yes' ) {
 										if ( strtotime( gmdate( 'Y-m-d', strtotime( $start_time ) ) ) == strtotime( gmdate( 'Y-m-d', strtotime( $end_time ) ) ) ) { ?>
-                                            <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_text_theme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
+                                            <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) . ' - ' . MPWEM_Global_Function::date_format( $end_time, 'time' ) ); ?></a>
 										<?php } else { ?>
-                                            <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_text_theme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ).'-'.esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format )); ?></a>
+                                            <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ).'-'.esc_html( MPWEM_Global_Function::date_format( $end_time, $date_format )); ?></a>
 											<?php
 										}
 									} else { ?>
-                                        <a class="<?php echo esc_attr( strtotime( $start_time ) == strtotime( $upcoming_date ) ? '_text_theme' : '' ); ?>" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
+                                        <a class="" href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format ) ); ?></a>
 									<?php } ?>
                                 </div>
                             </div>
@@ -129,8 +129,8 @@
                                 $fist_time=current($all_times);
 	                            $time_info = array_key_exists( 'start', $fist_time ) ? $fist_time['start'] : [];
 	                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
-		                            $label = array_key_exists( 'label', $fist_time ) ? $fist_time['label'] : '';
-		                            $time  = array_key_exists( 'time', $fist_time ) ? $fist_time['time'] : '';
+		                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
+		                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 		                            if ( $time ) {
 			                            $full_date = $date . ' ' . $time;
 			                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time' );

@@ -227,7 +227,8 @@
 					$cart_location           = array_key_exists( 'event_cart_location', $values ) ? $values['event_cart_location'] : '';
 					$event_extra_service     = array_key_exists( 'event_extra_service', $values ) ? $values['event_extra_service'] : [];
 					$ticket_type_arr         = array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
-					$cart_date               = get_mep_datetime( $values['event_cart_date'], 'date-time-text' );
+					$event_cart_date_raw     = array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
+					$cart_date               = ! empty( $event_cart_date_raw ) ? get_mep_datetime( $event_cart_date_raw, 'date-time-text' ) : '';
 					$event_user_info         = $values['event_user_info'];
 					$recurring               = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status             = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';
@@ -236,7 +237,10 @@
 							$count = 1;
 							foreach ( $ticket_type_arr as $_event_recurring_date ) {
 								if($count == 1){
-									$item->add_meta_data( $date_text, get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
+									if ( ! empty( $event_date_value ) ) {
+										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+									}
 								}
 								$count++;
 								}
@@ -246,13 +250,18 @@
 							$count = 1;
 							foreach ( $ticket_type_arr as $_event_recurring_date ) {
 								if($count == 1){
-									$item->add_meta_data( $date_text, get_mep_datetime( $_event_recurring_date['event_date'], apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
+									if ( ! empty( $event_date_value ) ) {
+										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+									}
 								}
 							$count++;
 							}
 						}
 					} else {
-						$item->add_meta_data( $date_text, $cart_date );
+						if ( ! empty( $cart_date ) ) {
+							$item->add_meta_data( $date_text, $cart_date );
+						}
 					}
 					if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
 						mep_cart_order_data_save_ticket_type( $item, $ticket_type_arr, $eid );

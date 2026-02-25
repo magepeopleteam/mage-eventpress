@@ -126,8 +126,7 @@
 			public function get_mpwem_ticket() {
 				// Sanitize and validate input
 				$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-				$dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
-				
+$dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
 				// Check if post exists and is published
 				if ( ! $post_id || get_post_status( $post_id ) !== 'publish' ) {
 					wp_send_json_error( 'Invalid or unpublished Event.', 'mage-eventpress' );

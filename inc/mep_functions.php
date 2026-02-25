@@ -402,6 +402,16 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : '';
 			$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : '';
 			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
+			$payment_method = get_post_meta( $attendee_id, 'ea_payment_method', true ) ?: '';
+			$amount_paid    = '';
+			$order          = wc_get_order( $order_id );
+			if ( $order instanceof WC_Order ) {
+				$payment_method = $order->get_payment_method_title();
+				$amount_paid    = wc_price( (float) $order->get_total() );
+			} else {
+				$attendee_amount = get_post_meta( $attendee_id, 'ea_ticket_order_amount', true );
+				$amount_paid     = '' !== $attendee_amount ? wc_price( (float) $attendee_amount ) : '';
+			}
 			$email_body    = str_replace( "{name}", $attendee_name, $email_body );
 			$email_body    = str_replace( "{email}", $email, $email_body );
 			$email_body    = str_replace( "{event}", $event_name, $email_body );
@@ -410,6 +420,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$email_body    = str_replace( "{event_datetime}", $date_time, $email_body );
 			$email_body    = str_replace( "{ticket_type}", $ticket_type, $email_body );
 			$email_body    = str_replace( "{order_id}", $order_id, $email_body );
+			$email_body    = str_replace( "{payment_method}", $payment_method, $email_body );
+			$email_body    = str_replace( "{amount_paid}", $amount_paid, $email_body );
 			return $email_body;
 		}
 	}

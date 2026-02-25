@@ -866,9 +866,11 @@
 										Order ID: <b>{order_id}</b><br/>
                                         Event Date: <b>{event_date}</b><br/>
                                         Start Time: <b>{event_time}</b><br/>
-                                        Full DateTime: <b>{event_datetime}</b>', 'mage-eventpress' ),
+                                        Full DateTime: <b>{event_datetime}</b><br/>
+                                        Payment Method: <b>{payment_method}</b><br/>
+                                        Amount Paid: <b>{amount_paid}</b>', 'mage-eventpress' ),
 								'type'    => 'wysiwyg',
-								'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Thanks',
+								'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Payment Method: {payment_method}<br><br>Amount Paid: {amount_paid}<br><br>Thanks',
 							),
 							array(
 								'name'    => 'mep_send_confirmation_to_billing_email',

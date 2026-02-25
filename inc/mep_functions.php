@@ -1719,12 +1719,22 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 	if ( ! function_exists( 'get_mep_datetime' ) ) {
 		function get_mep_datetime( $date, $type ) {
+			// Return empty string if date is empty or invalid
+			if ( empty( $date ) ) {
+				return '';
+			}
+			
 			$event_id             = get_the_id() ? get_the_id() : 0;
 			$date_format          = mep_get_datetime_format( $event_id, 'date' );
 			$time_format_timezone = mep_get_datetime_format( $event_id, 'time_timezone' );
 			$wpdatesettings       = $date_format . '  ' . $time_format_timezone;
-			$timezone             = wp_timezone_string();
-			$timestamp            = strtotime( $date . ' ' . $timezone );
+			$timestamp            = strtotime( $date );
+			
+			// If strtotime fails, return empty string instead of showing 1970
+			if ( $timestamp === false || $timestamp < 0 ) {
+				return '';
+			}
+			
 			if ( $type == 'date' ) {
 				return esc_html( wp_date( $date_format, $timestamp ) );
 			}

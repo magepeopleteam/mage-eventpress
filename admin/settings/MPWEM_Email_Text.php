@@ -31,6 +31,8 @@
                                 <li><span class="_min_200"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?></span><code>{event_date}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Start Time', 'mage-eventpress' ); ?></span><code>{event_time}</code></li>
                                 <li><span class="_min_200"><?php esc_html_e( 'Full DateTime', 'mage-eventpress' ); ?></span><code>{event_datetime}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Payment Method', 'mage-eventpress' ); ?></span><code>{payment_method}</code></li>
+                                <li><span class="_min_200"><?php esc_html_e( 'Amount Paid', 'mage-eventpress' ); ?></span><code>{amount_paid}</code></li>
                             </ul>
                             <div class="_mt">
 								<?php

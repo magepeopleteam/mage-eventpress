@@ -18,9 +18,12 @@
 				/**********************************************/
 				add_action( 'woocommerce_after_checkout_validation', array( $this, 'after_checkout_validation' ) );
 				add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'checkout_create_order_line_item' ), 10, 4 );
+				add_action( 'woocommerce_store_api_checkout_update_order_from_request', array( $this, 'store_api_checkout_update_order' ), 10, 2 );
 				add_action( 'woocommerce_order_status_changed', array( $this, 'order_status_changed' ), 10, 4 );
 				add_action( 'woocommerce_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
 				add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'checkout_order_processed' ), 90 );
+				// Add payment complete hook for PayPal and other payment gateways
+				add_action( 'woocommerce_payment_complete', array( $this, 'payment_complete_create_attendees' ), 10, 1 );
 				/**********************************************/
 				// Old dashboard - Replaced by MPWEM_My_Account_Dashboard
 				// add_action( 'woocommerce_account_dashboard', array( $this, 'account_dashboard' ) );
@@ -216,6 +219,30 @@
 					$wc_get_cart_url = wc_get_checkout_url();
 				}
 				return $wc_get_cart_url;
+			}
+			public function store_api_checkout_update_order( $order, $request ) {
+				// Handle Store API checkout (PayPal, Apple Pay, etc. from cart page)
+				// This ensures attendee data is saved when using express checkout buttons
+				foreach ( $order->get_items() as $item_id => $item ) {
+					$product_id = $item->get_product_id();
+					$cart = WC()->cart->get_cart();
+					
+					// Find the matching cart item
+					foreach ( $cart as $cart_item_key => $cart_item ) {
+						if ( $cart_item['product_id'] == $product_id && array_key_exists( 'event_id', $cart_item ) ) {
+							$event_id = $cart_item['event_id'];
+							
+							if ( get_post_type( $event_id ) == 'mep_events' ) {
+								// Get all event data from cart
+								$values = $cart_item;
+								
+								// Call the same function that handles regular checkout
+								$this->checkout_create_order_line_item( $item, $cart_item_key, $values, $order );
+								break;
+							}
+						}
+					}
+				}
 			}
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
 				$eid           = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
@@ -475,6 +502,79 @@
 						} // end of check post type
 					}
 					do_action( 'mep_after_event_booking', $order_id, $order->get_status() );
+				}
+			}
+			/**
+			 * Handle attendee creation when payment is completed
+			 * This ensures attendees are created for PayPal and other payment gateways
+			 * that complete payment after the order is created
+			 *
+			 * @param int $order_id The order ID
+			 */
+			public function payment_complete_create_attendees( $order_id ) {
+				if ( ! $order_id ) {
+					return;
+				}
+				
+				// Get the order
+				$order = wc_get_order( $order_id );
+				if ( ! $order ) {
+					return;
+				}
+				
+				// Check if attendees already exist for this order
+				$existing_attendees = get_posts( array(
+					'post_type'      => 'mep_events_attendees',
+					'posts_per_page' => 1,
+					'meta_query'     => array(
+						array(
+							'key'   => 'ea_order_id',
+							'value' => $order_id,
+						),
+					),
+				) );
+				
+				// If attendees already exist, don't create duplicates
+				if ( ! empty( $existing_attendees ) ) {
+					return;
+				}
+				
+				// Process each order item
+				foreach ( $order->get_items() as $item_id => $item_values ) {
+					$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
+					
+					if ( get_post_type( $event_id ) == 'mep_events' ) {
+						$user_info_arr         = wc_get_order_item_meta( $item_id, '_event_user_info', true );
+						$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
+						$_event_extra_service  = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
+						
+						// Create extra services
+						mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service );
+						
+						// Create attendees from user info
+						if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
+							foreach ( $user_info_arr as $_user_info ) {
+								mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
+							}
+						} else {
+							// Create attendees from ticket info (billing)
+							if ( is_array( $event_ticket_info_arr ) && sizeof( $event_ticket_info_arr ) > 0 ) {
+								foreach ( $event_ticket_info_arr as $tinfo ) {
+									for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
+										mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
+									}
+								}
+							}
+						}
+						
+						// Update seat inventory
+						if ( is_array( $event_ticket_info_arr ) && sizeof( $event_ticket_info_arr ) > 0 ) {
+							mep_update_event_seat_inventory( $event_id, $event_ticket_info_arr );
+						}
+						
+						// Trigger after booking action
+						do_action( 'mep_after_event_booking', $order_id, $order->get_status() );
+					}
 				}
 			}
 			public static function get_cart_ticket_info( $post_id ) {

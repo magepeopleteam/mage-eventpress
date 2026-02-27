@@ -45,6 +45,58 @@
 				}
 				return $is_purchasable;
 			}
+			private function normalize_order_id( $order_input ) {
+				if ( $order_input instanceof WC_Order ) {
+					return $order_input->get_id();
+				}
+				if ( is_numeric( $order_input ) ) {
+					return absint( $order_input );
+				}
+				if ( is_object( $order_input ) ) {
+					if ( method_exists( $order_input, 'get_id' ) ) {
+						return absint( $order_input->get_id() );
+					}
+					if ( isset( $order_input->id ) && is_numeric( $order_input->id ) ) {
+						return absint( $order_input->id );
+					}
+				}
+				if ( is_array( $order_input ) && isset( $order_input['id'] ) && is_numeric( $order_input['id'] ) ) {
+					return absint( $order_input['id'] );
+				}
+				if ( is_string( $order_input ) ) {
+					$decoded = json_decode( $order_input );
+					if ( $decoded && isset( $decoded->id ) && is_numeric( $decoded->id ) ) {
+						return absint( $decoded->id );
+					}
+					if ( is_numeric( trim( $order_input ) ) ) {
+						return absint( trim( $order_input ) );
+					}
+				}
+				return 0;
+			}
+			private function get_event_order_item_meta( $item_id, $meta_key, $default = '' ) {
+				$value = wc_get_order_item_meta( $item_id, $meta_key, true );
+				$empty = '' === $value || null === $value || ( is_array( $value ) && empty( $value ) );
+				if ( ! $empty ) {
+					return $value;
+				}
+				$fallback_key = strpos( $meta_key, '_' ) === 0 ? ltrim( $meta_key, '_' ) : '_' . $meta_key;
+				$fallback     = wc_get_order_item_meta( $item_id, $fallback_key, true );
+				$empty        = '' === $fallback || null === $fallback || ( is_array( $fallback ) && empty( $fallback ) );
+				if ( ! $empty ) {
+					return $fallback;
+				}
+				return $default;
+			}
+			private function get_event_id_from_order_item( $item_id, $item_values ) {
+				$event_id = $this->get_event_order_item_meta( $item_id, 'event_id', 0 );
+				if ( $event_id ) {
+					return (int) $event_id;
+				}
+				$product_id      = is_a( $item_values, 'WC_Order_Item_Product' ) ? $item_values->get_product_id() : 0;
+				$linked_event_id = $product_id ? get_post_meta( $product_id, 'link_mep_event', true ) : 0;
+				return mep_product_exists( $linked_event_id ) ? (int) $linked_event_id : (int) $product_id;
+			}
 			public function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 				$linked_event_id = MPWEM_Global_Function::get_post_info( $product_id, 'link_mep_event', $product_id );
 				$product_id      = mep_product_exists( $linked_event_id ) ? $linked_event_id : $product_id;
@@ -334,10 +386,11 @@
 				$cn           = 1;
 				$event_arr    = [];
 				foreach ( $order->get_items() as $item_id => $item_values ) {
-					$event_id    = MPWEM_Global_Function::get_order_item_meta( $item_id, 'event_id' );
+					$event_id    = $this->get_event_id_from_order_item( $item_id, $item_values );
 					$event_arr[] = $event_id;
 					if ( get_post_type( $event_id ) == 'mep_events' ) {
-						$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
+						$event_ticket_info_arr = $this->get_event_order_item_meta( $item_id, '_event_ticket_info', [] );
+						$event_ticket_info_arr = is_array( $event_ticket_info_arr ) ? $event_ticket_info_arr : [];
 						$org                   = get_the_terms( $event_id, 'mep_org' );
 						$term_id               = isset( $org[0]->term_id ) ? $org[0]->term_id : '';
 						$org_email             = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
@@ -401,33 +454,39 @@
 			} // End Function
 			public function checkout_order_processed( $order_id ) {
 				global $woocommerce;
-				$result   = ! is_numeric( $order_id ) ? json_decode( $order_id ) : [ 0 ];
-				$order_id = ! is_numeric( $order_id ) ? $result->id : $order_id;
+				$order_id = $this->normalize_order_id( $order_id );
 				if ( ! $order_id ) {
 					return;
 				}
 				// Getting an instance of the order object
 				$order        = wc_get_order( $order_id );
+				if ( ! $order instanceof WC_Order ) {
+					return;
+				}
 				$order_status = $order->get_status();
 				if ( $order_status != 'failed' ) {
 					foreach ( $order->get_items() as $item_id => $item_values ) {
-						$event_id = wc_get_order_item_meta( $item_id, 'event_id', true );
+						$event_id = $this->get_event_id_from_order_item( $item_id, $item_values );
 						if ( get_post_type( $event_id ) == 'mep_events' ) {
-							$user_info_arr         = wc_get_order_item_meta( $item_id, '_event_user_info', true );
-							$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
-							$_event_extra_service  = wc_get_order_item_meta( $item_id, '_event_extra_service', true );
+							$user_info_arr         = $this->get_event_order_item_meta( $item_id, '_event_user_info', [] );
+							$event_ticket_info_arr = $this->get_event_order_item_meta( $item_id, '_event_ticket_info', [] );
+							$_event_extra_service  = $this->get_event_order_item_meta( $item_id, '_event_extra_service', [] );
+							$user_info_arr         = is_array( $user_info_arr ) ? $user_info_arr : [];
+							$event_ticket_info_arr = is_array( $event_ticket_info_arr ) ? $event_ticket_info_arr : [];
+							$_event_extra_service  = is_array( $_event_extra_service ) ? $_event_extra_service : [];
 							$item_quantity         = 0;
 							$check_before_create   = mep_check_attendee_exist_before_create( $order_id, $event_id );
 							mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service );
 							mep_delete_attandee_of_an_order( $order_id, $event_id );
 							foreach ( $event_ticket_info_arr as $field ) {
-								if ( $field['ticket_qty'] > 0 ) {
+								if ( is_array( $field ) && array_key_exists( 'ticket_qty', $field ) && $field['ticket_qty'] > 0 ) {
 									$item_quantity = $item_quantity + $field['ticket_qty'];
 								}
 							}
 							if ( is_array( $user_info_arr ) && sizeof( $user_info_arr ) > 0 ) {
 								foreach ( $user_info_arr as $_user_info ) {
-									$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $_user_info['user_event_date'] );
+									$event_date = is_array( $_user_info ) && array_key_exists( 'user_event_date', $_user_info ) ? $_user_info['user_event_date'] : '';
+									mep_check_attendee_exist_before_create( $order_id, $event_id, $event_date );
 									if ( function_exists( 'mep_re_language_load' ) ) {
 										mep_attendee_create( 'user_form', $order_id, $event_id, $_user_info, 'yes' );
 									} else {
@@ -438,8 +497,13 @@
 								}
 							} else {
 								foreach ( $event_ticket_info_arr as $tinfo ) {
-									for ( $x = 1; $x <= $tinfo['ticket_qty']; $x ++ ) {
-										$check_before_create_date = mep_check_attendee_exist_before_create( $order_id, $event_id, $tinfo['event_date'] );
+									if ( ! is_array( $tinfo ) ) {
+										continue;
+									}
+									$ticket_qty = array_key_exists( 'ticket_qty', $tinfo ) ? (int) $tinfo['ticket_qty'] : 0;
+									$event_date = array_key_exists( 'event_date', $tinfo ) ? $tinfo['event_date'] : '';
+									for ( $x = 1; $x <= $ticket_qty; $x ++ ) {
+										mep_check_attendee_exist_before_create( $order_id, $event_id, $event_date );
 										if ( function_exists( 'mep_re_language_load' ) ) {
 											mep_attendee_create( 'billing', $order_id, $event_id, $tinfo, 'yes' );
 										} else {

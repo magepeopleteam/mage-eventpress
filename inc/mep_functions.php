@@ -4438,27 +4438,54 @@ die();
 	/******************** Remove upper function after 2025********************** event_start_datetime*/
 	add_action( 'mpwem_expired_event_notice_after', 'mpwem_expired_event_notice_after' );
 	function mpwem_expired_event_notice_after( $event_id ) {
-		$start_datetime   = get_post_meta( $event_id, 'event_start_datetime', true );
-		$end_date   = get_post_meta( $event_id, 'event_expire_datetime', true );
-		$total_sold = MPWEM_Functions::get_total_sold( $event_id );
-		$event_expire_on   = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
-		$expired_datetime = $event_expire_on == 'event_start_datetime' ? $start_datetime : $end_date;
-		$formatted  = MPWEM_Global_Function::date_format( $expired_datetime, 'full', $event_id );
+		$start_datetime     = get_post_meta( $event_id, 'event_start_datetime', true );
+		$end_date           = get_post_meta( $event_id, 'event_expire_datetime', true );
+		$total_sold         = MPWEM_Functions::get_total_sold( $event_id );
+		$event_expire_on    = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+		
+		$expired_datetime   = ( $event_expire_on == 'event_start_datetime' ) ? $start_datetime : $end_date;
+		$buffer_minutes     = (int) MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
+		
+		// Convert times to timestamps for comparison
+		$current_timestamp  = current_time( 'timestamp' );
+		$expired_timestamp  = strtotime( $expired_datetime );
+		
+		// Subtract buffer (assuming buffer is in minutes, convert to seconds)
+		$registration_close_timestamp = $expired_timestamp - ( $buffer_minutes * 60 );
+
+		// Determine the status
+		$is_expired           = ( $current_timestamp > $expired_timestamp );
+		$is_registration_over = ( $current_timestamp > $registration_close_timestamp );
+
+		// If neither has happened yet, we don't need to show a notice
+		if ( ! $is_registration_over && ! $is_expired ) {
+			return;
+		}
+
+		$formatted = MPWEM_Global_Function::date_format( $expired_datetime, 'full', $event_id );
 		?>
-        <div class="mpwem-expired-card">
-            <div class="mpwem-expired-title">
-                ❌ <?php _e( 'Event Expired', 'mage-eventpress' ); ?>
-            </div>
-            <div class="mpwem-expired-date">
-				<?php _e( 'This event expired on', 'mage-eventpress' ); ?>
-                <span class="mpwem-date-highlight">
-                <?php echo esc_html( $formatted ); ?>
-            </span>
-            </div>
-            <div class="mpwem-total-sold-badge">
-                🎟 <?php _e( 'Total tickets sold', 'mage-eventpress' ); ?>:
+		<div class="mpwem-expired-card">
+			<div class="mpwem-expired-title">
+				<?php if ( $is_expired ) : ?>
+					❌ <?php _e( 'Event Expired', 'mage-eventpress' ); ?>
+				<?php else : ?>
+					🚫 <?php _e( 'Registration Closed', 'mage-eventpress' ); ?>
+				<?php endif; ?>
+			</div>        
+			<div class="mpwem-expired-date">
+				<?php if ( $is_expired ) : ?>
+					<?php _e( 'This event expired on', 'mage-eventpress' ); ?>
+				<span class="mpwem-date-highlight">
+					<?php echo esc_html( $formatted ); ?>
+				</span>
+				<?php else : ?>
+					<?php _e( 'Registration for this event closed', 'mage-eventpress' ); ?>
+				<?php endif; ?>        
+			</div>
+			<div class="mpwem-total-sold-badge">
+				🎟 <?php _e( 'Total tickets sold', 'mage-eventpress' ); ?>:
 				<?php echo esc_html( $total_sold ); ?>
-            </div>
-        </div>
+			</div>
+		</div>
 		<?php
 	}

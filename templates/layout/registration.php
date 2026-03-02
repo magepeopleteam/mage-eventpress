@@ -13,7 +13,7 @@
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-	//echo '<pre>';			print_r($event_id);			echo '</pre>';
+	// echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {
 		//  $saved_user_role 	          = get_post_meta($event_id, 'mep_member_only_user_role', true) ? get_post_meta($event_id, 'mep_member_only_user_role', true) : [];
@@ -21,7 +21,7 @@
 
 		?>
         <div class="mpwem_style"><?php
-		$reg_status 					= array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+		 $reg_status 					= array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 		$reg_status_msg_status 	= array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : 'off';
 		$reg_status_msg_txt 		= array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
 		$reg_off_msg 				= $reg_status_msg_status == 'on' ? $reg_status_msg_txt : '';

@@ -8,10 +8,74 @@
 	} // Cannot access pages directly.
 	if ( ! class_exists( 'MPWEM_Venue_Settings' ) ) {
 		class MPWEM_Venue_Settings {
+			const VIRTUAL_DETAILS_MIGRATION_OPTION = 'mpwem_virtual_event_details_html_migrated_1';
+
 			public function __construct() {
 				add_action( 'mpwem_event_tab_setting_item', array( $this, 'venue_settings' ),10,2 );
+				add_action( 'admin_init', array( $this, 'migrate_virtual_event_details_html' ) );
 				add_action( 'save_post', array( $this, 'save_venue_coordinates' ), 1 );
 			}
+
+			private function normalize_virtual_event_details( $description ) {
+				$description = (string) $description;
+				$normalized  = $description;
+
+				for ( $i = 0; $i < 2; $i++ ) {
+					$decoded = wp_specialchars_decode( $normalized, ENT_QUOTES );
+
+					if ( $decoded === $normalized ) {
+						break;
+					}
+
+					$normalized = $decoded;
+
+					if ( preg_match( '/<\/?[a-z][^>]*>/i', $normalized ) ) {
+						return $normalized;
+					}
+				}
+
+				return $description;
+			}
+
+			public function migrate_virtual_event_details_html() {
+				if ( get_option( self::VIRTUAL_DETAILS_MIGRATION_OPTION ) ) {
+					return;
+				}
+
+				if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) ) {
+					return;
+				}
+
+				global $wpdb;
+
+				$post_ids = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT pm.post_id
+						FROM {$wpdb->postmeta} pm
+						INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+						WHERE pm.meta_key = %s
+						AND pm.meta_value LIKE %s
+						AND p.post_type = %s",
+						'mp_event_virtual_type_des',
+						'%&lt;%',
+						'mep_events'
+					)
+				);
+
+				if ( ! empty( $post_ids ) ) {
+					foreach ( $post_ids as $post_id ) {
+						$description = get_post_meta( $post_id, 'mp_event_virtual_type_des', true );
+						$normalized  = $this->normalize_virtual_event_details( $description );
+
+						if ( $normalized !== $description ) {
+							update_post_meta( $post_id, 'mp_event_virtual_type_des', wp_kses_post( $normalized ) );
+						}
+					}
+				}
+
+				update_option( self::VIRTUAL_DETAILS_MIGRATION_OPTION, gmdate( 'Y-m-d H:i:s' ), false );
+			}
+
 			public function venue_settings( $event_id ,$event_infos) {
 				?>
                 <div class="mp_tab_item active" data-tab-item="#mp_event_venue">
@@ -416,6 +480,7 @@
 				$event_type        = get_post_meta( $post_id, 'mep_event_type', true );
 				$event_member_type = get_post_meta( $post_id, 'mep_member_only_event', true );
 				$description       = get_post_meta( $post_id, 'mp_event_virtual_type_des', true );
+				$description       = $this->normalize_virtual_event_details( $description );
 				$checked           = ( $event_type == 'online' ) ? 'online' : '';
 				?>
                 <section>
@@ -442,9 +507,17 @@
                         </div>
                     </div>
                     <br>
-					<?php 
-                    // wp_editor( html_entity_decode( nl2br( $description ) ), 'mp_event_virtual_type_des' );
-                    wp_editor($description,'mp_event_virtual_type_des',array('textarea_name' => 'mp_event_virtual_type_des','media_buttons' => true,'textarea_rows' => 10,)); ?>
+					<?php
+					wp_editor(
+						$description,
+						'mp_event_virtual_type_des',
+						array(
+							'textarea_name' => 'mp_event_virtual_type_des',
+							'media_buttons' => true,
+							'textarea_rows' => 10,
+						)
+					);
+					?>
                 </section>
 				<?php do_action( 'mep_event_details_after_virtual_event_info_text_box', $post_id ); ?>
 				<?php

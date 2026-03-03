@@ -215,7 +215,7 @@
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
 	div.default_theme .speaker_list a [data-bg-image] {width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
 	div.default_theme .speaker_list a h6 { margin: var(--dmp_xs) 0 0 0; font-size: 16px; font-weight: 500; text-transform: capitalize; }
-	div.default_theme .speaker_list img{width: 150px;}
+	div.default_theme .speaker_list img{width: 110px;}
 	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
 	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
 	div.mep_smart_theme .speaker_list a [data-bg-image] {width: 70px;height: auto;border-radius: 0;}
@@ -327,7 +327,9 @@
 		height: auto;
 		min-width: auto !important;
 	}
-
+	.wp-site-blocks > .mage{
+		max-width: 100%;
+	}
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
 	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }

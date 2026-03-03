@@ -1740,7 +1740,8 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$date_format          = mep_get_datetime_format( $event_id, 'date' );
 			$time_format_timezone = mep_get_datetime_format( $event_id, 'time_timezone' );
 			$wpdatesettings       = $date_format . '  ' . $time_format_timezone;
-			$timestamp            = strtotime( $date );
+			$datetime 			  = new DateTime( $date, wp_timezone() );
+			$timestamp            = $datetime->getTimestamp();
 			
 			// If strtotime fails, return empty string instead of showing 1970
 			if ( $timestamp === false || $timestamp < 0 ) {

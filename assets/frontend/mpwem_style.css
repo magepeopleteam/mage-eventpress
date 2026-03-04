@@ -132,8 +132,19 @@
 	.mep_smart_theme .mpwem_content_area { margin: 40px 0 0 0; flex-direction: row; }
 	.mep_smart_theme .mpwem_left_content { max-width: 70%; margin-right: 2%; }
 	.mep_smart_theme .mpwem_right_content { max-width: 30%; width: 100%; }
-	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;}
+	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;position: relative;}
 	.mpwem_registration_area input#mpwem_date_time { width: 100%; max-width: 100%; box-sizing: border-box; }
+	.mpwem_registration_area .date-time-area > label::after {
+		content: "\f078";
+		font-family: "Font Awesome 5 Free";
+		font-size: 17px;
+		font-weight: 900;
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #a6c0cb;
+	}
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 12px 0 !important; margin: 0 !important; gap: 8px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item { margin: 0 !important; padding: 0 !important; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body { padding: 15px 20px 20px 20px !important; }
@@ -215,7 +226,7 @@
 	div.default_theme .speaker_list a {display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;padding: var(--dmp_xs);border-radius: 0;-webkit-flex-direction: column;flex-direction: column;width: 50%;max-width: 120px;}
 	div.default_theme .speaker_list a [data-bg-image] {width: 90px;height: 90px;border-radius: 100%;overflow: hidden;}
 	div.default_theme .speaker_list a h6 { margin: var(--dmp_xs) 0 0 0; font-size: 16px; font-weight: 500; text-transform: capitalize; }
-	div.default_theme .speaker_list img{width: 150px;}
+	div.default_theme .speaker_list img{width: 110px;}
 	div.mep_smart_theme .speaker_list {-webkit-flex-direction: column;flex-direction: column;-webkit-flex-wrap: initial;flex-wrap: initial;}
 	div.mep_smart_theme .speaker_list a {max-width: 100%;width: 100%;-webkit-flex-direction: initial;flex-direction: initial;}
 	div.mep_smart_theme .speaker_list a [data-bg-image] {width: 70px;height: auto;border-radius: 0;}
@@ -327,7 +338,9 @@
 		height: auto;
 		min-width: auto !important;
 	}
-
+	.wp-site-blocks > .mage{
+		max-width: 100%;
+	}
 	div.list_with_filter_section {margin: 0 0 20px 0;}
 	div.list_with_filter_section div.all_filter_item {display: none;}
 	.list_with_filter_section.mep_event_list { max-width: 1270px;margin: auto; }
@@ -884,6 +897,11 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.spring_area .spring_item_3 {width: 45%;}
 	div.spring_area .spring_item_4 {width: 25%;}
 	div.mep_event_winter_list div.spring_area .spring_item_2 {width: 75%;}
+	.mpwem_registration_area .date-time-area{
+		flex-direction: column;
+		justify-content: center;
+		align-items: end;
+	}
 }
 @media only screen and (max-width: 991px) {
 	.mep-default-content { width: calc(100% - 250px); }
@@ -904,6 +922,10 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 @media only screen and (max-width: 767px) {
 	div.mep_event_native_list .mep_list_event_details,
 	div.mep_event_native_list .mep_list_thumb { width: 100%;}
+	.mpwem_registration_area .date-time-area > label::after {
+		top:78%;
+	}
+	
 	/********************/
 	div.default_theme .content_area {display: block;}
 	div.mep_flex.default_theme { display: block; }

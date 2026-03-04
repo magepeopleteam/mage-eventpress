@@ -226,14 +226,18 @@
 			}
 
 			public function get_all_hidden_product_id() {
-				$product_id = [];
-				$query      = MPWEM_Query::query_post_type( MPWEM_Functions::get_cpt() );
-				foreach ( $query->posts as $result ) {
-					$post_id      = $result->ID;
-					$product_id[] = MPWEM_Global_Function::get_post_info( $post_id, 'link_wc_product' );
-				}
+				global $wpdb;
+				$product_ids = $wpdb->get_col( "
+					SELECT pm.meta_value 
+					FROM {$wpdb->postmeta} pm 
+					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id 
+					WHERE p.post_type = 'mep_events' 
+					  AND p.post_status = 'publish' 
+					  AND pm.meta_key = 'link_wc_product' 
+					  AND pm.meta_value != ''
+				" );
 
-				return array_filter( $product_id );
+				return array_filter( $product_ids );
 			}
 		}
 	}

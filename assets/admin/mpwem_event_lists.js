@@ -87,7 +87,7 @@
         showMoreItems();
     });*/
 
-    const itemsPerPage = 20;
+    const itemsPerPage = 10;
     let currentFilteredItems = $('.mpwem_event_list_card');
     let totalVisible = 0;
     function showNextItems() {

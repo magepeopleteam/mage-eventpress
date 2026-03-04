@@ -1846,20 +1846,27 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	add_action( 'admin_head', 'mep_hide_date_from_order_page' );
 	if ( ! function_exists( 'mep_hide_date_from_order_page' ) ) {
 		function mep_hide_date_from_order_page() {
-			$product_id = [];
-			$hide_wc    = mep_get_option( 'mep_show_hidden_wc_product', 'general_setting_sec', 'no' );
-			$args       = array(
-				'post_type'      => 'mep_events',
-				'posts_per_page' => - 1
-			);
-			$qr         = new WP_Query( $args );
-			foreach ( $qr->posts as $result ) {
-				$post_id      = $result->ID;
-				$product_id[] = get_post_meta( $post_id, 'link_wc_product', true ) ? '.woocommerce-admin-page .post-' . get_post_meta( $post_id, 'link_wc_product', true ) . '.type-product' : '';
+			$hide_wc = mep_get_option( 'mep_show_hidden_wc_product', 'general_setting_sec', 'no' );
+			if ( $hide_wc !== 'no' ) {
+				return;
 			}
-			$product_id = array_filter( $product_id );
-			$parr       = implode( ', ', $product_id );
-			if ( $hide_wc == 'no' ) {
+			
+			global $wpdb;
+			$product_ids = $wpdb->get_col( "
+				SELECT pm.meta_value 
+				FROM {$wpdb->postmeta} pm 
+				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id 
+				WHERE p.post_type = 'mep_events' 
+				  AND pm.meta_key = 'link_wc_product' 
+				  AND pm.meta_value != ''
+			" );
+
+			if ( ! empty( $product_ids ) ) {
+				$css_selectors = array();
+				foreach ( $product_ids as $id ) {
+					$css_selectors[] = '.woocommerce-admin-page .post-' . intval( $id ) . '.type-product';
+				}
+				$parr = implode( ', ', $css_selectors );
 				echo '<style> ' . esc_html( $parr ) . '{display:none!important}' . ' </style>';
 			}
 		}

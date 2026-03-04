@@ -67,11 +67,14 @@
 				if ( get_option( 'mep_event_seat_left_data_update_01' ) != 'completed' ) {
 					$args = array(
 						'post_type'      => 'mep_events',
-						'posts_per_page' => - 1
+						'posts_per_page' => - 1,
+						'fields'         => 'ids',
+						'no_found_rows'  => true,
+						'update_post_meta_cache' => false,
+						'update_post_term_cache' => false,
 					);
 					$qr   = new WP_Query( $args );
-					foreach ( $qr->posts as $result ) {
-						$post_id   = $result->ID;
+					foreach ( $qr->posts as $post_id ) {
 						$seat_left = mep_count_total_available_seat( $post_id );
 						update_post_meta( $post_id, 'mep_total_seat_left', $seat_left );
 					}

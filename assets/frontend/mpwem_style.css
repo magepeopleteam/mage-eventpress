@@ -132,8 +132,19 @@
 	.mep_smart_theme .mpwem_content_area { margin: 40px 0 0 0; flex-direction: row; }
 	.mep_smart_theme .mpwem_left_content { max-width: 70%; margin-right: 2%; }
 	.mep_smart_theme .mpwem_right_content { max-width: 30%; width: 100%; }
-	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;}
+	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;position: relative;}
 	.mpwem_registration_area input#mpwem_date_time { width: 100%; max-width: 100%; box-sizing: border-box; }
+	.mpwem_registration_area .date-time-area > label::after {
+		content: "\f078";
+		font-family: "Font Awesome 5 Free";
+		font-size: 17px;
+		font-weight: 900;
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #a6c0cb;
+	}
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data { padding: 12px 0 !important; margin: 0 !important; gap: 8px; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item { margin: 0 !important; padding: 0 !important; }
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body { padding: 15px 20px 20px 20px !important; }
@@ -886,6 +897,11 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.spring_area .spring_item_3 {width: 45%;}
 	div.spring_area .spring_item_4 {width: 25%;}
 	div.mep_event_winter_list div.spring_area .spring_item_2 {width: 75%;}
+	.mpwem_registration_area .date-time-area{
+		flex-direction: column;
+		justify-content: center;
+		align-items: end;
+	}
 }
 @media only screen and (max-width: 991px) {
 	.mep-default-content { width: calc(100% - 250px); }
@@ -906,6 +922,10 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 @media only screen and (max-width: 767px) {
 	div.mep_event_native_list .mep_list_event_details,
 	div.mep_event_native_list .mep_list_thumb { width: 100%;}
+	.mpwem_registration_area .date-time-area > label::after {
+		top:78%;
+	}
+	
 	/********************/
 	div.default_theme .content_area {display: block;}
 	div.mep_flex.default_theme { display: block; }

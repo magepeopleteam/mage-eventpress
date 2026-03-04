@@ -228,7 +228,7 @@
 					$event_extra_service     = array_key_exists( 'event_extra_service', $values ) ? $values['event_extra_service'] : [];
 					$ticket_type_arr         = array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
 					$event_cart_date_raw     = array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
-					$cart_date               = ! empty( $event_cart_date_raw ) ? get_mep_datetime( $event_cart_date_raw, 'date-time-text' ) : '';
+					$cart_date               = ! empty( $event_cart_date_raw ) ? $event_cart_date_raw : '';
 					$event_user_info         = $values['event_user_info'];
 					$recurring               = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
 					$time_status             = get_post_meta( $eid, 'mep_disable_ticket_time', true ) ? get_post_meta( $eid, 'mep_disable_ticket_time', true ) : 'no';

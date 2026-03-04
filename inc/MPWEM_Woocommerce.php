@@ -635,7 +635,10 @@
 										if ( $type && $name && $type != 'title' && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {
 											$label = array_key_exists( 'label', $form ) ? $form['label'] : '';
 											if ( $type == 'file' ) {
-												echo '<li>' . esc_html( $label . ' : ' . $user[ $name ] ) . '</li>';
+												$upload_dir = wp_upload_dir();
+												$file_url   = $upload_dir['baseurl'] . '/mep_attendee_file_list/' . $user[ $name ];
+												$file_url   = str_replace( 'http://', 'https://', $file_url );
+												echo '<li>' . esc_html( $label ) . ' : <a href="' . esc_url( $file_url ) . '" target="_blank">📎 ' . esc_html( $user[ $name ] ) . '</a></li>';
 											} else {
 												echo '<li>' . esc_html( $label . ' : ' . $user[ $name ] ) . '</li>';
 											}

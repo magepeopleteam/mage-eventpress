@@ -508,7 +508,7 @@ input#mep_search_icon { padding: 3px 12px; border-color: #D3D3D3;}
 }
 select#mep_org_address_list { min-width: 177px !important;}
 h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
-#epanel-mainmenu a { background: #7E3BD0;}
+
 .mpRequired { border-color: red !important;}
 /******************************************************************** Welcome page ************************************************/
 @media only screen and (min-width: 10px) {

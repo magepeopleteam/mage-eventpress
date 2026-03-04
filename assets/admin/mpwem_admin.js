@@ -1104,3 +1104,92 @@ document.addEventListener('click', function (e) {
         */
     }
 });
+
+
+jQuery(document).ready(function($) {
+    // Add new FAQ item
+    $('#add-timeline-item').on('click', function() {
+        var template = $('#timeline-item-template').html();
+        var container = $('#timeline-items-container');
+
+        // ইউনিক আইডি তৈরি (একবার জেনারেট করে সব জায়গায় ব্যবহার করতে হবে)
+        var uniqueId = 'timeline_description_' + Date.now();
+
+        // টেমপ্লেটের প্লেসহোল্ডার রিপ্লেস করা
+        // নিশ্চিত করুন আপনার টেমপ্লেটে textarea-র ID এবং Name-এ 'index' শব্দটি আছে
+        var newItem = template.replace(/timeline_description_new/g, uniqueId);
+
+        container.append(newItem);
+
+        // ১. TinyMCE (Visual Editor) ইনিশিয়ালাইজ করা
+        if (typeof tinyMCE !== 'undefined') {
+            setTimeout(function() {
+                // ডিফল্ট সেটিংস কপি করা (যাতে টুলবার বাটনগুলো ঠিকঠাক আসে)
+                var settings = tinyMCEPreInit.mceInit['timeline-item-template'] || {}; // আপনার টেমপ্লেট এডিটরের আইডি দিন
+                settings.selector = '#' + uniqueId;
+
+                tinyMCE.init(settings);
+                tinyMCE.execCommand('mceAddEditor', false, uniqueId);
+            }, 200);
+        }
+
+        // ২. Quicktags (Text/Code Buttons) ইনিশিয়ালাইজ করা
+        if (typeof quicktags !== 'undefined') {
+            setTimeout(function() {
+                quicktags({id: uniqueId});
+                // কুইক ট্যাগ বাটনগুলোকে ভিজিবল করা
+                QTags._buttonsInit();
+            }, 300);
+        }
+    });
+
+    // Remove FAQ item
+    $(document).on('click', '.remove-timeline-item', function() {
+        if (confirm('Are you sure you want to remove this timeline item?')) {
+            var item = $(this).closest('.timeline-item');
+
+            // Remove tinyMCE editor if exists
+            var editorId = item.find('.wp-editor-area').attr('id');
+            if (editorId && typeof tinyMCE !== 'undefined') {
+                tinyMCE.execCommand('mceRemoveEditor', false, editorId);
+            }
+
+            item.remove();
+        }
+    });
+
+    // Update indices after removal
+    function updateFaqIndices() {
+        $('.faq-item').each(function(index) {
+            $(this).find('.timeline-item-header h3').contents().first().replaceWith('timeline Item ' + (index + 1) + ' ');
+        });
+    }
+
+});
+
+document.addEventListener('click', function (e) {
+    // চেক করা হচ্ছে ক্লিক করা এলিমেন্টটি .edit-faq-item কি না
+    // অথবা এর ভেতরে থাকা কোনো আইকন কি না
+    const editBtn = e.target.closest('.edit-timeline-item');
+
+    if (editBtn) {
+        e.preventDefault();
+
+        // ক্লিক করা বাটনের প্যারেন্ট .faq-item খুঁজে বের করা
+        const parentItem = editBtn.closest('.timeline-item');
+
+        // 'open' ক্লাসটি টগল করা (CSS এর মাধ্যমে স্লাইড হবে)
+        if (parentItem) {
+            parentItem.classList.toggle('open');
+        }
+
+        // (ঐচ্ছিক) একটি ওপেন করলে বাকিগুলো বন্ধ করতে চাইলে নিচের কোডটি আনকমেন্ট করুন
+        /*
+        document.querySelectorAll('.faq-item').forEach(item => {
+            if (item !== parentItem) {
+                item.classList.remove('open');
+            }
+        });
+        */
+    }
+});

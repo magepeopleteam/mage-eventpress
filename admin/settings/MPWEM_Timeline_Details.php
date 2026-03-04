@@ -19,6 +19,9 @@
 			public function timeline_tab_content( $post_id ) {
 				//$time_line_infos = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_day', [] );
 				$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
+				if ( ! is_array( $time_line_infos ) ) {
+					$time_line_infos = array();
+				}
 				$reg_status=get_post_meta($post_id,'mep_timeline_status',true)?get_post_meta($post_id,'mep_timeline_status',true):'on';
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				$checked    = $reg_status == 'on' ? 'checked' : '';
@@ -39,26 +42,111 @@
                         </div>
                         <div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_timeline_status">
                         <div class="_padding_bB">
-                            <div class="mpwem_timeline_area">
-								<?php $this->timeline_item( $time_line_infos ); ?>
+                            <div class="mpwem_time_line_area_new" id="timeline-items-container">
+		                        <?php if ( is_array( $time_line_infos ) && sizeof( $time_line_infos ) > 0 ) {
+
+			                        foreach ( $time_line_infos as $index => $faq_info ) {
+				                        if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
+					                        $title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+					                        $content     = array_key_exists( 'mep_day_content', $faq_info ) ? $faq_info['mep_day_content'] : '';
+					                        $this->render_time_item($index, $faq_info);
+				                        }
+
+			                        }
+		                        }?>
                             </div>
-                            <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_timeline_popup"> <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?></button>
+                            <button type="button" id="add-timeline-item" class="button button-primary">
+		                        <?php esc_html_e( 'Add New', 'mage-eventpress' ); ?>
+                            </button>
+                            <template id="timeline-item-template">
+		                        <?php $this->render_time_item('new'); ?>
+                            </template>
+<!--                            <div class="mpwem_timeline_area">-->
+<!--								--><?php //$this->timeline_item( $time_line_infos ); ?>
+<!--                            </div>-->
+<!--                            <button type="button" class="_button_default_xs_bgBlue" data-key="" data-target-popup="#mpwem_timeline_popup">-->
+<!--                                --><?php ////esc_html_e( 'Add New', 'mage-eventpress' ); ?><!--</button>-->
 							<?php //echo '<pre>';print_r($time_line_infos);echo '</pre>'; ?>
                         </div>
                         </div>
                     </div>
-                    <div class="mpPopup right_popup mpwem_timeline_popup" data-popup="#mpwem_timeline_popup">
-                        <div class="popupMainArea">
-                            <span class="fas fa-times popup_close"></span>
-                            <div class="popupBody timeline_input">
-								<?php //$this->mpwem_load_timeline(); ?>
+<!--                    <div class="mpPopup right_popup mpwem_timeline_popup" data-popup="#mpwem_timeline_popup">-->
+<!--                        <div class="popupMainArea">-->
+<!--                            <span class="fas fa-times popup_close"></span>-->
+<!--                            <div class="popupBody timeline_input">-->
+<!--								--><?php ////$this->mpwem_load_timeline(); ?>
+<!--                            </div>-->
+<!--                            <div class="popupFooter">-->
+<!--                                <div class="buttonGroup">-->
+<!--                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save">--><?php //esc_html_e( 'Save', 'mage-eventpress' ); ?><!--</button>-->
+<!--                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save_close">--><?php //esc_html_e( 'Save & Close', 'mage-eventpress' ); ?><!--</button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+				<?php
+			}
+			public function render_time_item($index, $item = array('mep_day_title' => '', 'mep_day_content' => '')) {
+				$title = isset($item['mep_day_title']) ? $item['mep_day_title'] : '';
+				$time = isset($item['mep_day_time']) ? $item['mep_day_time'] : '';
+				$description = isset($item['mep_day_content']) ? $item['mep_day_content'] : '';
+				$editor_id = 'timeline_description_' . ($index === 'new' ? 'new' : $index);
+				?>
+                <div class="timeline-item" data-index="<?php echo esc_attr($index); ?>">
+                    <div class="timeline-item-header">
+
+                        <h3 class="edit-timeline-item">
+							<?php echo esc_attr($title); ?> <?php echo is_numeric($index) ? '' : 'NEW'; ?>
+                        </h3>
+
+
+                        <div class="allCenter">
+                            <div class="buttonGroup max_200">
+                                <button type="button" class="_whiteButton_xs edit-timeline-item"><span class="far fa-edit mp_zero"></span></button>
+                                <button type="button" class="_whiteButton_xs remove-timeline-item"><span class="fas fa-trash-alt mp_zero"></span></button>
                             </div>
-                            <div class="popupFooter">
-                                <div class="buttonGroup">
-                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save"><?php esc_html_e( 'Save', 'mage-eventpress' ); ?></button>
-                                    <button type="button" class="_button_general_xs_bg_light mpwem_timeline_save_close"><?php esc_html_e( 'Save & Close', 'mage-eventpress' ); ?></button>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item-content">
+                        <div>
+                            <label for="timeline_title_<?php echo esc_attr($index); ?>"><?php esc_html_e( 'Title', 'mage-eventpress' ); ?></label>
+                            <input type="text"
+                                   id="timeline_title_<?php echo esc_attr($index); ?>"
+                                   name="mep_day_title[]"
+                                   value="<?php echo esc_attr($title); ?>"
+                                   class="regular-text"
+                            />
+                        </div>
+
+
+                        <div>
+                            <label for="timeline_time_<?php echo esc_attr($index); ?>"><?php esc_html_e( 'Time', 'mage-eventpress' ); ?></label>
+                            <input type="text"
+                                   id="timeline_time_<?php echo esc_attr($index); ?>"
+                                   name="mep_day_time[]"
+                                   value="<?php echo esc_attr($time); ?>"
+                                   class="regular-text"
+                            />
+                        </div>
+
+                        <div>
+                            <label><?php esc_html_e( 'Content', 'mage-eventpress' ); ?></label>
+
+						<?php
+							wp_editor(
+								$description,
+								$editor_id,
+								array(
+									'textarea_name' => 'mep_day_content[]',
+									'textarea_rows' => 10,
+									'media_buttons' => true,
+									'teeny' => false,
+									'quicktags' => true
+								)
+							);
+						?>
                         </div>
                     </div>
                 </div>

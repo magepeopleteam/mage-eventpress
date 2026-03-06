@@ -994,26 +994,29 @@
                     </section>
                     <section>
                         <div class="mpwem_settings_area">
-                            <table class="mep_special_on_dates_table">
-                                <thead>
-                                <tr>
-                                    <th class="w-20"><?php esc_html_e( 'Label', 'mage-eventpress' ); ?></th>
-                                    <th class="w-20"><?php esc_html_e( 'Start Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-20"><?php esc_html_e( 'End Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-30"><?php esc_html_e( 'Times', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
-                                    <th class="w-10"><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
-                                </tr>
-                                </thead>
-                                <tbody class="mpwem_sortable_area mpwem_item_insert">
-								<?php
-									if ( is_array( $special_dates ) && sizeof( $special_dates ) > 0 ) {
-										foreach ( $special_dates as $special_date ) {
-											$this->special_on_day_item( $special_date );
-										}
-									}
-								?>
-                                </tbody>
-                            </table>
+                            <div class="mep-special-dates-wrap">
+                                <table class="mep_special_on_dates_table">
+                                    <thead>
+                                    <tr>
+                                        <th class="w-20"><?php esc_html_e( 'Label', 'mage-eventpress' ); ?></th>
+                                        <th class="w-20"><?php esc_html_e( 'Start Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                        <th class="w-20"><?php esc_html_e( 'End Date', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                        <th class="w-30"><?php esc_html_e( 'Times', 'mage-eventpress' ); ?><span class="textRequired">&nbsp;*</span></th>
+                                        <th class="w-10"><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="mpwem_sortable_area mpwem_item_insert">
+                                    <?php
+                                        if ( is_array( $special_dates ) && sizeof( $special_dates ) > 0 ) {
+                                            foreach ( $special_dates as $special_date ) {
+                                                $this->special_on_day_item( $special_date );
+                                            }
+                                        }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             <div class="mt-2"></div>
 							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add New Special Date', 'mage-eventpress' ), 'ttbm_add_new_special_date' ); ?>
 							<?php $this->hidden_special_on_day_item(); ?>

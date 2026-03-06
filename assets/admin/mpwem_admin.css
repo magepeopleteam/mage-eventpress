@@ -773,3 +773,6 @@ div.ftimeline-item .timeline-item-header{
 div.mpwem_time_line_area_new .quicktags-toolbar{
 	display: flex;
 }
+.mep-special-dates-wrap{
+    overflow: auto;
+}

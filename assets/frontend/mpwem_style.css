@@ -133,7 +133,7 @@
 	.mep_smart_theme .mpwem_left_content { max-width: 70%; margin-right: 2%; }
 	.mep_smart_theme .mpwem_right_content { max-width: 30%; width: 100%; }
 	.mpwem_registration_area input#mpwem_date_time {border-radius: 5px !important;position: relative;}
-	.mpwem_registration_area input#mpwem_date_time { width: 100%; max-width: 100%; box-sizing: border-box; }
+	.mpwem_registration_area input#mpwem_date_time { width: 220px; max-width: 100%; box-sizing: border-box; }
 	.mpwem_registration_area .date-time-area > label::after {
 		content: "\f078";
 		font-family: "Font Awesome 5 Free";

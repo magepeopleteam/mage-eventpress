@@ -325,7 +325,7 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 								</a>
 								<span class="mpwem-event-date">
 									<i class="dashicons dashicons-calendar-alt"></i>
-									<?php echo esc_html( date_i18n( 'M j, Y g:i a', strtotime( $event_date ) ) ); ?>
+									<?php echo esc_html( date_i18n( 'M j, Y g:i a', strtotime( get_post_meta($first_attendee_id,'ea_event_date',true) ) ) ); ?>
 								</span>
 							</div>
 						</div>

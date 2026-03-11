@@ -204,8 +204,27 @@
 				if ( get_post_type( $event_id ) == 'mep_events' ) {
 					$not_in_the_cart = apply_filters( 'mep_check_product_into_cart', true, $wc_product_id );
 					if ( ! $not_in_the_cart ) {
-						wc_add_notice( "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error' );
-						$passed = false;
+						// Check if it's a date conflict
+						$current_event_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+						$current_event_date = ! empty( $current_event_date ) ? current( $current_event_date ) : '';
+						
+						// Check cart for same event with different date
+						$has_date_conflict = false;
+						if ( isset( WC()->cart ) && ! empty( WC()->cart->get_cart() ) && ! empty( $current_event_date ) ) {
+							foreach ( WC()->cart->get_cart() as $cart_item ) {
+								$cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+								$cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
+								if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $current_event_date == $cart_event_date ) {
+									$passed = false;
+									break;
+								}
+							}
+						}
+						
+						if (!$passed ) {
+							wc_add_notice( "This event has already been added to the shopping cart. To change the quantity, please remove it from the cart and add it back again.", 'error' );
+						}
+
 					}
 				}
 				return $passed;

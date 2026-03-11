@@ -2682,8 +2682,21 @@ die();
 		function mep_disable_add_to_cart_if_product_is_in_cart( $is_purchasable, $product ) {
 			// Loop through cart items checking if the product is already in cart
 			if ( isset( WC()->cart ) && ! is_admin() && ! empty( WC()->cart->get_cart() ) ) {
+				// Get the current event date being added
+				$current_event_date = isset( $_POST['mep_event_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_start_date'] ) ) : [];
+				$current_event_date = ! empty( $current_event_date ) ? current( $current_event_date ) : '';
+				
 				foreach ( WC()->cart->get_cart() as $cart_item ) {
 					if ( $cart_item['data']->get_id() == $product ) {
+						return false;
+					}
+					
+					// Check if event date is not equal to cart date for same product
+					$cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
+					$cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+					
+					// If same event but different date, also prevent adding
+					if ( $cart_event_id == $product && ! empty( $current_event_date ) && ! empty( $cart_event_date ) && $current_event_date != $cart_event_date ) {
 						return false;
 					}
 				}

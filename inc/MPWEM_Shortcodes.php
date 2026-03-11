@@ -9,12 +9,16 @@
 	if ( ! class_exists( 'MPWEM_Shortcodes' ) ) {
 		class MPWEM_Shortcodes {
 			public function __construct() {
+				add_shortcode( 'event-list-recurring', array( $this, 'eventlistrecurring' ) );
 				add_shortcode( 'event-list', array( $this, 'event_list' ) );
 				add_shortcode( 'event-add-cart-section', array( $this, 'add_to_cart_section' ) );
 				add_shortcode( 'event-city-list', array( $this, 'event_city_list' ) );
 				add_shortcode( 'event-speaker-list', array( $this, 'speaker_list' ) );
 				add_shortcode( 'event-calendar', array( $this, 'calender' ) );
 			}
+            public function eventlistrecurring($atts) {
+	            $this->event_list($atts);
+            }
 			public function event_list( $atts, $content = null ) {
 				$defaults         = array(
 					"cat"              => "0",

@@ -449,7 +449,6 @@
 		}
 		new MPWEM_Global_Function();
 	}
-	//===Old function use change to new fn date 03/10/25===//
 	if ( ! class_exists( 'MP_Global_Function' ) ) {
 		class MP_Global_Function {
 			public function __construct() {

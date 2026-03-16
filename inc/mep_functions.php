@@ -441,90 +441,88 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 
 
 	if ( ! function_exists( 'mep_email_dynamic_content' ) ) {
-		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0, $event_ticket_info_arr = array() ) {
-			
-			$event_name = get_the_title( $event_id );
-			$order      = wc_get_order( $order_id );
-			$final_output = "";
+    function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0, $event_ticket_info_arr = array() ) {
+        
+        $event_name = get_the_title( $event_id );
+        $order      = wc_get_order( $order_id );
+        $final_output = "";
 
-			// ১. যদি অ্যারেতে ডাটা থাকে (লুপ মোড)
-			if ( ! empty( $event_ticket_info_arr ) && is_array( $event_ticket_info_arr ) ) {
-				
-				// বিলিং নেম নেওয়া (যদি অর্ডার অবজেক্ট থাকে)
-				$billing_name = '';
-				if ( $order instanceof WC_Order ) {
-					$billing_name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
-				}
+        // ১. যদি অ্যারেতে ডাটা থাকে (লুপ মোড)
+        if ( ! empty( $event_ticket_info_arr ) && is_array( $event_ticket_info_arr ) ) {
+            
+            // অর্ডারের বিলিং ইনফরমেশন নেওয়া
+            $billing_name  = ( $order instanceof WC_Order ) ? $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() : '';
+            $billing_email = ( $order instanceof WC_Order ) ? $order->get_billing_email() : '';
+            $payment_method = ( $order instanceof WC_Order ) ? $order->get_payment_method_title() : '';
 
-				foreach ( $event_ticket_info_arr as $ticket ) {
-					$temp_body = $email_body;
+            foreach ( $event_ticket_info_arr as $ticket ) {
+                $temp_body = $email_body;
 
-					// টিকেট অ্যারে থেকে টাইম এবং ডেট আলাদা করা
-					$raw_date = isset( $ticket['event_date'] ) ? $ticket['event_date'] : ''; // format: 2026-03-25 09:00
-					$t_date   = '';
-					$t_time   = '';
+                // টিকেট অ্যারে থেকে ডেট এবং টাইম বের করা
+                $raw_date = isset( $ticket['event_date'] ) ? $ticket['event_date'] : ''; 
+                $date_text = !empty($raw_date) ? date_i18n( get_option( 'date_format' ), strtotime( $raw_date ) ) : '';
+                $time_text = !empty($raw_date) ? date_i18n( get_option( 'time_format' ), strtotime( $raw_date ) ) : '';
 
-					if ( ! empty( $raw_date ) ) {
-						$t_date = date_i18n( get_option( 'date_format' ), strtotime( $raw_date ) );
-						$t_time = date_i18n( get_option( 'time_format' ), strtotime( $raw_date ) );
-					}
+                // ডাইনামিক ট্যাগ রিপ্লেস
+                $temp_body = str_replace( "{name}", $billing_name, $temp_body );
+                $temp_body = str_replace( "{email}", $billing_email, $temp_body );
+                $temp_body = str_replace( "{event}", $event_name, $temp_body );
+                $temp_body = str_replace( "{event_date}", $date_text, $temp_body );
+                $temp_body = str_replace( "{event_time}", $time_text, $temp_body );
+                $temp_body = str_replace( "{event_datetime}", $date_text . ' ' . $time_text, $temp_body );
+                $temp_body = str_replace( "{ticket_type}", ( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' ), $temp_body );
+                $temp_body = str_replace( "{order_id}", $order_id, $temp_body );
+                $temp_body = str_replace( "{payment_method}", $payment_method, $temp_body );
+                $temp_body = str_replace( "{amount_paid}", ( isset( $ticket['ticket_price'] ) ? wc_price( $ticket['ticket_price'] ) : '' ), $temp_body );
 
-					// ডাইনামিক ট্যাগ রিপ্লেস
-					$temp_body = str_replace( "{name}", $billing_name, $temp_body );
-					$temp_body = str_replace( "{event}", $event_name, $temp_body );
-					$temp_body = str_replace( "{ticket_type}", ( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' ), $temp_body );
-					$temp_body = str_replace( "{amount_paid}", ( isset( $ticket['ticket_price'] ) ? wc_price( $ticket['ticket_price'] ) : '' ), $temp_body );
-					$temp_body = str_replace( "{event_date}", $t_date, $temp_body );
-					$temp_body = str_replace( "{event_time}", $t_time, $temp_body );
-					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
+                $final_output .= $temp_body . "<br><hr><br>";
+            }
 
-					$final_output .= $temp_body . "<br><hr><br>";
-				}
+            return $final_output;
 
-				return $final_output;
+        } else {
+            // ২. অ্যারে খালি থাকলে আগের (Original) লজিক
+            $attendee_q   = mep_get_attendee_info_query( $event_id, $order_id );
+            $_attendee_id = 0; 
+            foreach ( $attendee_q->posts as $_attendee_q ) {
+                $_attendee_id = $_attendee_q->ID;
+            }
 
-			} else {
-				// ২. আগের (Original) লজিক (ফলব্যাক)
-				$attendee_q   = mep_get_attendee_info_query( $event_id, $order_id );
-				$_attendee_id = 0; 
-				foreach ( $attendee_q->posts as $_attendee_q ) {
-					$_attendee_id = $_attendee_q->ID;
-				}
+            $attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
+            $attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
+            $email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
+            
+            $date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-time-text' );
+            $date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-text' );
+            $time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'time' );
+            
+            $ticket_type    = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
+            $payment_method = '';
+            $amount_paid    = '';
+            
+            if ( $order instanceof WC_Order ) {
+                $payment_method = $order->get_payment_method_title();
+                $amount_paid    = wc_price( (float) $order->get_total() );
+            } else {
+                $attendee_amount = get_post_meta( $attendee_id, 'ea_ticket_order_amount', true );
+                $amount_paid     = '' !== $attendee_amount ? wc_price( (float) $attendee_amount ) : '';
+            }
 
-				$attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
-				$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
-				$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
-				
-				$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-time-text' );
-				$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-text' );
-				$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'time' );
-				
-				$ticket_type    = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
-				$payment_method = '';
-				
-				if ( $order instanceof WC_Order ) {
-					$payment_method = $order->get_payment_method_title();
-					$amount_paid    = wc_price( (float) $order->get_total() );
-				} else {
-					$attendee_amount = get_post_meta( $attendee_id, 'ea_ticket_order_amount', true );
-					$amount_paid     = '' !== $attendee_amount ? wc_price( (float) $attendee_amount ) : '';
-				}
+            $email_body = str_replace( "{name}", $attendee_name, $email_body );
+            $email_body = str_replace( "{email}", $email, $email_body );
+            $email_body = str_replace( "{event}", $event_name, $email_body );
+            $email_body = str_replace( "{event_date}", $date, $email_body );
+            $email_body = str_replace( "{event_time}", $time, $email_body );
+            $email_body = str_replace( "{event_datetime}", $date_time, $email_body );
+            $email_body = str_replace( "{ticket_type}", $ticket_type, $email_body );
+            $email_body = str_replace( "{order_id}", $order_id, $email_body );
+            $email_body = str_replace( "{payment_method}", $payment_method, $email_body );
+            $email_body = str_replace( "{amount_paid}", $amount_paid, $email_body );
 
-				$email_body = str_replace( "{name}", $attendee_name, $email_body );
-				$email_body = str_replace( "{email}", $email, $email_body );
-				$email_body = str_replace( "{event}", $event_name, $email_body );
-				$email_body = str_replace( "{event_date}", $date, $email_body );
-				$email_body = str_replace( "{event_time}", $time, $email_body );
-				$email_body = str_replace( "{event_datetime}", $date_time, $email_body );
-				$email_body = str_replace( "{ticket_type}", $ticket_type, $email_body );
-				$email_body = str_replace( "{order_id}", $order_id, $email_body );
-				$email_body = str_replace( "{payment_method}", $payment_method, $email_body );
-				$email_body = str_replace( "{amount_paid}", $amount_paid, $email_body );
-
-				return $email_body;
-			}
-		}
-	}
+            return $email_body;
+        }
+    }
+}
 
 	
 	// Send Confirmation email to customer

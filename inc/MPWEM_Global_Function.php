@@ -137,7 +137,8 @@
 			}
 			public static function date_picker_format( $key = 'mep_datepicker_format' ): string {
 				$format      = self::get_settings( 'general_setting_sec', $key, 'D d M , yy' );
-				//$format      = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_datepicker_format', 'D d M , yy' );
+				$date_format        = mep_rec_get_datepicker_php_format( $format );
+				$format      = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_datepicker_format', 'D d M , yy' );
 				$date_format = 'Y-m-d';
 				$date_format = $format == 'yy/mm/dd' ? 'Y/m/d' : $date_format;
 				$date_format = $format == 'yy-dd-mm' ? 'Y-d-m' : $date_format;
@@ -149,7 +150,7 @@
 				$date_format = $format == 'd M , yy' ? 'j M , Y' : $date_format;
 				$date_format = $format == 'D d M , yy' ? 'D j M , Y' : $date_format;
 				$date_format = $format == 'M d , yy' ? 'M  j, Y' : $date_format;
-				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
+				return  mep_rec_get_datepicker_php_format( $format) ;
 			}
 			public static function date_format( $date, $format = 'date', $post_id = '' ) {
 				if ( $date ) {
@@ -436,6 +437,7 @@
 					'Y-m-d'     => date( 'Y-m-d' ),
 					'm/d/Y'     => date( 'm/d/Y' ),
 					'd/m/Y'     => date( 'd/m/Y' ),
+					'd.m.Y'     => date( 'd.m.Y' ),
 				];
 			}
 			public static function time_format_list(): array {

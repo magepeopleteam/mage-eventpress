@@ -400,7 +400,13 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
 			$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : '';
 			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : '';
-			$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : '';
+            $_date_time=get_post_meta( $attendee_id, 'ea_event_date', true ) ;
+            $dt = new DateTime($_date_time);
+            $time='';
+            if ($dt->format('H:i:s') !== '00:00:00') {
+                $time=get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' );
+            }
+
 			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
 			$payment_method = get_post_meta( $attendee_id, 'ea_payment_method', true ) ?: '';
 			$amount_paid    = '';
@@ -416,7 +422,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$email_body    = str_replace( "{email}", $email, $email_body );
 			$email_body    = str_replace( "{event}", $event_name, $email_body );
 			$email_body    = str_replace( "{event_date}", $date, $email_body );
-			$email_body    = str_replace( "{event_time}", $time, $email_body );
+            if($time) {
+                $email_body = str_replace( "{event_time}", $time, $email_body );
+            }
 			$email_body    = str_replace( "{event_datetime}", $date_time, $email_body );
 			$email_body    = str_replace( "{ticket_type}", $ticket_type, $email_body );
 			$email_body    = str_replace( "{order_id}", $order_id, $email_body );
@@ -3311,8 +3319,8 @@ die();
 	}
 	function mep_rec_get_datepicker_php_format( $fotmat ) {
 		$php_format = str_replace(
-			array( "yy-mm-dd", "yy/mm/dd", "yy-dd-mm", "yy/dd/mm", "dd-mm-yy", "dd/mm/yy", "mm-dd-yy", "mm/dd/yy", "d M , yy", "D d M , yy", "M d , yy", "D M d , yy" ),
-			array( "Y-m-d", "Y/m/d", "Y-d-m", "Y/d/m", "d-m-Y", "d/m/Y", "m-d-Y", "m/d/Y", "j M , Y", "D j M , Y", "M  j, Y", "D M  j, Y" ),
+			array( "yy-mm-dd", "yy/mm/dd", "yy-dd-mm", "yy/dd/mm", "dd-mm-yy", "dd/mm/yy", "mm-dd-yy", "mm/dd/yy", "d M , yy", "D d M , yy", "M d , yy", "D M d , yy","dd.mm.yy" ),
+			array( "Y-m-d", "Y/m/d", "Y-d-m", "Y/d/m", "d-m-Y", "d/m/Y", "m-d-Y", "m/d/Y", "j M , Y", "D j M , Y", "M  j, Y", "D M  j, Y","d.m.Y" ),
 			$fotmat
 		);
 		return $php_format;

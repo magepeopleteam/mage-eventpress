@@ -357,6 +357,8 @@
 					$event_arr[] = $event_id;
 					if ( get_post_type( $event_id ) == 'mep_events' ) {
 						$event_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
+
+
 						$org                   = get_the_terms( $event_id, 'mep_org' );
 						$term_id               = isset( $org[0]->term_id ) ? $org[0]->term_id : '';
 						$org_email             = get_term_meta( $term_id, 'org_email', true ) ? get_term_meta( $term_id, 'org_email', true ) : '';
@@ -368,7 +370,7 @@
 							do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
 							if ( $enable_billing_email == 'enable' ) {
 								if ( in_array( 'processing', $email_send_status ) ) {
-									mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+									mep_event_confirmation_email_sent( $event_id, $email, $order_id, 0, $event_ticket_info_arr );
 								}
 							}
 						}
@@ -391,9 +393,9 @@
 							change_extra_service_status( $order_id, 'publish', 'publish', 'completed' );
 							do_action( 'mep_wc_order_status_change', $order_status, $event_id, $order_id );
 							if ( in_array( 'completed', $email_send_status ) ) {
-								mep_event_confirmation_email_sent( $event_id, $email, $order_id );
+								mep_event_confirmation_email_sent( $event_id, $email, $order_id, 0, $event_ticket_info_arr );
 								if ( ! empty( $org_email ) ) {
-									mep_event_confirmation_email_sent( $event_id, $org_email, $order_id );
+									mep_event_confirmation_email_sent( $event_id, $org_email, $order_id, 0, $event_ticket_info_arr );
 								}
 							}
 						}

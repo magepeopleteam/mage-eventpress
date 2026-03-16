@@ -419,7 +419,6 @@
 					} // End of Post Type Check
 					$cn ++;
 				} // End order item foreach
-				
 			} // End Function
 			public function checkout_order_processed( $order_id ) {
 				global $woocommerce;

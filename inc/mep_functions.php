@@ -387,8 +387,21 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $loop;
 		}
 	}
+
+	function getEventDateById($target_id, $data) {
+		if(is_array($data) && count($data) > 0) {
+			foreach ($data as $item) {
+				if (isset($item['event_id']) && $item['event_id'] == $target_id) {
+					return $item['event_date'];
+				}
+			}
+		}		
+		return null; // Return null if the ID doesn't exist in the array
+	}
+
+
 	if ( ! function_exists( 'mep_email_dynamic_content' ) ) {
-		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0 ) {
+		function mep_email_dynamic_content( $email_body, $event_id, $order_id, $__attendee_id = 0, $event_ticket_info_arr = array() ) {
 			$event_name   = get_the_title( $event_id );
 			$attendee_q   = mep_get_attendee_info_query( $event_id, $order_id );
 			$_attendee_id = 0; // Initialize to avoid undefined variable warning
@@ -398,9 +411,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
 			$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
 			$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
-			$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : '';
-			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : '';
-			$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : '';
+			$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-time-text' );
+			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-text' );
+			$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'time' );
 			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
 			$payment_method = get_post_meta( $attendee_id, 'ea_payment_method', true ) ?: '';
 			$amount_paid    = '';
@@ -427,7 +440,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 	// Send Confirmation email to customer
 	if ( ! function_exists( 'mep_event_confirmation_email_sent' ) ) {
-		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0 ) {
+		function mep_event_confirmation_email_sent( $event_id, $sent_email, $order_id, $attendee_id = 0, $event_ticket_info_arr = array() ) {
 			// Global Email Settings
 			$global_email_text       = mep_get_option( 'mep_confirmation_email_text', 'email_setting_sec', '' );
 			$global_email_form_email = mep_get_option( 'mep_email_form_email', 'email_setting_sec', '' );
@@ -443,7 +456,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
 			$email_body       = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
 			// Dynamic Content Replace
-			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id );
+			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
 			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id );
 			// ✨ Format email body properly
@@ -453,6 +466,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$headers   = array();
 			$headers[] = "From: $form_name <$form_email>";
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
 			// Send Email
 			wp_mail( $sent_email, $email_sub, $email_body, $headers );
 		}

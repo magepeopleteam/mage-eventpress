@@ -1341,8 +1341,11 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 
 	.mpwem_registration_area .date-time-area .formControl{
 		min-width: min(75px, 100%);
+		z-index: 1;
 	}
-
+	.mpwem_registration_area .date-time-area > label::after{
+		z-index: 0;
+	}
 
 	.woocommerce-order-details ul.wc-item-meta li > p {
 		padding: 0px !important;

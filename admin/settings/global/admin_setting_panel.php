@@ -555,6 +555,7 @@
 									// 'yy-dd-mm'      => date('Y-d-m',strtotime($current_date)),
 									// 'yy/dd/mm'      => date('Y/d/m',strtotime($current_date)),
 									'dd-mm-yy'   => date( 'd-m-Y', strtotime( $current_date ) ),
+									'dd.mm.yy'   => date( 'd.m.Y', strtotime( $current_date ) ),
 									// 'dd/mm/yy'      => date('d/m/Y',strtotime($current_date)),
 									'mm-dd-yy'   => date( 'm-d-Y', strtotime( $current_date ) ),
 									'mm/dd/yy'   => date( 'm/d/Y', strtotime( $current_date ) ),

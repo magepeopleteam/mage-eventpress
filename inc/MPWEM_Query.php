@@ -41,6 +41,8 @@
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
+				// Fix: When ordering by meta_value for dates, use meta_value_num or datetime to ensure proper date sorting
+				$event_order_by      = ( $event_order_by == 'meta_value' ) ? 'meta_value' : $event_order_by;
 				$event_expire_on     = $event_expire_on_old == 'event_end_datetime' ? 'event_end_datetime' : 'event_upcoming_datetime';
 				$now                 = current_time( 'Y-m-d H:i:s' );
 				if ( $paged_override && is_numeric( $paged_override ) ) {
@@ -210,7 +212,7 @@
 					'post_status'    => array( 'publish' ),
 					'order'          => $sort,
 					'orderby'        => $event_order_by,
-					'meta_key'       => 'event_start_datetime',
+					'meta_key'       => $event_expire_on,
 					'meta_query'     => $meta_query,
 					'tax_query'      => $tax_query
 				);
@@ -219,7 +221,16 @@
 					$args['post__in'] = !empty($matching_post_ids) ? $matching_post_ids : array(0);
 				}
 
-				return new WP_Query( $args );
+				// Add filter to cast meta_value as DATETIME for proper date sorting
+				// This only affects queries ordering by meta_value with datetime meta keys
+				add_filter( 'posts_orderby', array( __CLASS__, 'filter_event_orderby_datetime' ), 10, 2 );
+				
+				$query = new WP_Query( $args );
+				
+				// Remove the filter after query is executed to avoid affecting other queries
+				remove_filter( 'posts_orderby', array( __CLASS__, 'filter_event_orderby_datetime' ), 10, 2 );
+				
+				return $query;
 			}
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
 				$meta_query = [];
@@ -287,6 +298,24 @@
 					'meta_query'     => $meta_query
 				);
 				return new WP_Query( $args );
+			}
+			
+			/**
+			 * Filter to cast meta value as DATETIME for proper date sorting
+			 * Only applies when ordering by meta_value for event dates
+			 */
+			public static function filter_event_orderby_datetime( $orderby, $wp_query ) {
+				global $wpdb;
+				
+				// Only modify if ordering by meta_value and meta_key is an event datetime field
+				$meta_key = $wp_query->get( 'meta_key' );
+				if ( $wp_query->get( 'orderby' ) === 'meta_value' && 
+				     in_array( $meta_key, array( 'event_upcoming_datetime', 'event_start_datetime', 'event_end_datetime' ) ) ) {
+					$order = strtoupper( $wp_query->get( 'order' ) ) === 'DESC' ? 'DESC' : 'ASC';
+					$orderby = " CAST({$wpdb->postmeta}.meta_value AS DATETIME) " . $order;
+				}
+				
+				return $orderby;
 			}
 		}
 		new MPWEM_Query();

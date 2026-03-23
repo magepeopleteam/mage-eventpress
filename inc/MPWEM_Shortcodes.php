@@ -16,8 +16,8 @@
 				add_shortcode( 'event-speaker-list', array( $this, 'speaker_list' ) );
 				add_shortcode( 'event-calendar', array( $this, 'calender' ) );
 			}
-            public function eventlistrecurring($atts) {
-	            $this->event_list($atts);
+            public function eventlistrecurring( $atts, $content = null ) {
+	            return $this->event_list( $atts, $content );
             }
 			public function event_list( $atts, $content = null ) {
 				$defaults         = array(

@@ -399,6 +399,109 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		return null; // Return null if the ID doesn't exist in the array
 	}
 
+	if ( ! function_exists( 'mep_email_datetime_has_time' ) ) {
+		function mep_email_datetime_has_time( $date_time ) {
+			if ( empty( $date_time ) ) {
+				return false;
+			}
+
+			$parsed_date = date_parse( $date_time );
+			if ( ! empty( $parsed_date['error_count'] ) ) {
+				return false;
+			}
+
+			return ! empty( $parsed_date['hour'] ) || ! empty( $parsed_date['minute'] ) || ! empty( $parsed_date['second'] );
+		}
+	}
+
+	if ( ! function_exists( 'mep_get_email_event_datetime' ) ) {
+		function mep_get_email_event_datetime( $event_id, $order_id, $attendee_id = 0, $event_ticket_info_arr = array() ) {
+			$attendee_date = $attendee_id > 0 ? get_post_meta( $attendee_id, 'ea_event_date', true ) : '';
+			if ( $attendee_date && mep_email_datetime_has_time( $attendee_date ) ) {
+				return $attendee_date;
+			}
+
+			$resolved_date = getEventDateById( $event_id, $event_ticket_info_arr );
+
+			if ( empty( $resolved_date ) ) {
+				$order = wc_get_order( $order_id );
+				if ( $order instanceof WC_Order ) {
+					foreach ( $order->get_items() as $item_id => $item ) {
+						$item_event_id = (int) wc_get_order_item_meta( $item_id, 'event_id', true );
+						if ( $item_event_id !== (int) $event_id ) {
+							continue;
+						}
+
+						$item_ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
+						$resolved_date        = getEventDateById( $event_id, $item_ticket_info_arr );
+
+						if ( empty( $resolved_date ) && is_array( $item_ticket_info_arr ) ) {
+							foreach ( $item_ticket_info_arr as $ticket_info ) {
+								$ticket_date = isset( $ticket_info['event_date'] ) ? $ticket_info['event_date'] : '';
+								if ( empty( $ticket_date ) ) {
+									continue;
+								}
+
+								if ( empty( $attendee_date ) ) {
+									$resolved_date = $ticket_date;
+									break;
+								}
+
+								if ( date( 'Y-m-d', strtotime( $ticket_date ) ) === date( 'Y-m-d', strtotime( $attendee_date ) ) ) {
+									$resolved_date = $ticket_date;
+									break;
+								}
+
+								if ( empty( $resolved_date ) ) {
+									$resolved_date = $ticket_date;
+								}
+							}
+						}
+
+						if ( ! empty( $resolved_date ) ) {
+							break;
+						}
+					}
+				}
+			}
+
+			$event_start_time = get_post_meta( $event_id, 'event_start_time', true );
+			if ( ! empty( $resolved_date ) ) {
+				if ( mep_email_datetime_has_time( $resolved_date ) ) {
+					return $resolved_date;
+				}
+
+				$resolved_day = strtotime( $resolved_date );
+				if ( $resolved_day && ! empty( $event_start_time ) ) {
+					return date( 'Y-m-d', $resolved_day ) . ' ' . date( 'H:i:s', strtotime( $event_start_time ) );
+				}
+
+				return $resolved_date;
+			}
+
+			if ( ! empty( $attendee_date ) ) {
+				$attendee_day = strtotime( $attendee_date );
+				if ( $attendee_day && ! empty( $event_start_time ) ) {
+					return date( 'Y-m-d', $attendee_day ) . ' ' . date( 'H:i:s', strtotime( $event_start_time ) );
+				}
+
+				return $attendee_date;
+			}
+
+			$event_start_datetime = get_post_meta( $event_id, 'event_start_datetime', true );
+			if ( ! empty( $event_start_datetime ) ) {
+				return $event_start_datetime;
+			}
+
+			$event_start_date = get_post_meta( $event_id, 'event_start_date', true );
+			if ( ! empty( $event_start_date ) && ! empty( $event_start_time ) ) {
+				return date( 'Y-m-d', strtotime( $event_start_date ) ) . ' ' . date( 'H:i:s', strtotime( $event_start_time ) );
+			}
+
+			return $event_start_date ?: '';
+		}
+	}
+
 
 	if ( ! function_exists( 'mep_email_dynamic_contentX' ) ) {
 		function mep_email_dynamic_contentX( $email_body, $event_id, $order_id, $__attendee_id = 0, $event_ticket_info_arr = array() ) {
@@ -411,15 +514,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
 			$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
 			$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
-
-			$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : '';
-			$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : '';
-            $_date_time=get_post_meta( $attendee_id, 'ea_event_date', true ) ;
-            $dt = new DateTime($_date_time);
-            $time='';
-            if ($dt->format('H:i:s') !== '00:00:00') {
-                $time=get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' );
-            }
+			$event_date_time = mep_get_email_event_datetime( $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
+			$date_time       = $event_date_time ? get_mep_datetime( $event_date_time, 'date-time-text' ) : '';
+			$date            = $event_date_time ? get_mep_datetime( $event_date_time, 'date-text' ) : '';
+			$time            = $event_date_time ? get_mep_datetime( $event_date_time, 'time' ) : '';
 
 
 			$ticket_type   = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
@@ -437,9 +535,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$email_body    = str_replace( "{email}", $email, $email_body );
 			$email_body    = str_replace( "{event}", $event_name, $email_body );
 			$email_body    = str_replace( "{event_date}", $date, $email_body );
-            if($time) {
-                $email_body = str_replace( "{event_time}", $time, $email_body );
-            }
+			$email_body    = str_replace( "{event_time}", $time, $email_body );
 			$email_body    = str_replace( "{event_datetime}", $date_time, $email_body );
 			$email_body    = str_replace( "{ticket_type}", $ticket_type, $email_body );
 			$email_body    = str_replace( "{order_id}", $order_id, $email_body );
@@ -470,13 +566,15 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = $email_body;
 
 					// টিকেট অ্যারে থেকে টাইম এবং ডেট আলাদা করা
-					$raw_date = isset( $ticket['event_date'] ) ? $ticket['event_date'] : ''; // format: 2026-03-25 09:00
-					$t_date   = '';
-					$t_time   = '';
+					$raw_date    = mep_get_email_event_datetime( $event_id, $order_id, 0, array( $ticket ) );
+					$t_date      = '';
+					$t_date_time = '';
+					$t_time      = '';
 
 					if ( ! empty( $raw_date ) ) {
-						$t_date = date_i18n( get_option( 'date_format' ), strtotime( $raw_date ) );
-						$t_time = date_i18n( get_option( 'time_format' ), strtotime( $raw_date ) );
+						$t_date      = get_mep_datetime( $raw_date, 'date-text' );
+						$t_date_time = get_mep_datetime( $raw_date, 'date-time-text' );
+						$t_time      = get_mep_datetime( $raw_date, 'time' );
 					}
 
 					// ডাইনামিক ট্যাগ রিপ্লেস
@@ -486,6 +584,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = str_replace( "{amount_paid}", ( isset( $ticket['ticket_price'] ) ? wc_price( $ticket['ticket_price'] ) : '' ), $temp_body );
 					$temp_body = str_replace( "{event_date}", $t_date, $temp_body );
 					$temp_body = str_replace( "{event_time}", $t_time, $temp_body );
+					$temp_body = str_replace( "{event_datetime}", $t_date_time, $temp_body );
 					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
 
 					$final_output .= $temp_body . "<br><hr><br>";
@@ -504,10 +603,10 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$attendee_id   = $__attendee_id > 0 ? $__attendee_id : $_attendee_id;
 				$attendee_name = get_post_meta( $attendee_id, 'ea_name', true ) ?: '';
 				$email         = get_post_meta( $attendee_id, 'ea_email', true ) ?: '';
-				
-				$date_time     = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-time-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-time-text' );
-				$date          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'date-text' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'date-text' );
-				$time          = get_post_meta( $attendee_id, 'ea_event_date', true ) ? get_mep_datetime( get_post_meta( $attendee_id, 'ea_event_date', true ), 'time' ) : get_mep_datetime( getEventDateById( $event_id, $event_ticket_info_arr ), 'time' );
+				$event_date_time = mep_get_email_event_datetime( $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
+				$date_time       = $event_date_time ? get_mep_datetime( $event_date_time, 'date-time-text' ) : '';
+				$date            = $event_date_time ? get_mep_datetime( $event_date_time, 'date-text' ) : '';
+				$time            = $event_date_time ? get_mep_datetime( $event_date_time, 'time' ) : '';
 				
 				$ticket_type    = get_post_meta( $attendee_id, 'ea_ticket_type', true ) ?: '';
 				$payment_method = '';

@@ -17,48 +17,63 @@ if ( ! class_exists( 'class_icon_popup' ) ) {
         }
 
         function mep_admin_icon_scripts(){
-            $icon_library = new mep_icon_library();
-            $icon_library_list = $icon_library->mep_fontawesome_icons();
+            $icon_library_list = [];
+            if ( class_exists( 'MPWEM_Select_Icon_image' ) && method_exists( 'MPWEM_Select_Icon_image', 'all_icon_array' ) ) {
+                $icon_groups = MPWEM_Select_Icon_image::all_icon_array();
+                if ( is_array( $icon_groups ) ) {
+                    foreach ( $icon_groups as $icon_group ) {
+                        $icons = isset( $icon_group['icon'] ) && is_array( $icon_group['icon'] ) ? $icon_group['icon'] : [];
+                        foreach ( $icons as $icon_class => $icon_label ) {
+                            $icon_library_list[ $icon_class ] = $icon_label;
+                        }
+                    }
+                }
+            }
+            if ( empty( $icon_library_list ) ) {
+                $icon_library = new mep_icon_library();
+                $icon_library_list = $icon_library->mep_fontawesome_icons();
+            }
             ?>
             <script>
                 jQuery(document).ready(function(){
-                            // Global Icon Popup
-                            jQuery('.mep_global_icon_lib_btn').click(function (e) { 
-                            let remove_active_label 	= jQuery('#mep_global_icon_list_wrapper label').removeClass('selected');
-                            let data_key 				= jQuery(this).attr('data-key');
-                            jQuery("#mep_global_icon_list_wrapper").attr('data-key', data_key);
-                            jQuery('#mep_search_icon').val('');
-                            jQuery('.mep_global_icon_list_body label').show();
-                            jQuery("#mep_global_icon_list_wrapper").mage_modal({
+                    jQuery(document).on('click', '.mep_global_icon_lib_btn', function (e) {
+                        e.preventDefault();
+                        let data_key = jQuery(this).attr('data-key');
+                        jQuery('#mep_global_icon_list_wrapper label').removeClass('selected');
+                        jQuery('#mep_global_icon_list_wrapper').attr('data-key', data_key);
+                        jQuery('#mep_search_icon').val('');
+                        jQuery('.mep_global_icon_list_body label').show();
+
+                        if (typeof jQuery.fn.mage_modal === 'function') {
+                            jQuery('#mep_global_icon_list_wrapper').mage_modal({
                                 escapeClose: false,
                                 clickClose: false,
                                 showClose: false
                             });
-        
-                            // Selected Global Icon Action
-                            jQuery('#mep_global_icon_list_wrapper label').click(function (e) {
-                                e.stopImmediatePropagation();
-                                let selected_label 		= jQuery(this);
-                                let selected_val 		= jQuery('input', this).val();
-                                let selected_data_key 	= jQuery("#mep_global_icon_list_wrapper").attr('data-key');
-                                jQuery('#mep_global_icon_list_wrapper label').removeClass('selected');
-                                jQuery('.mep_global_settings_icon_preview[data-key="'+selected_data_key+'"]').empty();
-                                jQuery(selected_label).addClass('selected');
-                                jQuery('.mep_global_settings_icon[data-key="'+selected_data_key+'"]').val(selected_val);
-                                jQuery('.mep_global_settings_icon_preview[data-key="'+selected_data_key+'"]').append('<i class="'+selected_val+'"></i>');
-    
-                            });				
+                        }
+                    });
+
+                    jQuery(document).on('click', '#mep_global_icon_list_wrapper label', function (e) {
+                        e.preventDefault();
+                        let selected_label = jQuery(this);
+                        let selected_val = jQuery('input', this).val();
+                        let selected_data_key = jQuery('#mep_global_icon_list_wrapper').attr('data-key');
+                        jQuery('#mep_global_icon_list_wrapper label').removeClass('selected');
+                        jQuery('.mep_global_settings_icon_preview[data-key="' + selected_data_key + '"]').empty();
+                        jQuery(selected_label).addClass('selected');
+                        jQuery('.mep_global_settings_icon[data-key="' + selected_data_key + '"]').val(selected_val);
+                        jQuery('.mep_global_settings_icon_preview[data-key="' + selected_data_key + '"]').append('<span class="' + selected_val + '"></span>');
+                        jQuery.mage_modal.close();
+                    });
+
+                    jQuery(document).on('keyup', '#mep_search_icon', function () {
+                        let value = jQuery(this).val().toLowerCase();
+                        jQuery('.mep_global_icon_list_body label[data-id]').each(function () {
+                            let icon_name = (jQuery(this).attr('data-id') || '').toLowerCase();
+                            let icon_class = (jQuery('input', this).val() || '').toLowerCase();
+                            jQuery(this).toggle(icon_name.indexOf(value) > -1 || icon_class.indexOf(value) > -1);
                         });
-                        // End Global Icon Popup
-                        
-                        // Icon Filter 
-                            jQuery('#mep_search_icon').keyup(function (e) { 
-                                let value = jQuery(this).val().toLowerCase();
-                                jQuery(".mep_global_icon_list_body label[data-id]").show().filter(function() {
-                                    jQuery(this).toggle(jQuery(this).attr('data-id').toLowerCase().indexOf(value) > -1)
-                                }).hide();
-                            });
-                        // End Icon Filter
+                    });
                 });	
             </script>
             <div id="mep_global_icon_list_wrapper" class="mage_modal">
@@ -76,9 +91,9 @@ if ( ! class_exists( 'class_icon_popup' ) ) {
                 foreach ($icon_library_list as $key => $value) {
                     $input_id = str_replace(' ', '', $key);
                     ?>
-                    <label for="<?php echo $input_id; ?>" data-id="<?php echo $value; ?>">
+                    <label for="<?php echo esc_attr( $input_id ); ?>" data-id="<?php echo esc_attr( $value ); ?>">
                     <input type="radio" name="mep_icon" id="<?php echo $input_id; ?>" value="<?php echo $key; ?>">
-                    <i class="<?php echo $key; ?>"></i>
+                    <span class="<?php echo esc_attr( $key ); ?>"></span>
                     </label> 
                     <?php
                 }

@@ -924,7 +924,7 @@
 								'label'   => __( 'Choose Event Location Icon', 'mage-eventpress' ),
 								'desc'    => __( 'Please choose event location icon.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
-								'default' => 'mi mi-marker',
+								'default' => 'mi mi-map-marker',
 							),
 							array(
 								'name'    => 'mep_event_organizer_icon',

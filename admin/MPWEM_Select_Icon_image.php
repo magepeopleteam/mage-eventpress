@@ -182,7 +182,7 @@
 				return $all_icon;
 			}
 
-			public function all_icon_array(): array {
+			public static function all_icon_array(): array {
 				return [
 					[
 						'title' => 'Mage icon',

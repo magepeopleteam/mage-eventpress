@@ -4229,7 +4229,7 @@ die();
 	add_action( 'mep_event_list_date_li', 'mep_event_list_upcoming_date_li', 10, 2 );
 	if ( ! function_exists( 'mep_event_list_upcoming_date_li' ) ) {
 		function mep_event_list_upcoming_date_li( $event_id, $type = 'grid' ) {
-			$event_date_icon         = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt' );
+			$event_date_icon         = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'mi mi-calendar' );
 			$hide_only_end_time_list = mep_get_option( 'mep_event_hide_end_time_list', 'event_list_setting_sec', 'no' );
 			$event_start_datetime    = get_post_meta( $event_id, 'event_start_datetime', true );
 			$event_end_datetime      = get_post_meta( $event_id, 'event_end_datetime', true );
@@ -4426,7 +4426,7 @@ die();
 						$start_datetime  = $every_day . ' ' . $start_time;
 						$end_datetime    = $every_day . ' ' . $end_time;
 						$theme           = get_post_meta( $event_id, 'mep_event_template', true );
-						$event_date_icon = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'far fa-calendar-alt' ); ?>
+						$event_date_icon = mep_get_option( 'mep_event_date_icon', 'icon_setting_sec', 'mi mi-calendar' ); ?>
 						<?php if ( $start_date != $end_date ) : ?>
                             <li>
 								<?php do_action( 'mep_single_before_event_date_list_item', $event_id, $start_datetime ); ?>

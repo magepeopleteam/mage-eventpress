@@ -448,15 +448,18 @@
 				$output = '';
 				$desc   = $this->get_field_description( $args );
 				$value  = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+				if ( $args['id'] === 'mep_event_location_icon' && $value === 'mi mi-marker' ) {
+					$value = 'mi mi-map-marker';
+				}
 				$id     = esc_attr($args['id']);
 				$type   = 'hidden';
 				$class  = 'mep_global_settings_icon';
 				if(! empty($value)){
 					$output .= '<div class="mep_settings_icon"><div class="mep_global_settings_icon_preview" data-key="'.$id.'">';
-					$output .= '<i class="'.$value.'"></i>';
+					$output .= '<span class="'.$value.'"></span>';
 					$output .= '</div>';
 				}
-				$output .= '<a class="mep_global_icon_lib_btn" data-key="'.$id.'">'.esc_html__('Icon Library','mage-eventpress').'</a></div>';
+				$output .= '<a href="#" class="mep_global_icon_lib_btn" data-key="'.$id.'">'.esc_html__('Icon Library','mage-eventpress').'</a></div>';
 				
 				$output .= sprintf( '<input type="%1$s" class="%2$s" id="%4$s" name="%3$s[%4$s]" value="%5$s" data-key="'.$id.'"/>', $type, $class, $args['section'], $args['id'], $value);
 				

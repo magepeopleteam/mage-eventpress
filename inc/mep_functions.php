@@ -3764,6 +3764,7 @@ die();
 				foreach ( $names as $key => $name ) {
 					$current_qty = $qty[ $key ];
 					$current_qty = apply_filters( 'mpwem_group_actual_qty', $current_qty, $product_id, $name );
+					$current_qty = apply_filters( 'mpwem_group_qty_actual', $current_qty, $product_id, $name );
 					if ( $current_qty > 0 && $name ) {
 						for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && $iu > 0 && $_current_template == 'smart.php' ) {

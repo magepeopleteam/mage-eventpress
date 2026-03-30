@@ -104,6 +104,7 @@
 														$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 														$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
 														$ticket_price_     = apply_filters( 'mpwem_group_ticket_price', $ticket_price_, $event_id, $ticket_name );
+														$ticket_price_     = apply_filters( 'mpwem_group_qty_price', $ticket_price_, $event_id, $ticket_name );
 														$ticket_price_wc   = wc_price( $ticket_price_ );
 														$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
 														$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
@@ -113,6 +114,7 @@
 														$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 														$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 														$available         = apply_filters( 'mpwem_group_ticket_qty', $available, $event_id, $ticket_name );
+														$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );
 														$available         = max( 0, floor( $available ) );
 														if ( $ticket_name && $ticket_qty > 0 ) {
 															$input_data              = [];

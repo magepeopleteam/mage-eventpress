@@ -512,6 +512,7 @@
 						$ticket_name               = explode( '_', $name );
                         $_name=$ticket_name[0];
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
+						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
 						if ( $_name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;
 							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
@@ -593,8 +594,9 @@
 						$ticket_name               = explode( '_', $name );
 						$_name=$ticket_name[0];
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
+						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
 						if ( $current_qty > 0 && $name ) {
-							for ( $j = 0; $j < $qty[ $key ]; $j ++ ) {
+							for ( $j = 0; $j < $current_qty; $j ++ ) {
 								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $attendee_info ) && sizeof( $attendee_info ) > 0 ) {
 									$attendee_info[ $count ] = current( $attendee_info );
 								} else {

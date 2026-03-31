@@ -1356,3 +1356,6 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 .mpTabs.kera_ticket_area {
     margin-top: 20px;
 }
+.mpTabs.kera_ticket_area .mpwem_ticket_type {
+    padding: 15px;
+}

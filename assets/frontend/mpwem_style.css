@@ -1353,3 +1353,6 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.mpwem_registration_area .date-time-area label{
 		width: max-content;
 	}
+.mpTabs.kera_ticket_area {
+    margin-top: 20px;
+}

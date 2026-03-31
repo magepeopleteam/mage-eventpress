@@ -52,13 +52,16 @@
 		$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 		$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
         $template=MPWEM_Functions::get_details_template_name($event_id);
-		$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
-		$fatal_error_fix           = array_key_exists( 'mep_fix_details_page_fatal_error', $general_setting_sec ) ? $general_setting_sec['mep_fix_details_page_fatal_error'] : 'disable';
+
+        $general_setting_sec=get_option('general_setting_sec');
+        $fatal_error_fix=is_array($general_setting_sec) && array_key_exists('mep_fix_details_page_fatal_error',$general_setting_sec)?$general_setting_sec['mep_fix_details_page_fatal_error']:'disable';
+
 		?>
 		<div id="mage-container" class="mage">
 			<div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" style="max-width: 100%;">
 				<div class="mpwem_container">
 					<?php
+
 						if ( $fatal_error_fix === 'disable' ) {
 							if ( ! class_exists( 'WC_Bundles' ) ) {
 								if ( ! class_exists( 'WEPOF_Extra_Product_Options' ) ) {

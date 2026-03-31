@@ -320,24 +320,32 @@ function mpwem_attendee_management(parent, total_qty) {
     });
     $(document).on("click", ".mpwem_book_now", function (e) {
         e.preventDefault();
-        let parent = $(this).closest('.mpwem_registration_area');
-        let total_qty = mpwem_qty(parent);
-        if (total_qty > 0) {
-            if (parent.find('[name="mepmm_min_qty"]').length > 0) {
-                let min_qty = parseInt(parent.find('[name="mepmm_min_qty"]').val());
-                if (total_qty < min_qty) {
-                    alert('must buy minimum number of ticket : ' + min_qty);
+
+        const $wrap = $(this).closest('.mpwem_summery');
+        const alreadyInCart = parseInt($(this).attr('data-in-cart'));
+        if (alreadyInCart === 1 || alreadyInCart === '1') {
+            alert('This product is already in your cart.');
+            return false;
+        }else {
+            let parent = $(this).closest('.mpwem_registration_area');
+            let total_qty = mpwem_qty(parent);
+            if (total_qty > 0) {
+                if (parent.find('[name="mepmm_min_qty"]').length > 0) {
+                    let min_qty = parseInt(parent.find('[name="mepmm_min_qty"]').val());
+                    if (total_qty < min_qty) {
+                        alert('must buy minimum number of ticket : ' + min_qty);
+                    } else {
+                        parent.find('.mpwem_add_to_cart').trigger('click');
+                    }
                 } else {
                     parent.find('.mpwem_add_to_cart').trigger('click');
                 }
             } else {
-                parent.find('.mpwem_add_to_cart').trigger('click');
+                alert('Please Select Ticket Type');
+                let currentTarget = $(this).closest('.mpwem_registration_area').find('[name="option_qty[]"]');
+                currentTarget.addClass('error');
+                return false;
             }
-        } else {
-            alert('Please Select Ticket Type');
-            let currentTarget = $(this).closest('.mpwem_registration_area').find('[name="option_qty[]"]');
-            currentTarget.addClass('error');
-            return false;
         }
     });
     $(document).on('change', '.mpwem_registration_area [name="event_extra_service_qty[]"]', function () {
@@ -649,4 +657,21 @@ document.querySelectorAll('li').forEach(function(li) {
             });
         }
     }
+});
+
+
+jQuery(function ($) {
+    $('.mpwem_book_now').on('click', function (e) {
+        e.preventDefault();
+
+        const $wrap = $(this).closest('.mpwem_summery');
+        const alreadyInCart = $wrap.data('in-cart');
+
+        if (alreadyInCart === 1 || alreadyInCart === '1') {
+            alert('This product is already in your cart.');
+            return;
+        }
+
+        $wrap.find('.mpwem_add_to_cart').trigger('click');
+    });
 });

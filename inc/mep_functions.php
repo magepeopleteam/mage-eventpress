@@ -4867,8 +4867,10 @@ die();
 		<?php
 	}
 
+
     add_action('wp_enqueue_scripts', 'mep_custom_add_to_cart_script');
     function mep_custom_add_to_cart_script() {
+
         if (is_product()) {
             wp_add_inline_script('wc-add-to-cart', '
             jQuery(document).ready(function($) {
@@ -4904,9 +4906,11 @@ die();
         }
     }
 
+
     add_action('wp_ajax_check_duplicate_product', 'mep_check_duplicate_product_callback');
     add_action('wp_ajax_nopriv_check_duplicate_product', 'mep_check_duplicate_product_callback');
     function mep_check_duplicate_product_callback() {
+
         $product_id = intval($_POST['product_id']);
         $is_duplicate = false;
 

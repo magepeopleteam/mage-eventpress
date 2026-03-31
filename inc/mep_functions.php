@@ -4866,3 +4866,56 @@ die();
 		</div>
 		<?php
 	}
+
+    add_action('wp_enqueue_scripts', 'custom_add_to_cart_script');
+    function custom_add_to_cart_script() {
+        if (is_product()) {
+            wp_add_inline_script('wc-add-to-cart', '
+            jQuery(document).ready(function($) {
+                $(".mpwem_add_to_cart").on("click", function(e) {
+                    e.preventDefault();
+                    
+                    var product_id = $(this).val();
+                    var is_duplicate = false;
+                    
+                    // Check if product already in cart
+                    $.ajax({
+                        url: mpwem_ajax_url,
+                        type: "POST",
+                        data: {
+                            action: "check_duplicate_product",
+                            product_id: product_id
+                        },
+                        async: false,
+                        success: function(response) {
+                            if(response.duplicate) {
+                                is_duplicate = true;
+                                alert("This product is already in your cart!");
+                            }
+                        }
+                    });
+                    
+                    if(!is_duplicate) {
+                        $(this).closest("form").off("submit").submit();
+                    }
+                });
+            });
+        ');
+        }
+    }
+
+    add_action('wp_ajax_check_duplicate_product', 'check_duplicate_product_callback');
+    add_action('wp_ajax_nopriv_check_duplicate_product', 'check_duplicate_product_callback');
+    function check_duplicate_product_callback() {
+        $product_id = intval($_POST['product_id']);
+        $is_duplicate = false;
+
+        foreach(WC()->cart->get_cart() as $item) {
+            if($item['product_id'] == $product_id) {
+                $is_duplicate = true;
+                break;
+            }
+        }
+
+        wp_send_json(array('duplicate' => $is_duplicate));
+    }

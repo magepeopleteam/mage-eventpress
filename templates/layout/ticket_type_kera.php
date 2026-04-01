@@ -7,9 +7,9 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id           = $event_id ?? 0;
-	$all_dates          = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-	$all_times          = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
-	$date               = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$all_dates          = MPWEM_Functions::get_dates( $event_id );
+	$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
+	$date               = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id);
 	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 	if ( $total_available > 0 ) {
@@ -69,14 +69,17 @@
 								$des     = get_term_meta( $meta_id, 'custom_description', true );
 								?>
                                 <div data-tabs-target="#category_name_<?php echo esc_attr( $tab_count ); ?>">
+<div class="category-item">
+                                    <div class="category-title"><?php echo $tickets['group']; ?></div>
+    <div class="category-content">
 									<?php
 										if ( $des ) {
 											echo wp_kses_post( $des );
-										} else {
-											echo esc_html( $tickets['group'] );
 										}
 										$tab_count ++;
 									?>
+    </div>
+                                </div>
                                 </div>
 							<?php } ?>
                     </div>
@@ -180,7 +183,7 @@
 																				?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr( $ticket_price ); ?>"/><?php
 																				esc_html_e( 'Upcoming', 'mage-eventpress' );
 																			}
-																			$exit_avail = $available;
+																			//$exit_avail = $available;
 																		?>
                                                                     </div>
                                                                 </div>

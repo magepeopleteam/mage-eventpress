@@ -47,39 +47,39 @@
 				$sections = array(
 					array(
 						'id'    => 'general_setting_sec',
-						'title' => '<i class="fas fa-cogs"></i>' . __( 'General Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-settings"></i>' . __( 'General Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'event_list_setting_sec',
-						'title' => '<i class="far fa-calendar-alt"></i>' . __( 'Event List Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-rectangle-list"></i>' . __( 'Event List Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'single_event_setting_sec',
-						'title' => '<i class="far fa-calendar-check"></i>' . __( 'Single Event Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-calendar"></i>' . __( 'Single Event Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'email_setting_sec',
-						'title' => '<i class="fas fa-envelope"></i>' . __( 'Email Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-envelope"></i>' . __( 'Email Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'style_setting_sec',
-						'title' => '<i class="fas fa-palette"></i>' . __( 'Style Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-palette"></i>' . __( 'Style Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'icon_setting_sec',
-						'title' => '<i class="fab fa-font-awesome"></i>' . __( 'Icon Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-icon-star"></i>' . __( 'Icon Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'carousel_setting_sec',
-						'title' => '<i class="fas fa-sliders-h"></i>' . __( 'Carousel Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-copy-image"></i>' . __( 'Carousel Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'mp_slider_settings',
-						'title' => '<i class="fas fa-sliders-h"></i>' . __( 'Slider Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-settings-sliders"></i>' . __( 'Slider Settings', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'mep_settings_licensing',
-						'title' => __( 'License', 'mage-eventpress' )
+						'title' => '<i class="mi mi-license"></i>'. __( 'License', 'mage-eventpress' )
 					)
 				);
 

@@ -396,7 +396,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					$location_title      = array_key_exists( 'location_title', $event_infos ) ? $event_infos['location_title'] : '';
 					$icon_setting_sec    = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec    = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$event_location_icon = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
+					$event_location_icon = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
 					?>
                     <div class="list_content upcomming_location">
                         <span class="<?php echo esc_attr( $event_location_icon ); ?>"></span>

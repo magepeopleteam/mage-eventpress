@@ -513,6 +513,7 @@
 				$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : self::get_dates( $event_id );
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$times     = [];
+
 				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
 						$date = $date ?date( 'Y-m-d', strtotime( $date ) ): date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );

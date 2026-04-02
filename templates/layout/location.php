@@ -70,7 +70,7 @@
                 </div>
 				<?php
 			} else {
-				echo esc_html( $location[ $type ] );
+				echo esc_html( array_key_exists($type,$location)?$location[ $type ]:'');
 			}
 		}
 	}

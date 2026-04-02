@@ -4923,3 +4923,25 @@ die();
 
         wp_send_json(array('duplicate' => $is_duplicate));
     }
+
+    add_action('before_delete_post', 'mep_delete_linked_wc_product');
+
+    function mep_delete_linked_wc_product($post_id) {
+
+        // avoid autosave / revision
+        if (wp_is_post_revision($post_id)) {
+            return;
+        }
+
+        // check your custom post type
+        if (get_post_type($post_id) !== 'mep_events') {
+            return;
+        }
+
+        // get linked product id
+        $product_id = get_post_meta($post_id, 'link_wc_product', true);
+
+        if ($product_id) {
+            wp_delete_post($product_id, true); // true = force delete
+        }
+    }

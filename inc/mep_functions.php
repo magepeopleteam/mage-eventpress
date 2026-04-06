@@ -18,10 +18,6 @@ if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
 	}
 }
 
-
-
-
-
 if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
 		if ( $post->post_type === 'mep_events' ) {
@@ -2909,8 +2905,10 @@ die();
 	add_filter( 'wp_unique_post_slug_is_bad_flat_slug', 'mep_event_prevent_slug_conflict', 10, 3 );
 	if ( ! function_exists( 'mep_event_prevent_slug_conflict' ) ) {
 		function mep_event_prevent_slug_conflict( $is_bad_slug, $slug, $post_type, $post_parent_id = 0 ) {
-			$reserved_top_level_slugs = apply_filters( 'mep_event_prevent_slug_conflict_arr', array( 'events' ) );
-			if ( 0 === $post_parent_id && in_array( $slug, $reserved_top_level_slugs ) ) {
+			$event_slug = sanitize_title( mep_get_option( 'mep_event_slug', 'general_setting_sec', 'events' ) );
+			$event_slug = $event_slug ? $event_slug : 'events';
+			$reserved_top_level_slugs = apply_filters( 'mep_event_prevent_slug_conflict_arr', array_filter( array_unique( array( $event_slug ) ) ) );
+			if ( 0 === $post_parent_id && in_array( $slug, $reserved_top_level_slugs, true ) ) {
 				$is_bad_slug = true;
 			}
 			return $is_bad_slug;

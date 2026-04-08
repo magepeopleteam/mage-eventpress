@@ -11,6 +11,7 @@
 			public function __construct() {
 				add_shortcode( 'event-list-recurring', array( $this, 'eventlistrecurring' ) );
 				add_shortcode( 'event-list', array( $this, 'event_list' ) );
+				add_shortcode( 'expire-event-list', array( $this, 'expired_event_list' ) );
 				add_shortcode( 'event-add-cart-section', array( $this, 'add_to_cart_section' ) );
 				add_shortcode( 'event-city-list', array( $this, 'event_city_list' ) );
 				add_shortcode( 'event-speaker-list', array( $this, 'speaker_list' ) );
@@ -19,6 +20,11 @@
             public function eventlistrecurring( $atts, $content = null ) {
 	            return $this->event_list( $atts, $content );
             }
+			public function expired_event_list( $atts, $content = null ) {
+				$atts           = is_array( $atts ) ? $atts : array();
+				$atts['status'] = 'expired';
+				return $this->event_list( $atts, $content );
+			}
 			public function event_list( $atts, $content = null ) {
 				$defaults         = array(
 					"cat"              => "0",

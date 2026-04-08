@@ -41,7 +41,11 @@
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
-				$event_expire_on     = $event_expire_on_old == 'event_end_datetime' ? 'event_end_datetime' : 'event_upcoming_datetime';
+				if ( $event_expire_on_old === 'event_end_datetime' || $event_expire_on_old === 'event_expire_datetime' ) {
+					$event_expire_on = 'event_expire_datetime';
+				} else {
+					$event_expire_on = 'event_upcoming_datetime';
+				}
 				$now                 = current_time( 'Y-m-d H:i:s' );
 				if ( $paged_override && is_numeric( $paged_override ) ) {
 					$paged = intval( $paged_override );
@@ -169,12 +173,50 @@
 					);
 				}
 
-				$expire_filter = ! empty( $event_expire_on ) ? array(
-					'key'     => $event_expire_on,
-					'value'   => $now,
-					'compare' => $etype,
-					'type'    => 'DATETIME'
-				) : '';
+				$expire_filter = '';
+				if ( ! empty( $event_expire_on ) ) {
+					if ( $event_expire_on === 'event_upcoming_datetime' ) {
+						// Some selected-date recurring events never get event_upcoming_datetime populated.
+						// In that case fall back to the saved start datetime so expired events still appear.
+						$expire_filter = array(
+							'relation' => 'OR',
+							array(
+								'key'     => 'event_upcoming_datetime',
+								'value'   => $now,
+								'compare' => $etype,
+								'type'    => 'DATETIME'
+							),
+							array(
+								'relation' => 'AND',
+								array(
+									'relation' => 'OR',
+									array(
+										'key'     => 'event_upcoming_datetime',
+										'compare' => 'NOT EXISTS'
+									),
+									array(
+										'key'     => 'event_upcoming_datetime',
+										'value'   => '',
+										'compare' => '='
+									)
+								),
+								array(
+									'key'     => 'event_start_datetime',
+									'value'   => $now,
+									'compare' => $etype,
+									'type'    => 'DATETIME'
+								)
+							)
+						);
+					} else {
+						$expire_filter = array(
+							'key'     => $event_expire_on,
+							'value'   => $now,
+							'compare' => $etype,
+							'type'    => 'DATETIME'
+						);
+					}
+				}
 
 				// Build meta_query
 				$meta_query = array();

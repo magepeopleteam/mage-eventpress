@@ -223,10 +223,12 @@
 			//==========================//
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
 				$up_coming_date='';
+				$date_type   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+				$event_expire_on_old   = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+				$event_expire_on       = $event_expire_on_old == 'event_end_datetime' ? 'event_expire_datetime' : $event_expire_on_old;				
 				$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : self::get_dates( $event_id );
 				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 					$all_times = $all_times && is_array( $all_times ) && sizeof( $all_times ) ? $all_times : MPWEM_Functions::get_times( $event_id, $all_dates );
-					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
 						$date = date( 'Y-m-d', strtotime( current( $all_dates )['time'] ) );
 					} else {
@@ -240,8 +242,11 @@
 					$date_time = $date . ' ' . $start_time;
 					$up_coming_date= MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
-				update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
-				return $up_coming_date;
+				 $event_expire_on_date= $event_expire_on == 'event_start_datetime' ?  'event_start_datetime' : 'event_end_datetime';
+				 $up_coming_date = $date_type == 'no' ? get_post_meta( $event_id, $event_expire_on_date, true ) : $up_coming_date;
+				 
+				 update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+				 return $up_coming_date;
 			}
 			public static function get_all_dates( $event_id ) {
 				$all_dates = [];
@@ -506,6 +511,8 @@
 						}
 					}
 					$all_dates  = array_unique( $all_dates );
+					// echo '<pre>'; print_r($all_dates); echo '</pre>';
+
 				}
 				return $all_dates;
 			}

@@ -43,7 +43,7 @@
                 <div class="_padding_bt">
                     <label class="_justify_between_align_center_wrap ">
                         <span class="_mr"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
-                        <input class="formControl id_validation" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
+                        <input class="formControl" type="text" name="mep_event_sku" value="<?php echo esc_attr( $sku ); ?>" placeholder="<?php esc_attr_e( 'Event SKU No', 'mage-eventpress' ); ?>"/>
                     </label>
                     <span class="label-text"><?php esc_html_e( 'Event SKU No', 'mage-eventpress' ); ?></span>
                 </div>

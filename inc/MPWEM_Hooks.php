@@ -437,21 +437,41 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				}
 			}
 			public function list_upcoming_date( $event_infos ) {
+                $event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
+                $event_infos = MPWEM_Functions::get_all_info($event_id);
+                $all_dates = MPWEM_Functions::get_dates($event_id);
+                $date_type = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : '';
 				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-				if ( $upcoming_date ) {
+                if ($date_type == 'no' || $date_type == 'yes') {
+                    $start_time = current($all_dates)['time'];
+                } else {
+                    $date = current($all_dates);
+                    $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
+                    if (is_array($all_times) && sizeof($all_times) > 0) {
+                        $time = current($all_times);
+                        $time_info = array_key_exists('start', $time) ? $time['start'] : [];
+                        if (is_array($time_info) && sizeof($time_info) > 0) {
+                            $time = array_key_exists('time', $time_info) ? $time_info['time'] : '';
+                            if ($time) {
+                                $start_time = $date . ' ' . $time;
+                            }
+                        }
+                    }
+                }
+				if ( $start_time ) {
 					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$event_date_icon         = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
 					$event_list_setting_sec  = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
-					$date_format             = MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ? 'full' : 'date';
+					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
 					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					$event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
 					?>
                     <div class="list_content upcomming_date_only_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
-							echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, $date_format, $event_id ) );
+							echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id ) );
 							if ( $end_time && $hide_only_end_time_list == 'no' ) {
 								if ( strtotime( date( 'Y-m-d', strtotime( $upcoming_date ) ) ) == strtotime( date( 'Y-m-d', strtotime( $end_time ) ) ) ) {
 									$end_date_format = 'time';
@@ -517,7 +537,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function list_more_date_button( $event_infos ) {
 				$event_id                  = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
-				$all_dates                 = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+                $all_dates = MPWEM_Functions::get_dates($event_id);
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 				$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';

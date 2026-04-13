@@ -330,6 +330,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -510,6 +511,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -693,6 +695,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -876,6 +879,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -1058,6 +1062,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -1254,6 +1259,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -1438,6 +1444,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(
@@ -1639,6 +1646,7 @@
 									'mep_sgm' => '1',
 									//Ticket Type & prices
 									'mep_reg_status' => 'on',
+									'mep_display_slider' => 'off',
 									'mep_show_advance_col_status' => 'off',
 									'mep_event_ticket_type' => array(
 										0 => array(

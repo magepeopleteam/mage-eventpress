@@ -127,7 +127,7 @@
 				}
 				if ( is_array( $ticket_type ) && sizeof( $ticket_type ) > 0 ) {
 					$filter_args['post_id']    = $event_id;
-					$filter_args['event_date'] = $date;
+					$filter_args['event_date'] = date('Y-m-d H:i', strtotime($date));
 					$filter_args['ea_ticket_type'] = $ticket_name;
 					$ticket_qty       = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 					$ticket_r_qty     = array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;

@@ -282,7 +282,7 @@
 				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_date',
-						'value'   => $filter_args['event_date'],
+						'value'   => date('Y-m-d H:i', strtotime($filter_args['event_date'])),
 						'compare' => 'LIKE'
 					);
 				}

@@ -11,6 +11,7 @@
 			public function __construct() {
 				add_shortcode( 'event-list-recurring', array( $this, 'eventlistrecurring' ) );
 				add_shortcode( 'event-list', array( $this, 'event_list' ) );
+				add_shortcode( 'events_list', array( $this, 'event_lists' ) );
 				add_shortcode( 'expire-event-list', array( $this, 'expired_event_list' ) );
 				add_shortcode( 'event-add-cart-section', array( $this, 'add_to_cart_section' ) );
 				add_shortcode( 'event-city-list', array( $this, 'event_city_list' ) );
@@ -25,6 +26,110 @@
 				$atts['status'] = 'expired';
 				return $this->event_list( $atts, $content );
 			}
+            public function event_lists($atts, $content = null ) {
+                $defaults         = array(
+                    "cat"              => "0",
+                    "org"              => "0",
+                    "tag"              => "0",
+                    "style"            => "grid",
+                    "column"           => 3,
+                    "cat-filter"       => "no",
+                    "org-filter"       => "no",
+                    "tag-filter"       => "no",
+                    "show"             => "-1",
+                    "pagination"       => "no",
+                    "pagination-style" => "load_more",
+                    "city"             => "",
+                    "state"            => "",
+                    "country"          => "",
+                    "carousal-nav"     => "no",
+                    "carousal-dots"    => "yes",
+                    "carousal-id"      => "102448",
+                    "timeline-mode"    => "vertical",
+                    'sort'             => 'ASC',
+                    'status'           => 'upcoming',
+                    'search-filter'    => '',
+                    'title-filter'     => 'yes',
+                    'category-filter'  => 'yes',
+                    'organizer-filter' => 'yes',
+                    'city-filter'      => 'yes',
+                    'state-filter'     => 'yes',
+                    'date-filter'      => 'yes',
+                    'year'             => '',
+                );
+                $params           = shortcode_atts( $defaults, $atts );
+                $filter           = sanitize_text_field( $params['search-filter'] );
+                $pagination       = sanitize_text_field( $params['pagination'] );
+                $pagination_style = sanitize_text_field( $params['pagination-style'] );
+                $style            = sanitize_text_field( $params['style'] );
+                $column           = $style != 'grid' ? 1 : absint( $params['column'] );
+                $cat              = sanitize_text_field( $params['cat'] );
+                $org              = sanitize_text_field( $params['org'] );
+                $tag              = sanitize_text_field( $params['tag'] );
+                $city             = sanitize_text_field( $params['city'] );
+                $city             = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $city );
+                $state            = sanitize_text_field( $params['state'] );
+                $state            = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $state );
+                $country          = sanitize_text_field( $params['country'] );
+                $country          = str_replace( array( '[', ']', '<', '>', '"', "'", '`' ), '', $country );
+                $cid              = sanitize_text_field( $params['carousal-id'] );
+                $status           = sanitize_text_field( $params['status'] );
+                $year             = sanitize_text_field( $params['year'] );
+                $filter           = sanitize_text_field( $params['search-filter'] );
+                $sort             = sanitize_text_field( $params['sort'] );
+                $show             = isset( $atts['show'] ) && $atts['show'] !== '' ? intval( $atts['show'] ) : -1;
+                $show             = ( $filter == 'yes' || $pagination == 'yes') && $pagination_style != 'ajax' ? - 1 : $show;
+                $loop       = MPWEM_Query::event_list_query( $show);
+                $unq_id           = 'abr' . uniqid();
+                $total_item = $loop->found_posts;
+                ob_start();
+                ?>
+                <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
+                    <?php if ( $total_item > 0 ) { ?>
+                    <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
+                                 data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
+                                 data-style="<?php echo esc_attr( $style ); ?>"
+                                 data-column="<?php echo esc_attr( $column ); ?>"
+                                 data-cat="<?php echo esc_attr( $cat ); ?>"
+                                 data-org="<?php echo esc_attr( $org ); ?>"
+                                 data-tag="<?php echo esc_attr( $tag ); ?>"
+                                 data-city="<?php echo esc_attr( $city ); ?>"
+                                 data-country="<?php echo esc_attr( $country ); ?>"
+                                 data-status="<?php echo esc_attr( $status ); ?>"
+                                 data-year="<?php echo esc_attr( $year ); ?>"
+                                 data-sort="<?php echo esc_attr( $sort ); ?>"
+                                 data-show="<?php echo esc_attr( $show ); ?>"
+                                 data-pagination="<?php echo esc_attr( $pagination ); ?>"
+                                 data-pagination-style="<?php echo esc_attr( $pagination_style ); ?>"
+                    >
+                        <div class="mage_grid_box">
+                            <?php while ( $loop->have_posts() ) {
+                                $loop->the_post();
+                                $event_id = get_the_id();
+                                if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
+                                    $columnNumber = 'column_style';
+                                    $width        = 100 / (int) $column;
+                                } elseif ( $pagination == 'carousal' && $style == 'grid' ) {
+                                    $columnNumber = 'grid';
+                                    $width        = 100;
+                                } else {
+                                    $columnNumber = 'one_column';
+                                    $width        = 100;
+                                }
+                                do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
+                            }
+                                wp_reset_postdata(); ?>
+                        </div>
+                    </div>
+                    <?php 	do_action( 'mpwem_pagination', $params, $total_item );
+                    } else {
+                        echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
+                    }?>
+                </div>
+                <?php
+                $content = ob_get_clean();
+                return $content;
+            }
 			public function event_list( $atts, $content = null ) {
 				$defaults         = array(
 					"cat"              => "0",
@@ -57,7 +162,7 @@
 					'year'             => '',
 				);
 			$params           = shortcode_atts( $defaults, $atts );
-			
+
 			// Sanitize all customer-provided shortcode attributes to prevent XSS and injection attacks
 			$tmode            = sanitize_text_field( $params['timeline-mode'] );
 			$cat              = sanitize_text_field( $params['cat'] );

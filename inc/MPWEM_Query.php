@@ -38,6 +38,20 @@
 				sort( $meta_values, SORT_NATURAL );
 				return $meta_values;
 			}
+			public static function event_list_query($show) {
+				$args = array(
+					'post_type'      => array( 'mep_events' ),
+					'paged'          => 1,
+					'posts_per_page' => $show,
+					'post_status'    => array( 'publish' ),
+					'order'          => '',
+					//'orderby'        => $event_order_by,
+					'meta_key'       => 'event_start_datetime',
+					//'meta_query'     => $meta_query,
+					//'tax_query'      => $tax_query
+				);
+				return new WP_Query( $args );
+			}
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );

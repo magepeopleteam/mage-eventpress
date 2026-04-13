@@ -580,6 +580,9 @@
 				} else {
 					$time = $start_time;
 				}
+				
+				$date 			= date('Y-m-d H:i', strtotime($date));
+
 				$total_ticket = MPWEM_Functions::get_total_ticket( $id, $date );
 				// $total_sold   = mep_get_event_total_seat_left( $id );
 				$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );

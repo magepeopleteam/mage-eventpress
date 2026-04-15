@@ -319,12 +319,15 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			/***********************/
 			public function seat_status( $event_id, $event_infos = [], $date = '' ) {
 				$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+				$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$show_available_seat       = array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 				$hide_seat_status          = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
 				$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 				$date                      = $date != '' ? $date : $upcoming_date;
+				$date = $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $date;
+
 				if ( $hide_seat_status == 'no' && $date ) { ?>
                     <div class="mpwem_seat_status">
 						<?php require MPWEM_Functions::template_path( 'layout/seat_status.php' ); ?>
@@ -352,7 +355,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
 					die;
 				}
-				$date = isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( $_POST['date'] ) ) : '';
+				 $date = isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( $_POST['date'] ) ) : '';
 				if ( $post_id && $date ) {
 					$total_sold      = mep_ticket_type_sold( $post_id, '', $date );
 					$total_ticket    = MPWEM_Functions::get_total_ticket( $post_id, $date );

@@ -5,11 +5,13 @@
 	$event_id = $event_id ?? 0;
 	if ( $event_id > 0 ) {
 		$event_infos                 = $event_infos ?? [];
+		$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 		$event_infos              = (is_array($event_infos) && sizeof($event_infos)>0) ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
 		$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 		$single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
 		$hide_date_details        = array_key_exists( 'mep_event_hide_date_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_date_from_details'] : 'no';
-		$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+		$upcoming_date            = array_key_exists( 'upcoming_date', $event_infos ) && $event_recurring == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
+
 		if ( $hide_date_details == 'no' && $upcoming_date ) {
 			$icon_setting_sec    = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 			$icon_setting_sec = empty($icon_setting_sec) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;

@@ -9,10 +9,13 @@
 	$event_id    = $event_id ?? 0;
 	$event_infos                 = $event_infos ?? [];
 	$event_infos              = (is_array($event_infos) && sizeof($event_infos)>0) ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
+	$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+
 	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+	$date = $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $date;
 	// echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {

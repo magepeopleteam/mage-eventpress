@@ -9,9 +9,16 @@
 	$event_id  = $event_id ?? 0;
 	$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
 	$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
+
+	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+// echo $date;
+
 	$date      = empty( $date ) ? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ) : $date;
 	//echo '<pre>';			print_r($all_times);			echo '</pre>';
-	//echo '<pre>';			print_r($all_dates);			echo '</pre>';
+	//echo '<pre>';			print_r($all_dates);			echo '</pre>'; everyday2026-04-30 12:00 no2026-04-30 11:59:00
+
+
 	ob_start();
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );

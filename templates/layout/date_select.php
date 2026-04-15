@@ -21,7 +21,9 @@
 				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$date_type=$date_type?:'no';
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
-					$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
+					// $date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
+					$date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id);
+
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 					if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {
 						?>

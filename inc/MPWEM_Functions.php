@@ -243,9 +243,15 @@
 					$up_coming_date= MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
 				 $event_expire_on_date= $event_expire_on == 'event_start_datetime' ?  'event_start_datetime' : 'event_end_datetime';
-				 $up_coming_date = $date_type == 'no' ? get_post_meta( $event_id, $event_expire_on_date, true ) : $up_coming_date;
-				 
-				 update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+				 if ( $date_type == 'no' ) {
+				 	// Update event_upcoming_datetime with the expire-on datetime (used for expiry/listing queries)
+				 	$expire_datetime = get_post_meta( $event_id, $event_expire_on_date, true );
+				 	update_post_meta( $event_id, 'event_upcoming_datetime', $expire_datetime );
+				 	// Always return start datetime for cart/booking form display
+				 	$up_coming_date = get_post_meta( $event_id, 'event_start_datetime', true );
+				 } else {
+				 	update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+				 }
 				 return $up_coming_date;
 			}
 			public static function get_all_dates( $event_id ) {

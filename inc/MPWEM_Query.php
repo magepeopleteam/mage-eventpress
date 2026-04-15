@@ -280,9 +280,11 @@
 					);
 				}
 				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
+					$date = new DateTime($filter_args['event_date']);
+					$hasTime = $date->format('H:i:s') !== '00:00:00';
 					$meta_query[] = array(
 						'key'     => 'ea_event_date',
-						'value'   => date('Y-m-d H:i', strtotime($filter_args['event_date'])),
+						'value' => $hasTime ? $date->format('Y-m-d H:i') : $date->format('Y-m-d'),
 						'compare' => 'LIKE'
 					);
 				}

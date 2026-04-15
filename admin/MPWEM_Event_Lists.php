@@ -581,7 +581,8 @@
 					$time = $start_time;
 				}
 				
-				$date 			= date('Y-m-d H:i', strtotime($date));
+
+				$date 			= $event_type == 'no' ? get_post_meta( $id, 'event_start_datetime', true ) : date('Y-m-d H:i', strtotime($date));
 
 				$total_ticket = MPWEM_Functions::get_total_ticket( $id, $date );
 				// $total_sold   = mep_get_event_total_seat_left( $id );

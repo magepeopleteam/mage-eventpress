@@ -77,15 +77,32 @@
                 $year             = sanitize_text_field( $params['year'] );
                 $filter           = sanitize_text_field( $params['search-filter'] );
                 $sort             = sanitize_text_field( $params['sort'] );
+                $cat_f            = sanitize_text_field( $params['cat-filter'] );
+                $org_f            = sanitize_text_field( $params['org-filter'] );
+                $tag_f            = sanitize_text_field( $params['tag-filter'] );
                 $show             = isset( $atts['show'] ) && $atts['show'] !== '' ? intval( $atts['show'] ) : -1;
                 $show             = ( $filter == 'yes' || $pagination == 'yes') && $pagination_style != 'ajax' ? - 1 : $show;
-                $loop       = MPWEM_Query::event_list_query( $show);
+                $loop       = MPWEM_Query::event_list_query( $show,$status,$sort);
                 $unq_id           = 'abr' . uniqid();
                 $total_item = $loop->found_posts;
                 ob_start();
+                //echo $total_item;
                 ?>
                 <div class='mage list_with_filter_section mep_event_list' id='mage-container'>
-                    <?php if ( $total_item > 0 ) { ?>
+                    <?php if ( $total_item > 0 ) {
+                        if ( $cat_f == 'yes' && $cat < 1 ) {
+                            do_action( 'mpwem_taxonomy_filter', 'mep_cat', $unq_id );
+                        }
+                        if ( $org_f == 'yes' && $org < 1 ) {
+                            do_action( 'mpwem_taxonomy_filter', 'mep_org', $unq_id );
+                        }
+                        if ( $tag_f == 'yes' && $tag < 1 ) {
+                            do_action( 'mpwem_taxonomy_filter', 'mep_tag', $unq_id );
+                        }
+                        if ( $filter == 'yes' && $style != 'timeline' ) {
+                            do_action( 'mpwem_list_with_filter_section', $loop, $params );
+                        }
+                        ?>
                     <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
                                  data-unq-id="<?php echo esc_attr( $unq_id ); ?>"
                                  data-style="<?php echo esc_attr( $style ); ?>"
@@ -116,6 +133,7 @@
                                     $columnNumber = 'one_column';
                                     $width        = 100;
                                 }
+                                //echo $event_id;
                                 do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
                             }
                                 wp_reset_postdata(); ?>
@@ -126,6 +144,171 @@
                         echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
                     }?>
                 </div>
+                <script>
+                    jQuery(document).ready(function () {
+                        var containerEl = document.querySelector('#mep_event_list_<?php echo esc_attr( $unq_id ); ?>');
+                        var mixer = mixitup(containerEl, {
+                            selectors: {
+                                target: '.mep-event-list-loop',
+                                control: '[data-mixitup-control]'
+                            }
+                        });
+                        // Handle title filter input
+                        jQuery('input[name="filter_with_title"]').on('keyup', function () {
+                            var searchText = jQuery(this).val().toLowerCase();
+                            var items = jQuery('.mep-event-list-loop');
+                            items.each(function () {
+                                var itemTitle = jQuery(this).data('title').toLowerCase();
+                                if (itemTitle.indexOf(searchText) > -1) {
+                                    jQuery(this).show();
+                                } else {
+                                    jQuery(this).hide();
+                                }
+                            });
+                        });
+                        // Handle date filter change
+                        jQuery('input[name="filter_with_date"]').on('change', function () {
+                            var selectedDate = jQuery(this).val();
+                            var items = jQuery('.mep-event-list-loop');
+                            if (!selectedDate) {
+                                items.show();
+                            } else {
+                                var filterDate = new Date(selectedDate);
+                                filterDate.setHours(0, 0, 0, 0); // Reset time part for date comparison
+                                items.each(function () {
+                                    var itemDate = new Date(jQuery(this).data('date'));
+                                    itemDate.setHours(0, 0, 0, 0); // Reset time part for date comparison
+                                    if (itemDate.getTime() === filterDate.getTime()) {
+                                        jQuery(this).show();
+                                    } else {
+                                        jQuery(this).hide();
+                                    }
+                                });
+                            }
+                        });
+                        // Handle state filter change
+                        jQuery('select[name="filter_with_state"]').on('change', function () {
+                            var state = jQuery(this).val();
+                            var items = jQuery('.mep-event-list-loop');
+                            if (state === '') {
+                                items.show();
+                            } else {
+                                items.each(function () {
+                                    var itemState = jQuery(this).data('state');
+                                    if (itemState === state) {
+                                        jQuery(this).show();
+                                    } else {
+                                        jQuery(this).hide();
+                                    }
+                                });
+                            }
+                        });
+                        // Handle city filter change
+                        jQuery('select[name="filter_with_city"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Handle category filter change
+                        jQuery('select[name="filter_with_category"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Handle organizer filter change
+                        jQuery('select[name="filter_with_organizer"]').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Combined filter function that applies all filters
+                        function applyAllFilters() {
+                            var titleFilter = jQuery('input[name="filter_with_title"]').val().toLowerCase();
+                            var dateFilter = jQuery('input[name="filter_with_date"]').val();
+                            var stateFilter = jQuery('select[name="filter_with_state"]').val();
+                            var cityFilter = jQuery('select[name="filter_with_city"]').val();
+                            var categoryFilter = jQuery('select[name="filter_with_category"]').val();
+                            var organizerFilter = jQuery('select[name="filter_with_organizer"]').val();
+                            var visibleCount = 0;
+                            jQuery('.mep-event-list-loop').each(function () {
+                                var $item = jQuery(this);
+                                var show = true;
+                                // Title filter
+                                if (titleFilter) {
+                                    var itemTitle = ($item.data('title') || '').toLowerCase();
+                                    if (itemTitle.indexOf(titleFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                // Date filter
+                                if (show && dateFilter) {
+                                    var itemDate = $item.data('date');
+                                    if (itemDate) {
+                                        var filterDate = new Date(dateFilter);
+                                        filterDate.setHours(0, 0, 0, 0);
+                                        var itemDateObj = new Date(itemDate);
+                                        itemDateObj.setHours(0, 0, 0, 0);
+                                        if (itemDateObj.getTime() !== filterDate.getTime()) {
+                                            show = false;
+                                        }
+                                    } else {
+                                        show = false;
+                                    }
+                                }
+                                // State filter
+                                if (show && stateFilter) {
+                                    var itemState = $item.data('state') || '';
+                                    if (itemState !== stateFilter) {
+                                        show = false;
+                                    }
+                                }
+                                // City filter
+                                if (show && cityFilter) {
+                                    var itemCity = $item.data('city-name') || '';
+                                    if (itemCity !== cityFilter) {
+                                        show = false;
+                                    }
+                                }
+                                // Category filter
+                                if (show && categoryFilter) {
+                                    var itemCategory = $item.data('category') || '';
+                                    // Check if category matches (can be comma-separated)
+                                    var itemCategories = itemCategory.split(',').map(function (c) {
+                                        return c.trim();
+                                    });
+                                    if (itemCategories.indexOf(categoryFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                // Organizer filter
+                                if (show && organizerFilter) {
+                                    var itemOrganizer = $item.data('organizer') || '';
+                                    // Check if organizer matches (can be comma-separated)
+                                    var itemOrganizers = itemOrganizer.split(',').map(function (o) {
+                                        return o.trim();
+                                    });
+                                    if (itemOrganizers.indexOf(organizerFilter) === -1) {
+                                        show = false;
+                                    }
+                                }
+                                if (show) {
+                                    $item.show();
+                                    visibleCount++;
+                                } else {
+                                    $item.hide();
+                                }
+                            });
+                            // Update count display
+                            jQuery('.qty_count').text(visibleCount);
+                        }
+                        // Update title filter to use combined function
+                        jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
+                            applyAllFilters();
+                        });
+                        // Update date filter to use combined function
+                        jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        // Update state filter to use combined function
+                        jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                    });
+                </script>
                 <?php
                 $content = ob_get_clean();
                 return $content;

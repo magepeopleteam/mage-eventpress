@@ -38,16 +38,82 @@
 				sort( $meta_values, SORT_NATURAL );
 				return $meta_values;
 			}
-			public static function event_list_query($show) {
+			public static function event_list_query($show,$evnt_type = 'upcoming',$sort = '',$paged_override = 0) {
+				$etype          = $evnt_type == 'expired' ? '<' : '>';
+				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
+				if ( $event_expire_on_old === 'event_end_datetime' || $event_expire_on_old === 'event_expire_datetime' ) {
+					$event_expire_on = 'event_expire_datetime';
+				} else {
+					$event_expire_on = 'event_upcoming_datetime';
+				}
+				if ( $paged_override && is_numeric( $paged_override ) ) {
+					$paged = intval( $paged_override );
+				} elseif ( get_query_var( 'paged' ) ) {
+					$paged = get_query_var( 'paged' );
+				} elseif ( get_query_var( 'page' ) ) {
+					$paged = get_query_var( 'page' );
+				} else {
+					$paged = 1;
+				}
+				$now                 = current_time( 'Y-m-d H:i:s' );
+				$expire_filter = '';
+				if ( ! empty( $event_expire_on ) ) {
+					if ( $event_expire_on === 'event_upcoming_datetime' ) {
+						// Some selected-date recurring events never get event_upcoming_datetime populated.
+						// In that case fall back to the saved start datetime so expired events still appear.
+						$expire_filter = array(
+							'relation' => 'OR',
+							array(
+								'key'     => 'event_upcoming_datetime',
+								'value'   => $now,
+								'compare' => $etype,
+								'type'    => 'DATETIME'
+							),
+							array(
+								'relation' => 'AND',
+								array(
+									'relation' => 'OR',
+									array(
+										'key'     => 'event_upcoming_datetime',
+										'compare' => 'NOT EXISTS'
+									),
+									array(
+										'key'     => 'event_upcoming_datetime',
+										'value'   => '',
+										'compare' => '='
+									)
+								),
+								array(
+									'key'     => 'event_start_datetime',
+									'value'   => $now,
+									'compare' => $etype,
+									'type'    => 'DATETIME'
+								)
+							)
+						);
+					} else {
+						$expire_filter = array(
+							'key'     => $event_expire_on,
+							'value'   => $now,
+							'compare' => $etype,
+							'type'    => 'DATETIME'
+						);
+					}
+				}
+				$meta_query = array();
+				if ( ! empty( $expire_filter ) ) {
+					$meta_query[] = $expire_filter;
+				}
 				$args = array(
 					'post_type'      => array( 'mep_events' ),
-					'paged'          => 1,
+					'paged'          => $paged,
 					'posts_per_page' => $show,
 					'post_status'    => array( 'publish' ),
-					'order'          => '',
-					//'orderby'        => $event_order_by,
+					'order'          => $sort,
+					'orderby'        => $event_order_by,
 					'meta_key'       => 'event_start_datetime',
-					//'meta_query'     => $meta_query,
+					'meta_query'     => $meta_query,
 					//'tax_query'      => $tax_query
 				);
 				return new WP_Query( $args );

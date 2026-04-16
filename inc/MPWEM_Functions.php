@@ -517,6 +517,9 @@
 				return $all_dates;
 			}
 			public static function get_times( $event_id, $all_dates = [], $date = '' ) {
+				if ( is_array( $date ) ) {
+					$date = isset( $date['time'] ) ? $date['time'] : current( $date );
+				}
 				$all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : self::get_dates( $event_id );
 				$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$times     = [];

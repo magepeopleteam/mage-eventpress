@@ -1400,3 +1400,105 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		color: #fff;
 
 	}
+
+	button.mep_event_list_all{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+	}
+	button.mep_event_list_all:hover{
+		border-bottom: 2px solid #1e0a3c;
+		cursor: pointer;
+	}
+
+	button.mep_event_list_all.active{
+		color: #3659e3;
+		border-bottom-color: #3659e3;
+	}
+
+	div.mep_event_list_doc_area{
+		margin: 20px;
+		display: flex;
+		justify-content: space-between;
+	}
+	div.mep_event_list_doc{
+		display: flex;
+		gap: 24px;
+	}
+
+	button.mep_event_list_today{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+	}
+	button.mep_event_list_today:hover{
+		border-bottom: 2px solid #1e0a3c;
+		cursor: pointer;
+	}
+
+	button.mep_event_list_today.active{
+		color: #3659e3;
+		border-bottom-color: #3659e3;
+	}
+
+	button.mep_event_list_grid{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+		align-items: center;
+		gap:10px;
+		margin-right:10px;
+	}
+	button.mep_event_list_grid:hover{
+		border-color: #3659e3;
+		cursor: pointer;
+	}
+
+	button.mep_event_list_grid.active{
+		color: #3659e3;
+		border-color: #3659e3;
+	}
+	button.mep_event_list_list{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+		align-items: center;
+		gap:10px;
+	}
+	button.mep_event_list_list:hover{
+		border-color: #3659e3;
+		cursor: pointer;
+	}
+
+	button.mep_event_list_list.active{
+		color: #3659e3;
+		border-color: #3659e3;
+	}

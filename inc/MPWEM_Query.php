@@ -40,6 +40,7 @@
 			}
 			public static function event_list_query($show,$evnt_type = 'upcoming',$sort = '',$paged_override = 0) {
 				$etype          = $evnt_type == 'expired' ? '<' : '>';
+				$etype=$evnt_type=='today'?'LIKE':$etype;
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
 				if ( $event_expire_on_old === 'event_end_datetime' || $event_expire_on_old === 'event_expire_datetime' ) {
@@ -57,6 +58,9 @@
 					$paged = 1;
 				}
 				$now                 = current_time( 'Y-m-d H:i:s' );
+				if($evnt_type=='today'){
+					$now                 = current_time( 'Y-m-d' );
+				}
 				$expire_filter = '';
 				if ( ! empty( $event_expire_on ) ) {
 					if ( $event_expire_on === 'event_upcoming_datetime' ) {

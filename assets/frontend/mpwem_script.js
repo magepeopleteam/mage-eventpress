@@ -500,6 +500,184 @@ function mpwem_attendee_management(parent, total_qty) {
             });
         }
     });
+
+    $(document).on('click', 'button.mep_event_list_grid', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+let id=target_data.attr('data-unq-id');
+let style='grid';
+let column=target_data.attr('data-column');
+let cat=target_data.attr('data-cat');
+let org=target_data.attr('data-org');
+let tag=target_data.attr('data-tag');
+let city=target_data.attr('data-city');
+let country=target_data.attr('data-country');
+let status=target_data.attr('data-status');
+let year=target_data.attr('data-year');
+let sort=target_data.attr('data-sort');
+let show=target_data.attr('data-show');
+let pagination=target_data.attr('data-pagination');
+let pagination_style=target_data.attr('data-pagination-style');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_list_all",
+                    "id": id,
+                    "style": style,
+                    "column": column,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year,
+                    "sort": sort,
+                    "show": show,
+                    "pagination": pagination,
+                    "pagination_style": pagination_style,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    mpwem_loader_xs(target);
+                },
+                success: function (data) {
+                    mpwem_loader_remove($this);
+                    target.html(data);
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_grid').addClass('active');
+                    parent.find('.mep_event_list_list').removeClass('active');
+                    if(parent.find('.mep_event_list_today').hasClass( 'active' )){
+                        alert('Today Event List');
+                        parent.find('.mep_event_list_today').trigger('click');
+                    }
+                }
+            });
+
+    });
+    $(document).on('click', 'button.mep_event_list_list', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+let id=target_data.attr('data-unq-id');
+let style='list';
+let column=target_data.attr('data-column');
+let cat=target_data.attr('data-cat');
+let org=target_data.attr('data-org');
+let tag=target_data.attr('data-tag');
+let city=target_data.attr('data-city');
+let country=target_data.attr('data-country');
+let status=target_data.attr('data-status');
+let year=target_data.attr('data-year');
+let sort=target_data.attr('data-sort');
+let show=target_data.attr('data-show');
+let pagination=target_data.attr('data-pagination');
+let pagination_style=target_data.attr('data-pagination-style');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_list_all",
+                    "id": id,
+                    "style": style,
+                    "column": column,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year,
+                    "sort": sort,
+                    "show": show,
+                    "pagination": pagination,
+                    "pagination_style": pagination_style,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    mpwem_loader_xs(target);
+                },
+                success: function (data) {
+                    mpwem_loader_remove($this);
+                    target.html(data);
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_list').addClass('active');
+                    parent.find('.mep_event_list_grid').removeClass('active');
+                }
+            });
+
+    });
+
+    $(document).on('click', 'button.mep_event_list_all', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        var items = jQuery('.mep-event-list-loop');
+        items.each(function () {jQuery(this).show();});
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').addClass('active');
+        parent.find('.mep_event_list_today').removeClass('active');
+
+    });
+
+    $(document).on('click', 'button.mep_event_list_today', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let today=$this.attr('data-today');
+        var items = jQuery('.mep-event-list-loop');
+        items.each(function () {
+            var date = jQuery(this).data('date');
+            if (today===date) {
+                jQuery(this).show();
+            } else {
+                jQuery(this).hide();
+            }
+        });
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_today').addClass('active');
+    });
 }(jQuery));
 (function ($) {
     "use strict";

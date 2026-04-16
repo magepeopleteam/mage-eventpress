@@ -125,295 +125,213 @@
 			public static function event_query( $show, $sort = '', $cat = '', $org = '', $city = '', $country = '', $evnt_type = 'upcoming', $state = '', $year = '', $paged_override = 0, $tag = '' ) {
 				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
 				$event_order_by      = mep_get_option( 'mep_event_list_order_by', 'general_setting_sec', 'meta_value' );
-				if ( $event_expire_on_old === 'event_end_datetime' || $event_expire_on_old === 'event_expire_datetime' ) {
-					$event_expire_on = 'event_expire_datetime';
-				} else {
-					$event_expire_on = 'event_upcoming_datetime';
-				}
-				$now                 = current_time( 'Y-m-d H:i:s' );
+
+				$event_expire_on = ( in_array( $event_expire_on_old, ['event_end_datetime', 'event_expire_datetime'] ) ) ? 'event_expire_datetime' : 'event_upcoming_datetime';
+
+				$now = current_time( 'mysql' );
+
 				if ( $paged_override && is_numeric( $paged_override ) ) {
 					$paged = intval( $paged_override );
-				} elseif ( get_query_var( 'paged' ) ) {
-					$paged = get_query_var( 'paged' );
-				} elseif ( get_query_var( 'page' ) ) {
-					$paged = get_query_var( 'page' );
 				} else {
-					$paged = 1;
+					$paged = max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) );
 				}
-				$etype          = $evnt_type == 'expired' ? '<' : '>';
-				
-				// Taxonomy filters helper
-				$process_tax = function($input, $taxonomy) {
+
+				$etype = ( $evnt_type === 'expired' ) ? '<' : '>';
+
+				$process_tax = function( $input, $taxonomy ) {
 					if ( empty( $input ) ) return '';
-					$terms = explode( ',', $input );
-					$ids = [];
-					$slugs = [];
-					foreach($terms as $term) {
-						$term = trim($term);
-						if ( is_numeric($term) ) {
-							$id = intval($term);
-							if ($id !== 0) $ids[] = $id;
-						} elseif (!empty($term)) {
-							$slugs[] = $term;
-						}
+					$terms = array_map( 'trim', explode( ',', $input ) );
+					$ids   = array_filter( $terms, 'is_numeric' );
+					$slugs = array_diff( $terms, $ids );
+
+					$tax_clauses = [];
+					if ( ! empty( $ids ) ) {
+						$tax_clauses[] = [ 'taxonomy' => $taxonomy, 'field' => 'term_id', 'terms' => $ids ];
 					}
-					
-					$clauses = [];
-					if ( ! empty($ids) ) {
-						$clauses[] = array(
-							'taxonomy' => $taxonomy,
-							'field'    => 'term_id',
-							'terms'    => $ids
-						);
+					if ( ! empty( $slugs ) ) {
+						$tax_clauses[] = [ 'taxonomy' => $taxonomy, 'field' => 'slug', 'terms' => $slugs ];
 					}
-					
-					if ( ! empty($slugs) ) {
-						$clauses[] = array(
-							'taxonomy' => $taxonomy,
-							'field'    => 'slug',
-							'terms'    => $slugs
-						);
-						$clauses[] = array(
-							'taxonomy' => $taxonomy,
-							'field'    => 'name',
-							'terms'    => $slugs
-						);
-					}
-					
-					if (count($clauses) === 0) return '';
-					if (count($clauses) === 1) return $clauses[0];
-					
-					return array_merge(['relation' => 'OR'], $clauses);
+
+					if ( empty( $tax_clauses ) ) return '';
+					return ( count( $tax_clauses ) > 1 ) ? array_merge( [ 'relation' => 'OR' ], $tax_clauses ) : $tax_clauses[0];
 				};
 
-				$cat_filter = $process_tax($cat, 'mep_cat');
-				$org_filter = $process_tax($org, 'mep_org');
-				$tag_filter = $process_tax($tag, 'mep_tag');
+				$tax_query = array_values( array_filter( [
+					$process_tax( $cat, 'mep_cat' ),
+					$process_tax( $org, 'mep_org' ),
+					$process_tax( $tag, 'mep_tag' )
+				] ) );
 
-				// Location Filter Resolver (Post Meta OR Organizer Meta)
-				$matching_post_ids = null;
-				$apply_location_filter = false;
-
-				$resolve_location = function($value, $meta_key, $term_meta_key) {
-					global $wpdb;
-					// 1. Get post IDs where city/state is in postmeta
-					$ids_from_meta = $wpdb->get_col($wpdb->prepare(
-						"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value LIKE %s",
-						$meta_key, '%' . $wpdb->esc_like($value) . '%'
-					));
-
-					// 2. Get organizer term IDs where city/state is in termmeta
-					$term_ids = $wpdb->get_col($wpdb->prepare(
-						"SELECT term_id FROM $wpdb->termmeta WHERE meta_key = %s AND meta_value LIKE %s",
-						$term_meta_key, '%' . $wpdb->esc_like($value) . '%'
-					));
-
-					$ids_from_terms = [];
-					if (!empty($term_ids)) {
-						// Get posts assigned to these organizers
-						$ids_from_terms = get_posts(array(
-							'post_type' => 'mep_events',
-							'posts_per_page' => -1,
-							'fields' => 'ids',
-							'post_status' => 'publish',
-							'tax_query' => array(
-								array(
-									'taxonomy' => 'mep_org',
-									'field'    => 'term_id',
-									'terms'    => $term_ids,
-								),
-							),
-						));
-					}
-
-					return array_unique(array_merge($ids_from_meta, $ids_from_terms));
-				};
-
-				if (!empty($city)) {
-					$apply_location_filter = true;
-					$city_ids = $resolve_location($city, 'mep_city', 'org_city');
-					$matching_post_ids = is_null($matching_post_ids) ? $city_ids : array_intersect($matching_post_ids, $city_ids);
-				}
-
-				if (!empty($state)) {
-					$apply_location_filter = true;
-					$state_ids = $resolve_location($state, 'mep_state', 'org_state');
-					$matching_post_ids = is_null($matching_post_ids) ? $state_ids : array_intersect($matching_post_ids, $state_ids);
-				}
-
-				if (!empty($country)) {
-					$apply_location_filter = true;
-					$country_ids = $resolve_location($country, 'mep_country', 'org_country');
-					$matching_post_ids = is_null($matching_post_ids) ? $country_ids : array_intersect($matching_post_ids, $country_ids);
-				}
-
-				$year_filter = '';
-				if ( ! empty( $year ) && preg_match( '/^\\d{4}$/', $year ) ) {
-					$year_filter = array(
-						'key'     => 'event_start_datetime',
-						'value'   => array( $year . '-01-01 00:00:00', $year . '-12-31 23:59:59' ),
-						'compare' => 'BETWEEN',
-						'type'    => 'DATETIME',
-					);
-				}
-
-				$expire_filter = '';
-				if ( ! empty( $event_expire_on ) ) {
-					if ( $event_expire_on === 'event_upcoming_datetime' ) {
-						// Some selected-date recurring events never get event_upcoming_datetime populated.
-						// In that case fall back to the saved start datetime so expired events still appear.
-						$expire_filter = array(
-							'relation' => 'OR',
-							array(
-								'key'     => 'event_upcoming_datetime',
-								'value'   => $now,
-								'compare' => $etype,
-								'type'    => 'DATETIME'
-							),
-							array(
-								'relation' => 'AND',
-								array(
-									'relation' => 'OR',
-									array(
-										'key'     => 'event_upcoming_datetime',
-										'compare' => 'NOT EXISTS'
-									),
-									array(
-										'key'     => 'event_upcoming_datetime',
-										'value'   => '',
-										'compare' => '='
-									)
-								),
-								array(
-									'key'     => 'event_start_datetime',
-									'value'   => $now,
-									'compare' => $etype,
-									'type'    => 'DATETIME'
-								)
-							)
-						);
-					} else {
-						$expire_filter = array(
-							'key'     => $event_expire_on,
-							'value'   => $now,
-							'compare' => $etype,
-							'type'    => 'DATETIME'
-						);
-					}
-				}
-
-				// Build meta_query
-				$meta_query = array();
-				if ( ! empty( $expire_filter ) ) {
-					$meta_query[] = $expire_filter;
-				}
-				if ( ! empty( $year_filter ) ) {
-					$meta_query[] = $year_filter;
-				}
-				if ( count( $meta_query ) > 1 ) {
-					$meta_query['relation'] = 'AND';
-				}
-
-				// Build tax_query
-				$tax_query = array();
-				if ( ! empty( $cat_filter ) ) {
-					$tax_query[] = $cat_filter;
-				}
-				if ( ! empty( $org_filter ) ) {
-					$tax_query[] = $org_filter;
-				}
-				if ( ! empty( $tag_filter ) ) {
-					$tax_query[] = $tag_filter;
-				}
 				if ( count( $tax_query ) > 1 ) {
 					$tax_query['relation'] = 'AND';
 				}
 
-				$args = array(
-					'post_type'      => array( 'mep_events' ),
+				// Optimized Date & Location Query
+				global $wpdb;
+				$sql_joins = "";
+				$sql_where = "AND p.post_type = 'mep_events' AND p.post_status = 'publish'";
+				$prepare_args = [];
+
+				if ( $event_expire_on === 'event_upcoming_datetime' ) {
+					$sql_joins .= "
+						LEFT JOIN {$wpdb->postmeta} pm_upc ON p.ID = pm_upc.post_id AND pm_upc.meta_key = 'event_upcoming_datetime'
+						LEFT JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'
+					";
+					$sql_where .= " AND (
+						(pm_upc.meta_value IS NOT NULL AND pm_upc.meta_value != '' AND pm_upc.meta_value {$etype} %s)
+						OR
+						((pm_upc.meta_value IS NULL OR pm_upc.meta_value = '') AND pm_start.meta_value {$etype} %s)
+					)";
+					$prepare_args[] = $now;
+					$prepare_args[] = $now;
+				} else {
+					$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = %s";
+					$prepare_args[] = $event_expire_on;
+					$sql_where .= " AND pm_exp.meta_value {$etype} %s";
+					$prepare_args[] = $now;
+				}
+
+				if ( ! empty( $year ) && preg_match( '/^\d{4}$/', $year ) ) {
+					if ( strpos($sql_joins, 'pm_start') === false ) {
+						$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'";
+					}
+					$sql_where .= " AND pm_start.meta_value >= %s AND pm_start.meta_value <= %s";
+					$prepare_args[] = "$year-01-01 00:00:00";
+					$prepare_args[] = "$year-12-31 23:59:59";
+				}
+				
+				$location_filters = ['city' => ['mep_city', 'org_city'], 'state' => ['mep_state', 'org_state'], 'country' => ['mep_country', 'org_country']];
+				$lc = 0;
+				foreach ($location_filters as $var_name => $keys) {
+					$val = $$var_name;
+					if (!empty($val)) {
+						$lc++;
+						$pm_alias = "pm_loc_" . $lc;
+						$tr_alias = "tr_loc_" . $lc;
+						$tm_alias = "tm_loc_" . $lc;
+						$sql_joins .= "
+							LEFT JOIN {$wpdb->postmeta} $pm_alias ON p.ID = $pm_alias.post_id AND $pm_alias.meta_key = %s
+							LEFT JOIN {$wpdb->term_relationships} $tr_alias ON p.ID = $tr_alias.object_id
+							LEFT JOIN {$wpdb->termmeta} $tm_alias ON $tr_alias.term_taxonomy_id = $tm_alias.term_id AND $tm_alias.meta_key = %s
+						";
+						$prepare_args[] = $keys[0];
+						$prepare_args[] = $keys[1];
+						
+						$search = '%' . $wpdb->esc_like( $val ) . '%';
+						$sql_where .= " AND ($pm_alias.meta_value LIKE %s OR $tm_alias.meta_value LIKE %s)";
+						$prepare_args[] = $search;
+						$prepare_args[] = $search;
+					}
+				}
+
+				$query = "SELECT DISTINCT p.ID FROM {$wpdb->posts} p {$sql_joins} WHERE 1=1 {$sql_where}";
+				if ( ! empty($prepare_args) ) {
+					$query = $wpdb->prepare($query, $prepare_args);
+				}
+				
+				$final_ids = $wpdb->get_col($query);
+
+				if ( empty($final_ids) ) {
+					$final_ids = [0];
+				}
+
+				$args = [
+					'post_type'      => 'mep_events',
 					'paged'          => $paged,
-					'posts_per_page' => $show,
-					'post_status'    => array( 'publish' ),
+					'posts_per_page' => (int)$show,
+					'post_status'    => 'publish',
 					'order'          => $sort,
 					'orderby'        => $event_order_by,
-					'meta_key'       => 'event_start_datetime',
-					'meta_query'     => $meta_query,
-					'tax_query'      => $tax_query
-				);
-
-				if ($apply_location_filter) {
-					$args['post__in'] = !empty($matching_post_ids) ? $matching_post_ids : array(0);
+					'post__in'       => $final_ids,
+					'tax_query'      => $tax_query,
+				];
+				
+				if ( $event_order_by === 'meta_value' || $event_order_by === 'meta_value_num' ) {
+					$args['meta_key'] = 'event_start_datetime';
 				}
 
 				return new WP_Query( $args );
 			}
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
-				$meta_query = [];
-				if ( array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_event_id',
-						'value'   => $filter_args['post_id'],
-						'compare' => '='
-					);
+				global $wpdb;
+				$sql_joins = "";
+				$sql_where = "AND p.post_type = 'mep_events_attendees' AND p.post_status = 'publish'";
+				$prepare_args = [];
+				$join_count = 0;
+
+				$direct_matches = [
+					'post_id'        => 'ea_event_id',
+					'ea_user_id'     => 'ea_user_id',
+					'ea_ticket_type' => 'ea_ticket_type',
+					'ea_seat_name'   => 'ea_seat_name',
+					'mep_checkin'    => 'mep_checkin',
+				];
+
+				foreach ($direct_matches as $arg_key => $meta_key) {
+					if ( array_key_exists( $arg_key, $filter_args ) && $filter_args[$arg_key] ) {
+						$join_count++;
+						$alias = "pm_{$join_count}";
+						$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = %s ";
+						$sql_where .= " AND {$alias}.meta_value = %s ";
+						$prepare_args[] = $meta_key;
+						$prepare_args[] = $filter_args[$arg_key];
+					}
 				}
-				if ( array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_user_id',
-						'value'   => $filter_args['ea_user_id'],
-						'compare' => '='
-					);
-				}
+
 				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
-					$date = new DateTime($filter_args['event_date']);
-					$hasTime = $date->format('H:i:s') !== '00:00:00';
-					$meta_query[] = array(
-						'key'     => 'ea_event_date',
-						'value' => $hasTime ? $date->format('Y-m-d H:i') : $date->format('Y-m-d'),
-						'compare' => 'LIKE'
-					);
+					try {
+						$date = new DateTime($filter_args['event_date']);
+						$hasTime = $date->format('H:i:s') !== '00:00:00';
+						$date_val = $hasTime ? $date->format('Y-m-d H:i') : $date->format('Y-m-d');
+						$join_count++;
+						$alias = "pm_{$join_count}";
+						$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = 'ea_event_date' ";
+						$sql_where .= " AND {$alias}.meta_value LIKE %s ";
+						$prepare_args[] = '%' . $wpdb->esc_like( $date_val ) . '%';
+					} catch (Exception $e) {}
 				}
-				if ( array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_ticket_type',
-						'value'   => $filter_args['ea_ticket_type'],
-						'compare' => '='
-					);
-				}
-				if ( array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_seat_name',
-						'value'   => $filter_args['ea_seat_name'],
-						'compare' => '='
-					);
-				}
-				if ( array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
-					$meta_query[] = array(
-						'key'     => 'mep_checkin',
-						'value'   => $filter_args['mep_checkin'],
-						'compare' => '='
-					);
-				}
+
 				if ( array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
-					$meta_query[] = array(
-						'key'     => $filter_args['filter_key'],
-						'value'   => $filter_args['filter_value'],
-						'compare' => 'LIKE'
-					);
+					$join_count++;
+					$alias = "pm_{$join_count}";
+					$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = %s ";
+					$sql_where .= " AND {$alias}.meta_value LIKE %s ";
+					$prepare_args[] = $filter_args['filter_key'];
+					$prepare_args[] = '%' . $wpdb->esc_like( $filter_args['filter_value'] ) . '%';
 				}
+
 				$booked_status   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'seat_reserved_order_status', [ 'processing', 'completed' ] );
+				if (!is_array($booked_status)) $booked_status = (array)$booked_status;
 				$booked_status[] = 'partially-paid';
-				$booked_status   = array_values( $booked_status );
-				$meta_query[]    = array(
-					'key'     => 'ea_order_status',
-					'value'   => $booked_status,
-					'compare' => 'IN'
-				);
-				$args            = array(
+				$booked_status   = array_unique(array_values( $booked_status ));
+
+				$join_count++;
+				$alias = "pm_{$join_count}";
+				$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = 'ea_order_status' ";
+				
+				$in_placeholders = implode(',', array_fill(0, count($booked_status), '%s'));
+				$sql_where .= " AND {$alias}.meta_value IN ($in_placeholders) ";
+				foreach ($booked_status as $st) {
+					$prepare_args[] = $st;
+				}
+
+				$query = "SELECT DISTINCT p.ID FROM {$wpdb->posts} p {$sql_joins} WHERE 1=1 {$sql_where}";
+				if ( ! empty( $prepare_args ) ) {
+					$query = $wpdb->prepare( $query, $prepare_args );
+				}
+
+				$final_ids = $wpdb->get_col( $query );
+				if ( empty( $final_ids ) ) {
+					$final_ids = [0];
+				}
+
+				$args = array(
 					'post_type'      => 'mep_events_attendees',
-					'posts_per_page' => $show,
-					'paged'          => $page,
-					'meta_query'     => $meta_query
+					'posts_per_page' => (int)$show,
+					'paged'          => (int)$page,
+					'post__in'       => $final_ids
 				);
+
 				return new WP_Query( $args );
 			}
 		}

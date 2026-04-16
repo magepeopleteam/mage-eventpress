@@ -18,7 +18,7 @@
             $icon_setting_sec = array_key_exists('icon_setting_sec', $event_infos) ? $event_infos['icon_setting_sec'] : [];
             $icon_setting_sec = empty($icon_setting_sec) && !is_array($icon_setting_sec) ? [] : $icon_setting_sec;
             $mep_event_time_icon = array_key_exists('mep_event_time_icon', $icon_setting_sec) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
-            $date_type = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : '';
+            $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
             if ($date_type == 'no' || $date_type == 'yes') {
                 $start_time = current($all_dates)['time'];
             } else {

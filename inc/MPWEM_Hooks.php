@@ -443,7 +443,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
                 $event_infos = MPWEM_Functions::get_all_info($event_id);
                 $all_dates = MPWEM_Functions::get_dates($event_id);
-                $date_type = get_post_meta($event_id, 'mep_enable_recurring', true) ? get_post_meta($event_id, 'mep_enable_recurring', true) : '';
+                $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
                 if ($date_type == 'no' || $date_type == 'yes') {
                     $start_time = current($all_dates)['time'];

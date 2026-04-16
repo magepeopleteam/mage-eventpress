@@ -169,72 +169,85 @@
 				return new WP_Query( $args );
 			}
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
-				$meta_query = [];
-				if ( array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_event_id',
-						'value'   => $filter_args['post_id'],
-						'compare' => '='
-					);
+				global $wpdb;
+				$sql_joins = "";
+				$sql_where = "AND p.post_type = 'mep_events_attendees' AND p.post_status = 'publish'";
+				$prepare_args = [];
+				$join_count = 0;
+
+				$direct_matches = [
+					'post_id'        => 'ea_event_id',
+					'ea_user_id'     => 'ea_user_id',
+					'ea_ticket_type' => 'ea_ticket_type',
+					'ea_seat_name'   => 'ea_seat_name',
+					'mep_checkin'    => 'mep_checkin',
+				];
+
+				foreach ($direct_matches as $arg_key => $meta_key) {
+					if ( array_key_exists( $arg_key, $filter_args ) && $filter_args[$arg_key] ) {
+						$join_count++;
+						$alias = "pm_{$join_count}";
+						$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = %s ";
+						$sql_where .= " AND {$alias}.meta_value = %s ";
+						$prepare_args[] = $meta_key;
+						$prepare_args[] = $filter_args[$arg_key];
+					}
 				}
-				if ( array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_user_id',
-						'value'   => $filter_args['ea_user_id'],
-						'compare' => '='
-					);
-				}
+
 				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
-					$date = new DateTime($filter_args['event_date']);
-					$hasTime = $date->format('H:i:s') !== '00:00:00';
-					$meta_query[] = array(
-						'key'     => 'ea_event_date',
-						'value' => $hasTime ? $date->format('Y-m-d H:i') : $date->format('Y-m-d'),
-						'compare' => 'LIKE'
-					);
+					try {
+						$date = new DateTime($filter_args['event_date']);
+						$hasTime = $date->format('H:i:s') !== '00:00:00';
+						$date_val = $hasTime ? $date->format('Y-m-d H:i') : $date->format('Y-m-d');
+						$join_count++;
+						$alias = "pm_{$join_count}";
+						$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = 'ea_event_date' ";
+						$sql_where .= " AND {$alias}.meta_value LIKE %s ";
+						$prepare_args[] = '%' . $wpdb->esc_like( $date_val ) . '%';
+					} catch (Exception $e) {}
 				}
-				if ( array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_ticket_type',
-						'value'   => $filter_args['ea_ticket_type'],
-						'compare' => '='
-					);
-				}
-				if ( array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
-					$meta_query[] = array(
-						'key'     => 'ea_seat_name',
-						'value'   => $filter_args['ea_seat_name'],
-						'compare' => '='
-					);
-				}
-				if ( array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
-					$meta_query[] = array(
-						'key'     => 'mep_checkin',
-						'value'   => $filter_args['mep_checkin'],
-						'compare' => '='
-					);
-				}
+
 				if ( array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
-					$meta_query[] = array(
-						'key'     => $filter_args['filter_key'],
-						'value'   => $filter_args['filter_value'],
-						'compare' => 'LIKE'
-					);
+					$join_count++;
+					$alias = "pm_{$join_count}";
+					$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = %s ";
+					$sql_where .= " AND {$alias}.meta_value LIKE %s ";
+					$prepare_args[] = $filter_args['filter_key'];
+					$prepare_args[] = '%' . $wpdb->esc_like( $filter_args['filter_value'] ) . '%';
 				}
+
 				$booked_status   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'seat_reserved_order_status', [ 'processing', 'completed' ] );
+				if (!is_array($booked_status)) $booked_status = (array)$booked_status;
 				$booked_status[] = 'partially-paid';
-				$booked_status   = array_values( $booked_status );
-				$meta_query[]    = array(
-					'key'     => 'ea_order_status',
-					'value'   => $booked_status,
-					'compare' => 'IN'
-				);
-				$args            = array(
+				$booked_status   = array_unique(array_values( $booked_status ));
+
+				$join_count++;
+				$alias = "pm_{$join_count}";
+				$sql_joins .= " INNER JOIN {$wpdb->postmeta} {$alias} ON p.ID = {$alias}.post_id AND {$alias}.meta_key = 'ea_order_status' ";
+				
+				$in_placeholders = implode(',', array_fill(0, count($booked_status), '%s'));
+				$sql_where .= " AND {$alias}.meta_value IN ($in_placeholders) ";
+				foreach ($booked_status as $st) {
+					$prepare_args[] = $st;
+				}
+
+				$query = "SELECT DISTINCT p.ID FROM {$wpdb->posts} p {$sql_joins} WHERE 1=1 {$sql_where}";
+				if ( ! empty( $prepare_args ) ) {
+					$query = $wpdb->prepare( $query, $prepare_args );
+				}
+
+				$final_ids = $wpdb->get_col( $query );
+				if ( empty( $final_ids ) ) {
+					$final_ids = [0];
+				}
+
+				$args = array(
 					'post_type'      => 'mep_events_attendees',
-					'posts_per_page' => $show,
-					'paged'          => $page,
-					'meta_query'     => $meta_query
+					'posts_per_page' => (int)$show,
+					'paged'          => (int)$page,
+					'post__in'       => $final_ids
 				);
+
 				return new WP_Query( $args );
 			}
 		}

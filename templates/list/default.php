@@ -45,7 +45,7 @@
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );
 					}
-					do_action( 'mpwem_list_price', $event_infos );
+					
 					if ( $style == 'list' ) { ?>
                         <div class="mep-event-excerpt">
 							<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
@@ -56,7 +56,13 @@
 					do_action( 'mpwem_list_upcoming_date', $event_infos );
 				?>
             </a>
-			<?php do_action( 'mpwem_list_more_date_button', $event_infos ); ?>
+			<div class="mpwem-price-area">
+				<?php
+				do_action( 'mpwem_list_price', $event_infos );
+				do_action( 'mpwem_list_more_date_button', $event_infos ); 
+				?>
+			</div>
+			
         </div>
 		<?php do_action( 'mpwem_list_hover', $event_infos ); ?>
     </div>

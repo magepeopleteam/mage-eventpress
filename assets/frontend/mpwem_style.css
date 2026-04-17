@@ -468,8 +468,8 @@
 		opacity: 1;
 		
 	}
-	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
-	div.mep_list_event_details div.list_content span {color: var(--color_theme); margin: 0 var(--dmp_xs) 0 0; font-weight: normal; }
+	div.mep_list_event_details div.list_content {color: #505050; font-weight: 500; font-size: 14px;margin: var(--dmp_xxs) 0 0 0;}
+	div.mep_list_event_details div.list_content span {color:#434652; margin: 0 var(--dmp_xs) 0 0; font-weight: normal; }
 	div.mep_list_event_details div.mep_minimal_list_organizer,
 	div.mep_list_event_details div.mep_minimal_list_location,
 	div.mep_list_event_details div.mep_list_event_date {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
@@ -546,9 +546,10 @@
 	.mep_event_title_list_item a { display: block; font-size: 18px; border-bottom: 1px dashed #DDD !important; padding: 10px 0; color: #333 !important;}
 	/*********************/
 	p.mep_list_title,
-	h2.mep_list_title { font-size: 22px; font-weight:500; padding:20px;margin: 0;}
+	h2.mep_list_title { font-size: 18px; font-weight: 700 !important; padding: 0 0 5px 0;}
 	p.mep_list_title:before,
 	h2.mep_list_title:before { display: none;}
+
 	/*********************/
 	.mep_list_thumb { width: 40%; position: relative;min-height: 100px; overflow: hidden;}
 	.mep_list_thumb a { height: 100%;}
@@ -665,8 +666,7 @@
 	.mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec { max-width: 50%; border-radius: 0 0 0 25px; }
 	.mep_event_grid_item.filter_item{
 		border-radius: 12px;
-		display: flex;
-		justify-content: space-between;
+
 	}
 	/***********************************/
 	div.mep_event_winter_list { width: 100%; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.06); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; min-height: 160px; position: relative; padding: 0;}

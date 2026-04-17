@@ -57,8 +57,8 @@
         $fatal_error_fix=is_array($general_setting_sec) && array_key_exists('mep_fix_details_page_fatal_error',$general_setting_sec)?$general_setting_sec['mep_fix_details_page_fatal_error']:'disable';
 
 		?>
-		<div id="mage-container" class="mage">
-			<div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" style="max-width: 100%;">
+		<div id="mage-container" class="mage" style="width: 100%;">
+			<div class="mpwem_style mpwem_wrapper mep-events-wrapper wrapper" >
 				<div class="mpwem_container">
 					<?php
 

@@ -41,7 +41,7 @@
 
         <div class="mep_list_event_details">
             <a class="event_details_link" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-				<h2 class='mep_list_title'><?php echo esc_html( $title ); ?></h2>
+				<h2 class='mep_list_title' title="<?php echo esc_attr( $title ); ?>"><?php echo esc_html( mb_strimwidth( $title, 0, 80, '...' ) ); ?></h2>
 				<?php
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );

@@ -334,7 +334,7 @@
 
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
-	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
+	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;gap:15px;}
 	div.mpwem_related_area .related_title {padding: var(--dmp_xs);}
 	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
 	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}
@@ -892,7 +892,7 @@ div.mep_flex,
 div.mep_event_list div.mage_grid_box { 
 	display: -webkit-flex; 
 	display: flex;
-	gap: 21px;
+	gap:18px;
 }
 .mep_event_list div.evl-cc { -webkit-align-items: center; align-items: center;}
 .mep-default-title h2,

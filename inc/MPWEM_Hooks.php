@@ -433,7 +433,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				if ( $show_price == 'yes' ) {
 					$event_id         = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
 					$ticket_types     = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
+					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					?>
                     <p class="list_price"><?php echo esc_html( $show_price_label ) . " " . wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) ); ?></p>
 					<?php

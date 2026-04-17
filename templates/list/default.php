@@ -38,9 +38,12 @@
 		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
 		
 		<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
+		<a class="event_details_link" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
+			<h2 class='mep_list_title'><?php echo esc_html( $title ); ?></h2>
+		</a>
         <div class="mep_list_event_details">
-            <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-                <h5 class='mep_list_title'><?php echo esc_html( $title ); ?></h5>
+            <a class="event_details_link" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
+				
 				<?php
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );

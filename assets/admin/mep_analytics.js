@@ -274,7 +274,7 @@
         updateCharts(data);
 
         // Update data table
-        updateDataTable(data.detailed_data, data.debug);
+        updateDataTable(data.detailed_data);
     }
 
     // Update summary cards
@@ -307,53 +307,12 @@
     }
 
     // Update data table
-    function updateDataTable(detailedData, debug) {
+    function updateDataTable(detailedData) {
         const tableBody = $('#mep-data-table-body');
         tableBody.empty();
 
-        if (detailedData.length === 0) {
-            let message = 'No data available for the selected filters.';
-
-            // Add debug information if available
-            if (debug) {
-                message += '<br><br><strong>Debug Information:</strong><br>';
-                message += 'Events found: ' + debug.events_count + '<br>';
-                message += 'Attendees found: ' + (debug.attendees_found ? 'Yes' : 'No') + '<br>';
-                message += 'Total attendees: ' + debug.attendee_count + '<br>';
-                message += 'Date range: ' + debug.date_range.start + ' to ' + debug.date_range.end + '<br>';
-                message += 'Order statuses checked: ' + Object.values(debug.order_statuses).join(', ') + '<br>';
-                message += 'Including all order statuses: ' + (debug.include_all_statuses ? 'Yes' : 'No') + '<br>';
-
-                if (debug.event_ids && debug.event_ids.length > 0) {
-                    message += 'Event IDs: ' + debug.event_ids.join(', ') + '<br>';
-                }
-
-                if (debug.all_attendees_count) {
-                    message += '<br><strong>All Attendees in Database:</strong><br>';
-                    for (const [status, count] of Object.entries(debug.all_attendees_count)) {
-                        message += status + ': ' + count + '<br>';
-                    }
-                    message += 'Total attendees in database: ' + debug.total_attendees_in_db + '<br>';
-                }
-
-                if (debug.sample_attendee_from_db) {
-                    message += '<br><strong>Sample Attendee from Database:</strong><br>';
-                    message += 'ID: ' + debug.sample_attendee_from_db.id + '<br>';
-                    message += 'Order Status: ' + debug.sample_attendee_from_db.order_status + '<br>';
-                    message += 'Event ID: ' + debug.sample_attendee_from_db.event_id + '<br>';
-                    message += 'Order ID: ' + debug.sample_attendee_from_db.order_id + '<br>';
-                }
-
-                if (debug.sample_attendee) {
-                    message += '<br><strong>Sample Attendee:</strong><br>';
-                    message += 'ID: ' + debug.sample_attendee.id + '<br>';
-                    message += 'Order Status: ' + debug.sample_attendee.order_status + '<br>';
-                    message += 'Event ID: ' + debug.sample_attendee.event_id + '<br>';
-                    message += 'Order ID: ' + debug.sample_attendee.order_id + '<br>';
-                }
-            }
-
-            tableBody.append('<tr><td colspan="6">' + message + '</td></tr>');
+        if (!detailedData || detailedData.length === 0) {
+            tableBody.append('<tr><td colspan="6">No data available for the selected filters.</td></tr>');
             return;
         }
 
@@ -384,6 +343,7 @@
         const startDate = $('#mep-start-date').val();
         const endDate = $('#mep-end-date').val();
         const eventId = $('#mep-event-filter').val();
+        const filter_with_category = $("select[name='filter_with_category']").val();
 
         // Make AJAX request
         $.ajax({
@@ -394,7 +354,8 @@
                 nonce: mep_analytics_data.nonce,
                 start_date: startDate,
                 end_date: endDate,
-                event_id: eventId
+                event_id: eventId,
+                filter_with_category: filter_with_category
             },
             success: function(response) {
                 if (response.success) {

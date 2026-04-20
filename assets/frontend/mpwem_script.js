@@ -542,10 +542,10 @@ let pagination_style=target_data.attr('data-pagination-style');
                     "nonce": mpwem_script_var.nonce
                 },
                 beforeSend: function () {
-                    mpwem_loader_xs(target);
+                    showLoader();
                 },
                 success: function (data) {
-                    mpwem_loader_remove($this);
+                    hideLoader();
                     target.html(data);
                     target.find('[data-bg-image]:visible').each(function () {
                         let target = jQuery(this);
@@ -567,6 +567,7 @@ let pagination_style=target_data.attr('data-pagination-style');
                     });
                     parent.find('.mep_event_list_grid').addClass('active');
                     parent.find('.mep_event_list_list').removeClass('active');
+                    parent.find('.mep_event_list_calender').removeClass('active');
                     if(parent.find('.mep_event_list_today').hasClass( 'active' )){
                         alert('Today Event List');
                         parent.find('.mep_event_list_today').trigger('click');
@@ -616,10 +617,10 @@ let pagination_style=target_data.attr('data-pagination-style');
                     "nonce": mpwem_script_var.nonce
                 },
                 beforeSend: function () {
-                    mpwem_loader_xs(target);
+                    showLoader();
                 },
                 success: function (data) {
-                    mpwem_loader_remove($this);
+                    hideLoader();
                     target.html(data);
                     target.find('[data-bg-image]:visible').each(function () {
                         let target = jQuery(this);
@@ -641,6 +642,50 @@ let pagination_style=target_data.attr('data-pagination-style');
                     });
                     parent.find('.mep_event_list_list').addClass('active');
                     parent.find('.mep_event_list_grid').removeClass('active');
+                    parent.find('.mep_event_list_calender').removeClass('active');
+                }
+            });
+
+    });
+    $(document).on('click', 'button.mep_event_list_calender', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_calender",
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    showLoader();
+                },
+                success: function (data) {
+                    hideLoader();
+                    target.html(data);
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_list').removeClass('active');
+                    parent.find('.mep_event_list_grid').removeClass('active');
+                    parent.find('.mep_event_list_calender').addClass('active');
                 }
             });
 
@@ -656,6 +701,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         parent.find('.pagination_area').slideUp('fast');
         parent.find('.mep_event_list_all').addClass('active');
         parent.find('.mep_event_list_today').removeClass('active');
+        parent.find('.mep_event_list_this_week').removeClass('active');
 
     });
 
@@ -664,11 +710,14 @@ let pagination_style=target_data.attr('data-pagination-style');
         let parent = $this.closest('.list_with_filter_section');
         let target = parent.find('.mage_grid_box');
         let target_data = parent.find('.all_filter_item');
-        let today=$this.attr('data-today');
+
         var items = jQuery('.mep-event-list-loop');
         items.each(function () {
+            let today=$this.attr('data-today');
             var date = jQuery(this).data('date');
-            if (today===date) {
+            let date1 = new Date(date);
+            let date2 = new Date(date);
+            if (date===today) {
                 jQuery(this).show();
             } else {
                 jQuery(this).hide();
@@ -676,7 +725,33 @@ let pagination_style=target_data.attr('data-pagination-style');
         });
         parent.find('.pagination_area').slideUp('fast');
         parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_this_week').removeClass('active');
         parent.find('.mep_event_list_today').addClass('active');
+    });
+    $(document).on('click', 'button.mep_event_list_this_week', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+
+        var items = jQuery('.mep-event-list-loop');
+        items.each(function () {
+            let week=$this.attr('data-week');
+            let today=parent.find('.mep_event_list_today').attr('data-today');
+            var date = jQuery(this).data('date');
+            let date1 = new Date(date);
+            let date2 = new Date(today);
+            let date3 = new Date(week);
+            if (date1>=date2 && date1<=date3) {
+                jQuery(this).show();
+            } else {
+                jQuery(this).hide();
+            }
+        });
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_today').removeClass('active');
+        parent.find('.mep_event_list_this_week').addClass('active');
     });
 }(jQuery));
 (function ($) {
@@ -749,9 +824,15 @@ let pagination_style=target_data.attr('data-pagination-style');
 }(jQuery));
 
 
+function showLoader() {
+    const loader = document.getElementById('loader-overlay');
+    loader.classList.add('active');
+}
 
-
-
+function hideLoader() {
+    const loader = document.getElementById('loader-overlay');
+    loader.classList.remove('active');
+}
 // DatePicker Function
 jQuery(document).ready(function ($) {
 

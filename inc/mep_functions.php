@@ -4985,45 +4985,13 @@ die();
         wp_reset_postdata();
         die();
     }
-    add_action( 'wp_ajax_mep_get_event_list_today', 'mep_get_event_list_today' );
-    add_action( 'wp_ajax_nopriv_mep_get_event_list_today', 'mep_get_event_list_today');
-    function mep_get_event_list_today() {
+    add_action( 'wp_ajax_mep_gat_event_calender', 'gat_event_calender' );
+    add_action( 'wp_ajax_nopriv_mep_gat_event_calender', 'gat_event_calender');
+    function gat_event_calender() {
         if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
             wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
             wp_die();
         }
-        $unq_id              = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
-        $style              = isset( $_POST['style'] ) ? sanitize_text_field( wp_unslash( $_POST['style'] ) ) : '';
-        $column              = isset( $_POST['column'] ) ? sanitize_text_field( wp_unslash( $_POST['column'] ) ) : '';
-        $cat              = isset( $_POST['cat'] ) ? sanitize_text_field( wp_unslash( $_POST['cat'] ) ) : '';
-        $org              = isset( $_POST['org'] ) ? sanitize_text_field( wp_unslash( $_POST['org'] ) ) : '';
-        $tag              = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
-        $city              = isset( $_POST['city'] ) ? sanitize_text_field( wp_unslash( $_POST['city'] ) ) : '';
-        $country              = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-        $status              = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
-        $year              = isset( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
-        $sort              = isset( $_POST['sort'] ) ? sanitize_text_field( wp_unslash( $_POST['sort'] ) ) : '';
-        $show              = isset( $_POST['show'] ) ? sanitize_text_field( wp_unslash( $_POST['show'] ) ) : '';
-        $pagination              = isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '';
-        $pagination_style              = isset( $_POST['pagination_style'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination_style'] ) ) : '';
-        $loop       = MPWEM_Query::event_list_query( $show,'today',$sort);
-        $total_item = $loop->found_posts;
-        while ( $loop->have_posts() ) {
-            $loop->the_post();
-            $event_id = get_the_id();
-            if ( $style == 'grid' && (int) $column > 0 && $pagination != 'carousal' ) {
-                $columnNumber = 'column_style';
-                $width        = 100 / (int) $column;
-            } elseif ( $pagination == 'carousal' && $style == 'grid' ) {
-                $columnNumber = 'grid';
-                $width        = 100;
-            } else {
-                $columnNumber = 'one_column';
-                $width        = 100;
-            }
-            //echo $event_id;
-            do_action( 'mep_event_list_shortcode', $event_id, $columnNumber, $style, $width, $unq_id );
-        }
-        wp_reset_postdata();
+        echo 'calender content here';
         die();
     }

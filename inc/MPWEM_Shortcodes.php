@@ -106,11 +106,13 @@
                         <div class="mep_event_list_doc_area">
                             <div class="mep_event_list_doc">
                                 <button type="button" class="mep_event_list_all active"><?php esc_attr_e('All','mage-eventpress'); ?></button>
+                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr(date('Y-m-d', strtotime('+7 days', time()))); ?>"><?php esc_attr_e('This Week','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_attr_e('Today','mage-eventpress'); ?></button>
                             </div>
                             <div class="mep_event_list_doc">
                                 <button type="button" class="mep_event_list_grid active"><i class="fa-solid fa-border-all"></i><?php esc_attr_e('Grid','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_list"><i class="fa-solid fa-list"></i><?php esc_attr_e('List','mage-eventpress'); ?></button>
+                                <button type="button" class="mep_event_list_calender"><i class="fa-regular fa-calendar-days"></i><?php esc_attr_e('Calender','mage-eventpress'); ?></button>
                             </div>
                         </div>
 
@@ -154,6 +156,14 @@
                     } else {
                         echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
                     }?>
+                </div>
+                <div id="loader-overlay" class="loader-overlay">
+                    <div class="modern-spinner">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
                 <script>
                     jQuery(document).ready(function () {

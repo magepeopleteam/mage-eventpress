@@ -444,9 +444,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
                 if ($date_type == 'no' || $date_type == 'yes') {
-                    $start_time = current($all_dates)['time'];
+                    $first_date = is_array($all_dates) && !empty($all_dates) ? current($all_dates) : [];
+                    $start_time = is_array($first_date) && array_key_exists('time', $first_date) ? $first_date['time'] : '';
                 } else {
-                    $date = current($all_dates);
+                    $date = is_array($all_dates) && !empty($all_dates) ? current($all_dates) : '';
                     $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
                     if (is_array($all_times) && sizeof($all_times) > 0) {
                         $time = current($all_times);

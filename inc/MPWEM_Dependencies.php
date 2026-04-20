@@ -124,11 +124,11 @@
 					// Enqueue Chart.js
 					wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js', array(), '3.9.1', true );
 					wp_enqueue_script( 'chartjs-date-adapter', 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js', array( 'chartjs' ), '2.0.0', true );
-					// Enqueue custom analytics scripts
-					wp_enqueue_script( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.js', array( 'jquery', 'chartjs' ), time(), true );
-					wp_enqueue_style( 'mep-analytics', MPWEM_PLUGIN_URL . '/assets/admin/mep_analytics.css', array(), time() );
+					// Enqueue custom analytics scripts (renamed to avoid ad blocker blocking)
+					wp_enqueue_script( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.js', array( 'jquery', 'chartjs' ), time(), true );
+					wp_enqueue_style( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.css', array(), time() );
 					// Localize script with AJAX URL, nonce, and currency symbol
-					wp_localize_script( 'mep-analytics', 'mep_analytics_data', array(
+					wp_localize_script( 'mep-event-stats', 'mep_analytics_data', array(
 						'ajax_url'        => admin_url( 'admin-ajax.php' ),
 						'nonce'           => wp_create_nonce( 'mep_analytics_nonce' ),
 						'currency_symbol' => get_woocommerce_currency_symbol(),

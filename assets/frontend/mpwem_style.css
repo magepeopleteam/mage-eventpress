@@ -334,7 +334,7 @@
 
 	div.mpwem_related_area {margin: 0 0 var(--dmp) 0;}
 	div.mpwem_related_area div.related_item,
-	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;}
+	div.mpwem_related_area div.slick-track {display: -webkit-flex;display: flex;gap:15px;}
 	div.mpwem_related_area .related_title {padding: var(--dmp_xs);}
 	div.mpwem_related_area div.related_navigation {display: -webkit-flex;display: flex;}
 	div.mpwem_related_area div.related_navigation button {margin: 0 0 0 var(--dmp_xxs);}
@@ -414,10 +414,71 @@
 	.list_with_filter_section span.filter_date_icon {position: absolute;top: 0;right: 0; padding: 7px 5px; bottom: 0; margin: 5px; color: #DDD;cursor: pointer;}
 
 	.mep_list_event_details { min-height: 100px;width: 60%;}
-	div.mep_list_event_details .mep_list_title {font-size: var(--fs_h5); font-weight: normal; padding: 0 0 var(--dmp_xxs) 0;margin: 0;line-height: 1.25; text-transform:none; }
-	div.mep_list_event_details div.list_content {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
-	div.mep_list_event_details p.list_price,
-	div.mep_list_event_details div.list_content span {color: var(--color_theme); margin: 0 var(--dmp_xs) 0 0; font-weight: normal; }
+	div.mep_list_event_details .mep_list_title {
+		color:#191C1F;
+		font-size: 22px; 
+		font-weight: bold; 
+		padding: 0;
+		margin: 0;
+		line-height: 1.25;
+		text-transform:none; 
+		text-align: left;
+	}
+	.event_details_link{
+		text-align: left;
+	}
+	button.mpwem_get_date_list{
+		background-color: var(--color_theme);
+		color: var(--color_theme_alter);
+		border-radius: 10px;
+		padding: 12px 15px;
+		font-weight: 500;
+		font-size: 16px;
+		min-width: 174px;
+	}
+	.mep_event_list div.mpwem-price-area{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 30px;
+		flex-wrap: wrap;
+	}
+	div.mpwem-price-area .list_price{
+		display: flex;
+		flex-direction: column;
+		justify-content: start;
+		align-self: start;
+		text-transform: uppercase;
+		color: #434652;
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.6;
+	}
+	div.mpwem-price-area .woocommerce-Price-amount{
+		font-size: 20px;
+		font-weight: 600;
+		color: #002869;
+	}
+	.mpwem_style.mpwem_list_date_list {
+		width: auto;
+		margin: 0;
+	}
+	button.mpwem_get_date_list i{
+		font-size: 16px;
+		margin-left: 10px;
+	}
+	button.mpwem_get_date_list:focus {
+		background-color: var(--color_theme);
+		opacity: 1;
+		
+	}
+	div.mep_list_event_details div.list_content {
+		color: #6b6b6b;
+		font-weight: 600;
+		font-size: 15px;
+		margin: 7px 0;
+	}
+	div.mep_list_event_details div.list_content span {color:#434652; margin: 0 var(--dmp_xs) 0 0; font-weight: normal; }
 	div.mep_list_event_details div.mep_minimal_list_organizer,
 	div.mep_list_event_details div.mep_minimal_list_location,
 	div.mep_list_event_details div.mep_list_event_date {color: #505050; font-weight: normal; font-style: normal;font-size: 15px;margin: var(--dmp_xxs) 0 0 0;}
@@ -425,7 +486,11 @@
 	div.mep_list_event_details div.mep_minimal_list_location span,
 	div.mep_list_event_details div.mep_list_event_date span {color: var(--color_theme);}
 	/*********************/
-	div.mep-event-excerpt { padding: 0; margin: 10px 0; }
+	div.mep-event-excerpt { 
+		padding: 0; 
+		margin: 10px 0; 
+		font-size: 16px;
+	}
 	/*********************/
 	div.mep-event-list-loop div.item_hover_effect { position: absolute; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: none; -webkit-justify-content: center; justify-content: center; -webkit-align-items: center; align-items: center;z-index: 1111;}
 	div.mep-event-list-loop div.item_hover_effect a { font-size: 22px; font-weight: 500; color: #FFF; padding: 15px 30px; border-radius: 5px; background-color: #346B80; transition: 250ms ease-in-out; border: 1px solid #FFF;}
@@ -433,16 +498,41 @@
 	div.mep-event-list-loop:hover div.item_hover_effect { display: -webkit-flex; display: flex;}
 	/*********************/
 	div.mep-event-list-loop .mepev-ribbons { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 5px;z-index: 11; }
-	div.mep-event-list-loop .mepev-ribbons .mepev-ribbon { padding: 5px 10px; color: var(--color_6); background: rgba(0, 0, 0, 0.6666666667); text-align: center; border-radius: 50px; border: 1px solid #FFF; font-size: 14px; font-weight: 500; }
+	div.mep-event-list-loop .mepev-ribbons .mepev-ribbon {
+		padding: 5px 10px; 
+		color: #333; 
+		background: rgba(255, 255, 255, 0.667); 
+		text-align: center; 
+		border-radius: 50px; 
+		border: 1px solid #d2d2d2; 
+		font-size: 14px; 
+		font-weight: 500; 
+	}
 	div.mep-event-list-loop .mepev-ribbons .mepev-ribbon:nth-child(2) { background: rgba(96, 70, 255, 0.6666666667); }
 	div.mep-event-list-loop .mepev-ribbons .mepev-ribbon.sold-out { background: rgba(255, 70, 70, 0.6666666667); }
 	/*********************/
-	div.mep-ev-start-date { background: var(--color_theme); color: var(--color_7);position: absolute; top: var(--dmp_xs); left: var(--dmp_xs); line-height: 1.8; text-align: center; width: 50px; font-size: 18px;z-index: 11;}
-	div.mep-ev-start-date .mep-day { font-weight: bold;}
-	div.mep-ev-start-date .mep-month { background: var(--color_7); text-transform: uppercase; color: var(--color_theme);}
+	div.mep-ev-start-date { 
+		background: var(--color_theme); 
+		color: var(--color_7);
+		position: absolute; 
+		top: var(--dmp_xs); 
+		left: var(--dmp_xs); 
+		line-height: 1.8; 
+		text-align: center; 
+		padding: 5px 15px;
+		font-size: 18px;
+		z-index: 11;
+		border-radius: 12px;
+	}
+	div.mep-ev-start-date .mep-day { 
+		font-weight: bold;
+		font-size: 30px;
+		line-height: 1.2;
+	}
+	div.mep-ev-start-date .mep-month { background: var(--color_theme); text-transform: uppercase; color: var(--color_theme_alter);border-radius: 12px;font-weight: 500;font-size: 14px;}
 	/*********************/
 	div.mpwem_list_date_list {position: relative;margin: var(--dmp_xs) 0 0 0;}
-	div.mpwem_list_date_list .list_date_list {position: absolute;left: 0;top: calc(100% + var(--dmp_xs));max-height: 300px; overflow: auto; z-index: 1111; background: #FFF; padding: 10px; border: 1px solid var(--color_theme); width: auto; max-width: 100%; border-radius: 8px; box-shadow: 0 10px 25px var(--color_theme);}
+	div.mpwem_list_date_list .list_date_list {position: absolute;left: 0;top: calc(100% + var(--dmp_xs));max-height: 300px; overflow: auto; z-index: 1111; background: #FFF; padding: 10px; border: 1px solid var(--color_theme); width: auto; max-width: 100%; border-radius: 8px; box-shadow: 0 10px 25px var(--color_theme);width: 100%;}
 	div.mpwem_list_date_list .date_list_area {position: relative;}
 	div.mpwem_list_date_list .date_list_area.open_list:before { content: ""; position: absolute; top: 0; left: var(--dmp); transform: translateX(-50%); border-left: var(--dmp_xs) solid transparent; border-right: var(--dmp_xs) solid transparent; border-bottom: var(--dmp_xs) solid var(--color_theme); }
 	div.mpwem_list_date_list .date_list_area .date_item {background-color: var(--color_light);padding: var(--dmp_xs);margin: 0 0 var(--dmp_xs) 0;}
@@ -472,6 +562,7 @@
 	h2.mep_list_title { font-size: 18px; font-weight: 700 !important; padding: 0 0 5px 0;}
 	p.mep_list_title:before,
 	h2.mep_list_title:before { display: none;}
+
 	/*********************/
 	.mep_list_thumb { width: 40%; position: relative;min-height: 100px; overflow: hidden;}
 	.mep_list_thumb a { height: 100%;}
@@ -515,7 +606,7 @@
 	.mep_list_event_details p { white-space: nowrap; font-size: 15px; font-weight: 500; overflow: hidden;}
 	.mep_list_event_details p.read-more a { color: var(--color_theme);}
 	.mep_list_event_details p.read-more a:hover { color: #DDD;}
-	.mep_event_grid_item .mep_list_event_details { margin: 0; height: auto; width: 100%;padding: 15px; }
+	.mep_event_grid_item .mep_list_event_details { margin: 0; height: auto; width: auto;padding:20px; }
 	.mep_event_list_item .mep_list_event_details { padding: 10px; }
 	.mep_event_winter_list .mep_list_event_details { width: auto;float: left; display: block; padding: 10px; margin: 0;}
 	.mep_event_spring_list .mep_list_event_details.mep_list_details_col_one i { margin-right: 5px;}
@@ -583,9 +674,21 @@
 	.mep_event_grid_item .mep_list_location_name { gap: 10px; }
 	.mep_event_grid_item .mep_list_event_date h5,
 	.mep_event_grid_item .mep_list_event_date p { display: block; }
-	.mep_event_grid_item { border: 1px solid #DDD; margin: 7px; background-color: #FFF; -webkit-box-shadow: 0 0 6px 1px #D9D9D9; box-shadow: 0 0 6px 1px #D9D9D9; }
+	.mep_event_grid_item.filter_item{ 
+		border: 1px solid #E2E2E2;  
+		background-color: #FFF;
+		border-radius: 12px; 
+		display: flex;
+		justify-content: space-between;
+	}
+	.mep_list_event_details a.event_details_link{
+		display: flex;  
+		flex-direction: column;  
+		justify-content: space-between;
+	}	
 	.mep_event_grid_item .mep-list-footer { padding: 0; }
 	.mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec { max-width: 50%; border-radius: 0 0 0 25px; }
+
 	/***********************************/
 	div.mep_event_winter_list { width: 100%; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.06); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; min-height: 160px; position: relative; padding: 0;}
 	div.mep_event_winter_list:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); border: none;}
@@ -682,7 +785,10 @@
 	.mep_event_timeline_list .mep_minimal_list_organizer i { padding-right: 10px;}
 	.mep_event_timeline_list .mep-ev-start-date { left: var(--dmp_xs);top: var(--dmp_xs);z-index: 99999;}
 	/***********************************/
-	div.mep_event_native_list { display: -webkit-flex; display: flex; width: 100%;}
+	div.mep_event_native_list { 
+		display: -webkit-flex; 
+		display: flex; 
+		width: 100%;}
 	div.mep_event_native_list .mep_list_event_details { width: calc(100% - 150px);min-height: auto;}
 	div.mep_event_native_list .mep_list_thumb { width: 150px;min-height: auto;}
 	div.mep_event_native_list .mep_list_event_details a {border-left: 2px solid var(--color_theme);padding: 0 0 0 var(--dmp_xs);}
@@ -783,7 +889,11 @@ span.tkt-pric,
 label.mep-show { display: block;}
 div.mep_flex,
 .mep_event_list .mep_event_list_sec div.mep_event_list_item,
-div.mep_event_list div.mage_grid_box { display: -webkit-flex; display: flex;}
+div.mep_event_list div.mage_grid_box { 
+	display: -webkit-flex; 
+	display: flex;
+	gap:18px;
+}
 .mep_event_list div.evl-cc { -webkit-align-items: center; align-items: center;}
 .mep-default-title h2,
 .section-heading h2 { font-size: 25px; margin: 0 0 15px 0; color: #3A3A3A; font-weight: bold;}

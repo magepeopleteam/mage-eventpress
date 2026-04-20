@@ -402,8 +402,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					$event_location_icon = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
 					?>
                     <div class="list_content upcomming_location">
-                        <span class="<?php echo esc_attr( $event_location_icon ); ?>"></span>
-						<?php echo esc_html( $location_title . ' ' . $location ); ?>
+                        <span class="<?php echo esc_attr( $event_location_icon ); ?>"></span><?php echo esc_html($location ); ?>
                     </div>
 				<?php }
 			}
@@ -417,11 +416,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$organizer_title      = array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
 				$icon_setting_sec     = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-				$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
+				$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
 				?>
                     <div class="list_content upcomming_organizer">
-                        <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span>
-					<?php echo esc_html( $organizer_title . ' ' . $organizer_name ); ?>
+                        <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
                     </div>
 			<?php }
 		}
@@ -433,7 +431,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				if ( $show_price == 'yes' ) {
 					$event_id         = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
 					$ticket_types     = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
+					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					?>
                     <p class="list_price"><?php echo esc_html( $show_price_label ) . " " . wp_kses_post( wc_price( MPWEM_Functions::get_min_price( $event_id ) ) ); ?></p>
 					<?php
@@ -464,7 +462,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				if ( $start_time ) {
 					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$event_date_icon         = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
+					$event_date_icon         = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
 					$event_list_setting_sec  = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
@@ -533,8 +531,9 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				if ( $upcoming_date ) {
 					?>
                     <div class="mep-ev-start-date">
-                        <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
                         <div class="mep-month"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'month' ) ); ?></div>
+
+                        <div class="mep-day"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date, 'day' ) ); ?></div>
                     </div>
 				<?php }
 			}
@@ -549,7 +548,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$show_date_list            = array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
 				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
                     <div class="mpwem_style mpwem_list_date_list">
-                        <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class="_button_theme_light_mt_xs mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span></button>
+                        <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class=" mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span> <i class="fas fa-caret-down"></i></button>
                         <div class="date_list_area" data-collapse="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>"></div>
                     </div>
 				<?php }

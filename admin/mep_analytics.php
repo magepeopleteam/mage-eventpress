@@ -184,6 +184,10 @@
 		$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 		$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
 		$order_status     = array_values( $_order_status );
+		// Ensure statuses don't have 'wc-' prefix for wc_get_orders
+		$wc_statuses = array_map( function( $s ) {
+			return strpos( $s, 'wc-' ) === 0 ? substr( $s, 3 ) : $s;
+		}, $order_status );
 
 		// Convert dates to timestamp for comparison
 		$start_timestamp = strtotime( $start_date );
@@ -219,7 +223,6 @@
 		if ( $event_id !== 'all' ) {
 			$event_args['p'] = $event_id;
 		}
-		// FIX: Apply category filter at the event query level when possible
 		if ( $filter_with_category ) {
 			$event_args['tax_query'] = array(
 				array(
@@ -233,157 +236,118 @@
 		$events                       = get_posts( $event_args );
 		$summary_data['total_events'] = count( $events );
 
-		// Process each event
+		// Build a map of event_id => hidden_product_id for quick lookup
+		$event_product_map = array();
 		foreach ( $events as $event ) {
-			$event_id    = $event->ID;
-			$event_title = $event->post_title;
+			$product_id = get_post_meta( $event->ID, 'link_wc_product', true );
+			if ( $product_id ) {
+				$event_product_map[ $event->ID ] = intval( $product_id );
+			}
+		}
 
-			// Get attendees for this event with order status filter
-			$attendee_args = array(
-				'post_type'      => 'mep_events_attendees',
-				'posts_per_page' => - 1,
-				'meta_query'     => array(
-					'relation' => 'AND',
-					array(
-						'key'     => 'ea_event_id',
-						'value'   => $event_id,
-						'compare' => '=',
-					),
-				),
-			);
-			$attendees = get_posts( $attendee_args );
+		// Get all WooCommerce orders in the date range with valid statuses
+		$order_args = array(
+			'limit'        => -1,
+			'status'       => $wc_statuses,
+			'date_created' => $start_timestamp . '...' . $end_timestamp,
+			'return'       => 'objects',
+		);
+		$orders = wc_get_orders( $order_args );
 
-			// Initialize event data
-			$event_data = array(
-				'event_id'     => $event_id,
-				'event_title'  => $event_title,
-				'tickets_sold' => 0,
-				'total_sales'  => 0,
-				'dates'        => array(),
-			);
+		// Process each order
+		foreach ( $orders as $order ) {
+			$order_id     = $order->get_id();
+			$order_date   = $order->get_date_created();
+			$order_date_ts = $order_date ? $order_date->getTimestamp() : 0;
 
-			// De-duplication: Only count unique attendee/order/date/ticket_type
-			$unique_attendees = array();
+			if ( ! $order_date_ts || $order_date_ts < $start_timestamp || $order_date_ts > $end_timestamp ) {
+				continue;
+			}
 
-			// Process each attendee
-			foreach ( $attendees as $attendee ) {
-				$attendee_id = $attendee->ID;
-				$attendee_event_id = MPWEM_Global_Function::get_post_info( $attendee_id, 'ea_event_id' );
-				$order_id     = get_post_meta( $attendee_id, 'ea_order_id', true );
-				$ticket_type  = get_post_meta( $attendee_id, 'ea_ticket_type', true );
-				$event_date   = get_post_meta( $attendee_id, 'ea_event_date', true );
-
-				// Skip if missing critical data
-				if ( empty( $order_id ) ) {
+			// Process each item in the order
+			foreach ( $order->get_items() as $item ) {
+				$product_id = $item->get_product_id();
+				if ( ! $product_id ) {
 					continue;
 				}
 
-				$unique_key = $order_id . '_' . $attendee_event_id . '_' . $event_date . '_' . $ticket_type;
-				if ( isset( $unique_attendees[ $unique_key ] ) ) {
-					continue; // Skip duplicate
+				// Check if this product is linked to an event
+				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true );
+				if ( ! $linked_event_id ) {
+					continue; // Not an event product
 				}
-				$unique_attendees[ $unique_key ] = true;
+				$linked_event_id = intval( $linked_event_id );
 
-				// Get order and check status
-				$order = wc_get_order( $order_id );
-				if ( ! $order ) {
+				// Check if this event is in our filtered list
+				if ( $event_id !== 'all' && $linked_event_id !== $event_id ) {
 					continue;
 				}
 
-				// FIX: Filter by order status - only count valid orders
-				$current_order_status = $order->get_status();
-				if ( ! in_array( $current_order_status, $order_status, true ) ) {
+				// Get event info
+				$event_post = get_post( $linked_event_id );
+				if ( ! $event_post || $event_post->post_status !== 'publish' ) {
 					continue;
 				}
+				$event_title = $event_post->post_title;
 
-				// FIX: Safely get order date timestamp
-				$order_date_obj = $order->get_date_created();
-				if ( ! $order_date_obj ) {
-					continue;
-				}
-				$order_date = $order_date_obj->getTimestamp();
-
-				// Check if order date is within the selected range
-				if ( $order_date < $start_timestamp || $order_date > $end_timestamp ) {
-					continue;
-				}
-
-				// Get ticket price
-				$ticket_price = get_post_meta( $attendee_id, 'ea_ticket_price', true );
-				$ticket_price = is_numeric( $ticket_price ) ? floatval( $ticket_price ) : 0;
+				// Get ticket info from order item meta
+				$ticket_type  = $item->get_meta( 'Ticket Type' ) ?: $item->get_name();
+				$event_date   = $item->get_meta( 'Event Date' ) ?: '';
+				$item_total   = floatval( $item->get_total() );
+				$item_qty     = $item->get_quantity();
 
 				// Update summary data
-				$summary_data['tickets_sold'] ++;
-				$summary_data['total_sales'] += $ticket_price;
+				$summary_data['tickets_sold'] += $item_qty;
+				$summary_data['total_sales']  += $item_total;
 
-				// Update event data
-				$event_data['tickets_sold'] ++;
-				$event_data['total_sales'] += $ticket_price;
+				// Update tickets by event
+				if ( ! isset( $tickets_by_event[ $event_title ] ) ) {
+					$tickets_by_event[ $event_title ] = 0;
+				}
+				$tickets_by_event[ $event_title ] += $item_qty;
 
 				// Format date for chart
-				$date_formatted = date( 'Y-m-d', $order_date );
+				$date_formatted = date( 'Y-m-d', $order_date_ts );
 
 				// Update sales by date
 				if ( ! isset( $sales_by_date[ $date_formatted ] ) ) {
 					$sales_by_date[ $date_formatted ] = 0;
 				}
-				$sales_by_date[ $date_formatted ] += $ticket_price;
+				$sales_by_date[ $date_formatted ] += $item_total;
 
 				// Update sales by weekday
-				$weekday                      = date( 'l', $order_date );
-				$sales_by_weekday[ $weekday ] += $ticket_price;
+				$weekday                      = date( 'l', $order_date_ts );
+				$sales_by_weekday[ $weekday ] += $item_total;
 
 				// Update ticket types data
-				if ( ! isset( $ticket_types_data[ $ticket_type ] ) ) {
-					$ticket_types_data[ $ticket_type ] = 0;
+				$type_label = $ticket_type ?: 'General';
+				if ( ! isset( $ticket_types_data[ $type_label ] ) ) {
+					$ticket_types_data[ $type_label ] = 0;
 				}
-				$ticket_types_data[ $ticket_type ] ++;
+				$ticket_types_data[ $type_label ] += $item_qty;
 
-				// Track event dates
-				if ( ! isset( $event_data['dates'][ $event_date ] ) ) {
-					$event_data['dates'][ $event_date ] = array(
+				// Track event dates for detailed data
+				$date_key = $event_date ?: $date_formatted;
+				if ( ! isset( $detailed_data[ $linked_event_id ] ) ) {
+					$detailed_data[ $linked_event_id ] = array(
+						'event_id'        => $linked_event_id,
+						'event'           => $event_title,
+						'dates'           => array(),
+						'tickets_sold'    => 0,
+						'total_sales'     => 0,
+					);
+				}
+				$detailed_data[ $linked_event_id ]['tickets_sold'] += $item_qty;
+				$detailed_data[ $linked_event_id ]['total_sales']  += $item_total;
+
+				if ( ! isset( $detailed_data[ $linked_event_id ]['dates'][ $date_key ] ) ) {
+					$detailed_data[ $linked_event_id ]['dates'][ $date_key ] = array(
 						'tickets_sold' => 0,
 						'total_sales'  => 0,
 					);
 				}
-				$event_data['dates'][ $event_date ]['tickets_sold'] ++;
-				$event_data['dates'][ $event_date ]['total_sales'] += $ticket_price;
-			}
-
-			// Add event to tickets by event data
-			$tickets_by_event[ $event_title ] = $event_data['tickets_sold'];
-
-			// Process detailed data for each event date
-			foreach ( $event_data['dates'] as $date => $date_data ) {
-				// Get total seats and available seats
-				$total_seats     = mep_event_total_seat( $event_id, 'total' );
-				$total_seats     = is_numeric( $total_seats ) ? intval( $total_seats ) : 0;
-				$available_seats = mep_get_event_total_available_seat( $event_id, $date );
-				$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
-				$occupancy_rate  = $total_seats > 0 ? round( ( $date_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
-
-				$normalized_title = trim( html_entity_decode( $event_title, ENT_QUOTES, 'UTF-8' ) );
-				$normalized_date  = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
-
-				if ( empty( $normalized_date ) ) {
-					continue;
-				}
-
-				$detailed_key = $normalized_title . '||' . $normalized_date;
-				if ( ! isset( $detailed_data[ $detailed_key ] ) ) {
-					$detailed_data[ $detailed_key ] = array(
-						'event'           => $normalized_title,
-						'date'            => $normalized_date,
-						'tickets_sold'    => 0,
-						'total_sales'     => 0,
-						'available_seats' => $available_seats,
-						'occupancy_rate'  => 0,
-					);
-				}
-				$detailed_data[ $detailed_key ]['tickets_sold']   += $date_data['tickets_sold'];
-				$detailed_data[ $detailed_key ]['total_sales']    += $date_data['total_sales'];
-				$detailed_data[ $detailed_key ]['available_seats'] = $available_seats;
-				$detailed_data[ $detailed_key ]['occupancy_rate']  = $occupancy_rate;
+				$detailed_data[ $linked_event_id ]['dates'][ $date_key ]['tickets_sold'] += $item_qty;
+				$detailed_data[ $linked_event_id ]['dates'][ $date_key ]['total_sales']  += $item_total;
 			}
 		}
 
@@ -403,6 +367,32 @@
 			);
 		}
 
+		// Build detailed data array with seat info
+		$detailed_output = array();
+		foreach ( $detailed_data as $event_id => $event_summary ) {
+			foreach ( $event_summary['dates'] as $date => $date_data ) {
+				$total_seats     = mep_event_total_seat( $event_id, 'total' );
+				$total_seats     = is_numeric( $total_seats ) ? intval( $total_seats ) : 0;
+				$available_seats = mep_get_event_total_available_seat( $event_id, $date );
+				$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
+				$occupancy_rate  = $total_seats > 0 ? round( ( $date_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
+
+				$normalized_date = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
+				if ( empty( $normalized_date ) ) {
+					continue;
+				}
+
+				$detailed_output[] = array(
+					'event'           => trim( html_entity_decode( $event_summary['event'], ENT_QUOTES, 'UTF-8' ) ),
+					'date'            => $normalized_date,
+					'tickets_sold'    => $date_data['tickets_sold'],
+					'total_sales'     => $date_data['total_sales'],
+					'available_seats' => $available_seats,
+					'occupancy_rate'  => $occupancy_rate,
+				);
+			}
+		}
+
 		// Prepare response
 		$response = array(
 			'summary'            => $summary_data,
@@ -419,7 +409,7 @@
 				'labels' => array_keys( $sales_by_weekday ),
 				'data'   => array_values( $sales_by_weekday ),
 			),
-			'detailed_data'      => array_values( $detailed_data ),
+			'detailed_data'      => $detailed_output,
 		);
 		wp_send_json_success( $response );
 	}
@@ -440,6 +430,10 @@
 		$_user_set_status = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
 		$_order_status    = ! empty( $_user_set_status ) ? $_user_set_status : array( 'processing', 'completed' );
 		$order_status     = array_values( $_order_status );
+		// Ensure statuses don't have 'wc-' prefix for wc_get_orders
+		$wc_statuses = array_map( function( $s ) {
+			return strpos( $s, 'wc-' ) === 0 ? substr( $s, 3 ) : $s;
+		}, $order_status );
 
 		// Convert dates to timestamp for comparison
 		$start_timestamp = strtotime( $start_date );
@@ -468,105 +462,105 @@
 
 		$events = get_posts( $event_args );
 
-		// Process each event
+		// Build a map of event_id => event_title
+		$event_map = array();
 		foreach ( $events as $event ) {
-			$event_id    = $event->ID;
-			$event_title = $event->post_title;
+			$event_map[ $event->ID ] = $event->post_title;
+		}
 
-			// Get attendees for this event
-			$attendee_args = array(
-				'post_type'      => 'mep_events_attendees',
-				'posts_per_page' => - 1,
-				'meta_query'     => array(
-					'relation' => 'AND',
-					array(
-						'key'     => 'ea_event_id',
-						'value'   => $event_id,
-						'compare' => '=',
-					),
-				),
-			);
-			$attendees = get_posts( $attendee_args );
+		// Get all WooCommerce orders in the date range with valid statuses
+		$order_args = array(
+			'limit'        => -1,
+			'status'       => $wc_statuses,
+			'date_created' => $start_timestamp . '...' . $end_timestamp,
+			'return'       => 'objects',
+		);
+		$orders = wc_get_orders( $order_args );
 
-			// Initialize event data
-			$event_data = array(
-				'dates' => array(),
-			);
+		// Aggregate data by event and date
+		$event_date_data = array();
 
-			// Process each attendee
-			foreach ( $attendees as $attendee ) {
-				$attendee_id = $attendee->ID;
+		// Process each order
+		foreach ( $orders as $order ) {
+			$order_date   = $order->get_date_created();
+			$order_date_ts = $order_date ? $order_date->getTimestamp() : 0;
 
-				// Get attendee data
-				$order_id     = get_post_meta( $attendee_id, 'ea_order_id', true );
-				$ticket_price = get_post_meta( $attendee_id, 'ea_ticket_price', true );
-				$event_date   = get_post_meta( $attendee_id, 'ea_event_date', true );
+			if ( ! $order_date_ts || $order_date_ts < $start_timestamp || $order_date_ts > $end_timestamp ) {
+				continue;
+			}
 
-				// Skip if no order ID
-				if ( empty( $order_id ) ) {
+			// Process each item in the order
+			foreach ( $order->get_items() as $item ) {
+				$product_id = $item->get_product_id();
+				if ( ! $product_id ) {
 					continue;
 				}
 
-				// Get order and check status
-				$order = wc_get_order( $order_id );
-				if ( ! $order ) {
+				// Check if this product is linked to an event
+				$linked_event_id = get_post_meta( $product_id, 'link_mep_event', true );
+				if ( ! $linked_event_id ) {
+					continue; // Not an event product
+				}
+				$linked_event_id = intval( $linked_event_id );
+
+				// Check if this event is in our filtered list
+				if ( $event_id !== 'all' && $linked_event_id !== $event_id ) {
+					continue;
+				}
+				if ( ! isset( $event_map[ $linked_event_id ] ) ) {
 					continue;
 				}
 
-				// FIX: Filter by order status
-				$current_order_status = $order->get_status();
-				if ( ! in_array( $current_order_status, $order_status, true ) ) {
-					continue;
-				}
+				$event_title = $event_map[ $linked_event_id ];
+				$event_date  = $item->get_meta( 'Event Date' ) ?: date( 'Y-m-d', $order_date_ts );
+				$item_qty    = $item->get_quantity();
+				$item_total  = floatval( $item->get_total() );
 
-				// FIX: Safely get order date timestamp
-				$order_date_obj = $order->get_date_created();
-				if ( ! $order_date_obj ) {
-					continue;
-				}
-				$order_date = $order_date_obj->getTimestamp();
-
-				// Check if order date is within the selected range
-				if ( $order_date < $start_timestamp || $order_date > $end_timestamp ) {
-					continue;
-				}
-
-				// Track event dates
-				if ( ! isset( $event_data['dates'][ $event_date ] ) ) {
-					$event_data['dates'][ $event_date ] = array(
+				$key = $linked_event_id . '||' . $event_date;
+				if ( ! isset( $event_date_data[ $key ] ) ) {
+					$event_date_data[ $key ] = array(
+						'event_id'     => $linked_event_id,
+						'event_title'  => $event_title,
+						'date'         => $event_date,
 						'tickets_sold' => 0,
 						'total_sales'  => 0,
 					);
 				}
-				$event_data['dates'][ $event_date ]['tickets_sold'] ++;
-				$event_data['dates'][ $event_date ]['total_sales'] += floatval( $ticket_price );
+				$event_date_data[ $key ]['tickets_sold'] += $item_qty;
+				$event_date_data[ $key ]['total_sales']  += $item_total;
+			}
+		}
+
+		// Process aggregated data for CSV
+		foreach ( $event_date_data as $data ) {
+			$event_id        = $data['event_id'];
+			$event_title     = $data['event_title'];
+			$date            = $data['date'];
+			$tickets_sold    = $data['tickets_sold'];
+			$total_sales     = $data['total_sales'];
+
+			// Get total seats and available seats
+			$total_seats     = mep_event_total_seat( $event_id, 'total' );
+			$total_seats     = is_numeric( $total_seats ) ? intval( $total_seats ) : 0;
+			$available_seats = mep_get_event_total_available_seat( $event_id, $date );
+			$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
+			$occupancy_rate  = $total_seats > 0 ? round( ( $tickets_sold / $total_seats ) * 100, 2 ) : 0;
+
+			$normalized_title = trim( html_entity_decode( $event_title, ENT_QUOTES, 'UTF-8' ) );
+			$normalized_date  = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
+
+			if ( empty( $normalized_date ) ) {
+				continue;
 			}
 
-			// Process detailed data for each event date
-			foreach ( $event_data['dates'] as $date => $date_data ) {
-				// Get total seats and available seats
-				$total_seats     = mep_event_total_seat( $event_id, 'total' );
-				$total_seats     = is_numeric( $total_seats ) ? intval( $total_seats ) : 0;
-				$available_seats = mep_get_event_total_available_seat( $event_id, $date );
-				$available_seats = is_numeric( $available_seats ) ? intval( $available_seats ) : 0;
-				$occupancy_rate  = $total_seats > 0 ? round( ( $date_data['tickets_sold'] / $total_seats ) * 100, 2 ) : 0;
-
-				$normalized_title = trim( html_entity_decode( $event_title, ENT_QUOTES, 'UTF-8' ) );
-				$normalized_date  = ! empty( $date ) ? date( 'Y-m-d', strtotime( $date ) ) : '';
-
-				if ( empty( $normalized_date ) ) {
-					continue;
-				}
-
-				$csv_data[] = array(
-					$normalized_title,
-					$normalized_date,
-					$date_data['tickets_sold'],
-					$date_data['total_sales'],
-					$available_seats,
-					$occupancy_rate,
-				);
-			}
+			$csv_data[] = array(
+				$normalized_title,
+				$normalized_date,
+				$tickets_sold,
+				$total_sales,
+				$available_seats,
+				$occupancy_rate,
+			);
 		}
 
 		// Convert CSV data to string with proper escaping

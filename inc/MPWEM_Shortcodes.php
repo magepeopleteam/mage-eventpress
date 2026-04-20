@@ -106,14 +106,129 @@
                         <div class="mep_event_list_doc_area">
                             <div class="mep_event_list_doc">
                                 <button type="button" class="mep_event_list_all active"><?php esc_attr_e('All','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr(date('Y-m-d', strtotime('+7 days', time()))); ?>"><?php esc_attr_e('This Week','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_attr_e('Today','mage-eventpress'); ?></button>
+                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr(date('Y-m-d', strtotime('+7 days', time()))); ?>"><?php esc_attr_e('This Week','mage-eventpress'); ?></button>
+                                <button type="button" class="mep_event_list_this_month"><?php esc_attr_e('This Month','mage-eventpress'); ?></button>
                             </div>
                             <div class="mep_event_list_doc">
+                                <button type="button" class="mep_event_list_filter_toggle"><i class="fas fa-filter"></i><?php esc_attr_e('Filter','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_grid active"><i class="fa-solid fa-border-all"></i><?php esc_attr_e('Grid','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_list"><i class="fa-solid fa-list"></i><?php esc_attr_e('List','mage-eventpress'); ?></button>
                                 <button type="button" class="mep_event_list_calender"><i class="fa-regular fa-calendar-days"></i><?php esc_attr_e('Calender','mage-eventpress'); ?></button>
                             </div>
+                        </div>
+                        <?php
+                        // Collect filter data from the loop
+                        $filter_cities = array();
+                        $filter_states = array();
+                        $filter_dates  = array();
+                        $filter_loop = MPWEM_Query::event_list_query( $show, $status, $sort );
+                        while ( $filter_loop->have_posts() ) {
+                            $filter_loop->the_post();
+                            $f_id    = get_the_ID();
+                            $f_infos = MPWEM_Functions::get_all_info( $f_id );
+                            $f_city  = isset( $f_infos['mep_city'] ) ? $f_infos['mep_city'] : '';
+                            $f_state = isset( $f_infos['mep_state'] ) ? $f_infos['mep_state'] : '';
+                            // Collect ALL event dates (single, multi-date, recurring)
+                            $event_date_arr = mep_get_event_dates_arr( $f_id );
+                            if ( is_array( $event_date_arr ) && sizeof( $event_date_arr ) > 0 ) {
+                                foreach ( $event_date_arr as $ed ) {
+                                    $ds = isset( $ed['start'] ) && ! empty( $ed['start'] ) ? date( 'm/d/Y', strtotime( $ed['start'] ) ) : '';
+                                    if ( ! empty( $ds ) ) {
+                                        $filter_dates[] = $ds;
+                                    }
+                                }
+                            }
+                            if ( ! empty( $f_city ) ) {
+                                $filter_cities[] = array(
+                                    'city'    => $f_city,
+                                    'state'   => $f_state,
+                                    'display' => ! empty( $f_state ) ? $f_city . ', ' . $f_state : $f_city,
+                                );
+                            }
+                            if ( ! empty( $f_state ) ) {
+                                $filter_states[] = $f_state;
+                            }
+                        }
+                        wp_reset_postdata();
+                        $filter_cities = array_map( 'unserialize', array_unique( array_map( 'serialize', $filter_cities ) ) );
+                        usort( $filter_cities, function ( $a, $b ) { return strcmp( strtolower( $a['city'] ), strtolower( $b['city'] ) ); } );
+                        $filter_states = array_unique( $filter_states );
+                        sort( $filter_states );
+                        $filter_dates  = array_unique( $filter_dates );
+                        sort( $filter_dates );
+                        $filter_categories = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
+                        $filter_organizers = MPWEM_Global_Function::get_all_term_data( 'mep_org' );
+                        $filter_dates_json = wp_json_encode( array_values( $filter_dates ) );
+                        ?>
+                        <div class="mep_event_filter_panel" style="display:none;" data-event-dates='<?php echo esc_attr( $filter_dates_json ); ?>'>
+                            <div class="mep_filter_grid">
+                                <label>
+                                    <span><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></span>
+                                    <input type="text" name="filter_with_title" class="formControl" placeholder="<?php esc_attr_e( 'Search events...', 'mage-eventpress' ); ?>">
+                                </label>
+                                <label>
+                                    <span><?php esc_html_e( 'Start Date', 'mage-eventpress' ); ?></span>
+                                    <input type="text" name="filter_with_start_date" class="formControl filter_datepicker" placeholder="<?php esc_attr_e( 'mm/dd/yyyy', 'mage-eventpress' ); ?>">
+                                </label>
+                                <label>
+                                    <span><?php esc_html_e( 'End Date', 'mage-eventpress' ); ?></span>
+                                    <input type="text" name="filter_with_end_date" class="formControl filter_datepicker" placeholder="<?php esc_attr_e( 'mm/dd/yyyy', 'mage-eventpress' ); ?>">
+                                </label>
+                                <?php if ( is_array( $filter_categories ) && sizeof( $filter_categories ) > 0 ) { ?>
+                                <label>
+                                    <span><?php esc_html_e( 'Category', 'mage-eventpress' ); ?></span>
+                                    <select class="formControl" name="filter_with_category">
+                                        <option selected value=""><?php esc_html_e( 'All Categories', 'mage-eventpress' ); ?></option>
+                                        <?php foreach ( $filter_categories as $category ) { ?>
+                                            <option value="<?php echo esc_attr( $category ); ?>"><?php echo esc_html( $category ); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </label>
+                                <?php } ?>
+                                <?php if ( is_array( $filter_organizers ) && sizeof( $filter_organizers ) > 0 ) { ?>
+                                <label>
+                                    <span><?php esc_html_e( 'Organizer', 'mage-eventpress' ); ?></span>
+                                    <select class="formControl" name="filter_with_organizer">
+                                        <option selected value=""><?php esc_html_e( 'All Organizers', 'mage-eventpress' ); ?></option>
+                                        <?php foreach ( $filter_organizers as $organizer ) { ?>
+                                            <option value="<?php echo esc_attr( $organizer ); ?>"><?php echo esc_html( $organizer ); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </label>
+                                <?php } ?>
+                                <?php if ( ! empty( $filter_cities ) ) { ?>
+                                <label>
+                                    <span><?php esc_html_e( 'City', 'mage-eventpress' ); ?></span>
+                                    <select class="formControl" name="filter_with_city">
+                                        <option selected value=""><?php esc_html_e( 'All Cities', 'mage-eventpress' ); ?></option>
+                                        <?php foreach ( $filter_cities as $city_data ) { ?>
+                                            <option value="<?php echo esc_attr( $city_data['city'] ); ?>"><?php echo esc_html( $city_data['display'] ); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </label>
+                                <?php } ?>
+                                <?php if ( ! empty( $filter_states ) ) { ?>
+                                <label>
+                                    <span><?php esc_html_e( 'State', 'mage-eventpress' ); ?></span>
+                                    <select class="formControl" name="filter_with_state">
+                                        <option selected value=""><?php esc_html_e( 'All States', 'mage-eventpress' ); ?></option>
+                                        <?php foreach ( $filter_states as $state ) { ?>
+                                            <option value="<?php echo esc_attr( $state ); ?>"><?php echo esc_html( $state ); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </label>
+                                <?php } ?>
+                                <div class="mep_filter_actions">
+                                    <button type="button" class="mep_event_filter_clear"><?php esc_html_e( 'Clear', 'mage-eventpress' ); ?></button>
+                                </div>
+                            </div>
+                            <p class="textGray _text_center search_sort_code_counts">
+                                <?php esc_html_e( 'Showing', 'mage-eventpress' ); ?>
+                                <strong class="qty_count"><?php echo esc_html( $total_item ); ?></strong>
+                                <?php esc_html_e( 'of', 'mage-eventpress' ); ?>
+                                <strong class="total_filter_qty"><?php echo esc_html( $total_item ); ?></strong>
+                            </p>
                         </div>
 
                     <div class="all_filter_item mep_event_list_sec" id='mep_event_list_<?php echo esc_attr( $unq_id ); ?>'
@@ -240,6 +355,8 @@
                         function applyAllFilters() {
                             var titleFilter = jQuery('input[name="filter_with_title"]').val().toLowerCase();
                             var dateFilter = jQuery('input[name="filter_with_date"]').val();
+                            var startDateFilter = jQuery('input[name="filter_with_start_date"]').val();
+                            var endDateFilter = jQuery('input[name="filter_with_end_date"]').val();
                             var stateFilter = jQuery('select[name="filter_with_state"]').val();
                             var cityFilter = jQuery('select[name="filter_with_city"]').val();
                             var categoryFilter = jQuery('select[name="filter_with_category"]').val();
@@ -255,7 +372,7 @@
                                         show = false;
                                     }
                                 }
-                                // Date filter
+                                // Single Date filter (legacy)
                                 if (show && dateFilter) {
                                     var itemDate = $item.data('date');
                                     if (itemDate) {
@@ -265,6 +382,30 @@
                                         itemDateObj.setHours(0, 0, 0, 0);
                                         if (itemDateObj.getTime() !== filterDate.getTime()) {
                                             show = false;
+                                        }
+                                    } else {
+                                        show = false;
+                                    }
+                                }
+                                // Date Range filter
+                                if (show && (startDateFilter || endDateFilter)) {
+                                    var itemDate = $item.data('date');
+                                    if (itemDate) {
+                                        var itemDateObj = new Date(itemDate);
+                                        itemDateObj.setHours(0, 0, 0, 0);
+                                        if (startDateFilter) {
+                                            var startDate = new Date(startDateFilter);
+                                            startDate.setHours(0, 0, 0, 0);
+                                            if (itemDateObj < startDate) {
+                                                show = false;
+                                            }
+                                        }
+                                        if (endDateFilter) {
+                                            var endDate = new Date(endDateFilter);
+                                            endDate.setHours(0, 0, 0, 0);
+                                            if (itemDateObj > endDate) {
+                                                show = false;
+                                            }
                                         }
                                     } else {
                                         show = false;
@@ -287,7 +428,6 @@
                                 // Category filter
                                 if (show && categoryFilter) {
                                     var itemCategory = $item.data('category') || '';
-                                    // Check if category matches (can be comma-separated)
                                     var itemCategories = itemCategory.split(',').map(function (c) {
                                         return c.trim();
                                     });
@@ -298,7 +438,6 @@
                                 // Organizer filter
                                 if (show && organizerFilter) {
                                     var itemOrganizer = $item.data('organizer') || '';
-                                    // Check if organizer matches (can be comma-separated)
                                     var itemOrganizers = itemOrganizer.split(',').map(function (o) {
                                         return o.trim();
                                     });
@@ -313,19 +452,30 @@
                                     $item.hide();
                                 }
                             });
-                            // Update count display
                             jQuery('.qty_count').text(visibleCount);
                         }
-                        // Update title filter to use combined function
                         jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
                             applyAllFilters();
                         });
-                        // Update date filter to use combined function
                         jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
-                        // Update state filter to use combined function
+                        jQuery('input[name="filter_with_start_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('input[name="filter_with_end_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
                         jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_city"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_category"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_organizer"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
                     });
@@ -544,6 +694,8 @@
                         function applyAllFilters() {
                             var titleFilter = jQuery('input[name="filter_with_title"]').val().toLowerCase();
                             var dateFilter = jQuery('input[name="filter_with_date"]').val();
+                            var startDateFilter = jQuery('input[name="filter_with_start_date"]').val();
+                            var endDateFilter = jQuery('input[name="filter_with_end_date"]').val();
                             var stateFilter = jQuery('select[name="filter_with_state"]').val();
                             var cityFilter = jQuery('select[name="filter_with_city"]').val();
                             var categoryFilter = jQuery('select[name="filter_with_category"]').val();
@@ -559,7 +711,7 @@
                                         show = false;
                                     }
                                 }
-                                // Date filter
+                                // Single Date filter (legacy)
                                 if (show && dateFilter) {
                                     var itemDate = $item.data('date');
                                     if (itemDate) {
@@ -569,6 +721,30 @@
                                         itemDateObj.setHours(0, 0, 0, 0);
                                         if (itemDateObj.getTime() !== filterDate.getTime()) {
                                             show = false;
+                                        }
+                                    } else {
+                                        show = false;
+                                    }
+                                }
+                                // Date Range filter
+                                if (show && (startDateFilter || endDateFilter)) {
+                                    var itemDate = $item.data('date');
+                                    if (itemDate) {
+                                        var itemDateObj = new Date(itemDate);
+                                        itemDateObj.setHours(0, 0, 0, 0);
+                                        if (startDateFilter) {
+                                            var startDate = new Date(startDateFilter);
+                                            startDate.setHours(0, 0, 0, 0);
+                                            if (itemDateObj < startDate) {
+                                                show = false;
+                                            }
+                                        }
+                                        if (endDateFilter) {
+                                            var endDate = new Date(endDateFilter);
+                                            endDate.setHours(0, 0, 0, 0);
+                                            if (itemDateObj > endDate) {
+                                                show = false;
+                                            }
                                         }
                                     } else {
                                         show = false;
@@ -591,7 +767,6 @@
                                 // Category filter
                                 if (show && categoryFilter) {
                                     var itemCategory = $item.data('category') || '';
-                                    // Check if category matches (can be comma-separated)
                                     var itemCategories = itemCategory.split(',').map(function (c) {
                                         return c.trim();
                                     });
@@ -602,7 +777,6 @@
                                 // Organizer filter
                                 if (show && organizerFilter) {
                                     var itemOrganizer = $item.data('organizer') || '';
-                                    // Check if organizer matches (can be comma-separated)
                                     var itemOrganizers = itemOrganizer.split(',').map(function (o) {
                                         return o.trim();
                                     });
@@ -617,19 +791,30 @@
                                     $item.hide();
                                 }
                             });
-                            // Update count display
                             jQuery('.qty_count').text(visibleCount);
                         }
-                        // Update title filter to use combined function
                         jQuery('input[name="filter_with_title"]').off('keyup').on('keyup', function () {
                             applyAllFilters();
                         });
-                        // Update date filter to use combined function
                         jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
-                        // Update state filter to use combined function
+                        jQuery('input[name="filter_with_start_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('input[name="filter_with_end_date"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
                         jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_city"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_category"]').off('change').on('change', function () {
+                            applyAllFilters();
+                        });
+                        jQuery('select[name="filter_with_organizer"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
 						<?php if ($pagination == 'carousal') { ?>

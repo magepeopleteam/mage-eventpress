@@ -1642,6 +1642,49 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		  border-bottom-color: #3659e3;
 	  }
 
+	button.mep_event_list_this_month{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+	}
+	button.mep_event_list_this_month:hover{
+		 border-bottom: 2px solid #1e0a3c;
+		 cursor: pointer;
+	 }
+	button.mep_event_list_this_month.active{
+		  color: #3659e3;
+		  border-bottom-color: #3659e3;
+	  }
+
+	button.mep_event_list_filter_toggle{
+		all: unset;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		font-weight: 600;
+		display: flex;
+		justify-content: center;
+		padding-bottom: 12px;
+		border-bottom: 2px solid transparent;
+		color: #6f7287;
+		align-items: center;
+		gap:10px;
+		margin-right:10px;
+	}
+	button.mep_event_list_filter_toggle:hover{
+		border-color: #3659e3;
+		cursor: pointer;
+	}
+	button.mep_event_list_filter_toggle.active{
+		color: #3659e3;
+		border-color: #3659e3;
+	}
 	button.mep_event_list_calender{
 		all: unset;
 		font-size: .875rem;
@@ -1649,7 +1692,6 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		font-weight: 600;
 		display: flex;
 		justify-content: center;
-
 		padding-bottom: 12px;
 		border-bottom: 2px solid transparent;
 		color: #6f7287;
@@ -1665,6 +1707,89 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		  border-bottom-color: #3659e3;
 	  }
 
+	.mep_event_filter_panel{
+		display: none;
+		background: #fff;
+		border: 1px solid #E2E2E2;
+		border-radius: 12px;
+		padding: 16px 20px;
+		margin: 0 20px 20px 20px;
+		box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+	}
+	#mage-container.mage .mep_filter_grid,
+	.mep_filter_grid{
+		display: flex !important;
+		flex-wrap: nowrap !important;
+		align-items: flex-end !important;
+		gap: 12px;
+	}
+	#mage-container.mage .mep_filter_grid > label,
+	.mep_filter_grid > label{
+		display: flex !important;
+		flex-direction: column !important;
+		gap: 6px;
+		font-size: .7rem;
+		font-weight: 600;
+		color: #1e0a3c;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		flex: 1 1 0 !important;
+		min-width: 0;
+		position: static;
+	}
+	#mage-container.mage .mep_filter_grid > label > input.formControl,
+	#mage-container.mage .mep_filter_grid > label > select.formControl,
+	.mep_filter_grid > label > input.formControl,
+	.mep_filter_grid > label > select.formControl{
+		display: block !important;
+		padding: 10px 12px !important;
+		border: 1px solid #D2D2D2 !important;
+		border-radius: 8px !important;
+		font-size: .875rem !important;
+		color: #434652 !important;
+		background: #fff !important;
+		width: 100% !important;
+		box-sizing: border-box !important;
+		height: 42px !important;
+		box-shadow: none !important;
+		margin: 0 !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+	.mep_filter_grid > label > input.formControl:focus,
+	.mep_filter_grid > label > select.formControl:focus{
+		outline: none;
+		border-color: #3659e3;
+	}
+	.mep_filter_actions{
+		display: flex;
+		align-items: flex-end;
+		flex: 0 0 auto;
+		padding-bottom: 0;
+	}
+	.mep_event_filter_clear{
+		all: unset;
+		cursor: pointer;
+		font-size: .875rem;
+		font-weight: 600;
+		color: #3659e3;
+		padding: 10px 16px;
+		border-radius: 8px;
+		transition: background 150ms ease;
+		white-space: nowrap;
+		height: 42px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.mep_event_filter_clear:hover{
+		background: #F1F5FF;
+	}
+	.mep_event_filter_clear:before{
+		content: "\00d7";
+		font-size: 1.2rem;
+		line-height: 1;
+	}
 	.loader-overlay {
 		position: fixed;
 		top: 0;right:0;bottom:0;

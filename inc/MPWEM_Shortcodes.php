@@ -273,6 +273,7 @@
                     } else {
                         echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' );
                     }?>
+                    <div class="no_event_found"><?php echo esc_html__( 'There are currently no events scheduled.', 'mage-eventpress' ); ?></div>
                 </div>
                 <div id="loader-overlay" class="loader-overlay">
                     <div class="modern-spinner">

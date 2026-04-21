@@ -719,6 +719,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         let target_data = parent.find('.all_filter_item');
 
         var items = jQuery('.mep-event-list-loop');
+        let exit=0;
         items.each(function () {
             let today=$this.attr('data-today');
             var date = jQuery(this).data('date');
@@ -726,10 +727,16 @@ let pagination_style=target_data.attr('data-pagination-style');
             let date2 = new Date(date);
             if (date===today) {
                 jQuery(this).show();
+                exit=1;
             } else {
                 jQuery(this).hide();
             }
         });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
         parent.find('.pagination_area').slideUp('fast');
         parent.find('.mep_event_list_all').removeClass('active');
         parent.find('.mep_event_list_this_week').removeClass('active');
@@ -746,16 +753,22 @@ let pagination_style=target_data.attr('data-pagination-style');
         let month = today.getMonth();
         let firstDay = new Date(year, month, 1);
         let lastDay = new Date(year, month + 1, 0);
-
+        let exit=0;
         items.each(function () {
             var date = jQuery(this).data('date');
             let date1 = new Date(date);
             if (date1 >= firstDay && date1 <= lastDay) {
                 jQuery(this).show();
+                exit=1;
             } else {
                 jQuery(this).hide();
             }
         });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
         parent.find('.pagination_area').slideUp('fast');
         parent.find('.mep_event_list_all').removeClass('active');
         parent.find('.mep_event_list_this_week').removeClass('active');
@@ -769,6 +782,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         let target_data = parent.find('.all_filter_item');
 
         var items = jQuery('.mep-event-list-loop');
+        let exit=0;
         items.each(function () {
             let week=$this.attr('data-week');
             let today=parent.find('.mep_event_list_today').attr('data-today');
@@ -778,10 +792,16 @@ let pagination_style=target_data.attr('data-pagination-style');
             let date3 = new Date(week);
             if (date1>=date2 && date1<=date3) {
                 jQuery(this).show();
+                exit=1;
             } else {
                 jQuery(this).hide();
             }
         });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
         parent.find('.pagination_area').slideUp('fast');
         parent.find('.mep_event_list_all').removeClass('active');
         parent.find('.mep_event_list_today').removeClass('active');
@@ -797,6 +817,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         let start_date=$this.val();
         //alert(start_date);
         let end_date=parent.find('input[name="filter_with_end_date"]').val();
+        let exit=0;
         if(start_date && end_date) {
             var items = jQuery('.mep-event-list-loop');
             items.each(function () {
@@ -808,10 +829,16 @@ let pagination_style=target_data.attr('data-pagination-style');
                 let date3 = new Date(end_date);
                 if (date1 >= date2 && date1 <= date3) {
                     jQuery(this).show();
+                    exit=1;
                 } else {
                     jQuery(this).hide();
                 }
             });
+            if(exit===0){
+                parent.find('.no_event_found').show();
+            }else{
+                parent.find('.no_event_found').hide();
+            }
             parent.find('.pagination_area').slideUp('fast');
             parent.find('.mep_event_list_all').removeClass('active');
             parent.find('.mep_event_list_today').removeClass('active');
@@ -828,6 +855,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         let start_date=parent.find('input[name="filter_with_start_date"]').val();
         let end_date=$this.val();
        // alert(end_date);
+        let exit=0;
         if(start_date && end_date) {
             var items = jQuery('.mep-event-list-loop');
             items.each(function () {
@@ -839,10 +867,16 @@ let pagination_style=target_data.attr('data-pagination-style');
                 let date3 = new Date(end_date);
                 if (date1 >= date2 && date1 <= date3) {
                     jQuery(this).show();
+                    exit=1;
                 } else {
                     jQuery(this).hide();
                 }
             });
+            if(exit===0){
+                parent.find('.no_event_found').show();
+            }else{
+                parent.find('.no_event_found').hide();
+            }
             parent.find('.pagination_area').slideUp('fast');
             parent.find('.mep_event_list_all').removeClass('active');
             parent.find('.mep_event_list_today').removeClass('active');
@@ -916,6 +950,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         jQuery('.mep-event-list-loop').each(function () {
             jQuery(this).show();
         });
+        parent.find('.no_event_found').hide();
         // Update count display
         var totalItems = jQuery('.mep-event-list-loop').length;
         jQuery('.qty_count').text(totalItems);

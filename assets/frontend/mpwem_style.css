@@ -1853,3 +1853,4 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		color: #bbb;
 		box-shadow: none;
 	}
+	div.no_event_found{display: none;}

@@ -388,29 +388,7 @@
                                     }
                                 }
                                 // Date Range filter
-                                if (show && (startDateFilter || endDateFilter)) {
-                                    var itemDate = $item.data('date');
-                                    if (itemDate) {
-                                        var itemDateObj = new Date(itemDate);
-                                        itemDateObj.setHours(0, 0, 0, 0);
-                                        if (startDateFilter) {
-                                            var startDate = new Date(startDateFilter);
-                                            startDate.setHours(0, 0, 0, 0);
-                                            if (itemDateObj < startDate) {
-                                                show = false;
-                                            }
-                                        }
-                                        if (endDateFilter) {
-                                            var endDate = new Date(endDateFilter);
-                                            endDate.setHours(0, 0, 0, 0);
-                                            if (itemDateObj > endDate) {
-                                                show = false;
-                                            }
-                                        }
-                                    } else {
-                                        show = false;
-                                    }
-                                }
+
                                 // State filter
                                 if (show && stateFilter) {
                                     var itemState = $item.data('state') || '';
@@ -460,12 +438,12 @@
                         jQuery('input[name="filter_with_date"]').off('change').on('change', function () {
                             applyAllFilters();
                         });
-                        jQuery('input[name="filter_with_start_date"]').off('change').on('change', function () {
-                            applyAllFilters();
-                        });
-                        jQuery('input[name="filter_with_end_date"]').off('change').on('change', function () {
-                            applyAllFilters();
-                        });
+                        // jQuery('input[name="filter_with_start_date"]').off('change').on('change', function () {
+                        //     applyAllFilters();
+                        // });
+                        // jQuery('input[name="filter_with_end_date"]').off('change').on('change', function () {
+                        //     applyAllFilters();
+                        // });
                         jQuery('select[name="filter_with_state"]').off('change').on('change', function () {
                             applyAllFilters();
                         });

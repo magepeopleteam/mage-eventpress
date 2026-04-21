@@ -788,7 +788,68 @@ let pagination_style=target_data.attr('data-pagination-style');
         parent.find('.mep_event_list_this_month').removeClass('active');
         parent.find('.mep_event_list_this_week').addClass('active');
     });
-
+    $(document).on('change', 'input[name="filter_with_start_date"]', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let start_date=$this.val();
+        //alert(start_date);
+        let end_date=parent.find('input[name="filter_with_end_date"]').val();
+        if(start_date && end_date) {
+            var items = jQuery('.mep-event-list-loop');
+            items.each(function () {
+                let week = $this.attr('data-week');
+                let today = parent.find('.mep_event_list_today').attr('data-today');
+                var date = jQuery(this).data('date');
+                let date1 = new Date(date);
+                let date2 = new Date(start_date);
+                let date3 = new Date(end_date);
+                if (date1 >= date2 && date1 <= date3) {
+                    jQuery(this).show();
+                } else {
+                    jQuery(this).hide();
+                }
+            });
+            parent.find('.pagination_area').slideUp('fast');
+            parent.find('.mep_event_list_all').removeClass('active');
+            parent.find('.mep_event_list_today').removeClass('active');
+            parent.find('.mep_event_list_this_month').removeClass('active');
+            parent.find('.mep_event_list_this_week').removeClass('active');
+        }
+    });
+    $(document).on('change', 'input[name="filter_with_end_date"]', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let start_date=parent.find('input[name="filter_with_start_date"]').val();
+        let end_date=$this.val();
+       // alert(end_date);
+        if(start_date && end_date) {
+            var items = jQuery('.mep-event-list-loop');
+            items.each(function () {
+                let week = $this.attr('data-week');
+                let today = parent.find('.mep_event_list_today').attr('data-today');
+                var date = jQuery(this).data('date');
+                let date1 = new Date(date);
+                let date2 = new Date(start_date);
+                let date3 = new Date(end_date);
+                if (date1 >= date2 && date1 <= date3) {
+                    jQuery(this).show();
+                } else {
+                    jQuery(this).hide();
+                }
+            });
+            parent.find('.pagination_area').slideUp('fast');
+            parent.find('.mep_event_list_all').removeClass('active');
+            parent.find('.mep_event_list_today').removeClass('active');
+            parent.find('.mep_event_list_this_month').removeClass('active');
+            parent.find('.mep_event_list_this_week').removeClass('active');
+        }
+    });
     // Advanced Filter Panel Toggle
     $(document).on('click', 'button.mep_event_list_filter_toggle', function () {
         let $this = $(this);
@@ -824,10 +885,12 @@ let pagination_style=target_data.attr('data-pagination-style');
                     onSelect: function (selectedDate) {
                         if ( $(this).attr('name') === 'filter_with_start_date' ) {
                             $endDate.datepicker('option', 'minDate', selectedDate);
+                            $endDate.trigger('change');
                         } else if ( $(this).attr('name') === 'filter_with_end_date' ) {
                             $startDate.datepicker('option', 'maxDate', selectedDate);
+                            $startDate.trigger('change');
                         }
-                        applyAllFilters();
+                        //applyAllFilters();
                     }
                 });
             }

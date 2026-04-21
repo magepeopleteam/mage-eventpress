@@ -222,6 +222,8 @@
                                 <div class="mep_filter_actions">
                                     <button type="button" class="mep_event_filter_clear"><?php esc_html_e( 'Clear', 'mage-eventpress' ); ?></button>
                                 </div>
+                                <button type="button" class="mep_event_filter_close"><i class="fa-regular fa-circle-xmark"></i></button>
+
                             </div>
                             <p class="textGray _text_center search_sort_code_counts">
                                 <?php esc_html_e( 'Showing', 'mage-eventpress' ); ?>

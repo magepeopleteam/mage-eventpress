@@ -920,6 +920,54 @@ let pagination_style=target_data.attr('data-pagination-style');
         var totalItems = jQuery('.mep-event-list-loop').length;
         jQuery('.qty_count').text(totalItems);
     });
+    $(document).on('click', 'button.mep_event_filter_close', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let panel = parent.find('.mep_event_filter_panel');
+        panel.slideToggle('fast');
+        $this.toggleClass('active');
+        // Initialize datepickers with event dates on first open
+        if ( ! panel.data('datepicker-init') ) {
+            let datesAttr = panel.attr('data-event-dates');
+            let availableDates = [];
+            try {
+                availableDates = datesAttr ? JSON.parse(datesAttr) : [];
+            } catch (e) {
+                availableDates = [];
+            }
+            let $startDate = panel.find('input[name="filter_with_start_date"]');
+            let $endDate   = panel.find('input[name="filter_with_end_date"]');
+            function initDatepicker($el) {
+                $el.datepicker('destroy');
+                $el.datepicker({
+                    dateFormat: 'mm/dd/yy',
+                    beforeShowDay: function (date) {
+                        let m = date.getMonth() + 1;
+                        let d = date.getDate();
+                        let y = date.getFullYear();
+                        let dateStr = ('0' + m).slice(-2) + '/' + ('0' + d).slice(-2) + '/' + y;
+                        if ( availableDates.indexOf(dateStr) !== -1 ) {
+                            return [true, '', 'Available'];
+                        }
+                        return [false, '', 'Unavailable'];
+                    },
+                    onSelect: function (selectedDate) {
+                        if ( $(this).attr('name') === 'filter_with_start_date' ) {
+                            $endDate.datepicker('option', 'minDate', selectedDate);
+                            $endDate.trigger('change');
+                        } else if ( $(this).attr('name') === 'filter_with_end_date' ) {
+                            $startDate.datepicker('option', 'maxDate', selectedDate);
+                            $startDate.trigger('change');
+                        }
+                        //applyAllFilters();
+                    }
+                });
+            }
+            initDatepicker($startDate);
+            initDatepicker($endDate);
+            panel.data('datepicker-init', true);
+        }
+    });
 }(jQuery));
 (function ($) {
     "use strict";

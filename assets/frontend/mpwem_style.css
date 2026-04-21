@@ -1841,3 +1841,15 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	.loader-overlay.active {
 		display: flex;
 	}
+	div.mep_event_filter_panel{
+		position: relative;
+	}
+	button.mep_event_filter_close{
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 5px;
+		background-color: transparent;
+		color: #bbb;
+		box-shadow: none;
+	}

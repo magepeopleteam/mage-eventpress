@@ -38,25 +38,33 @@
 		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
 		
 		<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
+
         <div class="mep_list_event_details">
-            <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
-                <h5 class='mep_list_title'><?php echo esc_html( $title ); ?></h5>
+            <a class="event_details_link" href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>">
+				<h2 class='mep_list_title' title="<?php echo esc_attr( $title ); ?>"><?php echo esc_html( mb_strimwidth( $title, 0, 80, '...' ) ); ?></h2>
 				<?php
 					if ( $available_seat == 0 ) {
 						do_action( 'mep_show_waitlist_label' );
 					}
-					do_action( 'mpwem_list_price', $event_infos );
+					
 					if ( $style == 'list' ) { ?>
                         <div class="mep-event-excerpt">
 							<?php echo mb_strimwidth( get_the_excerpt(), 0, 220, '...' ); ?>
                         </div>
 					<?php }
-					do_action( 'mpwem_list_organizer', $event_infos );
-					do_action( 'mpwem_list_location', $event_infos );
 					do_action( 'mpwem_list_upcoming_date', $event_infos );
+					do_action( 'mpwem_list_location', $event_infos );
+					do_action( 'mpwem_list_organizer', $event_infos );
+					
 				?>
             </a>
-			<?php do_action( 'mpwem_list_more_date_button', $event_infos ); ?>
+			<div class="mpwem-price-area">
+				<?php
+				do_action( 'mpwem_list_price', $event_infos );
+				do_action( 'mpwem_list_more_date_button', $event_infos ); 
+				?>
+			</div>
+			
         </div>
 		<?php do_action( 'mpwem_list_hover', $event_infos ); ?>
     </div>

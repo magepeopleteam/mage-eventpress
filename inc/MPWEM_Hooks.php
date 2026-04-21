@@ -438,11 +438,15 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				}
 			}
 			public function list_upcoming_date( $event_infos ) {
+
+				
+
                 $event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
                 $event_infos = MPWEM_Functions::get_all_info($event_id);
                 $all_dates = MPWEM_Functions::get_dates($event_id);
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
                 if ($date_type == 'no' || $date_type == 'yes') {
                     $first_date = is_array($all_dates) && !empty($all_dates) ? current($all_dates) : [];
                     $start_time = is_array($first_date) && array_key_exists('time', $first_date) ? $first_date['time'] : '';
@@ -487,7 +491,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_date_only( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date ) {
 					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
@@ -510,7 +515,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_time( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+			$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date && MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ) {
 					$icon_setting_sec = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
@@ -528,7 +534,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_sort_date( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date ) {
 					?>
                     <div class="mep-ev-start-date">

@@ -324,7 +324,9 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 				$hide_seat_status          = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
-				$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				// $upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];				
 				$date                      = $date != '' ? $date : $upcoming_date;
 				$date = $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $date;
 
@@ -444,7 +446,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $event_infos = MPWEM_Functions::get_all_info($event_id);
                 $all_dates = MPWEM_Functions::get_dates($event_id);
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				// echo '<pre>'; print_r($event_infos); echo '</pre>';
+				// $upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];				
                 if ($date_type == 'no' || $date_type == 'yes') {
                     $start_time = current($all_dates)['time'];
                 } else {
@@ -469,7 +474,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
-					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$end_time                = array_key_exists( 'event_end_datetime', $event_infos ) ? $event_infos['event_end_datetime'] : '';
 					$event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
 					?>
                     <div class="list_content upcomming_date_only_only">
@@ -488,7 +493,9 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_date_only( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				// $upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];				
 				if ( $upcoming_date ) {
 					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
@@ -496,7 +503,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					$event_list_setting_sec  = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
-					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$end_time                = array_key_exists( 'event_end_datetime', $event_infos ) ? $event_infos['event_end_datetime'] : '';
 					?>
                     <div class="list_content upcomming_date_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
@@ -511,12 +518,14 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_time( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				// $upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];				
 				if ( $upcoming_date && MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ) {
 					$icon_setting_sec = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 					$time_icon        = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
-					$end_time         = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$end_time         = array_key_exists( 'event_end_datetime', $event_infos ) ? $event_infos['event_end_datetime'] : '';
 					?>
                     <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
@@ -529,7 +538,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_sort_date( $event_infos ) {
-				$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date ) {
 					?>
                     <div class="mep-ev-start-date">
@@ -540,7 +550,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function list_more_date_button( $event_infos ) {
 				$event_id                  = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
-                $all_dates = MPWEM_Functions::get_dates($event_id);
+                $all_dates 				   = MPWEM_Functions::get_dates($event_id);
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 				$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';

@@ -543,14 +543,15 @@
                 applyCalendarDayAppearance($el, info.el, info.date, false);
             },
 
-            // Style expired events
+            // Style expired events — use !important to override theme CSS
             eventDidMount: function(info) {
                 var props = info.event.extendedProps || {};
                 if (props.isExpired) {
                     info.el.classList.add('mep-cal-expired-event');
-                    info.el.style.backgroundColor = expiredColor;
-                    info.el.style.borderColor = expiredColor;
-                    info.el.style.color = expiredTextColor;
+                    info.el.style.setProperty('background-color', expiredColor, 'important');
+                    info.el.style.setProperty('border-color', expiredColor, 'important');
+                    info.el.style.setProperty('color', expiredTextColor, 'important');
+                    info.el.style.setProperty('background-image', 'none', 'important');
                     info.el.style.opacity = expiredOpacity;
                     if (props.expiredBadge) {
                         info.el.title = mepCalendar.i18n.expired + ': ' + info.event.title;

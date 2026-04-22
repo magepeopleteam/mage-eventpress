@@ -4992,6 +4992,36 @@ die();
             wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
             wp_die();
         }
-        echo 'calender content here';
+
+		$cat     = isset( $_POST['cat'] ) ? sanitize_text_field( wp_unslash( $_POST['cat'] ) ) : '0';
+		$org     = isset( $_POST['org'] ) ? sanitize_text_field( wp_unslash( $_POST['org'] ) ) : '0';
+		$tag     = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '0';
+		$city    = isset( $_POST['city'] ) ? sanitize_text_field( wp_unslash( $_POST['city'] ) ) : '';
+		$country = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
+		$status  = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'upcoming';
+		$year    = isset( $_POST['year'] ) ? sanitize_text_field( wp_unslash( $_POST['year'] ) ) : '';
+
+		$shortcode_atts = array(
+			'cat'     => $cat,
+			'org'     => $org,
+			'tag'     => $tag,
+			'city'    => $city,
+			'country' => $country,
+			'status'  => $status,
+		);
+
+		if ( ! empty( $year ) ) {
+			$shortcode_atts['year'] = $year;
+		}
+
+		$shortcode_str = '[mep-event-calendar';
+		foreach ( $shortcode_atts as $key => $value ) {
+			if ( $value !== '' && $value !== '0' ) {
+				$shortcode_str .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+			}
+		}
+		$shortcode_str .= ']';
+
+		echo do_shortcode( $shortcode_str );
         die();
     }

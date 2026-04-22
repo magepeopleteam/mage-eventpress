@@ -547,6 +547,9 @@ let pagination_style=target_data.attr('data-pagination-style');
                 success: function (data) {
                     hideLoader();
                     target.html(data);
+                    if (typeof mepCalendarInit === 'function') {
+                        mepCalendarInit();
+                    }
                     target.find('[data-bg-image]:visible').each(function () {
                         let target = jQuery(this);
                         if (target.closest('.sliderAllItem').length === 0) {
@@ -658,12 +661,27 @@ let pagination_style=target_data.attr('data-pagination-style');
         let parent = $this.closest('.list_with_filter_section');
         let target = parent.find('.mage_grid_box');
         let target_data = parent.find('.all_filter_item');
+        let id=target_data.attr('data-unq-id');
+        let cat=target_data.attr('data-cat');
+        let org=target_data.attr('data-org');
+        let tag=target_data.attr('data-tag');
+        let city=target_data.attr('data-city');
+        let country=target_data.attr('data-country');
+        let status=target_data.attr('data-status');
+        let year=target_data.attr('data-year');
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_script_var.url,
                 data: {
                     "action": "mep_gat_event_calender",
-                    "nonce": mpwem_script_var.nonce
+                    "nonce": mpwem_script_var.nonce,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year
                 },
                 beforeSend: function () {
                     showLoader();

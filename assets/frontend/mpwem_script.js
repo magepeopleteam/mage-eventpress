@@ -572,7 +572,6 @@ let pagination_style=target_data.attr('data-pagination-style');
                     parent.find('.mep_event_list_list').removeClass('active');
                     parent.find('.mep_event_list_calender').removeClass('active');
                     if(parent.find('.mep_event_list_today').hasClass( 'active' )){
-                        alert('Today Event List');
                         parent.find('.mep_event_list_today').trigger('click');
                     }
                     if(parent.find('.mep_event_list_this_month').hasClass( 'active' )){

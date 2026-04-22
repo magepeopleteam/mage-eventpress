@@ -567,6 +567,7 @@
                 renderTimeGridDaySummaryButtons($el, calId, events);
                 setTimeout(function() {
                     if (calendars[calId]) {
+                        styleMonthMoreLinks($el);
                         localizeCalendarChrome(calendars[calId], locale);
                     }
                 }, 0);
@@ -578,6 +579,7 @@
                         if (typeof calendars[calId].getEvents === 'function') {
                             renderTimeGridDaySummaryButtons($el, calId, calendars[calId].getEvents());
                         }
+                        styleMonthMoreLinks($el);
                         localizeCalendarChrome(calendars[calId], locale);
                     }
                 }, 0);
@@ -605,11 +607,13 @@
 
             // Tooltip on hover
             eventMouseEnter: function(info) {
+                toggleCalendarEventHoverState(info, true);
                 if (hideTooltip) return;
                 showTooltip(info.event, info.jsEvent, calId);
             },
 
             eventMouseLeave: function(info) {
+                toggleCalendarEventHoverState(info, false);
                 hideTooltipEl(calId);
             },
 
@@ -637,12 +641,12 @@
                 // Badge
                 if (showBadge && !isMonthGrid) {
                     if (props.eventType === 'everyday') {
-                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.recurring + '">â†»</span>';
+                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.recurring + '">&#8635;</span>';
                     } else if (props.eventType === 'yes') {
-                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.multiDate + '">ðŸ“…</span>';
+                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.multiDate + '">&#128197;</span>';
                     }
                     if (props.eventMode === 'online') {
-                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.virtual + '">ðŸŒ</span>';
+                        html += ' <span class="mep-cal-event-badge" title="' + mepCalendar.i18n.virtual + '">&#127760;</span>';
                     }
                 }
 
@@ -732,17 +736,20 @@
             },
 
             eventMouseEnter: function(info) {
+                toggleCalendarEventHoverState(info, true);
                 if (hideTooltip) return;
                 showTooltip(info.event, info.jsEvent, calId);
             },
 
             eventMouseLeave: function(info) {
+                toggleCalendarEventHoverState(info, false);
                 hideTooltipEl(calId);
             },
 
             datesSet: function() {
                 setTimeout(function() {
                     if (calendars[calId]) {
+                        styleMonthMoreLinks($el);
                         localizeCalendarChrome(calendars[calId], locale);
                     }
                 }, 0);
@@ -1479,6 +1486,54 @@
         });
     }
 
+    // Fixed by Shahnur -- 2026-04-22 12:31 PM (Asia/Dhaka)
+    function styleMonthMoreLinks($el) {
+        var calendarEl;
+        var moreLinks;
+
+        if (!$el || !$el.length) {
+            return;
+        }
+
+        calendarEl = $el.get(0);
+        if (!calendarEl) {
+            return;
+        }
+
+        moreLinks = calendarEl.querySelectorAll('.fc-dayGridMonth-view .fc-daygrid-day-bottom a, .fc-dayGridMonth-view .fc-daygrid-day-bottom .fc-more-link, .fc-dayGridMonth-view .fc-daygrid-day-bottom .fc-daygrid-more-link');
+
+        moreLinks.forEach(function(linkEl) {
+            var textNodes = linkEl.querySelectorAll('.fc-sticky, .mep-cal-more-link-text');
+
+            linkEl.classList.add('mep-cal-more-link-button');
+            linkEl.style.setProperty('display', 'inline-flex', 'important');
+            linkEl.style.setProperty('align-items', 'center', 'important');
+            linkEl.style.setProperty('justify-content', 'center', 'important');
+            linkEl.style.setProperty('width', 'auto', 'important');
+            linkEl.style.setProperty('max-width', '100%', 'important');
+            linkEl.style.setProperty('padding', '5px 10px', 'important');
+            linkEl.style.setProperty('border', '1px solid rgba(44, 62, 80, 0.22)', 'important');
+            linkEl.style.setProperty('border-radius', '999px', 'important');
+            linkEl.style.setProperty('background', '#34495e', 'important');
+            linkEl.style.setProperty('color', '#ffffff', 'important');
+            linkEl.style.setProperty('font-size', '12px', 'important');
+            linkEl.style.setProperty('font-weight', '600', 'important');
+            linkEl.style.setProperty('line-height', '1.2', 'important');
+            linkEl.style.setProperty('text-decoration', 'none', 'important');
+            linkEl.style.setProperty('box-shadow', '0 2px 8px rgba(15, 23, 42, 0.12)', 'important');
+            linkEl.style.setProperty('cursor', 'pointer', 'important');
+
+            textNodes.forEach(function(textNode) {
+                textNode.style.setProperty('display', 'inline-flex', 'important');
+                textNode.style.setProperty('align-items', 'center', 'important');
+                textNode.style.setProperty('justify-content', 'center', 'important');
+                textNode.style.setProperty('position', 'static', 'important');
+                textNode.style.setProperty('color', 'inherit', 'important');
+                textNode.style.setProperty('white-space', 'nowrap', 'important');
+            });
+        });
+    }
+
     function stabilizeMonthGridEvent(info) {
         var nodes = [];
         var harnessEl;
@@ -1551,6 +1606,68 @@
             titleEl.style.whiteSpace = 'nowrap';
             titleEl.style.textOverflow = 'ellipsis';
         }
+    }
+
+    // Fixed by Shahnur -- 2026-04-22 12:08 PM (Asia/Dhaka)
+    function toggleCalendarEventHoverState(info, isActive) {
+        var harnessEl;
+        var innerEl;
+        var mainEl;
+        var highlightEl;
+        var textNodes;
+
+        if (!info || !info.el) {
+            return;
+        }
+
+        harnessEl = info.el.closest('.fc-daygrid-event-harness, .fc-daygrid-event-harness-abs');
+        innerEl = info.el.querySelector('.mep-cal-event-inner, .mep-cal-event-inner-month');
+        mainEl = info.el.querySelector('.fc-event-main');
+        highlightEl = innerEl || mainEl || info.el;
+        textNodes = info.el.querySelectorAll('.mep-cal-event-time, .mep-cal-event-title, .fc-event-time, .fc-event-title');
+
+        info.el.classList.toggle('mep-cal-event-hovered', !!isActive);
+
+        if (harnessEl) {
+            harnessEl.classList.toggle('mep-cal-event-hovered-wrap', !!isActive);
+            if (isActive) {
+                harnessEl.style.setProperty('z-index', '4', 'important');
+            } else {
+                harnessEl.style.removeProperty('z-index');
+            }
+        }
+
+        if (innerEl) {
+            innerEl.classList.toggle('mep-cal-event-hovered-inner', !!isActive);
+        }
+
+        if (mainEl) {
+            mainEl.classList.toggle('mep-cal-event-hovered-main', !!isActive);
+        }
+
+        if (highlightEl) {
+            if (isActive) {
+                highlightEl.style.setProperty('background', 'rgba(58, 135, 173, 0.16)', 'important');
+                highlightEl.style.setProperty('box-shadow', 'inset 0 0 0 1px rgba(58, 135, 173, 0.42)', 'important');
+                highlightEl.style.setProperty('border-radius', '6px', 'important');
+                highlightEl.style.setProperty('padding', '2px 4px', 'important');
+            } else {
+                highlightEl.style.removeProperty('background');
+                highlightEl.style.removeProperty('box-shadow');
+                highlightEl.style.removeProperty('border-radius');
+                highlightEl.style.removeProperty('padding');
+            }
+        }
+
+        textNodes.forEach(function(node) {
+            if (isActive) {
+                node.style.setProperty('color', '#b71c1c', 'important');
+                node.style.setProperty('font-weight', '600', 'important');
+            } else {
+                node.style.removeProperty('color');
+                node.style.removeProperty('font-weight');
+            }
+        });
     }
 
     function getEventsForDate(events, dateStr) {

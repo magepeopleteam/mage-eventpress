@@ -77,10 +77,8 @@ if ( ! function_exists( 'mep_cal_get_setting' ) ) {
 
 if ( ! function_exists( 'mep_cal_enqueue_assets' ) ) {
 	function mep_cal_enqueue_assets() {
-		$fullcalendar_local_file = MPWEM_PLUGIN_DIR . '/assets/helper/calendar/fullcalendar.index.global.min.js';
-		$fullcalendar_url        = file_exists( $fullcalendar_local_file )
-			? MPWEM_PLUGIN_URL . '/assets/helper/calendar/fullcalendar.index.global.min.js'
-			: 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js';
+		// Fixed by Shahnur — 2026-04-22 11:37 AM (Asia/Dhaka)
+		$fullcalendar_url = MPWEM_PLUGIN_URL . '/assets/helper/calendar/fullcalendar.index.global.min.js';
 
 		wp_register_script(
 			'fullcalendar-js',

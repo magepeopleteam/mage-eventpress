@@ -547,6 +547,7 @@
             eventDidMount: function(info) {
                 var props = info.event.extendedProps || {};
                 if (props.isExpired) {
+                    info.el.classList.add('mep-cal-expired-event');
                     info.el.style.backgroundColor = expiredColor;
                     info.el.style.borderColor = expiredColor;
                     info.el.style.color = expiredTextColor;

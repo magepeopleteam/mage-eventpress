@@ -219,6 +219,34 @@
 	opacity: 0.9;
 }
 
+/* Expired events — compact to reduce calendar gaps */
+.mep-calendar-container .fc-event.mep-cal-expired-event {
+	padding: 1px 4px !important;
+	font-size: 0.72em !important;
+	line-height: 1.2 !important;
+	min-height: auto !important;
+	background-image: none !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event .fc-event-main {
+	padding: 1px 2px !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event .mep-cal-event-inner {
+	gap: 1px !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event .mep-cal-event-time,
+.mep-calendar-container .fc-event.mep-cal-expired-event .mep-cal-event-title {
+	font-size: 0.85em !important;
+	line-height: 1.2 !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event:hover {
+	transform: none !important;
+	box-shadow: none !important;
+}
+
 .mep-calendar-container .fc .fc-timeGridWeek-view .fc-h-event,
 .mep-calendar-container .fc .fc-timeGridWeek-view .fc-daygrid-event,
 .mep-calendar-container .fc .fc-timeGridWeek-view .fc-timegrid-event,

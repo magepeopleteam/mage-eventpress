@@ -440,7 +440,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-top: 30px;
+		margin-top:auto;
 		flex-wrap: wrap;
 	}
 	div.mpwem-price-area .list_price{
@@ -570,7 +570,7 @@
 	.mep_event_list .mep_list_thumb img,
 	.mep_list_thumb img { height: auto; width: auto; max-width: 100%;border-radius: 0;}
 	div.column_style .mep_list_thumb img { height: 160px;}
-	.mep_event_grid_item .mep_list_thumb { border-radius: 5px 5px 0 0; width: 100%; height: 200px; }
+	.mep_event_grid_item .mep_list_thumb { border-radius: 5px 5px 0 0; width: 100%; height: 300px; }
 	.mep_event_list_item .mep_list_thumb { border-radius: 5px 0 0 5px; }
 	/*********************/
 	.mp_event_more_date_list { list-style: none; padding: 5px;}
@@ -682,9 +682,8 @@
 		justify-content: space-between;
 	}
 	.mep_list_event_details a.event_details_link{
-		display: flex;  
-		flex-direction: column;  
-		justify-content: space-between;
+		display: block;  
+		margin-bottom:  30px;
 	}	
 	.mep_event_grid_item .mep-list-footer { padding: 0; }
 	.mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec { max-width: 50%; border-radius: 0 0 0 25px; }

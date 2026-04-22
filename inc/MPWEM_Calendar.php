@@ -48,6 +48,7 @@ if ( ! function_exists( 'mep_cal_get_all_settings' ) ) {
 			'mep_cal_show_prev_next'       => 'yes',
 			'mep_cal_show_expired_events'  => 'yes',
 			'mep_cal_expired_event_color'  => '#999999',
+			'mep_cal_expired_text_color'   => '#ffffff',
 			'mep_cal_expired_opacity'      => '0.6',
 			'mep_cal_event_click'          => 'navigate',
 			'mep_cal_show_thumbnail'       => 'yes',
@@ -238,6 +239,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Shortcode' ) ) {
 				'show_prev_next'         => $settings['mep_cal_show_prev_next'],
 				'show_expired_events'    => $settings['mep_cal_show_expired_events'],
 				'expired_event_color'    => '',
+				'expired_text_color'     => '',
 				'expired_opacity'        => '',
 				'event_click'            => $event_click_default,
 				'id'                     => 'mep-cal-' . uniqid(),
@@ -432,6 +434,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Shortcode' ) ) {
 					data-show-prev-next="<?php echo esc_attr( $atts['show_prev_next'] ); ?>"
 					data-show-expired-events="<?php echo esc_attr( $atts['show_expired_events'] ); ?>"
 					data-expired-event-color="<?php echo esc_attr( $atts['expired_event_color'] ); ?>"
+					data-expired-text-color="<?php echo esc_attr( $atts['expired_text_color'] ); ?>"
 					data-expired-opacity="<?php echo esc_attr( $atts['expired_opacity'] ); ?>"
 					data-event-click="<?php echo esc_attr( $atts['event_click'] ); ?>"
 				></div>
@@ -599,6 +602,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$hide_expired               = $settings['mep_cal_hide_expired'];
 			$show_expired_events        = isset( $_POST['show_expired_events'] ) ? sanitize_text_field( wp_unslash( $_POST['show_expired_events'] ) ) : $settings['mep_cal_show_expired_events'];
 			$expired_event_color        = $settings['mep_cal_expired_event_color'];
+			$expired_text_color         = $settings['mep_cal_expired_text_color'];
 			$event_color                = isset( $_POST['event_color'] ) && ! empty( $_POST['event_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['event_color'] ) ) : $settings['mep_cal_event_color'];
 			$text_color                 = isset( $_POST['text_color'] ) && ! empty( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : $settings['mep_cal_event_text_color'];
 			$sold_out_color             = $settings['mep_cal_sold_out_color'];
@@ -840,7 +844,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 								$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 								$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 								$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-								$is_date_expired, $expired_event_color, $split_multi_day
+								$is_date_expired, $expired_event_color, $expired_text_color, $split_multi_day
 							) as $event_data ) {
 								$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 							}
@@ -885,7 +889,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 										$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 										$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 										$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-										$is_date_expired_r, $expired_event_color, $split_multi_day
+										$is_date_expired_r, $expired_event_color, $expired_text_color, $split_multi_day
 									) as $event_data ) {
 										$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 									}
@@ -916,7 +920,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 									$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 									$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 									$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-									$is_date_expired_f, $expired_event_color, $split_multi_day
+									$is_date_expired_f, $expired_event_color, $expired_text_color, $split_multi_day
 								) as $event_data ) {
 									$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 								}
@@ -945,7 +949,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 									$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 									$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 									$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-									$is_fb_expired, $expired_event_color, $split_multi_day
+									$is_fb_expired, $expired_event_color, $expired_text_color, $split_multi_day
 								) as $event_data ) {
 									$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 								}
@@ -1007,7 +1011,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 			$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 			$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-			$is_expired = false, $expired_event_color = '#999999'
+			$is_expired = false, $expired_event_color = '#999999', $expired_text_color = '#ffffff'
 		) {
 			$total_seats     = 0;
 			$available_seats = 0;
@@ -1040,7 +1044,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 
 			if ( $is_expired ) {
 				$bg_color   = $expired_event_color;
-				$text_color = '#ffffff';
+				$text_color = $expired_text_color;
 			}
 
 			$fc_start = date( 'Y-m-d\TH:i:s', strtotime( $start_dt ) );
@@ -1163,7 +1167,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 			$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 			$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-			$is_expired = false, $expired_event_color = '#999999', $split_multi_day = 'no'
+			$is_expired = false, $expired_event_color = '#999999', $expired_text_color = '#ffffff', $split_multi_day = 'no'
 		) {
 			$instances = array();
 
@@ -1174,8 +1178,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 					$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 					$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-					$is_expired, $expired_event_color
-				);
+					$is_expired, $expired_event_color, $expired_text_color				);
 				return $instances;
 			}
 
@@ -1195,8 +1198,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 					$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 					$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-					$is_expired, $expired_event_color
-				);
+					$is_expired, $expired_event_color, $expired_text_color				);
 
 				$current_day = strtotime( '+1 day', $current_day );
 			}
@@ -1723,6 +1725,13 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 								</td>
 							</tr>
 							<tr>
+								<th scope="row"><label><?php esc_html_e( 'Expired Event Text Color', 'mage-eventpress' ); ?></label></th>
+								<td>
+									<input type="text" name="mep_calendar_settings[mep_cal_expired_text_color]" value="<?php echo esc_attr( $settings['mep_cal_expired_text_color'] ); ?>" class="mep-cal-color-picker" />
+									<p class="description"><?php esc_html_e( 'Text color for expired events when shown on calendar.', 'mage-eventpress' ); ?></p>
+								</td>
+							</tr>
+							<tr>
 								<th scope="row"><label for="mep_cal_expired_opacity"><?php esc_html_e( 'Expired Event Opacity', 'mage-eventpress' ); ?></label></th>
 								<td>
 									<select name="mep_calendar_settings[mep_cal_expired_opacity]" id="mep_cal_expired_opacity">
@@ -1910,6 +1919,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 									<tr><td><code>show_prev_next</code></td><td>(setting)</td><td><?php esc_html_e( 'Show prev/next month arrows', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>show_expired_events</code></td><td>(setting)</td><td><?php esc_html_e( 'Show expired events: yes (with faded style) or no (hide)', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>expired_event_color</code></td><td>(setting)</td><td><?php esc_html_e( 'Override expired event color (#hex)', 'mage-eventpress' ); ?></td></tr>
+									<tr><td><code>expired_text_color</code></td><td>(setting)</td><td><?php esc_html_e( 'Override expired event text color (#hex)', 'mage-eventpress' ); ?></td></tr>
 									<tr><td><code>expired_opacity</code></td><td>(setting)</td><td><?php esc_html_e( 'Expired event opacity: 0.3 to 1', 'mage-eventpress' ); ?></td></tr>
 								</tbody>
 							</table>

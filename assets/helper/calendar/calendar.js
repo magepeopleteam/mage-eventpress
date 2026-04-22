@@ -473,6 +473,7 @@
         var hideTooltip = $el.data('hide-tooltip') === 'yes';
         var clickAction = $el.data('event-click') || settings.mep_cal_event_click || 'navigate';
         var expiredColor = $el.data('expired-event-color') || settings.mep_cal_expired_event_color || '#999999';
+        var expiredTextColor = $el.data('expired-text-color') || settings.mep_cal_expired_text_color || '#ffffff';
         var expiredOpacity = $el.data('expired-opacity') || settings.mep_cal_expired_opacity || '0.6';
         var locale = resolveCalendarLocaleCode(settings.mep_cal_locale || '');
         var explicitEventColor = String($el.data('event-color') || '').trim();
@@ -548,6 +549,7 @@
                 if (props.isExpired) {
                     info.el.style.backgroundColor = expiredColor;
                     info.el.style.borderColor = expiredColor;
+                    info.el.style.color = expiredTextColor;
                     info.el.style.opacity = expiredOpacity;
                     if (props.expiredBadge) {
                         info.el.title = mepCalendar.i18n.expired + ': ' + info.event.title;

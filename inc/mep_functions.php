@@ -5008,6 +5008,8 @@ die();
 			'city'    => $city,
 			'country' => $country,
 			'status'  => $status,
+			// Fixed by Shahnur — 2026-04-22 11:27 AM (Asia/Dhaka)
+			'split_multi_day' => 'yes',
 		);
 
 		if ( ! empty( $year ) ) {

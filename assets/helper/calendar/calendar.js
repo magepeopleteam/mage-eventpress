@@ -1484,6 +1484,7 @@
         var harnessEl;
         var titleEl;
         var innerEl;
+        var isDotEvent;
 
         if (!info || !info.el || !info.view || info.view.type !== 'dayGridMonth') {
             return;
@@ -1492,6 +1493,7 @@
         harnessEl = info.el.closest('.fc-daygrid-event-harness');
         titleEl = info.el.querySelector('.mep-cal-event-title');
         innerEl = info.el.querySelector('.mep-cal-event-inner, .mep-cal-event-inner-month');
+        isDotEvent = info.el.classList.contains('fc-daygrid-dot-event');
 
         [
             harnessEl,
@@ -1521,12 +1523,27 @@
             harnessEl.style.right = '0';
             harnessEl.style.width = '100%';
             harnessEl.style.maxWidth = '100%';
+            harnessEl.style.top = 'auto';
+            harnessEl.style.bottom = 'auto';
         }
 
         info.el.style.width = '100%';
         info.el.style.maxWidth = '100%';
         info.el.style.display = 'flex';
         info.el.style.alignItems = 'center';
+
+        // Fixed by Shahnur — 2026-04-22 11:27 AM (Asia/Dhaka)
+        if (isDotEvent) {
+            if (harnessEl) {
+                harnessEl.style.position = 'static';
+                harnessEl.style.marginTop = '2px';
+            }
+
+            info.el.style.background = 'transparent';
+            info.el.style.border = 'none';
+            info.el.style.boxShadow = 'none';
+            info.el.style.padding = '2px 4px';
+        }
 
         if (titleEl) {
             titleEl.style.display = 'block';

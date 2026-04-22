@@ -584,6 +584,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$date_end        = isset( $_POST['date_end'] ) ? sanitize_text_field( wp_unslash( $_POST['date_end'] ) ) : '';
 			$visible_start   = isset( $_POST['visible_start'] ) ? sanitize_text_field( wp_unslash( $_POST['visible_start'] ) ) : '';
 			$visible_end     = isset( $_POST['visible_end'] ) ? sanitize_text_field( wp_unslash( $_POST['visible_end'] ) ) : '';
+			$view_type       = isset( $_POST['view_type'] ) ? sanitize_text_field( wp_unslash( $_POST['view_type'] ) ) : '';
 
 			$show_stock      = isset( $_POST['show_stock_details'] ) ? sanitize_text_field( wp_unslash( $_POST['show_stock_details'] ) ) : 'no';
 			$hide_time       = isset( $_POST['hide_time'] ) ? sanitize_text_field( wp_unslash( $_POST['hide_time'] ) ) : 'no';
@@ -597,6 +598,8 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$effective_org          = ! empty( $org_filter ) ? $org_filter : $org;
 			$effective_date_start   = ! empty( $date_start ) ? $date_start : $this->normalize_date_boundary( $visible_start, 'start' );
 			$effective_date_end     = ! empty( $date_end ) ? $date_end : $this->normalize_date_boundary( $visible_end, 'end' );
+			// Fixed by Shahnur — 2026-04-22 11:11 AM (Asia/Dhaka)
+			$effective_split_multi_day = ( 'yes' === $split_multi_day || 'dayGridMonth' === $view_type ) ? 'yes' : 'no';
 
 			$settings                   = mep_cal_get_all_settings();
 			$hide_expired               = $settings['mep_cal_hide_expired'];
@@ -844,7 +847,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 								$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 								$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 								$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-								$is_date_expired, $expired_event_color, $expired_text_color, $split_multi_day
+								$is_date_expired, $expired_event_color, $expired_text_color, $effective_split_multi_day
 							) as $event_data ) {
 								$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 							}
@@ -889,7 +892,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 										$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 										$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 										$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-										$is_date_expired_r, $expired_event_color, $expired_text_color, $split_multi_day
+										$is_date_expired_r, $expired_event_color, $expired_text_color, $effective_split_multi_day
 									) as $event_data ) {
 										$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 									}
@@ -920,7 +923,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 									$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 									$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 									$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-									$is_date_expired_f, $expired_event_color, $expired_text_color, $split_multi_day
+									$is_date_expired_f, $expired_event_color, $expired_text_color, $effective_split_multi_day
 								) as $event_data ) {
 									$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 								}
@@ -949,7 +952,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 									$location_text, $organizer_name, $cat_names, $min_price, $thumbnail,
 									$event_color, $text_color, $sold_out_color, $low_stock_color, $low_threshold,
 									$show_stock, $hide_time, $show_price, $show_location, $show_organizer,
-									$is_fb_expired, $expired_event_color, $expired_text_color, $split_multi_day
+									$is_fb_expired, $expired_event_color, $expired_text_color, $effective_split_multi_day
 								) as $event_data ) {
 									$events[] = apply_filters( 'mep_calendar_event_data', $event_data, $event_id );
 								}

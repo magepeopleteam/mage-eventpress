@@ -185,6 +185,11 @@
 	background-color: var(--mep-cal-today, #fcf8e3) !important;
 }
 
+/* Fixed by Shahnur — 2026-04-22 11:31 AM (Asia/Dhaka) */
+.mep-calendar-container .fc .fc-day-today .fc-daygrid-day-number {
+	font-weight: 700;
+}
+
 /* Other month days */
 .mep-calendar-container .fc .fc-day-other .fc-daygrid-day-number {
 	color: #adb5bd;
@@ -1200,6 +1205,23 @@
 	white-space: nowrap !important;
 }
 
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-day-events {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: stretch !important;
+}
+
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness,
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness-abs {
+	position: static !important;
+	inset: auto !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	margin: 2px 0 0 !important;
+}
+
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event .fc-event-title,
 .mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .mep-cal-event-title {
 	display: block !important;
@@ -1212,4 +1234,44 @@
 	position: static !important;
 	left: auto !important;
 	right: auto !important;
+}
+
+/* Fixed by Shahnur — 2026-04-22 11:27 AM (Asia/Dhaka) */
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-dot-event,
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event.fc-daygrid-dot-event {
+	display: flex !important;
+	align-items: center !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	margin: 2px 0 0 !important;
+	padding: 2px 4px !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+}
+
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness:has(> .fc-daygrid-dot-event),
+.mep-calendar-container .fc .fc-dayGridMonth-view .fc-daygrid-body .fc-daygrid-event-harness-abs:has(> .fc-daygrid-dot-event) {
+	position: static !important;
+	inset: auto !important;
+	top: auto !important;
+	left: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	margin: 2px 0 0 !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event,
+.mep-calendar-container .fc-daygrid-event.mep-cal-expired-event,
+.mep-calendar-container .fc-daygrid-block-event.mep-cal-expired-event,
+.mep-calendar-container .fc-h-event.mep-cal-expired-event {
+	padding: 2px 6px !important;
+	font-size: 0.82em !important;
+	line-height: 1.25 !important;
+}
+
+.mep-calendar-container .fc-event.mep-cal-expired-event .mep-cal-event-time,
+.mep-calendar-container .fc-event.mep-cal-expired-event .mep-cal-event-title {
+	font-size: inherit !important;
+	line-height: inherit !important;
 }

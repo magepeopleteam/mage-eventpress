@@ -1,0 +1,391 @@
+/* MEP Calendar Admin Styles aligned with mage-eventpress admin palette */
+
+:root {
+	--mep-cal-admin-theme: var(--color_theme, #005497);
+	--mep-cal-admin-theme-soft: var(--color_light, #f5f8ff);
+	--mep-cal-admin-dark: var(--color_dark, #1d2327);
+	--mep-cal-admin-white: var(--color_white, #ffffff);
+	--mep-cal-admin-gray: var(--color_gray, #d9dde3);
+}
+
+.mep-calendar-settings-wrap {
+	max-width: 1120px;
+}
+
+.mep-calendar-settings-wrap > h1 {
+	margin: 24px 0 8px;
+	padding: 18px 22px;
+	background: var(--mep-cal-admin-theme);
+	color: var(--mep-cal-admin-white);
+	border-radius: 6px 6px 0 0;
+	font-size: 22px;
+	line-height: 1.3;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.mep-calendar-settings-wrap > h1 .dashicons {
+	color: var(--mep-cal-admin-white);
+}
+
+.mep-calendar-settings-wrap > .description {
+	margin: 0 0 22px;
+	padding: 14px 22px 18px;
+	background: var(--mep-cal-admin-white);
+	border: 1px solid var(--mep-cal-admin-gray);
+	border-top: 0;
+	color: #667085;
+	box-shadow: 0 3px 12px rgba(0, 44, 102, 0.08);
+}
+
+.mep-calendar-settings-wrap form {
+	background: var(--mep-cal-admin-white);
+	border: 1px solid var(--mep-cal-admin-gray);
+	box-shadow: 0 6px 18px rgba(0, 44, 102, 0.08);
+}
+
+.mep-cal-settings-section {
+	margin: 0;
+	border-bottom: 1px solid var(--mep-cal-admin-gray);
+}
+
+.mep-cal-settings-section:last-of-type {
+	border-bottom: 0;
+}
+
+.mep-cal-settings-section h2 {
+	margin: 0;
+	padding: 16px 22px;
+	background: var(--mep-cal-admin-theme-soft);
+	color: var(--mep-cal-admin-theme);
+	font-size: 18px;
+	font-weight: 600;
+	border-bottom: 1px solid var(--mep-cal-admin-gray);
+}
+
+.mep-cal-settings-section .form-table {
+	margin: 0;
+	border-collapse: collapse;
+}
+
+.mep-cal-settings-section .form-table th,
+.mep-cal-settings-section .form-table td {
+	padding: 14px 18px;
+	vertical-align: middle;
+	border-bottom: 1px solid #edf1f5;
+}
+
+.mep-cal-settings-section .form-table tr:last-child th,
+.mep-cal-settings-section .form-table tr:last-child td {
+	border-bottom: 0;
+}
+
+.mep-cal-settings-section .form-table tr:nth-child(odd) {
+	background: #ffffff;
+}
+
+.mep-cal-settings-section .form-table tr:nth-child(even) {
+	background: rgba(0, 84, 151, 0.045);
+}
+
+.mep-cal-settings-section .form-table th {
+	width: 30%;
+	color: var(--mep-cal-admin-dark);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.mep-cal-settings-section .form-table td {
+	color: #4b5563;
+}
+
+.mep-cal-settings-section input[type="text"],
+.mep-cal-settings-section input[type="number"],
+.mep-cal-settings-section select,
+.mep-cal-settings-section textarea {
+	min-height: 40px;
+	border: 1px solid #c8d1dc;
+	border-radius: 4px;
+	padding: 6px 12px;
+	box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.mep-cal-settings-section select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	padding-right: 38px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23005497' d='M6 8.6 1.6 4.2l.8-.8L6 7l3.6-3.6.8.8z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 12px 12px;
+}
+
+.mep-cal-settings-section input[type="text"]:focus,
+.mep-cal-settings-section input[type="number"]:focus,
+.mep-cal-settings-section select:focus,
+.mep-cal-settings-section textarea:focus {
+	border-color: var(--mep-cal-admin-theme);
+	box-shadow: 0 0 0 1px var(--mep-cal-admin-theme);
+}
+
+.mep-cal-settings-section .description {
+	margin-top: 6px;
+	color: #667085;
+}
+
+.mep-cal-shortcode-ref {
+	padding: 18px 22px 24px;
+	background: #fff;
+}
+
+.mep-cal-shortcode-ref > p {
+	margin: 0 0 14px;
+}
+
+.mep-cal-shortcode-ref > code {
+	display: block;
+	margin-bottom: 16px;
+	padding: 14px 16px;
+	background: var(--mep-cal-admin-theme);
+	color: var(--mep-cal-admin-white);
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.mep-cal-shortcode-ref > h4 + code {
+	display: block;
+	padding: 14px 16px;
+	background: #0f172a;
+	color: #dbeafe;
+	border-radius: 4px;
+	font-size: 13px;
+	word-break: break-word;
+}
+
+.mep-cal-shortcode-ref table {
+	margin-top: 12px;
+	width: 100%;
+	border: 1px solid var(--mep-cal-admin-gray);
+	border-collapse: collapse;
+	table-layout: fixed;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.mep-cal-shortcode-ref table th,
+.mep-cal-shortcode-ref table td {
+	padding: 14px 16px;
+	border-bottom: 1px solid #edf1f5;
+	text-align: left;
+	vertical-align: top;
+}
+
+.mep-cal-shortcode-ref table thead th {
+	background: var(--mep-cal-admin-theme-soft);
+	color: var(--mep-cal-admin-theme);
+	font-weight: 700;
+	font-size: 13px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.mep-cal-shortcode-ref table tbody tr:nth-child(even) {
+	background: rgba(0, 84, 151, 0.045);
+}
+
+.mep-cal-shortcode-ref table tbody tr:hover {
+	background: rgba(0, 84, 151, 0.08);
+}
+
+.mep-cal-shortcode-ref table th:first-child,
+.mep-cal-shortcode-ref table td:first-child {
+	width: 22%;
+}
+
+.mep-cal-shortcode-ref table th:nth-child(2),
+.mep-cal-shortcode-ref table td:nth-child(2) {
+	width: 16%;
+}
+
+.mep-cal-shortcode-ref table td:nth-child(2) {
+	font-weight: 600;
+	color: #344054;
+}
+
+.mep-cal-shortcode-ref table td:nth-child(3) {
+	color: #667085;
+	line-height: 1.55;
+}
+
+.mep-cal-shortcode-ref table code {
+	display: inline-block;
+	max-width: 100%;
+	background: rgba(0, 84, 151, 0.08);
+	color: var(--mep-cal-admin-theme);
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.5;
+	word-break: break-word;
+}
+
+.mep-cal-day-rule-list {
+	max-width: 980px;
+}
+
+.mep-cal-day-rule-items {
+	display: grid;
+	gap: 16px;
+	margin-top: 16px;
+}
+
+.mep-cal-day-rule-item {
+	border: 1px solid var(--mep-cal-admin-gray);
+	border-radius: 10px;
+	background: #f9fbff;
+	padding: 16px;
+}
+
+.mep-cal-day-rule-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px 16px;
+	align-items: end;
+}
+
+.mep-cal-day-rule-field label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: var(--mep-cal-admin-dark);
+}
+
+.mep-cal-day-rule-field-image {
+	grid-column: 1 / -1;
+}
+
+.mep-cal-day-rule-image-input {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+}
+
+.mep-cal-day-rule-image-input .regular-text {
+	min-width: 320px;
+	flex: 1 1 320px;
+}
+
+.mep-cal-day-rule-actions {
+	grid-column: 1 / -1;
+}
+
+.mep-cal-day-rule-preview {
+	margin-top: 14px;
+	height: 92px;
+	border-radius: 8px;
+	border: 1px dashed #c7d3e0;
+	background: linear-gradient(135deg, rgba(0, 84, 151, 0.05), rgba(0, 84, 151, 0.02));
+	position: relative;
+	overflow: hidden;
+}
+
+.mep-cal-day-rule-preview::before {
+	content: "Background preview";
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #6b7280;
+}
+
+.mep-cal-day-rule-preview.has-image {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.mep-cal-day-rule-preview.has-image::before {
+	content: "";
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(17, 24, 39, 0.12));
+}
+
+.mep-cal-day-rule-item .is-hidden {
+	display: none;
+}
+
+.mep-calendar-settings-wrap form p.submit {
+	margin: 0;
+	padding: 18px 22px 22px;
+	text-align: right;
+	background: #fff;
+	border-top: 1px solid var(--mep-cal-admin-gray);
+}
+
+.mep-calendar-settings-wrap form p.submit .button-primary {
+	min-height: 42px;
+	padding: 0 20px;
+	background: var(--mep-cal-admin-theme);
+	border-color: var(--mep-cal-admin-theme);
+	box-shadow: none;
+}
+
+.mep-calendar-settings-wrap form p.submit .button-primary:hover,
+.mep-calendar-settings-wrap form p.submit .button-primary:focus {
+	background: #00457d;
+	border-color: #00457d;
+}
+
+@media (max-width: 782px) {
+	.mep-calendar-settings-wrap > h1,
+	.mep-calendar-settings-wrap > .description {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mep-cal-settings-section h2,
+	.mep-cal-shortcode-ref,
+	.mep-calendar-settings-wrap form p.submit {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mep-cal-settings-section .form-table th,
+	.mep-cal-settings-section .form-table td {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mep-cal-shortcode-ref table {
+		table-layout: auto;
+	}
+
+	.mep-cal-shortcode-ref table th,
+	.mep-cal-shortcode-ref table td {
+		padding: 12px 14px;
+	}
+
+	.mep-cal-shortcode-ref table th:first-child,
+	.mep-cal-shortcode-ref table td:first-child,
+	.mep-cal-shortcode-ref table th:nth-child(2),
+	.mep-cal-shortcode-ref table td:nth-child(2) {
+		width: auto;
+	}
+
+	.mep-cal-day-rule-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.mep-cal-day-rule-image-input .regular-text {
+		min-width: 0;
+		flex-basis: 100%;
+	}
+}

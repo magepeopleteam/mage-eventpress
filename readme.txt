@@ -218,6 +218,13 @@ A. Yes! Woocommerce Events Manager is free.
 You can check the demo of this plugin from here:
 [View Live PRO Version Demo For Business](https://wpevently.com/)
 
+= Q. Does the calendar feature use a bundled third-party library? =
+A. Yes. The frontend calendar bundles FullCalendar Standard Bundle v6.1.17.
+
+Source repository: https://github.com/fullcalendar/fullcalendar
+Documentation and license details: https://fullcalendar.io/docs/initialize-globals
+Bundled file: `assets/helper/calendar/fullcalendar.index.global.min.js`
+
 = Q. Any Documentation? =
 A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
  

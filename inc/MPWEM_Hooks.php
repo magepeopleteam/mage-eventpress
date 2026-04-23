@@ -547,7 +547,17 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function list_more_date_button( $event_infos ) {
 				$event_id                  = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+                $price=MPWEM_Functions::get_min_price( $event_id );
+                $date    = MPWEM_Functions::get_upcoming_date_time( $event_id );
+                $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $date );
                 $all_dates = MPWEM_Functions::get_dates($event_id);
+                $today = new DateTime(date('Y-m-d'));
+                $next7Days = new DateTime(date('Y-m-d'));
+                $next7Days->modify('+7 days');
+                $new_date=date('Y-m-d',strtotime($date));
+                $checkDate = new DateTime($new_date);
+                //echo $checkDate;
+                //echo $today;
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 				$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
@@ -560,6 +570,77 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                         <div class="date_list_area" data-collapse="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>"></div>
                     </div>
 				<?php }
+                else{
+                    $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $date_type == 'no') {
+
+                        if($price==0){
+                            echo esc_html__('Free','mage-eventpress');
+                        }elseif ($available_seat <10) {
+
+                            ?>
+                            <div class="es-top-line">
+                                <span class="es-dot"></span>
+                                <span class="es-tag"><?php echo esc_html__('Limited stock','mage-eventpress'); ?></span>
+                                <span class="es-dot"></span>
+                            </div>
+                            <?php
+                        }elseif ($checkDate >= $today && $checkDate <= $next7Days){
+                            ?>
+                            <div class="es-top-line">
+                                <span class="es-dot"></span>
+                                <span class="es-tag"><?php echo esc_html__('Ending Soon','mage-eventpress'); ?></span>
+                                <span class="es-dot"></span>
+                            </div>
+                            <?php
+
+                        }else{
+                            ?><div class="mpwem_style list_calender"><?php
+                            $hide_calendar_details = MPWEM_Global_Function::get_settings( 'single_event_setting_sec', 'mep_event_hide_calendar_details', 'no' );
+                            if ( $hide_calendar_details == 'no' ) {
+                                $event_id  = $event_id ?? 0;
+                                $all_dates = $all_dates ?? [];
+                                $all_dates = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
+                                if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
+                                    $upcoming_date = $upcoming_date ?? '';
+                                    $date_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                                    $end_time      = '';
+                                    if ( $date_type == 'no' || $date_type == 'yes' ) {
+                                        $dates    = current( $all_dates );
+                                        $end_time = is_array( $all_dates ) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+                                    } else {
+                                        $end_time = $upcoming_date;
+                                    }
+                                    $event_date_icon = MPWEM_Global_Function::get_settings( 'icon_setting_sec', 'mep_event_date_icon', 'far fa-calendar' );
+                                    do_action( 'mep_before_add_calendar_button' );
+                                    $event_title = get_the_title( $event_id );
+                                    $date        = MPWEM_Global_Function::calender_date_format( $upcoming_date );
+                                    $end_time    = $end_time ? MPWEM_Global_Function::calender_date_format( $end_time ) : '';
+                                    $content     = substr( get_the_content( $event_id ), 0, 1000 );
+                                    $location    = MPWEM_Functions::get_location( $event_id );
+                                    $location    = implode( '  ', $location );
+                                    ?>
+                                    <div class="mpwem_calender_area">
+                                        <button type="button" class="_button_theme_margin_auto_min_150" data-collapse-target="#mpwem_calender_area_<?php echo $event_id; ?>" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add Calendar', 'mage-eventpress' ); ?>">
+                                            <span data-text><?php esc_html_e( 'Add Calendar', 'mage-eventpress' ); ?></span>
+                                        </button>
+                                        <div data-collapse="#mpwem_calender_area_<?php echo $event_id; ?>">
+                                            <div class="_mt_xs_fdColumn">
+                                                <a class="_button_general_mt_xs" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
+                                                <a class="_button_general_mt_xs" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
+                                                <a class="_button_general_mt_xs" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
+                                                <a class="_button_general_mt_xs" href="https://webapps.genprod.com/wa/cal/download-ics.php?date_end=<?php echo esc_attr( $end_time ); ?>&date_start=<?php echo esc_attr( $date ); ?>&summary=<?php echo esc_url( $event_title ); ?>&location=<?php echo esc_attr( $location ); ?>&description=<?php echo esc_attr( $content ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    do_action( 'mep_after_add_calendar_button' );
+                                }
+                            }
+                            ?></div><?php
+                        }
+                    }
+                }
 			}
 			public function list_hover( $event_infos ) {
 				$event_id                 = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;

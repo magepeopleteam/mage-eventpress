@@ -7,18 +7,26 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id  = $event_id ?? 0;
-	$all_dates = $all_dates ?? MPWEM_Functions::get_dates( $event_id );
-	$all_times = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates );
+	$all_dates = MPWEM_Functions::get_dates( $event_id );
+	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
 
 	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 // echo $date;
 
-	$date      = empty( $date ) ? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times ) : $date;
+	$date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	//echo '<pre>';			print_r($all_times);			echo '</pre>';
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>'; everyday2026-04-30 12:00 no2026-04-30 11:59:00
 
-
+    $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
+    $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
+    $url_date=$url_date?:$url_date_2;
+    $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
+    $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
+    $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+    $all_dates   = MPWEM_Functions::get_dates( $event_id );
+    $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
+    $date                           = $url_date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	ob_start();
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );

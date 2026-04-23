@@ -26,9 +26,27 @@
 		deactivate_plugins( '/woocommerce-event-manager-addon-recurring-event/recurring_events.php' );
 	}
 
+	/**
+	 * Set a transient on plugin activation to trigger the
+	 * WooCommerce check / redirect on next admin page load.
+	 */
+	register_activation_hook( __FILE__, 'mpwem_on_plugin_activation' );
+	function mpwem_on_plugin_activation() {
+		set_transient( 'mpwem_plugin_activated', true, 60 );
+	}
+
+	/**
+	 * Always load the WooCommerce Installer module in admin.
+	 * It handles: activation redirect when WooCommerce IS active,
+	 * and shows the beautiful popup when WooCommerce is NOT active.
+	 */
+	if ( is_admin() ) {
+		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woo_Installer.php';
+	}
+
 	if (is_plugin_active('woocommerce/woocommerce.php')) {
 		function appsero_init_tracker_mage_eventpress() {
-			if (!class_exists('Appsero\Client')) {
+			if (!class_exists('Appsero\\Client')) {
 				require_once __DIR__ . '/lib/appsero/src/Client.php';
 			}
 			$client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
@@ -119,13 +137,5 @@
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
 		require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';
-		function mep_no_woo_event_activation_redirect($plugin) {
-			if ($plugin == plugin_basename(__FILE__)) {
-				exit(wp_redirect(admin_url('admin.php?post_type=mep_events&page=mpwem_quick_setup')));
-			}
-		}
-		add_action('activated_plugin', 'mep_no_woo_event_activation_redirect');
 	}
-
-
 	remove_action( 'admin_init', 'mep_re_meta_boxs',200);

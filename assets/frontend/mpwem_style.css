@@ -1853,4 +1853,47 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		color: #bbb;
 		box-shadow: none;
 	}
-	div.no_event_found{display: none;}
+	div.no_event_found{
+		display: none;
+	}
+
+	div.list_calender{
+		display: contents;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	div.list_calender .mpwem_calender_area{
+		border:none;
+		padding: 0;
+		position: relative;
+	}
+	div.list_calender .mpwem_calender_area [data-collapse].mActive{
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 111111;
+	}
+
+	.es-top-line {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 18px;
+		animation: fadeDown 0.6s ease both;
+	}
+	.es-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #e63946;
+		animation: blink 1s ease-in-out infinite;
+	}
+	.es-tag {
+		font-family: 'DM Sans', sans-serif;
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 3.5px;
+		text-transform: uppercase;
+		color: #e63946;
+	}

@@ -574,8 +574,15 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                     $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
                     if ( $date_type == 'no') {
 
-                        if($price==0){
-                            echo esc_html__('Free','mage-eventpress');
+                        if($checkDate >= $today && $checkDate <= $next7Days){
+                            ?>
+                            <div class="es-top-line">
+                                <span class="es-dot"></span>
+                                <span class="es-tag"><?php echo esc_html__('Ending Soon','mage-eventpress'); ?></span>
+                                <span class="es-dot"></span>
+                            </div>
+                            <?php
+
                         }elseif ($available_seat <10) {
 
                             ?>
@@ -585,14 +592,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                                 <span class="es-dot"></span>
                             </div>
                             <?php
-                        }elseif ($checkDate >= $today && $checkDate <= $next7Days){
-                            ?>
-                            <div class="es-top-line">
-                                <span class="es-dot"></span>
-                                <span class="es-tag"><?php echo esc_html__('Ending Soon','mage-eventpress'); ?></span>
-                                <span class="es-dot"></span>
-                            </div>
-                            <?php
+                        }elseif ($price==0){
+                            echo esc_html__('Free','mage-eventpress');
 
                         }else{
                             ?><div class="mpwem_style list_calender"><?php

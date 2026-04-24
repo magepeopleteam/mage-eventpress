@@ -434,7 +434,7 @@ function mpwem_attendee_management(parent, total_qty) {
             nextArrow: '.related_next',
             infinite: true,
             centerMode: false, // Make sure centerMode is false
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 2000,
             centerPadding: '0px',
             slidesToShow: 4,

@@ -47,6 +47,16 @@
 					);
 					wp_insert_post($post_details);
 				}
+				if (empty(mep_get_page_by_slug('events-grid-new-style'))) {
+					$post_details = array(
+						'post_title' => 'Events – New Style',
+						'post_content' => "[events_list]",
+						'post_status' => 'publish',
+						'post_author' => 1,
+						'post_type' => 'page'
+					);
+					wp_insert_post($post_details);
+				}
 				if (empty(mep_get_page_by_slug('events-list-style-with-search-box'))) {
 					$post_details = array(
 						'post_title' => 'Events – List Style with Search Box',
@@ -374,7 +384,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+8 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+60 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -567,7 +577,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+10 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+90 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -751,7 +761,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+15 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+80 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -935,7 +945,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+50 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+100 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1130,7 +1140,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+70 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1315,7 +1325,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+47 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+65 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1512,7 +1522,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+25 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1714,7 +1724,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",

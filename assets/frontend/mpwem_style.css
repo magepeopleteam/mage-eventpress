@@ -432,7 +432,7 @@
 		color: var(--color_theme_alter);
 		border-radius: 10px;
 		padding: 12px 15px;
-		font-weight: 500;
+		font-weight: 700;
 		font-size: 16px;
 		min-width: 174px;
 	}
@@ -460,17 +460,20 @@
 		color: #002869;
 	}
 	
-	.mpwem_get_status{
+	div.mpwem-price-area .mpwem_get_status{
 		background-color: var(--color_theme_alter);
 		color: var(--color_theme);
-		border:1px solid var(--color_theme);
+		border:2px solid var(--color_theme);
 		border-radius: 10px;
 		padding: 10px 15px;
-		font-weight: 500;
+		font-weight: 700;
 		font-size: 16px;
 		min-width: 130px;
 		text-align: center;
 		position: relative;
+		display: flex;
+		align-items: center	;
+		gap:5px;
 	}
 	button.mpwem_get_status{
 		background-color: var(--color_theme);
@@ -485,6 +488,17 @@
 	}
 	.mpwem_get_status_calender{
 		position: relative;
+	}
+	.mpwem_get_status_calender .mpwem_get_date_list{
+		background-color: #e7e8ec;
+		color: #333;
+		font-weight: 700;
+	}
+	.mpwem_get_status_calender .mpwem_get_date_list:hover,
+	.mpwem_get_status_calender .mpwem_get_date_list:focus{
+		background-color: #e7e8ec;
+		color: #000;
+
 	}
 	.calendar-list-area{
 		position: absolute;
@@ -512,6 +526,9 @@
 		color: var(--color_theme);
 		margin-top: var(--dmp_xs);
 		text-align: center;
+	}
+	.calendar-list-area .list_calender i{
+		margin-right: 5px;
 	}
 	.mpwem_style.mpwem_list_date_list {
 		width: auto;
@@ -624,7 +641,7 @@
 	.mep_event_list .mep_list_thumb img,
 	.mep_list_thumb img { height: auto; width: auto; max-width: 100%;border-radius: 0;}
 	div.column_style .mep_list_thumb img { height: 160px;}
-	.mep_event_grid_item .mep_list_thumb { border-radius: 5px 5px 0 0; width: 100%; height: 300px; }
+	.mep_event_grid_item .mep_list_thumb { border-radius: 5px 5px 0 0; width: 100%; height: 270px; }
 	.mep_event_list_item .mep_list_thumb { border-radius: 5px 0 0 5px; }
 	/*********************/
 	.mp_event_more_date_list { list-style: none; padding: 5px;}

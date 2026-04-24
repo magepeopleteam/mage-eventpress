@@ -582,12 +582,14 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 							if($checkDate >= $today && $checkDate <= $next7Days){
 								?>
 								<div class="mpwem_get_status">
+									<i class="mi mi-stopwatch"></i>
 									<?php echo esc_html__('Ending Soon','mage-eventpress'); ?>
 								</div>
 								<?php
 							}elseif ($available_seat <10) {
 								?>
 								<div class="mpwem_get_status">
+									<i class="mi mi-shopping-cart"></i>
 									<?php echo esc_html__('Limited stock','mage-eventpress'); ?>
 								</div>
 								<?php
@@ -626,16 +628,17 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 											$location    = implode( '  ', $location );
 											?>
 											<div class="mpwem_get_status_calender mpwem_list_date_list">
-												<button type="button" class=" mpwem_get_date_list" data-collapse-target="#mpwem_calender_area_<?php echo $event_id; ?>" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add To Calendar', 'mage-eventpress' ); ?>">
+												<button type="button" class="mpwem_get_date_list" data-collapse-target="#mpwem_calender_area_<?php echo $event_id; ?>" data-open-text="<?php esc_attr_e( 'Hide Calender', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'Add To Calendar', 'mage-eventpress' ); ?>">
+													<i class="far fa-calendar-plus"></i>&nbsp;&nbsp;
 													<span data-text><?php esc_html_e( 'Add To Calendar', 'mage-eventpress' ); ?></span>
-													<i class="fas fa-caret-down"></i>
+													
 												</button>
 												<div class="calendar-list-area " data-collapse="#mpwem_calender_area_<?php echo $event_id; ?>">
 													<div class="_mt_xs_fdColumn">
-														<a class="list_calender" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
-														<a class="list_calender" href="https://webapps.genprod.com/wa/cal/download-ics.php?date_end=<?php echo esc_attr( $end_time ); ?>&date_start=<?php echo esc_attr( $date ); ?>&summary=<?php echo esc_url( $event_title ); ?>&location=<?php echo esc_attr( $location ); ?>&description=<?php echo esc_attr( $content ); ?>" rel="noopener noreferrer" target='_blank'><?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="https://calendar.google.com/calendar/r/eventedit?text=<?php echo esc_url( $event_title ); ?>&dates=<?php echo esc_attr( $date ); ?>/<?php echo esc_attr( $end_time ); ?>&details=<?php echo esc_attr( $content ); ?>&location=<?php echo esc_attr( $location ); ?>&sf=true" rel="noopener noreferrer" target='_blank' rel="nofollow"> <i class="fab fa-google"></i> <?php esc_html_e( 'Google', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="https://calendar.yahoo.com/?v=60&view=d&type=20&title=<?php echo esc_url( $event_title ); ?>&st=<?php echo esc_attr( $date ); ?>&et=<?php echo esc_attr( $end_time ); ?>&desc=<?php echo esc_attr( $content ); ?>&in_loc=<?php echo esc_attr( $location ); ?>&uid=" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="fab fa-yahoo"></i> <?php esc_html_e( 'Yahoo', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=<?php echo esc_attr( $date ); ?>&enddt=<?php echo esc_attr( $end_time ); ?>&subject=<?php echo esc_attr( $event_title ); ?>&body=<?php echo esc_url( $event_title ); ?>" rel="noopener noreferrer" target='_blank' rel="nofollow"><i class="far fa-envelope"></i> <?php esc_html_e( 'Outlook', 'mage-eventpress' ); ?></a>
+														<a class="list_calender" href="https://webapps.genprod.com/wa/cal/download-ics.php?date_end=<?php echo esc_attr( $end_time ); ?>&date_start=<?php echo esc_attr( $date ); ?>&summary=<?php echo esc_url( $event_title ); ?>&location=<?php echo esc_attr( $location ); ?>&description=<?php echo esc_attr( $content ); ?>" rel="noopener noreferrer" target='_blank'><i class="fab fa-apple"></i> <?php esc_html_e( 'Apple', 'mage-eventpress' ); ?></a>
 													</div>
 												</div>
 											</div>

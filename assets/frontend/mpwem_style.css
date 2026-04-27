@@ -456,9 +456,10 @@
 		line-height: 1.6;
 	}
 	div.mpwem-price-area .list_price_value{
-		font-size: 20px;
+		font-size: 26px;
 		font-weight: 600;
 		color: #002869;
+		line-height: 1.2;
 	}
 	
 	div.mpwem-price-area .mpwem_get_status{
@@ -765,7 +766,7 @@
 	.mep_list_event_details a.event_details_link{
 		display: block;  
 		margin-bottom:  30px;
-		min-height: 152px;
+		min-height: 180px;
 	}	
 	.mep_event_grid_item .mep-list-footer { padding: 0; }
 	.mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec { max-width: 50%; border-radius: 0 0 0 25px; }
@@ -1853,18 +1854,20 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		cursor: pointer;
 		font-size: .875rem;
 		font-weight: 600;
-		color: #3659e3;
+		background-color: #3659e3;
+		color: #fff;
 		padding: 10px 16px;
 		border-radius: 8px;
 		transition: background 150ms ease;
 		white-space: nowrap;
-		height: 42px;
+		height:auto;
 		display: flex;
 		align-items: center;
 		gap: 6px;
 	}
 	.mep_event_filter_clear:hover{
-		background: #F1F5FF;
+		background-color: #3659e3;
+		color: #fff;
 	}
 	.mep_event_filter_clear:before{
 		content: "\00d7";

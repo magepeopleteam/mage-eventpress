@@ -258,7 +258,7 @@
 								if($count == 1){
 									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
 									if ( ! empty( $event_date_value ) ) {
-										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' )) );
 									}
 								}
 								$count++;
@@ -271,7 +271,7 @@
 								if($count == 1){
 									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
 									if ( ! empty( $event_date_value ) ) {
-										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ) ) );
+										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ),$event_id ) );
 									}
 								}
 							$count++;

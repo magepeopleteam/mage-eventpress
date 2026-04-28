@@ -51,7 +51,7 @@
                     <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr($mep_event_time_icon); ?>"></span></h4>
                     <div class="_fdColumn">
                         <h6><?php esc_html_e('Event Time:', 'mage-eventpress'); ?></h6>
-                        <p><?php echo get_mep_datetime( $upcoming_date, 'time' ); ?></p>
+                        <p class="mep_time_status"><?php echo get_mep_datetime( $upcoming_date, 'time' ); ?></p>
 
                     </div>
                 </div>

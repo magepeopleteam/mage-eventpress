@@ -41,6 +41,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_analytics.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Template_Override_Menu.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/Mage_people_news_update.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Edit_Page.php';
 				//****************Meta Settings File Include************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Venue_Settings.php';

@@ -26,6 +26,7 @@
 				$speaker_status           = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
 				?>
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
+                    <div class="mpwem_step_notice" aria-live="polite" style="display:none;"></div>
                     <div class="mp_tab_menu">
                         <ul>
                             <li data-target-tabs="#mp_event_venue"><i class="mi mi-marker"></i><?php esc_html_e( 'Venue/Location', 'mage-eventpress' ); ?> </li>
@@ -55,6 +56,11 @@
                         <!-- ==================================  -->
 						<?php do_action( 'mep_admin_event_details_before_tab_details_location', $post_id ); ?>
 						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
+                        <div class="mpwem_step_nav">
+                            <button type="button" class="button mpwem-step-prev"><?php esc_html_e( 'Back', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="button button-primary mpwem-step-next"><?php esc_html_e( 'Next', 'mage-eventpress' ); ?></button>
+                            <span class="mpwem-step-status" aria-live="polite"></span>
+                        </div>
                         <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
                     </div>
                 </div>

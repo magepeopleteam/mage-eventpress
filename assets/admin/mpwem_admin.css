@@ -119,7 +119,7 @@
 /******************************************************************** Image upload  ************************************************/
 @media only screen and (min-width: 10px) {
 	div.mp_multi_image { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap;}
-	div.mp_multi_image_item { position: relative; width: calc(19% - 5px); min-width: 130px;margin: 0 10px 5px 0;min-height: 50px;gap: 5px;}
+	div.mp_multi_image_item { position: relative; width: calc(19% - 5px); min-width: 119px;margin: 0;min-height: 50px;gap: 5px;}
 	div.mp_multi_image_item img {width: 100%;height: 120px;}
 	span.mpwem_remove_single_image,
 	div.mpwem_style span.mpwem_remove_multi_image { cursor: pointer; position: absolute; top: 0; right: 0; background-color: var(--color_danger);margin: 0; opacity: 0;color: var(--color_white) }
@@ -374,17 +374,24 @@ iframe#gmap_canvas { width: 100%; height: 300px;}
 .mp_event_all_meta_in_tab label { position: relative; width: auto; line-height: 18px; margin: 10px;}
 #mp_event_all_info_in_tab .mp_form_builder_table label { margin: 0;}
 .mp_event_all_meta_in_tab { display: -webkit-flex; display: flex; min-height: 300px;}
+.mp_event_all_meta_in_tab.mp_event_tab_area { -webkit-flex-direction: column; flex-direction: column; gap: 12px; }
+.mp_event_all_meta_in_tab .mpwem_step_notice { margin: 0; }
+.mp_event_all_meta_in_tab .mpwem_step_notice.notice { display: block; padding: 10px 12px; border-radius: 6px; }
 .field-icon-wrapper .icon-list li { display: inline-block !important; border-bottom: 1px solid #DDD; padding: 0; margin: 2px 0; cursor: pointer; width: 30px; height: 30px; font-size: 19px; text-align: center;}
 .show_rec_checkbox label { display: inline-block !important;}
-.mp_tab_menu { padding: 10px; min-width: 250px; max-width: 283px;}
-.mp_tab_menu ul { list-style-type: none; margin: 0; padding: 0;}
-.mp_tab_menu ul li { padding: 10px; cursor: pointer; color: var(--color_dark); position: relative; font-size: 16px; font-weight: normal; transition: all 350ms ease-in-out; display: flex; -webkit-align-items: center; align-items: center; margin: 5px 0; background-color: #F8F8F8;}
+.mp_tab_menu { padding: 10px; width: 100%; min-width: 0; max-width: none; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; }
+.mp_tab_menu ul { list-style-type: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.mp_tab_menu ul li { padding: 10px 12px; cursor: pointer; color: var(--color_dark); position: relative; font-size: 14px; font-weight: 600; transition: all 200ms ease-in-out; display: flex; -webkit-align-items: center; align-items: center; margin: 0; background-color: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 999px; }
 .mp_tab_menu ul li.active,
 .mp_tab_menu ul li.active:hover { background-color: var(--color_theme); color: var(--color_white);}
-.mp_tab_menu ul li.active::after { content: ""; position: absolute; top: 50%; right: -8px; transform: translateY(-50%); width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 8px solid var(--color_theme);}
+.mp_tab_menu ul li.active::after { content: none; }
 .mp_tab_menu ul li.active i { color: var(--color_white);}
-.mp_tab_menu ul li:hover { background-color: #EAF6FF; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 119, 204, 0.15);}
+.mp_tab_menu ul li:hover { background-color: #EAF6FF; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06); transform: none; }
 .mp_tab_item { display: none; overflow-y: hidden; overflow-x: auto;}
+.mp_tab_details { width: 100%; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px; position: relative; }
+.mpwem_step_nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; margin-top: 12px; border-top: 1px solid #E5E7EB; }
+.mpwem_step_nav .mpwem-step-status { color: #475569; font-size: 13px; }
+.mpwem_step_nav .button { min-height: 34px; }
 .mp_form_area { display: -webkit-flex; display: flex;}
 .mp_form_area > * { -webkit-flex: 1; flex: 1;}
 .mp_form_area label { font-size: 15px; color: #777; font-weight: 500; margin: 0; position: relative; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center;}

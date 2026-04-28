@@ -28,7 +28,7 @@
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>
-                <div class="_layout_default_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero" style="overflow: visible;">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Date & Time Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Date and Time Settings Here', 'mage-eventpress' ); ?></span>

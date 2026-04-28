@@ -985,7 +985,7 @@
 				$special_dates       = MPWEM_Global_Function::get_post_info( $post_id, 'mep_special_date_info', array() );
 				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'off' );
 				?>
-                <div class="mpwem_style mep-special-datetime" style="display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
+                <div class="mpwem_style mep-special-datetime" style="border-radius:4px;border:1px solid #eef2f7!important;display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
                         <div>
                             <h2><?php esc_html_e( 'Special  Dates Time Settings', 'mage-eventpress' ); ?></h2>
@@ -1153,7 +1153,7 @@
                 <div class="_layout_default mpwem_date_format_settings">
                     <div class="_bg_light_padding">
                         <div class="_justify_between_align_center_wrap ">
-                            <h4><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></h4>
+                            <h4 style="display:flex !important;gap:5px"><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></h4>
 							<?php MPWEM_Custom_Layout::switch_button( 'mep_enable_custom_dt_format', $checked ); ?>
                         </div>
                         <span class="label-text"><?php esc_html_e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>

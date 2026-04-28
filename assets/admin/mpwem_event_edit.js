@@ -429,6 +429,477 @@
         });
     }
 
+    function getDatePanel($root) {
+        return $root.find('#mpwem_wizard_date_mount .mpwem_date_settings').first();
+    }
+
+    function syncDateTypeSections($panel, value) {
+        const map = {
+            no: '#mep_normal_event',
+            yes: '#mep_particular_event',
+            everyday: '#mep_everyday_event'
+        };
+
+        $.each(map, function(type, selector) {
+            const $section = $panel.find('[data-collapse="' + selector + '"]').first();
+            if (!$section.length) return;
+
+            if (type === value) {
+                $section.addClass('mActive mpwem-date-mode-active').show();
+            } else {
+                $section.removeClass('mActive mpwem-date-mode-active').hide();
+            }
+        });
+
+        $panel.find('.mpwem-date-type-option').removeClass('is-active');
+        $panel.find('.mpwem-date-type-option').attr('aria-checked', 'false');
+        $panel.find('.mpwem-date-type-option[data-value="' + value + '"]').addClass('is-active').attr('aria-checked', 'true');
+    }
+
+    function enhanceDateTypeSelector($panel) {
+        const $select = $panel.find('select[name="mep_enable_recurring"]').first();
+        if (!$select.length || $select.data('mpwemDateTypeEnhanced')) return;
+
+        const details = {
+            no: {
+                title: 'Single Event',
+                desc: 'One main start and end date.'
+            },
+            yes: {
+                title: 'Particular Dates',
+                desc: 'Specific dates with individual schedules.'
+            },
+            everyday: {
+                title: 'Repeated Event',
+                desc: 'Runs across a date range with repeat rules.'
+            }
+        };
+
+        const $selector = $('<div class="mpwem-date-type-selector" role="radiogroup" aria-label="Event date type"></div>');
+        $select.find('option[value]').each(function() {
+            const $option = $(this);
+            const value = $option.val();
+            const meta = details[value] || {
+                title: $option.text(),
+                desc: ''
+            };
+
+            const $button = $('<button type="button" class="mpwem-date-type-option" role="radio"></button>');
+            $button.attr('data-value', value);
+            $button.append($('<span class="mpwem-date-type-option__icon dashicons"></span>'));
+            $button.append(
+                $('<span class="mpwem-date-type-option__copy"></span>')
+                    .append($('<strong></strong>').text(meta.title))
+                    .append($('<small></small>').text(meta.desc))
+            );
+            $selector.append($button);
+        });
+
+        const $field = $select.closest('._padding_bt');
+        if ($field.length) {
+            $field.before($selector);
+            $field.addClass('mpwem-date-type-native-field').hide();
+        } else {
+            $select.before($selector);
+            $select.hide();
+        }
+
+        $selector.on('click', '.mpwem-date-type-option', function() {
+            const value = $(this).data('value');
+            $select.val(value).trigger('change');
+            syncDateTypeSections($panel, value);
+        });
+
+        $select.on('change', function() {
+            syncDateTypeSections($panel, $(this).val());
+        });
+
+        $select.data('mpwemDateTypeEnhanced', true);
+        syncDateTypeSections($panel, $select.val() || 'no');
+    }
+
+    function enhanceDateFields($panel) {
+        $panel.find('label').each(function() {
+            const $label = $(this);
+            const $dateInput = $label.find('input.formControl:not([type]), input[type="text"].formControl, input[type="text"].date_type, input[type="text"].new-date_type, input[type="text"].new-date_type-new, input[type="text"].new-particular-date_type').first();
+            const hasHiddenDate = $label.find('input[type="hidden"]').filter(function() {
+                const name = $(this).attr('name') || '';
+                return /(^|_)event_.*date|mep_ticket_off_dates|mep_special_(start|end)_date/.test(name);
+            }).length > 0;
+            if ($dateInput.length && hasHiddenDate) {
+                $label.addClass('mpwem-date-input-wrap');
+                $dateInput.addClass('mpwem-date-input');
+            }
+
+            const $timeInput = $label.find('input[type="time"]').first();
+            if ($timeInput.length) {
+                $label.addClass('mpwem-time-input-wrap');
+                $timeInput.addClass('mpwem-time-input');
+            }
+        });
+    }
+
+    function parseIsoDate(value) {
+        if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+        const parts = value.split('-').map(function(part) {
+            return parseInt(part, 10);
+        });
+        const date = new Date(parts[0], parts[1] - 1, parts[2]);
+
+        if (date.getFullYear() !== parts[0] || date.getMonth() !== parts[1] - 1 || date.getDate() !== parts[2]) {
+            return null;
+        }
+
+        return date;
+    }
+
+    function formatIsoDate(date) {
+        return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+    }
+
+    function formatVisibleDate(date) {
+        const format = window.mpwem_date_format || 'yy-mm-dd';
+        if ($.datepicker && $.datepicker.formatDate) {
+            return $.datepicker.formatDate(format, date);
+        }
+        return formatIsoDate(date);
+    }
+
+    function normalizeMinDate(minDate) {
+        if (!minDate) return null;
+        if (minDate instanceof Date) {
+            return new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
+        }
+        if (typeof minDate === 'string') {
+            return parseIsoDate(minDate);
+        }
+        return null;
+    }
+
+    function ensureCustomCalendar() {
+        let $calendar = $('#mpwem_custom_calendar');
+        if ($calendar.length) return $calendar;
+
+        $calendar = $(
+            '<div id="mpwem_custom_calendar" class="mpwem-custom-calendar" role="dialog" aria-modal="false" aria-label="Choose date">' +
+            '  <div class="mpwem-custom-calendar__head">' +
+            '    <button type="button" class="mpwem-custom-calendar__nav" data-calendar-nav="-1" aria-label="Previous month"><span class="dashicons dashicons-arrow-left-alt2"></span></button>' +
+            '    <div class="mpwem-custom-calendar__title">' +
+            '      <select class="mpwem-custom-calendar__month" aria-label="Month"></select>' +
+            '      <input class="mpwem-custom-calendar__year" type="number" aria-label="Year" min="1900" max="2100" />' +
+            '    </div>' +
+            '    <button type="button" class="mpwem-custom-calendar__nav" data-calendar-nav="1" aria-label="Next month"><span class="dashicons dashicons-arrow-right-alt2"></span></button>' +
+            '  </div>' +
+            '  <div class="mpwem-custom-calendar__week"></div>' +
+            '  <div class="mpwem-custom-calendar__days"></div>' +
+            '  <div class="mpwem-custom-calendar__foot">' +
+            '    <button type="button" class="mpwem-custom-calendar__today">Today</button>' +
+            '    <button type="button" class="mpwem-custom-calendar__clear">Clear</button>' +
+            '  </div>' +
+            '</div>'
+        );
+
+        const region = $.datepicker && $.datepicker.regional ? $.datepicker.regional[''] : null;
+        const monthNames = region && region.monthNames ? region.monthNames : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const dayNames = region && region.dayNamesMin ? region.dayNamesMin : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+        monthNames.forEach(function(name, index) {
+            $calendar.find('.mpwem-custom-calendar__month').append($('<option></option>').val(index).text(name));
+        });
+        dayNames.forEach(function(name) {
+            $calendar.find('.mpwem-custom-calendar__week').append($('<span></span>').text(name));
+        });
+
+        $('body').append($calendar);
+        return $calendar;
+    }
+
+    function positionCustomCalendar($calendar, $input) {
+        const offset = $input.offset();
+        const width = $calendar.outerWidth();
+        const viewportRight = $(window).scrollLeft() + $(window).width();
+        let left = offset.left;
+
+        if (left + width > viewportRight - 12) {
+            left = Math.max(12, viewportRight - width - 12);
+        }
+
+        $calendar.css({
+            top: offset.top + $input.outerHeight() + 8,
+            left: left
+        });
+    }
+
+    function renderCustomCalendar($calendar) {
+        const state = $calendar.data('mpwemState');
+        if (!state || !state.$input) return;
+
+        const view = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth(), 1);
+        const selected = parseIsoDate(state.$input.closest('label').find('input[type="hidden"]').first().val());
+        const selectedIso = selected ? formatIsoDate(selected) : '';
+        const todayIso = formatIsoDate(new Date());
+        const daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+        const firstDay = view.getDay();
+        const $days = $calendar.find('.mpwem-custom-calendar__days').empty();
+
+        $calendar.find('.mpwem-custom-calendar__month').val(view.getMonth());
+        $calendar.find('.mpwem-custom-calendar__year').val(view.getFullYear());
+
+        for (let i = 0; i < firstDay; i++) {
+            $days.append('<span class="mpwem-custom-calendar__empty"></span>');
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(view.getFullYear(), view.getMonth(), day);
+            const iso = formatIsoDate(date);
+            const $button = $('<button type="button" class="mpwem-custom-calendar__day"></button>').text(day).attr('data-date', iso);
+
+            if (state.minDate && date < state.minDate) $button.prop('disabled', true).addClass('is-disabled');
+            if (iso === todayIso) $button.addClass('is-today');
+            if (iso === selectedIso) $button.addClass('is-selected');
+
+            $days.append($button);
+        }
+    }
+
+    function openCustomCalendar($input) {
+        const $calendar = ensureCustomCalendar();
+        const $hidden = $input.closest('label').find('input[type="hidden"]').first();
+        const selected = parseIsoDate($hidden.val());
+        const now = new Date();
+        let minDate = $input.data('mpwemMinDate') || null;
+
+        const viewDate = selected || minDate || now;
+        $calendar.data('mpwemState', {
+            $input: $input,
+            minDate: minDate,
+            viewDate: new Date(viewDate.getFullYear(), viewDate.getMonth(), 1)
+        });
+
+        renderCustomCalendar($calendar);
+        positionCustomCalendar($calendar, $input);
+        if ($.datepicker) $.datepicker._hideDatepicker();
+        $calendar.addClass('is-open');
+    }
+
+    function closeCustomCalendar() {
+        $('#mpwem_custom_calendar').removeClass('is-open');
+    }
+
+    function selectCustomCalendarDate($calendar, date) {
+        const state = $calendar.data('mpwemState');
+        if (!state || !state.$input) return;
+
+        state.$input.closest('label').find('input[type="hidden"]').first().val(formatIsoDate(date)).trigger('change');
+        state.$input.val(formatVisibleDate(date)).trigger('change');
+        closeCustomCalendar();
+    }
+
+    function bindCustomCalendar() {
+        if (window.mpwemCustomCalendarBound) return;
+
+        $(document).on('focus click', '.mpwem-event-wizard .mpwem-date-input', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openCustomCalendar($(this));
+        });
+
+        $(document).on('click', '.mpwem-custom-calendar__day', function(e) {
+            e.preventDefault();
+            const date = parseIsoDate($(this).data('date'));
+            if (date) selectCustomCalendarDate($('#mpwem_custom_calendar'), date);
+        });
+
+        $(document).on('click', '.mpwem-custom-calendar__nav', function(e) {
+            e.preventDefault();
+            const $calendar = $('#mpwem_custom_calendar');
+            const state = $calendar.data('mpwemState');
+            if (!state) return;
+
+            state.viewDate = new Date(state.viewDate.getFullYear(), state.viewDate.getMonth() + (parseInt($(this).data('calendar-nav'), 10) || 0), 1);
+            $calendar.data('mpwemState', state);
+            renderCustomCalendar($calendar);
+        });
+
+        $(document).on('change', '.mpwem-custom-calendar__month, .mpwem-custom-calendar__year', function() {
+            const $calendar = $('#mpwem_custom_calendar');
+            const state = $calendar.data('mpwemState');
+            if (!state) return;
+
+            const month = parseInt($calendar.find('.mpwem-custom-calendar__month').val(), 10);
+            const year = parseInt($calendar.find('.mpwem-custom-calendar__year').val(), 10);
+            if (!Number.isNaN(month) && !Number.isNaN(year)) {
+                state.viewDate = new Date(year, month, 1);
+                $calendar.data('mpwemState', state);
+                renderCustomCalendar($calendar);
+            }
+        });
+
+        $(document).on('click', '.mpwem-custom-calendar__today', function(e) {
+            e.preventDefault();
+            const $calendar = $('#mpwem_custom_calendar');
+            const state = $calendar.data('mpwemState');
+            const today = new Date();
+            const cleanToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+            if (state && state.minDate && cleanToday < state.minDate) {
+                state.viewDate = new Date(state.minDate.getFullYear(), state.minDate.getMonth(), 1);
+                $calendar.data('mpwemState', state);
+                renderCustomCalendar($calendar);
+                return;
+            }
+
+            selectCustomCalendarDate($calendar, cleanToday);
+        });
+
+        $(document).on('click', '.mpwem-custom-calendar__clear', function(e) {
+            e.preventDefault();
+            const $calendar = $('#mpwem_custom_calendar');
+            const state = $calendar.data('mpwemState');
+            if (!state || !state.$input) return;
+
+            state.$input.closest('label').find('input[type="hidden"]').first().val('').trigger('change');
+            state.$input.val('').trigger('change');
+            closeCustomCalendar();
+        });
+
+        $(document).on('click', '.mpwem-event-wizard .mpwem-date-input-wrap .mpwem_date_reset', function(e) {
+            e.preventDefault();
+            const $label = $(this).closest('label');
+            $label.find('input[type="hidden"]').first().val('').trigger('change');
+            $label.find('.mpwem-date-input').first().val('').trigger('change');
+            closeCustomCalendar();
+        });
+
+        $(document).on('mousedown', function(e) {
+            const $target = $(e.target);
+            if ($target.closest('.mpwem-custom-calendar, .mpwem-date-input-wrap').length) return;
+            closeCustomCalendar();
+        });
+
+        $(window).on('resize scroll', function() {
+            const $calendar = $('#mpwem_custom_calendar.is-open');
+            const state = $calendar.data('mpwemState');
+            if ($calendar.length && state && state.$input) {
+                positionCustomCalendar($calendar, state.$input);
+            }
+        });
+
+        window.mpwemCustomCalendarBound = true;
+    }
+
+    function enhanceCustomCalendar($panel) {
+        bindCustomCalendar();
+        $panel.find('.mpwem-date-input').each(function() {
+            const $input = $(this);
+
+            if ($.datepicker && $input.hasClass('hasDatepicker')) {
+                try {
+                    $input.data('mpwemMinDate', normalizeMinDate($input.datepicker('option', 'minDate')));
+                    $input.datepicker('destroy');
+                } catch (error) {
+                    // Leave the input usable if a legacy datepicker instance is incomplete.
+                }
+            }
+
+            $input.attr('autocomplete', 'off');
+            $input.data('mpwemCustomCalendar', true);
+        });
+    }
+
+    function decorateDateSections($panel) {
+        $panel.addClass('mpwem-date-step');
+        $panel.children('._layout_default_xs_mp_zero, ._layout_default, [data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"], [data-collapse="#mep_everyday_event"]').addClass('mpwem-date-card');
+        $panel.find('._bg_light_padding').addClass('mpwem-date-card__head');
+        $panel.find('.mpwem_settings_area').addClass('mpwem-date-repeat-area');
+        $panel.find('table').not('.ui-datepicker-calendar').addClass('mpwem-date-table');
+        $panel.find('table.mpwem_time_setting_table').addClass('mpwem-date-time-slots-table');
+        $panel.find('.mep_special_on_dates_table').addClass('mpwem-date-special-table');
+        $panel.find('input[name="mep_buffer_time"]').closest('._padding_bt').addClass('mpwem-date-buffer-field');
+        $panel.find('input[name="mep_ticket_off_dates[]"]').closest('._padding_bt').addClass('mpwem-ticket-off-dates-field');
+
+        const labels = {
+            '#mep_normal_event': 'Single schedule',
+            '#mep_particular_event': 'Specific date schedule',
+            '#mep_everyday_event': 'Repeated schedule'
+        };
+
+        $.each(labels, function(selector, label) {
+            const $section = $panel.find('[data-collapse="' + selector + '"]').first();
+            if (!$section.length || $section.find('> .mpwem-date-mode-label').length) return;
+            $section.prepend($('<div class="mpwem-date-mode-label"></div>').text(label));
+        });
+    }
+
+    function enhanceOffDayPicker($panel) {
+        $panel.find('.groupCheckBox').each(function() {
+            const $group = $(this);
+            if ($group.data('mpwemOffDaysEnhanced')) return;
+
+            $group.addClass('mpwem-offday-grid');
+            $group.find('.customCheckboxLabel').addClass('mpwem-offday-option');
+            $group.find('.customCheckbox').addClass('mpwem-offday-chip');
+            $group.data('mpwemOffDaysEnhanced', true);
+        });
+    }
+
+    function syncDateOptionTargetSelect($panel, $select) {
+        const targets = [];
+        $select.find('option[data-option-target]').each(function() {
+            const target = $(this).data('option-target');
+            if (target && targets.indexOf(target) === -1) {
+                targets.push(target);
+            }
+        });
+
+        targets.forEach(function(target) {
+            $panel.find('[data-collapse="' + target + '"]').removeClass('mActive').hide();
+        });
+
+        const selectedTarget = $select.find('option:selected').data('option-target');
+        if (selectedTarget) {
+            $panel.find('[data-collapse="' + selectedTarget + '"]').addClass('mActive').show();
+        }
+    }
+
+    function enhanceDateConditionalSelects($panel) {
+        $panel.find('select[data-collapse-target]').not('[name="mep_enable_recurring"]').each(function() {
+            const $select = $(this);
+            if ($select.data('mpwemDateConditionalEnhanced')) return;
+
+            $select.on('change', function() {
+                syncDateOptionTargetSelect($panel, $select);
+            });
+            $select.data('mpwemDateConditionalEnhanced', true);
+            syncDateOptionTargetSelect($panel, $select);
+        });
+    }
+
+    function alignDateFormatTooltips($panel) {
+        $panel.find('.mpwem_date_format_settings label._justify_between_align_center_wrap').each(function() {
+            const $label = $(this);
+            const $labelText = $label.children('._mr').first();
+
+            if (!$labelText.length) return;
+
+            $label.children('.mpwem-info-tip').appendTo($labelText);
+        });
+    }
+
+    function enhanceDateStep($root) {
+        const $panel = getDatePanel($root);
+        if (!$panel.length) return;
+
+        decorateDateSections($panel);
+        enhanceDateTypeSelector($panel);
+        enhanceDateFields($panel);
+        enhanceCustomCalendar($panel);
+        enhanceOffDayPicker($panel);
+        enhanceDateConditionalSelects($panel);
+        alignDateFormatTooltips($panel);
+    }
+
     function setActiveStep($root, stepKey, options) {
         const $steps = $root.find('.mpwem-step');
         const $targetStep = $steps.filter('[data-step-key="' + stepKey + '"]');
@@ -461,6 +932,9 @@
             enhanceSwitches($panel);
             enhanceTooltips($panel);
             enhanceSelects($panel);
+            if (stepKey === 'date') {
+                enhanceDateStep($root);
+            }
         }
 
         // Sidebar/Additional visibility
@@ -633,6 +1107,12 @@
         $root.on('click', '.mpwem-wizard-save-draft', function(e) {
             e.preventDefault();
             $('#mpwem-event-edit-form').submit();
+        });
+
+        $root.on('click', '#mpwem_wizard_date_mount .mpwem_add_item, #mpwem_wizard_date_mount .ttbm_add_new_special_date', function() {
+            window.setTimeout(function() {
+                enhanceDateStep($root);
+            }, 80);
         });
 
         // Add Premium Toaster Notification on form submit

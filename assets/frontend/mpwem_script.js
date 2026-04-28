@@ -370,7 +370,7 @@ function mpwem_attendee_management(parent, total_qty) {
         e.preventDefault();
 
         const $wrap = $(this).closest('.mpwem_summery');
-        const alreadyInCart = parseInt($(this).attr('data-in-cart'));
+        const alreadyInCart = 0;
         if (alreadyInCart === 1 || alreadyInCart === '1') {
             alert('This product is already in your cart.');
             return false;

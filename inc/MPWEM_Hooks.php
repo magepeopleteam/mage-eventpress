@@ -559,6 +559,12 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $next7Days->modify('+7 days');
                 $new_date=date('Y-m-d',strtotime($date));
                 $checkDate = new DateTime($new_date);
+                $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                $start_date_time = $start_time ? date('Y-m-d H:i',strtotime($start_date . ' ' . $start_time)) : date('Y-m-d',strtotime($start_date));
+                $end_date        = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
+                $end_time        = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_time' );
+                $end_date_time   = $end_time ? date('Y-m-d',strtotime($end_date . ' ' . $end_time)) : date('Y-m-d',strtotime($end_date));
                 //echo $checkDate;
                 //echo $today;
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
@@ -578,7 +584,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 						<?php
 						$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 						if ( $date_type == 'no') {
-                            if($checkDate==$today){
+                            if($checkDate>=$start_date_time && $end_date_time>=$checkDate){
                                 ?>
                                 <div class="mpwem_get_status">
                                     <?php echo esc_html__('Event Running','mage-eventpress'); ?>

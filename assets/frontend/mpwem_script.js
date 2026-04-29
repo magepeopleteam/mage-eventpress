@@ -220,6 +220,8 @@ function mpwem_attendee_management(parent, total_qty) {
             success: function (data) {
                 target.html(data).slideDown('fast').promise().done(function () {
                     mpwem_load_seat_status(parent.closest('.mpwem_wrapper'));
+                    mep_change_date_status(parent.closest('.mpwem_wrapper'),date);
+                    mep_change_time_status(parent.closest('.mpwem_wrapper'),date);
                     mpwem_price_calculation(parent);
                 });
             }
@@ -247,6 +249,52 @@ function mpwem_attendee_management(parent, total_qty) {
                 }
             });
         }
+    }
+    function mep_change_date_status(parent,dates) {
+        let target = parent.find('.mep_date_status');
+
+            let post_id = parent.find('[name="mpwem_post_id"]').val();
+            //let dates = parent.find('[name="mpwem_date_time"]').val();
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_change_date_status",
+                    "post_id": post_id,
+                    "dates": dates,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    mpwem_loader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                }
+            });
+
+    }
+    function mep_change_time_status(parent,dates) {
+        let target = parent.find('.mep_time_status');
+
+        let post_id = parent.find('[name="mpwem_post_id"]').val();
+        //let dates = parent.find('[name="mpwem_date_time"]').val();
+        jQuery.ajax({
+            type: 'POST',
+            url: mpwem_script_var.url,
+            data: {
+                "action": "mep_change_time_status",
+                "post_id": post_id,
+                "dates": dates,
+                "nonce": mpwem_script_var.nonce
+            },
+            beforeSend: function () {
+                mpwem_loader_xs(target);
+            },
+            success: function (data) {
+                target.html(data);
+            }
+        });
+
     }
     $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
         let parent = $(this).closest('.mpwem_registration_area');
@@ -322,7 +370,7 @@ function mpwem_attendee_management(parent, total_qty) {
         e.preventDefault();
 
         const $wrap = $(this).closest('.mpwem_summery');
-        const alreadyInCart = parseInt($(this).attr('data-in-cart'));
+        const alreadyInCart = 0;
         if (alreadyInCart === 1 || alreadyInCart === '1') {
             alert('This product is already in your cart.');
             return false;

@@ -34,7 +34,7 @@
 			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>
         </button>
 	<?php } else { ?>
-        <button type="button" class="_button_theme mpwem_book_now" data-in-cart="<?php echo esc_attr( $in_cart ); ?>">
+        <button type="button" class="_button_theme mpwem_book_now">
             <i class='fa fa-shopping-cart _mr_xs'></i>
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>

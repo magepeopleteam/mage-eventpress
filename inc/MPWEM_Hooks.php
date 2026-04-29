@@ -578,8 +578,15 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 						<?php
 						$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 						if ( $date_type == 'no') {
+                            if($checkDate==$today){
+                                ?>
+                                <div class="mpwem_get_status">
+                                    <?php echo esc_html__('Event Running','mage-eventpress'); ?>
+                                </div>
+                                <?php
+                            }
 
-							if($checkDate >= $today && $checkDate <= $next7Days){
+                            elseif($checkDate >= $today && $checkDate <= $next7Days){
 								?>
 								<div class="mpwem_get_status">
 									<i class="mi mi-stopwatch"></i>

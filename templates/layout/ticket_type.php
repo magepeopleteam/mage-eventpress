@@ -116,7 +116,30 @@
 														if ( $sale_end_datetime ) {
 															$current_time = current_time( 'Y-m-d H:i' );
 															if ( strtotime( $current_time ) < strtotime( $sale_end_datetime ) ) {
-																MPWEM_Custom_Layout::qty_input( $input_data );
+                                                                $in_cart=0;
+                                                                $product_id = get_post_meta( $event_id, 'link_wc_product' );
+                                                                if ( isset( WC()->cart ) && ! empty( WC()->cart->get_cart() ) && ! empty( $date ) ) {
+                                                                    foreach ( WC()->cart->get_cart() as $cart_item ) {
+                                                                        $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+                                                                        $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
+                                                                        $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
+                                                                        if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $date == $cart_event_date ) {
+                                                                            if(sizeof($event_ticket_info)>0){
+                                                                                foreach ($event_ticket_info as $key => $value) {
+                                                                                    if($value['ticket_name']==$ticket_name){
+                                                                                        $in_cart=1;
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if($in_cart>0){
+                                                                    _e( 'Already in Cart! ', 'mage-eventpress' );
+                                                                }else {
+                                                                    MPWEM_Custom_Layout::qty_input($input_data);
+                                                                }
 															} else {
 																?>
                                                                 <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Sale close On: ', 'mage-eventpress' );
@@ -125,7 +148,30 @@
 																<?php
 															}
 														} else {
-															MPWEM_Custom_Layout::qty_input( $input_data );
+                                                            $in_cart=0;
+                                                            $product_id = get_post_meta( $event_id, 'link_wc_product' );
+                                                            if ( isset( WC()->cart ) && ! empty( WC()->cart->get_cart() ) && ! empty( $date ) ) {
+                                                                foreach ( WC()->cart->get_cart() as $cart_item ) {
+                                                                    $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+                                                                    $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
+                                                                    $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
+                                                                    if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $date == $cart_event_date ) {
+                                                                        if(sizeof($event_ticket_info)>0){
+                                                                            foreach ($event_ticket_info as $key => $value) {
+                                                                                if($value['ticket_name']==$ticket_name){
+                                                                                    $in_cart=1;
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                            }
+                                                            if($in_cart>0){
+                                                                _e( 'Already in Cart! ', 'mage-eventpress' );
+                                                            }else {
+                                                                MPWEM_Custom_Layout::qty_input($input_data);
+                                                            }
 														}
 													} else {
 														$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';

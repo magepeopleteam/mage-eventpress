@@ -498,6 +498,30 @@ input#mep_search_icon { padding: 3px 12px; border-color: #D3D3D3;}
 @media only screen and (min-width: 600px) {
 	.mage_settings_panel_wrap .nav-tab-wrapper { width: 21%; }
 	.mage_settings_panel_wrap .metabox-holder { width: 79%; }
+
+/* Responsive for mp_tab_menu at max-width 1260px */
+@media (max-width: 1260px) {
+    .mp_tab_menu {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+    }
+    .mp_tab_menu ul li {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px 5px;
+    }
+    .mp_tab_menu ul li i {
+        margin-bottom: 5px;
+        margin-right: 0;
+        font-size: 24px;
+    }
+    .mp_tab_details {
+        width: auto;
+        flex: 1;
+    }
+}
 	.wc_status_table_wrapper { width: 800px; margin: auto; margin-top: 50px; }
 }
 @media only screen and (max-width: 600px) {

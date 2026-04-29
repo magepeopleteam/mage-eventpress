@@ -44,14 +44,15 @@
             $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
             $all_dates   = MPWEM_Functions::get_dates( $event_id );
             $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
-            $upcoming_date                           = $url_date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-            if (MPWEM_Global_Function::check_time_exit_date($upcoming_date)) {
+            $upcoming_date = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+            $date                    = $url_date ?: $upcoming_date;
+            if (MPWEM_Global_Function::check_time_exit_date($date)) {
                 ?>
                 <div class="short_item">
                     <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr($mep_event_time_icon); ?>"></span></h4>
                     <div class="_fdColumn">
                         <h6><?php esc_html_e('Event Time:', 'mage-eventpress'); ?></h6>
-                        <p class="mep_time_status"><?php echo get_mep_datetime( $upcoming_date, 'time' ); ?></p>
+                        <p class="mep_time_status"><?php echo get_mep_datetime( $date, 'time' ); ?></p>
 
                     </div>
                 </div>

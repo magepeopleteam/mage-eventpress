@@ -474,3 +474,247 @@
 		}
 		new MPWEM_Settings();
 	}
+    if (!class_exists('MEP_Global_Quantity')) {
+        class MEP_Global_Quantity {
+            public function __construct() {
+
+                add_action( 'admin_init', [ $this, 'gq_update' ] );
+                add_action( 'mpwem_before_ticket_type', [ $this, 'gq_settings' ] );
+                add_action( 'mpwem_before_ex_service', [ $this, 'gq_ex_service_settings' ] );
+                /*********************************/
+                add_action('mep_date_table_head', [$this, 'date_table_head']);
+                add_action('mep_date_table_body_default_date', [$this, 'date_table_default_date']);
+                add_action('mep_date_table_empty', [$this, 'mep_gq_date_table_empty']);
+                add_action('mep_date_table_body_more_date', [$this, 'date_table_more_date'], 10, 2);
+                add_action('mpwem_settings_save', [$this, 'save_global_quantity']);
+                add_filter('mep_more_date_arr_save', [$this, 'mep_gq_more_date_arr_save'], 99);
+            }
+
+            public function gq_update() {
+                if (get_option('mpwem_gq_update') != 'completed') {
+                    $gq_type = MPWEM_Global_Function::get_settings('mep_gq_settings', 'mep_gq_type');
+                    if ($gq_type) {
+                        $query = MPWEM_Query::query_post_type(MPWEM_Functions::get_cpt());
+                        foreach ($query->posts as $result) {
+                            $post_id = $result->ID;
+                            if ($gq_type == 'global') {
+                                update_post_meta($post_id, 'mep_gq_type', $gq_type);
+                            } else {
+                                update_post_meta($post_id, 'mep_gq_type', 'date_wise');
+                            }
+                        }
+                    }
+                    $args = array(
+                        'post_type' => 'mep_events',
+                        'posts_per_page' => -1
+                    );
+                    $qr = new WP_Query($args);
+                    foreach ($qr->posts as $result) {
+                        $post_id = $result->ID;
+                        $seat_left = mep_count_total_available_seat($post_id);
+                        update_post_meta($post_id, 'mep_total_seat_left', $seat_left);
+                    }
+                    update_option('mpwem_gq_update', 'completed');
+                }
+            }
+            public function gq_settings($event_id) {
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $mep_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $checked = $enable_global_qty == 'off' ? '' : 'checked';
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_seat');
+                $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_resv_seat');
+                ?>
+                <div class="_padding_bt">
+                    <div class="_justify_between_align_center_wrap ">
+                        <label><span class="_mr"><?php esc_html_e('Enable Global Qty? ', 'mage-eventpress-gq'); ?></span></label>
+                        <?php MPWEM_Custom_Layout::switch_button('enable_global_qty', $checked); ?>
+                    </div>
+                    <span class="des_info"><?php esc_html_e('Please select if you want to enable global quantity for this event. when you turn on global qty total ticket type seat will not be count ', 'mage-eventpress-gq'); ?></span>
+                    <div class=" _bg_light_padding_mt_xs <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#enable_global_qty">
+                        <div>
+                            <label class="_justify_between_align_center_wrap "><span class="_mr"><?php esc_html_e('Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
+                                <select class="formControl" name="mep_gq_type" data-collapse-target>
+                                    <option value="date_wise" data-option-target="#mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                    <option value="global" data-option-target="#mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                </select>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Please Select the global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap "><span class="_mr"><?php esc_html_e('Total Qty', 'mage-eventpress-gq'); ?></span>
+                                <input class="formControl" type="number" min="0" name="mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Enter The Total Seat of this event. ', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap ">
+                                <span class="_mr"><?php esc_html_e('Reserve Qty', 'mage-eventpress-gq'); ?></span>
+                                <input class="formControl" type="number" min="0" name="mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Enter The Total Reserve Seat Qty of this event', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            public function gq_ex_service_settings($event_id) {
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $mep_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $checked = $enable_global_qty == 'off' ? '' : 'checked';
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_seat');
+                $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_resv_seat');
+                ?>
+                <div class="_padding_bt">
+                    <div class="_justify_between_align_center_wrap ">
+                        <label><span class="_mr"><?php esc_html_e('Enable Extra service  Global Qty?', 'mage-eventpress-gq'); ?></span></label>
+                        <?php MPWEM_Custom_Layout::switch_button('ex_enable_global_qty', $checked); ?>
+                    </div>
+                    <span class="des_info"><?php esc_html_e('Please select if you want to enable Extra service  global quantity for this event. when you turn on global qty total ticket type seat will not be count', 'mage-eventpress-gq'); ?></span>
+                    <div class="<?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#ex_enable_global_qty">
+                        <div>
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap ">
+                                <span class="_mr"><?php esc_html_e('Extra service Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
+                                <select class="formControl" name="ex_mep_gq_type" data-collapse-target>
+                                    <option value="date_wise" data-option-target="#ex_mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                    <option value="global" data-option-target="#ex_mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                </select>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Please Select Extra service global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap ">
+                                <span class="_mr"><?php esc_html_e('Extra service Total Qty', 'mage-eventpress-gq'); ?></span>
+                                <input class="formControl" type="number" min="0" name="ex_mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Enter The Total Extra service Reserve Seat Qty of this event ', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap ">
+                                <span class="_mr"><?php esc_html_e('Extra service Reserve Qty', 'mage-eventpress-gq'); ?></span>
+                                <input class="formControl" type="number" min="0" name="ex_mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                            </label>
+                            <span class="des_info"><?php esc_html_e('Enter The Total Extra service Seat of this event', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            //*******************//
+            public function date_table_head($event_id) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                ?>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <?php
+            }
+            public function date_table_default_date($event_id) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'event_date_gq');
+                $res_seat = MPWEM_Global_Function::get_post_info($event_id, 'event_date_gq_rev');
+                $ex_total_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_event_date_gq');
+                $ex_res_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_event_date_gq_rev');
+                ?>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
+                </td>
+                <?php
+            }
+            public function date_table_more_date($event_id, $field = []) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $total_seat = array_key_exists('event_date_gq_md', $field) ? $field['event_date_gq_md'] : '';
+                $res_seat = array_key_exists('event_date_gq_md_rev', $field) ? $field['event_date_gq_md_rev'] : '';
+                $ex_total_seat = array_key_exists('ex_event_date_gq_md', $field) ? $field['ex_event_date_gq_md'] : '';
+                $ex_res_seat = array_key_exists('ex_event_date_gq_md_rev', $field) ? $field['ex_event_date_gq_md_rev'] : '';
+                ?>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
+                </td>
+                <?php
+            }
+            public function mep_gq_date_table_empty($event_id) {
+                $this->date_table_more_date($event_id);
+            }
+            public function save_global_quantity($post_id) {
+                if (get_post_type($post_id) == 'mep_events') {
+                    $global_qty = isset($_POST['enable_global_qty']) && sanitize_text_field(wp_unslash($_POST['enable_global_qty'])) ? 'on' : 'off';
+                    $esv_seat = isset($_POST['mep_gq_total_resv_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_resv_seat'])) : '';
+                    $total_seat = isset($_POST['mep_gq_total_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_seat'])) : '';
+                    $mep_gq_type = isset($_POST['mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_type'])) : '';
+                    update_post_meta($post_id, 'enable_global_qty', $global_qty);
+                    update_post_meta($post_id, 'mep_gq_total_resv_seat', $esv_seat);
+                    update_post_meta($post_id, 'mep_gq_total_seat', $total_seat);
+                    $event_date_gq = isset($_POST['event_date_gq']) ? sanitize_text_field(wp_unslash($_POST['event_date_gq'])) : '';
+                    $event_date_gq_rev = isset($_POST['event_date_gq_rev']) ? sanitize_text_field(wp_unslash($_POST['event_date_gq_rev'])) : '';
+                    update_post_meta($post_id, 'event_date_gq', $event_date_gq);
+                    update_post_meta($post_id, 'event_date_gq_rev', $event_date_gq_rev);
+                    update_post_meta($post_id, 'mep_gq_type', $mep_gq_type);
+//========================//
+                    $ex_event_date_gq = isset($_POST['ex_event_date_gq']) ? sanitize_text_field(wp_unslash($_POST['ex_event_date_gq'])) : '';
+                    $ex_event_date_gq_rev = isset($_POST['ex_event_date_gq_rev']) ? sanitize_text_field(wp_unslash($_POST['ex_event_date_gq_rev'])) : '';
+                    update_post_meta($post_id, 'ex_event_date_gq', $ex_event_date_gq);
+                    update_post_meta($post_id, 'ex_event_date_gq_rev', $ex_event_date_gq_rev);
+                    $ex_global_qty = isset($_POST['ex_enable_global_qty']) && sanitize_text_field(wp_unslash($_POST['ex_enable_global_qty'])) ? 'on' : 'off';
+                    $ex_esv_seat = isset($_POST['ex_mep_gq_total_resv_seat']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_total_resv_seat'])) : '';
+                    $ex_total_seat = isset($_POST['ex_mep_gq_total_seat']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_total_seat'])) : '';
+                    $ex_mep_gq_type = isset($_POST['ex_mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_type'])) : '';
+                    update_post_meta($post_id, 'ex_enable_global_qty', $ex_global_qty);
+                    update_post_meta($post_id, 'ex_mep_gq_total_resv_seat', $ex_esv_seat);
+                    update_post_meta($post_id, 'ex_mep_gq_total_seat', $ex_total_seat);
+                    update_post_meta($post_id, 'ex_mep_gq_type', $ex_mep_gq_type);
+                }
+            }
+            public function mep_gq_more_date_arr_save($data) {
+                $event_date_gq_md = isset($_POST['event_date_gq_md']) ? array_map('sanitize_text_field', wp_unslash($_POST['event_date_gq_md'])) : [];
+                $event_date_gq_md_rev = isset($_POST['event_date_gq_md_rev']) ? array_map('sanitize_text_field', wp_unslash($_POST['event_date_gq_md_rev'])) : [];
+                $ex_event_date_gq_md = isset($_POST['ex_event_date_gq_md']) ? array_map('sanitize_text_field', wp_unslash($_POST['ex_event_date_gq_md'])) : [];
+                $ex_event_date_gq_md_rev = isset($_POST['ex_event_date_gq_md_rev']) ? array_map('sanitize_text_field', wp_unslash($_POST['ex_event_date_gq_md_rev'])) : [];
+                if (sizeof($event_date_gq_md) > 0) {
+                    $count = count($event_date_gq_md);
+                    for ($i = 0; $i < $count; $i++) {
+                        if ($event_date_gq_md[$i] != '') {
+                            $data[$i]['event_date_gq_md'] = array_key_exists($i, $event_date_gq_md) ? $event_date_gq_md[$i] : '';
+                            $data[$i]['event_date_gq_md_rev'] = array_key_exists($i, $event_date_gq_md_rev) ? $event_date_gq_md_rev[$i] : '';
+                            $data[$i]['ex_event_date_gq_md'] = array_key_exists($i, $ex_event_date_gq_md) ? $ex_event_date_gq_md[$i] : '';
+                            $data[$i]['ex_event_date_gq_md_rev'] = array_key_exists($i, $ex_event_date_gq_md_rev) ? $ex_event_date_gq_md_rev[$i] : '';
+                        }
+                    }
+                }
+                return $data;
+            }
+        }
+        new MEP_Global_Quantity();
+    }

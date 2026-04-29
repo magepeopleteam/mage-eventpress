@@ -745,7 +745,6 @@
 	.mep_event_list_item .mep-list-footer-ul { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 5px 10px; }
 	/*******************/
 	.mage_grid_box { margin: 0; }
-	.mage_grid_box { margin: 0 -7px 20px -7px; }
 	.mage_grid_box .blank_div { margin: 0 20px 0 0; }
 	.mage_grid_box .blank_div:last-child { margin: 0 0 15px 0; }
 	div.mep_event_list div.mage_grid_box img { min-height: auto; }
@@ -1624,7 +1623,7 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	}
 
 	div.mep_event_list_doc_area{
-		margin: 20px;
+		margin: 20px 0;
 		display: flex;
 		justify-content: space-between;
 	}

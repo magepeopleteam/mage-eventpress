@@ -718,3 +718,39 @@
         }
         new MEP_Global_Quantity();
     }
+    if (!class_exists('MP_Event_Eb_Settings')) {
+        class MP_Event_Eb_Settings {
+            public function __construct() {
+                add_filter('mep_settings_sec_reg', array($this, 'mep_eb_settings_sec'), 10);
+                add_filter('mep_settings_sec_fields', array($this, 'mep_eb_settings_fields'), 10);
+            }
+            public function mep_eb_settings_sec($default_sec) {
+                $sections = array(
+                    array(
+                        'id' => 'mep_eb_settings',
+                        'title' => '<i class="fas fa-dove"></i>' . __('Early Birds', 'mage-eventpress-mm')
+                    )
+                );
+                return array_merge($default_sec, $sections);
+            }
+            public function mep_eb_settings_fields($default_fields) {
+                $settings_fields = array(
+                    'mep_eb_settings' => array(
+                        array(
+                            'name' => 'mp_event_eb_type',
+                            'label' => __('Early bird ticket visible option', 'mage-eventpress'),
+                            'desc' => __('select Early bird ticket visible option', 'mage-eventpress'),
+                            'type' => 'select',
+                            'default' => '0',
+                            'options' => array(
+                                '0' => __('Depend on time', 'mage-eventpress'),
+                                '1' => __('Depend on order', 'mage-eventpress')
+                            )
+                        ),
+                    )
+                );
+                return array_merge($default_fields, $settings_fields);
+            }
+        }
+        new MP_Event_Eb_Settings();
+    }

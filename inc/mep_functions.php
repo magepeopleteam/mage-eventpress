@@ -5524,3 +5524,71 @@ function mep_change_date_status() {
         }
         return apply_filters( 'mep_gq_total_left_sect', $total_left, $event_id, $event_date );
     }
+
+    if ( ! function_exists( 'mep_early_bird_column' ) ) {
+    add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
+    function mep_early_bird_column( $event_id ) {
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        ?>
+        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
+        <?php
+    }
+    }
+    if ( ! function_exists( 'mep_early_bird_column_saved' ) ) {
+    add_action( 'mpwem_add_extra_input_box', 'mep_early_bird_column_saved', 90,2 );
+    function mep_early_bird_column_saved( $event_id, $ticket_info = [] ) {
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $sale_start          = array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
+        ?>
+        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+            <div class="_dFlex">
+                <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
+                <label>
+                    <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_start ) ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
+                </label>
+            </div>
+        </td>
+        <?php
+    }
+    }
+    if ( ! function_exists( 'mep_early_bird_save_data' ) ) {
+        add_filter('mpwem_ticket_type_arr_save', 'mep_early_bird_save_data');
+        function mep_early_bird_save_data($data) {
+            $sale_start_date = $_POST['option_sale_start_date'] ? mage_array_strip($_POST['option_sale_start_date']) : array();
+            $sale_start_time = $_POST['option_sale_start_time'] ? mage_array_strip($_POST['option_sale_start_time']) : array();
+            if (sizeof($sale_start_date) > 0) {
+                $count = count($data);
+                for ($i = 0; $i < $count; $i++) {
+                    if (array_key_exists($i, $data)) {
+                        $data[$i]['option_sale_start_date'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i])) : '';
+                        $data[$i]['option_sale_start_time'] = !empty($sale_start_time[$i]) ? stripslashes(strip_tags($sale_start_time[$i])) : '';
+                        $data[$i]['option_sale_start_date_t'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i] . ' ' . $sale_start_time[$i])) : '';
+                    }
+                }
+            }
+            return $data;
+        }
+    }
+    if ( ! function_exists( 'mep_early_bird_startdatetime' ) ) {
+        add_filter('mep_sale_start_datetime', 'mep_early_bird_startdatetime', 10, 3);
+        function mep_early_bird_startdatetime($date, $event_id, $field) {
+            return isset($field['option_sale_start_date_t']) ? date('Y-m-d H:i', strtotime($field['option_sale_start_date_t'])) : $date;
+        }
+    }
+    if ( ! function_exists( 'mpwem_early_date_filter' ) ) {
+        add_filter('mpwem_early_date', 'mpwem_early_date_filter', 10, 3);
+        function mpwem_early_date_filter($return, $ticket_type, $event_id) {
+            $sale_start_datetime = array_key_exists('option_sale_start_date_t', $ticket_type) && !empty($ticket_type['option_sale_start_date_t']) ? date('Y-m-d H:i', strtotime($ticket_type['option_sale_start_date_t'])) : '';
+            if ($sale_start_datetime) {
+                $current_time = current_time('Y-m-d H:i');
+                if (strtotime($current_time) > strtotime($sale_start_datetime)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return $return;
+        }
+    }

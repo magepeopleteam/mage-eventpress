@@ -129,8 +129,10 @@
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
 
+        const $ticketPricingPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+
         // Move Extra Services into its own card
-        const $exService = $('#mpwem_ticket_pricing_settings').find('input[name="option_name[]"]').first().closest('._layout_default_xs_mp_zero');
+        const $exService = $ticketPricingPanel.find('input[name="option_name[]"]').first().closest('._layout_default_xs_mp_zero');
         if ($exService.length) {
             const $extraMount = $('#mpwem_wizard_extra_services_mount');
             if ($extraMount.length) {
@@ -142,7 +144,7 @@
         }
 
         // Move the Ticket Pricing documentation section into the wizard sidebar
-        const $ticketDoc = $('#mpwem_wizard_tickets_mount').find('.bg-light').first();
+        const $ticketDoc = $ticketPricingPanel.find('section.bg-light').last();
         if ($ticketDoc.length) {
             const $moreDocs = $ticketDoc.next('section');
             const $ticketStep = $root.find('.mpwem-wizard-panel[data-tab-item="#mpwem_wizard_tickets"]');
@@ -172,6 +174,8 @@
                 }
             }
         }
+
+        initializeTicketPricingModal($root);
 
         // Mount into Date Step
         mountPanel($root, '#mpwem_date_settings', 'mpwem_wizard_date_mount');
@@ -204,6 +208,363 @@
             });
             if ($additionalMount.children().length) $('#mpwem_edit_page_additional').show();
         }
+    }
+
+    function getTicketModalContext($root) {
+        const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        let $summary = $ticketPanel.find('#mpwem_ticket_summary').first();
+
+        if ($ticketPanel.length && !$summary.length) {
+            const $summaryMarkup = $(
+                '<div class="mpwem-ticket-summary" id="mpwem_ticket_summary">' +
+                    '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<div class="mpwem-ticket-summary__intro">' +
+                            '<span class="mpwem-ticket-summary__eyebrow">Ticket Overview</span>' +
+                            '<h3>Simple ticket list</h3>' +
+                            '<p>View pricing at a glance, then open the full editor only when you need details.</p>' +
+                        '</div>' +
+                        '<div class="mpwem-ticket-summary__actions">' +
+                            '<button type="button" class="button button-secondary mpwem-ticket-summary__open" data-mpwem-ticket-modal-open="list">Show Details</button>' +
+                            '<button type="button" class="button button-primary mpwem-ticket-summary__add" data-mpwem-ticket-modal-open="new">+ Add New Ticket Type</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="mpwem-ticket-summary__list" id="mpwem_ticket_summary_list"></div>' +
+                '</div>'
+            );
+
+            const $summaryHost = $ticketPanel.find('> ._layout_default_xs_mp_zero').first();
+            if ($summaryHost.length) {
+                $summaryHost.append($summaryMarkup);
+                $summary = $summaryMarkup;
+            }
+        }
+
+        return {
+            $summaryList: $summary.find('#mpwem_ticket_summary_list').first(),
+            $modal: $root.find('#mpwem_ticket_editor_modal').first(),
+            $modalMount: $root.find('#mpwem_ticket_modal_mount').first(),
+            $modalAdvanceToggle: $root.find('#mpwem_ticket_modal_advance_toggle').first(),
+            $legacyMount: $root.find('#mpwem_wizard_tickets_mount').first()
+        };
+    }
+
+    function getTicketRows($root) {
+        const $tbody = $root.find('#mpwem_ticket_modal_mount .mpwem_ticket_table tbody.mpwem_item_insert').first();
+        if (!$tbody.length) {
+            return $();
+        }
+
+        return $tbody.children('tr.mpwem_remove_area').filter(function() {
+            return $(this).closest('.mpwem_hidden_content').length === 0;
+        });
+    }
+
+    function ticketRowName($row) {
+        const $nameInput = $row.find('[name="option_name_t[]"]').first();
+        const inputValue = ($nameInput.val() || '').toString().trim();
+        if (inputValue) {
+            return inputValue;
+        }
+
+        const textValue = $row.find('.ticket_name ._flex_wrap > span').first().text().trim();
+        return textValue || 'Untitled Ticket';
+    }
+
+    function ticketRowPrice($row) {
+        const value = ($row.find('[name="option_price_t[]"]').first().val() || '').toString().trim();
+        if (!value.length) {
+            return 'Price not set';
+        }
+
+        return value === '0' ? 'Free' : value;
+    }
+
+    function ticketRowCapacity($row) {
+        const value = ($row.find('[name="option_qty_t[]"]').first().val() || '').toString().trim();
+        return value.length ? value : 'Unlimited';
+    }
+
+    function ticketRowDescription($row) {
+        const value = ($row.find('[name="option_details_t[]"]').first().val() || '').toString().trim();
+        return value || 'No short description yet.';
+    }
+
+    function highlightTicketRow($row) {
+        if (!$row || !$row.length) {
+            return;
+        }
+
+        const $container = $row.closest('.mpwem-ticket-modal__body');
+        if ($container.length) {
+            const top = $row.position().top + $container.scrollTop() - 24;
+            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
+        }
+
+        $row.addClass('mpwem-ticket-row-focus');
+        window.setTimeout(function() {
+            $row.removeClass('mpwem-ticket-row-focus');
+        }, 1800);
+    }
+
+    function renderTicketSummary($root) {
+        const context = getTicketModalContext($root);
+        const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        const regEnabled = $ticketPanel.find('input[name="mep_reg_status"]').first().is(':checked');
+        const $rows = getTicketRows($root);
+        if (!context.$summaryList.length) {
+            return;
+        }
+
+        context.$summaryList.empty();
+
+        $ticketPanel.find('#mpwem_ticket_summary').toggle(regEnabled);
+
+        if (!regEnabled) {
+            closeTicketModal($root);
+            return;
+        }
+
+        context.$summaryList.append(
+            $('<div class="mpwem-ticket-summary__header"></div>')
+                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
+                .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
+                // .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'))
+        );
+
+        if (!$rows.length) {
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__empty"></div>')
+                    .append($('<h4></h4>').text('No ticket types yet'))
+                    .append($('<p></p>').text('Start with one ticket type, then open the editor whenever you need the full pricing table.'))
+                    .append($('<button type="button" class="button button-primary"></button>')
+                        .attr('data-mpwem-ticket-modal-open', 'new')
+                        .text('Create First Ticket'))
+            );
+            return;
+        }
+
+        $rows.each(function(index) {
+            const $row = $(this);
+            const name = ticketRowName($row);
+            const price = ticketRowPrice($row);
+            const isDisabled = $row.hasClass('disable_row');
+
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
+                    .attr('data-ticket-row-index', index)
+                    .toggleClass('is-disabled', isDisabled)
+                    .append(
+                        $('<div class="mpwem-ticket-summary__item-main"></div>')
+                            .append(
+                                $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                    .append($('<h4></h4>').text(name))
+                                    // .append($('<span class="mpwem-ticket-summary__status"></span>').text(isDisabled ? 'Hidden' : 'Active'))
+                            )
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))
+                    )
+                    // .append(
+                    //     $('<div class="mpwem-ticket-summary__item-actions"></div>')
+                    //         .append(
+                    //             $('<button type="button" class="button button-secondary"></button>')
+                    //                 .attr('data-mpwem-ticket-modal-open', 'details')
+                    //                 .attr('data-ticket-row-index', index)
+                    //                 .text('Details')
+                    //         )
+                    // )
+            );
+        });
+    }
+
+    function openTicketModal($root, mode, rowIndex) {
+        const context = getTicketModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'false').addClass('is-open');
+        $('body').addClass('mpwem-ticket-modal-open');
+
+        const isNew = mode === 'new';
+        $root.find('#mpwem_ticket_modal_title').text(isNew ? 'Add ticket type' : 'Manage ticket types');
+        $root.find('#mpwem_ticket_modal_description').text(
+            isNew
+                ? 'Create a new ticket type, then fill in pricing, capacity, and any advanced values.'
+                : 'Edit pricing, capacities, advanced columns, and ticket settings without leaving this step.'
+        );
+
+        if (isNew) {
+            const $addButton = context.$modalMount.find('.mpwem_add_item').first();
+            if ($addButton.length) {
+                $addButton.trigger('click');
+                window.setTimeout(function() {
+                    const $rows = getTicketRows($root);
+                    highlightTicketRow($rows.last());
+                    renderTicketSummary($root);
+                }, 100);
+            }
+            return;
+        }
+
+        if (typeof rowIndex === 'number' && rowIndex >= 0) {
+            const $row = getTicketRows($root).eq(rowIndex);
+            window.setTimeout(function() {
+                highlightTicketRow($row);
+            }, 60);
+        }
+    }
+
+    function closeTicketModal($root) {
+        const context = getTicketModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
+        $('body').removeClass('mpwem-ticket-modal-open');
+    }
+
+    function syncTicketAdvancedColumns($root) {
+        const context = getTicketModalContext($root);
+        const $toggle = context.$modalMount.find('input[name="mep_show_advance_col_status"]').first();
+        const $targets = context.$modalMount.find('[data-collapse="#mep_show_advance_col_status"]');
+        if (!$toggle.length || !$targets.length) {
+            return;
+        }
+
+        const isVisible = $toggle.is(':checked');
+        context.$modal.toggleClass('is-advanced-visible', isVisible);
+        $targets.toggleClass('mpwem-ticket-col-hidden', !isVisible);
+    }
+
+    function initializeTicketTableDragScroll($root) {
+        const context = getTicketModalContext($root);
+        const $scroller = context.$modalMount.find('._ov_auto').first();
+        if (!$scroller.length || $scroller.data('mpwemDragScrollInit')) {
+            return;
+        }
+
+        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        let isDragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        $scroller.on('mousedown.mpwemDragScroll', function(e) {
+            if (e.button !== 0) {
+                return;
+            }
+
+            if ($(e.target).closest(interactiveSelector).length) {
+                return;
+            }
+
+            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
+            if (!hasHorizontalOverflow) {
+                return;
+            }
+
+            isDragging = true;
+            startX = e.pageX;
+            startScrollLeft = this.scrollLeft;
+            $scroller.addClass('is-dragging');
+            e.preventDefault();
+        });
+
+        $(document).on('mousemove.mpwemDragScroll', function(e) {
+            if (!isDragging) {
+                return;
+            }
+
+            const deltaX = e.pageX - startX;
+            $scroller.scrollLeft(startScrollLeft - deltaX);
+        });
+
+        $(document).on('mouseup.mpwemDragScroll mouseleave.mpwemDragScroll', function() {
+            if (!isDragging) {
+                return;
+            }
+
+            isDragging = false;
+            $scroller.removeClass('is-dragging');
+        });
+
+        $scroller.data('mpwemDragScrollInit', true);
+    }
+
+    function initializeTicketPricingModal($root) {
+        const context = getTicketModalContext($root);
+        const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        const $ticketSettingsBlock = $ticketPanel.find('.mpwem-ticket-editor-section').first();
+
+        if (!$ticketPanel.length || !context.$modalMount.length || !$ticketSettingsBlock.length) {
+            return;
+        }
+
+        if ($ticketSettingsBlock.parent()[0] !== context.$modalMount[0]) {
+            context.$modalMount.append($ticketSettingsBlock.detach());
+        }
+
+        context.$modalMount.find('.mpwem-ticket-editor-section > ._bg_light_padding').first().hide();
+        context.$modalMount.find('.mpwem_settings_area > p').first().addClass('mpwem-ticket-modal__note');
+        context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
+
+        renderTicketSummary($root);
+        syncTicketAdvancedColumns($root);
+        initializeTicketTableDragScroll($root);
+
+        const $tbody = context.$modalMount.find('.mpwem_ticket_table tbody.mpwem_item_insert').first();
+        if ($tbody.length && !$tbody.data('mpwemSummaryObserver')) {
+            const observer = new MutationObserver(function() {
+                renderTicketSummary($root);
+                syncTicketAdvancedColumns($root);
+                initializeTicketTableDragScroll($root);
+            });
+            observer.observe($tbody[0], { childList: true, subtree: true });
+            $tbody.data('mpwemSummaryObserver', observer);
+        }
+
+        $root.off('.mpwemTicketModal');
+
+        $root.on('click.mpwemTicketModal', '[data-mpwem-ticket-modal-open]', function(e) {
+            e.preventDefault();
+            const mode = $(this).attr('data-mpwem-ticket-modal-open') || 'list';
+            const rowIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
+            openTicketModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
+        $root.on('click.mpwemTicketModal', '[data-mpwem-ticket-modal-close]', function(e) {
+            e.preventDefault();
+            closeTicketModal($root);
+        });
+
+        $root.on('input.mpwemTicketModal change.mpwemTicketModal', '#mpwem_ticket_modal_mount [name="option_name_t[]"], #mpwem_ticket_modal_mount [name="option_details_t[]"], #mpwem_ticket_modal_mount [name="option_price_t[]"], #mpwem_ticket_modal_mount [name="option_qty_t[]"], #mpwem_ticket_modal_mount [name="option_ticket_enable[]"]', function() {
+            renderTicketSummary($root);
+        });
+
+        $root.on('change.mpwemTicketModal', '[name="mep_reg_status"]', function() {
+            renderTicketSummary($root);
+        });
+
+        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_show_advance_col_status"]', function() {
+            syncTicketAdvancedColumns($root);
+        });
+
+        $root.on('click.mpwemTicketModal', '#mpwem_ticket_modal_mount .mpwem_item_remove, #mpwem_ticket_modal_mount .mpwem_show_hide_button', function() {
+            window.setTimeout(function() {
+                renderTicketSummary($root);
+                syncTicketAdvancedColumns($root);
+            }, 280);
+        });
+
+        $(document)
+            .off('keydown.mpwemTicketModal')
+            .on('keydown.mpwemTicketModal', function(e) {
+                if (e.key === 'Escape' && context.$modal.hasClass('is-open')) {
+                    closeTicketModal($root);
+                }
+            });
     }
 
     function enhanceDisplayStep($root) {
@@ -1248,6 +1609,10 @@
     }
 
     function setActiveStep($root, stepKey, options) {
+        if (stepKey !== 'tickets') {
+            closeTicketModal($root);
+        }
+
         const $steps = $root.find('.mpwem-step');
         const $targetStep = $steps.filter('[data-step-key="' + stepKey + '"]');
         if (!$targetStep.length) {

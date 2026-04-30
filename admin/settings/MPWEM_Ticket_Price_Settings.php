@@ -36,6 +36,7 @@
 					<?php
 						do_action( 'mep_event_tab_before_ticket_pricing', $event_id );
 						$this->event_view_shortcode( $event_id );
+						do_action( 'mep_add_category_display', $event_id );
 						$this->registration_on_off( $event_id, $event_infos );
 					?>
                 </div>
@@ -49,14 +50,13 @@
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
                 <div class="_mt"></div>
-                <div class="_layout_default_xs_mp_zero ">
+                <div class="_layout_default_xs_mp_zero mpwem-ticket-editor-section">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket Type Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Ticket Type', 'mage-eventpress' ); ?></span>
                     </div>
 					<?php
 						do_action( 'mpwem_before_ticket_type', $event_id );
-						do_action( 'mep_add_category_display', $event_id );
 						$this->show_advance_column( $show_advance_column );
 					?>
                     <div class="_padding_bt mpwem_settings_area">
@@ -88,7 +88,8 @@
                                 </tbody>
                             </table>
                         </div>
-						<?php MPWEM_Custom_Layout::add_new_button( __( 'Add New Ticket Type', 'mage-eventpress' ) ); ?>
+                        <p class="mpwem-ticket-table-hint"><?php esc_html_e( 'Tip: Drag the table left or right to see more columns.', 'mage-eventpress' ); ?></p>
+						<?php MPWEM_Custom_Layout::add_new_button( __( 'Add New Ticket Type', 'mage-eventpress' ), 'mpwem_add_item', '_button_theme_xs_mt_xs', 'fas fa-plus' ); ?>
                         <div class="mpwem_hidden_content">
                             <table>
                                 <tbody class="mpwem_hidden_item">

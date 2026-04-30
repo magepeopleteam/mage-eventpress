@@ -71,6 +71,37 @@
     function mountAll($root) {
         // Mount into Basic Step Media sidebar
         mountPanel($root, '#ttbm_settings_gallery', 'mpwem_wizard_media_mount_basic');
+
+        const $galleryMount = $('#mpwem_wizard_media_mount_basic');
+        const $thumbnailMount = $('#mpwem_wizard_thumbnail_mount_basic');
+        if ($galleryMount.length && $thumbnailMount.length) {
+            const $galleryPanel = $galleryMount.children('.mp_tab_item').first();
+            const $thumbnailBody = $galleryPanel.children('.mpwem_style').filter(function() {
+                return $(this).find('input[name="mep_list_thumbnail"]').length > 0;
+            }).first();
+            const $thumbnailHeader = $thumbnailBody.prev('section.bg-light');
+
+            if ($thumbnailHeader.length && $thumbnailBody.length) {
+                $thumbnailMount.append($thumbnailHeader.detach(), $thumbnailBody.detach());
+            }
+        }
+
+        const $galleryCardHead = $('#mpwem_gallery_images_card_toggle');
+        const $galleryToggleSection = $galleryMount.find('input[name="mep_display_slider"]').first().closest('section');
+        const $galleryToggle = $galleryToggleSection.find('.mpev-switch, .mpwem-switch-wrap').first();
+        const $galleryBodyLabel = $galleryMount.find('#mep_display_slider > section .mpev-label').first();
+
+        if ($galleryCardHead.length && $galleryToggle.length && !$galleryCardHead.children().length) {
+            $galleryCardHead.append($galleryToggle.detach());
+        }
+
+        if ($galleryToggleSection.length) {
+            $galleryToggleSection.remove();
+        }
+
+        if ($galleryBodyLabel.length) {
+            $galleryBodyLabel.remove();
+        }
         
         // Convert label-text into info icons for sidebar items
         $('#mpwem_wizard_media_mount_basic section').each(function() {
@@ -83,6 +114,13 @@
                     $heading.find('.dashicons-info, .fa-info-circle').remove();
                     // $heading.append(' <span class="dashicons dashicons-info mpwem-info-icon" title="' + infoText.replace(/"/g, '&quot;') + '"></span>');
                 }
+                $info.hide();
+            }
+        });
+        $('#mpwem_wizard_thumbnail_mount_basic section').each(function() {
+            const $heading = $(this).find('h2').first();
+            const $info = $(this).find('.label-text').first();
+            if ($heading.length && $info.length) {
                 $info.hide();
             }
         });

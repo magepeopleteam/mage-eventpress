@@ -8,8 +8,12 @@ if (! defined('ABSPATH')) {
 }
 
 if (! class_exists('MPWEM_Event_Edit_Page')) {
+	/**
+	 * Event edit page controller.
+	 */
 	class MPWEM_Event_Edit_Page
 	{
+		private const POST_TYPE = 'mep_events';
 		private const PAGE_SLUG = 'mpwem_event_edit';
 		private const NONCE_ACTION_SAVE = 'mpwem_event_edit_save';
 		private const NONCE_ACTION_CREATE = 'mpwem_event_edit_create';
@@ -30,15 +34,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			add_filter('page_row_actions', [$this, 'filter_row_actions'], 20, 2);
 			add_filter('parent_file', [$this, 'filter_parent_file']);
 			add_filter('submenu_file', [$this, 'filter_submenu_file'], 10, 2);
+			add_filter('admin_title', [$this, 'filter_admin_title'], 10, 2);
 		}
 
 		public function register_menu(): void
 		{
 			add_submenu_page(
-				'edit.php?post_type=mep_events',
+				'edit.php?post_type=' . self::POST_TYPE,
 				esc_html__('Event Edit Page', 'mage-eventpress'),
 				esc_html__('Event Edit Page', 'mage-eventpress'),
-				'read',
+				'edit_posts',
 				self::PAGE_SLUG,
 				[$this, 'render_page']
 			);
@@ -46,37 +51,76 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 		public function hide_menu_styles(): void
 		{
-			?>
+?>
 			<style>
 				#adminmenu a[href="edit.php?post_type=mep_events&page=<?php echo esc_attr(self::PAGE_SLUG); ?>"] {
 					display: none !important;
 				}
 			</style>
-			<?php
+		<?php
 		}
 
+		/**
+		 * Filters the parent menu item for the custom edit screen.
+		 *
+		 * @param string $parent_file Parent menu slug.
+		 * @return string
+		 */
 		public function filter_parent_file($parent_file)
 		{
 			if (! $this->is_edit_screen()) {
 				return $parent_file;
 			}
-			return 'edit.php?post_type=mep_events';
+			return 'edit.php?post_type=' . self::POST_TYPE;
 		}
 
+		/**
+		 * Filters the highlighted submenu item for the custom edit screen.
+		 *
+		 * @param string $submenu_file Submenu slug.
+		 * @param string $parent_file  Parent menu slug.
+		 * @return string
+		 */
 		public function filter_submenu_file($submenu_file, $parent_file = '')
 		{
+			unset($parent_file);
+
 			if (! $this->is_edit_screen()) {
 				return $submenu_file;
 			}
 			return 'mep_event_lists';
 		}
 
-		public function admin_body_class(string $classes): string
+		public function admin_body_class($classes)
 		{
 			if (! $this->is_edit_screen()) {
 				return $classes;
 			}
 			return $classes . ' mpwem-event-wizard-screen';
+		}
+
+		/**
+		 * Filters the admin browser tab title for the custom event edit screen.
+		 *
+		 * @param string $admin_title Full admin title.
+		 * @param string $title       Current page title.
+		 * @return string
+		 */
+		public function filter_admin_title($admin_title, $title)
+		{
+			if (! $this->is_edit_screen()) {
+				return $admin_title;
+			}
+
+			$post_id = isset($_GET['event_id']) ? absint($_GET['event_id']) : 0;
+			$post    = $post_id ? get_post($post_id) : null;
+
+			$screen_title = $post_id && $post ? $post->post_title : __('Create Event', 'mage-eventpress');
+			if ($post_id && '' === trim((string) $screen_title)) {
+				$screen_title = sprintf(__('Edit Event #%d', 'mage-eventpress'), $post_id);
+			}
+
+			return str_replace($title, $screen_title, $admin_title);
 		}
 
 		private function is_edit_screen(): bool
@@ -91,9 +135,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return isset($_GET[self::CLASSIC_BYPASS_QUERY]) && (string) wp_unslash($_GET[self::CLASSIC_BYPASS_QUERY]) === '1';
 		}
 
+		/**
+		 * Builds the custom edit page URL.
+		 *
+		 * @param int    $post_id  Event post ID.
+		 * @param string $step_key Wizard step key.
+		 * @return string
+		 */
 		private function edit_url(int $post_id = 0, string $step_key = 'basic'): string
 		{
-			$base = admin_url('edit.php?post_type=mep_events&page=' . self::PAGE_SLUG);
+			$base = admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG);
 			$step = sanitize_key($step_key) ?: 'basic';
 			if ($post_id > 0) {
 				return $base . '&event_id=' . $post_id . '#/events/edit/' . $post_id . '/' . $step;
@@ -101,9 +152,52 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return $base . '#/events/new/' . $step;
 		}
 
+		/**
+		 * Checks whether the current user can manage events in the custom UI.
+		 *
+		 * @return bool
+		 */
 		private function can_manage_events(): bool
 		{
 			return current_user_can('edit_posts') || current_user_can('manage_woocommerce');
+		}
+
+		/**
+		 * Gets a stable asset version for the given plugin-relative file.
+		 *
+		 * @param string $relative_path Asset path relative to the plugin root.
+		 * @return string
+		 */
+		private function get_asset_version(string $relative_path): string
+		{
+			$asset_path = trailingslashit(MPWEM_PLUGIN_DIR) . ltrim($relative_path, '/');
+
+			if (file_exists($asset_path)) {
+				$filemtime = filemtime($asset_path);
+
+				if (false !== $filemtime) {
+					return (string) $filemtime;
+				}
+			}
+
+			return '1.0.0';
+		}
+
+		/**
+		 * Gets the classic post editor URL for an event.
+		 *
+		 * @param int $post_id Event post ID.
+		 * @return string
+		 */
+		private function get_classic_edit_url(int $post_id): string
+		{
+			return admin_url(
+				sprintf(
+					'post.php?post=%d&action=edit&%s=1',
+					$post_id,
+					self::CLASSIC_BYPASS_QUERY
+				)
+			);
 		}
 
 		public function maybe_redirect_edit_screen(): void
@@ -119,7 +213,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			$post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
-			if (! $post_id || get_post_type($post_id) !== 'mep_events') {
+			if (! $post_id || get_post_type($post_id) !== self::POST_TYPE) {
 				return;
 			}
 			if (! current_user_can('edit_post', $post_id)) {
@@ -143,7 +237,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			$post_type = isset($_GET['post_type']) ? sanitize_key(wp_unslash($_GET['post_type'])) : '';
-			if ($post_type !== 'mep_events') {
+			if ($post_type !== self::POST_TYPE) {
 				return;
 			}
 
@@ -151,9 +245,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			exit;
 		}
 
-		public function filter_edit_post_link(string $link, int $post_id, string $context): string
+		public function filter_edit_post_link($link, $post_id, $context)
 		{
-			if (! $post_id || get_post_type($post_id) !== 'mep_events') {
+			unset($context);
+
+			if (! $post_id || get_post_type($post_id) !== self::POST_TYPE) {
 				return $link;
 			}
 			// Keep classic editor available by explicitly requesting it.
@@ -163,9 +259,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return $this->edit_url($post_id, 'basic');
 		}
 
-		public function filter_row_actions(array $actions, WP_Post $post): array
+		public function filter_row_actions($actions, $post)
 		{
-			if (! $post || $post->post_type !== 'mep_events') {
+			if (! $post || $post->post_type !== self::POST_TYPE) {
 				return $actions;
 			}
 			if (isset($actions['edit'])) {
@@ -177,14 +273,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 			$actions['classic'] = sprintf(
 				'<a href="%s">%s</a>',
-				esc_url(admin_url(sprintf('post.php?post=%d&action=edit&%s=1', $post->ID, self::CLASSIC_BYPASS_QUERY))),
+				esc_url($this->get_classic_edit_url((int) $post->ID)),
 				esc_html__('Classic Editor', 'mage-eventpress')
 			);
 			return $actions;
 		}
 
-		public function enqueue_assets(string $hook): void
+		public function enqueue_assets($hook): void
 		{
+			unset($hook);
+
 			if (! $this->is_edit_screen()) {
 				return;
 			}
@@ -195,14 +293,14 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				'mpwem_event_edit',
 				MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.css',
 				['mpwem_admin'],
-				time()
+				$this->get_asset_version('assets/admin/mpwem_event_edit.css')
 			);
 
 			wp_enqueue_script(
 				'mpwem_event_edit',
 				MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.js',
 				['jquery', 'mpwem_admin'],
-				time(),
+				$this->get_asset_version('assets/admin/mpwem_event_edit.js'),
 				true
 			);
 
@@ -213,7 +311,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'ajax_url'      => admin_url('admin-ajax.php'),
 					'admin_nonce'   => wp_create_nonce('mpwem_admin_nonce'),
 					'create_nonce'  => wp_create_nonce(self::NONCE_ACTION_CREATE),
-					'page_url'      => admin_url('edit.php?post_type=mep_events&page=' . self::PAGE_SLUG),
+					'page_url'      => admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG),
 				]
 			);
 		}
@@ -227,7 +325,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$post_id = isset($_GET['event_id']) ? absint($_GET['event_id']) : 0;
 			$post    = $post_id ? get_post($post_id) : null;
 
-			if ($post_id && (! $post || $post->post_type !== 'mep_events')) {
+			if ($post_id && (! $post || $post->post_type !== self::POST_TYPE)) {
 				wp_die(esc_html__('Invalid event ID.', 'mage-eventpress'));
 			}
 
@@ -245,17 +343,17 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$event_infos = $post_id ? MPWEM_Functions::get_all_info($post_id) : [];
 
-			$back_to_list = admin_url('edit.php?post_type=mep_events');
+			$back_to_list = admin_url('edit.php?post_type=' . self::POST_TYPE);
 			$screen_title = $post_id && $post ? $post->post_title : __('Create Event', 'mage-eventpress');
 			if ($post_id && '' === trim((string) $screen_title)) {
 				$screen_title = sprintf(__('Edit Event #%d', 'mage-eventpress'), $post_id);
 			}
 			$featured_id  = $post_id ? (int) get_post_thumbnail_id($post_id) : 0;
 			$featured_url = $featured_id ? wp_get_attachment_image_url($featured_id, 'medium') : '';
-			$classical_url = $post_id ? admin_url(sprintf('post.php?post=%d&action=edit&%s=1', $post_id, self::CLASSIC_BYPASS_QUERY)) : '';
+			$classical_url = $post_id ? $this->get_classic_edit_url($post_id) : '';
 			$frontend_url = $post_id ? get_permalink($post_id) : '';
 
-?>
+		?>
 			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
@@ -473,13 +571,25 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 														</div>
 													</div>
-													<div class="mpwem-card">
+													<div class="mpwem-card" id="mpwem_gallery_images_card">
 														<div class="mpwem-card__head">
-															<h2><?php esc_html_e('Gallery Images', 'mage-eventpress'); ?></h2>
-															<p><?php esc_html_e('Additional photos.', 'mage-eventpress'); ?></p>
+															<div class="mpwem-card__head-copy">
+																<h2><?php esc_html_e('Gallery Images', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Additional photos.', 'mage-eventpress'); ?></p>
+															</div>
+															<div class="mpwem-card__head-actions" id="mpwem_gallery_images_card_toggle"></div>
 														</div>
 														<div class="mpwem-card__body">
 															<div class="mpwem-media-mount" id="mpwem_wizard_media_mount_basic"></div>
+														</div>
+													</div>
+													<div class="mpwem-card">
+														<div class="mpwem-card__head">
+															<h2><?php esc_html_e('Event List Thumbnail', 'mage-eventpress'); ?></h2>
+															<p><?php esc_html_e('Thumbnail used in event listing layouts.', 'mage-eventpress'); ?></p>
+														</div>
+														<div class="mpwem-card__body">
+															<div class="mpwem-media-mount" id="mpwem_wizard_thumbnail_mount_basic"></div>
 														</div>
 													</div>
 												</aside>
@@ -611,37 +721,35 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 										</div>
 									</div>
 								</div>
+								<footer class="mpwem-event-wizard__footer">
+									<div class="mpwem-event-wizard__footer-inner">
+										<button type="button" class="button mpwem-wizard-prev"><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
+										<div class="mpwem-event-wizard__footer-center">
+											<span class="mpwem-wizard-progress" aria-live="polite"></span>
+										</div>
+										<button type="button" class="button button-primary mpwem-wizard-next"><?php esc_html_e('Next', 'mage-eventpress'); ?></button>
+									</div>
+								</footer>
+								<div class="mpwem-confirm-modal" id="mpwem_reset_booking_modal" aria-hidden="true">
+									<div class="mpwem-confirm-modal__backdrop"></div>
+									<div class="mpwem-confirm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_reset_booking_modal_title">
+										<div class="mpwem-confirm-modal__head">
+											<h3 id="mpwem_reset_booking_modal_title"><?php esc_html_e('Reset Booking Count?', 'mage-eventpress'); ?></h3>
+											<button type="button" class="mpwem-confirm-modal__close" aria-label="<?php esc_attr_e('Close confirmation dialog', 'mage-eventpress'); ?>">&times;</button>
+										</div>
+										<div class="mpwem-confirm-modal__body">
+											<p><?php esc_html_e('This will remove all booking information for this event, including the attendee list. This action cannot be undone.', 'mage-eventpress'); ?></p>
+										</div>
+										<div class="mpwem-confirm-modal__actions">
+											<button type="button" class="button mpwem-confirm-cancel"><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+											<button type="button" class="button mpwem-btn-danger mpwem-confirm-reset"><?php esc_html_e('Yes, Reset Booking', 'mage-eventpress'); ?></button>
+										</div>
+									</div>
+								</div>
+							</form>
+						<?php endif; ?>
 					</div>
-
-					<footer class="mpwem-event-wizard__footer">
-						<div class="mpwem-event-wizard__footer-inner">
-							<button type="button" class="button mpwem-wizard-prev"><?php esc_html_e('Back', 'mage-eventpress'); ?></button>
-							<div class="mpwem-event-wizard__footer-center">
-								<span class="mpwem-wizard-progress" aria-live="polite"></span>
-							</div>
-							<button type="button" class="button button-primary mpwem-wizard-next"><?php esc_html_e('Next', 'mage-eventpress'); ?></button>
-						</div>
-					</footer>
-					<div class="mpwem-confirm-modal" id="mpwem_reset_booking_modal" aria-hidden="true">
-						<div class="mpwem-confirm-modal__backdrop"></div>
-						<div class="mpwem-confirm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_reset_booking_modal_title">
-							<div class="mpwem-confirm-modal__head">
-								<h3 id="mpwem_reset_booking_modal_title"><?php esc_html_e('Reset Booking Count?', 'mage-eventpress'); ?></h3>
-								<button type="button" class="mpwem-confirm-modal__close" aria-label="<?php esc_attr_e('Close confirmation dialog', 'mage-eventpress'); ?>">&times;</button>
-							</div>
-							<div class="mpwem-confirm-modal__body">
-								<p><?php esc_html_e('This will remove all booking information for this event, including the attendee list. This action cannot be undone.', 'mage-eventpress'); ?></p>
-							</div>
-							<div class="mpwem-confirm-modal__actions">
-								<button type="button" class="button mpwem-confirm-cancel"><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
-								<button type="button" class="button mpwem-btn-danger mpwem-confirm-reset"><?php esc_html_e('Yes, Reset Booking', 'mage-eventpress'); ?></button>
-							</div>
-						</div>
-					</div>
-					</form>
-				<?php endif; ?>
-			</div>
-			</main>
+				</main>
 			</div>
 <?php
 		}
@@ -652,12 +760,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				wp_die(esc_html__('Sorry, you are not allowed to do that.', 'mage-eventpress'));
 			}
 
-			if (! isset($_POST['_mpwem_edit_nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_mpwem_edit_nonce'])), self::NONCE_ACTION_SAVE)) {
-				wp_die(esc_html__('Security check failed.', 'mage-eventpress'));
-			}
+			check_admin_referer(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce');
 
 			$post_id = isset($_POST['post_ID']) ? absint($_POST['post_ID']) : 0;
-			if (! $post_id || get_post_type($post_id) !== 'mep_events') {
+			if (! $post_id || get_post_type($post_id) !== self::POST_TYPE) {
 				wp_die(esc_html__('Invalid event.', 'mage-eventpress'));
 			}
 			if (! current_user_can('edit_post', $post_id)) {
@@ -668,13 +774,18 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$post_content = isset($_POST['content']) ? wp_kses_post(wp_unslash($_POST['content'])) : '';
 			$thumb_id     = isset($_POST['_thumbnail_id']) ? absint($_POST['_thumbnail_id']) : 0;
 
-			wp_update_post(
+			$updated_post = wp_update_post(
 				[
 					'ID'           => $post_id,
 					'post_title'   => $post_title,
 					'post_content' => $post_content,
-				]
+				],
+				true
 			);
+
+			if (is_wp_error($updated_post)) {
+				wp_die(esc_html($updated_post->get_error_message()));
+			}
 
 			if (function_exists('set_post_thumbnail') && function_exists('delete_post_thumbnail')) {
 				if ($thumb_id > 0) {
@@ -688,7 +799,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$redirect = add_query_arg(
 				[
-					'post_type' => 'mep_events',
+					'post_type' => self::POST_TYPE,
 					'page'      => self::PAGE_SLUG,
 					'event_id'  => $post_id,
 					'saved'     => 1,
@@ -708,7 +819,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$post_id = wp_insert_post(
 				[
-					'post_type'   => 'mep_events',
+					'post_type'   => self::POST_TYPE,
 					'post_status' => 'draft',
 					'post_title'  => __('New Event', 'mage-eventpress'),
 				],

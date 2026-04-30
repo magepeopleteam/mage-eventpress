@@ -646,6 +646,17 @@
 									'no'  => 'No'
 								)
 							),
+                            array(
+                                'name'    => 'mep_hide_event_list_msg',
+                                'label'   => __( 'Hide/Show Event list Massage', 'mage-eventpress' ),
+                                'desc'    => __( 'Please select either \'Yes\' to hide or \'No\' to display.', 'mage-eventpress' ),
+                                'type'    => 'select',
+                                'default' => mep_change_global_option_section( 'mep_hide_event_list_msg', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
+                                'options' => array(
+                                    'yes' => 'Yes',
+                                    'no'  => 'No'
+                                )
+                            ),
 						)
 					),
 					'single_event_setting_sec' => apply_filters( 'mep_settings_single_event_arr', array(

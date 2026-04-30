@@ -220,6 +220,8 @@ function mpwem_attendee_management(parent, total_qty) {
             success: function (data) {
                 target.html(data).slideDown('fast').promise().done(function () {
                     mpwem_load_seat_status(parent.closest('.mpwem_wrapper'));
+                    mep_change_date_status(parent.closest('.mpwem_wrapper'),date);
+                    mep_change_time_status(parent.closest('.mpwem_wrapper'),date);
                     mpwem_price_calculation(parent);
                 });
             }
@@ -247,6 +249,52 @@ function mpwem_attendee_management(parent, total_qty) {
                 }
             });
         }
+    }
+    function mep_change_date_status(parent,dates) {
+        let target = parent.find('.mep_date_status');
+
+            let post_id = parent.find('[name="mpwem_post_id"]').val();
+            //let dates = parent.find('[name="mpwem_date_time"]').val();
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_change_date_status",
+                    "post_id": post_id,
+                    "dates": dates,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    mpwem_loader_xs(target);
+                },
+                success: function (data) {
+                    target.html(data);
+                }
+            });
+
+    }
+    function mep_change_time_status(parent,dates) {
+        let target = parent.find('.mep_time_status');
+
+        let post_id = parent.find('[name="mpwem_post_id"]').val();
+        //let dates = parent.find('[name="mpwem_date_time"]').val();
+        jQuery.ajax({
+            type: 'POST',
+            url: mpwem_script_var.url,
+            data: {
+                "action": "mep_change_time_status",
+                "post_id": post_id,
+                "dates": dates,
+                "nonce": mpwem_script_var.nonce
+            },
+            beforeSend: function () {
+                mpwem_loader_xs(target);
+            },
+            success: function (data) {
+                target.html(data);
+            }
+        });
+
     }
     $(document).on("click", "div.mpwem_style .decQty, div.mpwem_style .incQty", function () {
         let parent = $(this).closest('.mpwem_registration_area');
@@ -322,7 +370,7 @@ function mpwem_attendee_management(parent, total_qty) {
         e.preventDefault();
 
         const $wrap = $(this).closest('.mpwem_summery');
-        const alreadyInCart = parseInt($(this).attr('data-in-cart'));
+        const alreadyInCart = 0;
         if (alreadyInCart === 1 || alreadyInCart === '1') {
             alert('This product is already in your cart.');
             return false;
@@ -434,7 +482,7 @@ function mpwem_attendee_management(parent, total_qty) {
             nextArrow: '.related_next',
             infinite: true,
             centerMode: false, // Make sure centerMode is false
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 2000,
             centerPadding: '0px',
             slidesToShow: 4,
@@ -498,6 +546,526 @@ function mpwem_attendee_management(parent, total_qty) {
                     mpwem_loader_remove($this);
                 }
             });
+        }
+    });
+
+    $(document).on('click', 'button.mep_event_list_grid', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+let id=target_data.attr('data-unq-id');
+let style='grid';
+let column=target_data.attr('data-column');
+let cat=target_data.attr('data-cat');
+let org=target_data.attr('data-org');
+let tag=target_data.attr('data-tag');
+let city=target_data.attr('data-city');
+let country=target_data.attr('data-country');
+let status=target_data.attr('data-status');
+let year=target_data.attr('data-year');
+let sort=target_data.attr('data-sort');
+let show=target_data.attr('data-show');
+let pagination=target_data.attr('data-pagination');
+let pagination_style=target_data.attr('data-pagination-style');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_list_all",
+                    "id": id,
+                    "style": style,
+                    "column": column,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year,
+                    "sort": sort,
+                    "show": show,
+                    "pagination": pagination,
+                    "pagination_style": pagination_style,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    showLoader();
+                },
+                success: function (data) {
+                    hideLoader();
+                    target.html(data);
+                    if (typeof mepCalendarInit === 'function') {
+                        mepCalendarInit();
+                    }
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_grid').addClass('active');
+                    parent.find('.mep_event_list_list').removeClass('active');
+                    parent.find('.mep_event_list_calender').removeClass('active');
+                    if(parent.find('.mep_event_list_today').hasClass( 'active' )){
+                        parent.find('.mep_event_list_today').trigger('click');
+                    }
+                    if(parent.find('.mep_event_list_this_month').hasClass( 'active' )){
+                        parent.find('.mep_event_list_this_month').trigger('click');
+                    }
+                }
+            });
+
+    });
+    $(document).on('click', 'button.mep_event_list_list', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+let id=target_data.attr('data-unq-id');
+let style='list';
+let column=target_data.attr('data-column');
+let cat=target_data.attr('data-cat');
+let org=target_data.attr('data-org');
+let tag=target_data.attr('data-tag');
+let city=target_data.attr('data-city');
+let country=target_data.attr('data-country');
+let status=target_data.attr('data-status');
+let year=target_data.attr('data-year');
+let sort=target_data.attr('data-sort');
+let show=target_data.attr('data-show');
+let pagination=target_data.attr('data-pagination');
+let pagination_style=target_data.attr('data-pagination-style');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_list_all",
+                    "id": id,
+                    "style": style,
+                    "column": column,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year,
+                    "sort": sort,
+                    "show": show,
+                    "pagination": pagination,
+                    "pagination_style": pagination_style,
+                    "nonce": mpwem_script_var.nonce
+                },
+                beforeSend: function () {
+                    showLoader();
+                },
+                success: function (data) {
+                    hideLoader();
+                    target.html(data);
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_list').addClass('active');
+                    parent.find('.mep_event_list_grid').removeClass('active');
+                    parent.find('.mep_event_list_calender').removeClass('active');
+                    if(parent.find('.mep_event_list_this_month').hasClass( 'active' )){
+                        parent.find('.mep_event_list_this_month').trigger('click');
+                    }
+                }
+            });
+
+    });
+    $(document).on('click', 'button.mep_event_list_calender', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let id=target_data.attr('data-unq-id');
+        let cat=target_data.attr('data-cat');
+        let org=target_data.attr('data-org');
+        let tag=target_data.attr('data-tag');
+        let city=target_data.attr('data-city');
+        let country=target_data.attr('data-country');
+        let status=target_data.attr('data-status');
+        let year=target_data.attr('data-year');
+            jQuery.ajax({
+                type: 'POST',
+                url: mpwem_script_var.url,
+                data: {
+                    "action": "mep_gat_event_calender",
+                    "nonce": mpwem_script_var.nonce,
+                    "cat": cat,
+                    "org": org,
+                    "tag": tag,
+                    "city": city,
+                    "country": country,
+                    "status": status,
+                    "year": year
+                },
+                beforeSend: function () {
+                    showLoader();
+                },
+                success: function (data) {
+                    hideLoader();
+                    target.html(data);
+                    target.find('[data-bg-image]:visible').each(function () {
+                        let target = jQuery(this);
+                        if (target.closest('.sliderAllItem').length === 0) {
+                            let width = target.outerWidth();
+                            let height = target.outerHeight();
+                            if (target.css('background-image') === 'none' || width === 0 || height === 0) {
+                                let bg_url = target.data('bg-image');
+                                if (!bg_url || bg_url.width === 0 || bg_url.width === 'undefined') {
+                                    bg_url = mpwem_empty_image_url;
+                                }
+                                mpwem_resize_bg_image_area(target, bg_url);
+                                target.css('background-image', 'url("' + bg_url + '")').promise().done(function () {
+                                    mpwem_loader_remove(jQuery(this));
+                                });
+                            }
+                        }
+
+                    });
+                    parent.find('.mep_event_list_list').removeClass('active');
+                    parent.find('.mep_event_list_grid').removeClass('active');
+                    parent.find('.mep_event_list_calender').addClass('active');
+                }
+            });
+
+    });
+
+    $(document).on('click', 'button.mep_event_list_all', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        var items = jQuery('.mep-event-list-loop');
+        items.each(function () {jQuery(this).show();});
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').addClass('active');
+        parent.find('.mep_event_list_today').removeClass('active');
+        parent.find('.mep_event_list_this_week').removeClass('active');
+        parent.find('.mep_event_list_this_month').removeClass('active');
+
+    });
+
+    $(document).on('click', 'button.mep_event_list_today', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+
+        var items = jQuery('.mep-event-list-loop');
+        let exit=0;
+        items.each(function () {
+            let today=$this.attr('data-today');
+            var date = jQuery(this).data('date');
+            let date1 = new Date(date);
+            let date2 = new Date(date);
+            if (date===today) {
+                jQuery(this).show();
+                exit=1;
+            } else {
+                jQuery(this).hide();
+            }
+        });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_this_week').removeClass('active');
+        parent.find('.mep_event_list_this_month').removeClass('active');
+        parent.find('.mep_event_list_today').addClass('active');
+    });
+    $(document).on('click', 'button.mep_event_list_this_month', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+
+        var items = jQuery('.mep-event-list-loop');
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth();
+        let firstDay = new Date(year, month, 1);
+        let lastDay = new Date(year, month + 1, 0);
+        let exit=0;
+        items.each(function () {
+            var date = jQuery(this).data('date');
+            let date1 = new Date(date);
+            if (date1 >= firstDay && date1 <= lastDay) {
+                jQuery(this).show();
+                exit=1;
+            } else {
+                jQuery(this).hide();
+            }
+        });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_this_week').removeClass('active');
+        parent.find('.mep_event_list_today').removeClass('active');
+        parent.find('.mep_event_list_this_month').addClass('active');
+    });
+    $(document).on('click', 'button.mep_event_list_this_week', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+
+        var items = jQuery('.mep-event-list-loop');
+        let exit=0;
+        items.each(function () {
+            let week=$this.attr('data-week');
+            let today=parent.find('.mep_event_list_today').attr('data-today');
+            var date = jQuery(this).data('date');
+            let date1 = new Date(date);
+            let date2 = new Date(today);
+            let date3 = new Date(week);
+            if (date1>=date2 && date1<=date3) {
+                jQuery(this).show();
+                exit=1;
+            } else {
+                jQuery(this).hide();
+            }
+        });
+        if(exit===0){
+            parent.find('.no_event_found').show();
+        }else{
+            parent.find('.no_event_found').hide();
+        }
+        parent.find('.pagination_area').slideUp('fast');
+        parent.find('.mep_event_list_all').removeClass('active');
+        parent.find('.mep_event_list_today').removeClass('active');
+        parent.find('.mep_event_list_this_month').removeClass('active');
+        parent.find('.mep_event_list_this_week').addClass('active');
+    });
+    $(document).on('change', 'input[name="filter_with_start_date"]', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let start_date=$this.val();
+        //alert(start_date);
+        let end_date=parent.find('input[name="filter_with_end_date"]').val();
+        let exit=0;
+        if(start_date && end_date) {
+            var items = jQuery('.mep-event-list-loop');
+            items.each(function () {
+                let week = $this.attr('data-week');
+                let today = parent.find('.mep_event_list_today').attr('data-today');
+                var date = jQuery(this).data('date');
+                let date1 = new Date(date);
+                let date2 = new Date(start_date);
+                let date3 = new Date(end_date);
+                if (date1 >= date2 && date1 <= date3) {
+                    jQuery(this).show();
+                    exit=1;
+                } else {
+                    jQuery(this).hide();
+                }
+            });
+            if(exit===0){
+                parent.find('.no_event_found').show();
+            }else{
+                parent.find('.no_event_found').hide();
+            }
+            parent.find('.pagination_area').slideUp('fast');
+            parent.find('.mep_event_list_all').removeClass('active');
+            parent.find('.mep_event_list_today').removeClass('active');
+            parent.find('.mep_event_list_this_month').removeClass('active');
+            parent.find('.mep_event_list_this_week').removeClass('active');
+        }
+    });
+    $(document).on('change', 'input[name="filter_with_end_date"]', function (e) {
+        e.preventDefault();
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let target = parent.find('.mage_grid_box');
+        let target_data = parent.find('.all_filter_item');
+        let start_date=parent.find('input[name="filter_with_start_date"]').val();
+        let end_date=$this.val();
+       // alert(end_date);
+        let exit=0;
+        if(start_date && end_date) {
+            var items = jQuery('.mep-event-list-loop');
+            items.each(function () {
+                let week = $this.attr('data-week');
+                let today = parent.find('.mep_event_list_today').attr('data-today');
+                var date = jQuery(this).data('date');
+                let date1 = new Date(date);
+                let date2 = new Date(start_date);
+                let date3 = new Date(end_date);
+                if (date1 >= date2 && date1 <= date3) {
+                    jQuery(this).show();
+                    exit=1;
+                } else {
+                    jQuery(this).hide();
+                }
+            });
+            if(exit===0){
+                parent.find('.no_event_found').show();
+            }else{
+                parent.find('.no_event_found').hide();
+            }
+            parent.find('.pagination_area').slideUp('fast');
+            parent.find('.mep_event_list_all').removeClass('active');
+            parent.find('.mep_event_list_today').removeClass('active');
+            parent.find('.mep_event_list_this_month').removeClass('active');
+            parent.find('.mep_event_list_this_week').removeClass('active');
+        }
+    });
+    // Advanced Filter Panel Toggle
+    $(document).on('click', 'button.mep_event_list_filter_toggle', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let panel = parent.find('.mep_event_filter_panel');
+        panel.slideToggle('fast');
+        $this.toggleClass('active');
+        // Initialize datepickers with event dates on first open
+        if ( ! panel.data('datepicker-init') ) {
+            let datesAttr = panel.attr('data-event-dates');
+            let availableDates = [];
+            try {
+                availableDates = datesAttr ? JSON.parse(datesAttr) : [];
+            } catch (e) {
+                availableDates = [];
+            }
+            let $startDate = panel.find('input[name="filter_with_start_date"]');
+            let $endDate   = panel.find('input[name="filter_with_end_date"]');
+            function initDatepicker($el) {
+                $el.datepicker('destroy');
+                $el.datepicker({
+                    dateFormat: 'mm/dd/yy',
+                    beforeShowDay: function (date) {
+                        let m = date.getMonth() + 1;
+                        let d = date.getDate();
+                        let y = date.getFullYear();
+                        let dateStr = ('0' + m).slice(-2) + '/' + ('0' + d).slice(-2) + '/' + y;
+                        if ( availableDates.indexOf(dateStr) !== -1 ) {
+                            return [true, '', 'Available'];
+                        }
+                        return [false, '', 'Unavailable'];
+                    },
+                    onSelect: function (selectedDate) {
+                        if ( $(this).attr('name') === 'filter_with_start_date' ) {
+                            $endDate.datepicker('option', 'minDate', selectedDate);
+                            $endDate.trigger('change');
+                        } else if ( $(this).attr('name') === 'filter_with_end_date' ) {
+                            $startDate.datepicker('option', 'maxDate', selectedDate);
+                            $startDate.trigger('change');
+                        }
+                        //applyAllFilters();
+                    }
+                });
+            }
+            initDatepicker($startDate);
+            initDatepicker($endDate);
+            panel.data('datepicker-init', true);
+        }
+    });
+
+    // Clear All Filters
+    $(document).on('click', 'button.mep_event_filter_clear', function () {
+        let parent = $(this).closest('.mep_event_filter_panel');
+        parent.find('input[name="filter_with_title"]').val('');
+        parent.find('input[name="filter_with_start_date"]').val('');
+        parent.find('input[name="filter_with_end_date"]').val('');
+        parent.find('select[name="filter_with_category"]').val('');
+        parent.find('select[name="filter_with_organizer"]').val('');
+        parent.find('select[name="filter_with_city"]').val('');
+        parent.find('select[name="filter_with_state"]').val('');
+        // Also reset legacy single date filter if it exists
+        parent.find('input[name="filter_with_date"]').val('');
+        // Show all items
+        jQuery('.mep-event-list-loop').each(function () {
+            jQuery(this).show();
+        });
+        parent.find('.no_event_found').hide();
+        // Update count display
+        var totalItems = jQuery('.mep-event-list-loop').length;
+        jQuery('.qty_count').text(totalItems);
+    });
+    $(document).on('click', 'button.mep_event_filter_close', function () {
+        let $this = $(this);
+        let parent = $this.closest('.list_with_filter_section');
+        let panel = parent.find('.mep_event_filter_panel');
+        panel.slideToggle('fast');
+        $this.toggleClass('active');
+        // Initialize datepickers with event dates on first open
+        if ( ! panel.data('datepicker-init') ) {
+            let datesAttr = panel.attr('data-event-dates');
+            let availableDates = [];
+            try {
+                availableDates = datesAttr ? JSON.parse(datesAttr) : [];
+            } catch (e) {
+                availableDates = [];
+            }
+            let $startDate = panel.find('input[name="filter_with_start_date"]');
+            let $endDate   = panel.find('input[name="filter_with_end_date"]');
+            function initDatepicker($el) {
+                $el.datepicker('destroy');
+                $el.datepicker({
+                    dateFormat: 'mm/dd/yy',
+                    beforeShowDay: function (date) {
+                        let m = date.getMonth() + 1;
+                        let d = date.getDate();
+                        let y = date.getFullYear();
+                        let dateStr = ('0' + m).slice(-2) + '/' + ('0' + d).slice(-2) + '/' + y;
+                        if ( availableDates.indexOf(dateStr) !== -1 ) {
+                            return [true, '', 'Available'];
+                        }
+                        return [false, '', 'Unavailable'];
+                    },
+                    onSelect: function (selectedDate) {
+                        if ( $(this).attr('name') === 'filter_with_start_date' ) {
+                            $endDate.datepicker('option', 'minDate', selectedDate);
+                            $endDate.trigger('change');
+                        } else if ( $(this).attr('name') === 'filter_with_end_date' ) {
+                            $startDate.datepicker('option', 'maxDate', selectedDate);
+                            $startDate.trigger('change');
+                        }
+                        //applyAllFilters();
+                    }
+                });
+            }
+            initDatepicker($startDate);
+            initDatepicker($endDate);
+            panel.data('datepicker-init', true);
         }
     });
 }(jQuery));
@@ -571,9 +1139,15 @@ function mpwem_attendee_management(parent, total_qty) {
 }(jQuery));
 
 
+function showLoader() {
+    const loader = document.getElementById('loader-overlay');
+    loader.classList.add('active');
+}
 
-
-
+function hideLoader() {
+    const loader = document.getElementById('loader-overlay');
+    loader.classList.remove('active');
+}
 // DatePicker Function
 jQuery(document).ready(function ($) {
 

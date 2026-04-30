@@ -7,12 +7,18 @@
 		die;
 	} // Cannot access pages directly.
 	$event_id    = $event_id ?? 0;
-	$event_infos = $event_infos ?? [];
-	$event_infos = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
+	$event_infos =  MPWEM_Functions::get_all_info( $event_id );
 	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+    $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
+    $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
+    $url_date=$url_date?:$url_date_2;
+    $url_date=$url_date ? date( 'Y-m-d H:i', $url_date ) : '';
+    $date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
+    $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
+    $date                           = $url_date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 		?>
         <div class="date-time-header">
@@ -22,7 +28,7 @@
 				$date_type=$date_type?:'no';
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					// $date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
-					$date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id);
+					$date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : $date;
 
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 					if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {

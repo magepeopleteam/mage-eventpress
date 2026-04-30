@@ -94,7 +94,7 @@ if ( ! empty( $get_option_name ) ) {
 		public function mp_event_all_in_tab_menu_list()
 		{
 ?>
-			<li data-target-tabs="#<?php echo esc_attr($this->get_meta_box_id()); ?>">
+			<li data-target-tabs="#<?php echo esc_attr($this->get_meta_box_id()); ?>" title="<?php echo esc_attr( $this->get_meta_box_title() ); ?>">
 				<?php echo mep_esc_html($this->get_meta_box_title()); ?>
 			</li>
 			<?php

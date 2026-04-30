@@ -505,6 +505,30 @@ input#mep_search_icon { padding: 3px 12px; border-color: #D3D3D3;}
 @media only screen and (min-width: 600px) {
 	.mage_settings_panel_wrap .nav-tab-wrapper { width: 21%; }
 	.mage_settings_panel_wrap .metabox-holder { width: 79%; }
+
+/* Responsive for mp_tab_menu at max-width 1260px */
+@media (max-width: 1260px) {
+    .mp_tab_menu {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+    }
+    .mp_tab_menu ul li {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px 5px;
+    }
+    .mp_tab_menu ul li i {
+        margin-bottom: 5px;
+        margin-right: 0;
+        font-size: 24px;
+    }
+    .mp_tab_details {
+        width: auto;
+        flex: 1;
+    }
+}
 	.wc_status_table_wrapper { width: 800px; margin: auto; margin-top: 50px; }
 }
 @media only screen and (max-width: 600px) {
@@ -512,6 +536,30 @@ input#mep_search_icon { padding: 3px 12px; border-color: #D3D3D3;}
 	.mage_settings_panel_wrap .nav-tab-wrapper { width: 230px; }
 	.mage_settings_panel_wrap .metabox-holder { width: 570px; }
 	.mage_settings_panel_wrap table th { border-bottom: 0; }
+
+	/* Mobile responsive for mp_tab_menu */
+	.mp_tab_menu {
+		width: 50px;
+		min-width: 50px;
+		max-width: 50px;
+		padding: 5px;
+	}
+	.mp_tab_menu ul li {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 8px 2px;
+		font-size: 0;
+	}
+	.mp_tab_menu ul li i {
+		margin-bottom: 0;
+		margin-right: 0;
+		font-size: 20px;
+	}
+	.mp_tab_details {
+		width: auto;
+		flex: 1;
+	}
 }
 select#mep_org_address_list { min-width: 177px !important;}
 h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
@@ -782,4 +830,26 @@ div.mpwem_time_line_area_new .quicktags-toolbar{
 }
 .mep-special-dates-wrap{
     overflow: auto;
+}
+div#mep_event_gq_meta_boxes table th, div#mep_event_gq_meta_boxes table td {
+	width: 100%;
+	display: block;
+	float: none;
+	overflow: hidden;
+}
+
+div#mep_event_gq_meta_boxes table, div#mep_event_gq_meta_boxes table tbody {
+	width: 100%!important;
+	overflow: hidden;
+	display: block;
+}
+
+div#mep_event_gq_meta_boxes table td input {
+	width: 93%!important;
+}
+div#mep_event_gq_meta_boxes span.slider:before {
+	display: none;
+}
+div#mep_event_gq_meta_boxes table td input#enable_global_qty {
+	width: auto!important;
 }

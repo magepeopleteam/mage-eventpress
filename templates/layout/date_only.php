@@ -21,7 +21,7 @@
                 <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr( $mep_event_date_icon ); ?>"></span></h4>
                 <div class="_fdColumn">
                     <h6><?php esc_html_e( 'Event Date:', 'mage-eventpress' ); ?></h6>
-                    <p><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) ); ?></p>
+                    <p class="mep_date_status"><?php echo esc_html( MPWEM_Global_Function::date_format( $upcoming_date ) ); ?></p>
                 </div>
             </div>
 			<?php

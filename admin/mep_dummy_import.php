@@ -47,6 +47,16 @@
 					);
 					wp_insert_post($post_details);
 				}
+				if (empty(mep_get_page_by_slug('events-grid-new-style'))) {
+					$post_details = array(
+						'post_title' => 'Events – New Style',
+						'post_content' => "[events_list]",
+						'post_status' => 'publish',
+						'post_author' => 1,
+						'post_type' => 'page'
+					);
+					wp_insert_post($post_details);
+				}
 				if (empty(mep_get_page_by_slug('events-list-style-with-search-box'))) {
 					$post_details = array(
 						'post_title' => 'Events – List Style with Search Box',
@@ -292,7 +302,7 @@
 					'custom_post' => [
 						'mep_events' => [
 							0 => [
-								'name' => 'Coxesbazar Sea beach Chair Booking',
+								'name' => 'Beachfront Conference & Networking Event',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -317,7 +327,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/close-up-recording-video-with-smartphone-during-concert_1153-7310.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-1.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -374,7 +384,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+8 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+60 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -469,7 +479,7 @@
 								],
 							],
 							1 => [
-								'name' => 'American Towman ShowPlace',
+								'name' => 'City Festival & Community Gathering',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -498,7 +508,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/people-having-fun-wedding-hall_1303-19593.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-2.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -567,7 +577,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+10 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+90 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -657,7 +667,7 @@
 								],
 							],
 							2 => [
-								'name' => 'Sistahs in Business Expo 2021',
+								'name' => 'Modern Business Meetup & Workshop',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -682,7 +692,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/corporate-businessman-giving-presentation-large-audience_53876-101865.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-3.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -751,7 +761,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+40 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+15 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+80 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -841,7 +851,7 @@
 								],
 							],
 							3 => [
-								'name' => 'Tech Career Fair: Exclusive Tech Hiring Event',
+								'name' => 'Exclusive Tech Hiring & Networking Event',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -866,7 +876,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/female-business-executive-giving-speech_107420-63791.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-4.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -935,7 +945,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+50 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+100 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1025,7 +1035,7 @@
 								],
 							],
 							4 => [
-								'name' => 'Free Networking Event In NYC',
+								'name' => 'Luxury Business Gala & Private Networking Night',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -1049,7 +1059,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/group-young-people-are-looking-map-where-they-are-while-walking-autumn-forest_613910-15159.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-5.jpg',
 									'mep_event_type' => 'online',
 									'mp_event_virtual_type_des' => 'Virtual Event',
 									'mep_org_address' => '',
@@ -1130,7 +1140,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+60 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+70 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1220,7 +1230,7 @@
 								],
 							],
 							5 => [
-								'name' => 'Austin Tech Career Fair',
+								'name' => 'Ultimate Live Music Experience & Concert Night',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -1246,7 +1256,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/yes_53876-47102.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-6.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -1315,7 +1325,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+47 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+65 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1405,7 +1415,7 @@
 								],
 							],
 							6 => [
-								'name' => 'Ohio and Kentucky Cannabis & Hemp Expo',
+								'name' => 'Live Music & Cannabis Industry Expo',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -1431,7 +1441,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/speaker-business-meeting-conference-hall_155003-12698.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-7.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -1512,7 +1522,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+25 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",
@@ -1607,7 +1617,7 @@
 								],
 							],
 							7 => [
-								'name' => 'Greenwich Economic Forum',
+								'name' => 'Global Economic Leadership Summit',
 								'content' => '
 
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -1633,7 +1643,7 @@
 								],
 								'post_data' => [
 									//venue/location
-									'feature_image' => 'https://img.freepik.com/free-photo/female-african-american-speaker-giving-presentation-hall-university-workshop_155003-3579.jpg',
+									'feature_image' => 'https://raw.githubusercontent.com/magepeopleteam/dummy-images/main/eventpress/event-8.jpg',
 									'mep_event_type' => 'off',
 									'mp_event_virtual_type_des' => '',
 									'mep_org_address' => '0',
@@ -1714,7 +1724,7 @@
 									'mep_event_custom_date_format' => 'F j, Y',
 									'mep_custom_event_time_format' => 'g:i a',
 									'mep_time_zone_display' => 'no',
-									'event_start_date' => $start_date = date('Y-m-d', strtotime('+30 days', time())),
+									'event_start_date' => $start_date = date('Y-m-d', strtotime('+0 days', time())),
 									'event_start_time' => $start_time = "09:00",
 									'event_end_date' => $end_date = date('Y-m-d', strtotime('+10 days', strtotime($start_date))),
 									'event_end_time' => $end_time = "19:00",

@@ -585,10 +585,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 						$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 						if ( $date_type == 'no') {
 
-                            if($checkDate>=$start_date_time && $end_date_time>=$checkDate){
+                            if($today>=$start_date_time && $end_date_time>=$today){
                                 ?>
                                 <div class="mpwem_get_status">
-                                    <?php echo esc_html__('Event Running','mage-eventpress'); ?>
+                                    <?php echo esc_html__('Happening Now','mage-eventpress'); ?>
                                 </div>
                                 <?php
                             }

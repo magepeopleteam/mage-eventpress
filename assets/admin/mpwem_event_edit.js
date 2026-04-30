@@ -138,17 +138,15 @@
         // Mount into Date Step
         mountPanel($root, '#mpwem_date_settings', 'mpwem_wizard_date_mount');
 
-        // Mount into Display Step
-        mountPanel($root, '#mep_event_faq_meta', 'mpwem_wizard_faq_mount');
-        mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
-        mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
+        // Mount into Advanced Step
         mountPanel($root, '#mep_event_template', 'mpwem_wizard_template_mount');
-
-        // Mount into Related Step
-        mountPanel($root, '#mep_related_event_meta', 'mpwem_wizard_related_mount');
-
-        // Mount into Timeline Step
+        mountPanel($root, '#mep_event_faq_meta', 'mpwem_wizard_faq_mount');
         mountPanel($root, '#mep_event_timeline_meta', 'mpwem_wizard_timeline_mount');
+        mountPanel($root, '#mep_related_event_meta', 'mpwem_wizard_related_mount');
+        mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
+        mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
+        enhanceDisplayStep($root);
+        mountDangerZone($root);
         
         // Handle remaining legacy panels (Additional Sections)
         const $steps = $root.find('.mpwem-step');
@@ -168,6 +166,317 @@
             });
             if ($additionalMount.children().length) $('#mpwem_edit_page_additional').show();
         }
+    }
+
+    function enhanceDisplayStep($root) {
+        const $displayPanel = $root.find('[data-tab-item="#mpwem_wizard_display"]').first();
+        const $displayMainStack = $displayPanel.find('.mpwem-event-wizard__main .mpwem-card__body.mpwem-display-stack').first();
+        const $displaySidebar = $displayPanel.find('.mpwem-event-wizard__sidebar').first();
+        let $displaySidebarStack = $displaySidebar.children('.mpwem-display-sidebar-stack').first();
+
+        if ($displaySidebar.length && !$displaySidebarStack.length) {
+            $displaySidebarStack = $('<div class="mpwem-display-sidebar-stack"></div>');
+            $displaySidebarStack.append($displaySidebar.children());
+            $displaySidebar.append($displaySidebarStack);
+        }
+
+        const sections = [
+            {
+                mount: '#mpwem_wizard_template_mount',
+                className: 'mpwem-display-section--template',
+                title: 'Page Template',
+                desc: 'Choose the public event detail layout.',
+                icon: 'dashicons-layout'
+            },
+            {
+                mount: '#mpwem_wizard_faq_mount',
+                className: 'mpwem-display-section--faq',
+                title: 'FAQs',
+                desc: 'Answer common attendee questions before checkout.',
+                icon: 'dashicons-editor-help'
+            },
+            {
+                mount: '#mpwem_wizard_timeline_mount',
+                className: 'mpwem-display-section--timeline',
+                title: 'Timeline',
+                desc: 'Show the event flow in an organized attendee-friendly format.',
+                icon: 'dashicons-clock'
+            },
+            {
+                mount: '#mpwem_wizard_related_mount',
+                className: 'mpwem-display-section--related',
+                title: 'Related Events',
+                desc: 'Promote similar or upcoming events alongside this one.',
+                icon: 'dashicons-networking'
+            },
+            {
+                mount: '#mpwem_wizard_email_mount',
+                className: 'mpwem-display-section--email',
+                title: 'Email Message',
+                desc: 'Customize attendee confirmation email content.',
+                icon: 'dashicons-email-alt'
+            },
+            {
+                mount: '#mpwem_wizard_seo_mount',
+                className: 'mpwem-display-section--seo',
+                title: 'SEO & Schema',
+                desc: 'Control rich result details used by search engines.',
+                icon: 'dashicons-chart-bar'
+            }
+        ];
+
+        sections.forEach(function(section) {
+            const $mount = $root.find(section.mount).first();
+            if (!$mount.length) return;
+
+            $mount.addClass('mpwem-display-section ' + section.className);
+            if (!$mount.children('.mpwem-display-section__head').length) {
+                $mount.prepend(
+                    $('<div class="mpwem-display-section__head"></div>')
+                        .append($('<div class="mpwem-display-section__head-main"></div>')
+                            .append($('<span class="mpwem-display-section__badge" aria-hidden="true"></span>').append($('<span class="dashicons"></span>').addClass(section.icon || 'dashicons-admin-generic')))
+                            .append($('<h3></h3>').text(section.title))
+                            .append($('<p></p>').text(section.desc)))
+                );
+            }
+
+            if (section.className === 'mpwem-display-section--template' && $displayMainStack.length) {
+                if (!$mount.parent().is($displayMainStack) || !$mount.is($displayMainStack.children().first())) {
+                    $displayMainStack.prepend($mount);
+                }
+            }
+
+            if (section.className === 'mpwem-display-section--seo' || section.className === 'mpwem-display-section--email') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>');
+                    $body.append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                if ($head.length && !$head.find('.mpwem-display-toggle-wrap').length) {
+                    $head.append(
+                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Toggle section"></label>')
+                            .append('<input type="checkbox" class="mpwem-switch-input mpwem-display-toggle" />')
+                            .append('<span class="mpwem-switch-slider"></span>')
+                    );
+                }
+
+                const $toggle = $head.find('.mpwem-display-toggle').first();
+                const syncSimpleToggle = function(isExpanded, useAnimation) {
+                    $mount.toggleClass('is-collapsed', !isExpanded);
+                    $mount.toggleClass('is-expanded', isExpanded);
+                    $toggle.prop('checked', isExpanded).attr('aria-expanded', isExpanded ? 'true' : 'false');
+
+                    if (useAnimation) {
+                        $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isExpanded);
+                    }
+                };
+
+                $toggle.off('change.mpwemSectionToggle').on('change.mpwemSectionToggle', function() {
+                    syncSimpleToggle($(this).is(':checked'), true);
+                });
+
+                syncSimpleToggle(false, false);
+            }
+
+            if (section.className === 'mpwem-display-section--faq') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                const $sourceRow = $mount.find('> .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bt').first();
+                const $switch = $sourceRow.find('.round_switch_label').first();
+                const $checkbox = $switch.find('input[type="checkbox"]').first();
+                const $legacySlider = $switch.find('.round_switch').first();
+
+                if ($head.length && $switch.length && !$head.find('.round_switch_label').length) {
+                    $head.append($switch);
+                    $sourceRow.addClass('mpwem-faq-toggle-row');
+                }
+
+                if ($checkbox.length) {
+                    const target = $checkbox.attr('data-collapse-target') || $legacySlider.attr('data-collapse-target') || '#mep_faq_status';
+                    const $collapse = $mount.find('[data-collapse="' + target + '"]').first();
+
+                    $checkbox.attr('data-collapse-target', target);
+                    if (!$checkbox.attr('data-toggle-values')) {
+                        $checkbox.attr('data-toggle-values', 'on,off');
+                    }
+
+                    const syncFaqToggle = function(useAnimation) {
+                        const isChecked = $checkbox.is(':checked');
+                        $checkbox.val(isChecked ? 'on' : 'off');
+                        $mount.toggleClass('is-collapsed', !isChecked);
+                        $mount.toggleClass('is-expanded', isChecked);
+
+                        if (!$collapse.length) return;
+                        if (useAnimation) {
+                            $collapse.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](250);
+                        } else {
+                            $collapse.toggle(isChecked);
+                        }
+                        $collapse.toggleClass('mActive', isChecked);
+                    };
+
+                    $checkbox.off('change.mpwemFaqToggle').on('change.mpwemFaqToggle', function() {
+                        syncFaqToggle(true);
+                    });
+
+                    syncFaqToggle(false);
+                }
+            }
+
+            if (section.className === 'mpwem-display-section--timeline') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                const $sourceRow = $mount.find('> .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bt').first();
+                const $switch = $sourceRow.find('.round_switch_label').first();
+                const $checkbox = $switch.find('input[type="checkbox"]').first();
+                const $legacySlider = $switch.find('.round_switch').first();
+
+                if ($head.length && $switch.length && !$head.find('.round_switch_label').length) {
+                    $head.append($switch);
+                    $sourceRow.addClass('mpwem-timeline-toggle-row');
+                }
+
+                if ($checkbox.length) {
+                    const target = $checkbox.attr('data-collapse-target') || $legacySlider.attr('data-collapse-target') || '#mep_timeline_status';
+                    const $collapse = $mount.find('[data-collapse="' + target + '"]').first();
+
+                    $checkbox.attr('data-collapse-target', target);
+                    if (!$checkbox.attr('data-toggle-values')) {
+                        $checkbox.attr('data-toggle-values', 'on,off');
+                    }
+
+                    const syncTimelineToggle = function(useAnimation) {
+                        const isChecked = $checkbox.is(':checked');
+                        $checkbox.val(isChecked ? 'on' : 'off');
+                        $mount.toggleClass('is-collapsed', !isChecked);
+                        $mount.toggleClass('is-expanded', isChecked);
+
+                        if (!$collapse.length) return;
+                        if (useAnimation) {
+                            $collapse.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](250);
+                        } else {
+                            $collapse.toggle(isChecked);
+                        }
+                        $collapse.toggleClass('mActive', isChecked);
+                    };
+
+                    $checkbox.off('change.mpwemTimelineToggle').on('change.mpwemTimelineToggle', function() {
+                        syncTimelineToggle(true);
+                    });
+
+                    syncTimelineToggle(false);
+                }
+            }
+
+            if (section.className === 'mpwem-display-section--related') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                const $bodySwitch = $mount.find('> .mp_tab_item > section .mpev-switch').first();
+                const $toggleSection = $bodySwitch.closest('section');
+                const $checkbox = $bodySwitch.find('input[type="checkbox"]').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>');
+                    $body.append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                if ($head.length && $bodySwitch.length && !$head.find('.mpev-switch, .mpwem-switch-wrap').length) {
+                    $head.append($bodySwitch);
+                }
+
+                if ($toggleSection.length) {
+                    $toggleSection.addClass('mpwem-related-toggle-row');
+                }
+
+                if ($checkbox.length) {
+                    const target = $checkbox.attr('data-collapse-target') || '#mpev-related-event-display';
+                    const $collapse = $mount.find(target).first();
+
+                    $checkbox.attr('data-collapse-target', target);
+                    if (!$checkbox.attr('data-toggle-values')) {
+                        $checkbox.attr('data-toggle-values', 'on,off');
+                    }
+
+                    const syncRelatedToggle = function(useAnimation) {
+                        const isChecked = $checkbox.is(':checked');
+                        $checkbox.val(isChecked ? 'on' : 'off');
+                        $mount.toggleClass('is-collapsed', !isChecked);
+                        $mount.toggleClass('is-expanded', isChecked);
+
+                        if (!$collapse.length) return;
+                        if (useAnimation) {
+                            $collapse.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](250);
+                        } else {
+                            $collapse.toggle(isChecked);
+                        }
+                    };
+
+                    $checkbox.off('change.mpwemRelatedToggle').on('change.mpwemRelatedToggle', function() {
+                        syncRelatedToggle(true);
+                    });
+
+                    syncRelatedToggle(false);
+                }
+            }
+
+            if (section.className === 'mpwem-display-section--template') {
+                $mount.addClass('is-expanded');
+            }
+        });
+
+        $root.find('#mpwem_wizard_display .mpwem-card--help-display .mpwem-card__body').each(function() {
+            const $body = $(this);
+            if ($body.find('.mpwem-display-guide').length) return;
+
+            $body.append(
+                $('<div class="mpwem-display-guide"></div>')
+                    .append($('<span></span>').append($('<strong></strong>').text('Template')).append($('<small></small>').text('Choose the event page design first. This controls the visitor-facing layout.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('FAQs')).append($('<small></small>').text('Enable this when buyers may ask common questions before booking.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('Timeline')).append($('<small></small>').text('Use this for agenda items, session flow, or key moments during the event.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('Related Events')).append($('<small></small>').text('Show similar or upcoming events when you want to cross-promote more listings.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('Email Message')).append($('<small></small>').text('Edit the attendee confirmation message and insert dynamic tags where needed.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('SEO & Schema')).append($('<small></small>').text('Complete this only when search result presentation and structured data matter.')))
+            );
+        });
+    }
+
+    function mountDangerZone($root) {
+        const $mount = $root.find('#mpwem_wizard_danger_mount').first();
+        if (!$mount.length || $mount.children().length) return;
+
+        const $sourceRow = $root.find('[data-tab-item="#mpwem_event_settings"] ._padding_bt').filter(function() {
+            return $(this).find('.mpwem_reset_booking').length > 0;
+        }).first();
+
+        if (!$sourceRow.length) {
+            $root.find('#mpwem_advanced_danger_zone').hide();
+            return;
+        }
+
+        const helpText = $.trim($sourceRow.find('.label-text').first().text()) || 'This action is irreversible.';
+        const buttonText = $.trim($sourceRow.find('.mpwem_reset_booking').first().text()) || 'Reset Booking';
+
+        $sourceRow.remove();
+
+        const $danger = $('<div class="mpwem-danger-zone"></div>');
+        $danger.append(
+            $('<div class="mpwem-danger-zone__intro"></div>')
+                .append($('<span class="mpwem-danger-zone__eyebrow"></span>').text('Reset booking count'))
+                .append($('<p></p>').text(helpText))
+        );
+        $danger.append(
+            $('<button type="button" class="button mpwem-btn-danger mpwem-danger-reset-trigger"></button>')
+                .text(buttonText)
+        );
+
+        $mount.append($danger);
     }
 
     function enhanceVenueGrid($root) {
@@ -1053,6 +1362,69 @@
         });
     }
 
+    function bindDangerZone($root) {
+        const $modal = $root.find('#mpwem_reset_booking_modal').first();
+        if (!$modal.length) return;
+
+        const closeModal = function() {
+            $modal.attr('aria-hidden', 'true').removeClass('is-open');
+        };
+
+        const openModal = function() {
+            $modal.attr('aria-hidden', 'false').addClass('is-open');
+        };
+
+        $root.on('click', '.mpwem-danger-reset-trigger', function(e) {
+            e.preventDefault();
+            openModal();
+        });
+
+        $modal.on('click', '.mpwem-confirm-modal__backdrop, .mpwem-confirm-modal__close, .mpwem-confirm-cancel', function(e) {
+            e.preventDefault();
+            closeModal();
+        });
+
+        $(document).on('keydown.mpwemDangerZone', function(e) {
+            if (e.key === 'Escape' && $modal.hasClass('is-open')) {
+                closeModal();
+            }
+        });
+
+        $modal.on('click', '.mpwem-confirm-reset', function(e) {
+            e.preventDefault();
+
+            const config = getConfig();
+            const postId = $root.find('[name="post_ID"]').val();
+            const $button = $(this);
+            const originalText = $button.data('mpwemOriginalText') || $button.text();
+            $button.data('mpwemOriginalText', originalText);
+
+            if (!config.ajax_url || !config.admin_nonce || !postId) {
+                showNotice($root, 'Reset booking is not configured for this event.', 'error');
+                closeModal();
+                return;
+            }
+
+            $button.prop('disabled', true).text('Resetting...');
+
+            $.post(config.ajax_url, {
+                action: 'mpwem_reset_booking',
+                post_id: postId,
+                nonce: config.admin_nonce
+            }).done(function(response) {
+                const message = typeof response === 'string' && response.trim().length ? response.trim() : 'Booking reset completed.';
+                showNotice($root, message, 'success');
+                closeModal();
+            }).fail(function(xhr) {
+                const response = xhr.responseJSON || {};
+                const message = response.data && response.data.message ? response.data.message : 'Booking reset unsuccessful.';
+                showNotice($root, message, 'error');
+            }).always(function() {
+                $button.prop('disabled', false).text(originalText);
+            });
+        });
+    }
+
     $(function () {
         const $root = getWizardRoot();
         if (!$root.length) return;
@@ -1064,6 +1436,7 @@
         window.setTimeout(markReady, 2500);
         bindCreateEvent($root);
         bindFeaturedImage($root);
+        bindDangerZone($root);
 
         try {
             mountAll($root);

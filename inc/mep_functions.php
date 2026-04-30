@@ -5524,7 +5524,7 @@ function mep_change_date_status() {
         }
         return apply_filters( 'mep_gq_total_left_sect', $total_left, $event_id, $event_date );
     }
-
+    if (!is_plugin_active('woocommerce-event-manager-addon-early-bird/early-bird.php')) {
     if ( ! function_exists( 'mep_early_bird_column' ) ) {
     add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
     function mep_early_bird_column( $event_id ) {
@@ -5591,4 +5591,5 @@ function mep_change_date_status() {
             }
             return $return;
         }
+    }
     }

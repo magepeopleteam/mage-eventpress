@@ -685,7 +685,6 @@
 	.mep_list_event_details p.read-more a { color: var(--color_theme);}
 	.mep_list_event_details p.read-more a:hover { color: #DDD;}
 	.mep_event_grid_item .mep_list_event_details { margin: 0; height: auto; width: auto;padding:20px; }
-	.mpwem_related_area .mep_event_grid_item .mep_list_event_details,
 	[data-column="4"] .mep_event_grid_item .mep_list_event_details{
 		padding: 10px;
 	}

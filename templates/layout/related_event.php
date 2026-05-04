@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="related_item">
+            <div class="related_item mep_event_list">
 				<?php foreach ( $related_tours as $_event_id ) {
 					do_action( 'mep_event_list_shortcode', $_event_id,'column_style', 'grid',25 );
 				} ?>

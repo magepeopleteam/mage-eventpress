@@ -381,7 +381,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				?>
                 <div class="mep_list_thumb mpwem_style">
                     <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
-					<?php do_action( 'mpwem_list_ribbon', $event_infos ); ?>
+					<?php do_action( 'mpwem_list_ribbon', $event_id ); ?>
 				</div>
 				<?php
 			}
@@ -574,7 +574,6 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$event_list_setting_sec    = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 				$show_date_list            = array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
 				$event_list_setting=get_option('event_list_setting_sec');
-                $event_list_setting    = empty( $event_list_setting ) && ! is_array( $event_list_setting ) ? [] : $event_list_setting;
                 $show_msg            = array_key_exists( 'mep_hide_event_list_msg', $event_list_setting ) ? $event_list_setting['mep_hide_event_list_msg'] : 'no';
 
                 if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
@@ -688,7 +687,9 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                     </div>
 				<?php }
 			}
-			public function list_ribbon( $event_infos ) {
+			public function list_ribbon( $event_id ) {
+                $event_infos              = MPWEM_Functions::get_all_info( $event_id );
+                echo '<pre>';print_r($event_infos);echo '</pre>';
 				$available                      = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
 				$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 				$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
@@ -719,6 +720,20 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 							?>
                             <div class='mepev-ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div><?php
 						}
+
+                        $all_dates   = MPWEM_Functions::get_dates( $event_id );
+                        $all_times   = MPWEM_Functions::get_times( $event_id, );
+
+                        $upcoming_date                           = MPWEM_Functions::get_upcoming_date_time( $event_id);
+                        $upcoming_date            = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+                        $total_sold      = mep_ticket_type_sold( $event_id, '', $upcoming_date );
+                        $total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $upcoming_date );
+                        $total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $upcoming_date );
+                        $total_available = $total_ticket - ( $total_sold + $total_reserve );
+                        $available = max( $total_available, 0 );
+
+                        //echo '<pre>';print_r($upcoming_date);echo '</pre>';
+                        //echo '<pre>';print_r($available);echo '</pre>';
 						if ( $sold_out_ribbon == 'yes' && $reg_status == 'on' && $available <= 0 ) {
 							?>
                             <div class="mepev-ribbon sold-out"><?php esc_html_e( 'Sold Out', 'mage-eventpress' ); ?></div><?php

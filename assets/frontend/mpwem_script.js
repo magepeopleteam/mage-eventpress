@@ -810,7 +810,7 @@ let pagination_style=target_data.attr('data-pagination-style');
         let month = today.getMonth();
         let firstDay = new Date(year, month, 1);
         let lastDay = new Date(year, month + 1, 0);
-        alert(lastDay);
+        //alert(lastDay);
         let exit=0;
         items.each(function () {
             var date = jQuery(this).data('date');

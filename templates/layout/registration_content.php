@@ -17,7 +17,7 @@
 	$date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	//echo '<pre>';			print_r($all_times);			echo '</pre>';
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>'; everyday2026-04-30 12:00 no2026-04-30 11:59:00
-	$event_infos              = (isset($event_infos) && is_array($event_infos) && sizeof($event_infos)>0) ?$event_infos: MPWEM_Functions::get_all_info( $event_id );
+	$event_infos              = MPWEM_Functions::get_all_info( $event_id );
 	// echo '<pre>';			print_r($event_infos);			echo '</pre>';
 	$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
     $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;

@@ -559,6 +559,12 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $next7Days->modify('+7 days');
                 $new_date=date('Y-m-d',strtotime($date));
                 $checkDate = new DateTime($new_date);
+                $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                $start_date_time = new DateTime(date('Y-m-d',strtotime($start_date)));
+                $end_date        = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_date' );
+                $end_time        = MPWEM_Global_Function::get_post_info( $event_id, 'event_end_time' );
+                $end_date_time   =  new DateTime(date('Y-m-d',strtotime($end_date)));
                 //echo $checkDate;
                 //echo $today;
 				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
@@ -567,21 +573,28 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$event_list_setting_sec    = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec    = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 				$show_date_list            = array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
-				if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
+				$event_list_setting=get_option('event_list_setting_sec');
+                $event_list_setting    = empty( $event_list_setting ) && ! is_array( $event_list_setting ) ? [] : $event_list_setting;
+                $show_msg            = array_key_exists( 'mep_hide_event_list_msg', $event_list_setting ) ? $event_list_setting['mep_hide_event_list_msg'] : 'no';
+
+                if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
                     <div class="mpwem_style mpwem_list_date_list">
                         <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class=" mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span> <i class="fas fa-caret-down"></i></button>
                         <div class="date_list_area" data-collapse="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>"></div>
                     </div>
 				<?php }
-                else{?>
+                else{
+                    if($show_msg=='no'){
+                    ?>
 					<div class="mpwem_status_area">
 						<?php
 						$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 						if ( $date_type == 'no') {
-                            if($checkDate==$today){
+
+                            if($today>=$start_date_time && $end_date_time>=$today){
                                 ?>
                                 <div class="mpwem_get_status">
-                                    <?php echo esc_html__('Event Running','mage-eventpress'); ?>
+                                    <?php echo esc_html__('Happening Now','mage-eventpress'); ?>
                                 </div>
                                 <?php
                             }
@@ -661,6 +674,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 						?>
 					</div>
 					<?php
+                    }
                 }
 			}
 			public function list_hover( $event_infos ) {

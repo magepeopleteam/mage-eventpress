@@ -25,6 +25,12 @@
 	if (is_plugin_active('woocommerce-event-manager-addon-recurring-event/recurring_events.php')) {
 		deactivate_plugins( '/woocommerce-event-manager-addon-recurring-event/recurring_events.php' );
 	}
+	if (is_plugin_active('woocommerce-event-manager-addon-global-quantity/global-quantity.php')) {
+		deactivate_plugins( '/woocommerce-event-manager-addon-global-quantity/global-quantity.php' );
+	}
+	if (is_plugin_active('woocommerce-event-manager-addon-early-bird/early-bird.php')) {
+		deactivate_plugins( '/woocommerce-event-manager-addon-early-bird/early-bird.php' );
+	}
 
 	/**
 	 * Set a transient on plugin activation to trigger the

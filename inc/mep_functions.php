@@ -5100,3 +5100,496 @@ function mep_change_date_status() {
         }
         die();
     }
+
+    add_action( 'admin_init', 'mep_gq_update' );
+    function mep_gq_update() {
+        if ( get_option( 'mpwem_gq_update' ) != 'completed' ) {
+            $gq_type = MPWEM_Global_Function::get_settings( 'mep_gq_settings', 'mep_gq_type' );
+            if ( $gq_type ) {
+                $query = MPWEM_Query::query_post_type( MPWEM_Functions::get_cpt() );
+                foreach ( $query->posts as $result ) {
+                    $post_id = $result->ID;
+                    if ( $gq_type == 'global' ) {
+                        update_post_meta( $post_id, 'mep_gq_type', $gq_type );
+                    } else {
+                        update_post_meta( $post_id, 'mep_gq_type', 'date_wise' );
+                    }
+                }
+            }
+            $args = array(
+                'post_type'      => 'mep_events',
+                'posts_per_page' => - 1
+            );
+            $qr   = new WP_Query( $args );
+            foreach ( $qr->posts as $result ) {
+                $post_id   = $result->ID;
+                $seat_left = mep_count_total_available_seat( $post_id );
+                update_post_meta( $post_id, 'mep_total_seat_left', $seat_left );
+            }
+            update_option( 'mpwem_gq_update', 'completed' );
+        }
+    }
+    if ( ! class_exists( 'MPWEMAGQ_Functions' ) ) {
+        class MPWEMAGQ_Functions {
+            public function __construct() {
+
+                add_filter( 'filter_mpwem_gq_ticket', [ $this, 'gq_ticket' ], 99, 3 );
+                add_filter( 'filter_mpwem_gq_ex_service', [ $this, 'gq_ex_service' ], 99, 3 );
+                add_filter( 'mpwem_event_total_seat_counts', [ $this, 'event_total_seat' ], 99, 3 );
+                add_filter( 'mpwem_event_total_ex_counts', [ $this, 'event_total_ex' ], 99, 3 );
+                add_filter( 'mpwem_event_total_resv_seat_count', [ $this, 'event_total_resv_seat' ], 99, 3 );
+                add_filter( 'mpwem_event_total_resv_ex_count', [ $this, 'event_total_resv_ex' ], 99, 3 );
+                add_filter( 'mep_event_total_seat_count_checkout', [ $this, 'event_total_seat_checkout' ], 99, 3 );
+                add_filter( 'mpwem_gq_qty_statistics', [ $this, 'gq_qty_statistics' ], 99, 3 );
+                add_action( 'mpwem_gq_statistics', [ $this, 'gq_statistics' ], 10, 3 );
+                add_action( 'mepgq_max_qty_hook', [ $this, 'max_qty_hook_func' ], 10, 3 );
+                add_action( 'mepgq_max_ex_qty_hook', [ $this, 'max_ex_qty_hook_func' ], 10, 3 );
+            }
+            public function gq_ticket( $total_seat, $available, $event_id ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $total_seat = $available;
+                }
+                return $total_seat;
+            }
+            public function gq_ex_service( $total_seat, $available, $event_id ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'ex_enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $total_seat = $available;
+                }
+                return $total_seat;
+            }
+            public function event_total_seat( $total_seat, $event_id, $date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' ) {
+                        $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_total_seat', $total_seat );
+                    } else {
+                        if ( $recurring == 'yes' && $date ) {
+                            $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                            $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                            $start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+                            if ( strtotime( $date ) == strtotime( $start_date_time ) ) {
+                                $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'event_date_gq', $total_seat );
+                            } else {
+                                $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+                                if ( sizeof( $more_dates ) > 0 ) {
+                                    foreach ( $more_dates as $more_date ) {
+                                        $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+                                        $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+                                        $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+                                        if ( strtotime( $date ) == strtotime( $more_start_date_time ) ) {
+                                            $total_seat = array_key_exists( 'event_date_gq_md', $more_date ) ? $more_date['event_date_gq_md'] : $total_seat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $total_seat;
+            }
+            public function event_total_ex( $total_seat, $event_id, $date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'ex_enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'ex_mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' ) {
+                        $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'ex_mep_gq_total_seat', $total_seat );
+                    } else {
+                        if ( $recurring == 'yes' && $date ) {
+                            $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                            $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                            $start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+                            if ( strtotime( $date ) == strtotime( $start_date_time ) ) {
+                                $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'ex_event_date_gq', $total_seat );
+                            } else {
+                                $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+                                if ( sizeof( $more_dates ) > 0 ) {
+                                    foreach ( $more_dates as $more_date ) {
+                                        $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+                                        $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+                                        $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+                                        if ( strtotime( $date ) == strtotime( $more_start_date_time ) ) {
+                                            $total_seat = array_key_exists( 'ex_event_date_gq_md', $more_date ) ? $more_date['ex_event_date_gq_md'] : $total_seat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $total_seat;
+            }
+            public function event_total_resv_seat( $total_seat, $event_id, $date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' ) {
+                        $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_total_resv_seat', $total_seat );
+                    } else {
+                        if ( $recurring == 'yes' && $date ) {
+                            $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                            $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                            $start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+                            if ( strtotime( $date ) == strtotime( $start_date_time ) ) {
+                                $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'event_date_gq_rev', $total_seat );
+                            } else {
+                                $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+                                if ( sizeof( $more_dates ) > 0 ) {
+                                    foreach ( $more_dates as $more_date ) {
+                                        $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+                                        $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+                                        $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+                                        if ( strtotime( $date ) == strtotime( $more_start_date_time ) ) {
+                                            $total_seat = array_key_exists( 'event_date_gq_md_rev', $more_date ) ? $more_date['event_date_gq_md_rev'] : $total_seat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $total_seat;
+            }
+            public function event_total_resv_ex( $total_seat, $event_id, $date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'ex_enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'ex_mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' ) {
+                        $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'ex_mep_gq_total_resv_seat', $total_seat );
+                    } else {
+                        if ( $recurring == 'yes' && $date ) {
+                            $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                            $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                            $start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+                            if ( strtotime( $date ) == strtotime( $start_date_time ) ) {
+                                $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'ex_event_date_gq_rev', $total_seat );
+                            } else {
+                                $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+                                if ( sizeof( $more_dates ) > 0 ) {
+                                    foreach ( $more_dates as $more_date ) {
+                                        $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+                                        $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+                                        $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+                                        if ( strtotime( $date ) == strtotime( $more_start_date_time ) ) {
+                                            $total_seat = array_key_exists( 'ex_event_date_gq_md_rev', $more_date ) ? $more_date['ex_event_date_gq_md_rev'] : $total_seat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $total_seat;
+            }
+            public function event_total_seat_checkout( $total_seat, $event_id, $event_date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' ) {
+                        $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_total_seat', $total_seat );
+                    } else {
+                        if ( $recurring == 'yes' && $event_date ) {
+                            $start_date      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_date' );
+                            $start_time      = MPWEM_Global_Function::get_post_info( $event_id, 'event_start_time' );
+                            $start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+                            if ( strtotime( $event_date ) == strtotime( $start_date_time ) ) {
+                                $total_seat = MPWEM_Global_Function::get_post_info( $event_id, 'event_date_gq', $total_seat );
+                            } else {
+                                $more_dates = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_more_date', [] );
+                                if ( sizeof( $more_dates ) > 0 ) {
+                                    foreach ( $more_dates as $more_date ) {
+                                        $more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+                                        $more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+                                        $more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+                                        if ( strtotime( $event_date ) == strtotime( $more_start_date_time ) ) {
+                                            $total_seat = array_key_exists( 'event_date_gq_md', $more_date ) ? $more_date['event_date_gq_md'] : $total_seat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return $total_seat;
+            }
+            public function gq_qty_statistics( $ticket_qty, $event_id ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    return null;
+                }
+                return $ticket_qty;
+            }
+            public function gq_statistics( $event_id, $date ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $total   = MPWEM_Functions::get_total_ticket( $event_id, $date );
+                    $reserve = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+                    $sold    = MPWEM_Functions::get_total_sold( $event_id, $date )
+                    ?>
+                    <tr>
+                        <th><?php esc_html_e( '🌐 Global Quantity (All Ticket Types)', 'mage-eventpress-gq' ); ?></th>
+                        <th><?php echo esc_html( $total ); ?></th>
+                        <th><?php echo esc_html( $reserve ); ?></th>
+                        <th><?php echo esc_html( $sold ); ?></th>
+                        <th><?php echo esc_html( $total - $reserve - $sold ); ?></th>
+                    </tr>
+                    <?php
+                }
+            }
+            public function max_qty_hook_func( $event_id, $available = 0, $date = '' ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' || ( $recurring == 'yes' && $date ) ) {
+                        ?>
+                        <input type="hidden" name="mepgq_max_qty" value="<?php echo esc_attr($available); ?>"/>
+                        <?php
+                    }
+                }
+            }
+            public function max_ex_qty_hook_func( $event_id, $available = 0, $date = '' ) {
+                $event_global_qty_status = MPWEM_Global_Function::get_post_info( $event_id, 'ex_enable_global_qty', 'off' );
+                if ( $event_global_qty_status == 'on' ) {
+                    $mep_gq_type = MPWEM_Global_Function::get_post_info( $event_id, 'ex_mep_gq_type', 'global' );
+                    $recurring   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+                    if ( $mep_gq_type == 'global' || ( $recurring == 'yes' && $date ) ) {
+                        ?>
+                        <input type="hidden" name="mepgq_max_ex_qty" value="<?php echo $available; ?>"/>
+                        <?php
+                    }
+                }
+            }
+        }
+        new MPWEMAGQ_Functions();
+    }
+    if ( ! function_exists( 'mep_gq_ticket_total_sold' ) ) {
+        function mep_gq_ticket_total_sold( $event_id, $date = '' ) {
+            //   echo $date;
+            if ( $date ) {
+                $args = array(
+                    'post_type'      => 'mep_events_attendees',
+                    'posts_per_page' => - 1,
+                    'meta_query'     => array(
+                        'relation' => 'AND',
+                        array(
+                            'relation' => 'AND',
+                            array(
+                                'key'     => 'ea_event_id',
+                                'value'   => $event_id,
+                                'compare' => '='
+                            ),
+                            array(
+                                'key'     => 'ea_event_date',
+                                'value'   => $date,
+                                'compare' => 'LIKE'
+                            )
+                        ),
+                        array(
+                            'relation' => 'OR',
+                            array(
+                                'key'     => 'ea_order_status',
+                                'value'   => 'processing',
+                                'compare' => '='
+                            ),
+                            array(
+                                'key'     => 'ea_order_status',
+                                'value'   => 'completed',
+                                'compare' => '='
+                            )
+                        )
+                    )
+                );
+            } else {
+                $args = array(
+                    'post_type'      => 'mep_events_attendees',
+                    'posts_per_page' => - 1,
+                    'meta_query'     => array(
+                        'relation' => 'AND',
+                        array(
+                            'relation' => 'AND',
+                            array(
+                                'key'     => 'ea_event_id',
+                                'value'   => $event_id,
+                                'compare' => '='
+                            )
+                        ),
+                        array(
+                            'relation' => 'OR',
+                            array(
+                                'key'     => 'ea_order_status',
+                                'value'   => 'processing',
+                                'compare' => '='
+                            ),
+                            array(
+                                'key'     => 'ea_order_status',
+                                'value'   => 'completed',
+                                'compare' => '='
+                            )
+                        )
+                    )
+                );
+            }
+            $loop = new WP_Query( $args );
+            return $loop->post_count;
+        }
+    }
+    add_filter( 'mep_event_total_seat_counts', 'mep_gq_modifiy_event_total_seat', 99, 2 );
+    add_filter( 'mep_event_total_seat_count', 'mep_gq_modifiy_event_total_seat', 99, 2 );
+    function mep_gq_modifiy_event_total_seat( $total_seat, $event_id ) {
+        $global_qty_status       = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+        $event_global_qty_status = get_post_meta( $event_id, 'enable_global_qty', true ) ? get_post_meta( $event_id, 'enable_global_qty', true ) : 'off';
+        $recurring               = get_post_meta( $event_id, 'mep_enable_recurring', true ) ? get_post_meta( $event_id, 'mep_enable_recurring', true ) : 'no';
+        if ( $recurring == 'no' && $global_qty_status == 'yes' && $event_global_qty_status == 'on' ) {
+            $total_seat = get_post_meta( $event_id, 'mep_gq_total_seat', true ) ? get_post_meta( $event_id, 'mep_gq_total_seat', true ) : $total_seat;
+        }
+        return $total_seat;
+    }
+    function mep_gq_get_event_dates_arr( $event_id ) {
+        $event_start_datetime  = get_post_meta( $event_id, 'event_start_datetime', true ) ? date( 'Y-m-d H:i', strtotime( get_post_meta( $event_id, 'event_start_datetime', true ) ) ) : '';
+        $event_expire_datetime = get_post_meta( $event_id, 'event_end_datetime', true );
+        $event_gq_default      = get_post_meta( $event_id, 'event_date_gq', true );
+        $event_more_dates      = get_post_meta( $event_id, 'mep_event_more_date', true ) ? get_post_meta( $event_id, 'mep_event_more_date', true ) : [];
+        $date_arr              = array(
+            array(
+                'start' => $event_start_datetime,
+                'end'   => $event_expire_datetime,
+                'gq'    => $event_gq_default
+            )
+        );
+        $m_date_arr            = [];
+        if ( sizeof( $event_more_dates ) > 0 ) {
+            $i = 0;
+            foreach ( $event_more_dates as $mdate ) {
+                $mstart                    = date( 'Y-m-d H:i', strtotime( $mdate['event_more_start_date'] . ' ' . $mdate['event_more_start_time'] ) );
+                $mend                      = $mdate['event_more_end_date'] . ' ' . $mdate['event_more_end_time'];
+                $m_date_arr[ $i ]['start'] = $mstart;
+                $m_date_arr[ $i ]['end']   = $mend;
+                $m_date_arr[ $i ]['gq']    = $mdate['event_date_gq_md'];
+                $i ++;
+            }
+        }
+        $event_dates = array_merge( $date_arr, $m_date_arr );
+// echo '<pre>'; print_r($event_dates); echo '</pre>';
+        return $event_dates;
+    }
+    function mep_gq_get_datewise_gq( $event_id, $date ) {
+        $date_arr = mep_gq_get_event_dates_arr( $event_id );
+        $gq       = '';
+        foreach ( $date_arr as $_date_arr ) {
+            if ( $_date_arr['start'] === $date ) {
+                $gq = $_date_arr['gq'];
+            }
+        }
+        return $gq;
+    }
+    function mep_gq_check_datewise_data( $event_id ) {
+        $mep_event_ticket_type = get_post_meta( $event_id, 'mep_event_ticket_type', true ) ? get_post_meta( $event_id, 'mep_event_ticket_type', true ) : array();
+        $date_arr              = mep_gq_get_event_dates_arr( $event_id );
+        $gq                    = 0;
+        foreach ( $date_arr as $_date_arr ) {
+            $gq = (int) $_date_arr['gq'] + $gq;
+        }
+        return $gq;
+    }
+    add_filter( 'mep_event_total_seat_count', 'mep_gq_modifiy_event_total_seat_label', 90, 2 );
+    function mep_gq_modifiy_event_total_seat_label( $total_left, $post_id ) {
+        $event_global_qty_status = get_post_meta( $post_id, 'enable_global_qty', true ) ? get_post_meta( $post_id, 'enable_global_qty', true ) : 'off';
+        $count_datewise_gq       = mep_gq_check_datewise_data( $post_id );
+        $total_left_gq           = $event_global_qty_status == 'yes' || $count_datewise_gq > 0 ? 1 : $total_left;
+        return $total_left_gq;
+    }
+    add_filter( 'mep_total_available_seat', 'mep_gq_modifiy_event_ticket_type_total_seat', 90, 4 );
+    function mep_gq_modifiy_event_ticket_type_total_seat( $total_left, $event_id, $field = '', $event_date = '' ) {
+        $mep_gq_type             = MPWEM_Global_Function::get_post_info( $event_id, 'mep_gq_type', 'global' );
+        $event_global_qty_status = get_post_meta( $event_id, 'enable_global_qty', true ) ? get_post_meta( $event_id, 'enable_global_qty', true ) : 'off';
+        if ( $mep_gq_type == 'global' && $event_global_qty_status == 'on' ) {
+            $total_seat = (int) get_post_meta( $event_id, 'mep_gq_total_seat', true );
+            $total_resv = get_post_meta( $event_id, 'mep_gq_total_resv_seat', true ) ? get_post_meta( $event_id, 'mep_gq_total_resv_seat', true ) : 0;
+            $total_sold = ! empty( $event_date ) ? (int) mep_gq_ticket_total_sold( $event_id, $event_date ) : (int) mep_ticket_sold( $event_id );
+            $total_left = (int) $total_seat - ( (int) $total_sold + (int) $total_resv );
+        } elseif ( $mep_gq_type == 'datewise' ) {
+            $total_seat  = mep_gq_get_datewise_gq( $event_id, $event_date );
+            $total_resv  = get_post_meta( $event_id, 'mep_gq_total_resv_seat', true ) ? get_post_meta( $event_id, 'mep_gq_total_resv_seat', true ) : 0;
+            $total_sold  = ! empty( $event_date ) ? (int) mep_gq_ticket_total_sold( $event_id, $event_date ) : (int) mep_ticket_sold( $event_id );
+            $_total_left = (int) $total_seat - ( (int) $total_sold + (int) $total_resv );
+            $total_left  = ! empty( $total_seat ) ? $_total_left : $total_left;
+        }
+        return apply_filters( 'mep_gq_total_left_sect', $total_left, $event_id, $event_date );
+    }
+    if (!is_plugin_active('woocommerce-event-manager-addon-early-bird/early-bird.php')) {
+    if ( ! function_exists( 'mep_early_bird_column' ) ) {
+    add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
+    function mep_early_bird_column( $event_id ) {
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        ?>
+        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
+        <?php
+    }
+    }
+    if ( ! function_exists( 'mep_early_bird_column_saved' ) ) {
+    add_action( 'mpwem_add_extra_input_box', 'mep_early_bird_column_saved', 90,2 );
+    function mep_early_bird_column_saved( $event_id, $ticket_info = [] ) {
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $sale_start          = array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
+        ?>
+        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+            <div class="_dFlex">
+                <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
+                <label>
+                    <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_start ) ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
+                </label>
+            </div>
+        </td>
+        <?php
+    }
+    }
+    if ( ! function_exists( 'mep_early_bird_save_data' ) ) {
+        add_filter('mpwem_ticket_type_arr_save', 'mep_early_bird_save_data');
+        function mep_early_bird_save_data($data) {
+            $sale_start_date = $_POST['option_sale_start_date'] ? mage_array_strip($_POST['option_sale_start_date']) : array();
+            $sale_start_time = $_POST['option_sale_start_time'] ? mage_array_strip($_POST['option_sale_start_time']) : array();
+            if (sizeof($sale_start_date) > 0) {
+                $count = count($data);
+                for ($i = 0; $i < $count; $i++) {
+                    if (array_key_exists($i, $data)) {
+                        $data[$i]['option_sale_start_date'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i])) : '';
+                        $data[$i]['option_sale_start_time'] = !empty($sale_start_time[$i]) ? stripslashes(strip_tags($sale_start_time[$i])) : '';
+                        $data[$i]['option_sale_start_date_t'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i] . ' ' . $sale_start_time[$i])) : '';
+                    }
+                }
+            }
+            return $data;
+        }
+    }
+    if ( ! function_exists( 'mep_early_bird_startdatetime' ) ) {
+        add_filter('mep_sale_start_datetime', 'mep_early_bird_startdatetime', 10, 3);
+        function mep_early_bird_startdatetime($date, $event_id, $field) {
+            return isset($field['option_sale_start_date_t']) ? date('Y-m-d H:i', strtotime($field['option_sale_start_date_t'])) : $date;
+        }
+    }
+    if ( ! function_exists( 'mpwem_early_date_filter' ) ) {
+        add_filter('mpwem_early_date', 'mpwem_early_date_filter', 10, 3);
+        function mpwem_early_date_filter($return, $ticket_type, $event_id) {
+            $sale_start_datetime = array_key_exists('option_sale_start_date_t', $ticket_type) && !empty($ticket_type['option_sale_start_date_t']) ? date('Y-m-d H:i', strtotime($ticket_type['option_sale_start_date_t'])) : '';
+            if ($sale_start_datetime) {
+                $current_time = current_time('Y-m-d H:i');
+                if (strtotime($current_time) > strtotime($sale_start_datetime)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return $return;
+        }
+    }
+    }

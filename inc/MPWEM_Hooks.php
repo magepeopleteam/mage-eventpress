@@ -450,6 +450,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
+				$start_time = '';
                 if ($date_type == 'no' || $date_type == 'yes') {
                     $first_date = is_array($all_dates) && !empty($all_dates) ? current($all_dates) : [];
                     $start_time = is_array($first_date) && array_key_exists('time', $first_date) ? $first_date['time'] : '';

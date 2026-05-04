@@ -88,7 +88,7 @@
 									if (is_string($check_terms) || (is_array($check_terms) && sizeof($check_terms) == 0)) {
 										foreach ($dummy_taxonomy as $taxonomy_data) {
 											$term = wp_insert_term($taxonomy_data['name'], $taxonomy);
-											if (array_key_exists('tax_data', $taxonomy_data)) {
+											if (is_array($taxonomy_data) && array_key_exists( 'tax_data', $taxonomy_data )) {
 												foreach ($taxonomy_data['tax_data'] as $meta_key => $data) {
 													update_term_meta($term['term_id'], $meta_key, $data);
 												}
@@ -115,12 +115,12 @@
 										'post_type' => $custom_post,
 									]);
 									$related_events[] = $post_id;
-									if (array_key_exists('taxonomy_terms', $dummy_data)) {
+									if (is_array($dummy_data) && array_key_exists( 'taxonomy_terms', $dummy_data )) {
 										foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
 											wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
 										}
 									}
-									if (array_key_exists('post_data', $dummy_data)) {
+									if (is_array($dummy_data) && array_key_exists( 'post_data', $dummy_data )) {
 										foreach ($dummy_data['post_data'] as $meta_key => $data) {
 											if ($meta_key == 'feature_image') {
 												$url = $data;

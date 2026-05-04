@@ -22,8 +22,8 @@
 				$post_id = get_the_id();
 				wp_nonce_field( 'mpwem_type_nonce', 'mpwem_type_nonce' );
 				$event_infos              = MPWEM_Functions::get_all_info( $post_id );
-				$single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-				$speaker_status           = array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+				$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$speaker_status           = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
 				?>
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                     <div class="mp_tab_menu">
@@ -646,10 +646,10 @@
                 $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
                 $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
                 $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
-                $total_seat = array_key_exists('event_date_gq_md', $field) ? $field['event_date_gq_md'] : '';
-                $res_seat = array_key_exists('event_date_gq_md_rev', $field) ? $field['event_date_gq_md_rev'] : '';
-                $ex_total_seat = array_key_exists('ex_event_date_gq_md', $field) ? $field['ex_event_date_gq_md'] : '';
-                $ex_res_seat = array_key_exists('ex_event_date_gq_md_rev', $field) ? $field['ex_event_date_gq_md_rev'] : '';
+                $total_seat = is_array($field) && array_key_exists( 'event_date_gq_md', $field ) ? $field['event_date_gq_md'] : '';
+                $res_seat = is_array($field) && array_key_exists( 'event_date_gq_md_rev', $field ) ? $field['event_date_gq_md_rev'] : '';
+                $ex_total_seat = is_array($field) && array_key_exists( 'ex_event_date_gq_md', $field ) ? $field['ex_event_date_gq_md'] : '';
+                $ex_res_seat = is_array($field) && array_key_exists( 'ex_event_date_gq_md_rev', $field ) ? $field['ex_event_date_gq_md_rev'] : '';
                 ?>
                 <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/> </label>
@@ -706,10 +706,10 @@
                     $count = count($event_date_gq_md);
                     for ($i = 0; $i < $count; $i++) {
                         if ($event_date_gq_md[$i] != '') {
-                            $data[$i]['event_date_gq_md'] = array_key_exists($i, $event_date_gq_md) ? $event_date_gq_md[$i] : '';
-                            $data[$i]['event_date_gq_md_rev'] = array_key_exists($i, $event_date_gq_md_rev) ? $event_date_gq_md_rev[$i] : '';
-                            $data[$i]['ex_event_date_gq_md'] = array_key_exists($i, $ex_event_date_gq_md) ? $ex_event_date_gq_md[$i] : '';
-                            $data[$i]['ex_event_date_gq_md_rev'] = array_key_exists($i, $ex_event_date_gq_md_rev) ? $ex_event_date_gq_md_rev[$i] : '';
+                            $data[$i]['event_date_gq_md'] = is_array($event_date_gq_md) && array_key_exists( $i, $event_date_gq_md ) ? $event_date_gq_md[$i] : '';
+                            $data[$i]['event_date_gq_md_rev'] = is_array($event_date_gq_md_rev) && array_key_exists( $i, $event_date_gq_md_rev ) ? $event_date_gq_md_rev[$i] : '';
+                            $data[$i]['ex_event_date_gq_md'] = is_array($ex_event_date_gq_md) && array_key_exists( $i, $ex_event_date_gq_md ) ? $ex_event_date_gq_md[$i] : '';
+                            $data[$i]['ex_event_date_gq_md_rev'] = is_array($ex_event_date_gq_md_rev) && array_key_exists( $i, $ex_event_date_gq_md_rev ) ? $ex_event_date_gq_md_rev[$i] : '';
                         }
                     }
                 }

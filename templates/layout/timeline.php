@@ -13,9 +13,9 @@
             <div class="timeline_area">
 				<?php
 					foreach ( $time_line_infos as $time_line_info ) {
-						$title        = array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
-						$time         = array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
-						$content      = array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
+						$title        = is_array($time_line_info) && array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
+						$time         = is_array($time_line_info) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
+						$content      = is_array($time_line_info) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
 						$collapse_id  = uniqid( 'mpwem_time_line' );
 						$active_class = $counter == 0 ? 'mActive' : '';
 						$counter ++;

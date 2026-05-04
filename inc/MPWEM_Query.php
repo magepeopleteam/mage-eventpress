@@ -254,49 +254,49 @@
 			}
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
 				$meta_query = [];
-				if ( array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_id',
 						'value'   => $filter_args['post_id'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_user_id',
 						'value'   => $filter_args['ea_user_id'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_date',
 						'value'   => $filter_args['event_date'],
 						'compare' => 'LIKE'
 					);
 				}
-				if ( array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_ticket_type',
 						'value'   => $filter_args['ea_ticket_type'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_seat_name',
 						'value'   => $filter_args['ea_seat_name'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
 					$meta_query[] = array(
 						'key'     => 'mep_checkin',
 						'value'   => $filter_args['mep_checkin'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && is_array($filter_args) && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
 					$meta_query[] = array(
 						'key'     => $filter_args['filter_key'],
 						'value'   => $filter_args['filter_value'],

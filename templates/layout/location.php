@@ -13,17 +13,17 @@
 	$type = $type ?? '';
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos               = MPWEM_Functions::get_all_info( $event_id );
-	$map_status                = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
-	$is_virtual                = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
-	$event_template            = array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
-	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+	$map_status                = is_array($event_infos) && array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
+	$is_virtual                = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
+	$event_template            = is_array($event_infos) && array_key_exists( 'mep_event_template', $event_infos ) ? $event_infos['mep_event_template'] : '';
+	$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
-	$icon_setting_sec          = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+	$hide_location_details     = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
+	$icon_setting_sec          = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 	$icon_setting_sec          = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-	$location_icon             = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
+	$location_icon             = is_array($icon_setting_sec) && array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
 	if ( $hide_location_details == 'no' && $is_virtual != 'online' ) {
-		$location = array_key_exists( 'full_address', $event_infos ) ? $event_infos['full_address'] : [];
+		$location = is_array($event_infos) && array_key_exists( 'full_address', $event_infos ) ? $event_infos['full_address'] : [];
 		if ( is_array( $location ) && sizeof( $location ) > 0 ) {
 			if ( $type == 'sidebar' ) {
 				?>
@@ -72,7 +72,7 @@
 			} elseif(empty($type)){
                 echo esc_html(implode(', ', $location));
             }else {
-				echo esc_html( array_key_exists($type,$location)?$location[ $type ]:'');
+				echo esc_html( is_array($location) && array_key_exists( $type, $location )?$location[ $type ]:'');
 			}
 		}
 	}

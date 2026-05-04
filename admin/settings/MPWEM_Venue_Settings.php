@@ -99,8 +99,8 @@
 				$values          = get_post_custom( $post_id );
 				$user_api        = mep_get_option( 'google-map-api', 'general_setting_sec', '' );
 				$map_type        = mep_get_option( 'mep_google_map_type', 'general_setting_sec', 'iframe' );
-				$mep_org_address = array_key_exists( 'mep_org_address', $values ) ? $values['mep_org_address'][0] : 0;
-				$map_visible     = array_key_exists( 'mep_sgm', $values ) ? $values['mep_sgm'][0] : 0;
+				$mep_org_address = is_array($values) && array_key_exists( 'mep_org_address', $values ) ? $values['mep_org_address'][0] : 0;
+				$map_visible     = is_array($values) && array_key_exists( 'mep_sgm', $values ) ? $values['mep_sgm'][0] : 0;
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [
@@ -210,14 +210,14 @@
                                         <input id="pac-input" name='location_name' value=''/>
                                     </div>
                                 <input type="hidden" class="form-control" id="latitude" name="latitude" value="<?php
-									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
+									if ( is_array($values) && array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
 										echo esc_attr( $values['latitude'][0] );
 									} else {
 										echo esc_attr( get_post_meta( $post_id, 'latitude', true ) );
 									}
 								?>">
                                 <input type="hidden" class="form-control" id="longitude" name="longitude" value="<?php
-									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
+									if ( is_array($values) && array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
 										echo esc_attr( $values['longitude'][0] );
 									} else {
 										echo esc_attr( get_post_meta( $post_id, 'longitude', true ) );
@@ -235,14 +235,14 @@
 									// Get coordinates from post meta or form values
 									$saved_lat = get_post_meta( $post_id, 'latitude', true );
 									$saved_lon = get_post_meta( $post_id, 'longitude', true );
-									if ( array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
+									if ( is_array($values) && array_key_exists( 'latitude', $values ) && ! empty( $values['latitude'][0] ) ) {
 										$lat = str_replace( ',', '.', $values['latitude'][0] );
 									} elseif ( ! empty( $saved_lat ) ) {
 										$lat = str_replace( ',', '.', $saved_lat );
 									} else {
 										$lat = '37.0902';
 									}
-									if ( array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
+									if ( is_array($values) && array_key_exists( 'longitude', $values ) && ! empty( $values['longitude'][0] ) ) {
 										$lon = str_replace( ',', '.', $values['longitude'][0] );
 									} elseif ( ! empty( $saved_lon ) ) {
 										$lon = str_replace( ',', '.', $saved_lon );

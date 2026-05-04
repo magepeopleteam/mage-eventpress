@@ -86,7 +86,7 @@
 			}
 			public function before_calculate_totals( $cart_object ) {
 				foreach ( $cart_object->cart_contents as $key => $value ) {
-					$event_id = array_key_exists( 'event_id', $value ) ? $value['event_id'] : 0;
+					$event_id = is_array($value) && array_key_exists( 'event_id', $value ) ? $value['event_id'] : 0;
 					if ( get_post_type( $event_id ) == 'mep_events' ) {
 						$event_total_price = $value['event_tp'];
 						$value['data']->set_price( $event_total_price );
@@ -99,18 +99,18 @@
 			}
 			public function get_item_data( $item_data, $cart_item ) {
 				ob_start();
-				$eid = array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
+				$eid = is_array($cart_item) && array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
 				if ( get_post_type( $eid ) == 'mep_events' ) {
 					$general_setting_sec  =  MPWEM_Global_Function::get_setting('general_setting_sec') ;
-					$hide_location_status = array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
-					$hide_date_status     = array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
-					$user_info            = array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];
-					$ticket_type_arr      = array_key_exists( 'event_ticket_info', $cart_item ) ? $cart_item['event_ticket_info'] : [];
-					$event_extra_service  = array_key_exists( 'event_extra_service', $cart_item ) ? $cart_item['event_extra_service'] : [];
-					$event_date           = array_key_exists( 'event_cart_date', $cart_item ) ? $cart_item['event_cart_date'] : '';
+					$hide_location_status = is_array($general_setting_sec) && array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
+					$hide_date_status     = is_array($general_setting_sec) && array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
+					$user_info            = is_array($cart_item) && array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];
+					$ticket_type_arr      = is_array($cart_item) && array_key_exists( 'event_ticket_info', $cart_item ) ? $cart_item['event_ticket_info'] : [];
+					$event_extra_service  = is_array($cart_item) && array_key_exists( 'event_extra_service', $cart_item ) ? $cart_item['event_extra_service'] : [];
+					$event_date           = is_array($cart_item) && array_key_exists( 'event_cart_date', $cart_item ) ? $cart_item['event_cart_date'] : '';
 					$date_format          = MPWEM_Global_Function::check_time_exit_date( $event_date ) ? 'full' : 'date';
-					$location             = array_key_exists( 'event_cart_location', $cart_item ) ? $cart_item['event_cart_location'] : '';
-					$same_attendee        = array_key_exists( 'mep_enable_same_attendee', $general_setting_sec ) ? $general_setting_sec['mep_enable_same_attendee'] : 'no';
+					$location             = is_array($cart_item) && array_key_exists( 'event_cart_location', $cart_item ) ? $cart_item['event_cart_location'] : '';
+					$same_attendee        = is_array($general_setting_sec) && array_key_exists( 'mep_enable_same_attendee', $general_setting_sec ) ? $general_setting_sec['mep_enable_same_attendee'] : 'no';
 					// echo '<pre>';print_r(MPWEM_Form_Builder::get_form_array($eid));echo '</pre>';
 					$form_array = MPWEM_Layout::get_form_array( $eid );
 					?>
@@ -173,7 +173,7 @@
 				global $woocommerce;
 				$items = $woocommerce->cart->get_cart();
 				foreach ( $items as $item => $values ) {
-					$event_id        = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; // $values['event_id'];
+					$event_id        = is_array($values) && array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; // $values['event_id'];
 					$check_seat_plan = get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) ? get_post_meta( $event_id, 'mepsp_event_seat_plan_info', true ) : array();
 					if ( get_post_type( $event_id ) == 'mep_events' && is_array( $check_seat_plan ) && sizeof( $check_seat_plan ) == 0 ) {
 						$total_seat = apply_filters( 'mep_event_total_seat_counts', mep_event_total_seat( $event_id, 'total' ), $event_id );
@@ -237,16 +237,16 @@
 				return $wc_get_cart_url;
 			}
 			public function checkout_create_order_line_item( $item, $cart_item_key, $values, $order ) {
-				$eid           = array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
+				$eid           = is_array($values) && array_key_exists( 'event_id', $values ) ? $values['event_id'] : 0; //$values['event_id'];
 				$location_text = mep_get_option( 'mep_location_text_x', 'label_setting_sec', esc_html__( 'Location', 'mage-eventpress' ) );
 				$date_text     = mep_get_option( 'mep_event_date_text_x', 'label_setting_sec', esc_html__( 'Date', 'mage-eventpress' ) );
 				if ( get_post_type( $eid ) == 'mep_events' ) {
 					$event_id                = $eid;
-					$mep_events_extra_prices = array_key_exists( 'event_extra_option', $values ) ? $values['event_extra_option'] : [];
-					$cart_location           = array_key_exists( 'event_cart_location', $values ) ? $values['event_cart_location'] : '';
-					$event_extra_service     = array_key_exists( 'event_extra_service', $values ) ? $values['event_extra_service'] : [];
-					$ticket_type_arr         = array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
-					$event_cart_date_raw     = array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
+					$mep_events_extra_prices = is_array($values) && array_key_exists( 'event_extra_option', $values ) ? $values['event_extra_option'] : [];
+					$cart_location           = is_array($values) && array_key_exists( 'event_cart_location', $values ) ? $values['event_cart_location'] : '';
+					$event_extra_service     = is_array($values) && array_key_exists( 'event_extra_service', $values ) ? $values['event_extra_service'] : [];
+					$ticket_type_arr         = is_array($values) && array_key_exists( 'event_ticket_info', $values ) ? $values['event_ticket_info'] : '';
+					$event_cart_date_raw     = is_array($values) && array_key_exists( 'event_cart_date', $values ) ? $values['event_cart_date'] : '';
 					$cart_date               = ! empty( $event_cart_date_raw ) ? $event_cart_date_raw : '';
 					$event_user_info         = $values['event_user_info'];
 					$recurring               = get_post_meta( $eid, 'mep_enable_recurring', true ) ? get_post_meta( $eid, 'mep_enable_recurring', true ) : 'no';
@@ -256,7 +256,7 @@
 							$count = 1;
 							foreach ( $ticket_type_arr as $_event_recurring_date ) {
 								if($count == 1){
-									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
+									$event_date_value = is_array($_event_recurring_date) && array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
 									if ( ! empty( $event_date_value ) ) {
 										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' )) );
 									}
@@ -269,7 +269,7 @@
 							$count = 1;
 							foreach ( $ticket_type_arr as $_event_recurring_date ) {
 								if($count == 1){
-									$event_date_value = array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
+									$event_date_value = is_array($_event_recurring_date) && array_key_exists( 'event_date', $_event_recurring_date ) ? $_event_recurring_date['event_date'] : '';
 									if ( ! empty( $event_date_value ) ) {
 										$item->add_meta_data( $date_text, get_mep_datetime( $event_date_value, apply_filters( 'mep_cart_date_format', 'date-time-text' ),$event_id ) );
 									}
@@ -287,34 +287,34 @@
 					}
 					$custom_forms_id = mep_get_user_custom_field_ids( $eid );
 					foreach ( $event_user_info as $userinf ) {
-						if ( array_key_exists( 'user_name', $userinf ) && ! empty( $userinf['user_name'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_name', $userinf ) && ! empty( $userinf['user_name'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Name' ), $userinf['user_name'] );
 						}
-						if ( array_key_exists( 'user_email', $userinf ) && ! empty( $userinf['user_email'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_email', $userinf ) && ! empty( $userinf['user_email'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Email' ), $userinf['user_email'] );
 						}
-						if ( array_key_exists( 'user_phone', $userinf ) && ! empty( $userinf['user_phone'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_phone', $userinf ) && ! empty( $userinf['user_phone'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Phone' ), $userinf['user_phone'] );
 						}
-						if ( array_key_exists( 'user_address', $userinf ) && ! empty( $userinf['user_address'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_address', $userinf ) && ! empty( $userinf['user_address'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Address' ), $userinf['user_address'] );
 						}
-						if ( array_key_exists( 'user_gender', $userinf ) && ! empty( $userinf['user_gender'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_gender', $userinf ) && ! empty( $userinf['user_gender'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Gender' ), $userinf['user_gender'] );
 						}
-						if ( array_key_exists( 'user_tshirtsize', $userinf ) && ! empty( $userinf['user_tshirtsize'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_tshirtsize', $userinf ) && ! empty( $userinf['user_tshirtsize'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'T-Shirt Size' ), $userinf['user_tshirtsize'] );
 						}
-						if ( array_key_exists( 'user_company', $userinf ) && ! empty( $userinf['user_company'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_company', $userinf ) && ! empty( $userinf['user_company'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Company' ), $userinf['user_company'] );
 						}
-						if ( array_key_exists( 'user_designation', $userinf ) && ! empty( $userinf['user_designation'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_designation', $userinf ) && ! empty( $userinf['user_designation'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Designation' ), $userinf['user_designation'] );
 						}
-						if ( array_key_exists( 'user_website', $userinf ) && ! empty( $userinf['user_website'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_website', $userinf ) && ! empty( $userinf['user_website'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Website' ), $userinf['user_website'] );
 						}
-						if ( array_key_exists( 'user_vegetarian', $userinf ) && ! empty( $userinf['user_vegetarian'] ) ) {
+						if ( is_array($userinf) && array_key_exists( 'user_vegetarian', $userinf ) && ! empty( $userinf['user_vegetarian'] ) ) {
 							$item->add_meta_data( mep_get_reg_label( $event_id, 'Vegetarian' ), $userinf['user_vegetarian'] );
 						}
 						if ( is_array( $custom_forms_id ) && sizeof( $custom_forms_id ) > 0 ) {
@@ -508,7 +508,7 @@
 				$total_price = 0;
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
-						$current_qty = array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
+						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
 						$ticket_name               = explode( '_', $name );
                         $_name=$ticket_name[0];
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
@@ -517,7 +517,7 @@
 							$ticket_info[ $key ]['ticket_name']  = $name;
 							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
 							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
-							$ticket_info[ $key ]['max_qty']      = array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
+							$ticket_info[ $key ]['max_qty']      = is_array($max_qty) && array_key_exists( $key, $max_qty ) ? $max_qty[ $key ] : 0;
 							$ticket_info[ $key ]['event_date']   = $start_date;
 							$ticket_info[ $key ]['event_id']     = $post_id;
 						}
@@ -529,8 +529,8 @@
 				$price = 0;
 				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
-						$qty           = array_key_exists( 'ticket_qty', $ticket_info ) ? $ticket_info['ticket_qty'] : 0;
-						$current_price = array_key_exists( 'ticket_price', $ticket_info ) ? $ticket_info['ticket_price'] : 0;
+						$qty           = is_array($ticket_info) && array_key_exists( 'ticket_qty', $ticket_info ) ? $ticket_info['ticket_qty'] : 0;
+						$current_price = is_array($ticket_info) && array_key_exists( 'ticket_price', $ticket_info ) ? $ticket_info['ticket_price'] : 0;
 						$price         = $price + $current_price * $qty;
 					}
 				}
@@ -545,7 +545,7 @@
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
 					foreach ( $names as $key => $name ) {
-						$current_qty = array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
+						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
 						if ( $name && $current_qty > 0 ) {
 							$ticket_info[ $key ]['service_name']  = $name;
 							$ticket_info[ $key ]['service_price'] = MPWEM_Functions::get_ex_price_by_name( $name, $post_id, $ticket_types );
@@ -560,8 +560,8 @@
 				$price = 0;
 				if ( is_array( $ticket_infos ) && sizeof( $ticket_infos ) > 0 ) {
 					foreach ( $ticket_infos as $ticket_info ) {
-						$qty           = array_key_exists( 'service_qty', $ticket_info ) ? $ticket_info['service_qty'] : 0;
-						$current_price = array_key_exists( 'service_price', $ticket_info ) ? $ticket_info['service_price'] : 0;
+						$qty           = is_array($ticket_info) && array_key_exists( 'service_qty', $ticket_info ) ? $ticket_info['service_qty'] : 0;
+						$current_price = is_array($ticket_info) && array_key_exists( 'service_price', $ticket_info ) ? $ticket_info['service_price'] : 0;
 						$price         = $price + $current_price * $qty;
 					}
 				}
@@ -579,8 +579,8 @@
 					if ( is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
 						foreach ( $form_array as $form ) {
 							if ( is_array( $form ) && sizeof( $form ) > 0 ) {
-								$type = array_key_exists( 'type', $form ) ? $form['type'] : '';
-								$name = array_key_exists( 'name', $form ) ? $form['name'] : '';
+								$type = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
+								$name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
 								if ( $type && $name && $type != 'title' ) {
 									$submit_infos[ $name ] = isset( $_POST[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name ] ) ) : [];
 								}
@@ -603,13 +603,13 @@
 									if ( is_array( $form_array ) && sizeof( $form_array ) > 0 && is_array( $submit_infos ) && sizeof( $submit_infos ) > 0 ) {
 										foreach ( $form_array as $form ) {
 											if ( is_array( $form ) && sizeof( $form ) > 0 ) {
-												$type       = array_key_exists( 'type', $form ) ? $form['type'] : '';
-												$input_name = array_key_exists( 'name', $form ) ? $form['name'] : '';
+												$type       = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
+												$input_name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
 												if ( $type && $input_name && $type != 'title' ) {
 													if ( $type == 'file' ) {
 														$attendee_info[ $count ] = apply_filters( 'mpwem_upload_attendee_file', $attendee_info[ $count ], $input_name, $count );
 													} else {
-														$data                                    = array_key_exists( $input_name, $submit_infos ) ? $submit_infos[ $input_name ] : [];
+														$data                                    = is_array($submit_infos) && array_key_exists( $input_name, $submit_infos ) ? $submit_infos[ $input_name ] : [];
 														$attendee_info[ $count ] [ $input_name ] = $data[ $count ];
 													}
 												}
@@ -633,7 +633,7 @@
 			}
 			public static function show_attendee( $user, $form_array, $same_attendee = 'yes' ) {
 				if ( is_array( $user ) && sizeof( $user ) >0) {
-					$post_id = array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
+					$post_id = is_array($user) && array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
 					?>
                     <div class="_layout_info_xs_mt_xs">
 						<?php if ( $same_attendee == 'yes' ) { ?>
@@ -643,9 +643,9 @@
                         <ul class="cart_list">
 							<?php
 								if ( $same_attendee == 'no' ) {
-									$ticket_name = array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
-									$ticket_price = array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
-									$ticket_qty = array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
+									$ticket_name = is_array($user) && array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
+									$ticket_price = is_array($user) && array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
+									$ticket_qty = is_array($user) && array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
 									$ticket_text = '<li>' . esc_attr( $ticket_name) . " &nbsp;&nbsp;" . wc_price( (float) $ticket_price) . '&nbsp;x&nbsp;' . esc_attr( $ticket_qty ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
                                     //echo '<li><pre>'.print_r($user).'</pre></li>';
 									echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
@@ -653,10 +653,10 @@
 								}
 								foreach ( $form_array as $form ) {
 									if ( is_array( $form ) && sizeof( $form ) > 0 ) {
-										$type = array_key_exists( 'type', $form ) ? $form['type'] : '';
-										$name = array_key_exists( 'name', $form ) ? $form['name'] : '';
-										if ( $type && $name && $type != 'title' && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {
-											$label = array_key_exists( 'label', $form ) ? $form['label'] : '';
+										$type = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
+										$name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
+										if ( $type && $name && $type != 'title' && is_array($user) && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {
+											$label = is_array($form) && array_key_exists( 'label', $form ) ? $form['label'] : '';
 											if ( $type == 'file' ) {
 												$upload_dir = wp_upload_dir();
 												$file_url   = $upload_dir['baseurl'] . '/mep_attendee_file_list/' . $user[ $name ];
@@ -743,7 +743,7 @@
 				echo wp_kses_post( html_entity_decode( $content ) );
 			}
 			public function cart_item_price( $price, $cart_item, $r ) {
-				if ( array_key_exists( 'event_id', $cart_item ) && get_post_type( $cart_item['event_id'] ) == 'mep_events' ) {
+				if ( is_array($cart_item) && array_key_exists( 'event_id', $cart_item ) && get_post_type( $cart_item['event_id'] ) == 'mep_events' ) {
 					$price = wc_price( $cart_item['event_tp']);
 				}
 				return $price;

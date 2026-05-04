@@ -16,7 +16,7 @@
 			}
 			public function super_slider( $post_id = '', $event_infos = [] ) {
 				$event_infos = is_array( $event_infos ) && sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $post_id );
-				$display     = array_key_exists( 'mep_display_slider', $event_infos ) ? $event_infos['mep_display_slider'] : 'on';
+				$display     = is_array($event_infos) && array_key_exists( 'mep_display_slider', $event_infos ) ? $event_infos['mep_display_slider'] : 'on';
 					?>
                     <div class="mpwem_slider_area">
 					<?php

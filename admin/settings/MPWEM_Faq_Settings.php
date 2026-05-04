@@ -54,8 +54,8 @@
 
 					foreach ( $faq_infos as $index => $faq_info ) {
 						if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
-							$title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
-							$content     = array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '';
+							$title       = is_array($faq_info) && array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+							$content     = is_array($faq_info) && array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '';
 							$this->render_faq_item($index, $faq_info);
 						}
 
@@ -155,8 +155,8 @@
 				if ( is_array( $faq_infos ) && sizeof( $faq_infos ) > 0 ) {
 					foreach ( $faq_infos as $key => $faq_info ) {
 						if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
-							$title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
-							$content     = array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '';
+							$title       = is_array($faq_info) && array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+							$content     = is_array($faq_info) && array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '';
 							$collapse_id = uniqid( 'mpwem_faq' );
 							?>
                             <div class="_padding_border_mb_xs">
@@ -204,8 +204,8 @@
 						$faq_info = $faq_infos[ $key ];
 					}
 				}
-				$title   = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
-				$content = html_entity_decode( array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '' );
+				$title   = is_array($faq_info) && array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+				$content = html_entity_decode( is_array($faq_info) && array_key_exists( 'mep_faq_content', $faq_info ) ? $faq_info['mep_faq_content'] : '' );
 				if ( $title ) {
 					?>
                     <h4 class="_mb"><?php echo esc_html__( 'Edit F.A.Q Info : ', 'mage-eventpress' ) . esc_html( $title ); ?></h4>
@@ -285,7 +285,7 @@
 					if ( ! is_array( $faq_infos ) ) {
 						$faq_infos = array();
 					}
-					if ( ! array_key_exists( $key, $faq_infos ) ) {
+					if ( ! is_array($faq_infos) && array_key_exists( $key, $faq_infos ) ) {
 						$key = is_array($faq_infos) ? sizeof( $faq_infos ) : 0;
 					}
 					$faq_infos[ $key ]['mep_faq_title']   = $title;

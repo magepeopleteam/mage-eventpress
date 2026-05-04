@@ -12,7 +12,7 @@
 				add_action( 'mpwem_event_tab_setting_item', array( $this, 'ticket_settings' ), 10, 2 );
 			}
 			public function ticket_settings( $event_id, $event_infos ) {
-				$reg_status        = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
@@ -42,8 +42,8 @@
 				<?php
 			}
 			public function ticket_setting( $event_id, $event_infos ) {
-				$ticket_infos        = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-				$show_advance_column = array_key_exists( 'mep_show_advance_col_status', $event_infos ) ? $event_infos['mep_show_advance_col_status'] : 'off';
+				$ticket_infos        = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
+				$show_advance_column = is_array($event_infos) && array_key_exists( 'mep_show_advance_col_status', $event_infos ) ? $event_infos['mep_show_advance_col_status'] : 'off';
 				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
 				$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
@@ -101,16 +101,16 @@
 				<?php
 			}
 			public function ticket_info( $event_id, $active_category, $ticket_info = [] ) {
-				$qty_t_type           = array_key_exists( 'option_qty_t_type', $ticket_info ) ? $ticket_info['option_qty_t_type'] : 'inputbox';
-				$option_details       = array_key_exists( 'option_details_t', $ticket_info ) ? $ticket_info['option_details_t'] : '';
-				$option_name          = array_key_exists( 'option_name_t', $ticket_info ) ? $ticket_info['option_name_t'] : '';
+				$qty_t_type           = is_array($ticket_info) && array_key_exists( 'option_qty_t_type', $ticket_info ) ? $ticket_info['option_qty_t_type'] : 'inputbox';
+				$option_details       = is_array($ticket_info) && array_key_exists( 'option_details_t', $ticket_info ) ? $ticket_info['option_details_t'] : '';
+				$option_name          = is_array($ticket_info) && array_key_exists( 'option_name_t', $ticket_info ) ? $ticket_info['option_name_t'] : '';
 				$option_name_text     = preg_replace( "/[{}()<>+ ]/", '_', $option_name ) . '_' . $event_id;
-				$option_price         = array_key_exists( 'option_price_t', $ticket_info ) ? $ticket_info['option_price_t'] : '';
-				$option_qty           = array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
-				$option_default_qty   = array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
-				$option_rsv_qty       = array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
-				$sale_end             = array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
-				$option_ticket_enable = array_key_exists( 'option_ticket_enable', $ticket_info ) && $ticket_info['option_ticket_enable'] ? $ticket_info['option_ticket_enable'] : 'yes';
+				$option_price         = is_array($ticket_info) && array_key_exists( 'option_price_t', $ticket_info ) ? $ticket_info['option_price_t'] : '';
+				$option_qty           = is_array($ticket_info) && array_key_exists( 'option_qty_t', $ticket_info ) ? $ticket_info['option_qty_t'] : 0;
+				$option_default_qty   = is_array($ticket_info) && array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
+				$option_rsv_qty       = is_array($ticket_info) && array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
+				$sale_end             = is_array($ticket_info) && array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
+				$option_ticket_enable = is_array($ticket_info) && array_key_exists( 'option_ticket_enable', $ticket_info ) && $ticket_info['option_ticket_enable'] ? $ticket_info['option_ticket_enable'] : 'yes';
 				$checked              = $option_ticket_enable == 'yes' ? 'checked' : '';
 				$ticket_sold          = 0;
 				if ( $option_name ) {
@@ -240,10 +240,10 @@
 				<?php
 			}
 			public function ex_info( $ticket_info = [] ) {
-				$option_name  = array_key_exists( 'option_name', $ticket_info ) ? $ticket_info['option_name'] : '';
-				$option_price = array_key_exists( 'option_price', $ticket_info ) ? $ticket_info['option_price'] : '';
-				$option_qty   = array_key_exists( 'option_qty', $ticket_info ) ? $ticket_info['option_qty'] : 0;
-				$qty_t_type   = array_key_exists( 'option_qty_type', $ticket_info ) ? $ticket_info['option_qty_type'] : 'inputbox';
+				$option_name  = is_array($ticket_info) && array_key_exists( 'option_name', $ticket_info ) ? $ticket_info['option_name'] : '';
+				$option_price = is_array($ticket_info) && array_key_exists( 'option_price', $ticket_info ) ? $ticket_info['option_price'] : '';
+				$option_qty   = is_array($ticket_info) && array_key_exists( 'option_qty', $ticket_info ) ? $ticket_info['option_qty'] : 0;
+				$qty_t_type   = is_array($ticket_info) && array_key_exists( 'option_qty_type', $ticket_info ) ? $ticket_info['option_qty_type'] : 'inputbox';
 				?>
                 <tr class="mpwem_remove_area data_required">
                     <td><label> <input data-required="" type="text" class="formControl" name="option_name[]" placeholder="Ex: Cap" value="<?php echo esc_attr( $option_name ); ?>"/> </label></td>
@@ -273,9 +273,9 @@
 				<?php
 			}
 			public function registration_on_off( $event_id, $event_infos ) {
-				$reg_status = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
-                $reg_status_msg_status = array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : '';
-                $reg_status_msg_txt = array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
+				$reg_status = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+                $reg_status_msg_status = is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : '';
+                $reg_status_msg_txt = is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
 
 				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';

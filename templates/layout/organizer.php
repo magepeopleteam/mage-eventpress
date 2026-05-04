@@ -23,7 +23,7 @@
 				$org = get_the_terms( $event_id, 'mep_org' );
 				?>
                 <div class="mpwem_organizer">
-                    <h5><?php esc_html_e( 'Organized By : ', 'mage-eventpress' ); ?>&nbsp;</h5>
+                    <h5><span class="mi mi-users"></span> <?php esc_html_e( 'Organized By : ', 'mage-eventpress' ); ?>&nbsp;</h5>
                     <div class="mpwem_organizer_item">
 						<?php
 							$total = count( $org );

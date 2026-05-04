@@ -23,14 +23,14 @@
 ?>
 <div class="default_theme mep_smart_theme">
 	<?php do_action( 'mpwem_title', $event_id ); ?>
-	<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
-    <div class="mpwem_location_time">
+	<div class="smart_theme_metainfo">
+		<?php do_action( 'mpwem_organizer', $event_id,$event_infos ); ?>
 		<?php do_action( 'mpwem_location', $event_id,$event_infos,'sort' ); ?>
 		<?php
 			if ( $hide_time == 'no' ): ?>
 				<?php do_action( 'mpwem_time', $event_id, $all_dates, $all_times ); ?>
 			<?php endif; ?>
-    </div>
+		</div>
 	<?php do_action( 'mpwem_custom_slider', $event_id,$event_infos ); ?>
     <div class="mpwem_content_area">
         <div class="mpwem_left_content">

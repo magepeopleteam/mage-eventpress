@@ -21,7 +21,7 @@
 	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
 	$icon_setting_sec          = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 	$icon_setting_sec          = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-	$location_icon             = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
+	$location_icon             = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
 	if ( $hide_location_details == 'no' && $is_virtual != 'online' ) {
 		$location = array_key_exists( 'full_address', $event_infos ) ? $event_infos['full_address'] : [];
 		if ( is_array( $location ) && sizeof( $location ) > 0 ) {

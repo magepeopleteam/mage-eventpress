@@ -177,10 +177,10 @@
                                         $count=0;
                                         ?>
 										<?php foreach ( $more_dates as $more_date ) { ?>
-											<?php $more_start_date = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : ''; ?>
-											<?php $more_start_time = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
-											<?php $more_end_date = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
-											<?php $more_end_time = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
+											<?php $more_start_date = is_array($more_date) && array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : ''; ?>
+											<?php $more_start_time = is_array($more_date) && array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
+											<?php $more_end_date = is_array($more_date) && array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
+											<?php $more_end_time = is_array($more_date) && array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
                                             <tr class="mpwem_remove_area">
                                                 <td><?php
                                                         //self::date_item( 'event_more_start_date_normal[]', $more_start_date );
@@ -449,10 +449,10 @@
 										$count=0;
                                         ?>
 										<?php foreach ( $more_dates as $more_date ) { ?>
-											<?php $more_start_date = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : ''; ?>
-											<?php $more_start_time = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
-											<?php $more_end_date = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
-											<?php $more_end_time = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
+											<?php $more_start_date = is_array($more_date) && array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : ''; ?>
+											<?php $more_start_time = is_array($more_date) && array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : ''; ?>
+											<?php $more_end_date = is_array($more_date) && array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : ''; ?>
+											<?php $more_end_time = is_array($more_date) && array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : ''; ?>
                                             <tr class="mpwem_remove_area">
                                                 <td>
                                                     <?php
@@ -948,8 +948,8 @@
 				<?php
 			}
 			public function time_line_item( $key, $time_info = [] ) {
-				$label = array_key_exists( 'mep_ticket_time_name', $time_info ) ? $time_info['mep_ticket_time_name'] : '';
-				$time  = array_key_exists( 'mep_ticket_time', $time_info ) ? $time_info['mep_ticket_time'] : '';
+				$label = is_array($time_info) && array_key_exists( 'mep_ticket_time_name', $time_info ) ? $time_info['mep_ticket_time_name'] : '';
+				$time  = is_array($time_info) && array_key_exists( 'mep_ticket_time', $time_info ) ? $time_info['mep_ticket_time'] : '';
 				?>
                 <tr class="mpwem_remove_area">
                     <td>
@@ -1029,14 +1029,14 @@
 				$date_format        = MPWEM_Global_Function::date_picker_format();
 				$now                = date_i18n( $date_format, time() );
 				$special_date       = $special_date && is_array( $special_date ) ? $special_date : array();
-				$date_name          = array_key_exists( 'date_label', $special_date ) ? $special_date['date_label'] : '';
-				$start_date         = array_key_exists( 'start_date', $special_date ) ? $special_date['start_date'] : '';
+				$date_name          = is_array($special_date) && array_key_exists( 'date_label', $special_date ) ? $special_date['date_label'] : '';
+				$start_date         = is_array($special_date) && array_key_exists( 'start_date', $special_date ) ? $special_date['start_date'] : '';
 				$hidden_start_date  = $start_date ? date( 'Y-m-d', strtotime( $start_date ) ) : '';
 				$visible_start_date = $start_date ? date_i18n( $date_format, strtotime( $start_date ) ) : '';
-				$end_date           = array_key_exists( 'end_date', $special_date ) ? $special_date['end_date'] : '';
+				$end_date           = is_array($special_date) && array_key_exists( 'end_date', $special_date ) ? $special_date['end_date'] : '';
 				$hidden_end_date    = $end_date ? date( 'Y-m-d', strtotime( $end_date ) ) : '';
 				$visible_end_date   = $end_date ? date_i18n( $date_format, strtotime( $end_date ) ) : '';
-				$time               = array_key_exists( 'time', $special_date ) ? maybe_unserialize( $special_date['time'] ) : array();
+				$time               = is_array($special_date) && array_key_exists( 'time', $special_date ) ? maybe_unserialize( $special_date['time'] ) : array();
 				$unique_name        = uniqid();
 				$slot_name          = 'mep_special_time_label_' . $unique_name . '[]';
 				$time_name          = 'mep_special_time_value_' . $unique_name . '[]';
@@ -1106,8 +1106,8 @@
 				<?php
 			}
 			public function time_slot_item( $slot_name, $time_name, $time_slots = array() ) {
-				$slot_label = array_key_exists( 'mep_ticket_time_name', $time_slots ) ? $time_slots['mep_ticket_time_name'] : '';
-				$slot_time  = array_key_exists( 'mep_ticket_time', $time_slots ) ? $time_slots['mep_ticket_time'] : '';
+				$slot_label = is_array($time_slots) && array_key_exists( 'mep_ticket_time_name', $time_slots ) ? $time_slots['mep_ticket_time_name'] : '';
+				$slot_time  = is_array($time_slots) && array_key_exists( 'mep_ticket_time', $time_slots ) ? $time_slots['mep_ticket_time'] : '';
 				?>
                 <tr class="mpwem_remove_area">
                     <td>
@@ -1139,15 +1139,15 @@
 			}
 			/*************************************/
 			public function event_date_format( $event_id, $event_infos ) {
-				$time_zone_display   = array_key_exists( 'mep_time_zone_display', $event_infos ) ? $event_infos['mep_time_zone_display'] : '';
-				$display             = array_key_exists( 'mep_enable_custom_dt_format', $event_infos ) ? $event_infos['mep_enable_custom_dt_format'] : 'off';
+				$time_zone_display   = is_array($event_infos) && array_key_exists( 'mep_time_zone_display', $event_infos ) ? $event_infos['mep_time_zone_display'] : '';
+				$display             = is_array($event_infos) && array_key_exists( 'mep_enable_custom_dt_format', $event_infos ) ? $event_infos['mep_enable_custom_dt_format'] : 'off';
 				$checked             = $display == 'off' ? '' : 'checked';
 				$active              = $display == 'off' ? '' : 'mActive';
-				$date_formats        = array_key_exists( 'mep_event_date_format', $event_infos ) ? $event_infos['mep_event_date_format'] : '';
-				$custom_date_formats = array_key_exists( 'mep_event_custom_date_format', $event_infos ) ? $event_infos['mep_event_custom_date_format'] : '';
+				$date_formats        = is_array($event_infos) && array_key_exists( 'mep_event_date_format', $event_infos ) ? $event_infos['mep_event_date_format'] : '';
+				$custom_date_formats = is_array($event_infos) && array_key_exists( 'mep_event_custom_date_format', $event_infos ) ? $event_infos['mep_event_custom_date_format'] : '';
 				$date_format_lists   = MPWEM_Global_Function::date_format_list();
-				$time_formats        = array_key_exists( 'mep_event_time_format', $event_infos ) ? $event_infos['mep_event_time_format'] : '';
-				$custom_time_formats = array_key_exists( 'mep_custom_event_time_format', $event_infos ) ? $event_infos['mep_custom_event_time_format'] : '';
+				$time_formats        = is_array($event_infos) && array_key_exists( 'mep_event_time_format', $event_infos ) ? $event_infos['mep_event_time_format'] : '';
+				$custom_time_formats = is_array($event_infos) && array_key_exists( 'mep_custom_event_time_format', $event_infos ) ? $event_infos['mep_custom_event_time_format'] : '';
 				$time_format_lists   = MPWEM_Global_Function::time_format_list();
 				?>
                 <div class="_layout_default mpwem_date_format_settings">

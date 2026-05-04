@@ -375,9 +375,9 @@
 							<?php
 								do_action( 'mpwem_gq_statistics', $event_id, $date );
 								foreach ( $ticket_types as $ticket_type ) {
-									$ticket_name      = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-									$ticket_qty       = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
-									$ticket_r_qty     = array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
+									$ticket_name      = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+									$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+									$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 									$total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
 									$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
 									?>
@@ -714,7 +714,7 @@
 										if ( $dis_ticket_type_count < 2 ) {
 											?>
                                             <div class="ticket-item">
-                                                <span class="ticket-name"><?php echo array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
+                                                <span class="ticket-name"><?php echo is_array($type) && array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
                                                 <span class="ticket-price ticket-free"><?php echo isset( $type['option_price_t'] ) ? esc_html( $type['option_price_t'] ) : ''; ?></span>
                                             </div>
 											<?php

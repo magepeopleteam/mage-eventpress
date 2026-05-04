@@ -147,7 +147,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 	                $start_time = '';
 	                if ( is_array($all_times) && sizeof( $all_times ) > 0 ) {
 		                $all_times_current = current( $all_times );
-		                $start_time = array_key_exists( 'start', $all_times_current ) ? $all_times_current['start']['time'] : '';
+		                $start_time = is_array($all_times_current) && array_key_exists( 'start', $all_times_current ) ? $all_times_current['start']['time'] : '';
 	                }
 	                
 	                $event_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
@@ -260,8 +260,8 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 								$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
 								$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 								foreach ( $all_dates as $dates ) {
-									$start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
-									$end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+									$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
+									$end_time   = is_array($dates) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
 									if ( $start_time ) {
 										$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_time ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 										?>
@@ -291,10 +291,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                                         <a href="<?php echo esc_url( $event_url ); ?>"><?php echo esc_html( MPWEM_Global_Function::date_format( $date, '', $event_id ) ); ?></a>
 										<?php if ( is_array( $all_times ) && sizeof( $all_times ) ) {
 											foreach ( $all_times as $times ) {
-												$time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
+												$time_info = is_array($times) && array_key_exists( 'start', $times ) ? $times['start'] : [];
 												if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
-													$label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
-													$time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
+													$label = is_array($time_info) && array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
+													$time  = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 													if ( $time ) {
 														$full_date = $date . ' ' . $time;
 														$time      = MPWEM_Global_Function::date_format( $full_date, 'time', $event_id );
@@ -319,12 +319,12 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			/***********************/
 			public function seat_status( $event_id, $event_infos = [], $date = '' ) {
 				$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-				$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-				$show_available_seat       = array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
-				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$event_recurring			= is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$show_available_seat       = is_array($event_infos) && array_key_exists( 'mep_available_seat', $event_infos ) ? $event_infos['mep_available_seat'] : 'on';
+				$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-				$hide_seat_status          = array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
-				$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+				$hide_seat_status          = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_total_seat_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_total_seat_from_details'] : 'no';
+				$upcoming_date             = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 				$date                      = $date != '' ? $date : $upcoming_date;
 				$date = $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $date;
 
@@ -368,7 +368,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			/*********************************/
 			public function list_thumb( $event_infos ) {
-				$event_id = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$event_id = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
 				// Check for custom list thumbnail first (from Gallery Settings)
 				$custom_thumbnail_id = get_post_meta( $event_id, 'mep_list_thumbnail', true );
 				if ( $custom_thumbnail_id ) {
@@ -386,20 +386,20 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php
 			}
 			public function list_location( $event_infos ) {
-				$event_id     = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
-				$address_type = array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
+				$event_id     = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$address_type = is_array($event_infos) && array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
 				if ( $address_type ) {
 					$org_arr  = get_the_terms( $event_id, 'mep_org' );
 					$org_id   = $org_arr[0]->term_id;
 					$location = get_term_meta( $org_id, 'org_location', true );
 				} else {
-					$location = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
+					$location = is_array($event_infos) && array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
 				}
 				if ( $event_id > 0 && $location ) {
-					$location_title      = array_key_exists( 'location_title', $event_infos ) ? $event_infos['location_title'] : '';
-					$icon_setting_sec    = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+					$location_title      = is_array($event_infos) && array_key_exists( 'location_title', $event_infos ) ? $event_infos['location_title'] : '';
+					$icon_setting_sec    = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec    = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$event_location_icon = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
+					$event_location_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'mi mi-marker';
 					?>
                     <div class="list_content upcomming_location">
                         <span class="<?php echo esc_attr( $event_location_icon ); ?>"></span><?php echo esc_html($location ); ?>
@@ -407,16 +407,16 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_organizer( $event_infos ) {
-		$event_list_setting_sec = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+		$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 		$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-		$hide_org_list          = array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
+		$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
 		if ( $hide_org_list == 'no' ) {
-			$organizer_name = array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
+			$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
 			if ( $organizer_name ) {
-				$organizer_title      = array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
-				$icon_setting_sec     = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+				$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
+				$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-				$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
+				$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
 				?>
                     <div class="list_content upcomming_organizer">
                         <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
@@ -425,12 +425,12 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 		}
 	}
 			public function list_price( $event_infos ) {
-				$event_list_setting_sec = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-				$show_price             = array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
+				$show_price             = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
 				if ( $show_price == 'yes' ) {
-					$event_id         = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
-					$ticket_types     = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
+					$event_id         = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+					$ticket_types     = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
 					$show_price_label = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );
 					?>
                     <div class="list_price">
@@ -444,11 +444,11 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 
 				
 
-                $event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
+                $event_id                = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
                 $event_infos = MPWEM_Functions::get_all_info($event_id);
                 $all_dates = MPWEM_Functions::get_dates($event_id);
                 $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
-				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				$start_time = '';
                 if ($date_type == 'no' || $date_type == 'yes') {
@@ -459,9 +459,9 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                     $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
                     if (is_array($all_times) && sizeof($all_times) > 0) {
                         $time = current($all_times);
-                        $time_info = array_key_exists('start', $time) ? $time['start'] : [];
+                        $time_info = is_array($time) && array_key_exists( 'start', $time ) ? $time['start'] : [];
                         if (is_array($time_info) && sizeof($time_info) > 0) {
-                            $time = array_key_exists('time', $time_info) ? $time_info['time'] : '';
+                            $time = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
                             if ($time) {
                                 $start_time = $date . ' ' . $time;
                             }
@@ -469,15 +469,15 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                     }
                 }
 				if ( $start_time ) {
-					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$event_date_icon         = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
-					$event_list_setting_sec  = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'mi mi-clock';
+					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
-					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
-					$event_id                = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
+					$end_time                = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$event_id                = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
 					?>
                     <div class="list_content upcomming_date_only_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
@@ -495,16 +495,16 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_date_only( $event_infos ) {
-				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date ) {
-					$icon_setting_sec        = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+					$icon_setting_sec        = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec        = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$event_date_icon         = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
-					$event_list_setting_sec  = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+					$event_date_icon         = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
+					$event_list_setting_sec  = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-					$hide_only_end_time_list = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
-					$end_time                = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$end_time                = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
                     <div class="list_content upcomming_date_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
@@ -519,13 +519,13 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_upcoming_time( $event_infos ) {
-			$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+			$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date && MPWEM_Global_Function::check_time_exit_date( $upcoming_date ) ) {
-					$icon_setting_sec = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+					$icon_setting_sec = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 					$icon_setting_sec = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-					$time_icon        = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
-					$end_time         = array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$time_icon        = is_array($icon_setting_sec) && array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
+					$end_time         = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
 					?>
                     <div class="list_content upcomming_time_only">
                         <span class="<?php echo esc_attr( $time_icon ); ?>"></span><?php
@@ -538,7 +538,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_sort_date( $event_infos ) {
-				$recurring_event = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$recurring_event = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$upcoming_date = $recurring_event == 'no' ? $event_infos['event_start_date'] : $event_infos['upcoming_date'];
 				if ( $upcoming_date ) {
 					?>
@@ -550,7 +550,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_more_date_button( $event_infos ) {
-				$event_id                  = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$event_id                  = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
                 $price=MPWEM_Functions::get_min_price( $event_id );
                 $date    = MPWEM_Functions::get_upcoming_date_time( $event_id );
                 $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $date );
@@ -568,15 +568,14 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 $end_date_time   =  new DateTime(date('Y-m-d',strtotime($end_date)));
                 //echo $checkDate;
                 //echo $today;
-				$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-				$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
-				$event_list_setting_sec    = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+				$hide_date_list            = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
+				$event_list_setting_sec    = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec    = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-				$show_date_list            = array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
+				$show_date_list            = is_array($event_list_setting_sec) && array_key_exists( 'mep_date_list_in_event_listing', $event_list_setting_sec ) ? $event_list_setting_sec['mep_date_list_in_event_listing'] : 'yes';
 				$event_list_setting=get_option('event_list_setting_sec');
-                $show_msg            = array_key_exists( 'mep_hide_event_list_msg', $event_list_setting ) ? $event_list_setting['mep_hide_event_list_msg'] : 'no';
-
+                $show_msg            = is_array($event_list_setting) && array_key_exists( 'mep_hide_event_list_msg', $event_list_setting ) ? $event_list_setting['mep_hide_event_list_msg'] : 'no';
                 if ( is_array( $all_dates ) && sizeof( $all_dates ) > 1 && $hide_date_list == 'no' && $show_date_list == 'yes' ) { ?>
                     <div class="mpwem_style mpwem_list_date_list">
                         <button type="button" data-event-id="<?php echo esc_attr( $event_id ); ?>" class=" mpwem_get_date_list" data-collapse-target="#mpwem_more_date_<?php echo esc_attr( $event_id ); ?>" data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>" data-close-text="<?php esc_attr_e( 'View More Date', 'mage-eventpress' ); ?>"><span data-text><?php esc_html_e( 'View More Date', 'mage-eventpress' ); ?></span> <i class="fas fa-caret-down"></i></button>
@@ -678,10 +677,10 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                 }
 			}
 			public function list_hover( $event_infos ) {
-				$event_id                 = array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
-				$event_list_setting_sec   = array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+				$event_id                 = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : 0;
+				$event_list_setting_sec   = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec   = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-				$mep_hide_event_hover_btn = array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
+				$mep_hide_event_hover_btn = is_array($event_list_setting_sec) && array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
 				if ( 'yes' == $mep_hide_event_hover_btn ) { ?>
                     <div class="item_hover_effect">
                         <a href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>"><?php esc_html_e( 'Book Now', 'mage-eventpress' ); ?></a>
@@ -689,18 +688,17 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				<?php }
 			}
 			public function list_ribbon( $event_id ) {
-                $event_infos              = MPWEM_Functions::get_all_info( $event_id );
-                echo '<pre>';print_r($event_infos);echo '</pre>';
-				$available                      = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
-				$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-				$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
-				$event_type                     = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
-				$recurring                      = array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
-				$general_setting_sec            = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+                $event_infos              		= MPWEM_Functions::get_all_info( $event_id );
+				$available                      = is_array($event_infos) && array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
+				$all_dates                      = is_array($event_infos) && array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+				$reg_status                     = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+				$event_type                     = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
+				$recurring                      = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
+				$general_setting_sec            = is_array($event_infos) && array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 				$general_setting_sec            = empty( $general_setting_sec ) && ! is_array( $general_setting_sec ) ? [] : $general_setting_sec;
-				$sold_out_ribbon                = array_key_exists( 'mep_show_sold_out_ribbon_list_page', $general_setting_sec ) ? $general_setting_sec['mep_show_sold_out_ribbon_list_page'] : 'no';
-				$limited_availability_ribbon    = array_key_exists( 'mep_show_limited_availability_ribbon', $general_setting_sec ) ? $general_setting_sec['mep_show_limited_availability_ribbon'] : 'no';
-				$limited_availability_threshold = array_key_exists( 'mep_limited_availability_threshold', $general_setting_sec ) ? $general_setting_sec['mep_limited_availability_threshold'] : 5;
+				$sold_out_ribbon                = is_array($general_setting_sec) && array_key_exists( 'mep_show_sold_out_ribbon_list_page', $general_setting_sec ) ? $general_setting_sec['mep_show_sold_out_ribbon_list_page'] : 'no';
+				$limited_availability_ribbon    = is_array($general_setting_sec) && array_key_exists( 'mep_show_limited_availability_ribbon', $general_setting_sec ) ? $general_setting_sec['mep_show_limited_availability_ribbon'] : 'no';
+				$limited_availability_threshold = is_array($general_setting_sec) && array_key_exists( 'mep_limited_availability_threshold', $general_setting_sec ) ? $general_setting_sec['mep_limited_availability_threshold'] : 5;
 				?>
                 <div class="mepev-ribbons">
 					<?php
@@ -726,7 +724,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
                         $all_times   = MPWEM_Functions::get_times( $event_id, );
 
                         $upcoming_date                           = MPWEM_Functions::get_upcoming_date_time( $event_id);
-                        $upcoming_date            = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+                        $upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
                         $total_sold      = mep_ticket_type_sold( $event_id, '', $upcoming_date );
                         $total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $upcoming_date );
                         $total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $upcoming_date );

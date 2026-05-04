@@ -607,6 +607,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<p><?php esc_html_e('Optional add-ons that attendees can purchase with tickets.', 'mage-eventpress'); ?></p>
 														</div>
 														<div class="mpwem-card__body">
+															<div class="mpwem_style" id="mpwem_extra_service_global_qty_mount">
+																<?php do_action('mpwem_before_extra_services_mount', $post_id); ?>
+															</div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_extra_services_mount"></div>
 														</div>
 													</div>
@@ -628,6 +631,26 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 															<div class="mpwem-ticket-modal__body">
 																<div class="mpwem-ticket-modal__mount" id="mpwem_ticket_modal_mount"></div>
+															</div>
+														</div>
+													</div>
+													<div class="mpwem-ticket-modal" id="mpwem_extra_service_editor_modal" aria-hidden="true">
+														<div class="mpwem-ticket-modal__backdrop" data-mpwem-extra-modal-close></div>
+														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_extra_service_modal_title">
+															<div class="mpwem-ticket-modal__header">
+																<div class="mpwem-ticket-modal__header-copy">
+																	<span class="mpwem-ticket-modal__eyebrow"><?php esc_html_e('Extra Service Editor', 'mage-eventpress'); ?></span>
+																	<h3 id="mpwem_extra_service_modal_title"><?php esc_html_e('Manage extra services', 'mage-eventpress'); ?></h3>
+																	<p id="mpwem_extra_service_modal_description"><?php esc_html_e('Edit optional add-ons, pricing, stock, and quantity settings without leaving this step.', 'mage-eventpress'); ?></p>
+																</div>
+																<div class="mpwem-ticket-modal__header-actions">
+																	<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close extra service editor', 'mage-eventpress'); ?>" data-mpwem-extra-modal-close>
+																		<span class="dashicons dashicons-no-alt"></span>
+																	</button>
+																</div>
+															</div>
+															<div class="mpwem-ticket-modal__body">
+																<div class="mpwem-ticket-modal__mount" id="mpwem_extra_service_modal_mount"></div>
 															</div>
 														</div>
 													</div>

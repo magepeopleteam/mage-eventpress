@@ -43,6 +43,35 @@
             .show();
     }
 
+    function showToast(message, type) {
+        let $toast = $('.mpwem-toast');
+        const toastType = type || 'info';
+        const iconClass = toastType === 'error' ? 'dashicons-warning' : 'dashicons-update-alt';
+
+        if ($toast.length === 0) {
+            $toast = $(`
+                <div class="mpwem-toast">
+                    <span class="dashicons"></span>
+                    <span class="mpwem-toast-text"></span>
+                </div>
+            `);
+            $('body').append($toast);
+        }
+
+        window.clearTimeout($toast.data('mpwemToastTimer'));
+        $toast.removeClass('show is-error is-success is-info').addClass('is-' + toastType);
+        $toast.find('.dashicons').attr('class', 'dashicons ' + iconClass);
+        $toast.find('.mpwem-toast-text').text(message || '');
+        $toast[0].offsetHeight;
+        $toast.addClass('show');
+
+        const timer = window.setTimeout(function() {
+            $toast.removeClass('show');
+        }, toastType === 'error' ? 4200 : 2600);
+
+        $toast.data('mpwemToastTimer', timer);
+    }
+
     function getWizardRoot() {
         return $('.mpwem-event-wizard').first();
     }
@@ -136,6 +165,7 @@
         if ($exService.length) {
             const $extraMount = $('#mpwem_wizard_extra_services_mount');
             if ($extraMount.length) {
+                $exService.addClass('mpwem_style');
                 $exService.detach().appendTo($extraMount);
                 $('#mpwem_wizard_extra_services_card').show();
                 // Remove the legacy header from inside the card body since our new card has its own head
@@ -176,6 +206,7 @@
         }
 
         initializeTicketPricingModal($root);
+        initializeExtraServiceModal($root);
 
         // Mount into Date Step
         mountPanel($root, '#mpwem_date_settings', 'mpwem_wizard_date_mount');
@@ -400,6 +431,7 @@
             if ($addButton.length) {
                 $addButton.trigger('click');
                 window.setTimeout(function() {
+                    enhanceSelects(context.$modalMount);
                     const $rows = getTicketRows($root);
                     highlightTicketRow($rows.last());
                     renderTicketSummary($root);
@@ -510,6 +542,7 @@
         context.$modalMount.find('.mpwem_settings_area > p').first().addClass('mpwem-ticket-modal__note');
         context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
 
+        enhanceSelects(context.$modalMount);
         renderTicketSummary($root);
         syncTicketAdvancedColumns($root);
         initializeTicketTableDragScroll($root);
@@ -517,6 +550,7 @@
         const $tbody = context.$modalMount.find('.mpwem_ticket_table tbody.mpwem_item_insert').first();
         if ($tbody.length && !$tbody.data('mpwemSummaryObserver')) {
             const observer = new MutationObserver(function() {
+                enhanceSelects(context.$modalMount);
                 renderTicketSummary($root);
                 syncTicketAdvancedColumns($root);
                 initializeTicketTableDragScroll($root);
@@ -565,6 +599,300 @@
                     closeTicketModal($root);
                 }
             });
+    }
+
+    function getExtraServiceModalContext($root) {
+        const $mount = $root.find('#mpwem_wizard_extra_services_mount').first();
+        let $summary = $mount.find('#mpwem_extra_service_summary').first();
+
+        if ($mount.length && !$summary.length) {
+            const $summaryMarkup = $(
+                '<div class="mpwem-ticket-summary" id="mpwem_extra_service_summary">' +
+                    '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<div class="mpwem-ticket-summary__intro">' +
+                            '<span class="mpwem-ticket-summary__eyebrow">Extra Service Overview</span>' +
+                            '<h3>Simple add-on list</h3>' +
+                            '<p>Review optional services at a glance, then open the full editor when you need pricing or quantity details.</p>' +
+                        '</div>' +
+                        '<div class="mpwem-ticket-summary__actions">' +
+                            '<button type="button" class="button button-secondary" data-mpwem-extra-modal-open="list">Show Details</button>' +
+                            '<button type="button" class="button button-primary" data-mpwem-extra-modal-open="new">+ Add Extra Service</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="mpwem-ticket-summary__list" id="mpwem_extra_service_summary_list"></div>' +
+                '</div>'
+            );
+
+            $mount.append($summaryMarkup);
+            $summary = $summaryMarkup;
+        }
+
+        return {
+            $summaryList: $summary.find('#mpwem_extra_service_summary_list').first(),
+            $modal: $root.find('#mpwem_extra_service_editor_modal').first(),
+            $modalMount: $root.find('#mpwem_extra_service_modal_mount').first(),
+            $legacyMount: $mount
+        };
+    }
+
+    function getExtraServiceRows($root) {
+        const $tbody = $root.find('#mpwem_extra_service_modal_mount tbody.mpwem_item_insert').first();
+        if (!$tbody.length) {
+            return $();
+        }
+
+        return $tbody.children('tr.mpwem_remove_area').filter(function() {
+            return $(this).closest('.mpwem_hidden_content').length === 0;
+        });
+    }
+
+    function extraServiceRowName($row) {
+        const value = ($row.find('[name="option_name[]"]').first().val() || '').toString().trim();
+        return value || 'Untitled Service';
+    }
+
+    function extraServiceRowPrice($row) {
+        const value = ($row.find('[name="option_price[]"]').first().val() || '').toString().trim();
+        if (!value.length) {
+            return 'Price not set';
+        }
+
+        return value === '0' ? 'Free' : value;
+    }
+
+    function extraServiceRowQty($row) {
+        const value = ($row.find('[name="option_qty[]"]').first().val() || '').toString().trim();
+        return value.length ? value : 'Unlimited';
+    }
+
+    function highlightExtraServiceRow($row) {
+        if (!$row || !$row.length) {
+            return;
+        }
+
+        const $container = $row.closest('.mpwem-ticket-modal__body');
+        if ($container.length) {
+            const top = $row.position().top + $container.scrollTop() - 24;
+            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
+        }
+
+        $row.addClass('mpwem-ticket-row-focus');
+        window.setTimeout(function() {
+            $row.removeClass('mpwem-ticket-row-focus');
+        }, 1800);
+    }
+
+    function renderExtraServiceSummary($root) {
+        const context = getExtraServiceModalContext($root);
+        const $rows = getExtraServiceRows($root);
+        if (!context.$summaryList.length) {
+            return;
+        }
+
+        context.$summaryList.empty();
+
+        context.$summaryList.append(
+            $('<div class="mpwem-ticket-summary__header"></div>')
+                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Extra Service'))
+                .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
+        );
+
+        if (!$rows.length) {
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__empty"></div>')
+                    .append($('<h4></h4>').text('No extra services yet'))
+                    .append($('<p></p>').text('Create optional add-ons like meals, merchandise, or upgrades, then manage them in the full editor.'))
+                    .append($('<button type="button" class="button button-primary"></button>')
+                        .attr('data-mpwem-extra-modal-open', 'new')
+                        .text('Create First Extra Service'))
+            );
+            return;
+        }
+
+        $rows.each(function(index) {
+            const $row = $(this);
+
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
+                    .attr('data-extra-service-row-index', index)
+                    .append(
+                        $('<div class="mpwem-ticket-summary__item-main"></div>')
+                            .append(
+                                $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                    .append($('<h4></h4>').text(extraServiceRowName($row)))
+                            )
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__price"></span>').text(extraServiceRowPrice($row)))
+                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text('Qty ' + extraServiceRowQty($row)))
+                    )
+            );
+        });
+    }
+
+    function openExtraServiceModal($root, mode, rowIndex) {
+        const context = getExtraServiceModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'false').addClass('is-open');
+        $('body').addClass('mpwem-ticket-modal-open');
+
+        const isNew = mode === 'new';
+        $root.find('#mpwem_extra_service_modal_title').text(isNew ? 'Add extra service' : 'Manage extra services');
+        $root.find('#mpwem_extra_service_modal_description').text(
+            isNew
+                ? 'Create a new optional add-on, then fill in its price, available quantity, and quantity box settings.'
+                : 'Edit optional add-ons, pricing, stock, and quantity settings without leaving this step.'
+        );
+
+        if (isNew) {
+            const $addButton = context.$modalMount.find('.mpwem_add_item').first();
+            if ($addButton.length) {
+                $addButton.trigger('click');
+                window.setTimeout(function() {
+                    const $rows = getExtraServiceRows($root);
+                    highlightExtraServiceRow($rows.last());
+                    renderExtraServiceSummary($root);
+                }, 100);
+            }
+            return;
+        }
+
+        if (typeof rowIndex === 'number' && rowIndex >= 0) {
+            const $row = getExtraServiceRows($root).eq(rowIndex);
+            window.setTimeout(function() {
+                highlightExtraServiceRow($row);
+            }, 60);
+        }
+    }
+
+    function closeExtraServiceModal($root) {
+        const context = getExtraServiceModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
+        $('body').removeClass('mpwem-ticket-modal-open');
+    }
+
+    function initializeExtraServiceModal($root) {
+        const context = getExtraServiceModalContext($root);
+        const $serviceBlock = context.$legacyMount.children('._layout_default_xs_mp_zero').first();
+
+        if (!context.$legacyMount.length || !context.$modalMount.length || !$serviceBlock.length) {
+            return;
+        }
+
+        if ($serviceBlock.parent()[0] !== context.$modalMount[0]) {
+            context.$modalMount.append($serviceBlock.detach());
+        }
+
+        context.$modalMount.find('> ._layout_default_xs_mp_zero > ._bg_light_padding').first().hide();
+        context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
+        context.$modalMount.find('.mpwem_settings_area').first().addClass('mpwem-extra-service-settings-area');
+
+        renderExtraServiceSummary($root);
+        initializeExtraServiceTableDragScroll($root);
+
+        const $tbody = context.$modalMount.find('tbody.mpwem_item_insert').first();
+        if ($tbody.length && !$tbody.data('mpwemExtraSummaryObserver')) {
+            const observer = new MutationObserver(function() {
+                renderExtraServiceSummary($root);
+                initializeExtraServiceTableDragScroll($root);
+            });
+            observer.observe($tbody[0], { childList: true, subtree: true });
+            $tbody.data('mpwemExtraSummaryObserver', observer);
+        }
+
+        $root.off('.mpwemExtraModal');
+
+        $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-open]', function(e) {
+            e.preventDefault();
+            const mode = $(this).attr('data-mpwem-extra-modal-open') || 'list';
+            const rowIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
+            openExtraServiceModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
+        $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-close]', function(e) {
+            e.preventDefault();
+            closeExtraServiceModal($root);
+        });
+
+        $root.on('input.mpwemExtraModal change.mpwemExtraModal', '#mpwem_extra_service_modal_mount [name="option_name[]"], #mpwem_extra_service_modal_mount [name="option_price[]"], #mpwem_extra_service_modal_mount [name="option_qty[]"]', function() {
+            renderExtraServiceSummary($root);
+        });
+
+        $root.on('click.mpwemExtraModal', '#mpwem_extra_service_modal_mount .mpwem_item_remove', function() {
+            window.setTimeout(function() {
+                renderExtraServiceSummary($root);
+            }, 280);
+        });
+
+        $(document)
+            .off('keydown.mpwemExtraModal')
+            .on('keydown.mpwemExtraModal', function(e) {
+                if (e.key === 'Escape' && context.$modal.hasClass('is-open')) {
+                    closeExtraServiceModal($root);
+                }
+            });
+    }
+
+    function initializeExtraServiceTableDragScroll($root) {
+        const context = getExtraServiceModalContext($root);
+        const $scroller = context.$modalMount.find('._ov_auto').first();
+        if (!$scroller.length || $scroller.data('mpwemExtraDragScrollInit')) {
+            return;
+        }
+
+        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        let isDragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        $scroller.on('mousedown.mpwemExtraDragScroll', function(e) {
+            if (e.button !== 0) {
+                return;
+            }
+
+            if ($(e.target).closest(interactiveSelector).length) {
+                return;
+            }
+
+            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
+            if (!hasHorizontalOverflow) {
+                return;
+            }
+
+            isDragging = true;
+            startX = e.pageX;
+            startScrollLeft = this.scrollLeft;
+            $scroller.addClass('is-dragging');
+            e.preventDefault();
+        });
+
+        $(document).on('mousemove.mpwemExtraDragScroll', function(e) {
+            if (!isDragging) {
+                return;
+            }
+
+            const deltaX = e.pageX - startX;
+            $scroller.scrollLeft(startScrollLeft - deltaX);
+        });
+
+        $(document).on('mouseup.mpwemExtraDragScroll mouseleave.mpwemExtraDragScroll', function() {
+            if (!isDragging) {
+                return;
+            }
+
+            isDragging = false;
+            $scroller.removeClass('is-dragging');
+        });
+
+        $scroller.data('mpwemExtraDragScrollInit', true);
     }
 
     function enhanceDisplayStep($root) {
@@ -1050,10 +1378,44 @@
         }
     }
 
+    function normalizeHiddenSelectTemplates($container) {
+        $container.find('.mpwem_hidden_content .mpwem-select-wrapper').each(function() {
+            const $wrapper = $(this);
+            const $select = $wrapper.children('select').first();
+            if (!$select.length) {
+                return;
+            }
+
+            $select.removeClass('mpwem-enhanced').show();
+            $wrapper.replaceWith($select);
+        });
+    }
+
+    function normalizeNativeModalSelects($container) {
+        $container.find('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]').each(function() {
+            const $select = $(this);
+            const $wrapper = $select.closest('.mpwem-select-wrapper');
+
+            if ($wrapper.length) {
+                $select.removeClass('mpwem-enhanced').show();
+                $wrapper.replaceWith($select);
+            }
+        });
+    }
+
     function enhanceSelects($container) {
+        normalizeHiddenSelectTemplates($container);
+        normalizeNativeModalSelects($container);
+
         $container.find('select').each(function() {
             const $select = $(this);
-            if ($select.hasClass('mpwem-enhanced') || $select.is('[multiple]') || $select.closest('.mpwem-select-wrapper').length) return;
+            if (
+                $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
+                $select.closest('.mpwem_hidden_content').length ||
+                $select.hasClass('mpwem-enhanced') ||
+                $select.is('[multiple]') ||
+                $select.closest('.mpwem-select-wrapper').length
+            ) return;
 
             const $wrapper = $('<div class="mpwem-select-wrapper"></div>');
             const $trigger = $('<div class="mpwem-select-trigger"><span>' + ($select.find('option:selected').text() || 'Select...') + '</span></div>');
@@ -1608,6 +1970,69 @@
         alignDateFormatTooltips($panel);
     }
 
+    function validateDateWiseGlobalQty($root, options) {
+        const $datePanel = getDatePanel($root);
+        const shouldFocusStep = !(options && options.focusStep === false);
+        if (!$datePanel.length) {
+            return true;
+        }
+
+        const isGlobalQtyEnabled = $root.find('input[name="enable_global_qty"]').first().is(':checked');
+        const globalQtyType = ($root.find('select[name="mep_gq_type"]').first().val() || '').toString();
+
+        if (!isGlobalQtyEnabled || globalQtyType !== 'date_wise') {
+            return true;
+        }
+
+        const $requiredFields = $datePanel.find('[data-collapse="#mep_particular_event"] input[name="event_date_gq"], [data-collapse="#mep_particular_event"] input[name="event_date_gq_md[]"]').filter(function() {
+            return $(this).closest('.mpwem_hidden_content').length === 0;
+        });
+        const recurringType = ($datePanel.find('select[name="mep_enable_recurring"]').first().val() || '').toString();
+
+        if (recurringType !== 'yes') {
+            $requiredFields.removeClass('mpwem-field-error');
+            return true;
+        }
+
+        let hasError = false;
+        let $firstInvalid = $();
+
+        $requiredFields.each(function() {
+            const $input = $(this);
+            const value = ($input.val() || '').toString().trim();
+            const isEmpty = value === '';
+
+            $input.toggleClass('mpwem-field-error', isEmpty);
+
+            if (isEmpty && !hasError) {
+                hasError = true;
+                $firstInvalid = $input;
+            }
+        });
+
+        if (!hasError) {
+            return true;
+        }
+
+        if (shouldFocusStep) {
+            setActiveStep($root, 'date', { pushHash: true, validate: false });
+        }
+
+        if ($firstInvalid.length) {
+            window.setTimeout(function() {
+                const $scrollWrap = $firstInvalid.closest('._ov_auto');
+                if ($scrollWrap.length) {
+                    const left = $firstInvalid.position().left + $scrollWrap.scrollLeft() - 24;
+                    $scrollWrap.animate({ scrollLeft: Math.max(left, 0) }, 220);
+                }
+                $firstInvalid.trigger('focus');
+            }, 80);
+        }
+
+        showToast('Global Qty is required in Particular Date & Time Settings when Global Qty Type is set to Particular Date Wise.', 'error');
+        return false;
+    }
+
     function setActiveStep($root, stepKey, options) {
         if (stepKey !== 'tickets') {
             closeTicketModal($root);
@@ -1625,6 +2050,9 @@
             // Basic validation
             if (stepKey !== STEP_KEY_FALLBACK && !$('#title').val()) {
                 alert('Please enter an event title.');
+                return;
+            }
+            if (!validateDateWiseGlobalQty($root)) {
                 return;
             }
         }
@@ -1875,6 +2303,9 @@
             if (idx < $steps.length - 1) {
                 setActiveStep($root, $steps.eq(idx + 1).data('step-key'), { pushHash: true, validate: true });
             } else {
+                if (!validateDateWiseGlobalQty($root)) {
+                    return;
+                }
                 $('#mpwem-event-edit-form').submit();
             }
         });
@@ -1882,6 +2313,9 @@
         // Topbar "Save" Button Handler
         $root.on('click', '.mpwem-wizard-save-draft', function(e) {
             e.preventDefault();
+            if (!validateDateWiseGlobalQty($root)) {
+                return;
+            }
             $('#mpwem-event-edit-form').submit();
         });
 
@@ -1892,20 +2326,12 @@
         });
 
         // Add Premium Toaster Notification on form submit
-        $('#mpwem-event-edit-form').on('submit', function() {
-            let $toast = $('.mpwem-toast');
-            if ($toast.length === 0) {
-                $toast = $(`
-                    <div class="mpwem-toast">
-                        <span class="dashicons dashicons-update-alt"></span>
-                        <span class="mpwem-toast-text">Saving changes... Please wait</span>
-                    </div>
-                `);
-                $('body').append($toast);
+        $('#mpwem-event-edit-form').on('submit', function(e) {
+            if (!validateDateWiseGlobalQty($root, { focusStep: true })) {
+                e.preventDefault();
+                return false;
             }
-            // Trigger layout reflow for animation
-            $toast[0].offsetHeight;
-            $toast.addClass('show');
+            showToast('Saving changes... Please wait', 'info');
         });
 
         $(window).on('hashchange', function() {

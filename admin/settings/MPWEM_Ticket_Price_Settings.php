@@ -38,6 +38,7 @@
 						$this->event_view_shortcode( $event_id );
 						do_action( 'mep_add_category_display', $event_id );
 						$this->registration_on_off( $event_id, $event_infos );
+						do_action( 'mpwem_after_registration_on_off', $event_id );
 					?>
                 </div>
 				<?php
@@ -207,7 +208,7 @@
 					<?php do_action( 'mpwem_before_ex_service', $event_id ); ?>
                     <div class="_padding_bt mpwem_settings_area">
                         <div class="_ov_auto">
-                            <table>
+                            <table class="mpwem_extra_service_table">
                                 <thead>
                                 <tr>
                                     <th title="<?php esc_attr_e( 'Extra Service Name', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Name', 'mage-eventpress' ); ?></th>

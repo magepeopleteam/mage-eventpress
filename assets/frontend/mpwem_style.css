@@ -64,14 +64,14 @@
 	div.date_time_location_short .short_item h6 { font-size: 16px; font-weight: 500; text-transform: capitalize; margin: 0; }
 	div.date_time_location_short .short_item p {color: #878787;margin: 5px 0 0 0;}
 	div.mpwem_location,
-	div.mpwem_time { color: #393332; font-size: 16px; display: flex; -webkit-align-items: center; align-items: center;}
+	div.mpwem_time { color: #393332; font-size: 16px; display: flex; -webkit-align-items: center; align-items: center; gap:5px;}
 	div.mpwem_location span,
 	div.mpwem_time span { width: 55px; height: 55px; background-color: #F1F5FF; color: #6046FF; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; font-size: 25px; }
 	.mep_smart_theme .mpwem_location_time { display: flex; flex-direction: column; justify-content: start; gap: 10px; margin-bottom: 10px; }
 	.mep_smart_theme .mpwem_location_time .mpwem_location,
 	.mep_smart_theme .mpwem_location_time .mpwem_time { flex-wrap: wrap; align-items: center; }
 	.mep_smart_theme .mpwem_location_time .mpwem_location i,
-	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px; }
+	.mep_smart_theme .mpwem_location_time .mpwem_time i { width: 30px; height: 30px; color: var(--color_theme); display: flex; align-items: center; justify-content: center; font-size: 25px; border-radius: 5px; margin-right: 5px;}
 
 	div.mpwem_registration_area {margin: var(--dmp) 0 0 0;}
 	div.mpwem_style .kera_ticket_area [data-tabs-target] {padding: 2px; margin: 0 15px 0 0; border-radius: 10px;}
@@ -192,7 +192,7 @@
 	div.mep_smart_theme .mpwem_organizer { display: -webkit-flex; display: flex;margin: 5px 0; }
 	div.mep_smart_theme .mpwem_organizer {padding: 0; background: transparent; border-radius: 0;}
 	div.mep_smart_theme .mpwem_organizer,
-	div.mep_smart_theme .mpwem_organizer a {color: var(--color_light_3) !important;}
+	div.mep_smart_theme .mpwem_organizer a {color: #393332 !important;}
 	div.mep_smart_theme .mpwem_organizer h5 { margin: 0;color: var(--color_theme); }
 
 	div.mpwem_timeline_area {margin: var(--dmp) 0 0 0; }
@@ -1075,9 +1075,16 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
     font-weight: 800;
 }
 
+.smart_theme_metainfo{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin:10px 0;
+}
 
-
-
+.smart_theme_metainfo i{
+	color:var(--color_theme);
+}
 
 
 

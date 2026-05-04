@@ -690,7 +690,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function list_ribbon( $event_id ) {
                 $event_infos              = MPWEM_Functions::get_all_info( $event_id );
-                echo '<pre>';print_r($event_infos);echo '</pre>';
+                //echo '<pre>';print_r($event_infos);echo '</pre>';
 				$available                      = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
 				$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 				$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
@@ -727,6 +727,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 
                         $upcoming_date                           = MPWEM_Functions::get_upcoming_date_time( $event_id);
                         $upcoming_date            = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+                        $upcoming_date=date( 'Y-m-d H:i', strtotime($upcoming_date) );
                         $total_sold      = mep_ticket_type_sold( $event_id, '', $upcoming_date );
                         $total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $upcoming_date );
                         $total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $upcoming_date );

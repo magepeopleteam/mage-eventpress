@@ -491,7 +491,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 {
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 3,
+                        slidesToShow: 2,
                         slidesToScroll: 1,
                         infinite: true,
                         dots: false,
@@ -501,21 +501,13 @@ function mpwem_attendee_management(parent, total_qty) {
                 {
                     breakpoint: 767,
                     settings: {
-                        slidesToShow: 2,
+                        slidesToShow: 1,
                         slidesToScroll: 1,
                         infinite: true,
                         dots: false,
                         centerMode: false // Ensure left alignment on responsive
                     }
                 },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        centerMode: false // Ensure left alignment on mobile
-                    }
-                }
             ]
         });
     });

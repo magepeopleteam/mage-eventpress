@@ -12,9 +12,18 @@
 			block_header_area();
 			$header_html = trim( ob_get_clean() );
 			if ( $header_html ) {
+				global $mep_used_block_header;
+				$mep_used_block_header = true;
 				// If the block theme has a header part, print it
-				wp_head();
-				wp_body_open();
+				?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+<?php
 				echo '<header class="wp-block-template-part site-header">';
 				echo $header_html;
 				echo '</header>';
@@ -70,11 +79,16 @@
 // ==============================
 // FOOTER
 // ==============================
-	if ( function_exists( 'block_footer_area' ) && function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+	global $mep_used_block_header;
+	if ( ! empty( $mep_used_block_header ) && function_exists( 'block_footer_area' ) && function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
 		echo '<footer class="wp-block-template-part mep-site-footer">';
 		block_footer_area();
 		echo '</footer>';
 		wp_footer();
+		?>
+</body>
+</html>
+		<?php
 	} else {
 		get_footer();
 	}

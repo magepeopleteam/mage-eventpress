@@ -485,7 +485,7 @@ function mpwem_attendee_management(parent, total_qty) {
             autoplay: false,
             autoplaySpeed: 2000,
             centerPadding: '0px',
-            slidesToShow: 4,
+            slidesToShow: 3,
             slidesToScroll: 1,
             responsive: [
                 {

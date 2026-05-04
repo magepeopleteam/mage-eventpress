@@ -200,6 +200,310 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			);
 		}
 
+		private function get_taxonomy_terms(string $taxonomy): array
+		{
+			if (! taxonomy_exists($taxonomy)) {
+				return [];
+			}
+
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+				]
+			);
+
+			if (is_wp_error($terms) || ! is_array($terms)) {
+				return [];
+			}
+
+			return $terms;
+		}
+
+		private function get_selected_term_ids(int $post_id, string $taxonomy): array
+		{
+			$terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'ids']);
+			if (is_wp_error($terms) || ! is_array($terms)) {
+				return [];
+			}
+
+			return array_map('absint', $terms);
+		}
+
+		private function get_selected_tag_names(int $post_id): array
+		{
+			$terms = wp_get_post_terms($post_id, 'mep_tag', ['fields' => 'names']);
+			if (is_wp_error($terms) || ! is_array($terms)) {
+				return [];
+			}
+
+			return array_values(array_filter(array_map('sanitize_text_field', $terms)));
+		}
+
+		private function render_taxonomy_field(string $id, string $label, string $taxonomy, array $terms, array $selected_ids, string $help = '', string $manage_label = ''): void
+		{
+			$manage_url = admin_url('edit-tags.php?taxonomy=' . rawurlencode($taxonomy) . '&post_type=' . self::POST_TYPE);
+			$manage_text = $manage_label ?: __('Manage terms', 'mage-eventpress');
+			?>
+			<div class="mpwem-taxonomy-card__field">
+				<div class="mpwem-field">
+					<span class="mpwem-field__label"><?php echo esc_html($label); ?></span>
+					<div class="mpwem-taxonomy-checklist" id="<?php echo esc_attr($id); ?>">
+						<?php foreach ($terms as $term) : ?>
+							<label class="mpwem-taxonomy-checklist__item">
+								<input
+									type="checkbox"
+									name="<?php echo esc_attr($taxonomy); ?>[]"
+									value="<?php echo esc_attr((string) $term->term_id); ?>"
+									<?php checked(in_array((int) $term->term_id, $selected_ids, true)); ?> />
+								<span class="mpwem-taxonomy-checklist__label"><?php echo esc_html($term->name); ?></span>
+							</label>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<div class="mpwem-taxonomy-card__meta">
+					<?php if ($help) : ?>
+						<p class="mpwem-taxonomy-card__help"><?php echo esc_html($help); ?></p>
+					<?php endif; ?>
+					<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url($manage_url); ?>" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html($manage_text); ?>
+					</a>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function render_setting_toggle_field(string $name, string $label, bool $checked, string $help = '', string $value = 'on'): void
+		{
+			?>
+			<div class="mpwem-event-setting-card__item">
+				<div class="mpwem-event-setting-card__item-head">
+					<div class="mpwem-event-setting-card__copy">
+						<h3><?php echo esc_html($label); ?></h3>
+						<?php if ($help) : ?>
+							<p><?php echo esc_html($help); ?></p>
+						<?php endif; ?>
+					</div>
+					<label class="mpwem-event-setting-card__switch">
+						<input type="checkbox" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>" data-no-mpwem-switch="1" <?php checked($checked); ?> />
+						<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+					</label>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function render_setting_roles_field(array $selected_roles, bool $is_active): void
+		{
+			$editable_roles = get_editable_roles();
+			?>
+			<div class="mpwem-event-setting-card__item mpwem-event-setting-card__item--roles <?php echo esc_attr($is_active ? 'mActive' : ''); ?>" data-collapse="#mep_member_only_event">
+				<div class="mpwem-event-setting-card__copy">
+					<h3><?php esc_html_e('Allowed User Roles', 'mage-eventpress'); ?></h3>
+					<p><?php esc_html_e('Choose which logged-in roles can access this member-only event.', 'mage-eventpress'); ?></p>
+				</div>
+				<div class="mpwem-taxonomy-checklist mpwem-taxonomy-checklist--roles">
+					<label class="mpwem-taxonomy-checklist__item">
+						<input type="checkbox" name="mep_member_only_user_role[]" value="all" <?php checked(in_array('all', $selected_roles, true)); ?> />
+						<span class="mpwem-taxonomy-checklist__label"><?php esc_html_e('Any Logged-in User', 'mage-eventpress'); ?></span>
+					</label>
+					<?php foreach ($editable_roles as $role => $details) : ?>
+						<label class="mpwem-taxonomy-checklist__item">
+							<input type="checkbox" name="mep_member_only_user_role[]" value="<?php echo esc_attr($role); ?>" <?php checked(in_array($role, $selected_roles, true)); ?> />
+							<span class="mpwem-taxonomy-checklist__label"><?php echo esc_html(translate_user_role($details['name'])); ?></span>
+						</label>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function render_event_setting_options(int $post_id): void
+		{
+			$sku = (string) get_post_meta($post_id, '_sku', true);
+			$show_end_datetime = get_post_meta($post_id, 'mep_show_end_datetime', true);
+			$available_seat = get_post_meta($post_id, 'mep_available_seat', true);
+			$member_only_event = get_post_meta($post_id, 'mep_member_only_event', true);
+			$member_roles = get_post_meta($post_id, 'mep_member_only_user_role', true);
+			$member_roles = is_array($member_roles) && ! empty($member_roles) ? array_map('sanitize_text_field', $member_roles) : ['all'];
+			$is_member_only = $member_only_event === 'member_only';
+			?>
+			<div class="mpwem-event-setting-card">
+				<div class="mpwem-event-setting-card__grid">
+					<div class="mpwem-event-setting-card__item mpwem-event-setting-card__item--sku">
+						<label class="mpwem-field" for="mpwem_event_setting_sku">
+							<span class="mpwem-field__label"><?php esc_html_e('Event SKU', 'mage-eventpress'); ?></span>
+							<input
+								id="mpwem_event_setting_sku"
+								class="mpwem-input"
+								type="text"
+								name="mep_event_sku"
+								value="<?php echo esc_attr($sku); ?>"
+								placeholder="<?php esc_attr_e('Event SKU No', 'mage-eventpress'); ?>" />
+						</label>
+						<p class="mpwem-event-setting-card__help"><?php esc_html_e('Use a simple internal code to identify this event in your workflow.', 'mage-eventpress'); ?></p>
+					</div>
+					<?php
+					$this->render_setting_toggle_field(
+						'mep_show_end_datetime',
+						__('Display End Datetime', 'mage-eventpress'),
+						$show_end_datetime !== 'no',
+						__('Show or hide the event end date and time on the front end.', 'mage-eventpress'),
+						'yes'
+					);
+					$this->render_setting_toggle_field(
+						'mep_available_seat',
+						__('Show Available Seat', 'mage-eventpress'),
+						$available_seat !== 'off',
+						__('Display remaining seat availability to visitors.', 'mage-eventpress'),
+						'on'
+					);
+					$this->render_setting_toggle_field(
+						'mep_member_only_event',
+						__('Member Only Event', 'mage-eventpress'),
+						$is_member_only,
+						__('Restrict this event so only selected logged-in user roles can access it.', 'mage-eventpress'),
+						'member_only'
+					);
+					?>
+				</div>
+				<?php $this->render_setting_roles_field($member_roles, $is_member_only); ?>
+			</div>
+			<?php
+		}
+
+		private function render_taxonomy_card(int $post_id): void
+		{
+			$category_terms = $this->get_taxonomy_terms('mep_cat');
+			$organizer_terms = $this->get_taxonomy_terms('mep_org');
+			$tag_terms = $this->get_taxonomy_terms('mep_tag');
+			$selected_categories = $this->get_selected_term_ids($post_id, 'mep_cat');
+			$selected_organizers = $this->get_selected_term_ids($post_id, 'mep_org');
+			$selected_tags = $this->get_selected_tag_names($post_id);
+			$tag_values = implode(', ', $selected_tags);
+			$tag_suggestions = array_values(
+				array_filter(
+					array_map(
+						static function ($term) {
+							return is_object($term) && isset($term->name) ? (string) $term->name : '';
+						},
+						$tag_terms
+					)
+				)
+			);
+			?>
+				<div class="mpwem-card mpwem-taxonomy-card">
+				<div class="mpwem-card__head">
+					<h2><?php esc_html_e('Event Setting', 'mage-eventpress'); ?></h2>
+					<p><?php esc_html_e('Organize this event and control its core display settings in one place.', 'mage-eventpress'); ?></p>
+				</div>
+				<div class="mpwem-card__body">
+					<div class="mpwem-taxonomy-card__grid">
+						<?php
+						$this->render_taxonomy_field(
+							'mpwem_event_categories',
+							__('Event Category', 'mage-eventpress'),
+							'mep_cat',
+							$category_terms,
+							$selected_categories,
+							'',
+							__('Manage categories', 'mage-eventpress')
+						);
+						$this->render_taxonomy_field(
+							'mpwem_event_organizers',
+							__('Event Organizer', 'mage-eventpress'),
+							'mep_org',
+							$organizer_terms,
+							$selected_organizers,
+							__('Venue location can use organizer details when the venue source is set to Organizer.', 'mage-eventpress'),
+							__('Manage organizers', 'mage-eventpress')
+						);
+						?>
+						<div class="mpwem-taxonomy-card__field mpwem-taxonomy-card__field--tags">
+							<label class="mpwem-field" for="mpwem_event_tags">
+								<span class="mpwem-field__label"><?php esc_html_e('Event Tags', 'mage-eventpress'); ?></span>
+								<input
+									id="mpwem_event_tags"
+									name="mep_tag_names"
+									type="text"
+									class="mpwem-input mpwem-taxonomy-card__tags-input"
+									value="<?php echo esc_attr($tag_values); ?>"
+									placeholder="<?php esc_attr_e('Add tags separated by commas', 'mage-eventpress'); ?>"
+									list="mpwem_event_tags_suggestions"
+									data-tag-input />
+							</label>
+							<datalist id="mpwem_event_tags_suggestions">
+								<?php foreach ($tag_suggestions as $tag_name) : ?>
+									<option value="<?php echo esc_attr($tag_name); ?>"></option>
+								<?php endforeach; ?>
+							</datalist>
+							<div class="mpwem-taxonomy-card__chips" data-tag-preview>
+								<?php foreach ($selected_tags as $tag_name) : ?>
+									<span class="mpwem-taxonomy-card__chip"><?php echo esc_html($tag_name); ?></span>
+								<?php endforeach; ?>
+							</div>
+							<div class="mpwem-taxonomy-card__meta">
+								<p class="mpwem-taxonomy-card__help"><?php esc_html_e('Type existing tags or add new ones. Separate each tag with a comma.', 'mage-eventpress'); ?></p>
+								<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=mep_tag&post_type=' . self::POST_TYPE)); ?>" target="_blank" rel="noopener noreferrer">
+									<?php esc_html_e('Manage tags', 'mage-eventpress'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+					<?php $this->render_event_setting_options($post_id); ?>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function save_taxonomies(int $post_id): void
+		{
+			if (taxonomy_exists('mep_cat')) {
+				$category_ids = isset($_POST['mep_cat']) && is_array($_POST['mep_cat']) ? array_filter(array_map('absint', wp_unslash($_POST['mep_cat']))) : [];
+				wp_set_post_terms($post_id, $category_ids, 'mep_cat', false);
+			}
+
+			if (taxonomy_exists('mep_org')) {
+				$organizer_ids = isset($_POST['mep_org']) && is_array($_POST['mep_org']) ? array_filter(array_map('absint', wp_unslash($_POST['mep_org']))) : [];
+				wp_set_post_terms($post_id, $organizer_ids, 'mep_org', false);
+			}
+
+			if (taxonomy_exists('mep_tag')) {
+				$raw_tags = isset($_POST['mep_tag_names']) ? sanitize_text_field(wp_unslash($_POST['mep_tag_names'])) : '';
+				$tag_names = array_values(
+					array_unique(
+						array_filter(
+							array_map(
+								'sanitize_text_field',
+								array_map('trim', explode(',', $raw_tags))
+							)
+						)
+					)
+				);
+				wp_set_post_terms($post_id, $tag_names, 'mep_tag', false);
+			}
+		}
+
+		private function save_event_setting_options(int $post_id): void
+		{
+			$sku = isset($_POST['mep_event_sku']) ? sanitize_text_field(wp_unslash($_POST['mep_event_sku'])) : (string) $post_id;
+			update_post_meta($post_id, '_sku', $sku);
+
+			$show_end_datetime = isset($_POST['mep_show_end_datetime']) ? 'yes' : 'no';
+			update_post_meta($post_id, 'mep_show_end_datetime', $show_end_datetime);
+
+			$available_seat = isset($_POST['mep_available_seat']) ? 'on' : 'off';
+			update_post_meta($post_id, 'mep_available_seat', $available_seat);
+
+			$member_only_event = isset($_POST['mep_member_only_event']) ? 'member_only' : 'for_all';
+			update_post_meta($post_id, 'mep_member_only_event', $member_only_event);
+
+			$member_roles = isset($_POST['mep_member_only_user_role']) && is_array($_POST['mep_member_only_user_role'])
+				? array_values(array_unique(array_map('sanitize_text_field', wp_unslash($_POST['mep_member_only_user_role']))))
+				: ['all'];
+			update_post_meta($post_id, 'mep_member_only_user_role', $member_roles);
+		}
+
 		public function maybe_redirect_edit_screen(): void
 		{
 			if (defined('DOING_AJAX') && DOING_AJAX) {
@@ -545,6 +849,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-panel-mount" id="mpwem_wizard_venue_mount"></div>
 														</div>
 													</div>
+													<?php $this->render_taxonomy_card($post_id); ?>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
 													<div class="mpwem-card">
@@ -832,6 +1137,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			} else {
 				update_post_meta($post_id, '_thumbnail_id', $thumb_id ? $thumb_id : '');
 			}
+
+			$this->save_taxonomies($post_id);
+			$this->save_event_setting_options($post_id);
 
 			$redirect = add_query_arg(
 				[

@@ -220,6 +220,15 @@
         mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
         enhanceDisplayStep($root);
         mountDangerZone($root);
+
+        const $legacySettingsPanel = $root.find('.mp_tab_item[data-tab-item="#mpwem_event_settings"]').first();
+        if ($legacySettingsPanel.length) {
+            $legacySettingsPanel
+                .addClass('mpwem-legacy-panel--disabled')
+                .hide()
+                .find('input, select, textarea, button')
+                .prop('disabled', true);
+        }
         
         // Handle remaining legacy panels (Additional Sections)
         const $steps = $root.find('.mpwem-step');
@@ -232,7 +241,7 @@
                 const $p = $(this);
                 const id = $p.data('tab-item') || ('#' + this.id);
                 // Don't move if it's a step panel or already handled
-                if (stepPanelSelectors.indexOf(id) !== -1 || id === '#mp_event_venue' || id === '#ttbm_settings_gallery' || $p.hasClass('mpwem-wizard-panel')) {
+                if (stepPanelSelectors.indexOf(id) !== -1 || id === '#mp_event_venue' || id === '#ttbm_settings_gallery' || id === '#mpwem_event_settings' || $p.hasClass('mpwem-wizard-panel')) {
                     return;
                 }
                 $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($additionalMount).show();
@@ -1301,7 +1310,7 @@
     function enhanceSwitches($container) {
         $container.find('input[type="checkbox"]').each(function() {
             const $cb = $(this);
-            if ($cb.data('mpwemSwitch') || $cb.closest('.mpwem-event-type-toggle').length) return;
+            if ($cb.is('[data-no-mpwem-switch]') || $cb.data('mpwemSwitch') || $cb.closest('.mpwem-event-type-toggle').length) return;
             // Rescue data attributes from legacy sliders before destroying them
             const $legacySliders = $cb.siblings('.mpev-slider, .mp_slider, .mpev-slider-round, .round_switch');
             if ($legacySliders.length) {
@@ -1970,6 +1979,68 @@
         alignDateFormatTooltips($panel);
     }
 
+    function enhanceTaxonomyCard($root) {
+        const $card = $root.find('.mpwem-taxonomy-card').first();
+        if (!$card.length) {
+            return;
+        }
+
+        $card.find('input[name="mep_member_only_event"]').each(function() {
+            const $toggle = $(this);
+            const $roles = $card.find('[data-collapse="#mep_member_only_event"]').first();
+            const syncRoles = function() {
+                const isChecked = $toggle.is(':checked');
+                $roles.toggleClass('mActive', isChecked).toggle(isChecked);
+            };
+
+            if (!$toggle.data('mpwemMemberOnlyInit')) {
+                $toggle.on('change.mpwemMemberOnly', syncRoles);
+                $toggle.data('mpwemMemberOnlyInit', true);
+            }
+
+            syncRoles();
+        });
+
+        $card.find('[data-tag-input]').each(function() {
+            const $input = $(this);
+            const $preview = $card.find('[data-tag-preview]').first();
+
+            if ($input.data('mpwemTagPreviewInit')) {
+                return;
+            }
+
+            const renderPreview = function() {
+                const tags = ($input.val() || '')
+                    .toString()
+                    .split(',')
+                    .map(function(tag) {
+                        return tag.trim();
+                    })
+                    .filter(function(tag, index, allTags) {
+                        return tag.length && allTags.indexOf(tag) === index;
+                    });
+
+                $preview.empty();
+
+                if (!tags.length) {
+                    $preview.removeClass('has-items');
+                    return;
+                }
+
+                $preview.addClass('has-items');
+                tags.forEach(function(tag) {
+                    $('<span class="mpwem-taxonomy-card__chip"></span>').text(tag).appendTo($preview);
+                });
+            };
+
+            $input
+                .on('input.mpwemTagPreview change.mpwemTagPreview blur.mpwemTagPreview', renderPreview)
+                .data('mpwemTagPreviewInit', true);
+
+            renderPreview();
+        });
+    }
+
     function validateDateWiseGlobalQty($root, options) {
         const $datePanel = getDatePanel($root);
         const shouldFocusStep = !(options && options.focusStep === false);
@@ -2072,6 +2143,7 @@
             enhanceSwitches($panel);
             enhanceTooltips($panel);
             enhanceSelects($panel);
+            enhanceTaxonomyCard($root);
             if (stepKey === 'date') {
                 enhanceDateStep($root);
             }
@@ -2276,6 +2348,7 @@
             enhanceSwitches($root);
             enhanceTooltips($root);
             enhanceSelects($root);
+            enhanceTaxonomyCard($root);
 
             const h = parseHash();
             setActiveStep($root, h.stepKey || STEP_KEY_FALLBACK, { pushHash: false });

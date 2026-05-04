@@ -761,6 +761,7 @@
 		border-radius: 12px; 
 		display: flex;
 		justify-content: space-between;
+		flex-direction: column;
 	}
 	.mep_list_event_details a.event_details_link{
 		display: block;  
@@ -769,7 +770,9 @@
 	}	
 	.mep_event_grid_item .mep-list-footer { padding: 0; }
 	.mep_event_grid_item span.mep_waitlist_label.mep-tem3-title-sec { max-width: 50%; border-radius: 0 0 0 25px; }
-
+	.mage_grid_box.owl-theme.owl-carousel.owl-loaded.owl-drag div.owl-dots{ 
+		width: auto;
+	}
 	/***********************************/
 	div.mep_event_winter_list { width: 100%; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.06); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; min-height: 160px; position: relative; padding: 0;}
 	div.mep_event_winter_list:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); border: none;}

@@ -616,7 +616,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 							}elseif ($price==0){
 								?>
 								<div class="mpwem_get_status">
-									<?php echo esc_html__('Frees','mage-eventpress'); ?>
+									<?php echo esc_html__('Free','mage-eventpress'); ?>
 								</div>
 								<?php
 							}else{

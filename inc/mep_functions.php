@@ -877,8 +877,12 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		function mep_attendee_create( $type, $order_id, $event_id, $_user_info = array(), $force_order_status = 'no' ) {
 			// Getting an instance of the order object
 			$order             = wc_get_order( $order_id );
+			// Fixed by Shahnur - attendee creation should skip stale Woo orders and 2026-05-05 12:13 PM (Asia/Dhaka)
+			if ( ! $order instanceof WC_Order ) {
+				return false;
+			}
 			$order_meta        = get_post_meta( $order_id );
-			$order_status      = $order instanceof WC_Order ? $order->get_status() : '';
+			$order_status      = $order->get_status();
 			$payment_method    = $order->get_payment_method_title();
 			$user_id           = $order->get_customer_id();
 			$first_name        = $order->get_billing_first_name();
@@ -914,7 +918,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$ticket_type = is_array($_user_info) && array_key_exists( 'user_ticket_type', $_user_info ) ? stripslashes( $_user_info['user_ticket_type'] ) : "";
 				$ticket_qty  = is_array($_user_info) && array_key_exists( 'user_ticket_qty', $_user_info ) ? sanitize_text_field( $_user_info['user_ticket_qty'] ) : "";
 				$event_date  = is_array($_user_info) && array_key_exists( 'user_event_date', $_user_info ) ? sanitize_text_field( $_user_info['user_event_date'] ) : "";
-				$event_id    = $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
+				$event_id    = is_array( $_user_info ) && array_key_exists( 'user_event_id', $_user_info ) && $_user_info['user_event_id'] ? sanitize_text_field( $_user_info['user_event_id'] ) : $event_id;
 			}
 			// $ticket_total_price = (int) ( mep_get_event_ticket_price_by_name( $event_id, $ticket_type ) * (int) $ticket_qty );
 			$price              = mep_get_event_ticket_price_by_name( $event_id, $ticket_type );
@@ -932,6 +936,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			);
 			//SAVE THE POST
 			$pid = wp_insert_post( $new_post );
+			if ( ! $pid || is_wp_error( $pid ) ) {
+				return false;
+			}
 			$pin = $user_id . $order_id . $event_id . $pid;
 			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
 			update_post_meta( $pid, 'ea_address_1', mep_prevent_serialized_input( $address ) );
@@ -976,10 +983,12 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$mep_form_builder_data = get_post_meta( $reg_form_id, 'mep_form_builder_data', true ) ? get_post_meta( $reg_form_id, 'mep_form_builder_data', true ) : [];
 			if ( is_array( $mep_form_builder_data ) && sizeof( $mep_form_builder_data ) > 0 ) {
 				foreach ( $mep_form_builder_data as $_field ) {
-					update_post_meta( $pid, "ea_" . $_field['mep_fbc_id'], $_user_info[ $_field['mep_fbc_id'] ] );
+					$field_value = is_array( $_user_info ) && array_key_exists( $_field['mep_fbc_id'], $_user_info ) ? $_user_info[ $_field['mep_fbc_id'] ] : '';
+					update_post_meta( $pid, "ea_" . $_field['mep_fbc_id'], $field_value );
 					do_action( 'mep_attendee_upload_file_save', $event_id, $_user_info, $_field );
 				}
 			} // End User Form builder data update loop
+			return $pid;
 		}
 	}
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {

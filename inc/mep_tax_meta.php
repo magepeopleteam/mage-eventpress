@@ -45,7 +45,8 @@
 				<?php
 					$user_api = mep_get_option( 'google-map-api', 'general_setting_sec', '' );
 					if ( $user_api ) {
-					wp_enqueue_script( 'gmap-libs', 'https://maps.googleapis.com/maps/api/js?key=' . $user_api . '&libraries=places&callback=initMap', array( 'jquery', 'gmap-scripts' ), 1, true );
+					// Fixed by Shahnur - Google Maps taxonomy loader should not depend on an unregistered handle and 2026-05-05 12:13 PM (Asia/Dhaka)
+					wp_enqueue_script( 'gmap-libs', 'https://maps.googleapis.com/maps/api/js?key=' . $user_api . '&libraries=places&callback=initMap', array( 'jquery' ), 1, true );
 				?>
                     <script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( $user_api ); ?>&#038;libraries=places&#038;callback=initMap&#038;ver=1'></script>
 				<?php

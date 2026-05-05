@@ -9,6 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Event_Lists' ) ) {
 		class MPWEM_Event_Lists {
 			public function __construct() {
+				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';
 				add_action( 'admin_menu', array( $this, 'event_list_menu' ) );
 				add_action( 'admin_action_mpwem_duplicate_post', [ $this, 'mpwem_duplicate_post_function' ] );
 				add_action( 'wp_ajax_mpwem_trash_multiple_posts', [ $this, 'mpwem_trash_multiple_posts' ] );
@@ -75,12 +76,20 @@
                             <div class="header">
                                 <div class="header-top">
                                     <h1><?php esc_html_e( 'Event Management Dashboard', 'mage-eventpress' ) ?></h1>
-                                    <a href="<?php echo esc_url( $add_new_link ); ?>">
-                                        <button class="add-event-btn">
-                                            <span>+</span>
-											<?php esc_html_e( 'Add New Event', 'mage-eventpress' ) ?>
-                                        </button>
-                                    </a>
+                                    <div style="display: flex; gap: 10px;">
+                                        <?php if ( get_option('mep_dummy_already_inserted') !== 'yes' && empty($post_counts['publish']) && \Admin\mep_dummy_import::check_plugin('mage-eventpress', 'woocommerce-event-press.php') == 1 ) : ?>
+                                            <button type="button" class="add-event-btn" id="mep-trigger-dummy-import-btn" style="background-color: #6366f1; color: white; border: none;">
+                                                <span style="margin-right: 5px;">↓</span>
+                                                <?php esc_html_e( 'Import Dummy Data', 'mage-eventpress' ) ?>
+                                            </button>
+                                        <?php endif; ?>
+                                        <a href="<?php echo esc_url( $add_new_link ); ?>">
+                                            <button class="add-event-btn">
+                                                <span>+</span>
+                                                <?php esc_html_e( 'Add New Event', 'mage-eventpress' ) ?>
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="analytics">
                                     <div class="analytics-card">

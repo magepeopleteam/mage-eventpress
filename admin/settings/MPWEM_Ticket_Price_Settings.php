@@ -45,8 +45,8 @@
 			}
 			public function ticket_setting( $event_id, $event_infos ) {
 				$ticket_infos        = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-				$show_advance_column = array_key_exists( 'mep_show_advance_col_status', $event_infos ) ? $event_infos['mep_show_advance_col_status'] : 'off';
-				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+				$show_advance_column = array_key_exists( 'mep_enable_early_bird_status', $event_infos ) ? $event_infos['mep_enable_early_bird_status'] : 'off';
+				$active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
 				$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
@@ -70,10 +70,10 @@
                                     <th class="_min_150" title="<?php esc_attr_e( 'Ticket Type Details', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Short Desc.', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" title="<?php esc_attr_e( 'Ticket Price', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></th>
                                     <th class="_min_100" title="<?php esc_attr_e( 'Available Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Default Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
-                                    <th class="_min_100 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_100" title="<?php esc_attr_e( 'Default Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_100" title="<?php esc_attr_e( 'Reserve Qty', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
 									<?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
-                                    <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale End Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date & Time', 'mage-eventpress' ); ?></th>
+                                    <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status" title="<?php esc_attr_e( 'Sale End Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale End Date & Time', 'mage-eventpress' ); ?></th>
                                     <th class="_min_150" title="<?php esc_attr_e( 'Qty Box Type', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
                                     <th><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                                 </tr>
@@ -147,14 +147,14 @@
                     <td><label><input type="text" class="formControl" name="option_details_t[]" placeholder="" value="<?php echo esc_attr( $option_details ); ?>"/></label></td>
                     <td><label><input type="number" size="4" pattern="[0-9]*" step="0.001" class="formControl" name="option_price_t[]" placeholder="Ex: 10" value="<?php echo esc_attr( $option_price ); ?>"/></label></td>
                     <td><label><input type="number" size="4" pattern="[0-9]*" step="1" class="formControl" name="option_qty_t[]" placeholder="Ex: 500" value="<?php echo esc_attr( $option_qty ) ?>"/></label></td>
-                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+                    <td>
                         <label><input type="number" size="2" pattern="[0-9]*" step="1" class="formControl" name="option_default_qty_t[]" placeholder="Ex: 1" value="<?php echo esc_attr( $option_default_qty ) ?>"/></label>
                     </td>
-                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+                    <td>
                         <label><input type="number" class="formControl" name="option_rsv_t[]" placeholder="Ex: 5" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/></label>
                     </td>
 					<?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
-                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+                    <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
                         <div class="_dFlex">
 							<?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
                             <label>
@@ -307,10 +307,10 @@
 				?>
                 <div class="_padding_bt">
                     <div class=" _justify_between_align_center_wrap">
-                        <label><span class="_mr"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span></label>
-						<?php MPWEM_Custom_Layout::switch_button( 'mep_show_advance_col_status', $checked ); ?>
+                        <label><span class="_mr"><?php esc_html_e( 'Enable early bird:', 'mage-eventpress' ); ?></span></label>
+						<?php MPWEM_Custom_Layout::switch_button( 'mep_enable_early_bird_status', $checked ); ?>
                     </div>
-                    <span class="label-text"><?php esc_html_e( 'Show Advanced Column:', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'Enable early bird ticket pricing schedule', 'mage-eventpress' ); ?></span>
                 </div>
 				<?php
 			}

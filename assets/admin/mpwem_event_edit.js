@@ -207,6 +207,7 @@
 
         initializeTicketPricingModal($root);
         initializeExtraServiceModal($root);
+        initializeParticularDateModal($root);
 
         // Mount into Date Step
         mountPanel($root, '#mpwem_date_settings', 'mpwem_wizard_date_mount');
@@ -469,8 +470,8 @@
 
     function syncTicketAdvancedColumns($root) {
         const context = getTicketModalContext($root);
-        const $toggle = context.$modalMount.find('input[name="mep_show_advance_col_status"]').first();
-        const $targets = context.$modalMount.find('[data-collapse="#mep_show_advance_col_status"]');
+        const $toggle = context.$modalMount.find('input[name="mep_enable_early_bird_status"]').first();
+        const $targets = context.$modalMount.find('[data-collapse="#mep_enable_early_bird_status"]');
         if (!$toggle.length || !$targets.length) {
             return;
         }
@@ -550,8 +551,10 @@
         context.$modalMount.find('.mpwem-ticket-editor-section > ._bg_light_padding').first().hide();
         context.$modalMount.find('.mpwem_settings_area > p').first().addClass('mpwem-ticket-modal__note');
         context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
-
+        
         enhanceSelects(context.$modalMount);
+        enhanceDateFields(context.$modalMount);
+        enhanceCustomCalendar(context.$modalMount);
         renderTicketSummary($root);
         syncTicketAdvancedColumns($root);
         initializeTicketTableDragScroll($root);
@@ -560,6 +563,8 @@
         if ($tbody.length && !$tbody.data('mpwemSummaryObserver')) {
             const observer = new MutationObserver(function() {
                 enhanceSelects(context.$modalMount);
+                enhanceDateFields(context.$modalMount);
+                enhanceCustomCalendar(context.$modalMount);
                 renderTicketSummary($root);
                 syncTicketAdvancedColumns($root);
                 initializeTicketTableDragScroll($root);
@@ -590,7 +595,7 @@
             renderTicketSummary($root);
         });
 
-        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_show_advance_col_status"]', function() {
+        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"]', function() {
             syncTicketAdvancedColumns($root);
         });
 
@@ -902,6 +907,307 @@
         });
 
         $scroller.data('mpwemExtraDragScrollInit', true);
+    }
+
+    function getParticularDateModalContext($root) {
+        const $datePanel = getPanel($root, '#mpwem_date_settings');
+        const $particularSection = $root.find('[data-collapse="#mep_particular_event"]').first();
+        let $summary = $datePanel.find('#mpwem_particular_date_summary').first();
+
+        if ($datePanel.length && !$summary.length) {
+            const $summaryMarkup = $(
+                '<div class="mpwem-ticket-summary" id="mpwem_particular_date_summary" style="display:none;">' +
+                    '<div class="mpwem-ticket-summary__toolbar">' +
+                        '<div class="mpwem-ticket-summary__intro">' +
+                            '<span class="mpwem-ticket-summary__eyebrow">Particular Date Overview</span>' +
+                            '<h3>Specific event dates</h3>' +
+                            '<p>Review particular dates at a glance, then open the full editor when you need to change time or quantity details.</p>' +
+                        '</div>' +
+                        '<div class="mpwem-ticket-summary__actions">' +
+                            '<button type="button" class="button button-secondary" data-mpwem-date-modal-open="list">Show Details</button>' +
+                            '<button type="button" class="button button-primary" data-mpwem-date-modal-open="new">+ Add Particular Date</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="mpwem-ticket-summary__list" id="mpwem_particular_date_summary_list"></div>' +
+                '</div>'
+            );
+
+            const $dateTypeField = $datePanel.find('select[name="mep_enable_recurring"]').closest('._padding_bt');
+            if ($dateTypeField.length) {
+                $dateTypeField.after($summaryMarkup);
+            } else {
+                $datePanel.find('select[name="mep_enable_recurring"]').after($summaryMarkup);
+            }
+            $summary = $summaryMarkup;
+        }
+
+        return {
+            $summaryList: $summary.find('#mpwem_particular_date_summary_list').first(),
+            $summary: $summary,
+            $modal: $root.find('#mpwem_particular_date_modal').first(),
+            $modalMount: $root.find('#mpwem_particular_date_modal_mount').first(),
+            $legacyMount: $particularSection
+        };
+    }
+
+    function getParticularDateRows($root) {
+        const $tbody = $root.find('#mpwem_particular_date_modal_mount tbody.mpwem_item_insert').first();
+        if (!$tbody.length) {
+            return $();
+        }
+
+        return $tbody.children('tr.mpwem_remove_area').filter(function() {
+            return $(this).closest('.mpwem_hidden_content').length === 0;
+        });
+    }
+
+    function renderParticularDateSummary($root) {
+        const context = getParticularDateModalContext($root);
+        const $rows = getParticularDateRows($root);
+        if (!context.$summaryList.length) {
+            return;
+        }
+
+        context.$summaryList.empty();
+
+        context.$summaryList.append(
+            $('<div class="mpwem-ticket-summary__header"></div>')
+                .append($('<span class="mpwem-ticket-summary__header-ticket">Date & Time</span>'))
+                .append($('<span class="mpwem-ticket-summary__header-capacity">Capacity</span>'))
+        );
+
+        if (!$rows.length) {
+            context.$summaryList.append(
+                $('<div class="mpwem-ticket-summary__empty"></div>')
+                    .append($('<h4></h4>').text('No dates added yet'))
+                    .append($('<p></p>').text('Add specific dates and times for this event to run on.'))
+                    .append($('<button type="button" class="button button-primary"></button>')
+                        .attr('data-mpwem-date-modal-open', 'new')
+                        .text('Create First Date'))
+            );
+            return;
+        }
+
+        $rows.each(function(index) {
+            const $row = $(this);
+            const $dateInput = $row.find('input[name="event_date_gq_md[]"], input[name="event_date_md[]"], input.new-particular-date_type, input.date_type, input[name="event_date_gq"]').first();
+            const dateVal = ($dateInput.val() || '').toString().trim();
+            
+            const $timeInput = $row.find('input[name="event_time_gq_md[]"], input[name="event_time_md[]"], input[name="event_time_gq"]').first();
+            const timeVal = ($timeInput.val() || '').toString().trim();
+            
+            const $qtyInput = $row.find('input[name="event_time_gq_qty[]"], input[name="event_time_gq_qty"]').first();
+            const qtyVal = ($qtyInput.val() || '').toString().trim();
+
+            const displayDate = dateVal ? dateVal : 'Date not set';
+            const displayTime = timeVal ? timeVal : 'Time not set';
+            const displayQty = qtyVal ? qtyVal : 'Unlimited';
+
+            context.$summaryList.append(
+                $('<article class="mpwem-ticket-summary__item"></article>')
+                    .attr('data-date-row-index', index)
+                    .append(
+                        $('<div class="mpwem-ticket-summary__item-main"></div>')
+                            .append(
+                                $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                    .append($('<h4></h4>').text(displayDate + (timeVal ? ' at ' + displayTime : '')))
+                            )
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text('Qty ' + displayQty))
+                    )
+            );
+        });
+    }
+
+    function openParticularDateModal($root, mode, rowIndex) {
+        const context = getParticularDateModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'false').addClass('is-open');
+        $('body').addClass('mpwem-ticket-modal-open');
+
+        const isNew = mode === 'new';
+        $root.find('#mpwem_particular_date_modal_title').text(isNew ? 'Add particular date' : 'Manage particular dates');
+        $root.find('#mpwem_particular_date_modal_description').text(
+            isNew
+                ? 'Create a new date, then fill in time and quantity details.'
+                : 'Edit specific event dates, times, and quantities without leaving this step.'
+        );
+
+        if (isNew) {
+            const $addButton = context.$modalMount.find('.mpwem_add_item, .mp_add_item').first();
+            if ($addButton.length) {
+                $addButton.trigger('click');
+                window.setTimeout(function() {
+                    enhanceDateFields($root);
+                    const $rows = getParticularDateRows($root);
+                    if ($rows.length) {
+                        const $newRow = $rows.last();
+                        const $container = $newRow.closest('.mpwem-ticket-modal__body');
+                        if ($container.length) {
+                            const top = $newRow.position().top + $container.scrollTop() - 24;
+                            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
+                        }
+                        $newRow.addClass('mpwem-ticket-row-focus');
+                        window.setTimeout(function() {
+                            $newRow.removeClass('mpwem-ticket-row-focus');
+                        }, 1800);
+                    }
+                    renderParticularDateSummary($root);
+                }, 100);
+            }
+            return;
+        }
+
+        if (typeof rowIndex === 'number' && rowIndex >= 0) {
+            const $row = getParticularDateRows($root).eq(rowIndex);
+            window.setTimeout(function() {
+                const $container = $row.closest('.mpwem-ticket-modal__body');
+                if ($container.length) {
+                    const top = $row.position().top + $container.scrollTop() - 24;
+                    $container.animate({ scrollTop: Math.max(top, 0) }, 250);
+                }
+                $row.addClass('mpwem-ticket-row-focus');
+                window.setTimeout(function() {
+                    $row.removeClass('mpwem-ticket-row-focus');
+                }, 1800);
+            }, 60);
+        }
+    }
+
+    function closeParticularDateModal($root) {
+        const context = getParticularDateModalContext($root);
+        if (!context.$modal.length) {
+            return;
+        }
+
+        context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
+        $('body').removeClass('mpwem-ticket-modal-open');
+    }
+
+    function initializeParticularDateModal($root) {
+        const context = getParticularDateModalContext($root);
+        
+        if (!context.$legacyMount.length || !context.$modalMount.length) {
+            return;
+        }
+
+        if (context.$legacyMount.parent()[0] !== context.$modalMount[0]) {
+            context.$modalMount.append(context.$legacyMount.detach());
+            context.$legacyMount.show();
+        }
+
+        context.$modalMount.find('table').not('.ui-datepicker-calendar').addClass('mpwem-date-table');
+        context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
+        context.$modalMount.find('> section > ._bg_light_padding').first().hide();
+
+        const $scroller = context.$modalMount.find('._ov_auto').first();
+        if ($scroller.length && !context.$modalMount.find('.mpwem-ticket-table-hint').length) {
+            $scroller.after('<p class="mpwem-ticket-table-hint">Tip: Drag the table left or right to see more columns.</p>');
+        }
+
+        enhanceDateFields(context.$modalMount);
+        initializeParticularDateTableDragScroll($root);
+        // renderParticularDateSummary($root);
+
+        const $tbody = context.$modalMount.find('tbody.mpwem_item_insert').first();
+        if ($tbody.length && !$tbody.data('mpwemDateSummaryObserver')) {
+            const observer = new MutationObserver(function() {
+                renderParticularDateSummary($root);
+            });
+            observer.observe($tbody[0], { childList: true, subtree: true });
+            $tbody.data('mpwemDateSummaryObserver', observer);
+        }
+
+        $root.off('.mpwemDateModal');
+
+        $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-open]', function(e) {
+            e.preventDefault();
+            const mode = $(this).attr('data-mpwem-date-modal-open') || 'list';
+            const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
+            openParticularDateModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
+        $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-close]', function(e) {
+            e.preventDefault();
+            closeParticularDateModal($root);
+        });
+
+        $root.on('input.mpwemDateModal change.mpwemDateModal', '#mpwem_particular_date_modal_mount input', function() {
+            renderParticularDateSummary($root);
+        });
+
+        $root.on('click.mpwemDateModal', '#mpwem_particular_date_modal_mount .mpwem_item_remove, #mpwem_particular_date_modal_mount .mp_add_item', function() {
+            window.setTimeout(function() {
+                renderParticularDateSummary($root);
+            }, 280);
+        });
+
+        $(document)
+            .off('keydown.mpwemDateModal')
+            .on('keydown.mpwemDateModal', function(e) {
+                if (e.key === 'Escape' && context.$modal.hasClass('is-open')) {
+                    closeParticularDateModal($root);
+                }
+            });
+    }
+
+    function initializeParticularDateTableDragScroll($root) {
+        const context = getParticularDateModalContext($root);
+        const $scroller = context.$modalMount.find('._ov_auto').first();
+        if (!$scroller.length || $scroller.data('mpwemDateDragScrollInit')) {
+            return;
+        }
+
+        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        let isDragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        $scroller.on('mousedown.mpwemDateDragScroll', function(e) {
+            if (e.button !== 0) {
+                return;
+            }
+
+            if ($(e.target).closest(interactiveSelector).length) {
+                return;
+            }
+
+            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
+            if (!hasHorizontalOverflow) {
+                return;
+            }
+
+            isDragging = true;
+            startX = e.pageX;
+            startScrollLeft = this.scrollLeft;
+            $scroller.addClass('is-dragging');
+            e.preventDefault();
+        });
+
+        $(document).on('mousemove.mpwemDateDragScroll', function(e) {
+            if (!isDragging) {
+                return;
+            }
+
+            const deltaX = e.pageX - startX;
+            $scroller.scrollLeft(startScrollLeft - deltaX);
+        });
+
+        $(document).on('mouseup.mpwemDateDragScroll mouseleave.mpwemDateDragScroll', function() {
+            if (!isDragging) {
+                return;
+            }
+
+            isDragging = false;
+            $scroller.removeClass('is-dragging');
+        });
+
+        $scroller.data('mpwemDateDragScrollInit', true);
     }
 
     function enhanceDisplayStep($root) {
@@ -1515,7 +1821,6 @@
     function syncDateTypeSections($panel, value) {
         const map = {
             no: '#mep_normal_event',
-            yes: '#mep_particular_event',
             everyday: '#mep_everyday_event'
         };
 
@@ -1529,6 +1834,15 @@
                 $section.removeClass('mActive mpwem-date-mode-active').hide();
             }
         });
+
+        const $particularSummary = $panel.find('#mpwem_particular_date_summary');
+        if ($particularSummary.length) {
+            if (value === 'yes') {
+                $particularSummary.addClass('mActive mpwem-date-mode-active').show();
+            } else {
+                $particularSummary.removeClass('mActive mpwem-date-mode-active').hide();
+            }
+        }
 
         $panel.find('.mpwem-date-type-option').removeClass('is-active');
         $panel.find('.mpwem-date-type-option').attr('aria-checked', 'false');
@@ -1600,14 +1914,23 @@
     function enhanceDateFields($panel) {
         $panel.find('label').each(function() {
             const $label = $(this);
+            if ($label.data('mpwemDateEnhanced')) return;
             const $dateInput = $label.find('input.formControl:not([type]), input[type="text"].formControl, input[type="text"].date_type, input[type="text"].new-date_type, input[type="text"].new-date_type-new, input[type="text"].new-particular-date_type').first();
             const hasHiddenDate = $label.find('input[type="hidden"]').filter(function() {
                 const name = $(this).attr('name') || '';
-                return /(^|_)event_.*date|mep_ticket_off_dates|mep_special_(start|end)_date/.test(name);
+                return /(^|_)event_.*date|mep_ticket_off_dates|mep_special_(start|end)_date|option_sale_(start|end)_date/.test(name);
             }).length > 0;
             if ($dateInput.length && hasHiddenDate) {
                 $label.addClass('mpwem-date-input-wrap');
                 $dateInput.addClass('mpwem-date-input');
+                
+                const $hidden = $label.find('input[type="hidden"]').first();
+                if ($hidden.val()) {
+                    const parsed = parseIsoDate($hidden.val());
+                    if (parsed) {
+                        $dateInput.val(formatVisibleDate(parsed));
+                    }
+                }
             }
 
             const $timeInput = $label.find('input[type="time"]').first();
@@ -1615,6 +1938,8 @@
                 $label.addClass('mpwem-time-input-wrap');
                 $timeInput.addClass('mpwem-time-input');
             }
+
+            $label.data('mpwemDateEnhanced', true);
         });
     }
 
@@ -1638,7 +1963,7 @@
     }
 
     function formatVisibleDate(date) {
-        const format = window.mpwem_date_format || 'yy-mm-dd';
+        const format = 'D d M , yy';
         if ($.datepicker && $.datepicker.formatDate) {
             return $.datepicker.formatDate(format, date);
         }
@@ -1872,6 +2197,7 @@
         bindCustomCalendar();
         $panel.find('.mpwem-date-input').each(function() {
             const $input = $(this);
+            if ($input.data('mpwemCustomCalendar')) return;
 
             if ($.datepicker && $input.hasClass('hasDatepicker')) {
                 try {
@@ -2055,7 +2381,7 @@
             return true;
         }
 
-        const $requiredFields = $datePanel.find('[data-collapse="#mep_particular_event"] input[name="event_date_gq"], [data-collapse="#mep_particular_event"] input[name="event_date_gq_md[]"]').filter(function() {
+        const $requiredFields = $root.find('#mpwem_particular_date_modal_mount input[name="event_date_gq"], #mpwem_particular_date_modal_mount input[name="event_date_gq_md[]"]').filter(function() {
             return $(this).closest('.mpwem_hidden_content').length === 0;
         });
         const recurringType = ($datePanel.find('select[name="mep_enable_recurring"]').first().val() || '').toString();
@@ -2091,12 +2417,15 @@
 
         if ($firstInvalid.length) {
             window.setTimeout(function() {
-                const $scrollWrap = $firstInvalid.closest('._ov_auto');
-                if ($scrollWrap.length) {
-                    const left = $firstInvalid.position().left + $scrollWrap.scrollLeft() - 24;
-                    $scrollWrap.animate({ scrollLeft: Math.max(left, 0) }, 220);
-                }
-                $firstInvalid.trigger('focus');
+                openParticularDateModal($root, 'list');
+                window.setTimeout(function() {
+                    const $scrollWrap = $firstInvalid.closest('._ov_auto');
+                    if ($scrollWrap.length) {
+                        const left = $firstInvalid.position().left + $scrollWrap.scrollLeft() - 24;
+                        $scrollWrap.animate({ scrollLeft: Math.max(left, 0) }, 220);
+                    }
+                    $firstInvalid.trigger('focus');
+                }, 220);
             }, 80);
         }
 

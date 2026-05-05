@@ -987,6 +987,26 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-panel-mount" id="mpwem_wizard_date_mount"></div>
 														</div>
 													</div>
+													<div class="mpwem-ticket-modal" id="mpwem_particular_date_modal" aria-hidden="true">
+														<div class="mpwem-ticket-modal__backdrop" data-mpwem-date-modal-close></div>
+														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_particular_date_modal_title">
+															<div class="mpwem-ticket-modal__header">
+																<div class="mpwem-ticket-modal__header-copy">
+																	<span class="mpwem-ticket-modal__eyebrow"><?php esc_html_e('Particular Date Editor', 'mage-eventpress'); ?></span>
+																	<h3 id="mpwem_particular_date_modal_title"><?php esc_html_e('Manage particular dates', 'mage-eventpress'); ?></h3>
+																	<p id="mpwem_particular_date_modal_description"><?php esc_html_e('Edit specific event dates, times, and quantities without leaving this step.', 'mage-eventpress'); ?></p>
+																</div>
+																<div class="mpwem-ticket-modal__header-actions">
+																	<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close date editor', 'mage-eventpress'); ?>" data-mpwem-date-modal-close>
+																		<span class="dashicons dashicons-no-alt"></span>
+																	</button>
+																</div>
+															</div>
+															<div class="mpwem-ticket-modal__body">
+																<div class="mpwem-ticket-modal__mount" id="mpwem_particular_date_modal_mount"></div>
+															</div>
+														</div>
+													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
 													<div class="mpwem-card mpwem-card--help mpwem-card--help-schedule">

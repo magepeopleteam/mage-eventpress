@@ -122,11 +122,11 @@
 					update_post_meta( $post_id, 'mep_sgm', $mep_sgm );
 					update_post_meta( $post_id, 'location_name', $location_name );
 					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
-					$mep_show_advance_col_status = isset( $_POST['mep_show_advance_col_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advance_col_status'] ) ) ? 'on' : 'off';
+					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg_txt = isset( $_POST['mep_reg_status_show_msg_txt'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg_txt'] ) ) : '';
 					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
-					update_post_meta( $post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status );
+					update_post_meta( $post_id, 'mep_enable_early_bird_status', $mep_enable_early_bird_status );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
 					/********************************/
@@ -140,6 +140,8 @@
 					$qty_type             = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
 					$sale_end_date        = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
 					$sale_end_time        = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
+					$sale_start_date      = isset( $_POST['option_sale_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_date'] ) ) : [];
+					$sale_start_time      = isset( $_POST['option_sale_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_time'] ) ) : [];
 					$option_ticket_enable = isset( $_POST['option_ticket_enable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_enable'] ) ) : [];
 					$count                = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
@@ -155,6 +157,9 @@
 							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
+							$new_ticket_type[ $i ]['option_sale_start_date']   = $sale_start_date[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_time']   = $sale_start_time[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_date_t'] = $sale_start_date[ $i ] . ' ' . $sale_start_time[ $i ];
 						}
 					}
 					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );

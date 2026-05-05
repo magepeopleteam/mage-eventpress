@@ -419,6 +419,7 @@
 .mpwem-event-wizard .button,
 .mpwem-event-wizard button:not(.mpwem-step):not(.mpwem-select-trigger) {
 	display: inline-flex;
+	gap: 5px;
 	align-items: center;
 	justify-content: center;
 	padding: var(--mpwem-btn-padding);
@@ -1678,6 +1679,7 @@ select.mpwem-global-qty-field__input {
 	display: grid;
 	gap: 24px;
 	padding: 0 25px 20px;
+	margin-top: 20px;
 }
 #mpwem_extra_service_summary.mpwem-ticket-summary {
 	padding: 0;
@@ -2113,7 +2115,8 @@ select.mpwem-global-qty-field__input {
 	user-select: none;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table {
+.mpwem-ticket-modal__mount .mpwem_ticket_table,
+.mpwem-ticket-modal__mount .mpwem-date-table {
 	width: max-content;
 	min-width: 100%;
 	border-collapse: separate;
@@ -2131,7 +2134,8 @@ select.mpwem-global-qty-field__input {
 	margin-right: 0;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table thead th {
+.mpwem-ticket-modal__mount .mpwem_ticket_table thead th,
+.mpwem-ticket-modal__mount .mpwem-date-table thead th {
 	position: sticky;
 	top: 0;
 	z-index: 2;
@@ -2165,7 +2169,8 @@ select.mpwem-global-qty-field__input {
 	box-shadow: inset 0 -1px 0 rgba(148, 163, 184, 0.18);
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table thead th:first-child {
+.mpwem-ticket-modal__mount .mpwem_ticket_table thead th:first-child,
+.mpwem-ticket-modal__mount .mpwem-date-table thead th:first-child {
 	border-top-left-radius: 14px;
 	border-bottom-left-radius: 14px;
 }
@@ -2175,7 +2180,8 @@ select.mpwem-global-qty-field__input {
 	border-bottom-left-radius: 14px;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table thead th:last-child {
+.mpwem-ticket-modal__mount .mpwem_ticket_table thead th:last-child,
+.mpwem-ticket-modal__mount .mpwem-date-table thead th:last-child {
 	border-top-right-radius: 14px;
 	border-bottom-right-radius: 14px;
 }
@@ -2185,7 +2191,8 @@ select.mpwem-global-qty-field__input {
 	border-bottom-right-radius: 14px;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody tr {
 	box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.28);
 }
 
@@ -2193,7 +2200,8 @@ select.mpwem-global-qty-field__input {
 	box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.28);
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody td {
 	padding: 14px;
 	vertical-align: top;
 	border-top: 1px solid #e2e8f0;
@@ -2211,7 +2219,8 @@ select.mpwem-global-qty-field__input {
 	white-space: nowrap;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td:first-child {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td:first-child,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody td:first-child {
 	border-left: 1px solid #e2e8f0;
 	border-top-left-radius: 16px;
 	border-bottom-left-radius: 16px;
@@ -2223,7 +2232,8 @@ select.mpwem-global-qty-field__input {
 	border-bottom-left-radius: 16px;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td:last-child {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody td:last-child,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody td:last-child {
 	border-right: 1px solid #e2e8f0;
 	border-top-right-radius: 16px;
 	border-bottom-right-radius: 16px;
@@ -2235,7 +2245,8 @@ select.mpwem-global-qty-field__input {
 	border-bottom-right-radius: 16px;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(odd) td {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(odd) td,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody tr:nth-child(odd) td {
 	background: linear-gradient(135deg, #fffefd 0%, #fff9f2 55%, #fcefe1 100%);
 }
 
@@ -2243,7 +2254,8 @@ select.mpwem-global-qty-field__input {
 	background: linear-gradient(135deg, #fffefd 0%, #fff9f2 55%, #fcefe1 100%);
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(even) td {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(even) td,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody tr:nth-child(even) td {
 	background: linear-gradient(135deg, #ffffff 0%, #fffdf8 52%, #fdf3e8 100%);
 }
 
@@ -2251,12 +2263,14 @@ select.mpwem-global-qty-field__input {
 	background: linear-gradient(135deg, #ffffff 0%, #fffdf8 52%, #fdf3e8 100%);
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr.disable_row td {
+.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr.disable_row td,
+.mpwem-ticket-modal__mount .mpwem-date-table tbody tr.disable_row td {
 	background: linear-gradient(135deg, #fefdfb 0%, #fbf7f1 58%, #f6efe6 100%);
 	border-color: #e5d8c9;
 }
 
-.mpwem-ticket-modal__mount .mpwem_ticket_table label {
+.mpwem-ticket-modal__mount .mpwem_ticket_table label,
+.mpwem-ticket-modal__mount .mpwem-date-table label {
 	display: block;
 }
 
@@ -2265,6 +2279,7 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-ticket-modal__mount .mpwem_ticket_table .formControl,
+.mpwem-ticket-modal__mount .mpwem-date-table .formControl,
 .mpwem-ticket-modal__mount .mpwem_ticket_table .mp_formControl {
 	width: 100%;
 	max-width: 100%;
@@ -2278,6 +2293,7 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-ticket-modal__mount .mpwem_ticket_table .formControl:focus,
+.mpwem-ticket-modal__mount .mpwem-date-table .formControl:focus,
 .mpwem-ticket-modal__mount .mpwem_ticket_table .mp_formControl:focus {
 	border-color: #93c5fd;
 	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
@@ -2336,6 +2352,7 @@ select.mpwem-global-qty-field__input {
 
 .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem_sortable_button,
 .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem_item_remove,
+.mpwem-ticket-modal__mount .mpwem-date-table .mpwem_item_remove,
 .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem_show_hide_button {
 	display: inline-flex;
 	align-items: center;
@@ -4337,12 +4354,21 @@ body.mpwem-ticket-modal-open {
 	align-items: center;
 }
 
-.mpwem-date-input-wrap,
+.mpwem-date-input-wrap {
+	position: relative;
+	display: inline-flex !important;
+	align-items: center;
+	width: 160px;
+	flex-shrink: 0;
+	margin: 0;
+}
+
 .mpwem-time-input-wrap {
 	position: relative;
 	display: inline-flex !important;
 	align-items: center;
-	width: min(100%, 250px);
+	width: 120px;
+	flex-shrink: 0;
 	margin: 0;
 }
 
@@ -4388,7 +4414,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-date-input-wrap .remove_icon {
 	right: 8px;
 	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(0);
 	background: #fff1f2;
 	color: var(--mpwem-danger);
 	border: 1px solid #fecdd3;
@@ -4422,64 +4448,57 @@ body.mpwem-ticket-modal-open {
 	background: #fbfdff !important;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] ._ov_auto {
+#mpwem_particular_date_modal_mount ._ov_auto {
 	overflow-x: auto;
 	overflow-y: visible;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table {
+#mpwem_particular_date_modal_mount .mpwem-date-table {
 	width: max-content;
 	min-width: 100%;
 	table-layout: auto;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th,
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td {
+#mpwem_particular_date_modal_mount .mpwem-date-table th,
+#mpwem_particular_date_modal_mount .mpwem-date-table td {
 	width: auto;
 	min-width: max-content;
 	white-space: nowrap;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th:nth-child(1),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td:nth-child(1),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th:nth-child(3),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td:nth-child(3) {
-	min-width: 210px;
+#mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(1),
+#mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(1),
+#mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(3),
+#mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(3) {
+	width: 190px;
+	min-width: 190px;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th:nth-child(2),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td:nth-child(2),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th:nth-child(4),
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td:nth-child(4) {
-	min-width: 150px;
+#mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(2),
+#mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(2),
+#mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(4),
+#mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(4) {
+	width: 130px;
+	min-width: 130px;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table th:last-child,
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table td:last-child {
-	min-width: 88px;
+#mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(n+5):not(:last-child),
+#mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(n+5):not(:last-child) {
+	width: 120px;
+	min-width: 120px;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table input[type="number"].formControl {
-	width: 132px !important;
-	max-width: 132px !important;
-	height: 42px !important;
-	padding: 8px 12px !important;
-	border: 1px solid #d9e2ef !important;
-	border-radius: 10px !important;
-	background: #fff !important;
-	color: var(--mpwem-text) !important;
-	font-size: 13px !important;
-	font-weight: 700;
-	text-align: center;
-	box-shadow: none !important;
+#mpwem_particular_date_modal_mount .mpwem-date-table th:last-child,
+#mpwem_particular_date_modal_mount .mpwem-date-table td:last-child {
+	width: 110px;
+	min-width: 110px;
 }
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table input[type="number"].formControl:focus {
-	border-color: var(--mpwem-primary) !important;
-	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
-}
 
-.mpwem-date-step [data-collapse="#mep_particular_event"] .mpwem-date-table input[type="number"].formControl.mpwem-field-error {
+
+
+
+#mpwem_particular_date_modal_mount .mpwem-date-table input[type="number"].formControl.mpwem-field-error {
 	border-color: #e11d48 !important;
 	box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12) !important;
 	background: #fff7f8 !important;
@@ -5089,7 +5108,7 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
 
 .mpwem-custom-calendar {
 	position: absolute;
-	z-index: 100000;
+	z-index: 100200;
 	display: none;
 	width: 336px;
 	padding: 14px;

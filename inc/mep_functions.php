@@ -5528,21 +5528,21 @@ function mep_change_date_status() {
     if ( ! function_exists( 'mep_early_bird_column' ) ) {
     add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
     function mep_early_bird_column( $event_id ) {
-        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
-        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         ?>
-        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
+        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
         <?php
     }
     }
     if ( ! function_exists( 'mep_early_bird_column_saved' ) ) {
     add_action( 'mpwem_add_extra_input_box', 'mep_early_bird_column_saved', 90,2 );
     function mep_early_bird_column_saved( $event_id, $ticket_info = [] ) {
-        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
-        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         $sale_start          = array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
         ?>
-        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
+        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
             <div class="_dFlex">
                 <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
                 <label>

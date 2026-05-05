@@ -1,0 +1,304 @@
+/**
+ * Multilingual Admin Styles for MageEventPress
+ */
+
+.mep-lang-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    margin: 2px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.mep-lang-badge.mep-lang-current {
+    background: #2271b1;
+    color: #fff;
+}
+
+.mep-lang-badge.mep-lang-yes {
+    background: #00a32a;
+    color: #fff;
+}
+
+.mep-lang-badge.mep-lang-no {
+    background: #d63638;
+    color: #fff;
+}
+
+.mep-lang-badge.mep-lang-none {
+    background: #ccc;
+    color: #666;
+    font-size: 11px;
+}
+
+/* Translation Meta Box Styles */
+.mep-translation-status-box {
+    padding: 0;
+}
+
+.mep-translation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.mep-translation-table th,
+.mep-translation-table td {
+    padding: 8px 5px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+}
+
+.mep-translation-table th {
+    background: #f1f1f1;
+    font-weight: 600;
+}
+
+.mep-status-badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.mep-status-badge.current {
+    background: #2271b1;
+    color: #fff;
+}
+
+.mep-status-badge.translated {
+    background: #00a32a;
+    color: #fff;
+}
+
+.mep-status-badge.missing {
+    background: #d63638;
+    color: #fff;
+}
+
+.mep-sync-warning {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mep-sync-warning .dashicons {
+    vertical-align: middle;
+    color: #f59e0b;
+}
+
+/* Translation Row Action */
+.mep-translate-link {
+    color: #2271b1 !important;
+}
+
+.mep-translate-link:hover {
+    color: #135e96 !important;
+}
+
+/* Admin List View Translation Column */
+.column-mep_translations {
+    width: 150px;
+}
+
+/* Loading States */
+.mep-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.mep-loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #2271b1;
+    border-radius: 50%;
+    animation: mep-spin 0.8s linear infinite;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+@keyframes mep-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Toast Notifications */
+.mep-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #333;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 999999;
+    animation: mep-slide-in 0.3s ease;
+}
+
+.mep-toast.success {
+    background: #00a32a;
+}
+
+.mep-toast.error {
+    background: #d63638;
+}
+
+@keyframes mep-slide-in {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Translation Modal */
+.mep-translation-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mep-translation-modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 600px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+}
+
+.mep-translation-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.mep-translation-modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.mep-translation-modal-close {
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.mep-translation-modal-close:hover {
+    color: #333;
+}
+
+.mep-language-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.mep-language-item {
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mep-language-item:hover {
+    border-color: #2271b1;
+    background: #f7f7f7;
+}
+
+.mep-language-item.translated {
+    border-color: #00a32a;
+    background: #f0f9f0;
+}
+
+.mep-language-item.missing {
+    border-color: #d63638;
+    background: #fef7f7;
+}
+
+.mep-language-item .lang-code {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.mep-language-item .lang-name {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.mep-language-item .status-icon {
+    margin-top: 8px;
+}
+
+/* Settings Page Styles */
+.mep-ml-status-panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.mep-ml-status-panel h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.mep-ml-status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.mep-ml-status-item:last-child {
+    border-bottom: none;
+}
+
+.mep-ml-status-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.mep-ml-status-value {
+    color: #333;
+}
+
+.mep-ml-status-value.active {
+    color: #00a32a;
+}
+
+.mep-ml-status-value.inactive {
+    color: #d63638;
+}

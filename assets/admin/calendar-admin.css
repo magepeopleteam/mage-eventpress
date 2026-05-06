@@ -45,28 +45,84 @@
 	box-shadow: 0 6px 18px rgba(0, 44, 102, 0.08);
 }
 
-.mep-cal-settings-section {
+.mep-cal-settings-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
 	margin: 0;
+	padding: 18px 22px;
+	background: #fff;
 	border-bottom: 1px solid var(--mep-cal-admin-gray);
+}
+
+.mep-cal-settings-tab {
+	min-height: 38px;
+	margin: 0;
+	padding: 8px 14px;
+	border: 1px solid #c8d1dc;
+	border-radius: 4px;
+	background: var(--mep-cal-admin-theme-soft);
+	color: var(--mep-cal-admin-dark);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.35;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.mep-cal-settings-tab:hover,
+.mep-cal-settings-tab:focus {
+	border-color: var(--mep-cal-admin-theme);
+	color: var(--mep-cal-admin-theme);
+	outline: none;
+	box-shadow: 0 0 0 1px var(--mep-cal-admin-theme);
+}
+
+.mep-cal-settings-tab.is-active {
+	background: var(--mep-cal-admin-theme);
+	border-color: var(--mep-cal-admin-theme);
+	color: var(--mep-cal-admin-white);
+}
+
+.mep-cal-settings-section {
+	margin: 18px 22px 24px;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	display: none;
+	padding: 20px 20px 22px;
+	background: #fff;
+	box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.mep-cal-settings-section.is-active {
+	display: block;
 }
 
 .mep-cal-settings-section:last-of-type {
-	border-bottom: 0;
+	margin-bottom: 24px;
 }
 
 .mep-cal-settings-section h2 {
-	margin: 0;
-	padding: 16px 22px;
-	background: var(--mep-cal-admin-theme-soft);
+	margin: 0 0 16px;
+	padding: 0 0 12px;
+	background: transparent;
 	color: var(--mep-cal-admin-theme);
 	font-size: 18px;
 	font-weight: 600;
-	border-bottom: 1px solid var(--mep-cal-admin-gray);
+	line-height: 1.35;
+	border: 0;
+	border-bottom: 1px solid #e5e7eb;
+	box-shadow: none;
 }
 
 .mep-cal-settings-section .form-table {
 	margin: 0;
+	width: 100%;
 	border-collapse: collapse;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #fff;
 }
 
 .mep-cal-settings-section .form-table th,
@@ -351,9 +407,26 @@
 		padding-right: 16px;
 	}
 
+	.mep-cal-settings-tabs {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mep-cal-settings-tab {
+		flex: 1 1 140px;
+		justify-content: center;
+	}
+
 	.mep-cal-settings-section h2,
 	.mep-cal-shortcode-ref,
 	.mep-calendar-settings-wrap form p.submit {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mep-cal-settings-section {
+		margin-left: 16px;
+		margin-right: 16px;
 		padding-left: 16px;
 		padding-right: 16px;
 	}

@@ -28,7 +28,30 @@ jQuery(document).ready(function($) {
         refreshRulePreview($row);
     }
 
+    function activateSettingsTab($tab) {
+        var targetId = $tab.data('tab-target');
+
+        if (!targetId) {
+            return;
+        }
+
+        $('.mep-cal-settings-tab').removeClass('is-active').attr('aria-selected', 'false');
+        $('.mep-cal-settings-section[role="tabpanel"]').removeClass('is-active').attr('hidden', true);
+
+        $tab.addClass('is-active').attr('aria-selected', 'true');
+        $('#' + targetId).addClass('is-active').removeAttr('hidden');
+    }
+
     initColorPickers(document);
+
+    $(document).on('click', '.mep-cal-settings-tab', function(e) {
+        e.preventDefault();
+        activateSettingsTab($(this));
+    });
+
+    $('.mep-cal-settings-tabs .mep-cal-settings-tab.is-active').first().each(function() {
+        activateSettingsTab($(this));
+    });
 
     $(document).on('change', '.mep-cal-day-rule-type', function() {
         bindRuleRow($(this).closest('.mep-cal-day-rule-item'));

@@ -27,6 +27,9 @@
 			}
 			public function setting_head( $event_id, $event_infos ) {
 				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$is_custom_event_edit = is_admin()
+					&& isset( $_GET['page'] )
+					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
                 <div class="_layout_default_xs_mp_zero">
                     <div class="_bg_light_padding">
@@ -38,7 +41,9 @@
 						$this->event_view_shortcode( $event_id );
 						do_action( 'mep_add_category_display', $event_id );
 						$this->registration_on_off( $event_id, $event_infos );
-						do_action( 'mpwem_after_registration_on_off', $event_id );
+						if ( ! $is_custom_event_edit ) {
+							do_action( 'mpwem_after_registration_on_off', $event_id );
+						}
 					?>
                 </div>
 				<?php
@@ -138,18 +143,26 @@
                             <input type="number" size="4" pattern="[0-9]*" step="1" class="mpwem-card-input" name="option_qty_t[]" placeholder="100" value="<?php echo esc_attr( $option_qty ) ?>"/>
                         </div>
 
-                        <!-- Quantity Settings Group -->
-                        <div class="mpwem-ticket-card__group mpwem-ticket-card__quantity <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'QUANTITY', 'mage-eventpress' ); ?></label>
-                            <div class="mpwem-card-row mpwem-card-row--qty">
-                                <input type="number" size="2" pattern="[0-9]*" step="1" class="mpwem-card-input mpwem-card-input--small" name="option_default_qty_t[]" placeholder="1" value="<?php echo esc_attr( $option_default_qty ) ?>"/>
-                                <span class="mpwem-card-tag"><?php esc_html_e( 'DEFAULT', 'mage-eventpress' ); ?></span>
-                            </div>
-                            <div class="mpwem-card-row mpwem-card-row--qty">
-                                <input type="number" class="mpwem-card-input mpwem-card-input--small" name="option_rsv_t[]" placeholder="0" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/>
-                                <span class="mpwem-card-tag"><?php esc_html_e( 'RESERVE', 'mage-eventpress' ); ?></span>
-                            </div>
-                        </div>
+						<!-- Qty Box Group -->
+						<div class="mpwem-ticket-card__group mpwem-ticket-card__qty-box">
+							<label class="mpwem-card-label"><?php esc_html_e( 'QTY BOX', 'mage-eventpress' ); ?></label>
+							<select class="mpwem-card-input" name="option_qty_t_type[]">
+								<option value="inputbox" <?php selected( $qty_t_type, 'inputbox' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>
+								<option value="dropdown" <?php selected( $qty_t_type, 'dropdown' ); ?>><?php esc_html_e( 'Dropdown List', 'mage-eventpress' ); ?></option>
+							</select>
+						</div>
+
+						<!-- Default Qty Group -->
+						<div class="mpwem-ticket-card__group mpwem-ticket-card__default-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
+							<label class="mpwem-card-label"><?php esc_html_e( 'DEFAULT QTY', 'mage-eventpress' ); ?></label>
+							<input type="number" size="2" pattern="[0-9]*" step="1" class="mpwem-card-input mpwem-card-input--small" name="option_default_qty_t[]" placeholder="1" value="<?php echo esc_attr( $option_default_qty ); ?>"/>
+						</div>
+
+						<!-- Advance Qty Group -->
+						<div class="mpwem-ticket-card__group mpwem-ticket-card__advance-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
+							<label class="mpwem-card-label"><?php esc_html_e( 'Reserve qty', 'mage-eventpress' ); ?></label>
+							<input type="number" class="mpwem-card-input mpwem-card-input--small" name="option_rsv_t[]" placeholder="0" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/>
+						</div>
 
                         <!-- Sale Period Group -->
                         <div class="mpwem-ticket-card__group mpwem-ticket-card__sale-period <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
@@ -235,6 +248,7 @@
                         <!-- Identity Group -->
                         <div class="mpwem-ticket-card__group mpwem-ticket-card__identity">
                             <div class="mpwem-ticket-card__field">
+                                <label class="mpwem-card-label"><?php esc_html_e( 'Title', 'mage-eventpress' ); ?></label>
                                 <input type="text" class="mpwem-card-input mpwem-card-input--large" name="option_name[]" placeholder="Service Name" value="<?php echo esc_attr( $option_name ); ?>"/>
                             </div>
                         </div>

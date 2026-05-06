@@ -492,6 +492,22 @@
                 context.$modal.toggleClass('is-advanced-visible', isVisible);
             }
         });
+
+        const isGlobalQtyEnabled = context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked');
+        context.$modalMount.find('.mpwem-ticket-card__capacity').toggleClass('mpwem-ticket-col-hidden', isGlobalQtyEnabled);
+
+        context.$modal.toggleClass(
+            'is-advanced-columns-visible',
+            context.$modalMount.find('input[name="mep_show_advanced_column"]').first().is(':checked')
+        );
+        context.$modal.toggleClass(
+            'is-sale-period-visible',
+            context.$modalMount.find('input[name="mep_enable_early_bird_status"]').first().is(':checked')
+        );
+        context.$modal.toggleClass(
+            'is-global-qty-visible',
+            context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked')
+        );
     }
 
     function initializeTicketTableDragScroll($root) {
@@ -621,7 +637,24 @@
 
         $root.on('click.mpwemTicketModal', '.mpwem-ticket-modal__save', function(e) {
             e.preventDefault();
-            $('#mpwem-event-edit-form').trigger('submit');
+            const $button = $(this);
+
+            if ($button.prop('disabled')) {
+                return;
+            }
+
+            if (!validateDateWiseGlobalQty($root, { focusStep: true })) {
+                return;
+            }
+
+            $button.prop('disabled', true).addClass('is-saving');
+            submitEventForm($root, '');
+
+            window.setTimeout(function() {
+                if ($button.closest('body').length) {
+                    $button.prop('disabled', false).removeClass('is-saving');
+                }
+            }, 5000);
         });
 
         $root.on('input.mpwemTicketModal change.mpwemTicketModal', '#mpwem_ticket_modal_mount [name="option_name_t[]"], #mpwem_ticket_modal_mount [name="option_details_t[]"], #mpwem_ticket_modal_mount [name="option_price_t[]"], #mpwem_ticket_modal_mount [name="option_qty_t[]"], #mpwem_ticket_modal_mount [name="option_ticket_enable[]"]', function() {
@@ -687,6 +720,13 @@
     }
 
     function getExtraServiceRows($root) {
+        const $cardContainer = $root.find('#mpwem_extra_service_modal_mount .mpwem-ticket-cards-container.mpwem_item_insert').first();
+        if ($cardContainer.length) {
+            return $cardContainer.children('.mpwem-ticket-card.mpwem_remove_area').filter(function() {
+                return $(this).closest('.mpwem_hidden_content').length === 0;
+            });
+        }
+
         const $tbody = $root.find('#mpwem_extra_service_modal_mount tbody.mpwem_item_insert').first();
         if (!$tbody.length) {
             return $();
@@ -833,6 +873,7 @@
     function initializeExtraServiceModal($root) {
         const context = getExtraServiceModalContext($root);
         const $serviceBlock = context.$legacyMount.children('._layout_default_xs_mp_zero').first();
+        const $footerStart = $root.find('#mpwem_extra_service_modal_footer_start').first();
 
         if (!context.$legacyMount.length || !context.$modalMount.length || !$serviceBlock.length) {
             return;
@@ -846,18 +887,31 @@
         context.$modalMount.find('.mpwem_add_new_button_area').first().addClass('mpwem-ticket-modal__inline-actions');
         context.$modalMount.find('.mpwem_settings_area').first().addClass('mpwem-extra-service-settings-area');
 
+        if ($footerStart.length && !$footerStart.find('.mpwem-extra-service-modal__add').length) {
+            const addLabel = $.trim(context.$modalMount.find('.mpwem_add_item').first().text()) || 'Add Extra Service';
+            $footerStart.append(
+                $('<button type="button" class="button button-link mpwem-extra-service-modal__add"></button>')
+                    .text(addLabel)
+            );
+        }
+
         renderExtraServiceSummary($root);
         initializeExtraServiceTableDragScroll($root);
 
-        const $tbody = context.$modalMount.find('tbody.mpwem_item_insert').first();
-        if ($tbody.length && !$tbody.data('mpwemExtraSummaryObserver')) {
+        context.$modalMount.find('.mpwem-ticket-cards-container.mpwem_item_insert, tbody.mpwem_item_insert').each(function() {
+            const $container = $(this);
+            if ($container.data('mpwemExtraSummaryObserver')) {
+                return;
+            }
+
             const observer = new MutationObserver(function() {
                 renderExtraServiceSummary($root);
                 initializeExtraServiceTableDragScroll($root);
             });
-            observer.observe($tbody[0], { childList: true, subtree: true });
-            $tbody.data('mpwemExtraSummaryObserver', observer);
-        }
+
+            observer.observe($container[0], { childList: true, subtree: true });
+            $container.data('mpwemExtraSummaryObserver', observer);
+        });
 
         $root.off('.mpwemExtraModal');
 
@@ -871,6 +925,41 @@
         $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-close]', function(e) {
             e.preventDefault();
             closeExtraServiceModal($root);
+        });
+
+        $root.on('click.mpwemExtraModal', '.mpwem-extra-service-modal__add', function(e) {
+            e.preventDefault();
+            const $addButton = context.$modalMount.find('.mpwem_add_item').first();
+            if ($addButton.length) {
+                $addButton.trigger('click');
+                window.setTimeout(function() {
+                    const $rows = getExtraServiceRows($root);
+                    highlightExtraServiceRow($rows.last());
+                    renderExtraServiceSummary($root);
+                }, 100);
+            }
+        });
+
+        $root.on('click.mpwemExtraModal', '.mpwem-extra-service-modal__save', function(e) {
+            e.preventDefault();
+            const $button = $(this);
+
+            if ($button.prop('disabled')) {
+                return;
+            }
+
+            if (!validateDateWiseGlobalQty($root, { focusStep: true })) {
+                return;
+            }
+
+            $button.prop('disabled', true).addClass('is-saving');
+            submitEventForm($root, '');
+
+            window.setTimeout(function() {
+                if ($button.closest('body').length) {
+                    $button.prop('disabled', false).removeClass('is-saving');
+                }
+            }, 5000);
         });
 
         $root.on('input.mpwemExtraModal change.mpwemExtraModal', '#mpwem_extra_service_modal_mount [name="option_name[]"], #mpwem_extra_service_modal_mount [name="option_price[]"], #mpwem_extra_service_modal_mount [name="option_qty[]"]', function() {

@@ -519,6 +519,20 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				? array_values(array_unique(array_map('sanitize_text_field', wp_unslash($_POST['mep_member_only_user_role']))))
 				: ['all'];
 			update_post_meta($post_id, 'mep_member_only_user_role', $member_roles);
+
+			$enable_global_qty = isset($_POST['enable_global_qty']) ? 'on' : 'off';
+			update_post_meta($post_id, 'enable_global_qty', $enable_global_qty);
+
+			$mep_gq_type = isset($_POST['mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_type'])) : 'global';
+			if (! in_array($mep_gq_type, ['global', 'date_wise'], true)) {
+				$mep_gq_type = 'global';
+			}
+			update_post_meta($post_id, 'mep_gq_type', $mep_gq_type);
+
+			$mep_gq_total_seat = isset($_POST['mep_gq_total_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_seat'])) : '';
+			$mep_gq_total_resv_seat = isset($_POST['mep_gq_total_resv_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_resv_seat'])) : '';
+			update_post_meta($post_id, 'mep_gq_total_seat', $mep_gq_total_seat);
+			update_post_meta($post_id, 'mep_gq_total_resv_seat', $mep_gq_total_resv_seat);
 		}
 
 		public function maybe_redirect_edit_screen(): void
@@ -1027,6 +1041,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 															<div class="mpwem-ticket-modal__body">
 																<div class="mpwem-ticket-modal__mount" id="mpwem_extra_service_modal_mount"></div>
+															</div>
+															<div class="mpwem-ticket-modal__footer">
+																<div class="mpwem-ticket-modal__footer-start" id="mpwem_extra_service_modal_footer_start"></div>
+																<div class="mpwem-ticket-modal__footer-actions">
+																	<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-extra-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+																	<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-extra-service-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																</div>
 															</div>
 														</div>
 													</div>

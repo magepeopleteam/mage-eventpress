@@ -123,10 +123,12 @@
 					update_post_meta( $post_id, 'location_name', $location_name );
 					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
 					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
+					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg_txt = isset( $_POST['mep_reg_status_show_msg_txt'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg_txt'] ) ) : '';
 					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
 					update_post_meta( $post_id, 'mep_enable_early_bird_status', $mep_enable_early_bird_status );
+					update_post_meta( $post_id, 'mep_show_advanced_column', $mep_show_advanced_column );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
 					/********************************/

@@ -240,6 +240,23 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return array_values(array_filter(array_map('sanitize_text_field', $terms)));
 		}
 
+		/**
+		 * Creates a draft event used by the custom wizard flow.
+		 *
+		 * @return int|\WP_Error
+		 */
+		private function create_draft_event()
+		{
+			return wp_insert_post(
+				[
+					'post_type'   => self::POST_TYPE,
+					'post_status' => 'draft',
+					'post_title'  => __('New Event', 'mage-eventpress'),
+				],
+				true
+			);
+		}
+
 		private function render_taxonomy_field(string $id, string $label, string $taxonomy, array $terms, array $selected_ids, string $help = '', string $manage_label = ''): void
 		{
 			$manage_url = admin_url('edit-tags.php?taxonomy=' . rawurlencode($taxonomy) . '&post_type=' . self::POST_TYPE);
@@ -545,7 +562,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
-			wp_safe_redirect($this->edit_url(0, 'basic'));
+			$post_id = $this->create_draft_event();
+			if (is_wp_error($post_id)) {
+				return;
+			}
+
+			wp_safe_redirect($this->edit_url((int) $post_id, 'basic'));
 			exit;
 		}
 
@@ -629,6 +651,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$post_id = isset($_GET['event_id']) ? absint($_GET['event_id']) : 0;
 			$post    = $post_id ? get_post($post_id) : null;
 
+			if (! $post_id) {
+				$new_post_id = $this->create_draft_event();
+
+				if (! is_wp_error($new_post_id) && $new_post_id > 0) {
+					wp_safe_redirect($this->edit_url((int) $new_post_id, 'basic'));
+					exit;
+				}
+			}
+
 			if ($post_id && (! $post || $post->post_type !== self::POST_TYPE)) {
 				wp_die(esc_html__('Invalid event ID.', 'mage-eventpress'));
 			}
@@ -647,7 +678,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$event_infos = $post_id ? MPWEM_Functions::get_all_info($post_id) : [];
 
-			$back_to_list = admin_url('edit.php?post_type=' . self::POST_TYPE);
+			$back_to_list = admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=mep_event_lists');
 			$screen_title = $post_id && $post ? $post->post_title : __('Create Event', 'mage-eventpress');
 			if ($post_id && '' === trim((string) $screen_title)) {
 				$screen_title = sprintf(__('Edit Event #%d', 'mage-eventpress'), $post_id);
@@ -656,6 +687,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$featured_url = $featured_id ? wp_get_attachment_image_url($featured_id, 'medium') : '';
 			$classical_url = $post_id ? $this->get_classic_edit_url($post_id) : '';
 			$frontend_url = $post_id ? get_permalink($post_id) : '';
+			$is_published = $post && $post->post_status === 'publish';
+			$can_publish  = $post_id && current_user_can('publish_post', $post_id);
+			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
 		?>
 			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>">
@@ -770,7 +804,36 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 							<?php if ($classical_url) : ?>
 								<a class="mpwem-link" href="<?php echo esc_url($classical_url); ?>"><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></a>
 							<?php endif; ?>
-							<button type="button" class="button mpwem-wizard-save-draft"><?php esc_html_e('Save', 'mage-eventpress'); ?></button>
+							<?php if (! $is_published) : ?>
+								<button type="button" class="button mpwem-wizard-save-draft"><?php esc_html_e('Save as Draft', 'mage-eventpress'); ?></button>
+							<?php endif; ?>
+							<div class="mpwem-status-actions">
+								<?php if ($is_published) : ?>
+									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action=""><?php esc_html_e('Update', 'mage-eventpress'); ?></button>
+								<?php elseif ($can_publish) : ?>
+									<button type="button" class="button button-primary mpwem-status-actions__primary" data-status-action="publish"><?php esc_html_e('Publish', 'mage-eventpress'); ?></button>
+								<?php endif; ?>
+								<?php if (($is_published && ($can_publish || $can_trash)) || (! $is_published && $can_trash && $can_publish)) : ?>
+									<div class="mpwem-status-actions__menu-wrap">
+										<button
+											type="button"
+											class="button button-primary mpwem-status-actions__toggle"
+											aria-haspopup="true"
+											aria-expanded="false"
+											aria-label="<?php esc_attr_e('More status actions', 'mage-eventpress'); ?>">
+											<span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
+										</button>
+										<div class="mpwem-status-actions__menu" role="menu">
+											<?php if ($is_published && $can_publish) : ?>
+												<button type="button" class="mpwem-status-actions__menu-item" role="menuitem" data-status-action="draft"><?php esc_html_e('Switch to Draft', 'mage-eventpress'); ?></button>
+											<?php endif; ?>
+											<?php if ($can_trash) : ?>
+												<button type="button" class="mpwem-status-actions__menu-item is-danger" role="menuitem" data-status-action="trash"><?php esc_html_e('Move to Trash', 'mage-eventpress'); ?></button>
+											<?php endif; ?>
+										</div>
+									</div>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 				</header>
@@ -804,6 +867,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 							<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="mpwem-event-edit-form">
 								<input type="hidden" name="action" value="mpwem_event_edit_save" />
 								<input type="hidden" name="post_ID" value="<?php echo esc_attr($post_id); ?>" />
+								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 
@@ -936,6 +1000,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 															<div class="mpwem-ticket-modal__body">
 																<div class="mpwem-ticket-modal__mount" id="mpwem_ticket_modal_mount"></div>
+															</div>
+															<div class="mpwem-ticket-modal__footer">
+																<div class="mpwem-ticket-modal__footer-start" id="mpwem_ticket_modal_footer_start"></div>
+																<div class="mpwem-ticket-modal__footer-actions">
+																	<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-ticket-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+																	<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-ticket-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -1134,15 +1205,45 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$post_title   = isset($_POST['post_title']) ? sanitize_text_field(wp_unslash($_POST['post_title'])) : '';
 			$post_content = isset($_POST['content']) ? wp_kses_post(wp_unslash($_POST['content'])) : '';
 			$thumb_id     = isset($_POST['_thumbnail_id']) ? absint($_POST['_thumbnail_id']) : 0;
+			$post_status_action = isset($_POST['mpwem_post_status_action']) ? sanitize_key(wp_unslash($_POST['mpwem_post_status_action'])) : '';
 
-			$updated_post = wp_update_post(
-				[
-					'ID'           => $post_id,
-					'post_title'   => $post_title,
-					'post_content' => $post_content,
-				],
-				true
-			);
+			if ($post_status_action === 'trash') {
+				if (! current_user_can('delete_post', $post_id)) {
+					wp_die(esc_html__('Sorry, you are not allowed to move this event to the trash.', 'mage-eventpress'));
+				}
+
+				$trashed = wp_trash_post($post_id);
+				if (! $trashed) {
+					wp_die(esc_html__('The event could not be moved to the trash.', 'mage-eventpress'));
+				}
+
+				$redirect = add_query_arg(
+					[
+						'post_type' => self::POST_TYPE,
+						'page'      => 'mep_event_lists',
+						'trashed'   => 1,
+					],
+					admin_url('edit.php')
+				);
+				wp_safe_redirect($redirect);
+				exit;
+			}
+
+			$post_update = [
+				'ID'           => $post_id,
+				'post_title'   => $post_title,
+				'post_content' => $post_content,
+			];
+
+			if (in_array($post_status_action, ['publish', 'draft'], true)) {
+				if (! current_user_can('publish_post', $post_id)) {
+					wp_die(esc_html__('Sorry, you are not allowed to change this event status.', 'mage-eventpress'));
+				}
+
+				$post_update['post_status'] = $post_status_action === 'publish' ? 'publish' : 'draft';
+			}
+
+			$updated_post = wp_update_post($post_update, true);
 
 			if (is_wp_error($updated_post)) {
 				wp_die(esc_html($updated_post->get_error_message()));
@@ -1160,13 +1261,14 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$this->save_taxonomies($post_id);
 			$this->save_event_setting_options($post_id);
+			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
 			$redirect = add_query_arg(
 				[
 					'post_type' => self::POST_TYPE,
 					'page'      => self::PAGE_SLUG,
 					'event_id'  => $post_id,
-					'saved'     => 1,
+					$notice_key => 1,
 				],
 				admin_url('edit.php')
 			);
@@ -1181,14 +1283,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 			check_ajax_referer(self::NONCE_ACTION_CREATE, 'nonce');
 
-			$post_id = wp_insert_post(
-				[
-					'post_type'   => self::POST_TYPE,
-					'post_status' => 'draft',
-					'post_title'  => __('New Event', 'mage-eventpress'),
-				],
-				true
-			);
+			$post_id = $this->create_draft_event();
 
 			if (is_wp_error($post_id)) {
 				wp_send_json_error(['message' => $post_id->get_error_message()], 500);

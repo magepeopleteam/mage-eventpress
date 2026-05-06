@@ -5542,14 +5542,14 @@ function mep_change_date_status() {
         $active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         $sale_start          = array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
         ?>
-        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
-            <div class="_dFlex">
+        <div class="mpwem-card-date-wrapper <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
+            <div class="mpwem-card-date-field">
                 <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
-                <label>
+                <label class="mpwem-card-time-field">
                     <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_start ) ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
                 </label>
             </div>
-        </td>
+        </div>
         <?php
     }
     }

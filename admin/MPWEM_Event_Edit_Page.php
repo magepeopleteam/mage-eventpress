@@ -1270,6 +1270,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				wp_die(esc_html($updated_post->get_error_message()));
 			}
 
+			// Both functions are WordPress core since WP 2.9. The else branch is
+			// retained as a low-risk fallback in case of an unusual environment.
 			if (function_exists('set_post_thumbnail') && function_exists('delete_post_thumbnail')) {
 				if ($thumb_id > 0) {
 					set_post_thumbnail($post_id, $thumb_id);

@@ -29,6 +29,100 @@
         return window.mpwemEventEdit || {};
     }
 
+    // -------------------------------------------------------------------------
+    // Shared body-scroll lock helpers used by all modal open/close functions.
+    // -------------------------------------------------------------------------
+    function lockBodyScroll() {
+        $('body').addClass('mpwem-ticket-modal-open');
+    }
+
+    function unlockBodyScroll() {
+        $('body').removeClass('mpwem-ticket-modal-open');
+    }
+
+    /**
+     * Scroll a modal body so that $row is visible, then briefly highlight it.
+     * Used by ticket, extra-service, and date modal contexts.
+     *
+     * @param {jQuery} $row - The row element to bring into view and flash.
+     */
+    function highlightRow($row) {
+        if (!$row || !$row.length) {
+            return;
+        }
+
+        const $container = $row.closest('.mpwem-ticket-modal__body');
+        if ($container.length) {
+            const top = $row.position().top + $container.scrollTop() - 24;
+            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
+        }
+
+        $row.addClass('mpwem-ticket-row-focus');
+        window.setTimeout(function() {
+            $row.removeClass('mpwem-ticket-row-focus');
+        }, 1800);
+    }
+
+    /**
+     * Attaches a drag-to-scroll interaction to a horizontally scrollable element.
+     * Safe to call multiple times — guards with a data flag.
+     *
+     * @param {jQuery} $scroller  - The scrollable container element.
+     * @param {string} namespace  - jQuery event namespace (e.g. 'mpwemDragScroll').
+     * @param {string} flagName   - jQuery .data() key used to prevent double init.
+     */
+    function initializeDragScroll($scroller, namespace, flagName) {
+        if (!$scroller.length || $scroller.data(flagName)) {
+            return;
+        }
+
+        const interactiveSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        let isDragging = false;
+        let startX = 0;
+        let startScrollLeft = 0;
+
+        $scroller.on('mousedown.' + namespace, function(e) {
+            if (e.button !== 0) {
+                return;
+            }
+
+            if ($(e.target).closest(interactiveSelector).length) {
+                return;
+            }
+
+            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
+            if (!hasHorizontalOverflow) {
+                return;
+            }
+
+            isDragging = true;
+            startX = e.pageX;
+            startScrollLeft = this.scrollLeft;
+            $scroller.addClass('is-dragging');
+            e.preventDefault();
+        });
+
+        $(document).on('mousemove.' + namespace, function(e) {
+            if (!isDragging) {
+                return;
+            }
+
+            const deltaX = e.pageX - startX;
+            $scroller.scrollLeft(startScrollLeft - deltaX);
+        });
+
+        $(document).on('mouseup.' + namespace + ' mouseleave.' + namespace, function() {
+            if (!isDragging) {
+                return;
+            }
+
+            isDragging = false;
+            $scroller.removeClass('is-dragging');
+        });
+
+        $scroller.data(flagName, true);
+    }
+
     function showNotice($root, message, type) {
         const $notice = $root.find('.mpwem-wizard-notice').first();
         if (!$notice.length) {
@@ -338,21 +432,9 @@
         return value || 'No short description yet.';
     }
 
+    /* Delegates to the shared highlightRow helper defined near the top of this module. */
     function highlightTicketRow($row) {
-        if (!$row || !$row.length) {
-            return;
-        }
-
-        const $container = $row.closest('.mpwem-ticket-modal__body');
-        if ($container.length) {
-            const top = $row.position().top + $container.scrollTop() - 24;
-            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
-        }
-
-        $row.addClass('mpwem-ticket-row-focus');
-        window.setTimeout(function() {
-            $row.removeClass('mpwem-ticket-row-focus');
-        }, 1800);
+        highlightRow($row);
     }
 
     function renderTicketSummary($root) {
@@ -377,7 +459,7 @@
             $('<div class="mpwem-ticket-summary__header"></div>')
                 .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
                 .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
-                // .append($('<span class="mpwem-ticket-summary__header-action"></span>').text('Action'))
+                /* Planned: Action column header (.mpwem-ticket-summary__header-action) */
         );
 
         if (!$rows.length) {
@@ -407,22 +489,14 @@
                             .append(
                                 $('<div class="mpwem-ticket-summary__item-head"></div>')
                                     .append($('<h4></h4>').text(name))
-                                    // .append($('<span class="mpwem-ticket-summary__status"></span>').text(isDisabled ? 'Hidden' : 'Active'))
+                                    /* Planned: status badge (.mpwem-ticket-summary__status) showing Hidden/Active */
                             )
                     )
                     .append(
                         $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))
                     )
-                    // .append(
-                    //     $('<div class="mpwem-ticket-summary__item-actions"></div>')
-                    //         .append(
-                    //             $('<button type="button" class="button button-secondary"></button>')
-                    //                 .attr('data-mpwem-ticket-modal-open', 'details')
-                    //                 .attr('data-ticket-row-index', index)
-                    //                 .text('Details')
-                    //         )
-                    // )
+                    /* Planned: per-row Details action button (data-mpwem-ticket-modal-open="details") */
             );
         });
     }
@@ -434,7 +508,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
-        $('body').addClass('mpwem-ticket-modal-open');
+        lockBodyScroll();
 
         const isNew = mode === 'new';
         $root.find('#mpwem_ticket_modal_title').text('Manage ticket types');
@@ -469,7 +543,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
-        $('body').removeClass('mpwem-ticket-modal-open');
+        unlockBodyScroll();
     }
 
     function syncTicketAdvancedColumns($root) {
@@ -511,57 +585,8 @@
     }
 
     function initializeTicketTableDragScroll($root) {
-        const context = getTicketModalContext($root);
-        const $scroller = context.$modalMount.find('._ov_auto').first();
-        if (!$scroller.length || $scroller.data('mpwemDragScrollInit')) {
-            return;
-        }
-
-        const interactiveSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
-        let isDragging = false;
-        let startX = 0;
-        let startScrollLeft = 0;
-
-        $scroller.on('mousedown.mpwemDragScroll', function(e) {
-            if (e.button !== 0) {
-                return;
-            }
-
-            if ($(e.target).closest(interactiveSelector).length) {
-                return;
-            }
-
-            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
-            if (!hasHorizontalOverflow) {
-                return;
-            }
-
-            isDragging = true;
-            startX = e.pageX;
-            startScrollLeft = this.scrollLeft;
-            $scroller.addClass('is-dragging');
-            e.preventDefault();
-        });
-
-        $(document).on('mousemove.mpwemDragScroll', function(e) {
-            if (!isDragging) {
-                return;
-            }
-
-            const deltaX = e.pageX - startX;
-            $scroller.scrollLeft(startScrollLeft - deltaX);
-        });
-
-        $(document).on('mouseup.mpwemDragScroll mouseleave.mpwemDragScroll', function() {
-            if (!isDragging) {
-                return;
-            }
-
-            isDragging = false;
-            $scroller.removeClass('is-dragging');
-        });
-
-        $scroller.data('mpwemDragScrollInit', true);
+        const $scroller = getTicketModalContext($root).$modalMount.find('._ov_auto').first();
+        initializeDragScroll($scroller, 'mpwemDragScroll', 'mpwemDragScrollInit');
     }
 
     function initializeTicketPricingModal($root) {
@@ -756,21 +781,9 @@
         return value.length ? value : 'Unlimited';
     }
 
+    /* Delegates to the shared highlightRow helper defined near the top of this module. */
     function highlightExtraServiceRow($row) {
-        if (!$row || !$row.length) {
-            return;
-        }
-
-        const $container = $row.closest('.mpwem-ticket-modal__body');
-        if ($container.length) {
-            const top = $row.position().top + $container.scrollTop() - 24;
-            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
-        }
-
-        $row.addClass('mpwem-ticket-row-focus');
-        window.setTimeout(function() {
-            $row.removeClass('mpwem-ticket-row-focus');
-        }, 1800);
+        highlightRow($row);
     }
 
     function renderExtraServiceSummary($root) {
@@ -829,7 +842,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
-        $('body').addClass('mpwem-ticket-modal-open');
+        lockBodyScroll();
 
         const isNew = mode === 'new';
         $root.find('#mpwem_extra_service_modal_title').text(isNew ? 'Add extra service' : 'Manage extra services');
@@ -867,7 +880,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
-        $('body').removeClass('mpwem-ticket-modal-open');
+        unlockBodyScroll();
     }
 
     function initializeExtraServiceModal($root) {
@@ -982,57 +995,8 @@
     }
 
     function initializeExtraServiceTableDragScroll($root) {
-        const context = getExtraServiceModalContext($root);
-        const $scroller = context.$modalMount.find('._ov_auto').first();
-        if (!$scroller.length || $scroller.data('mpwemExtraDragScrollInit')) {
-            return;
-        }
-
-        const interactiveSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
-        let isDragging = false;
-        let startX = 0;
-        let startScrollLeft = 0;
-
-        $scroller.on('mousedown.mpwemExtraDragScroll', function(e) {
-            if (e.button !== 0) {
-                return;
-            }
-
-            if ($(e.target).closest(interactiveSelector).length) {
-                return;
-            }
-
-            const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
-            if (!hasHorizontalOverflow) {
-                return;
-            }
-
-            isDragging = true;
-            startX = e.pageX;
-            startScrollLeft = this.scrollLeft;
-            $scroller.addClass('is-dragging');
-            e.preventDefault();
-        });
-
-        $(document).on('mousemove.mpwemExtraDragScroll', function(e) {
-            if (!isDragging) {
-                return;
-            }
-
-            const deltaX = e.pageX - startX;
-            $scroller.scrollLeft(startScrollLeft - deltaX);
-        });
-
-        $(document).on('mouseup.mpwemExtraDragScroll mouseleave.mpwemExtraDragScroll', function() {
-            if (!isDragging) {
-                return;
-            }
-
-            isDragging = false;
-            $scroller.removeClass('is-dragging');
-        });
-
-        $scroller.data('mpwemExtraDragScrollInit', true);
+        const $scroller = getExtraServiceModalContext($root).$modalMount.find('._ov_auto').first();
+        initializeDragScroll($scroller, 'mpwemExtraDragScroll', 'mpwemExtraDragScrollInit');
     }
 
     function getDateModalTypeConfig(type) {
@@ -1310,7 +1274,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
-        $('body').addClass('mpwem-ticket-modal-open');
+        lockBodyScroll();
 
         const isNew = mode === 'new' && activeType === 'yes';
         $root.find('#mpwem_particular_date_modal_title').text(isNew ? (config.modalNewTitle || config.modalTitle) : config.modalTitle);
@@ -1368,7 +1332,7 @@
         }
 
         context.$modal.attr('aria-hidden', 'true').removeClass('is-open');
-        $('body').removeClass('mpwem-ticket-modal-open');
+        unlockBodyScroll();
     }
 
     function initializeParticularDateModal($root) {
@@ -2821,7 +2785,9 @@
             }
         }
 
-        // Sidebar/Additional visibility
+        // Legacy hook: #mpwem_event_edit_sidebar may be rendered by add-on panels
+        // (e.g. gallery, SEO) that hook into the basic step sidebar area.
+        // #mpwem_edit_page_additional is the non-basic step supplemental area.
         if (stepKey === 'basic') {
             $('#mpwem_event_edit_sidebar').show();
             $('#mpwem_edit_page_additional').hide();
@@ -3024,6 +2990,10 @@
             $root.removeClass('is-loading').addClass('is-ready');
         };
 
+        // Timeout is a safety-net: if the initialization throws and the finally
+        // branch's requestAnimationFrame callback never runs, we still unblock the
+        // UI after 2.5 seconds. Both fire if init succeeds — that is intentional
+        // and harmless (idempotent class swap).
         window.setTimeout(markReady, 2500);
         bindCreateEvent($root);
         bindFeaturedImage($root);

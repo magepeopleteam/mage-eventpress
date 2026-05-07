@@ -1538,6 +1538,13 @@
                 title: 'SEO & Schema',
                 desc: 'Control rich result details used by search engines.',
                 icon: 'dashicons-chart-bar'
+            },
+            {
+                mount: '#mpwem_wizard_settings_mount',
+                className: 'mpwem-display-section--settings',
+                title: 'Access & Settings',
+                desc: 'Control event SKU, visibility, and member-only access.',
+                icon: 'dashicons-admin-settings'
             }
         ];
 
@@ -1562,7 +1569,7 @@
                 }
             }
 
-            if (section.className === 'mpwem-display-section--seo' || section.className === 'mpwem-display-section--email') {
+            if (section.className === 'mpwem-display-section--seo' || section.className === 'mpwem-display-section--email' || section.className === 'mpwem-display-section--settings') {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 let $body = $mount.children('.mpwem-display-section__body').first();
 
@@ -2613,64 +2620,85 @@
     }
 
     function enhanceTaxonomyCard($root) {
-        const $card = $root.find('.mpwem-taxonomy-card').first();
-        if (!$card.length) {
+        const $cards = $root.find('.mpwem-taxonomy-card');
+        if (!$cards.length) {
             return;
         }
 
-        $card.find('input[name="mep_member_only_event"]').each(function() {
-            const $toggle = $(this);
-            const $roles = $card.find('[data-collapse="#mep_member_only_event"]').first();
-            const syncRoles = function() {
-                const isChecked = $toggle.is(':checked');
-                $roles.toggleClass('mActive', isChecked).toggle(isChecked);
-            };
+        $cards.each(function() {
+            const $card = $(this);
 
-            if (!$toggle.data('mpwemMemberOnlyInit')) {
-                $toggle.on('change.mpwemMemberOnly', syncRoles);
-                $toggle.data('mpwemMemberOnlyInit', true);
+            const $slugInput = $card.find('#post_name');
+            if ($slugInput.length) {
+                $slugInput.on('input.mpwemSlug', function() {
+                    const $input = $(this);
+                    const $preview = $('#mpwem_slug_preview');
+                    const originalUrl = $preview.data('original-url');
+                    const originalSlug = $input.data('original-slug');
+                    // Simple slug sanitization for preview
+                    const newSlug = $input.val().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+                    
+                    if (originalUrl && originalSlug) {
+                        const newUrl = originalUrl.replace(originalSlug, newSlug);
+                        $preview.text(newUrl).attr('href', newUrl);
+                    }
+                });
             }
 
-            syncRoles();
-        });
+            $card.find('input[name="mep_member_only_event"]').each(function() {
+                const $toggle = $(this);
+                const $roles = $card.find('[data-collapse="#mep_member_only_event"]').first();
+                const syncRoles = function() {
+                    const isChecked = $toggle.is(':checked');
+                    $roles.toggleClass('mActive', isChecked).toggle(isChecked);
+                };
 
-        $card.find('[data-tag-input]').each(function() {
-            const $input = $(this);
-            const $preview = $card.find('[data-tag-preview]').first();
+                if (!$toggle.data('mpwemMemberOnlyInit')) {
+                    $toggle.on('change.mpwemMemberOnly', syncRoles);
+                    $toggle.data('mpwemMemberOnlyInit', true);
+                }
 
-            if ($input.data('mpwemTagPreviewInit')) {
-                return;
-            }
+                syncRoles();
+            });
 
-            const renderPreview = function() {
-                const tags = ($input.val() || '')
-                    .toString()
-                    .split(',')
-                    .map(function(tag) {
-                        return tag.trim();
-                    })
-                    .filter(function(tag, index, allTags) {
-                        return tag.length && allTags.indexOf(tag) === index;
-                    });
+            $card.find('[data-tag-input]').each(function() {
+                const $input = $(this);
+                const $preview = $card.find('[data-tag-preview]').first();
 
-                $preview.empty();
-
-                if (!tags.length) {
-                    $preview.removeClass('has-items');
+                if ($input.data('mpwemTagPreviewInit')) {
                     return;
                 }
 
-                $preview.addClass('has-items');
-                tags.forEach(function(tag) {
-                    $('<span class="mpwem-taxonomy-card__chip"></span>').text(tag).appendTo($preview);
-                });
-            };
+                const renderPreview = function() {
+                    const tags = ($input.val() || '')
+                        .toString()
+                        .split(',')
+                        .map(function(tag) {
+                            return tag.trim();
+                        })
+                        .filter(function(tag, index, allTags) {
+                            return tag.length && allTags.indexOf(tag) === index;
+                        });
 
-            $input
-                .on('input.mpwemTagPreview change.mpwemTagPreview blur.mpwemTagPreview', renderPreview)
-                .data('mpwemTagPreviewInit', true);
+                    $preview.empty();
 
-            renderPreview();
+                    if (!tags.length) {
+                        $preview.removeClass('has-items');
+                        return;
+                    }
+
+                    $preview.addClass('has-items');
+                    tags.forEach(function(tag) {
+                        $('<span class="mpwem-taxonomy-card__chip"></span>').text(tag).appendTo($preview);
+                    });
+                };
+
+                $input
+                    .on('input.mpwemTagPreview change.mpwemTagPreview blur.mpwemTagPreview', renderPreview)
+                    .data('mpwemTagPreviewInit', true);
+
+                renderPreview();
+            });
         });
     }
 
@@ -3074,7 +3102,7 @@
             }
         });
 
-        $root.on('click', '.mpwem-status-actions__menu-item', function(e) {
+        $root.on('click', 'button.mpwem-status-actions__menu-item', function(e) {
             e.preventDefault();
             if (!validateDateWiseGlobalQty($root)) {
                 return;

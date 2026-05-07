@@ -33,15 +33,25 @@
 	--mpwem-btn-padding: 10px 24px;
 	--mpwem-card-header-bg: #e9eff6;
 	--mpwem-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--mpwem-admin-menu-width: 160px;
+	--mpwem-admin-menu-folded-width: 36px;
+	--mpwem-admin-bar-height: 32px;
+	--mpwem-admin-bar-height-mobile: 46px;
+}
+
+body.mpwem-event-wizard-screen {
+	--mpwem-admin-sidebar-offset: 0px;
+	--mpwem-admin-bar-offset: var(--mpwem-admin-bar-height-mobile);
 }
 .buttonGroup {
 	gap: 3px;
 }
 .mpwem-event-wizard {
 	background: var(--mpwem-bg);
-	min-height: calc(100vh - 32px);
-	padding-bottom: 100px;
+	min-height: calc(100vh - var(--mpwem-admin-bar-offset));
+	padding-bottom: 196px;
 	font-family: 'Inter', -apple-system, sans-serif;
+	box-sizing: border-box;
 }
 
 .mpwem-event-wizard__skeleton {
@@ -360,15 +370,15 @@
 
 /* Topbar & Steps */
 .mpwem-event-wizard__topbar {
-	position: sticky;
-	top: 32px;
-	left: 160px;
-	right: 0;
+	position: relative;
+	top: auto;
+	left: 0;
+	right: auto;
 	z-index: 100;
 	background: rgba(255, 255, 255, 0.95);
 	backdrop-filter: blur(10px);
 	border-bottom: 1px solid var(--mpwem-border);
-	padding: 16px 20px;
+	padding: 12px 16px;
 	transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
@@ -377,14 +387,15 @@
 	max-width: 1400px;
 	margin: 0 auto;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
 }
 
 .mpwem-event-wizard__title {
-	flex: 1 1 auto;
+	width: 100%;
 	min-width: 0;
-	margin: 0 16px;
+	margin: 0;
 }
 
 .mpwem-event-wizard__title h1 {
@@ -395,7 +406,8 @@
 	letter-spacing: -0.02em;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	white-space: normal;
+	word-break: break-word;
 }
 
 .mpwem-event-wizard__title .description {
@@ -406,16 +418,19 @@
 
 .mpwem-event-wizard__actions {
 	display: flex;
-	align-items: center;
-	gap: 16px;
+	width: 100%;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
 }
 
 .mpwem-status-actions {
 	position: relative;
 	display: inline-flex;
 	align-items: stretch;
+	width: 100%;
 	border-radius: var(--mpwem-btn-radius);
-	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+	/* box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); */
 	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -430,6 +445,7 @@
 }
 
 .mpwem-status-actions__primary {
+	flex: 1 1 auto;
 	border-radius: var(--mpwem-btn-radius) !important;
 }
 
@@ -704,21 +720,21 @@
 
 .mpwem-event-wizard__steps {
 	position: sticky;
-	top: 107px; 
+	top: 0;
 	z-index: 90;
 	background: rgba(255, 255, 255, 0.85);
 	backdrop-filter: blur(12px);
 	-webkit-backdrop-filter: blur(12px);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 	padding: 0;
-	margin-bottom: 32px;
+	margin-bottom: 24px;
 	box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
 }
 
 .mpwem-event-wizard__steps-inner {
 	max-width: 1400px;
 	margin: 0 auto;
-	padding: 0 20px;
+	padding: 0 16px;
 	display: flex;
 	gap: 4px;
 	overflow-x: auto;
@@ -757,38 +773,17 @@
 	border-bottom-color: var(--mpwem-primary);
 }
 
-/* Sidebar Responsive Overrides (Shared) */
-.folded .mpwem-event-wizard__topbar,
-.folded .mpwem-event-wizard__steps,
-.folded .mpwem-event-wizard__footer {
-	left: 36px;
-}
-
-@media screen and (max-width: 782px) {
-
-	.mpwem-event-wizard__topbar,
-	.mpwem-event-wizard__steps,
-	.mpwem-event-wizard__footer {
-		left: 0;
-		top: 0;
-	}
-
-	.mpwem-event-wizard__steps {
-		top: 86px; /* Topbar height on mobile without WP admin bar */
-	}
-}
-
 /* Grid & Cards */
 .mpwem-event-wizard__container {
 	max-width: 1400px;
 	margin: 0 auto;
-	padding: 0 20px 100px 20px;
+	padding: 0 16px 120px;
 }
 
 .mpwem-event-wizard__grid {
 	display: grid;
-	grid-template-columns: 1fr 400px;
-	gap: 24px;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 16px;
 }
 
 .mpwem-event-wizard__grid.is-full-width {
@@ -800,7 +795,12 @@
 }
 
 .mpwem-event-wizard__grid:not(.is-full-width) .mpwem-event-wizard__main {
-	max-width: 976px;
+	max-width: none;
+}
+
+.mpwem-event-wizard__main,
+.mpwem-event-wizard__sidebar {
+	min-width: 0;
 }
 
 .mpwem-card {
@@ -808,12 +808,12 @@
 	border: 1px solid var(--mpwem-border);
 	border-radius: var(--mpwem-radius);
 	box-shadow: var(--mpwem-shadow);
-	margin-bottom: 24px;
+	margin-bottom: 16px;
 	overflow: hidden;
 }
 
 .mpwem-card__head {
-	padding: 16px 24px;
+	padding: 14px 16px;
 	background: var(--mpwem-card-header-bg);
 	border-bottom: 1px solid var(--mpwem-border);
 }
@@ -849,7 +849,7 @@
 }
 
 .mpwem-card__body {
-	padding: 24px;
+	padding: 16px;
 }
 
 /* Custom Help Card Colors per step */
@@ -909,7 +909,7 @@
 
 .mpwem-taxonomy-card__grid {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 20px;
 	align-items: start;
 }
@@ -924,7 +924,7 @@
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
-.mpwem-taxonomy-card__field + .mpwem-taxonomy-card__field::before {
+/* .mpwem-taxonomy-card__field + .mpwem-taxonomy-card__field::before {
 	content: '';
 	position: absolute;
 	left: -10px;
@@ -932,10 +932,11 @@
 	bottom: 14px;
 	width: 1px;
 	background: linear-gradient(180deg, rgba(217, 226, 239, 0) 0%, rgba(217, 226, 239, 0.95) 18%, rgba(217, 226, 239, 0.95) 82%, rgba(217, 226, 239, 0) 100%);
-}
+} */
 
 .mpwem-taxonomy-card__meta {
 	display: flex;
+	flex-direction: column;
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: 12px;
@@ -990,12 +991,14 @@
 }
 
 .mpwem-taxonomy-checklist {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	/* grid-template-columns: repeat(3, auto); */
 	gap: 8px;
-	padding: 2px 0 0;
+	padding: 6px;
 	max-height: 136px;
 	overflow-y: auto;
+	box-shadow: 1px 1px 2px 1px #ddd;
+	border-radius: 10px;
 }
 
 .mpwem-taxonomy-checklist__item {
@@ -1053,7 +1056,7 @@
 
 .mpwem-event-setting-card__grid {
 	display: grid;
-	grid-template-columns: 1.2fr 1fr 1fr 1fr;
+	grid-template-columns: repeat(2, auto);
 	gap: 16px;
 	align-items: stretch;
 }
@@ -1513,7 +1516,6 @@ select.mpwem-global-qty-field__input {
 .mpwem-switch-wrap,
 .mpev-label {
 	display: flex;
-	justify-content: end;
 	align-items: center;
 	gap: 12px;
 	cursor: pointer;
@@ -1601,34 +1603,26 @@ select.mpwem-global-qty-field__input {
 .mpwem-event-wizard__footer {
 	position: fixed;
 	bottom: 0;
-	left: 181px;
+	left: 0;
+	width: 100%;
 	right: 0;
 	background: #fff;
 	border-top: 1px solid var(--mpwem-border);
-	padding: 16px 0;
+	padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
 	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 	z-index: 200;
 	transition: left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.folded .mpwem-event-wizard__footer {
-	left: 36px;
-}
-
-@media screen and (max-width: 782px) {
-	.mpwem-event-wizard__footer {
-		left: 0;
-	}
-}
-
 .mpwem-event-wizard__footer-inner {
 	max-width: 1400px;
 	margin: 0 auto;
-	padding: 0 20px;
-	display: flex;
-	justify-content: center;
+	padding: 0 16px;
+	display: grid;
+	grid-template-columns: 1fr;
+	justify-content: stretch;
 	align-items: center;
-	gap: 40px;
+	gap: 12px;
 }
 
 .mpwem-wizard-progress {
@@ -1637,6 +1631,12 @@ select.mpwem-global-qty-field__input {
 	color: #ced2d7;
 	min-width: 100px;
 	text-align: center;
+}
+
+.mpwem-event-wizard__footer-center {
+	display: flex;
+	justify-content: center;
+	min-width: 0;
 }
 
 /* Mapping Legacy Containers to Modern Cards */
@@ -1722,27 +1722,153 @@ select.mpwem-global-qty-field__input {
 
 .mpwem-featured-image__actions {
 	display: flex;
+	flex-direction: column;
 	gap: 8px;
 }
 
-@media (max-width: 900px) {
-	.mpwem-event-wizard__grid {
-		grid-template-columns: 1fr;
+/* Breakpoint: small tablets and large phones */
+@media (min-width: 600px) {
+	.mpwem-event-wizard {
+		padding-bottom: 148px;
 	}
 
+	.mpwem-event-wizard__actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.mpwem-event-wizard__actions > * {
+		width: auto;
+	}
+
+	.mpwem-status-actions {
+		width: auto;
+		margin-left: auto;
+	}
+
+	.mpwem-event-wizard__container,
+	.mpwem-event-wizard__footer-inner,
+	.mpwem-event-wizard__steps-inner {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	.mpwem-event-wizard__footer-inner {
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	}
+
+	.mpwem-wizard-prev,
+	.mpwem-wizard-next {
+		width: auto;
+		justify-self: center;
+		min-height: 44px;
+	}
+
+	.mpwem-card {
+		margin-bottom: 20px;
+	}
+
+	.mpwem-card__head,
+	.mpwem-card__body {
+		padding: 20px;
+	}
+
+	.mpwem-featured-image__actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.mpwem-taxonomy-checklist {
+		grid-template-columns: repeat(2, auto);
+	}
+}
+
+/* Breakpoint: WordPress admin tablet/desktop layout */
+@media screen and (min-width: 783px) {
+	body.mpwem-event-wizard-screen {
+		--mpwem-admin-sidebar-offset: var(--mpwem-admin-menu-width);
+		--mpwem-admin-bar-offset: var(--mpwem-admin-bar-height);
+	}
+
+	body.mpwem-event-wizard-screen.folded,
+	body.mpwem-event-wizard-screen.auto-fold {
+		--mpwem-admin-sidebar-offset: var(--mpwem-admin-menu-folded-width);
+	}
+
+	body.mpwem-event-wizard-screen .mpwem-event-wizard__footer {
+		left: var(--mpwem-admin-menu-width);
+		width: calc(100% - var(--mpwem-admin-menu-width));
+	}
+
+	body.mpwem-event-wizard-screen.folded .mpwem-event-wizard__footer,
+	body.mpwem-event-wizard-screen.auto-fold .mpwem-event-wizard__footer {
+		left: var(--mpwem-admin-menu-folded-width);
+		width: calc(100% - var(--mpwem-admin-menu-folded-width));
+	}
+
+	.mpwem-event-wizard {
+		padding-bottom: 140px;
+	}
+
+	.mpwem-event-wizard__topbar {
+		position: sticky;
+		top: var(--mpwem-admin-bar-offset);
+		left: var(--mpwem-admin-sidebar-offset);
+		right: 0;
+		padding: 16px 20px;
+	}
+
+	.mpwem-event-wizard__steps {
+		top: 107px;
+		margin-bottom: 32px;
+	}
+
+	.mpwem-event-wizard__container {
+		padding-bottom: 100px;
+	}
+
+	.mpwem-event-wizard__footer {
+		padding-top: 16px;
+	}
+
+	.mpwem-event-wizard__footer-inner {
+		gap: 20px;
+	}
+	.mpwem-taxonomy-checklist {
+		grid-template-columns: repeat(2, auto);
+	}
+}
+
+/* Breakpoint: wide tablet and small desktop */
+@media (min-width: 901px) {
 	.mpwem-event-wizard__topbar-inner {
-		flex-direction: column;
-		gap: 12px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.mpwem-event-wizard__topbar-inner .mpwem-link {
+		min-width: 90px;
 	}
 
 	.mpwem-event-wizard__title {
-		width: 100%;
-		margin: 0;
+		flex: 1 1 auto;
+		margin: 0 16px;
 	}
 
 	.mpwem-event-wizard__title h1 {
-		white-space: normal;
-		word-break: break-word;
+		white-space: nowrap;
+		word-break: normal;
+	}
+
+	.mpwem-event-wizard__actions {
+		width: auto;
+		flex-wrap: nowrap;
+		gap: 0;
+		min-width: initial;
+	}
+
+	.mpwem-status-actions {
+		margin-left: 0;
 	}
 
 	.mpwem-ticket-summary__toolbar,
@@ -1768,7 +1894,42 @@ select.mpwem-global-qty-field__input {
 	.mpwem-ticket-modal__body {
 		padding: 20px;
 	}
+	.mpwem-taxonomy-checklist {
+		grid-template-columns: repeat(1, auto);
+	}
+}
 
+/* Breakpoint: desktop with sidebar rail */
+@media (min-width: 960px) {
+	.mpwem-event-wizard__grid {
+		grid-template-columns: minmax(0, 1fr) 320px;
+		gap: 24px;
+	}
+}
+
+/* Breakpoint: large desktop */
+@media (min-width: 1200px) {
+	.mpwem-event-wizard__grid {
+		grid-template-columns: minmax(0, 1fr) 400px;
+	}
+
+	.mpwem-event-wizard__grid:not(.is-full-width) .mpwem-event-wizard__main {
+		max-width: 976px;
+	}
+
+	.mpwem-card__head {
+		padding: 16px 24px;
+	}
+
+	.mpwem-card__body {
+		padding: 24px;
+	}
+}
+/* Breakpoint: most large desktop */
+@media (min-width: 1600px) {
+	.mpwem-taxonomy-checklist {
+		grid-template-columns: repeat(2, auto);
+	}
 }
 
 .mpwem-media-mount section.bg-light {
@@ -1823,7 +1984,7 @@ select.mpwem-global-qty-field__input {
 
 .mpwem-ticket-summary__toolbar {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 20px;
 	align-items: end;
 	padding: 28px;
@@ -2153,8 +2314,26 @@ select.mpwem-global-qty-field__input {
 	margin-top: 20px;
 }
 
+.mpwem-ticket-modal__mount .mpwem-repeat-schedule-modal {
+	padding: 0 !important;
+	border: 1px solid #dbe6f3 !important;
+	border-radius: 22px !important;
+	background:
+		radial-gradient(circle at top left, rgba(37, 99, 235, 0.1), transparent 30%),
+		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+	box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.35);
+	overflow: hidden !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
+	display: grid;
+	gap: 14px;
+	padding: 18px !important;
+	background: transparent !important;
+}
+
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._padding_bt {
-	padding: 18px 0 !important;
+	padding: 18px 10px !important;
 	border-bottom: 1px solid #e2e8f0;
 }
 
@@ -2162,10 +2341,123 @@ select.mpwem-global-qty-field__input {
 	border-bottom: none;
 }
 
+.mpwem-ticket-modal__mount .mpwem-repeat-row {
+	padding: 16px 18px !important;
+	border: 1px solid #e2e8f0 !important;
+	border-radius: 18px !important;
+	background: rgba(255, 255, 255, 0.96) !important;
+	box-shadow: 0 12px 28px -24px rgba(15, 23, 42, 0.42);
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--start,
+.mpwem-ticket-modal__mount .mpwem-repeat-row--end {
+	background: linear-gradient(135deg, rgba(219, 234, 254, 0.75), rgba(255, 255, 255, 0.95) 42%) !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--interval {
+	background: linear-gradient(135deg, rgba(224, 242, 254, 0.75), rgba(255, 255, 255, 0.95) 42%) !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays,
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates {
+	background: linear-gradient(135deg, rgba(240, 253, 244, 0.78), rgba(255, 255, 255, 0.95) 42%) !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row .label-text {
+	display: block;
+	margin-top: 10px;
+	color: #5b708c;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
 	display: grid !important;
-	grid-template-columns: 1fr auto !important;
-	gap: 24px !important;
+	grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) !important;
+	gap: 18px !important;
+	align-items: center !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap > label:first-child,
+.mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap > ._mr {
+	display: grid;
+	gap: 6px;
+	align-content: start;
+	margin: 0;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap > label:first-child::after,
+.mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap > ._mr::after {
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.45;
+	color: #64748b;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--start ._justify_between_align_center_wrap > label:first-child::after {
+	content: "Choose when the repeated schedule begins.";
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--end ._justify_between_align_center_wrap > label:first-child::after {
+	content: "Set when the repeated schedule should stop.";
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap > ._mr::after {
+	content: "Use 1 for daily repetition or a higher number to skip days.";
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap > ._mr {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	column-gap: 8px;
+	row-gap: 4px;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--interval label._justify_between_align_center_wrap > ._mr::after {
+	flex-basis: 100%;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap > label:first-child::after {
+	content: "Pick weekdays that should always stay unavailable.";
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .fdColumn .label-text {
+	margin-top: 6px;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group {
+	display: grid !important;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 12px;
+	align-items: center;
+	width: 100%;
+	max-width: 100%;
+	justify-self: stretch;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group > label,
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group > .mep_load_every_day {
+	width: 100%;
+	max-width: 100%;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group .formControl,
+.mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+	min-height: 44px;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+	max-width: 260px !important;
+	justify-self: start;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .justify_between {
+	align-items: start !important;
 }
 
 .mpwem-ticket-modal__mount .mep-special-datetime {
@@ -2173,6 +2465,21 @@ select.mpwem-global-qty-field__input {
 	margin-top: 30px;
 	padding-top: 20px;
 	border-top: 2px dashed #e2e8f0 !important;
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-times-panel,
+.mpwem-ticket-modal__mount .mpwem-repeat-special-panel {
+	margin-top: 20px;
+	padding: 22px 0 !important;
+	border: 1px solid #dbe6f3 !important;
+	border-radius: 20px !important;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%) !important;
+	box-shadow: 0 18px 36px -30px rgba(15, 23, 42, 0.4);
+}
+
+.mpwem-ticket-modal__mount .mpwem-repeat-times-panel .mpTabs,
+.mpwem-ticket-modal__mount .mpwem-repeat-special-panel .mpwem_settings_area {
+	margin-top: 0;
 }
 
 .mpwem-ticket-modal__mount .mep-special-datetime::before {
@@ -2183,7 +2490,7 @@ select.mpwem-global-qty-field__input {
 	color: #64748b;
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
-	margin-bottom: 20px;
+	margin: 10px 22px;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-table-hint {
@@ -5046,12 +5353,47 @@ body.mpwem-ticket-modal-open {
 #mpwem_particular_date_modal_mount ._ov_auto {
 	overflow-x: auto;
 	overflow-y: visible;
+	-webkit-overflow-scrolling: touch;
 }
 
 #mpwem_particular_date_modal_mount .mpwem-date-table {
 	width: max-content;
 	min-width: 100%;
 	table-layout: auto;
+}
+
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] ._ov_auto {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-y: visible;
+	cursor: grab;
+	touch-action: pan-x;
+}
+
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table {
+	width: 100%;
+	min-width: 760px;
+}
+
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:nth-child(1),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table td:nth-child(1),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:nth-child(3),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table td:nth-child(3) {
+	min-width: 190px;
+}
+
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:nth-child(2),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table td:nth-child(2),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:nth-child(4),
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table td:nth-child(4) {
+	min-width: 130px;
+}
+
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:last-child,
+#mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table td:last-child {
+	min-width: 90px;
 }
 
 #mpwem_particular_date_modal_mount .mpwem-date-table th,
@@ -5881,6 +6223,22 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
 		grid-template-columns: 1fr;
 	}
 
+	.mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
+		grid-template-columns: 1fr !important;
+		gap: 14px !important;
+	}
+
+	.mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
+		padding: 14px !important;
+	}
+
+	.mpwem-ticket-modal__mount .mpwem-repeat-row,
+	.mpwem-ticket-modal__mount .mpwem-repeat-times-panel,
+	.mpwem-ticket-modal__mount .mpwem-repeat-special-panel {
+		padding: 16px !important;
+		border-radius: 16px !important;
+	}
+
 	.mpwem-ticket-off-dates-field .justify_between {
 		grid-template-columns: 1fr;
 	}
@@ -5904,6 +6262,14 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
 
 	.mpwem-ticket-off-dates-field .mpwem_settings_area {
 		justify-self: start;
+	}
+
+	.mpwem-ticket-modal__mount .mpwem-repeat-field-group {
+		grid-template-columns: 1fr;
+	}
+
+	.mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
+		max-width: 100% !important;
 	}
 
 	.mpwem-date-type-option {
@@ -6512,8 +6878,9 @@ code {
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-cards-container {
 	gap: 0;
 	margin-top: 0;
-	width: max-content;
+	width: auto;
 	min-width: 100%;
+	overflow-x: auto;
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__body {

@@ -517,7 +517,7 @@
             return;
         }
 
-        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        const interactiveSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
         let isDragging = false;
         let startX = 0;
         let startScrollLeft = 0;
@@ -988,7 +988,7 @@
             return;
         }
 
-        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        const interactiveSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
         let isDragging = false;
         let startX = 0;
         let startScrollLeft = 0;
@@ -1402,6 +1402,7 @@
         decorateDateSections(context.$modalMount);
         enhanceDateFields(context.$modalMount);
         enhanceOffDayPicker(context.$modalMount);
+        enhanceRepeatedScheduleLayout(context.$modalMount);
         initializeParticularDateTableDragScroll($root);
         renderParticularDateSummary($root);
 
@@ -1452,52 +1453,65 @@
 
     function initializeParticularDateTableDragScroll($root) {
         const context = getParticularDateModalContext($root);
-        const interactiveSelector = 'input, textarea, select, button, a, label, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        const blockedSelector = 'select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
         context.$modalMount.find('._ov_auto').each(function() {
             const $scroller = $(this);
             if ($scroller.data('mpwemDateDragScrollInit')) {
                 return;
             }
 
+            let isPointerDown = false;
             let isDragging = false;
             let startX = 0;
             let startScrollLeft = 0;
+            let dragBlocked = false;
+            let hasHorizontalOverflow = false;
 
             $scroller.on('mousedown.mpwemDateDragScroll', function(e) {
                 if (e.button !== 0) {
                     return;
                 }
 
-                if ($(e.target).closest(interactiveSelector).length) {
-                    return;
-                }
-
-                const hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
+                hasHorizontalOverflow = this.scrollWidth > this.clientWidth + 2;
                 if (!hasHorizontalOverflow) {
                     return;
                 }
 
-                isDragging = true;
+                isPointerDown = true;
+                dragBlocked = $(e.target).closest(blockedSelector).length > 0;
+                isDragging = false;
                 startX = e.pageX;
                 startScrollLeft = this.scrollLeft;
-                $scroller.addClass('is-dragging');
-                e.preventDefault();
             });
 
             $(document).on('mousemove.mpwemDateDragScroll', function(e) {
-                if (!isDragging) {
+                if (!isPointerDown || dragBlocked || !hasHorizontalOverflow) {
                     return;
                 }
 
                 const deltaX = e.pageX - startX;
+                if (!isDragging) {
+                    if (Math.abs(deltaX) < 8) {
+                        return;
+                    }
+
+                    isDragging = true;
+                    $scroller.addClass('is-dragging');
+
+                    const activeElement = document.activeElement;
+                    if (activeElement && $scroller.has(activeElement).length) {
+                        activeElement.blur();
+                    }
+                }
+
                 $scroller.scrollLeft(startScrollLeft - deltaX);
+                e.preventDefault();
             });
 
             $(document).on('mouseup.mpwemDateDragScroll mouseleave.mpwemDateDragScroll', function() {
-                if (!isDragging) {
-                    return;
-                }
-
+                isPointerDown = false;
+                dragBlocked = false;
+                hasHorizontalOverflow = false;
                 isDragging = false;
                 $scroller.removeClass('is-dragging');
             });
@@ -2544,6 +2558,37 @@
             $group.find('.customCheckboxLabel').addClass('mpwem-offday-option');
             $group.find('.customCheckbox').addClass('mpwem-offday-chip');
             $group.data('mpwemOffDaysEnhanced', true);
+        });
+    }
+
+    function enhanceRepeatedScheduleLayout($panel) {
+        const $repeatSection = $panel.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length) return;
+
+        $repeatSection.addClass('mpwem-repeat-schedule-modal');
+        $repeatSection.children('._layout_default_xs_mp_zero').addClass('mpwem-repeat-schedule-shell');
+        $repeatSection.find('.mep-special-datetime').addClass('mpwem-repeat-special-panel');
+        $repeatSection.find('#mep_disable_ticket_time').addClass('mpwem-repeat-times-panel');
+
+        $repeatSection.find('> ._layout_default_xs_mp_zero > ._padding_bt').each(function() {
+            const $row = $(this);
+            const $fieldWrap = $row.find('> ._justify_between_align_center_wrap').first();
+
+            $row.addClass('mpwem-repeat-row');
+
+            if ($row.find('input[name="event_start_date_everyday"], input[name="event_start_time_everyday"]').length) {
+                $row.addClass('mpwem-repeat-row--start');
+            } else if ($row.find('input[name="event_end_date_everyday"], input[name="event_end_time_everyday"]').length) {
+                $row.addClass('mpwem-repeat-row--end');
+            } else if ($row.find('input[name="mep_repeated_periods"]').length) {
+                $row.addClass('mpwem-repeat-row--interval');
+            } else if ($row.find('input[name="mep_ticket_offdays"]').length) {
+                $row.addClass('mpwem-repeat-row--offdays');
+            } else if ($row.find('input[name="mep_ticket_off_dates[]"]').length) {
+                $row.addClass('mpwem-repeat-row--offdates');
+            }
+
+            $fieldWrap.find('> .dFlex, > ._dFlex').addClass('mpwem-repeat-field-group');
         });
     }
 

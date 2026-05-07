@@ -567,6 +567,7 @@ body.mpwem-event-wizard-screen {
 	box-sizing: border-box;
 	background: var(--mpwem-secondary);
 	color: var(--mpwem-text);
+	margin-bottom: 0;
 }
 
 /* 
@@ -1305,7 +1306,6 @@ select.mpwem-global-qty-field__input {
 
 	.mpwem-global-qty-field__toggle,
 	.mpwem-global-qty-field__control {
-		flex-direction: column;
 		align-items: stretch;
 		gap: 12px;
 	}
@@ -1673,10 +1673,14 @@ select.mpwem-global-qty-field__input {
 	color: var(--mpwem-muted) !important;
 }
 
-.mpwem_settings_area,
+
 ._padding,
 ._padding_bt {
 	padding: 24px !important;
+}
+.mpwem_settings_area {
+	padding: 0 !important;
+	border-top: none !important;
 }
 
 .mpwem_style {
@@ -1781,6 +1785,9 @@ select.mpwem-global-qty-field__input {
 	.mpwem-taxonomy-checklist {
 		grid-template-columns: repeat(2, auto);
 	}
+	.mpwem-ticket-summary {
+		padding: 0 17px 20px;
+	}
 }
 
 /* Breakpoint: WordPress admin tablet/desktop layout */
@@ -1848,6 +1855,9 @@ select.mpwem-global-qty-field__input {
 	}
 	.mpwem-event-wizard__topbar-inner .mpwem-link {
 		min-width: 90px;
+	}
+	.mpwem-event-wizard__topbar-inner > .mpwem-link:first-child {
+		min-width: 122px;
 	}
 
 	.mpwem-event-wizard__title {
@@ -2093,7 +2103,7 @@ select.mpwem-global-qty-field__input {
 .mpwem-ticket-summary__item-head h4,
 .mpwem-ticket-summary__empty h4 {
 	margin: 0 !important;
-	font-size: 17px !important;
+	font-size: 16px !important;
 	color: #10233f;
 }
 
@@ -2273,19 +2283,18 @@ select.mpwem-global-qty-field__input {
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-editor-section > ._padding_bt {
-	padding: 22px 24px !important;
+	padding: 0 !important;
 	border-bottom: 1px solid var(--mpwem-border);
 	background: #fff;
 }
 
 .mpwem-ticket-modal__mount .mpwem_settings_area {
-	padding: 24px !important;
+	padding: 0x !important;
 	min-width: 0;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-modal__note {
-	margin-top: 0;
-	margin-bottom: 18px;
+	margin: 18px;
 	padding: 14px 16px;
 	border: 1px solid #dbeafe;
 	border-radius: 12px;
@@ -3021,9 +3030,8 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-card {
-	padding: 30px 0;
+	padding: 2px 0 0;
 	border: 0;
-	border-top: 1px solid #dbe4ef;
 	border-radius: 0;
 	background: transparent;
 	box-shadow: none;
@@ -3031,8 +3039,7 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-card:first-child {
-	border-top: 0;
-	padding-top: 8px;
+	padding-top: 0;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-card:hover {
@@ -3048,8 +3055,12 @@ body.mpwem-ticket-modal-open {
 	display: grid;
 	grid-template-columns: minmax(280px, 1.8fr) minmax(120px, 0.62fr) minmax(120px, 0.62fr) minmax(128px, 0.72fr) minmax(220px, 1fr) 68px;
 	gap: 16px 18px;
-	padding: 0;
+	padding: 10px;
 	align-items: center;
+}
+
+.mpwem-ticket-modal__mount .mpwem-ticket-card:nth-child(even) .mpwem-ticket-card__main {
+	background: #f7f7f7;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-card__group {
@@ -5373,8 +5384,8 @@ body.mpwem-ticket-modal-open {
 }
 
 #mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table {
-	width: 100%;
-	min-width: 760px;
+	width: max-content;
+	min-width: 100%;
 }
 
 #mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] .mpwem-date-table th:nth-child(1),
@@ -6881,6 +6892,7 @@ code {
 	width: auto;
 	min-width: 100%;
 	overflow-x: auto;
+	box-sizing: border-box;
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__body {
@@ -6892,7 +6904,6 @@ code {
 	gap: 18px;
 	padding: 10px 22px;
 	margin: 0;
-	border-top: 1px solid #d7dde8;
 	border-bottom: 1px solid #d7dde8;
 	border-left: 0;
 	border-right: 0;
@@ -6975,9 +6986,8 @@ code {
 }
 
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card {
-	padding: 22px 0;
+	padding: 2px 0 0;
 	border: 0;
-	border-top: 1px solid #dbe4ef;
 	border-radius: 0;
 	background: transparent;
 	box-shadow: none;
@@ -6993,10 +7003,11 @@ code {
 	grid-template-columns: minmax(320px, 1fr) 120px 96px 118px 92px;
 	column-gap: 12px;
 	row-gap: 8px;
-	padding: 0;
+	padding: 8px 18px;
 	align-items: start;
 	width: max-content;
 	min-width: 100%;
+	box-sizing: border-box;
 }
 
 #mpwem_ticket_editor_modal.is-advanced-columns-visible .mpwem-ticket-modal__mount .mpwem-ticket-card__main {

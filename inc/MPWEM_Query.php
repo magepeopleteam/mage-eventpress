@@ -166,11 +166,12 @@
 					$tax_query['relation'] = 'AND';
 				}
 
-				// Optimized Date & Location Query
+				// Optimized Date & Location Query..
 				global $wpdb;
 				$sql_joins = "";
 				$sql_where = "AND p.post_type = 'mep_events' AND p.post_status = 'publish'";
-				$prepare_args = [];
+				$join_args = [];
+				$where_args = [];
 
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
 					$sql_joins .= "
@@ -182,13 +183,13 @@
 						OR
 						((pm_upc.meta_value IS NULL OR pm_upc.meta_value = '') AND pm_start.meta_value {$etype} %s)
 					)";
-					$prepare_args[] = $now;
-					$prepare_args[] = $now;
+					$where_args[] = $now;
+					$where_args[] = $now;
 				} else {
 					$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = %s";
-					$prepare_args[] = $event_expire_on;
+					$join_args[] = $event_expire_on;
 					$sql_where .= " AND pm_exp.meta_value {$etype} %s";
-					$prepare_args[] = $now;
+					$where_args[] = $now;
 				}
 
 				if ( ! empty( $year ) && preg_match( '/^\d{4}$/', $year ) ) {
@@ -196,8 +197,8 @@
 						$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'";
 					}
 					$sql_where .= " AND pm_start.meta_value >= %s AND pm_start.meta_value <= %s";
-					$prepare_args[] = "$year-01-01 00:00:00";
-					$prepare_args[] = "$year-12-31 23:59:59";
+					$where_args[] = "$year-01-01 00:00:00";
+					$where_args[] = "$year-12-31 23:59:59";
 				}
 				
 				$location_filters = ['city' => ['mep_city', 'org_city'], 'state' => ['mep_state', 'org_state'], 'country' => ['mep_country', 'org_country']];
@@ -214,17 +215,18 @@
 							LEFT JOIN {$wpdb->term_relationships} $tr_alias ON p.ID = $tr_alias.object_id
 							LEFT JOIN {$wpdb->termmeta} $tm_alias ON $tr_alias.term_taxonomy_id = $tm_alias.term_id AND $tm_alias.meta_key = %s
 						";
-						$prepare_args[] = $keys[0];
-						$prepare_args[] = $keys[1];
+						$join_args[] = $keys[0];
+						$join_args[] = $keys[1];
 						
 						$search = '%' . $wpdb->esc_like( $val ) . '%';
 						$sql_where .= " AND ($pm_alias.meta_value LIKE %s OR $tm_alias.meta_value LIKE %s)";
-						$prepare_args[] = $search;
-						$prepare_args[] = $search;
+						$where_args[] = $search;
+						$where_args[] = $search;
 					}
 				}
 
 				$query = "SELECT DISTINCT p.ID FROM {$wpdb->posts} p {$sql_joins} WHERE 1=1 {$sql_where}";
+				$prepare_args = array_merge( $join_args, $where_args );
 				if ( ! empty($prepare_args) ) {
 					$query = $wpdb->prepare($query, $prepare_args);
 				}

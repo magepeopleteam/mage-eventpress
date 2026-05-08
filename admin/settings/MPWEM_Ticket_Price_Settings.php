@@ -38,7 +38,9 @@
                     </div>
 					<?php
 						do_action( 'mep_event_tab_before_ticket_pricing', $event_id );
-						$this->event_view_shortcode( $event_id );
+						if ( ! $is_custom_event_edit ) {
+							$this->event_view_shortcode( $event_id );
+						}
 						do_action( 'mep_add_category_display', $event_id );
 						$this->registration_on_off( $event_id, $event_infos );
 						if ( ! $is_custom_event_edit ) {
@@ -67,8 +69,6 @@
 						$this->show_advance_column( $event_id, $event_infos );
 					?>
                     <div class="_padding_bt mpwem_settings_area">
-                        <p><?php esc_html_e( 'Once a ticket is sold, it cannot be edited anymore.', 'mage-eventpress' ); ?></p>
-                        
                         <div class="mpwem-ticket-cards-container mpwem_sortable_area mpwem_item_insert">
                             <?php
                                 if ( is_array($ticket_infos) && sizeof( $ticket_infos ) > 0 ) {
@@ -124,7 +124,7 @@
                                     <input data-required="" type="text" class="mpwem-card-input mpwem-card-input--large name_validation" name="option_name_t[]" placeholder="Ticket Name (Ex: Adult)" value="<?php echo esc_attr( $option_name ); ?>"/>
                                 <?php } ?>
                             </div>
-                            <div class="mpwem-ticket-card__field">
+                            <div class="mpwem-ticket-card__field mpwem-ticket-card__description <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
                                 <input type="text" class="mpwem-card-input" name="option_details_t[]" placeholder="Add short description" value="<?php echo esc_attr( $option_details ); ?>"/>
                             </div>
                         </div>
@@ -294,13 +294,20 @@
 				<?php
 			}
 			public function event_view_shortcode( $post_id ) {
+				self::render_shortcode_help( $post_id );
+			}
+			public static function render_shortcode_help( $post_id, $is_sidebar = false ) {
+				$wrapper_classes = 'mpwem-shortcode-help';
+				if ( $is_sidebar ) {
+					$wrapper_classes .= ' mpwem-shortcode-help--sidebar';
+				}
 				?>
-                <div class="_padding ">
-                    <label class=" _justify_between_align_center_wrap">
-                        <span><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
-                        <code> [event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
-                    </label>
-                    <span class="label-text"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></span>
+                <div class="<?php echo esc_attr( $wrapper_classes ); ?>">
+                    <div class="mpwem-shortcode-help__row">
+                        <span class="mpwem-shortcode-help__title"><?php esc_html_e( 'Add To Cart Form Shortcode', 'mage-eventpress' ); ?></span>
+                        <code class="mpwem-shortcode-help__code">[event-add-cart-section event="<?php echo esc_html( $post_id ); ?>"]</code>
+                    </div>
+                    <p class="mpwem-shortcode-help__description"><?php esc_html_e( 'If you want to display the ticket type list with an add-to-cart button on any post or page of your website, simply copy the shortcode and paste it where desired.', 'mage-eventpress' ); ?></p>
                 </div>
 				<?php
 			}
@@ -308,17 +315,39 @@
 				$reg_status = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
                 $reg_status_msg_status = array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : '';
                 $reg_status_msg_txt = array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
+				$is_custom_event_edit = is_admin()
+					&& isset( $_GET['page'] )
+					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 
 				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
 
 				?>
-                <div class="_padding_bt">
-                    <div class=" _justify_between_align_center_wrap">
-                        <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
-						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
-                    </div>
-                    <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+                <div class="">
+					<?php if ( $is_custom_event_edit ) { ?>
+                        <div class="mpwem-registration-mode">
+                            <div class="mpwem-registration-mode__toggle mpwem-event-type-toggle">
+                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--listing" data-value="off">
+                                    <span class="mpwem-date-type-option__icon dashicons dashicons-format-aside"></span>
+                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Event Listing Only', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Show the event details without selling tickets.', 'mage-eventpress' ); ?></small></span>
+                                </button>
+                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--selling" data-value="on">
+                                    <span class="mpwem-date-type-option__icon dashicons dashicons-cart"></span>
+                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Ticket Selling & Get Payment', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Enable checkout so attendees can purchase tickets.', 'mage-eventpress' ); ?></small></span>
+                                </button>
+                            </div>
+                            <div class="mpwem-registration-mode__control" hidden>
+                                <input type="checkbox" name="mep_reg_status" value="on" <?php echo esc_attr( $checked ); ?> data-no-mpwem-switch />
+                            </div>
+                        </div>
+                        <span class="label-text mpwem-tooltip-skip"><?php esc_html_e( 'Choose whether this event is only listed or open for ticket sales.', 'mage-eventpress' ); ?></span>
+					<?php } else { ?>
+                        <div class=" _justify_between_align_center_wrap">
+                            <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
+							<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
+                        </div>
+                        <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+					<?php } ?>
                 </div>
                 <div class="_padding_bt reg_close_msg_dash">
                     <div class=" _justify_between_align_center_wrap">
@@ -371,14 +400,18 @@
                             </select>
                         </div>
                         <div class="mpwem-ticket-card__group">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'TOTAL QTY', 'mage-eventpress' ); ?></label>
+                            <label class="mpwem-card-label">
+								<?php esc_html_e( 'TOTAL QTY', 'mage-eventpress' ); ?>
+                                <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Seat of this event.', 'mage-eventpress' ); ?>">i</span>
+                            </label>
                             <input type="number" class="mpwem-card-input" name="mep_gq_total_seat" placeholder="0" value="<?php echo esc_attr( $total_qty ); ?>"/>
-                            <span class="mpwem-card-sub-label"><?php esc_html_e( 'Enter The Total Seat of this event.', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="mpwem-ticket-card__group">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'RESERVE QTY', 'mage-eventpress' ); ?></label>
+                            <label class="mpwem-card-label">
+								<?php esc_html_e( 'RESERVE QTY', 'mage-eventpress' ); ?>
+                                <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Reserve Seat Qty of this event.', 'mage-eventpress' ); ?>">i</span>
+                            </label>
                             <input type="number" class="mpwem-card-input" name="mep_gq_total_resv_seat" placeholder="0" value="<?php echo esc_attr( $reserve_qty ); ?>"/>
-                            <span class="mpwem-card-sub-label"><?php esc_html_e( 'Enter The Total Reserve Seat Qty of this event.', 'mage-eventpress' ); ?></span>
                         </div>
                     </div>
                 </div>

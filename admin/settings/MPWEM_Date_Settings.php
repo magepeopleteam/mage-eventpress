@@ -278,7 +278,7 @@
                                     </tbody>
                                 </table>
                             </div>
-							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Dates', 'mage-eventpress' ) ); ?>
+							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Date', 'mage-eventpress' ) ); ?>
                             <div class="mpwem_hidden_content">
                                 <table>
                                     <tbody class="mpwem_hidden_item">
@@ -1141,8 +1141,9 @@
 			public function event_date_format( $event_id, $event_infos ) {
 				$time_zone_display   = array_key_exists( 'mep_time_zone_display', $event_infos ) ? $event_infos['mep_time_zone_display'] : '';
 				$display             = array_key_exists( 'mep_enable_custom_dt_format', $event_infos ) ? $event_infos['mep_enable_custom_dt_format'] : 'off';
-				$checked             = $display == 'off' ? '' : 'checked';
-				$active              = $display == 'off' ? '' : 'mActive';
+				$is_custom_dt_enabled = in_array( $display, array( 'on', 'yes' ), true );
+				$checked             = $is_custom_dt_enabled ? 'checked' : '';
+				$active              = $is_custom_dt_enabled ? 'mActive' : '';
 				$date_formats        = array_key_exists( 'mep_event_date_format', $event_infos ) ? $event_infos['mep_event_date_format'] : '';
 				$custom_date_formats = array_key_exists( 'mep_event_custom_date_format', $event_infos ) ? $event_infos['mep_event_custom_date_format'] : '';
 				$date_format_lists   = MPWEM_Global_Function::date_format_list();

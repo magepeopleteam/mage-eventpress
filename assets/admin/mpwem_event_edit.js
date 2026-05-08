@@ -570,9 +570,14 @@
         const isGlobalQtyEnabled = context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked');
         context.$modalMount.find('.mpwem-ticket-card__capacity').toggleClass('mpwem-ticket-col-hidden', isGlobalQtyEnabled);
 
+        const isAdvancedColumnsVisible = context.$modalMount.find('input[name="mep_show_advanced_column"]').first().is(':checked');
+        context.$modalMount
+            .find('.mpwem-ticket-card')
+            .toggleClass('mpwem-ticket-card--compact-identity', !isAdvancedColumnsVisible);
+
         context.$modal.toggleClass(
             'is-advanced-columns-visible',
-            context.$modalMount.find('input[name="mep_show_advanced_column"]').first().is(':checked')
+            isAdvancedColumnsVisible
         );
         context.$modal.toggleClass(
             'is-sale-period-visible',
@@ -799,6 +804,7 @@
             $('<div class="mpwem-ticket-summary__header"></div>')
                 .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Extra Service'))
                 .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
+                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Qty'))
         );
 
         if (!$rows.length) {
@@ -829,7 +835,10 @@
                     .append(
                         $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__price"></span>').text(extraServiceRowPrice($row)))
-                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text('Qty ' + extraServiceRowQty($row)))
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--capacity"></div>')
+                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(extraServiceRowQty($row)))
                     )
             );
         });
@@ -1075,6 +1084,7 @@
             $summaryActions: $summary.find('.mpwem-ticket-summary__actions').first(),
             $modal: $root.find('#mpwem_particular_date_modal').first(),
             $modalMount: $root.find('#mpwem_particular_date_modal_mount').first(),
+            $footerStart: $root.find('#mpwem_particular_date_modal_footer_start').first(),
             $legacyMounts: $allSections
         };
     }
@@ -1136,8 +1146,8 @@
 
             context.$summaryList.append(
                 $('<div class="mpwem-ticket-summary__header"></div>')
-                    .append($('<span class="mpwem-ticket-summary__header-ticket">Date & Time</span>'))
-                    .append($('<span class="mpwem-ticket-summary__header-capacity">Capacity</span>'))
+                    .append($('<span class="mpwem-ticket-summary__header-ticket">Start Date</span>'))
+                    .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
             );
 
             if (!$rows.length) {
@@ -1154,18 +1164,13 @@
 
             $rows.each(function(index) {
                 const $row = $(this);
-                const $dateInput = $row.find('input[name="event_date_gq_md[]"], input[name="event_date_md[]"], input.new-particular-date_type, input.date_type, input[name="event_date_gq"]').first();
-                const dateVal = ($dateInput.val() || '').toString().trim();
+                const dateVal = ($row.find('input[name="event_more_start_date[]"]').first().val() || '').toString().trim();
+                const timeVal = ($row.find('input[name="event_more_start_time[]"]').first().val() || '').toString().trim();
+                const endDateVal = ($row.find('input[name="event_more_end_date[]"]').first().val() || '').toString().trim();
+                const endTimeVal = ($row.find('input[name="event_more_end_time[]"]').first().val() || '').toString().trim();
 
-                const $timeInput = $row.find('input[name="event_time_gq_md[]"], input[name="event_time_md[]"], input[name="event_time_gq"]').first();
-                const timeVal = ($timeInput.val() || '').toString().trim();
-
-                const $qtyInput = $row.find('input[name="event_time_gq_qty[]"], input[name="event_time_gq_qty"]').first();
-                const qtyVal = ($qtyInput.val() || '').toString().trim();
-
-                const displayDate = dateVal ? dateVal : 'Date not set';
-                const displayTime = timeVal ? timeVal : 'Time not set';
-                const displayQty = qtyVal ? qtyVal : 'Unlimited';
+                const displayStart = buildScheduleDateTimeLabel(dateVal, timeVal) || 'Start date not set';
+                const displayEnd = buildScheduleDateTimeLabel(endDateVal, endTimeVal) || 'End date not set';
 
                 context.$summaryList.append(
                     $('<article class="mpwem-ticket-summary__item"></article>')
@@ -1174,12 +1179,12 @@
                             $('<div class="mpwem-ticket-summary__item-main"></div>')
                                 .append(
                                     $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                        .append($('<h4></h4>').text(displayDate + (timeVal ? ' at ' + displayTime : '')))
+                                        .append($('<h4></h4>').text(displayStart))
                                 )
                         )
                         .append(
                             $('<div class="mpwem-ticket-summary__meta"></div>')
-                                .append($('<span class="mpwem-ticket-summary__capacity"></span>').text('Qty ' + displayQty))
+                                .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(displayEnd))
                         )
                 );
             });
@@ -1189,21 +1194,7 @@
         const summaryItems = [];
 
         if (type === 'no') {
-            const startDate = ($modalMount.find('input[name="event_start_date_normal"]').first().val() || '').toString().trim();
-            const startTime = ($modalMount.find('input[name="event_start_time_normal"]').first().val() || '').toString().trim();
-            const endDate = ($modalMount.find('input[name="event_end_date_normal"]').first().val() || '').toString().trim();
-            const endTime = ($modalMount.find('input[name="event_end_time_normal"]').first().val() || '').toString().trim();
-            const extraDates = $modalMount
-                .find('[data-collapse="#mep_normal_event"] tbody.mpwem_item_insert tr.mpwem_remove_area')
-                .not(':first')
-                .filter(function() {
-                    return $(this).closest('.mpwem_hidden_content').length === 0;
-                }).length;
-
-            summaryItems.push({
-                title: startDate || endDate ? [startDate, startTime].filter(Boolean).join(' ') + (endDate || endTime ? ' to ' + [endDate, endTime].filter(Boolean).join(' ') : '') : 'Main schedule not set',
-                detail: extraDates ? extraDates + ' extra date' + (extraDates > 1 ? 's' : '') + ' added' : 'No extra dates yet'
-            });
+            Array.prototype.push.apply(summaryItems, collectSingleEventSummaryItems($modalMount));
         } else if (type === 'everyday') {
             const startDate = ($modalMount.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
             const startTime = ($modalMount.find('input[name="event_start_time_everyday"]').first().val() || '').toString().trim();
@@ -1216,13 +1207,15 @@
             }).length;
 
             summaryItems.push({
-                title: startDate || endDate ? [startDate, startTime].filter(Boolean).join(' ') + (endDate || endTime ? ' to ' + [endDate, endTime].filter(Boolean).join(' ') : '') : 'Repeated date range not set',
+                title: buildScheduleRangeLabel(startDate, startTime, endDate, endTime) || 'Repeated date range not set',
                 detail: 'Repeats every ' + interval + ' day' + (interval === '1' ? '' : 's')
             });
-            summaryItems.push({
-                title: offDays ? 'Off days: ' + offDays : 'No off days selected',
-                detail: offDates ? offDates + ' off date' + (offDates > 1 ? 's' : '') + ' added' : 'No off dates added'
-            });
+            if (offDays || offDates) {
+                summaryItems.push({
+                    title: offDates ? 'Off dates configured' : 'Off days configured',
+                    detail: offDays ? offDays : (offDates ? offDates + ' off date' + (offDates > 1 ? 's' : '') + ' added' : '')
+                });
+            }
         }
 
         if (!summaryItems.length) {
@@ -1234,27 +1227,47 @@
             return;
         }
 
-        context.$summaryList.append(
-            $('<div class="mpwem-ticket-summary__header"></div>')
-                .append($('<span class="mpwem-ticket-summary__header-ticket">Schedule</span>'))
-                .append($('<span class="mpwem-ticket-summary__header-capacity">Details</span>'))
-        );
+        const $header = $('<div class="mpwem-ticket-summary__header"></div>')
+            .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text(type === 'no' ? 'Start Date' : 'Schedule'));
+
+        $header.append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text(type === 'no' ? 'End Date' : 'Details'));
+
+        context.$summaryList.append($header);
 
         summaryItems.forEach(function(item) {
-            context.$summaryList.append(
-                $('<article class="mpwem-ticket-summary__item"></article>')
+            const $item = $('<article class="mpwem-ticket-summary__item"></article>');
+
+            if (type === 'no') {
+                $item
                     .append(
                         $('<div class="mpwem-ticket-summary__item-main"></div>')
                             .append(
                                 $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                    .append($('<h4></h4>').text(item.title))
+                                    .append($('<h4></h4>').text(item.startLabel))
                             )
                     )
                     .append(
                         $('<div class="mpwem-ticket-summary__meta"></div>')
+                            .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(item.endLabel))
+                    );
+            } else {
+                $item.append(
+                    $('<div class="mpwem-ticket-summary__item-main"></div>')
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                .append($('<h4></h4>').text(item.title))
+                        )
+                );
+
+                if (item.detail) {
+                    $item.append(
+                        $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(item.detail))
-                    )
-            );
+                    );
+                }
+            }
+
+            context.$summaryList.append($item);
         });
     }
 
@@ -1335,6 +1348,32 @@
         unlockBodyScroll();
     }
 
+    function syncParticularDateModalFooter($root) {
+        const context = getParticularDateModalContext($root);
+        const activeType = getActiveDateModalType($root);
+        const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
+
+        if (!context.$footerStart.length) {
+            return;
+        }
+
+        if (!context.$footerStart.find('.mpwem-date-modal__add').length) {
+            context.$footerStart.append(
+                $('<button type="button" class="button button-link mpwem-ticket-modal__add mpwem-date-modal__add"></button>')
+            );
+        }
+
+        const $footerAdd = context.$footerStart.find('.mpwem-date-modal__add').first();
+        const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
+        const addLabel = $.trim($addButton.text());
+
+        if ($addButton.length && addLabel) {
+            $footerAdd.text(addLabel).show();
+        } else {
+            $footerAdd.hide();
+        }
+    }
+
     function initializeParticularDateModal($root) {
         const context = getParticularDateModalContext($root);
         
@@ -1352,6 +1391,7 @@
 
         context.$modalMount.find('table').not('.ui-datepicker-calendar').addClass('mpwem-date-table');
         context.$modalMount.find('.mpwem_add_new_button_area').addClass('mpwem-ticket-modal__inline-actions');
+        context.$modalMount.find('.mpwem_add_new_button_area').hide();
         context.$modalMount.find('[data-collapse] > ._layout_default_xs_mp_zero > ._bg_light_padding').hide();
         context.$modalMount.find('section.bg-light').hide();
         context.$modalMount.find('.mep-special-datetime section.bg-light').hide();
@@ -1369,6 +1409,7 @@
         enhanceRepeatedScheduleLayout(context.$modalMount);
         initializeParticularDateTableDragScroll($root);
         renderParticularDateSummary($root);
+        syncParticularDateModalFooter($root);
 
         context.$modalMount.find('tbody.mpwem_item_insert').each(function() {
             const $tbody = $(this);
@@ -1396,12 +1437,55 @@
             closeParticularDateModal($root);
         });
 
+        $root.on('click.mpwemDateModal', '.mpwem-date-modal__add', function(e) {
+            e.preventDefault();
+
+            const activeType = getActiveDateModalType($root);
+            const context = getParticularDateModalContext($root);
+            const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
+            const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
+
+            if ($addButton.length) {
+                $addButton.trigger('click');
+            }
+        });
+
+        $root.on('click.mpwemDateModal', '.mpwem-date-modal__save', function(e) {
+            e.preventDefault();
+            const $button = $(this);
+
+            if ($button.prop('disabled')) {
+                return;
+            }
+
+            if (!validateDateWiseGlobalQty($root, { focusStep: true })) {
+                return;
+            }
+
+            $button.prop('disabled', true).addClass('is-saving');
+            submitEventForm($root, '');
+
+            window.setTimeout(function() {
+                if ($button.closest('body').length) {
+                    $button.prop('disabled', false).removeClass('is-saving');
+                }
+            }, 5000);
+        });
+
         $root.on('input.mpwemDateModal change.mpwemDateModal', '#mpwem_particular_date_modal_mount input', function() {
             renderParticularDateSummary($root);
         });
 
-        $root.on('click.mpwemDateModal', '#mpwem_particular_date_modal_mount .mpwem_item_remove, #mpwem_particular_date_modal_mount .mp_add_item', function() {
+        $root.on('change.mpwemDateModal', 'select[name="mep_enable_recurring"]', function() {
             window.setTimeout(function() {
+                syncParticularDateModalFooter($root);
+                renderParticularDateSummary($root);
+            }, 20);
+        });
+
+        $root.on('click.mpwemDateModal', '#mpwem_particular_date_modal_mount .mpwem_item_remove, #mpwem_particular_date_modal_mount .mp_add_item, #mpwem_particular_date_modal_mount .mpwem_add_item', function() {
+            window.setTimeout(function() {
+                syncParticularDateModalFooter($root);
                 renderParticularDateSummary($root);
             }, 280);
         });
@@ -1894,7 +1978,76 @@
         $checkbox.data('mpwemEnhanced', true);
     }
 
+    function enhanceRegistrationMode($root) {
+        const $panel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        if (!$panel.length) return;
+
+        const $toggle = $panel.find('.mpwem-registration-mode__toggle').first();
+        const $checkbox = $panel.find('input[name="mep_reg_status"]').first();
+        const $collapse = $panel.find('[data-collapse="#mep_reg_status"]').first();
+        const $extraServicesCard = $root.find('#mpwem_wizard_extra_services_card').first();
+
+        if (!$toggle.length || !$checkbox.length || $toggle.data('mpwemEnhanced')) {
+            return;
+        }
+
+        const syncRegistrationMode = function(useAnimation) {
+            const isEnabled = $checkbox.is(':checked');
+            const activeValue = isEnabled ? 'on' : 'off';
+
+            $checkbox.val('on');
+            $toggle.find('.mpwem-event-type-option').removeClass('is-active');
+            $toggle.find('[data-value="' + activeValue + '"]').addClass('is-active');
+
+            if ($collapse.length) {
+                if (useAnimation) {
+                    $collapse.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](250);
+                } else {
+                    $collapse.toggle(isEnabled);
+                }
+                $collapse.toggleClass('mActive', isEnabled);
+            }
+
+            if ($extraServicesCard.length) {
+                if (useAnimation) {
+                    $extraServicesCard.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](250);
+                } else {
+                    $extraServicesCard.toggle(isEnabled);
+                }
+            }
+        };
+
+        $toggle.on('click', '.mpwem-event-type-option', function() {
+            const nextValue = $(this).data('value') === 'on';
+            if ($checkbox.is(':checked') === nextValue) {
+                return;
+            }
+
+            $checkbox.prop('checked', nextValue).trigger('change');
+        });
+
+        $checkbox.on('change.mpwemRegistrationMode', function() {
+            syncRegistrationMode(true);
+        });
+
+        syncRegistrationMode(false);
+        $toggle.data('mpwemEnhanced', true);
+    }
+
     function enhanceSwitches($container) {
+        function getSwitchTargets(target) {
+            if (!target) {
+                return $();
+            }
+
+            const $directTarget = $(target);
+            if ($directTarget.length) {
+                return $directTarget;
+            }
+
+            return $('[data-collapse="' + target + '"]');
+        }
+
         $container.find('input[type="checkbox"]').each(function() {
             const $cb = $(this);
             if ($cb.is('[data-no-mpwem-switch]') || $cb.data('mpwemSwitch') || $cb.closest('.mpwem-event-type-toggle').length) return;
@@ -1934,6 +2087,20 @@
                 }
             });
 
+            const target = $cb.data('collapse-target');
+            const close = $cb.data('close-target');
+            const isChecked = $cb.is(':checked');
+            const $target = getSwitchTargets(target);
+            const $close = getSwitchTargets(close);
+
+            if ($target.length) {
+                $target.toggle(isChecked).toggleClass('mActive', isChecked);
+            }
+
+            if ($close.length) {
+                $close.toggle(!isChecked).toggleClass('mActive', !isChecked);
+            }
+
             $cb.data('mpwemSwitch', true);
         });
 
@@ -1946,6 +2113,8 @@
                 const target = $cb.data('collapse-target');
                 const close = $cb.data('close-target');
                 const toggleValues = $cb.data('toggle-values') ? $cb.data('toggle-values').toString().split(',') : null;
+                const $target = getSwitchTargets(target);
+                const $close = getSwitchTargets(close);
 
                 // Sync value if toggle values exist
                 if (toggleValues && toggleValues.length === 2) {
@@ -1954,11 +2123,11 @@
 
                 // Handle sliding sections
                 if (isChecked) {
-                    if (target) $(target).slideDown(250);
-                    if (close) $(close).slideUp(250);
+                    if ($target.length) $target.stop(true, true).slideDown(250).addClass('mActive');
+                    if ($close.length) $close.stop(true, true).slideUp(250).removeClass('mActive');
                 } else {
-                    if (target) $(target).slideUp(250);
-                    if (close) $(close).slideDown(250);
+                    if ($target.length) $target.stop(true, true).slideUp(250).removeClass('mActive');
+                    if ($close.length) $close.stop(true, true).slideDown(250).addClass('mActive');
                 }
 
                 // Legacy specific: ticket time toggle
@@ -2059,7 +2228,7 @@
     function enhanceTooltips($container) {
         $container.find('.label-text, small, .mep_help_text').each(function() {
             const $help = $(this);
-            if ($help.data('mpwemTooltip') || $help.closest('.mpwem-venue-field').length) return;
+            if ($help.data('mpwemTooltip') || $help.hasClass('mpwem-tooltip-skip') || $help.closest('.mpwem-venue-field, .mpwem-registration-mode').length) return;
             
             const text = $help.text().trim();
             if (text.length < 5) return;
@@ -2251,6 +2420,71 @@
             return $.datepicker.formatDate(format, date);
         }
         return formatIsoDate(date);
+    }
+
+    function formatScheduleDateValue(value) {
+        const parsed = parseIsoDate((value || '').toString().trim());
+        return parsed ? formatVisibleDate(parsed) : (value || '').toString().trim();
+    }
+
+    function buildScheduleRangeLabel(startDate, startTime, endDate, endTime) {
+        const formattedStartDate = formatScheduleDateValue(startDate);
+        const formattedEndDate = formatScheduleDateValue(endDate);
+        const startLabel = [formattedStartDate, startTime].filter(Boolean).join(' ');
+        const endLabel = [formattedEndDate, endTime].filter(Boolean).join(' ');
+
+        if (!startLabel && !endLabel) {
+            return '';
+        }
+
+        if (startLabel && endLabel) {
+            return startLabel + ' to ' + endLabel;
+        }
+
+        return startLabel || endLabel;
+    }
+
+    function buildScheduleDateTimeLabel(dateValue, timeValue) {
+        return [formatScheduleDateValue(dateValue), (timeValue || '').toString().trim()].filter(Boolean).join(' ');
+    }
+
+    function collectSingleEventSummaryItems($modalMount) {
+        const items = [];
+        const mainStartDate = ($modalMount.find('input[name="event_start_date_normal"]').first().val() || '').toString().trim();
+        const mainStartTime = ($modalMount.find('input[name="event_start_time_normal"]').first().val() || '').toString().trim();
+        const mainEndDate = ($modalMount.find('input[name="event_end_date_normal"]').first().val() || '').toString().trim();
+        const mainEndTime = ($modalMount.find('input[name="event_end_time_normal"]').first().val() || '').toString().trim();
+
+        if (mainStartDate || mainStartTime || mainEndDate || mainEndTime) {
+            items.push({
+                startLabel: buildScheduleDateTimeLabel(mainStartDate, mainStartTime) || 'Start date not set',
+                endLabel: buildScheduleDateTimeLabel(mainEndDate, mainEndTime) || 'End date not set'
+            });
+        }
+
+        $modalMount
+            .find('[data-collapse="#mep_normal_event"] tbody.mpwem_item_insert tr.mpwem_remove_area')
+            .filter(function() {
+                return $(this).closest('.mpwem_hidden_content').length === 0;
+            })
+            .each(function() {
+                const $row = $(this);
+                const startDate = ($row.find('input[name="event_more_start_date_normal[]"]').first().val() || '').toString().trim();
+                const startTime = ($row.find('input[name="event_more_start_time_normal[]"]').first().val() || '').toString().trim();
+                const endDate = ($row.find('input[name="event_more_end_date_normal[]"]').first().val() || '').toString().trim();
+                const endTime = ($row.find('input[name="event_more_end_time_normal[]"]').first().val() || '').toString().trim();
+
+                if (!startDate && !startTime && !endDate && !endTime) {
+                    return;
+                }
+
+                items.push({
+                    startLabel: buildScheduleDateTimeLabel(startDate, startTime) || 'Start date not set',
+                    endLabel: buildScheduleDateTimeLabel(endDate, endTime) || 'End date not set'
+                });
+            });
+
+        return items;
     }
 
     function normalizeMinDate(minDate) {
@@ -2528,8 +2762,25 @@
             $group.addClass('mpwem-offday-grid');
             $group.find('.customCheckboxLabel').addClass('mpwem-offday-option');
             $group.find('.customCheckbox').addClass('mpwem-offday-chip');
+            $group.find('input[type="checkbox"]').off('change.mpwemOffDays').on('change.mpwemOffDays', function() {
+                syncOffDayPickerValue($group);
+            });
+            syncOffDayPickerValue($group);
             $group.data('mpwemOffDaysEnhanced', true);
         });
+    }
+
+    function syncOffDayPickerValue($group) {
+        let value = '';
+
+        $group.find('input[type="checkbox"]').each(function() {
+            if ($(this).is(':checked')) {
+                const currentValue = ($(this).attr('data-checked') || '').toString().trim();
+                value += value && currentValue ? ',' + currentValue : currentValue;
+            }
+        });
+
+        $group.find('input[type="hidden"]').first().val(value).trigger('change');
     }
 
     function enhanceRepeatedScheduleLayout($panel) {
@@ -3031,6 +3282,7 @@
             mountAll($root);
             enhanceVenueGrid($root);
             enhanceEventType($root);
+            enhanceRegistrationMode($root);
             enhanceSwitches($root);
             enhanceTooltips($root);
             enhanceSelects($root);

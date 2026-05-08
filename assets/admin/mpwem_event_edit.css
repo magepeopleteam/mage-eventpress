@@ -759,6 +759,43 @@ body.mpwem-event-wizard-screen {
 .mpwem-card--help .mpwem-card__head h2 {
 	color: var(--help-color) !important;
 }
+.mpwem-shortcode-help {
+	display: grid;
+	gap: 10px;
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid rgba(148, 163, 184, 0.18);
+}
+.mpwem-shortcode-help__row {
+	display: grid;
+	gap: 8px;
+}
+.mpwem-shortcode-help__title {
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--mpwem-text);
+}
+.mpwem-shortcode-help__code {
+	display: block;
+	padding: 10px 12px;
+	border: 1px solid #d6e0ef;
+	border-radius: 10px;
+	background: #f8fbff;
+	color: #1d4ed8;
+	font-size: 12px;
+	line-height: 1.5;
+	white-space: normal;
+	word-break: break-word;
+}
+.mpwem-shortcode-help__description {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.55;
+	color: var(--mpwem-muted);
+}
+.mpwem-shortcode-help--sidebar {
+	margin-top: 16px;
+}
 /* Fields */
 .mpwem-field {
 	display: block;
@@ -1309,6 +1346,86 @@ select.mpwem-global-qty-field__input {
 	font-size: 12px;
 	color: var(--mpwem-muted);
 }
+.mpwem-registration-mode {
+	display: grid;
+	gap: 10px;
+	padding: 10px 15px 0;
+}
+.mpwem-registration-mode + span {
+	margin-bottom: 0;
+	padding: 0 20px;
+}
+.mpwem-registration-mode__toggle {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+.mpwem-registration-mode__toggle .mpwem-event-type-option {
+	position: relative;
+	display: grid !important;
+	grid-template-columns: 38px minmax(0, 1fr);
+	gap: 12px;
+	align-items: center;
+	min-height: 82px;
+	width: 100%;
+	padding: 14px !important;
+	background: #fff !important;
+	border: 1px solid #d9e2ef !important;
+	border-radius: 10px !important;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+	font: inherit;
+	color: inherit;
+	appearance: none;
+	text-align: left;
+	transition: all 0.2s;
+}
+.mpwem-registration-mode__control {
+	display: none;
+}
+.mpwem-registration-mode__toggle .mpwem-event-type-option:hover {
+	border-color: #9db4d4 !important;
+	background: #f8fbff !important;
+	transform: translateY(-1px);
+}
+.mpwem-registration-mode__toggle .mpwem-event-type-option.is-active {
+	border-color: var(--mpwem-primary) !important;
+	background: #eef6ff !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+.mpwem-registration-mode__toggle .mpwem-date-type-option__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	align-self: center;
+	width: 38px;
+	height: 38px;
+	line-height: 38px;
+	border-radius: 10px;
+	background: #e7eef8;
+	color: #31537f !important;
+	font-size: 18px;
+	text-align: center;
+}
+.mpwem-registration-mode__toggle .mpwem-event-type-option.is-active .mpwem-date-type-option__icon {
+	background: var(--mpwem-primary);
+	color: #fff !important;
+}
+.mpwem-registration-mode__toggle .mpwem-date-type-option__copy {
+	display: grid;
+	gap: 3px;
+	min-width: 0;
+}
+.mpwem-registration-mode__toggle .mpwem-date-type-option__copy strong {
+	color: var(--mpwem-text);
+	font-size: 13px;
+	font-weight: 800;
+	line-height: 1.25;
+}
+.mpwem-registration-mode__toggle .mpwem-date-type-option__copy small {
+	color: var(--mpwem-muted);
+	font-size: 12px;
+	line-height: 1.35;
+}
 /* Venue Grid */
 .mpwem-venue-grid {
 	display: grid;
@@ -1409,6 +1526,13 @@ select.mpwem-global-qty-field__input {
 	cursor: help;
 	vertical-align: middle;
 	text-align: center;
+	text-transform: lowercase;
+}
+.mpwem-info-tip--mini {
+	width: 13px;
+	height: 13px;
+	font-size: 8px;
+	margin-left: 5px;
 }
 /* Hide WP Footer in Wizard */
 .mpwem-event-wizard-screen #wpfooter {
@@ -1567,7 +1691,7 @@ select.mpwem-global-qty-field__input {
 		min-height: 44px;
 	}
 	.mpwem-card {
-		margin-bottom: 20px;
+		margin-bottom: 15px;
 	}
 	.mpwem-card__head,
 	.mpwem-card__body {
@@ -1614,7 +1738,7 @@ select.mpwem-global-qty-field__input {
 		padding: 16px 20px;
 	}
 	.mpwem-event-wizard__steps {
-		top: 107px;
+		top: 101px;
 		margin-bottom: 32px;
 	}
 	.mpwem-event-wizard__container {
@@ -1703,10 +1827,10 @@ select.mpwem-global-qty-field__input {
 		max-width: 976px;
 	}
 	.mpwem-card__head {
-		padding: 16px 24px;
+		padding: 10px 15px;
 	}
 	.mpwem-card__body {
-		padding: 24px;
+		padding: 10px 15px;
 	}
 }
 /* Breakpoint: most large desktop */
@@ -1757,9 +1881,15 @@ select.mpwem-global-qty-field__input {
 	padding: 0 25px 20px;
 	margin-top: 20px;
 }
+#mpwem_ticket_summary.mpwem-ticket-summary {
+	gap: 14px;
+	padding: 0 15px 14px;
+	margin-top: 14px;
+}
 #mpwem_extra_service_summary.mpwem-ticket-summary {
-	padding: 0;
-	margin-top: 20px;
+	gap: 14px;
+	padding: 0 0 5px;
+	margin-top: 14px;
 }
 .mpwem-ticket-summary__toolbar {
 	display: grid;
@@ -1772,6 +1902,18 @@ select.mpwem-global-qty-field__input {
 	background:
 		radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 36%),
 		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__toolbar {
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	padding: 18px 20px;
+	border-radius: 14px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__toolbar {
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	padding: 18px 20px;
+	border-radius: 14px;
 }
 .mpwem-ticket-summary__eyebrow,
 .mpwem-ticket-modal__eyebrow {
@@ -1787,17 +1929,35 @@ select.mpwem-global-qty-field__input {
 .mpwem-ticket-summary__intro h3,
 .mpwem-ticket-modal__header-copy h3 {
 	margin: 4px 0 2px;
-	font-size: 20px;
+	font-size: 16px !important;
 	line-height: 1.15;
 	color: #10233f;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__intro h3 {
+	margin: 2px 0 1px;
+	font-size: 16px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__intro h3 {
+	margin: 2px 0 1px;
+	font-size: 16px;
 }
 .mpwem-ticket-summary__intro p,
 .mpwem-ticket-modal__header-copy p {
 	margin: 0;
 	max-width: 58ch;
-	font-size: 12px;
+	font-size: 11px;
 	line-height: 1.45;
 	color: var(--mpwem-muted);
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__intro p {
+	max-width: 48ch;
+	font-size: 11px;
+	line-height: 1.4;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__intro p {
+	max-width: 48ch;
+	font-size: 11px;
+	line-height: 1.4;
 }
 .mpwem-ticket-summary__actions {
 	display: flex;
@@ -1805,9 +1965,33 @@ select.mpwem-global-qty-field__input {
 	justify-content: flex-end;
 	gap: 12px;
 }
+#mpwem_ticket_summary .mpwem-ticket-summary__actions {
+	gap: 8px;
+	align-items: center;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__actions {
+	gap: 8px;
+	align-items: center;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__actions .button {
+	min-height: 34px;
+	padding: 0 12px;
+	line-height: 32px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__actions .button {
+	min-height: 34px;
+	padding: 0 12px;
+	line-height: 32px;
+}
 .mpwem-ticket-summary__list {
 	display: grid;
 	gap: 7px;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__list {
+	gap: 5px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__list {
+	gap: 5px;
 }
 .mpwem-ticket-summary__header,
 .mpwem-ticket-summary__item {
@@ -1824,6 +2008,16 @@ select.mpwem-global-qty-field__input {
 	text-transform: uppercase;
 	color: #64748b;
 }
+#mpwem_ticket_summary .mpwem-ticket-summary__header {
+	padding: 0 14px;
+	font-size: 10px;
+	letter-spacing: 0.1em;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__header {
+	padding: 0 14px;
+	font-size: 10px;
+	letter-spacing: 0.1em;
+}
 .mpwem-ticket-summary__item {
 	padding: 10px 22px;
 	border: 1px solid var(--mpwem-border);
@@ -1831,6 +2025,16 @@ select.mpwem-global-qty-field__input {
 	background: #fff;
 	box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.45);
 	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__item {
+	padding: 8px 14px;
+	gap: 14px;
+	border-radius: 12px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+	padding: 8px 14px;
+	gap: 14px;
+	border-radius: 12px;
 }
 .mpwem-ticket-summary__item:nth-child(even) {
 	background: linear-gradient(135deg, #ffffff 0%, #fffdf8 52%, #fdf3e8 100%);
@@ -1860,6 +2064,14 @@ select.mpwem-global-qty-field__input {
 	margin: 0 !important;
 	font-size: 16px !important;
 	color: #10233f;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__item-head h4 {
+	font-size: 14px !important;
+	line-height: 1.3;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-head h4 {
+	font-size: 14px !important;
+	line-height: 1.3;
 }
 .mpwem-ticket-summary__item-main p,
 .mpwem-ticket-summary__empty p {
@@ -1891,11 +2103,27 @@ select.mpwem-global-qty-field__input {
 	gap: 4px;
 	text-align: right;
 }
+#mpwem_ticket_summary .mpwem-ticket-summary__meta {
+	gap: 2px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__meta {
+	gap: 2px;
+}
 .mpwem-ticket-summary__price {
 	font-size: 20px;
 	font-weight: 800;
 	color: #10233f;
 	padding-right: 0 !important;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__price {
+	font-size: 14px;
+	line-height: 1.2;
+	font-weight: 400;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__price {
+	font-size: 14px;
+	line-height: 1.2;
+	font-weight: 400;
 }
 .mpwem-ticket-summary__capacity {
 	font-size: 12px;
@@ -1903,6 +2131,15 @@ select.mpwem-global-qty-field__input {
 	color: var(--mpwem-muted);
 	text-transform: uppercase;
 	letter-spacing: 0.06em;
+}
+.mpwem-ticket-summary__datetime {
+	display: block;
+	font-size: 14px;
+	line-height: 1.3;
+	font-weight: 400;
+	color: #10233f;
+	text-transform: none;
+	letter-spacing: 0;
 }
 .mpwem-ticket-summary__item-actions {
 	display: flex;
@@ -1913,6 +2150,70 @@ select.mpwem-global-qty-field__input {
 .mpwem-ticket-summary__header-action {
 	text-align: right;
 }
+.mpwem-ticket-summary__header-capacity {
+	text-align: right;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__header,
+#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+	grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(64px, 0.28fr);
+	column-gap: 16px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__header-ticket,
+#mpwem_extra_service_summary .mpwem-ticket-summary__item-main {
+	text-align: left;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__header-price,
+#mpwem_extra_service_summary .mpwem-ticket-summary__header-capacity,
+#mpwem_extra_service_summary .mpwem-ticket-summary__meta,
+#mpwem_extra_service_summary .mpwem-ticket-summary__meta--capacity {
+	justify-self: end;
+	text-align: right;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__header-price,
+#mpwem_extra_service_summary .mpwem-ticket-summary__header-capacity {
+	width: 100%;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__meta--capacity {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__price,
+#mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
+	display: block;
+	width: 100%;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__meta--capacity {
+	min-width: 64px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0;
+	text-transform: none;
+	color: #10233f;
+}
+@media (max-width: 767px) {
+	#mpwem_extra_service_summary .mpwem-ticket-summary__header,
+	#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+		grid-template-columns: minmax(0, 1fr) 78px 52px;
+		column-gap: 10px;
+	}
+	#mpwem_extra_service_summary .mpwem-ticket-summary__header {
+		padding: 0 10px;
+		font-size: 9px;
+	}
+	#mpwem_extra_service_summary .mpwem-ticket-summary__item {
+		padding: 8px 10px;
+	}
+	#mpwem_extra_service_summary .mpwem-ticket-summary__item-head h4 {
+		font-size: 13px !important;
+	}
+	#mpwem_extra_service_summary .mpwem-ticket-summary__price,
+	#mpwem_extra_service_summary .mpwem-ticket-summary__capacity {
+		font-size: 12px;
+	}
+}
 .mpwem-ticket-summary__empty {
 	display: grid;
 	gap: 12px;
@@ -1921,6 +2222,16 @@ select.mpwem-global-qty-field__input {
 	border: 1px dashed #c7d8f6;
 	border-radius: 18px;
 	background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__empty {
+	gap: 8px;
+	padding: 18px;
+	border-radius: 14px;
+}
+#mpwem_extra_service_summary .mpwem-ticket-summary__empty {
+	gap: 8px;
+	padding: 18px;
+	border-radius: 14px;
 }
 .mpwem-ticket-modal {
 	position: fixed;
@@ -2049,6 +2360,9 @@ select.mpwem-global-qty-field__input {
 	padding: 0 !important;
 	margin-top: 20px;
 }
+.mpwem-ticket-modal__mount .mpwem-date-repeat-area .mpwem_add_item {
+	display: none !important;
+}
 .mpwem-ticket-modal__mount .mpwem-repeat-schedule-modal {
 	padding: 0 !important;
 	border: 1px solid #dbe6f3 !important;
@@ -2099,7 +2413,7 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
 	display: grid !important;
-	grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) !important;
+	grid-template-columns: minmax(220px, 1fr) 200px !important;
 	gap: 18px !important;
 	align-items: center !important;
 }
@@ -2153,7 +2467,7 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group > label,
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group > .mep_load_every_day {
-	width: 100%;
+	width: fit-content;
 	max-width: 100%;
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group .formControl,
@@ -2170,6 +2484,16 @@ select.mpwem-global-qty-field__input {
 .mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
 .mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .justify_between {
 	align-items: start !important;
+}
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap {
+	grid-template-columns: minmax(0, .5fr) .5fr !important;
+	gap: 12px !important;
+}
+.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays .mpwem-repeat-field-group {
+	justify-self: stretch;
+	display: grid !important;
+	grid-template-columns: repeat(4, auto);
+	gap: 8px !important;
 }
 .mpwem-ticket-modal__mount .mep-special-datetime {
 	border: none !important;
@@ -2618,7 +2942,11 @@ body.mpwem-ticket-modal-open {
 	min-width: 0;
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-card__identity {
-	gap: 10px;
+	gap: 2px;
+}
+.mpwem-ticket-modal__mount .mpwem-ticket-card--compact-identity .mpwem-ticket-card__identity {
+	justify-content: flex-end;
+	align-self: end;
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-card__field {
 	min-width: 0;
@@ -2672,8 +3000,8 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-ticket-modal__mount .mpwem-card-input--large {
 	height: 42px;
-	font-size: 18px;
-	font-weight: 600;
+	font-size: 14px;
+	font-weight: 400;
 }
 .mpwem-ticket-modal__mount .mpwem-card-input--small {
 	width: 100%;
@@ -2808,6 +3136,18 @@ body.mpwem-ticket-modal-open {
 	font-size: 15px;
 	font-weight: 600;
 }
+.mpwem-ticket-modal__footer-btn.button:not(.button-primary) {
+	border-color: #cbd5e1;
+	background: #fff;
+	color: #334155;
+	box-shadow: none;
+}
+.mpwem-ticket-modal__footer-btn.button:not(.button-primary):hover,
+.mpwem-ticket-modal__footer-btn.button:not(.button-primary):focus {
+	border-color: #94a3b8;
+	background: #f8fafc;
+	color: #0f172a;
+}
 .mpwem-ticket-modal__add.button.button-link {
 	display: inline-flex;
 	align-items: center;
@@ -2829,6 +3169,16 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__save.button-primary {
 	min-width: 180px;
 	box-shadow: none;
+	border-color: var(--mpwem-primary);
+	background: var(--mpwem-primary);
+	color: #fff;
+}
+.mpwem-ticket-modal__save.button-primary:hover,
+.mpwem-ticket-modal__save.button-primary:focus {
+	border-color: var(--mpwem-primary-hover) !important;
+	background: var(--mpwem-primary-hover) !important;
+	color: #fff !important;
+	box-shadow: none !important;
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-modal__inline-actions {
 	display: none !important;
@@ -4475,7 +4825,7 @@ body.mpwem-ticket-modal-open {
 [data-collapse="#mep_everyday_event"] > ._layout_default_xs_mp_zero > ._padding_bt ._justify_between_align_center_wrap > ._dFlex {
 	justify-self: end;
 	justify-content: flex-end;
-	width: 510px;
+	width: 100%;
 	max-width: 100%;
 }
 [data-collapse="#mep_everyday_event"] .mep_load_every_day {
@@ -4517,7 +4867,7 @@ body.mpwem-ticket-modal-open {
 	position: relative;
 	display: inline-flex !important;
 	align-items: center;
-	width: 160px;
+	width: 100%;
 	flex-shrink: 0;
 	margin: 0;
 }
@@ -4525,7 +4875,7 @@ body.mpwem-ticket-modal-open {
 	position: relative;
 	display: inline-flex !important;
 	align-items: center;
-	width: 120px;
+	width: 98%px;
 	flex-shrink: 0;
 	margin: 0;
 }
@@ -4591,9 +4941,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-date-step .mpwem-date-table td {
 	padding: 12px !important;
 }
-.mpwem-date-step .mpwem-date-table tr:hover td {
+/* .mpwem-date-step .mpwem-date-table tr:hover td {
 	background: #fbfdff !important;
-}
+} */
 #mpwem_particular_date_modal_mount ._ov_auto {
 	overflow-x: auto;
 	overflow-y: visible;
@@ -5384,6 +5734,9 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
 	.mpwem-date-type-option {
 		min-height: 72px;
 	}
+	.mpwem-registration-mode__toggle {
+		grid-template-columns: 1fr;
+	}
 	.mpwem-date-buffer-field ._justify_between_align_center_wrap {
 		grid-template-columns: 1fr;
 	}
@@ -5761,6 +6114,15 @@ code {
 	outline: none;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
+.mpwem-event-wizard input::placeholder,
+.mpwem-event-wizard textarea::placeholder,
+.mpwem-event-wizard select::placeholder,
+.mpwem-ticket-modal input::placeholder,
+.mpwem-ticket-modal textarea::placeholder,
+.mpwem-ticket-modal select::placeholder {
+	color: #94a3b8;
+	opacity: 1;
+}
 .mpwem-card-input--large {
 	font-size: 16px;
 	font-weight: 700;
@@ -5929,7 +6291,7 @@ code {
 	font-size: 11px;
 	font-weight: 800;
 	letter-spacing: 0.08em;
-	text-transform: uppercase;
+	text-transform: capitalize;
 	color: #111827;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-action-bar__divider {
@@ -5950,7 +6312,7 @@ code {
 	box-shadow:
 		inset 0 1px 0 rgba(255, 255, 255, 0.8),
 		0 16px 34px -28px rgba(14, 116, 144, 0.45);
-	overflow: hidden;
+	overflow: visible;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-global-card::before {
 	content: "";
@@ -6037,7 +6399,7 @@ code {
 	min-width: 0;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__group {
-	align-self: start;
+	align-self: end;
 	white-space: nowrap;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__locked-name,
@@ -6067,8 +6429,8 @@ code {
 	text-align: center;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-input--large {
-	font-size: 16px;
-	font-weight: 600;
+	font-size: 14px;
+	font-weight: 400;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-input--small {
 	width: 100%;
@@ -6187,7 +6549,7 @@ code {
 	align-self: center;
 	justify-self: end;
 	min-width: 64px;
-	padding-top: 22px;
+	padding-top: 35px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__identity .mpwem-card-input--large,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__identity .mpwem-ticket-card__locked-name {
@@ -6227,8 +6589,12 @@ code {
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-modal__inline-actions {
 	display: none !important;
 }
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount .mpwem-ticket-modal__inline-actions {
+	display: none !important;
+}
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__footer,
-#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer {
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer,
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -6238,14 +6604,16 @@ code {
 	background: #f8fbff;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-actions,
-#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-actions {
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-actions,
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer-actions {
 	display: flex;
 	align-items: center;
 	gap: 16px;
 	margin-left: auto;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-btn.button,
-#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button {
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button,
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer-btn.button {
 	min-width: 128px;
 	height: 52px;
 	padding: 0 26px;
@@ -6253,19 +6621,55 @@ code {
 	font-size: 15px;
 	font-weight: 600;
 }
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary),
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary),
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary) {
+	border-color: #cbd5e1;
+	background: #fff;
+	color: #334155;
+	box-shadow: none;
+}
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):hover,
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):focus,
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):hover,
+#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):focus,
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):hover,
+#mpwem_particular_date_modal .mpwem-ticket-modal__footer-btn.button:not(.button-primary):focus {
+	border-color: #94a3b8;
+	background: #f8fafc;
+	color: #0f172a;
+}
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary,
+#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary {
 	min-width: 180px;
+	border-color: var(--mpwem-primary);
+	background: var(--mpwem-primary);
+	color: #fff;
+	box-shadow: none;
+}
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary:hover,
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary:focus,
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary:hover,
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary:focus,
+#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary:hover,
+#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary:focus {
+	border-color: var(--mpwem-primary-hover) !important;
+	background: var(--mpwem-primary-hover) !important;
+	color: #fff !important;
+	box-shadow: none !important;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary.is-saving,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary.is-saving {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary.is-saving,
+#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary.is-saving {
 	position: relative;
 	padding-right: 48px;
 	opacity: 0.88;
 	pointer-events: none;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary.is-saving::after,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary.is-saving::after {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary.is-saving::after,
+#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary.is-saving::after {
 	content: "";
 	position: absolute;
 	right: 20px;
@@ -6279,7 +6683,8 @@ code {
 	animation: mpwemTicketSaveSpin 0.8s linear infinite;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__add.button.button-link,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link,
+#mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link {
 	display: inline-flex;
 	align-items: center;
 	gap: 10px;
@@ -6294,7 +6699,8 @@ code {
 	box-shadow: 0 10px 24px -20px rgba(29, 78, 216, 0.65);
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__add.button.button-link::before,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link::before {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link::before,
+#mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link::before {
 	content: "+";
 	font-size: 24px;
 	line-height: 1;
@@ -6303,7 +6709,9 @@ code {
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__add.button.button-link:hover,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__add.button.button-link:focus,
 #mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link:hover,
-#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link:focus {
+#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__add.button.button-link:focus,
+#mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link:hover,
+#mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link:focus {
 	border-color: #93c5fd;
 	background: linear-gradient(180deg, #ffffff 0%, #dbeafe 100%);
 	color: #1e40af;
@@ -6358,13 +6766,16 @@ code {
 		align-items: stretch;
 	}
 	#mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-actions,
-	#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-actions {
+	#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-actions,
+	#mpwem_particular_date_modal .mpwem-ticket-modal__footer-actions {
 		margin-left: 0;
 	}
 	#mpwem_ticket_editor_modal .mpwem-ticket-modal__footer-btn.button,
 	#mpwem_ticket_editor_modal .mpwem-ticket-modal__save.button-primary,
 	#mpwem_extra_service_editor_modal .mpwem-ticket-modal__footer-btn.button,
-	#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary {
+	#mpwem_extra_service_editor_modal .mpwem-extra-service-modal__save.button-primary,
+	#mpwem_particular_date_modal .mpwem-ticket-modal__footer-btn.button,
+	#mpwem_particular_date_modal .mpwem-date-modal__save.button-primary {
 		width: 100%;
 	}
 }

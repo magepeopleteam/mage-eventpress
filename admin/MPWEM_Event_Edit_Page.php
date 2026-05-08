@@ -1139,6 +1139,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														</div>
 														<div class="mpwem-card__body">
 															<p class="description"><?php esc_html_e('Ensure you have at least one ticket type defined to allow registrations.', 'mage-eventpress'); ?></p>
+															<?php
+															if (class_exists('MPWEM_Ticket_Price_Settings')) {
+																MPWEM_Ticket_Price_Settings::render_shortcode_help($post_id, true);
+															}
+															?>
 														</div>
 													</div>
 												</aside>
@@ -1175,6 +1180,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															</div>
 															<div class="mpwem-ticket-modal__body">
 																<div class="mpwem-ticket-modal__mount" id="mpwem_particular_date_modal_mount"></div>
+															</div>
+															<div class="mpwem-ticket-modal__footer">
+																<div class="mpwem-ticket-modal__footer-start" id="mpwem_particular_date_modal_footer_start"></div>
+																<div class="mpwem-ticket-modal__footer-actions">
+																	<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-date-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+																	<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-date-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																</div>
 															</div>
 														</div>
 													</div>

@@ -507,13 +507,25 @@
 				$max_qty     = isset( $_POST['max_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['max_qty'] ) ) : [];
 				$total_price = 0;
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
+					$event_ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+					$valid_ticket_names = [];
+					if ( is_array( $event_ticket_types ) && sizeof( $event_ticket_types ) > 0 ) {
+						foreach ( $event_ticket_types as $t_type ) {
+							$t_name = is_array($t_type) && array_key_exists( 'option_name_t', $t_type ) ? $t_type['option_name_t'] : '';
+							$t_name = html_entity_decode( urldecode( $t_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+							if ( $t_name ) {
+								$valid_ticket_names[] = $t_name;
+							}
+						}
+					}
 					foreach ( $names as $key => $name ) {
 						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? (int) $qty[ $key ] : 0;
 						$ticket_name               = explode( '_', $name );
                         $_name=$ticket_name[0];
+						$decoded_name = html_entity_decode( urldecode( $_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
 						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
-						if ( $_name && $current_qty > 0 ) {
+						if ( $_name && $current_qty > 0 && in_array( $decoded_name, $valid_ticket_names ) ) {
 							$ticket_info[ $key ]['ticket_name']  = $name;
 							$ticket_info[ $key ]['ticket_price'] = MPWEM_Functions::get_ticket_price_by_name( $_name, $post_id );
 							$ticket_info[ $key ]['ticket_qty']   = $current_qty;
@@ -544,9 +556,21 @@
 				$names        = isset( $_POST['event_extra_service_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_name'] ) ) : [];
 				$qty          = isset( $_POST['event_extra_service_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_extra_service_qty'] ) ) : [];
 				if ( is_array( $names ) && sizeof( $names ) > 0 ) {
+					$valid_ex_names = [];
+					if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
+						foreach ( $ticket_types as $t_type ) {
+							$t_name = is_array($t_type) && array_key_exists( 'option_name', $t_type ) ? $t_type['option_name'] : '';
+							$t_name = str_replace( "'", "", $t_name );
+							if ( $t_name ) {
+								$valid_ex_names[] = $t_name;
+							}
+						}
+					}
 					foreach ( $names as $key => $name ) {
 						$current_qty = is_array($qty) && array_key_exists( $key, $qty ) ? $qty[ $key ] : 0;
-						if ( $name && $current_qty > 0 ) {
+						$ex_name = explode( '_', $name )[0];
+						$ex_name = str_replace( "'", "", $ex_name );
+						if ( $name && $current_qty > 0 && in_array( $ex_name, $valid_ex_names ) ) {
 							$ticket_info[ $key ]['service_name']  = $name;
 							$ticket_info[ $key ]['service_price'] = MPWEM_Functions::get_ex_price_by_name( $name, $post_id, $ticket_types );
 							$ticket_info[ $key ]['service_qty']   = $current_qty;
@@ -589,13 +613,27 @@
 					}
 					$same_attendee = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' );
 					$count         = 0;
+
+					$event_ticket_types = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_ticket_type', [] );
+					$valid_ticket_names = [];
+					if ( is_array( $event_ticket_types ) && sizeof( $event_ticket_types ) > 0 ) {
+						foreach ( $event_ticket_types as $t_type ) {
+							$t_name = is_array($t_type) && array_key_exists( 'option_name_t', $t_type ) ? $t_type['option_name_t'] : '';
+							$t_name = html_entity_decode( urldecode( $t_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+							if ( $t_name ) {
+								$valid_ticket_names[] = $t_name;
+							}
+						}
+					}
+
 					foreach ( $names as $key => $name ) {
 						$current_qty=$qty[ $key ];
 						$ticket_name               = explode( '_', $name );
 						$_name=$ticket_name[0];
+						$decoded_name = html_entity_decode( urldecode( $_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 						$current_qty = apply_filters('mpwem_group_actual_qty', $current_qty, $post_id, $_name);
 						$current_qty = apply_filters('mpwem_group_qty_actual', $current_qty, $post_id, $_name);
-						if ( $current_qty > 0 && $name ) {
+						if ( $current_qty > 0 && $name && in_array( $decoded_name, $valid_ticket_names ) ) {
 							for ( $j = 0; $j < $current_qty; $j ++ ) {
 								if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $attendee_info ) && sizeof( $attendee_info ) > 0 ) {
 									$attendee_info[ $count ] = current( $attendee_info );

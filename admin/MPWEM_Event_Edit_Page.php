@@ -29,6 +29,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			add_filter('admin_body_class', [$this, 'admin_body_class']);
 			add_action('admin_post_mpwem_event_edit_save', [$this, 'handle_save']);
 			add_action('wp_ajax_mpwem_event_edit_create', [$this, 'ajax_create_draft']);
+			add_action('wp_ajax_mpwem_add_event_taxonomy_term', [$this, 'ajax_add_event_taxonomy_term']);
 			add_filter('get_edit_post_link', [$this, 'filter_edit_post_link'], 20, 3);
 			add_filter('post_row_actions', [$this, 'filter_row_actions'], 20, 2);
 			add_filter('page_row_actions', [$this, 'filter_row_actions'], 20, 2);
@@ -257,7 +258,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			);
 		}
 
-		private function render_taxonomy_field(string $id, string $label, string $taxonomy, array $terms, array $selected_ids, string $help = '', string $manage_label = ''): void
+		private function render_taxonomy_field(string $id, string $label, string $taxonomy, array $terms, array $selected_ids, string $help = '', string $manage_label = '', bool $allow_ajax_add = false): void
 		{
 			$manage_url = admin_url('edit-tags.php?taxonomy=' . rawurlencode($taxonomy) . '&post_type=' . self::POST_TYPE);
 			$manage_text = $manage_label ?: __('Manage terms', 'mage-eventpress');
@@ -279,6 +280,24 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<?php endforeach; ?>
 					</div>
 				</div>
+				<?php if ($allow_ajax_add) : ?>
+					<div class="mpwem-taxonomy-create" data-taxonomy-create-form data-taxonomy="<?php echo esc_attr($taxonomy); ?>">
+						<label class="screen-reader-text" for="<?php echo esc_attr($id); ?>_new_term"><?php printf(esc_html__('Add new %s', 'mage-eventpress'), esc_html($label)); ?></label>
+						<div class="mpwem-taxonomy-create__controls">
+							<input
+								id="<?php echo esc_attr($id); ?>_new_term"
+								type="text"
+								class="mpwem-input mpwem-taxonomy-create__input"
+								name="term_name"
+								placeholder="<?php printf(esc_attr__('Add new %s', 'mage-eventpress'), esc_attr(strtolower($label))); ?>"
+								autocomplete="off" />
+							<button type="button" class="button button-secondary mpwem-taxonomy-create__button">
+								<?php esc_html_e('Add New', 'mage-eventpress'); ?>
+							</button>
+						</div>
+						<p class="mpwem-taxonomy-create__message" data-taxonomy-create-message aria-live="polite"></p>
+					</div>
+				<?php endif; ?>
 				<div class="mpwem-taxonomy-card__meta">
 					<?php if ($help) : ?>
 						<p class="mpwem-taxonomy-card__help"><?php echo esc_html($help); ?></p>
@@ -443,7 +462,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						$terms,
 						$selected_ids,
 						'',
-						__('Manage categories', 'mage-eventpress')
+						__('Manage categories', 'mage-eventpress'),
+						true
 					);
 					?>
 				</div>
@@ -729,9 +749,20 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'ajax_url'      => admin_url('admin-ajax.php'),
 					'admin_nonce'   => wp_create_nonce('mpwem_admin_nonce'),
 					'create_nonce'  => wp_create_nonce(self::NONCE_ACTION_CREATE),
+					'term_nonce'    => wp_create_nonce('mpwem_add_event_taxonomy_term'),
 					'page_url'      => admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG),
 				]
 			);
+		}
+
+		private function current_user_can_manage_taxonomy(string $taxonomy): bool
+		{
+			$taxonomy_object = get_taxonomy($taxonomy);
+			if (! $taxonomy_object || ! isset($taxonomy_object->cap->manage_terms)) {
+				return current_user_can('manage_categories');
+			}
+
+			return current_user_can($taxonomy_object->cap->manage_terms);
 		}
 
 		public function render_page(): void
@@ -956,6 +987,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="action" value="mpwem_event_edit_save" />
 								<input type="hidden" name="post_ID" value="<?php echo esc_attr($post_id); ?>" />
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
+								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 
@@ -1216,6 +1248,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														</div>
 														<div class="mpwem-card__body mpwem-display-stack">
 															<div class="mpwem-panel-mount" id="mpwem_wizard_template_mount"></div>
+															<div class="mpwem-panel-mount" id="mpwem_wizard_terms_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_faq_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_timeline_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_related_mount"></div>
@@ -1322,6 +1355,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$post_content = isset($_POST['content']) ? wp_kses_post(wp_unslash($_POST['content'])) : '';
 			$thumb_id     = isset($_POST['_thumbnail_id']) ? absint($_POST['_thumbnail_id']) : 0;
 			$post_status_action = isset($_POST['mpwem_post_status_action']) ? sanitize_key(wp_unslash($_POST['mpwem_post_status_action'])) : '';
+			$active_step = isset($_POST['mpwem_active_step']) ? sanitize_key(wp_unslash($_POST['mpwem_active_step'])) : 'basic';
 
 			if ($post_status_action === 'trash') {
 				if (! current_user_can('delete_post', $post_id)) {
@@ -1384,12 +1418,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$redirect = add_query_arg(
 				[
-					'post_type' => self::POST_TYPE,
-					'page'      => self::PAGE_SLUG,
-					'event_id'  => $post_id,
 					$notice_key => 1,
 				],
-				admin_url('edit.php')
+				$this->edit_url($post_id, $active_step ?: 'basic')
 			);
 			wp_safe_redirect($redirect);
 			exit;
@@ -1409,6 +1440,74 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			wp_send_json_success(['event_id' => (int) $post_id]);
+		}
+
+		public function ajax_add_event_taxonomy_term(): void
+		{
+			if (! $this->can_manage_events()) {
+				wp_send_json_error(['message' => __('Not allowed.', 'mage-eventpress')], 403);
+			}
+
+			check_ajax_referer('mpwem_add_event_taxonomy_term', 'nonce');
+
+			$taxonomy = isset($_POST['taxonomy']) ? sanitize_key(wp_unslash($_POST['taxonomy'])) : '';
+			$term_name = isset($_POST['term_name']) ? sanitize_text_field(wp_unslash($_POST['term_name'])) : '';
+			$post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+
+			if ($taxonomy !== 'mep_cat') {
+				wp_send_json_error(['message' => __('Invalid taxonomy.', 'mage-eventpress')], 400);
+			}
+
+			if (! taxonomy_exists($taxonomy)) {
+				wp_send_json_error(['message' => __('This taxonomy is not available.', 'mage-eventpress')], 400);
+			}
+
+			if (! $this->current_user_can_manage_taxonomy($taxonomy)) {
+				wp_send_json_error(['message' => __('Sorry, you are not allowed to create terms here.', 'mage-eventpress')], 403);
+			}
+
+			if ($term_name === '') {
+				wp_send_json_error(['message' => __('Please enter a category name.', 'mage-eventpress')], 400);
+			}
+
+			$existing_term = get_term_by('name', $term_name, $taxonomy);
+			if (! $existing_term) {
+				$inserted = wp_insert_term($term_name, $taxonomy);
+
+				if (is_wp_error($inserted)) {
+					wp_send_json_error(['message' => $inserted->get_error_message()], 400);
+				}
+
+				$term_id = isset($inserted['term_id']) ? absint($inserted['term_id']) : 0;
+				$existing_term = $term_id ? get_term($term_id, $taxonomy) : null;
+			}
+
+			if (! $existing_term || is_wp_error($existing_term)) {
+				wp_send_json_error(['message' => __('The category could not be created.', 'mage-eventpress')], 500);
+			}
+
+			if ($post_id > 0) {
+				$post = get_post($post_id);
+				if (! $post || $post->post_type !== self::POST_TYPE) {
+					wp_send_json_error(['message' => __('Invalid event.', 'mage-eventpress')], 400);
+				}
+
+				if (! current_user_can('edit_post', $post_id)) {
+					wp_send_json_error(['message' => __('Sorry, you are not allowed to edit this event.', 'mage-eventpress')], 403);
+				}
+
+				wp_set_post_terms($post_id, [(int) $existing_term->term_id], $taxonomy, true);
+			}
+
+			wp_send_json_success(
+				[
+					'term' => [
+						'id'   => (int) $existing_term->term_id,
+						'name' => $existing_term->name,
+					],
+					'message' => __('Category ready. It has been selected for this event.', 'mage-eventpress'),
+				]
+			);
 		}
 	}
 

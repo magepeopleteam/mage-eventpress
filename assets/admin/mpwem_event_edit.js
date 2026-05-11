@@ -191,6 +191,40 @@
         }
     }
 
+    function normalizePanelLabel(text) {
+        return (text || '')
+            .toString()
+            .toLowerCase()
+            .replace(/&/g, ' and ')
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim();
+    }
+
+    function panelLooksLikeTermsSection($panel) {
+        if (!$panel || !$panel.length) {
+            return false;
+        }
+
+        const candidateTexts = [];
+        const panelId = (($panel.data('tab-item') || '') + ' ' + ($panel.attr('id') || '')).trim();
+        if (panelId) {
+            candidateTexts.push(panelId);
+        }
+
+        $panel.find('h1, h2, h3, h4, .section-title, .mpev-label, .label-text').slice(0, 8).each(function() {
+            const text = $.trim($(this).text());
+            if (text) {
+                candidateTexts.push(text);
+            }
+        });
+
+        return candidateTexts.some(function(text) {
+            const normalized = normalizePanelLabel(text);
+            return normalized.indexOf('terms and conditions') !== -1
+                || (normalized.indexOf('terms') !== -1 && normalized.indexOf('condition') !== -1);
+        });
+    }
+
     function mountAll($root) {
         // Mount into Basic Step Media sidebar
         mountPanel($root, '#ttbm_settings_gallery', 'mpwem_wizard_media_mount_basic');
@@ -313,7 +347,6 @@
         mountPanel($root, '#mep_related_event_meta', 'mpwem_wizard_related_mount');
         mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
         mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
-        enhanceDisplayStep($root);
         mountDangerZone($root);
 
         const $legacySettingsPanel = $root.find('.mp_tab_item[data-tab-item="#mpwem_event_settings"]').first();
@@ -331,6 +364,7 @@
         $steps.each(function() { stepPanelSelectors.push($(this).data('panel')); });
         
         const $additionalMount = $('#mpwem_additional_sections_mount');
+        const $termsMount = $('#mpwem_wizard_terms_mount');
         if ($additionalMount.length) {
             $root.find('.mpwem-wizard-panels > .mp_tab_item').each(function() {
                 const $p = $(this);
@@ -339,10 +373,18 @@
                 if (stepPanelSelectors.indexOf(id) !== -1 || id === '#mp_event_venue' || id === '#ttbm_settings_gallery' || id === '#mpwem_event_settings' || $p.hasClass('mpwem-wizard-panel')) {
                     return;
                 }
+
+                if ($termsMount.length && !$termsMount.children().length && panelLooksLikeTermsSection($p)) {
+                    $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($termsMount).show();
+                    return;
+                }
+
                 $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($additionalMount).show();
             });
             if ($additionalMount.children().length) $('#mpwem_edit_page_additional').show();
         }
+
+        enhanceDisplayStep($root);
     }
 
     function getTicketModalContext($root) {
@@ -1576,6 +1618,13 @@
                 icon: 'dashicons-layout'
             },
             {
+                mount: '#mpwem_wizard_terms_mount',
+                className: 'mpwem-display-section--terms',
+                title: 'Terms & Conditions',
+                desc: 'Show the attendee-facing terms content for this event.',
+                icon: 'dashicons-media-text'
+            },
+            {
                 mount: '#mpwem_wizard_faq_mount',
                 className: 'mpwem-display-section--faq',
                 title: 'FAQs',
@@ -1622,6 +1671,7 @@
         sections.forEach(function(section) {
             const $mount = $root.find(section.mount).first();
             if (!$mount.length) return;
+            if (!$mount.children().length) return;
 
             $mount.addClass('mpwem-display-section ' + section.className);
             if (!$mount.children('.mpwem-display-section__head').length) {
@@ -1720,6 +1770,110 @@
                     });
 
                     syncFaqToggle(false);
+                }
+            }
+
+            if (section.className === 'mpwem-display-section--terms') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>');
+                    $body.append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                const $sourceRow = $body.find('> .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bt, > .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bB, > .mp_tab_item > section').filter(function() {
+                    return $(this).find('.round_switch_label, .mpev-switch, .mpwem-switch-wrap').length > 0;
+                }).first();
+                let $switch = $sourceRow.find('.round_switch_label').first();
+                if (!$switch.length) {
+                    $switch = $sourceRow.find('.mpev-switch, .mpwem-switch-wrap').first();
+                }
+                const $checkbox = $switch.find('input[type="checkbox"]').first();
+                const $legacySlider = $switch.find('.round_switch').first();
+
+                if ($head.length && $switch.length && !$head.find('.round_switch_label, .mpev-switch, .mpwem-switch-wrap').length) {
+                    $head.append($switch);
+                    $sourceRow.addClass('mpwem-terms-toggle-row');
+                }
+
+                if ($sourceRow.length) {
+                    $sourceRow.find('.round_switch_label, .mpev-switch, .mpwem-switch-wrap').not($head.find('.round_switch_label, .mpev-switch, .mpwem-switch-wrap')).each(function() {
+                        $(this).closest('.round_switch_label, .mpev-switch, .mpwem-switch-wrap').remove();
+                    });
+                }
+
+                if ($checkbox.length) {
+                    const fallbackTarget = $mount.find('[data-collapse]').first().attr('data-collapse') || '';
+                    const target = $checkbox.attr('data-collapse-target') || $legacySlider.attr('data-collapse-target') || fallbackTarget;
+                    const $collapse = target ? $mount.find('[data-collapse="' + target + '"]').first() : $();
+
+                    if (target) {
+                        $checkbox.attr('data-collapse-target', target);
+                    }
+                    if (!$checkbox.attr('data-toggle-values')) {
+                        $checkbox.attr('data-toggle-values', 'on,off');
+                    }
+
+                    if ($collapse.length && !$collapse.children('.mpwem-terms-list').length) {
+                        const $termsList = $('<div class="mpwem-terms-list"></div>');
+                        let $currentItem = null;
+                        let $currentContent = null;
+
+                        $collapse.children().each(function() {
+                            const $node = $(this);
+                            const $headerRow = $node.is('.justify_between, ._justify_between_align_center_wrap')
+                                ? $node
+                                : $node.children('.justify_between, ._justify_between_align_center_wrap').first();
+                            const actionCount = $headerRow.find('a, button, .button, .buttonGroup > *, .dashicons, .fas, .far, .fa').length;
+                            const looksLikeItemHeader = $headerRow.length && actionCount >= 2;
+
+                            if (looksLikeItemHeader) {
+                                $currentItem = $('<div class="mpwem-terms-item"></div>');
+                                $currentContent = $('<div class="mpwem-terms-item__content"></div>');
+                                const $headerWrap = $('<div class="mpwem-terms-item__head"></div>');
+
+                                $headerWrap.append($node);
+                                $currentItem.append($headerWrap).append($currentContent);
+                                $termsList.append($currentItem);
+                                return;
+                            }
+
+                            if ($currentContent) {
+                                $currentContent.append($node);
+                                return;
+                            }
+
+                            $termsList.append($node);
+                        });
+
+                        if ($termsList.children('.mpwem-terms-item').length) {
+                            $collapse.append($termsList);
+                        }
+                    }
+
+                    const syncTermsToggle = function(useAnimation) {
+                        const isChecked = $checkbox.is(':checked');
+                        $checkbox.val(isChecked ? 'on' : 'off');
+                        $mount.toggleClass('is-collapsed', !isChecked);
+                        $mount.toggleClass('is-expanded', isChecked);
+
+                        if (!$collapse.length) return;
+                        if (useAnimation) {
+                            $collapse.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](250);
+                        } else {
+                            $collapse.toggle(isChecked);
+                        }
+                        $collapse.toggleClass('mActive', isChecked);
+                    };
+
+                    $checkbox.off('change.mpwemTermsToggle').on('change.mpwemTermsToggle', function() {
+                        syncTermsToggle(true);
+                    });
+
+                    syncTermsToggle(false);
                 }
             }
 
@@ -2866,6 +3020,43 @@
             return;
         }
 
+        const showTaxonomyCreateMessage = function($message, text, type) {
+            if (!$message.length) {
+                return;
+            }
+
+            $message
+                .removeClass('is-success is-error')
+                .toggleClass('is-success', type === 'success')
+                .toggleClass('is-error', type === 'error')
+                .text(text || '');
+        };
+
+        const ensureChecklistTerm = function($checklist, taxonomy, term) {
+            const termId = parseInt(term && term.id, 10) || 0;
+            const termName = term && term.name ? term.name.toString() : '';
+
+            if (!termId || !termName || !$checklist.length) {
+                return $();
+            }
+
+            let $existing = $checklist.find('input[name="' + taxonomy + '[]"][value="' + termId + '"]').closest('.mpwem-taxonomy-checklist__item');
+            if ($existing.length) {
+                return $existing;
+            }
+
+            const $item = $('<label class="mpwem-taxonomy-checklist__item"></label>');
+            const $input = $('<input type="checkbox" data-no-mpwem-switch="1" checked="checked" />')
+                .attr('name', taxonomy + '[]')
+                .val(termId);
+            const $label = $('<span class="mpwem-taxonomy-checklist__label"></span>').text(termName);
+
+            $item.append($input, $label);
+            $checklist.prepend($item);
+
+            return $item;
+        };
+
         $cards.each(function() {
             const $card = $(this);
 
@@ -2939,6 +3130,82 @@
                     .data('mpwemTagPreviewInit', true);
 
                 renderPreview();
+            });
+
+            $card.find('[data-taxonomy-create-form]').each(function() {
+                const $form = $(this);
+                const $input = $form.find('.mpwem-taxonomy-create__input').first();
+                const $button = $form.find('.mpwem-taxonomy-create__button').first();
+                const $message = $form.find('[data-taxonomy-create-message]').first();
+                const taxonomy = ($form.data('taxonomy') || '').toString();
+                const $checklist = $card.find('.mpwem-taxonomy-checklist').first();
+                const postId = parseInt($root.find('[name="post_ID"]').val(), 10) || 0;
+
+                if ($form.data('mpwemTaxonomyCreateInit')) {
+                    return;
+                }
+
+                const submitCreateTerm = function() {
+                    const config = getConfig();
+                    const termName = ($input.val() || '').toString().trim();
+
+                    if (!termName) {
+                        showTaxonomyCreateMessage($message, 'Please enter a category name.', 'error');
+                        $input.trigger('focus');
+                        return;
+                    }
+
+                    if (!config.ajax_url || !config.term_nonce) {
+                        showTaxonomyCreateMessage($message, 'Category creation is not configured.', 'error');
+                        return;
+                    }
+
+                    $form.addClass('is-loading');
+                    $button.prop('disabled', true);
+                    showTaxonomyCreateMessage($message, 'Adding category...', 'success');
+
+                    $.post(config.ajax_url, {
+                        action: 'mpwem_add_event_taxonomy_term',
+                        nonce: config.term_nonce,
+                        taxonomy: taxonomy,
+                        term_name: termName,
+                        post_id: postId
+                    }).done(function(response) {
+                        if (!(response && response.success && response.data && response.data.term)) {
+                            const fallbackMessage = response && response.data && response.data.message ? response.data.message : 'The category could not be added.';
+                            showTaxonomyCreateMessage($message, fallbackMessage, 'error');
+                            return;
+                        }
+
+                        const $item = ensureChecklistTerm($checklist, taxonomy, response.data.term);
+                        $item.find('input[type="checkbox"]').prop('checked', true).trigger('change');
+                        $input.val('');
+                        showTaxonomyCreateMessage($message, response.data.message || 'Category added.', 'success');
+                    }).fail(function(xhr) {
+                        const response = xhr.responseJSON || {};
+                        const fallbackMessage = response.data && response.data.message ? response.data.message : 'The category could not be added.';
+                        showTaxonomyCreateMessage($message, fallbackMessage, 'error');
+                    }).always(function() {
+                        $form.removeClass('is-loading');
+                        $button.prop('disabled', false);
+                    });
+                };
+
+                $button.on('click.mpwemTaxonomyCreate', function(e) {
+                    e.preventDefault();
+                    submitCreateTerm();
+                });
+
+                $input.on('keydown.mpwemTaxonomyCreate', function(e) {
+                    if (e.key !== 'Enter') {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    submitCreateTerm();
+                });
+
+                $form.data('mpwemTaxonomyCreateInit', true);
             });
         });
     }
@@ -3070,6 +3337,7 @@
         $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $steps.length);
         $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
         $root.find('.mpwem-wizard-next').text(current === $steps.length ? 'Save Event' : 'Next Step');
+        $root.find('#mpwem_active_step').val(stepKey);
 
         if (options && options.pushHash) {
             setHash(parseInt($root.data('event-id'), 10) > 0 ? 'edit' : 'new', $root.data('event-id'), stepKey);
@@ -3242,6 +3510,7 @@
         }
 
         $form.find('#mpwem_post_status_action').val(action || '');
+        $form.find('#mpwem_active_step').val($root.find('.mpwem-step.is-active').data('step-key') || STEP_KEY_FALLBACK);
         $form.trigger('submit');
     }
 

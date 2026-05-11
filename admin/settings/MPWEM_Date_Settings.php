@@ -792,6 +792,9 @@
                             <span class="label-text"><?php esc_html_e( 'Configure Tour Off Dates', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="mpwem_settings_area">
+							<div class="mpwem-ticket-off-dates-actions">
+								<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
+							</div>
                             <div class="mpwem_item_insert mpwem_sortable_area">
 								<?php
                                     $all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
@@ -816,7 +819,6 @@
                                     }
 								?>
                             </div>
-							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
                             <div class="mpwem_hidden_content">
                                 <div class="mpwem_hidden_item">
 									<?php self::off_date_item(); ?>
@@ -983,9 +985,9 @@
 			/*************************************/
 			public function special_on_dates_setting( $post_id ) {
 				$special_dates       = MPWEM_Global_Function::get_post_info( $post_id, 'mep_special_date_info', array() );
-				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'off' );
+				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'no' );
 				?>
-                <div class="mpwem_style mep-special-datetime" style="border-radius:4px;border:1px solid #eef2f7!important;display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
+                <div class="mpwem_style mep-special-datetime" style="border-radius:4px;border:1px solid #eef2f7!important;display:<?php echo esc_attr( $display_ticket_time == 'yes' ? 'block' : 'none' ); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
                         <div>
                             <h2><?php esc_html_e( 'Special  Dates Time Settings', 'mage-eventpress' ); ?></h2>

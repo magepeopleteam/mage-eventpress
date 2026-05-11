@@ -1350,26 +1350,13 @@
 
     function syncParticularDateModalFooter($root) {
         const context = getParticularDateModalContext($root);
-        const activeType = getActiveDateModalType($root);
-        const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
 
         if (!context.$footerStart.length) {
             return;
         }
 
-        if (!context.$footerStart.find('.mpwem-date-modal__add').length) {
-            context.$footerStart.append(
-                $('<button type="button" class="button button-link mpwem-ticket-modal__add mpwem-date-modal__add"></button>')
-            );
-        }
-
         const $footerAdd = context.$footerStart.find('.mpwem-date-modal__add').first();
-        const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
-        const addLabel = $.trim($addButton.text());
-
-        if ($addButton.length && addLabel) {
-            $footerAdd.text(addLabel).show();
-        } else {
+        if ($footerAdd.length) {
             $footerAdd.hide();
         }
     }
@@ -2132,10 +2119,13 @@
 
                 // Legacy specific: ticket time toggle
                 if ($cb.attr('name') === 'mep_disable_ticket_time') {
+                    const $timeSettingsScope = $cb.closest('.mpwem_date_settings, #mpwem_particular_date_modal_mount, #mpwem_wizard_date_mount');
+                    const $specialDatePanel = $timeSettingsScope.find('.mep-special-datetime');
+
                     if (isChecked) {
-                        $(".mep-special-datetime").slideUp(200);
+                        $specialDatePanel.stop(true, true).slideDown(200);
                     } else {
-                        $(".mep-special-datetime").slideDown(200);
+                        $specialDatePanel.stop(true, true).slideUp(200);
                     }
                 }
             });

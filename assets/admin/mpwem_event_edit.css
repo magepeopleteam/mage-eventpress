@@ -1353,7 +1353,7 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-registration-mode + span {
 	margin-bottom: 0;
-	padding: 0 20px;
+	padding: 10px 20px;
 }
 .mpwem-registration-mode__toggle {
 	display: grid;
@@ -1784,9 +1784,8 @@ select.mpwem-global-qty-field__input {
 	.mpwem-status-actions {
 		margin-left: 0;
 	}
-	.mpwem-ticket-summary__toolbar,
-	.mpwem-ticket-summary__item {
-		grid-template-columns: 1fr;
+	.mpwem-ticket-summary__toolbar {
+		grid-template-columns: minmax(0, 1fr) auto !important;
 	}
 	.mpwem-ticket-summary__actions,
 	.mpwem-ticket-summary__item-actions,
@@ -1904,13 +1903,13 @@ select.mpwem-global-qty-field__input {
 		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__toolbar {
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: 1fr;
 	gap: 14px;
 	padding: 18px 20px;
 	border-radius: 14px;
 }
 #mpwem_extra_service_summary .mpwem-ticket-summary__toolbar {
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: 1fr;
 	gap: 14px;
 	padding: 18px 20px;
 	border-radius: 14px;
@@ -2358,7 +2357,7 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-ticket-modal__mount .mpwem-date-repeat-area {
 	padding: 0 !important;
-	margin-top: 20px;
+	margin-top: 0;
 }
 .mpwem-ticket-modal__mount .mpwem-date-repeat-area .mpwem_add_item {
 	display: none !important;
@@ -2372,6 +2371,7 @@ select.mpwem-global-qty-field__input {
 		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
 	box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.35);
 	overflow: hidden !important;
+	margin-bottom: 20px !important;
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-schedule-shell {
 	display: grid;
@@ -5000,7 +5000,7 @@ body.mpwem-ticket-modal-open {
 #mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(2),
 #mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(4),
 #mpwem_particular_date_modal_mount .mpwem-date-table td:nth-child(4) {
-	width: 130px;
+	width: 161px;
 	min-width: 130px;
 }
 #mpwem_particular_date_modal_mount .mpwem-date-table th:nth-child(n+5):not(:last-child),
@@ -5102,6 +5102,7 @@ body.mpwem-ticket-modal-open {
 .mep-special-datetime .mep_special_on_dates_table .mpwem-date-input,
 .mep-special-datetime .mep_special_on_dates_table .mpwem-time-input {
 	height: 38px !important;
+	text-align: center;
 }
 .mep-special-datetime .mep_special_on_dates_table .mpwem-date-input-wrap,
 .mep-special-datetime .mep_special_on_dates_table .mpwem-time-input-wrap {
@@ -5161,7 +5162,15 @@ body.mpwem-ticket-modal-open {
 	width: 100%;
 }
 .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
+	display: inline-flex !important;
+	visibility: visible !important;
+	opacity: 1 !important;
 	margin-top: 8px !important;
+}
+.mpwem-ticket-modal__mount .mep-special-datetime .mep_special_on_dates_table td .mpwem_settings_area .mpwem_add_item {
+	display: inline-flex !important;
+	visibility: visible !important;
+	opacity: 1 !important;
 }
 .mep-special-datetime .mep_special_on_dates_table .buttonGroup {
 	justify-content: center;
@@ -5192,10 +5201,23 @@ body.mpwem-ticket-modal-open {
 	max-width: 100%;
 	padding: 0 !important;
 	box-sizing: border-box;
+	display: grid;
+	row-gap: 12px;
+}
+.mpwem-ticket-off-dates-field .mpwem-ticket-off-dates-actions {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+.mpwem-ticket-modal__mount .mpwem-ticket-off-dates-field .mpwem-ticket-off-dates-actions .mpwem_add_item {
+	display: inline-flex !important;
+	visibility: visible !important;
+	opacity: 1 !important;
 }
 .mpwem-ticket-off-dates-field .mpwem_item_insert {
 	display: grid;
 	gap: 10px;
+	width: 100%;
 }
 .mpwem-ticket-off-dates-field .mpwem_remove_area._mt_xs {
 	margin: 0 !important;
@@ -5223,7 +5245,7 @@ body.mpwem-ticket-modal-open {
 	align-items: center;
 	justify-content: center;
 	min-height: 38px;
-	margin-top: 12px !important;
+	margin-top: 0 !important;
 	border-radius: 10px !important;
 }
 .mpwem-offday-grid {
@@ -5328,8 +5350,8 @@ body.mpwem-ticket-modal-open {
 	margin-top: 5px;
 }
 #mep_disable_ticket_time {
-	padding: 0 !important;
-	border-bottom: 0 !important;
+	padding: 0 20px !important;
+	border: 0 !important;
 }
 #mep_disable_ticket_time .mpTabs.topTabs {
 	margin: 0;
@@ -5419,6 +5441,9 @@ body.mpwem-ticket-modal-open {
 	visibility: visible !important;
 }
 #mep_disable_ticket_time .mpwem_add_item {
+	display: inline-flex !important;
+	visibility: visible !important;
+	opacity: 1 !important;
 	margin-top: 14px !important;
 	border-radius: 10px !important;
 }

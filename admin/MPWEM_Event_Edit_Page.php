@@ -855,7 +855,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
 						<div class="mpwem-skeleton-title-group">
 							<span class="mpwem-skeleton-line mpwem-skeleton-line--title"></span>
-							<span class="mpwem-skeleton-line mpwem-skeleton-line--subtitle"></span>
+							<!-- <span class="mpwem-skeleton-line mpwem-skeleton-line--subtitle"></span> -->
 						</div>
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--action"></span>
 					</div>

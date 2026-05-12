@@ -298,6 +298,7 @@ body.mpwem-event-wizard-screen {
 /* Mounting & Visibility */
 .mpwem-embedded-panel {
 	display: block !important;
+	overflow: initial;
 	/* Force visible when mounted */
 }
 .mpwem-wizard-panels>.mp_tab_item {
@@ -305,6 +306,7 @@ body.mpwem-event-wizard-screen {
 }
 .mpwem-wizard-panels>.mp_tab_item.is-active {
 	display: block !important;
+	overflow: initial;
 }
 .mpwem-link {
 	text-decoration: none;
@@ -712,12 +714,15 @@ body.mpwem-event-wizard-screen {
 	border-radius: var(--mpwem-radius);
 	box-shadow: var(--mpwem-shadow);
 	margin-bottom: 16px;
-	overflow: hidden;
+	overflow: visible;
 }
 .mpwem-card__head {
 	padding: 14px 16px;
 	background: var(--mpwem-card-header-bg);
 	border-bottom: 1px solid var(--mpwem-border);
+	border-top-right-radius: var(--mpwem-radius);
+	border-top-left-radius: var(--mpwem-radius);
+	overflow: hidden;
 }
 .mpwem-card__head h2 {
 	margin: 0;
@@ -5141,6 +5146,7 @@ body.mpwem-ticket-modal-open {
 	display: grid;
 	gap: 18px;
 	background: #fff;
+	overflow: initial;
 }
 .mpwem-date-step > h3,
 .mpwem-date-step > p {
@@ -5989,6 +5995,7 @@ body.mpwem-ticket-modal-open {
 	overflow: hidden;
 	background: #fff;
 	box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+	margin-bottom: 0 !important;
 }
 .mpwem-date-step .mpwem_date_format_settings ._bg_light_padding {
 	padding: 18px 22px !important;

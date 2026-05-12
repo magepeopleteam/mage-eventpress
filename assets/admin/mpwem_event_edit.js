@@ -820,7 +820,15 @@
             return 'Price not set';
         }
 
-        return value === '0' ? 'Free' : value;
+        if (value === '0') {
+            return 'Free';
+        }
+
+        if (typeof window.mpwem_price_format === 'function' && !Number.isNaN(Number(value))) {
+            return $('<div></div>').html(window.mpwem_price_format(Number(value))).text();
+        }
+
+        return value;
     }
 
     function extraServiceRowQty($row) {
@@ -2682,18 +2690,40 @@
 
     function positionCustomCalendar($calendar, $input) {
         const offset = $input.offset();
+        const wasOpen = $calendar.hasClass('is-open');
+        const previousVisibility = $calendar.css('visibility');
+
+        if (!wasOpen) {
+            $calendar.css('visibility', 'hidden').addClass('is-open');
+        }
+
         const width = $calendar.outerWidth();
+        const height = $calendar.outerHeight();
+        const inputHeight = $input.outerHeight();
+        const scrollTop = $(window).scrollTop();
         const viewportRight = $(window).scrollLeft() + $(window).width();
+        const viewportBottom = scrollTop + $(window).height();
+        const spaceBelow = viewportBottom - (offset.top + inputHeight);
+        const spaceAbove = offset.top - scrollTop;
         let left = offset.left;
+        let top = offset.top + inputHeight + 8;
 
         if (left + width > viewportRight - 12) {
             left = Math.max(12, viewportRight - width - 12);
         }
 
+        if (height && spaceBelow < height + 12 && spaceAbove > spaceBelow) {
+            top = Math.max(scrollTop + 12, offset.top - height - 8);
+        }
+
         $calendar.css({
-            top: offset.top + $input.outerHeight() + 8,
+            top: top,
             left: left
         });
+
+        if (!wasOpen) {
+            $calendar.removeClass('is-open').css('visibility', previousVisibility);
+        }
     }
 
     function renderCustomCalendar($calendar) {

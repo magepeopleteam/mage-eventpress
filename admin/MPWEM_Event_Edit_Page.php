@@ -262,6 +262,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		{
 			$manage_url = admin_url('edit-tags.php?taxonomy=' . rawurlencode($taxonomy) . '&post_type=' . self::POST_TYPE);
 			$manage_text = $manage_label ?: __('Manage terms', 'mage-eventpress');
+			$quick_add_panel_id = $id . '_quick_add';
 			?>
 			<div class="mpwem-taxonomy-card__field">
 				<div class="mpwem-field">
@@ -281,7 +282,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					</div>
 				</div>
 				<?php if ($allow_ajax_add) : ?>
-					<div class="mpwem-taxonomy-create" data-taxonomy-create-form data-taxonomy="<?php echo esc_attr($taxonomy); ?>">
+					<div class="mpwem-taxonomy-create" id="<?php echo esc_attr($quick_add_panel_id); ?>" data-taxonomy-create-form data-taxonomy="<?php echo esc_attr($taxonomy); ?>" data-taxonomy-create-panel hidden>
+						<div class="mpwem-taxonomy-create__head">
+							<h3><?php printf(esc_html__('Quick Add %s', 'mage-eventpress'), esc_html($label)); ?></h3>
+							<p><?php printf(esc_html__('Create a new %s here and attach it to this event instantly.', 'mage-eventpress'), esc_html(strtolower($label))); ?></p>
+						</div>
 						<label class="screen-reader-text" for="<?php echo esc_attr($id); ?>_new_term"><?php printf(esc_html__('Add new %s', 'mage-eventpress'), esc_html($label)); ?></label>
 						<div class="mpwem-taxonomy-create__controls">
 							<input
@@ -362,7 +367,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$slug = $post->post_name;
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--slug">
-				<div class="mpwem-card__head">
+				<div class="mpwem-card__head" style="flex-direction: column !important;">
 					<h2><?php esc_html_e('Event URL Slug', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('The unique identifier used in the event URL.', 'mage-eventpress'); ?></p>
 				</div>
@@ -450,8 +455,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--category">
 				<div class="mpwem-card__head">
-					<h2><?php esc_html_e('Event Category', 'mage-eventpress'); ?></h2>
-					<p><?php esc_html_e('Assign categories to help attendees find this event.', 'mage-eventpress'); ?></p>
+					<div class="mpwem-card__head-copy">
+						<h2><?php esc_html_e('Event Category', 'mage-eventpress'); ?></h2>
+						<p><?php esc_html_e('Assign categories to help attendees find this event.', 'mage-eventpress'); ?></p>
+					</div>
+					<div class="mpwem-card__head-actions">
+						<button
+							type="button"
+							class="button button-secondary mpwem-taxonomy-card__toggle"
+							data-taxonomy-create-toggle
+							data-open-label="<?php esc_attr_e('Add Category', 'mage-eventpress'); ?>"
+							data-close-label="<?php esc_attr_e('Close', 'mage-eventpress'); ?>"
+							aria-expanded="false"
+							aria-controls="mpwem_event_categories_quick_add">
+							<?php esc_html_e('Add Category', 'mage-eventpress'); ?>
+						</button>
+					</div>
 				</div>
 				<div class="mpwem-card__body">
 					<?php
@@ -478,8 +497,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--organizer">
 				<div class="mpwem-card__head">
-					<h2><?php esc_html_e('Event Organizer', 'mage-eventpress'); ?></h2>
-					<p><?php esc_html_e('Select the organization or person hosting this event.', 'mage-eventpress'); ?></p>
+					<div class="mpwem-card__head-copy">
+						<h2><?php esc_html_e('Event Organizer', 'mage-eventpress'); ?></h2>
+						<p><?php esc_html_e('Select the organization or person hosting this event.', 'mage-eventpress'); ?></p>
+					</div>
+					<div class="mpwem-card__head-actions">
+						<button
+							type="button"
+							class="button button-secondary mpwem-taxonomy-card__toggle"
+							data-taxonomy-create-toggle
+							data-open-label="<?php esc_attr_e('Add Organizer', 'mage-eventpress'); ?>"
+							data-close-label="<?php esc_attr_e('Close', 'mage-eventpress'); ?>"
+							aria-expanded="false"
+							aria-controls="mpwem_event_organizers_quick_add">
+							<?php esc_html_e('Add Organizer', 'mage-eventpress'); ?>
+						</button>
+					</div>
 				</div>
 				<div class="mpwem-card__body">
 					<?php
@@ -490,7 +523,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						$terms,
 						$selected_ids,
 						__('Venue location can use organizer details when the venue source is set to Organizer.', 'mage-eventpress'),
-						__('Manage organizers', 'mage-eventpress')
+						__('Manage organizers', 'mage-eventpress'),
+						true
 					);
 					?>
 				</div>
@@ -515,7 +549,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			);
 			?>
 			<div class="mpwem-card mpwem-taxonomy-card mpwem-taxonomy-card--tags">
-				<div class="mpwem-card__head">
+				<div class="mpwem-card__head" style="flex-direction: column !important;">
 					<h2><?php esc_html_e('Event Tags', 'mage-eventpress'); ?></h2>
 					<p><?php esc_html_e('Add tags to further describe your event.', 'mage-eventpress'); ?></p>
 				</div>
@@ -1454,7 +1488,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$term_name = isset($_POST['term_name']) ? sanitize_text_field(wp_unslash($_POST['term_name'])) : '';
 			$post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
 
-			if ($taxonomy !== 'mep_cat') {
+			if (! in_array($taxonomy, ['mep_cat', 'mep_org'], true)) {
 				wp_send_json_error(['message' => __('Invalid taxonomy.', 'mage-eventpress')], 400);
 			}
 
@@ -1467,7 +1501,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			if ($term_name === '') {
-				wp_send_json_error(['message' => __('Please enter a category name.', 'mage-eventpress')], 400);
+				$empty_message = $taxonomy === 'mep_org'
+					? __('Please enter an organizer name.', 'mage-eventpress')
+					: __('Please enter a category name.', 'mage-eventpress');
+				wp_send_json_error(['message' => $empty_message], 400);
 			}
 
 			$existing_term = get_term_by('name', $term_name, $taxonomy);
@@ -1505,7 +1542,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						'id'   => (int) $existing_term->term_id,
 						'name' => $existing_term->name,
 					],
-					'message' => __('Category ready. It has been selected for this event.', 'mage-eventpress'),
+					'message' => $taxonomy === 'mep_org'
+						? __('Organizer ready. It has been selected for this event.', 'mage-eventpress')
+						: __('Category ready. It has been selected for this event.', 'mage-eventpress'),
 				]
 			);
 		}

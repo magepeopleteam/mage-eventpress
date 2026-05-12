@@ -3032,6 +3032,32 @@
                 .text(text || '');
         };
 
+        const setTaxonomyCreateOpenState = function($card, isOpen) {
+            const $panel = $card.find('[data-taxonomy-create-panel]').first();
+            const $toggle = $card.find('[data-taxonomy-create-toggle]').first();
+
+            if (!$panel.length || !$toggle.length) {
+                return;
+            }
+
+            const openLabel = ($toggle.attr('data-open-label') || 'Add').toString();
+            const closeLabel = ($toggle.attr('data-close-label') || 'Close').toString();
+
+            $card.toggleClass('is-taxonomy-create-open', isOpen);
+            $panel.toggleClass('is-open', isOpen).prop('hidden', !isOpen);
+            $toggle
+                .attr('aria-expanded', isOpen ? 'true' : 'false')
+                .text(isOpen ? closeLabel : openLabel)
+                .toggleClass('is-active', isOpen);
+
+            if (isOpen) {
+                $panel.find('[data-taxonomy-create-message]').first().removeClass('is-success is-error').text('');
+                window.setTimeout(function() {
+                    $panel.find('.mpwem-taxonomy-create__input').first().trigger('focus');
+                }, 30);
+            }
+        };
+
         const ensureChecklistTerm = function($checklist, taxonomy, term) {
             const termId = parseInt(term && term.id, 10) || 0;
             const termName = term && term.name ? term.name.toString() : '';
@@ -3140,29 +3166,32 @@
                 const taxonomy = ($form.data('taxonomy') || '').toString();
                 const $checklist = $card.find('.mpwem-taxonomy-checklist').first();
                 const postId = parseInt($root.find('[name="post_ID"]').val(), 10) || 0;
+                const taxonomyLabel = taxonomy === 'mep_org' ? 'organizer' : 'category';
 
                 if ($form.data('mpwemTaxonomyCreateInit')) {
                     return;
                 }
+
+                setTaxonomyCreateOpenState($card, false);
 
                 const submitCreateTerm = function() {
                     const config = getConfig();
                     const termName = ($input.val() || '').toString().trim();
 
                     if (!termName) {
-                        showTaxonomyCreateMessage($message, 'Please enter a category name.', 'error');
+                        showTaxonomyCreateMessage($message, 'Please enter a ' + taxonomyLabel + ' name.', 'error');
                         $input.trigger('focus');
                         return;
                     }
 
                     if (!config.ajax_url || !config.term_nonce) {
-                        showTaxonomyCreateMessage($message, 'Category creation is not configured.', 'error');
+                        showTaxonomyCreateMessage($message, taxonomyLabel.charAt(0).toUpperCase() + taxonomyLabel.slice(1) + ' creation is not configured.', 'error');
                         return;
                     }
 
                     $form.addClass('is-loading');
                     $button.prop('disabled', true);
-                    showTaxonomyCreateMessage($message, 'Adding category...', 'success');
+                    showTaxonomyCreateMessage($message, 'Adding ' + taxonomyLabel + '...', 'success');
 
                     $.post(config.ajax_url, {
                         action: 'mpwem_add_event_taxonomy_term',
@@ -3172,7 +3201,7 @@
                         post_id: postId
                     }).done(function(response) {
                         if (!(response && response.success && response.data && response.data.term)) {
-                            const fallbackMessage = response && response.data && response.data.message ? response.data.message : 'The category could not be added.';
+                            const fallbackMessage = response && response.data && response.data.message ? response.data.message : 'The ' + taxonomyLabel + ' could not be added.';
                             showTaxonomyCreateMessage($message, fallbackMessage, 'error');
                             return;
                         }
@@ -3180,10 +3209,13 @@
                         const $item = ensureChecklistTerm($checklist, taxonomy, response.data.term);
                         $item.find('input[type="checkbox"]').prop('checked', true).trigger('change');
                         $input.val('');
-                        showTaxonomyCreateMessage($message, response.data.message || 'Category added.', 'success');
+                        showTaxonomyCreateMessage($message, response.data.message || (taxonomyLabel.charAt(0).toUpperCase() + taxonomyLabel.slice(1) + ' added.'), 'success');
+                        window.setTimeout(function() {
+                            setTaxonomyCreateOpenState($card, false);
+                        }, 220);
                     }).fail(function(xhr) {
                         const response = xhr.responseJSON || {};
-                        const fallbackMessage = response.data && response.data.message ? response.data.message : 'The category could not be added.';
+                        const fallbackMessage = response.data && response.data.message ? response.data.message : 'The ' + taxonomyLabel + ' could not be added.';
                         showTaxonomyCreateMessage($message, fallbackMessage, 'error');
                     }).always(function() {
                         $form.removeClass('is-loading');
@@ -3194,6 +3226,11 @@
                 $button.on('click.mpwemTaxonomyCreate', function(e) {
                     e.preventDefault();
                     submitCreateTerm();
+                });
+
+                $card.find('[data-taxonomy-create-toggle]').first().on('click.mpwemTaxonomyCreateToggle', function(e) {
+                    e.preventDefault();
+                    setTaxonomyCreateOpenState($card, !$card.hasClass('is-taxonomy-create-open'));
                 });
 
                 $input.on('keydown.mpwemTaxonomyCreate', function(e) {

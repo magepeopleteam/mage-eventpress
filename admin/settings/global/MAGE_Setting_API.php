@@ -115,7 +115,7 @@
 				foreach ( $this->settings_fields as $section => $field ) {
 					foreach ( $field as $option ) {
 						
-						$name           = $option['name'];
+						$name           = isset( $option['name'] ) ? $option['name'] : '';
 						$type           = isset( $option['type'] ) ? $option['type'] : 'text';
 						$label          = isset( $option['label'] ) ? $option['label'] : '';
 						$callback       = isset( $option['callback'] ) ? $option['callback'] : array( $this, 'callback_' . $type );

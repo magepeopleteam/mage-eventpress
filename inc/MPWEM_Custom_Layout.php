@@ -229,21 +229,21 @@
 			/*****************************/
 			public static function qty_input( $data = [] ) {
 				//echo '<pre>';print_r($data);echo '</pre>';
-				$input_name     = array_key_exists( 'name', $data ) ? $data['name'] : '';
-				$price          = array_key_exists( 'price', $data ) ? $data['price'] : 0;
-				$available_seat = array_key_exists( 'available', $data ) ? $data['available'] : 1;
-				$default_qty    = array_key_exists( 'd_qty', $data ) ? $data['d_qty'] : 0;
-				$min_qty        = array_key_exists( 'min_qty', $data ) ? $data['min_qty'] : 0;
+				$input_name     = is_array($data) && array_key_exists( 'name', $data ) ? $data['name'] : '';
+				$price          = is_array($data) && array_key_exists( 'price', $data ) ? $data['price'] : 0;
+				$available_seat = is_array($data) && array_key_exists( 'available', $data ) ? $data['available'] : 1;
+				$default_qty    = is_array($data) && array_key_exists( 'd_qty', $data ) ? $data['d_qty'] : 0;
+				$min_qty        = is_array($data) && array_key_exists( 'min_qty', $data ) ? $data['min_qty'] : 0;
 				$min_qty        = max( $min_qty, 0 );
-				$max_qty        = array_key_exists( 'max_qty', $data ) ? $data['max_qty'] : '';
-				$input_type     = array_key_exists( 'type', $data ) ? $data['type'] : '';
-				$must_min       = array_key_exists( 'must_min', $data ) ? $data['must_min'] : 'off';
+				$max_qty        = is_array($data) && array_key_exists( 'max_qty', $data ) ? $data['max_qty'] : '';
+				$input_type     = is_array($data) && array_key_exists( 'type', $data ) ? $data['type'] : '';
+				$must_min       = is_array($data) && array_key_exists( 'must_min', $data ) ? $data['must_min'] : 'off';
 				//$min_qty = max($default_qty, $min_qty);
 				$max_qty = $max_qty > 0 ? $max_qty : $available_seat;
 				$max_qty = min( $available_seat, $max_qty );
 				if ( $max_qty >= $min_qty && $max_qty > 0 ) {
 					if ( $input_type == 'dropdown' ) {
-						$text = array_key_exists( 'text', $data ) ? $data['text'] : '';
+						$text = is_array($data) && array_key_exists( 'text', $data ) ? $data['text'] : '';
 						?>
                         <label>
                             <select class="formControl" name="<?php echo esc_attr( $input_name ); ?>" data-price="<?php echo esc_attr( $price ); ?>">

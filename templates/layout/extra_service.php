@@ -30,12 +30,12 @@
 				<div class="card-header"><?php esc_html_e('Extra Service', 'mage-eventpress'); ?></div>
                 <div class="card-body">
 					<?php foreach ($ex_services as $ticket_type) {
-						$ticket_name = array_key_exists('option_name', $ticket_type) ? $ticket_type['option_name'] : '';
-						$ticket_price_ = array_key_exists('option_price', $ticket_type) ? $ticket_type['option_price'] : 0;
+						$ticket_name = is_array($ticket_type) && array_key_exists( 'option_name', $ticket_type ) ? $ticket_type['option_name'] : '';
+						$ticket_price_ = is_array($ticket_type) && array_key_exists( 'option_price', $ticket_type ) ? $ticket_type['option_price'] : 0;
 						$ticket_price = MPWEM_Global_Function::get_wc_raw_price($ticket_price_);
-						$ticket_qty = array_key_exists('option_qty', $ticket_type) ? $ticket_type['option_qty'] : 0;
+						$ticket_qty = is_array($ticket_type) && array_key_exists( 'option_qty', $ticket_type ) ? $ticket_type['option_qty'] : 0;
 						$ticket_qty = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_ex_available, $event_id );
-						$ticket_input_type = array_key_exists('option_qty_type', $ticket_type) ? $ticket_type['option_qty_type'] : 'inputbox';
+						$ticket_input_type = is_array($ticket_type) && array_key_exists( 'option_qty_type', $ticket_type ) ? $ticket_type['option_qty_type'] : 'inputbox';
 						$available = MPWEM_Functions::get_available_ex_service($event_id, $ticket_name, $date, $ticket_type);
 						$available = apply_filters( 'filter_mpwem_gq_ex_service', $available, $total_ex_available, $event_id );
 						if ($ticket_name && $ticket_qty > 0) {

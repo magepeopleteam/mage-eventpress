@@ -276,7 +276,7 @@ class Insights
                 ];
             }
 
-            if (array_key_exists($this->client->slug, $plugins_data)) {
+            if (is_array($plugins_data) && array_key_exists( $this->client->slug, $plugins_data )) {
                 unset($plugins_data[$this->client->slug]);
             }
 
@@ -775,7 +775,7 @@ class Insights
      */
     public function plugin_action_links($links)
     {
-        if (array_key_exists('deactivate', $links)) {
+        if (is_array($links) && array_key_exists( 'deactivate', $links )) {
             $links['deactivate'] = str_replace('<a', '<a class="' . $this->client->slug . '-deactivate-link"', $links['deactivate']);
         }
 

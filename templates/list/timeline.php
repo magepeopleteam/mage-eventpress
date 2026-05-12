@@ -11,10 +11,10 @@
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$upcoming_date = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-	$available_seat     = array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
-	$taxonomy_category  = array_key_exists( 'category_tax', $event_infos ) ? $event_infos['category_tax'] : '';
-	$taxonomy_organizer = array_key_exists( 'organizer_tax', $event_infos ) ? $event_infos['organizer_tax'] : '';
+	$upcoming_date = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$available_seat     = is_array($event_infos) && array_key_exists( 'available_seat', $event_infos ) ? $event_infos['available_seat'] : 0;
+	$taxonomy_category  = is_array($event_infos) && array_key_exists( 'category_tax', $event_infos ) ? $event_infos['category_tax'] : '';
+	$taxonomy_organizer = is_array($event_infos) && array_key_exists( 'organizer_tax', $event_infos ) ? $event_infos['organizer_tax'] : '';
 	$title              = get_the_title( $event_id );
 ?>
 <div class="timeline__item mep-event-list-loop">

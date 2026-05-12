@@ -8,9 +8,9 @@
 	} // Cannot access pages directly.
 	$event_id    = $event_id ?? 0;
 	$event_infos =  MPWEM_Functions::get_all_info( $event_id );
-	$all_dates   = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-	$all_times   = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
-	$date        = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$all_dates   = is_array($event_infos) && array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+	$all_times   = is_array($event_infos) && array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
+	$date        = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?: MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
     $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
     $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
@@ -24,7 +24,7 @@
         <div class="date-time-header">
             <div class="ticket-title"><?php esc_html_e( 'Ticket Options', 'mage-eventpress' ); ?></div>
 			<?php
-				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$date_type = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$date_type=$date_type?:'no';
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					// $date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
@@ -55,7 +55,7 @@
 					$hidden_date  = $date ? date( 'Y-m-d', strtotime( $date ) ) : '';
 					$visible_date = $date ? date_i18n( $date_format, strtotime( $date ) ) : '';
 					$all_times    = $all_times && is_array($all_times) && sizeof($all_times)>0 ?$all_times: MPWEM_Functions::get_times( $event_id, $all_dates, $date );
-					$display_time = array_key_exists( 'mep_disable_ticket_time', $event_infos ) ? $event_infos['mep_disable_ticket_time'] : 'no';
+					$display_time = is_array($event_infos) && array_key_exists( 'mep_disable_ticket_time', $event_infos ) ? $event_infos['mep_disable_ticket_time'] : 'no';
 					?>
                     <div class="date-time-area">
                         <label>

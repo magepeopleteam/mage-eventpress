@@ -271,9 +271,9 @@
 		 * Display low stock warning in template hook
 		 */
 		public function display_low_stock_warning_template( $field, $post_id ) {
-			$ticket_type_name    = array_key_exists( 'option_name_t', $field ) ? mep_remove_apostopie( $field['option_name_t'] ) : '';
-			$total_quantity      = array_key_exists( 'option_qty_t', $field ) ? $field['option_qty_t'] : 0;
-			$total_resv_quantity = array_key_exists( 'option_rsv_t', $field ) ? $field['option_rsv_t'] : 0;
+			$ticket_type_name    = is_array($field) && array_key_exists( 'option_name_t', $field ) ? mep_remove_apostopie( $field['option_name_t'] ) : '';
+			$total_quantity      = is_array($field) && array_key_exists( 'option_qty_t', $field ) ? $field['option_qty_t'] : 0;
+			$total_resv_quantity = is_array($field) && array_key_exists( 'option_rsv_t', $field ) ? $field['option_rsv_t'] : 0;
 			// Get available seats calculation
 			$event_date      = get_post_meta( $post_id, 'event_start_date', true ) . ' ' . get_post_meta( $post_id, 'event_start_time', true );
 			$selected_date   = isset( $_GET['event_date'] ) ? sanitize_text_field( $_GET['event_date'] ) : $event_date;
@@ -288,9 +288,9 @@
 		 * Display limited availability ribbon in template hook
 		 */
 		public function display_limited_availability_ribbon_template( $field, $post_id ) {
-			$ticket_type_name    = array_key_exists( 'option_name_t', $field ) ? mep_remove_apostopie( $field['option_name_t'] ) : '';
-			$total_quantity      = array_key_exists( 'option_qty_t', $field ) ? $field['option_qty_t'] : 0;
-			$total_resv_quantity = array_key_exists( 'option_rsv_t', $field ) ? $field['option_rsv_t'] : 0;
+			$ticket_type_name    = is_array($field) && array_key_exists( 'option_name_t', $field ) ? mep_remove_apostopie( $field['option_name_t'] ) : '';
+			$total_quantity      = is_array($field) && array_key_exists( 'option_qty_t', $field ) ? $field['option_qty_t'] : 0;
+			$total_resv_quantity = is_array($field) && array_key_exists( 'option_rsv_t', $field ) ? $field['option_rsv_t'] : 0;
 			// Get available seats calculation
 			$event_date      = get_post_meta( $post_id, 'event_start_date', true ) . ' ' . get_post_meta( $post_id, 'event_start_time', true );
 			$selected_date   = isset( $_GET['event_date'] ) ? sanitize_text_field( $_GET['event_date'] ) : $event_date;

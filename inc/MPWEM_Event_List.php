@@ -11,12 +11,12 @@
 			}
 			public function event_list_shortcode( $event_id, $columnNumber = '', $style = '', $width = '', $unq_id = '' ) {
 				$event_infos          = MPWEM_Functions::get_all_info( $event_id );
-				$icon_setting_sec     = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+				$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-				$event_organizer_icon = array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
-				$event_location_icon  = array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
-				$event_date_icon      = array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
-				$event_time_icon      = array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
+				$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'far fa-list-alt';
+				$event_location_icon  = is_array($icon_setting_sec) && array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
+				$event_date_icon      = is_array($icon_setting_sec) && array_key_exists( 'mep_event_date_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_date_icon'] : 'far fa-calendar-alt';
+				$event_time_icon      = is_array($icon_setting_sec) && array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
 				$torg                 = get_the_terms( $event_id, 'mep_org' );
 				$tcat                 = get_the_terms( $event_id, 'mep_cat' );
 				$author_terms         = get_the_terms( $event_id, 'mep_org' ) ? get_the_terms( $event_id, 'mep_org' ) : [];
@@ -60,26 +60,26 @@
 					if ( ! is_array( $event_list_setting_sec ) ) {
 						$event_list_setting_sec = [];
 					}
-					$show_price                     = array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
-					$hide_org_list                  = array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
-					$hide_location_list             = array_key_exists( 'mep_event_hide_location_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_location_list'] : 'no';
-					$hide_time_list                 = array_key_exists( 'mep_event_hide_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_time_list'] : 'no';
-					$hide_only_end_time_list        = array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
-					$mep_hide_event_hover_btn       = array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
-					$general_setting_sec            = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+					$show_price                     = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_price_show', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_price_show'] : 'yes';
+					$hide_org_list                  = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
+					$hide_location_list             = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_location_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_location_list'] : 'no';
+					$hide_time_list                 = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_time_list'] : 'no';
+					$hide_only_end_time_list        = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
+					$mep_hide_event_hover_btn       = is_array($event_list_setting_sec) && array_key_exists( 'mep_hide_event_hover_btn', $event_list_setting_sec ) ? $event_list_setting_sec['mep_hide_event_hover_btn'] : 'no';
+					$general_setting_sec            = is_array($event_infos) && array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 					$general_setting_sec            = empty( $general_setting_sec ) && ! is_array( $general_setting_sec ) ? [] : $general_setting_sec;
-					$sold_out_ribbon                = array_key_exists( 'mep_show_sold_out_ribbon_list_page', $general_setting_sec ) ? $general_setting_sec['mep_show_sold_out_ribbon_list_page'] : 'no';
-					$limited_availability_ribbon    = array_key_exists( 'mep_show_limited_availability_ribbon', $general_setting_sec ) ? $general_setting_sec['mep_show_limited_availability_ribbon'] : 'no';
-					$limited_availability_threshold = array_key_exists( 'mep_limited_availability_threshold', $general_setting_sec ) ? $general_setting_sec['mep_limited_availability_threshold'] : 5;
+					$sold_out_ribbon                = is_array($general_setting_sec) && array_key_exists( 'mep_show_sold_out_ribbon_list_page', $general_setting_sec ) ? $general_setting_sec['mep_show_sold_out_ribbon_list_page'] : 'no';
+					$limited_availability_ribbon    = is_array($general_setting_sec) && array_key_exists( 'mep_show_limited_availability_ribbon', $general_setting_sec ) ? $general_setting_sec['mep_show_limited_availability_ribbon'] : 'no';
+					$limited_availability_threshold = is_array($general_setting_sec) && array_key_exists( 'mep_limited_availability_threshold', $general_setting_sec ) ? $general_setting_sec['mep_limited_availability_threshold'] : 5;
 					$now                            = current_time( 'Y-m-d H:i:s' );
-					$all_dates                      = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
-					$all_times                      = array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
-					$upcoming_date                  = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-					$event_type                     = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
-					$recurring                      = array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
-					$reg_status                     = array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
-					$ticket_types                   = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-					$event_multidate                = array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
+					$all_dates                      = is_array($event_infos) && array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+					$all_times                      = is_array($event_infos) && array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
+					$upcoming_date                  = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+					$event_type                     = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
+					$recurring                      = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) && $event_infos['mep_enable_recurring'] ? $event_infos['mep_enable_recurring'] : 'no';
+					$reg_status                     = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
+					$ticket_types                   = is_array($event_infos) && array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
+					$event_multidate                = is_array($event_infos) && array_key_exists( 'mep_event_more_date', $event_infos ) ? $event_infos['mep_event_more_date'] : [];
 					$total_left                     = $available_seat = MPWEM_Functions::get_total_available_seat( $event_id, $upcoming_date );
 					$class_name                     = $total_left > 0 ? 'event-availabe-seat' : 'event-no-availabe-seat';
 					$show_price_label               = (is_array( $ticket_types ) && sizeof( $ticket_types ) > 1) ? __( 'Price Starts from:', 'mage-eventpress' ) : __( 'Price:', 'mage-eventpress' );

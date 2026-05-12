@@ -33,7 +33,6 @@
 				//************************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Hidden_Product.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Lists.php';
-				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_CPT.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/status.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Welcome.php';

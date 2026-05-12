@@ -9,6 +9,7 @@
 	if ( ! class_exists( 'MPWEM_Event_Lists' ) ) {
 		class MPWEM_Event_Lists {
 			public function __construct() {
+				require_once MPWEM_PLUGIN_DIR . '/admin/mep_dummy_import.php';
 				add_action( 'admin_menu', array( $this, 'event_list_menu' ) );
 				add_action( 'admin_action_mpwem_duplicate_post', [ $this, 'mpwem_duplicate_post_function' ] );
 				add_action( 'wp_ajax_mpwem_trash_multiple_posts', [ $this, 'mpwem_trash_multiple_posts' ] );
@@ -75,12 +76,20 @@
                             <div class="header">
                                 <div class="header-top">
                                     <h1><?php esc_html_e( 'Event Management Dashboard', 'mage-eventpress' ) ?></h1>
-                                    <a href="<?php echo esc_url( $add_new_link ); ?>">
-                                        <button class="add-event-btn">
-                                            <span>+</span>
-											<?php esc_html_e( 'Add New Event', 'mage-eventpress' ) ?>
-                                        </button>
-                                    </a>
+                                    <div style="display: flex; gap: 10px;">
+                                        <?php if ( get_option('mep_dummy_already_inserted') !== 'yes' && empty($post_counts['publish']) && \Admin\mep_dummy_import::check_plugin('mage-eventpress', 'woocommerce-event-press.php') == 1 ) : ?>
+                                            <button type="button" class="add-event-btn" id="mep-trigger-dummy-import-btn" style="background-color: #6366f1; color: white; border: none;">
+                                                <span style="margin-right: 5px;">↓</span>
+                                                <?php esc_html_e( 'Import Dummy Data', 'mage-eventpress' ) ?>
+                                            </button>
+                                        <?php endif; ?>
+                                        <a href="<?php echo esc_url( $add_new_link ); ?>">
+                                            <button class="add-event-btn">
+                                                <span>+</span>
+                                                <?php esc_html_e( 'Add New Event', 'mage-eventpress' ) ?>
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="analytics">
                                     <div class="analytics-card">
@@ -375,9 +384,9 @@
 							<?php
 								do_action( 'mpwem_gq_statistics', $event_id, $date );
 								foreach ( $ticket_types as $ticket_type ) {
-									$ticket_name      = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-									$ticket_qty       = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
-									$ticket_r_qty     = array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
+									$ticket_name      = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+									$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+									$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 									$total_sold       = mep_get_ticket_type_seat_count( $event_id, $ticket_name, $date, $ticket_qty, $ticket_r_qty );
 									$available_ticket = (int) $ticket_qty - ( (int) $total_sold + (int) $ticket_r_qty );
 									?>
@@ -425,7 +434,7 @@
 				$end_date        = get_post_meta( $id, 'event_end_datetime', true );
 				$start_timestamp = strtotime( $start_date );
 				$end_timestamp   = strtotime( $end_date );
-				$now             = time();
+				$now             = current_time( 'timestamp' );
 				if ( $now < $start_timestamp ) {
 					$upcoming_count ++;
 				} elseif ( $now >= $start_timestamp && $now <= $end_timestamp ) {
@@ -520,7 +529,7 @@
 	function get_time_remaining_fixed( $event_id, $end_date ) {
 		$all_dates      = MPWEM_Functions::get_dates( $event_id );
 		$all_times      = MPWEM_Functions::get_times( $event_id, $all_dates );
-		$now            = time();
+		$now            = current_time( 'timestamp' );
 		$future_found   = false;
 		$closest_future = null;
 		foreach ( $all_dates as $date_info ) {
@@ -562,9 +571,10 @@
 				$start_date     = date( 'F j, Y', strtotime( $start_date ) );
 				$start_time     = get_post_meta( $id, 'event_start_time', true );
 				$end_date       = get_post_meta( $id, 'event_end_datetime', true );
+				$upcoming_date  = get_post_meta( $id, 'event_upcoming_datetime', true );
 				$ticket_type    = get_post_meta( $id, 'mep_event_ticket_type', true );
 				$location       = get_post_meta( $id, 'mep_location_venue', true );
-				$time_remaining = get_time_remaining_fixed( $id, $end_date );
+				$time_remaining = get_time_remaining_fixed( $id, $upcoming_date );
 				$event_type     = MPWEM_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
 				$event_id       = $id ?? 0;
 				$all_dates      = MPWEM_Functions::get_dates( $event_id );
@@ -588,13 +598,13 @@
 				// $total_sold   = mep_get_event_total_seat_left( $id );
 				$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				if ( $event_type === 'everyday' ) {
-					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
+					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Repeated)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
 					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else if ( $event_type === 'yes' ) {
-					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
+					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Selected Dates)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
@@ -616,7 +626,7 @@
 				$event_organiser = isset( $organiser_data['all_category'] ) ? $organiser_data['all_category'] : '';
 				$start_timestamp = strtotime( $start_date );
 				$end_timestamp   = strtotime( $end_date );
-				$now             = time();
+				$now             = current_time( 'timestamp' );
 				if ( $now < $start_timestamp ) {
 					$event_status       = 'Active';
 					$event_status_class = 'status-active';
@@ -714,7 +724,7 @@
 										if ( $dis_ticket_type_count < 2 ) {
 											?>
                                             <div class="ticket-item">
-                                                <span class="ticket-name"><?php echo array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
+                                                <span class="ticket-name"><?php echo is_array($type) && array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
                                                 <span class="ticket-price ticket-free"><?php echo isset( $type['option_price_t'] ) ? esc_html( $type['option_price_t'] ) : ''; ?></span>
                                             </div>
 											<?php

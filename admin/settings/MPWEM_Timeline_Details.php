@@ -47,8 +47,8 @@
 
 			                        foreach ( $time_line_infos as $index => $faq_info ) {
 				                        if ( is_array( $faq_info ) && sizeof( $faq_info ) > 0 ) {
-					                        $title       = array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
-					                        $content     = array_key_exists( 'mep_day_content', $faq_info ) ? $faq_info['mep_day_content'] : '';
+					                        $title       = is_array($faq_info) && array_key_exists( 'mep_faq_title', $faq_info ) ? $faq_info['mep_faq_title'] : '';
+					                        $content     = is_array($faq_info) && array_key_exists( 'mep_day_content', $faq_info ) ? $faq_info['mep_day_content'] : '';
 					                        $this->render_time_item($index, $faq_info);
 				                        }
 
@@ -157,9 +157,9 @@
 				if (is_array($time_line_infos) && sizeof( $time_line_infos ) > 0 ) {
 					foreach ( $time_line_infos as $key => $time_line_info ) {
 						if ( is_array( $time_line_info ) && sizeof( $time_line_info ) > 0 ) {
-							$title       = array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
-							$time        = array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
-							$content     = array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
+							$title       = is_array($time_line_info) && array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
+							$time        = is_array($time_line_info) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
+							$content     = is_array($time_line_info) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
 							$collapse_id = uniqid( 'mpwem_time_line' );
 							?>
                             <div class="_padding_border_mb_xs">
@@ -203,9 +203,9 @@
 						$time_line_info = $time_line_infos[ $key ];
 					}
 				}
-				$title   = array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
-				$time    = array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
-				$content = html_entity_decode( array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '' );
+				$title   = is_array($time_line_info) && array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
+				$time    = is_array($time_line_info) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
+				$content = html_entity_decode( is_array($time_line_info) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '' );
 				if ( $title ) { ?>
                     <h4 class="_mb"><?php echo esc_html__( 'Edit Timeline Info : ', 'mage-eventpress' ) . esc_html( $title ); ?></h4>
 				<?php } else { ?>
@@ -276,7 +276,7 @@
 					if ( ! is_array( $time_line_infos ) ) {
 						$time_line_infos = [];
 					}
-					if ( ! array_key_exists( $key, $time_line_infos ) ) {
+					if ( ! is_array($time_line_infos) && array_key_exists( $key, $time_line_infos ) ) {
 						$key = is_array($time_line_infos) ? sizeof( $time_line_infos ) : 0;
 					}
 					$time_line_infos[ $key ]['mep_day_title']   = $title;

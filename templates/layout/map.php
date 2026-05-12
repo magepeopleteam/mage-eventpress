@@ -11,18 +11,18 @@
 	$event_infos = $event_infos ?? [];
 	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$map_status                = array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
-	$mep_org_address           = array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
-	$venue_value               = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
-	$is_virtual                = array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
-	$general_setting_sec       = array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
+	$map_status                = is_array($event_infos) && array_key_exists( 'mep_sgm', $event_infos ) ? $event_infos['mep_sgm'] : '';
+	$mep_org_address           = is_array($event_infos) && array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
+	$venue_value               = is_array($event_infos) && array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
+	$is_virtual                = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : '';
+	$general_setting_sec       = is_array($event_infos) && array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 	$general_setting_sec       = is_array( $general_setting_sec ) && ! empty( $general_setting_sec ) ? $general_setting_sec : [];
-	$map_api                   = array_key_exists( 'google-map-api', $general_setting_sec ) ? $general_setting_sec['google-map-api'] : '';
-	$map_type                  = array_key_exists( 'mep_google_map_type', $general_setting_sec ) ? $general_setting_sec['mep_google_map_type'] : 'iframe';
-	$map_zoom                  = array_key_exists( 'mep_google_map_zoom_level', $general_setting_sec ) ? $general_setting_sec['mep_google_map_zoom_level'] : '17';
-	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+	$map_api                   = is_array($general_setting_sec) && array_key_exists( 'google-map-api', $general_setting_sec ) ? $general_setting_sec['google-map-api'] : '';
+	$map_type                  = is_array($general_setting_sec) && array_key_exists( 'mep_google_map_type', $general_setting_sec ) ? $general_setting_sec['mep_google_map_type'] : 'iframe';
+	$map_zoom                  = is_array($general_setting_sec) && array_key_exists( 'mep_google_map_zoom_level', $general_setting_sec ) ? $general_setting_sec['mep_google_map_zoom_level'] : '17';
+	$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-	$hide_location_details     = array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
+	$hide_location_details     = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_location_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_location_from_details'] : 'no';
 	if ( $hide_location_details == 'no' && $map_status && $is_virtual != 'online' ) {
 		$lat = 0;
 		$lon = 0;
@@ -37,19 +37,19 @@
 				$lon         = $longitude ? floatval( str_replace( ',', '.', $longitude ) ) : 0;
 			}
 		} else {
-			$latitude  = array_key_exists( 'latitude', $event_infos ) ? $event_infos['latitude'] : '';
-			$longitude = array_key_exists( 'longitude', $event_infos ) ? $event_infos['longitude'] : '';
+			$latitude  = is_array($event_infos) && array_key_exists( 'latitude', $event_infos ) ? $event_infos['latitude'] : '';
+			$longitude = is_array($event_infos) && array_key_exists( 'longitude', $event_infos ) ? $event_infos['longitude'] : '';
 			$lat       = $latitude ? floatval( str_replace( ',', '.', $latitude ) ) : 0;
 			$lon       = $longitude ? floatval( str_replace( ',', '.', $longitude ) ) : 0;
 		}
 		$location_parts = [];
 		if ( is_array( $event_infos ) ) {
-			$location_parts[] = array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
-			$location_parts[] = array_key_exists( 'mep_street', $event_infos ) ? $event_infos['mep_street'] : '';
-			$location_parts[] = array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '';
-			$location_parts[] = array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '';
-			$location_parts[] = array_key_exists( 'mep_postcode', $event_infos ) ? $event_infos['mep_postcode'] : '';
-			$location_parts[] = array_key_exists( 'mep_country', $event_infos ) ? $event_infos['mep_country'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_street', $event_infos ) ? $event_infos['mep_street'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_city', $event_infos ) ? $event_infos['mep_city'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_state', $event_infos ) ? $event_infos['mep_state'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_postcode', $event_infos ) ? $event_infos['mep_postcode'] : '';
+			$location_parts[] = is_array($event_infos) && array_key_exists( 'mep_country', $event_infos ) ? $event_infos['mep_country'] : '';
 		}
 		$location_parts = array_filter( array_map( 'trim', $location_parts ) );
 		$address_query  = implode( ', ', $location_parts );

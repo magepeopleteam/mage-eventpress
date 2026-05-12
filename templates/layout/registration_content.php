@@ -19,7 +19,7 @@
 	//echo '<pre>';			print_r($all_dates);			echo '</pre>'; everyday2026-04-30 12:00 no2026-04-30 11:59:00
 	$event_infos              = MPWEM_Functions::get_all_info( $event_id );
 	// echo '<pre>';			print_r($event_infos);			echo '</pre>';
-	$event_recurring			= array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+	$event_recurring			= is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
     $url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
     $url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
     $url_date=$url_date?:$url_date_2;
@@ -28,7 +28,7 @@
     $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
     $all_dates   = MPWEM_Functions::get_dates( $event_id );
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
-	$upcoming_date            = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
     $date                    = $url_date ?: $upcoming_date;
 	ob_start();
 	if ( $event_id > 0 ) {

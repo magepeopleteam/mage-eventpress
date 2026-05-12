@@ -9,15 +9,15 @@
     if ($event_id > 0) {
         $event_infos = MPWEM_Functions::get_all_info($event_id);
         $all_dates = MPWEM_Functions::get_dates($event_id);
-        $upcoming_date = array_key_exists('upcoming_date', $event_infos) ? $event_infos['upcoming_date'] : '';
+        $upcoming_date = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
         $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $upcoming_date);
-        $_single_event_setting_sec = array_key_exists('single_event_setting_sec', $event_infos) ? $event_infos['single_event_setting_sec'] : [];
+        $_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
         $single_event_setting_sec = is_array($_single_event_setting_sec) && !empty($_single_event_setting_sec) ? $_single_event_setting_sec : [];
-        $hide_time_details = array_key_exists('mep_event_hide_time_from_details', $single_event_setting_sec) ? $single_event_setting_sec['mep_event_hide_time_from_details'] : 'no';
+        $hide_time_details = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_time_from_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_time_from_details'] : 'no';
         if ($hide_time_details == 'no' && $upcoming_date && MPWEM_Global_Function::check_time_exit_date($upcoming_date)) {
-            $icon_setting_sec = array_key_exists('icon_setting_sec', $event_infos) ? $event_infos['icon_setting_sec'] : [];
+            $icon_setting_sec = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
             $icon_setting_sec = empty($icon_setting_sec) && !is_array($icon_setting_sec) ? [] : $icon_setting_sec;
-            $mep_event_time_icon = array_key_exists('mep_event_time_icon', $icon_setting_sec) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
+            $mep_event_time_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_time_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_time_icon'] : 'fas fa-clock';
             $date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
             if ($date_type == 'no' || $date_type == 'yes') {
                 $first_date = is_array($all_dates) && !empty($all_dates) ? current($all_dates) : [];
@@ -27,9 +27,9 @@
                 $all_times = MPWEM_Functions::get_times($event_id, $all_dates, $date);
                 if (is_array($all_times) && sizeof($all_times) > 0) {
                     $time = current($all_times);
-                    $time_info = array_key_exists('start', $time) ? $time['start'] : [];
+                    $time_info = is_array($time) && array_key_exists( 'start', $time ) ? $time['start'] : [];
                     if (is_array($time_info) && sizeof($time_info) > 0) {
-                        $time = array_key_exists('time', $time_info) ? $time_info['time'] : '';
+                        $time = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
                         if ($time) {
                             $start_time = $date . ' ' . $time;
                         }
@@ -44,7 +44,7 @@
             $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
             $all_dates   = MPWEM_Functions::get_dates( $event_id );
             $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
-            $upcoming_date = array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+            $upcoming_date = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
             $date                    = $url_date ?: $upcoming_date;
             if (MPWEM_Global_Function::check_time_exit_date($date)) {
                 ?>

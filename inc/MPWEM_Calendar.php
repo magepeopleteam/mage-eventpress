@@ -565,6 +565,8 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 		public function get_events() {
 			check_ajax_referer( 'mep_calendar_nonce', 'nonce' );
 
+			@set_time_limit( 25 );
+
 			$cat             = isset( $_POST['cat'] ) ? sanitize_text_field( wp_unslash( $_POST['cat'] ) ) : '';
 			$org             = isset( $_POST['org'] ) ? sanitize_text_field( wp_unslash( $_POST['org'] ) ) : '';
 			$tag             = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
@@ -583,6 +585,11 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$visible_start   = isset( $_POST['visible_start'] ) ? sanitize_text_field( wp_unslash( $_POST['visible_start'] ) ) : '';
 			$visible_end     = isset( $_POST['visible_end'] ) ? sanitize_text_field( wp_unslash( $_POST['visible_end'] ) ) : '';
 			$view_type       = isset( $_POST['view_type'] ) ? sanitize_text_field( wp_unslash( $_POST['view_type'] ) ) : '';
+
+			// Sanitize ISO 8601 datetime strings from FullCalendar (e.g. "2026-05-11T00:00:00+06:00")
+			// These may fail on some live server PHP configs — strip to plain Y-m-d date.
+			$visible_start = $this->normalize_fullcalendar_datestr( $visible_start );
+			$visible_end   = $this->normalize_fullcalendar_datestr( $visible_end );
 
 			$show_stock      = isset( $_POST['show_stock_details'] ) ? sanitize_text_field( wp_unslash( $_POST['show_stock_details'] ) ) : 'no';
 			$hide_time       = isset( $_POST['hide_time'] ) ? sanitize_text_field( wp_unslash( $_POST['hide_time'] ) ) : 'no';
@@ -1139,11 +1146,47 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			if ( empty( $value ) ) {
 				return '';
 			}
-			$timestamp = strtotime( $value );
-			if ( false === $timestamp ) {
+
+			// Strip timezone offset from ISO 8601 strings like "2026-05-11T00:00:00+06:00"
+			// before passing to strtotime(), which can behave inconsistently on live servers.
+			$clean = preg_replace( '/[Tt](\d{2}:\d{2}:\d{2})([+-]\d{2}:?\d{2}|Z)?$/', '', trim( $value ) );
+			if ( empty( $clean ) ) {
+				$clean = $value;
+			}
+
+			$timestamp = strtotime( $clean );
+			if ( false === $timestamp || 0 === $timestamp ) {
+				// Fallback: try the original value as-is
+				$timestamp = strtotime( $value );
+			}
+			if ( false === $timestamp || 0 === $timestamp ) {
 				return '';
 			}
-			return 'end' === $boundary ? date( 'Y-m-d', $timestamp ) : date( 'Y-m-d', $timestamp );
+			return date( 'Y-m-d', $timestamp );
+		}
+
+		/**
+		 * Normalize a FullCalendar datetime string to a plain Y-m-d date.
+		 * FullCalendar Week/Day views send strings like "2026-05-11T00:00:00+06:00".
+		 * On some live server PHP configs, strtotime() with a timezone offset can
+		 * return wrong results or false. We strip the time+timezone part and keep only the date.
+		 *
+		 * @param string $value Raw datetime string from JS.
+		 * @return string Plain Y-m-d date string, or the original value if it is already plain.
+		 */
+		private function normalize_fullcalendar_datestr( $value ) {
+			$value = trim( (string) $value );
+			if ( empty( $value ) ) {
+				return '';
+			}
+
+			// If the string contains a T (ISO 8601 datetime), extract only the date part.
+			if ( preg_match( '/^(\d{4}-\d{2}-\d{2})[Tt]/', $value, $matches ) ) {
+				return $matches[1];
+			}
+
+			// Already looks like a plain date or something else — return as-is.
+			return $value;
 		}
 
 		private function parse_event_ids( $value ) {
@@ -1183,12 +1226,15 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				return $instances;
 			}
 
-			$current_day = strtotime( date( 'Y-m-d', strtotime( $start_dt ) ) );
-			$final_day   = strtotime( date( 'Y-m-d', strtotime( $end_dt ) ) );
-			$start_day   = date( 'Y-m-d', strtotime( $start_dt ) );
-			$end_day     = date( 'Y-m-d', strtotime( $end_dt ) );
+			$current_day       = strtotime( date( 'Y-m-d', strtotime( $start_dt ) ) );
+			$final_day         = strtotime( date( 'Y-m-d', strtotime( $end_dt ) ) );
+			$start_day         = date( 'Y-m-d', strtotime( $start_dt ) );
+			$end_day           = date( 'Y-m-d', strtotime( $end_dt ) );
+			$split_iter_limit  = 500;
+			$split_iter_count  = 0;
 
-			while ( false !== $current_day && $current_day <= $final_day ) {
+			while ( false !== $current_day && $current_day <= $final_day && $split_iter_count < $split_iter_limit ) {
+				$split_iter_count++;
 				$current_date  = date( 'Y-m-d', $current_day );
 				$segment_start = $current_date === $start_day ? $start_dt : $current_date . ' 00:00:00';
 				$segment_end   = $current_date === $end_day ? $end_dt : $current_date . ' 23:59:59';
@@ -1300,7 +1346,10 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 					}
 
 					$current_timestamp = $window_start;
-					while ( $current_timestamp <= $window_end ) {
+					$iteration_limit   = 1500;
+					$iteration_count   = 0;
+					while ( $current_timestamp !== false && $current_timestamp <= $window_end && $iteration_count < $iteration_limit ) {
+						$iteration_count++;
 						$date = date( 'Y-m-d', $current_timestamp );
 						$day  = strtolower( date( 'D', $current_timestamp ) );
 						if ( ! in_array( $date, $off_dates, true ) && ! in_array( $day, $off_days, true ) ) {
@@ -1591,8 +1640,20 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 				<form method="post" action="options.php">
 					<?php settings_fields( 'mep_calendar_settings_group' ); ?>
 
+					<?php // Fixed by Shahnur — calendar settings tab layout and 2026-05-06 02:20 PM (Asia/Dhaka) ?>
+					<div class="mep-cal-settings-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Calendar settings sections', 'mage-eventpress' ); ?>">
+						<button type="button" class="mep-cal-settings-tab is-active" id="mep-cal-tab-general" data-tab-target="mep-cal-panel-general" role="tab" aria-selected="true" aria-controls="mep-cal-panel-general"><?php esc_html_e( 'General', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-navigation" data-tab-target="mep-cal-panel-navigation" role="tab" aria-selected="false" aria-controls="mep-cal-panel-navigation"><?php esc_html_e( 'Navigation', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-expired" data-tab-target="mep-cal-panel-expired" role="tab" aria-selected="false" aria-controls="mep-cal-panel-expired"><?php esc_html_e( 'Expired Events', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-colors" data-tab-target="mep-cal-panel-colors" role="tab" aria-selected="false" aria-controls="mep-cal-panel-colors"><?php esc_html_e( 'Colors', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-weekdays" data-tab-target="mep-cal-panel-weekdays" role="tab" aria-selected="false" aria-controls="mep-cal-panel-weekdays"><?php esc_html_e( 'Weekdays', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-backgrounds" data-tab-target="mep-cal-panel-backgrounds" role="tab" aria-selected="false" aria-controls="mep-cal-panel-backgrounds"><?php esc_html_e( 'Backgrounds', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-stock" data-tab-target="mep-cal-panel-stock" role="tab" aria-selected="false" aria-controls="mep-cal-panel-stock"><?php esc_html_e( 'Stock', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-shortcode" data-tab-target="mep-cal-panel-shortcode" role="tab" aria-selected="false" aria-controls="mep-cal-panel-shortcode"><?php esc_html_e( 'Shortcode', 'mage-eventpress' ); ?></button>
+					</div>
+
 					<!-- General Settings -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section is-active" id="mep-cal-panel-general" role="tabpanel" aria-labelledby="mep-cal-tab-general">
 						<h2><?php esc_html_e( 'General Settings', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1679,7 +1740,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Navigation Settings -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-navigation" role="tabpanel" aria-labelledby="mep-cal-tab-navigation" hidden>
 						<h2><?php esc_html_e( 'Navigation Settings', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1706,7 +1767,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Expired Events Settings -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-expired" role="tabpanel" aria-labelledby="mep-cal-tab-expired" hidden>
 						<h2><?php esc_html_e( 'Expired Event Settings', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1749,7 +1810,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Color Settings -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-colors" role="tabpanel" aria-labelledby="mep-cal-tab-colors" hidden>
 						<h2><?php esc_html_e( 'Color Settings', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1780,7 +1841,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Weekday Column Styles -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-weekdays" role="tabpanel" aria-labelledby="mep-cal-tab-weekdays" hidden>
 						<h2><?php esc_html_e( 'Weekday Column Styles', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<?php foreach ( $this->get_weekday_labels() as $weekday_key => $weekday_label ) : ?>
@@ -1808,7 +1869,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Day Background Images -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-backgrounds" role="tabpanel" aria-labelledby="mep-cal-tab-backgrounds" hidden>
 						<h2><?php esc_html_e( 'Day Background Images', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1849,7 +1910,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Stock Color Settings -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-stock" role="tabpanel" aria-labelledby="mep-cal-tab-stock" hidden>
 						<h2><?php esc_html_e( 'Stock Indicator Colors', 'mage-eventpress' ); ?></h2>
 						<table class="form-table">
 							<tr>
@@ -1871,7 +1932,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 					</div>
 
 					<!-- Shortcode Reference -->
-					<div class="mep-cal-settings-section">
+					<div class="mep-cal-settings-section" id="mep-cal-panel-shortcode" role="tabpanel" aria-labelledby="mep-cal-tab-shortcode" hidden>
 						<h2><?php esc_html_e( 'Shortcode Reference', 'mage-eventpress' ); ?></h2>
 						<div class="mep-cal-shortcode-ref">
 							<code>[mep-event-calendar]</code>

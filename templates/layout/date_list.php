@@ -5,24 +5,24 @@
 	$event_id                  = $event_id ?? 0;
 	$event_infos               = $event_infos ?? [];
 	$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$all_dates                 = array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
+	$all_dates                 = is_array($event_infos) && array_key_exists( 'all_date', $event_infos ) ? $event_infos['all_date'] : [];
 	$all_dates                 = (is_array( $all_dates ) && sizeof( $all_dates ) > 0) ? $all_dates : MPWEM_Functions::get_dates( $event_id );
-	$upcoming_date             = array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
-	$mep_show_end_datetime     = array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
-	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+	$upcoming_date             = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+	$mep_show_end_datetime     = is_array($event_infos) && array_key_exists( 'mep_show_end_datetime', $event_infos ) ? $event_infos['mep_show_end_datetime'] : 'yes';
+	$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-	$hide_date_list            = array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
+	$hide_date_list            = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$date_count                = 0;
 	if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
         <div class="date_list_area">
 			<?php
-				$date_type = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
+				$date_type = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				if ( $date_type == 'no' || $date_type == 'yes' ) {
 					$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 					foreach ( $all_dates as $dates ) {
-						$start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
-						$end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+						$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
+						$end_time   = is_array($dates) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
 						if ( $start_time ) {
 							$event_url = add_query_arg( [ 'action' => 'mpwem_date_' . $event_id, 'date' => strtotime( $start_time ), '_wpnonce' => wp_create_nonce( 'mpwem_date_' . $event_id ) ], get_the_permalink( $event_id ) );
 							?>
@@ -53,11 +53,11 @@
 							$now         = strtotime( current_time( 'Y-m-d H:i:s' ) );
 							$expire_on   = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_expire_on_datetimes', 'event_start_datetime' );
 							foreach ( $more_dates as $more_date ) {
-								$more_start_date      = array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
-								$more_start_time      = array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
+								$more_start_date      = is_array($more_date) && array_key_exists( 'event_more_start_date', $more_date ) ? $more_date['event_more_start_date'] : '';
+								$more_start_time      = is_array($more_date) && array_key_exists( 'event_more_start_time', $more_date ) ? $more_date['event_more_start_time'] : '';
 								$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
-								$more_end_date        = array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
-								$more_end_time        = array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
+								$more_end_date        = is_array($more_date) && array_key_exists( 'event_more_end_date', $more_date ) ? $more_date['event_more_end_date'] : '';
+								$more_end_time        = is_array($more_date) && array_key_exists( 'event_more_end_time', $more_date ) ? $more_date['event_more_end_time'] : '';
 								$more_end_date_time   = $more_end_time ? $more_end_date . ' ' . $more_end_time : $more_end_date;
 								$expire_check         = $expire_on == 'event_start_datetime' ? $more_start_date_time : $more_end_date_time;
 								$expire_check         = date( 'Y-m-d H:i', strtotime( $expire_check ) - $buffer_time );
@@ -72,8 +72,8 @@
 							}
 							if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 								foreach ( $all_dates as $dates ) {
-									$start_time = array_key_exists( 'time', $dates ) ? $dates['time'] : '';
-									$end_time   = array_key_exists( 'end', $dates ) ? $dates['end'] : '';
+									$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
+									$end_time   = is_array($dates) && array_key_exists( 'end', $dates ) ? $dates['end'] : '';
 									if ( $start_time ) {
 										?>
                                         <div class="_layout_info_xs date-list-item" <?php if ( $date_count > 4 ) { ?>data-collapse="#mpwem_more_date"<?php } ?>>
@@ -111,10 +111,10 @@
 						if ( is_array( $all_times ) && sizeof( $all_times )>0 ) {
                             if(is_array($all_times) && sizeof($all_times)==1){
 	                            foreach ( $all_times as $times ) {
-		                            $time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
+		                            $time_info = is_array($times) && array_key_exists( 'start', $times ) ? $times['start'] : [];
 		                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
-			                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
-			                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
+			                            $label = is_array($time_info) && array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
+			                            $time  = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 			                            if ( $time ) {
 				                            $full_date = $date . ' ' . $time;
 				                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time' );
@@ -127,10 +127,10 @@
 	                            }
                             }else{
                                 $fist_time=current($all_times);
-	                            $time_info = array_key_exists( 'start', $fist_time ) ? $fist_time['start'] : [];
+	                            $time_info = is_array($fist_time) && array_key_exists( 'start', $fist_time ) ? $fist_time['start'] : [];
 	                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
-		                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
-		                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
+		                            $label = is_array($time_info) && array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
+		                            $time  = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 		                            if ( $time ) {
 			                            $full_date = $date . ' ' . $time;
 			                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time' );
@@ -142,10 +142,10 @@
 	                            }
 	                            if ( is_array( $all_times ) && sizeof( $all_times ) ) {
 		                            foreach ( $all_times as $times ) {
-			                            $time_info = array_key_exists( 'start', $times ) ? $times['start'] : [];
+			                            $time_info = is_array($times) && array_key_exists( 'start', $times ) ? $times['start'] : [];
 			                            if ( is_array( $time_info ) && sizeof( $time_info ) > 0 ) {
-				                            $label = array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
-				                            $time  = array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
+				                            $label = is_array($time_info) && array_key_exists( 'label', $time_info ) ? $time_info['label'] : '';
+				                            $time  = is_array($time_info) && array_key_exists( 'time', $time_info ) ? $time_info['time'] : '';
 				                            if ( $time ) {
 					                            $full_date = $date . ' ' . $time;
 					                            $time      = MPWEM_Global_Function::date_format( $full_date, 'time' );

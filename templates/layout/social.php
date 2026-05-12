@@ -5,17 +5,17 @@
 	$event_id                  = $event_id ?? 0;
 	$event_infos               = $event_infos ?? [];
 	$event_infos               = (is_array( $event_infos ) && sizeof( $event_infos ) > 0) ? $event_infos : MPWEM_Functions::get_all_info( $event_id );
-	$_single_event_setting_sec = array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+	$_single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
-	$hide_share_details        = array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
+	$hide_share_details        = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_share_this_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_share_this_details'] : 'no';
 	if ( $hide_share_details == 'no' ) {
-		$icon_setting_sec = array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+		$icon_setting_sec = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 		$icon_setting_sec = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-		$fb_icon          = array_key_exists( 'mep_event_ss_fb_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_fb_icon'] : 'fab fa-facebook-f';
-		$twitter_icon     = array_key_exists( 'mep_event_ss_twitter_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_twitter_icon'] : 'fab fa-x-twitter';
-		$linkedin_icon    = array_key_exists( 'mep_event_ss_linkedin_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_linkedin_icon'] : 'fab fa-linkedin';
-		$whatsapp_icon    = array_key_exists( 'mep_event_ss_whatsapp_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_whatsapp_icon'] : 'fab fa-whatsapp';
-		$email_icon       = array_key_exists( 'mep_event_ss_email_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_email_icon'] : 'fa fa-envelope';
+		$fb_icon          = is_array($icon_setting_sec) && array_key_exists( 'mep_event_ss_fb_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_fb_icon'] : 'fab fa-facebook-f';
+		$twitter_icon     = is_array($icon_setting_sec) && array_key_exists( 'mep_event_ss_twitter_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_twitter_icon'] : 'fab fa-x-twitter';
+		$linkedin_icon    = is_array($icon_setting_sec) && array_key_exists( 'mep_event_ss_linkedin_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_linkedin_icon'] : 'fab fa-linkedin';
+		$whatsapp_icon    = is_array($icon_setting_sec) && array_key_exists( 'mep_event_ss_whatsapp_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_whatsapp_icon'] : 'fab fa-whatsapp';
+		$email_icon       = is_array($icon_setting_sec) && array_key_exists( 'mep_event_ss_email_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_ss_email_icon'] : 'fa fa-envelope';
         $url=get_the_permalink( $event_id );
         $tile=get_the_title($event_id);
 		$find    = [ '&', '#038;' ];

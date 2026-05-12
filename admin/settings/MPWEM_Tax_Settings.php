@@ -27,12 +27,12 @@
 
 			public function mp_event_tax( $post_id ) {
 				$values = get_post_custom( $post_id );
-				if ( array_key_exists( '_tax_status', $values ) ) {
+				if ( is_array($values) && array_key_exists( '_tax_status', $values ) ) {
 					$tx_status = $values['_tax_status'][0];
 				} else {
 					$tx_status = '';
 				}
-				if ( array_key_exists( '_tax_class', $values ) ) {
+				if ( is_array($values) && array_key_exists( '_tax_class', $values ) ) {
 					$tx_class = $values['_tax_class'][0];
 				} else {
 					$tx_class = '';

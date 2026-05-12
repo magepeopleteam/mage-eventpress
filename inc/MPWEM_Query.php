@@ -166,11 +166,12 @@
 					$tax_query['relation'] = 'AND';
 				}
 
-				// Optimized Date & Location Query
+				// Optimized Date & Location Query..
 				global $wpdb;
 				$sql_joins = "";
 				$sql_where = "AND p.post_type = 'mep_events' AND p.post_status = 'publish'";
-				$prepare_args = [];
+				$join_args = [];
+				$where_args = [];
 
 				if ( $event_expire_on === 'event_upcoming_datetime' ) {
 					$sql_joins .= "
@@ -182,13 +183,13 @@
 						OR
 						((pm_upc.meta_value IS NULL OR pm_upc.meta_value = '') AND pm_start.meta_value {$etype} %s)
 					)";
-					$prepare_args[] = $now;
-					$prepare_args[] = $now;
+					$where_args[] = $now;
+					$where_args[] = $now;
 				} else {
 					$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_exp ON p.ID = pm_exp.post_id AND pm_exp.meta_key = %s";
-					$prepare_args[] = $event_expire_on;
+					$join_args[] = $event_expire_on;
 					$sql_where .= " AND pm_exp.meta_value {$etype} %s";
-					$prepare_args[] = $now;
+					$where_args[] = $now;
 				}
 
 				if ( ! empty( $year ) && preg_match( '/^\d{4}$/', $year ) ) {
@@ -196,8 +197,8 @@
 						$sql_joins .= " INNER JOIN {$wpdb->postmeta} pm_start ON p.ID = pm_start.post_id AND pm_start.meta_key = 'event_start_datetime'";
 					}
 					$sql_where .= " AND pm_start.meta_value >= %s AND pm_start.meta_value <= %s";
-					$prepare_args[] = "$year-01-01 00:00:00";
-					$prepare_args[] = "$year-12-31 23:59:59";
+					$where_args[] = "$year-01-01 00:00:00";
+					$where_args[] = "$year-12-31 23:59:59";
 				}
 				
 				$location_filters = ['city' => ['mep_city', 'org_city'], 'state' => ['mep_state', 'org_state'], 'country' => ['mep_country', 'org_country']];
@@ -214,17 +215,18 @@
 							LEFT JOIN {$wpdb->term_relationships} $tr_alias ON p.ID = $tr_alias.object_id
 							LEFT JOIN {$wpdb->termmeta} $tm_alias ON $tr_alias.term_taxonomy_id = $tm_alias.term_id AND $tm_alias.meta_key = %s
 						";
-						$prepare_args[] = $keys[0];
-						$prepare_args[] = $keys[1];
+						$join_args[] = $keys[0];
+						$join_args[] = $keys[1];
 						
 						$search = '%' . $wpdb->esc_like( $val ) . '%';
 						$sql_where .= " AND ($pm_alias.meta_value LIKE %s OR $tm_alias.meta_value LIKE %s)";
-						$prepare_args[] = $search;
-						$prepare_args[] = $search;
+						$where_args[] = $search;
+						$where_args[] = $search;
 					}
 				}
 
 				$query = "SELECT DISTINCT p.ID FROM {$wpdb->posts} p {$sql_joins} WHERE 1=1 {$sql_where}";
+				$prepare_args = array_merge( $join_args, $where_args );
 				if ( ! empty($prepare_args) ) {
 					$query = $wpdb->prepare($query, $prepare_args);
 				}
@@ -254,49 +256,49 @@
 			}
 			public static function attendee_query( $filter_args = [], $show = - 1, $page = 1 ) {
 				$meta_query = [];
-				if ( array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'post_id', $filter_args ) && $filter_args['post_id'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_id',
 						'value'   => $filter_args['post_id'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_user_id', $filter_args ) && $filter_args['ea_user_id'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_user_id',
 						'value'   => $filter_args['ea_user_id'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'event_date', $filter_args ) && $filter_args['event_date'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_event_date',
 						'value'   => $filter_args['event_date'],
 						'compare' => 'LIKE'
 					);
 				}
-				if ( array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_ticket_type', $filter_args ) && $filter_args['ea_ticket_type'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_ticket_type',
 						'value'   => $filter_args['ea_ticket_type'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'ea_seat_name', $filter_args ) && $filter_args['ea_seat_name'] ) {
 					$meta_query[] = array(
 						'key'     => 'ea_seat_name',
 						'value'   => $filter_args['ea_seat_name'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'mep_checkin', $filter_args ) && $filter_args['mep_checkin'] ) {
 					$meta_query[] = array(
 						'key'     => 'mep_checkin',
 						'value'   => $filter_args['mep_checkin'],
 						'compare' => '='
 					);
 				}
-				if ( array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
+				if ( is_array($filter_args) && array_key_exists( 'filter_key', $filter_args ) && $filter_args['filter_key'] && is_array($filter_args) && array_key_exists( 'filter_value', $filter_args ) && $filter_args['filter_value'] ) {
 					$meta_query[] = array(
 						'key'     => $filter_args['filter_key'],
 						'value'   => $filter_args['filter_value'],

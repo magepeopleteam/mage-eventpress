@@ -26,27 +26,27 @@
             <div class="mpwem_ticket_type">
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
-						$option_ticket_enable = array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
+						$option_ticket_enable = is_array($ticket_type) && array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
 						if ( $option_ticket_enable == 'yes' ) {
 							$input_data        = [];
 							$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 							do_action( 'mep_ticket_type_loop_list_row_start', $event_id, $date, $ticket_type );
 							if ( $ticket_permission ) {
 								//echo '<pre>';print_r($ticket_type);echo '</pre>';
-								$ticket_name       = array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
-								$ticket_details    = array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
-								$ticket_price      = array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
+								$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+								$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
+								$ticket_price      = is_array($ticket_type) && array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 								$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
 								$ticket_price_     = apply_filters( 'mpwem_group_ticket_price', $ticket_price_, $event_id, $ticket_name );
 								$ticket_price_     = apply_filters( 'mpwem_group_qty_price', $ticket_price_, $event_id, $ticket_name );
 								$ticket_price_wc   = wc_price( $ticket_price_ );
 								$ticket_price      = MPWEM_Global_Function::price_convert_raw( $ticket_price_wc );
-								$ticket_qty        = array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
+								$ticket_qty        = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 								$ticket_qty        = apply_filters( 'filter_mpwem_gq_ticket', $ticket_qty, $total_available, $event_id );
-								$ticket_d_qty      = array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
+								$ticket_d_qty      = is_array($ticket_type) && array_key_exists( 'option_default_qty_t', $ticket_type ) ? $ticket_type['option_default_qty_t'] : 0;
 								$ticket_min_qty    = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
 								$ticket_max_qty    = apply_filters( 'filter_mpwem_max_ticket', '', $event_id, $ticket_type );
-								$ticket_input_type = array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
+								$ticket_input_type = is_array($ticket_type) && array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
 								$date              = date('Y-m-d H:i',strtotime($date));
 								$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 								$available         = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
@@ -68,7 +68,7 @@
 									$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
 									$mep_hide_expire_ticket=mep_get_option( 'mep_hide_expire_ticket', 'general_setting_sec', 'no' );
 									if ( $early_date ) {
-										$sale_end_datetime = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+										$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 										if ( $sale_end_datetime ) {
 											$current_time = current_time( 'Y-m-d H:i' );
 											if ( strtotime( $current_time ) > strtotime( $sale_end_datetime ) && $mep_hide_expire_ticket=='no' ) {
@@ -113,7 +113,7 @@
 												<?php
 													$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
 													if ( $early_date ) {
-														$sale_end_datetime = array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
+														$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 														if ( $sale_end_datetime ) {
 															$current_time = current_time( 'Y-m-d H:i' );
 															if ( strtotime( $current_time ) < strtotime( $sale_end_datetime ) ) {
@@ -175,7 +175,7 @@
                                                             }
 														}
 													} else {
-														$sale_start_datetime = array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+														$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
 														?>
                                                         <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
 																echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>

@@ -434,7 +434,7 @@
 				$end_date        = get_post_meta( $id, 'event_end_datetime', true );
 				$start_timestamp = strtotime( $start_date );
 				$end_timestamp   = strtotime( $end_date );
-				$now             = time();
+				$now             = current_time( 'timestamp' );
 				if ( $now < $start_timestamp ) {
 					$upcoming_count ++;
 				} elseif ( $now >= $start_timestamp && $now <= $end_timestamp ) {
@@ -529,7 +529,7 @@
 	function get_time_remaining_fixed( $event_id, $end_date ) {
 		$all_dates      = MPWEM_Functions::get_dates( $event_id );
 		$all_times      = MPWEM_Functions::get_times( $event_id, $all_dates );
-		$now            = time();
+		$now            = current_time( 'timestamp' );
 		$future_found   = false;
 		$closest_future = null;
 		foreach ( $all_dates as $date_info ) {
@@ -571,9 +571,10 @@
 				$start_date     = date( 'F j, Y', strtotime( $start_date ) );
 				$start_time     = get_post_meta( $id, 'event_start_time', true );
 				$end_date       = get_post_meta( $id, 'event_end_datetime', true );
+				$upcoming_date  = get_post_meta( $id, 'event_upcoming_datetime', true );
 				$ticket_type    = get_post_meta( $id, 'mep_event_ticket_type', true );
 				$location       = get_post_meta( $id, 'mep_location_venue', true );
-				$time_remaining = get_time_remaining_fixed( $id, $end_date );
+				$time_remaining = get_time_remaining_fixed( $id, $upcoming_date );
 				$event_type     = MPWEM_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
 				$event_id       = $id ?? 0;
 				$all_dates      = MPWEM_Functions::get_dates( $event_id );
@@ -597,13 +598,13 @@
 				// $total_sold   = mep_get_event_total_seat_left( $id );
 				$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				if ( $event_type === 'everyday' ) {
-					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
+					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Repeated)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
 					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else if ( $event_type === 'yes' ) {
-					$time_remaining    = get_time_remaining_fixed( $id, $end_date );
+					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
 					$start_date        = date( 'F j, Y', strtotime( $date ) );
 					$event_type_status = 'Recurring Event (Selected Dates)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
@@ -625,7 +626,7 @@
 				$event_organiser = isset( $organiser_data['all_category'] ) ? $organiser_data['all_category'] : '';
 				$start_timestamp = strtotime( $start_date );
 				$end_timestamp   = strtotime( $end_date );
-				$now             = time();
+				$now             = current_time( 'timestamp' );
 				if ( $now < $start_timestamp ) {
 					$event_status       = 'Active';
 					$event_status_class = 'status-active';

@@ -117,7 +117,7 @@
 					$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
 					if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
 						foreach ( $ticket_types as $type ) {
-							$name = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+							$name = is_array($type) && array_key_exists( 'option_name_t', $type ) ? $type['option_name_t'] : '';
 							$name = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 							if ( $name == $ticket_name_ ) {
 								$ticket_type = $type;

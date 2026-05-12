@@ -717,15 +717,23 @@
                     <td>
                         <div class="ticket-types">
 							<?php
-								$dis_ticket_type_count = 0;;
+								$dis_ticket_type_count = 0;
 								if ( is_array( $ticket_type ) && ! empty( $ticket_type ) ) {
 									$ticket_type_count = count( $ticket_type );
 									foreach ( $ticket_type as $type ) {
 										if ( $dis_ticket_type_count < 2 ) {
+											$tt_name    = is_array($type) && array_key_exists( 'option_name_t', $type ) ? $type['option_name_t'] : '';
+											$tt_qty     = is_array($type) && array_key_exists( 'option_qty_t', $type ) ? (int) $type['option_qty_t'] : 0;
+											$tt_rsv     = is_array($type) && array_key_exists( 'option_rsv_t', $type ) ? (int) $type['option_rsv_t'] : 0;
+											$tt_sold    = (int) mep_ticket_type_sold( $id, $tt_name, $date );
+											$tt_avail   = max( $tt_qty - ( $tt_sold + $tt_rsv ), 0 );
 											?>
-                                            <div class="ticket-item">
-                                                <span class="ticket-name"><?php echo is_array($type) && array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
+                                            <div class="ticket-item" style="display:flex;align-items:center;gap:4px;">
+                                                <span class="ticket-name"><?php echo esc_html( $tt_name ); ?></span>
                                                 <span class="ticket-price ticket-free"><?php echo isset( $type['option_price_t'] ) ? esc_html( $type['option_price_t'] ) : ''; ?></span>
+												<?php if ( $tt_avail < $tt_qty ) { ?>
+                                                <span class="ticket-avail" style="color:green;font-weight:600;font-size:11px;"><?php echo esc_html( $tt_avail ); ?></span>
+												<?php } ?>
                                             </div>
 											<?php
 										}

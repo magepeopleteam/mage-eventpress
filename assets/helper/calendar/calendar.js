@@ -507,7 +507,7 @@
             allDayText: getLocaleUiText(locale, 'allDay', mepCalendar.i18n.allDay),
             editable: false,
             selectable: false,
-            expandRows: true,
+            expandRows: false,
             dayMaxEvents: true,
             navLinks: true,
             eventDisplay: 'block',
@@ -564,8 +564,9 @@
             },
 
             eventsSet: function(events) {
-                renderTimeGridDaySummaryButtons($el, calId, events);
+                var eventsSnapshot = events ? events.slice() : [];
                 setTimeout(function() {
+                    renderTimeGridDaySummaryButtons($el, calId, eventsSnapshot);
                     if (calendars[calId]) {
                         styleMonthMoreLinks($el);
                         localizeCalendarChrome(calendars[calId], locale);
@@ -784,14 +785,33 @@
     }
 
     /**
+     * Strip timezone and time from FullCalendar ISO 8601 strings.
+     * Week/Day views send strings like "2026-05-11T00:00:00+06:00".
+     * We send only plain "Y-m-d" to PHP to avoid strtotime() inconsistencies on live servers.
+     *
+     * @param {string} isoStr FullCalendar date string.
+     * @returns {string} Plain date YYYY-MM-DD, or original string if not ISO 8601.
+     */
+    function stripIsoTimezone(isoStr) {
+        if (typeof isoStr !== 'string' || !isoStr) {
+            return isoStr || '';
+        }
+        var match = isoStr.match(/^(\d{4}-\d{2}-\d{2})[T ]/);
+        if (match) {
+            return match[1];
+        }
+        return isoStr;
+    }
+
+    /**
      * Load events via AJAX
      */
     function loadEvents($el, calId, info, successCallback, failureCallback) {
         var data = {
             action: 'mep_calendar_get_events',
             nonce: mepCalendar.nonce,
-            visible_start: info && info.startStr ? info.startStr : '',
-            visible_end: info && info.endStr ? info.endStr : '',
+            visible_start: info && info.startStr ? stripIsoTimezone(info.startStr) : '',
+            visible_end: info && info.endStr ? stripIsoTimezone(info.endStr) : '',
             view_type: info && info.view && info.view.type ? info.view.type : '',
             cat: $el.data('cat') || '',
             org: $el.data('org') || '',
@@ -852,6 +872,7 @@
             type: 'POST',
             data: data,
             dataType: 'json',
+            timeout: 30000,
             success: function(response) {
                 if (response.success && response.data) {
                     successCallback(response.data);
@@ -860,7 +881,7 @@
                 }
             },
             error: function() {
-                failureCallback();
+                successCallback([]);
             }
         });
     }

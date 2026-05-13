@@ -129,7 +129,7 @@
 $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates'] ) : '';
 				// Check if post exists and is published
 				if ( ! $post_id || get_post_status( $post_id ) !== 'publish' ) {
-					wp_send_json_error( 'Invalid or unpublished Event.', 'mage-eventpress' );
+					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
 					wp_die();
 				}
 				
@@ -175,7 +175,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 
 				// Check if post exists and is published
 				if ( ! $event_id || get_post_status( $event_id ) !== 'publish' ) {
-					wp_send_json_error( 'Invalid or unpublished Event.', 'mage-eventpress' );
+					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
 					wp_die();
 				}
 
@@ -231,11 +231,11 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function mpwem_load_date() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
-					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					wp_send_json_error( __( 'Invalid nonce!', 'mage-eventpress' ) ); // Prevent unauthorized access
 				}
 				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
-					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					wp_send_json_error( [ 'message' => __( 'User cannot edit this post', 'mage-eventpress' ) ] );
 					die;
 				}
 				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
@@ -244,7 +244,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function mpwem_get_date_list() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
-					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					wp_send_json_error( __( 'Invalid nonce!', 'mage-eventpress' ) ); // Prevent unauthorized access
 					wp_die();
 				}
 				$event_id              = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
@@ -337,7 +337,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function mpwem_load_seat_status() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
-					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					wp_send_json_error( __( 'Invalid nonce!', 'mage-eventpress' ) ); // Prevent unauthorized access
 					wp_die();
 				}
 				$event_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
@@ -347,12 +347,12 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 			}
 			public function mpwem_reload_seat_status() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
-					wp_send_json_error( 'Invalid nonce!' ); // Prevent unauthorized access
+					wp_send_json_error( __( 'Invalid nonce!', 'mage-eventpress' ) ); // Prevent unauthorized access
 					die;
 				}
 				$post_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 				if ( ! current_user_can( 'edit_post', $post_id ) ) {
-					wp_send_json_error( [ 'message' => 'User cannot edit this post' ] );
+					wp_send_json_error( [ 'message' => __( 'User cannot edit this post', 'mage-eventpress' ) ] );
 					die;
 				}
 				 $date = isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( $_POST['date'] ) ) : '';
@@ -747,4 +747,3 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 		}
 		new MPWEM_Hooks();
 	}
-

@@ -3658,6 +3658,17 @@ body.mpwem-ticket-modal-open {
 	background: #fff4ec;
 	color: #9a3412;
 }
+.mpwem-display-section--pdf-custom-text::before {
+	background: #0f766e;
+}
+.mpwem-display-section--pdf-custom-text .mpwem-display-section__head {
+	background: linear-gradient(180deg, #f3fdf9 0%, #eafaf3 100%);
+}
+.mpwem-display-section--pdf-custom-text .mpwem-display-section__badge {
+	border-color: #b7e4d7;
+	background: #e7fbf2;
+	color: #0f766e;
+}
 .mpwem-display-section--seo::before {
 	background: #4338ca;
 }
@@ -3768,6 +3779,218 @@ body.mpwem-ticket-modal-open {
 	border-radius: 9px !important;
 	font-size: 13px !important;
 	font-weight: 700 !important;
+}
+.mpwem-display-section--attendee-form .mpwem-display-section__body,
+.mpwem-display-section--email .mpwem-display-section__body,
+.mpwem-display-section--pdf-custom-text .mpwem-display-section__body,
+.mpwem-display-section--seo .mpwem-display-section__body,
+.mpwem-display-section--settings .mpwem-display-section__body {
+	padding: 18px;
+	background:
+		radial-gradient(circle at top right, rgba(148, 163, 184, 0.09), transparent 32%),
+		linear-gradient(180deg, #fbfdff 0%, #f8fbfe 100%);
+}
+.mpwem-display-section--attendee-form .mp_tab_item,
+.mpwem-display-section--email .mp_tab_item,
+.mpwem-display-section--pdf-custom-text .mp_tab_item,
+.mpwem-display-section--seo .mp_tab_item,
+.mpwem-display-section--settings .mp_tab_item,
+.mpwem-display-section--attendee-form .mp_tab_item > ._layout_default_xs_mp_zero,
+.mpwem-display-section--email .mp_tab_item > ._layout_default_xs_mp_zero,
+.mpwem-display-section--pdf-custom-text .mp_tab_item > ._layout_default_xs_mp_zero,
+.mpwem-display-section--seo .mp_tab_item > ._layout_default_xs_mp_zero,
+.mpwem-display-section--settings .mp_tab_item > ._layout_default_xs_mp_zero {
+	display: grid;
+	gap: 14px;
+	background: transparent !important;
+}
+.mpwem-display-section--attendee-form ._padding_bt,
+.mpwem-display-section--attendee-form ._padding_bB,
+.mpwem-display-section--attendee-form .mp_tab_item > section:not(.bg-light),
+.mpwem-display-section--email ._padding_bt,
+.mpwem-display-section--email ._padding_bB,
+.mpwem-display-section--email .mp_tab_item > section:not(.bg-light),
+.mpwem-display-section--pdf-custom-text ._padding_bt,
+.mpwem-display-section--pdf-custom-text ._padding_bB,
+.mpwem-display-section--pdf-custom-text .mp_tab_item > section:not(.bg-light),
+.mpwem-display-section--seo ._padding_bt,
+.mpwem-display-section--seo ._padding_bB,
+.mpwem-display-section--seo .mp_tab_item > section:not(.bg-light),
+.mpwem-display-section--settings ._padding_bt,
+.mpwem-display-section--settings ._padding_bB,
+.mpwem-display-section--settings .mp_tab_item > section:not(.bg-light) {
+	padding: 16px 18px !important;
+	background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+	border: 1px solid #dbe4ef !important;
+	border-radius: 14px !important;
+	box-shadow:
+		0 10px 22px rgba(15, 23, 42, 0.04),
+		0 1px 2px rgba(15, 23, 42, 0.03);
+}
+.mpwem-display-section--attendee-form ._padding_bt + ._padding_bt,
+.mpwem-display-section--attendee-form ._padding_bt + ._padding_bB,
+.mpwem-display-section--attendee-form ._padding_bB + ._padding_bt,
+.mpwem-display-section--attendee-form ._padding_bB + ._padding_bB,
+.mpwem-display-section--attendee-form .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
+.mpwem-display-section--email ._padding_bt + ._padding_bt,
+.mpwem-display-section--email ._padding_bt + ._padding_bB,
+.mpwem-display-section--email ._padding_bB + ._padding_bt,
+.mpwem-display-section--email ._padding_bB + ._padding_bB,
+.mpwem-display-section--email .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
+.mpwem-display-section--pdf-custom-text ._padding_bt + ._padding_bt,
+.mpwem-display-section--pdf-custom-text ._padding_bt + ._padding_bB,
+.mpwem-display-section--pdf-custom-text ._padding_bB + ._padding_bt,
+.mpwem-display-section--pdf-custom-text ._padding_bB + ._padding_bB,
+.mpwem-display-section--pdf-custom-text .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
+.mpwem-display-section--seo ._padding_bt + ._padding_bt,
+.mpwem-display-section--seo ._padding_bt + ._padding_bB,
+.mpwem-display-section--seo ._padding_bB + ._padding_bt,
+.mpwem-display-section--seo ._padding_bB + ._padding_bB,
+.mpwem-display-section--seo .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
+.mpwem-display-section--settings ._padding_bt + ._padding_bt,
+.mpwem-display-section--settings ._padding_bt + ._padding_bB,
+.mpwem-display-section--settings ._padding_bB + ._padding_bt,
+.mpwem-display-section--settings ._padding_bB + ._padding_bB,
+.mpwem-display-section--settings .mp_tab_item > section:not(.bg-light) + section:not(.bg-light) {
+	margin-top: 0 !important;
+}
+.mpwem-display-section--attendee-form ._justify_between_align_center_wrap,
+.mpwem-display-section--attendee-form .justify_between,
+.mpwem-display-section--attendee-form .mpev-label,
+.mpwem-display-section--email ._justify_between_align_center_wrap,
+.mpwem-display-section--email .justify_between,
+.mpwem-display-section--email .mpev-label,
+.mpwem-display-section--pdf-custom-text ._justify_between_align_center_wrap,
+.mpwem-display-section--pdf-custom-text .justify_between,
+.mpwem-display-section--pdf-custom-text .mpev-label,
+.mpwem-display-section--seo ._justify_between_align_center_wrap,
+.mpwem-display-section--seo .justify_between,
+.mpwem-display-section--seo .mpev-label,
+.mpwem-display-section--settings ._justify_between_align_center_wrap,
+.mpwem-display-section--settings .justify_between,
+.mpwem-display-section--settings .mpev-label {
+	grid-template-columns: minmax(200px, 1.1fr) minmax(260px, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+.mpwem-display-section--attendee-form ._mr,
+.mpwem-display-section--attendee-form label > span:first-child,
+.mpwem-display-section--attendee-form .mpev-label h2,
+.mpwem-display-section--email ._mr,
+.mpwem-display-section--email label > span:first-child,
+.mpwem-display-section--email .mpev-label h2,
+.mpwem-display-section--pdf-custom-text ._mr,
+.mpwem-display-section--pdf-custom-text label > span:first-child,
+.mpwem-display-section--pdf-custom-text .mpev-label h2,
+.mpwem-display-section--seo ._mr,
+.mpwem-display-section--seo label > span:first-child,
+.mpwem-display-section--seo .mpev-label h2,
+.mpwem-display-section--settings ._mr,
+.mpwem-display-section--settings label > span:first-child,
+.mpwem-display-section--settings .mpev-label h2 {
+	font-size: 13px !important;
+	font-weight: 800 !important;
+	letter-spacing: -0.01em;
+}
+.mpwem-display-section--attendee-form .label-text,
+.mpwem-display-section--attendee-form .mpev-label .label-text,
+.mpwem-display-section--email .label-text,
+.mpwem-display-section--email .mpev-label .label-text,
+.mpwem-display-section--pdf-custom-text .label-text,
+.mpwem-display-section--pdf-custom-text .mpev-label .label-text,
+.mpwem-display-section--seo .label-text,
+.mpwem-display-section--seo .mpev-label .label-text,
+.mpwem-display-section--settings .label-text,
+.mpwem-display-section--settings .mpev-label .label-text {
+	margin-top: 6px;
+	color: #64748b !important;
+	font-size: 11.5px !important;
+	line-height: 1.55;
+	max-width: 34ch;
+}
+.mpwem-display-section--attendee-form input[type="text"],
+.mpwem-display-section--attendee-form select,
+.mpwem-display-section--attendee-form textarea,
+.mpwem-display-section--attendee-form .formControl,
+.mpwem-display-section--attendee-form .regular-text,
+.mpwem-display-section--attendee-form .mp_formControl,
+.mpwem-display-section--email input[type="text"],
+.mpwem-display-section--email select,
+.mpwem-display-section--email textarea,
+.mpwem-display-section--email .formControl,
+.mpwem-display-section--email .regular-text,
+.mpwem-display-section--email .mp_formControl,
+.mpwem-display-section--pdf-custom-text input[type="text"],
+.mpwem-display-section--pdf-custom-text select,
+.mpwem-display-section--pdf-custom-text textarea,
+.mpwem-display-section--pdf-custom-text .formControl,
+.mpwem-display-section--pdf-custom-text .regular-text,
+.mpwem-display-section--pdf-custom-text .mp_formControl,
+.mpwem-display-section--seo input[type="text"],
+.mpwem-display-section--seo select,
+.mpwem-display-section--seo textarea,
+.mpwem-display-section--seo .formControl,
+.mpwem-display-section--seo .regular-text,
+.mpwem-display-section--seo .mp_formControl,
+.mpwem-display-section--settings input[type="text"],
+.mpwem-display-section--settings select,
+.mpwem-display-section--settings textarea,
+.mpwem-display-section--settings .formControl,
+.mpwem-display-section--settings .regular-text,
+.mpwem-display-section--settings .mp_formControl {
+	border-color: #d5dfeb !important;
+	background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+	box-shadow:
+		inset 0 1px 2px rgba(15, 23, 42, 0.03),
+		0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+.mpwem-display-section--attendee-form textarea,
+.mpwem-display-section--email textarea,
+.mpwem-display-section--pdf-custom-text textarea,
+.mpwem-display-section--seo textarea,
+.mpwem-display-section--settings textarea {
+	min-height: 132px;
+	line-height: 1.6;
+}
+.mpwem-display-section--attendee-form .button,
+.mpwem-display-section--attendee-form button,
+.mpwem-display-section--email .button,
+.mpwem-display-section--email button,
+.mpwem-display-section--pdf-custom-text .button,
+.mpwem-display-section--pdf-custom-text button,
+.mpwem-display-section--seo .button,
+.mpwem-display-section--seo button,
+.mpwem-display-section--settings .button,
+.mpwem-display-section--settings button {
+	min-height: 36px;
+	padding: 0 14px !important;
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+.mpwem-display-section--attendee-form .button:not(.button-primary),
+.mpwem-display-section--attendee-form button:not(.button-primary),
+.mpwem-display-section--email .button:not(.button-primary),
+.mpwem-display-section--email button:not(.button-primary),
+.mpwem-display-section--pdf-custom-text .button:not(.button-primary),
+.mpwem-display-section--pdf-custom-text button:not(.button-primary),
+.mpwem-display-section--seo .button:not(.button-primary),
+.mpwem-display-section--seo button:not(.button-primary),
+.mpwem-display-section--settings .button:not(.button-primary),
+.mpwem-display-section--settings button:not(.button-primary) {
+	background: #fff !important;
+	border-color: #cfd9e5 !important;
+	color: #334155 !important;
+}
+.mpwem-display-section--attendee-form .button:hover,
+.mpwem-display-section--attendee-form button:hover,
+.mpwem-display-section--email .button:hover,
+.mpwem-display-section--email button:hover,
+.mpwem-display-section--pdf-custom-text .button:hover,
+.mpwem-display-section--pdf-custom-text button:hover,
+.mpwem-display-section--seo .button:hover,
+.mpwem-display-section--seo button:hover,
+.mpwem-display-section--settings .button:hover,
+.mpwem-display-section--settings button:hover {
+	transform: translateY(-1px);
 }
 .mpwem-display-section--faq .mpwem_faq_area_new {
 	display: grid;
@@ -4255,6 +4478,169 @@ body.mpwem-ticket-modal-open {
 	border: 1px solid #e1e8f0 !important;
 	border-radius: 10px !important;
 	box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table {
+	width: 100% !important;
+	margin: 18px 0 0 !important;
+	border: 0 !important;
+	border-collapse: separate !important;
+	border-spacing: 0 !important;
+	background: #fff !important;
+	table-layout: auto !important;
+	box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td {
+	padding: 10px 4px !important;
+	vertical-align: baseline !important;
+	border-color: #e2e8f0 !important;
+	white-space: normal;
+	word-break: break-word;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: #f8fbff !important;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table tbody tr td {
+	background: #fff !important;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(1),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(1) {
+	width: 18%;
+	min-width: 150px;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(2),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(2) {
+	width: 22%;
+	min-width: 190px;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(3),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(3) {
+	width: 25%;
+	min-width: 220px;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(4),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(4),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(5),
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(5) {
+	width: 14%;
+	min-width: 120px;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table th:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td:last-child {
+	width: 1%;
+	min-width: 120px;
+	white-space: nowrap;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table .mp_formControl,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table .formControl,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table input[type="text"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table input[type="number"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table select,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table textarea {
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: 100% !important;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td > label,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td > .mpwem-label,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table td > .mpev-label {
+	width: 100%;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table .button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table input[type="button"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table input[type="submit"] {
+	max-width: 100%;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + .button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="button"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="submit"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ .button:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ button:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="button"]:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="submit"]:last-child {
+	margin-top: 18px !important;
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + .button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + button,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="button"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="submit"],
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ .button:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ button:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="button"]:last-child,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="submit"]:last-child {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 42px;
+	padding: 10px 18px !important;
+	border: 1px solid #bfdbfe !important;
+	border-radius: 999px !important;
+	background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%) !important;
+	color: #1d4ed8 !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2;
+	box-shadow: 0 10px 24px -20px rgba(29, 78, 216, 0.65);
+}
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + .button:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + .button:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + button:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + button:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="button"]:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="button"]:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="submit"]:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table + input[type="submit"]:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ .button:last-child:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ .button:last-child:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ button:last-child:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ button:last-child:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="button"]:last-child:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="button"]:last-child:focus,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="submit"]:last-child:hover,
+.mpwem-display-section--attendee-form .mp_event_custom_form_table ~ input[type="submit"]:last-child:focus {
+	border-color: #93c5fd !important;
+	background: linear-gradient(180deg, #ffffff 0%, #dbeafe 100%) !important;
+	color: #1e40af !important;
+	box-shadow: 0 16px 30px -22px rgba(30, 64, 175, 0.8);
+}
+@media (max-width: 1199px) {
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table {
+		display: block;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+	}
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table thead,
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table tbody {
+		display: table;
+		width: 100%;
+		min-width: 920px;
+		table-layout: fixed;
+	}
+}
+@media (max-width: 782px) {
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table th,
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table td {
+		padding: 12px !important;
+	}
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(1),
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(1) {
+		min-width: 136px;
+	}
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(2),
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(2) {
+		min-width: 170px;
+	}
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table th:nth-child(3),
+	.mpwem-display-section--attendee-form .mp_event_custom_form_table td:nth-child(3) {
+		min-width: 190px;
+	}
 }
 .mpwem-display-section--faq .mpwem-faq-toggle-row ._justify_between_align_center_wrap {
 	grid-template-columns: 1fr !important;
@@ -5230,6 +5616,7 @@ body.mpwem-ticket-modal-open {
 	background: #fff;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 	margin-bottom: 1px;
+	table-layout: fixed;
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) th {
 	background: #f1f5f9;
@@ -5245,19 +5632,18 @@ body.mpwem-ticket-modal-open {
 	border-left: none !important;
 	border-right: none !important;
 	white-space: nowrap;
+	text-transform: capitalize;
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) td {
 	padding: 16px;
-	vertical-align: middle;
+	vertical-align: middle !important;
 	border-top: none !important;
 	border-left: none !important;
 	border-right: none !important;
 	background: #fff;
 	transition: background-color 0.2s ease;
 }
-.mpwem-event-wizard table:not(.ui-datepicker-calendar) tr:last-child td {
-	border-bottom: none !important;
-}
+
 /* Explicitly round the corners of the first and last cells to prevent background bleeding */
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) th:first-child {
 	border-top-left-radius: calc(var(--mpwem-radius) - 1px);

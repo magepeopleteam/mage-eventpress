@@ -252,6 +252,33 @@
         });
     }
 
+    function panelLooksLikePdfCustomTextSection($panel) {
+        if (!$panel || !$panel.length) {
+            return false;
+        }
+
+        const candidateTexts = [];
+        const panelId = (($panel.data('tab-item') || '') + ' ' + ($panel.attr('id') || '')).trim();
+        if (panelId) {
+            candidateTexts.push(panelId);
+        }
+
+        $panel.find('h1, h2, h3, h4, .section-title, .mpev-label, .label-text, .event_meta_help_txt').slice(0, 12).each(function() {
+            const text = $.trim($(this).text());
+            if (text) {
+                candidateTexts.push(text);
+            }
+        });
+
+        return candidateTexts.some(function(text) {
+            const normalized = normalizePanelLabel(text);
+            return normalized.indexOf('pdf custom text') !== -1
+                || normalized.indexOf('custom pdf text') !== -1
+                || normalized.indexOf('pdf ticket custom text') !== -1
+                || (normalized.indexOf('pdf') !== -1 && normalized.indexOf('custom') !== -1 && normalized.indexOf('text') !== -1);
+        });
+    }
+
     function mountAll($root) {
         // Mount into Basic Step Media sidebar
         mountPanel($root, '#ttbm_settings_gallery', 'mpwem_wizard_media_mount_basic');
@@ -394,6 +421,7 @@
         const $additionalMount = $('#mpwem_additional_sections_mount');
         const $termsMount = $('#mpwem_wizard_terms_mount');
         const $attendeeFormMount = $('#mpwem_wizard_attendee_form_mount');
+        const $pdfCustomTextMount = $('#mpwem_wizard_pdf_custom_text_mount');
         if ($additionalMount.length) {
             $root.find('.mpwem-wizard-panels > .mp_tab_item').each(function() {
                 const $p = $(this);
@@ -410,6 +438,11 @@
 
                 if ($attendeeFormMount.length && !$attendeeFormMount.children().length && panelLooksLikeAttendeeFormSection($p)) {
                     $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($attendeeFormMount).show();
+                    return;
+                }
+
+                if ($pdfCustomTextMount.length && !$pdfCustomTextMount.children().length && panelLooksLikePdfCustomTextSection($p)) {
+                    $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($pdfCustomTextMount).show();
                     return;
                 }
 
@@ -1660,18 +1693,18 @@
                 icon: 'dashicons-layout'
             },
             {
-                mount: '#mpwem_wizard_terms_mount',
-                className: 'mpwem-display-section--terms',
-                title: 'Terms & Conditions',
-                desc: 'Show the attendee-facing terms content for this event.',
-                icon: 'dashicons-media-text'
-            },
-            {
                 mount: '#mpwem_wizard_attendee_form_mount',
                 className: 'mpwem-display-section--attendee-form',
                 title: 'Attendee Form',
                 desc: 'Choose registration fields and attendee form behavior for this event.',
                 icon: 'dashicons-id'
+            },
+            {
+                mount: '#mpwem_wizard_terms_mount',
+                className: 'mpwem-display-section--terms',
+                title: 'Terms & Conditions',
+                desc: 'Show the attendee-facing terms content for this event.',
+                icon: 'dashicons-media-text'
             },
             {
                 mount: '#mpwem_wizard_faq_mount',
@@ -1700,6 +1733,13 @@
                 title: 'Email Message',
                 desc: 'Customize attendee confirmation email content.',
                 icon: 'dashicons-email-alt'
+            },
+            {
+                mount: '#mpwem_wizard_pdf_custom_text_mount',
+                className: 'mpwem-display-section--pdf-custom-text',
+                title: 'PDF Custom Text',
+                desc: 'Manage the custom text used in PDF ticket output.',
+                icon: 'dashicons-media-document'
             },
             {
                 mount: '#mpwem_wizard_seo_mount',
@@ -1739,7 +1779,13 @@
                 }
             }
 
-            if (section.className === 'mpwem-display-section--seo' || section.className === 'mpwem-display-section--email' || section.className === 'mpwem-display-section--settings') {
+            if (
+                section.className === 'mpwem-display-section--attendee-form' ||
+                section.className === 'mpwem-display-section--seo' ||
+                section.className === 'mpwem-display-section--email' ||
+                section.className === 'mpwem-display-section--pdf-custom-text' ||
+                section.className === 'mpwem-display-section--settings'
+            ) {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 let $body = $mount.children('.mpwem-display-section__body').first();
 
@@ -2039,6 +2085,7 @@
                     .append($('<span></span>').append($('<strong></strong>').text('Timeline')).append($('<small></small>').text('Use this for agenda items, session flow, or key moments during the event.')))
                     .append($('<span></span>').append($('<strong></strong>').text('Related Events')).append($('<small></small>').text('Show similar or upcoming events when you want to cross-promote more listings.')))
                     .append($('<span></span>').append($('<strong></strong>').text('Email Message')).append($('<small></small>').text('Edit the attendee confirmation message and insert dynamic tags where needed.')))
+                    .append($('<span></span>').append($('<strong></strong>').text('PDF Custom Text')).append($('<small></small>').text('Use this when Event Pro is active and you want custom copy printed on PDF tickets.')))
                     .append($('<span></span>').append($('<strong></strong>').text('SEO & Schema')).append($('<small></small>').text('Complete this only when search result presentation and structured data matter.')))
             );
         });
@@ -2361,13 +2408,82 @@
         });
     }
 
+    function shouldKeepNativeSelect($select) {
+        const name = ($select.attr('name') || '').toString();
+
+        return $select.closest('.mp_event_custom_form_table').length > 0
+            || name === 'mep_event_reg_form_id'
+            || /\[mep_global_single_template\]$/.test(name);
+    }
+
+    function normalizeCustomFormTableSelects($container) {
+        $container.find('.mpwem-select-wrapper').each(function() {
+            const $wrapper = $(this);
+            const $select = $wrapper.children('select').first();
+
+            if (!$select.length || !shouldKeepNativeSelect($select)) {
+                return;
+            }
+
+            $select.removeClass('mpwem-enhanced').show();
+            $wrapper.replaceWith($select);
+        });
+    }
+
+    function initializeEnhancedSelectEvents() {
+        if (window.mpwemEnhancedSelectEventsInitialized) {
+            return;
+        }
+
+        $(document).on('click', '.mpwem-select-trigger', function(e) {
+            const $trigger = $(this);
+            const $wrapper = $trigger.closest('.mpwem-select-wrapper');
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isOpen = $wrapper.hasClass('is-open');
+            $('.mpwem-select-wrapper').removeClass('is-open');
+
+            if (!isOpen) {
+                $wrapper.addClass('is-open');
+            }
+        });
+
+        $(document).on('click', '.mpwem-select-options .mpwem-select-option', function(e) {
+            const $option = $(this);
+            const $wrapper = $option.closest('.mpwem-select-wrapper');
+            const $select = $wrapper.children('select').first();
+            const value = $option.data('value');
+            const text = $option.text();
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!$select.length) {
+                return;
+            }
+
+            $select.val(value).trigger('change');
+            $wrapper.find('.mpwem-select-trigger span').text(text);
+            $wrapper.find('.mpwem-select-option').removeClass('is-selected');
+            $option.addClass('is-selected');
+            $wrapper.removeClass('is-open');
+        });
+
+        window.mpwemEnhancedSelectEventsInitialized = true;
+    }
+
     function enhanceSelects($container) {
         normalizeHiddenSelectTemplates($container);
         normalizeNativeModalSelects($container);
+        normalizeCustomFormTableSelects($container);
+        initializeEnhancedSelectEvents();
 
         $container.find('select').each(function() {
             const $select = $(this);
             if (
+                shouldKeepNativeSelect($select) ||
                 $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
                 $select.closest('.mpwem_hidden_content').length ||
                 $select.hasClass('mpwem-enhanced') ||
@@ -2388,26 +2504,6 @@
 
             $select.hide().addClass('mpwem-enhanced').after($wrapper);
             $wrapper.append($select).append($trigger).append($options);
-
-            $trigger.on('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isOpen = $wrapper.hasClass('is-open');
-                $('.mpwem-select-wrapper').removeClass('is-open');
-                if (!isOpen) $wrapper.addClass('is-open');
-            });
-
-            $options.on('click', '.mpwem-select-option', function() {
-                const val = $(this).data('value');
-                const text = $(this).text();
-                
-                $select.val(val).trigger('change');
-                $trigger.find('span').text(text);
-                $options.find('.mpwem-select-option').removeClass('is-selected');
-                $(this).addClass('is-selected');
-                $wrapper.removeClass('is-open');
-            });
 
             $select.on('change', function() {
                 const text = $select.find('option:selected').text();

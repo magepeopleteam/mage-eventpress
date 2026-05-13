@@ -9481,3 +9481,50 @@ msgstr "🌐 Quantità globale (tutti i tipi di biglietto)"
 #: inc/recurring/inc/recurring_attendee_stat.php:293
 msgid "📅 Date-wise Global Quantity (All Ticket Types)"
 msgstr "📅 Quantità globale per data (tutti i tipi di biglietto)"
+
+#: inc/MPWEM_Hooks.php:108
+msgid "Event Tags"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:132
+#: inc/MPWEM_Hooks.php:178
+msgid "Invalid or unpublished Event."
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:234
+#: inc/MPWEM_Hooks.php:247
+#: inc/MPWEM_Hooks.php:340
+#: inc/MPWEM_Hooks.php:350
+msgid "Invalid nonce!"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:238
+#: inc/MPWEM_Hooks.php:355
+msgid "User cannot edit this post"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:434
+msgid "Price Starts"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:596
+msgid "Happening Now"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:605
+msgid "Ending Soon"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:612
+msgid "Limited stock"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:650
+msgid "Hide Calender"
+msgstr ""
+
+#: inc/MPWEM_Hooks.php:650
+#: inc/MPWEM_Hooks.php:652
+msgid "Add To Calendar"
+msgstr ""
+

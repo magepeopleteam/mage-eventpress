@@ -225,6 +225,33 @@
         });
     }
 
+    function panelLooksLikeAttendeeFormSection($panel) {
+        if (!$panel || !$panel.length) {
+            return false;
+        }
+
+        const candidateTexts = [];
+        const panelId = (($panel.data('tab-item') || '') + ' ' + ($panel.attr('id') || '')).trim();
+        if (panelId) {
+            candidateTexts.push(panelId);
+        }
+
+        $panel.find('h1, h2, h3, h4, .section-title, .mpev-label, .label-text, .event_meta_help_txt').slice(0, 10).each(function() {
+            const text = $.trim($(this).text());
+            if (text) {
+                candidateTexts.push(text);
+            }
+        });
+
+        return candidateTexts.some(function(text) {
+            const normalized = normalizePanelLabel(text);
+            return normalized.indexOf('attendee form') !== -1
+                || normalized.indexOf('attendee registration form') !== -1
+                || normalized.indexOf('attendee form settings') !== -1
+                || normalized.indexOf('mp event reg form menu') !== -1;
+        });
+    }
+
     function mountAll($root) {
         // Mount into Basic Step Media sidebar
         mountPanel($root, '#ttbm_settings_gallery', 'mpwem_wizard_media_mount_basic');
@@ -347,6 +374,7 @@
         mountPanel($root, '#mep_related_event_meta', 'mpwem_wizard_related_mount');
         mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
         mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
+        mountPanel($root, '#mp_event_reg_form_menu', 'mpwem_wizard_attendee_form_mount');
         mountDangerZone($root);
 
         const $legacySettingsPanel = $root.find('.mp_tab_item[data-tab-item="#mpwem_event_settings"]').first();
@@ -365,6 +393,7 @@
         
         const $additionalMount = $('#mpwem_additional_sections_mount');
         const $termsMount = $('#mpwem_wizard_terms_mount');
+        const $attendeeFormMount = $('#mpwem_wizard_attendee_form_mount');
         if ($additionalMount.length) {
             $root.find('.mpwem-wizard-panels > .mp_tab_item').each(function() {
                 const $p = $(this);
@@ -376,6 +405,11 @@
 
                 if ($termsMount.length && !$termsMount.children().length && panelLooksLikeTermsSection($p)) {
                     $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($termsMount).show();
+                    return;
+                }
+
+                if ($attendeeFormMount.length && !$attendeeFormMount.children().length && panelLooksLikeAttendeeFormSection($p)) {
+                    $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($attendeeFormMount).show();
                     return;
                 }
 
@@ -1631,6 +1665,13 @@
                 title: 'Terms & Conditions',
                 desc: 'Show the attendee-facing terms content for this event.',
                 icon: 'dashicons-media-text'
+            },
+            {
+                mount: '#mpwem_wizard_attendee_form_mount',
+                className: 'mpwem-display-section--attendee-form',
+                title: 'Attendee Form',
+                desc: 'Choose registration fields and attendee form behavior for this event.',
+                icon: 'dashicons-id'
             },
             {
                 mount: '#mpwem_wizard_faq_mount',
@@ -3599,7 +3640,7 @@
         // branch's requestAnimationFrame callback never runs, we still unblock the
         // UI after 2.5 seconds. Both fire if init succeeds — that is intentional
         // and harmless (idempotent class swap).
-        window.setTimeout(markReady, 2500);
+        window.setTimeout(markReady, 1000);
         bindCreateEvent($root);
         bindFeaturedImage($root);
         bindDangerZone($root);

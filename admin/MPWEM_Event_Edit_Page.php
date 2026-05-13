@@ -1283,6 +1283,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-card__body mpwem-display-stack">
 															<div class="mpwem-panel-mount" id="mpwem_wizard_template_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_terms_mount"></div>
+															<div class="mpwem-panel-mount" id="mpwem_wizard_attendee_form_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_faq_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_timeline_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_related_mount"></div>

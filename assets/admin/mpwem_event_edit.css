@@ -3952,6 +3952,81 @@ body.mpwem-ticket-modal-open {
 	min-height: 132px;
 	line-height: 1.6;
 }
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + .button,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + button,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ .button,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ button,
+.mpwem-display-section--attendee-form table + .button,
+.mpwem-display-section--attendee-form table + button,
+.mpwem-display-section--attendee-form table ~ .button,
+.mpwem-display-section--attendee-form table ~ button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 42px;
+	padding: 0 16px !important;
+	background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+	border: 1px solid #cfdced !important;
+	border-radius: 12px !important;
+	color: #1e3a5f !important;
+	font-size: 13px !important;
+	font-weight: 800 !important;
+	letter-spacing: -0.01em;
+	box-shadow:
+		0 10px 20px rgba(15, 23, 42, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 0.92);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + .button::before,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + button::before,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ .button::before,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ button::before,
+.mpwem-display-section--attendee-form table + .button::before,
+.mpwem-display-section--attendee-form table + button::before,
+.mpwem-display-section--attendee-form table ~ .button::before,
+.mpwem-display-section--attendee-form table ~ button::before {
+	content: "\f502";
+	display: inline-grid;
+	place-items: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 999px;
+	background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+	color: var(--mpwem-primary);
+	font-family: dashicons;
+	font-size: 14px;
+	line-height: 1;
+}
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + .button:hover,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + button:hover,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ .button:hover,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ button:hover,
+.mpwem-display-section--attendee-form table + .button:hover,
+.mpwem-display-section--attendee-form table + button:hover,
+.mpwem-display-section--attendee-form table ~ .button:hover,
+.mpwem-display-section--attendee-form table ~ button:hover {
+	transform: translateY(-1px);
+	border-color: #b9cceb !important;
+	background: linear-gradient(180deg, #ffffff 0%, #eef5ff 100%) !important;
+	box-shadow:
+		0 14px 28px rgba(37, 99, 235, 0.12),
+		inset 0 1px 0 rgba(255, 255, 255, 0.96);
+	color: #1d4ed8 !important;
+}
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + .button:focus,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table + button:focus,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ .button:focus,
+.mpwem-display-section--attendee-form #mp_event_custom_form_table ~ button:focus,
+.mpwem-display-section--attendee-form table + .button:focus,
+.mpwem-display-section--attendee-form table + button:focus,
+.mpwem-display-section--attendee-form table ~ .button:focus,
+.mpwem-display-section--attendee-form table ~ button:focus {
+	outline: none !important;
+	box-shadow:
+		0 0 0 3px rgba(37, 99, 235, 0.14),
+		0 12px 24px rgba(15, 23, 42, 0.08) !important;
+}
 .mpwem-display-section--attendee-form .button,
 .mpwem-display-section--attendee-form button,
 .mpwem-display-section--email .button,
@@ -4200,6 +4275,12 @@ body.mpwem-ticket-modal-open {
 	border-radius: 12px;
 	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
 	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.mep_conditional_area {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+	justify-content: space-between;
 }
 .mpwem-display-section--terms .mep-term-item:hover {
 	border-color: #bfd1ef;

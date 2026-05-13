@@ -2411,7 +2411,8 @@
     function shouldKeepNativeSelect($select) {
         const name = ($select.attr('name') || '').toString();
 
-        return $select.closest('.mp_event_custom_form_table').length > 0
+        return $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
+            || $select.closest('#mpwem_wizard_attendee_form_mount table, .mpwem-display-section--attendee-form table').length > 0
             || name === 'mep_event_reg_form_id'
             || /\[mep_global_single_template\]$/.test(name);
     }

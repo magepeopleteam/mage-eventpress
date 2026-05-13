@@ -1,6 +1,6 @@
 <?php
 	/*
-	* @Author 		engr.sumonazma@gmail.com
+	* @Author 		a.a.mahin@gmail.com
 	* Copyright: 	mage-people.com
 	*/
 	if ( ! defined( 'ABSPATH' ) ) {

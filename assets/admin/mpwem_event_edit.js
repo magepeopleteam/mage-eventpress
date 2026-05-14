@@ -279,6 +279,33 @@
         });
     }
 
+    function panelLooksLikeEmailReminderSection($panel) {
+        if (!$panel || !$panel.length) {
+            return false;
+        }
+
+        const candidateTexts = [];
+        const panelId = (($panel.data('tab-item') || '') + ' ' + ($panel.attr('id') || '') + ' ' + ($panel.attr('class') || '')).trim();
+        if (panelId) {
+            candidateTexts.push(panelId);
+        }
+
+        $panel.find('h1, h2, h3, h4, h5, .section-title, .mpev-label, .label-text, .event_meta_help_txt, strong').slice(0, 16).each(function() {
+            const text = $.trim($(this).text());
+            if (text) {
+                candidateTexts.push(text);
+            }
+        });
+
+        return candidateTexts.some(function(text) {
+            const normalized = normalizePanelLabel(text);
+            return normalized.indexOf('email reminder') !== -1
+                || normalized.indexOf('emails reminder') !== -1
+                || normalized.indexOf('event email reminder') !== -1
+                || (normalized.indexOf('reminder') !== -1 && normalized.indexOf('email') !== -1);
+        });
+    }
+
     function mountAll($root) {
         // Mount into Basic Step Media sidebar
         mountPanel($root, '#ttbm_settings_gallery', 'mpwem_wizard_media_mount_basic');
@@ -422,6 +449,7 @@
         const $additionalMount = $('#mpwem_additional_sections_mount');
         const $termsMount = $('#mpwem_wizard_terms_mount');
         const $attendeeFormMount = $('#mpwem_wizard_attendee_form_mount');
+        const $emailReminderMount = $('#mpwem_wizard_email_reminder_mount');
         const $pdfCustomTextMount = $('#mpwem_wizard_pdf_custom_text_mount');
         if ($additionalMount.length) {
             $root.find('.mpwem-wizard-panels > .mp_tab_item').each(function() {
@@ -439,6 +467,11 @@
 
                 if ($attendeeFormMount.length && !$attendeeFormMount.children().length && panelLooksLikeAttendeeFormSection($p)) {
                     $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($attendeeFormMount).show();
+                    return;
+                }
+
+                if ($emailReminderMount.length && !$emailReminderMount.children().length && panelLooksLikeEmailReminderSection($p)) {
+                    $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($emailReminderMount).show();
                     return;
                 }
 
@@ -1773,6 +1806,13 @@
                 icon: 'dashicons-email-alt'
             },
             {
+                mount: '#mpwem_wizard_email_reminder_mount',
+                className: 'mpwem-display-section--email-reminder',
+                title: 'Email Reminder',
+                desc: 'Schedule attendee reminder emails without changing the addon settings flow.',
+                icon: 'dashicons-clock'
+            },
+            {
                 mount: '#mpwem_wizard_pdf_custom_text_mount',
                 className: 'mpwem-display-section--pdf-custom-text',
                 title: 'PDF Custom Text',
@@ -1821,6 +1861,7 @@
                 section.className === 'mpwem-display-section--attendee-form' ||
                 section.className === 'mpwem-display-section--seo' ||
                 section.className === 'mpwem-display-section--email' ||
+                section.className === 'mpwem-display-section--email-reminder' ||
                 section.className === 'mpwem-display-section--pdf-custom-text' ||
                 section.className === 'mpwem-display-section--settings'
             ) {

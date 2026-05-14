@@ -1295,6 +1295,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-panel-mount" id="mpwem_wizard_timeline_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_related_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_email_mount"></div>
+															<div class="mpwem-panel-mount" id="mpwem_wizard_email_reminder_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_pdf_custom_text_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_seo_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_settings_mount">

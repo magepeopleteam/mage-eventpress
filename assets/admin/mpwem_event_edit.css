@@ -3659,6 +3659,17 @@ body.mpwem-ticket-modal-open {
 	background: #fff4ec;
 	color: #9a3412;
 }
+.mpwem-display-section--email-reminder::before {
+	background: #0f766e;
+}
+.mpwem-display-section--email-reminder .mpwem-display-section__head {
+	background: linear-gradient(180deg, #f2fffb 0%, #ebfbf7 100%);
+}
+.mpwem-display-section--email-reminder .mpwem-display-section__badge {
+	border-color: #b9eadf;
+	background: #ecfdf5;
+	color: #0f766e;
+}
 .mpwem-display-section--pdf-custom-text::before {
 	background: #0f766e;
 }
@@ -3783,6 +3794,7 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-display-section--attendee-form .mpwem-display-section__body,
 .mpwem-display-section--email .mpwem-display-section__body,
+.mpwem-display-section--email-reminder .mpwem-display-section__body,
 .mpwem-display-section--pdf-custom-text .mpwem-display-section__body,
 .mpwem-display-section--seo .mpwem-display-section__body,
 .mpwem-display-section--settings .mpwem-display-section__body {
@@ -3793,11 +3805,13 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-display-section--attendee-form .mp_tab_item,
 .mpwem-display-section--email .mp_tab_item,
+.mpwem-display-section--email-reminder .mp_tab_item,
 .mpwem-display-section--pdf-custom-text .mp_tab_item,
 .mpwem-display-section--seo .mp_tab_item,
 .mpwem-display-section--settings .mp_tab_item,
 .mpwem-display-section--attendee-form .mp_tab_item > ._layout_default_xs_mp_zero,
 .mpwem-display-section--email .mp_tab_item > ._layout_default_xs_mp_zero,
+.mpwem-display-section--email-reminder .mp_tab_item > ._layout_default_xs_mp_zero,
 .mpwem-display-section--pdf-custom-text .mp_tab_item > ._layout_default_xs_mp_zero,
 .mpwem-display-section--seo .mp_tab_item > ._layout_default_xs_mp_zero,
 .mpwem-display-section--settings .mp_tab_item > ._layout_default_xs_mp_zero {
@@ -3811,6 +3825,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email ._padding_bt,
 .mpwem-display-section--email ._padding_bB,
 .mpwem-display-section--email .mp_tab_item > section:not(.bg-light),
+.mpwem-display-section--email-reminder ._padding_bt,
+.mpwem-display-section--email-reminder ._padding_bB,
+.mpwem-display-section--email-reminder .mp_tab_item > section:not(.bg-light),
 .mpwem-display-section--pdf-custom-text ._padding_bt,
 .mpwem-display-section--pdf-custom-text ._padding_bB,
 .mpwem-display-section--pdf-custom-text .mp_tab_item > section:not(.bg-light),
@@ -3838,6 +3855,11 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email ._padding_bB + ._padding_bt,
 .mpwem-display-section--email ._padding_bB + ._padding_bB,
 .mpwem-display-section--email .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
+.mpwem-display-section--email-reminder ._padding_bt + ._padding_bt,
+.mpwem-display-section--email-reminder ._padding_bt + ._padding_bB,
+.mpwem-display-section--email-reminder ._padding_bB + ._padding_bt,
+.mpwem-display-section--email-reminder ._padding_bB + ._padding_bB,
+.mpwem-display-section--email-reminder .mp_tab_item > section:not(.bg-light) + section:not(.bg-light),
 .mpwem-display-section--pdf-custom-text ._padding_bt + ._padding_bt,
 .mpwem-display-section--pdf-custom-text ._padding_bt + ._padding_bB,
 .mpwem-display-section--pdf-custom-text ._padding_bB + ._padding_bt,
@@ -3861,6 +3883,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email ._justify_between_align_center_wrap,
 .mpwem-display-section--email .justify_between,
 .mpwem-display-section--email .mpev-label,
+.mpwem-display-section--email-reminder ._justify_between_align_center_wrap,
+.mpwem-display-section--email-reminder .justify_between,
+.mpwem-display-section--email-reminder .mpev-label,
 .mpwem-display-section--pdf-custom-text ._justify_between_align_center_wrap,
 .mpwem-display-section--pdf-custom-text .justify_between,
 .mpwem-display-section--pdf-custom-text .mpev-label,
@@ -3880,6 +3905,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email ._mr,
 .mpwem-display-section--email label > span:first-child,
 .mpwem-display-section--email .mpev-label h2,
+.mpwem-display-section--email-reminder ._mr,
+.mpwem-display-section--email-reminder label > span:first-child,
+.mpwem-display-section--email-reminder .mpev-label h2,
 .mpwem-display-section--pdf-custom-text ._mr,
 .mpwem-display-section--pdf-custom-text label > span:first-child,
 .mpwem-display-section--pdf-custom-text .mpev-label h2,
@@ -3896,7 +3924,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--attendee-form .label-text,
 .mpwem-display-section--attendee-form .mpev-label .label-text,
 .mpwem-display-section--email .label-text,
+.mpwem-display-section--email-reminder .label-text,
 .mpwem-display-section--email .mpev-label .label-text,
+.mpwem-display-section--email-reminder .mpev-label .label-text,
 .mpwem-display-section--pdf-custom-text .label-text,
 .mpwem-display-section--pdf-custom-text .mpev-label .label-text,
 .mpwem-display-section--seo .label-text,
@@ -5283,6 +5313,134 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email .mce-edit-area iframe {
 	min-height: 150px !important;
 	height: 150px !important;
+}
+.mpwem-display-section--email-reminder .mp_tab_item > ._layout_default_xs_mp_zero {
+	gap: 16px;
+}
+.mpwem-display-section--email-reminder ._padding_bt,
+.mpwem-display-section--email-reminder ._padding_bB,
+.mpwem-display-section--email-reminder .mp_tab_item > section:not(.bg-light) {
+	position: relative;
+	padding: 18px 20px !important;
+	background:
+		radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 30%),
+		linear-gradient(180deg, #ffffff 0%, #f8fffd 100%) !important;
+	border-color: #d2ebe3 !important;
+}
+.mpwem-display-section--email-reminder ._padding_bt::before,
+.mpwem-display-section--email-reminder ._padding_bB::before,
+.mpwem-display-section--email-reminder .mp_tab_item > section:not(.bg-light)::before {
+	content: '';
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 4px;
+	border-radius: 14px 0 0 14px;
+	background: linear-gradient(180deg, #14b8a6 0%, #0f766e 100%);
+	opacity: 0.9;
+}
+.mpwem-display-section--email-reminder h4,
+.mpwem-display-section--email-reminder h5 {
+	margin: 0 0 8px !important;
+	color: #134e4a;
+	font-size: 13px !important;
+	font-weight: 800 !important;
+	letter-spacing: -0.01em;
+}
+.mpwem-display-section--email-reminder ._mp_zero,
+.mpwem-display-section--email-reminder p:not(.description),
+.mpwem-display-section--email-reminder .event_meta_help_txt {
+	color: #58727a !important;
+	font-size: 12px !important;
+	line-height: 1.55;
+}
+.mpwem-display-section--email-reminder .description {
+	margin-top: 8px !important;
+	color: #64748b !important;
+	font-size: 12px !important;
+	line-height: 1.55;
+}
+.mpwem-display-section--email-reminder .round_switch_label,
+.mpwem-display-section--email-reminder .mpev-switch,
+.mpwem-display-section--email-reminder .mpwem-switch-wrap {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+}
+.mpwem-display-section--email-reminder textarea,
+.mpwem-display-section--email-reminder .wp-editor-area {
+	min-height: 148px;
+}
+.mpwem-display-section--email-reminder .wp-editor-wrap {
+	border: 1px solid #d6e8e3;
+	border-radius: 12px;
+	overflow: hidden;
+	background: #fff;
+}
+.mpwem-display-section--email-reminder .wp-editor-tools {
+	padding: 8px 10px 0;
+	background: #f6fffc;
+	border-bottom: 1px solid #e2f3ee;
+}
+.mpwem-display-section--email-reminder .wp-editor-tabs {
+	margin-top: 0;
+}
+.mpwem-display-section--email-reminder .quicktags-toolbar {
+	padding: 6px !important;
+	background: #fcfffe;
+}
+.mpwem-display-section--email-reminder .mce-edit-area iframe {
+	min-height: 170px !important;
+}
+.mpwem-display-section--email-reminder table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+.mpwem-display-section--email-reminder table th,
+.mpwem-display-section--email-reminder table td {
+	padding: 12px 14px !important;
+	border-bottom: 1px solid #e2f3ee;
+	vertical-align: top;
+}
+.mpwem-display-section--email-reminder table th {
+	background: #f6fffc;
+	color: #134e4a;
+	font-size: 12px;
+	font-weight: 800;
+	text-align: left;
+}
+.mpwem-display-section--email-reminder table tr:last-child th,
+.mpwem-display-section--email-reminder table tr:last-child td {
+	border-bottom: 0;
+}
+.mpwem-display-section--email-reminder code {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 8px;
+	border-radius: 8px;
+	background: #f0fdfa;
+	border: 1px solid #cceee6;
+	color: #0f766e;
+	font-size: 11px;
+	font-weight: 700;
+}
+@media (max-width: 782px) {
+	.mpwem-display-section--email-reminder ._justify_between_align_center_wrap,
+	.mpwem-display-section--email-reminder .justify_between,
+	.mpwem-display-section--email-reminder .mpev-label {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.mpwem-display-section--email-reminder table,
+	.mpwem-display-section--email-reminder table tbody,
+	.mpwem-display-section--email-reminder table tr,
+	.mpwem-display-section--email-reminder table th,
+	.mpwem-display-section--email-reminder table td {
+		display: block;
+		width: 100%;
+	}
+	.mpwem-display-section--email-reminder table tr {
+		border-bottom: 1px solid #e2f3ee;
+	}
 }
 .mpwem-display-section--template .mep-template-section {
 	display: grid !important;

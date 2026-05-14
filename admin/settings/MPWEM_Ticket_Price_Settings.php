@@ -55,10 +55,12 @@
 				$show_advance_column = is_array($event_infos) && array_key_exists( 'mep_show_advance_col_status', $event_infos ) ? $event_infos['mep_show_advance_col_status'] : 'off';
 				$active_category     = $show_advance_column == 'on' ? 'mActive' : '';
 				$ticket_infos          = array_key_exists( 'mep_event_ticket_type', $event_infos ) ? $event_infos['mep_event_ticket_type'] : [];
-				$early_bird_status     = array_key_exists( 'mep_enable_early_bird_status', $event_infos ) ? $event_infos['mep_enable_early_bird_status'] : 'off';
-				$advanced_col_status   = array_key_exists( 'mep_show_advanced_column', $event_infos ) ? $event_infos['mep_show_advanced_column'] : 'off';
-				$active_category       = $early_bird_status == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
-				$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+					$early_bird_status     = array_key_exists( 'mep_enable_early_bird_status', $event_infos ) ? $event_infos['mep_enable_early_bird_status'] : 'off';
+					$advanced_col_status   = array_key_exists( 'mep_show_advanced_column', $event_infos ) ? $event_infos['mep_show_advanced_column'] : 'off';
+					$global_qty_status     = array_key_exists( 'enable_global_qty', $event_infos ) ? $event_infos['enable_global_qty'] : 'off';
+					$active_category       = $early_bird_status == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
+					$capacity_col_status   = $global_qty_status == 'on' ? 'mpwem-ticket-col-hidden' : '';
+					$event_label         = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				//echo '<pre>';print_r($ticket_infos);echo '</pre>';
 				?>
                 <div class="_mt"></div>
@@ -72,14 +74,31 @@
 						$this->show_advance_column( $event_id, $event_infos );
 					?>
                     <div class="_padding_bt mpwem_settings_area">
-                        <div class="mpwem-ticket-cards-container mpwem_sortable_area mpwem_item_insert">
-                            <?php
-                                if ( is_array($ticket_infos) && sizeof( $ticket_infos ) > 0 ) {
-                                    foreach ( $ticket_infos as $ticket_info ) {
-                                        $this->ticket_info( $event_id, $active_category, $advanced_col_status, $ticket_info );
-                                    }
-                                }
-                            ?>
+                        <div class="_ov_auto mpwem-ticket-table-wrap">
+                            <table class="mpwem_ticket_table mpwem-ticket-table">
+                                <thead>
+                                    <tr>
+                                        <th><?php esc_html_e( 'Ticket Type', 'mage-eventpress' ); ?></th>
+                                        <th><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></th>
+	                                        <th class="mpwem-ticket-card__capacity <?php echo esc_attr( $capacity_col_status ); ?>"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
+                                        <th><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
+                                        <th class="<?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
+                                        <th class="<?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
+                                        <?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
+                                        <th class="mpwem-ticket-table__sale-period <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status"><?php esc_html_e( 'Sale Period', 'mage-eventpress' ); ?></th>
+                                        <th class="mpwem-ticket-table__actions"><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="mpwem-ticket-cards-container mpwem_sortable_area mpwem_item_insert">
+                                    <?php
+                                        if ( is_array($ticket_infos) && sizeof( $ticket_infos ) > 0 ) {
+                                            foreach ( $ticket_infos as $ticket_info ) {
+	                                                $this->ticket_info( $event_id, $active_category, $advanced_col_status, $ticket_info, $global_qty_status );
+                                            }
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="mpwem-ticket-footer">
@@ -87,15 +106,17 @@
                         </div>
 
                         <div class="mpwem_hidden_content">
-                            <div class="mpwem_hidden_item">
-                                <?php $this->ticket_info( $event_id, $active_category, $advanced_col_status ); ?>
-                            </div>
+                            <table>
+                                <tbody class="mpwem_hidden_item">
+                                    <?php $this->ticket_info( $event_id, $active_category, $advanced_col_status, [], $global_qty_status ); ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 				<?php
 			}
-			public function ticket_info( $event_id, $active_category, $advanced_col_status, $ticket_info = [] ) {
+				public function ticket_info( $event_id, $active_category, $advanced_col_status, $ticket_info = [], $global_qty_status = 'off' ) {
 				$qty_t_type           = is_array($ticket_info) && array_key_exists( 'option_qty_t_type', $ticket_info ) ? $ticket_info['option_qty_t_type'] : 'inputbox';
 				$option_details       = is_array($ticket_info) && array_key_exists( 'option_details_t', $ticket_info ) ? $ticket_info['option_details_t'] : '';
 				$option_name          = is_array($ticket_info) && array_key_exists( 'option_name_t', $ticket_info ) ? $ticket_info['option_name_t'] : '';
@@ -114,94 +135,85 @@
 					$ticket_sold                   = MPWEM_Query::attendee_query( $filter_args )->post_count;
 				}
 				?>
-                <div class="mpwem-ticket-card mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable !== 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
-                    <div class="mpwem-ticket-card__main">
-                        <!-- Identity Group -->
-                        <div class="mpwem-ticket-card__group mpwem-ticket-card__identity">
+                <tr class="mpwem-ticket-card mpwem-ticket-row mpwem_remove_area data_required <?php echo esc_attr( $option_ticket_enable !== 'yes'  && $ticket_sold>0? 'disable_row' : '' ); ?>">
+                    <td class="mpwem-ticket-card__group mpwem-ticket-card__identity">
+                        <label class="mpwem-card-label"><?php esc_html_e( 'Ticket Type', 'mage-eventpress' ); ?></label>
+                        <div class="mpwem-ticket-card__field">
                             <input type="hidden" name="hidden_option_name_t[]" value="<?php echo esc_attr( $option_name_text ); ?>"/>
-                            <div class="mpwem-ticket-card__field">
-                                <?php if ( $ticket_sold > 0 ) { ?>
-                                    <input type="hidden" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
-                                    <div class="mpwem-ticket-card__locked-name"><?php echo esc_html( $option_name ); ?></div>
-                                <?php } else { ?>
-                                    <input data-required="" type="text" class="mpwem-card-input mpwem-card-input--large name_validation" name="option_name_t[]" placeholder="Ticket Name (Ex: Adult)" value="<?php echo esc_attr( $option_name ); ?>"/>
-                                <?php } ?>
-                            </div>
-                            <div class="mpwem-ticket-card__field mpwem-ticket-card__description <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
-                                <input type="text" class="mpwem-card-input" name="option_details_t[]" placeholder="Add short description" value="<?php echo esc_attr( $option_details ); ?>"/>
-                            </div>
+                            <?php if ( $ticket_sold > 0 ) { ?>
+                                <input type="hidden" name="option_name_t[]" value="<?php echo esc_attr( $option_name ); ?>"/>
+                                <div class="mpwem-ticket-card__locked-name"><?php echo esc_html( $option_name ); ?></div>
+                            <?php } else { ?>
+                                <input data-required="" type="text" class="mpwem-card-input mpwem-card-input--large name_validation" name="option_name_t[]" placeholder="Ticket Name (Ex: Adult)" value="<?php echo esc_attr( $option_name ); ?>"/>
+                            <?php } ?>
                         </div>
-
-                        <!-- Price Group -->
-                        <div class="mpwem-ticket-card__group mpwem-ticket-card__price">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'PRICE', 'mage-eventpress' ); ?></label>
-                            <div class="mpwem-card-input-wrapper mpwem-card-input-wrapper--currency">
-                                <input type="number" size="4" pattern="[0-9]*" step="0.001" class="mpwem-card-input" name="option_price_t[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
-                            </div>
+                        <div class="mpwem-ticket-card__field mpwem-ticket-card__description <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
+                            <input type="text" class="mpwem-card-input" name="option_details_t[]" placeholder="Add short description" value="<?php echo esc_attr( $option_details ); ?>"/>
                         </div>
+                    </td>
 
-                        <!-- Capacity Group -->
-                        <div class="mpwem-ticket-card__group mpwem-ticket-card__capacity">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'CAPACITY', 'mage-eventpress' ); ?></label>
-                            <input type="number" size="4" pattern="[0-9]*" step="1" class="mpwem-card-input" name="option_qty_t[]" placeholder="100" value="<?php echo esc_attr( $option_qty ) ?>"/>
+                    <td class="mpwem-ticket-card__group mpwem-ticket-card__price">
+                        <label class="mpwem-card-label"><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></label>
+                        <div class="mpwem-card-input-wrapper mpwem-card-input-wrapper--currency">
+                            <input type="number" size="4" pattern="[0-9]*" step="0.001" class="mpwem-card-input" name="option_price_t[]" placeholder="0.00" value="<?php echo esc_attr( $option_price ); ?>"/>
                         </div>
+                    </td>
 
-						<!-- Qty Box Group -->
-						<div class="mpwem-ticket-card__group mpwem-ticket-card__qty-box">
-							<label class="mpwem-card-label"><?php esc_html_e( 'QTY BOX', 'mage-eventpress' ); ?></label>
-							<select class="mpwem-card-input" name="option_qty_t_type[]">
-								<option value="inputbox" <?php selected( $qty_t_type, 'inputbox' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>
-								<option value="dropdown" <?php selected( $qty_t_type, 'dropdown' ); ?>><?php esc_html_e( 'Dropdown List', 'mage-eventpress' ); ?></option>
-							</select>
-						</div>
+	                    <td class="mpwem-ticket-card__group mpwem-ticket-card__capacity <?php echo esc_attr( $global_qty_status == 'on' ? 'mpwem-ticket-col-hidden' : '' ); ?>">
+                        <label class="mpwem-card-label"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></label>
+                        <input type="number" size="4" pattern="[0-9]*" step="1" class="mpwem-card-input" name="option_qty_t[]" placeholder="100" value="<?php echo esc_attr( $option_qty ) ?>"/>
+                    </td>
 
-						<!-- Default Qty Group -->
-						<div class="mpwem-ticket-card__group mpwem-ticket-card__default-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
-							<label class="mpwem-card-label"><?php esc_html_e( 'DEFAULT QTY', 'mage-eventpress' ); ?></label>
-							<input type="number" size="2" pattern="[0-9]*" step="1" class="mpwem-card-input mpwem-card-input--small" name="option_default_qty_t[]" placeholder="1" value="<?php echo esc_attr( $option_default_qty ); ?>"/>
-						</div>
+					<td class="mpwem-ticket-card__group mpwem-ticket-card__qty-box">
+						<label class="mpwem-card-label"><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></label>
+						<select class="mpwem-card-input" name="option_qty_t_type[]">
+							<option value="inputbox" <?php selected( $qty_t_type, 'inputbox' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>
+							<option value="dropdown" <?php selected( $qty_t_type, 'dropdown' ); ?>><?php esc_html_e( 'Dropdown List', 'mage-eventpress' ); ?></option>
+						</select>
+					</td>
 
-						<!-- Advance Qty Group -->
-						<div class="mpwem-ticket-card__group mpwem-ticket-card__advance-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
-							<label class="mpwem-card-label"><?php esc_html_e( 'Reserve qty', 'mage-eventpress' ); ?></label>
-							<input type="number" class="mpwem-card-input mpwem-card-input--small" name="option_rsv_t[]" placeholder="0" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/>
-						</div>
+					<td class="mpwem-ticket-card__group mpwem-ticket-card__default-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
+						<label class="mpwem-card-label"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></label>
+						<input type="number" size="2" pattern="[0-9]*" step="1" class="mpwem-card-input mpwem-card-input--small" name="option_default_qty_t[]" placeholder="1" value="<?php echo esc_attr( $option_default_qty ); ?>"/>
+					</td>
 
-                        <!-- Sale Period Group -->
-                        <div class="mpwem-ticket-card__group mpwem-ticket-card__sale-period <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
-                            <label class="mpwem-card-label"><?php esc_html_e( 'SALE PERIOD', 'mage-eventpress' ); ?></label>
-                            <div class="mpwem-card-row mpwem-card-row--date">
-                                <?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
-                            </div>
-                            <div class="mpwem-card-row mpwem-card-row--date">
-                                <div class="mpwem-card-date-wrapper mpwem-card-date-wrapper--end">
-                                    <div class="mpwem-card-date-field">
-                                    <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
-                                        <div class="mpwem-card-time-field">
-                                            <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
-                                        </div>
+					<td class="mpwem-ticket-card__group mpwem-ticket-card__advance-qty <?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column">
+						<label class="mpwem-card-label"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></label>
+						<input type="number" class="mpwem-card-input mpwem-card-input--small" name="option_rsv_t[]" placeholder="0" value="<?php echo esc_attr( $option_rsv_qty ); ?>"/>
+					</td>
+
+                    <?php do_action( 'mpwem_add_extra_input_box', $event_id, $ticket_info ); ?>
+
+                    <td class="mpwem-ticket-card__group mpwem-ticket-card__sale-period <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
+                        <label class="mpwem-card-label"><?php esc_html_e( 'Sale Period', 'mage-eventpress' ); ?></label>
+                        <div class="mpwem-card-row mpwem-card-row--date">
+                            <?php do_action( 'mpwem_add_sale_period_input_box', $event_id, $ticket_info ); ?>
+                            <div class="mpwem-card-date-wrapper mpwem-card-date-wrapper--end">
+                                <div class="mpwem-card-date-field">
+                                <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
+                                    <div class="mpwem-card-time-field">
+                                        <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </td>
 
-                        <!-- Action Group -->
-                        <div class="mpwem-ticket-card__actions">
-                            <div class="mpwem-ticket-card__action-btn mpwem_sortable_button" title="<?php esc_attr_e( 'Drag to reorder', 'mage-eventpress' ); ?>">
-                                <span class="fas fa-ellipsis-v"></span>
-                                <span class="fas fa-ellipsis-v"></span>
-                            </div>
-                            <button class="mpwem-ticket-card__action-btn mpwem-ticket-card__action-btn--danger mpwem_item_remove" type="button" title="<?php esc_attr_e( 'Delete', 'mage-eventpress' ); ?>">
-                                <span class="fas fa-trash-alt"></span>
-                            </button>
-                            <?php if($ticket_sold > 0) { 
-                                MPWEM_Custom_Layout::show_hide_button( 'option_ticket_enable[]', $option_ticket_enable );
-                            } else { ?>
-                                <input type="hidden" name="option_ticket_enable[]" value="yes">
-                            <?php } ?>
+                    <td class="mpwem-ticket-card__actions">
+                        <div class="mpwem-ticket-card__action-btn mpwem_sortable_button" title="<?php esc_attr_e( 'Drag to reorder', 'mage-eventpress' ); ?>">
+                            <span class="fas fa-ellipsis-v"></span>
+                            <span class="fas fa-ellipsis-v"></span>
                         </div>
-                    </div>
-                </div>
+                        <button class="mpwem-ticket-card__action-btn mpwem-ticket-card__action-btn--danger mpwem_item_remove" type="button" title="<?php esc_attr_e( 'Delete', 'mage-eventpress' ); ?>">
+                            <span class="fas fa-trash-alt"></span>
+                        </button>
+                        <?php if($ticket_sold > 0) { 
+                            MPWEM_Custom_Layout::show_hide_button( 'option_ticket_enable[]', $option_ticket_enable );
+                        } else { ?>
+                            <input type="hidden" name="option_ticket_enable[]" value="yes">
+                        <?php } ?>
+                    </td>
+                </tr>
 				<?php
 			}
 			public function ex_service_setting( $event_id ) {

@@ -5534,9 +5534,8 @@ function mep_change_date_status() {
         return apply_filters( 'mep_gq_total_left_sect', $total_left, $event_id, $event_date );
     }
     if (!is_plugin_active('woocommerce-event-manager-addon-early-bird/early-bird.php')) {
-    if ( ! function_exists( 'mep_early_bird_column' ) ) {
-    add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
-    function mep_early_bird_column( $event_id ) {
+	    if ( ! function_exists( 'mep_early_bird_column' ) ) {
+	    function mep_early_bird_column( $event_id ) {
         $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
         $active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         ?>
@@ -5545,10 +5544,10 @@ function mep_change_date_status() {
     }
     }
     if ( ! function_exists( 'mep_early_bird_column_saved' ) ) {
-    add_action( 'mpwem_add_extra_input_box', 'mep_early_bird_column_saved', 90,2 );
+    add_action( 'mpwem_add_sale_period_input_box', 'mep_early_bird_column_saved', 90, 2 );
     function mep_early_bird_column_saved( $event_id, $ticket_info = [] ) {
-        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
-        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $early_bird_status   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
+        $active_category     = $early_bird_status == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         $sale_start          = is_array($ticket_info) && array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
         ?>
         <div class="mpwem-card-date-wrapper <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">

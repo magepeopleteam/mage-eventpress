@@ -248,7 +248,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		 */
 		private function create_draft_event()
 		{
-			return wp_insert_post(
+			$post_id = wp_insert_post(
 				[
 					'post_type'   => self::POST_TYPE,
 					'post_status' => 'draft',
@@ -256,6 +256,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				],
 				true
 			);
+
+			if (! is_wp_error($post_id) && $post_id > 0) {
+				update_post_meta((int) $post_id, 'mpwem_show_mm', 'off');
+				update_post_meta((int) $post_id, 'min_qty_all_must', 'off');
+			}
+
+			return $post_id;
 		}
 
 		private function render_taxonomy_field(string $id, string $label, string $taxonomy, array $terms, array $selected_ids, string $help = '', string $manage_label = '', bool $allow_ajax_add = false): void
@@ -1445,7 +1452,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					delete_post_thumbnail($post_id);
 				}
 			} else {
-				update_post_meta($post_id, '_thumbnail_id', $thumb_id ? $thumb_id : '');
+				if ($thumb_id > 0) {
+					update_post_meta($post_id, '_thumbnail_id', $thumb_id);
+				} else {
+					delete_post_meta($post_id, '_thumbnail_id');
+				}
 			}
 
 			$this->save_taxonomies($post_id);

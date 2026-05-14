@@ -341,6 +341,7 @@
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
 
         const $ticketPricingPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        decorateMinMaxSettings($root);
 
         // Move Extra Services into its own card
         const $exService = $ticketPricingPanel.find('input[name="option_name[]"]').first().closest('._layout_default_xs_mp_zero');
@@ -493,14 +494,39 @@
     }
 
     function getTicketRows($root) {
-        const $container = $root.find('#mpwem_ticket_modal_mount .mpwem-ticket-cards-container.mpwem_item_insert').first();
+        const $container = $root.find('#mpwem_ticket_modal_mount tbody.mpwem-ticket-cards-container.mpwem_item_insert, #mpwem_ticket_modal_mount .mpwem-ticket-cards-container.mpwem_item_insert').first();
         if (!$container.length) {
             return $();
         }
 
-        return $container.children('.mpwem-ticket-card.mpwem_remove_area').filter(function() {
+        return $container.children('.mpwem-ticket-card.mpwem_remove_area, tr.mpwem_remove_area').filter(function() {
             return $(this).closest('.mpwem_hidden_content').length === 0;
         });
+    }
+
+    function decorateMinMaxSettings($root) {
+        const $toggle = $root.find('input[name="mpwem_show_mm"]').first();
+        if (!$toggle.length) {
+            return;
+        }
+
+        const $card = $toggle.closest('._padding_bt');
+        if (!$card.length || $card.data('mpwemMinMaxDecorated')) {
+            return;
+        }
+
+        $card
+            .addClass('mpwem-minmax-settings-card')
+            .data('mpwemMinMaxDecorated', true);
+
+        $card.children('._justify_between_align_center_wrap').first().addClass('mpwem-minmax-settings-card__head');
+        $card.children('.des_info').first().addClass('mpwem-minmax-settings-card__intro');
+
+        const $body = $card.children('[data-collapse="#mpwem_show_mm"]').first();
+        $body.addClass('mpwem-minmax-settings-card__body');
+        $body.children('div').first().addClass('mpwem-minmax-settings-card__type-row');
+        $body.children('[data-collapse="#mep_mm_global"]').addClass('mpwem-minmax-settings-card__global-row');
+        $body.children('[data-collapse="#mep_mm_ticket_type"]').addClass('mpwem-minmax-settings-card__ticket-row');
     }
 
     function ticketRowName($row) {
@@ -679,6 +705,18 @@
         const isGlobalQtyEnabled = context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked');
         context.$modalMount.find('.mpwem-ticket-card__capacity').toggleClass('mpwem-ticket-col-hidden', isGlobalQtyEnabled);
 
+        const $minMaxToggle = context.$modalMount.find('input[name="mpwem_show_mm"]').first().add(
+            $root.find('input[name="mpwem_show_mm"]').first()
+        ).first();
+        const $minMaxType = context.$modalMount.find('select[name="mep_mm_min_max_type"]').first().add(
+            $root.find('select[name="mep_mm_min_max_type"]').first()
+        ).first();
+        const isMinMaxEnabled = $minMaxToggle.is(':checked');
+        const isTicketTypeMinMax = $minMaxType.val() === 'ticket_type';
+        context.$modalMount
+            .find('[data-collapse="#mep_mm_ticket_type"]')
+            .toggleClass('mpwem-ticket-col-hidden', !(isMinMaxEnabled && isTicketTypeMinMax));
+
         const isAdvancedColumnsVisible = context.$modalMount.find('input[name="mep_show_advanced_column"]').first().is(':checked');
         context.$modalMount
             .find('.mpwem-ticket-card')
@@ -804,7 +842,7 @@
             renderTicketSummary($root);
         });
 
-        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"], #mpwem_ticket_modal_mount input[name="enable_global_qty"], #mpwem_ticket_modal_mount input[name="mep_show_advanced_column"]', function() {
+        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"], #mpwem_ticket_modal_mount input[name="enable_global_qty"], #mpwem_ticket_modal_mount input[name="mep_show_advanced_column"], input[name="mpwem_show_mm"], select[name="mep_mm_min_max_type"]', function() {
             syncTicketAdvancedColumns($root);
         });
 

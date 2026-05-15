@@ -782,17 +782,9 @@ body.mpwem-event-wizard-screen {
 }
 /* Custom Help Card Colors per step */
 .mpwem-card--help {
-	--help-color: #f59e0b; /* Warm Amber */
 	--help-bg: #fffbeb;
-	border-left: 4px solid var(--help-color) !important;
 }
-.mpwem-card--help .mpwem-card__head {
-	background: var(--help-bg) !important;
-	border-bottom: 1px solid rgba(0,0,0,0.03);
-}
-.mpwem-card--help .mpwem-card__head h2 {
-	color: var(--help-color) !important;
-}
+
 .mpwem-shortcode-help {
 	display: grid;
 	gap: 10px;
@@ -969,7 +961,7 @@ body.mpwem-event-wizard-screen {
 	padding: 0 18px !important;
 	border: 1px solid #1d4ed8 !important;
 	border-radius: 12px !important;
-	background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%) !important;
+	background: var(--mpwem-btn-primary-bg) !important;
 	color: #fff !important;
 	font-weight: 700 !important;
 	box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
@@ -1082,7 +1074,7 @@ body.mpwem-event-wizard-screen {
 .mpwem-taxonomy-checklist {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: 3px;
 	padding: 4px 0;
 }
 .mpwem-taxonomy-checklist__item {
@@ -1102,13 +1094,13 @@ body.mpwem-event-wizard-screen {
 .mpwem-taxonomy-checklist__label {
 	display: inline-flex;
 	align-items: center;
-	padding: 8px 16px;
+	padding:6px;
 	border: 1px solid #d9e2ef;
 	border-radius: 999px;
 	background: #fff;
 	color: #475569;
-	font-size: 13px;
-	font-weight: 600;
+	font-size: 10px;
+	font-weight: normal;
 	line-height: 1.2;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	user-select: none;
@@ -1493,7 +1485,6 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-event-type-option.is-active {
 	border-color: var(--mpwem-primary);
-	background: #eff6ff;
 }
 .mpwem-event-type-option .dashicons {
 	font-size: 20px;
@@ -1592,6 +1583,7 @@ select.mpwem-global-qty-field__input {
 	color: var(--mpwem-muted);
 	font-size: 12px;
 	line-height: 1.35;
+	font-weight: normal;
 }
 /* Venue Grid */
 .mpwem-venue-grid {
@@ -1825,6 +1817,9 @@ select.mpwem-global-qty-field__input {
 	flex-direction: column;
 	gap: 8px;
 }
+.mpwem-featured-select,.mpwem-featured-remove{
+	width: 50%;
+}
 /* Breakpoint: small tablets and large phones */
 @media (min-width: 600px) {
 	.mpwem-event-wizard {
@@ -1880,8 +1875,9 @@ select.mpwem-global-qty-field__input {
 	}
 	.mpwem-featured-image__actions {
 		flex-direction: row;
-		flex-wrap: wrap;
+		justify-content: stretch;
 	}
+
 	.mpwem-taxonomy-checklist {
 		grid-template-columns: repeat(2, auto);
 	}
@@ -2114,6 +2110,12 @@ select.mpwem-global-qty-field__input {
 	line-height: 1.15;
 	color: #10233f;
 }
+div.mep_reg_status_show_msg_txt_sec textarea.formControl{
+	width:100%;
+	max-width: 100%;
+	background-color: #fff;
+}
+
 #mpwem_ticket_summary .mpwem-ticket-summary__intro h3 {
 	margin: 2px 0 1px;
 	font-size: 16px;
@@ -2125,13 +2127,11 @@ select.mpwem-global-qty-field__input {
 .mpwem-ticket-summary__intro p,
 .mpwem-ticket-modal__header-copy p {
 	margin: 0;
-	max-width: 58ch;
 	font-size: 11px;
 	line-height: 1.45;
 	color: var(--mpwem-muted);
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__intro p {
-	max-width: 48ch;
 	font-size: 11px;
 	line-height: 1.4;
 }

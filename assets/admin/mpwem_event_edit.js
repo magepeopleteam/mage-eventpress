@@ -542,8 +542,7 @@
                 '<div class="mpwem-ticket-summary" id="mpwem_ticket_summary">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
                         '<div class="mpwem-ticket-summary__intro">' +
-                            '<span class="mpwem-ticket-summary__eyebrow">Ticket Overview</span>' +
-                            '<h3>Simple ticket list</h3>' +
+                            '<h3>Simple Ticket Type</h3>' +
                             '<p>View pricing at a glance, then open the full editor only when you need details.</p>' +
                         '</div>' +
                         '<div class="mpwem-ticket-summary__actions">' +

@@ -140,7 +140,9 @@
     function showToast(message, type) {
         let $toast = $('.mpwem-toast');
         const toastType = type || 'info';
-        const iconClass = toastType === 'error' ? 'dashicons-warning' : 'dashicons-update-alt';
+        const iconClass = toastType === 'error'
+            ? 'dashicons-warning'
+            : (toastType === 'warning' ? 'dashicons-info-outline' : 'dashicons-update-alt');
 
         if ($toast.length === 0) {
             $toast = $(`
@@ -153,7 +155,7 @@
         }
 
         window.clearTimeout($toast.data('mpwemToastTimer'));
-        $toast.removeClass('show is-error is-success is-info').addClass('is-' + toastType);
+        $toast.removeClass('show is-error is-success is-info is-warning').addClass('is-' + toastType);
         $toast.find('.dashicons').attr('class', 'dashicons ' + iconClass);
         $toast.find('.mpwem-toast-text').text(message || '');
         $toast[0].offsetHeight;
@@ -161,7 +163,7 @@
 
         const timer = window.setTimeout(function() {
             $toast.removeClass('show');
-        }, toastType === 'error' ? 4200 : 2600);
+        }, toastType === 'error' ? 4200 : (toastType === 'warning' ? 3600 : 2600));
 
         $toast.data('mpwemToastTimer', timer);
     }
@@ -249,6 +251,40 @@
                 || normalized.indexOf('attendee registration form') !== -1
                 || normalized.indexOf('attendee form settings') !== -1
                 || normalized.indexOf('mp event reg form menu') !== -1;
+        });
+    }
+
+    function panelLooksLikeWaitlistSection($panel) {
+        if (!$panel || !$panel.length) {
+            return false;
+        }
+
+        const candidateTexts = [];
+        const panelId = (($panel.data('tab-item') || '') + ' ' + ($panel.attr('id') || '') + ' ' + ($panel.attr('class') || '')).trim();
+        if (panelId) {
+            candidateTexts.push(panelId);
+        }
+
+        $panel.find('h1, h2, h3, h4, h5, .section-title, .mpev-label, .label-text, .event_meta_help_txt, label, strong').slice(0, 20).each(function() {
+            const text = $.trim($(this).text());
+            if (text) {
+                candidateTexts.push(text);
+            }
+        });
+
+        const fieldHints = $panel.find('input, select, textarea').map(function() {
+            return [$(this).attr('name'), $(this).attr('id')].filter(Boolean).join(' ');
+        }).get();
+
+        candidateTexts.push.apply(candidateTexts, fieldHints);
+
+        return candidateTexts.some(function(text) {
+            const normalized = normalizePanelLabel(text);
+            return normalized.indexOf('waitlist') !== -1
+                || normalized.indexOf('show wait list') !== -1
+                || normalized.indexOf('show waitlist') !== -1
+                || normalized.indexOf('wait list form') !== -1
+                || normalized.indexOf('waitlist form') !== -1;
         });
     }
 
@@ -470,6 +506,15 @@
                     return;
                 }
 
+                if (panelLooksLikeWaitlistSection($p)) {
+                    $p
+                        .addClass('mpwem-legacy-panel--disabled')
+                        .hide()
+                        .find('input, select, textarea, button')
+                        .prop('disabled', true);
+                    return;
+                }
+                
                 if ($emailReminderMount.length && !$emailReminderMount.children().length && panelLooksLikeEmailReminderSection($p)) {
                     $p.addClass('mpwem-embedded-panel mpwem-legacy-panel').detach().appendTo($emailReminderMount).show();
                     return;
@@ -767,6 +812,35 @@
             'is-global-qty-visible',
             context.$modalMount.find('input[name="enable_global_qty"]').first().is(':checked')
         );
+
+        syncDateWiseGlobalQtyColumns($root);
+    }
+
+    function syncDateWiseGlobalQtyColumns($root) {
+        const ticketContext = getTicketModalContext($root);
+        const $globalQtyToggle = ticketContext.$modalMount.find('input[name="enable_global_qty"]').first().add(
+            $root.find('input[name="enable_global_qty"]').first()
+        ).first();
+        const $globalQtyTypeSelect = ticketContext.$modalMount.find('select[name="mep_gq_type"]').first().add(
+            $root.find('select[name="mep_gq_type"]').first()
+        ).first();
+        const isGlobalQtyEnabled = $globalQtyToggle.is(':checked');
+        const globalQtyType = ($globalQtyTypeSelect.val() || '').toString();
+        const shouldShowDateWiseColumns = isGlobalQtyEnabled && globalQtyType === 'date_wise';
+        const $targets = $root.find(
+            '#mpwem_particular_date_modal_mount [data-collapse="#mep_gq_type_date_wise"], ' +
+            '#mpwem_wizard_date_mount [data-collapse="#mep_gq_type_date_wise"]'
+        );
+
+        $targets.each(function() {
+            const $target = $(this);
+            const tagName = (this.tagName || '').toLowerCase();
+            const displayValue = tagName === 'th' || tagName === 'td' ? 'table-cell' : 'block';
+
+            $target.toggleClass('mActive', shouldShowDateWiseColumns);
+            $target.toggleClass('mpwem-ticket-col-hidden', !shouldShowDateWiseColumns);
+            $target.css('display', shouldShowDateWiseColumns ? displayValue : 'none');
+        });
     }
 
     function initializeTicketTableDragScroll($root) {
@@ -1468,11 +1542,14 @@
         const activeType = getActiveDateModalType($root);
         const config = getDateModalTypeConfig(activeType);
         const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
+        const $dateModeSections = context.$modalMount.children('[data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"], [data-collapse="#mep_everyday_event"]');
 
-        context.$modalMount.find('[data-collapse]').removeClass('mActive mpwem-date-mode-active').hide();
+        $dateModeSections.removeClass('mActive mpwem-date-mode-active').hide();
         if ($activeSection.length) {
             $activeSection.addClass('mActive mpwem-date-mode-active').show();
         }
+        initializeParticularDateTableDragScroll($root);
+        syncDateWiseGlobalQtyColumns($root);
 
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
         lockBodyScroll();
@@ -1583,6 +1660,7 @@
         enhanceOffDayPicker(context.$modalMount);
         enhanceRepeatedScheduleLayout(context.$modalMount);
         initializeParticularDateTableDragScroll($root);
+        syncDateWiseGlobalQtyColumns($root);
         renderParticularDateSummary($root);
         syncParticularDateModalFooter($root);
 
@@ -1592,6 +1670,7 @@
                 return;
             }
             const observer = new MutationObserver(function() {
+                syncDateWiseGlobalQtyColumns($root);
                 renderParticularDateSummary($root);
             });
             observer.observe($tbody[0], { childList: true, subtree: true });
@@ -1658,8 +1737,16 @@
             }, 20);
         });
 
+        $root.on('change.mpwemDateModal', 'input[name="enable_global_qty"], select[name="mep_gq_type"]', function() {
+            window.setTimeout(function() {
+                syncDateWiseGlobalQtyColumns($root);
+            }, 20);
+        });
+
         $root.on('click.mpwemDateModal', '#mpwem_particular_date_modal_mount .mpwem_item_remove, #mpwem_particular_date_modal_mount .mp_add_item, #mpwem_particular_date_modal_mount .mpwem_add_item', function() {
             window.setTimeout(function() {
+                initializeParticularDateTableDragScroll($root);
+                syncDateWiseGlobalQtyColumns($root);
                 syncParticularDateModalFooter($root);
                 renderParticularDateSummary($root);
             }, 280);
@@ -1689,6 +1776,7 @@
             let startScrollLeft = 0;
             let dragBlocked = false;
             let hasHorizontalOverflow = false;
+            let suppressClick = false;
 
             $scroller.on('mousedown.mpwemDateDragScroll', function(e) {
                 if (e.button !== 0) {
@@ -1703,8 +1791,13 @@
                 isPointerDown = true;
                 dragBlocked = $(e.target).closest(blockedSelector).length > 0;
                 isDragging = false;
+                suppressClick = false;
                 startX = e.pageX;
                 startScrollLeft = this.scrollLeft;
+
+                if (!dragBlocked) {
+                    e.preventDefault();
+                }
             });
 
             $(document).on('mousemove.mpwemDateDragScroll', function(e) {
@@ -1719,7 +1812,9 @@
                     }
 
                     isDragging = true;
+                    suppressClick = true;
                     $scroller.addClass('is-dragging');
+                    $('body').addClass('mpwem-drag-scroll-active');
 
                     const activeElement = document.activeElement;
                     if (activeElement && $scroller.has(activeElement).length) {
@@ -1737,6 +1832,37 @@
                 hasHorizontalOverflow = false;
                 isDragging = false;
                 $scroller.removeClass('is-dragging');
+                $('body').removeClass('mpwem-drag-scroll-active');
+            });
+
+            $scroller.on('click.mpwemDateDragScroll', function(e) {
+                if (!suppressClick) {
+                    return;
+                }
+
+                suppressClick = false;
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            $scroller.on('wheel.mpwemDateDragScroll', function(e) {
+                const originalEvent = e.originalEvent;
+                if (!originalEvent) {
+                    return;
+                }
+
+                const horizontalDelta = Math.abs(originalEvent.deltaX || 0);
+                const verticalDelta = Math.abs(originalEvent.deltaY || 0);
+                const canScrollHorizontally = this.scrollWidth > this.clientWidth + 2;
+
+                if (!canScrollHorizontally) {
+                    return;
+                }
+
+                if (verticalDelta > horizontalDelta) {
+                    this.scrollLeft += originalEvent.deltaY;
+                    e.preventDefault();
+                }
             });
 
             $scroller.data('mpwemDateDragScrollInit', true);
@@ -3496,7 +3622,8 @@
 
     function validateDateWiseGlobalQty($root, options) {
         const $datePanel = getDatePanel($root);
-        const shouldFocusStep = !(options && options.focusStep === false);
+        const shouldFocusStep = !!(options && options.focusStep);
+        const blockOnError = !!(options && options.blockOnError);
         if (!$datePanel.length) {
             return true;
         }
@@ -3538,11 +3665,11 @@
             return true;
         }
 
-        if (shouldFocusStep) {
+        if (blockOnError && shouldFocusStep) {
             setActiveStep($root, 'date', { pushHash: true, validate: false });
         }
 
-        if ($firstInvalid.length) {
+        if (blockOnError && $firstInvalid.length) {
             window.setTimeout(function() {
                 openParticularDateModal($root, 'list');
                 window.setTimeout(function() {
@@ -3556,8 +3683,8 @@
             }, 80);
         }
 
-        showToast('Global Qty is required in Particular Date & Time Settings when Global Qty Type is set to Particular Date Wise.', 'error');
-        return false;
+        showToast('Global Qty is required in Particular Date & Time Settings when Global Qty Type is set to Particular Date Wise.', 'warning');
+        return !blockOnError;
     }
 
     function setActiveStep($root, stepKey, options) {

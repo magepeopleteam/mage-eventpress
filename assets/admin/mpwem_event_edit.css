@@ -1858,7 +1858,7 @@ select.mpwem-global-qty-field__input {
 		min-height: 44px;
 	}
 	.mpwem-card {
-		margin-bottom: 15px;
+		margin-bottom: 0;
 	}
 	.mpwem-card__head,
 	.mpwem-card__body {
@@ -3625,6 +3625,25 @@ body.mpwem-ticket-modal-open {
 	border-color: #a7ddeb;
 	background: #e6f8fc;
 	color: #0e7490;
+}
+.mpwem-display-section--waitlist::before {
+	background: #ca8a04;
+}
+.mpwem-display-section--waitlist .mpwem-display-section__head {
+	background: linear-gradient(180deg, #fffdf5 0%, #fff7db 100%);
+}
+.mpwem-display-section--waitlist .mpwem-display-section__head-main {
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: 6px;
+}
+.mpwem-display-section--waitlist .mpwem-display-section__head p {
+	grid-column: 1;
+	margin-top: 0;
+}
+.mpwem-display-section--waitlist .mpwem-display-section__badge {
+	border-color: #f4d58d;
+	background: #fff8db;
+	color: #a16207;
 }
 .mpwem-display-section--timeline::before {
 	background: #2563eb;
@@ -6256,6 +6275,16 @@ body.mpwem-ticket-modal-open {
 	overflow-x: auto;
 	overflow-y: visible;
 	-webkit-overflow-scrolling: touch;
+	touch-action: pan-x;
+	overscroll-behavior-x: contain;
+	cursor: grab;
+}
+#mpwem_particular_date_modal_mount ._ov_auto.is-dragging {
+	cursor: grabbing;
+	user-select: none;
+}
+body.mpwem-drag-scroll-active {
+	user-select: none;
 }
 #mpwem_particular_date_modal_mount .mpwem-date-table {
 	width: max-content;
@@ -7322,6 +7351,13 @@ code {
 }
 .mpwem-toast.is-error .dashicons {
 	color: #fb7185;
+	animation: none;
+}
+.mpwem-toast.is-warning {
+	background-color: #5b3a00;
+}
+.mpwem-toast.is-warning .dashicons {
+	color: #fbbf24;
 	animation: none;
 }
 .mpwem-toast.is-info .dashicons,
@@ -8399,7 +8435,7 @@ code {
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table thead th {
 	position: sticky;
 	top: 0;
-	z-index: 2;
+	z-index: 0;
 	padding: 14px 12px;
 	border-bottom: 1px solid #d7dde8;
 	background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);

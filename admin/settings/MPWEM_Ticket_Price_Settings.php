@@ -411,6 +411,7 @@
                         <div class="mpwem-ticket-card__group">
                             <label class="mpwem-card-label"><?php esc_html_e( 'GLOBAL QUANTITY TYPE?', 'mage-eventpress' ); ?></label>
                             <select class="mpwem-card-input" name="mep_gq_type">
+                                <option value="date_wise" <?php selected( $global_qty_type, 'date_wise' ); ?>><?php esc_html_e( 'Particular Date Wise', 'mage-eventpress' ); ?></option>
                                 <option value="global" <?php selected( $global_qty_type, 'global' ); ?>><?php esc_html_e( 'Full Event Base', 'mage-eventpress' ); ?></option>
                             </select>
                         </div>

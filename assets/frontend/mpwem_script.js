@@ -475,6 +475,7 @@ function mpwem_attendee_management(parent, total_qty) {
 (function ($) {
     "use strict";
     $(document).ready(function () {
+        $('.mpwem_related_area').slideDown('fast').promise().done(function () {
         $('.mpwem_related_area .related_item').slick({
             dots: false,
             arrows: true,
@@ -509,6 +510,7 @@ function mpwem_attendee_management(parent, total_qty) {
                     }
                 },
             ]
+        });
         });
     });
 }(jQuery));

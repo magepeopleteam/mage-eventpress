@@ -1,5 +1,5 @@
 <?php
-	// Template Name: Smart Theme
+	// Template Name: Smart Theme  
 	// Settings Value :::::::::::::::::::::::::::::::::::::::;
 	$event_id                  = $event_id ?? 0;
 	$event_infos               = $event_infos ?? MPWEM_Functions::get_all_info( $event_id );

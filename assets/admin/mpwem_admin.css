@@ -18,7 +18,6 @@
 	div.mpwem_style h4,
 	div.mpwem_style h5,
 	div.mpwem_style h6 { margin: 0; padding: 0; line-height: 1.25; }
-	div.mpwem_style strong { font-weight: normal; }
 	div.mpwem_style .extra_bold { font-weight: 900; }
 	div.mpwem_style h1,
 	div.mpwem_style [class*="_fs_h1"] { font-size: var(--fs_h1); font-weight: normal; }

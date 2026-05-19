@@ -21,7 +21,7 @@
 				$event_rt_prv_date    = get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) ? get_post_meta( $event_id, 'mep_rt_event_prvdate', true ) : $event_start_date;
 				$rt_status            = get_post_meta( $event_id, 'mep_rich_text_status', true );
 				?>
-                <div class="mp_tab_item" data-tab-item="#mp_event_rich_text">
+                <div class="mp_tab_item" data-tab-item="#mp_event_rich_text" style="padding:15px">
                     <h3><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Rich Texts for SEO & Google Schema Text', 'mage-eventpress' ); ?></h3>
                     <p><?php esc_html_e( 'Configure Your Settings Here', 'mage-eventpress' ) ?></p>
                     <section class="bg-light">

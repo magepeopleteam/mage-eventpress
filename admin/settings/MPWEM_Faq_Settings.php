@@ -23,7 +23,7 @@
 					$faq_infos = array();
 				}
 				$faq_des   = MPWEM_Global_Function::get_post_info( $post_id, 'mep_faq_description', '' );
-                $reg_status=get_post_meta($post_id,'mep_faq_status',true)?get_post_meta($post_id,'mep_faq_status',true):'on';
+                $reg_status=get_post_meta($post_id,'mep_faq_status',true)?get_post_meta($post_id,'mep_faq_status',true):'off';
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $active_reg_status    = $reg_status == 'on' ? 'mActive' : '';

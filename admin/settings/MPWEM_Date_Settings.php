@@ -28,7 +28,7 @@
 				$event_type  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 				$buffer_time = MPWEM_Global_Function::get_post_info( $event_id, 'mep_buffer_time', 0 );
 				?>
-                <div class="_layout_default_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero" style="overflow: visible;">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Date & Time Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Date and Time Settings Here', 'mage-eventpress' ); ?></span>
@@ -278,7 +278,7 @@
                                     </tbody>
                                 </table>
                             </div>
-							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Dates', 'mage-eventpress' ) ); ?>
+							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add More Date', 'mage-eventpress' ) ); ?>
                             <div class="mpwem_hidden_content">
                                 <table>
                                     <tbody class="mpwem_hidden_item">
@@ -792,6 +792,9 @@
                             <span class="label-text"><?php esc_html_e( 'Configure Tour Off Dates', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="mpwem_settings_area">
+							<div class="mpwem-ticket-off-dates-actions">
+								<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
+							</div>
                             <div class="mpwem_item_insert mpwem_sortable_area">
 								<?php
                                     $all_off_dates = MPWEM_Global_Function::get_post_info( $post_id, 'mep_ticket_off_dates', array() );
@@ -816,7 +819,6 @@
                                     }
 								?>
                             </div>
-							<?php MPWEM_Custom_Layout::add_new_button( esc_html__( 'Add Off Date', 'mage-eventpress' ) ); ?>
                             <div class="mpwem_hidden_content">
                                 <div class="mpwem_hidden_item">
 									<?php self::off_date_item(); ?>
@@ -983,9 +985,9 @@
 			/*************************************/
 			public function special_on_dates_setting( $post_id ) {
 				$special_dates       = MPWEM_Global_Function::get_post_info( $post_id, 'mep_special_date_info', array() );
-				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'off' );
+				$display_ticket_time = MPWEM_Global_Function::get_post_info( $post_id, 'mep_disable_ticket_time', 'no' );
 				?>
-                <div class="mpwem_style mep-special-datetime" style="display:<?php echo esc_attr( $display_ticket_time == 'off' ? 'none' : 'block' ); ?>">
+                <div class="mpwem_style mep-special-datetime" style="border-radius:4px;border:1px solid #eef2f7!important;display:<?php echo esc_attr( $display_ticket_time == 'yes' ? 'block' : 'none' ); ?>">
                     <section class="bg-light" style="margin-top: 20px;">
                         <div>
                             <h2><?php esc_html_e( 'Special  Dates Time Settings', 'mage-eventpress' ); ?></h2>
@@ -1153,7 +1155,7 @@
                 <div class="_layout_default mpwem_date_format_settings">
                     <div class="_bg_light_padding">
                         <div class="_justify_between_align_center_wrap ">
-                            <h4><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></h4>
+                            <h4 style="display:flex !important;gap:5px"><?php esc_html_e( 'Date Time format Settings', 'mage-eventpress' ); ?></h4>
 							<?php MPWEM_Custom_Layout::switch_button( 'mep_enable_custom_dt_format', $checked ); ?>
                         </div>
                         <span class="label-text"><?php esc_html_e( 'You can change the date and time format by going to the settings', 'mage-eventpress' ); ?></span>

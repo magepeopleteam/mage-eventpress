@@ -1474,13 +1474,16 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$thedir = glob( $default_path . "*" );
 			}
 			$theme = array();
+			
 			foreach ( $thedir as $filename ) {
+				
 				if ( is_file( $filename ) ) {
 					$file  = basename( $filename );
 					$naame = str_replace( "?>", "", strip_tags( file_get_contents( $filename, false, null, 25, 15 ) ) );
 				}
 				$theme[ $file ] = $naame;
 			}
+			
 			return $theme;
 		}
 	}
@@ -5534,31 +5537,30 @@ function mep_change_date_status() {
         return apply_filters( 'mep_gq_total_left_sect', $total_left, $event_id, $event_date );
     }
     if (!is_plugin_active('woocommerce-event-manager-addon-early-bird/early-bird.php')) {
-    if ( ! function_exists( 'mep_early_bird_column' ) ) {
-    add_action( 'mpwem_add_extra_column', 'mep_early_bird_column', 90 );
-    function mep_early_bird_column( $event_id ) {
-        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
-        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+	    if ( ! function_exists( 'mep_early_bird_column' ) ) {
+	    function mep_early_bird_column( $event_id ) {
+        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
+        $active_category     = $show_advance_column == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         ?>
-        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
+        <th class="_min_250 <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status" title="<?php esc_attr_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?>"><?php esc_html_e( 'Sale Start Date & Time', 'mage-eventpress' ); ?></th>
         <?php
     }
     }
     if ( ! function_exists( 'mep_early_bird_column_saved' ) ) {
-    add_action( 'mpwem_add_extra_input_box', 'mep_early_bird_column_saved', 90,2 );
+    add_action( 'mpwem_add_sale_period_input_box', 'mep_early_bird_column_saved', 90, 2 );
     function mep_early_bird_column_saved( $event_id, $ticket_info = [] ) {
-        $show_advance_column = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_advance_col_status', 'off' );
-        $active_category     = $show_advance_column == 'on' ? 'mActive' : '';
+        $early_bird_status   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_early_bird_status', 'off' );
+        $active_category     = $early_bird_status == 'on' ? 'mActive' : 'mpwem-ticket-col-hidden';
         $sale_start          = is_array($ticket_info) && array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
         ?>
-        <td class="<?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_show_advance_col_status">
-            <div class="_dFlex">
+        <div class="mpwem-card-date-wrapper <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
+            <div class="mpwem-card-date-field">
                 <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
-                <label>
+                <label class="mpwem-card-time-field">
                     <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_start ) ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
                 </label>
             </div>
-        </td>
+        </div>
         <?php
     }
     }

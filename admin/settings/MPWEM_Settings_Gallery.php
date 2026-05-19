@@ -56,8 +56,6 @@
                     </section>
                     <div class="mpwem_style">
                         <section>
-                            <h2><?php esc_html_e( 'Thumbnail', 'mage-eventpress' ); ?></h2>
-                            <span class="label-text"><?php esc_html_e( 'Add thumbnail for your event lists', 'mage-eventpress' ); ?></span>
                             <div style="margin-top: 20px;">
 								<?php
 									$image_id = get_post_meta( $tour_id, 'mep_list_thumbnail', true );

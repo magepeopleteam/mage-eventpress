@@ -1474,13 +1474,16 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				$thedir = glob( $default_path . "*" );
 			}
 			$theme = array();
+			
 			foreach ( $thedir as $filename ) {
+				
 				if ( is_file( $filename ) ) {
 					$file  = basename( $filename );
 					$naame = str_replace( "?>", "", strip_tags( file_get_contents( $filename, false, null, 25, 15 ) ) );
 				}
 				$theme[ $file ] = $naame;
 			}
+			
 			return $theme;
 		}
 	}

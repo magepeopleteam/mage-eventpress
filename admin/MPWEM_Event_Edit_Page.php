@@ -1201,7 +1201,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_ticket_modal_title">
 															<div class="mpwem-ticket-modal__header">
 																<div class="mpwem-ticket-modal__header-copy">
-																	<span class="mpwem-ticket-modal__eyebrow"><?php esc_html_e('Ticket Editor', 'mage-eventpress'); ?></span>
 																	<h3 id="mpwem_ticket_modal_title"><?php esc_html_e('Manage ticket types', 'mage-eventpress'); ?></h3>
 																	<p id="mpwem_ticket_modal_description"><?php esc_html_e('Edit pricing, capacities, advanced columns, and ticket settings without leaving this step.', 'mage-eventpress'); ?></p>
 																</div>
@@ -1229,7 +1228,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_extra_service_modal_title">
 															<div class="mpwem-ticket-modal__header">
 																<div class="mpwem-ticket-modal__header-copy">
-																	<span class="mpwem-ticket-modal__eyebrow"><?php esc_html_e('Extra Service Editor', 'mage-eventpress'); ?></span>
 																	<h3 id="mpwem_extra_service_modal_title"><?php esc_html_e('Manage extra services', 'mage-eventpress'); ?></h3>
 																	<p id="mpwem_extra_service_modal_description"><?php esc_html_e('Edit optional add-ons, pricing, stock, and quantity settings without leaving this step.', 'mage-eventpress'); ?></p>
 																</div>
@@ -1289,7 +1287,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_particular_date_modal_title">
 															<div class="mpwem-ticket-modal__header">
 																<div class="mpwem-ticket-modal__header-copy">
-																	<span class="mpwem-ticket-modal__eyebrow"><?php esc_html_e('Particular Date Editor', 'mage-eventpress'); ?></span>
 																	<h3 id="mpwem_particular_date_modal_title"><?php esc_html_e('Manage particular dates', 'mage-eventpress'); ?></h3>
 																	<p id="mpwem_particular_date_modal_description"><?php esc_html_e('Edit specific event dates, times, and quantities without leaving this step.', 'mage-eventpress'); ?></p>
 																</div>

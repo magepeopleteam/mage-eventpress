@@ -1058,7 +1058,6 @@
                 '<div class="mpwem-ticket-summary" id="mpwem_extra_service_summary">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
                         '<div class="mpwem-ticket-summary__intro">' +
-                            '<span class="mpwem-ticket-summary__eyebrow">Extra Service Overview</span>' +
                             '<h3>Simple add-on list</h3>' +
                             '<p>Review optional services at a glance, then open the full editor when you need pricing or quantity details.</p>' +
                         '</div>' +
@@ -1419,7 +1418,6 @@
     function getDateModalTypeConfig(type) {
         const map = {
             no: {
-                eyebrow: 'Single Event Overview',
                 summaryTitle: 'Single event schedule',
                 summaryText: 'Review the main event date and any extra dates, then open the full editor when you need to update the schedule.',
                 primaryAction: 'Open Settings',
@@ -1427,7 +1425,6 @@
                 modalDescription: 'Edit the main event date, time, and any additional single-event dates without leaving this step.'
             },
             yes: {
-                eyebrow: 'Particular Date Overview',
                 summaryTitle: 'Specific event dates',
                 summaryText: 'Review particular dates at a glance, then open the full editor when you need to change time or quantity details.',
                 primaryAction: 'Show Details',
@@ -1438,7 +1435,6 @@
                 modalNewDescription: 'Create a new date, then fill in time and quantity details.'
             },
             everyday: {
-                eyebrow: 'Repeated Event Overview',
                 summaryTitle: 'Repeated event schedule',
                 summaryText: 'Review the repeating schedule, off days, and special date settings, then open the full editor to adjust them.',
                 primaryAction: 'Open Settings',
@@ -1466,7 +1462,6 @@
                 '<div class="mpwem-ticket-summary" id="mpwem_particular_date_summary" style="display:none;">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
                         '<div class="mpwem-ticket-summary__intro">' +
-                            '<span class="mpwem-ticket-summary__eyebrow"></span>' +
                             '<h3></h3>' +
                             '<p></p>' +
                         '</div>' +
@@ -1876,12 +1871,6 @@
         context.$modalMount.find('section.bg-light').hide();
         context.$modalMount.find('.mep-special-datetime section.bg-light').hide();
 
-        context.$modalMount.find('._ov_auto').each(function() {
-            const $scroller = $(this);
-            if (!$scroller.next('.mpwem-ticket-table-hint').length) {
-                $scroller.after('<p class="mpwem-ticket-table-hint">Tip: Drag the table left or right to see more columns.</p>');
-            }
-        });
 
         decorateDateSections(context.$modalMount);
         enhanceDateFields(context.$modalMount);
@@ -2201,9 +2190,11 @@
                 $mount.prepend(
                     $('<div class="mpwem-display-section__head"></div>')
                         .append($('<div class="mpwem-display-section__head-main"></div>')
-                            .append($('<span class="mpwem-display-section__badge" aria-hidden="true"></span>').append($('<span class="dashicons"></span>').addClass(section.icon || 'dashicons-admin-generic')))
-                            .append($('<h3></h3>').text(section.title))
-                            .append($('<p></p>').text(section.desc)))
+                        .append($('<span class="mpwem-display-section__badge" aria-hidden="true"></span>')
+                        .append($('<span class="dashicons"></span>')
+                        .addClass(section.icon || 'dashicons-admin-generic')))
+                        .append($('<h3></h3>').text(section.title))
+                        .append($('<p></p>').text(section.desc)))
                 );
             }
 

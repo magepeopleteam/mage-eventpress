@@ -490,7 +490,6 @@ body.mpwem-event-wizard-screen {
 	padding: var(--mpwem-btn-padding);
 	border-radius: var(--mpwem-btn-radius);
 	font-size: 14px;
-	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	border: 1px solid var(--mpwem-border);
@@ -1740,10 +1739,10 @@ select.mpwem-global-qty-field__input {
  * their `_` prefixed names because the PHP panels generate them.
  * =================================================================== */
 ._layout_default_xs_mp_zero {
-	background: #fff;
-	border: 1px solid var(--mpwem-border);
+
+
 	border-radius: var(--mpwem-radius);
-	box-shadow: var(--mpwem-shadow);
+
 	margin-bottom: 15px !important;
 	overflow: hidden;
 }
@@ -2073,9 +2072,9 @@ select.mpwem-global-qty-field__input {
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 20px;
 	align-items: end;
-	padding: 28px;
+	padding:15px;
 	border: 1px solid #dbe5f2;
-	border-radius: 18px;
+	border-radius:12px;
 	background:
 		radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 36%),
 		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -2202,7 +2201,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 .mpwem-ticket-summary__item {
 	padding: 10px 22px;
 	border: 1px solid var(--mpwem-border);
-	border-radius: var(--mpwem-radius);
+	border-radius: 5px;
 	background: #fff;
 	box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.45);
 	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -2210,28 +2209,28 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 #mpwem_ticket_summary .mpwem-ticket-summary__item {
 	padding: 8px 14px;
 	gap: 14px;
-	border-radius: 12px;
+	border-radius: 5px;
 }
 #mpwem_extra_service_summary .mpwem-ticket-summary__item {
 	padding: 8px 14px;
 	gap: 14px;
-	border-radius: 12px;
+	border-radius: 5px;
 }
 .mpwem-ticket-summary__item:nth-child(even) {
-	background: linear-gradient(135deg, #ffffff 0%, #fffdf8 52%, #fdf3e8 100%);
-	border-color: #f1e3d2;
+	background: #fafcff;
+	border-color: #dbe5f2;
 }
 .mpwem-ticket-summary__item:nth-child(odd) {
-	background: linear-gradient(135deg, #fffefd 0%, #fff9f2 55%, #fcefe1 100%);
-	border-color: #f3e6d8;
+	background:#fafcff;
+	border-color: #dbe5f2;
 }
 .mpwem-ticket-summary__item:hover {
 	transform: translateY(-1px);
-	border-color: #e8cfb5;
+	border-color: #dbe5f2;
 	box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.22);
 }
 .mpwem-ticket-summary__item.is-disabled {
-	background: linear-gradient(135deg, #fefdfb 0%, #fbf7f1 58%, #f6efe6 100%);
+	background: linear-gradient(135deg, #fefdfb 0%, #dbe5f2 58%, #dbe5f2 100%);
 	opacity: 0.9;
 }
 .mpwem-ticket-summary__item-head {
@@ -2243,7 +2242,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 .mpwem-ticket-summary__item-head h4,
 .mpwem-ticket-summary__empty h4 {
 	margin: 0 !important;
-	font-size: 16px !important;
+	font-size: 14px !important;
 	color: #10233f;
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__item-head h4 {
@@ -2307,13 +2306,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	line-height: 1.2;
 	font-weight: 400;
 }
-.mpwem-ticket-summary__capacity {
-	font-size: 12px;
-	font-weight: 600;
-	color: var(--mpwem-muted);
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-}
+
 .mpwem-ticket-summary__datetime {
 	display: block;
 	font-size: 14px;
@@ -2403,7 +2396,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	padding: 28px;
 	border: 1px dashed #c7d8f6;
 	border-radius: 18px;
-	background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__empty {
 	gap: 8px;
@@ -2440,7 +2432,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	margin: 24px auto;
 	border: 1px solid rgba(148, 163, 184, 0.35);
 	border-radius: 24px;
-	background: #f8fbff;
+	background: #fff;
 	box-shadow: 0 35px 80px -32px rgba(15, 23, 42, 0.55);
 	overflow: hidden;
 }
@@ -2484,7 +2476,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	color: #1d4ed8;
 }
 .mpwem-ticket-modal__body {
-	padding: 15px 15px 0;
+	padding: 15px 15px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	min-width: 0;
@@ -2498,10 +2490,8 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	gap: 0;
 	width: 100%;
 	min-width: 0;
-	border: 1px solid var(--mpwem-border);
 	border-radius: 18px;
 	background: #fff;
-	box-shadow: 0 14px 30px -26px rgba(15, 23, 42, 0.45);
 	overflow: hidden;
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-editor-section > ._bg_light_padding {
@@ -2547,12 +2537,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-schedule-modal {
 	padding: 0 !important;
-	border: 1px solid #dbe6f3 !important;
-	border-radius: 22px !important;
-	background:
-		radial-gradient(circle at top left, rgba(37, 99, 235, 0.1), transparent 30%),
-		linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
-	box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.35);
 	overflow: hidden !important;
 	margin-bottom: 20px !important;
 }
@@ -2563,7 +2547,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	background: transparent !important;
 }
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._padding_bt {
-	padding: 18px 10px !important;
 	border-bottom: 1px solid #e2e8f0;
 }
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._padding_bt:last-child {
@@ -2574,19 +2557,8 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	border: 1px solid #e2e8f0 !important;
 	border-radius: 18px !important;
 	background: rgba(255, 255, 255, 0.96) !important;
-	box-shadow: 0 12px 28px -24px rgba(15, 23, 42, 0.42);
 }
-.mpwem-ticket-modal__mount .mpwem-repeat-row--start,
-.mpwem-ticket-modal__mount .mpwem-repeat-row--end {
-	background: linear-gradient(135deg, rgba(219, 234, 254, 0.75), rgba(255, 255, 255, 0.95) 42%) !important;
-}
-.mpwem-ticket-modal__mount .mpwem-repeat-row--interval {
-	background: linear-gradient(135deg, rgba(224, 242, 254, 0.75), rgba(255, 255, 255, 0.95) 42%) !important;
-}
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdays,
-.mpwem-ticket-modal__mount .mpwem-repeat-row--offdates {
-	background: linear-gradient(135deg, rgba(240, 253, 244, 0.78), rgba(255, 255, 255, 0.95) 42%) !important;
-}
+
 .mpwem-ticket-modal__mount .mpwem-repeat-row .label-text {
 	display: block;
 	margin-top: 10px;
@@ -2595,10 +2567,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	line-height: 1.5;
 }
 .mpwem-ticket-modal__mount [data-collapse="#mep_everyday_event"] ._justify_between_align_center_wrap {
-	display: grid !important;
-	grid-template-columns: minmax(220px, 1fr) 200px !important;
-	gap: 18px !important;
-	align-items: center !important;
+
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-row ._justify_between_align_center_wrap > label:first-child,
 .mpwem-ticket-modal__mount .mpwem-repeat-row label._justify_between_align_center_wrap > ._mr {
@@ -2644,9 +2613,6 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	grid-template-columns: minmax(0, 1fr);
 	gap: 12px;
 	align-items: center;
-	width: 100%;
-	max-width: 100%;
-	justify-self: stretch;
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group > label,
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group > .mep_load_every_day {
@@ -2661,8 +2627,8 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	box-sizing: border-box;
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
-	max-width: 260px !important;
-	justify-self: start;
+	max-width: 80px !important;
+	justify-self: end;
 }
 .mpwem-ticket-modal__mount .mpwem-repeat-row--offdays ._justify_between_align_center_wrap,
 .mpwem-ticket-modal__mount .mpwem-repeat-row--offdates .justify_between {
@@ -2684,15 +2650,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	padding-top: 20px;
 	border-top: 2px dashed #e2e8f0 !important;
 }
-.mpwem-ticket-modal__mount .mpwem-repeat-times-panel,
-.mpwem-ticket-modal__mount .mpwem-repeat-special-panel {
-	margin-top: 20px;
-	padding: 22px 0 !important;
-	border: 1px solid #dbe6f3 !important;
-	border-radius: 20px !important;
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%) !important;
-	box-shadow: 0 18px 36px -30px rgba(15, 23, 42, 0.4);
-}
+
 .mpwem-ticket-modal__mount .mpwem-repeat-times-panel .mpTabs,
 .mpwem-ticket-modal__mount .mpwem-repeat-special-panel .mpwem_settings_area {
 	margin-top: 0;
@@ -2800,12 +2758,9 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	overflow-y: visible;
 	max-width: 100%;
 	max-height: none;
-	padding: 6px;
 	border: 1px solid #e2e8f0;
 	border-radius: 18px;
-	background:
-		radial-gradient(circle at top left, rgba(148, 163, 184, 0.08), transparent 30%),
-		linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+	background:#f8fafc;
 	cursor: grab;
 }
 .mpwem-ticket-modal__mount ._ov_auto.is-dragging {
@@ -2844,13 +2799,11 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 .mpwem-ticket-modal__mount .mpwem-date-table thead th:first-child,
 .mpwem-ticket-modal__mount .mpwem_extra_service_table thead th:first-child {
 	border-top-left-radius: 14px;
-	border-bottom-left-radius: 14px;
 }
 .mpwem-ticket-modal__mount .mpwem_ticket_table thead th:last-child,
 .mpwem-ticket-modal__mount .mpwem-date-table thead th:last-child,
 .mpwem-ticket-modal__mount .mpwem_extra_service_table thead th:last-child {
 	border-top-right-radius: 14px;
-	border-bottom-right-radius: 14px;
 }
 .mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr,
 .mpwem-ticket-modal__mount .mpwem-date-table tbody tr,
@@ -2881,21 +2834,7 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	border-top-right-radius: 16px;
 	border-bottom-right-radius: 16px;
 }
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(odd) td,
-.mpwem-ticket-modal__mount .mpwem-date-table tbody tr:nth-child(odd) td,
-.mpwem-ticket-modal__mount .mpwem_extra_service_table tbody tr:nth-child(odd) td {
-	background: linear-gradient(135deg, #fffefd 0%, #fff9f2 55%, #fcefe1 100%);
-}
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:nth-child(even) td,
-.mpwem-ticket-modal__mount .mpwem-date-table tbody tr:nth-child(even) td,
-.mpwem-ticket-modal__mount .mpwem_extra_service_table tbody tr:nth-child(even) td {
-	background: linear-gradient(135deg, #ffffff 0%, #fffdf8 52%, #fdf3e8 100%);
-}
-.mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr.disable_row td,
-.mpwem-ticket-modal__mount .mpwem-date-table tbody tr.disable_row td {
-	background: linear-gradient(135deg, #fefdfb 0%, #fbf7f1 58%, #f6efe6 100%);
-	border-color: #e5d8c9;
-}
+
 .mpwem-ticket-modal__mount .mpwem_ticket_table label,
 .mpwem-ticket-modal__mount .mpwem-date-table label,
 .mpwem-ticket-modal__mount .mpwem_extra_service_table label {
@@ -3053,7 +2992,6 @@ body.mpwem-ticket-modal-open {
 	gap: 18px;
 	padding: 10px 22px;
 	margin: 0 -24px 24px;
-	border-top: 1px solid #d7dde8;
 	border-bottom: 1px solid #d7dde8;
 	background: linear-gradient(180deg, #f6f8fc 0%, #eef2f7 100%);
 }
@@ -3110,10 +3048,13 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-card__main {
 	display: grid;
-	grid-template-columns: minmax(280px, 1.8fr) minmax(120px, 0.62fr) minmax(120px, 0.62fr) minmax(128px, 0.72fr) minmax(220px, 1fr) 68px;
+	grid-template-columns: minmax(380px, 2fr) minmax(120px, 1.62fr) minmax(120px, 1.62fr) minmax(128px, 1.72fr) minmax(220px, 1fr) 1fr;
 	gap: 16px 18px;
 	padding: 10px;
 	align-items: center;
+	border: 1px solid #d8d8d8;
+  	border-radius: 12px;
+	background: #fff;
 }
 .mpwem-ticket-modal__mount .mpwem-ticket-card:nth-child(even) .mpwem-ticket-card__main {
 	background: #f7f7f7;
@@ -3509,15 +3450,7 @@ body.mpwem-ticket-modal-open {
 	border-bottom: 1px solid #d9e2ef;
 	position: relative;
 }
-.mpwem-display-section::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 4px;
-	background: #cbd5e1;
-}
+
 .mpwem-display-section__head-main {
 	display: grid;
 	grid-template-columns: 36px minmax(0, 1fr);
@@ -3582,9 +3515,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section.is-expanded .mpwem-display-section__head {
 	border-bottom-color: rgba(37, 99, 235, 0.12);
 }
-.mpwem-display-section--template::before {
-	background: #7c3aed;
-}
+
 .mpwem-display-section--template .mpwem-display-section__head {
 	background: linear-gradient(180deg, #faf7ff 0%, #f5f0ff 100%);
 }
@@ -3659,9 +3590,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--related::before {
 	background: #c2410c;
 }
-.mpwem-display-section--related .mpwem-display-section__head {
-	background: linear-gradient(180deg, #fff8f3 0%, #fff1e7 100%);
-}
+
 .mpwem-display-section--related .mpwem-display-section__badge {
 	border-color: #f4c8aa;
 	background: #fff1e7;
@@ -3670,9 +3599,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--email::before {
 	background: #7c2d12;
 }
-.mpwem-display-section--email .mpwem-display-section__head {
-	background: linear-gradient(180deg, #fff9f5 0%, #fff4ec 100%);
-}
+
 .mpwem-display-section--email .mpwem-display-section__badge {
 	border-color: #f2d3c1;
 	background: #fff4ec;
@@ -5510,7 +5437,7 @@ body.mpwem-ticket-modal-open {
 	box-shadow: none;
 }
 .mpwem-display-section--template .mep-template h5 {
-	margin: 9px 2px 0;
+	margin: 0px 0 20px 0;
 	color: var(--mpwem-text);
 	font-size: 13px;
 	font-weight: 800;
@@ -5960,7 +5887,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-date-step .bg-light {
 	background: #f8fafc !important;
 	border-bottom: 1px solid var(--mpwem-border);
-	border-radius: var(--mpwem-radius) var(--mpwem-radius) 0 0;
+	border-radius:5px;
 	padding: 18px 22px !important;
 	margin: 0 !important;
 }
@@ -6073,12 +6000,16 @@ body.mpwem-ticket-modal-open {
 	background: var(--mpwem-primary);
 	color: #fff !important;
 }
-.mpwem-date-type-option__copy {
+div.mpwem-date-type-option__copy {
 	display: grid;
 	gap: 3px;
 	min-width: 0;
 }
-.mpwem-date-type-option__copy strong {
+div.mpwem-date-type-option__copy strong {
+	color: var(--mpwem-text);
+	font-size: 13px;
+	font-weight: 800;
+	line-height: 1.25;
 	color: var(--mpwem-text);
 	font-size: 13px;
 	font-weight: 800;
@@ -6130,7 +6061,7 @@ body.mpwem-ticket-modal-open {
 	border-radius: 10px !important;
 	background: #fff !important;
 	font-size: 13px !important;
-	font-weight: 700;
+	font-weight: normal;
 	text-align: center;
 }
 .mpwem-date-buffer-field input[name="mep_buffer_time"]:focus {
@@ -6148,13 +6079,7 @@ body.mpwem-ticket-modal-open {
 	justify-self: start;
 	text-align: left;
 }
-[data-collapse="#mep_everyday_event"] > ._layout_default_xs_mp_zero > ._padding_bt ._justify_between_align_center_wrap > .dFlex,
-[data-collapse="#mep_everyday_event"] > ._layout_default_xs_mp_zero > ._padding_bt ._justify_between_align_center_wrap > ._dFlex {
-	justify-self: end;
-	justify-content: flex-end;
-	width: 100%;
-	max-width: 100%;
-}
+
 [data-collapse="#mep_everyday_event"] .mep_load_every_day {
 	width: min(100%, 250px);
 }
@@ -6189,6 +6114,7 @@ body.mpwem-ticket-modal-open {
 	flex-wrap: wrap;
 	gap: 10px;
 	align-items: center;
+	justify-content: end;
 }
 .mpwem-date-input-wrap {
 	position: relative;
@@ -6567,8 +6493,8 @@ body.mpwem-drag-scroll-active {
 	justify-content: end;
 	width: 100%;
 	padding: 10px;
-	background: #fff7ed;
-	border: 1px solid #fdba74;
+	background: #d9e2ef;
+	border: 1px solid #d9e2ef;
 	border-radius: 12px;
 	box-sizing: border-box;
 }
@@ -6652,16 +6578,18 @@ body.mpwem-drag-scroll-active {
 .mpwem-date-step .tabLists li {
 	flex: 0 0 auto;
 	padding: 9px 12px !important;
-	border-radius: 8px !important;
 	color: #475569;
 	font-size: 12px;
 	font-weight: 800;
 	cursor: pointer;
+	border: none;
 }
 .mpwem-date-step .tabLists li.active,
 .mpwem-date-step .tabLists li:hover {
 	background: #eaf2ff;
 	color: var(--mpwem-primary);
+	border-color:transparent;
+	border-radius: 8px;
 }
 .mpwem-date-step .tabsContent {
 	padding: 16px;
@@ -6790,7 +6718,6 @@ body.mpwem-drag-scroll-active {
 }
 .mpwem-date-step .mpwem_date_format_settings {
 	border: 1px solid #d9e2ef;
-	border-radius: 12px;
 	overflow: hidden;
 	background: #fff;
 	box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
@@ -7179,6 +7106,14 @@ body.mpwem-event-wizard-screen #ui-datepicker-div {
 	cursor: pointer;
 	transition: all 0.2s;
 }
+button.mpwem_item_remove span{
+	color: var(--mpwem-btn-danger-text) !important;
+}
+#mpwem_ticket_editor_modal button.mpwem_item_remove:hover span,
+#mpwem_ticket_editor_modal button.mpwem_item_remove:focus span{
+	color: #fff !important;
+}
+
 .mpwem_item_remove:hover {
 	background: var(--mpwem-btn-danger-hover-bg) !important;
 	color: var(--mpwem-btn-danger-hover-text) !important;
@@ -7382,7 +7317,6 @@ code {
 	align-items: center;
 	padding: 12px 24px;
 	background: #f8fafc;
-	border: 1px solid #e2e8f0;
 	border-radius: 12px;
 	margin-bottom: 20px;
 }
@@ -7676,21 +7610,12 @@ code {
 	padding: 18px;
 	border: 1px solid rgba(191, 219, 254, 0.9);
 	border-radius: 18px;
-	background:
-		radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 34%),
-		linear-gradient(135deg, rgba(239, 246, 255, 0.96) 0%, rgba(224, 242, 254, 0.94) 52%, rgba(240, 249, 255, 0.98) 100%);
-	box-shadow:
-		inset 0 1px 0 rgba(255, 255, 255, 0.8),
-		0 16px 34px -28px rgba(14, 116, 144, 0.45);
 	overflow: visible;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-global-card::before {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background:
-		linear-gradient(120deg, rgba(37, 99, 235, 0.08), transparent 38%),
-		linear-gradient(300deg, rgba(6, 182, 212, 0.08), transparent 34%);
 	pointer-events: none;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-global-card__content {
@@ -8184,10 +8109,11 @@ code {
 	width: 100%;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__identity .mpwem-card-input:not(.mpwem-card-input--large) {
-	height: 29px;
+	height: 55px;
 	font-size: 12px;
 	border-color: #dfdfdf;
-	background: #eee;
+	background: #f8f8f8;
+	margin-top: 5px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__price .mpwem-card-label,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__capacity .mpwem-card-label,
@@ -8319,7 +8245,7 @@ code {
 	padding: 10px 16px;
 	border: 1px solid #bfdbfe;
 	border-radius: 999px;
-	background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+	background: #eff6ff;
 	color: #1d4ed8;
 	font-size: 15px;
 	font-weight: 700;
@@ -8341,7 +8267,7 @@ code {
 #mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link:hover,
 #mpwem_particular_date_modal .mpwem-date-modal__add.button.button-link:focus {
 	border-color: #93c5fd;
-	background: linear-gradient(180deg, #ffffff 0%, #dbeafe 100%);
+	background: #dbeafe;
 	color: #1e40af;
 	box-shadow: 0 16px 30px -22px rgba(30, 64, 175, 0.8);
 }
@@ -8468,8 +8394,8 @@ code {
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(2),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(2) {
-	width: 120px;
-	min-width: 120px;
+	width: 70px;
+	min-width: 70px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(3),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(3) {
@@ -8478,15 +8404,15 @@ code {
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(4),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(4) {
-	width: 132px;
-	min-width: 132px;
+	width: 90px;
+	min-width: 90px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(5),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(5),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(6),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(6) {
-	width: 104px;
-	min-width: 104px;
+	width: 85px;
+	min-width: 85px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th:nth-child(7),
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td:nth-child(7),
@@ -8507,13 +8433,13 @@ code {
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th.mpwem-ticket-table__sale-period,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__sale-period {
-	width: 292px;
-	min-width: 292px;
+	width: 260px;
+	min-width: 260px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th.mpwem-ticket-table__actions,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__actions {
-	width: 110px;
-	min-width: 110px;
+	width: 60px;
+	min-width: 60px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__group,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__actions {

@@ -883,6 +883,7 @@
         );
 
         syncDateWiseGlobalQtyColumns($root);
+        syncGlobalQtyTypeWarning($root);
     }
 
     function syncDateWiseGlobalQtyColumns($root) {
@@ -910,6 +911,21 @@
             $target.toggleClass('mpwem-ticket-col-hidden', !shouldShowDateWiseColumns);
             $target.css('display', shouldShowDateWiseColumns ? displayValue : 'none');
         });
+    }
+
+    function syncGlobalQtyTypeWarning($root) {
+        const ticketContext = getTicketModalContext($root);
+        const $globalQtyToggle = ticketContext.$modalMount.find('input[name="enable_global_qty"]').first().add(
+            $root.find('input[name="enable_global_qty"]').first()
+        ).first();
+        const $globalQtyTypeSelect = ticketContext.$modalMount.find('select[name="mep_gq_type"]').first().add(
+            $root.find('select[name="mep_gq_type"]').first()
+        ).first();
+        const isGlobalQtyEnabled = $globalQtyToggle.is(':checked');
+        const globalQtyType = ($globalQtyTypeSelect.val() || '').toString();
+        const shouldShowWarning = isGlobalQtyEnabled && globalQtyType === 'date_wise';
+
+        $root.find('.mpwem-global-qty-warning').toggleClass('is-visible', shouldShowWarning);
     }
 
     function initializeTicketTableDragScroll($root) {
@@ -1029,8 +1045,16 @@
             renderTicketSummary($root);
         });
 
-        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"], #mpwem_ticket_modal_mount input[name="enable_global_qty"], #mpwem_ticket_modal_mount input[name="mep_show_advanced_column"], input[name="mpwem_show_mm"], select[name="mep_mm_min_max_type"]', function() {
+        $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"], #mpwem_ticket_modal_mount input[name="enable_global_qty"], #mpwem_ticket_modal_mount input[name="mep_show_advanced_column"], #mpwem_ticket_modal_mount select[name="mep_gq_type"], input[name="mpwem_show_mm"], select[name="mep_mm_min_max_type"]', function() {
             syncTicketAdvancedColumns($root);
+        });
+
+        $root.on('click.mpwemTicketModal', '[data-mpwem-open-particular-date-modal]', function(e) {
+            e.preventDefault();
+            setActiveStep($root, 'date', { pushHash: true, validate: false });
+            window.setTimeout(function() {
+                openParticularDateModal($root, 'list');
+            }, 120);
         });
 
         $root.on('click.mpwemTicketModal', '#mpwem_ticket_modal_mount .mpwem_item_remove, #mpwem_ticket_modal_mount .mpwem_show_hide_button', function() {
@@ -2032,6 +2056,7 @@
         $root.on('change.mpwemDateModal', 'input[name="enable_global_qty"], select[name="mep_gq_type"]', function() {
             window.setTimeout(function() {
                 syncDateWiseGlobalQtyColumns($root);
+                syncGlobalQtyTypeWarning($root);
             }, 20);
         });
 
@@ -4033,6 +4058,7 @@
         const shouldFocusStep = !!(options && options.focusStep);
         const blockOnError = !!(options && options.blockOnError);
         if (!$datePanel.length) {
+            $root.removeData('mpwemMissingDateWiseGlobalQty');
             return true;
         }
 
@@ -4040,16 +4066,18 @@
         const globalQtyType = ($root.find('select[name="mep_gq_type"]').first().val() || '').toString();
 
         if (!isGlobalQtyEnabled || globalQtyType !== 'date_wise') {
+            $root.removeData('mpwemMissingDateWiseGlobalQty');
             return true;
         }
 
-        const $requiredFields = $root.find('#mpwem_particular_date_modal_mount input[name="event_date_gq"], #mpwem_particular_date_modal_mount input[name="event_date_gq_md[]"]').filter(function() {
+        const $requiredFields = $root.find('#mpwem_particular_date_modal_mount input[name="event_date_gq"], #mpwem_particular_date_modal_mount input[name="event_date_gq_md[]"], #mpwem_wizard_date_mount input[name="event_date_gq"], #mpwem_wizard_date_mount input[name="event_date_gq_md[]"]').filter(function() {
             return $(this).closest('.mpwem_hidden_content').length === 0;
         });
         const recurringType = ($datePanel.find('select[name="mep_enable_recurring"]').first().val() || '').toString();
 
         if (recurringType !== 'yes') {
             $requiredFields.removeClass('mpwem-field-error');
+            $root.removeData('mpwemMissingDateWiseGlobalQty');
             return true;
         }
 
@@ -4070,8 +4098,11 @@
         });
 
         if (!hasError) {
+            $root.removeData('mpwemMissingDateWiseGlobalQty');
             return true;
         }
+
+        $root.data('mpwemMissingDateWiseGlobalQty', true);
 
         if (blockOnError && shouldFocusStep) {
             setActiveStep($root, 'date', { pushHash: true, validate: false });
@@ -4091,7 +4122,7 @@
             }, 80);
         }
 
-        showToast('Global Qty is required in Particular Date & Time Settings when Global Qty Type is set to Particular Date Wise.', 'warning');
+        showToast('Global Qty is not set in Particular Date & Time Settings while Global Qty Type is set to Particular Date Wise.', 'warning');
         return !blockOnError;
     }
 
@@ -4453,8 +4484,10 @@
                 e.preventDefault();
                 return false;
             }
+            const hasMissingDateWiseGlobalQty = !!$root.data('mpwemMissingDateWiseGlobalQty');
             const statusAction = ($(this).find('#mpwem_post_status_action').val() || '').toString();
             let toastMessage = 'Saving changes... Please wait';
+            let toastType = 'info';
 
             if (statusAction === 'publish') {
                 toastMessage = 'Publishing event... Please wait';
@@ -4464,7 +4497,12 @@
                 toastMessage = 'Moving event to trash... Please wait';
             }
 
-            showToast(toastMessage, 'info');
+            if (hasMissingDateWiseGlobalQty) {
+                toastMessage = 'Saving changes. Global Qty is still missing in Particular Date & Time Settings.';
+                toastType = 'warning';
+            }
+
+            showToast(toastMessage, toastType);
         });
 
         $(window).on('hashchange', function() {

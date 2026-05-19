@@ -7451,6 +7451,33 @@ code {
 	color: #64748b;
 	margin-top: 4px;
 }
+.mpwem-global-qty-warning {
+	display: none;
+	margin: 2px 0 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #b45309;
+}
+.mpwem-global-qty-warning.is-visible {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+.mpwem-global-qty-warning__action.button.button-secondary {
+	min-height: 30px;
+	padding: 4px 10px;
+	border-color: #f59e0b;
+	color: #92400e;
+	background: #fff7ed;
+	box-shadow: none;
+}
+.mpwem-global-qty-warning__action.button.button-secondary:hover,
+.mpwem-global-qty-warning__action.button.button-secondary:focus {
+	border-color: #d97706;
+	color: #78350f;
+	background: #ffedd5;
+}
 /* Inputs */
 .mpwem-card-input {
 	width: 100%;
@@ -8002,8 +8029,8 @@ code {
 	min-width: 0;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__group {
-	align-self: end;
-	white-space: nowrap;
+	align-self: flex-start;
+	white-space: wrap;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-ticket-card__locked-name,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem-card-input,

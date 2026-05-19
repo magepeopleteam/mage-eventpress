@@ -414,6 +414,12 @@
                                 <option value="date_wise" <?php selected( $global_qty_type, 'date_wise' ); ?>><?php esc_html_e( 'Particular Date Wise', 'mage-eventpress' ); ?></option>
                                 <option value="global" <?php selected( $global_qty_type, 'global' ); ?>><?php esc_html_e( 'Full Event Base', 'mage-eventpress' ); ?></option>
                             </select>
+                            <p class="mpwem-global-qty-warning <?php echo esc_attr( ( $global_qty_status === 'on' && $global_qty_type === 'date_wise' ) ? 'is-visible' : '' ); ?>">
+								<?php esc_html_e( 'Please set the Global Qty value in Date & Time Steps -> Particular Date Wise modal table.', 'mage-eventpress' ); ?>
+                                <button type="button" class="button button-secondary mpwem-global-qty-warning__action" data-mpwem-open-particular-date-modal>
+									<?php esc_html_e( 'Open Particular Date Table', 'mage-eventpress' ); ?>
+                                </button>
+                            </p>
                         </div>
                         <div class="mpwem-ticket-card__group">
                             <label class="mpwem-card-label">

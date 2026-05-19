@@ -681,6 +681,26 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				);
 				wp_set_post_terms($post_id, $tag_names, 'mep_tag', false);
 			}
+
+			if (taxonomy_exists('product_cat')) {
+				if (isset($_POST['tax_input']['product_cat'])) {
+					$product_cat_terms = [];
+					$product_cat_input = wp_unslash($_POST['tax_input']['product_cat']);
+
+					if (is_array($product_cat_input)) {
+						$product_cat_terms = array_filter(array_map('absint', $product_cat_input));
+					} else {
+						$product_cat_terms = array_filter(
+							array_map(
+								'absint',
+								preg_split('/[\s,]+/', (string) $product_cat_input, -1, PREG_SPLIT_NO_EMPTY)
+							)
+						);
+					}
+
+					wp_set_post_terms($post_id, $product_cat_terms, 'product_cat', false);
+				}
+			}
 		}
 
 		private function save_event_setting_options(int $post_id): void
@@ -1079,6 +1099,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
+								<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
 
 								<div class="mpwem-event-wizard__content">
 									<div class="mpwem-wizard-panels">
@@ -1507,8 +1528,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			$this->save_taxonomies($post_id);
-			$this->save_event_setting_options($post_id);
-			do_action('mpwem_settings_save', $post_id);
+			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
 			$redirect = add_query_arg(

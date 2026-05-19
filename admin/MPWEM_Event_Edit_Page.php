@@ -881,7 +881,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			$steps = [
-				['key' => 'basic', 'label' => __('Basic', 'mage-eventpress'), 'panel' => '#mpwem_wizard_basic'],
+				['key' => 'basic', 'label' => __('Basic Info', 'mage-eventpress'), 'panel' => '#mpwem_wizard_basic'],
 				['key' => 'tickets', 'label' => __('Ticket & Pricing', 'mage-eventpress'), 'panel' => '#mpwem_wizard_tickets'],
 				['key' => 'date', 'label' => __('Date & Time', 'mage-eventpress'), 'panel' => '#mpwem_wizard_date'],
 				['key' => 'display', 'label' => __('Advanced', 'mage-eventpress'), 'panel' => '#mpwem_wizard_display'],

@@ -4300,3 +4300,33 @@
     });
 
 })(jQuery);
+// step counting and navigation
+jQuery(document).ready(function ($) {
+
+	var $steps = $('.mpwem-step');
+
+	// Add step numbers
+	$steps.each(function (index) {
+		$(this).attr('data-step', index + 1);
+	});
+
+	// Active / Complete state
+	$steps.on('click', function () {
+
+		var currentIndex = $(this).index();
+
+		$steps.removeClass('is-active is-complete');
+
+		$steps.each(function (index) {
+
+			if (index < currentIndex) {
+				$(this).addClass('is-complete');
+			}
+
+			if (index === currentIndex) {
+				$(this).addClass('is-active');
+			}
+		});
+	});
+
+});

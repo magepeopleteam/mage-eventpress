@@ -658,31 +658,7 @@ body.mpwem-event-wizard-screen {
 .mpwem-event-wizard__steps-inner::-webkit-scrollbar {
 	display: none; /* Hide scrollbar Chrome/Safari */
 }
-.mpwem-step {
-	padding: 16px 16px;
-	background: transparent;
-	border: none;
-	border-bottom: 2px solid transparent;
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--mpwem-muted);
-	cursor: pointer;
-	white-space: nowrap;
-	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: -1px; /* Overlap border-bottom for perfect underline */
-}
-.mpwem-step:hover {
-	color: var(--mpwem-text);
-	background: rgba(0, 0, 0, 0.02);
-	border-radius: 6px 6px 0 0;
-}
-.mpwem-step.is-active {
-	color: var(--mpwem-primary);
-	border-bottom-color: var(--mpwem-primary);
-}
+
 /* Grid & Cards */
 .mpwem-event-wizard__container {
 	max-width: 1400px;
@@ -1851,9 +1827,7 @@ select.mpwem-global-qty-field__input {
 		justify-self: center;
 		min-height: 44px;
 	}
-	.mpwem-card {
-		margin-bottom: 0;
-	}
+
 	.mpwem-card__head,
 	.mpwem-card__body {
 		padding: 20px;
@@ -8616,5 +8590,125 @@ code {
 	#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table thead th,
 	#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table tbody td {
 		padding: 10px;
+	}
+}
+
+/*=============================*/
+.mpwem-event-wizard__steps-inner{
+	display:flex;
+	align-items:center;
+	gap:12px;
+	flex-wrap:wrap;
+	padding: 20px;
+}
+
+.mpwem-step{
+	position:relative;
+	display:flex;
+	align-items:center;
+	gap:10px;
+	padding:12px 18px;
+	border:1px solid #dcdcdc;
+	border-radius:60px;
+	background:#fff;
+	cursor:pointer;
+	transition:0.25s ease;
+	font-size:14px;
+	font-weight:600;
+	color:#444;
+	min-height:52px;
+	flex:1;
+	min-width:180px;
+	justify-content:center;
+}
+
+/* Step Number */
+.mpwem-step::before{
+	content:attr(data-step);
+	width:30px;
+	height:30px;
+	border-radius:50%;
+	background:#e9ecef;
+	color:#222;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	font-size:13px;
+	font-weight:700;
+	flex-shrink:0;
+	transition:0.25s ease;
+}
+
+/* Active */
+.mpwem-step.is-active{
+	background:#16a34a;
+	border-color:#16a34a;
+	color:#fff;
+	box-shadow:0 4px 14px rgba(0,0,0,0.12);
+}
+.mpwem-event-wizard .mpwem-step.is-active  span{
+	color:#fff !important;
+}
+.mpwem-step.is-active::before{
+	background:#fff;
+	color:#222;
+}
+
+/* Complete */
+.mpwem-step.is-complete{
+	border-color:#16a34a;
+	color:#16a34a;
+}
+
+.mpwem-step.is-complete::before{
+	content:"✓";
+	background:#16a34a;
+	color:#fff;
+}
+
+/* Desktop connector */
+@media (min-width:768px){
+
+	.mpwem-step:not(:last-child)::after{
+		content:"";
+		position:absolute;
+		right:-12px;
+		top:50%;
+		transform:translateY(-50%);
+		width:12px;
+		height:2px;
+		background:#dcdcdc;
+		z-index:1;
+	}
+}
+
+/* Tablet */
+@media (max-width:991px){
+	.mpwem-step{
+		min-width:140px;
+		padding:10px 14px;
+		font-size:13px;
+	}
+}
+
+/* Mobile */
+@media (max-width:767px){
+
+	.mpwem-event-wizard__steps-inner{
+		flex-direction:column;
+		align-items:stretch;
+		gap:10px;
+	}
+
+	.mpwem-step{
+		width:100%;
+		min-width:100%;
+		justify-content:flex-start;
+		border-radius:14px;
+		padding:12px 14px;
+	}
+
+	.mpwem-step__label{
+		white-space:normal;
 	}
 }

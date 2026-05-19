@@ -688,7 +688,7 @@ body.mpwem-event-wizard-screen {
 	border: 1px solid var(--mpwem-border);
 	border-radius: var(--mpwem-radius);
 	box-shadow: var(--mpwem-shadow);
-	margin-bottom: 16px;
+	margin-bottom: 0;
 	overflow: visible;
 }
 .mpwem-card__head {
@@ -4411,6 +4411,7 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-display-section--attendee-form #mp_event_all_info_in_tab {
 	padding: 16px 18px 18px !important;
+	border-radius: var(--mpwem-radius);
 }
 .mpwem-display-section--attendee-form .event_meta_help_txt {
 	margin: 0 !important;
@@ -7962,9 +7963,9 @@ code {
 	line-height: 1.35;
 	color: var(--mpwem-text, #0f172a) !important;
 }
-.mpwem-minmax-settings-card__ticket-row > .des_info {
+/* .mpwem-minmax-settings-card__ticket-row > .des_info {
 	padding-left: 16px !important;
-}
+} */
 @media (max-width: 782px) {
 	.mpwem-minmax-settings-card__head {
 		align-items: flex-start;

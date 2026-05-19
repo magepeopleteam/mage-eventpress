@@ -411,6 +411,344 @@ p.event_meta_help_txt:before { font-family: "Font Awesome 5 Free"; font-weight: 
 .mep-tooltips .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent;}
 label.mp_event_virtual_type_des { margin: 0;}
 label.mp_event_virtual_type_des textarea { width: 100%;}
+/************ classic ticket & pricing layout ************/
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-editor-section,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings ._layout_default_xs_mp_zero {
+	margin: 0 0 16px;
+	border: 1px solid #d9e2ec;
+	border-radius: 8px;
+	background: #fff;
+	overflow: hidden;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings ._bg_light_padding {
+	padding: 14px 16px;
+	background: #f8fafc;
+	border-bottom: 1px solid #e2e8f0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings > ._mt {
+	display: none;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings ._padding_bt {
+	padding: 16px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-settings-head > :not(._bg_light_padding) {
+	margin: 14px 16px 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-settings-head > :last-child {
+	margin-bottom: 16px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-block {
+	padding: 12px 14px;
+	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-block ._justify_between_align_center_wrap {
+	margin: 0;
+	align-items: center;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-block .label-text {
+	display: block;
+	margin-top: 8px;
+	color: #64748b;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message {
+	margin-top: 12px;
+	padding: 14px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message ._justify_between_align_center_wrap {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 12px;
+	margin: 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message label {
+	margin: 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message .label-text {
+	display: block;
+	margin-top: 10px;
+	color: #64748b;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mep_reg_status_show_msg_txt_sec {
+	display: block;
+	width: 100%;
+	margin: 0;
+	text-align: left;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mep_reg_status_show_msg_txt_sec textarea,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mep_reg_status_show_msg_txt_sec textarea.formControl {
+	float: none;
+	width: 100%;
+	max-width: 100%;
+	min-height: 92px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	margin: 0 0 14px;
+	padding: 12px 14px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar__item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar__item label {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #334155;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar__divider {
+	width: 1px;
+	height: 24px;
+	background: #d7dee7;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-global-card {
+	margin: 0 0 14px;
+	padding: 14px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-global-card__content {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-global-card__content .mpwem-ticket-card__group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-label {
+	display: block;
+	margin: 0 0 6px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #475569;
+	text-transform: uppercase;
+	letter-spacing: .03em;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-table-wrap {
+	overflow-x: auto;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table {
+	width: 100%;
+	min-width: 980px;
+	border-collapse: collapse;
+	border: 1px solid #d9e2ec;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table thead th {
+	padding: 10px 8px;
+	background: #eef4ff;
+	color: #1e293b;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .03em;
+	border-bottom: 1px solid #d9e2ec;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td {
+	padding: 10px 8px;
+	vertical-align: top;
+	border-bottom: 1px solid #e5edf5;
+	background: #fff;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody tr:nth-child(even) td {
+	background: #fbfdff;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__field {
+	margin: 0 0 8px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__field:last-child {
+	margin-bottom: 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-input,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__locked-name,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-time-field input.formControl,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-date-input-wrap input {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	padding: 7px 10px;
+	border: 1px solid #cbd5e1;
+	border-radius: 4px;
+	background: #fff;
+	font-size: 13px;
+	line-height: 1.4;
+	box-sizing: border-box;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__locked-name {
+	background: #f8fafc;
+	color: #334155;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-input-wrapper--currency {
+	position: relative;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-input-wrapper--currency::before {
+	content: "$";
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #64748b;
+	font-size: 12px;
+	font-weight: 700;
+	pointer-events: none;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-input-wrapper--currency .mpwem-card-input {
+	padding-left: 24px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-row--date {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-date-field {
+	display: flex;
+	gap: 8px;
+	align-items: stretch;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-date-input-wrap,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-time-field {
+	flex: 1 1 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__actions {
+	min-width: 108px;
+	text-align: center;
+	white-space: nowrap;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__action-btn,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__actions .mep_switch_button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 2px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-footer {
+	margin-top: 14px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-cards-container > .mpwem-ticket-card {
+	margin: 0 0 12px;
+	padding: 14px;
+	border: 1px solid #d9e2ec;
+	border-radius: 8px;
+	background: #fbfdff;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-cards-container > .mpwem-ticket-card:last-child {
+	margin-bottom: 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main {
+	display: grid;
+	grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(130px, 1fr)) 64px;
+	gap: 12px;
+	align-items: end;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main > .mpwem-ticket-card__group {
+	min-width: 0;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main > .mpwem-ticket-card__actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-extra-service-section .mpwem_settings_area {
+	padding-top: 18px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-extra-service-section .mpwem-ticket-cards-container {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-extra-service-section .mpwem-ticket-cards-container > .mpwem-ticket-card {
+	margin: 0;
+	background: #fff;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service {
+	grid-template-columns: minmax(220px, 2.2fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(140px, 1fr) 64px;
+	align-items: end;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service > .mpwem-ticket-card__group:empty {
+	display: none;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service > .mpwem-ticket-card__actions {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+@media only screen and (max-width: 1200px) {
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-global-card__content {
+		grid-template-columns: 1fr;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main--extra-service {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main > .mpwem-ticket-card__actions {
+		flex-direction: row;
+		justify-content: flex-start;
+		grid-column: 1 / -1;
+	}
+}
+@media only screen and (max-width: 782px) {
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-action-bar__divider {
+		display: none;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table {
+		min-width: 0;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table thead {
+		display: none;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table td {
+		display: block;
+		width: 100%;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tr {
+		margin-bottom: 12px;
+		border: 1px solid #d9e2ec;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td {
+		border-bottom: 1px solid #e5edf5;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_ticket_table tbody td:last-child {
+		border-bottom: 0;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-card__main {
+		grid-template-columns: 1fr;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-settings-head > :not(._bg_light_padding) {
+		margin-left: 12px;
+		margin-right: 12px;
+	}
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-block,
+	body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-registration-message {
+		padding: 12px;
+	}
+}
 /*************/
 #mp_event_all_info_in_tab button { -webkit-transition: all 0.25s ease-in-out; transition: all 0.25s ease-in-out;}
 #mp_event_all_info_in_tab .mp_event_remove_move { display: -webkit-flex; display: flex;}

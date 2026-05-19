@@ -2619,6 +2619,15 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	width: fit-content;
 	max-width: 100%;
 }
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group .mpwem-date-input-wrap,
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group .mep_load_every_day .mpwem-date-input-wrap {
+	/* width: 100%; */
+	min-width: 0;
+}
+.mpwem-ticket-modal__mount .mpwem-repeat-field-group > label.mpwem-time-input-wrap {
+	width: fit-content;
+	max-width: 100%;
+}
 .mpwem-ticket-modal__mount .mpwem-repeat-field-group .formControl,
 .mpwem-ticket-modal__mount .mpwem-repeat-row input[name="mep_repeated_periods"] {
 	min-height: 44px;
@@ -6138,10 +6147,14 @@ div.mpwem-date-type-option__copy strong {
 	max-width: none !important;
 	height: 42px !important;
 	padding-left: 38px !important;
+	padding-right: 44px !important;
 	border-color: #d9e2ef !important;
 	border-radius: 10px !important;
 	background: #fff !important;
 	font-size: 13px !important;
+}
+.mpwem-time-input {
+	padding-right: 76px !important;
 }
 .mpwem-date-input-wrap::before,
 .mpwem-time-input-wrap::before {
@@ -6167,12 +6180,51 @@ div.mpwem-date-type-option__copy strong {
 }
 .mpwem-date-input-wrap .mpwem_date_reset,
 .mpwem-date-input-wrap .remove_icon {
+	position: absolute;
 	right: 8px;
 	top: 50%;
-	transform: translateY(0);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	border-radius: 999px;
+	transform: translateY(-50%);
 	background: #fff1f2;
 	color: var(--mpwem-danger);
 	border: 1px solid #fecdd3;
+	font-size: 11px;
+	line-height: 1;
+	cursor: pointer;
+	z-index: 2;
+}
+.mpwem-time-input-wrap .mpwem_time_reset {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	border: 1px solid #fecdd3;
+	border-radius: 999px;
+	background: #fff1f2;
+	color: var(--mpwem-danger);
+	font-size: 11px;
+	line-height: 1;
+	cursor: pointer;
+	transform: translateY(-50%);
+	z-index: 2;
+}
+.mpwem-time-input-wrap .mpwem_time_reset:hover,
+.mpwem-time-input-wrap .mpwem_time_reset:focus {
+	border-color: #fda4af;
+	background: #ffe4e6;
+	color: var(--mpwem-danger);
+	outline: none;
 }
 .mpwem-date-step .mpwem-date-table {
 	margin: 0 !important;
@@ -6198,11 +6250,17 @@ div.mpwem-date-type-option__copy strong {
 	background: #fbfdff !important;
 } */
 #mpwem_particular_date_modal_mount ._ov_auto {
+	display: block;
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
 	overflow-x: auto;
 	overflow-y: visible;
 	-webkit-overflow-scrolling: touch;
 	touch-action: pan-x;
 	overscroll-behavior-x: contain;
+	padding-bottom: 2px;
 	cursor: grab;
 }
 #mpwem_particular_date_modal_mount ._ov_auto.is-dragging {
@@ -6213,8 +6271,10 @@ body.mpwem-drag-scroll-active {
 	user-select: none;
 }
 #mpwem_particular_date_modal_mount .mpwem-date-table {
+	display: table;
 	width: max-content;
 	min-width: 100%;
+	max-width: none;
 	table-layout: auto;
 }
 #mpwem_particular_date_modal_mount [data-collapse="#mep_normal_event"] ._ov_auto {
@@ -6280,6 +6340,22 @@ body.mpwem-drag-scroll-active {
 	border-color: #e11d48 !important;
 	box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12) !important;
 	background: #fff7f8 !important;
+}
+#mpwem_particular_date_modal .mpwem-ticket-modal__body {
+	overflow-x: auto;
+}
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount,
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount > [data-collapse="#mep_particular_event"],
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount > [data-collapse="#mep_normal_event"],
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount ._layout_default_xs_mp_zero,
+#mpwem_particular_date_modal .mpwem-ticket-modal__mount .mpwem_settings_area {
+	min-width: 0;
+	width: 100%;
+	max-width: 100%;
+}
+#mpwem_particular_date_modal [data-collapse="#mep_particular_event"] ._ov_auto,
+#mpwem_particular_date_modal [data-collapse="#mep_normal_event"] ._ov_auto {
+	margin-right: 0;
 }
 .mep-special-datetime > section:not(.bg-light) {
 	padding: 14px 18px !important;

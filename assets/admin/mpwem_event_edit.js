@@ -1506,6 +1506,90 @@
         });
     }
 
+    function getSingleEventDateRows($root) {
+        const context = getParticularDateModalContext($root);
+        const $tbody = context.$modalMount
+            .find('[data-collapse="#mep_normal_event"] tbody.mpwem_item_insert')
+            .first();
+        if (!$tbody.length) {
+            return $();
+        }
+
+        return $tbody.children('tr.mpwem_remove_area').filter(function() {
+            return $(this).closest('.mpwem_hidden_content').length === 0;
+        });
+    }
+
+    function getActiveDateModalSection($root, type) {
+        const context = getParticularDateModalContext($root);
+        const activeType = (type || getActiveDateModalType($root) || 'no').toString();
+        const target = activeType === 'no'
+            ? '#mep_normal_event'
+            : (activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event');
+
+        return context.$modalMount.find('[data-collapse="' + target + '"]').first();
+    }
+
+    function getActiveDateModalRows($root, type) {
+        const activeType = (type || getActiveDateModalType($root) || 'no').toString();
+
+        if (activeType === 'no') {
+            return getSingleEventDateRows($root);
+        }
+
+        if (activeType === 'yes') {
+            return getParticularDateRows($root);
+        }
+
+        return $();
+    }
+
+    function addDateModalRow($root, type) {
+        const activeType = (type || getActiveDateModalType($root) || 'no').toString();
+        const $activeSection = getActiveDateModalSection($root, activeType);
+        const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
+
+        if (!$addButton.length) {
+            return;
+        }
+
+        $addButton.trigger('click');
+
+        window.setTimeout(function() {
+            enhanceDateFields($root);
+            initializeParticularDateTableDragScroll($root);
+            syncDateWiseGlobalQtyColumns($root);
+            syncParticularDateModalFooter($root);
+            renderParticularDateSummary($root);
+
+            const $rows = getActiveDateModalRows($root, activeType);
+            if ($rows.length) {
+                highlightRow($rows.last());
+            }
+        }, 100);
+    }
+
+    function ensureParticularDateTableHints($root) {
+        const context = getParticularDateModalContext($root);
+        const hintText = 'Tip: Drag this table left and right to view all columns.';
+
+        context.$modalMount
+            .find('[data-collapse="#mep_particular_event"] ._ov_auto, [data-collapse="#mep_normal_event"] ._ov_auto')
+            .each(function() {
+                const $wrap = $(this);
+                const $next = $wrap.next('.mpwem-ticket-table-hint');
+
+                if ($next.length) {
+                    $next.text(hintText);
+                    return;
+                }
+
+                $('<p class="mpwem-ticket-table-hint"></p>')
+                    .text(hintText)
+                    .insertAfter($wrap);
+            });
+    }
+
     function storeSavedParticularDateSummarySnapshot($root) {
         const context = getParticularDateModalContext($root);
         context.$modal
@@ -1580,6 +1664,7 @@
         enhanceDateFields(context.$modalMount);
         enhanceOffDayPicker(context.$modalMount);
         enhanceRepeatedScheduleLayout(context.$modalMount);
+        ensureParticularDateTableHints($root);
         initializeParticularDateTableDragScroll($root);
         syncDateWiseGlobalQtyColumns($root);
         syncParticularDateModalFooter($root);
@@ -1763,7 +1848,7 @@
         beginParticularDateModalSession($root);
         const activeType = getActiveDateModalType($root);
         const config = getDateModalTypeConfig(activeType);
-        const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
+        const $activeSection = getActiveDateModalSection($root, activeType);
         const $dateModeSections = context.$modalMount.children('[data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"], [data-collapse="#mep_everyday_event"]');
 
         $dateModeSections.removeClass('mActive mpwem-date-mode-active').hide();
@@ -1776,7 +1861,7 @@
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
         lockBodyScroll();
 
-        const isNew = mode === 'new' && activeType === 'yes';
+        const isNew = mode === 'new' && (activeType === 'yes' || activeType === 'no');
         $root.find('#mpwem_particular_date_modal_title').text(isNew ? (config.modalNewTitle || config.modalTitle) : config.modalTitle);
         $root.find('#mpwem_particular_date_modal_description').text(
             isNew
@@ -1785,27 +1870,7 @@
         );
 
         if (isNew) {
-            const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
-            if ($addButton.length) {
-                $addButton.trigger('click');
-                window.setTimeout(function() {
-                    enhanceDateFields($root);
-                    const $rows = getParticularDateRows($root);
-                    if ($rows.length) {
-                        const $newRow = $rows.last();
-                        const $container = $newRow.closest('.mpwem-ticket-modal__body');
-                        if ($container.length) {
-                            const top = $newRow.position().top + $container.scrollTop() - 24;
-                            $container.animate({ scrollTop: Math.max(top, 0) }, 250);
-                        }
-                        $newRow.addClass('mpwem-ticket-row-focus');
-                        window.setTimeout(function() {
-                            $newRow.removeClass('mpwem-ticket-row-focus');
-                        }, 1800);
-                    }
-                    renderParticularDateSummary($root);
-                }, 100);
-            }
+            addDateModalRow($root, activeType);
             return;
         }
 
@@ -1843,9 +1908,24 @@
             return;
         }
 
-        const $footerAdd = context.$footerStart.find('.mpwem-date-modal__add').first();
-        if ($footerAdd.length) {
-            $footerAdd.hide();
+        let $footerAdd = context.$footerStart.find('.mpwem-date-modal__add').first();
+        if (!$footerAdd.length) {
+            $footerAdd = $('<button type="button" class="button button-link mpwem-date-modal__add"></button>');
+            context.$footerStart.append($footerAdd);
+        }
+
+        const activeType = getActiveDateModalType($root);
+        const $activeSection = getActiveDateModalSection($root, activeType);
+        const addLabel = $.trim($activeSection.find('.mpwem_add_item, .mp_add_item').first().text());
+        const shouldShowAdd = (activeType === 'no' || activeType === 'yes') && !!addLabel;
+
+        $footerAdd
+            .text(addLabel || 'Add New Row')
+            .toggle(shouldShowAdd);
+
+        context.$footerStart.toggle(shouldShowAdd);
+        if (!shouldShowAdd) {
+            context.$footerStart.hide();
         }
     }
 
@@ -1876,6 +1956,7 @@
         enhanceDateFields(context.$modalMount);
         enhanceOffDayPicker(context.$modalMount);
         enhanceRepeatedScheduleLayout(context.$modalMount);
+        ensureParticularDateTableHints($root);
         initializeParticularDateTableDragScroll($root);
         syncDateWiseGlobalQtyColumns($root);
         storeSavedParticularDateSummarySnapshot($root);
@@ -1911,15 +1992,7 @@
 
         $root.on('click.mpwemDateModal', '.mpwem-date-modal__add', function(e) {
             e.preventDefault();
-
-            const activeType = getActiveDateModalType($root);
-            const context = getParticularDateModalContext($root);
-            const $activeSection = context.$modalMount.find('[data-collapse="' + (activeType === 'no' ? '#mep_normal_event' : activeType === 'yes' ? '#mep_particular_event' : '#mep_everyday_event') + '"]').first();
-            const $addButton = $activeSection.find('.mpwem_add_item, .mp_add_item').first();
-
-            if ($addButton.length) {
-                $addButton.trigger('click');
-            }
+            addDateModalRow($root);
         });
 
         $root.on('click.mpwemDateModal', '.mpwem-date-modal__save', function(e) {
@@ -3105,6 +3178,15 @@
             if ($timeInput.length) {
                 $label.addClass('mpwem-time-input-wrap');
                 $timeInput.addClass('mpwem-time-input');
+
+                const timeFieldName = ($timeInput.attr('name') || '').toString();
+                const shouldShowTimeReset = timeFieldName === 'event_start_time_everyday' || timeFieldName === 'event_end_time_everyday';
+
+                if (shouldShowTimeReset && !$label.find('.mpwem_time_reset').length) {
+                    $label.append(
+                        $('<span class="fas fa-times remove_icon mpwem_time_reset" aria-hidden="true" title="Clear time"></span>')
+                    );
+                }
             }
 
             $label.data('mpwemDateEnhanced', true);
@@ -3216,6 +3298,66 @@
         return null;
     }
 
+    function getTodayDateOnly() {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    function syncRepeatedDateConstraints($scope) {
+        const $context = $scope && $scope.length ? $scope : $('.mpwem-event-wizard').first();
+        const $repeatSection = $context.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length) return;
+
+        const today = getTodayDateOnly();
+        const $startLabel = $repeatSection.find('input[name="event_start_date_everyday"]').first().closest('label');
+        const $endLabel = $repeatSection.find('input[name="event_end_date_everyday"]').first().closest('label');
+        const $startInput = $startLabel.find('.mpwem-date-input, input.formControl').first();
+        const $endInput = $endLabel.find('.mpwem-date-input, input.formControl').first();
+        const startValue = ($startLabel.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
+        const startDate = parseIsoDate(startValue);
+        const endMinDate = startDate && startDate > today ? startDate : today;
+
+        if ($startInput.length) {
+            $startInput.data('mpwemMinDate', today);
+            if ($.datepicker && $startInput.hasClass('hasDatepicker')) {
+                try {
+                    $startInput.datepicker('option', 'minDate', today);
+                } catch (error) {
+                    // Ignore incomplete legacy datepicker state.
+                }
+            }
+        }
+
+        if ($endInput.length) {
+            $endInput.data('mpwemMinDate', endMinDate);
+            if ($.datepicker && $endInput.hasClass('hasDatepicker')) {
+                try {
+                    $endInput.datepicker('option', 'minDate', endMinDate);
+                } catch (error) {
+                    // Ignore incomplete legacy datepicker state.
+                }
+            }
+        }
+    }
+
+    function getDynamicDateMinDate($input) {
+        const fieldName = ($input.attr('name') || '').toString();
+        const today = getTodayDateOnly();
+
+        if (fieldName === 'event_start_date_everyday') {
+            return today;
+        }
+
+        if (fieldName === 'event_end_date_everyday') {
+            const $repeatSection = $input.closest('[data-collapse="#mep_everyday_event"]');
+            const startValue = ($repeatSection.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
+            const startDate = parseIsoDate(startValue);
+            return startDate && startDate > today ? startDate : today;
+        }
+
+        return normalizeMinDate($input.data('mpwemMinDate'));
+    }
+
     function ensureCustomCalendar() {
         let $calendar = $('#mpwem_custom_calendar');
         if ($calendar.length) return $calendar;
@@ -3325,11 +3467,19 @@
     }
 
     function openCustomCalendar($input) {
+        if ($.datepicker && $input.hasClass('hasDatepicker')) {
+            try {
+                $input.datepicker('destroy');
+            } catch (error) {
+                // Ignore incomplete legacy datepicker instances.
+            }
+        }
+
         const $calendar = ensureCustomCalendar();
         const $hidden = $input.closest('label').find('input[type="hidden"]').first();
         const selected = parseIsoDate($hidden.val());
         const now = new Date();
-        let minDate = $input.data('mpwemMinDate') || null;
+        const minDate = getDynamicDateMinDate($input);
 
         const viewDate = selected || minDate || now;
         $calendar.data('mpwemState', {
@@ -3431,6 +3581,29 @@
             $label.find('input[type="hidden"]').first().val('').trigger('change');
             $label.find('.mpwem-date-input').first().val('').trigger('change');
             closeCustomCalendar();
+        });
+
+        $(document).on('click', '.mpwem-event-wizard .mpwem-time-input-wrap .mpwem_time_reset', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $label = $(this).closest('label');
+            $label.find('.mpwem-time-input').first().val('').trigger('change');
+        });
+
+        $(document).on('input change', '.mpwem-event-wizard input[name="event_start_date_everyday"], .mpwem-event-wizard input[name="event_end_date_everyday"]', function() {
+            const $wizard = $('.mpwem-event-wizard').first();
+            if (!$wizard.length) return;
+            syncRepeatedDateConstraints($wizard);
+        });
+
+        $(document).ajaxComplete(function(event, xhr, settings) {
+            if (!settings || typeof settings.data !== 'string') return;
+            if (settings.data.indexOf('action=load_event_start_date_everyday') === -1) return;
+
+            const $wizard = $('.mpwem-event-wizard').first();
+            if (!$wizard.length) return;
+
+            refreshRepeatedEndDateFieldUI($wizard);
         });
 
         $(document).on('mousedown', function(e) {
@@ -3554,6 +3727,17 @@
         });
     }
 
+    function refreshRepeatedEndDateFieldUI($scope) {
+        const $context = $scope && $scope.length ? $scope : $('.mpwem-event-wizard').first();
+        const $repeatSection = $context.find('[data-collapse="#mep_everyday_event"]').first();
+        if (!$repeatSection.length) return;
+
+        enhanceDateFields($repeatSection);
+        enhanceCustomCalendar($repeatSection);
+        enhanceRepeatedScheduleLayout($repeatSection);
+        syncRepeatedDateConstraints($repeatSection);
+    }
+
     function syncDateOptionTargetSelect($panel, $select) {
         const targets = [];
         $select.find('option[data-option-target]').each(function() {
@@ -3607,6 +3791,7 @@
         enhanceCustomCalendar($panel);
         enhanceOffDayPicker($panel);
         enhanceDateConditionalSelects($panel);
+        syncRepeatedDateConstraints($panel);
         alignDateFormatTooltips($panel);
     }
 

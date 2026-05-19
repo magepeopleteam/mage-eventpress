@@ -136,6 +136,35 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return isset($_GET[self::CLASSIC_BYPASS_QUERY]) && (string) wp_unslash($_GET[self::CLASSIC_BYPASS_QUERY]) === '1';
 		}
 
+		private function get_edit_mode(): string
+		{
+			$mode = function_exists('mep_get_option')
+				? mep_get_option('mep_event_edit_page_mode', 'general_setting_sec', 'modern')
+				: 'modern';
+
+			return in_array($mode, ['modern', 'classic'], true) ? $mode : 'modern';
+		}
+
+		private function is_modern_mode_enabled(): bool
+		{
+			return $this->get_edit_mode() === 'modern';
+		}
+
+		private function set_global_edit_mode(string $mode): void
+		{
+			if (! $this->can_manage_events()) {
+				return;
+			}
+			$options = get_option('general_setting_sec');
+			if (! is_array($options)) {
+				$options = [];
+			}
+			if (! isset($options['mep_event_edit_page_mode']) || $options['mep_event_edit_page_mode'] !== $mode) {
+				$options['mep_event_edit_page_mode'] = $mode;
+				update_option('general_setting_sec', $options);
+			}
+		}
+
 		/**
 		 * Builds the custom edit page URL.
 		 *
@@ -747,6 +776,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if (defined('DOING_AJAX') && DOING_AJAX) {
 				return;
 			}
+
+			if ($this->is_classic_bypass()) {
+				$this->set_global_edit_mode('classic');
+			}
+
 			if (! is_admin() || $this->is_edit_screen() || $this->is_classic_bypass()) {
 				return;
 			}
@@ -762,6 +796,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
+			if (! $this->is_modern_mode_enabled()) {
+				return;
+			}
+
 			wp_safe_redirect($this->edit_url($post_id, 'basic'));
 			exit;
 		}
@@ -771,6 +809,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if (defined('DOING_AJAX') && DOING_AJAX) {
 				return;
 			}
+
+			if ($this->is_classic_bypass()) {
+				$this->set_global_edit_mode('classic');
+			}
+
 			if (! is_admin() || $this->is_edit_screen() || $this->is_classic_bypass()) {
 				return;
 			}
@@ -780,6 +823,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$post_type = isset($_GET['post_type']) ? sanitize_key(wp_unslash($_GET['post_type'])) : '';
 			if ($post_type !== self::POST_TYPE) {
+				return;
+			}
+
+			if (! $this->is_modern_mode_enabled()) {
 				return;
 			}
 
@@ -803,7 +850,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if ($this->is_classic_bypass()) {
 				return $link;
 			}
-			return $this->edit_url($post_id, 'basic');
+
+			if ($this->is_modern_mode_enabled()) {
+				return $this->edit_url($post_id, 'basic');
+			}
+
+			return $this->get_classic_edit_url((int) $post_id);
 		}
 
 		public function filter_row_actions($actions, $post)
@@ -811,18 +863,31 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if (! $post || $post->post_type !== self::POST_TYPE) {
 				return $actions;
 			}
+
+			$default_is_modern = $this->is_modern_mode_enabled();
+
 			if (isset($actions['edit'])) {
 				$actions['edit'] = sprintf(
 					'<a href="%s">%s</a>',
-					esc_url($this->edit_url((int) $post->ID, 'basic')),
+					esc_url($default_is_modern ? $this->edit_url((int) $post->ID, 'basic') : $this->get_classic_edit_url((int) $post->ID)),
 					esc_html__('Edit', 'mage-eventpress')
 				);
 			}
-			$actions['classic'] = sprintf(
-				'<a href="%s">%s</a>',
-				esc_url($this->get_classic_edit_url((int) $post->ID)),
-				esc_html__('Classic Editor', 'mage-eventpress')
-			);
+
+			if ($default_is_modern) {
+				$actions['classic'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url($this->get_classic_edit_url((int) $post->ID)),
+					esc_html__('Classic Editor', 'mage-eventpress')
+				);
+			} else {
+				$actions['modern'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url($this->edit_url((int) $post->ID, 'basic')),
+					esc_html__('Modern Editor', 'mage-eventpress')
+				);
+			}
+
 			return $actions;
 		}
 
@@ -879,6 +944,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if (! $this->can_manage_events()) {
 				wp_die(esc_html__('Sorry, you are not allowed to access this page.', 'mage-eventpress'));
 			}
+
+			$this->set_global_edit_mode('modern');
 
 			$post_id = isset($_GET['event_id']) ? absint($_GET['event_id']) : 0;
 			$post    = $post_id ? get_post($post_id) : null;

@@ -11,7 +11,9 @@
 	.reg_close_msg { animation: fadeIn 0.5s ease-in-out; }
 	@keyframes fadeIn {from { opacity: 0; transform: translateY(-10px); }to { opacity: 1; transform: translateY(0); }}
 
-
+	div.mpwem_related_area{
+		display: none;
+	}
 
 	.mpwem_registration_area_show_msg {display: flex;justify-content: center;margin: 40px 0;}
 	.mpwem_registration_area_show_msg ._margin_zero_text_center {max-width: 620px;padding: 28px 32px;text-align: center;background: linear-gradient(135deg, #f8fafc, #ffffff);border-radius: 14px;border: 1px solid rgba(0, 0, 0, 0.06);box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);position: relative;overflow: hidden;}

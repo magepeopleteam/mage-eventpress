@@ -367,6 +367,49 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<?php
 		}
 
+		private function is_waitlist_addon_active(): bool
+		{
+			if (! function_exists('is_plugin_active')) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			return function_exists('is_plugin_active')
+				&& is_plugin_active('woocommerce-event-manager-addon-waitlist/waitlist.php');
+		}
+
+		private function render_waitlist_sidebar_option(int $post_id): void
+		{
+			if (! $this->is_waitlist_addon_active()) {
+				return;
+			}
+
+			$waitlist_enabled = get_post_meta($post_id, 'mep_show_waitlist', true) === 'on';
+			?>
+			<div class="mpwem-display-section mpwem-display-section--waitlist is-expanded">
+				<div class="mpwem-display-section__head">
+					<div class="mpwem-display-section__head-main">
+						<h3><?php esc_html_e('Waitlist Form', 'mage-eventpress'); ?></h3>
+						<p><?php esc_html_e('Show the waitlist signup form for this event when the waitlist addon is active.', 'mage-eventpress'); ?></p>
+					</div>
+				</div>
+				<div class="mpwem-display-section__body">
+					<div class="mpwem-event-setting-card__item">
+						<div class="mpwem-event-setting-card__item-head">
+							<div class="mpwem-event-setting-card__copy">
+								<h3><?php esc_html_e('Show Waitlist Form', 'mage-eventpress'); ?></h3>
+								<p><?php esc_html_e('Turn this on to allow attendees to join the waitlist for this event.', 'mage-eventpress'); ?></p>
+							</div>
+							<label class="mpwem-event-setting-card__switch">
+								<input type="checkbox" name="mep_show_waitlist" value="on" data-no-mpwem-switch="1" <?php checked($waitlist_enabled); ?> />
+								<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
 		private function render_slug_card(int $post_id): void
 		{
 			$post = get_post($post_id);
@@ -658,6 +701,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				? array_values(array_unique(array_map('sanitize_text_field', wp_unslash($_POST['mep_member_only_user_role']))))
 				: ['all'];
 			update_post_meta($post_id, 'mep_member_only_user_role', $member_roles);
+
+			if ($this->is_waitlist_addon_active()) {
+				$waitlist_status = isset($_POST['mep_show_waitlist']) ? 'on' : 'off';
+				update_post_meta($post_id, 'mep_show_waitlist', $waitlist_status);
+			}
 
 			$enable_global_qty = isset($_POST['enable_global_qty']) ? 'on' : 'off';
 			update_post_meta($post_id, 'enable_global_qty', $enable_global_qty);
@@ -1311,6 +1359,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<p class="description"><?php esc_html_e('Review each section below and enable only the parts this event actually needs.', 'mage-eventpress'); ?></p>
 														</div>
 													</div>
+													<?php $this->render_waitlist_sidebar_option($post_id); ?>
 													<div class="mpwem-card mpwem-card--danger mpwem-card--danger-advanced" id="mpwem_advanced_danger_zone">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Danger Zone', 'mage-eventpress'); ?></h2>
@@ -1459,6 +1508,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$this->save_taxonomies($post_id);
 			$this->save_event_setting_options($post_id);
+			do_action('mpwem_settings_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
 			$redirect = add_query_arg(

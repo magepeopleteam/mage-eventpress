@@ -970,10 +970,11 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			<style>
 				.mpwem-title-switch-form {
 					display: inline-flex;
-					margin: 0 0 0 12px;
+					margin: 0 0 0 10px;
 					vertical-align: middle;
 				}
 				.mpwem-title-switch-button {
+					appearance: none;
 					position: relative;
 					display: inline-flex;
 					align-items: center;
@@ -986,12 +987,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					background: var(--color_theme);
 					color: #fff;
 					font-size: 13px;
+					min-height: 31px;
+					padding: 0 18px;
+					border: 1px solid #9f1f66;
+					border-radius: 5px;
+					background: linear-gradient(135deg, #d63384 0%, #a61e67 100%);
+					color: #fff;
+					font-size: 13px;
 					font-weight: 600;
 					line-height: 1;
-					letter-spacing: 0.02em;
+					letter-spacing: 0.01em;
 					text-decoration: none;
 					cursor: pointer;
 					box-shadow: 0 10px 20px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+					transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
+					margin-top: -8px;
+					box-shadow: 0 10px 20px -12px rgba(166, 30, 103, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 					transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
 					margin-top: -8px;
 				}
@@ -1003,30 +1014,41 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					filter: brightness(0.85);
 				}
 				.mpwem-title-switch-button:focus {
+					border-color: #861a54;
+					background: linear-gradient(135deg, #e13c8e 0%, #8d1b58 100%);
+					color: #fff;
+					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+					transform: translateY(-1px);
+					filter: saturate(1.05);
+				}
+				.mpwem-title-switch-button:focus {
 					outline: none;
 					box-shadow: 0 14px 28px -14px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px var(--color_theme_77);
+					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px rgba(214, 51, 132, 0.18);
 				}
 				.mpwem-title-switch-button:active {
 					transform: translateY(0);
 					box-shadow: 0 8px 18px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+					transform: translateY(0);
+					box-shadow: 0 8px 18px -12px rgba(166, 30, 103, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 				}
 				.mpwem-title-switch-button .mpwem-title-switch-label {
 					display: inline-block;
 					white-space: nowrap;
-					position: relative;
-					z-index: 1;
 				}
 				.mpwem-title-switch-button .dashicons {
-					width: 18px;
-					height: 18px;
-					font-size: 18px;
-					opacity: 0.95;
-					position: relative;
-					z-index: 1;
-					transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+					width: 16px;
+					height: 16px;
+					font-size: 16px;
+					opacity: 0.92;
 				}
-				.mpwem-title-switch-button:hover .dashicons {
-					transform: scale(1.15) rotate(15deg);
+				.mpwem-title-switch-button::after {
+					content: "";
+					position: absolute;
+					inset: 1px;
+					border-radius: inherit;
+					background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+					pointer-events: none;
 				}
 			</style>
 				<script>
@@ -1296,62 +1318,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						</div>
 						<div class="mpwem-event-wizard__actions">
 							<?php if ($classical_url) : ?>
-								<style>
-									.mpwem-modern-to-classic-btn {
-										position: relative;
-										display: inline-flex;
-										align-items: center;
-										justify-content: center;
-										gap: 8px;
-										padding: 0 20px;
-										height: 36px;
-										white-space: nowrap;
-										border: none;
-										border-radius: 8px;
-										background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #f97316 100%);
-										color: #ffffff;
-										font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-										font-size: 14px;
-										font-weight: 600;
-										line-height: 1;
-										letter-spacing: 0.02em;
-										text-decoration: none;
-										cursor: pointer;
-										box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-										transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-										overflow: hidden;
-										margin-right: 12px;
-									}
-									.mpwem-modern-to-classic-btn::before {
-										content: '';
-										position: absolute;
-										top: 0; left: -100%; width: 100%; height: 100%;
-										background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-										transition: left 0.6s ease;
-									}
-									.mpwem-modern-to-classic-btn:hover,
-									.mpwem-modern-to-classic-btn:focus {
-										transform: translateY(-2px);
-										box-shadow: 0 6px 16px rgba(244, 63, 94, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-										color: #ffffff;
-										outline: none;
-									}
-									.mpwem-modern-to-classic-btn:hover::before {
-										left: 100%;
-									}
-									.mpwem-modern-to-classic-btn:active {
-										transform: translateY(1px);
-										box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-									}
-									.mpwem-modern-to-classic-btn .dashicons {
-										width: 16px; height: 16px; font-size: 16px; opacity: 0.95; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-									}
-									.mpwem-modern-to-classic-btn:hover .dashicons {
-										transform: scale(1.15) rotate(15deg);
-									}
-								</style>
-								<a class="mpwem-modern-to-classic-btn" href="<?php echo esc_url($classical_url); ?>">
-									<span class="dashicons dashicons-editor-code"></span>
+								<a class="mpwem-link mpwem-modern-to-classic-btn" href="<?php echo esc_url($classical_url); ?>">
+									<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
 									<span><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></span>
 								</a>
 							<?php endif; ?>

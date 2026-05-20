@@ -4665,7 +4665,7 @@ jQuery(document).ready(function ($) {
 
 		var $list = $('<div class="mpwem-related-results-list"></div>');
 		if (!searchTerm || searchTerm.length === 0) {
-			$list.append('<div class="mpwem-related-results-hint">Showing 10 events — type to search</div>');
+			$list.append('<div class="mpwem-related-results-hint">All events — type to search</div>');
 		}
 		$.each(results, function (i, ev) {
 			var isSelected = $.inArray(ev.id, selectedIds) !== -1;
@@ -4784,12 +4784,6 @@ jQuery(document).ready(function ($) {
 
 	$relatedWrap.on('focus', '.mpwem-related-search-input', function () {
 		$(this).closest('.mpwem-related-search-wrap').find('.mpwem-related-results').show();
-	});
-
-	$(document).on('click', function (e) {
-		if (!$(e.target).closest('.mpwem-related-search-wrap').length) {
-			$('.mpwem-related-results').hide();
-		}
 	});
 
 });

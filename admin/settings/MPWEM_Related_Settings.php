@@ -15,18 +15,19 @@
 				$exclude = isset( $_POST['exclude'] ) ? array_map( 'intval', (array) $_POST['exclude'] ) : [];
 				$exclude[] = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 
-				$args = [
-					'post_type'      => 'mep_events',
-					'posts_per_page' => 10,
-					'post_status'    => 'publish',
-					'post__not_in'   => array_filter( $exclude ),
-					'orderby'        => 'title',
-					'order'          => 'ASC',
-				];
+			$args = [
+				'post_type'      => 'mep_events',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				'post__not_in'   => array_filter( $exclude ),
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			];
 
-				if ( ! empty( $search ) ) {
-					$args['s'] = $search;
-				}
+			if ( ! empty( $search ) ) {
+				$args['s'] = $search;
+				$args['posts_per_page'] = 10;
+			}
 
 				$query   = new WP_Query( $args );
 				$results = [];

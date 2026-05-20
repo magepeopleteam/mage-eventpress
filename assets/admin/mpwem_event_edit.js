@@ -968,6 +968,26 @@
             $target.toggleClass('mpwem-ticket-col-hidden', !shouldShowDateWiseColumns);
             $target.css('display', shouldShowDateWiseColumns ? displayValue : 'none');
         });
+
+        const $extraGlobalQtyToggle = $root.find('input[name="ex_enable_global_qty"]').first();
+        const $extraGlobalQtyTypeSelect = $root.find('select[name="ex_mep_gq_type"]').first();
+        const isExtraGlobalQtyEnabled = $extraGlobalQtyToggle.is(':checked');
+        const extraGlobalQtyType = ($extraGlobalQtyTypeSelect.val() || '').toString();
+        const shouldShowExtraDateWiseColumns = isExtraGlobalQtyEnabled && extraGlobalQtyType === 'date_wise';
+        const $extraTargets = $root.find(
+            '#mpwem_particular_date_modal_mount [data-collapse="#ex_mep_gq_type_date_wise"], ' +
+            '#mpwem_wizard_date_mount [data-collapse="#ex_mep_gq_type_date_wise"]'
+        );
+
+        $extraTargets.each(function() {
+            const $target = $(this);
+            const tagName = (this.tagName || '').toLowerCase();
+            const displayValue = tagName === 'th' || tagName === 'td' ? 'table-cell' : 'block';
+
+            $target.toggleClass('mActive', shouldShowExtraDateWiseColumns);
+            $target.toggleClass('mpwem-ticket-col-hidden', !shouldShowExtraDateWiseColumns);
+            $target.css('display', shouldShowExtraDateWiseColumns ? displayValue : 'none');
+        });
     }
 
     function syncGlobalQtyTypeWarning($root) {
@@ -1047,6 +1067,16 @@
             const mode = $(this).attr('data-mpwem-ticket-modal-open') || 'list';
             const rowIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
             openTicketModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
+        $root.on('click.mpwemTicketModal', '#mpwem_ticket_summary .mpwem-ticket-summary__item', function(e) {
+            if ($(e.target).closest('[data-mpwem-ticket-modal-open], button, a, input, select, textarea').length) {
+                return;
+            }
+
+            e.preventDefault();
+            const rowIndex = parseInt($(this).attr('data-ticket-row-index'), 10);
+            openTicketModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
         $root.on('click.mpwemTicketModal', '[data-mpwem-ticket-modal-close]', function(e) {
@@ -1429,6 +1459,16 @@
             const mode = $(this).attr('data-mpwem-extra-modal-open') || 'list';
             const rowIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
             openExtraServiceModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
+        $root.on('click.mpwemExtraModal', '#mpwem_extra_service_summary .mpwem-ticket-summary__item', function(e) {
+            if ($(e.target).closest('[data-mpwem-extra-modal-open], button, a, input, select, textarea').length) {
+                return;
+            }
+
+            e.preventDefault();
+            const rowIndex = parseInt($(this).attr('data-extra-service-row-index'), 10);
+            openExtraServiceModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
         $root.on('click.mpwemExtraModal', '[data-mpwem-extra-modal-close]', function(e) {
@@ -2137,7 +2177,7 @@
 
     function initializeParticularDateTableDragScroll($root) {
         const context = getParticularDateModalContext($root);
-        const blockedSelector = 'select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
+        const blockedSelector = 'input, textarea, select, button, a, .mpwem-select-wrapper, .ui-datepicker, .wp-picker-container';
         context.$modalMount.find('._ov_auto').each(function() {
             const $scroller = $(this);
             if ($scroller.data('mpwemDateDragScrollInit')) {
@@ -2803,6 +2843,7 @@
         const $toggle = $panel.find('.mpwem-registration-mode__toggle').first();
         const $checkbox = $panel.find('input[name="mep_reg_status"]').first();
         const $collapse = $panel.find('[data-collapse="#mep_reg_status"]').first();
+        const $ticketSummary = $panel.find('#mpwem_ticket_summary').first();
         const $extraServicesCard = $root.find('#mpwem_wizard_extra_services_card').first();
 
         if (!$toggle.length || !$checkbox.length || $toggle.data('mpwemEnhanced')) {
@@ -2832,6 +2873,19 @@
                 } else {
                     $extraServicesCard.toggle(isEnabled);
                 }
+            }
+
+            if ($ticketSummary.length) {
+                if (useAnimation) {
+                    $ticketSummary.stop(true, true)[isEnabled ? 'slideDown' : 'slideUp'](250);
+                } else {
+                    $ticketSummary.toggle(isEnabled);
+                }
+            }
+
+            if (!isEnabled) {
+                closeTicketModal($root);
+                closeExtraServiceModal($root);
             }
         };
 

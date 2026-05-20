@@ -979,47 +979,36 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					align-items: center;
 					justify-content: center;
 					gap: 8px;
-					padding: 0 20px;
-					height: 38px;
-					border: none;
-					border-radius: 8px;
-					background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #f97316 100%);
-					color: #ffffff;
-					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-					font-size: 14px;
+					min-height: 31px;
+					padding: 0 18px;
+					border: 1px solid var(--color_theme);
+					border-radius: 5px;
+					background: var(--color_theme);
+					color: #fff;
+					font-size: 13px;
 					font-weight: 600;
 					line-height: 1;
 					letter-spacing: 0.02em;
 					text-decoration: none;
 					cursor: pointer;
-					box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-					transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-					margin-top: -6px;
-					overflow: hidden;
-				}
-				.mpwem-title-switch-button::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: -100%;
-					width: 100%;
-					height: 100%;
-					background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-					transition: left 0.6s ease;
+					box-shadow: 0 10px 20px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+					transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
+					margin-top: -8px;
 				}
 				.mpwem-title-switch-button:hover,
 				.mpwem-title-switch-button:focus {
-					transform: translateY(-2px);
-					box-shadow: 0 6px 16px rgba(244, 63, 94, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-					color: #ffffff;
-					outline: none;
+					color: #fff;
+					box-shadow: 0 14px 28px -14px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+					transform: translateY(-1px);
+					filter: brightness(0.85);
 				}
-				.mpwem-title-switch-button:hover::before {
-					left: 100%;
+				.mpwem-title-switch-button:focus {
+					outline: none;
+					box-shadow: 0 14px 28px -14px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px var(--color_theme_77);
 				}
 				.mpwem-title-switch-button:active {
-					transform: translateY(1px);
-					box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+					transform: translateY(0);
+					box-shadow: 0 8px 18px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 				}
 				.mpwem-title-switch-button .mpwem-title-switch-label {
 					display: inline-block;

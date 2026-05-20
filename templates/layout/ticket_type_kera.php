@@ -94,8 +94,7 @@
 										$count        = 0;
 										if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) { ?>
                                             <div class="data-label">
-                                                <p><?php echo esc_html( $tickets['group'] ); ?></p>
-                                                <p><?php echo esc_html__( 'Price', 'mage-eventpress' ); ?></p>
+                                                <?php echo esc_html__( 'Ticket Selection --', 'mage-eventpress' ); ?><?php echo esc_html( $tickets['group'] ); ?>
                                             </div>
                                             <div class="mpwem_ticket_type">
 												<?php foreach ( $ticket_types as $ticket_type ) {
@@ -136,17 +135,17 @@
                                                             <div class="mep_ticket_item">
                                                                 <div class="justify_between">
                                                                     <div class="">
-                                                                        <h6><?php echo esc_html( $ticket_name ); ?></h6>
+                                                                        <h6><?php echo esc_html( $ticket_name ); ?>  <?php echo esc_html( $tickets['group'] ); ?></h6>
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
 																		<?php if ( $mep_available_seat == 'on' ) { ?>
                                                                             <div class="ticket-remaining xtra-item-left <?php echo $available <= 10 ? 'remaining-low' : 'remaining-high'; ?>">
-																				<?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
+                                                                                <i class="fa-solid fa-ticket"></i> <?php echo esc_html( max( $available, 0 ) ) . __( ' Tickets remaining', 'mage-eventpress' ); ?>
                                                                             </div>
 																		<?php } ?>
                                                                     </div>
-                                                                    <div class="">
+                                                                    <div class="price_content">
                                                                         <h6 class="_text_center"><?php echo wc_price( $ticket_price_ ); ?></h6>
                                                                         <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>

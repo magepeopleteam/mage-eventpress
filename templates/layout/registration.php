@@ -34,8 +34,11 @@
 				$saved_user_role   = is_array($event_infos) && array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];
 				// if ( $event_member_type == 'for_all' || ( is_user_logged_in() && ( array_intersect( wp_get_current_user()->roles, $saved_user_role ) ) || in_array( 'all', $saved_user_role ) ) ) {
 				if( $event_member_type == 'for_all' || ($event_member_type != 'for_all'  && is_user_logged_in() && ( in_array(wp_get_current_user()->roles[0],$saved_user_role) || in_array('all',$saved_user_role) ) )){
-				 ?>
-                    <div class="mpwem_registration_area">
+
+                    $kera_class = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_category', 'off' );
+                    $kera_class=$kera_class=='on'?'kera_class':'';
+                    ?>
+                    <div class="mpwem_registration_area <?php echo esc_attr( $kera_class ); ?>">
 						<?php do_action( 'mpwem_date_select', $event_id, $event_infos); ?>
                         <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
 							<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>

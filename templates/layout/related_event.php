@@ -14,7 +14,7 @@
 		$related_label   = is_array($event_infos) && array_key_exists( 'related_section_label', $event_infos ) ? $event_infos['related_section_label'] : [];
 		$related_label=$related_label?:__( 'Related Events', 'mage-eventpress' );
 		?>
-        <div class="mpwem_related_area">
+        <div class="mpwem_related_area on_load_off">
             <div class="related_title _align_center_justify_between">
                 <h3><?php echo esc_html($related_label); ?></h3>
                 <div class="related_navigation">

@@ -1526,6 +1526,25 @@ select.mpwem-global-qty-field__input {
 	background: #eef6ff !important;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
 }
+
+.mpwem-registration-mode__toggle .mpwem-event-type-option.is-active::after {
+	content: "✓";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: var(--mpwem-primary);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+	line-height: 1;
+}
 .mpwem-registration-mode__toggle .mpwem-date-type-option__icon {
 	display: inline-flex;
 	align-items: center;
@@ -2154,6 +2173,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	color: var(--mpwem-btn-primary-text);
 	border-color: var(--mpwem-btn-primary-bg);
 }
+#mpwem_particular_date_summary .mpwem-ticket-summary__actions .button {
+	min-height: 34px;
+	padding: 0 12px;
+	line-height: 32px;
+}
+
+#mpwem_particular_date_summary .mpwem-ticket-summary__actions .button-primary,
+#mpwem_particular_date_summary .mpwem-ticket-summary__actions .button-primary:hover,
+#mpwem_particular_date_summary .mpwem-ticket-summary__actions .button-primary:focus {
+	background: var(--mpwem-btn-primary-bg);
+	color: var(--mpwem-btn-primary-text);
+	border-color: var(--mpwem-btn-primary-bg);
+}
 .mpwem-ticket-summary__list {
 	display: grid;
 	gap: 7px;
@@ -2462,6 +2494,14 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	gap: 8px;
 	padding: 18px;
 	border-radius: 14px;
+}
+
+.mpwem-ticket-summary__empty .button-primary,
+.mpwem-ticket-summary__empty .button-primary:hover,
+.mpwem-ticket-summary__empty .button-primary:focus {
+	background: var(--mpwem-btn-primary-bg) !important;
+	color: var(--mpwem-btn-primary-text) !important;
+	border-color: var(--mpwem-btn-primary-bg) !important;
 }
 .mpwem-ticket-modal {
 	position: fixed;
@@ -6654,6 +6694,32 @@ body.mpwem-drag-scroll-active {
 	justify-self: start;
 	width: 250px;
 	max-width: 100%;
+}
+
+.mpwem_sortable_area .mpwem_date_reset,
+.mpwem_sortable_area .remove_icon {
+	position: absolute;
+	right: 8px;
+	top: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	border-radius: 999px;
+	transform: translateY(-50%);
+	background: #fff1f2;
+	color: var(--mpwem-danger);
+	border: 1px solid #fecdd3;
+	font-size: 11px;
+	line-height: 1;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.mpwem_sortable_area label {
+	position: relative;
 }
 .mpwem-ticket-off-dates-field .mpwem_add_item {
 	display: inline-flex !important;

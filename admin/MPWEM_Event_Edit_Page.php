@@ -1369,7 +1369,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<?php else : ?>
 							<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="mpwem-event-edit-form">
 								<input type="hidden" name="action" value="mpwem_event_edit_save" />
-								<input type="hidden" name="post_ID" value="<?php echo esc_attr($post_id); ?>" />
+								<input type="hidden" name="post_ID" id="post_ID" value="<?php echo esc_attr($post_id); ?>" />
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>

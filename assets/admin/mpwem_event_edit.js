@@ -589,10 +589,22 @@
         const context = getTicketModalContext($root);
         const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
         const $container = getTicketRowsContainer($root);
+        const $globalQtyToggle = context.$modalMount.find('input[name="enable_global_qty"]').first().add(
+            $ticketPanel.find('input[name="enable_global_qty"]').first()
+        ).add(
+            $root.find('input[name="enable_global_qty"]').first()
+        ).first();
+        const $globalQtyInput = context.$modalMount.find('input[name="mep_gq_total_seat"]').first().add(
+            $ticketPanel.find('input[name="mep_gq_total_seat"]').first()
+        ).add(
+            $root.find('input[name="mep_gq_total_seat"]').first()
+        ).first();
 
         context.$modal
             .data('mpwemTicketSavedRowsHtml', $container.length ? $container.html() : '')
-            .data('mpwemTicketSavedRegEnabled', $ticketPanel.find('input[name="mep_reg_status"]').first().is(':checked'));
+            .data('mpwemTicketSavedRegEnabled', $ticketPanel.find('input[name="mep_reg_status"]').first().is(':checked'))
+            .data('mpwemTicketSavedGlobalQtyEnabled', $globalQtyToggle.is(':checked'))
+            .data('mpwemTicketSavedGlobalTotalQty', (($globalQtyInput.val() || '').toString().trim()));
     }
 
     function getSavedTicketSummaryRows($root) {
@@ -707,6 +719,45 @@
         return value.length ? value : 'Unlimited';
     }
 
+    function isTicketGlobalQtyEnabled($root) {
+        const context = getTicketModalContext($root);
+        const savedValue = context.$modal.data('mpwemTicketSavedGlobalQtyEnabled');
+
+        if (typeof savedValue === 'boolean') {
+            return savedValue;
+        }
+
+        const $toggle = context.$modalMount.find('input[name="enable_global_qty"]').first().add(
+            $root.find('input[name="enable_global_qty"]').first()
+        ).first();
+
+        return $toggle.is(':checked');
+    }
+
+    function ticketGlobalTotalQty($root) {
+        const context = getTicketModalContext($root);
+        const savedValue = context.$modal.data('mpwemTicketSavedGlobalTotalQty');
+
+        if (typeof savedValue === 'string') {
+            return savedValue.length ? savedValue : '0';
+        }
+
+        const $input = context.$modalMount.find('input[name="mep_gq_total_seat"]').first().add(
+            $root.find('input[name="mep_gq_total_seat"]').first()
+        ).first();
+        const value = ($input.val() || '').toString().trim();
+
+        return value.length ? value : '0';
+    }
+
+    function ticketSummaryQty($root, $row) {
+        if (isTicketGlobalQtyEnabled($root)) {
+            return ticketGlobalTotalQty($root);
+        }
+
+        return ticketRowCapacity($row);
+    }
+
     function ticketRowDescription($row) {
         const value = ($row.find('[name="option_details_t[]"]').first().val() || '').toString().trim();
         return value || 'No short description yet.';
@@ -738,6 +789,7 @@
             $('<div class="mpwem-ticket-summary__header"></div>')
                 .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
                 .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
+                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Total Qty'))
                 /* Planned: Action column header (.mpwem-ticket-summary__header-action) */
         );
 
@@ -757,6 +809,7 @@
             const $row = $(this);
             const name = ticketRowName($row);
             const price = ticketRowPrice($row);
+            const capacity = ticketSummaryQty($root, $row);
             const isDisabled = $row.hasClass('disable_row');
 
             context.$summaryList.append(
@@ -774,6 +827,10 @@
                     .append(
                         $('<div class="mpwem-ticket-summary__meta"></div>')
                             .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))
+                    )
+                    .append(
+                        $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--capacity"></div>')
+                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(capacity))
                     )
                     /* Planned: per-row Details action button (data-mpwem-ticket-modal-open="details") */
             );

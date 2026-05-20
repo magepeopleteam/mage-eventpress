@@ -2148,6 +2148,11 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 #mpwem_extra_service_summary .mpwem-ticket-summary__list {
 	gap: 5px;
 }
+#mpwem_ticket_summary .mpwem-ticket-summary__header,
+#mpwem_ticket_summary .mpwem-ticket-summary__item {
+	grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(68px, 0.3fr);
+	column-gap: 16px;
+}
 .mpwem-ticket-summary__header,
 .mpwem-ticket-summary__item {
 	display: grid;
@@ -2261,9 +2266,16 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__meta {
 	gap: 2px;
+	justify-self: stretch;
+	width: 100%;
+	justify-content: flex-end;
 }
 #mpwem_extra_service_summary .mpwem-ticket-summary__meta {
 	gap: 2px;
+}
+.mpwem-ticket-summary__meta--capacity {
+	justify-self: end;
+	text-align: right;
 }
 .mpwem-ticket-summary__price {
 	font-size: 20px;
@@ -2280,6 +2292,12 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	font-size: 14px;
 	line-height: 1.2;
 	font-weight: 400;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__capacity {
+	font-size: 14px;
+	line-height: 1.2;
+	font-weight: 400;
+	color: #10233f;
 }
 
 .mpwem-ticket-summary__datetime {
@@ -2302,6 +2320,22 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 }
 .mpwem-ticket-summary__header-capacity {
 	text-align: right;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__header-price,
+#mpwem_ticket_summary .mpwem-ticket-summary__header-capacity {
+	display: block;
+	width: 100%;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__meta--capacity {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	min-width: 56px;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__price,
+#mpwem_ticket_summary .mpwem-ticket-summary__capacity {
+	display: block;
+	width: 100%;
 }
 #mpwem_extra_service_summary .mpwem-ticket-summary__header,
 #mpwem_extra_service_summary .mpwem-ticket-summary__item {
@@ -2344,6 +2378,25 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	color: #10233f;
 }
 @media (max-width: 767px) {
+	#mpwem_ticket_summary .mpwem-ticket-summary__header,
+	#mpwem_ticket_summary .mpwem-ticket-summary__item {
+		grid-template-columns: minmax(0, 1fr) 78px 56px;
+		column-gap: 10px;
+	}
+	#mpwem_ticket_summary .mpwem-ticket-summary__header {
+		padding: 0 10px;
+		font-size: 9px;
+	}
+	#mpwem_ticket_summary .mpwem-ticket-summary__item {
+		padding: 8px 10px;
+	}
+	#mpwem_ticket_summary .mpwem-ticket-summary__item-head h4 {
+		font-size: 13px !important;
+	}
+	#mpwem_ticket_summary .mpwem-ticket-summary__price,
+	#mpwem_ticket_summary .mpwem-ticket-summary__capacity {
+		font-size: 12px;
+	}
 	#mpwem_extra_service_summary .mpwem-ticket-summary__header,
 	#mpwem_extra_service_summary .mpwem-ticket-summary__item {
 		grid-template-columns: minmax(0, 1fr) 78px 52px;
@@ -8644,6 +8697,7 @@ code {
 	min-height: 34px;
 	padding-top: 6px;
 	padding-bottom: 6px;
+	padding-right: 0 !important;
 	font-size: 12px;
 	line-height: 1.2;
 	border-radius: 8px;

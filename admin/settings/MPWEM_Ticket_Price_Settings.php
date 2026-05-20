@@ -355,7 +355,6 @@
                                 <input type="checkbox" name="mep_reg_status" value="on" <?php echo esc_attr( $checked ); ?> data-no-mpwem-switch />
                             </div>
                         </div>
-                        <span class="label-text mpwem-tooltip-skip"><?php esc_html_e( 'Choose whether this event is only listed or open for ticket sales.', 'mage-eventpress' ); ?></span>
 					<?php } else { ?>
                         <div class=" _justify_between_align_center_wrap">
                             <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>

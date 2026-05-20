@@ -982,9 +982,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					gap: 8px;
 					min-height: 31px;
 					padding: 0 18px;
-					border: 1px solid #9f1f66;
+					border: 1px solid var(--color_theme);
 					border-radius: 5px;
-					background: linear-gradient(135deg, #d63384 0%, #a61e67 100%);
+					background: var(--color_theme);
 					color: #fff;
 					font-size: 13px;
 					font-weight: 600;
@@ -992,26 +992,24 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					letter-spacing: 0.01em;
 					text-decoration: none;
 					cursor: pointer;
-					box-shadow: 0 10px 20px -12px rgba(166, 30, 103, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+					box-shadow: 0 10px 20px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 					transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
 					margin-top: -8px;
 				}
 				.mpwem-title-switch-button:hover,
 				.mpwem-title-switch-button:focus {
-					border-color: #861a54;
-					background: linear-gradient(135deg, #e13c8e 0%, #8d1b58 100%);
 					color: #fff;
-					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+					box-shadow: 0 14px 28px -14px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 					transform: translateY(-1px);
-					filter: saturate(1.05);
+					filter: brightness(0.85);
 				}
 				.mpwem-title-switch-button:focus {
 					outline: none;
-					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px rgba(214, 51, 132, 0.18);
+					box-shadow: 0 14px 28px -14px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px var(--color_theme_77);
 				}
 				.mpwem-title-switch-button:active {
 					transform: translateY(0);
-					box-shadow: 0 8px 18px -12px rgba(166, 30, 103, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+					box-shadow: 0 8px 18px -12px var(--color_theme_aa), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 				}
 				.mpwem-title-switch-button .mpwem-title-switch-label {
 					display: inline-block;

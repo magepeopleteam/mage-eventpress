@@ -5558,7 +5558,7 @@ function mep_change_date_status() {
             <div class="mpwem-card-date-field">
                 <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
                 <label class="mpwem-card-time-field">
-                    <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_start ) ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
+                    <input type="time" value="<?php echo esc_attr( strlen(trim((string)$sale_start)) > 10 ? date( 'H:i', strtotime( $sale_start ) ) : '' ); ?>" name="option_sale_start_time[]" class="formControl"/>
                 </label>
             </div>
         </div>
@@ -5568,15 +5568,19 @@ function mep_change_date_status() {
     if ( ! function_exists( 'mep_early_bird_save_data' ) ) {
         add_filter('mpwem_ticket_type_arr_save', 'mep_early_bird_save_data');
         function mep_early_bird_save_data($data) {
-            $sale_start_date = $_POST['option_sale_start_date'] ? mage_array_strip($_POST['option_sale_start_date']) : array();
-            $sale_start_time = $_POST['option_sale_start_time'] ? mage_array_strip($_POST['option_sale_start_time']) : array();
-            if (sizeof($sale_start_date) > 0) {
+            $sale_start_date = isset($_POST['option_sale_start_date']) ? mage_array_strip($_POST['option_sale_start_date']) : array();
+            $sale_start_time = isset($_POST['option_sale_start_time']) ? mage_array_strip($_POST['option_sale_start_time']) : array();
+            
+            if (is_array($sale_start_date) && sizeof($sale_start_date) > 0) {
                 $count = count($data);
                 for ($i = 0; $i < $count; $i++) {
                     if (is_array($data) && array_key_exists( $i, $data )) {
-                        $data[$i]['option_sale_start_date'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i])) : '';
-                        $data[$i]['option_sale_start_time'] = !empty($sale_start_time[$i]) ? stripslashes(strip_tags($sale_start_time[$i])) : '';
-                        $data[$i]['option_sale_start_date_t'] = !empty($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i] . ' ' . $sale_start_time[$i])) : '';
+                        $s_date = isset($sale_start_date[$i]) ? stripslashes(strip_tags($sale_start_date[$i])) : '';
+                        $s_time = isset($sale_start_time[$i]) ? stripslashes(strip_tags($sale_start_time[$i])) : '';
+                        
+                        $data[$i]['option_sale_start_date'] = $s_date;
+                        $data[$i]['option_sale_start_time'] = $s_time;
+                        $data[$i]['option_sale_start_date_t'] = trim($s_date . ' ' . $s_time);
                     }
                 }
             }

@@ -193,7 +193,7 @@
                                 <div class="mpwem-card-date-field">
                                 <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
                                     <div class="mpwem-card-time-field">
-                                        <input type="time" value="<?php echo esc_attr( MPWEM_Global_Function::check_time_exit_date( $sale_end ) ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
+                                        <input type="time" value="<?php echo esc_attr( strlen(trim((string)$sale_end)) > 10 ? date( 'H:i', strtotime( $sale_end ) ) : '' ); ?>" name="option_sale_end_time[]" class="formControl"/>
                                     </div>
                                 </div>
                             </div>

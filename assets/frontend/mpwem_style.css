@@ -11,9 +11,19 @@
 	.reg_close_msg { animation: fadeIn 0.5s ease-in-out; }
 	@keyframes fadeIn {from { opacity: 0; transform: translateY(-10px); }to { opacity: 1; transform: translateY(0); }}
 
-	div.mpwem_related_area{
-		display: none;
+	div.mpwem_related_area.on_load_off{
+		/*opacity:0;*/
+		overflow: hidden;
+		background-color: rgba(255, 255, 255, 0.3);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+
+		filter: blur(15px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		padding: 20px;
+		border-radius: 10px;
 	}
+
 
 	.mpwem_registration_area_show_msg {display: flex;justify-content: center;margin: 40px 0;}
 	.mpwem_registration_area_show_msg ._margin_zero_text_center {max-width: 620px;padding: 28px 32px;text-align: center;background: linear-gradient(135deg, #f8fafc, #ffffff);border-radius: 14px;border: 1px solid rgba(0, 0, 0, 0.06);box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);position: relative;overflow: hidden;}
@@ -1990,4 +2000,94 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		letter-spacing: 3.5px;
 		text-transform: uppercase;
 		color: #e63946;
+	}
+
+
+	div.mpwem_registration_area.kera_class{
+		background-color: #f7f9fb;
+		padding: 15px;
+	}
+	div.mpwem_registration_area.kera_class .date-time-header{
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		color: #222;
+		padding: 0 0 10px 0 !important;
+	}
+	div.mpwem_registration_area.kera_class .ticket-title{
+		color: #222;
+		font-size: 20px !important;
+		text-align: left !important;
+		font-weight: 600;
+	}
+	div.mpwem_registration_area.kera_class .tabsContent{
+		padding: 0 !important;
+	}
+	div.mpwem_registration_area.kera_class .tabsContent .tabsItem{}
+	div.mpwem_registration_area.kera_class .tabsContent .data-label{
+		padding: 15px;
+		border-bottom: 1px solid #ddd;
+		background-color: #f2f4f6;
+		font-weight: 600;
+	}
+	div.mpwem_registration_area.kera_class .tabsContent .mpwem_ticket_type{
+		box-shadow: none;
+	}
+	div.mpwem_style .kera_ticket_area [data-tabs-target].active div.category-item div.category-title{
+		background: #4a90e2;
+	}
+	div.mpwem_style .kera_ticket_area [data-tabs-target].active{
+		border:2px solid #4a90e2;
+	}
+	div.mpwem_style .kera_ticket_area [data-tabs-target]{
+		padding: 0;
+	}
+	.mep-events-wrapper div.xtra-item-left{
+		display: flex;
+		color: #4a90e2;
+	}
+	.mep-events-wrapper div.xtra-item-left i{
+		margin-right: 10px;
+	}
+	div.mpwem_registration_area.kera_class .price_content{
+		display: flex;
+		align-items: center;
+	}
+	div.mpwem_registration_area.kera_class .price_content h6{
+		color: #4a90e2;
+		margin-right: 20px;
+
+	}
+	div.mpwem_registration_area.kera_class .mep_ticket_item p{
+
+		margin-bottom: 10px;
+
+	}
+	div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec{
+		max-width: 120px;
+		border: 2px solid #ddd;
+		border-radius: 10px;
+
+	}
+	div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .decQty{
+
+		border-right: 2px solid #ddd;
+		border-radius: 10px 0 0 10px;
+		background-color: #fff;
+		color: #4a90e2;
+	}
+
+	div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .incQty{
+
+		border-left: 2px solid #ddd;
+		border-radius: 0 10px 10px 0;
+		background-color: #fff;
+		color: #4a90e2;
+	}
+
+	div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec .inputIncDec{
+		margin: 0;
+		border-radius: 0;
+		width:100%;
+		background-color: #fff;
 	}

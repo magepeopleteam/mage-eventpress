@@ -133,6 +133,17 @@
 								)
 							),
 							array(
+								'name'    => 'mep_event_edit_page_mode',
+								'label'   => __( 'Event Edit Page Mode', 'mage-eventpress' ),
+								'desc'    => __( 'Choose which editor opens by default when you add or edit an event.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'modern',
+								'options' => array(
+									'modern'  => __( 'Modern', 'mage-eventpress' ),
+									'classic' => __( 'Classic', 'mage-eventpress' )
+								)
+							),
+							array(
 								'name'    => 'mep_rest_api_status',
 								'label'   => __( 'Enable Rest API?', 'mage-eventpress' ),
 								'desc'    => __( 'If you want to enable event data available in the Rest API Please enable this.', 'mage-eventpress' ),

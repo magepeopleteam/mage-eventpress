@@ -31,7 +31,7 @@
 					&& isset( $_GET['page'] )
 					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
-                <div class="_layout_default_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
@@ -221,7 +221,7 @@
 				$ex_infos    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_events_extra_prices', [] );
 				?>
                 <div class="_mt"></div>
-                <div class="_layout_default_xs_mp_zero">
+                <div class="_layout_default_xs_mp_zero mpwem-extra-service-section">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Extra Service Area', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Extra Service Here. Extra Service as Product that you can sell and it is not included on event package', 'mage-eventpress' ); ?></span>
@@ -259,7 +259,7 @@
 				$qty_t_type   = is_array($ticket_info) && array_key_exists( 'option_qty_type', $ticket_info ) ? $ticket_info['option_qty_type'] : 'inputbox';
 				?>
                 <div class="mpwem-ticket-card mpwem_remove_area data_required">
-                    <div class="mpwem-ticket-card__main">
+                    <div class="mpwem-ticket-card__main mpwem-ticket-card__main--extra-service">
                         <!-- Identity Group -->
                         <div class="mpwem-ticket-card__group mpwem-ticket-card__identity">
                             <div class="mpwem-ticket-card__field">
@@ -338,7 +338,7 @@
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
 
 				?>
-                <div class="">
+                <div class="mpwem-ticket-registration-block">
 					<?php if ( $is_custom_event_edit ) { ?>
                         <div class="mpwem-registration-mode">
                             <div class="mpwem-registration-mode__toggle mpwem-event-type-toggle">
@@ -364,7 +364,7 @@
                         <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
 					<?php } ?>
                 </div>
-                <div class="_padding_bt reg_close_msg_dash">
+                <div class="_padding_bt reg_close_msg_dash mpwem-ticket-registration-message">
                     <div class=" _justify_between_align_center_wrap">
                         <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>
 						<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status_show_msg', $reg_msg_checked ); ?>
@@ -414,6 +414,12 @@
                                 <option value="date_wise" <?php selected( $global_qty_type, 'date_wise' ); ?>><?php esc_html_e( 'Particular Date Wise', 'mage-eventpress' ); ?></option>
                                 <option value="global" <?php selected( $global_qty_type, 'global' ); ?>><?php esc_html_e( 'Full Event Base', 'mage-eventpress' ); ?></option>
                             </select>
+                            <p class="mpwem-global-qty-warning <?php echo esc_attr( ( $global_qty_status === 'on' && $global_qty_type === 'date_wise' ) ? 'is-visible' : '' ); ?>">
+								<?php esc_html_e( 'Please set the Global Qty value in Date & Time Steps -> Particular Date Wise modal table.', 'mage-eventpress' ); ?>
+                                <button type="button" class="button button-secondary mpwem-global-qty-warning__action" data-mpwem-open-particular-date-modal>
+									<?php esc_html_e( 'Open Particular Date Table', 'mage-eventpress' ); ?>
+                                </button>
+                            </p>
                         </div>
                         <div class="mpwem-ticket-card__group">
                             <label class="mpwem-card-label">

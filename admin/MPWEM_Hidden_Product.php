@@ -7,6 +7,7 @@
 			public function __construct() {
 				add_action( 'wp_insert_post', array( $this, 'create_hidden_wc_product_on_publish' ), 10, 3 );
 				add_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99, 1 );
+				add_action( 'mpwem_after_event_edit_save', array( $this, 'run_link_product_on_save' ), 99, 1 );
 				add_action( 'parse_query', array( $this, 'hide_wc_hidden_product_from_product_list' ) );
 				add_action( 'pre_get_posts', array( $this, 'hide_wc_hidden_product') );
 				add_action( 'wp', array( $this, 'hide_hidden_wc_product_from_frontend' ) );

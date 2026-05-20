@@ -17,7 +17,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		private const PAGE_SLUG = 'mpwem_event_edit';
 		private const NONCE_ACTION_SAVE = 'mpwem_event_edit_save';
 		private const NONCE_ACTION_CREATE = 'mpwem_event_edit_create';
+		private const NONCE_ACTION_SWITCH = 'mpwem_switch_event_editor';
 		private const CLASSIC_BYPASS_QUERY = 'mpwem_classic';
+		private const EVENT_MODE_META_KEY = '_mpwem_event_edit_mode';
 
 		public function __construct()
 		{
@@ -36,6 +38,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			add_filter('parent_file', [$this, 'filter_parent_file']);
 			add_filter('submenu_file', [$this, 'filter_submenu_file'], 10, 2);
 			add_filter('admin_title', [$this, 'filter_admin_title'], 10, 2);
+			add_action('admin_post_mpwem_switch_event_editor', [$this, 'handle_editor_switch']);
+			add_action('admin_footer', [$this, 'render_classic_switch_title_button']);
 		}
 
 		public function register_menu(): void
@@ -136,7 +140,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return isset($_GET[self::CLASSIC_BYPASS_QUERY]) && (string) wp_unslash($_GET[self::CLASSIC_BYPASS_QUERY]) === '1';
 		}
 
-		private function get_edit_mode(): string
+		private function get_default_edit_mode(): string
 		{
 			$mode = function_exists('mep_get_option')
 				? mep_get_option('mep_event_edit_page_mode', 'general_setting_sec', 'modern')
@@ -145,24 +149,35 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return in_array($mode, ['modern', 'classic'], true) ? $mode : 'modern';
 		}
 
-		private function is_modern_mode_enabled(): bool
+		private function get_edit_mode(int $post_id = 0): string
 		{
-			return $this->get_edit_mode() === 'modern';
+			if ($post_id > 0) {
+				$mode = get_post_meta($post_id, self::EVENT_MODE_META_KEY, true);
+
+				if (in_array($mode, ['modern', 'classic'], true)) {
+					return $mode;
+				}
+			}
+
+			return $this->get_default_edit_mode();
 		}
 
-		private function set_global_edit_mode(string $mode): void
+		private function is_modern_mode_enabled(int $post_id = 0): bool
 		{
-			if (! $this->can_manage_events()) {
+			return $this->get_edit_mode($post_id) === 'modern';
+		}
+
+		private function set_event_edit_mode(int $post_id, string $mode): void
+		{
+			if ($post_id <= 0 || ! current_user_can('edit_post', $post_id)) {
 				return;
 			}
-			$options = get_option('general_setting_sec');
-			if (! is_array($options)) {
-				$options = [];
+
+			if (! in_array($mode, ['modern', 'classic'], true)) {
+				return;
 			}
-			if (! isset($options['mep_event_edit_page_mode']) || $options['mep_event_edit_page_mode'] !== $mode) {
-				$options['mep_event_edit_page_mode'] = $mode;
-				update_option('general_setting_sec', $options);
-			}
+
+			update_post_meta($post_id, self::EVENT_MODE_META_KEY, $mode);
 		}
 
 		/**
@@ -228,6 +243,58 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					self::CLASSIC_BYPASS_QUERY
 				)
 			);
+		}
+
+		private function get_modern_edit_url(int $post_id = 0): string
+		{
+			if ($post_id > 0) {
+				$post = get_post($post_id);
+
+				if ($post instanceof WP_Post && $post->post_type === self::POST_TYPE) {
+					return $this->edit_url($post_id, 'basic');
+				}
+			}
+
+			return admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=' . self::PAGE_SLUG);
+		}
+
+		private function get_editor_switch_url(string $mode, int $post_id = 0): string
+		{
+			$args = [
+				'action' => 'mpwem_switch_event_editor',
+				'mode'   => $mode,
+			];
+
+			if ($post_id > 0) {
+				$args['post_id'] = $post_id;
+			}
+
+			return wp_nonce_url(
+				add_query_arg($args, admin_url('admin-post.php')),
+				self::NONCE_ACTION_SWITCH
+			);
+		}
+
+		private function is_classic_event_post_screen(): bool
+		{
+			if (! is_admin() || $this->is_edit_screen()) {
+				return false;
+			}
+
+			$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+			if (! $screen) {
+				return false;
+			}
+
+			if ($screen->base !== 'post' || $screen->post_type !== self::POST_TYPE) {
+				return false;
+			}
+
+			if (method_exists($screen, 'is_block_editor') && $screen->is_block_editor()) {
+				return false;
+			}
+
+			return true;
 		}
 
 		private function get_taxonomy_terms(string $taxonomy): array
@@ -777,10 +844,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
-			if ($this->is_classic_bypass()) {
-				$this->set_global_edit_mode('classic');
-			}
-
 			if (! is_admin() || $this->is_edit_screen() || $this->is_classic_bypass()) {
 				return;
 			}
@@ -796,7 +859,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
-			if (! $this->is_modern_mode_enabled()) {
+			if (! $this->is_modern_mode_enabled($post_id)) {
 				return;
 			}
 
@@ -808,10 +871,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		{
 			if (defined('DOING_AJAX') && DOING_AJAX) {
 				return;
-			}
-
-			if ($this->is_classic_bypass()) {
-				$this->set_global_edit_mode('classic');
 			}
 
 			if (! is_admin() || $this->is_edit_screen() || $this->is_classic_bypass()) {
@@ -851,7 +910,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return $link;
 			}
 
-			if ($this->is_modern_mode_enabled()) {
+			if ($this->is_modern_mode_enabled((int) $post_id)) {
 				return $this->edit_url($post_id, 'basic');
 			}
 
@@ -864,7 +923,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return $actions;
 			}
 
-			$default_is_modern = $this->is_modern_mode_enabled();
+			$default_is_modern = $this->is_modern_mode_enabled((int) $post->ID);
 
 			if (isset($actions['edit'])) {
 				$actions['edit'] = sprintf(
@@ -877,18 +936,169 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			if ($default_is_modern) {
 				$actions['classic'] = sprintf(
 					'<a href="%s">%s</a>',
-					esc_url($this->get_classic_edit_url((int) $post->ID)),
+					esc_url($this->get_editor_switch_url('classic', (int) $post->ID)),
 					esc_html__('Classic Editor', 'mage-eventpress')
 				);
 			} else {
 				$actions['modern'] = sprintf(
 					'<a href="%s">%s</a>',
-					esc_url($this->edit_url((int) $post->ID, 'basic')),
+					esc_url($this->get_editor_switch_url('modern', (int) $post->ID)),
 					esc_html__('Modern Editor', 'mage-eventpress')
 				);
 			}
 
 			return $actions;
+		}
+
+		public function render_classic_switch_title_button(): void
+		{
+			if (! $this->is_classic_event_post_screen()) {
+				return;
+			}
+
+			global $post;
+
+			if (! $post instanceof WP_Post || $post->post_type !== self::POST_TYPE) {
+				return;
+			}
+
+			$post_id          = (int) $post->ID;
+			$form_action      = admin_url('admin-post.php');
+			$button_text      = __('Edit with Modern Editor', 'mage-eventpress');
+			$nonce_field_html = wp_nonce_field(self::NONCE_ACTION_SWITCH, '_mpwem_switch_nonce', true, false);
+		?>
+			<style>
+				.mpwem-title-switch-form {
+					display: inline-flex;
+					margin: 0 0 0 10px;
+					vertical-align: middle;
+				}
+				.mpwem-title-switch-button {
+					appearance: none;
+					position: relative;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					gap: 8px;
+					min-height: 31px;
+					padding: 0 18px;
+					border: 1px solid #9f1f66;
+					border-radius: 5px;
+					background: linear-gradient(135deg, #d63384 0%, #a61e67 100%);
+					color: #fff;
+					font-size: 13px;
+					font-weight: 600;
+					line-height: 1;
+					letter-spacing: 0.01em;
+					text-decoration: none;
+					cursor: pointer;
+					box-shadow: 0 10px 20px -12px rgba(166, 30, 103, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+					transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, filter 0.18s ease;
+					margin-top: -8px;
+				}
+				.mpwem-title-switch-button:hover,
+				.mpwem-title-switch-button:focus {
+					border-color: #861a54;
+					background: linear-gradient(135deg, #e13c8e 0%, #8d1b58 100%);
+					color: #fff;
+					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+					transform: translateY(-1px);
+					filter: saturate(1.05);
+				}
+				.mpwem-title-switch-button:focus {
+					outline: none;
+					box-shadow: 0 14px 28px -14px rgba(166, 30, 103, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 3px rgba(214, 51, 132, 0.18);
+				}
+				.mpwem-title-switch-button:active {
+					transform: translateY(0);
+					box-shadow: 0 8px 18px -12px rgba(166, 30, 103, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+				}
+				.mpwem-title-switch-button .mpwem-title-switch-label {
+					display: inline-block;
+					white-space: nowrap;
+				}
+				.mpwem-title-switch-button .dashicons {
+					width: 16px;
+					height: 16px;
+					font-size: 16px;
+					opacity: 0.92;
+				}
+				.mpwem-title-switch-button::after {
+					content: "";
+					position: absolute;
+					inset: 1px;
+					border-radius: inherit;
+					background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+					pointer-events: none;
+				}
+			</style>
+				<script>
+					jQuery(function ($) {
+						var $titleActions = $('.wrap .page-title-action').first();
+						if (! $titleActions.length || $('.mpwem-title-switch-button').length) {
+							return;
+						}
+
+						var formHtml = ''
+							+ '<form class="mpwem-title-switch-form" method="post" action="' + <?php echo wp_json_encode($form_action); ?> + '">'
+							+ '<input type="hidden" name="action" value="mpwem_switch_event_editor">'
+							+ '<input type="hidden" name="mode" value="modern">'
+							+ '<input type="hidden" name="post_id" value="' + <?php echo wp_json_encode((string) $post_id); ?> + '">'
+							+ <?php echo wp_json_encode($nonce_field_html); ?>
+							+ '</form>';
+
+					var $form = $(formHtml);
+					var $submit = $('<button>', {
+						type: 'submit',
+						'class': 'mpwem-title-switch-button'
+					});
+
+					$submit.append($('<span>', {
+						'class': 'dashicons dashicons-edit',
+						'aria-hidden': 'true'
+					}));
+
+					$submit.append($('<span>', {
+						'class': 'mpwem-title-switch-label',
+						text: <?php echo wp_json_encode($button_text); ?>
+					}));
+
+					$form.append($submit);
+					$titleActions.after($form);
+				});
+			</script>
+		<?php
+		}
+
+		public function handle_editor_switch(): void
+		{
+			if (! $this->can_manage_events()) {
+				wp_die(esc_html__('Sorry, you are not allowed to switch the event editor.', 'mage-eventpress'));
+			}
+
+			check_admin_referer(self::NONCE_ACTION_SWITCH, isset($_REQUEST['_mpwem_switch_nonce']) ? '_mpwem_switch_nonce' : '_wpnonce');
+
+			$mode    = isset($_REQUEST['mode']) ? sanitize_key(wp_unslash($_REQUEST['mode'])) : '';
+			$post_id = isset($_REQUEST['post_id']) ? absint($_REQUEST['post_id']) : 0;
+
+			if (! in_array($mode, ['modern', 'classic'], true)) {
+				wp_die(esc_html__('Invalid editor mode.', 'mage-eventpress'));
+			}
+
+			if ($post_id > 0 && ! current_user_can('edit_post', $post_id)) {
+				wp_die(esc_html__('Sorry, you are not allowed to edit this event.', 'mage-eventpress'));
+			}
+
+			if ($post_id > 0) {
+				$this->set_event_edit_mode($post_id, $mode);
+			}
+
+			$redirect_url = $mode === 'classic'
+				? ($post_id > 0 ? $this->get_classic_edit_url($post_id) : admin_url('post-new.php?post_type=' . self::POST_TYPE . '&' . self::CLASSIC_BYPASS_QUERY . '=1'))
+				: $this->get_modern_edit_url($post_id);
+
+			wp_safe_redirect($redirect_url);
+			exit;
 		}
 
 		public function enqueue_assets($hook): void
@@ -945,8 +1155,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				wp_die(esc_html__('Sorry, you are not allowed to access this page.', 'mage-eventpress'));
 			}
 
-			$this->set_global_edit_mode('modern');
-
 			$post_id = isset($_GET['event_id']) ? absint($_GET['event_id']) : 0;
 			$post    = $post_id ? get_post($post_id) : null;
 
@@ -984,7 +1192,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 			$featured_id  = $post_id ? (int) get_post_thumbnail_id($post_id) : 0;
 			$featured_url = $featured_id ? wp_get_attachment_image_url($featured_id, 'medium') : '';
-			$classical_url = $post_id ? $this->get_classic_edit_url($post_id) : '';
+			$classical_url = $post_id ? $this->get_editor_switch_url('classic', $post_id) : '';
 			$frontend_url = $post_id ? get_permalink($post_id) : '';
 			$is_published = $post && $post->post_status === 'publish';
 			$can_publish  = $post_id && current_user_can('publish_post', $post_id);

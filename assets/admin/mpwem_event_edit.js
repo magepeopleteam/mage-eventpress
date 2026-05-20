@@ -4663,4 +4663,181 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
+	// ========== Related Events Search ==========
+
+	var relatedSearchTimer;
+	var $relatedWrap = $('.mpwem-related-search-wrap');
+
+	function getSelectedRelatedIds($wrap) {
+		var ids = [];
+		$wrap.find('.mpwem-related-pill').each(function () {
+			ids.push(parseInt($(this).data('id')));
+		});
+		return ids;
+	}
+
+	function updateRelatedHiddenInputs($wrap, ids) {
+		$wrap.find('.mpwem-related-ids').remove();
+		if (ids.length === 0) {
+			$wrap.append('<input type="hidden" name="event_list[]" class="mpwem-related-ids" value="">');
+			return;
+		}
+		$.each(ids, function (i, id) {
+			$wrap.append('<input type="hidden" name="event_list[]" class="mpwem-related-ids" value="' + id + '">');
+		});
+	}
+
+	function renderRelatedPills($wrap, events) {
+		var $pills = $wrap.find('.mpwem-related-pills');
+		$pills.empty();
+		if (!events || !events.length) {
+			$pills.append('<span class="mpwem-related-pills-empty">' + $pills.data('empty-msg') + '</span>');
+			return;
+		}
+		$.each(events, function (i, ev) {
+			$pills.append(
+				'<span class="mpwem-related-pill" data-id="' + ev.id + '">' +
+					'<span class="mpwem-related-pill__title">' + $('<span>').text(ev.title).html() + '</span>' +
+					'<button type="button" class="mpwem-related-pill__remove" title="Remove" aria-label="Remove">&times;</button>' +
+				'</span>'
+			);
+		});
+	}
+
+	function renderRelatedResults($wrap, results, selectedIds, searchTerm) {
+		var $results = $wrap.find('.mpwem-related-results');
+		var $empty = $wrap.find('.mpwem-related-empty-state');
+		$results.empty().hide();
+		$empty.hide();
+
+		if (!results || !results.length) {
+			if (searchTerm && searchTerm.length > 0) {
+				$empty.show();
+			}
+			return;
+		}
+
+		var $list = $('<div class="mpwem-related-results-list"></div>');
+		if (!searchTerm || searchTerm.length === 0) {
+			$list.append('<div class="mpwem-related-results-hint">All events — type to search</div>');
+		}
+		$.each(results, function (i, ev) {
+			var isSelected = $.inArray(ev.id, selectedIds) !== -1;
+			$list.append(
+				'<div class="mpwem-related-result-item' + (isSelected ? ' is-selected' : '') + '" data-id="' + ev.id + '">' +
+					'<div class="mpwem-related-result-item__info">' +
+						'<span class="mpwem-related-result-item__title">' + $('<span>').text(ev.title).html() + '</span>' +
+						(ev.date ? '<span class="mpwem-related-result-item__date">' + $('<span>').text(ev.date).html() + '</span>' : '') +
+					'</div>' +
+					'<span class="mpwem-related-result-item__icon dashicons ' + (isSelected ? 'dashicons-yes' : 'dashicons-plus') + '"></span>' +
+				'</div>'
+			);
+		});
+		$results.append($list).show();
+	}
+
+	function doRelatedSearch($input) {
+		var $wrap = $input.closest('.mpwem-related-search-wrap');
+		var term = $input.val().trim();
+
+		$wrap.find('.mpwem-related-search-spinner').addClass('is-active');
+
+		$.post(mpwemEventEdit.ajax_url, {
+			action: 'mpwem_search_related_events',
+			nonce: mpwemEventEdit.admin_nonce,
+			search: term,
+			exclude: getSelectedRelatedIds($wrap),
+			post_id: $('#post_ID').val() || 0
+		}).done(function (res) {
+			if (res.success) {
+				renderRelatedResults($wrap, res.data, getSelectedRelatedIds($wrap), term);
+			}
+		}).always(function () {
+			$wrap.find('.mpwem-related-search-spinner').removeClass('is-active');
+		});
+	}
+
+	function loadDefaultRelatedEvents($wrap) {
+		doRelatedSearch($wrap.find('.mpwem-related-search-input'));
+	}
+
+	$relatedWrap.each(function () {
+		var $wrap = $(this);
+		var preSelected = [];
+		$wrap.find('.mpwem-related-pill').each(function () {
+			preSelected.push({
+				id: parseInt($(this).data('id')),
+				title: $(this).find('.mpwem-related-pill__title').text()
+			});
+		});
+		if (!preSelected.length) {
+			$wrap.find('.mpwem-related-pills').append(
+				'<span class="mpwem-related-pills-empty">' + $wrap.find('.mpwem-related-pills').data('empty-msg') + '</span>'
+			);
+		}
+		loadDefaultRelatedEvents($wrap);
+	});
+
+	$relatedWrap.on('input', '.mpwem-related-search-input', function () {
+		var $input = $(this);
+		clearTimeout(relatedSearchTimer);
+		relatedSearchTimer = setTimeout(function () {
+			doRelatedSearch($input);
+		}, 300);
+	});
+
+	$relatedWrap.on('keydown', '.mpwem-related-search-input', function (e) {
+		if (e.key === 'Escape') {
+			$(this).val('').trigger('input');
+		}
+	});
+
+	$relatedWrap.on('click', '.mpwem-related-result-item:not(.is-selected)', function () {
+		var $item = $(this);
+		var $wrap = $item.closest('.mpwem-related-search-wrap');
+		var id = parseInt($item.data('id'));
+		var title = $item.find('.mpwem-related-result-item__title').text();
+		var date = $item.find('.mpwem-related-result-item__date').text();
+
+		var currentIds = getSelectedRelatedIds($wrap);
+		if ($.inArray(id, currentIds) !== -1) return;
+
+		var pills = [];
+		$wrap.find('.mpwem-related-pill').each(function () {
+			pills.push({ id: parseInt($(this).data('id')), title: $(this).find('.mpwem-related-pill__title').text() });
+		});
+		pills.push({ id: id, title: title });
+
+		renderRelatedPills($wrap, pills);
+		updateRelatedHiddenInputs($wrap, $.map(pills, function (p) { return p.id; }));
+
+		$item.addClass('is-selected');
+	});
+
+	$relatedWrap.on('click', '.mpwem-related-pill__remove', function () {
+		var $btn = $(this);
+		var $pill = $btn.closest('.mpwem-related-pill');
+		var $wrap = $pill.closest('.mpwem-related-search-wrap');
+		var id = parseInt($pill.data('id'));
+
+		var pills = [];
+		$wrap.find('.mpwem-related-pill').each(function () {
+			var pid = parseInt($(this).data('id'));
+			if (pid !== id) {
+				pills.push({ id: pid, title: $(this).find('.mpwem-related-pill__title').text() });
+			}
+		});
+
+		renderRelatedPills($wrap, pills);
+		updateRelatedHiddenInputs($wrap, $.map(pills, function (p) { return p.id; }));
+
+		$wrap.find('.mpwem-related-result-item[data-id="' + id + '"]').removeClass('is-selected');
+
+		doRelatedSearch($wrap.find('.mpwem-related-search-input'));
+	});
+
+	$relatedWrap.on('focus', '.mpwem-related-search-input', function () {
+		$(this).closest('.mpwem-related-search-wrap').find('.mpwem-related-results').show();
+	});
+
 });

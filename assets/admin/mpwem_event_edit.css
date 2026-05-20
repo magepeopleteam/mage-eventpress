@@ -3304,7 +3304,7 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-card-date-wrapper {
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: 10px;
+	gap: 0;
 	width: 100%;
 }
 .mpwem-ticket-modal__mount .mpwem-card-date-field {
@@ -6497,9 +6497,9 @@ div.mpwem-date-type-option__copy strong {
 .mpwem-date-input-wrap::before {
 	content: "\f145";
 }
-.mpwem-time-input-wrap::before {
+/* .mpwem-time-input-wrap::before {
 	content: "\f469";
-}
+} */
 .mpwem-date-input:focus,
 .mpwem-time-input:focus {
 	border-color: var(--mpwem-primary) !important;
@@ -9022,6 +9022,7 @@ code {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	padding-right: 0 !important;
+	padding-left: 30px !important;
 	font-size: 12px;
 	line-height: 1.2;
 	border-radius: 8px;

@@ -5554,6 +5554,7 @@ function mep_change_date_status() {
         $sale_start          = is_array($ticket_info) && array_key_exists( 'option_sale_start_date_t', $ticket_info ) ? $ticket_info['option_sale_start_date_t'] : '';
         ?>
         <div class="mpwem-card-date-wrapper <?php echo esc_attr( $active_category ); ?>" data-collapse="#mep_enable_early_bird_status">
+            <div style="font-size: 11px; color: #646970; margin-bottom: 0;text-align:center; font-weight: 600; text-transform: uppercase;"><?php esc_html_e('Start Date', 'mage-eventpress'); ?></div>
             <div class="mpwem-card-date-field">
                 <?php MPWEM_Date_Settings::date_item( 'option_sale_start_date[]', $sale_start ); ?>
                 <label class="mpwem-card-time-field">

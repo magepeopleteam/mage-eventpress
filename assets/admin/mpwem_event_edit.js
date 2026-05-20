@@ -973,7 +973,7 @@
         const $extraGlobalQtyTypeSelect = $root.find('select[name="ex_mep_gq_type"]').first();
         const isExtraGlobalQtyEnabled = $extraGlobalQtyToggle.is(':checked');
         const extraGlobalQtyType = ($extraGlobalQtyTypeSelect.val() || '').toString();
-        const shouldShowExtraDateWiseColumns = isExtraGlobalQtyEnabled && extraGlobalQtyType === 'date_wise';
+        const shouldShowExtraDateWiseColumns = isGlobalQtyEnabled && globalQtyType === 'date_wise' && isExtraGlobalQtyEnabled && extraGlobalQtyType === 'date_wise';
         const $extraTargets = $root.find(
             '#mpwem_particular_date_modal_mount [data-collapse="#ex_mep_gq_type_date_wise"], ' +
             '#mpwem_wizard_date_mount [data-collapse="#ex_mep_gq_type_date_wise"]'
@@ -1003,6 +1003,9 @@
         const shouldShowWarning = isGlobalQtyEnabled && globalQtyType === 'date_wise';
 
         $root.find('.mpwem-global-qty-warning').toggleClass('is-visible', shouldShowWarning);
+        
+        $root.find('input[name="mep_gq_total_seat"]').closest('.mpwem-ticket-card__group').toggleClass('mpwem-ticket-col-hidden', globalQtyType === 'date_wise');
+        $root.find('input[name="mep_gq_total_resv_seat"]').closest('.mpwem-ticket-card__group').toggleClass('mpwem-ticket-col-hidden', globalQtyType === 'date_wise');
     }
 
     function initializeTicketTableDragScroll($root) {

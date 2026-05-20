@@ -637,8 +637,8 @@
                 ?>
                 <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  Qty', 'mage-eventpress-gq'); ?></th>
                 <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
-                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
-                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
                 <?php
             }
             public function date_table_default_date($event_id) {
@@ -657,10 +657,10 @@
                 <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
                 </td>
                 <?php
@@ -681,10 +681,10 @@
                 <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
                 </td>
                 <?php

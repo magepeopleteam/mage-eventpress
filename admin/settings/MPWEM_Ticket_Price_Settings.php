@@ -189,6 +189,7 @@
                         <div class="mpwem-card-row mpwem-card-row--date">
                             <?php do_action( 'mpwem_add_sale_period_input_box', $event_id, $ticket_info ); ?>
                             <div class="mpwem-card-date-wrapper mpwem-card-date-wrapper--end">
+                                <div style="font-size: 11px; color: #646970; margin-bottom: 0; font-weight: 600; text-transform: uppercase;text-align:center"><?php esc_html_e('End Date', 'mage-eventpress'); ?></div>
                                 <div class="mpwem-card-date-field">
                                 <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
                                     <div class="mpwem-card-time-field">
@@ -420,14 +421,14 @@
                                 </button>
                             </p>
                         </div>
-                        <div class="mpwem-ticket-card__group">
+                        <div class="mpwem-ticket-card__group <?php echo esc_attr( $global_qty_type === 'date_wise' ? 'mpwem-ticket-col-hidden' : '' ); ?>">
                             <label class="mpwem-card-label">
 								<?php esc_html_e( 'TOTAL QTY', 'mage-eventpress' ); ?>
                                 <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Seat of this event.', 'mage-eventpress' ); ?>">i</span>
                             </label>
                             <input type="number" class="mpwem-card-input" name="mep_gq_total_seat" placeholder="0" value="<?php echo esc_attr( $total_qty ); ?>"/>
                         </div>
-                        <div class="mpwem-ticket-card__group">
+                        <div class="mpwem-ticket-card__group <?php echo esc_attr( $global_qty_type === 'date_wise' ? 'mpwem-ticket-col-hidden' : '' ); ?>">
                             <label class="mpwem-card-label">
 								<?php esc_html_e( 'RESERVE QTY', 'mage-eventpress' ); ?>
                                 <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Reserve Seat Qty of this event.', 'mage-eventpress' ); ?>">i</span>

@@ -688,9 +688,10 @@ body.mpwem-event-wizard-screen {
 	border: 1px solid var(--mpwem-border);
 	border-radius: var(--mpwem-radius);
 	box-shadow: var(--mpwem-shadow);
-	margin-bottom: 0;
+	margin-bottom: 20px;
 	overflow: visible;
 }
+
 .mpwem-card__head {
 	padding: 14px 16px;
 	background: var(--mpwem-card-header-bg);

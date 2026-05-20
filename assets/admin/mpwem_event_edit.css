@@ -2172,20 +2172,22 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl{
 	align-items: center;
 }
 .mpwem-ticket-summary__header {
-	padding: 0 22px;
+	padding: 10px 22px;
 	font-size: 11px;
 	font-weight: 800;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: #64748b;
+	background: #e9eff6;
+	border-radius: 5px;
 }
 #mpwem_ticket_summary .mpwem-ticket-summary__header {
-	padding: 0 14px;
+	padding: 10px 14px;
 	font-size: 10px;
 	letter-spacing: 0.1em;
 }
 #mpwem_extra_service_summary .mpwem-ticket-summary__header {
-	padding: 0 14px;
+	padding: 10px 14px;
 	font-size: 10px;
 	letter-spacing: 0.1em;
 }
@@ -5967,6 +5969,25 @@ body.mpwem-ticket-modal-open {
 	background: #eef6ff !important;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
 }
+
+.mpwem-date-type-option.is-active::after {
+	content: "✓";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: var(--mpwem-primary);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+	line-height: 1;
+}
 .mpwem-date-type-option__icon {
 	display: inline-flex;
 	align-items: center;
@@ -8740,7 +8761,7 @@ code {
 	min-height:auto;
 	flex:1;
 	justify-content:center;
-	max-width:165px;
+	max-width:245px;
 	z-index:1;
 }
 

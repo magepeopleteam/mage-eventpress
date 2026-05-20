@@ -1318,7 +1318,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						</div>
 						<div class="mpwem-event-wizard__actions">
 							<?php if ($classical_url) : ?>
-								<a class="mpwem-link" href="<?php echo esc_url($classical_url); ?>"><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></a>
+								<a class="mpwem-link mpwem-modern-to-classic-btn" href="<?php echo esc_url($classical_url); ?>">
+									<span class="dashicons dashicons-editor-code" aria-hidden="true"></span>
+									<span><?php esc_html_e('Classic editor', 'mage-eventpress'); ?></span>
+								</a>
 							<?php endif; ?>
 							<?php if (! $is_published) : ?>
 								<button type="button" class="button mpwem-wizard-save-draft"><?php esc_html_e('Save as Draft', 'mage-eventpress'); ?></button>

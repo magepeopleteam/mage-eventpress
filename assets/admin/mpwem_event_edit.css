@@ -1449,6 +1449,7 @@ select.mpwem-global-qty-field__input {
 	gap: 12px;
 }
 .mpwem-event-type-option {
+	position: relative;
 	display: flex;
 	align-items: center;
 	gap: 12px;
@@ -1461,6 +1462,25 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-event-type-option.is-active {
 	border-color: var(--mpwem-primary);
+}
+
+.mpwem-event-type-option.is-active::after {
+	content: "✓";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: var(--mpwem-primary);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+	line-height: 1;
 }
 .mpwem-event-type-option .dashicons {
 	font-size: 20px;

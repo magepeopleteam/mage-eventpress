@@ -7734,6 +7734,11 @@ button.mpwem_item_remove span{
 	align-items: center;
 	gap: 4px;
 }
+._button_success_xxs[data-open-icon="mi-unlock"] {
+	padding: inherit !important;
+	margin: 0;
+	vertical-align: middle;
+}
 /* Shortcode box */
 code {
 	background: #f8fafc;

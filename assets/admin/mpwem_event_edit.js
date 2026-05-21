@@ -1834,14 +1834,14 @@
             return;
         }
 
-        const type = getSavedDateModalType($root);
+        const type = getActiveDateModalType($root);
         const config = getDateModalTypeConfig(type);
-        const $modalMount = getSavedDateSummaryMount($root);
+        const $modalMount = context.$modalMount.length ? context.$modalMount : getSavedDateSummaryMount($root);
         renderDateModalSummaryActions($root, context, type);
         context.$summaryList.empty();
 
         if (type === 'yes') {
-            const $rows = getSavedParticularDateRows($root);
+            const $rows = getParticularDateRows($root);
 
             context.$summaryList.append(
                 $('<div class="mpwem-ticket-summary__header"></div>')
@@ -1992,7 +1992,7 @@
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
         lockBodyScroll();
 
-        const isNew = mode === 'new' && (activeType === 'yes' || activeType === 'no');
+        const isNew = mode === 'new' && activeType === 'yes';
         $root.find('#mpwem_particular_date_modal_title').text(isNew ? (config.modalNewTitle || config.modalTitle) : config.modalTitle);
         $root.find('#mpwem_particular_date_modal_description').text(
             isNew
@@ -3203,22 +3203,59 @@
         return $root.find('#mpwem_wizard_date_mount .mpwem_date_settings').first();
     }
 
+    function syncDateModalView($wizardRoot, value) {
+        if (!$wizardRoot || !$wizardRoot.length) {
+            return;
+        }
+
+        const context = getParticularDateModalContext($wizardRoot);
+        const config = getDateModalTypeConfig(value || 'no');
+        const $activeSection = getActiveDateModalSection($wizardRoot, value);
+        const $dateModeSections = context.$modalMount.children('[data-collapse="#mep_normal_event"], [data-collapse="#mep_particular_event"], [data-collapse="#mep_everyday_event"]');
+
+        if ($dateModeSections.length) {
+            $dateModeSections.removeClass('mActive mpwem-date-mode-active').hide();
+
+            if ($activeSection.length) {
+                $activeSection.addClass('mActive mpwem-date-mode-active').show();
+            }
+        }
+
+        syncParticularDateModalFooter($wizardRoot);
+        syncDateWiseGlobalQtyColumns($wizardRoot);
+        initializeParticularDateTableDragScroll($wizardRoot);
+        refreshRepeatedEndDateFieldUI($wizardRoot);
+
+        if (context.$modal.length && context.$modal.hasClass('is-open')) {
+            context.$modal.find('#mpwem_particular_date_modal_title').text(config.modalTitle);
+            context.$modal.find('#mpwem_particular_date_modal_description').text(config.modalDescription);
+        }
+    }
+
     function syncDateTypeSections($panel, value) {
         const map = {
             no: '#mep_normal_event',
             yes: '#mep_particular_event',
             everyday: '#mep_everyday_event'
         };
+        const $wizardRoot = $panel.closest('.mpwem-event-wizard');
+        const $scope = $wizardRoot.length ? $wizardRoot : $panel;
 
         $.each(map, function(type, selector) {
-            const $section = $('[data-collapse="' + selector + '"]').first();
-            if (!$section.length) return;
+            $scope.find('[data-collapse="' + selector + '"]').each(function() {
+                const $section = $(this);
+                const isModalSection = !!$wizardRoot.length && $section.closest('#mpwem_particular_date_modal_mount').length;
 
-            if (type === value) {
-                $section.addClass('mActive mpwem-date-mode-active').show();
-            } else {
-                $section.removeClass('mActive mpwem-date-mode-active').hide();
-            }
+                if (isModalSection) {
+                    return;
+                }
+
+                if (type === value) {
+                    $section.addClass('mActive mpwem-date-mode-active').show();
+                } else {
+                    $section.removeClass('mActive mpwem-date-mode-active').hide();
+                }
+            });
         });
 
         const $particularSummary = $panel.find('#mpwem_particular_date_summary');
@@ -3230,8 +3267,8 @@
         $panel.find('.mpwem-date-type-option').attr('aria-checked', 'false');
         $panel.find('.mpwem-date-type-option[data-value="' + value + '"]').addClass('is-active').attr('aria-checked', 'true');
 
-        const $wizardRoot = $panel.closest('.mpwem-event-wizard');
         if ($wizardRoot.length) {
+            syncDateModalView($wizardRoot, value);
             renderParticularDateSummary($wizardRoot);
         }
     }

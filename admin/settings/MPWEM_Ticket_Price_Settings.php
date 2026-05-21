@@ -381,6 +381,7 @@
 				$global_qty_status   = array_key_exists( 'enable_global_qty', $event_infos ) ? $event_infos['enable_global_qty'] : 'off';
 				$advanced_col_status = array_key_exists( 'mep_show_advanced_column', $event_infos ) ? $event_infos['mep_show_advanced_column'] : 'off';
 				$global_qty_type     = array_key_exists( 'mep_gq_type', $event_infos ) ? $event_infos['mep_gq_type'] : 'global';
+				$date_schedule_type  = array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
 				$total_qty           = array_key_exists( 'mep_gq_total_seat', $event_infos ) ? $event_infos['mep_gq_total_seat'] : 0;
 				$reserve_qty         = array_key_exists( 'mep_gq_total_resv_seat', $event_infos ) ? $event_infos['mep_gq_total_resv_seat'] : 0;
 
@@ -414,8 +415,10 @@
                                 <option value="date_wise" <?php selected( $global_qty_type, 'date_wise' ); ?>><?php esc_html_e( 'Particular Date Wise', 'mage-eventpress' ); ?></option>
                                 <option value="global" <?php selected( $global_qty_type, 'global' ); ?>><?php esc_html_e( 'Full Event Base', 'mage-eventpress' ); ?></option>
                             </select>
-                            <p class="mpwem-global-qty-warning <?php echo esc_attr( ( $global_qty_status === 'on' && $global_qty_type === 'date_wise' ) ? 'is-visible' : '' ); ?>">
-								<?php esc_html_e( 'Please set the Global Qty in Date & Time Steps -> Particular Date Wise table.', 'mage-eventpress' ); ?>
+                            <p class="mpwem-global-qty-warning <?php echo esc_attr( ( $global_qty_status === 'on' && $global_qty_type === 'date_wise' && $date_schedule_type === 'yes' ) ? 'is-visible' : '' ); ?>">
+                                <span class="mpwem-global-qty-warning__text">
+								    <?php esc_html_e( 'Please set the Global Qty in Date & Time Steps -> Particular Date Wise table.', 'mage-eventpress' ); ?>
+                                </span>
                                 <button type="button" class="button button-secondary mpwem-global-qty-warning__action" data-mpwem-open-particular-date-modal>
 									<?php esc_html_e( 'Open Particular Date Table', 'mage-eventpress' ); ?>
                                 </button>

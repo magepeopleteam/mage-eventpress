@@ -454,6 +454,7 @@ body.mpwem-event-wizard-screen {
 	width: 16px;
 	height: 16px;
 	color: inherit !important;
+	line-height: 1 !important;
 }
 .mpwem-status-actions__menu-wrap {
 	position: relative;

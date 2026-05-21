@@ -538,7 +538,7 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	font-size: 12px;
 	font-weight: 600;
 	color: #475569;
-	text-transform: uppercase;
+	text-transform: none;
 	letter-spacing: .03em;
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-table-wrap {
@@ -639,6 +639,28 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-footer {
 	margin-top: 14px;
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-add-ticket-btn,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_add_item {
+	background: var(--mpwem-btn-primary-bg, #2563eb);
+	color: var(--mpwem-btn-primary-text, #ffffff);
+	border: none;
+	font-weight: 600;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	padding: 8px 16px;
+	border-radius: 8px;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-add-ticket-btn:hover,
+body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem_add_item:hover {
+	background: var(--mpwem-btn-primary-hover, #1d4ed8);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-cards-container > .mpwem-ticket-card {
 	margin: 0 0 12px;

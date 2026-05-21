@@ -1124,7 +1124,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		{
 			unset($hook);
 
-			if (! $this->is_edit_screen()) {
+			$is_classic = $this->is_classic_bypass()
+				&& function_exists('get_current_screen')
+				&& ($screen = get_current_screen())
+				&& $screen->post_type === self::POST_TYPE;
+
+			if (! $this->is_edit_screen() && ! $is_classic) {
 				return;
 			}
 

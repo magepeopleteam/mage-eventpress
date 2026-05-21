@@ -256,10 +256,11 @@
 	justify-content: flex-start;
 }
 
-.mpwem-add-ticket-btn {
-	background: transparent;
+.mpwem-add-ticket-btn,
+.mpwem_add_item {
+	background: var(--mpwem-btn-primary-bg, #2563eb);
+	color: var(--mpwem-btn-primary-text, #ffffff);
 	border: none;
-	color: var(--mpwem-primary);
 	font-weight: 600;
 	font-size: 14px;
 	display: flex;
@@ -269,10 +270,14 @@
 	padding: 8px 16px;
 	border-radius: 8px;
 	transition: all 0.2s ease;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.mpwem-add-ticket-btn:hover {
-	background: rgba(37, 99, 235, 0.05);
+.mpwem-add-ticket-btn:hover,
+.mpwem_add_item:hover {
+	background: var(--mpwem-btn-primary-hover, #1d4ed8);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 
 /* Hide Table Layout Hint */

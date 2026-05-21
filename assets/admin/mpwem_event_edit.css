@@ -1773,8 +1773,13 @@ select.mpwem-global-qty-field__input {
 	font-size: 8px;
 	margin-left: 5px;
 }
-/* Hide WP Footer in Wizard */
+/* Hide WP Footer & Notices in Wizard */
 .mpwem-event-wizard-screen #wpfooter {
+	display: none !important;
+}
+.mpwem-event-wizard-screen .notice,
+.mpwem-event-wizard-screen .updated,
+.mpwem-event-wizard-screen #message {
 	display: none !important;
 }
 /* Footer */

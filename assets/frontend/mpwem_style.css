@@ -2027,17 +2027,18 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.mpwem_registration_area.kera_class .tabsContent .data-label{
 		padding: 15px;
 		border-bottom: 1px solid #ddd;
-		background-color: #f2f4f6;
+		background: linear-gradient(135deg, var(--color_theme), var(--color_theme));
+		color:#fff;
 		font-weight: 600;
 	}
 	div.mpwem_registration_area.kera_class .tabsContent .mpwem_ticket_type{
 		box-shadow: none;
 	}
 	div.mpwem_style .kera_ticket_area [data-tabs-target].active div.category-item div.category-title{
-		background: #4a90e2;
+		background: linear-gradient(135deg, var(--color_theme), var(--color_theme));
 	}
 	div.mpwem_style .kera_ticket_area [data-tabs-target].active{
-		border:2px solid #4a90e2;
+		border:2px solid var(--color_theme);
 	}
 	div.mpwem_style .kera_ticket_area [data-tabs-target]{
 		padding: 0;
@@ -2061,6 +2062,37 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 	div.mpwem_registration_area.kera_class .mep_ticket_item p{
 
 		margin-bottom: 10px;
+
+	}
+
+	div.mpwem_registration_area.kera_class .mep_ticket_item h6{
+
+		font-size: 16px;
+		font-weight: normal;
+
+	}
+
+	div.mpwem_registration_area.kera_class .mep_ticket_item .ticket-price{
+
+		font-size: 18px;
+		font-weight: 600;
+		color: #2B3A55;
+		text-align: right;
+		flex: 0 0 20%;
+
+	}
+	div.mpwem_registration_area.kera_class .mep_ticket_item .ticket-data{
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+
+	}
+	div.mpwem_registration_area.kera_class .mep_ticket_item .ticket-info{
+
+		flex: 0 0 48%;
+
 
 	}
 	div.mpwem_registration_area.kera_class .mep_ticket_item .qtyIncDec{

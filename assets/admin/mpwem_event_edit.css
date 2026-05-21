@@ -5399,13 +5399,7 @@ body.mpwem-ticket-modal-open {
 	cursor: default;
 	opacity: 0.7;
 }
-.mpwem-related-results-hint {
-	padding: 8px 14px;
-	font-size: 11px;
-	color: #94a3b8;
-	border-bottom: 1px solid #f1f4f9;
-	background: #fafcff;
-}
+
 .mpwem-related-result-item__info {
 	display: grid;
 	gap: 2px;

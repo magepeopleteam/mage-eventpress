@@ -4845,9 +4845,6 @@ jQuery(document).ready(function ($) {
 		}
 
 		var $list = $('<div class="mpwem-related-results-list"></div>');
-		if (!searchTerm || searchTerm.length === 0) {
-			$list.append('<div class="mpwem-related-results-hint">All events — type to search</div>');
-		}
 		$.each(results, function (i, ev) {
 			var isSelected = $.inArray(ev.id, selectedIds) !== -1;
 			$list.append(

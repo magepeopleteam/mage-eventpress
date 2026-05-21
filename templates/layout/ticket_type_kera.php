@@ -133,8 +133,8 @@
                                                                 <div class="_divider"></div>
 															<?php } ?>
                                                             <div class="mep_ticket_item">
-                                                                <div class="justify_between">
-                                                                    <div class="">
+                                                                <div class="ticket-data">
+                                                                    <div class="ticket-info">
                                                                         <h6><?php echo esc_html( $ticket_name ); ?>  <?php echo esc_html( $tickets['group'] ); ?></h6>
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
@@ -146,7 +146,7 @@
 																		<?php } ?>
                                                                     </div>
                                                                     <div class="price_content">
-                                                                        <h6 class="_text_center"><?php echo wc_price( $ticket_price_ ); ?></h6>
+
                                                                         <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                                         <input type="hidden" name='ticket_category[]' value='<?php echo esc_attr( $tickets['group'] ); ?>'/>
@@ -184,6 +184,9 @@
 																			}
 																			//$exit_avail = $available;
 																		?>
+                                                                    </div>
+                                                                    <div class="ticket-price">
+                                                                        <?php echo wc_price($ticket_price_); ?>
                                                                     </div>
                                                                 </div>
 																<?php do_action( 'mpwem_multi_attendee', $event_id ); ?>

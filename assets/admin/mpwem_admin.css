@@ -662,6 +662,23 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	transform: translateY(-1px);
 	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
+.mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn {
+	background: var(--mpwem-btn-primary-bg, #2563eb);
+	color: var(--mpwem-btn-primary-text, #ffffff);
+	border: none;
+	padding: 10px 24px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+.mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn:hover {
+	background: var(--mpwem-btn-primary-hover, #1d4ed8);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-cards-container > .mpwem-ticket-card {
 	margin: 0 0 12px;
 	padding: 14px;

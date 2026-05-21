@@ -5,7 +5,7 @@
 	$event_id = $event_id ?? 0;
 	$date     = $date ?? '';
 	if ( $event_id > 0 ) {
-		$date 				 = date('Y-m-d H:i', strtotime($date));
+		$date = date('Y-m-d H:i', strtotime($date));
 		$show_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
 		$total_sold          = MPWEM_Functions::get_total_sold( $event_id, $date );
 		$total_ticket        = MPWEM_Functions::get_total_ticket( $event_id, $date );

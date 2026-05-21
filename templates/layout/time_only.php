@@ -44,7 +44,7 @@
             $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
             $all_dates   = MPWEM_Functions::get_dates( $event_id );
             $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
-            $upcoming_date = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+            $upcoming_date = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $date_type == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
             $date                    = $url_date ?: $upcoming_date;
             if (MPWEM_Global_Function::check_time_exit_date($date)) {
                 ?>

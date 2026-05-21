@@ -15,7 +15,7 @@
 	$all_times   = is_array($event_infos) && array_key_exists( 'all_time', $event_infos ) ? $event_infos['all_time'] : [];
 	$date        = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$date        = $date ?? MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-	$date = $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $date;
+	$date = $event_recurring == 'no' && is_array($event_infos) && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : $date;
 	// echo '<pre>';			print_r($all_dates);			echo '</pre>';
 	ob_start();
 	if ( $event_id > 0 ) {

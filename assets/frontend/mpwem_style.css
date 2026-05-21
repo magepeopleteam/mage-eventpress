@@ -116,7 +116,7 @@
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item .ticket-data .ticket-price { font-size: 18px; font-weight: 600; color: #2B3A55; text-align: right; flex: 0 0 20%; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .dLayout { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); border-radius: 12px; border: 0; margin: 15px 0; margin-bottom: 40px; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item { padding: 10px; margin: 5px 0; background-color: #ECECEC; border-radius: 12px; }
-	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item h6 { padding: 10px 10px; }
+	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item h6 { padding: 5px 10px; margin: 0; text-transform: none; font-size: 15px; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label { flex-direction: column; align-items: start; width: 100%; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label span { width: 100%; font-weight: normal; }
 	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label .formControl { width: 100%; margin-top: 5px; }

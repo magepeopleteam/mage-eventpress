@@ -536,7 +536,7 @@
                 $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_seat');
                 $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_resv_seat');
                 ?>
-                <div class="_padding_bt mpwem-global-qty-field">
+                <div class="_padding_bt mpwem-global-qty-field old-mpem-global-qty-field">
                     <div class="_justify_between_align_center_wrap mpwem-global-qty-field__toggle">
                         <label><span class="_mr"><?php esc_html_e('Enable Global Qty? ', 'mage-eventpress-gq'); ?></span></label>
                         <?php MPWEM_Custom_Layout::switch_button('enable_global_qty', $checked); ?>

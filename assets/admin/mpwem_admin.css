@@ -902,6 +902,9 @@ select#mep_org_address_list { min-width: 177px !important;}
 h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
 
 .mpRequired { border-color: red !important;}
+.old-mpem-global-qty-field{
+	display: none;
+}
 /******************************************************************** Welcome page ************************************************/
 @media only screen and (min-width: 10px) {
 	div.mpwem_welcome_page table tbody th { text-align: left; vertical-align: top; }

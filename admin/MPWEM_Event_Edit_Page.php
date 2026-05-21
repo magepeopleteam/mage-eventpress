@@ -1135,12 +1135,14 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			wp_enqueue_media();
 
-			wp_enqueue_style(
-				'mpwem_event_edit',
-				MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.css',
-				['mpwem_admin'],
-				$this->get_asset_version('assets/admin/mpwem_event_edit.css')
-			);
+			if ($this->is_edit_screen()) {
+				wp_enqueue_style(
+					'mpwem_event_edit',
+					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.css',
+					['mpwem_admin'],
+					$this->get_asset_version('assets/admin/mpwem_event_edit.css')
+				);
+			}
 
 			wp_enqueue_script(
 				'mpwem_event_edit',

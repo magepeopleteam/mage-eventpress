@@ -6222,7 +6222,7 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) th:last-child {
 	border-top-right-radius: calc(var(--mpwem-radius) - 1px);
-	text-align: center;
+	text-align: center !important;
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) tr:last-child td:first-child {
 	border-bottom-left-radius: calc(var(--mpwem-radius) - 1px);
@@ -9044,21 +9044,29 @@ code {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 2px;
+	gap: 10px;
 	flex-wrap: nowrap;
 	margin: 0;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-wrapper {
-	width: auto;
+	width: 100%;
 	min-width: 0;
 	max-width: 100%;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-wrapper > label,
-#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-field > label:first-child {
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-field > label:first-child,
+#mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-wrapper > :first-child {
 	display: block;
-	position: relative;
 	width: 100%;
 	min-width: 0;
+	margin: 0;
+	color: #64748b;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.08em;
+	text-align: left;
+	text-transform: uppercase;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-card-date-wrapper input[type="hidden"] {
 	display: none;

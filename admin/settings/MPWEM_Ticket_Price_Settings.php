@@ -189,7 +189,7 @@
                         <div class="mpwem-card-row mpwem-card-row--date">
                             <?php do_action( 'mpwem_add_sale_period_input_box', $event_id, $ticket_info ); ?>
                             <div class="mpwem-card-date-wrapper mpwem-card-date-wrapper--end">
-                                <div style="font-size: 11px; color: #646970; margin-bottom: 0; font-weight: 600; text-transform: uppercase;text-align:center"><?php esc_html_e('End Date', 'mage-eventpress'); ?></div>
+                                <div style="font-size: 11px; color: #646970; margin-bottom: 0; font-weight: 600; text-transform: uppercase;text-align:left"><?php esc_html_e('End Date', 'mage-eventpress'); ?></div>
                                 <div class="mpwem-card-date-field">
                                 <?php MPWEM_Date_Settings::date_item( 'option_sale_end_date[]', $sale_end ); ?>
                                     <div class="mpwem-card-time-field">
@@ -293,7 +293,7 @@
                         </div>
 
                         <!-- Spacer for Sale Period (not used in Extra Service usually) -->
-                        <div class="mpwem-ticket-card__group"></div>
+                        <!-- <div class="mpwem-ticket-card__group"></div> -->
 
                         <!-- Action Group -->
                         <div class="mpwem-ticket-card__actions">

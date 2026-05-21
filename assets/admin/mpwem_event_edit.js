@@ -1542,13 +1542,18 @@
     function getDateModalTypeConfig(type) {
         const map = {
             no: {
+                eyebrow: 'Single Event',
                 summaryTitle: 'Single event schedule',
                 summaryText: 'Review the main event date and any extra dates, then open the full editor when you need to update the schedule.',
                 primaryAction: 'Open Settings',
+                secondaryAction: '+ Add Schedule',
                 modalTitle: 'Manage single event schedule',
-                modalDescription: 'Edit the main event date, time, and any additional single-event dates without leaving this step.'
+                modalDescription: 'Edit the main event date, time, and any additional single-event dates without leaving this step.',
+                modalNewTitle: 'Add schedule',
+                modalNewDescription: 'Create an additional schedule, then fill in the date and time details.'
             },
             yes: {
+                eyebrow: 'Particular Dates',
                 summaryTitle: 'Specific event dates',
                 summaryText: 'Review particular dates at a glance, then open the full editor when you need to change time or quantity details.',
                 primaryAction: 'Show Details',
@@ -1559,6 +1564,7 @@
                 modalNewDescription: 'Create a new date, then fill in time and quantity details.'
             },
             everyday: {
+                eyebrow: 'Repeated Event',
                 summaryTitle: 'Repeated event schedule',
                 summaryText: 'Review the repeating schedule, off days, and special date settings, then open the full editor to adjust them.',
                 primaryAction: 'Open Settings',
@@ -1586,6 +1592,7 @@
                 '<div class="mpwem-ticket-summary" id="mpwem_particular_date_summary" style="display:none;">' +
                     '<div class="mpwem-ticket-summary__toolbar">' +
                         '<div class="mpwem-ticket-summary__intro">' +
+                            '<span class="mpwem-ticket-summary__eyebrow"></span>' +
                             '<h3></h3>' +
                             '<p></p>' +
                         '</div>' +
@@ -4467,6 +4474,51 @@
         });
     }
 
+    function bindTrashConfirmation($root) {
+        const $modal = $root.find('#mpwem_trash_event_modal').first();
+        if (!$modal.length) return;
+
+        const closeModal = function() {
+            $modal.attr('aria-hidden', 'true').removeClass('is-open');
+        };
+
+        const openModal = function() {
+            $modal.attr('aria-hidden', 'false').addClass('is-open');
+        };
+
+        $modal.on('click', '.mpwem-confirm-modal__backdrop, .mpwem-confirm-modal__close, .mpwem-confirm-cancel', function(e) {
+            e.preventDefault();
+            closeModal();
+        });
+
+        $(document).on('keydown.mpwemTrashConfirm', function(e) {
+            if (e.key === 'Escape' && $modal.hasClass('is-open')) {
+                closeModal();
+            }
+        });
+
+        $root.on('click', 'button.mpwem-status-actions__menu-item', function(e) {
+            const action = ($(this).data('status-action') || '').toString();
+            if (action !== 'trash') {
+                return;
+            }
+
+            e.preventDefault();
+            if (!validateDateWiseGlobalQty($root)) {
+                return;
+            }
+
+            closeStatusActionMenus();
+            openModal();
+        });
+
+        $modal.on('click', '.mpwem-confirm-trash', function(e) {
+            e.preventDefault();
+            closeModal();
+            submitEventForm($root, 'trash');
+        });
+    }
+
     function submitEventForm($root, action) {
         const $form = $('#mpwem-event-edit-form');
         if (!$form.length) {
@@ -4567,6 +4619,7 @@
         bindCreateEvent($root);
         bindFeaturedImage($root);
         bindDangerZone($root);
+        bindTrashConfirmation($root);
 
         try {
             mountAll($root);
@@ -4648,6 +4701,9 @@
         $root.on('click', 'button.mpwem-status-actions__menu-item', function(e) {
             e.preventDefault();
             if (!validateDateWiseGlobalQty($root)) {
+                return;
+            }
+            if (($(this).data('status-action') || '').toString() === 'trash') {
                 return;
             }
             closeStatusActionMenus();

@@ -313,63 +313,50 @@ body.mpwem-event-wizard-screen {
 }
 /* Classic Editor Switch Button styling */
 .mpwem-modern-to-classic-btn {
-	position: relative;
 	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	padding: 0 20px;
-	height: 38px;
+	justify-content: flex-start;
+	gap: 6px;
+	padding: 12px;
+	height: auto;
 	white-space: nowrap;
-	border: none;
-	border-radius: 8px;
-	background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #f97316 100%);
-	color: #ffffff !important;
+	border: 1px solid #a2a2a2;
+	border-radius: var(--mpwem-btn-radius);
+	background: transparent;
+	color: #353535 !important;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	font-size: 13px;
-	font-weight: 600;
+	font-size: 12px;
+	font-weight: 500;
 	line-height: 1;
-	letter-spacing: 0.02em;
+	letter-spacing: 0.01em;
 	text-decoration: none;
 	cursor: pointer;
-	box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-	overflow: hidden;
+	box-shadow: none;
+	transition: color 0.2s ease, opacity 0.2s ease;
+	opacity: 1;
 	margin-right: 12px;
 }
 .mpwem-modern-to-classic-btn::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: -100%;
-	width: 100%;
-	height: 100%;
-	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-	transition: left 0.6s ease;
+	content: none;
 }
 .mpwem-modern-to-classic-btn:hover,
 .mpwem-modern-to-classic-btn:focus {
-	transform: translateY(-2px);
-	box-shadow: 0 6px 16px rgba(244, 63, 94, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-	color: #ffffff !important;
+	color: #475569 !important;
+	opacity: 1;
 	outline: none;
 }
-.mpwem-modern-to-classic-btn:hover::before {
-	left: 100%;
-}
 .mpwem-modern-to-classic-btn:active {
-	transform: translateY(1px);
-	box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	opacity: 0.92;
 }
 .mpwem-modern-to-classic-btn .dashicons {
-	width: 16px;
-	height: 16px;
-	font-size: 16px;
-	opacity: 0.95;
-	transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	opacity: 0.7;
+	transition: opacity 0.2s ease;
 }
 .mpwem-modern-to-classic-btn:hover .dashicons {
-	transform: scale(1.15) rotate(15deg);
+	opacity: 0.9;
 }
 @media screen and (max-width: 900px) {
 	.mpwem-modern-to-classic-btn {
@@ -2180,6 +2167,23 @@ select.mpwem-global-qty-field__input {
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	color: var(--mpwem-primary);
+}
+#mpwem_particular_date_summary .mpwem-ticket-summary__toolbar {
+	position: relative;
+}
+#mpwem_particular_date_summary .mpwem-ticket-summary__eyebrow {
+	position: absolute;
+	top: 0;
+	left: 16px;
+	z-index: 2;
+	padding: 0 8px;
+	background: #f8fbff;
+	line-height: 1;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+#mpwem_particular_date_summary .mpwem-ticket-summary__intro h3 {
+	margin-top: 0;
 }
 .mpwem-ticket-summary__intro h3,
 .mpwem-ticket-modal__header-copy h3 {

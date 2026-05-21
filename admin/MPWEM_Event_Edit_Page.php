@@ -1734,6 +1734,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 										</div>
 									</div>
 								</div>
+								<div class="mpwem-confirm-modal" id="mpwem_trash_event_modal" aria-hidden="true">
+									<div class="mpwem-confirm-modal__backdrop"></div>
+									<div class="mpwem-confirm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_trash_event_modal_title">
+										<div class="mpwem-confirm-modal__head">
+											<h3 id="mpwem_trash_event_modal_title"><?php esc_html_e('Move Event to Trash?', 'mage-eventpress'); ?></h3>
+											<button type="button" class="mpwem-confirm-modal__close" aria-label="<?php esc_attr_e('Close confirmation dialog', 'mage-eventpress'); ?>">&times;</button>
+										</div>
+										<div class="mpwem-confirm-modal__body">
+											<p><?php esc_html_e('This event will be moved to the trash. You can restore it later from the Events trash list if needed.', 'mage-eventpress'); ?></p>
+										</div>
+										<div class="mpwem-confirm-modal__actions">
+											<button type="button" class="button mpwem-confirm-cancel"><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+											<button type="button" class="button mpwem-btn-danger mpwem-confirm-trash"><?php esc_html_e('Confirm', 'mage-eventpress'); ?></button>
+										</div>
+									</div>
+								</div>
 							</form>
 						<?php endif; ?>
 					</div>

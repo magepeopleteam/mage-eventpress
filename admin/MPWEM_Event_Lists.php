@@ -725,7 +725,7 @@
 											?>
                                             <div class="ticket-item">
                                                 <span class="ticket-name"><?php echo is_array($type) && array_key_exists( 'option_name_t', $type ) ? esc_html( $type['option_name_t'] ) : ''; ?></span>
-                                                <span class="ticket-price ticket-free"><?php echo isset( $type['option_price_t'] ) ? esc_html( $type['option_price_t'] ) : ''; ?></span>
+                                                <span class="ticket-price ticket-free"><?php echo isset( $type['option_price_t'] ) ? wc_price(esc_html( $type['option_price_t'] )) : ''; ?></span>
                                             </div>
 											<?php
 										}

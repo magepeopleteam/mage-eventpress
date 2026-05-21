@@ -79,12 +79,7 @@
 			public function venue_settings( $event_id ,$event_infos) {
 				?>
                 <div class="mp_tab_item active" data-tab-item="#mp_event_venue">
-                    <h3><?php esc_html_e( 'Venue/Location Settings', 'mage-eventpress' ) ?></h3>
-                    <p><?php esc_html_e( 'Configure Your Venue/Location Settings Here', 'mage-eventpress' ) ?></p>
-                    <section class="bg-light">
-                        <h2><?php esc_html_e( 'General Settings', 'mage-eventpress' ) ?></h2>
-                        <span><?php esc_html_e( 'Configure Event Locations and Virtual Venues', 'mage-eventpress' ) ?></span>
-                    </section>
+                    
 					<?php do_action( 'mep_event_tab_before_location', $event_id ); ?>
 
 					<?php $this->event_online_enable( $event_id ); ?>
@@ -118,7 +113,7 @@
                                 <h2><?php esc_html_e( " Location Source:", "mage-eventpress" ); ?></h2>
                                 <span class="label-text"><?php esc_html_e( 'If you have saved organizer details, please select the "Organizer" option. Please note that if you select "Organizer" and have not checked the organizer from the Event Organizer list on the right sidebar, the Event Location section will not populate on the front end.', 'mage-eventpress' ); ?></span>
                             </div>
-                            <select class="mp_formControl" name="mep_org_address" class='mep_org_address_list' id='mep_org_address_list'>
+                            <select class="mp_formControl mep_org_address_list" name="mep_org_address" id="mep_org_address_list">
 								<?php foreach ( $organizer as $key => $value ) { ?>
                                     <option value="<?php echo esc_attr( $key ); ?>" <?php echo ( $mep_org_address == $key ) ? esc_attr( 'selected' ) : ''; ?> > <?php echo esc_html( $value ); ?> </option>
 								<?php } ?>

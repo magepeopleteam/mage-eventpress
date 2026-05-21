@@ -28,6 +28,190 @@ function mpwem_initWpEditor(id) {
 //*************Un control js********************//
 (function ($) {
     "use strict";
+
+    function mpwem_getEventArea(el) {
+        const $area = $(el).closest('.mp_event_tab_area');
+        return $area.length ? $area : null;
+    }
+
+    function mpwem_getSteps($area) {
+        return $area.find('.mp_tab_menu').first().find('[data-target-tabs]').filter(':visible');
+    }
+
+    function mpwem_getActiveStep($area) {
+        return $area.find('.mp_tab_menu').first().find('[data-target-tabs].active').first();
+    }
+
+    function mpwem_getStepPanel($area, targetId) {
+        if (!targetId) return $();
+        return $area.find('.mp_tab_details').first().children('.mp_tab_item[data-tab-item="' + targetId + '"]').first();
+    }
+
+    function mpwem_showStepNotice($area, type, message) {
+        const $notice = $area.find('.mpwem_step_notice').first();
+        if (!$notice.length) return;
+        if (!message) {
+            $notice.hide();
+            return;
+        }
+        $notice.removeClass().addClass('mpwem_step_notice notice notice-' + type).text(message).show();
+    }
+
+    function mpwem_updateStepNav($area) {
+        const $steps = mpwem_getSteps($area);
+        const stepCount = $steps.length;
+        const $active = mpwem_getActiveStep($area);
+        const activeIndex = $steps.index($active);
+        const $nav = $area.find('.mpwem_step_nav').first();
+        if (!$nav.length || stepCount <= 0 || activeIndex < 0) return;
+
+        $nav.find('.mpwem-step-prev').prop('disabled', activeIndex <= 0);
+
+        const isLast = activeIndex === stepCount - 1;
+        const $next = $nav.find('.mpwem-step-next');
+        $next.text(isLast ? 'Go to Publish/Update' : 'Next');
+
+        $nav.find('.mpwem-step-status').text('Step ' + (activeIndex + 1) + ' of ' + stepCount);
+    }
+
+    function mpwem_activateLegacyTab($area, tabsTarget, saveToStorage) {
+        if (!$area || !$area.length || !tabsTarget) {
+            return false;
+        }
+
+        const $step = $area.find('.mp_tab_menu').first().find('[data-target-tabs="' + tabsTarget + '"]').first();
+        const $panel = mpwem_getStepPanel($area, tabsTarget);
+
+        if (!$step.length || !$panel.length) {
+            return false;
+        }
+
+        if (saveToStorage) {
+            const postId = $('body').find('[name="post_ID"]').val();
+            const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
+
+            try {
+                localStorage.setItem(storageKey, tabsTarget);
+            } catch (e) {
+                // Ignore storage failures and keep tab switching functional.
+            }
+        }
+
+        $area.find('.mp_tab_menu').first().find('[data-target-tabs].active').removeClass('active');
+        $step.addClass('active');
+
+        $area.find('.mp_tab_details').first().children('.mp_tab_item').removeClass('active').hide();
+        $panel.stop(true, true).addClass('active').show();
+
+        mpwem_updateStepNav($area);
+        return true;
+    }
+
+    function mpwem_syncClassicGlobalQtyWarning($area) {
+        if (!$area || !$area.length) {
+            return;
+        }
+
+        const $ticketPanel = $area.find('.mp_tab_details').first().children('.mp_tab_item[data-tab-item="#mpwem_ticket_pricing_settings"]').first();
+        const $datePanel = $area.find('.mp_tab_details').first().children('.mp_tab_item[data-tab-item="#mpwem_date_settings"]').first();
+        const isGlobalQtyEnabled = $ticketPanel.find('.mpwem-ticket-action-bar input[name="enable_global_qty"]').first().is(':checked');
+        const globalQtyType = ($ticketPanel.find('.mpwem-ticket-global-card select[name="mep_gq_type"]').first().val() || '').toString();
+        const dateScheduleType = ($datePanel.find('select[name="mep_enable_recurring"]').first().val() || '').toString();
+        const shouldShowWarning = isGlobalQtyEnabled && globalQtyType === 'date_wise' && dateScheduleType === 'yes';
+        const $warning = $ticketPanel.find('.mpwem-global-qty-warning').first();
+
+        if (!$warning.length) {
+            return;
+        }
+
+        $warning.toggleClass('is-visible', shouldShowWarning);
+
+        if (shouldShowWarning) {
+            $warning.css('display', 'flex');
+        } else {
+            $warning.css('display', 'none');
+        }
+    }
+
+    function mpwem_hasValue(val) {
+        return typeof val === 'string' ? val.trim().length > 0 : (val !== null && val !== undefined && val !== '');
+    }
+
+    function mpwem_validateCurrentStep($area) {
+        const $active = mpwem_getActiveStep($area);
+        const targetId = $active.attr('data-target-tabs');
+        const $panel = mpwem_getStepPanel($area, targetId);
+        if (!$panel.length) return true;
+
+        // Basic, non-breaking validations (only blocks step navigation)
+        const errors = [];
+
+        if (targetId === '#mp_event_venue') {
+            const title = $('#title').val();
+            if (!mpwem_hasValue(title)) {
+                errors.push('Please enter an event title.');
+            }
+        }
+
+        if (targetId === '#mpwem_date_settings') {
+            const startDate = $panel.find('[name="event_start_date_normal"],[name="event_start_date"],[name="event_start_date_everyday"],[name="event_start_date_daywise"]').first().val();
+            const endDate = $panel.find('[name="event_end_date_normal"],[name="event_end_date"],[name="event_end_date_everyday"],[name="event_end_date_daywise"]').first().val();
+            const startTime = $panel.find('[name="event_start_time_normal"],[name="event_start_time"]').first().val();
+            const endTime = $panel.find('[name="event_end_time_normal"],[name="event_end_time"]').first().val();
+            if (!mpwem_hasValue(startDate) || !mpwem_hasValue(endDate) || !mpwem_hasValue(startTime) || !mpwem_hasValue(endTime)) {
+                errors.push('Please set event start/end date and time.');
+            }
+        }
+
+        if (targetId === '#mpwem_ticket_pricing_settings') {
+            const regStatus = $panel.find('[name="mep_reg_status"]').val();
+            if (regStatus !== 'off') {
+                let hasValidTicket = false;
+                $panel.find('[name="option_name_t[]"]').each(function () {
+                    const name = $(this).val();
+                    if (!mpwem_hasValue(name)) return;
+                    const price = $(this).closest('tr').find('[name="option_price_t[]"]').first().val();
+                    if (mpwem_hasValue(price)) {
+                        hasValidTicket = true;
+                        return false;
+                    }
+                });
+                if (!hasValidTicket) {
+                    errors.push('Please add at least one ticket with a name and price.');
+                }
+            }
+        }
+
+        // Generic required fields inside the step (uses existing markup hints only)
+        $panel.find('input,select,textarea').filter(':visible').not(':disabled,[type="hidden"]').each(function () {
+            const $el = $(this);
+            const isRequired = $el.is('[required]') || $el.is('[data-required]') || $el.hasClass('name_validation');
+            if (!isRequired) return;
+
+            const type = ($el.attr('type') || '').toLowerCase();
+            if (type === 'checkbox' || type === 'radio') {
+                const name = $el.attr('name');
+                if (!name) return;
+                const anyChecked = $panel.find('[name="' + name + '"]').filter(':checked').length > 0;
+                if (!anyChecked) errors.push('Please complete the required options.');
+                return;
+            }
+
+            if (!mpwem_hasValue($el.val())) {
+                errors.push('Please fill out the required fields in this step.');
+                return false;
+            }
+        });
+
+        if (errors.length) {
+            mpwem_showStepNotice($area, 'error', errors[0]);
+            return false;
+        }
+
+        mpwem_showStepNotice($area, '', '');
+        return true;
+    }
+
     // =====================sidebar modal open close=============
     $(document).on('click', '[data-modal]', function (e) {
         const modalTarget = $(this).data('modal');
@@ -81,8 +265,9 @@ function mpwem_initWpEditor(id) {
         $(close).slideToggle();
     });
     /**************************/
-    $(window).load(function () {
+    function mpwem_initLegacyTabMenus() {
         $('.mp_tab_menu').each(function () {
+            const $area = $(this).closest('.mp_event_tab_area');
             // Get post-specific storage key for better security and isolation
             const postId = $('body').find('[name="post_ID"]').val();
             const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
@@ -98,42 +283,100 @@ function mpwem_initWpEditor(id) {
                 // localStorage not available, continue without persistence
             }
             if (savedTab) {
-                const savedTabElement = $(this).find('ul li[data-target-tabs="' + savedTab + '"]');
-                if (savedTabElement.length) {
-                    savedTabElement.trigger('click');
+                if (mpwem_activateLegacyTab($area, savedTab, false)) {
+                    return;
                 } else {
-                    // If saved tab doesn't exist, trigger first tab
-                    $(this).find('ul li:first-child').trigger('click');
+                    savedTab = null;
                 }
-            } else {
-                // No saved tab, trigger first tab
-                $(this).find('ul li:first-child').trigger('click');
+            }
+
+            const firstTabTarget = $(this).find('ul li[data-target-tabs]').first().attr('data-target-tabs');
+            if (firstTabTarget) {
+                mpwem_activateLegacyTab($area, firstTabTarget, false);
             }
         });
+        $('.mp_event_tab_area').each(function () {
+            mpwem_updateStepNav($(this));
+            mpwem_syncClassicGlobalQtyWarning($(this));
+        });
+        $('.mp_event_tab_area').find('.mpwem_step_nav').hide();
         if ($('[name="mep_org_address"]').val() > 0) {
             $('.mp_event_address').slideUp(250);
         }
-    });
+    }
+
+    mpwem_initLegacyTabMenus();
+
+    if (document.readyState !== 'complete') {
+        $(window).on('load', mpwem_initLegacyTabMenus);
+    }
     $(document).on('click', '[data-target-tabs]', function () {
+        const $area = mpwem_getEventArea(this);
+        const tabsTarget = $(this).attr('data-target-tabs');
         if (!$(this).hasClass('active')) {
-            let tabsTarget = $(this).attr('data-target-tabs');
             // Sanitize tab ID to prevent any potential issues
             if (tabsTarget && /^#[a-zA-Z_\-0-9]+$/.test(tabsTarget)) {
-                // Save the active tab to localStorage with post-specific key
-                const postId = $('body').find('[name="post_ID"]').val();
-                const storageKey = postId ? 'mpwem_active_tab_' + postId : 'mpwem_active_tab';
-                try {
-                    localStorage.setItem(storageKey, tabsTarget);
-                } catch (e) {
-                    // Silently fail if localStorage is not available or quota exceeded
-                    // This ensures the tab switching still works even without persistence
-                }
+                mpwem_activateLegacyTab($area, tabsTarget, true);
             }
-            let targetParent = $(this).closest('.mp_event_tab_area').find('.mp_tab_details').first();
-            targetParent.children('.mp_tab_item:visible').slideUp('fast');
-            targetParent.children('.mp_tab_item[data-tab-item="' + tabsTarget + '"]').slideDown(250);
-            $(this).siblings('li.active').removeClass('active');
-            $(this).addClass('active');
+        }
+        return false;
+    });
+
+    $(document).on('change', '.mp_event_tab_area .mpwem-ticket-action-bar input[name="enable_global_qty"], .mp_event_tab_area .mpwem-ticket-global-card select[name="mep_gq_type"], .mp_event_tab_area .mpwem_date_settings select[name="mep_enable_recurring"]', function () {
+        const $area = mpwem_getEventArea(this);
+        mpwem_syncClassicGlobalQtyWarning($area);
+    });
+
+    $(document).on('change', '.mp_event_tab_area .mpwem-ticket-global-card select[name="mep_gq_type"]', function () {
+        const $area = mpwem_getEventArea(this);
+        mpwem_syncClassicGlobalQtyWarning($area);
+    });
+
+    $(document).on('click', '.mp_event_tab_area .round_switch_label .round_switch', function () {
+        const $area = mpwem_getEventArea(this);
+
+        window.setTimeout(function () {
+            mpwem_syncClassicGlobalQtyWarning($area);
+        }, 0);
+    });
+
+    $(document).on('click', '.mp_event_tab_area [data-mpwem-open-particular-date-modal]', function () {
+        const $area = mpwem_getEventArea(this);
+        mpwem_activateLegacyTab($area, '#mpwem_date_settings', true);
+        return false;
+    });
+
+    $(document).on('click', '.mpwem-step-prev', function () {
+        const $area = mpwem_getEventArea(this);
+        if (!$area) return false;
+        const $steps = mpwem_getSteps($area);
+        const $active = mpwem_getActiveStep($area);
+        const idx = $steps.index($active);
+        if (idx > 0) {
+            $steps.eq(idx - 1).trigger('click');
+        }
+        return false;
+    });
+
+    $(document).on('click', '.mpwem-step-next', function () {
+        const $area = mpwem_getEventArea(this);
+        if (!$area) return false;
+        const $steps = mpwem_getSteps($area);
+        const $active = mpwem_getActiveStep($area);
+        const idx = $steps.index($active);
+        if (idx < 0) return false;
+
+        if (idx < $steps.length - 1) {
+            if (!mpwem_validateCurrentStep($area)) return false;
+            $steps.eq(idx + 1).trigger('click');
+            return false;
+        }
+
+        // Last step: guide user to the WP Publish/Update box
+        const $publishBox = $('#submitdiv');
+        if ($publishBox.length) {
+            $('html, body').animate({scrollTop: $publishBox.offset().top - 50}, 250);
+            mpwem_showStepNotice($area, 'info', 'Review your settings and use Publish/Update to save.');
         }
         return false;
     });

@@ -55,6 +55,11 @@
                         <!-- ==================================  -->
 						<?php do_action( 'mep_admin_event_details_before_tab_details_location', $post_id ); ?>
 						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
+                        <div class="mpwem_step_nav">
+                            <button type="button" class="button mpwem-step-prev"><?php esc_html_e( 'Back', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="button button-primary mpwem-step-next"><?php esc_html_e( 'Next', 'mage-eventpress' ); ?></button>
+                            <span class="mpwem-step-status" aria-live="polite"></span>
+                        </div>
                         <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
                     </div>
                 </div>
@@ -117,11 +122,13 @@
 					update_post_meta( $post_id, 'mep_sgm', $mep_sgm );
 					update_post_meta( $post_id, 'location_name', $location_name );
 					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
-					$mep_show_advance_col_status = isset( $_POST['mep_show_advance_col_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advance_col_status'] ) ) ? 'on' : 'off';
+					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
+					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg_txt = isset( $_POST['mep_reg_status_show_msg_txt'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg_txt'] ) ) : '';
 					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
-					update_post_meta( $post_id, 'mep_show_advance_col_status', $mep_show_advance_col_status );
+					update_post_meta( $post_id, 'mep_enable_early_bird_status', $mep_enable_early_bird_status );
+					update_post_meta( $post_id, 'mep_show_advanced_column', $mep_show_advanced_column );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
 					/********************************/
@@ -135,6 +142,8 @@
 					$qty_type             = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
 					$sale_end_date        = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
 					$sale_end_time        = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
+					$sale_start_date      = isset( $_POST['option_sale_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_date'] ) ) : [];
+					$sale_start_time      = isset( $_POST['option_sale_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_time'] ) ) : [];
 					$option_ticket_enable = isset( $_POST['option_ticket_enable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_enable'] ) ) : [];
 					$count                = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
@@ -150,6 +159,9 @@
 							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
+							$new_ticket_type[ $i ]['option_sale_start_date']   = $sale_start_date[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_time']   = $sale_start_time[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_date_t'] = $sale_start_date[ $i ] . ' ' . $sale_start_time[ $i ];
 						}
 					}
 					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
@@ -479,8 +491,8 @@
             public function __construct() {
 
                 add_action( 'admin_init', [ $this, 'gq_update' ] );
-                add_action( 'mpwem_before_ticket_type', [ $this, 'gq_settings' ] );
-                add_action( 'mpwem_before_ex_service', [ $this, 'gq_ex_service_settings' ] );
+                add_action( 'mpwem_after_registration_on_off', [ $this, 'gq_settings' ] );
+                add_action( 'mpwem_before_extra_services_mount', [ $this, 'gq_ex_service_settings' ] );
                 /*********************************/
                 add_action('mep_date_table_head', [$this, 'date_table_head']);
                 add_action('mep_date_table_body_default_date', [$this, 'date_table_default_date']);
@@ -524,36 +536,42 @@
                 $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_seat');
                 $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_resv_seat');
                 ?>
-                <div class="_padding_bt">
-                    <div class="_justify_between_align_center_wrap ">
+                <div class="_padding_bt mpwem-global-qty-field old-mpem-global-qty-field">
+                    <div class="_justify_between_align_center_wrap mpwem-global-qty-field__toggle">
                         <label><span class="_mr"><?php esc_html_e('Enable Global Qty? ', 'mage-eventpress-gq'); ?></span></label>
                         <?php MPWEM_Custom_Layout::switch_button('enable_global_qty', $checked); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e('Please select if you want to enable global quantity for this event. when you turn on global qty total ticket type seat will not be count ', 'mage-eventpress-gq'); ?></span>
-                    <div class=" _bg_light_padding_mt_xs <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#enable_global_qty">
-                        <div>
-                            <label class="_justify_between_align_center_wrap "><span class="_mr"><?php esc_html_e('Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
-                                <select class="formControl" name="mep_gq_type" data-collapse-target>
-                                    <option value="date_wise" data-option-target="#mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
-                                    <option value="global" data-option-target="#mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
-                                </select>
+                    <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please select if you want to enable global quantity for this event. when you turn on global qty total ticket type seat will not be count ', 'mage-eventpress-gq'); ?></span>
+                    <div class="mpwem-global-qty-field__panel _bg_light_padding_mt_xs <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#enable_global_qty">
+                        <div class="mpwem-global-qty-field__row">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control"><span class="_mr"><?php esc_html_e('Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--select">
+                                    <select class="formControl mpwem-global-qty-field__input" name="mep_gq_type" data-collapse-target>
+                                        <option value="date_wise" data-option-target="#mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                        <option value="global" data-option-target="#mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                    </select>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Please Select the global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please Select the global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
                         </div>
-                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
                             <div class="divider"></div>
-                            <label class="_justify_between_align_center_wrap "><span class="_mr"><?php esc_html_e('Total Qty', 'mage-eventpress-gq'); ?></span>
-                                <input class="formControl" type="number" min="0" name="mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control"><span class="_mr"><?php esc_html_e('Total Qty', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Enter The Total Seat of this event. ', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Seat of this event. ', 'mage-eventpress-gq'); ?></span>
                         </div>
-                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
                             <div class="divider"></div>
-                            <label class="_justify_between_align_center_wrap ">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
                                 <span class="_mr"><?php esc_html_e('Reserve Qty', 'mage-eventpress-gq'); ?></span>
-                                <input class="formControl" type="number" min="0" name="mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Enter The Total Reserve Seat Qty of this event', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Reserve Seat Qty of this event', 'mage-eventpress-gq'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -566,39 +584,45 @@
                 $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_seat');
                 $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_resv_seat');
                 ?>
-                <div class="_padding_bt">
-                    <div class="_justify_between_align_center_wrap ">
+                <div class="_padding_bt mpwem-global-qty-field">
+                    <div class="_justify_between_align_center_wrap mpwem-global-qty-field__toggle">
                         <label><span class="_mr"><?php esc_html_e('Enable Extra service  Global Qty?', 'mage-eventpress-gq'); ?></span></label>
                         <?php MPWEM_Custom_Layout::switch_button('ex_enable_global_qty', $checked); ?>
                     </div>
-                    <span class="des_info"><?php esc_html_e('Please select if you want to enable Extra service  global quantity for this event. when you turn on global qty total ticket type seat will not be count', 'mage-eventpress-gq'); ?></span>
-                    <div class="<?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#ex_enable_global_qty">
-                        <div>
+                    <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please select if you want to enable Extra service  global quantity for this event. when you turn on global qty total ticket type seat will not be count', 'mage-eventpress-gq'); ?></span>
+                    <div class="mpwem-global-qty-field__panel <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#ex_enable_global_qty">
+                        <div class="mpwem-global-qty-field__row">
                             <div class="divider"></div>
-                            <label class="_justify_between_align_center_wrap ">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
                                 <span class="_mr"><?php esc_html_e('Extra service Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
-                                <select class="formControl" name="ex_mep_gq_type" data-collapse-target>
-                                    <option value="date_wise" data-option-target="#ex_mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
-                                    <option value="global" data-option-target="#ex_mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
-                                </select>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--select">
+                                    <select class="formControl mpwem-global-qty-field__input" name="ex_mep_gq_type" data-collapse-target>
+                                        <option value="date_wise" data-option-target="#ex_mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                        <option value="global" data-option-target="#ex_mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                    </select>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Please Select Extra service global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please Select Extra service global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
                         </div>
-                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
                             <div class="divider"></div>
-                            <label class="_justify_between_align_center_wrap ">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
                                 <span class="_mr"><?php esc_html_e('Extra service Total Qty', 'mage-eventpress-gq'); ?></span>
-                                <input class="formControl" type="number" min="0" name="ex_mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="ex_mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Enter The Total Extra service Reserve Seat Qty of this event ', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Extra service Reserve Seat Qty of this event ', 'mage-eventpress-gq'); ?></span>
                         </div>
-                        <div class="<?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
                             <div class="divider"></div>
-                            <label class="_justify_between_align_center_wrap ">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
                                 <span class="_mr"><?php esc_html_e('Extra service Reserve Qty', 'mage-eventpress-gq'); ?></span>
-                                <input class="formControl" type="number" min="0" name="ex_mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="ex_mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                </span>
                             </label>
-                            <span class="des_info"><?php esc_html_e('Enter The Total Extra service Seat of this event', 'mage-eventpress-gq'); ?></span>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Extra service Seat of this event', 'mage-eventpress-gq'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -613,8 +637,8 @@
                 ?>
                 <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  Qty', 'mage-eventpress-gq'); ?></th>
                 <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
-                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
-                <th class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
                 <?php
             }
             public function date_table_default_date($event_id) {
@@ -633,10 +657,10 @@
                 <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
                 </td>
                 <?php
@@ -657,10 +681,10 @@
                 <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
                 </td>
-                <td class="<?php echo esc_attr(($ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
                     <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
                 </td>
                 <?php

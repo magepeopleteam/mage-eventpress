@@ -22,7 +22,7 @@
 				if ( ! is_array( $time_line_infos ) ) {
 					$time_line_infos = array();
 				}
-				$reg_status=get_post_meta($post_id,'mep_timeline_status',true)?get_post_meta($post_id,'mep_timeline_status',true):'on';
+				$reg_status=get_post_meta($post_id,'mep_timeline_status',true)?get_post_meta($post_id,'mep_timeline_status',true):'off';
 				//echo '<pre>';print_r($faq_infos);echo '</pre>';
 				$checked    = $reg_status == 'on' ? 'checked' : '';
 				$active_reg_status    = $reg_status == 'on' ? 'mActive' : '';

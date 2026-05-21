@@ -389,6 +389,7 @@ iframe#gmap_canvas { width: 100%; height: 300px;}
 .mp_tab_item { display: none; overflow-y: hidden; overflow-x: auto;}
 .mp_tab_details { width: 100%; background: #fff;  border-radius: 8px; padding: 12px; position: relative; }
 .mpwem_step_nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; margin-top: 12px; border-top: 1px solid #E5E7EB; }
+body:not(.mpwem-event-wizard-screen) .mpwem_step_nav { display: none; }
 .mpwem_step_nav .mpwem-step-status { color: #475569; font-size: 13px; }
 .mpwem_step_nav .button { min-height: 34px; }
 .mp_form_area { display: -webkit-flex; display: flex;}

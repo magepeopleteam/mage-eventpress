@@ -4256,6 +4256,10 @@ body.mpwem-ticket-modal-open {
 .mpwem-display-section--terms ._padding_bB:has(.round_switch_label, .mpev-switch, .mpwem-switch-wrap) {
 	display: none !important;
 }
+.timeline-item-header,
+.faq-item-header {
+	margin-bottom: 0;
+}
 .mpwem-display-section--terms .mp_tab_item > ._layout_default_xs_mp_zero {
 	padding: 0 !important;
 }
@@ -6218,6 +6222,7 @@ body.mpwem-ticket-modal-open {
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) th:last-child {
 	border-top-right-radius: calc(var(--mpwem-radius) - 1px);
+	text-align: center;
 }
 .mpwem-event-wizard table:not(.ui-datepicker-calendar) tr:last-child td:first-child {
 	border-bottom-left-radius: calc(var(--mpwem-radius) - 1px);
@@ -8904,7 +8909,6 @@ code {
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table tbody tr:last-child td {
 	border-bottom: 0;
-	text-align: right;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-ticket-card.disable_row td {
 	opacity: 0.72;
@@ -8955,13 +8959,13 @@ code {
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th.mpwem-ticket-table__sale-period,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__sale-period {
-	width: 260px;
-	min-width: 260px;
+	/* width: 260px; */
+	min-width: 284px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table th.mpwem-ticket-table__actions,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__actions {
-	width: 60px;
-	min-width: 60px;
+	/* width: 60px; */
+	min-width: 80px;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__group,
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table td.mpwem-ticket-card__actions {
@@ -9026,6 +9030,7 @@ code {
 	background-repeat: no-repeat;
 	background-position: right 12px center;
 	background-size: 14px 14px;
+	line-height: 1;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-ticket-card__sale-period {
 	min-width: 0;
@@ -9099,7 +9104,7 @@ code {
 	display: none !important;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-ticket-card__actions {
-	text-align: left;
+	text-align: center;
 	white-space: nowrap;
 }
 #mpwem_ticket_editor_modal .mpwem-ticket-modal__mount .mpwem_ticket_table .mpwem-ticket-card__action-btn {

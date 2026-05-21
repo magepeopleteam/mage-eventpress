@@ -4484,6 +4484,73 @@
             .attr('aria-expanded', 'false');
     }
 
+    function enforceSingleAdvancedAccordion($section, itemSelector, $preferredItem) {
+        if (!$section || !$section.length) {
+            return;
+        }
+
+        const $items = $section.find(itemSelector);
+        if (!$items.length) {
+            return;
+        }
+
+        if ($preferredItem && $preferredItem.length && $preferredItem.hasClass('open')) {
+            $items.not($preferredItem).removeClass('open');
+            return;
+        }
+
+        const $openItems = $items.filter('.open');
+        if ($openItems.length > 1) {
+            $openItems.not($openItems.first()).removeClass('open');
+        }
+    }
+
+    function initializeAdvancedAccordions($root) {
+        const accordionConfigs = [
+            {
+                sectionSelector: '.mpwem-display-section--faq',
+                itemSelector: '.faq-item',
+                triggerSelector: '.edit-faq-item',
+                addButtonSelector: '#add-faq-item'
+            },
+            {
+                sectionSelector: '.mpwem-display-section--timeline',
+                itemSelector: '.timeline-item',
+                triggerSelector: '.edit-timeline-item',
+                addButtonSelector: '#add-timeline-item'
+            }
+        ];
+
+        accordionConfigs.forEach(function(config) {
+            $root.find(config.sectionSelector).each(function() {
+                enforceSingleAdvancedAccordion($(this), config.itemSelector);
+            });
+
+            $root.on('click.mpwemAccordion', config.sectionSelector + ' ' + config.triggerSelector, function() {
+                const $section = $(this).closest(config.sectionSelector);
+                const $item = $(this).closest(config.itemSelector);
+
+                window.setTimeout(function() {
+                    enforceSingleAdvancedAccordion($section, config.itemSelector, $item);
+                }, 0);
+            });
+
+            $root.on('click.mpwemAccordion', config.sectionSelector + ' ' + config.addButtonSelector, function() {
+                const $section = $(this).closest(config.sectionSelector);
+
+                window.setTimeout(function() {
+                    const $newItem = $section.find(config.itemSelector).last();
+                    if (!$newItem.length) {
+                        return;
+                    }
+
+                    $newItem.addClass('open');
+                    enforceSingleAdvancedAccordion($section, config.itemSelector, $newItem);
+                }, 0);
+            });
+        });
+    }
+
     $(function () {
         const $root = getWizardRoot();
         if (!$root.length) return;
@@ -4510,6 +4577,7 @@
             enhanceTooltips($root);
             enhanceSelects($root);
             enhanceTaxonomyCard($root);
+            initializeAdvancedAccordions($root);
 
             const h = parseHash();
             setActiveStep($root, h.stepKey || STEP_KEY_FALLBACK, { pushHash: false });

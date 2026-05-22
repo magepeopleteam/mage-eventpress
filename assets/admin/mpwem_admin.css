@@ -211,18 +211,20 @@
 	.mep_everyday_date_secs input,
 	.mep_everyday_date_secs select {width: auto; margin: 0 5px;}
 }
-.mep-modal-container { position: fixed; right: -100%; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.1725490196); transition: right 0.3s ease; z-index: 1000;}
+.mep-modal-container { position: fixed; left: 100%; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.1725490196); transition: left 0.3s ease; z-index: 1000;}
 .mep-modal-container.open {
-	right: 0; /* Slide in */
+	left: 0; /* Slide in */
 }
 .mep-modal-container .mep-modal-content {
 	background-color: #FFF;
 	width: 800px;
+	max-width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 0;
 	right: 0;
 	padding: 70px 0px;
+	box-sizing: border-box;
 }
 .mep-modal-container .mep-modal-content .title {
 	padding: 0 40px;

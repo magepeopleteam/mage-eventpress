@@ -4308,7 +4308,12 @@
             }
         }
 
-        $steps.removeClass('is-active');
+        $steps.removeClass('is-active is-complete');
+        $steps.each(function () {
+            if ($(this).index() < $targetStep.index()) {
+                $(this).addClass('is-complete');
+            }
+        });
         $targetStep.addClass('is-active');
 
         const panelSelector = $targetStep.data('panel');

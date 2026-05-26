@@ -45,6 +45,8 @@
 				add_action( 'wp_ajax_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
+				add_action( 'wp_ajax_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
+				add_action( 'wp_ajax_nopriv_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
 				/***********************/
 				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
@@ -743,6 +745,37 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					?>
                 </div>
 				<?php
+			}
+
+			public function mep_submit_rsvp() {
+				check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+
+				$event_id   = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+				$name       = isset( $_POST['rsvp_name'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_name'] ) ) : '';
+				$email      = isset( $_POST['rsvp_email'] ) ? sanitize_email( wp_unslash( $_POST['rsvp_email'] ) ) : '';
+				$phone      = isset( $_POST['rsvp_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_phone'] ) ) : '';
+				$event_date = isset( $_POST['rsvp_date'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_date'] ) ) : '';
+				$ticket_qty = isset( $_POST['rsvp_qty'] ) ? absint( $_POST['rsvp_qty'] ) : 1;
+
+				if ( ! $event_id || empty( $name ) || empty( $email ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
+				}
+
+				$user_info = array(
+					'user_name'       => $name,
+					'user_email'      => $email,
+					'user_phone'      => $phone,
+					'user_event_date' => $event_date,
+					'user_ticket_qty' => $ticket_qty,
+				);
+
+				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info );
+
+				if ( $attendee_id ) {
+					wp_send_json_success( array( 'message' => esc_html__( 'RSVP submitted successfully!', 'mage-eventpress' ) ) );
+				} else {
+					wp_send_json_error( array( 'message' => esc_html__( 'Failed to submit RSVP. Please try again.', 'mage-eventpress' ) ) );
+				}
 			}
 		}
 		new MPWEM_Hooks();

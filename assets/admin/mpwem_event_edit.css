@@ -1515,6 +1515,7 @@ select.mpwem-global-qty-field__input {
 }
 .mpwem-event-type-option.is-active {
 	border-color: var(--mpwem-primary);
+	background: #eef6ff;
 }
 
 .mpwem-event-type-option.is-active::after {

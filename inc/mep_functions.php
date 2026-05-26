@@ -988,6 +988,41 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					do_action( 'mep_attendee_upload_file_save', $event_id, $_user_info, $_field );
 				}
 			} // End User Form builder data update loop
+		}
+	}
+	if ( ! function_exists( 'mep_rsvp_attendee_create' ) ) {
+		function mep_rsvp_attendee_create( $event_id, $user_info = array() ) {
+			$uname      = isset( $user_info['user_name'] ) ? sanitize_text_field( $user_info['user_name'] ) : '';
+			$email      = isset( $user_info['user_email'] ) ? sanitize_email( $user_info['user_email'] ) : '';
+			$phone      = isset( $user_info['user_phone'] ) ? sanitize_text_field( $user_info['user_phone'] ) : '';
+			$event_date = isset( $user_info['user_event_date'] ) ? sanitize_text_field( $user_info['user_event_date'] ) : '';
+			$ticket_qty = isset( $user_info['user_ticket_qty'] ) ? absint( $user_info['user_ticket_qty'] ) : 1;
+
+			$new_post   = array(
+				'post_title'    => $uname,
+				'post_content'  => '',
+				'post_status'   => 'publish',
+				'post_type'     => 'mep_events_attendees'
+			);
+
+			$pid = wp_insert_post( $new_post );
+			if ( ! $pid || is_wp_error( $pid ) ) {
+				return false;
+			}
+
+			$pin = 'RSVP' . $event_id . $pid . rand( 100, 999 );
+			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
+			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input( $email ) );
+			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input( $phone ) );
+			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
+			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
+			update_post_meta( $pid, 'ea_event_id', $event_id );
+			update_post_meta( $pid, 'mep_checkin', 'No' );
+			update_post_meta( $pid, 'ea_ticket_no', $pin );
+			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_order_status', 'completed' );
+			update_post_meta( $pid, 'ea_flag', 'rsvp_processed' );
+
 			return $pid;
 		}
 	}

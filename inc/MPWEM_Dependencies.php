@@ -33,8 +33,10 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
-				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
+				if ( MPWEM_Global_Function::has_woocommerce() ) {
+					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
+					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
+				}
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Calendar.php';
@@ -133,7 +135,7 @@
 					wp_localize_script( 'mep-event-stats', 'mep_analytics_data', array(
 						'ajax_url'        => admin_url( 'admin-ajax.php' ),
 						'nonce'           => wp_create_nonce( 'mep_analytics_nonce' ),
-						'currency_symbol' => get_woocommerce_currency_symbol(),
+						'currency_symbol' => MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency_symbol() : '$',
 					) );
 				}
 				//******************/
@@ -194,16 +196,22 @@
 				$this->add_open_graph_tags();
 			}
 			public function js_constant() {
+				$has_woo = MPWEM_Global_Function::has_woocommerce();
+				$currency_symbol = $has_woo ? get_woocommerce_currency_symbol() : '$';
+				$currency_position = $has_woo ? get_option( 'woocommerce_currency_pos' ) : 'left';
+				$currency_decimal = $has_woo ? wc_get_price_decimal_separator() : '.';
+				$currency_thousands = $has_woo ? wc_get_price_thousand_separator() : ',';
+				$num_of_decimals = $has_woo ? get_option( 'woocommerce_price_num_decimals', 2 ) : 2;
 				?>
                 <script type="text/javascript">
                     let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
-                    let mpwem_currency_symbol = "<?php echo get_woocommerce_currency_symbol(); ?>";
-                    let mpwem_currency_position = "<?php echo get_option( 'woocommerce_currency_pos' ); ?>";
-                    let mpwem_currency_decimal = "<?php echo wc_get_price_decimal_separator(); ?>";
-                    let mpwem_currency_thousands_separator = "<?php echo wc_get_price_thousand_separator(); ?>";
-                    let mpwem_num_of_decimal = "<?php echo get_option( 'woocommerce_price_num_decimals', 2 ); ?>";
+                    let mpwem_currency_symbol = "<?php echo esc_js( $currency_symbol ); ?>";
+                    let mpwem_currency_position = "<?php echo esc_js( $currency_position ); ?>";
+                    let mpwem_currency_decimal = "<?php echo esc_js( $currency_decimal ); ?>";
+                    let mpwem_currency_thousands_separator = "<?php echo esc_js( $currency_thousands ); ?>";
+                    let mpwem_num_of_decimal = "<?php echo esc_js( $num_of_decimals ); ?>";
                     let mpwem_empty_image_url = "<?php echo esc_attr( MPWEM_PLUGIN_URL . '/assets/helper/images/no_image.png' ); ?>";
                     let mpwem_date_format = "<?php echo  MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_datepicker_format', 'D d M , yy' );?>";
                     //let mp_nonce = wp_create_nonce('mep-ajax-nonce');
@@ -239,7 +247,7 @@
                                 "@type"         : "Offer",
                                 "url"           : "<?php echo get_the_permalink( $event_id ); ?>",
                                 "price"         : "<?php echo strip_tags( mep_event_list_number_price( $event_id ) ); ?>",
-                                "priceCurrency" : "<?php echo get_woocommerce_currency(); ?>",
+                                "priceCurrency" : "<?php echo MPWEM_Global_Function::has_woocommerce() ? get_woocommerce_currency() : 'USD'; ?>",
                                 "availability"  : "https://schema.org/InStock",
                                 "validFrom"     : "<?php echo esc_attr( $event_end_date ); ?>"
                             },

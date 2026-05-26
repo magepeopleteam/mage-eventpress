@@ -121,7 +121,12 @@
 					update_post_meta( $post_id, 'latitude', $latitude );
 					update_post_meta( $post_id, 'mep_sgm', $mep_sgm );
 					update_post_meta( $post_id, 'location_name', $location_name );
-					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
+					
+					$mep_reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'off';
+					if ( ! in_array( $mep_reg_status, [ 'off', 'rsvp', 'on' ], true ) ) {
+						$mep_reg_status = 'off';
+					}
+
 					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
 					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';

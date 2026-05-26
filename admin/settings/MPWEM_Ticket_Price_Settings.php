@@ -338,32 +338,18 @@
 				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
 
-				?>
-                <div class="mpwem-ticket-registration-block">
-					<?php if ( $is_custom_event_edit ) { ?>
-                        <div class="mpwem-registration-mode">
-                            <div class="mpwem-registration-mode__toggle mpwem-event-type-toggle">
-                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--listing" data-value="off">
-                                    <span class="mpwem-date-type-option__icon dashicons dashicons-format-aside"></span>
-                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Event Listing Only', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Show the event details without selling tickets.', 'mage-eventpress' ); ?></small></span>
-                                </button>
-                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--selling" data-value="on">
-                                    <span class="mpwem-date-type-option__icon dashicons dashicons-cart"></span>
-                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Ticket Selling & Get Payment', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Enable checkout so attendees can purchase tickets.', 'mage-eventpress' ); ?></small></span>
-                                </button>
-                            </div>
-                            <div class="mpwem-registration-mode__control" hidden>
-                                <input type="checkbox" name="mep_reg_status" value="on" <?php echo esc_attr( $checked ); ?> data-no-mpwem-switch />
-                            </div>
-                        </div>
-					<?php } else { ?>
-                        <div class=" _justify_between_align_center_wrap">
-                            <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
+				if ( ! $is_custom_event_edit ) {
+					?>
+					<div class="mpwem-ticket-registration-block">
+						<div class=" _justify_between_align_center_wrap">
+							<label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 							<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
-                        </div>
-                        <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
-					<?php } ?>
-                </div>
+						</div>
+						<span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+					</div>
+					<?php
+				}
+				?>
                 <div class="_padding_bt reg_close_msg_dash mpwem-ticket-registration-message">
                     <div class=" _justify_between_align_center_wrap">
                         <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>

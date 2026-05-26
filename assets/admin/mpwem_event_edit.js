@@ -585,6 +585,19 @@
         return $root.find('#mpwem_ticket_modal_mount tbody.mpwem-ticket-cards-container.mpwem_item_insert, #mpwem_ticket_modal_mount .mpwem-ticket-cards-container.mpwem_item_insert').first();
     }
 
+    function isRegistrationEnabled($root) {
+        const $wizardInput = $root.find('#mep_reg_status').first();
+        if ($wizardInput.length) {
+            return $wizardInput.val() === 'on';
+        }
+        const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        const $legacyCheckbox = $ticketPanel.find('input[name="mep_reg_status"]').first();
+        if ($legacyCheckbox.length) {
+            return $legacyCheckbox.is(':checked');
+        }
+        return false;
+    }
+
     function storeSavedTicketSummarySnapshot($root) {
         const context = getTicketModalContext($root);
         const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
@@ -602,7 +615,7 @@
 
         context.$modal
             .data('mpwemTicketSavedRowsHtml', $container.length ? $container.html() : '')
-            .data('mpwemTicketSavedRegEnabled', $ticketPanel.find('input[name="mep_reg_status"]').first().is(':checked'))
+            .data('mpwemTicketSavedRegEnabled', isRegistrationEnabled($root))
             .data('mpwemTicketSavedGlobalQtyEnabled', $globalQtyToggle.is(':checked'))
             .data('mpwemTicketSavedGlobalTotalQty', (($globalQtyInput.val() || '').toString().trim()));
     }
@@ -770,7 +783,7 @@
 
     function renderTicketSummary($root) {
         const context = getTicketModalContext($root);
-        const regEnabled = context.$modal.data('mpwemTicketSavedRegEnabled');
+        const regEnabled = isRegistrationEnabled($root);
         const $rows = getSavedTicketSummaryRows($root);
         if (!context.$summaryList.length) {
             return;
@@ -4346,14 +4359,57 @@
         }
 
         // Progress
-        const current = $steps.index($targetStep) + 1;
-        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $steps.length);
+        const $visibleSteps = $steps.filter(':visible');
+        const current = $visibleSteps.index($targetStep) + 1;
+        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
         $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-        $root.find('.mpwem-wizard-next').text(current === $steps.length ? 'Save Event' : 'Next Step');
+        $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
         $root.find('#mpwem_active_step').val(stepKey);
 
         if (options && options.pushHash) {
             setHash(parseInt($root.data('event-id'), 10) > 0 ? 'edit' : 'new', $root.data('event-id'), stepKey);
+        }
+    }
+
+    function updateStepsVisibility($root) {
+        const mode = ($('#mep_reg_status').val() || '').toString();
+        const $steps = $root.find('.mpwem-step');
+        const $ticketStep = $steps.filter('[data-step-key="tickets"]');
+        
+        // Tickets & Pricing step is always kept visible
+        $ticketStep.show();
+
+        // Toggle ticket details visibility inside Step 2 based on mode
+        if (mode === 'on') {
+            $('#mpwem_wizard_ticket_details_section').show();
+            $('#mpwem_wizard_pricing_help_card').show();
+            $('#mpwem_wizard_tickets_sidebar').show();
+        } else {
+            $('#mpwem_wizard_ticket_details_section').hide();
+            $('#mpwem_wizard_pricing_help_card').hide();
+            $('#mpwem_wizard_tickets_sidebar').show();
+        }
+
+        // Show/hide legacy registration closed message setting card
+        if (mode === 'off') {
+            $('.reg_close_msg_dash').show();
+        } else {
+            $('.reg_close_msg_dash').hide();
+        }
+
+        // Re-calculate data-step indices for visible steps
+        const $visibleSteps = $steps.filter(':visible');
+        $visibleSteps.each(function (index) {
+            $(this).attr('data-step', index + 1);
+        });
+
+        // Update progress counters for the active step
+        const $activeStep = $steps.filter('.is-active');
+        if ($activeStep.length) {
+            const current = $visibleSteps.index($activeStep) + 1;
+            $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
+            $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
+            $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
         }
     }
 
@@ -4676,6 +4732,7 @@
 
             const h = parseHash();
             setActiveStep($root, h.stepKey || STEP_KEY_FALLBACK, { pushHash: false });
+            updateStepsVisibility($root);
         } catch (error) {
             if (window.console && window.console.error) {
                 window.console.error('MPWEM event edit initialization failed.', error);
@@ -4683,6 +4740,20 @@
         } finally {
             window.requestAnimationFrame(markReady);
         }
+
+        $(document).on('change', '#mep_reg_status', function() {
+            updateStepsVisibility($root);
+        });
+
+        $(document).on('click', '#mpwem_event_mode_toggle .mpwem-event-type-option', function() {
+            if ($(this).hasClass('is-disabled')) {
+                return;
+            }
+            const val = $(this).data('value');
+            $('#mpwem_event_mode_toggle .mpwem-event-type-option').removeClass('is-active');
+            $(this).addClass('is-active');
+            $('#mep_reg_status').val(val).trigger('change');
+        });
 
         $root.on('click', '.mpwem-step', function() {
             setActiveStep($root, $(this).data('step-key'), { pushHash: true, validate: true });

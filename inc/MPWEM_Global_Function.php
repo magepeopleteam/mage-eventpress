@@ -263,7 +263,19 @@
 				return $data;
 			}
 			//=================//
+			public static function has_woocommerce(): bool {
+				return class_exists( 'WooCommerce' ) || self::check_woocommerce() === 1;
+			}
+			public static function get_admin_capability(): string {
+				return self::has_woocommerce() ? 'manage_woocommerce' : 'edit_posts';
+			}
 			public static function price_convert_raw( $price ) {
+				if ( ! self::has_woocommerce() ) {
+					$price = wp_strip_all_tags( $price );
+					$price = preg_replace( '/[^0-9.]/', '', $price );
+					$price = (float) $price;
+					return max( $price, 0 );
+				}
 				$price = wp_strip_all_tags( $price );
 				$price = str_replace( get_woocommerce_currency_symbol(), '', $price );
 				$price = str_replace( wc_get_price_thousand_separator(), 't_s', $price );
@@ -276,6 +288,9 @@
 				return max( $price, 0 );
 			}
 			public static function get_wc_raw_price( $price ) {
+				if ( ! self::has_woocommerce() ) {
+					return (float) $price;
+				}
 				$price = wc_price( $price );
 				return self::price_convert_raw( $price );
 			}
@@ -713,7 +728,19 @@
 				return self::get_settings( 'mp_basic_license_settings', $key, $default );
 			}
 			//***********************************//
+			public static function has_woocommerce(): bool {
+				return class_exists( 'WooCommerce' ) || self::check_woocommerce() === 1;
+			}
+			public static function get_admin_capability(): string {
+				return self::has_woocommerce() ? 'manage_woocommerce' : 'edit_posts';
+			}
 			public static function price_convert_raw( $price ) {
+				if ( ! self::has_woocommerce() ) {
+					$price = wp_strip_all_tags( $price );
+					$price = preg_replace( '/[^0-9.]/', '', $price );
+					$price = (float) $price;
+					return max( $price, 0 );
+				}
 				$price = wp_strip_all_tags( $price );
 				$price = str_replace( get_woocommerce_currency_symbol(), '', $price );
 				$price = str_replace( wc_get_price_thousand_separator(), 't_s', $price );
@@ -726,6 +753,10 @@
 				return max( $price, 0 );
 			}
 			public static function wc_price( $post_id, $price, $args = array() ): string {
+				if ( ! self::has_woocommerce() ) {
+					$currency_symbol = get_option( 'woocommerce_currency_symbol', '$' );
+					return $currency_symbol . number_format( (float) $price, 2 );
+				}
 				$num_of_decimal = get_option( 'woocommerce_price_num_decimals', 2 );
 				$args           = wp_parse_args( $args, array(
 					'qty'   => '',
@@ -783,6 +814,9 @@
 				return wc_price( $return_price ) . ' ' . $display_suffix;
 			}
 			public static function get_wc_raw_price( $price ) {
+				if ( ! self::has_woocommerce() ) {
+					return (float) $price;
+				}
 				$price = wc_price( $price );
 				return self::price_convert_raw( $price );
 			}

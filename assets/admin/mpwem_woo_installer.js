@@ -41,6 +41,20 @@
 			}
 			startProcess();
 		});
+
+		// Dismiss button click
+		$('#mpwem-woo-dismiss-btn').on('click', function (e) {
+			e.preventDefault();
+			$overlay.fadeOut(300);
+			$.ajax({
+				url:      config.ajax_url,
+				type:     'POST',
+				data: {
+					action: 'mpwem_dismiss_woocommerce_installer',
+					nonce:  config.dismiss_nonce
+				}
+			});
+		});
 	});
 
 	/**

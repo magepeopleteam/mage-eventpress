@@ -4382,7 +4382,30 @@
         // Toggle ticket details visibility inside Step 2 based on mode
         if (mode === 'on') {
             $('#mpwem_wizard_ticket_details_section').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
             $('#mpwem_wizard_pricing_help_card').show();
+            $('#mpwem_wizard_tickets_sidebar').show();
+        } else if (mode === 'rsvp') {
+            $('#mpwem_wizard_ticket_details_section').show();
+            // Hide the ticket lists and summaries
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').hide();
+            // Hide EARLY BIRD and SHOW ADVANCED COLUMN options, keep only ENABLE GLOBAL QTY
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').each(function() {
+                const $item = $(this);
+                if ($item.find('label').text().toUpperCase().indexOf('GLOBAL') !== -1) {
+                    $item.show();
+                } else {
+                    $item.hide();
+                }
+            });
+            // Hide dividers since we only show one option
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').hide();
+            // Show global settings card
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
+            $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
         } else {
             $('#mpwem_wizard_ticket_details_section').hide();

@@ -23,15 +23,27 @@
 
 	// RSVP mode renders a free RSVP form with direct attendee database storage
 	if ( $reg_status === 'rsvp' ) {
+		$url_date = isset( $_GET['date'] ) ? sanitize_text_field( wp_unslash( $_GET['date'] ) ) : null;
+		$url_date_2 = isset( $_GET['date_time'] ) ? sanitize_text_field( wp_unslash( $_GET['date_time'] ) ) : null;
+		$url_date = $url_date ?: $url_date_2;
+		$url_date = $url_date ? date( 'Y-m-d H:i', (int)$url_date ) : '';
+		if ($url_date) {
+			$date_format = MPWEM_Global_Function::check_time_exit_date( $url_date ) ? 'Y-m-d H:i' : 'Y-m-d';
+			$url_date = date( $date_format, strtotime($url_date) );
+		}
+
 		$all_dates = MPWEM_Functions::get_dates( $event_id );
 		$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
-		$date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+		$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+		
+		$date = $url_date ?: $upcoming_date;
 		?>
 		<div class="mpwem_booking_panel mep-rsvp-container" style="padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-top: 30px; border: 1px solid #eaeaea;">
 			<h3 style="margin-top: 0; margin-bottom: 20px; font-weight: 700; color: #1a1a1a; font-size: 20px;"><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
 			<form id="mep-rsvp-form" method="post">
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
 				<input type="hidden" name="event_id" value="<?php echo esc_attr( $event_id ); ?>" />
+				<input type="hidden" name="rsvp_date" value="<?php echo esc_attr( $date ); ?>" />
 				<?php wp_nonce_field( 'mep_rsvp_nonce', 'nonce' ); ?>
 
 				<div class="mep-rsvp-fields" style="display: grid; grid-gap: 16px; margin-bottom: 20px;">
@@ -44,22 +56,9 @@
 						<input type="email" name="rsvp_email" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your email', 'mage-eventpress' ); ?>" />
 					</div>
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Phone Number', 'mage-eventpress' ); ?></label>
-						<input type="text" name="rsvp_phone" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your phone', 'mage-eventpress' ); ?>" />
+						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Phone Number', 'mage-eventpress' ); ?> <span style="color: #ef4444;">*</span></label>
+						<input type="text" name="rsvp_phone" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your phone', 'mage-eventpress' ); ?>" />
 					</div>
-
-					<?php if ( is_array( $all_dates ) && count( $all_dates ) > 0 ) : ?>
-						<div class="mep-rsvp-field">
-							<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></label>
-							<select name="rsvp_date" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; background: #fff;">
-								<?php foreach ( $all_dates as $d ) : ?>
-									<option value="<?php echo esc_attr( $d ); ?>"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $d ) ) ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					<?php else : ?>
-						<input type="hidden" name="rsvp_date" value="<?php echo esc_attr( $date ); ?>" />
-					<?php endif; ?>
 
 					<div class="mep-rsvp-field">
 						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Number of Seats', 'mage-eventpress' ); ?></label>

@@ -757,7 +757,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 				$event_date = isset( $_POST['rsvp_date'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_date'] ) ) : '';
 				$ticket_qty = isset( $_POST['rsvp_qty'] ) ? absint( $_POST['rsvp_qty'] ) : 1;
 
-				if ( ! $event_id || empty( $name ) || empty( $email ) ) {
+				if ( ! $event_id || empty( $name ) || empty( $email ) || empty( $phone ) ) {
 					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
 				}
 

@@ -28,7 +28,7 @@
 		$reg_status_msg_status 	= is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg', $event_infos ) ? $event_infos['mep_reg_status_show_msg'] : 'off';
 		$reg_status_msg_txt 		= is_array($event_infos) && array_key_exists( 'mep_reg_status_show_msg_txt', $event_infos ) ? $event_infos['mep_reg_status_show_msg_txt'] : '';
 		$reg_off_msg 				= $reg_status_msg_status == 'on' ? $reg_status_msg_txt : '';
-		if ( $reg_status == 'on' ) {
+		if ( $reg_status == 'on' || $reg_status == 'rsvp' ) {
 			if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
 				$event_member_type = is_array($event_infos) && array_key_exists( 'mep_member_only_event', $event_infos ) ? $event_infos['mep_member_only_event'] : 'for_all';
 				$saved_user_role   = is_array($event_infos) && array_key_exists( 'mep_member_only_user_role', $event_infos ) ? $event_infos['mep_member_only_user_role'] : [];

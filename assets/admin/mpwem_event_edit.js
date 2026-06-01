@@ -1862,7 +1862,12 @@
                     .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
             );
 
-            if (!$rows.length) {
+            const primaryDateVal = ($modalMount.find('input[name="event_start_date"]').first().val() || '').toString().trim();
+            const primaryTimeVal = ($modalMount.find('input[name="event_start_time"]').first().val() || '').toString().trim();
+            const primaryEndDateVal = ($modalMount.find('input[name="event_end_date"]').first().val() || '').toString().trim();
+            const primaryEndTimeVal = ($modalMount.find('input[name="event_end_time"]').first().val() || '').toString().trim();
+
+            if (!primaryDateVal && !$rows.length) {
                 context.$summaryList.append(
                     $('<div class="mpwem-ticket-summary__empty"></div>')
                         .append($('<h4></h4>').text('No dates added yet'))
@@ -1872,6 +1877,27 @@
                             .text('Create First Date'))
                 );
                 return;
+            }
+
+            if (primaryDateVal) {
+                const primaryDisplayStart = buildScheduleDateTimeLabel(primaryDateVal, primaryTimeVal) || 'Start date not set';
+                const primaryDisplayEnd = buildScheduleDateTimeLabel(primaryEndDateVal, primaryEndTimeVal) || 'End date not set';
+                
+                context.$summaryList.append(
+                    $('<article class="mpwem-ticket-summary__item"></article>')
+                        .attr('data-date-row-index', -1)
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-main"></div>')
+                                .append(
+                                    $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                        .append($('<h4></h4>').text(primaryDisplayStart))
+                                )
+                        )
+                        .append(
+                            $('<div class="mpwem-ticket-summary__meta"></div>')
+                                .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryDisplayEnd))
+                        )
+                );
             }
 
             $rows.each(function(index) {

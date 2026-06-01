@@ -96,6 +96,9 @@
 			if ( ! function_exists( 'is_woocommerce' ) ) {
 				function is_woocommerce() { return false; }
 			}
+			if ( ! function_exists( 'is_product' ) ) {
+				function is_product() { return false; }
+			}
 			if ( ! function_exists( 'wc_get_cart_url' ) ) {
 				function wc_get_cart_url() { return ''; }
 			}

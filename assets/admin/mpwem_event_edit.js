@@ -4382,6 +4382,13 @@
         // Toggle ticket details visibility inside Step 2 based on mode
         if (mode === 'on') {
             $('#mpwem_wizard_ticket_details_section').show();
+            $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').show();
+            
+            // Only show extra services card if it actually has content
+            if ($('#mpwem_wizard_extra_services_mount').children().length > 0) {
+                $('#mpwem_wizard_extra_services_card').show();
+            }
+            
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').show();
@@ -4390,6 +4397,9 @@
             $('#mpwem_wizard_tickets_sidebar').show();
         } else if (mode === 'rsvp') {
             $('#mpwem_wizard_ticket_details_section').show();
+            $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
+            
             // Hide the ticket lists and summaries
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').hide();
             // Hide EARLY BIRD and SHOW ADVANCED COLUMN options, keep only ENABLE GLOBAL QTY
@@ -4409,6 +4419,7 @@
             $('#mpwem_wizard_tickets_sidebar').show();
         } else {
             $('#mpwem_wizard_ticket_details_section').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
             $('#mpwem_wizard_pricing_help_card').hide();
             $('#mpwem_wizard_tickets_sidebar').show();
         }

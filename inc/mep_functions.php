@@ -1023,6 +1023,23 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_order_status', 'completed' );
 			update_post_meta( $pid, 'ea_flag', 'rsvp_processed' );
 
+			// Populate standard ticket metadata fields for query compatibility
+			update_post_meta( $pid, 'ea_ticket_type', 'RSVP' );
+			update_post_meta( $pid, 'ea_ticket_price', 0 );
+			update_post_meta( $pid, 'ea_ticket_order_amount', 0 );
+			update_post_meta( $pid, 'ea_payment_method', 'RSVP' );
+			update_post_meta( $pid, 'ea_order_id', 0 );
+			update_post_meta( $pid, 'ea_user_id', get_current_user_id() );
+
+			// Optional details fields stored as empty strings to avoid PHP notice/blank field issues
+			update_post_meta( $pid, 'ea_address_1', '' );
+			update_post_meta( $pid, 'ea_gender', '' );
+			update_post_meta( $pid, 'ea_company', '' );
+			update_post_meta( $pid, 'ea_desg', '' );
+			update_post_meta( $pid, 'ea_website', '' );
+			update_post_meta( $pid, 'ea_vegetarian', '' );
+			update_post_meta( $pid, 'ea_tshirtsize', '' );
+
 			return $pid;
 		}
 	}

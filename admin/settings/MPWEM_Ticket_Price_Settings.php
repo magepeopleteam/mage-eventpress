@@ -14,6 +14,7 @@
 			public function ticket_settings( $event_id, $event_infos ) {
 				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
+				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
 					<?php $this->setting_head( $event_id, $event_infos ); ?>
@@ -21,6 +22,11 @@
 						<?php $this->ticket_setting( $event_id, $event_infos ); ?>
 						<?php $this->ex_service_setting( $event_id ); ?>
                     </div>
+					
+					<div class="mpwem-rsvp-settings-area" style="<?php echo esc_attr( $display_rsvp ); ?>">
+						<?php $this->rsvp_setting( $event_id, $event_infos ); ?>
+					</div>
+
 					<?php $this->mep_event_pro_purchase_notice(); ?>
                 </div>
 				<?php
@@ -423,6 +429,52 @@
                                 <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Reserve Seat Qty of this event.', 'mage-eventpress' ); ?>">i</span>
                             </label>
                             <input type="number" class="mpwem-card-input" name="mep_gq_total_resv_seat" placeholder="0" value="<?php echo esc_attr( $reserve_qty ); ?>"/>
+                        </div>
+                    </div>
+                </div>
+				<?php
+			}
+			public function rsvp_setting( $event_id, $event_infos ) {
+				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$name_label  = is_array($event_infos) && array_key_exists( 'mep_rsvp_name_label', $event_infos ) ? $event_infos['mep_rsvp_name_label'] : '';
+				$email_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_email_label', $event_infos ) ? $event_infos['mep_rsvp_email_label'] : '';
+				$phone_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_phone_label', $event_infos ) ? $event_infos['mep_rsvp_phone_label'] : '';
+				$qty_label   = is_array($event_infos) && array_key_exists( 'mep_rsvp_qty_label', $event_infos ) ? $event_infos['mep_rsvp_qty_label'] : '';
+				?>
+                <div class="_mt"></div>
+                <div class="_layout_default_xs_mp_zero mpwem-rsvp-settings-section">
+                    <div class="_bg_light_padding">
+                        <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'RSVP Settings', 'mage-eventpress' ); ?></h4>
+                        <span class="_mp_zero"><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></span>
+                    </div>
+                    <div class="mpwem_settings_area">
+                        <div class="_padding_bt">
+                            <label class="_justify_between_align_center_wrap">
+                                <span class="_mr"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></span>
+                                <input class="formControl" type="text" name="mep_rsvp_name_label" value="<?php echo esc_attr( $name_label ); ?>" placeholder="<?php esc_attr_e( 'Full Name', 'mage-eventpress' ); ?>"/>
+                            </label>
+                            <span class="label-text"><?php esc_html_e( 'Custom label for the Full Name field on the registration form.', 'mage-eventpress' ); ?></span>
+                        </div>
+                        <div class="_padding_bt">
+                            <label class="_justify_between_align_center_wrap">
+                                <span class="_mr"><?php esc_html_e( 'Email Address Label', 'mage-eventpress' ); ?></span>
+                                <input class="formControl" type="text" name="mep_rsvp_email_label" value="<?php echo esc_attr( $email_label ); ?>" placeholder="<?php esc_attr_e( 'Email Address', 'mage-eventpress' ); ?>"/>
+                            </label>
+                            <span class="label-text"><?php esc_html_e( 'Custom label for the Email Address field on the registration form.', 'mage-eventpress' ); ?></span>
+                        </div>
+                        <div class="_padding_bt">
+                            <label class="_justify_between_align_center_wrap">
+                                <span class="_mr"><?php esc_html_e( 'Phone Number Label', 'mage-eventpress' ); ?></span>
+                                <input class="formControl" type="text" name="mep_rsvp_phone_label" value="<?php echo esc_attr( $phone_label ); ?>" placeholder="<?php esc_attr_e( 'Phone Number', 'mage-eventpress' ); ?>"/>
+                            </label>
+                            <span class="label-text"><?php esc_html_e( 'Custom label for the Phone Number field on the registration form.', 'mage-eventpress' ); ?></span>
+                        </div>
+                        <div class="_padding_bt">
+                            <label class="_justify_between_align_center_wrap">
+                                <span class="_mr"><?php esc_html_e( 'Number of Seats Label', 'mage-eventpress' ); ?></span>
+                                <input class="formControl" type="text" name="mep_rsvp_qty_label" value="<?php echo esc_attr( $qty_label ); ?>" placeholder="<?php esc_attr_e( 'Number of Seats', 'mage-eventpress' ); ?>"/>
+                            </label>
+                            <span class="label-text"><?php esc_html_e( 'Custom label for the Number of Seats field on the registration form.', 'mage-eventpress' ); ?></span>
                         </div>
                     </div>
                 </div>

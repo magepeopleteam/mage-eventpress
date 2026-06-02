@@ -136,6 +136,16 @@
 					update_post_meta( $post_id, 'mep_show_advanced_column', $mep_show_advanced_column );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
+					
+					// RSVP Custom Labels
+					$mep_rsvp_name_label  = isset( $_POST['mep_rsvp_name_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_name_label'] ) ) : '';
+					$mep_rsvp_email_label = isset( $_POST['mep_rsvp_email_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_email_label'] ) ) : '';
+					$mep_rsvp_phone_label = isset( $_POST['mep_rsvp_phone_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_phone_label'] ) ) : '';
+					$mep_rsvp_qty_label   = isset( $_POST['mep_rsvp_qty_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_qty_label'] ) ) : '';
+					update_post_meta( $post_id, 'mep_rsvp_name_label', $mep_rsvp_name_label );
+					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
+					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
+					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
 					/********************************/
 					$new_ticket_type      = array();
 					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];

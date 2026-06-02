@@ -24,10 +24,8 @@
 				$status = MPWEM_Global_Function::check_woocommerce();
 				if ( $status == 1 ) {
 					add_submenu_page( 'edit.php?post_type=mep_events', __( 'Quick Setup', 'mage-eventpress' ), '<span style="color:#10dd10">' . esc_html__( 'Quick Setup', 'mage-eventpress' ) . '</span>', 'manage_options', 'mpwem_quick_setup', array( $this, 'quick_setup' ) );
-					add_submenu_page( 'mep_events', esc_html__( 'Quick Setup', 'mage-eventpress' ), '<span style="color:#10dd10">' . esc_html__( 'Quick Setup', 'mage-eventpress' ) . '</span>', 'manage_options', 'mpwem_quick_setup', array( $this, 'quick_setup' ) );
 				} else {
-					add_menu_page( esc_html__( 'Events', 'mage-eventpress' ), esc_html__( 'Events', 'mage-eventpress' ), 'manage_options', 'mep_events', array( $this, 'quick_setup' ), 'dashicons-calendar-alt', 6 );
-					add_submenu_page( 'mep_events', esc_html__( 'Quick Setup', 'mage-eventpress' ), '<span style="color:#10dd17">' . esc_html__( 'Quick Setup', 'mage-eventpress' ) . '</span>', 'manage_options', 'mpwem_quick_setup', array( $this, 'quick_setup' ) );
+					add_submenu_page( 'edit.php?post_type=mep_events', esc_html__( 'Quick Setup', 'mage-eventpress' ), '<span style="color:#10dd17">' . esc_html__( 'Quick Setup', 'mage-eventpress' ) . '</span>', 'manage_options', 'mpwem_quick_setup', array( $this, 'quick_setup' ) );
 				}
 			}
 			public function quick_setup() {

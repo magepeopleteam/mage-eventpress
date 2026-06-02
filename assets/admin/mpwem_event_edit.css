@@ -2117,7 +2117,8 @@ select.mpwem-global-qty-field__input {
 #mpwem_wizard_tickets_mount > .mpwem_style {
 	padding: 0 !important;
 }
-#mpwem_wizard_tickets_mount > .mpwem_style > ._layout_default_xs_mp_zero:first-child {
+#mpwem_wizard_tickets_mount > .mpwem_style > ._layout_default_xs_mp_zero:first-child,
+#mpwem_wizard_tickets_mount .mpwem-rsvp-settings-section {
 	border: 1px solid var(--mpwem-border);
 	border-radius: var(--mpwem-radius);
 	background: #fff;
@@ -9544,3 +9545,5 @@ code {
 		padding: 20px 12px;
 	}
 }
+
+

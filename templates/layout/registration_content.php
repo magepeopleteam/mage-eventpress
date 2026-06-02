@@ -36,9 +36,21 @@
 		$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
 		$upcoming_date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 		
-		$date = $url_date ?: $upcoming_date;
+		$date = $url_date ?: ($date ?: $upcoming_date);
+		
+		$event_infos = MPWEM_Functions::get_all_info( $event_id );
+		$label_name  = !empty($event_infos['mep_rsvp_name_label']) ? $event_infos['mep_rsvp_name_label'] : __( 'Full Name', 'mage-eventpress' );
+		$label_email = !empty($event_infos['mep_rsvp_email_label']) ? $event_infos['mep_rsvp_email_label'] : __( 'Email Address', 'mage-eventpress' );
+		$label_phone = !empty($event_infos['mep_rsvp_phone_label']) ? $event_infos['mep_rsvp_phone_label'] : __( 'Phone Number', 'mage-eventpress' );
+		$label_qty   = !empty($event_infos['mep_rsvp_qty_label']) ? $event_infos['mep_rsvp_qty_label'] : __( 'Number of Seats', 'mage-eventpress' );
+
+		if ( ! wp_doing_ajax() ) {
+			?>
+			<div class="mpwem_booking_panel mep-rsvp-container" style="padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-top: 30px; border: 1px solid #eaeaea;">
+			<?php
+		}
 		?>
-		<div class="mpwem_booking_panel mep-rsvp-container" style="padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-top: 30px; border: 1px solid #eaeaea;">
+			<input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $event_id ); ?>" />
 			<h3 style="margin-top: 0; margin-bottom: 20px; font-weight: 700; color: #1a1a1a; font-size: 20px;"><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
 			<form id="mep-rsvp-form" method="post">
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
@@ -48,20 +60,20 @@
 
 				<div class="mep-rsvp-fields" style="display: grid; grid-gap: 16px; margin-bottom: 20px;">
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Full Name', 'mage-eventpress' ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="text" name="rsvp_name" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your name', 'mage-eventpress' ); ?>" />
+						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_name ); ?> <span style="color: #ef4444;">*</span></label>
+						<input type="text" name="rsvp_name" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_name ); ?>" />
 					</div>
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Email Address', 'mage-eventpress' ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="email" name="rsvp_email" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your email', 'mage-eventpress' ); ?>" />
+						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_email ); ?> <span style="color: #ef4444;">*</span></label>
+						<input type="email" name="rsvp_email" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_email ); ?>" />
 					</div>
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Phone Number', 'mage-eventpress' ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="text" name="rsvp_phone" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php esc_attr_e( 'Your phone', 'mage-eventpress' ); ?>" />
+						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_phone ); ?> <span style="color: #ef4444;">*</span></label>
+						<input type="text" name="rsvp_phone" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_phone ); ?>" />
 					</div>
 
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php esc_html_e( 'Number of Seats', 'mage-eventpress' ); ?></label>
+						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_qty ); ?></label>
 						<input type="number" name="rsvp_qty" min="1" max="10" value="1" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;" />
 					</div>
 				</div>
@@ -123,8 +135,12 @@
 					});
 				});
 			</script>
-		</div>
 		<?php
+		if ( ! wp_doing_ajax() ) {
+			?>
+			</div>
+			<?php
+		}
 		return;
 	}
 

@@ -130,7 +130,7 @@
                                                                         $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
                                                                         $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
                                                                         $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
-                                                                        $mep_check_date = isset($a_date) && !empty($a_date) ? $a_date : $date;
+                                                                        $mep_check_date = isset($user_date) && !empty($user_date) ? $user_date : (isset($a_date) && !empty($a_date) ? $a_date : $date);
                                                                         if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $mep_check_date == $cart_event_date ) {
                                                                             if(sizeof($event_ticket_info)>0){
                                                                                 foreach ($event_ticket_info as $key => $value) {
@@ -163,7 +163,7 @@
                                                                     $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
                                                                     $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
                                                                     $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
-                                                                    $mep_check_date = isset($a_date) && !empty($a_date) ? $a_date : $date;
+                                                                    $mep_check_date = isset($user_date) && !empty($user_date) ? $user_date : (isset($a_date) && !empty($a_date) ? $a_date : $date);
                                                                     if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $mep_check_date == $cart_event_date ) {
                                                                         if(sizeof($event_ticket_info)>0){
                                                                             foreach ($event_ticket_info as $key => $value) {

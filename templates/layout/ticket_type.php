@@ -13,9 +13,9 @@
 	$total_available    = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 	$total_available    = max( $total_available, 0 );
 	$mep_available_seat = MPWEM_Global_Function::get_post_info( $event_id, 'mep_available_seat', 'on' );
-	$total_sold         = mep_ticket_type_sold( $event_id, '', $date );
-	$total_ticket       = MPWEM_Functions::get_total_ticket( $event_id, $date );
-	$total_reserve      = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
+	$total_sold         = mep_ticket_type_sold( $event_id, '', $user_date );
+	$total_ticket       = MPWEM_Functions::get_total_ticket( $event_id, $user_date );
+	$total_reserve      = MPWEM_Functions::get_reserve_ticket( $event_id, $user_date );
 	$total_available    = $total_ticket - ( $total_sold + $total_reserve );
 	$total_available    = max( $total_available, 0 );
 	if ( $total_available > 0 ) {
@@ -32,7 +32,8 @@
 							$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 							do_action( 'mep_ticket_type_loop_list_row_start', $event_id, $date, $ticket_type );
 							if ( $ticket_permission ) {
-								//echo '<pre>';print_r($ticket_type);echo '</pre>';
+								// echo '<pre>';print_r($ticket_type);echo '</pre>';
+								//  $user_date;
 								$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 								$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 								$ticket_price      = is_array($ticket_type) && array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
@@ -52,6 +53,11 @@
 								$available         = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
 								$available         = apply_filters( 'mpwem_group_ticket_qty', $available, $event_id, $ticket_name );
 								$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );
+
+
+
+
+								
 								$available         = max( 0, floor( $available ) );
 								if ( $ticket_name ) {
 									$input_data['name']      = 'option_qty[]';
@@ -124,7 +130,8 @@
                                                                         $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
                                                                         $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
                                                                         $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
-                                                                        if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $date == $cart_event_date ) {
+                                                                        $mep_check_date = isset($a_date) && !empty($a_date) ? $a_date : $date;
+                                                                        if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $mep_check_date == $cart_event_date ) {
                                                                             if(sizeof($event_ticket_info)>0){
                                                                                 foreach ($event_ticket_info as $key => $value) {
                                                                                     if($value['ticket_name']==$ticket_name){
@@ -156,7 +163,8 @@
                                                                     $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
                                                                     $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
                                                                     $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
-                                                                    if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $date == $cart_event_date ) {
+                                                                    $mep_check_date = isset($a_date) && !empty($a_date) ? $a_date : $date;
+                                                                    if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $mep_check_date == $cart_event_date ) {
                                                                         if(sizeof($event_ticket_info)>0){
                                                                             foreach ($event_ticket_info as $key => $value) {
                                                                                 if($value['ticket_name']==$ticket_name){

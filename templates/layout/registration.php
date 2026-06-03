@@ -38,13 +38,13 @@
                     $kera_class = MPWEM_Global_Function::get_post_info( $event_id, 'mep_show_category', 'off' );
                     $kera_class=$kera_class=='on'?'kera_class':'';
                     ?>
-                    <div class="mpwem_registration_area <?php echo esc_attr( $kera_class ); ?>">
-						<?php do_action( 'mpwem_date_select', $event_id, $event_infos); ?>
-                        <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
-							<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>
-                        </form>
-						<?php do_action( 'mpwem_hidden_content', $event_id ); ?>
-                    </div>
+                    <form action="" method='post' id="mpwem_registration" enctype="multipart/form-data">
+						<div class="mpwem_registration_area <?php echo esc_attr( $kera_class ); ?>">
+							<?php do_action( 'mpwem_date_select', $event_id, $event_infos); ?>
+								<?php do_action( 'mpwem_registration_content', $event_id, $all_dates, $all_times, $date ); ?>
+							<?php do_action( 'mpwem_hidden_content', $event_id ); ?>
+						</div>
+					</form>
 					<?php
 				}else{
 					echo '<div class="mpwem_registration_area_show_msg">';

@@ -1,4 +1,5 @@
 function mpwem_price_calculation(parent) {
+    // alert(123);
     try {
         const total_qty = mpwem_qty(parent);
         mpwem_attendee_management(parent, total_qty);
@@ -218,16 +219,17 @@ function mpwem_attendee_management(parent, total_qty) {
                 mpwem_loader_xs(target);
             },
             success: function (data) {
+                // alert(dates);
                 target.html(data).slideDown('fast').promise().done(function () {
-                    mpwem_load_seat_status(parent.closest('.mpwem_wrapper'));
-                    mep_change_date_status(parent.closest('.mpwem_wrapper'),date);
-                    mep_change_time_status(parent.closest('.mpwem_wrapper'),date);
+                    mpwem_load_seat_status(parent.closest('.mpwem_wrapper'),dates);
+                    mep_change_date_status(parent.closest('.mpwem_wrapper'),dates);
+                    mep_change_time_status(parent.closest('.mpwem_wrapper'),dates);
                     mpwem_price_calculation(parent);
                 });
             }
         });
     }
-    function mpwem_load_seat_status(parent) {
+    function mpwem_load_seat_status(parent,dates) {
         let target = parent.find('.mpwem_seat_status');
         if (target.length > 0) {
             let post_id = parent.find('[name="mpwem_post_id"]').val();

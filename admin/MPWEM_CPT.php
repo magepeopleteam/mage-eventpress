@@ -150,6 +150,25 @@
 					'rest_base'           => 'mep_temp_attendee'
 				);
 				register_post_type( 'mep_temp_attendee', $argsl );
+				
+				// Register RSVP Responses CPT
+				$rsvp_args = array(
+					'labels'              => array(
+						'name'          => __( 'RSVP Responses', 'mage-eventpress' ),
+						'singular_name' => __( 'RSVP Response', 'mage-eventpress' ),
+					),
+					'public'              => false,
+					'has_archive'         => false,
+					'exclude_from_search' => true,
+					'publicly_queryable'  => false,
+					'show_ui'             => false,
+					'show_in_menu'        => false,
+					'supports'            => array( 'title' ),
+					'capability_type'     => 'post',
+					'map_meta_cap'        => true,
+					'show_in_rest'        => false,
+				);
+				register_post_type( 'mep_rsvp_responses', $rsvp_args );
 			}
 			public function posts_column( $columns ) {
 				unset( $columns['date'] );

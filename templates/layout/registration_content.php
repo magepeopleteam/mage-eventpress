@@ -52,7 +52,7 @@
 		?>
 			<input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $event_id ); ?>" />
 			<h3><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
-			<form id="mep-rsvp-form" method="post">
+			<div id="mep-rsvp-form">
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
 				<input type="hidden" name="event_id" value="<?php echo esc_attr( $event_id ); ?>" />
 				<input type="hidden" name="rsvp_date" value="<?php echo esc_attr( $date ); ?>" />
@@ -83,58 +83,8 @@
 				<button type="submit" class="mep-rsvp-submit-btn">
 					<span><?php esc_html_e( 'Submit RSVP', 'mage-eventpress' ); ?></span>
 				</button>
-			</form>
+			</div>
 
-			<script type="text/javascript">
-				jQuery(document).ready(function($) {
-					$('#mep-rsvp-form').on('submit', function(e) {
-						e.preventDefault();
-						const $form = $(this);
-						const $btn = $form.find('.mep-rsvp-submit-btn');
-						const $msg = $form.find('.mep-rsvp-message');
-
-						$btn.prop('disabled', true).css('opacity', '0.6').find('span').text('<?php esc_html_e( "Submitting...", "mage-eventpress" ); ?>');
-						$msg.hide().removeClass('success error').css('background', 'none');
-
-						$.ajax({
-							url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
-							type: 'POST',
-							data: $form.serialize(),
-							success: function(response) {
-								if (response.success) {
-									$msg.text(response.data.message).addClass('success').css({
-										'display': 'block',
-										'background': '#ecfdf5',
-										'color': '#065f46',
-										'border': '1px solid #a7f3d0'
-									});
-									$form.find('input[type="text"], input[type="email"]').val('');
-									$form.find('input[type="number"]').val(1);
-								} else {
-									const errorMsg = response.data && response.data.message ? response.data.message : '<?php esc_html_e( "An error occurred. Please try again.", "mage-eventpress" ); ?>';
-									$msg.text(errorMsg).addClass('error').css({
-										'display': 'block',
-										'background': '#fef2f2',
-										'color': '#991b1b',
-										'border': '1px solid #fca5a5'
-									});
-								}
-							},
-							error: function() {
-								$msg.text('<?php esc_html_e( "Connection error. Please try again.", "mage-eventpress" ); ?>').addClass('error').css({
-									'display': 'block',
-									'background': '#fef2f2',
-									'color': '#991b1b',
-									'border': '1px solid #fca5a5'
-								});
-							},
-							complete: function() {
-								$btn.prop('disabled', false).css('opacity', '1').find('span').text('<?php esc_html_e( "Submit RSVP", "mage-eventpress" ); ?>');
-							}
-						});
-					});
-				});
-			</script>
 		<?php
 		if ( ! wp_doing_ajax() ) {
 			?>

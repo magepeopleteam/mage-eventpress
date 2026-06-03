@@ -767,7 +767,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 
 				// Prevent duplicate RSVP for the same event date with the same email
 				$existing_args = array(
-					'post_type'      => 'mep_events_attendees',
+					'post_type'      => 'mep_rsvp_responses',
 					'posts_per_page' => 1,
 					'meta_query'     => array(
 						'relation' => 'AND',
@@ -835,7 +835,7 @@ $dates   = isset( $_REQUEST['dates'] ) ? sanitize_text_field( $_REQUEST['dates']
 					if ( $capacity > 0 ) {
 						// Sum up the sold seats
 						$sold_args = array(
-							'post_type'      => 'mep_events_attendees',
+							'post_type'      => 'mep_rsvp_responses',
 							'posts_per_page' => -1,
 							'meta_query'     => array(
 								'relation' => 'AND',

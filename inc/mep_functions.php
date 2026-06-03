@@ -1002,7 +1002,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				'post_title'    => $uname,
 				'post_content'  => '',
 				'post_status'   => 'publish',
-				'post_type'     => 'mep_events_attendees'
+				'post_type'     => 'mep_rsvp_responses'
 			);
 
 			$pid = wp_insert_post( $new_post );

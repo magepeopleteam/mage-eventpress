@@ -233,7 +233,7 @@ function mpwem_attendee_management(parent, total_qty) {
         let target = parent.find('.mpwem_seat_status');
         if (target.length > 0) {
             let post_id = parent.find('[name="mpwem_post_id"]').val();
-            // let dates = parent.find('[name="mpwem_date_time"]').val();
+            let dates = parent.find('[name="mpwem_date_time"]').val();
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_script_var.url,

@@ -447,35 +447,28 @@
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'RSVP Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></span>
                     </div>
-                    <div class="mpwem_settings_area">
-                        <div class="_padding_bt">
-                            <label class="_justify_between_align_center_wrap">
-                                <span class="_mr"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></span>
-                                <input class="formControl" type="text" name="mep_rsvp_name_label" value="<?php echo esc_attr( $name_label ); ?>" placeholder="<?php esc_attr_e( 'Full Name', 'mage-eventpress' ); ?>"/>
-                            </label>
-                            <span class="label-text"><?php esc_html_e( 'Custom label for the Full Name field on the registration form.', 'mage-eventpress' ); ?></span>
+                    <div class="_padding_bt mpwem_settings_area">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="mpwem-ticket-card__group">
+                                <label class="mpwem-card-label"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></label>
+                                <input type="text" class="mpwem-card-input" name="mep_rsvp_name_label" placeholder="<?php esc_attr_e( 'Full Name', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $name_label ); ?>"/>
+                            </div>
+                            <div class="mpwem-ticket-card__group">
+                                <label class="mpwem-card-label"><?php esc_html_e( 'Email Address Label', 'mage-eventpress' ); ?></label>
+                                <input type="text" class="mpwem-card-input" name="mep_rsvp_email_label" placeholder="<?php esc_attr_e( 'Email Address', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $email_label ); ?>"/>
+                            </div>
+                            <div class="mpwem-ticket-card__group">
+                                <label class="mpwem-card-label"><?php esc_html_e( 'Phone Number Label', 'mage-eventpress' ); ?></label>
+                                <input type="text" class="mpwem-card-input" name="mep_rsvp_phone_label" placeholder="<?php esc_attr_e( 'Phone Number', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $phone_label ); ?>"/>
+                            </div>
+                            <div class="mpwem-ticket-card__group">
+                                <label class="mpwem-card-label"><?php esc_html_e( 'Number of Seats Label', 'mage-eventpress' ); ?></label>
+                                <input type="text" class="mpwem-card-input" name="mep_rsvp_qty_label" placeholder="<?php esc_attr_e( 'Number of Seats', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $qty_label ); ?>"/>
+                            </div>
                         </div>
-                        <div class="_padding_bt">
-                            <label class="_justify_between_align_center_wrap">
-                                <span class="_mr"><?php esc_html_e( 'Email Address Label', 'mage-eventpress' ); ?></span>
-                                <input class="formControl" type="text" name="mep_rsvp_email_label" value="<?php echo esc_attr( $email_label ); ?>" placeholder="<?php esc_attr_e( 'Email Address', 'mage-eventpress' ); ?>"/>
-                            </label>
-                            <span class="label-text"><?php esc_html_e( 'Custom label for the Email Address field on the registration form.', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <div class="_padding_bt">
-                            <label class="_justify_between_align_center_wrap">
-                                <span class="_mr"><?php esc_html_e( 'Phone Number Label', 'mage-eventpress' ); ?></span>
-                                <input class="formControl" type="text" name="mep_rsvp_phone_label" value="<?php echo esc_attr( $phone_label ); ?>" placeholder="<?php esc_attr_e( 'Phone Number', 'mage-eventpress' ); ?>"/>
-                            </label>
-                            <span class="label-text"><?php esc_html_e( 'Custom label for the Phone Number field on the registration form.', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <div class="_padding_bt">
-                            <label class="_justify_between_align_center_wrap">
-                                <span class="_mr"><?php esc_html_e( 'Number of Seats Label', 'mage-eventpress' ); ?></span>
-                                <input class="formControl" type="text" name="mep_rsvp_qty_label" value="<?php echo esc_attr( $qty_label ); ?>" placeholder="<?php esc_attr_e( 'Number of Seats', 'mage-eventpress' ); ?>"/>
-                            </label>
-                            <span class="label-text"><?php esc_html_e( 'Custom label for the Number of Seats field on the registration form.', 'mage-eventpress' ); ?></span>
-                        </div>
+                        <p style="margin-top: 15px; font-size: 13px; color: #646970; margin-bottom: 0;">
+                            <em><?php esc_html_e( 'Note: Leave blank to use the default labels.', 'mage-eventpress' ); ?></em>
+                        </p>
                     </div>
                 </div>
 				<?php

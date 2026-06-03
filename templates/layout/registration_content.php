@@ -46,41 +46,41 @@
 
 		if ( ! wp_doing_ajax() ) {
 			?>
-			<div class="mpwem_booking_panel mep-rsvp-container" style="padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-top: 30px; border: 1px solid #eaeaea;">
+			<div class="mpwem_booking_panel mep-rsvp-container">
 			<?php
 		}
 		?>
 			<input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $event_id ); ?>" />
-			<h3 style="margin-top: 0; margin-bottom: 20px; font-weight: 700; color: #1a1a1a; font-size: 20px;"><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
+			<h3><?php esc_html_e( 'Free RSVP Registration', 'mage-eventpress' ); ?></h3>
 			<form id="mep-rsvp-form" method="post">
 				<input type="hidden" name="action" value="mep_submit_rsvp" />
 				<input type="hidden" name="event_id" value="<?php echo esc_attr( $event_id ); ?>" />
 				<input type="hidden" name="rsvp_date" value="<?php echo esc_attr( $date ); ?>" />
 				<?php wp_nonce_field( 'mep_rsvp_nonce', 'nonce' ); ?>
 
-				<div class="mep-rsvp-fields" style="display: grid; grid-gap: 16px; margin-bottom: 20px;">
+				<div class="mep-rsvp-fields">
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_name ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="text" name="rsvp_name" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_name ); ?>" />
+						<label><?php echo esc_html( $label_name ); ?> <span>*</span></label>
+						<input type="text" name="rsvp_name" required placeholder="<?php echo esc_attr( $label_name ); ?>" />
 					</div>
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_email ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="email" name="rsvp_email" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_email ); ?>" />
+						<label><?php echo esc_html( $label_email ); ?> <span>*</span></label>
+						<input type="email" name="rsvp_email" required placeholder="<?php echo esc_attr( $label_email ); ?>" />
 					</div>
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_phone ); ?> <span style="color: #ef4444;">*</span></label>
-						<input type="text" name="rsvp_phone" required style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s;" placeholder="<?php echo esc_attr( $label_phone ); ?>" />
+						<label><?php echo esc_html( $label_phone ); ?> <span>*</span></label>
+						<input type="text" name="rsvp_phone" required placeholder="<?php echo esc_attr( $label_phone ); ?>" />
 					</div>
 
 					<div class="mep-rsvp-field">
-						<label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4b5563;"><?php echo esc_html( $label_qty ); ?></label>
-						<input type="number" name="rsvp_qty" min="1" max="10" value="1" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; box-sizing: border-box; outline: none;" />
+						<label><?php echo esc_html( $label_qty ); ?></label>
+						<input type="number" name="rsvp_qty" min="1" max="10" value="1" />
 					</div>
 				</div>
 
-				<div class="mep-rsvp-message" style="display: none; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; font-weight: 500;"></div>
+				<div class="mep-rsvp-message"></div>
 
-				<button type="submit" class="mep-rsvp-submit-btn" style="background: #007cba; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; width: 100%;">
+				<button type="submit" class="mep-rsvp-submit-btn">
 					<span><?php esc_html_e( 'Submit RSVP', 'mage-eventpress' ); ?></span>
 				</button>
 			</form>

@@ -63,6 +63,37 @@
 		}
 
 		if ( ! $is_activating ) {
+			if ( ! class_exists( 'MPWEM_WC_Cart_Fallback' ) ) {
+				class MPWEM_WC_Cart_Fallback {
+					public function get_cart() { return array(); }
+					public function empty_cart() {}
+				}
+			}
+			if ( ! class_exists( 'MPWEM_WC_Customer_Fallback' ) ) {
+				class MPWEM_WC_Customer_Fallback {
+					public function get_is_vat_exempt() { return false; }
+				}
+			}
+			if ( ! class_exists( 'MPWEM_WC_Fallback' ) ) {
+				class MPWEM_WC_Fallback {
+					public $cart;
+					public $customer;
+					public $version = '0.0.0';
+					public function __construct() {
+						$this->cart = new MPWEM_WC_Cart_Fallback();
+						$this->customer = new MPWEM_WC_Customer_Fallback();
+					}
+				}
+			}
+			if ( ! function_exists( 'WC' ) ) {
+				function WC() {
+					static $instance = null;
+					if ( null === $instance ) {
+						$instance = new MPWEM_WC_Fallback();
+					}
+					return $instance;
+				}
+			}
 			if ( ! function_exists( 'wc_get_orders' ) ) {
 				function wc_get_orders( $args = array() ) { return array(); }
 			}

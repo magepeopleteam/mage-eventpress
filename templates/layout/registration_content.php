@@ -30,10 +30,37 @@
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
 	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
     $date                    = $url_date ?: $upcoming_date;
+
+	// Block booking for a past/expired selected occurrence (e.g. opened from a calendar
+	// link pointing at a date that has already passed). Mirrors the calendar's expiry rule
+	// so the detail page and the calendar agree on what is expired.
+	$selected_date_expired = false;
+	if ( ! empty( $user_date ) ) {
+		$expire_on = function_exists( 'mep_get_option' )
+			? mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' )
+			: 'event_start_datetime';
+		$reference_dt = $user_date;
+		if ( $expire_on === 'event_end_datetime' ) {
+			$end_ref = $event_type === 'no' ? get_post_meta( $event_id, 'event_end_datetime', true ) : '';
+			if ( empty( $end_ref ) ) {
+				$end_time = get_post_meta( $event_id, 'event_end_time', true );
+				$end_ref  = $end_time ? date( 'Y-m-d', strtotime( $user_date ) ) . ' ' . $end_time : $user_date;
+			}
+			$reference_dt = $end_ref ?: $user_date;
+		}
+		$reference_ts = strtotime( $reference_dt );
+		$now_ts       = strtotime( current_time( 'Y-m-d H:i:s' ) );
+		if ( $reference_ts && $now_ts && $reference_ts < $now_ts ) {
+			$selected_date_expired = true;
+		}
+	}
+
 	ob_start();
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
-		if ( $reg_status == 'on' ) {
+		if ( $reg_status == 'on' && $selected_date_expired ) {
+			MPWEM_Layout::msg( esc_html__( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ), 'mpwem_date_expired_msg' );
+		} elseif ( $reg_status == 'on' ) {
 			$full_location = MPWEM_Functions::get_location( $event_id );
 			 //$total_available = MPWEM_Functions::get_total_available_seat( $event_id, $date );
 			// $total_available = max( $total_available, 0 );

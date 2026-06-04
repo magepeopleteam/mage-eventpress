@@ -745,12 +745,38 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				$expire_key = function_exists( 'mep_get_option' ) ? mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' ) : 'event_start_datetime';
 				$expire_key = $expire_key == 'event_end_datetime' ? 'event_end_datetime' : 'event_upcoming_datetime';
 				$compare    = $query_status === 'expired' ? '<' : '>';
-				$meta_query[] = array(
+				$datetime_filter = array(
 					'key'     => $expire_key,
 					'value'   => $now,
 					'compare' => $compare,
 					'type'    => 'DATETIME',
 				);
+
+				if ( $query_status === 'upcoming' ) {
+					// Recurring events (multi-date "yes" / repeated "everyday") can have future
+					// occurrences — including special dates — that the single stored
+					// event_upcoming_datetime does not capture and which can also be stale.
+					// Filtering recurring events by that one datetime here wrongly hides those
+					// future dates (e.g. a special date set beyond the main range) from the
+					// calendar. So only single events are pre-filtered by their one datetime;
+					// recurring events are always loaded and the per-instance loop below drops
+					// any past/expired occurrence (respecting hide_expired / show_expired_events).
+					$meta_query[] = array(
+						'relation' => 'OR',
+						array(
+							'relation' => 'AND',
+							array(
+								'relation' => 'OR',
+								array( 'key' => 'mep_enable_recurring', 'value' => 'no', 'compare' => '=' ),
+								array( 'key' => 'mep_enable_recurring', 'compare' => 'NOT EXISTS' ),
+							),
+							$datetime_filter,
+						),
+						array( 'key' => 'mep_enable_recurring', 'value' => array( 'yes', 'everyday' ), 'compare' => 'IN' ),
+					);
+				} else {
+					$meta_query[] = $datetime_filter;
+				}
 			}
 
 			if ( count( $meta_query ) > 1 ) {

@@ -1084,6 +1084,10 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 			$fc_start = date( 'Y-m-d\TH:i:s', strtotime( $start_dt ) );
 			$fc_end   = date( 'Y-m-d\TH:i:s', strtotime( $end_dt ) );
 
+			// Fixed by Shahnur — carry the clicked instance date to the event page so the
+			// correct date is pre-selected and its expired/booking state is reflected.
+			$event_url = $this->append_date_to_url( $url, $start_dt );
+
 			$all_day = false;
 			if ( class_exists( 'MPWEM_Global_Function' ) ) {
 				$all_day = ! MPWEM_Global_Function::check_time_exit_date( $start_dt );
@@ -1102,7 +1106,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				'title'           => $normalized_title,
 				'start'           => $fc_start,
 				'end'             => $fc_end,
-				'url'             => $url,
+				'url'             => $event_url,
 				'backgroundColor' => $bg_color,
 				'borderColor'     => $bg_color,
 				'textColor'       => $text_color,
@@ -1213,6 +1217,28 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 
 			// Already looks like a plain date or something else — return as-is.
 			return $value;
+		}
+
+		/**
+		 * Append the specific instance date to an event permalink as a `date` query arg.
+		 * The single-event page and the ticket date selector both read $_GET['date'] as a
+		 * Unix timestamp to pick the active date instance, so we pass the instance start time.
+		 *
+		 * @param string $url      Event permalink.
+		 * @param string $start_dt Instance start datetime (Y-m-d H:i:s or Y-m-d).
+		 * @return string URL with the date query arg appended.
+		 */
+		private function append_date_to_url( $url, $start_dt ) {
+			if ( empty( $url ) ) {
+				return $url;
+			}
+
+			$timestamp = strtotime( $start_dt );
+			if ( ! $timestamp ) {
+				return $url;
+			}
+
+			return add_query_arg( 'date', $timestamp, $url );
 		}
 
 		private function parse_event_ids( $value ) {

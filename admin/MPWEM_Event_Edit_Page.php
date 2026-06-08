@@ -1540,16 +1540,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																			<small><?php esc_html_e('Free Registration', 'mage-eventpress'); ?></small>
 																		</div>
 																	</div>
-																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?> <?php echo !$has_woo ? 'is-disabled' : ''; ?>" data-value="on" <?php echo !$has_woo ? 'style="opacity: 0.5; cursor: not-allowed;"' : ''; ?>>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?>" data-value="on">
 																		<span class="dashicons dashicons-tickets-alt"></span>
 																		<div>
 																			<strong><?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?></strong>
 																			<small>
 																				<?php 
 																				if (!$has_woo) {
-																					esc_html_e('Requires WooCommerce', 'mage-eventpress');
+																					esc_html_e('Explore Only (No WooCommerce)', 'mage-eventpress');
 																				} else {
-																					esc_html_e('Paid/WooCommerce', 'mage-eventpress');
+																					esc_html_e('Paid Registration', 'mage-eventpress');
 																				}
 																				?>
 																			</small>

@@ -126,6 +126,11 @@
 					if ( ! in_array( $mep_reg_status, [ 'off', 'rsvp', 'on' ], true ) ) {
 						$mep_reg_status = 'off';
 					}
+					
+					// Prevent saving as ticket selling if WooCommerce is not activated
+					if ( $mep_reg_status === 'on' && ! MPWEM_Global_Function::has_woocommerce() ) {
+						$mep_reg_status = 'off';
+					}
 
 					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
 					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';

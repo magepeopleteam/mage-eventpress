@@ -15,6 +15,857 @@
 				$this->settings_api = new MAGE_Setting_API;
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+				add_action( 'admin_footer', array( $this, 'payment_tabs_script' ) );
+				add_action( 'wp_ajax_mep_install_activate_wc', array( $this, 'ajax_install_activate_wc' ) );
+				add_action( 'wp_ajax_mep_save_gateway_settings', array( $this, 'ajax_save_gateway_settings' ) );
+				// Inject WooCommerce warning + modal in footer so it's outside hidden group divs
+				add_action( 'admin_footer', array( $this, 'render_wc_warning_banner' ) );
+				// Inject PayPal + Stripe config modals in footer
+				add_action( 'admin_footer', array( $this, 'render_gateway_modals' ) );
+			}
+
+			function render_wc_warning_banner() {
+			// Only output on our settings page
+			$screen = get_current_screen();
+			if ( ! $screen || $screen->id !== 'mep_events_page_mep_event_settings_page' ) {
+				return;
+			}
+
+			// If WooCommerce is active, we don't need the warning banner
+			if ( class_exists( 'WooCommerce' ) ) {
+				return;
+			}
+
+			$btn_label = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' )
+				? esc_html__( 'Activate WooCommerce', 'mage-eventpress' )
+				: esc_html__( 'Install WooCommerce', 'mage-eventpress' );
+
+			$is_installed = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' );
+			$modal_desc   = $is_installed
+				? esc_html__( 'WooCommerce is already installed but not active. Click the button below to activate it right now.', 'mage-eventpress' )
+				: esc_html__( 'WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.', 'mage-eventpress' );
+			$modal_btn    = $is_installed
+				? esc_html__( 'Activate WooCommerce Now', 'mage-eventpress' )
+				: esc_html__( 'Install & Activate Now', 'mage-eventpress' );
+			?>
+			<!-- WooCommerce Warning Banner — injected by JS after .payment-sub-tabs-wrapper -->
+			<div id="mep-wc-warning-banner" style="display:none; background:linear-gradient(135deg, rgb(223 169 182) 0%, rgb(255 202 193) 100%); color:#fff; padding:15px; border-radius:6px; margin:10px 0 15px 0; font-weight:500; box-shadow:0 3px 10px rgba(255,65,108,0.3);">
+				<div style="display:flex; align-items:flex-start;">
+					<span class="dashicons dashicons-warning" style="color:#fff; font-size:24px; width:24px; height:24px; margin-right:15px; margin-top:2px; flex-shrink:0;"></span>
+					<div>
+						<strong style="display:block; font-size:16px; margin-bottom:4px; color:#4d4d4d; line-height:1.2;"><?php esc_html_e( 'Action Required: WooCommerce is Not Active', 'mage-eventpress' ); ?></strong>
+						<p style="margin:0 0 10px 0; font-size:13px; color:#4d4d4d; line-height:1.4;"><?php esc_html_e( 'WooCommerce must be installed and active to process payments and use these features properly.', 'mage-eventpress' ); ?></p>
+						<button type="button" class="mep-install-wc-trigger" style="background:#fff; color:#ff416c; border:none; padding:8px 16px; font-size:13px; font-weight:700; border-radius:4px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:inline-flex; align-items:center; gap:6px;">
+							<span class="dashicons dashicons-admin-plugins" style="font-size:16px; width:16px; height:16px;"></span>
+							<?php echo esc_html( $btn_label ); ?>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- WooCommerce Install/Activate Modal -->
+			<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+				<div style="background:#fff; border-radius:12px; width:480px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden;">
+					<div style="padding:22px 25px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
+						<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php esc_html_e( 'WooCommerce Setup', 'mage-eventpress' ); ?></h3>
+						<button type="button" class="mep-close-modal" style="background:none; border:none; font-size:26px; cursor:pointer; color:#666; line-height:1; padding:0;">&times;</button>
+					</div>
+					<div style="padding:32px 28px; text-align:center;">
+						<span class="dashicons dashicons-cart" style="font-size:72px; width:72px; height:72px; color:#96588a; margin-bottom:18px; display:block; margin-left:auto; margin-right:auto;"></span>
+						<p style="font-size:15px; color:#444; margin-bottom:28px; line-height:1.6;"><?php echo esc_html( $modal_desc ); ?></p>
+						<div id="mep-wc-install-progress" style="display:none; margin-bottom:22px; font-weight:500; font-size:15px; background:#f0f0f1; padding:14px; border-radius:8px;">
+							<span class="spinner is-active" style="float:none; margin:0 10px 0 0;"></span>
+							<span id="mep-wc-install-status" style="color:#2271b1;"><?php esc_html_e( 'Working...', 'mage-eventpress' ); ?></span>
+						</div>
+						<button type="button" id="mep-wc-start-install" style="background:linear-gradient(135deg,#96588a,#6b3d6b); color:#fff; border:none; padding:14px 0; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; box-shadow:0 4px 12px rgba(150,88,138,0.4); transition:all 0.2s;">
+							<?php echo esc_html( $modal_btn ); ?>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<script>
+			jQuery(document).ready(function($) {
+				// Inject the warning banner right after the tab nav wrapper (visibility controlled by tabs)
+				var $tabWrapper = $('.payment-sub-tabs-wrapper');
+				if ($tabWrapper.length > 0) {
+					$('#mep-wc-warning-banner').insertAfter($tabWrapper);
+				}
+			});
+			</script>
+			<?php
+		}
+
+		function render_gateway_modals() {
+			$screen = get_current_screen();
+			if ( ! $screen || $screen->id !== 'mep_events_page_mep_event_settings_page' ) {
+				return;
+			}
+			$opts        = get_option( 'payment_setting_sec', array() );
+			$pp_enabled  = ! empty( $opts['mep_paypal_enable'] ) && $opts['mep_paypal_enable'] === 'on';
+			$pp_sandbox  = ! empty( $opts['mep_paypal_sandbox'] ) && $opts['mep_paypal_sandbox'] === 'on';
+			$pp_client   = esc_attr( $opts['mep_paypal_client_id'] ?? '' );
+			$pp_secret   = esc_attr( $opts['mep_paypal_secret'] ?? '' );
+			$st_enabled  = ! empty( $opts['mep_stripe_enable'] ) && $opts['mep_stripe_enable'] === 'on';
+			$st_sandbox  = ! empty( $opts['mep_stripe_sandbox'] ) && $opts['mep_stripe_sandbox'] === 'on';
+			$st_test_pub = esc_attr( $opts['mep_stripe_test_pub'] ?? '' );
+			$st_test_sec = esc_attr( $opts['mep_stripe_test_sec'] ?? '' );
+			$st_live_pub = esc_attr( $opts['mep_stripe_live_pub'] ?? '' );
+			$st_live_sec = esc_attr( $opts['mep_stripe_live_sec'] ?? '' );
+			$nonce       = wp_create_nonce( 'mep_save_gateway' );
+			?>
+			<style>
+			.mep-gw-modal {
+				display: none; position: fixed; inset: 0; z-index: 999999;
+				background: rgba(10,10,30,0.65); align-items: center; justify-content: center;
+				backdrop-filter: blur(3px);
+			}
+			.mep-gw-modal-box {
+				background: #fff; border-radius: 16px; width: 540px; max-width: 94vw;
+				max-height: 92vh; overflow-y: auto; overflow-x: hidden;
+				box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+				animation: mepModalIn 0.22s ease;
+			}
+			.mep-gw-modal-box::-webkit-scrollbar { width: 6px; }
+			.mep-gw-modal-box::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
+			.mep-gw-modal-box::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+			.mep-gw-modal-box::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+			@keyframes mepModalIn { from { transform: scale(0.94) translateY(12px); opacity:0; } to { transform: scale(1) translateY(0); opacity:1; } }
+			.mep-gw-modal-header {
+				padding: 22px 26px; display: flex; align-items: center; justify-content: space-between;
+				border-radius: 16px 16px 0 0;
+			}
+			.mep-gw-modal-header h2 { margin: 0; font-size: 19px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 12px; }
+			.mep-gw-modal-close {
+				background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 34px; height: 34px;
+				font-size: 20px; line-height: 1; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center;
+				transition: background 0.2s;
+			}
+			.mep-gw-modal-close:hover { background: rgba(255,255,255,0.35); }
+			.mep-gw-modal-body { padding: 26px 26px 10px; }
+			.mep-gw-field { margin-bottom: 20px; }
+			.mep-gw-field label.mep-gw-label {
+				display: block; font-weight: 600; font-size: 13px; color: #374151; margin-bottom: 7px; letter-spacing: 0.01em;
+			}
+			.mep-gw-field input[type="text"], .mep-gw-field input[type="password"] {
+				width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px;
+				font-size: 14px; color: #111; background: #f9fafb; box-sizing: border-box;
+				transition: border-color 0.2s, box-shadow 0.2s;
+			}
+			.mep-gw-field input[type="text"]:focus, .mep-gw-field input[type="password"]:focus {
+				border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); outline: none; background: #fff;
+			}
+			.mep-gw-toggle-row {
+				display: flex; align-items: center; justify-content: space-between;
+				padding: 14px 16px; background: #f9fafb; border-radius: 10px; margin-bottom: 20px;
+				border: 1.5px solid #e5e7eb;
+			}
+			.mep-gw-toggle-label { font-weight: 600; font-size: 14px; color: #111827; }
+			.mep-gw-toggle-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+			.mep-gw-divider { border: none; border-top: 1px solid #e5e7eb; margin: 4px 0 20px; }
+			.mep-gw-section-title { font-size: 12px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+			.mep-gw-modal-footer {
+				padding: 16px 26px 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+			}
+			.mep-gw-save-btn {
+				padding: 11px 28px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700;
+				cursor: pointer; color: #fff; transition: all 0.2s; flex-shrink: 0;
+			}
+			.mep-gw-save-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
+			.mep-gw-save-msg {
+				display: none; padding: 9px 14px; border-radius: 7px; font-size: 13px; font-weight: 500; flex: 1;
+			}
+			/* Fancy toggle switch for modals */
+			.mep-gw-switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+			.mep-gw-switch input { opacity: 0; width: 0; height: 0; }
+			.mep-gw-slider {
+				position: absolute; cursor: pointer; inset: 0; background: #d1d5db;
+				border-radius: 26px; transition: 0.3s;
+			}
+			.mep-gw-slider:before {
+				content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px;
+				background: #fff; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+			}
+			.mep-gw-switch input:checked + .mep-gw-slider { background: #22c55e; }
+			.mep-gw-switch input:checked + .mep-gw-slider:before { transform: translateX(22px); }
+			</style>
+
+			<!-- PayPal Config Modal -->
+			<div id="mep-paypal-modal" class="mep-gw-modal" style="display:none;">
+				<div class="mep-gw-modal-box">
+					<div class="mep-gw-modal-header" style="background: linear-gradient(135deg, #003087 0%, #0079C1 100%);">
+						<h2>
+							<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#fff"/>
+								<path d="M11.5 7.1c.05.27.01.59-.09.91-.98 5.05-4.35 6.79-8.65 6.79H4.95l-1.12 7.11a.64.64 0 0 0 .63.74h4.6a.64.64 0 0 0 .63-.54l.87-5.55a.64.64 0 0 1 .63-.54h1.08c3.5 0 6.23-1.42 7.03-5.52.2-.99.23-1.89.09-2.65-.48-2.6-2.58-3.41-5.63-3.41h-2.22z" fill="rgba(255,255,255,0.7)"/>
+							</svg>
+							<?php esc_html_e( 'PayPal Configuration', 'mage-eventpress' ); ?>
+						</h2>
+						<button type="button" class="mep-gw-modal-close">&times;</button>
+					</div>
+					<div class="mep-gw-modal-body">
+						<!-- Enable PayPal -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Enable PayPal', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Accept payments via PayPal', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_paypal_enable" <?php checked( $pp_enabled ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<!-- Sandbox Mode -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Sandbox / Test Mode', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Use sandbox credentials for testing', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_paypal_sandbox" <?php checked( $pp_sandbox ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<hr class="mep-gw-divider">
+						<p class="mep-gw-section-title"><?php esc_html_e( 'API Credentials', 'mage-eventpress' ); ?></p>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'PayPal Client ID', 'mage-eventpress' ); ?></label>
+							<input type="text" data-field="mep_paypal_client_id" value="<?php echo $pp_client; ?>" placeholder="<?php esc_attr_e( 'Enter your PayPal Client ID', 'mage-eventpress' ); ?>">
+						</div>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'PayPal Secret Key', 'mage-eventpress' ); ?></label>
+							<input type="password" data-field="mep_paypal_secret" value="<?php echo $pp_secret; ?>" placeholder="<?php esc_attr_e( 'Enter your PayPal Secret Key', 'mage-eventpress' ); ?>">
+						</div>
+					</div>
+					<div class="mep-gw-modal-footer">
+						<button type="button" class="mep-gw-save-btn" data-gateway="paypal" style="background: linear-gradient(135deg,#003087,#0079C1);">
+							<?php esc_html_e( 'Save PayPal Settings', 'mage-eventpress' ); ?>
+						</button>
+						<span class="mep-gw-save-msg"></span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Stripe Config Modal -->
+			<div id="mep-stripe-modal" class="mep-gw-modal" style="display:none;">
+				<div class="mep-gw-modal-box">
+					<div class="mep-gw-modal-header" style="background: linear-gradient(135deg, #635bff 0%, #3f36c5 100%);">
+						<h2>
+							<svg width="26" height="26" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+								<path fill="#fff" d="M14.07 15.11c-1.85-.43-2.61-.79-2.61-1.63 0-.79.75-1.33 1.95-1.33 1.34 0 2.87.41 4.31 1.09V8.65c-1.39-.56-2.93-.84-4.52-.84-3.8 0-6.66 1.96-6.66 5.25 0 3.73 3.32 4.96 6.03 5.61 2.05.49 2.8.92 2.8 1.8 0 .86-.87 1.48-2.3 1.48-1.57 0-3.37-.53-5.06-1.54v4.75c1.67.75 3.59 1.13 5.51 1.13 4.13 0 7-2 7-5.34-.01-3.6-3.6-4.41-6.45-5.84z"/>
+							</svg>
+							<?php esc_html_e( 'Stripe Configuration', 'mage-eventpress' ); ?>
+						</h2>
+						<button type="button" class="mep-gw-modal-close">&times;</button>
+					</div>
+					<div class="mep-gw-modal-body">
+						<!-- Enable Stripe -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Enable Stripe', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Accept payments via Stripe', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_stripe_enable" <?php checked( $st_enabled ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<!-- Sandbox Mode -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Sandbox / Test Mode', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Use test keys instead of live keys', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_stripe_sandbox" <?php checked( $st_sandbox ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<hr class="mep-gw-divider">
+						<p class="mep-gw-section-title"><?php esc_html_e( 'Test / Sandbox Keys', 'mage-eventpress' ); ?></p>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Test Publishable Key', 'mage-eventpress' ); ?></label>
+							<input type="text" data-field="mep_stripe_test_pub" value="<?php echo $st_test_pub; ?>" placeholder="pk_test_...">
+						</div>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Test Secret Key', 'mage-eventpress' ); ?></label>
+							<input type="password" data-field="mep_stripe_test_sec" value="<?php echo $st_test_sec; ?>" placeholder="sk_test_...">
+						</div>
+						<hr class="mep-gw-divider">
+						<p class="mep-gw-section-title"><?php esc_html_e( 'Live Keys', 'mage-eventpress' ); ?></p>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Live Publishable Key', 'mage-eventpress' ); ?></label>
+							<input type="text" data-field="mep_stripe_live_pub" value="<?php echo $st_live_pub; ?>" placeholder="pk_live_...">
+						</div>
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Live Secret Key', 'mage-eventpress' ); ?></label>
+							<input type="password" data-field="mep_stripe_live_sec" value="<?php echo $st_live_sec; ?>" placeholder="sk_live_...">
+						</div>
+					</div>
+					<div class="mep-gw-modal-footer">
+						<button type="button" class="mep-gw-save-btn" data-gateway="stripe" style="background: linear-gradient(135deg,#635bff,#3f36c5);">
+							<?php esc_html_e( 'Save Stripe Settings', 'mage-eventpress' ); ?>
+						</button>
+						<span class="mep-gw-save-msg"></span>
+					</div>
+				</div>
+			</div>
+
+			<script>
+			var mepGateway = {
+				nonce:   '<?php echo $nonce; ?>',
+				enabled: '<?php echo esc_js( __( 'Enabled', 'mage-eventpress' ) ); ?>',
+				disabled:'<?php echo esc_js( __( 'Disabled', 'mage-eventpress' ) ); ?>'
+			};
+			</script>
+			<?php
+		}
+
+		function ajax_save_gateway_settings() {
+			check_ajax_referer( 'mep_save_gateway', 'nonce' );
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
+			}
+			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );
+			$fields   = $_POST['fields'] ?? array();
+			$existing = get_option( 'payment_setting_sec', array() );
+
+			$allowed = array(
+				'paypal' => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
+				'stripe' => array( 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_stripe_test_pub', 'mep_stripe_test_sec', 'mep_stripe_live_pub', 'mep_stripe_live_sec' ),
+			);
+
+			if ( ! array_key_exists( $gateway, $allowed ) ) {
+				wp_send_json_error( __( 'Invalid gateway.', 'mage-eventpress' ) );
+			}
+
+			foreach ( $allowed[ $gateway ] as $key ) {
+				$val = isset( $fields[ $key ] ) ? $fields[ $key ] : 'off';
+				// Toggles are on/off; other fields are text
+				if ( in_array( $key, array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_stripe_enable', 'mep_stripe_sandbox' ), true ) ) {
+					$existing[ $key ] = ( $val === 'on' ) ? 'on' : 'off';
+				} else {
+					$existing[ $key ] = sanitize_text_field( $val );
+				}
+			}
+
+			update_option( 'payment_setting_sec', $existing );
+			wp_send_json_success( __( 'Settings saved successfully!', 'mage-eventpress' ) );
+		}
+
+			function payment_tabs_script() {
+				?>
+				<style>
+					.payment-sub-tabs-wrapper {
+						margin-top: 15px;
+						margin-bottom: 25px;
+						background: #f8f9fa;
+						padding: 10px 15px;
+						border-radius: 8px;
+						border: 1px solid #e2e4e7;
+						box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+					}
+					.payment-sub-tabs.nav-tab-wrapper {
+						border-bottom: none !important;
+						padding: 0 !important;
+						margin: 0 !important;
+						display: flex;
+						gap: 10px;
+					}
+					.payment-sub-tabs .nav-tab {
+						background: #fff;
+						border: 1px solid #ccd0d4;
+						border-radius: 6px;
+						padding: 8px 16px;
+						font-size: 14px;
+						font-weight: 500;
+						color: #3c434a !important;
+						transition: all 0.2s ease;
+						text-decoration: none;
+						margin: 0;
+					}
+					.payment-sub-tabs .nav-tab:hover {
+						background: #f0f0f1;
+						color: #2271b1 !important;
+						border-color: #2271b1;
+					}
+					.payment-sub-tabs .nav-tab-active,
+					.payment-sub-tabs .nav-tab-active:hover {
+						background: #2271b1;
+						color: #fff !important;
+						border-color: #2271b1;
+						box-shadow: 0 2px 5px rgba(34,113,177,0.2);
+					}
+				</style>
+
+				<style> /* CSS for Toggle Switch */
+					input[type="checkbox"]#wpuf-payment_setting_sec\[mep_enable_wc_payment\] {
+						appearance: none;
+						-webkit-appearance: none;
+						outline: none;
+						cursor: pointer;
+						width: 44px;
+						height: 24px;
+						background: #ccc;
+						border-radius: 24px;
+						position: relative;
+						transition: background 0.3s;
+						vertical-align: middle;
+						margin-right: 10px;
+						border: none;
+					}
+					input[type="checkbox"]#wpuf-payment_setting_sec\[mep_enable_wc_payment\]::after {
+						content: '';
+						position: absolute;
+						top: 3px;
+						left: 3px;
+						width: 18px;
+						height: 18px;
+						background: #fff;
+						border-radius: 50%;
+						transition: left 0.3s;
+						box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+					}
+					input[type="checkbox"]#wpuf-payment_setting_sec\[mep_enable_wc_payment\]:checked {
+						background: #2271b1 !important;
+						background-image: none !important;
+					}
+					input[type="checkbox"]#wpuf-payment_setting_sec\[mep_enable_wc_payment\]:checked::before {
+						content: none !important;
+						display: none !important;
+					}
+					input[type="checkbox"]#wpuf-payment_setting_sec\[mep_enable_wc_payment\]:checked::after {
+						left: 23px;
+					}
+				</style>
+				<style>
+tr.payment_tabs_html { display: none !important; }
+.payment-gateways-container th { display: none; }
+.payment-gateways-container td { padding: 15px 20px !important; }
+.gateway-card {
+    background: #fff;
+    border: 1px solid #e2e4e7;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+.gateway-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.gateway-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e2e4e7;
+    background: #fcfcfc;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative;
+}
+.gateway-header h3 {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #1e1e1e;
+    font-weight: 600;
+}
+.gateway-header .gateway-status {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #f0f0f1;
+    color: #555;
+    font-weight: 500;
+}
+.gateway-header .gateway-status.active {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+.gateway-body {
+    padding: 25px;
+    display: none;
+}
+.gateway-field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.gateway-field:last-child {
+    margin-bottom: 0;
+}
+.gateway-field label.gateway-label {
+    display: block;
+    font-weight: 600;
+    color: #2c3338;
+    font-size: 14px;
+}
+.gateway-field input[type="text"], .gateway-field input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    font-size: 14px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.gateway-field input[type="text"]:focus, .gateway-field input[type="password"]:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+.gateway-field p.description {
+    margin: 0;
+    font-style: normal;
+    color: #646970;
+    font-size: 13px;
+}
+/* Switch */
+.gateway-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    vertical-align: middle;
+}
+.gateway-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.gateway-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 24px;
+}
+.gateway-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.gateway-switch input:checked + .gateway-slider {
+    background-color: #2271b1;
+}
+.gateway-switch input:checked + .gateway-slider:before {
+    transform: translateX(20px);
+}
+
+/* Colorful Brands UI - Full Card */
+.gateway-card.paypal-card {
+    background: linear-gradient(135deg, #003087 0%, #0079C1 100%);
+    border: none;
+    color: #fff;
+}
+.gateway-card.paypal-card .gateway-header { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.gateway-card.paypal-card .gateway-header h3 { color: #fff; }
+.gateway-card.paypal-card .gateway-header svg path { fill: #fff !important; }
+.gateway-card.paypal-card .gateway-status { background: rgba(255,255,255,0.2); color: #fff; }
+.gateway-card.paypal-card .gateway-status.active { background: #fff; color: #003087; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.gateway-card.paypal-card .gateway-configure-btn { color: #003087 !important; background: #fff !important; border: none !important; font-weight:600 !important; border-radius: 6px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important; }
+.gateway-card.paypal-card label.gateway-label { color: #fff; }
+.gateway-card.paypal-card p.description { color: rgba(255,255,255,0.85); }
+.gateway-card.paypal-card input[type="text"], .gateway-card.paypal-card input[type="password"] { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
+.gateway-card.paypal-card input[type="text"]:focus, .gateway-card.paypal-card input[type="password"]:focus { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+
+.gateway-card.stripe-card {
+    background: linear-gradient(135deg, #635bff 0%, #3f36c5 100%);
+    border: none;
+    color: #fff;
+	margin-bottom: 0;
+}
+.gateway-card.stripe-card .gateway-header { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.gateway-card.stripe-card .gateway-header h3 { color: #fff; }
+.gateway-card.stripe-card .gateway-header svg path { fill: #fff !important; }
+.gateway-card.stripe-card .gateway-status { background: rgba(255,255,255,0.2); color: #fff; }
+.gateway-card.stripe-card .gateway-status.active { background: #fff; color: #635bff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.gateway-card.stripe-card .gateway-configure-btn { color: #635bff !important; background: #fff !important; border: none !important; font-weight:600 !important; border-radius: 6px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important; }
+.gateway-card.stripe-card label.gateway-label { color: #fff; }
+.gateway-card.stripe-card p.description { color: rgba(255,255,255,0.85); }
+.gateway-card.stripe-card input[type="text"], .gateway-card.stripe-card input[type="password"] { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
+.gateway-card.stripe-card input[type="text"]:focus, .gateway-card.stripe-card input[type="password"]:focus { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+</style>
+
+				<script>
+					jQuery(document).ready(function($) {
+						if ($('.payment-sub-tabs').length > 0) {
+							// WooCommerce Setting Toggle Logic
+							function toggleWcSettings() {
+								var isChecked = $('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').is(':checked');
+								var $wcFields = $('tr.woocommerce-field').not('tr.woocommerce-main-toggle');
+								if (isChecked) {
+									$wcFields.fadeIn(200);
+								} else {
+									$wcFields.hide();
+								}
+							}
+							
+							$('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').on('change', toggleWcSettings);
+							function updateTabs() {
+								var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
+								$("tr.woocommerce-field, div.woocommerce-field, tr.no-woocommerce-field").hide();
+								
+								// Hide save button on Custom Payment tab
+								if (activeTabId === 'no-woocommerce-field') {
+									$('#payment_setting_sec .submit').hide();
+								} else {
+									$('#payment_setting_sec .submit').show();
+								}
+								
+								// Special handling: if we have a div.woocommerce-field (the warning), show it
+								if (activeTabId === 'woocommerce-field') {
+									$("div.woocommerce-field").show();
+									$('#mep-wc-warning-banner').show();
+									$("tr.woocommerce-field").show();
+									toggleWcSettings();
+								} else {
+									$('#mep-wc-warning-banner').hide();
+									$("tr." + activeTabId).show();
+								}
+							}
+							
+							// Gateway Configure Buttons — open respective modals
+							$(document).on('click', '#mep-paypal-configure-btn', function(e) {
+								e.preventDefault();
+								$('#mep-paypal-modal').css('display','flex').hide().fadeIn(220);
+							});
+							$(document).on('click', '#mep-stripe-configure-btn', function(e) {
+								e.preventDefault();
+								$('#mep-stripe-modal').css('display','flex').hide().fadeIn(220);
+							});
+							// Close modals
+							$(document).on('click', '.mep-gw-modal-close, .mep-gw-modal-backdrop', function() {
+								$('.mep-gw-modal').fadeOut(200);
+							});
+							$(document).on('click', '.mep-gw-modal', function(e) {
+								if ($(e.target).hasClass('mep-gw-modal')) $(this).fadeOut(200);
+							});
+							// Save gateway settings via AJAX
+							$(document).on('click', '.mep-gw-save-btn', function(e) {
+								e.preventDefault();
+								var $btn    = $(this);
+								var $modal  = $btn.closest('.mep-gw-modal-box');
+								var gateway = $btn.data('gateway');
+								var $msg    = $modal.find('.mep-gw-save-msg');
+								var fields  = {};
+								$modal.find('input[data-field]').each(function() {
+									var key = $(this).data('field');
+									if ($(this).attr('type') === 'checkbox') {
+										fields[key] = $(this).is(':checked') ? 'on' : 'off';
+									} else {
+										fields[key] = $(this).val();
+									}
+								});
+								$btn.prop('disabled', true).css('opacity','0.7');
+								$msg.hide();
+								$.ajax({
+									url: ajaxurl,
+									type: 'POST',
+									data: {
+										action:  'mep_save_gateway_settings',
+										nonce:   mepGateway.nonce,
+										gateway: gateway,
+										fields:  fields
+									},
+									success: function(res) {
+										if (res.success) {
+											$msg.css({'color':'#0f5132','background':'#d1e7dd','border':'1px solid #badbcc'}).text(res.data).fadeIn(200);
+											setTimeout(function() { $msg.fadeOut(400); }, 1000);
+											// Update status badge on the card
+											var isEnabled = fields['mep_' + gateway + '_enable'] === 'on';
+											var $badge = $('.' + gateway + '-card .gateway-status');
+											$badge.text(isEnabled ? mepGateway.enabled : mepGateway.disabled);
+											$badge.toggleClass('active', isEnabled);
+										} else {
+											$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text(res.data).fadeIn(200);
+											setTimeout(function() { $msg.fadeOut(400); }, 1000);
+										}
+									},
+									error: function() {
+										$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text('A network error occurred.').fadeIn(200);
+										setTimeout(function() { $msg.fadeOut(400); }, 1000);
+									},
+									complete: function() {
+										$btn.prop('disabled', false).css('opacity','1');
+									}
+								});
+							});
+							
+							$(".payment-sub-tabs .nav-tab").click(function(e) {
+								e.preventDefault();
+								$(".payment-sub-tabs .nav-tab").removeClass("nav-tab-active");
+								$(this).addClass("nav-tab-active");
+								updateTabs();
+							});
+							updateTabs();
+							
+
+
+							// Modal logic — outside tab guard so it always binds
+							$(document).on('click', '.mep-install-wc-trigger', function(e) {
+								e.preventDefault();
+								$('#mep-wc-install-modal').css('display', 'flex').hide().fadeIn(200);
+							});
+
+							$(document).on('click', '.mep-close-modal', function() {
+								$('#mep-wc-install-modal').fadeOut(200);
+							});
+
+							$('#mep-wc-start-install').click(function() {
+								var $btn = $(this);
+								var $progress = $('#mep-wc-install-progress');
+								var $status = $('#mep-wc-install-status');
+								
+								$btn.prop('disabled', true);
+								$btn.css('opacity', '0.6');
+								$progress.fadeIn(200);
+								$status.text( <?php echo json_encode( __( "Please wait, configuring WooCommerce...", "mage-eventpress" ) ); ?> );
+								
+								$.ajax({
+									url: ajaxurl,
+									type: "POST",
+									data: {
+										action: "mep_install_activate_wc",
+										nonce: "<?php echo wp_create_nonce('mep_install_wc'); ?>"
+									},
+									success: function(response) {
+										if (response.success) {
+											$status.css('color', '#0f5132');
+											$status.text( <?php echo json_encode( __( "Successfully Activated! Reloading page...", "mage-eventpress" ) ); ?> );
+											setTimeout(function() {
+												location.reload();
+											}, 1500);
+										} else {
+											$status.css('color', '#dc3545');
+											$status.text( <?php echo json_encode( __( "Error: ", "mage-eventpress" ) ); ?> + (response.data || "Unknown error") );
+											$btn.prop("disabled", false);
+											$btn.css('opacity', '1');
+										}
+									},
+									error: function() {
+										$status.css('color', '#dc3545');
+										$status.text( <?php echo json_encode( __( "A network error occurred. Please try again.", "mage-eventpress" ) ); ?> );
+										$btn.prop("disabled", false);
+										$btn.css('opacity', '1');
+									}
+								});
+							});
+							// Move the wrapper out of the table so it displays like a real tab bar spanning full width
+							var $tabContainer = $('.payment-sub-tabs-wrapper');
+							var $table = $tabContainer.closest('table.form-table');
+							$tabContainer.insertBefore($table);
+							
+							// The tab container was originally inside a tr. We should hide that tr to prevent an empty row.
+							// But since we already moved $tabContainer, we need to hide the tr that has an empty th and a td containing just a p.description
+							$table.find('tr').each(function() {
+								if ($(this).find('.payment-sub-tabs-wrapper').length === 0 && $(this).text().trim() === '') {
+									$(this).hide();
+								}
+							});
+							// Add styles for text color
+							$('.payment-sub-tabs .nav-tab').css('color', 'black');
+						}
+					});
+				</script>
+				<?php if ( ! class_exists( 'WooCommerce' ) ) : ?>
+				<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+					<div style="background:#fff; border-radius:12px; width:450px; max-width:90%; box-shadow:0 10px 30px rgba(0,0,0,0.3); overflow:hidden;">
+						<div style="padding:20px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
+							<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php _e( "WooCommerce Configuration", "mage-eventpress" ); ?></h3>
+							<button type="button" class="mep-close-modal" style="background:none; border:none; font-size:24px; cursor:pointer; color:#666; line-height:1;">&times;</button>
+						</div>
+						<div style="padding:30px 25px; text-align:center;">
+							<span class="dashicons dashicons-cart" style="font-size:64px; width:64px; height:64px; color:#96588a; margin-bottom:20px;"></span>
+							<p style="font-size:16px; color:#444; margin-bottom:25px; line-height:1.5;">
+								<?php if ( file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ) : ?>
+									<?php _e( "WooCommerce is required to process payments. It is already installed on your site, but needs to be activated. Click the button below to activate it right now.", "mage-eventpress" ); ?>
+								<?php else : ?>
+									<?php _e( "WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.", "mage-eventpress" ); ?>
+								<?php endif; ?>
+							</p>
+							<div id="mep-wc-install-progress" style="display:none; margin-bottom:20px; font-weight:500; font-size:15px; background:#f0f0f1; padding:12px; border-radius:6px;">
+								<span class="spinner is-active" style="float:none; margin:0 10px 0 0;"></span> <span id="mep-wc-install-status" style="color:#2271b1;"><?php _e( "Working...", "mage-eventpress" ); ?></span>
+							</div>
+							<button type="button" id="mep-wc-start-install" class="button button-primary button-hero" style="background:#96588a; border-color:#703c66; width:100%; box-shadow:0 2px 4px rgba(150,88,138,0.3); transition:all 0.2s;">
+								<?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?>
+							</button>
+						</div>
+					</div>
+				</div>
+				<?php endif; ?>
+				<?php
+			}
+
+
+			function ajax_install_activate_wc() {
+				check_ajax_referer( 'mep_install_wc', 'nonce' );
+
+				if ( ! current_user_can( 'install_plugins' ) ) {
+					wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
+				}
+
+				// Load all required WP admin includes — not auto-loaded in AJAX context
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+				require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/misc.php';
+
+				$plugin_slug = 'woocommerce';
+				$plugin_file = 'woocommerce/woocommerce.php';
+
+				// Install if not already downloaded
+				if ( ! file_exists( WP_PLUGIN_DIR . '/' . $plugin_file ) ) {
+					$api = plugins_api( 'plugin_information', array(
+						'slug'   => $plugin_slug,
+						'fields' => array( 'sections' => false ),
+					) );
+
+					if ( is_wp_error( $api ) ) {
+						wp_send_json_error( $api->get_error_message() );
+					}
+
+					$upgrader       = new Plugin_Upgrader( new Automatic_Upgrader_Skin() );
+					$install_result = $upgrader->install( $api->download_link );
+
+					if ( is_wp_error( $install_result ) ) {
+						wp_send_json_error( $install_result->get_error_message() );
+					} elseif ( ! $install_result ) {
+						wp_send_json_error( __( 'Installation failed. Please try manually.', 'mage-eventpress' ) );
+					}
+				}
+
+				// Activate directly via the options table — avoids loading woocommerce.php
+				// into this PHP process which would cause a "Cannot redeclare WC()" fatal
+				// because our WC() fallback is already declared at plugins_loaded priority 1.
+				$current = get_option( 'active_plugins', array() );
+				if ( ! in_array( $plugin_file, $current, true ) ) {
+					$current[] = $plugin_file;
+					sort( $current );
+					update_option( 'active_plugins', $current );
+				}
+
+				// Run the plugin's activation hook cleanly via a separate internal request
+				do_action( 'activate_' . $plugin_file );
+				do_action( 'activated_plugin', $plugin_file, false );
+
+				wp_send_json_success( __( 'WooCommerce activated successfully!', 'mage-eventpress' ) );
 			}
 
 			function admin_init() {
@@ -78,6 +929,10 @@
 						'title' => '<i class="mi mi-settings-sliders"></i>' . __( 'Slider Settings', 'mage-eventpress' )
 					),
 					array(
+						'id'    => 'payment_setting_sec',
+						'title' => '<i class="mi mi-shopping-cart"></i>' . __( 'Payment', 'mage-eventpress' )
+					),
+					array(
 						'id'    => 'mep_settings_licensing',
 						'title' => '<i class="mi mi-license"></i>'. __( 'License', 'mage-eventpress' )
 					)
@@ -94,6 +949,19 @@
 			function get_settings_fields() {
 				$current_date = current_time( 'Y-m-d' );
 				$lang         = get_bloginfo( "language" );
+				
+				$payment_opts = get_option('payment_setting_sec');
+				$pp_enable = isset($payment_opts['mep_paypal_enable']) ? checked($payment_opts['mep_paypal_enable'], 'on', false) : '';
+				$pp_sandbox = isset($payment_opts['mep_paypal_sandbox']) ? checked($payment_opts['mep_paypal_sandbox'], 'on', false) : 'checked="checked"';
+				$pp_client = isset($payment_opts['mep_paypal_client_id']) ? esc_attr($payment_opts['mep_paypal_client_id']) : '';
+				$pp_secret = isset($payment_opts['mep_paypal_secret']) ? esc_attr($payment_opts['mep_paypal_secret']) : '';
+
+				$st_enable = isset($payment_opts['mep_stripe_enable']) ? checked($payment_opts['mep_stripe_enable'], 'on', false) : '';
+				$st_sandbox = isset($payment_opts['mep_stripe_sandbox']) ? checked($payment_opts['mep_stripe_sandbox'], 'on', false) : 'checked="checked"';
+				$st_test_pub = isset($payment_opts['mep_stripe_test_pub']) ? esc_attr($payment_opts['mep_stripe_test_pub']) : '';
+				$st_test_sec = isset($payment_opts['mep_stripe_test_sec']) ? esc_attr($payment_opts['mep_stripe_test_sec']) : '';
+				$st_live_pub = isset($payment_opts['mep_stripe_live_pub']) ? esc_attr($payment_opts['mep_stripe_live_pub']) : '';
+				$st_live_sec = isset($payment_opts['mep_stripe_live_sec']) ? esc_attr($payment_opts['mep_stripe_live_sec']) : '';
 				$settings_fields = array(
 					'general_setting_sec'      => apply_filters( 'mep_settings_general_arr', array(
 							array(
@@ -1143,6 +2011,119 @@
 								'min' => esc_html__( 'Minimum', 'mage-eventpress' ),
 								'avg' => esc_html__( 'Average', 'mage-eventpress' ),
 								'max' => esc_html__( 'Maximum', 'mage-eventpress' )
+							)
+						)
+					),
+					'payment_setting_sec' => apply_filters( 'mep_settings_payment_arr', array(
+							array(
+								'name'  => 'payment_tabs_html',
+								'type'  => 'html',
+								'desc'  => '
+									<div class="payment-sub-tabs-wrapper">
+										<h2 class="nav-tab-wrapper payment-sub-tabs">
+										<a href="#woocommerce-field" class="nav-tab nav-tab-active">' . __( "WooCommerce", "mage-eventpress" ) . '</a>
+										<a href="#no-woocommerce-field" class="nav-tab">' . __( "Custom Payment", "mage-eventpress" ) . '</a>
+										</h2>
+									</div>
+								'
+							),
+							array(
+								'name'    => 'mep_enable_wc_payment',
+								'label'   => __( 'Enable WooCommerce Payment', 'mage-eventpress' ),
+								'desc'    => __( 'If enabled, WooCommerce payment gateway will be used for checkout.', 'mage-eventpress' ),
+								'type'    => 'checkbox',
+								'default' => 'on',
+								'class'   => 'woocommerce-field woocommerce-main-toggle'
+							),
+							array(
+								'name'    => 'mep_wc_add_to_cart_redirect',
+								'label'   => __( 'After Adding to Cart, Redirect to', 'mage-eventpress' ),
+								'desc'    => __( 'Select where to redirect after adding tickets to cart.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'checkout',
+								'options' => array(
+									'cart'     => __( 'Cart', 'mage-eventpress' ),
+									'checkout' => __( 'Checkout', 'mage-eventpress' ),
+								),
+								'class'   => 'woocommerce-field'
+							),
+							array(
+								'name'    => 'mep_wc_after_order_redirect',
+								'label'   => __( 'After Confirming the Order, Redirect To', 'mage-eventpress' ),
+								'desc'    => __( 'Select where to redirect after confirming the order.', 'mage-eventpress' ),
+								'type'    => 'select',
+								'default' => 'plugin_thankyou',
+								'options' => array(
+									'plugin_thankyou' => __( 'Plugin Thank You Page', 'mage-eventpress' ),
+									'woo_thankyou'    => __( 'WooCommerce Thank You Page', 'mage-eventpress' ),
+								),
+								'class'   => 'woocommerce-field'
+							),
+							array(
+								'name'    => 'mep_wc_require_login',
+								'label'   => __( 'Require Account Login', 'mage-eventpress' ),
+								'desc'    => __( 'Require login to purchase event tickets.', 'mage-eventpress' ),
+								'type'    => 'checkbox',
+								'default' => '',
+								'class'   => 'woocommerce-field'
+							),
+							array(
+								'name'    => 'mep_wc_show_billing_info',
+								'label'   => __( 'Show Billing Info', 'mage-eventpress' ),
+								'desc'    => __( 'Show billing info on WooCommerce checkout page.', 'mage-eventpress' ),
+								'type'    => 'checkbox',
+								'default' => '',
+								'class'   => 'woocommerce-field'
+							),
+							array(
+								'name'    => 'mep_wc_confirm_ticket_status',
+								'label'   => __( 'Confirm Ticket Based on Payment Status', 'mage-eventpress' ),
+								'desc'    => __( 'Select the payment statuses that will trigger ticket confirmation.', 'mage-eventpress' ),
+								'type'    => 'multicheck',
+								'default' => array( 'processing' => 'processing', 'completed' => 'completed' ),
+								'options' => array(
+									'pending'    => __( 'Pending payment', 'mage-eventpress' ),
+									'processing' => __( 'Processing', 'mage-eventpress' ),
+									'on-hold'    => __( 'On hold', 'mage-eventpress' ),
+									'completed'  => __( 'Completed', 'mage-eventpress' ),
+								),
+								'class'   => 'woocommerce-field'
+							),
+							array(
+								'name'    => 'payment_gateways_ui',
+								'type'    => 'html',
+								'class'   => 'no-woocommerce-field payment-gateways-container',
+								'desc'    => '
+<!-- PayPal Card -->
+<div class="gateway-card paypal-card">
+    <div class="gateway-header">
+        <h3>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;">
+                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087"/>
+                <path d="M11.5 7.1c.05.27.01.59-.09.91-.98 5.05-4.35 6.79-8.65 6.79H4.95l-1.12 7.11a.64.64 0 0 0 .63.74h4.6a.64.64 0 0 0 .63-.54l.87-5.55a.64.64 0 0 1 .63-.54h1.08c3.5 0 6.23-1.42 7.03-5.52.2-.99.23-1.89.09-2.65-.48-2.6-2.58-3.41-5.63-3.41h-2.22z" fill="#0079C1"/>
+                <path d="M11.5 7.1c-.02-.13-.05-.27-.08-.41C10.3 5.4 8.3 4.86 5.73 4.86H3.54l-1.5 9.54h2.72c.52 0 .97-.38 1.05-.9l.87-5.5c.08-.52.53-.9.1-.9h2.19c3.5 0 6.23-1.42 7.03-5.52-.06.32-.14.64-.09.91z" fill="#00457C"/>
+            </svg>
+            ' . __( "PayPal", "mage-eventpress" ) . '
+        </h3>
+        <span class="gateway-status ' . ($pp_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($pp_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
+        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-paypal-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
+    </div>
+</div>
+
+<!-- Stripe Card -->
+<div class="gateway-card stripe-card">
+    <div class="gateway-header">
+        <h3>
+            <svg width="36" height="36" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;">
+                <path fill="#6772E5" d="M14.07 15.11c-1.85-.43-2.61-.79-2.61-1.63 0-.79.75-1.33 1.95-1.33 1.34 0 2.87.41 4.31 1.09V8.65c-1.39-.56-2.93-.84-4.52-.84-3.8 0-6.66 1.96-6.66 5.25 0 3.73 3.32 4.96 6.03 5.61 2.05.49 2.8.92 2.8 1.8 0 .86-.87 1.48-2.3 1.48-1.57 0-3.37-.53-5.06-1.54v4.75c1.67.75 3.59 1.13 5.51 1.13 4.13 0 7-2 7-5.34-.01-3.6-3.6-4.41-6.45-5.84z"/>
+            </svg>
+            ' . __( "Stripe", "mage-eventpress" ) . '
+        </h3>
+        <span class="gateway-status ' . ($st_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($st_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
+        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
+    </div>
+</div>
+'
 							)
 						)
 					),

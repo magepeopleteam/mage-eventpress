@@ -17,6 +17,26 @@
 				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
+					<?php
+					$payment_opts = get_option('payment_setting_sec', []);
+					$woo_enabled = isset($payment_opts['mep_enable_woocommerce_payment']) && $payment_opts['mep_enable_woocommerce_payment'] === 'on';
+					$paypal_enabled = isset($payment_opts['mep_paypal_enable']) && $payment_opts['mep_paypal_enable'] === 'on';
+					$stripe_enabled = isset($payment_opts['mep_stripe_enable']) && $payment_opts['mep_stripe_enable'] === 'on';
+					$show_payment_warning = !$woo_enabled && !$paypal_enabled && !$stripe_enabled;
+					?>
+					<div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status">
+						<?php if ( $show_payment_warning ) : ?>
+							<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; margin-bottom: 15px; border-radius: var(--mpwem-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+								<div>
+									<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+									<span style="font-size: 13px;"><?php esc_html_e( 'You have selected to sell tickets, but no payment methods (WooCommerce, Stripe, or PayPal) are currently enabled. Please configure a payment method to accept payments.', 'mage-eventpress' ); ?></span>
+								</div>
+								<div>
+									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=mep_events&page=mpwem_settings#mpwem-tab-payment_setting_sec' ) ); ?>" target="_blank" class="button button-primary" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></a>
+								</div>
+							</div>
+						<?php endif; ?>
+					</div>
 					<?php $this->setting_head( $event_id, $event_infos ); ?>
                     <div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status">
 						<?php $this->ticket_setting( $event_id, $event_infos ); ?>
@@ -37,12 +57,21 @@
 					&& isset( $_GET['page'] )
 					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
-                <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head">
+                <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head" style="border-radius: var(--mpwem-radius);">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
                     </div>
 					<?php
+						if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+							?>
+							<div class="mpwem-woo-warning-notice" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; margin: 15px 0; border-radius: 4px;">
+								<strong><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong><br/>
+								<?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as "Ticket-Selling" without WooCommerce. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?>
+							</div>
+							<?php
+						}
+						
 						do_action( 'mep_event_tab_before_ticket_pricing', $event_id );
 						if ( ! $is_custom_event_edit ) {
 							$this->event_view_shortcode( $event_id );

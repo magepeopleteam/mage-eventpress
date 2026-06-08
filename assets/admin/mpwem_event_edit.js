@@ -4385,7 +4385,7 @@
         }
 
         // Progress
-        const $visibleSteps = $steps.filter(':visible');
+        const $visibleSteps = $steps.filter(function() { return $(this).css('display') !== 'none'; });
         const current = $visibleSteps.index($targetStep) + 1;
         $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
         $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
@@ -4473,7 +4473,7 @@
         }
 
         // Re-calculate data-step indices for visible steps
-        const $visibleSteps = $steps.filter(':visible');
+        const $visibleSteps = $steps.filter(function() { return $(this).css('display') !== 'none'; });
         $visibleSteps.each(function (index) {
             $(this).attr('data-step', index + 1);
         });
@@ -4835,13 +4835,13 @@
         });
 
         $root.on('click', '.mpwem-wizard-prev', function() {
-            const $steps = $root.find('.mpwem-step:visible');
+            const $steps = $root.find('.mpwem-step').filter(function() { return $(this).css('display') !== 'none'; });
             const idx = $steps.index($steps.filter('.is-active'));
             if (idx > 0) setActiveStep($root, $steps.eq(idx - 1).data('step-key'), { pushHash: true });
         });
 
         $root.on('click', '.mpwem-wizard-next', function() {
-            const $steps = $root.find('.mpwem-step:visible');
+            const $steps = $root.find('.mpwem-step').filter(function() { return $(this).css('display') !== 'none'; });
             const idx = $steps.index($steps.filter('.is-active'));
             if (idx < $steps.length - 1) {
                 setActiveStep($root, $steps.eq(idx + 1).data('step-key'), { pushHash: true, validate: true });

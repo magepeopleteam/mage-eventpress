@@ -2023,6 +2023,7 @@ select.mpwem-global-qty-field__input {
 	.mpwem-event-wizard__title h1 {
 		white-space: nowrap;
 		word-break: normal;
+		line-height: initial;
 	}
 	.mpwem-event-wizard__actions {
 		width: auto;

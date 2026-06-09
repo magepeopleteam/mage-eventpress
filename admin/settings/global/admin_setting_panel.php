@@ -627,12 +627,20 @@ tr.payment_tabs_html { display: none !important; }
 									$('#payment_setting_sec .submit').show();
 								}
 								
+								var isWcActive = <?php echo class_exists('WooCommerce') ? 'true' : 'false'; ?>;
+								
 								// Special handling: if we have a div.woocommerce-field (the warning), show it
 								if (activeTabId === 'woocommerce-field') {
 									$("div.woocommerce-field").show();
 									$('#mep-wc-warning-banner').show();
-									$("tr.woocommerce-field").show();
-									toggleWcSettings();
+									
+									if (isWcActive) {
+										$("tr.woocommerce-field").show();
+										toggleWcSettings();
+									} else {
+										// Hide the save button if WooCommerce isn't active since settings are hidden
+										$('#payment_setting_sec .submit').hide();
+									}
 								} else {
 									$('#mep-wc-warning-banner').hide();
 									$("tr." + activeTabId).show();

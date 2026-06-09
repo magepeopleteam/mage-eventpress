@@ -28,14 +28,21 @@
 					<div class="mpwem-ticket-warnings <?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status" style="margin-bottom: 20px;">
 						<?php if ( ! $wc_active ) : ?>
 							<div class="mpwem-woo-warning-notice" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius);">
-								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
-								<span style="font-size: 13px;"><?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as "Ticket-Selling" without WooCommerce. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?></span>
+								<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+									<div style="flex: 1; min-width: 250px;">
+										<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
+										<span style="font-size: 13px;"><?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as "Ticket-Selling" without WooCommerce. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?></span>
+									</div>
+									<div>
+										<button type="button" class="button button-primary mep-install-wc-trigger" style="white-space: nowrap;"><?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?></button>
+									</div>
+								</div>
 							</div>
 						<?php elseif ( $show_payment_warning ) : ?>
 							<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
 								<div>
 									<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
-									<span style="font-size: 13px;"><?php esc_html_e( 'You have selected to sell tickets, but no payment methods (WooCommerce, Stripe, or PayPal) are currently enabled. Please configure a payment method to accept payments.', 'mage-eventpress' ); ?></span>
+									<span style="font-size: 13px;"><?php esc_html_e( 'You have selected to sell tickets, but no payment methods (WooCommerce or Custom Payments) are currently enabled. Please configure a payment method to accept payments.', 'mage-eventpress' ); ?></span>
 								</div>
 								<div>
 									<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=mep_events&page=mep_event_settings_page' ) ); ?>" target="_blank" class="button button-primary" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></a>
@@ -55,6 +62,85 @@
 					</div>
 
 					<?php $this->mep_event_pro_purchase_notice(); ?>
+					
+					<!-- WooCommerce Install/Activate Modal -->
+					<?php if ( ! $wc_active ) :
+						$is_installed = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' );
+						$modal_desc   = $is_installed
+							? esc_html__( 'WooCommerce is already installed but not active. Click the button below to activate it right now.', 'mage-eventpress' )
+							: esc_html__( 'WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.', 'mage-eventpress' );
+						$modal_btn    = $is_installed
+							? esc_html__( 'Activate WooCommerce Now', 'mage-eventpress' )
+							: esc_html__( 'Install & Activate Now', 'mage-eventpress' );
+					?>
+					<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+						<div style="background:#fff; border-radius:12px; width:480px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden;">
+							<div style="padding:22px 25px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
+								<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php esc_html_e( 'WooCommerce Setup', 'mage-eventpress' ); ?></h3>
+								<button type="button" class="mep-close-modal" style="background:none; border:none; font-size:26px; cursor:pointer; color:#666; line-height:1; padding:0;">&times;</button>
+							</div>
+							<div style="padding:32px 28px; text-align:center;">
+								<span class="dashicons dashicons-cart" style="font-size:72px; width:72px; height:72px; color:#96588a; margin-bottom:18px; display:block; margin-left:auto; margin-right:auto;"></span>
+								<p style="font-size:15px; color:#444; margin-bottom:28px; line-height:1.6;"><?php echo esc_html( $modal_desc ); ?></p>
+								<div id="mep-wc-install-progress" style="display:none; margin-bottom:22px; font-weight:500; font-size:15px; background:#f0f0f1; padding:14px; border-radius:8px;">
+									<span class="spinner is-active" style="float:none; margin:0 10px 0 0;"></span>
+									<span id="mep-wc-install-status" style="color:#2271b1;"><?php esc_html_e( 'Working...', 'mage-eventpress' ); ?></span>
+								</div>
+								<button type="button" id="mep-wc-start-install" style="background:linear-gradient(135deg,#96588a,#6b3d6b); color:#fff; border:none; padding:14px 0; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; box-shadow:0 4px 12px rgba(150,88,138,0.4); transition:all 0.2s;">
+									<?php echo esc_html( $modal_btn ); ?>
+								</button>
+							</div>
+						</div>
+					</div>
+					<script>
+					jQuery(document).ready(function($) {
+						$(document).on('click', '.mep-install-wc-trigger', function(e) {
+							e.preventDefault();
+							$('#mep-wc-install-modal').css('display', 'flex').hide().fadeIn(200);
+						});
+						$(document).on('click', '.mep-close-modal', function() {
+							$('#mep-wc-install-modal').fadeOut(200);
+						});
+						$('#mep-wc-start-install').click(function() {
+							var $btn = $(this);
+							var $progress = $('#mep-wc-install-progress');
+							var $status = $('#mep-wc-install-status');
+							$btn.prop('disabled', true);
+							$btn.css('opacity', '0.6');
+							$progress.fadeIn(200);
+							$status.text( <?php echo json_encode( __( "Please wait, configuring WooCommerce...", "mage-eventpress" ) ); ?> );
+							$.ajax({
+								url: ajaxurl,
+								type: "POST",
+								data: {
+									action: "mep_install_activate_wc",
+									nonce: "<?php echo wp_create_nonce('mep_install_wc'); ?>"
+								},
+								success: function(response) {
+									if (response.success) {
+										$status.css('color', '#0f5132');
+										$status.text( <?php echo json_encode( __( "Successfully Activated! Reloading page...", "mage-eventpress" ) ); ?> );
+										setTimeout(function() {
+											location.reload();
+										}, 1500);
+									} else {
+										$status.css('color', '#dc3545');
+										$status.text( <?php echo json_encode( __( "Error: ", "mage-eventpress" ) ); ?> + (response.data || "Unknown error") );
+										$btn.prop("disabled", false);
+										$btn.css('opacity', '1');
+									}
+								},
+								error: function() {
+									$status.css('color', '#dc3545');
+									$status.text( <?php echo json_encode( __( "A network error occurred. Please try again.", "mage-eventpress" ) ); ?> );
+									$btn.prop("disabled", false);
+									$btn.css('opacity', '1');
+								}
+							});
+						});
+					});
+					</script>
+					<?php endif; ?>
                 </div>
 				<?php
 			}

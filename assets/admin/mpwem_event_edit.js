@@ -2891,7 +2891,7 @@
 
         const $toggle = $panel.find('.mpwem-registration-mode__toggle').first();
         const $checkbox = $panel.find('input[name="mep_reg_status"]').first();
-        const $collapse = $panel.find('[data-collapse="#mep_reg_status"]').first();
+        const $collapse = $panel.find('[data-collapse="#mep_reg_status"]');
         const $ticketSummary = $panel.find('#mpwem_ticket_summary').first();
         const $extraServicesCard = $root.find('#mpwem_wizard_extra_services_card').first();
 
@@ -4409,6 +4409,7 @@
         if (mode === 'on') {
             $('#mpwem_wizard_ticket_details_section').show();
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').show();
             $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').show();
             
             // Only show extra services card if it actually has content
@@ -4428,6 +4429,7 @@
             
             // Hide the main Ticket & Pricing Settings header card
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').hide();
             
             // Hide only the ticket editor's header, not the RSVP one
             $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-editor-section ._bg_light_padding, .mpwem-extra-service-section ._bg_light_padding').hide();

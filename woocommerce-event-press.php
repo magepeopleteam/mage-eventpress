@@ -145,3 +145,124 @@
 		require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';
 	}
 	remove_action( 'admin_init', 'mep_re_meta_boxs',200);
+
+/**
+ * Grant WooCommerce Shop Managers access to Events plugin settings and menus.
+ * Only runs when PRO version is not active to avoid conflicts.
+ */
+if ( ! function_exists( 'mep_pro_modify_admin_menu_capabilities' ) ) {
+	add_action( 'admin_menu', 'mep_modify_admin_menu_capabilities', 999 );
+	function mep_modify_admin_menu_capabilities() {
+		global $menu, $submenu;
+
+		if ( ! empty( $menu ) ) {
+			foreach ( $menu as $key => $item ) {
+				if ( isset( $item[2] ) && $item[2] === 'mep_events' ) {
+					if ( isset( $item[1] ) && $item[1] === 'manage_options' ) {
+						$menu[ $key ][1] = 'manage_woocommerce';
+					}
+				}
+			}
+		}
+
+		$parents_to_modify = array( 'edit.php?post_type=mep_events', 'mep_events' );
+		foreach ( $parents_to_modify as $parent ) {
+			if ( isset( $submenu[ $parent ] ) ) {
+				foreach ( $submenu[ $parent ] as $key => $sub_item ) {
+					if ( isset( $sub_item[1] ) && $sub_item[1] === 'manage_options' ) {
+						$submenu[ $parent ][ $key ][1] = 'manage_woocommerce';
+					}
+				}
+			}
+		}
+	}
+}
+
+if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
+	add_filter( 'user_has_cap', 'mep_grant_shop_manager_access', 10, 4 );
+	function mep_grant_shop_manager_access( $allcaps, $caps, $args, $user ) {
+		if ( isset( $args[0] ) && $args[0] === 'manage_options' ) {
+			if ( ! empty( $allcaps['manage_woocommerce'] ) ) {
+
+				$is_eventpress_context = false;
+
+				if ( is_admin() ) {
+					global $pagenow;
+
+					if ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ) {
+						$page = $_GET['page'];
+						if (
+							strpos( $page, 'mep_' ) === 0 ||
+							strpos( $page, 'mpwem_' ) === 0 ||
+							$page === 'attendee_list' ||
+							$page === 'mep_event_welcome_page' ||
+							$page === 'mpwem_quick_setup'
+						) {
+							$is_eventpress_context = true;
+						}
+					}
+
+					if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] === 'mep_events' || $_GET['post_type'] === 'mep_event_speaker' ) ) {
+						$is_eventpress_context = true;
+					}
+
+					if ( $pagenow === 'post.php' && isset( $_GET['post'] ) ) {
+						$post_id = absint( $_GET['post'] );
+						if ( $post_id && get_post_type( $post_id ) === 'mep_events' ) {
+							$is_eventpress_context = true;
+						}
+					}
+
+					if ( $pagenow === 'options.php' && isset( $_POST['option_page'] ) && is_string( $_POST['option_page'] ) ) {
+						$option_page = $_POST['option_page'];
+						if (
+							strpos( $option_page, 'mep_' ) === 0 ||
+							strpos( $option_page, 'mpwem_' ) === 0 ||
+							strpos( $option_page, 'general_setting_sec' ) === 0 ||
+							strpos( $option_page, 'event_list_setting_sec' ) === 0 ||
+							strpos( $option_page, 'single_event_setting_sec' ) === 0 ||
+							strpos( $option_page, 'email_setting_sec' ) === 0 ||
+							strpos( $option_page, 'style_setting_sec' ) === 0 ||
+							strpos( $option_page, 'icon_setting_sec' ) === 0 ||
+							strpos( $option_page, 'carousel_setting_sec' ) === 0 ||
+							strpos( $option_page, 'mp_slider_settings' ) === 0 ||
+							strpos( $option_page, 'mep_settings_licensing' ) === 0
+						) {
+							$is_eventpress_context = true;
+						}
+					}
+				}
+
+				if ( wp_doing_ajax() ) {
+					if ( isset( $_REQUEST['action'] ) && is_string( $_REQUEST['action'] ) ) {
+						$action = $_REQUEST['action'];
+						if (
+							strpos( $action, 'mep_' ) === 0 ||
+							strpos( $action, 'mpwem_' ) === 0 ||
+							strpos( $action, 'wbtm_' ) === 0 ||
+							strpos( $action, 'wtbm_' ) === 0 ||
+							strpos( $action, 'wbbm_' ) === 0 ||
+							$action === 'generate_attendee_pdf'
+						) {
+							$is_eventpress_context = true;
+						}
+					}
+				}
+
+				if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+					if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+						if ( stripos( $_SERVER['REQUEST_URI'], '/wp-json/mep/' ) !== false || stripos( $_SERVER['REQUEST_URI'], '/wp-json/mpwem/' ) !== false ) {
+							$is_eventpress_context = true;
+						}
+					}
+				}
+
+				if ( $is_eventpress_context ) {
+					$allcaps['manage_options'] = true;
+				}
+			}
+		}
+
+		return $allcaps;
+	}
+}

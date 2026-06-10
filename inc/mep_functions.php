@@ -810,6 +810,11 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$headers[] = "From: $form_name <$form_email>";
 			$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
+			// Allow suppression (e.g. hybrid in-person tickets where the body would be blank).
+			$should_send = apply_filters( 'mep_should_send_confirmation_email', true, $event_id, $order_id, $event_ticket_info_arr );
+			if ( ! $should_send ) {
+				return;
+			}
 			// Send Email
 			wp_mail( $sent_email, $email_sub, $email_body, $headers );
 		}
@@ -2884,6 +2889,47 @@ die();
 			}
 		}
 	}
+	// For hybrid events, suppress the confirmation email when every purchased ticket
+	// is In Person (Physical) — those buyers only need the PDF ticket, not a blank email.
+	add_filter( 'mep_should_send_confirmation_email', 'mep_hybrid_suppress_inperson_email', 10, 4 );
+	if ( ! function_exists( 'mep_hybrid_suppress_inperson_email' ) ) {
+		function mep_hybrid_suppress_inperson_email( $should_send, $event_id, $order_id, $event_ticket_info_arr ) {
+			if ( ! $should_send ) {
+				return false; // Already suppressed upstream.
+			}
+
+			$event_type = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
+			if ( $event_type !== 'hybrid' ) {
+				return $should_send; // Non-hybrid — no change.
+			}
+
+			// Build mode map: plain ticket name → mode.
+			$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+			$mode_map     = [];
+			if ( is_array( $ticket_types ) ) {
+				foreach ( $ticket_types as $t ) {
+					if ( ! empty( $t['option_name_t'] ) ) {
+						$mode_map[ $t['option_name_t'] ] = isset( $t['option_ticket_mode_t'] ) ? $t['option_ticket_mode_t'] : 'inperson';
+					}
+				}
+			}
+
+			// If any ticket in this purchase has mode 'online', send the email
+			// (virtual content will be appended by mep_virtual_join_info_event_email_text).
+			if ( is_array( $event_ticket_info_arr ) ) {
+				foreach ( $event_ticket_info_arr as $ticket ) {
+					$name = isset( $ticket['ticket_name'] ) ? (string) $ticket['ticket_name'] : '';
+					if ( $name && isset( $mode_map[ $name ] ) && $mode_map[ $name ] === 'online' ) {
+						return $should_send; // Has at least one online ticket — send email.
+					}
+				}
+			}
+
+			// All tickets are In Person for a hybrid event — suppress the email.
+			return false;
+		}
+	}
+
 	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
 	if ( ! function_exists( 'mep_virtual_join_info_event_email_text' ) ) {
 		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id, $event_ticket_info_arr = [] ) {

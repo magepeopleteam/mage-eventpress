@@ -7,10 +7,13 @@
  *   2. User chooses "Deactivate only" or "Delete all data".
  *      - Delete: data is removed in small batches with a progress bar (so sites with
  *        thousands of events + linked hidden products never time out).
- *   3. We then re-fire the original click with a pass-through flag. That lets the
- *      Appsero feedback modal open through its own handler (with its deactivate URL
- *      set correctly). If Appsero isn't present, the click just navigates to the
- *      deactivate URL. Either way deactivation still happens.
+ *   3. What happens next depends on the choice:
+ *      - Deactivate only: we re-fire the original click with a pass-through flag so
+ *        the Appsero feedback survey opens through its own handler (with the correct
+ *        deactivate URL). If Appsero isn't present the click just navigates.
+ *      - Delete all data: once the cleanup finishes we go straight to the deactivate
+ *        URL and skip the survey entirely (the user has already committed to leaving,
+ *        and the data is gone, so there is nothing to cancel back to).
  */
 (function ($) {
 	'use strict';
@@ -76,12 +79,16 @@
 	}
 
 	/**
-	 * Hand control back to the original deactivate link so the Appsero survey (or, if
-	 * absent, the browser) takes over. We re-dispatch a real click that our own
-	 * capture listener lets through via the passThrough flag.
+	 * Continue to deactivation.
+	 *
+	 * @param {boolean} skipSurvey When true (the delete path) we navigate straight to
+	 *   the deactivate URL and bypass the Appsero survey. Otherwise we re-dispatch a
+	 *   real click that our capture listener lets through (passThrough), so the Appsero
+	 *   feedback survey can open via its own handler; if Appsero is absent the click
+	 *   simply navigates.
 	 */
-	function proceedToDeactivate() {
-		if (!deactivateLinkEl) {
+	function proceedToDeactivate(skipSurvey) {
+		if (skipSurvey || !deactivateLinkEl) {
 			window.location.href = deactivateUrl;
 			return;
 		}
@@ -140,7 +147,8 @@
 				}
 				if (res.data.done) {
 					setBar(total, true);
-					proceedToDeactivate();
+					// Delete path: deactivate immediately, skip the Appsero survey.
+					proceedToDeactivate(true);
 					return;
 				}
 				var remaining = parseInt(res.data.remaining, 10) || 0;
@@ -226,7 +234,8 @@
 			}
 
 			if (selectedMode() !== 'purge') {
-				proceedToDeactivate();
+				// Deactivate only: show the Appsero feedback survey before leaving.
+				proceedToDeactivate(false);
 				return;
 			}
 

@@ -941,6 +941,13 @@
 
         syncDateWiseGlobalQtyColumns($root);
         syncGlobalQtyTypeWarning($root);
+
+        // Sync Hybrid-only ticket mode column
+        var isHybrid = ($root.find('input[name="mep_event_type"]').val() || 'offline') === 'hybrid';
+        context.$modalMount.find('[data-hybrid-col]').toggleClass('mpwem-ticket-col-hidden', !isHybrid);
+        context.$modalMount.find('.mpwem-ticket-mode-select').each(function() {
+            $(this).attr('data-mode', $(this).val());
+        });
     }
 
     function syncDateWiseGlobalQtyColumns($root) {
@@ -2904,6 +2911,14 @@
             }, 100);
         }
 
+        function syncHybridTicketCols(val) {
+            var isHybrid = val === 'hybrid';
+            $root.find('[data-hybrid-col]').toggleClass('mpwem-ticket-col-hidden', !isHybrid);
+            $root.find('.mpwem-ticket-mode-select').each(function() {
+                $(this).attr('data-mode', $(this).val());
+            });
+        }
+
         function updateUI(val) {
             $checkbox.val(val);
             $toggle.find('.mpwem-event-type-option').removeClass('is-active');
@@ -2932,7 +2947,25 @@
                 virtualEditorInitialized = true;
                 reinitVirtualEditor();
             }
+
+            syncHybridTicketCols(val);
+            syncTicketAdvancedColumns($root);
         }
+
+        // Keep hybrid columns in sync when new ticket rows are added
+        $root.on('click.mpwemHybridCol', '.mpwem_add_item', function() {
+            window.setTimeout(function() {
+                syncHybridTicketCols($checkbox.val() || 'offline');
+            }, 60);
+        });
+
+        // Live color-code the ticket mode selects based on selected value
+        $root.on('change.mpwemTicketMode input.mpwemTicketMode', '.mpwem-ticket-mode-select', function() {
+            $(this).attr('data-mode', $(this).val());
+        });
+        $root.find('.mpwem-ticket-mode-select').each(function() {
+            $(this).attr('data-mode', $(this).val());
+        });
 
         const initialVal = $checkbox.val() || 'offline';
         // If starting as online/hybrid, mark editor as already visible so TinyMCE
@@ -3231,7 +3264,7 @@
             const $select = $(this);
             if (
                 shouldKeepNativeSelect($select) ||
-                $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
+                $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_ticket_modal_mount select[name="option_ticket_mode_t[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
                 $select.closest('.mpwem_hidden_content').length ||
                 $select.hasClass('mpwem-enhanced') ||
                 $select.is('[multiple]') ||

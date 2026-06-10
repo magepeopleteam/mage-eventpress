@@ -3541,6 +3541,39 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     display: none !important;
 }
 
+/* Ticket Mode column (visible only for Hybrid events) */
+.mpwem-ticket-card__mode {
+    min-width: 116px;
+}
+.mpwem-ticket-mode-select {
+    width: 100%;
+    max-width: 150px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 6px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color .15s;
+}
+.mpwem-ticket-mode-select:focus {
+    outline: none;
+    border-color: var(--mpwem-primary);
+    box-shadow: 0 0 0 2px rgba(37,99,235,.12);
+}
+.mpwem-ticket-mode-select[data-mode="inperson"] {
+    color: #059669;
+    border-color: #6ee7b7;
+    background-color: #ecfdf5;
+}
+.mpwem-ticket-mode-select[data-mode="online"] {
+    color: #2563eb;
+    border-color: #bfdbfe;
+    background-color: #eff6ff;
+}
+
 .mpwem-ticket-modal__mount ._ov_auto {
     display: block;
     width: 100%;
@@ -4026,6 +4059,9 @@ body.mpwem-ticket-modal-open {
 .mpwem-ticket-modal__mount .mpwem-ticket-card__price .mpwem-card-input,
 .mpwem-ticket-modal__mount .mpwem-ticket-card__capacity .mpwem-card-input {
     max-width: 120px;
+}
+.mpwem-ticket-modal__mount .mpwem-ticket-card__mode .mpwem-ticket-mode-select {
+    max-width: 116px;
 }
 
 .mpwem-ticket-modal__mount .mpwem-ticket-card__sale-period {

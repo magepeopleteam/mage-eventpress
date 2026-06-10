@@ -82,6 +82,7 @@
                                         <th><?php esc_html_e( 'Price', 'mage-eventpress' ); ?></th>
 	                                        <th class="mpwem-ticket-card__capacity <?php echo esc_attr( $capacity_col_status ); ?>"><?php esc_html_e( 'Capacity', 'mage-eventpress' ); ?></th>
                                         <th><?php esc_html_e( 'Qty Box', 'mage-eventpress' ); ?></th>
+                                        <th class="mpwem-ticket-card__mode mpwem-ticket-col-hidden" data-hybrid-col="1"><?php esc_html_e( 'Ticket Mode', 'mage-eventpress' ); ?></th>
                                         <th class="<?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column"><?php esc_html_e( 'Default Qty', 'mage-eventpress' ); ?></th>
                                         <th class="<?php echo esc_attr( $advanced_col_status === 'on' ? 'mActive' : 'mpwem-ticket-col-hidden' ); ?>" data-collapse="#mep_show_advanced_column"><?php esc_html_e( 'Reserve Qty', 'mage-eventpress' ); ?></th>
                                         <?php do_action( 'mpwem_add_extra_column', $event_id ); ?>
@@ -126,6 +127,7 @@
 				$option_default_qty   = is_array($ticket_info) && array_key_exists( 'option_default_qty_t', $ticket_info ) ? $ticket_info['option_default_qty_t'] : 0;
 				$option_rsv_qty       = is_array($ticket_info) && array_key_exists( 'option_rsv_t', $ticket_info ) ? $ticket_info['option_rsv_t'] : 0;
 				$sale_end             = is_array($ticket_info) && array_key_exists( 'option_sale_end_date_t', $ticket_info ) ? $ticket_info['option_sale_end_date_t'] : '';
+				$ticket_mode          = is_array($ticket_info) && array_key_exists( 'option_ticket_mode_t', $ticket_info ) ? $ticket_info['option_ticket_mode_t'] : 'inperson';
 				$option_ticket_enable = is_array($ticket_info) && array_key_exists( 'option_ticket_enable', $ticket_info ) && $ticket_info['option_ticket_enable'] ? $ticket_info['option_ticket_enable'] : 'yes';
 				$checked              = $option_ticket_enable == 'yes' ? 'checked' : '';
 				$ticket_sold          = 0;
@@ -169,6 +171,14 @@
 						<select class="mpwem-card-input" name="option_qty_t_type[]">
 							<option value="inputbox" <?php selected( $qty_t_type, 'inputbox' ); ?>><?php esc_html_e( 'Input Box', 'mage-eventpress' ); ?></option>
 							<option value="dropdown" <?php selected( $qty_t_type, 'dropdown' ); ?>><?php esc_html_e( 'Dropdown List', 'mage-eventpress' ); ?></option>
+						</select>
+					</td>
+
+					<td class="mpwem-ticket-card__group mpwem-ticket-card__mode mpwem-ticket-col-hidden" data-hybrid-col="1">
+						<label class="mpwem-card-label"><?php esc_html_e( 'Ticket Mode', 'mage-eventpress' ); ?></label>
+						<select class="mpwem-card-input mpwem-ticket-mode-select" name="option_ticket_mode_t[]">
+							<option value="inperson" <?php selected( $ticket_mode, 'inperson' ); ?>><?php esc_html_e( 'In Person (Physical)', 'mage-eventpress' ); ?></option>
+							<option value="online" <?php selected( $ticket_mode, 'online' ); ?>><?php esc_html_e( 'Online Event', 'mage-eventpress' ); ?></option>
 						</select>
 					</td>
 

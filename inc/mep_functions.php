@@ -2889,7 +2889,7 @@ die();
 		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id ) {
 			$event_type    = get_post_meta( $event_id, 'mep_event_type', true ) ? get_post_meta( $event_id, 'mep_event_type', true ) : 'offline';
 			$email_content = get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ? get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) : '';
-			if ( $event_type == 'online' ) {
+			if ( $event_type == 'online' || $event_type == 'hybrid' ) {
 				$content = $content . '<br/>' . html_entity_decode( $email_content );
 			}
 			return html_entity_decode( $content );

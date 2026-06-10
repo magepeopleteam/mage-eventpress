@@ -76,7 +76,10 @@
 				}
 
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$mep_event_type  = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_event_type'] ) ) ? 'online' : 'offline';
+					$mep_event_type  = isset( $_POST['mep_event_type'] ) ? sanitize_text_field( $_POST['mep_event_type'] ) : 'offline';
+					if ( ! in_array( $mep_event_type, [ 'online', 'offline', 'hybrid' ] ) ) {
+						$mep_event_type = 'offline';
+					}
 					$mep_org_address = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					// Handle venue location with coordinate detection
 					if ( isset( $_POST['mep_location_venue'] ) ) {

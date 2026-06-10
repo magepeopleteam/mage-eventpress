@@ -22,6 +22,7 @@
 				add_action( 'admin_footer', array( $this, 'render_wc_warning_banner' ) );
 				// Inject PayPal + Stripe config modals in footer
 				add_action( 'admin_footer', array( $this, 'render_gateway_modals' ) );
+				add_action( 'wp_ajax_mep_save_payment_settings_modal', array( $this, 'ajax_save_payment_settings_modal' ) );
 			}
 
 			function render_wc_warning_banner() {
@@ -98,7 +99,7 @@
 
 		function render_gateway_modals() {
 			$screen = get_current_screen();
-			if ( ! $screen || $screen->id !== 'mep_events_page_mep_event_settings_page' ) {
+			if ( ! $screen || ! in_array( $screen->id, array( 'mep_events_page_mep_event_settings_page', 'mep_events', 'mep_events_page_mpwem_event_edit' ), true ) ) {
 				return;
 			}
 			$opts        = get_option( 'payment_setting_sec', array() );
@@ -312,11 +313,82 @@
 			</div>
 
 			<script>
-			var mepGateway = {
-				nonce:   '<?php echo $nonce; ?>',
-				enabled: '<?php echo esc_js( __( 'Enabled', 'mage-eventpress' ) ); ?>',
-				disabled:'<?php echo esc_js( __( 'Disabled', 'mage-eventpress' ) ); ?>'
-			};
+			var mepGateway = <?php echo wp_json_encode(array(
+				'nonce'    => $nonce,
+				'enabled'  => __( 'Enabled', 'mage-eventpress' ),
+				'disabled' => __( 'Disabled', 'mage-eventpress' )
+			)); ?>;
+			
+			jQuery(document).ready(function($) {
+				// Gateway Configure Buttons — open respective modals
+				$(document).on('click', '#mep-paypal-configure-btn', function(e) {
+					e.preventDefault();
+					$('#mep-paypal-modal').css('display','flex').hide().fadeIn(220);
+				});
+				$(document).on('click', '#mep-stripe-configure-btn', function(e) {
+					e.preventDefault();
+					$('#mep-stripe-modal').css('display','flex').hide().fadeIn(220);
+				});
+				// Close modals
+				$(document).on('click', '.mep-gw-modal-close, .mep-gw-modal-backdrop', function() {
+					$('.mep-gw-modal').fadeOut(200);
+				});
+				$(document).on('click', '.mep-gw-modal', function(e) {
+					if ($(e.target).hasClass('mep-gw-modal')) $(this).fadeOut(200);
+				});
+				// Save gateway settings via AJAX
+				$(document).on('click', '.mep-gw-save-btn', function(e) {
+					e.preventDefault();
+					var $btn    = $(this);
+					var $modal  = $btn.closest('.mep-gw-modal-box');
+					var gateway = $btn.data('gateway');
+					var $msg    = $modal.find('.mep-gw-save-msg');
+					var fields  = {};
+					$modal.find('input[data-field]').each(function() {
+						var key = $(this).data('field');
+						if ($(this).attr('type') === 'checkbox') {
+							fields[key] = $(this).is(':checked') ? 'on' : 'off';
+						} else {
+							fields[key] = $(this).val();
+						}
+					});
+					$btn.prop('disabled', true).css('opacity','0.7');
+					$msg.hide();
+					$.ajax({
+						url: ajaxurl,
+						type: 'POST',
+						data: {
+							action:  'mep_save_gateway_settings',
+							nonce:   mepGateway.nonce,
+							gateway: gateway,
+							fields:  fields
+						},
+						success: function(res) {
+							if (res.success) {
+								$msg.css({'color':'#0f5132','background':'#d1e7dd','border':'1px solid #badbcc'}).text(res.data).fadeIn(200);
+								setTimeout(function() { $msg.fadeOut(400); }, 1000);
+								// Update status badge on the card (only if on global settings page)
+								if ($('.' + gateway + '-card .gateway-status').length > 0) {
+									var isEnabled = fields['mep_' + gateway + '_enable'] === 'on';
+									var $badge = $('.' + gateway + '-card .gateway-status');
+									$badge.text(isEnabled ? mepGateway.enabled : mepGateway.disabled);
+									$badge.toggleClass('active', isEnabled);
+								}
+							} else {
+								$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text(res.data).fadeIn(200);
+								setTimeout(function() { $msg.fadeOut(400); }, 1000);
+							}
+						},
+						error: function() {
+							$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text('A network error occurred.').fadeIn(200);
+							setTimeout(function() { $msg.fadeOut(400); }, 1000);
+						},
+						complete: function() {
+							$btn.prop('disabled', false).css('opacity','1');
+						}
+					});
+				});
+			});
 			</script>
 			<?php
 		}
@@ -646,82 +718,16 @@ tr.payment_tabs_html { display: none !important; }
 									$("tr." + activeTabId).show();
 								}
 							}
-							
-							// Gateway Configure Buttons — open respective modals
-							$(document).on('click', '#mep-paypal-configure-btn', function(e) {
-								e.preventDefault();
-								$('#mep-paypal-modal').css('display','flex').hide().fadeIn(220);
-							});
-							$(document).on('click', '#mep-stripe-configure-btn', function(e) {
-								e.preventDefault();
-								$('#mep-stripe-modal').css('display','flex').hide().fadeIn(220);
-							});
-							// Close modals
-							$(document).on('click', '.mep-gw-modal-close, .mep-gw-modal-backdrop', function() {
-								$('.mep-gw-modal').fadeOut(200);
-							});
-							$(document).on('click', '.mep-gw-modal', function(e) {
-								if ($(e.target).hasClass('mep-gw-modal')) $(this).fadeOut(200);
-							});
-							// Save gateway settings via AJAX
-							$(document).on('click', '.mep-gw-save-btn', function(e) {
-								e.preventDefault();
-								var $btn    = $(this);
-								var $modal  = $btn.closest('.mep-gw-modal-box');
-								var gateway = $btn.data('gateway');
-								var $msg    = $modal.find('.mep-gw-save-msg');
-								var fields  = {};
-								$modal.find('input[data-field]').each(function() {
-									var key = $(this).data('field');
-									if ($(this).attr('type') === 'checkbox') {
-										fields[key] = $(this).is(':checked') ? 'on' : 'off';
-									} else {
-										fields[key] = $(this).val();
-									}
-								});
-								$btn.prop('disabled', true).css('opacity','0.7');
-								$msg.hide();
-								$.ajax({
-									url: ajaxurl,
-									type: 'POST',
-									data: {
-										action:  'mep_save_gateway_settings',
-										nonce:   mepGateway.nonce,
-										gateway: gateway,
-										fields:  fields
-									},
-									success: function(res) {
-										if (res.success) {
-											$msg.css({'color':'#0f5132','background':'#d1e7dd','border':'1px solid #badbcc'}).text(res.data).fadeIn(200);
-											setTimeout(function() { $msg.fadeOut(400); }, 1000);
-											// Update status badge on the card
-											var isEnabled = fields['mep_' + gateway + '_enable'] === 'on';
-											var $badge = $('.' + gateway + '-card .gateway-status');
-											$badge.text(isEnabled ? mepGateway.enabled : mepGateway.disabled);
-											$badge.toggleClass('active', isEnabled);
-										} else {
-											$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text(res.data).fadeIn(200);
-											setTimeout(function() { $msg.fadeOut(400); }, 1000);
-										}
-									},
-									error: function() {
-										$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text('A network error occurred.').fadeIn(200);
-										setTimeout(function() { $msg.fadeOut(400); }, 1000);
-									},
-									complete: function() {
-										$btn.prop('disabled', false).css('opacity','1');
-									}
-								});
-							});
-							
-							$(".payment-sub-tabs .nav-tab").click(function(e) {
+													$(".payment-sub-tabs .nav-tab").click(function(e) {
 								e.preventDefault();
 								$(".payment-sub-tabs .nav-tab").removeClass("nav-tab-active");
 								$(this).addClass("nav-tab-active");
 								updateTabs();
 							});
 							updateTabs();
-							
+						}
+						
+					
 
 
 							// Modal logic — outside tab guard so it always binds
@@ -787,7 +793,6 @@ tr.payment_tabs_html { display: none !important; }
 							});
 							// Add styles for text color
 							$('.payment-sub-tabs .nav-tab').css('color', 'black');
-						}
 					});
 				</script>
 				<?php if ( ! class_exists( 'WooCommerce' ) ) : ?>
@@ -819,6 +824,36 @@ tr.payment_tabs_html { display: none !important; }
 				<?php
 			}
 
+
+			function ajax_save_payment_settings_modal() {
+				if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
+					wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
+				}
+
+				$payment_settings = get_option( 'payment_setting_sec', array() );
+				$payment_settings['mep_enable_wc_payment'] = isset( $_POST['mep_enable_wc_payment'] ) ? sanitize_text_field( $_POST['mep_enable_wc_payment'] ) : 'off';
+				$payment_settings['mep_paypal_enable'] = isset( $_POST['mep_paypal_enable'] ) ? sanitize_text_field( $_POST['mep_paypal_enable'] ) : 'off';
+				$payment_settings['mep_stripe_enable'] = isset( $_POST['mep_stripe_enable'] ) ? sanitize_text_field( $_POST['mep_stripe_enable'] ) : 'off';
+				
+				$payment_settings['mep_wc_add_to_cart_redirect'] = isset( $_POST['mep_wc_add_to_cart_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_add_to_cart_redirect'] ) : 'checkout';
+				$payment_settings['mep_wc_after_order_redirect'] = isset( $_POST['mep_wc_after_order_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_after_order_redirect'] ) : 'plugin_thankyou';
+				$payment_settings['mep_wc_require_login'] = isset( $_POST['mep_wc_require_login'] ) ? sanitize_text_field( $_POST['mep_wc_require_login'] ) : '';
+				$payment_settings['mep_wc_show_billing_info'] = isset( $_POST['mep_wc_show_billing_info'] ) ? sanitize_text_field( $_POST['mep_wc_show_billing_info'] ) : '';
+				
+				if ( isset( $_POST['mep_wc_confirm_ticket_status'] ) && is_array( $_POST['mep_wc_confirm_ticket_status'] ) ) {
+					$statuses = array();
+					foreach ( $_POST['mep_wc_confirm_ticket_status'] as $status ) {
+						$sanitized = sanitize_text_field( $status );
+						$statuses[ $sanitized ] = $sanitized;
+					}
+					$payment_settings['mep_wc_confirm_ticket_status'] = $statuses;
+				} else {
+					$payment_settings['mep_wc_confirm_ticket_status'] = array();
+				}
+
+				update_option( 'payment_setting_sec', $payment_settings );
+				wp_send_json_success( __( 'Settings saved.', 'mage-eventpress' ) );
+			}
 
 			function ajax_install_activate_wc() {
 				check_ajax_referer( 'mep_install_wc', 'nonce' );

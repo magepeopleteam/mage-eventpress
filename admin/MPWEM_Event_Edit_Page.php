@@ -1642,7 +1642,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php esc_html_e('Listing-Only', 'mage-eventpress'); ?>
 																</h4>
 																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Use this for announcement-only events. Displays details like date, time, and venue, but registration is disabled. Works without WooCommerce.', 'mage-eventpress'); ?>
+																	<?php esc_html_e('Event details only. No registration required.', 'mage-eventpress'); ?>
 																</p>
 															</div>
 															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
@@ -1651,7 +1651,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php esc_html_e('RSVP (Free)', 'mage-eventpress'); ?>
 																</h4>
 																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Allow users to register for free. A simple registration form is displayed on the frontend, and attendees are stored directly in your dashboard. Works without WooCommerce.', 'mage-eventpress'); ?>
+																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
 																</p>
 															</div>
 															<div class="mpwem-mode-manual-item">
@@ -1660,7 +1660,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
 																</h4>
 																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
-																	<?php esc_html_e('Sell paid or free tickets through a structured ticketing system. Handles seat capacities, extra services, and processes payments via WooCommerce. Requires WooCommerce.', 'mage-eventpress'); ?>
+																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
 																</p>
 															</div>
 														</div>

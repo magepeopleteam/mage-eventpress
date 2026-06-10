@@ -19,7 +19,7 @@
 				add_action( 'wp_ajax_mpwem_load_time', array( $this, 'mpwem_load_time' ) );
 			}
 			public function event_list_menu() {
-				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Event Lists', 'mage-eventpress' ), __( 'Event Lists', 'mage-eventpress' ), 'manage_woocommerce', 'mep_event_lists', array( $this, 'display_event_list' ) );
+				add_submenu_page( 'edit.php?post_type=mep_events', __( 'Event Lists', 'mage-eventpress' ), __( 'Event Lists', 'mage-eventpress' ), MPWEM_Global_Function::get_admin_capability(), 'mep_event_lists', array( $this, 'display_event_list' ) );
 			}
 			public function display_event_list() {
 				$counts = wp_count_posts( 'mep_events' );

@@ -801,7 +801,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter
-			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id );
+			$email_body = apply_filters( 'mep_event_confirmation_text', $email_body, $event_id, $order_id, $event_ticket_info_arr );
 			// ✨ Format email body properly
 			$email_body = wpautop( $email_body );        // Add paragraphs
 			$email_body = wp_kses_post( $email_body );   // Secure the content
@@ -2884,9 +2884,9 @@ die();
 			}
 		}
 	}
-	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 3 );
+	add_filter( 'mep_event_confirmation_text', 'mep_virtual_join_info_event_email_text', 10, 4 );
 	if ( ! function_exists( 'mep_virtual_join_info_event_email_text' ) ) {
-		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id ) {
+		function mep_virtual_join_info_event_email_text( $content, $event_id, $order_id, $event_ticket_info_arr = [] ) {
 			$event_type    = get_post_meta( $event_id, 'mep_event_type', true ) ?: 'offline';
 			$email_content = get_post_meta( $event_id, 'mp_event_virtual_type_des', true ) ?: '';
 
@@ -2895,62 +2895,34 @@ die();
 				return html_entity_decode( $content . '<br/>' . html_entity_decode( $email_content ) );
 			}
 
-			// Hybrid event: include virtual details only when the purchased
+			// Hybrid event: include virtual details only when a purchased
 			// ticket has option_ticket_mode_t = 'online'.
-			if ( $event_type === 'hybrid' && $order_id ) {
-				$include_virtual = false;
-				$order           = wc_get_order( $order_id );
-
-				if ( $order ) {
-					// Build a lookup: normalised_ticket_name → mode.
-					// Ticket names are stored with preg_replace( "/[{}()<>+ ]/", '_', ... )
-					// applied, so we normalise the same way when building the map.
-					$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
-					$mode_map     = [];
-					if ( is_array( $ticket_types ) ) {
-						foreach ( $ticket_types as $t ) {
-							if ( ! empty( $t['option_name_t'] ) ) {
-								$key              = preg_replace( '/[{}()<>+ ]/', '_', $t['option_name_t'] );
-								$mode_map[ $key ] = isset( $t['option_ticket_mode_t'] ) ? $t['option_ticket_mode_t'] : 'inperson';
-							}
-						}
-					}
-
-					foreach ( $order->get_items() as $item_id => $item ) {
-						if ( (int) wc_get_order_item_meta( $item_id, 'event_id', true ) !== (int) $event_id ) {
-							continue;
-						}
-						$ticket_info_arr = wc_get_order_item_meta( $item_id, '_event_ticket_info', true );
-						if ( ! is_array( $ticket_info_arr ) ) {
-							continue;
-						}
-
-						foreach ( $ticket_info_arr as $ticket ) {
-							$raw = isset( $ticket['ticket_name'] ) ? (string) $ticket['ticket_name'] : '';
-							if ( '' === $raw ) {
-								continue;
-							}
-							// ticket_name is stored as "{normalised_name}_{event_id}".
-							// Strip the _{event_id} suffix to recover the normalised name.
-							$suffix = '_' . intval( $event_id );
-							if ( substr( $raw, -strlen( $suffix ) ) === $suffix ) {
-								$normalised = substr( $raw, 0, -strlen( $suffix ) );
-							} else {
-								// Fallback: drop the last underscore-delimited segment.
-								$parts = explode( '_', $raw );
-								array_pop( $parts );
-								$normalised = implode( '_', $parts );
-							}
-
-							if ( isset( $mode_map[ $normalised ] ) && $mode_map[ $normalised ] === 'online' ) {
-								$include_virtual = true;
-								break 2;
-							}
+			if ( $event_type === 'hybrid' && ! empty( $event_ticket_info_arr ) && '' !== $email_content ) {
+				// Build map: plain ticket name (option_name_t) → ticket mode.
+				// ticket_name in _event_ticket_info equals the plain option_name_t value.
+				$ticket_types = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+				$mode_map     = [];
+				if ( is_array( $ticket_types ) ) {
+					foreach ( $ticket_types as $t ) {
+						if ( ! empty( $t['option_name_t'] ) ) {
+							$mode_map[ $t['option_name_t'] ] = isset( $t['option_ticket_mode_t'] ) ? $t['option_ticket_mode_t'] : 'inperson';
 						}
 					}
 				}
 
-				if ( $include_virtual && '' !== $email_content ) {
+				$include_virtual = false;
+				foreach ( $event_ticket_info_arr as $ticket ) {
+					$name = isset( $ticket['ticket_name'] ) ? (string) $ticket['ticket_name'] : '';
+					if ( '' === $name ) {
+						continue;
+					}
+					if ( isset( $mode_map[ $name ] ) && $mode_map[ $name ] === 'online' ) {
+						$include_virtual = true;
+						break;
+					}
+				}
+
+				if ( $include_virtual ) {
 					$virtual_block = '<br/><hr style="margin:16px 0;border:none;border-top:1px solid #e2e8f0;">'
 						. '<strong>' . esc_html__( 'Online Event Access Details', 'mage-eventpress' ) . '</strong><br/>'
 						. html_entity_decode( $email_content );

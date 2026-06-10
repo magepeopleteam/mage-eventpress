@@ -123,6 +123,19 @@
 						<?php }
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $user_info ) && sizeof( $user_info ) > 0 && is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
 								if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
+									// Build ticket mode map for hybrid events.
+									$_event_type_ci = MPWEM_Global_Function::get_post_info( $eid, 'mep_event_type', 'offline' );
+									$_mode_map_ci   = [];
+									if ( $_event_type_ci === 'hybrid' ) {
+										$_types_ci = get_post_meta( $eid, 'mep_event_ticket_type', true );
+										if ( is_array( $_types_ci ) ) {
+											foreach ( $_types_ci as $_t ) {
+												if ( ! empty( $_t['option_name_t'] ) ) {
+													$_mode_map_ci[ $_t['option_name_t'] ] = isset( $_t['option_ticket_mode_t'] ) ? $_t['option_ticket_mode_t'] : 'inperson';
+												}
+											}
+										}
+									}
 									?>
                                     <div class="_layout_info_xs_mt_xs">
                                         <h6 class="_mp_zero"><?php esc_html_e( 'Ticket Information', 'mage-eventpress' ); ?></h6>
@@ -130,7 +143,14 @@
                                         <ul class="cart_list">
 											<?php
 												foreach ( $ticket_type_arr as $ticket ) {
-													$ticket_text = '<li>' . esc_attr( $ticket['ticket_name'] ) . "&nbsp;&nbsp;" . wc_price( (float) $ticket['ticket_price'] ) . '&nbsp;x&nbsp;' . esc_attr( $ticket['ticket_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) . '</li>';
+													$_badge = '';
+													if ( $_event_type_ci === 'hybrid' ) {
+														$_mode  = isset( $_mode_map_ci[ $ticket['ticket_name'] ] ) ? $_mode_map_ci[ $ticket['ticket_name'] ] : 'inperson';
+														$_label = $_mode === 'online' ? esc_html__( 'Online Event', 'mage-eventpress' ) : esc_html__( 'In Person', 'mage-eventpress' );
+														$_cls   = $_mode === 'online' ? 'mep-ticket-mode-badge--online' : 'mep-ticket-mode-badge--inperson';
+														$_badge = ' <span class="mep-ticket-mode-badge ' . $_cls . '">' . $_label . '</span>';
+													}
+													$ticket_text = '<li>' . esc_html( $ticket['ticket_name'] ) . $_badge . '&nbsp;&nbsp;' . wc_price( (float) $ticket['ticket_price'] ) . '&nbsp;x&nbsp;' . esc_attr( $ticket['ticket_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) . '</li>';
 													echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $ticket, $eid );
 													do_action( 'mep_cart_after_ticket_type', $ticket );
 												}

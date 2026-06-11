@@ -65,7 +65,7 @@
 			</div>
 
 			<!-- WooCommerce Install/Activate Modal -->
-			<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+			<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
 				<div style="background:#fff; border-radius:12px; width:480px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden;">
 					<div style="padding:22px 25px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
 						<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php esc_html_e( 'WooCommerce Setup', 'mage-eventpress' ); ?></h3>
@@ -796,7 +796,7 @@ tr.payment_tabs_html { display: none !important; }
 					});
 				</script>
 				<?php if ( ! class_exists( 'WooCommerce' ) ) : ?>
-				<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+				<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
 					<div style="background:#fff; border-radius:12px; width:450px; max-width:90%; box-shadow:0 10px 30px rgba(0,0,0,0.3); overflow:hidden;">
 						<div style="padding:20px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
 							<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php _e( "WooCommerce Configuration", "mage-eventpress" ); ?></h3>
@@ -2061,14 +2061,38 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'  => 'payment_tabs_html',
 								'type'  => 'html',
-								'desc'  => '
+								'desc'  => (function() {
+									$wc_active = MPWEM_Global_Function::has_woocommerce();
+									$is_installed = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' );
+									$woo_btn_text = $is_installed ? __( "Activate WooCommerce Now", "mage-eventpress" ) : __( "Install & Activate Now", "mage-eventpress" );
+									$html = '
 									<div class="payment-sub-tabs-wrapper">
 										<h2 class="nav-tab-wrapper payment-sub-tabs">
 										<a href="#woocommerce-field" class="nav-tab nav-tab-active">' . __( "WooCommerce", "mage-eventpress" ) . '</a>
 										<a href="#no-woocommerce-field" class="nav-tab">' . __( "Custom Payment", "mage-eventpress" ) . '</a>
 										</h2>
 									</div>
-								'
+									';
+									if ( ! $wc_active ) {
+										$html .= '
+										<div class="woocommerce-field">
+											<div class="mpwem-woo-warning-notice" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); margin-bottom: 10px; margin-top: 15px;">
+												<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+													<div style="width: 100%;">
+														<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i>' . __( "Notice: WooCommerce is Not Activated", "mage-eventpress" ) . '</strong>
+														<span style="font-size: 13px; display: block;">' . __( "You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as \"Ticket-Selling\" without WooCommerce. To actually use the \"Ticket-Selling\" event type and allow ticket sales, you must install and activate WooCommerce.", "mage-eventpress" ) . '</span>
+													</div>
+													<div>
+														<button type="button" class="button button-primary mep-install-wc-trigger" style="white-space: nowrap;">' . $woo_btn_text . '</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<style>tr.woocommerce-field { display: none !important; }</style>
+										';
+									}
+									return $html;
+								})()
 							),
 							array(
 								'name'    => 'mep_enable_wc_payment',

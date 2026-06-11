@@ -38,8 +38,44 @@
             <i class='fa fa-shopping-cart _mr_xs'></i>
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
+        <?php
+        $is_woo_active = class_exists( 'WooCommerce' );
+        $can_book = true;
+
+        if ( ! $is_woo_active ) {
+            if ( class_exists( 'MEP_Payment_Gateway_Manager' ) ) {
+                $gateway_manager = MEP_Payment_Gateway_Manager::get_instance();
+                $gateways = $gateway_manager->get_available_gateways();
+                
+                if ( empty( $gateways ) ) {
+                    $can_book = false;
+                    echo '<div class="mep-payment-warning" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; border-radius: 4px;">';
+                    echo esc_html__( 'No payment method is enabled. Please contact the administrator.', 'mage-eventpress' );
+                    echo '</div>';
+                } else {
+                    echo '<div class="mep-payment-gateways" style="margin-bottom: 15px;">';
+                    echo '<h4 style="margin-bottom:10px;">' . esc_html__( 'Select Payment Method', 'mage-eventpress' ) . '</h4>';
+                    $first = true;
+                    foreach ( $gateways as $gateway_id => $gateway ) {
+                        $checked = $first ? 'checked="checked"' : '';
+                        echo '<label style="display:block; margin-bottom:5px; cursor:pointer;"><input type="radio" name="mep_payment_method" value="' . esc_attr( $gateway_id ) . '" ' . $checked . ' /> ' . esc_html( $gateway->get_title() ) . '</label>';
+                        $first = false;
+                    }
+                    echo '</div>';
+                }
+            } else {
+                $can_book = false;
+                echo '<div class="mep-payment-warning" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; border-radius: 4px;">';
+                echo esc_html__( 'No payment method is enabled. Please contact the administrator.', 'mage-eventpress' );
+                echo '</div>';
+            }
+        }
+        
+        if ( $can_book ) {
+        ?>
         <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
+        <?php } ?>
 	<?php } ?>
 </div>

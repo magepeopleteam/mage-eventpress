@@ -1481,11 +1481,11 @@ div.faq_area .item {
 	background-color: white;
 	cursor: pointer;
 	color: #333;
-	border-bottom: 1px solid #F0F0F0;
 	transition: all .5s;
 }
 
-div.faq_area .item:hover {
+div.faq_area .item:hover,
+div.faq_area .item:has(.content.mActive) {
 	background-color: #F0F0F0;
 }
 
@@ -1494,6 +1494,9 @@ div.faq_area .item .title {
 	display: flex;
 	justify-content: space-between;
 	color: #333;
+	margin: 5px 0;
+	border: 1px solid #ede8e8;
+	border-radius: 5px;
 }
 
 div.faq_area .item .title i {
@@ -4851,11 +4854,25 @@ div.mpwem_style [data-bg-image] {
 	}
 
 	/* Timeline — tablet/mobile: tag expands, connector hidden, time stays right */
-	div.mpwem_timeline_area .timeline_body { padding: 12px; }
-	div.timeline_item { padding: 0 0 14px 42px; }
-	div.timeline_item .timeline_tag { flex: 1; }
-	div.timeline_item .tl_title { max-width: 100%; }
-	div.timeline_item .timeline_connector { display: none; }
+	div.mpwem_timeline_area .timeline_body {
+		padding: 12px;
+	}
+
+	div.timeline_item {
+		padding: 0 0 14px 42px;
+	}
+
+	div.timeline_item .timeline_tag {
+		flex: 1;
+	}
+
+	div.timeline_item .tl_title {
+		max-width: 100%;
+	}
+
+	div.timeline_item .timeline_connector {
+		display: none;
+	}
 }
 
 @media only screen and (max-width: 650px) {
@@ -5159,13 +5176,43 @@ div.mpwem_style [data-bg-image] {
 
 /* Timeline — small phones: stack tag and time vertically */
 @media only screen and (max-width: 420px) {
-	div.mpwem_timeline_area .timeline_body { padding: 10px; }
-	div.timeline_item { padding: 0 0 12px 36px; }
-	div.timeline_item .timeline_counter { width: 26px; height: 26px; font-size: 11px; top: 3px; }
-	div.timeline_item .timeline_header { flex-direction: column; align-items: flex-start; gap: 5px; }
-	div.timeline_item .timeline_tag { clip-path: none; border-radius: 6px; padding: 7px 13px; }
-	div.timeline_item .tl_title { white-space: normal; overflow: visible; text-overflow: clip; }
-	div.mpwem_timeline_area .timeline_time { font-size: 11px; padding: 4px 9px; }
+	div.mpwem_timeline_area .timeline_body {
+		padding: 10px;
+	}
+
+	div.timeline_item {
+		padding: 0 0 12px 36px;
+	}
+
+	div.timeline_item .timeline_counter {
+		width: 26px;
+		height: 26px;
+		font-size: 11px;
+		top: 3px;
+	}
+
+	div.timeline_item .timeline_header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 5px;
+	}
+
+	div.timeline_item .timeline_tag {
+		clip-path: none;
+		border-radius: 6px;
+		padding: 7px 13px;
+	}
+
+	div.timeline_item .tl_title {
+		white-space: normal;
+		overflow: visible;
+		text-overflow: clip;
+	}
+
+	div.mpwem_timeline_area .timeline_time {
+		font-size: 11px;
+		padding: 4px 9px;
+	}
 }
 
 /********************************************************************************************************************************************/

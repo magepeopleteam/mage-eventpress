@@ -5596,6 +5596,10 @@ function mep_change_date_status() {
     if ( ! function_exists( 'mpwem_early_date_filter' ) ) {
         add_filter('mpwem_early_date', 'mpwem_early_date_filter', 10, 3);
         function mpwem_early_date_filter($return, $ticket_type, $event_id) {
+            $early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+            if ( $early_bird_status !== 'on' ) {
+                return $return;
+            }
             $sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && !empty($ticket_type['option_sale_start_date_t']) ? date('Y-m-d H:i', strtotime($ticket_type['option_sale_start_date_t'])) : '';
             if ($sale_start_datetime) {
                 $current_time = current_time('Y-m-d H:i');

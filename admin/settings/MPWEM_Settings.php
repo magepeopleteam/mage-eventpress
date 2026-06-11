@@ -76,7 +76,10 @@
 				}
 
 				if ( get_post_type( $post_id ) == 'mep_events' ) {
-					$mep_event_type  = isset( $_POST['mep_event_type'] ) && sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_event_type'] ) ) ? 'online' : 'offline';
+					$mep_event_type  = isset( $_POST['mep_event_type'] ) ? sanitize_text_field( $_POST['mep_event_type'] ) : 'offline';
+					if ( ! in_array( $mep_event_type, [ 'online', 'offline', 'hybrid' ] ) ) {
+						$mep_event_type = 'offline';
+					}
 					$mep_org_address = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
 					// Handle venue location with coordinate detection
 					if ( isset( $_POST['mep_location_venue'] ) ) {
@@ -145,6 +148,7 @@
 					$sale_start_date      = isset( $_POST['option_sale_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_date'] ) ) : [];
 					$sale_start_time      = isset( $_POST['option_sale_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_time'] ) ) : [];
 					$option_ticket_enable = isset( $_POST['option_ticket_enable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_enable'] ) ) : [];
+					$ticket_mode_t        = isset( $_POST['option_ticket_mode_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_mode_t'] ) ) : [];
 					$count                = count( $names );
 					for ( $i = 0; $i < $count; $i ++ ) {
 						if ( $names[ $i ] ) {
@@ -156,6 +160,7 @@
 							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
 							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_ticket_enable']   = $option_ticket_enable[ $i ] ?? 'yes';
+							$new_ticket_type[ $i ]['option_ticket_mode_t']   = in_array( $ticket_mode_t[ $i ] ?? '', [ 'inperson', 'online' ] ) ? $ticket_mode_t[ $i ] : 'inperson';
 							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
 							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];

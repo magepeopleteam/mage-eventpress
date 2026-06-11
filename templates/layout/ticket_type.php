@@ -20,7 +20,8 @@
 	$total_available    = max( $total_available, 0 );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
-		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$ticket_types  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$event_type    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_type', 'offline' );
 		$count        = 0;
 		if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
@@ -36,6 +37,7 @@
 								// echo '<pre>';print_r($ticket_type);echo '</pre>';
 								//  $user_date;
 								$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+								$ticket_mode       = is_array($ticket_type) && array_key_exists( 'option_ticket_mode_t', $ticket_type ) ? $ticket_type['option_ticket_mode_t'] : 'inperson';
 								$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 								$ticket_price      = is_array($ticket_type) && array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 								$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
@@ -91,7 +93,16 @@
                                     <div class="mep_ticket_item">
                                         <div class="ticket-data">
                                             <div class="ticket-info">
-                                                <div class="ticket-name"><?php echo esc_html( $ticket_name ); ?></div>
+                                                <div class="ticket-name">
+																<?php echo esc_html( $ticket_name ); ?>
+																<?php if ( $event_type === 'hybrid' ) : ?>
+																	<?php if ( $ticket_mode === 'online' ) : ?>
+																		<span class="mep-ticket-mode-badge mep-ticket-mode-badge--online"><?php esc_html_e( 'Online Event', 'mage-eventpress' ); ?></span>
+																	<?php else : ?>
+																		<span class="mep-ticket-mode-badge mep-ticket-mode-badge--inperson"><?php esc_html_e( 'In Person', 'mage-eventpress' ); ?></span>
+																	<?php endif; ?>
+																<?php endif; ?>
+																</div>
 												<?php if ( $ticket_details ) { ?>
                                                     <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 												<?php } ?>

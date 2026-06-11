@@ -2125,3 +2125,27 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		width:100%;
 		background-color: #fff;
 	}
+
+/* Ticket mode badges (shown on hybrid events) */
+.mep-ticket-mode-badge {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1;
+	padding: 3px 8px;
+	border-radius: 20px;
+	margin-left: 6px;
+	white-space: nowrap;
+	letter-spacing: 0.02em;
+}
+.mep-ticket-mode-badge--inperson {
+	background-color: #ecfdf5;
+	color: #059669;
+	border: 1px solid #6ee7b7;
+}
+.mep-ticket-mode-badge--online {
+	background-color: #eff6ff;
+	color: #2563eb;
+	border: 1px solid #bfdbfe;
+}

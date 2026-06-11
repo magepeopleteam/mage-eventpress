@@ -2866,6 +2866,15 @@
                     $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Hide Manual Fields');
                 }
             });
+
+            // If any manual address field already has a saved value, show the panel immediately on load
+            const hasManualValues = $manualPanel.find('input[type="text"]').toArray()
+                .some(function(el) { return $(el).val().trim() !== ''; });
+            if (hasManualValues) {
+                $manualPanel.show();
+                $toggleBtn.addClass('is-open');
+                $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Hide Manual Fields');
+            }
         }
 
         // ── 3. Real-time iframe map update while typing in the venue field ─────

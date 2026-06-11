@@ -279,7 +279,7 @@
 						}
 					} else {
 						if ( ! empty( $cart_date ) ) {
-							$item->add_meta_data( $date_text, $cart_date );
+							$item->add_meta_data( $date_text, get_mep_datetime( $cart_date, apply_filters( 'mep_cart_date_format', 'date-time-text' ), $event_id ) );
 						}
 					}
 					if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {

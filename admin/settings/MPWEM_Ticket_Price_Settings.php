@@ -216,6 +216,7 @@
 														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="completed" <?php echo in_array('completed', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></label>
 													</div>
 												</div>
+											</div>
 										</div>
 									</div>
 
@@ -232,13 +233,19 @@
 													</svg>
 													<div>
 														<strong style="display:block; margin-bottom:4px;"><?php esc_html_e( 'PayPal', 'mage-eventpress' ); ?></strong>
-														<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
-															<input type="checkbox" name="mep_paypal_enable" id="mep_modal_enable_paypal" value="on" <?php checked( $paypal_enabled ); ?> />
-															<span><?php esc_html_e( 'Enable PayPal', 'mage-eventpress' ); ?></span>
-														</label>
+														<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+															<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
+																<input type="checkbox" name="mep_paypal_enable" id="mep_modal_enable_paypal" value="on" <?php checked( $paypal_enabled ); ?> />
+																<span><?php esc_html_e( 'Enable PayPal', 'mage-eventpress' ); ?></span>
+															</label>
+														<?php endif; ?>
 													</div>
 												</div>
-												<button type="button" id="mep-paypal-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+													<button type="button" id="mep-paypal-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php else : ?>
+													<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php endif; ?>
 											</div>
 											
 											<div style="background:#f8f9fa; border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -248,13 +255,19 @@
 													</svg>
 													<div>
 														<strong style="display:block; margin-bottom:4px;"><?php esc_html_e( 'Stripe', 'mage-eventpress' ); ?></strong>
-														<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
-															<input type="checkbox" name="mep_stripe_enable" id="mep_modal_enable_stripe" value="on" <?php checked( $stripe_enabled ); ?> />
-															<span><?php esc_html_e( 'Enable Stripe', 'mage-eventpress' ); ?></span>
-														</label>
+														<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+															<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
+																<input type="checkbox" name="mep_stripe_enable" id="mep_modal_enable_stripe" value="on" <?php checked( $stripe_enabled ); ?> />
+																<span><?php esc_html_e( 'Enable Stripe', 'mage-eventpress' ); ?></span>
+															</label>
+														<?php endif; ?>
 													</div>
 												</div>
-												<button type="button" id="mep-stripe-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+													<button type="button" id="mep-stripe-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php else : ?>
+													<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php endif; ?>
 											</div>
 										</div>
 									</div>

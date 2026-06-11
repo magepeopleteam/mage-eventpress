@@ -40,6 +40,12 @@
 				if ($dismissed == 'yes') {
 					return false;
 				}
+
+				global $pagenow;
+				if ($pagenow !== 'edit.php' || !isset($_GET['post_type']) || $_GET['post_type'] !== 'mep_events') {
+					return false;
+				}
+
 				return true;
 			}
 
@@ -143,41 +149,66 @@
 							$actions.slideUp(250);
 							$progress.slideDown(300);
 
-							$fill.css('width', '50%');
-							$status.text('<?php echo esc_js(__("Importing dummy data. This may take a moment...", "mage-eventpress")); ?>').removeClass('mpwem-success mpwem-error');
+							$fill.css('width', '0%');
+							$status.text('<?php echo esc_js(__("Starting import...", "mage-eventpress")); ?>').removeClass('mpwem-success mpwem-error');
 
-							$.ajax({
-								url: ajaxurl,
-								type: 'POST',
-								data: {
-									action: 'mep_import_dummy_data',
-									nonce: '<?php echo wp_create_nonce("mep_import_dummy"); ?>'
-								},
-								success: function(response) {
-									if (response.success) {
-										$fill.css('width', '100%');
-										$status.text('<?php echo esc_js(__("Import complete!", "mage-eventpress")); ?>').addClass('mpwem-success');
-										$popup.addClass('mpwem-state-success');
-										$popup.find('.mpwem-woo-icon').html(
-											'<svg width="40" height="40" viewBox="0 0 24 24" fill="none">' +
-											'<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>' +
-											'<path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
-											'</svg>'
-										);
-										$popup.find('.mpwem-woo-title').text('<?php echo esc_js(__("Success", "mage-eventpress")); ?>');
-										$popup.find('.mpwem-woo-desc').text('<?php echo esc_js(__("Dummy data imported successfully. Reloading page...", "mage-eventpress")); ?>');
-										
-										setTimeout(function() {
-											window.location.reload();
-										}, 1500);
-									} else {
-										showError(response.data && response.data.message ? response.data.message : '<?php echo esc_js(__("Failed to import.", "mage-eventpress")); ?>');
+							function doStep(stepName, index, totalEvents) {
+								$.ajax({
+									url: ajaxurl,
+									type: 'POST',
+									data: {
+										action: 'mep_import_dummy_data',
+										nonce: '<?php echo wp_create_nonce("mep_import_dummy"); ?>',
+										step: stepName,
+										index: index
+									},
+									success: function(response) {
+										if (response.success) {
+											if (stepName === 'init') {
+												$fill.css('width', '10%');
+												$status.text('<?php echo esc_js(__("Importing events...", "mage-eventpress")); ?>');
+												var total = response.data.total_events || 0;
+												if (total > 0) {
+													doStep('event', 0, total);
+												} else {
+													doStep('finalize', 0, 0);
+												}
+											} else if (stepName === 'event') {
+												var nextIndex = index + 1;
+												var percent = 10 + Math.floor((nextIndex / totalEvents) * 80);
+												$fill.css('width', percent + '%');
+												$status.text('<?php echo esc_js(__("Importing events...", "mage-eventpress")); ?> (' + nextIndex + '/' + totalEvents + ')');
+												
+												if (nextIndex < totalEvents) {
+													doStep('event', nextIndex, totalEvents);
+												} else {
+													doStep('finalize', 0, 0);
+												}
+											} else if (stepName === 'finalize') {
+												$fill.css('width', '100%');
+												$status.text('<?php echo esc_js(__("Import complete! 100%", "mage-eventpress")); ?>').addClass('mpwem-success');
+												$popup.addClass('mpwem-state-success');
+												$popup.find('.mpwem-woo-icon').html(
+													'<svg width="40" height="40" viewBox="0 0 24 24" fill="none">' +
+													'<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>' +
+													'<path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+													'</svg>'
+												);
+												$popup.find('.mpwem-woo-title').text('<?php echo esc_js(__("Success", "mage-eventpress")); ?>');
+												$popup.find('.mpwem-woo-desc').text('<?php echo esc_js(__("Dummy data imported successfully. Reloading page...", "mage-eventpress")); ?>');
+												setTimeout(function() { window.location.reload(); }, 1500);
+											}
+										} else {
+											showError(response.data && response.data.message ? response.data.message : '<?php echo esc_js(__("Failed to import.", "mage-eventpress")); ?>');
+										}
+									},
+									error: function() {
+										showError('<?php echo esc_js(__("Failed to import. Please try again.", "mage-eventpress")); ?>');
 									}
-								},
-								error: function() {
-									showError('<?php echo esc_js(__("Failed to import. Please try again.", "mage-eventpress")); ?>');
-								}
-							});
+								});
+							}
+
+							doStep('init', 0, 0);
 						});
 
 						$dismissBtn.on('click', function(e) {
@@ -230,8 +261,29 @@
 				if (!current_user_can('manage_options')) {
 					wp_send_json_error(array('message' => 'Permission denied.'));
 				}
-				$this->dummy_import();
-				wp_send_json_success();
+
+				$step = isset($_POST['step']) ? sanitize_text_field($_POST['step']) : 'all';
+				$index = isset($_POST['index']) ? intval($_POST['index']) : 0;
+
+				try {
+					if ($step === 'init') {
+						$this->dummy_import_init();
+						$dummy_data = $this->dummy_data();
+						$total_events = isset($dummy_data['custom_post']['mep_events']) ? count($dummy_data['custom_post']['mep_events']) : 0;
+						wp_send_json_success(array('message' => 'Init complete', 'total_events' => $total_events));
+					} elseif ($step === 'event') {
+						$this->dummy_import_event($index);
+						wp_send_json_success(array('message' => "Event $index complete"));
+					} elseif ($step === 'finalize') {
+						$this->dummy_import_finalize();
+						wp_send_json_success(array('message' => 'Finalize complete'));
+					} else {
+						$this->dummy_import();
+						wp_send_json_success();
+					}
+				} catch (\Exception $e) {
+					wp_send_json_error(array('message' => $e->getMessage()));
+				}
 			}
 
 			public function ajax_dismiss_dummy_import() {
@@ -297,83 +349,102 @@
 					wp_insert_post($post_details);
 				}
 			}
-			public function dummy_import() {
-
+			public function dummy_import_init() {
 				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
-				if ($dummy_post_inserted) {
-					return;
+				if ($dummy_post_inserted) return;
+
+				$dummy_data = $this->dummy_data();
+				if (isset($dummy_data['taxonomy'])) {
+					foreach ($dummy_data['taxonomy'] as $taxonomy => $dummy_taxonomy) {
+						if (taxonomy_exists($taxonomy)) {
+							$check_terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false));
+							if (is_string($check_terms) || (is_array($check_terms) && sizeof($check_terms) == 0)) {
+								foreach ($dummy_taxonomy as $taxonomy_data) {
+									$term = wp_insert_term($taxonomy_data['name'], $taxonomy);
+									if (!is_wp_error($term) && is_array($taxonomy_data) && array_key_exists('tax_data', $taxonomy_data)) {
+										foreach ($taxonomy_data['tax_data'] as $meta_key => $data) {
+											update_term_meta($term['term_id'], $meta_key, $data);
+										}
+									}
+								}
+							}
+						}
+					}
 				}
-				$count_existing_event = wp_count_posts('mep_events')->publish;
-				$plugin_active = self::check_plugin('mage-eventpress', 'woocommerce-event-press.php');
-				$gallery_images = [];
-				$related_events = [];
-				if ($count_existing_event == 0 && $plugin_active == 1 && $dummy_post_inserted != 'yes') {
-					$dummy_data = $this->dummy_data();
-					foreach ($dummy_data as $type => $dummy) {
-						if ($type == 'taxonomy') {
-							foreach ($dummy as $taxonomy => $dummy_taxonomy) {
-								if (taxonomy_exists($taxonomy)) {
-									$check_terms = get_terms(array('taxonomy' => $taxonomy, 'hide_empty' => false));
-									if (is_string($check_terms) || (is_array($check_terms) && sizeof($check_terms) == 0)) {
-										foreach ($dummy_taxonomy as $taxonomy_data) {
-											$term = wp_insert_term($taxonomy_data['name'], $taxonomy);
-											if (is_array($taxonomy_data) && array_key_exists( 'tax_data', $taxonomy_data )) {
-												foreach ($taxonomy_data['tax_data'] as $meta_key => $data) {
-													update_term_meta($term['term_id'], $meta_key, $data);
-												}
-											}
-										}
-									}
-								}
+				$this->craete_pages();
+			}
+
+			public function dummy_import_event($index) {
+				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
+				if ($dummy_post_inserted) return;
+
+				$dummy_data = $this->dummy_data();
+				if (!isset($dummy_data['custom_post']['mep_events'][$index])) return;
+				
+				$dummy_event = $dummy_data['custom_post']['mep_events'][$index];
+				$existing = get_page_by_title($dummy_event['name'], OBJECT, 'mep_events');
+				if ($existing) return;
+
+				$post_id = wp_insert_post([
+					'post_title' => $dummy_event['name'],
+					'post_content' => $dummy_event['content'],
+					'post_status' => 'publish',
+					'post_type' => 'mep_events',
+				]);
+
+				if (is_array($dummy_event) && array_key_exists('taxonomy_terms', $dummy_event)) {
+					foreach ($dummy_event['taxonomy_terms'] as $taxonomy_term) {
+						wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
+					}
+				}
+
+				if (is_array($dummy_event) && array_key_exists('post_data', $dummy_event)) {
+					foreach ($dummy_event['post_data'] as $meta_key => $data) {
+						if ($meta_key == 'feature_image') {
+							$url = $data;
+							$image = media_sideload_image($url, $post_id, null, 'id');
+							if (!is_wp_error($image)) {
+								set_post_thumbnail($post_id, $image);
 							}
+						} else {
+							update_post_meta($post_id, $meta_key, $data);
 						}
 					}
-					if ($type == 'custom_post') {
-						foreach ($dummy as $custom_post => $dummy_post) {
-							$args = array(
-								'post_type' => $custom_post,
-								'posts_per_page' => -1,
-							);
-							$post = new WP_Query($args);
-							if ($post->post_count == 0) {
-								foreach ($dummy_post as $dummy_data) {
-									$post_id = wp_insert_post([
-										'post_title' => $dummy_data['name'],
-										'post_content' => $dummy_data['content'],
-										'post_status' => 'publish',
-										'post_type' => $custom_post,
-									]);
-									$related_events[] = $post_id;
-									if (is_array($dummy_data) && array_key_exists( 'taxonomy_terms', $dummy_data )) {
-										foreach ($dummy_data['taxonomy_terms'] as $taxonomy_term) {
-											wp_set_object_terms($post_id, $taxonomy_term['terms'], $taxonomy_term['taxonomy_name'], true);
-										}
-									}
-									if (is_array($dummy_data) && array_key_exists( 'post_data', $dummy_data )) {
-										foreach ($dummy_data['post_data'] as $meta_key => $data) {
-											if ($meta_key == 'feature_image') {
-												$url = $data;
-												$image = media_sideload_image($url, $post_id, null, 'id');
-												$gallery_images[] = $image;
-												set_post_thumbnail($post_id, $image);
-											} else {
-												update_post_meta($post_id, $meta_key, $data);
-
-											}
-											update_option('mep_dummy_post_data_inserted', 'yes');
-
-										}
-									}
-								}
-							}
-						}
-					}
-					$this->craete_pages();
-					$this->add_gallery_images($custom_post,$gallery_images);
-					$this->add_related_events($custom_post,$related_events);
-					update_option('mep_dummy_already_inserted', 'yes');
+					update_option('mep_dummy_post_data_inserted', 'yes');
 				}
 			}
+
+			public function dummy_import_finalize() {
+				$dummy_post_inserted = get_option('mep_dummy_already_inserted');
+				if ($dummy_post_inserted) return;
+
+				$args = array(
+					'post_type' => 'mep_events',
+					'posts_per_page' => -1,
+					'post_status' => 'publish'
+				);
+				$query = new WP_Query($args);
+				$related_events = [];
+				$gallery_images = [];
+
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$related_events[] = get_the_ID();
+						if (has_post_thumbnail()) {
+							$gallery_images[] = get_post_thumbnail_id();
+						}
+					}
+					wp_reset_postdata();
+				}
+
+				$this->add_gallery_images('mep_events', $gallery_images);
+				$this->add_related_events('mep_events', $related_events);
+
+				update_option('mep_dummy_already_inserted', 'yes');
+			}
+
+			public function dummy_import() {}
 
 			public function add_gallery_images($custom_post,$images){
 				$args = array(

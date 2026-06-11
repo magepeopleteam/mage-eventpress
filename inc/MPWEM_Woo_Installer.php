@@ -85,11 +85,7 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 		 * @return bool
 		 */
 		private function should_show_popup() {
-			if ( get_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed', true ) ) {
-				return false;
-			}
-			// Always show the popup when WooCommerce is not active
-			return ! $this->is_woo_active();
+			return false; // Disabled by user request
 		}
 
 		/**

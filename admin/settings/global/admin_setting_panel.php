@@ -2186,8 +2186,8 @@ tr.payment_tabs_html { display: none !important; }
             </svg>
             ' . __( "PayPal", "mage-eventpress" ) . '
         </h3>
-        <span class="gateway-status ' . ($pp_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($pp_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
-        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-paypal-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
+        ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<span class="gateway-status ' . ($pp_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($pp_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>' : '' ) . '
+        ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<button type="button" class="button button-secondary gateway-configure-btn" id="mep-paypal-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>' : '<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="' . esc_attr__("Available in Pro version", "mage-eventpress") . '">PRO</span>' ) . '
     </div>
 </div>
 
@@ -2200,8 +2200,8 @@ tr.payment_tabs_html { display: none !important; }
             </svg>
             ' . __( "Stripe", "mage-eventpress" ) . '
         </h3>
-        <span class="gateway-status ' . ($st_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($st_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
-        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
+        ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<span class="gateway-status ' . ($st_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($st_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>' : '' ) . '
+        ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>' : '<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="' . esc_attr__("Available in Pro version", "mage-eventpress") . '">PRO</span>' ) . '
     </div>
 </div>
 '

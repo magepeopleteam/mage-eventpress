@@ -491,13 +491,34 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 													'ea_company'    => __( 'Company', 'mage-eventpress' ),
 												);
 												
+												// Build ticket mode map once per attendee event for badge display.
+												$_ev_type_ma  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_type', 'offline' );
+												$_mode_map_ma = [];
+												if ( $_ev_type_ma === 'hybrid' ) {
+													$_types_ma = get_post_meta( $event_id, 'mep_event_ticket_type', true );
+													if ( is_array( $_types_ma ) ) {
+														foreach ( $_types_ma as $_t ) {
+															if ( ! empty( $_t['option_name_t'] ) ) {
+																$_mode_map_ma[ $_t['option_name_t'] ] = isset( $_t['option_ticket_mode_t'] ) ? $_t['option_ticket_mode_t'] : 'inperson';
+															}
+														}
+													}
+												}
+
 												foreach ( $attendee_data as $meta_key => $label ) {
 													$value = get_post_meta( $attendee_id, $meta_key, true );
 													if ( ! empty( $value ) ) {
+														$display_value = esc_html( $value );
+														if ( $meta_key === 'ea_ticket_type' && $_ev_type_ma === 'hybrid' ) {
+															$_mode    = isset( $_mode_map_ma[ $value ] ) ? $_mode_map_ma[ $value ] : 'inperson';
+															$_blabel  = $_mode === 'online' ? esc_html__( 'Online Event', 'mage-eventpress' ) : esc_html__( 'In Person', 'mage-eventpress' );
+															$_bcls    = 'mep-ticket-mode-badge ' . ( $_mode === 'online' ? 'mep-ticket-mode-badge--online' : 'mep-ticket-mode-badge--inperson' );
+															$display_value .= ' <span class="' . $_bcls . '">' . $_blabel . '</span>';
+														}
 														?>
 														<div class="mpwem-info-row">
 															<span class="mpwem-info-label"><?php echo esc_html( $label ); ?>:</span>
-															<span class="mpwem-info-value"><?php echo esc_html( $value ); ?></span>
+															<span class="mpwem-info-value"><?php echo $display_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- badge HTML is constructed safely above ?></span>
 														</div>
 														<?php
 													}
@@ -541,6 +562,59 @@ if ( ! class_exists( 'MPWEM_My_Account_Dashboard' ) ) {
 						</div>
 					</div>
 					
+					<!-- Ticket Summary Section (base plugin — no addon required) -->
+					<?php
+					$_bd_event_type = '';
+					$_bd_mode_map   = [];
+					foreach ( $order->get_items() as $_bd_item_id => $_bd_item ) {
+						$_bd_eid = wc_get_order_item_meta( $_bd_item_id, 'event_id', true );
+						if ( get_post_type( $_bd_eid ) !== 'mep_events' ) {
+							continue;
+						}
+						$_bd_ticket_arr = wc_get_order_item_meta( $_bd_item_id, '_event_ticket_info', true );
+						if ( ! is_array( $_bd_ticket_arr ) || empty( $_bd_ticket_arr ) ) {
+							continue;
+						}
+						if ( empty( $_bd_event_type ) ) {
+							$_bd_event_type = MPWEM_Global_Function::get_post_info( $_bd_eid, 'mep_event_type', 'offline' );
+							if ( $_bd_event_type === 'hybrid' ) {
+								$_bd_types = get_post_meta( $_bd_eid, 'mep_event_ticket_type', true );
+								if ( is_array( $_bd_types ) ) {
+									foreach ( $_bd_types as $_bd_t ) {
+										if ( ! empty( $_bd_t['option_name_t'] ) ) {
+											$_bd_mode_map[ $_bd_t['option_name_t'] ] = isset( $_bd_t['option_ticket_mode_t'] ) ? $_bd_t['option_ticket_mode_t'] : 'inperson';
+										}
+									}
+								}
+							}
+						}
+						?>
+						<div class="mpwem-section mpwem-tickets-section">
+							<h4><?php esc_html_e( 'Ticket Information', 'mage-eventpress' ); ?></h4>
+							<ul class="mpwem-ticket-list" style="list-style:none;margin:0;padding:0;">
+								<?php foreach ( $_bd_ticket_arr as $_bd_ticket ) :
+									$_bd_tname = isset( $_bd_ticket['ticket_name'] ) ? $_bd_ticket['ticket_name'] : '';
+									$_bd_qty   = isset( $_bd_ticket['ticket_qty'] ) ? (int) $_bd_ticket['ticket_qty'] : 0;
+									$_bd_price = isset( $_bd_ticket['ticket_price'] ) ? (float) $_bd_ticket['ticket_price'] : 0;
+									$_bd_badge = '';
+									if ( $_bd_event_type === 'hybrid' && $_bd_tname ) {
+										$_bd_mode   = isset( $_bd_mode_map[ $_bd_tname ] ) ? $_bd_mode_map[ $_bd_tname ] : 'inperson';
+										$_bd_blabel = $_bd_mode === 'online' ? esc_html__( 'Online Event', 'mage-eventpress' ) : esc_html__( 'In Person', 'mage-eventpress' );
+										$_bd_bcls   = 'mep-ticket-mode-badge ' . ( $_bd_mode === 'online' ? 'mep-ticket-mode-badge--online' : 'mep-ticket-mode-badge--inperson' );
+										$_bd_badge  = ' <span class="' . $_bd_bcls . '">' . $_bd_blabel . '</span>';
+									}
+									?>
+									<li style="padding:6px 0;border-bottom:1px solid #f0f0f0;">
+										<strong><?php echo esc_html( $_bd_tname ); ?></strong><?php echo $_bd_badge; // phpcs:ignore ?>
+										&nbsp;&mdash;&nbsp;<?php echo wp_kses_post( wc_price( $_bd_price ) ); ?> &times; <?php echo esc_html( $_bd_qty ); ?>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+						<?php
+					}
+					?>
+
 					<!-- Order Information Section -->
 					<div class="mpwem-section mpwem-order-section">
 						<h4><?php esc_html_e( 'Order Information', 'mage-eventpress' ); ?></h4>

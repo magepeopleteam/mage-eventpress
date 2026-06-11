@@ -1336,7 +1336,8 @@
   transition: all 0.5s;
 }
 
-#mage-container.mage div.faq_area .item:hover {
+#mage-container.mage div.faq_area .item:hover,
+#mage-container.mage div.faq_area .item:has(.content.mActive) {
   background-color: #F0F0F0;
 }
 
@@ -1344,6 +1345,9 @@
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  margin: 5px 0;
+  border: 1px solid #ede8e8;
+  border-radius: 5px;
 }
 
 #mage-container.mage div.faq_area .item .title i {

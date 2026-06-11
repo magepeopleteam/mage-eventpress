@@ -154,7 +154,8 @@
 																		<?php
 																			if ( $exit_avail < 1 ) {
 																				$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
-																				if ( $early_date ) {
+																				$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+																				if ( $early_date && $early_bird_status === 'on' ) {
 																					$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 																					if ( $sale_end_datetime ) {
 																						$current_time = current_time( 'Y-m-d H:i' );
@@ -171,12 +172,17 @@
 																						MPWEM_Custom_Layout::qty_input( $input_data );
 																					}
 																				} else {
-																					$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
-																					?>
-                                                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
-																							echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
-                                                                                    <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
-																					<?php
+																					$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+																					if ( $early_bird_status === 'on' ) {
+																						$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+																						?>
+                                                                                        <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
+																								echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+                                                                                        <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+																						<?php
+																					} else {
+																						MPWEM_Custom_Layout::qty_input( $input_data );
+																					}
 																				}
 																			} else {
 																				?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr( $ticket_price ); ?>"/><?php

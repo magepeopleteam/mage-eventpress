@@ -1591,6 +1591,11 @@ if ( ! class_exists( 'MPWEM_Calendar_Ajax' ) ) {
 				return false;
 			}
 
+			$early_bird_status = function_exists( 'get_post_meta' ) ? get_post_meta( $event_id, 'mep_enable_early_bird_status', true ) : 'off';
+			if ( $early_bird_status !== 'on' ) {
+				return true;
+			}
+
 			$mep_hide_expire_ticket = function_exists( 'mep_get_option' ) ? mep_get_option( 'mep_hide_expire_ticket', 'general_setting_sec', 'no' ) : 'no';
 			$early_date             = apply_filters( 'mpwem_early_date', true, $ticket, $event_id );
 

@@ -2126,103 +2126,26 @@ div.mpwem_style [data-bg-image] { background-size: cover; background-repeat: no-
 		background-color: #fff;
 	}
 
-/* Modern Frontend RSVP Form Styling */
-.mep-rsvp-container {
-	padding: 28px !important;
-	background: #ffffff !important;
-	border-radius: 16px !important;
-	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
-	margin-top: 30px !important;
-	border: 1px solid #f1f5f9 !important;
+/* Ticket mode badges (shown on hybrid events) */
+.mep-ticket-mode-badge {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1;
+	padding: 3px 8px;
+	border-radius: 20px;
+	margin-left: 6px;
+	white-space: nowrap;
+	letter-spacing: 0.02em;
 }
-.mep-rsvp-container h3 {
-	margin-top: 0 !important;
-	margin-bottom: 24px !important;
-	font-weight: 700 !important;
-	color: #0f172a !important;
-	font-size: 22px !important;
-	letter-spacing: -0.02em !important;
+.mep-ticket-mode-badge--inperson {
+	background-color: #ecfdf5;
+	color: #059669;
+	border: 1px solid #6ee7b7;
 }
-.mep-rsvp-fields {
-	display: grid !important;
-	grid-gap: 20px !important;
-	margin-bottom: 24px !important;
-}
-.mep-rsvp-field {
-	display: flex !important;
-	flex-direction: column !important;
-}
-.mep-rsvp-field label {
-	display: block !important;
-	margin-bottom: 8px !important;
-	font-weight: 600 !important;
-	font-size: 13px !important;
-	color: #475569 !important;
-	text-transform: uppercase !important;
-	letter-spacing: 0.05em !important;
-}
-.mep-rsvp-field label span {
-	color: #ef4444 !important;
-}
-.mep-rsvp-field input {
-	width: 100% !important;
-	padding: 12px 16px !important;
-	border: 1px solid #cbd5e1 !important;
-	border-radius: 10px !important;
-	font-size: 14px !important;
-	color: #1e293b !important;
-	background-color: #ffffff !important;
-	box-sizing: border-box !important;
-	outline: none !important;
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
-	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-.mep-rsvp-field input::placeholder {
-	color: #94a3b8 !important;
-}
-.mep-rsvp-field input:hover {
-	border-color: #94a3b8 !important;
-}
-.mep-rsvp-field input:focus {
-	border-color: #3b82f6 !important;
-	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12) !important;
-	background-color: #ffffff !important;
-}
-.mep-rsvp-submit-btn {
-	background: #3b82f6 !important;
-	color: #ffffff !important;
-	border: none !important;
-	padding: 14px 28px !important;
-	border-radius: 10px !important;
-	font-size: 15px !important;
-	font-weight: 600 !important;
-	cursor: pointer !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	gap: 8px !important;
-	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-	width: 100% !important;
-	box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2) !important;
-}
-.mep-rsvp-submit-btn:hover {
-	background: #2563eb !important;
-	box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3) !important;
-	transform: translateY(-1px) !important;
-}
-.mep-rsvp-submit-btn:active {
-	transform: translateY(0) !important;
-}
-.mep-rsvp-submit-btn:focus {
-	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4) !important;
-	outline: none !important;
-}
-.mep-rsvp-message {
-	display: none;
-	padding: 14px 18px !important;
-	border-radius: 10px !important;
-	margin-bottom: 20px !important;
-	font-size: 14px !important;
-	font-weight: 500 !important;
-	line-height: 1.5 !important;
+.mep-ticket-mode-badge--online {
+	background-color: #eff6ff;
+	color: #2563eb;
+	border: 1px solid #bfdbfe;
 }

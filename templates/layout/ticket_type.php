@@ -20,10 +20,12 @@
 	$total_available    = max( $total_available, 0 );
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, $total_available, $date );
-		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$ticket_types  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$event_type    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_type', 'offline' );
 		$count        = 0;
 		if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) { ?>
             <div class="mpwem_ticket_type">
+			
                 <div class="card-body">
 					<?php foreach ( $ticket_types as $ticket_type ) {
 						$option_ticket_enable = is_array($ticket_type) && array_key_exists( 'option_ticket_enable', $ticket_type ) ? $ticket_type['option_ticket_enable'] : 'yes';
@@ -35,6 +37,7 @@
 								// echo '<pre>';print_r($ticket_type);echo '</pre>';
 								//  $user_date;
 								$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+								$ticket_mode       = is_array($ticket_type) && array_key_exists( 'option_ticket_mode_t', $ticket_type ) ? $ticket_type['option_ticket_mode_t'] : 'inperson';
 								$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 								$ticket_price      = is_array($ticket_type) && array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 								$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
@@ -72,8 +75,9 @@
 									$count ++;
                                     $early_msg='yes';
 									$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
+									$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
 									$mep_hide_expire_ticket=mep_get_option( 'mep_hide_expire_ticket', 'general_setting_sec', 'no' );
-									if ( $early_date ) {
+									if ( $early_date && $early_bird_status === 'on' ) {
 										$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 										if ( $sale_end_datetime ) {
 											$current_time = current_time( 'Y-m-d H:i' );
@@ -82,12 +86,23 @@
                                             }
                                         }
                                     }
+
                                     if($early_msg == 'yes'){
 									?>
+									
                                     <div class="mep_ticket_item">
                                         <div class="ticket-data">
                                             <div class="ticket-info">
-                                                <div class="ticket-name"><?php echo esc_html( $ticket_name ); ?></div>
+                                                <div class="ticket-name">
+																<?php echo esc_html( $ticket_name ); ?>
+																<?php if ( $event_type === 'hybrid' ) : ?>
+																	<?php if ( $ticket_mode === 'online' ) : ?>
+																		<span class="mep-ticket-mode-badge mep-ticket-mode-badge--online"><?php esc_html_e( 'Online Event', 'mage-eventpress' ); ?></span>
+																	<?php else : ?>
+																		<span class="mep-ticket-mode-badge mep-ticket-mode-badge--inperson"><?php esc_html_e( 'In Person', 'mage-eventpress' ); ?></span>
+																	<?php endif; ?>
+																<?php endif; ?>
+																</div>
 												<?php if ( $ticket_details ) { ?>
                                                     <div class="ticket-description"><?php echo esc_html( $ticket_details ); ?></div>
 												<?php } ?>
@@ -116,9 +131,11 @@
                                                 <input type="hidden" name='option_name[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
                                                 <input type="hidden" name='ticket_type[]' value='<?php echo esc_attr( $ticket_name ); ?>'/>
 												<?php do_action( 'mpwem_hidden_item_ticket', $ticket_name, $event_id ); ?>
+								
 												<?php
 													$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
-													if ( $early_date ) {
+													$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+													if ( $early_date && $early_bird_status === 'on' ) {
 														$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 														if ( $sale_end_datetime ) {
 															$current_time = current_time( 'Y-m-d H:i' );
@@ -183,12 +200,40 @@
                                                             }
 														}
 													} else {
-														$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
-														?>
-                                                        <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
-																echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
-                                                        <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
-														<?php
+														$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+														if ( $early_bird_status === 'on' ) {
+															$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+															?>
+                                                            <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
+																	echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+                                                            <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+															<?php
+														} else {
+                                                            $in_cart=0;
+                                                            $product_id = get_post_meta( $event_id, 'link_wc_product' );
+                                                            if ( isset( WC()->cart ) && ! empty( WC()->cart->get_cart() ) && ! empty( $date ) ) {
+                                                                foreach ( WC()->cart->get_cart() as $cart_item ) {
+                                                                    $cart_event_id = isset( $cart_item['event_id'] ) ? $cart_item['event_id'] : 0;
+                                                                    $cart_event_date = isset( $cart_item['event_cart_date'] ) ? $cart_item['event_cart_date'] : '';
+                                                                    $event_ticket_info = isset( $cart_item['event_ticket_info'] ) ? $cart_item['event_ticket_info'] : '';
+                                                                    $mep_check_date = isset($user_date) && !empty($user_date) ? $user_date : (isset($a_date) && !empty($a_date) ? $a_date : $date);
+                                                                    if ( $cart_event_id == $event_id && ! empty( $cart_event_date ) && $mep_check_date == $cart_event_date ) {
+                                                                        if(sizeof($event_ticket_info)>0){
+                                                                            foreach ($event_ticket_info as $key => $value) {
+                                                                                if($value['ticket_name']==$ticket_name){
+                                                                                    $in_cart=1;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            if($in_cart>0){
+                                                                _e( 'Already in Cart! ', 'mage-eventpress' );
+                                                            }else {
+                                                                MPWEM_Custom_Layout::qty_input($input_data);
+                                                            }
+														}
 													}
 												?>
                                             </div>

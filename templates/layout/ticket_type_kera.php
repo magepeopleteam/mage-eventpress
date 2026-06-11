@@ -15,6 +15,7 @@
 	if ( $total_available > 0 ) {
 		do_action( 'mepgq_max_qty_hook', $event_id, max( $total_available, 0 ), $date );
 		$ticket_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', [] );
+		$event_type   = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_type', 'offline' );
 		if ( is_array( $ticket_types ) && sizeof( $ticket_types ) > 0 ) {
 			$categories  = MPWEM_Global_Function::get_all_term_data( 'mep_tic_cat' );
 			$new_tickets = [];
@@ -102,6 +103,7 @@
 													$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 													if ( $ticket_permission ) {
 														$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
+														$ticket_mode       = is_array($ticket_type) && array_key_exists( 'option_ticket_mode_t', $ticket_type ) ? $ticket_type['option_ticket_mode_t'] : 'inperson';
 														$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
 														$ticket_price      = is_array($ticket_type) && array_key_exists( 'option_price_t', $ticket_type ) ? $ticket_type['option_price_t'] : 0;
 														$ticket_price_     = apply_filters( 'mep_ticket_type_price', $ticket_price, $ticket_name, $event_id, $ticket_type );
@@ -135,7 +137,16 @@
                                                             <div class="mep_ticket_item">
                                                                 <div class="ticket-data">
                                                                     <div class="ticket-info">
-                                                                        <h6><?php echo esc_html( $ticket_name ); ?>  <?php echo esc_html( $tickets['group'] ); ?></h6>
+                                                                        <h6>
+																			<?php echo esc_html( $ticket_name ); ?><?php echo $tickets['group'] ? '  ' . esc_html( $tickets['group'] ) : ''; ?>
+																			<?php if ( $event_type === 'hybrid' ) : ?>
+																				<?php if ( $ticket_mode === 'online' ) : ?>
+																					<span class="mep-ticket-mode-badge mep-ticket-mode-badge--online"><?php esc_html_e( 'Online Event', 'mage-eventpress' ); ?></span>
+																				<?php else : ?>
+																					<span class="mep-ticket-mode-badge mep-ticket-mode-badge--inperson"><?php esc_html_e( 'In Person', 'mage-eventpress' ); ?></span>
+																				<?php endif; ?>
+																			<?php endif; ?>
+																		</h6>
 																		<?php if ( $ticket_details ) { ?>
                                                                             <p><?php echo esc_html( $ticket_details ); ?></p>
 																		<?php } ?>
@@ -154,7 +165,8 @@
 																		<?php
 																			if ( $exit_avail < 1 ) {
 																				$early_date = apply_filters( 'mpwem_early_date', true, $ticket_type, $event_id );
-																				if ( $early_date ) {
+																				$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+																				if ( $early_date && $early_bird_status === 'on' ) {
 																					$sale_end_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_end_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_end_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_end_date_t'] ) ) : '';
 																					if ( $sale_end_datetime ) {
 																						$current_time = current_time( 'Y-m-d H:i' );
@@ -171,12 +183,17 @@
 																						MPWEM_Custom_Layout::qty_input( $input_data );
 																					}
 																				} else {
-																					$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
-																					?>
-                                                                                    <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
-																							echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
-                                                                                    <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
-																					<?php
+																					$early_bird_status = get_post_meta( $event_id, 'mep_enable_early_bird_status', true );
+																					if ( $early_bird_status === 'on' ) {
+																						$sale_start_datetime = is_array($ticket_type) && array_key_exists( 'option_sale_start_date_t', $ticket_type ) && ! empty( $ticket_type['option_sale_start_date_t'] ) ? date( 'Y-m-d H:i', strtotime( $ticket_type['option_sale_start_date_t'] ) ) : '';
+																						?>
+                                                                                        <span class='early-bird-future-date-txt' style="font-size: 12px;"><?php _e( 'Available On: ', 'mage-eventpress' );
+																								echo get_mep_datetime( $sale_start_datetime, 'date-time-text' ); ?></span>
+                                                                                        <input type="hidden" name="option_qty[]" value="0" data-price="<?php echo esc_attr( $ticket_price ); ?>"/>
+																						<?php
+																					} else {
+																						MPWEM_Custom_Layout::qty_input( $input_data );
+																					}
 																				}
 																			} else {
 																				?> <input type="hidden" name="option_qty[]" value="0"  data-price="<?php echo esc_attr( $ticket_price ); ?>"/><?php

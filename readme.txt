@@ -1,11 +1,11 @@
-=== Event Booking Manager for WooCommerce – WpEvently ===
+=== Event Booking Manager for WooCommerce  ===
 Contributors: magepeopleteam, aamahin
 Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
 Requires at least: 5.3
 Stable tag: trunk
-Tested up to: 6.8.1
+Tested up to: 7.0
 WC requires at least: 3.0
-WC tested up to: 8.7
+WC tested up to: 10.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,20 +15,19 @@ Flexible WooCommerce plugin for event booking, attendee management, and responsi
 
 == Description ==
 
-The Event Manager plugin for WooCommerce simplifies the complicated event registration process. **WpEvently** is a complete [event booking and event manager plugin](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) for WordPress users who need a reliable way to **sell tickets**, **register attendees**, and **manage events**. Built to work seamlessly with **WooCommerce**, it gives you full control over pricing, ticket types, and attendee data collection.
+The Event Manager plugin for WooCommerce simplifies the complicated event registration process. **Evently** is a complete [event booking and event manager plugin](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) for WordPress users who need a reliable way to **sell tickets**, **register attendees**, and **manage events**. Built to work seamlessly with **WooCommerce**, it gives you full control over pricing, ticket types, and attendee data collection.
 
-Whether you're hosting conferences, classes, concerts, or workshops, WpEvently is your all-in-one **WordPress event solution**.
+Whether you're hosting conferences, classes, concerts, or workshops, Evently is your all-in-one **WordPress event solution**.
 
 ## LET'S SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
 https://www.youtube.com/watch?v=6eu3MowK8CQ
 
 
-## Event Manager: #1 WooCommerce Event Management Plugin
+## Event Manager: #1 Event Management Plugin for WooCommerce
 Accelerate your physical or virtual event management and offer attendees a smooth ticketing experience with WooCommerce Event Manager.
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 ###  Explore The Demo:
 🌐 [Live Demo](https://wpevently.com/)
-🌐 [Backend Demo[(https://app.instawp.io/launch?s=eventadmindemo&d=v2)
 📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
 ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
@@ -37,12 +36,12 @@ Whether you are a small event organizer or a large one, we have thousands of tru
 Creating an event and managing it in one place has never been easier, faster, organized, or smoother. Multiple Ticketing and Sales report features put the task at your fingertips. These features are available in the Event Manager Pro Version.
 We are not limiting you here; the free version features most of the basic event management activity.
 ### 🔁 Create and Manage Recurring Events now more easily
-Effortlessly set up repeating events—daily, weekly, or custom schedules. Whether you're running tours, appointments, or classes, WPEvently helps you sell tickets for recurring dates smoothly.
+Effortlessly set up repeating events—daily, weekly, or custom schedules. Whether you're running tours, appointments, or classes, Evently helps you sell tickets for recurring dates smoothly.
 ### 📅 Sell Tickets for Multiple Fixed Dates from a Single Event
-With WPEvently, you can add multiple specific dates to a single event and let your customers select their preferred date/time before booking. Perfect for sessions, workshops, or performances with set schedules.
+With Evently, you can add multiple specific dates to a single event and let your customers select their preferred date/time before booking. Perfect for sessions, workshops, or performances with set schedules.
 ### 📝 Build a Professional Event Registration Form
 Stand out with a customizable and dynamic attendee registration form. Apply conditional logic, such as showing a school name field only when the ticket type is “Child”. Designed for both flexibility and professionalism, even under tight deadlines.
-When you need to create something highly effective but have limited time available, [WordPress Event Manager - WpEvently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Event Manager, you can implement these features and make your event a success.
+When you need to create something highly effective but have limited time available, [Evently](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) is the solution you've been looking for. With the Evently, you can implement these features and make your event a success.
 
 ### 🆓 Features are Available With Free Version
 
@@ -218,6 +217,9 @@ A. Yes! Woocommerce Events Manager is free.
 You can check the demo of this plugin from here:
 [View Live PRO Version Demo For Business](https://wpevently.com/)
 
+= Q. Any Documentation? =
+A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
+ 
 = Q. Does the calendar feature use a bundled third-party library? =
 A. Yes. The frontend calendar bundles FullCalendar Standard Bundle v6.1.17.
 
@@ -225,9 +227,7 @@ Source repository: https://github.com/fullcalendar/fullcalendar
 Documentation and license details: https://fullcalendar.io/docs/initialize-globals
 Bundled file: `assets/helper/calendar/fullcalendar.index.global.min.js`
 
-= Q. Any Documentation? =
-A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
- 
+
 = Q. I installed correctly,y but 404 error what can I do?  =
 A. You need to re-save the permalink setting,s it will solve the 404. If still does not work that means your permalink not working, or you may have httaccess problem or you have a server permission problem. 
 
@@ -266,6 +266,229 @@ vulnerabilities.
 
 
 == Changelog ==
+
+= 5.3.4 =
+* Security Patch update
+* Calendar Weekly & Dalily list showing bug solved
+* Some  design issue fixed
+* Backend Modern Editor added
+* Code Optimization
+  21 May 2026*
+
+= 5.3.3 =
+* Block theme header/footer issue fixed for single event page
+* Some minor design issue fixed
+* Sold Out Ribbon setting not working issue fixed
+* Limited Stock and other ribbon settings issue fixed
+* Event list broken style issue fixed.
+* Code Optimization
+  05 May 2026*
+
+= 5.3.1 =
+* Wrong Date in Attendee issue fixed
+* Dashboard Mobile responsive issue fixed 
+* Code Optimization
+  30 Apr 2026*
+
+= 5.2.8 =
+* New Event List Style Shortcode added 
+* Calendar Added in New Event List Shortcode
+* Cart Alert issue fixed
+* Date time change based on datepicker in event details page. 
+* Wrong date TimeZone issue fixed 
+* Code Optimization
+  28 Apr 2026*
+
+= 5.2.7 =
+* Wrong date and Seat Count Iussue fixed
+* Code Optimization
+  15 Apr 2026*
+
+
+= 5.2.6 =
+* Attendee Wrong count issue has been fixed
+* Code Optimization
+  13 Apr 2026*
+
+
+= 5.2.5 =
+* Not all event showing in the event list page issue fixed. 
+* Expired Event shortcode not showing issue fixed. 
+* Code Optimization
+  08 Apr 2026*
+
+= 5.2.4 =
+* Quick Release: Time issue fixed in Confirmaion email
+* Single Date stock management issue solved
+* Recurring event list shortcode not working issue fixed
+* Some minor design issue fixed
+* Code Optimization
+  31 Mar 2026*
+
+= 5.2.3 =
+* Quick Release: Solved the Wrong Date issue for Event and PDF Ticket
+* Mobile Responsive issue fixed
+* Code Optimization
+  03 Mar 2026*
+
+= 5.2.2 =
+* Virtual Event Theme Added
+* Wrong Date issue solved for Repeted Events
+* New 2 Dynamic Tags added in the email confirmation email text
+* PHP 8.3+ version compatible issue fixed.
+* Some minor design issue fixed.
+* Code Optimization
+  25 Feb 2026*
+
+
+= 5.2.0 =
+* Multiple Booking not working issue fixed
+* Double date in thankyou page issue fixed
+* Smart theme mobile responsive issue fixed. 
+* Google Map issue fixed
+* Code Optimization
+  20 Feb 2026*
+
+
+= 5.1.9 =
+* Datepicker Not working issue fixed for multilanguge website
+* Added settings for Passed date in the event start date input box
+* Added settings for hide ticket type once the sale end date is passed. 
+* FAQ Not saving issue fixed
+  18 Feb 2026*
+
+= 5.1.8 =
+* Design Broken issue fixed.
+  10 Feb 2026*
+
+= 5.1.7 =
+* Attendee Count missmatch issue solved in dashboard event list page
+* Some design issue fixed 
+* Ribbon wrong display issue fixed
+* Schedule Display issue fixed
+* Code Optimization
+  10 Feb 2026*
+
+= 5.1.6 =
+* Design Broken Issue Fixed
+* Memberonly Event Not Showing Issue Fixed
+* PHP Fatal Error Issue Fixed
+* Expired Event Not Showing Issue Fixed
+* Code Optimization
+  30 Jan 2026*
+
+= 5.1.5 =
+* Code Optimized
+  28 Jan 2026*
+
+= 5.1.4 =
+* Quick Release: Solved the Sidebar & Only showing text issue
+  23 Jan 2026*
+
+= 5.1.3 =
+* Quick Release after solve some bug
+* Google Map Wrong location showing issue fixed
+* Code Optimization
+* Slow Loading issue fixed
+  22 Jan 2026*
+
+= 5.1.2 =
+* Event List Design Broken Issue Fixed
+* PHP Fatal Error Issue Fixed
+* FAQ & Timeline Not Saving Issue Fixed
+* Code Optimization
+* Slow Loading issue fixed
+  19 Jan 2026*
+
+= 5.1.1 =
+* Multiday Ribbon Showing issue fixed
+  7 Jan 2026*
+
+= 5.1.0 =
+* FAQ Fatal Error issue fixed
+* Event Edit page tab not loading issue fixed.
+  5 Jan 2026*
+
+= 5.0.8 =
+* FAQ Error issue fixed
+* Event Edit page tab not loading issue fixed.
+  8 Dec 2025*
+
+= 5.0.7 =
+* FAQ Popup design issue fixed
+* FAQ HTML Tags Not saving Issue fixed
+* Timeline not saving issue fixed
+* New Dashboard design added in the My Account page 
+  5 Dec 2025*
+
+= 5.0.6 =
+* Category Filter not working issue solved in the event list page 
+* Event Schedule not showing in sidebar for normal multidate event issue fixed
+* Sale end date issue not working issue fixed
+* Expired event not showing issue fixed in event list shortcode
+* Seat count issue fixed in default event list style
+* Location & Image issue fixed in Minimal list style
+* Template Override issue fixed.  
+  20 Nov 2025*
+
+= 5.0.5 =
+* Quick Release after solve some bug
+* Seat Count wrong issue solved.
+* Single Page Error issue fixed
+  12 Nov 2025*
+
+
+= 5.0.4 =
+* Quick Release after solve some bug
+* Event Details Page White/Fatal Error issue fixed.
+* Duplicator Event Feature not working issue solved.
+* Google Map Not showing issue solved
+* No Event Available label text added in the event list page
+* 0 Capacity Ticket type not saving issue solved
+* Category Filter not working issue solved in the event list page 
+  30 Oct 2025*
+
+
+= 5.0.3 =
+* Quick Release after solve some bug
+* Attendee Count in front-end issue fixed.
+* Fatal Error and conflit between another plugin issue fixed
+* Recurring Datepicker console error issue fixed. 
+  29 Oct 2025*
+
+= 5.0.2 =
+* Email Text Format Issue fixed
+* New UI Design Applied
+* Templates optimized
+  23 Oct 2025*
+
+= 5.0.1 =
+* Event Detais not showing issue fixed
+* Google MAP API Not working issue fixed
+  29 Aug 2025*
+
+= 5.0.0 =
+* New Event List not showing for shop_manager user role issue fixed.
+* Google MAP API Not working issue fixed
+* Low stock issue fixed
+* Security issue fixed
+* Translation issue fixed
+  19 Aug 2025*
+
+= 4.4.8 =
+* Grid List view column broken issue fixed.
+  24 July 2025*
+
+= 4.4.7 =
+* Email Not saving issue fixed.
+  22 July 2025*
+
+= 4.4.6 =
+* Design responsive issue fixed
+* Carousal Not working in block theme issue fixed
+  02 July 2025*
+
+
 = 4.4.5 =
 * Design responsive issue fixed
 * Yoast & UpdraftPlus warning issue fixed.
@@ -692,6 +915,4 @@ Added custom excerpt option into event, Fix zero amount add to cart issue, Showi
 *Quantity Manage Added - 14 February 2018*
 
 = 1.0.0 =
-
 *Initial Release Date - 02 February 2018*
-

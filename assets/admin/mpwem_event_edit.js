@@ -954,6 +954,13 @@
 
         syncDateWiseGlobalQtyColumns($root);
         syncGlobalQtyTypeWarning($root);
+
+        // Sync Hybrid-only ticket mode column
+        var isHybrid = ($root.find('input[name="mep_event_type"]').val() || 'offline') === 'hybrid';
+        context.$modalMount.find('[data-hybrid-col]').toggleClass('mpwem-ticket-col-hidden', !isHybrid);
+        context.$modalMount.find('.mpwem-ticket-mode-select').each(function() {
+            $(this).attr('data-mode', $(this).val());
+        });
     }
 
     function syncDateWiseGlobalQtyColumns($root) {
@@ -2797,34 +2804,83 @@
         const $venue = getPanel($root, '#mp_event_venue');
         if (!$venue.length || $venue.data('mpwemGridEnhanced')) return;
 
-        const $addressSection = $venue.find('.mp_event_address').first();
-        if (!$addressSection.length) return;
+        // ── 1. Convert the manual-entry address table into a CSS grid ──────────
+        const $manualWrap = $venue.find('#mpwem-manual-entry-wrap').first();
+        if ($manualWrap.length) {
+            const $table = $manualWrap.find('table').first();
+            if ($table.length) {
+                const $grid = $('<div class="mpwem-venue-grid"></div>');
+                $table.find('tr').each(function() {
+                    const $ths = $(this).find('th');
+                    const $tds = $(this).find('td');
+                    $ths.each(function(i) {
+                        const label = $(this).text().trim().replace(':', '');
+                        const $td   = $tds.eq(i);
+                        if (!label && !$td.length) return;
 
-        const $table = $addressSection.find('table').first();
-        if (!$table.length) return;
+                        const $field = $('<div class="mpwem-venue-field"></div>');
+                        if (label) $field.append('<label class="mpwem-venue-label">' + label + '</label>');
+                        $field.append($td.contents());
 
-        const $grid = $('<div class="mpwem-venue-grid"></div>');
-        $table.find('tr').each(function() {
-            const $ths = $(this).find('th');
-            const $tds = $(this).find('td');
-            $ths.each(function(i) {
-                const label = $(this).text().trim().replace(':', '');
-                const $td = $tds.eq(i);
-                if (!label && !$td.length) return;
-                
-                const $field = $('<div class="mpwem-venue-field"></div>');
-                if (label) $field.append('<label class="mpwem-venue-label">' + label + '</label>');
-                $field.append($td.contents());
-                
-                const $input = $field.find('input, select').first();
-                if ($input.attr('name') === 'mep_location_venue' || $input.attr('name') === 'mep_country') {
-                    $field.addClass('is-full');
+                        // Country and single-column cells get full width
+                        const $input = $field.find('input, select').first();
+                        if ($input.attr('name') === 'mep_country' || $td.hasClass('is-full')) {
+                            $field.addClass('is-full');
+                        }
+                        $grid.append($field);
+                    });
+                });
+                $table.replaceWith($grid);
+            }
+        }
+
+        // ── 2. Wire the Manual Entry toggle button ─────────────────────────────
+        const $toggleBtn   = $venue.find('#mpwem-manual-entry-toggle').first();
+        const $manualPanel = $venue.find('#mpwem-manual-entry-wrap').first();
+
+        if ($toggleBtn.length && $manualPanel.length) {
+            $toggleBtn.on('click', function() {
+                const isOpen = $toggleBtn.hasClass('is-open');
+                if (isOpen) {
+                    $manualPanel.slideUp(220);
+                    $toggleBtn.removeClass('is-open');
+                    $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Manual Entry');
+                } else {
+                    $manualPanel.slideDown(220);
+                    $toggleBtn.addClass('is-open');
+                    $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Hide Manual Fields');
                 }
-                $grid.append($field);
             });
-        });
-        
-        $table.replaceWith($grid);
+        }
+
+        // ── 3. Real-time iframe map update while typing in the venue field ─────
+        // (Only for iframe map type — the API map has its own geocoder already)
+        const $venueInput = $venue.find('#mpwem_location_venue, [name="mep_location_venue"]').first();
+        const $mapDiv     = $venue.find('#show_gmap').first();
+
+        if ($venueInput.length && $mapDiv.length) {
+            var mapDebounceTimer = null;
+
+            $venueInput.on('input', function() {
+                clearTimeout(mapDebounceTimer);
+                var location = $(this).val().trim();
+                if (!location) return;
+
+                mapDebounceTimer = window.setTimeout(function() {
+                    var coordinatePattern = /^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/;
+                    var queryParam = coordinatePattern.test(location)
+                        ? location
+                        : encodeURIComponent(location);
+
+                    $mapDiv.html(
+                        '<iframe id="gmap_canvas" src="https://maps.google.com/maps?q=' + queryParam +
+                        '&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" ' +
+                        'marginheight="0" marginwidth="0"></iframe>'
+                    );
+                }, 900);
+            });
+        }
+
         $venue.data('mpwemGridEnhanced', true);
     }
 
@@ -2850,6 +2906,10 @@
             '    <span class="dashicons dashicons-admin-site-alt3"></span>' +
             '    <div><strong>Online Event</strong><small>Virtual/Remote</small></div>' +
             '  </div>' +
+            '  <div class="mpwem-event-type-option" data-value="hybrid">' +
+            '    <span class="dashicons dashicons-groups"></span>' +
+            '    <div><strong>Hybrid</strong><small>In-Person & Online</small></div>' +
+            '  </div>' +
             '</div>'
         );
 
@@ -2857,25 +2917,99 @@
         $origSection.before($wrapper);
         $origSection.hide(); // Hide the original section entirely
 
+        // Track whether virtual editor has been properly re-initialized
+        var virtualEditorInitialized = false;
+
+        function reinitVirtualEditor() {
+            // Re-initialize TinyMCE for the virtual details editor after it becomes visible.
+            // TinyMCE breaks when initialized inside a hidden (display:none) container.
+            window.setTimeout(function() {
+                var editorId = 'mp_event_virtual_type_des';
+                try {
+                    if (typeof tinymce !== 'undefined') {
+                        var existingEditor = tinymce.get(editorId);
+                        if (existingEditor) {
+                            existingEditor.remove();
+                        }
+                        if (typeof mpwem_initWpEditor === 'function') {
+                            mpwem_initWpEditor(editorId);
+                        } else {
+                            tinymce.init({
+                                selector: '#' + editorId,
+                                toolbar1: 'formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link unlink | removeformat | undo redo',
+                                toolbar2: '',
+                                plugins: 'link,lists,wordpress,wpeditimage,wplink,wpview',
+                                menubar: false,
+                                statusbar: true
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.warn('mpwem: could not re-init virtual editor', e);
+                }
+            }, 100);
+        }
+
+        function syncHybridTicketCols(val) {
+            var isHybrid = val === 'hybrid';
+            $root.find('[data-hybrid-col]').toggleClass('mpwem-ticket-col-hidden', !isHybrid);
+            $root.find('.mpwem-ticket-mode-select').each(function() {
+                $(this).attr('data-mode', $(this).val());
+            });
+        }
+
         function updateUI(val) {
-            const isOnline = val === 'online';
-            $checkbox.prop('checked', isOnline).val(isOnline ? 'online' : '');
+            $checkbox.val(val);
             $toggle.find('.mpwem-event-type-option').removeClass('is-active');
-            $toggle.find('[data-value="' + (isOnline ? 'online' : 'offline') + '"]').addClass('is-active');
-            
+            $toggle.find('[data-value="' + val + '"]').addClass('is-active');
+
             // Trigger legacy collapses
             const target = $checkbox.data('collapse-target');
             const close = $checkbox.data('close-target');
-            if (isOnline) {
+
+            var wasHidden = target ? $(target).is(':hidden') : false;
+
+            if (val === 'online') {
                 if (close) $(close).hide();
                 if (target) $(target).show();
-            } else {
+            } else if (val === 'offline') {
                 if (target) $(target).hide();
                 if (close) $(close).show();
+            } else if (val === 'hybrid') {
+                if (target) $(target).show();
+                if (close) $(close).show();
             }
+
+            // Re-initialize TinyMCE if the virtual editor section just became visible
+            // and hasn't been properly initialized yet (was hidden on page load).
+            if ((val === 'online' || val === 'hybrid') && (wasHidden || !virtualEditorInitialized)) {
+                virtualEditorInitialized = true;
+                reinitVirtualEditor();
+            }
+
+            syncHybridTicketCols(val);
+            syncTicketAdvancedColumns($root);
         }
 
-        const initialVal = $checkbox.is(':checked') || $checkbox.val() === 'online' ? 'online' : 'offline';
+        // Keep hybrid columns in sync when new ticket rows are added
+        $root.on('click.mpwemHybridCol', '.mpwem_add_item', function() {
+            window.setTimeout(function() {
+                syncHybridTicketCols($checkbox.val() || 'offline');
+            }, 60);
+        });
+
+        // Live color-code the ticket mode selects based on selected value
+        $root.on('change.mpwemTicketMode input.mpwemTicketMode', '.mpwem-ticket-mode-select', function() {
+            $(this).attr('data-mode', $(this).val());
+        });
+        $root.find('.mpwem-ticket-mode-select').each(function() {
+            $(this).attr('data-mode', $(this).val());
+        });
+
+        const initialVal = $checkbox.val() || 'offline';
+        // If starting as online/hybrid, mark editor as already visible so TinyMCE
+        // initialized correctly. If offline, it will need re-init on first show.
+        virtualEditorInitialized = (initialVal === 'online' || initialVal === 'hybrid');
         updateUI(initialVal);
 
         $toggle.on('click', '.mpwem-event-type-option', function() {
@@ -3169,7 +3303,7 @@
             const $select = $(this);
             if (
                 shouldKeepNativeSelect($select) ||
-                $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
+                $select.is('#mpwem_ticket_modal_mount select[name="option_qty_t_type[]"], #mpwem_ticket_modal_mount select[name="option_ticket_mode_t[]"], #mpwem_extra_service_modal_mount select[name="option_qty_type[]"]') ||
                 $select.closest('.mpwem_hidden_content').length ||
                 $select.hasClass('mpwem-enhanced') ||
                 $select.is('[multiple]') ||

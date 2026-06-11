@@ -720,6 +720,9 @@
 						if ( $event_type == 'online' ) {
 							?>
                             <div class='mepev-ribbon online'><i class="fas fa-vr-cardboard"></i> <?php esc_html_e( 'Virtual', 'mage-eventpress' ); ?></div><?php
+						} elseif ( $event_type == 'hybrid' ) {
+							?>
+                            <div class='mepev-ribbon hybrid'><i class="fas fa-random"></i> <?php esc_html_e( 'Hybrid', 'mage-eventpress' ); ?></div><?php
 						}
 
                         $all_dates   = MPWEM_Functions::get_dates( $event_id );

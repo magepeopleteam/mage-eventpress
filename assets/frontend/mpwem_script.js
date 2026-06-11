@@ -1,4 +1,5 @@
 function mpwem_price_calculation(parent) {
+    // alert(123);
     try {
         const total_qty = mpwem_qty(parent);
         mpwem_attendee_management(parent, total_qty);
@@ -68,6 +69,14 @@ function mpwem_ex_price(parent) {
 function mpwem_attendee_management(parent, total_qty) {
     let form_target = parent.find('.mep_attendee_info');
     let same_attendee = parent.find('[name="mep_same_attendee"]').val();
+    
+    // Strip required attributes from hidden template inputs to avoid "invalid form control is not focusable" error
+    parent.find('.mep_attendee_info_hidden').find('input, select, textarea').each(function () {
+        if (jQuery(this).prop('required')) {
+            jQuery(this).removeAttr('required').addClass('mep-originally-required');
+        }
+    });
+
     if (form_target.length > 0 && total_qty > 0) {
         if (same_attendee === 'yes' || same_attendee === 'must') {
             form_target.slideDown('fast');
@@ -87,6 +96,7 @@ function mpwem_attendee_management(parent, total_qty) {
                             hidden_target.find('.mep_form_item').attr('data-seat_name', seat_name);
                             hidden_target.find('.mpwem_ticket_count').html(seat_name).promise().done(function () {
                                 form_target.append(hidden_target.html());
+                                form_target.find('.mep-originally-required').attr('required', 'required');
                             }).promise().done(function () {
                                 mpwem_load_date_picker(parent);
                             });
@@ -127,6 +137,7 @@ function mpwem_attendee_management(parent, total_qty) {
                                 hidden_target.find('.mpwem_ticket_name').html(ticket_name);
                                 hidden_target.find('.mpwem_ticket_count').html(i + 1).promise().done(function () {
                                     form_target.append(hidden_target.html()).promise().done(function () {
+                                        jQuery(this).find('.mep-originally-required').attr('required', 'required');
                                         jQuery(this).find('.mp_form_item').each(function () {
                                             let condition_type = jQuery(this).attr('data-depend');
                                             let current_ticket_name = jQuery(this).attr('data-condition-value');
@@ -218,16 +229,17 @@ function mpwem_attendee_management(parent, total_qty) {
                 mpwem_loader_xs(target);
             },
             success: function (data) {
+                // alert(dates);
                 target.html(data).slideDown('fast').promise().done(function () {
-                    mpwem_load_seat_status(parent.closest('.mpwem_wrapper'));
-                    mep_change_date_status(parent.closest('.mpwem_wrapper'),date);
-                    mep_change_time_status(parent.closest('.mpwem_wrapper'),date);
+                    mpwem_load_seat_status(parent.closest('.mpwem_wrapper'),dates);
+                    mep_change_date_status(parent.closest('.mpwem_wrapper'),dates);
+                    mep_change_time_status(parent.closest('.mpwem_wrapper'),dates);
                     mpwem_price_calculation(parent);
                 });
             }
         });
     }
-    function mpwem_load_seat_status(parent) {
+    function mpwem_load_seat_status(parent,dates) {
         let target = parent.find('.mpwem_seat_status');
         if (target.length > 0) {
             let post_id = parent.find('[name="mpwem_post_id"]').val();

@@ -9,6 +9,8 @@
 	}
 	.reg_close_msg {background-color: #fffaec; color: #d32f2f; border-left: 5px solid #d32f2f; padding: 15px 20px; margin: 20px 0; border-radius: 4px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; font-weight: 500; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 	.reg_close_msg { animation: fadeIn 0.5s ease-in-out; }
+	.mpwem_date_expired_msg._margin_zero_text_center { background-color: #fffaec; border-left: 5px solid #d32f2f; padding: 18px 24px; margin: 20px 0; border-radius: 6px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.06); animation: fadeIn 0.5s ease-in-out; }
+	.mpwem_date_expired_msg ._text_theme { color: #d32f2f; font-size: 16px; font-weight: 600; line-height: 1.6; }
 	@keyframes fadeIn {from { opacity: 0; transform: translateY(-10px); }to { opacity: 1; transform: translateY(0); }}
 
 	div.mpwem_related_area.on_load_off{

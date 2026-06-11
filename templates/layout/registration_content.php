@@ -97,6 +97,11 @@
 	// Ticket/WooCommerce mode (default layout)
 	$all_dates = MPWEM_Functions::get_dates( $event_id );
 	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
+	$user_date = $date;
+	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
+	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
+// echo $date;
+
 	$date      = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 	$event_infos              = MPWEM_Functions::get_all_info( $event_id );
 	$event_recurring			= is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
@@ -108,12 +113,39 @@
     $url_date    = $url_date ? date( $date_format, strtotime($url_date) ) : '';
     $all_dates   = MPWEM_Functions::get_dates( $event_id );
     $all_times   = MPWEM_Functions::get_times( $event_id, $all_dates, $url_date );
-	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+	$upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $event_recurring == 'no' && array_key_exists('event_start_datetime', $event_infos) ? $event_infos['event_start_datetime'] : (is_array($event_infos) && array_key_exists('event_upcoming_datetime', $event_infos) ? $event_infos['event_upcoming_datetime'] : '');
     $date                    = $url_date ?: $upcoming_date;
+
+	// Block booking for a past/expired selected occurrence (e.g. opened from a calendar
+	// link pointing at a date that has already passed). Mirrors the calendar's expiry rule
+	// so the detail page and the calendar agree on what is expired.
+	$selected_date_expired = false;
+	if ( ! empty( $user_date ) ) {
+		$expire_on = function_exists( 'mep_get_option' )
+			? mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' )
+			: 'event_start_datetime';
+		$reference_dt = $user_date;
+		if ( $expire_on === 'event_end_datetime' ) {
+			$end_ref = $event_type === 'no' ? get_post_meta( $event_id, 'event_end_datetime', true ) : '';
+			if ( empty( $end_ref ) ) {
+				$end_time = get_post_meta( $event_id, 'event_end_time', true );
+				$end_ref  = $end_time ? date( 'Y-m-d', strtotime( $user_date ) ) . ' ' . $end_time : $user_date;
+			}
+			$reference_dt = $end_ref ?: $user_date;
+		}
+		$reference_ts = strtotime( $reference_dt );
+		$now_ts       = strtotime( current_time( 'Y-m-d H:i:s' ) );
+		if ( $reference_ts && $now_ts && $reference_ts < $now_ts ) {
+			$selected_date_expired = true;
+		}
+	}
+
 	ob_start();
 	if ( $event_id > 0 ) {
 		$reg_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_reg_status', 'on' );
-		if ( $reg_status == 'on' ) {
+		if ( $reg_status == 'on' && $selected_date_expired ) {
+			MPWEM_Layout::msg( esc_html__( 'Sorry, this date has expired and is no longer available for booking.', 'mage-eventpress' ), 'mpwem_date_expired_msg' );
+		} elseif ( $reg_status == 'on' ) {
 			$full_location = MPWEM_Functions::get_location( $event_id );
 			$total_sold      = mep_ticket_type_sold( $event_id, '', $date );
 			$total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $date );
@@ -123,7 +155,7 @@
 			?>
             <div class="mpwem_booking_panel">
                 <input type="hidden" name='mpwem_post_id' value='<?php echo esc_attr( $event_id ); ?>'/>
-                <input type="hidden" name='mep_event_start_date[]' value='<?php echo esc_attr( $date ); ?>'/>
+                <input type="hidden" name='mep_event_start_date[]' value='<?php echo esc_attr( $user_date ); ?>'/>
                 <input type="hidden" name='mep_event_location_cart' value='<?php echo esc_attr( implode( ', ', $full_location ) ); ?>'/>
                 <input type="hidden" name='mep_same_attendee' value='<?php echo esc_attr( MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ) ); ?>'/>
 				<?php require apply_filters( 'mpwem_ticket_file', MPWEM_Functions::template_path( 'layout/ticket_type.php' ), $event_id ); ?>

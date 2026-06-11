@@ -30,6 +30,7 @@
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Functions.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Frontend.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Admin.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Deactivation.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Hooks.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Shortcodes.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Event_List.php';

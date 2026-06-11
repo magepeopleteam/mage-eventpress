@@ -2777,6 +2777,10 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(68px, 0.3fr);
     column-gap: 16px;
 }
+#mpwem_ticket_summary.is-earlybird .mpwem-ticket-summary__header,
+#mpwem_ticket_summary.is-earlybird .mpwem-ticket-summary__item {
+	grid-template-columns: minmax(0, 1fr) minmax(88px, 0.42fr) minmax(68px, 0.3fr) minmax(120px, 0.5fr);
+}
 
 .mpwem-ticket-summary__header,
 .mpwem-ticket-summary__item {
@@ -2962,6 +2966,19 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     line-height: 1.2;
     font-weight: 400;
     color: #10233f;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__header-earlybird {
+	text-align: right;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__meta--earlybird {
+	justify-self: end;
+	text-align: right;
+}
+#mpwem_ticket_summary .mpwem-ticket-summary__earlybird {
+	font-size: 14px;
+	line-height: 1.2;
+	font-weight: 400;
+	color: #10233f;
 }
 
 .mpwem-ticket-summary__datetime {

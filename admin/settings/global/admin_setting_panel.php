@@ -760,10 +760,24 @@ tr.payment_tabs_html { display: none !important; }
 									success: function(response) {
 										if (response.success) {
 											$status.css('color', '#0f5132');
-											$status.text( <?php echo json_encode( __( "Successfully Activated! Reloading page...", "mage-eventpress" ) ); ?> );
+											$status.text( <?php echo json_encode( __( "Successfully Activated!", "mage-eventpress" ) ); ?> );
 											setTimeout(function() {
-												location.reload();
-											}, 1500);
+												$('#mep-wc-install-modal').fadeOut(200);
+												$('.mpwem-woo-warning-notice').hide();
+												$('#mep-woo-warning-style').remove(); // remove the !important CSS override
+												
+												var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
+												if (activeTabId === 'woocommerce-field') {
+													$('tr.woocommerce-field').css('display', 'table-row').hide().fadeIn(200);
+													$('#payment_setting_sec .submit').fadeIn(200);
+												}
+												$('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').trigger('change');
+												
+												setTimeout(function() {
+													$btn.prop("disabled", false).css('opacity', '1');
+													$progress.hide();
+												}, 200);
+											}, 1000);
 										} else {
 											$status.css('color', '#dc3545');
 											$status.text( <?php echo json_encode( __( "Error: ", "mage-eventpress" ) ); ?> + (response.data || "Unknown error") );
@@ -2088,7 +2102,7 @@ tr.payment_tabs_html { display: none !important; }
 												</div>
 											</div>
 										</div>
-										<style>tr.woocommerce-field { display: none !important; }</style>
+										<style id="mep-woo-warning-style">tr.woocommerce-field { display: none !important; }</style>
 										';
 									}
 									return $html;

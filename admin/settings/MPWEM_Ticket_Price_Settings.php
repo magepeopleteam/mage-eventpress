@@ -113,10 +113,18 @@
 								success: function(response) {
 									if (response.success) {
 										$status.css('color', '#0f5132');
-										$status.text( <?php echo json_encode( __( "Successfully Activated! Reloading page...", "mage-eventpress" ) ); ?> );
+										$status.text( <?php echo json_encode( __( "Successfully Activated!", "mage-eventpress" ) ); ?> );
 										setTimeout(function() {
-											location.reload();
-										}, 1500);
+											$('#mep-wc-install-modal').fadeOut(200);
+											$('.mpwem-woo-warning-notice').hide();
+											$('.mep-woo-enable-label').css('display', 'flex').hide().fadeIn(200);
+											$('#mep_modal_enable_wc').trigger('change');
+											
+											setTimeout(function() {
+												$btn.prop("disabled", false).css('opacity', '1');
+												$progress.hide();
+											}, 200);
+										}, 1000);
 									} else {
 										$status.css('color', '#dc3545');
 										$status.text( <?php echo json_encode( __( "Error: ", "mage-eventpress" ) ); ?> + (response.data || "Unknown error") );
@@ -153,25 +161,24 @@
 									<div id="mep-modal-tab-woo" class="mep-modal-tab-content">
 										<div style="margin-bottom: 20px;">
 											<h4 style="margin:0 0 10px; font-size:15px; color:#1e1e1e;"><?php esc_html_e( 'WooCommerce Payment', 'mage-eventpress' ); ?></h4>
-											<?php if ( ! $wc_active ) : ?>
-												<div class="mpwem-woo-warning-notice" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); margin-bottom: 10px;">
-													<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
-														<div style="width: 100%;">
-															<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
-															<span style="font-size: 13px; display: block;"><?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as "Ticket-Selling" without WooCommerce. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?></span>
-														</div>
-														<div>
-															<button type="button" class="button button-primary mep-install-wc-trigger" style="white-space: nowrap;"><?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?></button>
-														</div>
+											<div class="mpwem-woo-warning-notice" style="display: <?php echo $wc_active ? 'none' : 'block'; ?>; background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); margin-bottom: 10px;">
+												<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+													<div style="width: 100%;">
+														<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
+														<span style="font-size: 13px; display: block;"><?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as "Ticket-Selling" without WooCommerce. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?></span>
+													</div>
+													<div>
+														<button type="button" class="button button-primary mep-install-wc-trigger" style="white-space: nowrap;"><?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?></button>
 													</div>
 												</div>
-											<?php else : ?>
-												<label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 12px;">
-													<input type="checkbox" name="mep_enable_wc_payment" id="mep_modal_enable_wc" value="on" <?php checked( $woo_enabled ); ?> />
-													<span><?php esc_html_e( 'Enable WooCommerce Payment Gateway', 'mage-eventpress' ); ?></span>
-												</label>
-												
-												<div class="mep-modal-wc-fields" style="display: <?php echo $woo_enabled ? 'flex' : 'none'; ?>; flex-direction: column; gap: 15px; padding: 15px; background: #f8f9fa; border: 1px solid #e2e4e7; border-radius: 8px;">
+											</div>
+
+											<label class="mep-woo-enable-label" style="display:<?php echo $wc_active ? 'flex' : 'none'; ?>; align-items:center; gap:10px; cursor:pointer; margin-bottom: 12px;">
+												<input type="checkbox" name="mep_enable_wc_payment" id="mep_modal_enable_wc" value="on" <?php checked( $woo_enabled ); ?> />
+												<span><?php esc_html_e( 'Enable WooCommerce Payment Gateway', 'mage-eventpress' ); ?></span>
+											</label>
+											
+											<div class="mep-modal-wc-fields" style="display: <?php echo ($woo_enabled && $wc_active) ? 'flex' : 'none'; ?>; flex-direction: column; gap: 15px; padding: 15px; background: #f8f9fa; border: 1px solid #e2e4e7; border-radius: 8px;">
 												<div>
 													<label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:5px;"><?php esc_html_e( 'After Adding to Cart, Redirect to', 'mage-eventpress' ); ?></label>
 													<select name="mep_wc_add_to_cart_redirect" style="width:100%; max-width:300px; border:1px solid #d1d5db; border-radius:6px; padding:6px 12px;">
@@ -209,7 +216,6 @@
 														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="completed" <?php echo in_array('completed', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></label>
 													</div>
 												</div>
-											<?php endif; ?>
 										</div>
 									</div>
 

@@ -26,72 +26,160 @@
 			}
 
 			function render_wc_warning_banner() {
-			// Only output on our settings page
 			$screen = get_current_screen();
 			if ( ! $screen || $screen->id !== 'mep_events_page_mep_event_settings_page' ) {
 				return;
 			}
-
-			// If WooCommerce is active, we don't need the warning banner
 			if ( class_exists( 'WooCommerce' ) ) {
 				return;
 			}
 
-			$btn_label = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' )
-				? esc_html__( 'Activate WooCommerce', 'mage-eventpress' )
-				: esc_html__( 'Install WooCommerce', 'mage-eventpress' );
-
 			$is_installed = file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' );
 			$modal_desc   = $is_installed
-				? esc_html__( 'WooCommerce is already installed but not active. Click the button below to activate it right now.', 'mage-eventpress' )
-				: esc_html__( 'WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.', 'mage-eventpress' );
+				? __( 'WooCommerce is already installed but not active. Click the button below to activate it right now.', 'mage-eventpress' )
+				: __( 'WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.', 'mage-eventpress' );
 			$modal_btn    = $is_installed
-				? esc_html__( 'Activate WooCommerce Now', 'mage-eventpress' )
-				: esc_html__( 'Install & Activate Now', 'mage-eventpress' );
+				? __( 'Activate WooCommerce Now', 'mage-eventpress' )
+				: __( 'Install &amp; Activate Now', 'mage-eventpress' );
 			?>
-			<!-- WooCommerce Warning Banner — injected by JS after .payment-sub-tabs-wrapper -->
-			<div id="mep-wc-warning-banner" style="display:none; background:linear-gradient(135deg, rgb(223 169 182) 0%, rgb(255 202 193) 100%); color:#fff; padding:15px; border-radius:6px; margin:10px 0 15px 0; font-weight:500; box-shadow:0 3px 10px rgba(255,65,108,0.3);">
-				<div style="display:flex; align-items:flex-start;">
-					<span class="dashicons dashicons-warning" style="color:#fff; font-size:24px; width:24px; height:24px; margin-right:15px; margin-top:2px; flex-shrink:0;"></span>
-					<div>
-						<strong style="display:block; font-size:16px; margin-bottom:4px; color:#4d4d4d; line-height:1.2;"><?php esc_html_e( 'Action Required: WooCommerce is Not Active', 'mage-eventpress' ); ?></strong>
-						<p style="margin:0 0 10px 0; font-size:13px; color:#4d4d4d; line-height:1.4;"><?php esc_html_e( 'WooCommerce must be installed and active to process payments and use these features properly.', 'mage-eventpress' ); ?></p>
-						<button type="button" class="mep-install-wc-trigger" style="background:#fff; color:#ff416c; border:none; padding:8px 16px; font-size:13px; font-weight:700; border-radius:4px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:inline-flex; align-items:center; gap:6px;">
-							<span class="dashicons dashicons-admin-plugins" style="font-size:16px; width:16px; height:16px;"></span>
-							<?php echo esc_html( $btn_label ); ?>
-						</button>
+			<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:999999; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+				<div style="background:#fff; border-radius:12px; width:520px; max-width:92vw; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden;">
+					<div style="padding:18px 24px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
+						<h3 style="margin:0; font-size:17px; color:#2c3338; display:flex; align-items:center; gap:8px;">
+							<span class="dashicons dashicons-plugins-checked" style="font-size:20px; color:#2271b1;"></span>
+							<?php esc_html_e( 'Set Up WooCommerce', 'mage-eventpress' ); ?>
+						</h3>
+						<button type="button" id="mep-wc-install-modal-close" style="background:none; border:none; font-size:24px; line-height:1; cursor:pointer; color:#666; padding:0;">&times;</button>
 					</div>
-				</div>
-			</div>
-
-			<!-- WooCommerce Install/Activate Modal -->
-			<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
-				<div style="background:#fff; border-radius:12px; width:480px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden;">
-					<div style="padding:22px 25px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
-						<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php esc_html_e( 'WooCommerce Setup', 'mage-eventpress' ); ?></h3>
-						<button type="button" class="mep-close-modal" style="background:none; border:none; font-size:26px; cursor:pointer; color:#666; line-height:1; padding:0;">&times;</button>
-					</div>
-					<div style="padding:32px 28px; text-align:center;">
-						<span class="dashicons dashicons-cart" style="font-size:72px; width:72px; height:72px; color:#96588a; margin-bottom:18px; display:block; margin-left:auto; margin-right:auto;"></span>
-						<p style="font-size:15px; color:#444; margin-bottom:28px; line-height:1.6;"><?php echo esc_html( $modal_desc ); ?></p>
-						<div id="mep-wc-install-progress" style="display:none; margin-bottom:22px; font-weight:500; font-size:15px; background:#f0f0f1; padding:14px; border-radius:8px;">
-							<span class="spinner is-active" style="float:none; margin:0 10px 0 0;"></span>
-							<span id="mep-wc-install-status" style="color:#2271b1;"><?php esc_html_e( 'Working...', 'mage-eventpress' ); ?></span>
+					<div style="padding:24px;">
+						<div id="mep-wc-modal-info">
+							<p style="margin:0 0 18px; font-size:14px; color:#3c434a; line-height:1.6;">
+								<?php echo esc_html( $modal_desc ); ?>
+							</p>
+							<button type="button" id="mep-wc-modal-action-btn" class="button button-primary" style="white-space:nowrap; padding:6px 18px;">
+								<?php echo wp_kses_post( $modal_btn ); ?>
+							</button>
 						</div>
-						<button type="button" id="mep-wc-start-install" style="background:linear-gradient(135deg,#96588a,#6b3d6b); color:#fff; border:none; padding:14px 0; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; width:100%; box-shadow:0 4px 12px rgba(150,88,138,0.4); transition:all 0.2s;">
-							<?php echo esc_html( $modal_btn ); ?>
-						</button>
+						<div id="mep-wc-modal-progress" style="display:none;">
+							<div style="width:100%; height:8px; background:#f0f0f1; border-radius:100px; overflow:hidden; margin-bottom:10px;">
+								<div id="mep-wc-modal-progress-fill" style="height:100%; width:0%; border-radius:100px; background:linear-gradient(90deg,#7b5ea7,#9b72cf); transition:width 0.5s cubic-bezier(0.16,1,0.3,1);"></div>
+							</div>
+							<p id="mep-wc-modal-status-text" style="font-size:13px; color:#50575e; margin:0; text-align:center; min-height:20px;"></p>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<script>
 			jQuery(document).ready(function($) {
-				// Inject the warning banner right after the tab nav wrapper (visibility controlled by tabs)
-				var $tabWrapper = $('.payment-sub-tabs-wrapper');
-				if ($tabWrapper.length > 0) {
-					$('#mep-wc-warning-banner').insertAfter($tabWrapper);
-				}
+				var mepWcIsInstalled = <?php echo $is_installed ? 'true' : 'false'; ?>;
+				var mepWcNonce       = '<?php echo esc_js( wp_create_nonce( 'mep_install_wc' ) ); ?>';
+
+				// Open modal when the warning button is clicked
+				$(document).on('click', '.mep-install-wc-trigger', function(e) {
+					e.preventDefault();
+					$('#mep-wc-install-modal').css('display', 'flex').hide().fadeIn(200);
+				});
+
+				// Close modal via × button or backdrop click
+				$('#mep-wc-install-modal-close').on('click', function() {
+					$('#mep-wc-install-modal').fadeOut(200);
+				});
+				$(document).on('click', '#mep-wc-install-modal', function(e) {
+					if ($(e.target).is('#mep-wc-install-modal')) {
+						$(this).fadeOut(200);
+					}
+				});
+
+				// Action button inside modal
+				$('#mep-wc-modal-action-btn').on('click', function() {
+					var $info     = $('#mep-wc-modal-info');
+					var $progress = $('#mep-wc-modal-progress');
+					var $fill     = $('#mep-wc-modal-progress-fill');
+					var $status   = $('#mep-wc-modal-status-text');
+
+					$info.hide();
+					$fill.css('width', '0%');
+					$progress.fadeIn(200);
+
+					var texts = mepWcIsInstalled
+						? [<?php echo implode( ',', array_map( 'json_encode', array(
+							__( 'Activating WooCommerce...', 'mage-eventpress' ),
+							__( 'Configuring settings...', 'mage-eventpress' ),
+							__( 'Finalizing setup...', 'mage-eventpress' ),
+						) ) ); ?>]
+						: [<?php echo implode( ',', array_map( 'json_encode', array(
+							__( 'Downloading WooCommerce...', 'mage-eventpress' ),
+							__( 'Installing WooCommerce...', 'mage-eventpress' ),
+							__( 'Activating WooCommerce...', 'mage-eventpress' ),
+							__( 'Configuring settings...', 'mage-eventpress' ),
+							__( 'Finalizing...', 'mage-eventpress' ),
+						) ) ); ?>];
+
+					var duration  = mepWcIsInstalled ? 3000 : 15000;
+					var startTime = Date.now();
+					var isDone    = false;
+					var frameId;
+
+					$status.text(texts[0]);
+
+					function animateBar() {
+						if (isDone) return;
+						var elapsed = Date.now() - startTime;
+						var raw     = Math.min(elapsed / duration, 1);
+						var eased   = raw * (2 - raw);
+						var pct     = eased * 95;
+						$fill.css('width', pct + '%');
+						var idx = Math.min(Math.floor((pct / 95) * texts.length), texts.length - 1);
+						$status.text(texts[idx] + ' ' + Math.round(pct) + '%');
+						if (pct < 95) frameId = requestAnimationFrame(animateBar);
+					}
+					frameId = requestAnimationFrame(animateBar);
+
+					$.ajax({
+						url:  ajaxurl,
+						type: 'POST',
+						data: { action: 'mep_install_activate_wc', nonce: mepWcNonce },
+						success: function(response) {
+							var minWait  = mepWcIsInstalled ? 1500 : 3000;
+							var leftover = Math.max(0, minWait - (Date.now() - startTime));
+							setTimeout(function() {
+								isDone = true;
+								cancelAnimationFrame(frameId);
+								$fill.css('width', '100%');
+								if (response.success) {
+									$status.css('color', '#039855').text(<?php echo wp_json_encode( __( 'Successfully Activated! 100%', 'mage-eventpress' ) ); ?>);
+									setTimeout(function() {
+										$('#mep-wc-install-modal').fadeOut(300);
+										// Remove the style rule that was hiding woocommerce settings rows
+										$('#mep-woo-warning-style').remove();
+										// Slide up the warning notice in the tab
+										$('div.woocommerce-field').slideUp(300);
+										// Reveal the WooCommerce settings rows and save button
+										$('tr.woocommerce-field').fadeIn(200);
+										$('#payment_setting_sec .submit').show();
+									}, 1200);
+								} else {
+									$status.css('color', '#d92d20').text(<?php echo wp_json_encode( __( 'Error: ', 'mage-eventpress' ) ); ?> + (response.data || 'Unknown error'));
+									setTimeout(function() {
+										$progress.hide();
+										$info.show();
+									}, 5000);
+								}
+							}, leftover);
+						},
+						error: function() {
+							isDone = true;
+							cancelAnimationFrame(frameId);
+							$fill.css('width', '100%');
+							$status.css('color', '#d92d20').text(<?php echo wp_json_encode( __( 'A network error occurred. Please try again.', 'mage-eventpress' ) ); ?>);
+							setTimeout(function() {
+								$progress.hide();
+								$info.show();
+							}, 5000);
+						}
+					});
+				});
 			});
 			</script>
 			<?php
@@ -320,6 +408,24 @@
 			)); ?>;
 			
 			jQuery(document).ready(function($) {
+				if ($("#mep-progress-styles").length === 0) {
+					var styles = `
+					.mep-wc-install-progress { width: 100%; padding: 10px 0; margin-bottom: 8px; animation: mpwemFadeIn 0.35s ease both; flex: 1; }
+					@keyframes mpwemFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+					.mep-wc-install-progress-bar { width: 100%; height: 8px; background: #f0f0f1; border-radius: 100px; overflow: hidden; }
+					.mep-wc-install-progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, #7b5ea7, #9b72cf); transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+					.mep-wc-install-progress-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%); animation: mpwemShimmer 1.5s linear infinite; }
+					@keyframes mpwemShimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+					.mep-wc-install-status-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size: 14px; color: #50575e; margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+					.mep-wc-install-status-text.mep-loading::before { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #dcdde1; border-top-color: #7b5ea7; border-radius: 50%; animation: mpwemSpin 0.7s linear infinite; flex-shrink: 0; }
+					@keyframes mpwemSpin { to { transform: rotate(360deg); } }
+					.mep-wc-install-status-text.mep-success { color: #039855; }
+					.mep-wc-install-status-text.mep-success::before { display: none; }
+					.mep-wc-install-status-text.mep-error { color: #d92d20; }
+					.mep-wc-install-status-text.mep-error::before { display: none; }
+					`;
+					$("head").append("<style id=\"mep-progress-styles\">" + styles + "</style>");
+				}
 				// Gateway Configure Buttons — open respective modals
 				$(document).on('click', '#mep-paypal-configure-btn', function(e) {
 					e.preventDefault();
@@ -675,6 +781,11 @@ tr.payment_tabs_html { display: none !important; }
 
 				<script>
 					jQuery(document).ready(function($) {
+						var wc_active = <?php echo MPWEM_Global_Function::has_woocommerce() ? 'true' : 'false'; ?>;
+						if (!wc_active) {
+							$('head').append('<style id="mep-woo-warning-style">tr.woocommerce-field { display: none !important; }</style>');
+						}
+
 						if ($('.payment-sub-tabs').length > 0) {
 							// WooCommerce Setting Toggle Logic
 							function toggleWcSettings() {
@@ -730,69 +841,6 @@ tr.payment_tabs_html { display: none !important; }
 					
 
 
-							// Modal logic — outside tab guard so it always binds
-							$(document).on('click', '.mep-install-wc-trigger', function(e) {
-								e.preventDefault();
-								$('#mep-wc-install-modal').css('display', 'flex').hide().fadeIn(200);
-							});
-
-							$(document).on('click', '.mep-close-modal', function() {
-								$('#mep-wc-install-modal').fadeOut(200);
-							});
-
-							$('#mep-wc-start-install').click(function() {
-								var $btn = $(this);
-								var $progress = $('#mep-wc-install-progress');
-								var $status = $('#mep-wc-install-status');
-								
-								$btn.prop('disabled', true);
-								$btn.css('opacity', '0.6');
-								$progress.fadeIn(200);
-								$status.text( <?php echo json_encode( __( "Please wait, configuring WooCommerce...", "mage-eventpress" ) ); ?> );
-								
-								$.ajax({
-									url: ajaxurl,
-									type: "POST",
-									data: {
-										action: "mep_install_activate_wc",
-										nonce: "<?php echo wp_create_nonce('mep_install_wc'); ?>"
-									},
-									success: function(response) {
-										if (response.success) {
-											$status.css('color', '#0f5132');
-											$status.text( <?php echo json_encode( __( "Successfully Activated!", "mage-eventpress" ) ); ?> );
-											setTimeout(function() {
-												$('#mep-wc-install-modal').fadeOut(200);
-												$('.mpwem-woo-warning-notice').hide();
-												$('#mep-woo-warning-style').remove(); // remove the !important CSS override
-												
-												var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
-												if (activeTabId === 'woocommerce-field') {
-													$('tr.woocommerce-field').css('display', 'table-row').hide().fadeIn(200);
-													$('#payment_setting_sec .submit').fadeIn(200);
-												}
-												$('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').trigger('change');
-												
-												setTimeout(function() {
-													$btn.prop("disabled", false).css('opacity', '1');
-													$progress.hide();
-												}, 200);
-											}, 1000);
-										} else {
-											$status.css('color', '#dc3545');
-											$status.text( <?php echo json_encode( __( "Error: ", "mage-eventpress" ) ); ?> + (response.data || "Unknown error") );
-											$btn.prop("disabled", false);
-											$btn.css('opacity', '1');
-										}
-									},
-									error: function() {
-										$status.css('color', '#dc3545');
-										$status.text( <?php echo json_encode( __( "A network error occurred. Please try again.", "mage-eventpress" ) ); ?> );
-										$btn.prop("disabled", false);
-										$btn.css('opacity', '1');
-									}
-								});
-							});
 							// Move the wrapper out of the table so it displays like a real tab bar spanning full width
 							var $tabContainer = $('.payment-sub-tabs-wrapper');
 							var $table = $tabContainer.closest('table.form-table');
@@ -809,32 +857,7 @@ tr.payment_tabs_html { display: none !important; }
 							$('.payment-sub-tabs .nav-tab').css('color', 'black');
 					});
 				</script>
-				<?php if ( ! class_exists( 'WooCommerce' ) ) : ?>
-				<div id="mep-wc-install-modal" style="display:none; position:fixed; z-index:99999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
-					<div style="background:#fff; border-radius:12px; width:450px; max-width:90%; box-shadow:0 10px 30px rgba(0,0,0,0.3); overflow:hidden;">
-						<div style="padding:20px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
-							<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php _e( "WooCommerce Configuration", "mage-eventpress" ); ?></h3>
-							<button type="button" class="mep-close-modal" style="background:none; border:none; font-size:24px; cursor:pointer; color:#666; line-height:1;">&times;</button>
-						</div>
-						<div style="padding:30px 25px; text-align:center;">
-							<span class="dashicons dashicons-cart" style="font-size:64px; width:64px; height:64px; color:#96588a; margin-bottom:20px;"></span>
-							<p style="font-size:16px; color:#444; margin-bottom:25px; line-height:1.5;">
-								<?php if ( file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ) : ?>
-									<?php _e( "WooCommerce is required to process payments. It is already installed on your site, but needs to be activated. Click the button below to activate it right now.", "mage-eventpress" ); ?>
-								<?php else : ?>
-									<?php _e( "WooCommerce is required to process payments. We will securely download, install, and activate it for you right now.", "mage-eventpress" ); ?>
-								<?php endif; ?>
-							</p>
-							<div id="mep-wc-install-progress" style="display:none; margin-bottom:20px; font-weight:500; font-size:15px; background:#f0f0f1; padding:12px; border-radius:6px;">
-								<span class="spinner is-active" style="float:none; margin:0 10px 0 0;"></span> <span id="mep-wc-install-status" style="color:#2271b1;"><?php _e( "Working...", "mage-eventpress" ); ?></span>
-							</div>
-							<button type="button" id="mep-wc-start-install" class="button button-primary button-hero" style="background:#96588a; border-color:#703c66; width:100%; box-shadow:0 2px 4px rgba(150,88,138,0.3); transition:all 0.2s;">
-								<?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?>
-							</button>
-						</div>
-					</div>
-				</div>
-				<?php endif; ?>
+
 				<?php
 			}
 
@@ -2085,7 +2108,6 @@ tr.payment_tabs_html { display: none !important; }
 										<a href="#woocommerce-field" class="nav-tab nav-tab-active">' . __( "WooCommerce", "mage-eventpress" ) . '</a>
 										<a href="#no-woocommerce-field" class="nav-tab">' . __( "Custom Payment", "mage-eventpress" ) . '</a>
 										</h2>
-									</div>
 									';
 									if ( ! $wc_active ) {
 										$html .= '
@@ -2094,7 +2116,7 @@ tr.payment_tabs_html { display: none !important; }
 												<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
 													<div style="width: 100%;">
 														<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i>' . __( "Notice: WooCommerce is Not Activated", "mage-eventpress" ) . '</strong>
-														<span style="font-size: 13px; display: block;">' . __( "You can explore and manage ticket types, prices, and related settings here. However, you cannot save the event type as \"Ticket-Selling\" without WooCommerce. To actually use the \"Ticket-Selling\" event type and allow ticket sales, you must install and activate WooCommerce.", "mage-eventpress" ) . '</span>
+														<span style="font-size: 13px; display: block;">' . __( "To actually use the \"Ticket-Selling\" event type and allow ticket sales, you must install and activate WooCommerce.", "mage-eventpress" ) . '</span>
 													</div>
 													<div>
 														<button type="button" class="button button-primary mep-install-wc-trigger" style="white-space: nowrap;">' . $woo_btn_text . '</button>
@@ -2102,9 +2124,9 @@ tr.payment_tabs_html { display: none !important; }
 												</div>
 											</div>
 										</div>
-										<style id="mep-woo-warning-style">tr.woocommerce-field { display: none !important; }</style>
 										';
 									}
+									$html .= '</div>';
 									return $html;
 								})()
 							),

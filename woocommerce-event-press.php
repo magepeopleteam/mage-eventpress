@@ -21,6 +21,9 @@
 	if (!defined('MPWEM_PLUGIN_URL')) {
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
+	if (!defined('MPWEM_PLUGIN_VERSION')) {
+		define('MPWEM_PLUGIN_VERSION', '5.3.4');
+	}
 
 	if (is_plugin_active('woocommerce-event-manager-addon-recurring-event/recurring_events.php')) {
 		deactivate_plugins( '/woocommerce-event-manager-addon-recurring-event/recurring_events.php' );
@@ -82,7 +85,7 @@
 					'wp-components',
 					'wp-block-editor'
 				),
-				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/event-list-block.js'),
+				MPWEM_PLUGIN_VERSION,
 				array('in_footer' => true)
 			);
 
@@ -91,7 +94,7 @@
 				'mep-blocks-editor',
 				plugins_url('assets/blocks/editor.css', __FILE__),
 				array('wp-edit-blocks'),
-				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/editor.css')
+				MPWEM_PLUGIN_VERSION
 			);
 
 			// Register front-end styles
@@ -99,7 +102,7 @@
 				'mep-blocks-style',
 				plugins_url('assets/blocks/style.css', __FILE__),
 				array(),
-				filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/style.css')
+				MPWEM_PLUGIN_VERSION
 			);
 
 			// Enqueue block editor assets
@@ -181,86 +184,104 @@ if ( ! function_exists( 'mep_pro_modify_admin_menu_capabilities' ) ) {
 if ( ! function_exists( 'mep_pro_grant_shop_manager_access' ) ) {
 	add_filter( 'user_has_cap', 'mep_grant_shop_manager_access', 10, 4 );
 	function mep_grant_shop_manager_access( $allcaps, $caps, $args, $user ) {
-		if ( isset( $args[0] ) && $args[0] === 'manage_options' ) {
-			if ( ! empty( $allcaps['manage_woocommerce'] ) ) {
+		// Fast exit: this filter only matters for manage_options checks.
+		if ( ! isset( $args[0] ) || $args[0] !== 'manage_options' ) {
+			return $allcaps;
+		}
+		// Fast exit: only shop managers need elevation — skip everyone else immediately.
+		if ( empty( $allcaps['manage_woocommerce'] ) ) {
+			return $allcaps;
+		}
 
-				$is_eventpress_context = false;
+		// Cache the context result per user per request so the string comparisons
+		// below run at most ONCE per user rather than on every capability check.
+		static $mep_cap_cache = array();
+		$uid = isset( $user->ID ) ? (int) $user->ID : 0;
+		if ( isset( $mep_cap_cache[ $uid ] ) ) {
+			if ( $mep_cap_cache[ $uid ] ) {
+				$allcaps['manage_options'] = true;
+			}
+			return $allcaps;
+		}
 
-				if ( is_admin() ) {
-					global $pagenow;
+		$is_eventpress_context = false;
 
-					if ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ) {
-						$page = $_GET['page'];
-						if (
-							strpos( $page, 'mep_' ) === 0 ||
-							strpos( $page, 'mpwem_' ) === 0 ||
-							$page === 'attendee_list' ||
-							$page === 'mep_event_welcome_page' ||
-							$page === 'mpwem_quick_setup'
-						) {
-							$is_eventpress_context = true;
-						}
-					}
+		if ( is_admin() ) {
+			global $pagenow;
 
-					if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] === 'mep_events' || $_GET['post_type'] === 'mep_event_speaker' ) ) {
-						$is_eventpress_context = true;
-					}
-
-					if ( $pagenow === 'post.php' && isset( $_GET['post'] ) ) {
-						$post_id = absint( $_GET['post'] );
-						if ( $post_id && get_post_type( $post_id ) === 'mep_events' ) {
-							$is_eventpress_context = true;
-						}
-					}
-
-					if ( $pagenow === 'options.php' && isset( $_POST['option_page'] ) && is_string( $_POST['option_page'] ) ) {
-						$option_page = $_POST['option_page'];
-						if (
-							strpos( $option_page, 'mep_' ) === 0 ||
-							strpos( $option_page, 'mpwem_' ) === 0 ||
-							strpos( $option_page, 'general_setting_sec' ) === 0 ||
-							strpos( $option_page, 'event_list_setting_sec' ) === 0 ||
-							strpos( $option_page, 'single_event_setting_sec' ) === 0 ||
-							strpos( $option_page, 'email_setting_sec' ) === 0 ||
-							strpos( $option_page, 'style_setting_sec' ) === 0 ||
-							strpos( $option_page, 'icon_setting_sec' ) === 0 ||
-							strpos( $option_page, 'carousel_setting_sec' ) === 0 ||
-							strpos( $option_page, 'mp_slider_settings' ) === 0 ||
-							strpos( $option_page, 'mep_settings_licensing' ) === 0
-						) {
-							$is_eventpress_context = true;
-						}
-					}
-				}
-
-				if ( wp_doing_ajax() ) {
-					if ( isset( $_REQUEST['action'] ) && is_string( $_REQUEST['action'] ) ) {
-						$action = $_REQUEST['action'];
-						if (
-							strpos( $action, 'mep_' ) === 0 ||
-							strpos( $action, 'mpwem_' ) === 0 ||
-							strpos( $action, 'wbtm_' ) === 0 ||
-							strpos( $action, 'wtbm_' ) === 0 ||
-							strpos( $action, 'wbbm_' ) === 0 ||
-							$action === 'generate_attendee_pdf'
-						) {
-							$is_eventpress_context = true;
-						}
-					}
-				}
-
-				if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-					if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-						if ( stripos( $_SERVER['REQUEST_URI'], '/wp-json/mep/' ) !== false || stripos( $_SERVER['REQUEST_URI'], '/wp-json/mpwem/' ) !== false ) {
-							$is_eventpress_context = true;
-						}
-					}
-				}
-
-				if ( $is_eventpress_context ) {
-					$allcaps['manage_options'] = true;
+			if ( isset( $_GET['page'] ) && is_string( $_GET['page'] ) ) {
+				$page = $_GET['page'];
+				if (
+					strpos( $page, 'mep_' ) === 0 ||
+					strpos( $page, 'mpwem_' ) === 0 ||
+					$page === 'attendee_list' ||
+					$page === 'mep_event_welcome_page' ||
+					$page === 'mpwem_quick_setup'
+				) {
+					$is_eventpress_context = true;
 				}
 			}
+
+			if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] === 'mep_events' || $_GET['post_type'] === 'mep_event_speaker' ) ) {
+				$is_eventpress_context = true;
+			}
+
+			if ( $pagenow === 'post.php' && isset( $_GET['post'] ) ) {
+				$post_id = absint( $_GET['post'] );
+				if ( $post_id && get_post_type( $post_id ) === 'mep_events' ) {
+					$is_eventpress_context = true;
+				}
+			}
+
+			if ( $pagenow === 'options.php' && isset( $_POST['option_page'] ) && is_string( $_POST['option_page'] ) ) {
+				$option_page = $_POST['option_page'];
+				if (
+					strpos( $option_page, 'mep_' ) === 0 ||
+					strpos( $option_page, 'mpwem_' ) === 0 ||
+					strpos( $option_page, 'general_setting_sec' ) === 0 ||
+					strpos( $option_page, 'event_list_setting_sec' ) === 0 ||
+					strpos( $option_page, 'single_event_setting_sec' ) === 0 ||
+					strpos( $option_page, 'email_setting_sec' ) === 0 ||
+					strpos( $option_page, 'style_setting_sec' ) === 0 ||
+					strpos( $option_page, 'icon_setting_sec' ) === 0 ||
+					strpos( $option_page, 'carousel_setting_sec' ) === 0 ||
+					strpos( $option_page, 'mp_slider_settings' ) === 0 ||
+					strpos( $option_page, 'mep_settings_licensing' ) === 0
+				) {
+					$is_eventpress_context = true;
+				}
+			}
+		}
+
+		if ( wp_doing_ajax() ) {
+			if ( isset( $_REQUEST['action'] ) && is_string( $_REQUEST['action'] ) ) {
+				$action = $_REQUEST['action'];
+				if (
+					strpos( $action, 'mep_' ) === 0 ||
+					strpos( $action, 'mpwem_' ) === 0 ||
+					strpos( $action, 'wbtm_' ) === 0 ||
+					strpos( $action, 'wtbm_' ) === 0 ||
+					strpos( $action, 'wbbm_' ) === 0 ||
+					$action === 'generate_attendee_pdf'
+				) {
+					$is_eventpress_context = true;
+				}
+			}
+		}
+
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+				if ( stripos( $_SERVER['REQUEST_URI'], '/wp-json/mep/' ) !== false || stripos( $_SERVER['REQUEST_URI'], '/wp-json/mpwem/' ) !== false ) {
+					$is_eventpress_context = true;
+				}
+			}
+		}
+
+		// Store result so all subsequent capability checks in this request are instant.
+		$mep_cap_cache[ $uid ] = $is_eventpress_context;
+
+		if ( $is_eventpress_context ) {
+			$allcaps['manage_options'] = true;
 		}
 
 		return $allcaps;

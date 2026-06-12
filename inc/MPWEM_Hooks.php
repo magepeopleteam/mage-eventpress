@@ -50,6 +50,7 @@
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
 				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 
+				add_action( 'save_post_mep_events', array( $this, 'flush_meta_value_transients' ) );
 				/*************************************/
 				add_action( 'mpwem_list_thumb', [ $this, 'list_thumb' ], 10, 3 );
 				add_action( 'mpwem_list_location', [ $this, 'list_location' ], 10, 3 );
@@ -747,6 +748,9 @@
                 </div>
 				<?php
 			}
+		public function flush_meta_value_transients() {
+			MPWEM_Query::flush_post_meta_value_cache();
 		}
-		new MPWEM_Hooks();
 	}
+	new MPWEM_Hooks();
+}

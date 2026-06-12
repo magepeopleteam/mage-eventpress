@@ -27,6 +27,11 @@
 				return $all_data;
 			}
 			public static function get_all_post_meta_value( $meta_key, $post_type = 'mep_events', $status = 'publish' ) {
+				$transient_key = 'mep_pmv_' . md5( $meta_key . $post_type . $status );
+				$cached        = get_transient( $transient_key );
+				if ( false !== $cached ) {
+					return $cached;
+				}
 				global $wpdb;
 				$sql         = $wpdb->prepare(
 					"    SELECT DISTINCT pm.meta_value    FROM {$wpdb->postmeta} pm    INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id    WHERE pm.meta_key = %s      AND p.post_status = %s      AND p.post_type = %s    ",
@@ -36,7 +41,12 @@
 				$meta_values = array_values( array_filter( $meta_values, 'strlen' ) );
 				$meta_values = array_unique( $meta_values );
 				sort( $meta_values, SORT_NATURAL );
+				set_transient( $transient_key, $meta_values, HOUR_IN_SECONDS );
 				return $meta_values;
+			}
+			public static function flush_post_meta_value_cache() {
+				global $wpdb;
+				$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_mep_pmv_%' OR option_name LIKE '_transient_timeout_mep_pmv_%'" );
 			}
 			public static function event_list_query($show,$evnt_type = 'upcoming',$sort = '',$paged_override = 0) {
 				$etype          = $evnt_type == 'expired' ? '<' : '>';

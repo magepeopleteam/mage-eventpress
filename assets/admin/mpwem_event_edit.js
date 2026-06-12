@@ -466,6 +466,7 @@
         mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
         mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
         mountPanel($root, '#mp_event_reg_form_menu', 'mpwem_wizard_attendee_form_mount');
+        mountPanel($root, '#mep_deposit_settings_tab', 'mpwem_wizard_deposit_mount');
         mountDangerZone($root);
 
         const $legacySettingsPanel = $root.find('.mp_tab_item[data-tab-item="#mpwem_event_settings"]').first();
@@ -2436,6 +2437,13 @@
                 title: 'SEO & Schema',
                 desc: 'Control rich result details used by search engines.',
                 icon: 'dashicons-chart-bar'
+            },
+            {
+                mount: '#mpwem_wizard_deposit_mount',
+                className: 'mpwem-display-section--deposit',
+                title: 'Deposit / Partial Payment',
+                desc: 'Override the global deposit setting for this specific event.',
+                icon: 'dashicons-money-alt'
             },
             {
                 mount: '#mpwem_wizard_settings_mount',

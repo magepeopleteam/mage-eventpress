@@ -132,8 +132,9 @@
 					$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 					$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 					$total_sold       = MPWEM_Query::attendee_query( $filter_args )->post_count;
+		 			$temp_count 	  = mep_temp_attendee_count( $event_id, $ticket_name, $date );
 					// echo '<pre>'; print_r(MPWEM_Query::attendee_query( $filter_args ));echo'</pre>';
-					$available_ticket = (int) $ticket_qty - ( $total_sold + (int) $ticket_r_qty );
+					$available_ticket = (int) $ticket_qty - ( ($total_sold + $temp_count) + (int) $ticket_r_qty );
 				}
 				return $available_ticket;
 			}

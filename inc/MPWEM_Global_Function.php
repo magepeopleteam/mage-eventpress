@@ -582,6 +582,9 @@
 				return $format == 'D M d , yy' ? 'D M  j, Y' : $date_format;
 			}
 			public function date_picker_js( $selector, $dates ) {
+				if ( empty( $dates ) ) {
+					return;
+				}
 				$start_date  = $dates[0];
 				$start_year  = date( 'Y', strtotime( $start_date ) );
 				$start_month = ( date( 'n', strtotime( $start_date ) ) - 1 );

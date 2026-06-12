@@ -258,7 +258,8 @@
                     <div class="list_date_list">
 						<?php
 							if ( $date_type == 'no' || $date_type == 'yes' ) {
-								$date        = ! empty( $date ) ? $date : current( $all_dates )['time'];
+								$_cur = current( $all_dates );
+							$date = ! empty( $date ) ? $date : ( is_array( $_cur ) && isset( $_cur['time'] ) ? $_cur['time'] : '' );
 								$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
 								foreach ( $all_dates as $dates ) {
 									$start_time = is_array($dates) && array_key_exists( 'time', $dates ) ? $dates['time'] : '';
@@ -391,8 +392,12 @@
 				$address_type = is_array($event_infos) && array_key_exists( 'mep_org_address', $event_infos ) ? $event_infos['mep_org_address'] : '';
 				if ( $address_type ) {
 					$org_arr  = get_the_terms( $event_id, 'mep_org' );
-					$org_id   = $org_arr[0]->term_id;
-					$location = get_term_meta( $org_id, 'org_location', true );
+					if ( is_array( $org_arr ) && ! empty( $org_arr ) ) {
+						$org_id   = $org_arr[0]->term_id;
+						$location = get_term_meta( $org_id, 'org_location', true );
+					} else {
+						$location = '';
+					}
 				} else {
 					$location = is_array($event_infos) && array_key_exists( 'mep_location_venue', $event_infos ) ? $event_infos['mep_location_venue'] : '';
 				}
@@ -728,7 +733,11 @@
                         $all_times   = MPWEM_Functions::get_times( $event_id, );
 
                         $upcoming_date                           = MPWEM_Functions::get_upcoming_date_time( $event_id);
-                        $upcoming_date            = is_array($event_infos) && array_key_exists( 'event_upcoming_datetime', $event_infos ) && $recurring == 'no' ? $event_infos['event_start_datetime'] : $event_infos['event_upcoming_datetime'];
+                        if ( is_array( $event_infos ) && $recurring == 'no' && array_key_exists( 'event_start_datetime', $event_infos ) ) {
+                            $upcoming_date = $event_infos['event_start_datetime'];
+                        } elseif ( is_array( $event_infos ) && array_key_exists( 'event_upcoming_datetime', $event_infos ) ) {
+                            $upcoming_date = $event_infos['event_upcoming_datetime'];
+                        }
                         $total_sold      = mep_ticket_type_sold( $event_id, '', $upcoming_date );
                         $total_ticket    = MPWEM_Functions::get_total_ticket( $event_id, $upcoming_date );
                         $total_reserve   = MPWEM_Functions::get_reserve_ticket( $event_id, $upcoming_date );

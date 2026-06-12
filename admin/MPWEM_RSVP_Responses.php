@@ -30,7 +30,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			if ( 'mep_events_page_event-rsvp-responses' !== $hook ) {
 				return;
 			}
-			wp_enqueue_style( 'mpwem-event-edit', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.css', array(), time() );
+			wp_enqueue_style( 'mpwem-rsvp-admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_rsvp_admin.css', array(), time() );
 			wp_enqueue_script( 'mpwem-rsvp-admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_rsvp_admin.js', array( 'jquery' ), time(), true );
 			wp_localize_script( 'mpwem-rsvp-admin', 'mep_rsvp_ajax', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),

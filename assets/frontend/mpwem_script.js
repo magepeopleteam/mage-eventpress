@@ -1270,8 +1270,8 @@ jQuery(function ($) {
         const $btn = $form.find('.mep-rsvp-submit-btn');
         const $msg = $form.find('.mep-rsvp-message');
 
-        $btn.prop('disabled', true).css('opacity', '0.6').find('span').text('Submitting...');
-        $msg.hide().removeClass('success error').css('background', 'none');
+        $btn.prop('disabled', true).find('span').text('Submitting...');
+        $msg.hide().removeClass('success error');
 
         $.ajax({
             url: mpwem_script_var ? mpwem_script_var.url : mpwem_ajax_url,
@@ -1279,43 +1279,19 @@ jQuery(function ($) {
             data: $form.serialize(),
             success: function(response) {
                 if (response.success) {
-                    $msg.text(response.data.message).addClass('success').css({
-                        'display': 'block',
-                        'background': '#ecfdf5',
-                        'color': '#065f46',
-                        'border': '1px solid #a7f3d0',
-                        'padding': '10px',
-                        'margin-top': '10px',
-                        'border-radius': '4px'
-                    });
+                    $msg.text(response.data.message).addClass('success').show();
                     $form.find('input[type="text"], input[type="email"]').val('');
                     $form.find('input[type="number"]').val(1);
                 } else {
                     const errorMsg = response.data && response.data.message ? response.data.message : 'An error occurred. Please try again.';
-                    $msg.text(errorMsg).addClass('error').css({
-                        'display': 'block',
-                        'background': '#fef2f2',
-                        'color': '#991b1b',
-                        'border': '1px solid #fca5a5',
-                        'padding': '10px',
-                        'margin-top': '10px',
-                        'border-radius': '4px'
-                    });
+                    $msg.text(errorMsg).addClass('error').show();
                 }
             },
             error: function() {
-                $msg.text('Connection error. Please try again.').addClass('error').css({
-                    'display': 'block',
-                    'background': '#fef2f2',
-                    'color': '#991b1b',
-                    'border': '1px solid #fca5a5',
-                    'padding': '10px',
-                    'margin-top': '10px',
-                    'border-radius': '4px'
-                });
+                $msg.text('Connection error. Please try again.').addClass('error').show();
             },
             complete: function() {
-                $btn.prop('disabled', false).css('opacity', '1').find('span').text('Submit RSVP');
+                $btn.prop('disabled', false).find('span').text('Submit RSVP');
             }
         });
     });

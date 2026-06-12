@@ -41,8 +41,8 @@ jQuery(document).ready(function($) {
                         <input type="checkbox" class="mep-rsvp-cb" value="${rsvp.id}">
                     </th>
                     <td class="column-name">
-                        <strong>${rsvp.name}</strong><br>
-                        <small><a href="mailto:${rsvp.email}">${rsvp.email}</a></small><br>
+                        <strong>${rsvp.name}</strong>
+                        <small><a href="mailto:${rsvp.email}">${rsvp.email}</a></small>
                         <small>${rsvp.phone}</small>
                     </td>
                     <td class="column-event">${rsvp.event_name}</td>

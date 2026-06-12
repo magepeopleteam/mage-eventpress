@@ -413,7 +413,7 @@
             if ($extraMount.length) {
                 $exService.addClass('mpwem_style');
                 $exService.detach().appendTo($extraMount);
-                $('#mpwem_wizard_extra_services_card').show();
+                $('#mpwem_wizard_extra_services_card').show().data('mpwem-mounted', true);
                 // Remove the legacy header from inside the card body since our new card has its own head
                 $exService.find('._bg_light_padding').first().hide();
             }
@@ -2928,6 +2928,7 @@
         if (!$origSection.length) return;
 
         const $wrapper = $('<div class="mpwem-event-type-card"></div>');
+        const $sectionTitle = $('<h4 class="mpwem-event-type-title">Event Type</h4>');
         const $toggle = $(
             '<div class="mpwem-event-type-toggle">' +
             '  <div class="mpwem-event-type-option" data-value="offline">' +
@@ -2945,6 +2946,7 @@
             '</div>'
         );
 
+        $wrapper.append($sectionTitle);
         $wrapper.append($toggle);
         $origSection.before($wrapper);
         $origSection.hide(); // Hide the original section entirely
@@ -3021,6 +3023,12 @@
 
             syncHybridTicketCols(val);
             syncTicketAdvancedColumns($root);
+
+            // Hide extra services card for virtual/online events (no physical services needed)
+            var $extraServicesCard = $('#mpwem_wizard_extra_services_card');
+            if ($extraServicesCard.length && $extraServicesCard.data('mpwem-mounted')) {
+                $extraServicesCard.toggle(val !== 'online');
+            }
         }
 
         // Keep hybrid columns in sync when new ticket rows are added

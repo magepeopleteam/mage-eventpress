@@ -1733,6 +1733,16 @@ select.mpwem-global-qty-field__input {
     margin-bottom: 24px;
 }
 
+.mpwem-event-type-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 12px 0;
+    padding: 0;
+}
+
 .mpwem-event-type-toggle {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

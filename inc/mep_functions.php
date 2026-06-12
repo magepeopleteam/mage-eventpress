@@ -196,27 +196,32 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 		}
 	}
 	if ( ! function_exists( 'mep_temp_attendee_count' ) ) {
-		function mep_temp_attendee_count( $event_id, $ticket_type, $event_date ) {
+		function mep_temp_attendee_count( $event_id, $ticket_type = '', $event_date = '' ) {
+			$meta_query = array(
+				array(
+					'key'     => 'event_id',
+					'value'   => $event_id,
+					'compare' => '='
+				),
+				array(
+					'key'     => 'event_date',
+					'value'   => $event_date,
+					'compare' => 'LIKE'
+				)
+			);
+
+			if ( ! empty( $ticket_type ) ) {
+				$meta_query[] = array(
+					'key'     => 'ticket_type',
+					'value'   => $ticket_type,
+					'compare' => '='
+				);
+			}
+
 			$args = array(
 				'post_type'      => array( 'mep_temp_attendee' ),
 				'posts_per_page' => - 1,
-				'meta_query'     => array(
-					array(
-						'key'     => 'event_id',
-						'value'   => $event_id,
-						'compare' => '='
-					),
-					array(
-						'key'     => 'ticket_type',
-						'value'   => $ticket_type,
-						'compare' => '='
-					),
-					array(
-						'key'     => 'event_date',
-						'value'   => $event_date,
-						'compare' => 'LIKE'
-					)
-				)
+				'meta_query'     => $meta_query
 			);
 			$loop = new WP_Query( $args );
 			$qty  = 0;

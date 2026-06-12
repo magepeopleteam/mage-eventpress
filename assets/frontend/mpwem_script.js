@@ -1,3 +1,13 @@
+function mpwem_qty_inperson(parent) {
+    let total_qty = 0;
+    parent.find('[name="option_qty[]"]').each(function () {
+        const $item = jQuery(this).closest('.mep_ticket_item');
+        if (!$item.find('.mep-ticket-mode-badge--online').length) {
+            total_qty += parseInt(jQuery(this).val()) || 0;
+        }
+    });
+    return total_qty;
+}
 function mpwem_price_calculation(parent) {
     // alert(123);
     try {
@@ -6,9 +16,16 @@ function mpwem_price_calculation(parent) {
         const target_summary = parent.find('.mpwem_total');
         let total = mpwem_price(parent);
         if (total_qty > 0) {
-            parent.find('.mpwem_ex_service').slideDown('fast');
             parent.find('.mpwem_form_submit_area button').removeAttr('disabled');
-            total += mpwem_ex_price(parent);
+            // For hybrid events, only show extra service when at least one in-person ticket is selected
+            const isHybrid = parent.find('.mep-ticket-mode-badge--online, .mep-ticket-mode-badge--inperson').length > 0;
+            const inPersonQty = isHybrid ? mpwem_qty_inperson(parent) : total_qty;
+            if (inPersonQty > 0) {
+                parent.find('.mpwem_ex_service').slideDown('fast');
+                total += mpwem_ex_price(parent);
+            } else {
+                parent.find('.mpwem_ex_service').slideUp('fast');
+            }
         } else {
             parent.find('.mpwem_ex_service').slideUp('fast');
             parent.find('.mpwem_form_submit_area button').attr('disabled', 'disabled');

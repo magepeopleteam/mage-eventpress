@@ -45,6 +45,8 @@
 				add_action( 'wp_ajax_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
+				add_action( 'wp_ajax_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
+				add_action( 'wp_ajax_nopriv_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
 				/***********************/
 				add_action( 'mpwem_seat_status', [ $this, 'seat_status' ], 10, 3 );
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
@@ -408,23 +410,23 @@
 				<?php }
 			}
 			public function list_organizer( $event_infos ) {
-		$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-		$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-		$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
-		if ( $hide_org_list == 'no' ) {
-			$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
-			if ( $organizer_name ) {
-				$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
-				$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
-				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-				$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
-				?>
-                    <div class="list_content upcomming_organizer">
-                        <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
-                    </div>
-			<?php }
-		}
-	}
+				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
+				$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
+				if ( $hide_org_list == 'no' ) {
+					$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
+					if ( $organizer_name ) {
+						$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
+						$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+						$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
+						$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
+						?>
+							<div class="list_content upcomming_organizer">
+								<span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
+							</div>
+					<?php }
+				}
+			}
 			public function list_price( $event_infos ) {
 				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
@@ -748,9 +750,158 @@
                 </div>
 				<?php
 			}
-		public function flush_meta_value_transients() {
-			MPWEM_Query::flush_post_meta_value_cache();
-		}
+
+			public function mep_submit_rsvp() {
+				check_ajax_referer( 'mep_rsvp_nonce', 'nonce' );
+
+				$event_id   = isset( $_POST['event_id'] ) ? absint( $_POST['event_id'] ) : 0;
+				$name       = isset( $_POST['rsvp_name'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_name'] ) ) : '';
+				$email      = isset( $_POST['rsvp_email'] ) ? sanitize_email( wp_unslash( $_POST['rsvp_email'] ) ) : '';
+				$phone      = isset( $_POST['rsvp_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_phone'] ) ) : '';
+				$event_date = isset( $_POST['rsvp_date'] ) ? sanitize_text_field( wp_unslash( $_POST['rsvp_date'] ) ) : '';
+				$ticket_qty = isset( $_POST['rsvp_qty'] ) ? absint( $_POST['rsvp_qty'] ) : 1;
+
+				if ( ! $event_id || empty( $name ) || empty( $email ) || empty( $phone ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please fill out all required fields.', 'mage-eventpress' ) ) );
+				}
+
+				if ( ! is_email( $email ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid email address.', 'mage-eventpress' ) ) );
+				}
+
+				// Prevent duplicate RSVP for the same event date with the same email
+				$existing_args = array(
+					'post_type'      => 'mep_rsvp_responses',
+					'posts_per_page' => 1,
+					'meta_query'     => array(
+						'relation' => 'AND',
+						array(
+							'key'     => 'ea_event_id',
+							'value'   => $event_id,
+							'compare' => '='
+						),
+						array(
+							'key'     => 'ea_email',
+							'value'   => $email,
+							'compare' => '='
+						),
+						array(
+							'key'     => 'ea_order_status',
+							'value'   => 'completed',
+							'compare' => '='
+						)
+					)
+				);
+				if ( ! empty( $event_date ) ) {
+					$existing_args['meta_query'][] = array(
+						'key'     => 'ea_event_date',
+						'value'   => $event_date,
+						'compare' => 'LIKE'
+					);
+				}
+				$existing_query = new WP_Query( $existing_args );
+				if ( $existing_query->have_posts() ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'You have already submitted an RSVP for this event.', 'mage-eventpress' ) ) );
+				}
+
+				// Capacity Check
+				$event_global_qty_status = get_post_meta( $event_id, 'enable_global_qty', true );
+				if ( $event_global_qty_status === 'on' ) {
+					$gq_type  = get_post_meta( $event_id, 'mep_gq_type', true ) ?: 'global';
+					$capacity = 0;
+					if ( $gq_type === 'global' ) {
+						$capacity = intval( get_post_meta( $event_id, 'mep_gq_total_seat', true ) );
+					} else {
+						$recurring = get_post_meta( $event_id, 'mep_enable_recurring', true ) ?: 'no';
+						if ( $recurring === 'yes' && $event_date ) {
+							$start_date      = get_post_meta( $event_id, 'event_start_date', true );
+							$start_time      = get_post_meta( $event_id, 'event_start_time', true );
+							$start_date_time = $start_time ? $start_date . ' ' . $start_time : $start_date;
+							if ( strtotime( $event_date ) == strtotime( $start_date_time ) ) {
+								$capacity = intval( get_post_meta( $event_id, 'event_date_gq', true ) );
+							} else {
+								$more_dates = get_post_meta( $event_id, 'mep_event_more_date', true ) ?: array();
+								if ( is_array( $more_dates ) && count( $more_dates ) > 0 ) {
+									foreach ( $more_dates as $more_date ) {
+										$more_start_date      = isset( $more_date['event_more_start_date'] ) ? $more_date['event_more_start_date'] : '';
+										$more_start_time      = isset( $more_date['event_more_start_time'] ) ? $more_date['event_more_start_time'] : '';
+										$more_start_date_time = $more_start_time ? $more_start_date . ' ' . $more_start_time : $more_start_date;
+										if ( strtotime( $event_date ) == strtotime( $more_start_date_time ) ) {
+											$capacity = isset( $more_date['event_date_gq_md'] ) ? intval( $more_date['event_date_gq_md'] ) : 0;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if ( $capacity > 0 ) {
+						// Sum up the sold seats
+						$sold_args = array(
+							'post_type'      => 'mep_rsvp_responses',
+							'posts_per_page' => -1,
+							'meta_query'     => array(
+								'relation' => 'AND',
+								array(
+									'key'     => 'ea_event_id',
+									'value'   => $event_id,
+									'compare' => '='
+								),
+								array(
+									'key'     => 'ea_order_status',
+									'value'   => 'completed',
+									'compare' => '='
+								)
+							)
+						);
+						if ( ! empty( $event_date ) ) {
+							$sold_args['meta_query'][] = array(
+								'key'     => 'ea_event_date',
+								'value'   => $event_date,
+								'compare' => 'LIKE'
+							);
+						}
+						$sold_query = new WP_Query( $sold_args );
+						$total_sold = 0;
+						foreach ( $sold_query->posts as $attendee ) {
+							$qty = get_post_meta( $attendee->ID, 'ea_ticket_qty', true );
+							$total_sold += $qty ? intval( $qty ) : 1;
+						}
+
+						$available_seats = $capacity - $total_sold;
+						if ( $available_seats <= 0 ) {
+							wp_send_json_error( array( 'message' => esc_html__( 'Sorry, this event is fully booked.', 'mage-eventpress' ) ) );
+						}
+						if ( $ticket_qty > $available_seats ) {
+							wp_send_json_error( array( 'message' => sprintf( esc_html__( 'Only %d seats are remaining.', 'mage-eventpress' ), $available_seats ) ) );
+						}
+					}
+				}
+
+				$user_info = array(
+					'user_name'       => $name,
+					'user_email'      => $email,
+					'user_phone'      => $phone,
+					'user_event_date' => $event_date,
+					'user_ticket_qty' => $ticket_qty,
+				);
+
+				$attendee_id = mep_rsvp_attendee_create( $event_id, $user_info );
+
+				if ( $attendee_id ) {
+					// Send confirmation email
+					if ( function_exists( 'mep_event_confirmation_email_sent' ) ) {
+						mep_event_confirmation_email_sent( $event_id, $email, 0, $attendee_id );
+					}
+					wp_send_json_success( array( 'message' => esc_html__( 'RSVP submitted successfully!', 'mage-eventpress' ) ) );
+				} else {
+					wp_send_json_error( array( 'message' => esc_html__( 'Failed to submit RSVP. Please try again.', 'mage-eventpress' ) ) );
+				}
+			}
+			public function flush_meta_value_transients() {
+				MPWEM_Query::flush_post_meta_value_cache();
+			}
 	}
 	new MPWEM_Hooks();
 }

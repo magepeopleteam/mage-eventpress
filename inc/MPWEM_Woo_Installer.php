@@ -29,6 +29,7 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 			// AJAX handlers for install, activate & dismiss
 			add_action( 'wp_ajax_mpwem_install_woocommerce', array( $this, 'ajax_install_woocommerce' ) );
 			add_action( 'wp_ajax_mpwem_activate_woocommerce', array( $this, 'ajax_activate_woocommerce' ) );
+			add_action( 'wp_ajax_mpwem_dismiss_woocommerce_installer', array( $this, 'ajax_dismiss_installer' ) );
 		}
 
 		/**
@@ -84,8 +85,7 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 		 * @return bool
 		 */
 		private function should_show_popup() {
-			// Always show the popup when WooCommerce is not active
-			return ! $this->is_woo_active();
+			return false; // Disabled by user request
 		}
 
 		/**
@@ -115,6 +115,7 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 				'ajax_url'         => admin_url( 'admin-ajax.php' ),
 				'install_nonce'    => wp_create_nonce( 'mpwem_install_woo' ),
 				'activate_nonce'   => wp_create_nonce( 'mpwem_activate_woo' ),
+				'dismiss_nonce'    => wp_create_nonce( 'mpwem_dismiss_woo' ),
 				'redirect_url'     => admin_url( 'edit.php?post_type=mep_events&page=mep_event_lists' ),
 				'woo_installed'    => $this->is_woo_installed() ? 'yes' : 'no',
 				'i18n'             => array(
@@ -154,6 +155,9 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 							</svg>
 						</div>
 						<span class="mpwem-woo-header-text"><?php esc_html_e( 'Event Booking Manager', 'mage-eventpress' ); ?></span>
+						<button type="button" class="mpwem-woo-popup-close" id="mpwem-woo-dismiss-btn" aria-label="Close">
+							&times;
+						</button>
 					</div>
 
 					<!-- Icon -->
@@ -297,8 +301,13 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 			if ( is_wp_error( $result ) ) {
 				wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 			}
-
 			wp_send_json_success( array( 'message' => __( 'WooCommerce activated successfully!', 'mage-eventpress' ) ) );
+		}
+
+		public function ajax_dismiss_installer() {
+			check_ajax_referer( 'mpwem_dismiss_woo', 'nonce' );
+			update_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed', true );
+			wp_send_json_success();
 		}
 	}
 

@@ -60,6 +60,27 @@
 	color: #fff;
 }
 
+/* ---------- Close Button ---------- */
+.mpwem-woo-popup-close {
+	position: absolute;
+	top: 14px;
+	right: 18px;
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 24px;
+	font-weight: 300;
+	cursor: pointer;
+	line-height: 1;
+	padding: 0;
+	transition: color 0.2s ease;
+	z-index: 10;
+}
+
+.mpwem-woo-popup-close:hover {
+	color: #fff;
+}
+
 .mpwem-woo-header-icon {
 	display: flex;
 	align-items: center;

@@ -14,14 +14,404 @@
 			public function ticket_settings( $event_id, $event_infos ) {
 				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
+				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
+					<?php
+					$payment_opts = get_option('payment_setting_sec', []);
+					$woo_enabled = isset($payment_opts['mep_enable_wc_payment']) && $payment_opts['mep_enable_wc_payment'] === 'on';
+					$paypal_enabled = isset($payment_opts['mep_paypal_enable']) && $payment_opts['mep_paypal_enable'] === 'on';
+					$stripe_enabled = isset($payment_opts['mep_stripe_enable']) && $payment_opts['mep_stripe_enable'] === 'on';
+					$show_payment_warning = !$woo_enabled && !$paypal_enabled && !$stripe_enabled;
+					
+					$wc_add_to_cart_redirect = isset($payment_opts['mep_wc_add_to_cart_redirect']) ? $payment_opts['mep_wc_add_to_cart_redirect'] : 'checkout';
+					$wc_after_order_redirect = isset($payment_opts['mep_wc_after_order_redirect']) ? $payment_opts['mep_wc_after_order_redirect'] : 'plugin_thankyou';
+					$wc_require_login = isset($payment_opts['mep_wc_require_login']) && $payment_opts['mep_wc_require_login'] === 'on';
+					$wc_show_billing_info = isset($payment_opts['mep_wc_show_billing_info']) && $payment_opts['mep_wc_show_billing_info'] === 'on';
+					$wc_confirm_ticket_status = isset($payment_opts['mep_wc_confirm_ticket_status']) && is_array($payment_opts['mep_wc_confirm_ticket_status']) ? $payment_opts['mep_wc_confirm_ticket_status'] : array('processing' => 'processing', 'completed' => 'completed');
+					$wc_active = MPWEM_Global_Function::has_woocommerce();
+					?>
+					<div class="mpwem-ticket-warnings <?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status" style="margin-bottom: 20px;">
+						<?php if ( $show_payment_warning ) : ?>
+							<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+								<div>
+									<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+									<span style="font-size: 13px;"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
+								</div>
+								<div>
+									<button type="button" class="button button-primary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
+								</div>
+							</div>
+						<?php endif; ?>
+					</div>
+					
 					<?php $this->setting_head( $event_id, $event_infos ); ?>
                     <div class="<?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status">
 						<?php $this->ticket_setting( $event_id, $event_infos ); ?>
 						<?php $this->ex_service_setting( $event_id ); ?>
                     </div>
+					
+					<div class="mpwem-rsvp-settings-area" style="<?php echo esc_attr( $display_rsvp ); ?>">
+						<?php $this->rsvp_setting( $event_id, $event_infos ); ?>
+					</div>
+
 					<?php $this->mep_event_pro_purchase_notice(); ?>
+					
+					<!-- Payment Settings Modal -->
+					<div id="mep-payment-settings-modal" style="display:none; position:fixed; z-index:999999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+						<div style="background:#fff; border-radius:12px; width:600px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.35); overflow:hidden; max-height:90vh; display:flex; flex-direction:column;">
+							<div style="padding:20px 25px; border-bottom:1px solid #e2e4e7; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa;">
+								<h3 style="margin:0; font-size:18px; color:#2c3338;"><?php esc_html_e( 'Payment Settings', 'mage-eventpress' ); ?></h3>
+								<button type="button" class="mep-close-payment-modal" style="background:none; border:none; font-size:26px; cursor:pointer; color:#666; line-height:1; padding:0;">&times;</button>
+							</div>
+							<div style="padding:25px; overflow-y:auto; flex:1;">
+								<div id="mep-payment-settings-form">
+									<div class="mep-modal-tabs" style="display:flex; border-bottom:1px solid #e2e4e7; margin-bottom:20px; gap:4px; padding:0 5px;">
+										<button type="button" class="mep-modal-tab-btn active" data-target="#mep-modal-tab-woo" style="background:#f0f6fc; border:none; border-bottom:2px solid #2271b1; border-radius:6px 6px 0 0; padding:12px 18px; font-weight:600; cursor:pointer; color:#2271b1; transition:all 0.2s;"><?php esc_html_e( 'WooCommerce', 'mage-eventpress' ); ?></button>
+										<button type="button" class="mep-modal-tab-btn" data-target="#mep-modal-tab-custom" style="background:transparent; border:none; border-bottom:2px solid transparent; border-radius:6px 6px 0 0; padding:12px 18px; font-weight:600; cursor:pointer; color:#646970; transition:all 0.2s;"><?php esc_html_e( 'Custom Payment', 'mage-eventpress' ); ?></button>
+									</div>
+
+									<div id="mep-modal-tab-woo" class="mep-modal-tab-content">
+										<div style="margin-bottom: 20px;">
+											<h4 style="margin:0 0 10px; font-size:15px; color:#1e1e1e;"><?php esc_html_e( 'WooCommerce Payment', 'mage-eventpress' ); ?></h4>
+											<div class="mpwem-woo-warning-notice" style="display: <?php echo $wc_active ? 'none' : 'block'; ?>; background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); margin-bottom: 10px;">
+												<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+													<div style="width: 100%;">
+														<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'Notice: WooCommerce is Not Activated', 'mage-eventpress' ); ?></strong>
+														<span style="font-size: 13px; display: block;"><?php esc_html_e( 'You can explore and manage ticket types, prices, and related settings here. To actually use the "Ticket-Selling" event type and allow ticket sales, you must install and activate WooCommerce.', 'mage-eventpress' ); ?></span>
+													</div>
+													<div class="mep-woo-install-action-wrapper" style="display:flex; align-items:center; gap:15px; width:100%;">
+														<button type="button" class="button button-primary ticket-settings-trigger" style="white-space: nowrap;"><?php echo file_exists( WP_PLUGIN_DIR . "/woocommerce/woocommerce.php" ) ? esc_html__( "Activate WooCommerce Now", "mage-eventpress" ) : esc_html__( "Install & Activate Now", "mage-eventpress" ); ?></button>
+														<div class="mep-wc-install-progress" style="display:none; flex:1;">
+															<div class="mep-wc-install-progress-bar">
+																<div class="mep-wc-install-progress-fill"></div>
+															</div>
+															<p class="mep-wc-install-status-text"></p>
+														</div>
+													</div>
+													
+													<script>
+													jQuery(document).ready(function($) {
+														$(document).on('click', '.ticket-settings-trigger', function(e) {
+															e.preventDefault();
+															var $btn           = $(this);
+															var $wrapper       = $btn.closest('.mep-woo-install-action-wrapper');
+															var $progress      = $wrapper.find('.mep-wc-install-progress');
+															var $fill          = $wrapper.find('.mep-wc-install-progress-fill');
+															var $status        = $wrapper.find('.mep-wc-install-status-text');
+															var $notice        = $btn.closest('.mpwem-woo-warning-notice');
+															var $warningText   = $notice.find('>div>div:first-child');
+															var $tabHeader     = $btn.closest('#mep-modal-tab-woo').find('h4').first();
+															var origStyle      = { bg: $notice.css('background-color'), border: $notice.css('border-left-color'), pad: $notice.css('padding') };
+															
+															$btn.hide();
+															$warningText.hide();
+															$notice.css({ 'background': 'transparent', 'border-left': 'none', 'padding': '10px 0' });
+															$fill.css('width', '0%');
+															$status.removeClass('mep-success mep-error').addClass('mep-loading');
+															$progress.fadeIn(250);
+															
+															var isInstalled = <?php echo file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' ) ? 'true' : 'false'; ?>;
+															$tabHeader.text( isInstalled
+																? <?php echo wp_json_encode( __( 'Activating WooCommerce…', 'mage-eventpress' ) ); ?>
+																: <?php echo wp_json_encode( __( 'Installing WooCommerce…', 'mage-eventpress' ) ); ?>
+															);
+															var nonce       = '<?php echo esc_js( wp_create_nonce( 'mep_install_wc' ) ); ?>';
+															var texts = isInstalled
+																? [<?php echo implode( ',', array_map( 'json_encode', array(
+																	__( 'Activating WooCommerce...', 'mage-eventpress' ),
+																	__( 'Configuring settings...', 'mage-eventpress' ),
+																	__( 'Finalizing setup...', 'mage-eventpress' ),
+																) ) ); ?>]
+																: [<?php echo implode( ',', array_map( 'json_encode', array(
+																	__( 'Downloading WooCommerce...', 'mage-eventpress' ),
+																	__( 'Installing WooCommerce...', 'mage-eventpress' ),
+																	__( 'Activating WooCommerce...', 'mage-eventpress' ),
+																	__( 'Configuring settings...', 'mage-eventpress' ),
+																	__( 'Finalizing...', 'mage-eventpress' ),
+																) ) ); ?>];
+															
+															// easing phase: 5s for activate-only, 30s for fresh install
+															var easeDuration = isInstalled ? 5000 : 30000;
+															var startTime    = Date.now();
+															var isDone       = false;
+															var frameId;
+															
+															$status.text(texts[0]);
+															
+															function animateBar() {
+																if (isDone) return;
+																var elapsed = Date.now() - startTime;
+																var pct;
+																if (elapsed < easeDuration) {
+																	// easeOutQuad: 0 → 95% over easeDuration
+																	var raw   = elapsed / easeDuration;
+																	var eased = raw * (2 - raw);
+																	pct = eased * 95;
+																} else {
+																	// Slow crawl: asymptotically approaches 99% — always moving, never stuck
+																	var extra = elapsed - easeDuration;
+																	pct = 95 + 4 * (1 - Math.exp(-extra / 60000));
+																}
+																$fill.css('width', pct + '%');
+																var idx = Math.min(Math.floor((pct / 99) * texts.length), texts.length - 1);
+																$status.text(texts[idx] + ' ' + Math.round(pct) + '%');
+																frameId = requestAnimationFrame(animateBar); // always keep going until AJAX responds
+															}
+															frameId = requestAnimationFrame(animateBar);
+															
+															$.ajax({
+																url:     ajaxurl,
+																type:    'POST',
+																data:    { action: 'mep_install_activate_wc', nonce: nonce },
+																timeout: 300000, // 5-minute timeout — enough for any slow connection
+																success: function(response) {
+																	isDone = true;
+																	cancelAnimationFrame(frameId);
+																	$fill.css('width', '100%');
+																	if (response.success) {
+																		$status.removeClass('mep-loading mep-error').addClass('mep-success');
+																		$status.text(<?php echo wp_json_encode( __( 'Successfully Activated! 100%', 'mage-eventpress' ) ); ?>);
+																		setTimeout(function() {
+																			$tabHeader.text(<?php echo wp_json_encode( __( 'WooCommerce Payment', 'mage-eventpress' ) ); ?>);
+																			$notice.slideUp(300);
+																			$('.mep-woo-enable-label').css('display', 'flex').hide().fadeIn(300);
+																			$('#mep_modal_enable_wc').trigger('change');
+																		}, 1200);
+																	} else {
+																		$status.removeClass('mep-loading mep-success').addClass('mep-error');
+																		$status.text(<?php echo wp_json_encode( __( 'Error: ', 'mage-eventpress' ) ); ?> + (response.data || 'Unknown error'));
+																		setTimeout(function() {
+																			$tabHeader.text(<?php echo wp_json_encode( __( 'WooCommerce Payment', 'mage-eventpress' ) ); ?>);
+																			$progress.hide();
+																			$btn.show();
+																			$warningText.show();
+																			$notice.css({ 'background': '#fff3cd', 'border-left': '4px solid #ffeeba', 'padding': '15px' });
+																		}, 5000);
+																	}
+																},
+																error: function() {
+																	isDone = true;
+																	cancelAnimationFrame(frameId);
+																	$fill.css('width', '100%');
+																	$status.removeClass('mep-loading mep-success').addClass('mep-error');
+																	$status.text(<?php echo wp_json_encode( __( 'A network error occurred. Please try again.', 'mage-eventpress' ) ); ?>);
+																	setTimeout(function() {
+																		$tabHeader.text(<?php echo wp_json_encode( __( 'WooCommerce Payment', 'mage-eventpress' ) ); ?>);
+																		$progress.hide();
+																		$btn.show();
+																		$warningText.show();
+																		$notice.css({ 'background': '#fff3cd', 'border-left': '4px solid #ffeeba', 'padding': '15px' });
+																	}, 5000);
+																}
+															});
+														});
+													});
+													</script>
+												</div>
+											</div>
+
+											<label class="mep-woo-enable-label" style="display:<?php echo $wc_active ? 'flex' : 'none'; ?>; align-items:center; gap:10px; cursor:pointer; margin-bottom: 12px;">
+												<input type="checkbox" name="mep_enable_wc_payment" id="mep_modal_enable_wc" value="on" <?php checked( $woo_enabled ); ?> />
+												<span><?php esc_html_e( 'Enable WooCommerce Payment Gateway', 'mage-eventpress' ); ?></span>
+											</label>
+											
+											<div class="mep-modal-wc-fields" style="display: <?php echo ($woo_enabled && $wc_active) ? 'flex' : 'none'; ?>; flex-direction: column; gap: 15px; padding: 15px; background: #f8f9fa; border: 1px solid #e2e4e7; border-radius: 8px;">
+												<div>
+													<label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:5px;"><?php esc_html_e( 'After Adding to Cart, Redirect to', 'mage-eventpress' ); ?></label>
+													<select name="mep_wc_add_to_cart_redirect" style="width:100%; max-width:300px; border:1px solid #d1d5db; border-radius:6px; padding:6px 12px;">
+														<option value="cart" <?php selected( $wc_add_to_cart_redirect, 'cart' ); ?>><?php esc_html_e( 'Cart', 'mage-eventpress' ); ?></option>
+														<option value="checkout" <?php selected( $wc_add_to_cart_redirect, 'checkout' ); ?>><?php esc_html_e( 'Checkout', 'mage-eventpress' ); ?></option>
+													</select>
+												</div>
+												
+												<div>
+													<label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:5px;"><?php esc_html_e( 'After Confirming the Order, Redirect To', 'mage-eventpress' ); ?></label>
+													<select name="mep_wc_after_order_redirect" style="width:100%; max-width:300px; border:1px solid #d1d5db; border-radius:6px; padding:6px 12px;">
+														<option value="plugin_thankyou" <?php selected( $wc_after_order_redirect, 'plugin_thankyou' ); ?>><?php esc_html_e( 'Plugin Thank You Page', 'mage-eventpress' ); ?></option>
+														<option value="woo_thankyou" <?php selected( $wc_after_order_redirect, 'woo_thankyou' ); ?>><?php esc_html_e( 'WooCommerce Thank You Page', 'mage-eventpress' ); ?></option>
+													</select>
+												</div>
+												
+												<div style="display: flex; flex-direction: column; gap: 8px;">
+													<label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px;">
+														<input type="checkbox" name="mep_wc_require_login" value="on" <?php checked( $wc_require_login ); ?> />
+														<span><?php esc_html_e( 'Require Account Login to Purchase', 'mage-eventpress' ); ?></span>
+													</label>
+													
+													<label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px;">
+														<input type="checkbox" name="mep_wc_show_billing_info" value="on" <?php checked( $wc_show_billing_info ); ?> />
+														<span><?php esc_html_e( 'Show Billing Info on Checkout', 'mage-eventpress' ); ?></span>
+													</label>
+												</div>
+												
+												<div>
+													<label style="display:block; font-size:13px; font-weight:600; color:#374151; margin-bottom:5px;"><?php esc_html_e( 'Confirm Ticket Based on Payment Status', 'mage-eventpress' ); ?></label>
+													<div style="display: flex; gap: 15px; flex-wrap: wrap;">
+														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="pending" <?php echo in_array('pending', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'Pending', 'mage-eventpress' ); ?></label>
+														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="processing" <?php echo in_array('processing', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'Processing', 'mage-eventpress' ); ?></label>
+														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="on-hold" <?php echo in_array('on-hold', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'On hold', 'mage-eventpress' ); ?></label>
+														<label style="display:flex; align-items:center; gap:6px; font-size:13px;"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="completed" <?php echo in_array('completed', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div id="mep-modal-tab-custom" class="mep-modal-tab-content" style="display:none;">
+										<div style="margin-bottom: 20px;">
+											<h4 style="margin:0 0 10px; font-size:15px; color:#1e1e1e;"><?php esc_html_e( 'Custom Payment Gateways', 'mage-eventpress' ); ?></h4>
+											
+											<div style="background:#f8f9fa; border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+												<div style="display:flex; align-items:center; gap:15px;">
+													<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087"/>
+														<path d="M11.5 7.1c.05.27.01.59-.09.91-.98 5.05-4.35 6.79-8.65 6.79H4.95l-1.12 7.11a.64.64 0 0 0 .63.74h4.6a.64.64 0 0 0 .63-.54l.87-5.55a.64.64 0 0 1 .63-.54h1.08c3.5 0 6.23-1.42 7.03-5.52.2-.99.23-1.89.09-2.65-.48-2.6-2.58-3.41-5.63-3.41h-2.22z" fill="#0079C1"/>
+														<path d="M11.5 7.1c-.02-.13-.05-.27-.08-.41C10.3 5.4 8.3 4.86 5.73 4.86H3.54l-1.5 9.54h2.72c.52 0 .97-.38 1.05-.9l.87-5.5c.08-.52.53-.9.1-.9h2.19c3.5 0 6.23-1.42 7.03-5.52-.06.32-.14.64-.09.91z" fill="#00457C"/>
+													</svg>
+													<div>
+														<strong style="display:block; margin-bottom:4px;"><?php esc_html_e( 'PayPal', 'mage-eventpress' ); ?></strong>
+														<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+															<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
+																<input type="checkbox" name="mep_paypal_enable" id="mep_modal_enable_paypal" value="on" <?php checked( $paypal_enabled ); ?> />
+																<span><?php esc_html_e( 'Enable PayPal', 'mage-eventpress' ); ?></span>
+															</label>
+														<?php endif; ?>
+													</div>
+												</div>
+												<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+													<button type="button" id="mep-paypal-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php else : ?>
+													<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php endif; ?>
+											</div>
+											
+											<div style="background:#f8f9fa; border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+												<div style="display:flex; align-items:center; gap:15px;">
+													<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+														<path fill="#6772E5" d="M14.07 15.11c-1.85-.43-2.61-.79-2.61-1.63 0-.79.75-1.33 1.95-1.33 1.34 0 2.87.41 4.31 1.09V8.65c-1.39-.56-2.93-.84-4.52-.84-3.8 0-6.66 1.96-6.66 5.25 0 3.73 3.32 4.96 6.03 5.61 2.05.49 2.8.92 2.8 1.8 0 .86-.87 1.48-2.3 1.48-1.57 0-3.37-.53-5.06-1.54v4.75c1.67.75 3.59 1.13 5.51 1.13 4.13 0 7-2 7-5.34-.01-3.6-3.6-4.41-6.45-5.84z"/>
+													</svg>
+													<div>
+														<strong style="display:block; margin-bottom:4px;"><?php esc_html_e( 'Stripe', 'mage-eventpress' ); ?></strong>
+														<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+															<label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#555;">
+																<input type="checkbox" name="mep_stripe_enable" id="mep_modal_enable_stripe" value="on" <?php checked( $stripe_enabled ); ?> />
+																<span><?php esc_html_e( 'Enable Stripe', 'mage-eventpress' ); ?></span>
+															</label>
+														<?php endif; ?>
+													</div>
+												</div>
+												<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) ) : ?>
+													<button type="button" id="mep-stripe-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php else : ?>
+													<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php endif; ?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div style="padding:15px 25px; border-top:1px solid #e2e4e7; background:#f8f9fa; display:flex; justify-content:flex-end; gap:10px;">
+								<span id="mep-payment-save-status" style="display:none; align-items:center; color:#0f5132; margin-right:auto; font-size:14px;"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Saved! Reloading...', 'mage-eventpress' ); ?></span>
+								<button type="button" class="button button-secondary mep-close-payment-modal"><?php esc_html_e( 'Cancel', 'mage-eventpress' ); ?></button>
+								<button type="button" id="mep-save-payment-settings" class="button button-primary"><?php esc_html_e( 'Save Changes', 'mage-eventpress' ); ?></button>
+							</div>
+						</div>
+					</div>
+					
+					<script type="text/javascript">
+					jQuery(document).ready(function($) {
+						if ($('#mep-progress-styles').length === 0) {
+							var styles = `
+							.mep-wc-install-progress { width: 100%; padding: 10px 0; margin-bottom: 8px; animation: mpwemFadeIn 0.35s ease both; flex: 1; }
+							@keyframes mpwemFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+							.mep-wc-install-progress-bar { width: 100%; height: 8px; background: #f0f0f1; border-radius: 100px; overflow: hidden; }
+							.mep-wc-install-progress-fill { height: 100%; width: 0%; border-radius: 100px; background: linear-gradient(90deg, #7b5ea7, #9b72cf); transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+							.mep-wc-install-progress-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%); animation: mpwemShimmer 1.5s linear infinite; }
+							@keyframes mpwemShimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+							.mep-wc-install-status-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size: 14px; color: #50575e; margin: 10px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+							.mep-wc-install-status-text.mep-loading::before { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #dcdde1; border-top-color: #7b5ea7; border-radius: 50%; animation: mpwemSpin 0.7s linear infinite; flex-shrink: 0; }
+							@keyframes mpwemSpin { to { transform: rotate(360deg); } }
+							.mep-wc-install-status-text.mep-success { color: #039855; }
+							.mep-wc-install-status-text.mep-success::before { display: none; }
+							.mep-wc-install-status-text.mep-error { color: #d92d20; }
+							.mep-wc-install-status-text.mep-error::before { display: none; }
+							`;
+							$('head').append('<style id="mep-progress-styles">' + styles + '</style>');
+						}
+						// Open Payment Modal
+						$(document).on('click', '.mep-payment-settings-trigger', function(e) {
+							e.preventDefault();
+							$('#mep-payment-settings-modal').css('display', 'flex').hide().fadeIn(200);
+						});
+						
+						// Close Payment Modal
+						$(document).on('click', '.mep-close-payment-modal', function() {
+							$('#mep-payment-settings-modal').fadeOut(200);
+						});
+						
+						// Toggle WooCommerce fields
+						$(document).on('change', '#mep_modal_enable_wc', function() {
+							if ($(this).is(':checked')) {
+								$('.mep-modal-wc-fields').css('display', 'flex').hide().slideDown(200, function() {
+									$(this).css('display', 'flex');
+								});
+							} else {
+								$('.mep-modal-wc-fields').slideUp(200);
+							}
+						});
+						
+						// Modal Tabs Switching
+						$(document).on('click', '.mep-modal-tab-btn', function(e) {
+							e.preventDefault();
+							$('.mep-modal-tab-btn').removeClass('active').css({
+								'background': 'transparent',
+								'border-bottom': '2px solid transparent',
+								'color': '#646970'
+							});
+							$(this).addClass('active').css({
+								'background': '#f0f6fc',
+								'border-bottom': '2px solid #2271b1',
+								'color': '#2271b1'
+							});
+							
+							$('.mep-modal-tab-content').hide();
+							var target = $(this).data('target');
+							$(target).fadeIn(200);
+						});
+						
+						// Save Payment Settings
+						$('#mep-save-payment-settings').click(function() {
+							var $btn = $(this);
+							var $status = $('#mep-payment-save-status');
+							var formData = $('#mep-payment-settings-form :input').serialize();
+							
+							$btn.prop('disabled', true).css('opacity', '0.6');
+							$status.hide();
+							
+							$.ajax({
+								url: ajaxurl,
+								type: "POST",
+								data: formData + '&action=mep_save_payment_settings_modal',
+								success: function(response) {
+									if (response.success) {
+										$status.css('color', '#0f5132').html('<span class="dashicons dashicons-yes"></span> ' + response.data).fadeIn(200);
+										setTimeout(function() {
+											location.reload();
+										}, 1000);
+									} else {
+										$status.css('color', '#dc3545').html('<span class="dashicons dashicons-no"></span> ' + (response.data || 'Error')).fadeIn(200);
+										$btn.prop('disabled', false).css('opacity', '1');
+									}
+								},
+								error: function() {
+									$status.css('color', '#dc3545').html('<span class="dashicons dashicons-no"></span> Network Error').fadeIn(200);
+									$btn.prop('disabled', false).css('opacity', '1');
+								}
+							});
+						});
+					});
+					</script>
                 </div>
 				<?php
 			}
@@ -31,7 +421,7 @@
 					&& isset( $_GET['page'] )
 					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
-                <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head">
+                <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head" style="border-radius: var(--mpwem-radius);">
                     <div class="_bg_light_padding">
                         <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
                         <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
@@ -348,32 +738,18 @@
 				$checked    = $reg_status == 'on' ? 'checked' : '';
                 $reg_msg_checked    = $reg_status_msg_status == 'on' ? 'checked' : '';
 
-				?>
-                <div class="mpwem-ticket-registration-block">
-					<?php if ( $is_custom_event_edit ) { ?>
-                        <div class="mpwem-registration-mode">
-                            <div class="mpwem-registration-mode__toggle mpwem-event-type-toggle">
-                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--listing" data-value="off">
-                                    <span class="mpwem-date-type-option__icon dashicons dashicons-format-aside"></span>
-                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Event Listing Only', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Show the event details without selling tickets.', 'mage-eventpress' ); ?></small></span>
-                                </button>
-                                <button type="button" class="mpwem-event-type-option mpwem-event-type-option--selling" data-value="on">
-                                    <span class="mpwem-date-type-option__icon dashicons dashicons-cart"></span>
-                                    <span class="mpwem-date-type-option__copy"><strong><?php esc_html_e( 'Ticket Selling & Get Payment', 'mage-eventpress' ); ?></strong><small><?php esc_html_e( 'Enable checkout so attendees can purchase tickets.', 'mage-eventpress' ); ?></small></span>
-                                </button>
-                            </div>
-                            <div class="mpwem-registration-mode__control" hidden>
-                                <input type="checkbox" name="mep_reg_status" value="on" <?php echo esc_attr( $checked ); ?> data-no-mpwem-switch />
-                            </div>
-                        </div>
-					<?php } else { ?>
-                        <div class=" _justify_between_align_center_wrap">
-                            <label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
+				if ( ! $is_custom_event_edit ) {
+					?>
+					<div class="mpwem-ticket-registration-block">
+						<div class=" _justify_between_align_center_wrap">
+							<label><span class="_mr"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span></label>
 							<?php MPWEM_Custom_Layout::switch_button( 'mep_reg_status', $checked ); ?>
-                        </div>
-                        <span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
-					<?php } ?>
-                </div>
+						</div>
+						<span class="label-text"><?php esc_html_e( 'Registration Off/On', 'mage-eventpress' ); ?></span>
+					</div>
+					<?php
+				}
+				?>
                 <div class="_padding_bt reg_close_msg_dash mpwem-ticket-registration-message">
                     <div class=" _justify_between_align_center_wrap">
                         <label><span class="_mr"><?php esc_html_e( 'Show Registration Off Message in Event details Page?', 'mage-eventpress' ); ?></span></label>
@@ -447,6 +823,175 @@
                                 <span class="mpwem-info-tip mpwem-info-tip--mini" title="<?php echo esc_attr__( 'Enter The Total Reserve Seat Qty of this event.', 'mage-eventpress' ); ?>">i</span>
                             </label>
                             <input type="number" class="mpwem-card-input" name="mep_gq_total_resv_seat" placeholder="0" value="<?php echo esc_attr( $reserve_qty ); ?>"/>
+                        </div>
+                    </div>
+                </div>
+				<?php
+			}
+			public function rsvp_setting( $event_id, $event_infos ) {
+				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
+				$name_label  = is_array($event_infos) && array_key_exists( 'mep_rsvp_name_label', $event_infos ) ? $event_infos['mep_rsvp_name_label'] : '';
+				$email_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_email_label', $event_infos ) ? $event_infos['mep_rsvp_email_label'] : '';
+				$phone_label = is_array($event_infos) && array_key_exists( 'mep_rsvp_phone_label', $event_infos ) ? $event_infos['mep_rsvp_phone_label'] : '';
+				$qty_label   = is_array($event_infos) && array_key_exists( 'mep_rsvp_qty_label', $event_infos ) ? $event_infos['mep_rsvp_qty_label'] : '';
+				?>
+                <style>
+                .mpwem-rsvp-card {
+                    background: #fff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: var(--mpwem-radius, 12px);
+                    overflow: hidden;
+                    margin-top: 16px;
+                    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+                }
+                .mpwem-rsvp-card__header {
+                    padding: 18px 22px;
+                    background: var(--mpwem-card-header-bg, #f8fafc);
+                    border-bottom: 1px solid #e2e8f0;
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                }
+                .mpwem-rsvp-card__header-icon {
+                    width: 38px;
+                    height: 38px;
+                    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                    color: #fff;
+                }
+                .mpwem-rsvp-card__header-icon .dashicons {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+                .mpwem-rsvp-card__header-title {
+                    font-size: 15px !important;
+                    font-weight: 700 !important;
+                    color: #1e293b !important;
+                    margin: 0 0 3px !important;
+                    line-height: 1.3 !important;
+                    display: block !important;
+                }
+                .mpwem-rsvp-card__header-sub {
+                    font-size: 12px !important;
+                    color: #64748b !important;
+                    margin: 0 !important;
+                    display: block !important;
+                }
+                .mpwem-rsvp-card__body {
+                    padding: 22px;
+                }
+                .mpwem-rsvp-section-title {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #94a3b8;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    margin: 0 0 16px;
+                }
+                .mpwem-rsvp-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                }
+                @media (max-width: 900px) {
+                    .mpwem-rsvp-grid { grid-template-columns: 1fr; }
+                }
+                .mpwem-rsvp-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                }
+                .mpwem-rsvp-label {
+                    display: block;
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: #374151;
+                    letter-spacing: 0.01em;
+                    margin: 0;
+                }
+                .mpwem-rsvp-input {
+                    width: 100%;
+                    padding: 9px 13px !important;
+                    border: 1.5px solid #d1d5db !important;
+                    border-radius: 8px !important;
+                    font-size: 13px;
+                    color: #1e293b;
+                    background: #f9fafb;
+                    box-sizing: border-box;
+                    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+                    height: auto;
+                    line-height: 1.5;
+                    box-shadow: none;
+                }
+                .mpwem-rsvp-input:focus {
+                    border-color: var(--mpwem-primary, #2563eb);
+                    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+                    outline: none;
+                    background: #fff;
+                }
+                .mpwem-rsvp-input::placeholder {
+                    color: #9ca3af;
+                }
+                .mpwem-rsvp-note {
+                    margin: 18px 0 0;
+                    padding: 10px 14px;
+                    background: #f0f9ff;
+                    border: 1px solid #bae6fd;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    color: #0369a1;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .mpwem-rsvp-note .dashicons {
+                    font-size: 15px;
+                    width: 15px;
+                    height: 15px;
+                    flex-shrink: 0;
+                }
+                </style>
+
+                <div class="mpwem-rsvp-settings-section">
+                    <div class="mpwem-rsvp-card">
+                        <div class="mpwem-rsvp-card__header">
+                            <div class="mpwem-rsvp-card__header-icon">
+                                <span class="dashicons dashicons-groups"></span>
+                            </div>
+                            <div>
+                                <h4 class="mpwem-rsvp-card__header-title"><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'RSVP Settings', 'mage-eventpress' ); ?></h4>
+                                <p class="mpwem-rsvp-card__header-sub"><?php esc_html_e( 'Configure RSVP Registration Field Labels', 'mage-eventpress' ); ?></p>
+                            </div>
+                        </div>
+                        <div class="mpwem-rsvp-card__body">
+                            <p class="mpwem-rsvp-section-title"><?php esc_html_e( 'Field Labels', 'mage-eventpress' ); ?></p>
+                            <div class="mpwem-rsvp-grid">
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Full Name Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_rsvp_name_label" placeholder="<?php esc_attr_e( 'Full Name', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $name_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Email Address Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_rsvp_email_label" placeholder="<?php esc_attr_e( 'Email Address', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $email_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Phone Number Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_rsvp_phone_label" placeholder="<?php esc_attr_e( 'Phone Number', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $phone_label ); ?>"/>
+                                </div>
+                                <div class="mpwem-rsvp-field">
+                                    <label class="mpwem-rsvp-label"><?php esc_html_e( 'Number of Seats Label', 'mage-eventpress' ); ?></label>
+                                    <input type="text" class="mpwem-rsvp-input" name="mep_rsvp_qty_label" placeholder="<?php esc_attr_e( 'Number of Seats', 'mage-eventpress' ); ?>" value="<?php echo esc_attr( $qty_label ); ?>"/>
+                                </div>
+                            </div>
+                            <p class="mpwem-rsvp-note">
+                                <span class="dashicons dashicons-info-outline"></span>
+                                <?php esc_html_e( 'Leave blank to use the default labels.', 'mage-eventpress' ); ?>
+                            </p>
                         </div>
                     </div>
                 </div>

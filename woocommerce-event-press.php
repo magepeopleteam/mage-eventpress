@@ -25,6 +25,123 @@
 		define('MPWEM_PLUGIN_VERSION', '5.3.4');
 	}
 
+	// WooCommerce Fallback Stub Functions to prevent Fatal Errors when WooCommerce is inactive.
+	// We hook this to plugins_loaded so that WooCommerce (if active or being activated) has loaded first,
+	// preventing any redeclaration conflicts.
+	add_action( 'plugins_loaded', 'mpwem_define_woocommerce_fallbacks', 1 );
+	function mpwem_define_woocommerce_fallbacks() {
+		if ( class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
+		// Detect if WooCommerce is being activated during this request to avoid redeclaration conflicts
+		$is_activating = false;
+		if ( isset( $GLOBALS['mpwem_activating_woocommerce'] ) && $GLOBALS['mpwem_activating_woocommerce'] ) {
+			$is_activating = true;
+		}
+		if ( ! $is_activating && ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) || isset( $_SERVER['argv'] ) ) ) {
+			// Web activation check (single or bulk)
+			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'activate' ) {
+				if ( isset( $_REQUEST['plugin'] ) && strpos( $_REQUEST['plugin'], 'woocommerce.php' ) !== false ) {
+					$is_activating = true;
+				}
+				if ( isset( $_REQUEST['checked'] ) && is_array( $_REQUEST['checked'] ) ) {
+					foreach ( $_REQUEST['checked'] as $checked_plugin ) {
+						if ( strpos( $checked_plugin, 'woocommerce.php' ) !== false ) {
+							$is_activating = true;
+							break;
+						}
+					}
+				}
+			}
+			// CLI / script activation check
+			if ( ! $is_activating && isset( $_SERVER['argv'] ) && is_array( $_SERVER['argv'] ) ) {
+				foreach ( $_SERVER['argv'] as $arg ) {
+					if ( strpos( $arg, 'woocommerce' ) !== false ) {
+						$is_activating = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if ( ! $is_activating ) {
+			if ( ! class_exists( 'MPWEM_WC_Cart_Fallback' ) ) {
+				class MPWEM_WC_Cart_Fallback {
+					public function get_cart() { return array(); }
+					public function empty_cart() {}
+				}
+			}
+			if ( ! class_exists( 'MPWEM_WC_Customer_Fallback' ) ) {
+				class MPWEM_WC_Customer_Fallback {
+					public function get_is_vat_exempt() { return false; }
+				}
+			}
+			if ( ! class_exists( 'MPWEM_WC_Fallback' ) ) {
+				class MPWEM_WC_Fallback {
+					public $cart;
+					public $customer;
+					public $version = '0.0.0';
+					public function __construct() {
+						$this->cart = new MPWEM_WC_Cart_Fallback();
+						$this->customer = new MPWEM_WC_Customer_Fallback();
+					}
+				}
+			}
+			if ( ! function_exists( 'WC' ) ) {
+				function WC() {
+					static $instance = null;
+					if ( null === $instance ) {
+						$instance = new MPWEM_WC_Fallback();
+					}
+					return $instance;
+				}
+			}
+			if ( ! function_exists( 'wc_get_orders' ) ) {
+				function wc_get_orders( $args = array() ) { return array(); }
+			}
+			if ( ! function_exists( 'wc_get_order' ) ) {
+				function wc_get_order( $order_id ) { return false; }
+			}
+			if ( ! function_exists( 'wc_get_product' ) ) {
+				function wc_get_product( $product_id ) { return false; }
+			}
+			if ( ! function_exists( 'wc_price' ) ) {
+				function wc_price( $price, $args = array() ) {
+					$currency_symbol = get_option( 'woocommerce_currency_symbol', '$' );
+					return $currency_symbol . number_format( (float) $price, 2 );
+				}
+			}
+			if ( ! function_exists( 'get_woocommerce_currency' ) ) {
+				function get_woocommerce_currency() { return 'USD'; }
+			}
+			if ( ! function_exists( 'get_woocommerce_currency_symbol' ) ) {
+				function get_woocommerce_currency_symbol( $currency = 'USD' ) { return '$'; }
+			}
+			if ( ! function_exists( 'wc_prices_include_tax' ) ) {
+				function wc_prices_include_tax() { return false; }
+			}
+			if ( ! function_exists( 'wc_get_price_thousand_separator' ) ) {
+				function wc_get_price_thousand_separator() { return ','; }
+			}
+			if ( ! function_exists( 'wc_get_price_decimal_separator' ) ) {
+				function wc_get_price_decimal_separator() { return '.'; }
+			}
+			if ( ! function_exists( 'is_woocommerce' ) ) {
+				function is_woocommerce() { return false; }
+			}
+			if ( ! function_exists( 'is_product' ) ) {
+				function is_product() { return false; }
+			}
+			if ( ! function_exists( 'wc_get_cart_url' ) ) {
+				function wc_get_cart_url() { return ''; }
+			}
+			if ( ! function_exists( 'wc_get_checkout_url' ) ) {
+				function wc_get_checkout_url() { return ''; }
+			}
+		}
+	}
+
 	if (is_plugin_active('woocommerce-event-manager-addon-recurring-event/recurring_events.php')) {
 		deactivate_plugins( '/woocommerce-event-manager-addon-recurring-event/recurring_events.php' );
 	}
@@ -53,26 +170,61 @@
 		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woo_Installer.php';
 	}
 
-	if (is_plugin_active('woocommerce/woocommerce.php')) {
-		function appsero_init_tracker_mage_eventpress() {
-			if (!class_exists('Appsero\\Client')) {
-				require_once __DIR__ . '/lib/appsero/src/Client.php';
-			}
-			$client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
-			$client->insights()->init();
+	function appsero_init_tracker_mage_eventpress() {
+		if (!class_exists('Appsero\\Client')) {
+			require_once __DIR__ . '/lib/appsero/src/Client.php';
+		}
+		$client = new Appsero\Client('08cd627c-4ed9-49cf-a9b5-1536ec384a5a', 'Event Manager For Woocommerce ', __FILE__);
+		$client->insights()->init();
+	}
+
+	// add_action('activated_plugin', 'mep_event_activation_redirect');
+	require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Dependencies.php';
+	require_once MPWEM_PLUGIN_DIR . '/inc/blocks.php';
+
+	// Register block editor assets
+	add_action('init', 'mep_register_block_assets');
+	function mep_register_block_assets() {
+		if (!function_exists('register_block_type')) {
+			return;
 		}
 
-		// add_action('activated_plugin', 'mep_event_activation_redirect');
-		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Dependencies.php';
-		require_once MPWEM_PLUGIN_DIR . '/inc/blocks.php';
+		// Register block editor script
+		wp_register_script(
+			'mep-blocks-editor',
+			plugins_url('assets/blocks/event-list-block.js', __FILE__),
+			array(
+				'wp-blocks',
+				'wp-i18n',
+				'wp-element',
+				'wp-editor',
+				'wp-components',
+				'wp-block-editor'
+			),
+			filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/event-list-block.js'),
+			array('in_footer' => true)
+		);
 
-		// Register block editor assets
-		add_action('init', 'mep_register_block_assets');
-		function mep_register_block_assets() {
-			if (!function_exists('register_block_type')) {
-				return;
-			}
+		// Register editor styles
+		wp_register_style(
+			'mep-blocks-editor',
+			plugins_url('assets/blocks/editor.css', __FILE__),
+			array('wp-edit-blocks'),
+			filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/editor.css')
+		);
 
+		// Register front-end styles
+		wp_register_style(
+			'mep-blocks-style',
+			plugins_url('assets/blocks/style.css', __FILE__),
+			array(),
+			filemtime(plugin_dir_path(__FILE__) . 'assets/blocks/style.css')
+		);
+
+		// Enqueue block editor assets
+		if (is_admin()) {
+			wp_enqueue_script('mep-blocks-editor');
+			//wp_enqueue_style('mep-blocks-editor');
 			// Register block editor script
 			wp_register_script(
 				'mep-blocks-editor',
@@ -142,11 +294,7 @@
 			return $links_array;
 		}
 	}
-	else {
-		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Function.php';
-		require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Global_Style.php';
-		require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';
-	}
+	
 	remove_action( 'admin_init', 'mep_re_meta_boxs',200);
 
 /**

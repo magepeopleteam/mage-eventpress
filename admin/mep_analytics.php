@@ -164,6 +164,9 @@ function mep_event_analytics_page() {
  * @return string 'attendees' or 'orders'
  */
 function mep_analytics_detect_source() {
+	if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+		return 'attendees';
+	}
 	if ( post_type_exists( 'mep_events_attendees' ) ) {
 		return 'attendees';
 	}
@@ -277,31 +280,36 @@ function mep_analytics_collect_from_attendees( $events, $start_ts, $end_ts, $sta
 			$t_price   = get_post_meta( $aid, 'ea_ticket_price', true );
 			$t_price   = is_numeric( $t_price ) ? floatval( $t_price ) : 0;
 
-			if ( empty( $order_id ) ) {
-				continue;
-			}
+			$order_date_ts = get_the_date( 'U', $attendee );
 
-			$unique_key = $order_id . '_' . $eid . '_' . $e_date . '_' . $t_type;
-			if ( isset( $seen[ $unique_key ] ) ) {
-				continue;
-			}
-			$seen[ $unique_key ] = true;
+			if ( ! empty( $order_id ) && MPWEM_Global_Function::has_woocommerce() ) {
+				$unique_key = $order_id . '_' . $eid . '_' . $e_date . '_' . $t_type;
+				if ( isset( $seen[ $unique_key ] ) ) {
+					continue;
+				}
+				$seen[ $unique_key ] = true;
 
-			$order = wc_get_order( $order_id );
-			if ( ! $order ) {
-				continue;
-			}
+				$order = wc_get_order( $order_id );
+				if ( $order ) {
+					$order_status = $order->get_status();
+					if ( ! in_array( $order_status, $statuses, true ) ) {
+						continue;
+					}
 
-			$order_status = $order->get_status();
-			if ( ! in_array( $order_status, $statuses, true ) ) {
-				continue;
+					$order_date_obj = $order->get_date_created();
+					if ( $order_date_obj ) {
+						$order_date_ts = $order_date_obj->getTimestamp();
+					}
+				} else {
+					continue;
+				}
+			} else {
+				$unique_key = 'rsvp_' . $aid;
+				if ( isset( $seen[ $unique_key ] ) ) {
+					continue;
+				}
+				$seen[ $unique_key ] = true;
 			}
-
-			$order_date_obj = $order->get_date_created();
-			if ( ! $order_date_obj ) {
-				continue;
-			}
-			$order_date_ts = $order_date_obj->getTimestamp();
 
 			if ( $order_date_ts < $start_ts || $order_date_ts > $end_ts ) {
 				continue;
@@ -384,6 +392,10 @@ function mep_analytics_collect_from_orders( $events, $start_ts, $end_ts, $status
 		),
 		'detailed'         => array(),
 	);
+
+	if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+		return $data;
+	}
 
 	// Build event map: event_id => event_title
 	$event_map = array();

@@ -5,6 +5,9 @@
 	if ( ! class_exists( 'MPWEM_Hidden_Product' ) ) {
 		class MPWEM_Hidden_Product {
 			public function __construct() {
+				if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+					return;
+				}
 				add_action( 'wp_insert_post', array( $this, 'create_hidden_wc_product_on_publish' ), 10, 3 );
 				add_action( 'save_post', array( $this, 'run_link_product_on_save' ), 99, 1 );
 				add_action( 'mpwem_after_event_edit_save', array( $this, 'run_link_product_on_save' ), 99, 1 );
@@ -20,6 +23,16 @@
 			}
 
 			public function create_hidden_wc_product_on_publish( $post_id, $post ) {
+				if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+					return;
+				}
+				$reg_status = get_post_meta( $post_id, 'mep_reg_status', true );
+				if ( empty( $reg_status ) ) {
+					$reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'on';
+				}
+				if ( in_array( $reg_status, [ 'off', 'rsvp' ], true ) ) {
+					return;
+				}
 				if ( $post->post_type == MPWEM_Functions::get_cpt() && $post->post_status == 'publish' && empty( MPWEM_Global_Function::get_post_info( $post_id, 'check_if_run_once' ) ) ) {
 					$product_cat_ids = wp_get_post_terms( $post_id, 'product_cat', array( 'fields' => 'ids' ) );
 					// ADD THE FORM INPUT TO $new_post ARRAY
@@ -54,6 +67,16 @@
 			public function run_link_product_on_save( $post_id ) {
 				add_filter( 'wpseo_public_post_statuses', 'mepfix_sitemap_exclude_post_type', 5 );
 				if ( get_post_type( $post_id ) == MPWEM_Functions::get_cpt() ) {
+					if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+						return;
+					}
+					$reg_status = get_post_meta( $post_id, 'mep_reg_status', true );
+					if ( empty( $reg_status ) ) {
+						$reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'on';
+					}
+					if ( in_array( $reg_status, [ 'off', 'rsvp' ], true ) ) {
+						return;
+					}
 					if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mpwem_type_nonce'] ) ), 'mpwem_type_nonce' ) ) {
 						return;
 					}

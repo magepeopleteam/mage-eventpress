@@ -124,7 +124,17 @@
 					update_post_meta( $post_id, 'latitude', $latitude );
 					update_post_meta( $post_id, 'mep_sgm', $mep_sgm );
 					update_post_meta( $post_id, 'location_name', $location_name );
-					$mep_reg_status              = isset( $_POST['mep_reg_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) ? 'on' : 'off';
+					
+					$mep_reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'off';
+					if ( ! in_array( $mep_reg_status, [ 'off', 'rsvp', 'on' ], true ) ) {
+						$mep_reg_status = 'off';
+					}
+					
+					// Prevent saving as ticket selling if WooCommerce is not activated
+					if ( $mep_reg_status === 'on' && ! MPWEM_Global_Function::has_woocommerce() ) {
+						$mep_reg_status = 'off';
+					}
+
 					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
 					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';
 					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
@@ -134,6 +144,16 @@
 					update_post_meta( $post_id, 'mep_show_advanced_column', $mep_show_advanced_column );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
 					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
+					
+					// RSVP Custom Labels
+					$mep_rsvp_name_label  = isset( $_POST['mep_rsvp_name_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_name_label'] ) ) : '';
+					$mep_rsvp_email_label = isset( $_POST['mep_rsvp_email_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_email_label'] ) ) : '';
+					$mep_rsvp_phone_label = isset( $_POST['mep_rsvp_phone_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_phone_label'] ) ) : '';
+					$mep_rsvp_qty_label   = isset( $_POST['mep_rsvp_qty_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_qty_label'] ) ) : '';
+					update_post_meta( $post_id, 'mep_rsvp_name_label', $mep_rsvp_name_label );
+					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
+					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
+					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
 					/********************************/
 					$new_ticket_type      = array();
 					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];

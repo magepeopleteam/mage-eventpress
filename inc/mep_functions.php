@@ -998,6 +998,58 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					do_action( 'mep_attendee_upload_file_save', $event_id, $_user_info, $_field );
 				}
 			} // End User Form builder data update loop
+		}
+	}
+	if ( ! function_exists( 'mep_rsvp_attendee_create' ) ) {
+		function mep_rsvp_attendee_create( $event_id, $user_info = array() ) {
+			$uname      = isset( $user_info['user_name'] ) ? sanitize_text_field( $user_info['user_name'] ) : '';
+			$email      = isset( $user_info['user_email'] ) ? sanitize_email( $user_info['user_email'] ) : '';
+			$phone      = isset( $user_info['user_phone'] ) ? sanitize_text_field( $user_info['user_phone'] ) : '';
+			$event_date = isset( $user_info['user_event_date'] ) ? sanitize_text_field( $user_info['user_event_date'] ) : '';
+			$ticket_qty = isset( $user_info['user_ticket_qty'] ) ? absint( $user_info['user_ticket_qty'] ) : 1;
+
+			$new_post   = array(
+				'post_title'    => $uname,
+				'post_content'  => '',
+				'post_status'   => 'publish',
+				'post_type'     => 'mep_rsvp_responses'
+			);
+
+			$pid = wp_insert_post( $new_post );
+			if ( ! $pid || is_wp_error( $pid ) ) {
+				return false;
+			}
+
+			$pin = 'RSVP' . $event_id . $pid . rand( 100, 999 );
+			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
+			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input( $email ) );
+			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input( $phone ) );
+			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
+			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
+			update_post_meta( $pid, 'ea_event_id', $event_id );
+			update_post_meta( $pid, 'mep_checkin', 'No' );
+			update_post_meta( $pid, 'ea_ticket_no', $pin );
+			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_order_status', 'completed' );
+			update_post_meta( $pid, 'ea_flag', 'rsvp_processed' );
+
+			// Populate standard ticket metadata fields for query compatibility
+			update_post_meta( $pid, 'ea_ticket_type', 'RSVP' );
+			update_post_meta( $pid, 'ea_ticket_price', 0 );
+			update_post_meta( $pid, 'ea_ticket_order_amount', 0 );
+			update_post_meta( $pid, 'ea_payment_method', 'RSVP' );
+			update_post_meta( $pid, 'ea_order_id', 0 );
+			update_post_meta( $pid, 'ea_user_id', get_current_user_id() );
+
+			// Optional details fields stored as empty strings to avoid PHP notice/blank field issues
+			update_post_meta( $pid, 'ea_address_1', '' );
+			update_post_meta( $pid, 'ea_gender', '' );
+			update_post_meta( $pid, 'ea_company', '' );
+			update_post_meta( $pid, 'ea_desg', '' );
+			update_post_meta( $pid, 'ea_website', '' );
+			update_post_meta( $pid, 'ea_vegetarian', '' );
+			update_post_meta( $pid, 'ea_tshirtsize', '' );
+
 			return $pid;
 		}
 	}
@@ -1642,11 +1694,12 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 				],
 				'h2'       => [ 'class' => [], 'id' => [], ],
 				'a'        => [ 'class' => [], 'id' => [], 'href' => [], ],
-				'div'      => [ 'class' => [], 'id' => [], 'data' => [], ],
+				'div'      => [ 'class' => [], 'id' => [], 'data' => [], 'style' => [] ],
 				'span'     => [
 					'class' => [],
 					'id'    => [],
 					'data'  => [],
+					'style' => [],
 				],
 				'i'        => [
 					'class' => [],
@@ -1695,7 +1748,20 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					'fill' => [],
 				],
 				'path'     => [
-					'd' => [],
+					'd'    => [],
+					'fill' => [],
+					'style'=> [],
+				],
+				'h3'       => [ 'class' => [], 'id' => [], 'style' => [] ],
+				'h4'       => [ 'class' => [], 'id' => [], 'style' => [] ],
+				'button'   => [
+					'type'  => [],
+					'class' => [],
+					'id'    => [],
+					'style' => [],
+					'data-gateway' => [],
+					'data-field'   => [],
+					'disabled'     => [],
 				],
 				'br'       => array(),
 				'em'       => array(),

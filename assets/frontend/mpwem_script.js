@@ -1275,3 +1275,41 @@ jQuery(function ($) {
         $wrap.find('.mpwem_add_to_cart').trigger('click');
     });
 });
+
+(function ($) {
+    "use strict";
+    $(document).on('submit', '#mpwem_registration', function(e) {
+        if ($(this).find('.mep-rsvp-submit-btn').length === 0) {
+            return;
+        }
+        e.preventDefault();
+        const $form = $(this);
+        const $btn = $form.find('.mep-rsvp-submit-btn');
+        const $msg = $form.find('.mep-rsvp-message');
+
+        $btn.prop('disabled', true).find('span').text('Submitting...');
+        $msg.hide().removeClass('success error');
+
+        $.ajax({
+            url: mpwem_script_var ? mpwem_script_var.url : mpwem_ajax_url,
+            type: 'POST',
+            data: $form.serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $msg.text(response.data.message).addClass('success').show();
+                    $form.find('input[type="text"], input[type="email"]').val('');
+                    $form.find('input[type="number"]').val(1);
+                } else {
+                    const errorMsg = response.data && response.data.message ? response.data.message : 'An error occurred. Please try again.';
+                    $msg.text(errorMsg).addClass('error').show();
+                }
+            },
+            error: function() {
+                $msg.text('Connection error. Please try again.').addClass('error').show();
+            },
+            complete: function() {
+                $btn.prop('disabled', false).find('span').text('Submit RSVP');
+            }
+        });
+    });
+}(jQuery));

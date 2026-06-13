@@ -586,6 +586,19 @@
         return $root.find('#mpwem_ticket_modal_mount tbody.mpwem-ticket-cards-container.mpwem_item_insert, #mpwem_ticket_modal_mount .mpwem-ticket-cards-container.mpwem_item_insert').first();
     }
 
+    function isRegistrationEnabled($root) {
+        const $wizardInput = $root.find('#mep_reg_status').first();
+        if ($wizardInput.length) {
+            return $wizardInput.val() === 'on';
+        }
+        const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
+        const $legacyCheckbox = $ticketPanel.find('input[name="mep_reg_status"]').first();
+        if ($legacyCheckbox.length) {
+            return $legacyCheckbox.is(':checked');
+        }
+        return false;
+    }
+
     function storeSavedTicketSummarySnapshot($root) {
         const context = getTicketModalContext($root);
         const $ticketPanel = getPanel($root, '#mpwem_ticket_pricing_settings');
@@ -603,7 +616,7 @@
 
         context.$modal
             .data('mpwemTicketSavedRowsHtml', $container.length ? $container.html() : '')
-            .data('mpwemTicketSavedRegEnabled', $ticketPanel.find('input[name="mep_reg_status"]').first().is(':checked'))
+            .data('mpwemTicketSavedRegEnabled', isRegistrationEnabled($root))
             .data('mpwemTicketSavedGlobalQtyEnabled', $globalQtyToggle.is(':checked'))
             .data('mpwemTicketSavedGlobalTotalQty', (($globalQtyInput.val() || '').toString().trim()));
     }
@@ -798,7 +811,7 @@
 
     function renderTicketSummary($root) {
         const context = getTicketModalContext($root);
-        const regEnabled = context.$modal.data('mpwemTicketSavedRegEnabled');
+        const regEnabled = isRegistrationEnabled($root);
         const $rows = getSavedTicketSummaryRows($root);
         if (!context.$summaryList.length) {
             return;
@@ -1911,7 +1924,12 @@
                     .append($('<span class="mpwem-ticket-summary__header-capacity">End Date</span>'))
             );
 
-            if (!$rows.length) {
+            const primaryDateVal = ($modalMount.find('input[name="event_start_date"]').first().val() || '').toString().trim();
+            const primaryTimeVal = ($modalMount.find('input[name="event_start_time"]').first().val() || '').toString().trim();
+            const primaryEndDateVal = ($modalMount.find('input[name="event_end_date"]').first().val() || '').toString().trim();
+            const primaryEndTimeVal = ($modalMount.find('input[name="event_end_time"]').first().val() || '').toString().trim();
+
+            if (!primaryDateVal && !$rows.length) {
                 context.$summaryList.append(
                     $('<div class="mpwem-ticket-summary__empty"></div>')
                         .append($('<h4></h4>').text('No dates added yet'))
@@ -1921,6 +1939,27 @@
                             .text('Create First Date'))
                 );
                 return;
+            }
+
+            if (primaryDateVal) {
+                const primaryDisplayStart = buildScheduleDateTimeLabel(primaryDateVal, primaryTimeVal) || 'Start date not set';
+                const primaryDisplayEnd = buildScheduleDateTimeLabel(primaryEndDateVal, primaryEndTimeVal) || 'End date not set';
+                
+                context.$summaryList.append(
+                    $('<article class="mpwem-ticket-summary__item"></article>')
+                        .attr('data-date-row-index', -1)
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-main"></div>')
+                                .append(
+                                    $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                        .append($('<h4></h4>').text(primaryDisplayStart))
+                                )
+                        )
+                        .append(
+                            $('<div class="mpwem-ticket-summary__meta"></div>')
+                                .append($('<span class="mpwem-ticket-summary__datetime"></span>').text(primaryDisplayEnd))
+                        )
+                );
             }
 
             $rows.each(function(index) {
@@ -3065,7 +3104,7 @@
 
         const $toggle = $panel.find('.mpwem-registration-mode__toggle').first();
         const $checkbox = $panel.find('input[name="mep_reg_status"]').first();
-        const $collapse = $panel.find('[data-collapse="#mep_reg_status"]').first();
+        const $collapse = $panel.find('[data-collapse="#mep_reg_status"]');
         const $ticketSummary = $panel.find('#mpwem_ticket_summary').first();
         const $extraServicesCard = $root.find('#mpwem_wizard_extra_services_card').first();
 
@@ -4559,14 +4598,108 @@
         }
 
         // Progress
-        const current = $steps.index($targetStep) + 1;
-        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $steps.length);
+        const $visibleSteps = $steps.filter(function() { return $(this).css('display') !== 'none'; });
+        const current = $visibleSteps.index($targetStep) + 1;
+        $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
         $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-        $root.find('.mpwem-wizard-next').text(current === $steps.length ? 'Save Event' : 'Next Step');
+        $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
         $root.find('#mpwem_active_step').val(stepKey);
 
         if (options && options.pushHash) {
             setHash(parseInt($root.data('event-id'), 10) > 0 ? 'edit' : 'new', $root.data('event-id'), stepKey);
+        }
+    }
+
+    function updateStepsVisibility($root) {
+        const mode = ($('#mep_reg_status').val() || '').toString();
+        const $steps = $root.find('.mpwem-step');
+        const $ticketStep = $steps.filter('[data-step-key="tickets"]');
+        
+        // Tickets & Pricing step is always kept visible
+        $ticketStep.show();
+
+        // Toggle ticket details visibility inside Step 2 based on mode
+        if (mode === 'on') {
+            $('#mpwem_wizard_ticket_details_section').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').show();
+            $('#mpwem_wizard_ticket_details_section').find('._bg_light_padding').show();
+            
+            // Only show extra services card if it actually has content
+            if ($('#mpwem_wizard_extra_services_mount').children().length > 0) {
+                $('#mpwem_wizard_extra_services_card').show();
+            }
+            
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-cards-container, #mpwem_ticket_summary, .mpwem_settings_area, .mpwem-ticket-footer').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
+            $('#mpwem_wizard_pricing_help_card').show();
+            $('#mpwem_wizard_tickets_sidebar').show();
+        } else if (mode === 'rsvp') {
+            $('#mpwem_wizard_ticket_details_section').show();
+            
+            // Hide the main Ticket & Pricing Settings header card
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-settings-head').hide();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-warnings').hide();
+            
+            // Hide only the ticket editor's header, not the RSVP one
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-editor-section ._bg_light_padding, .mpwem-extra-service-section ._bg_light_padding').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
+            
+            // Hide the ticket lists and summaries, explicitly excluding RSVP area children
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-editor-section .mpwem-ticket-cards-container, .mpwem-ticket-editor-section .mpwem_settings_area, .mpwem-ticket-editor-section .mpwem-ticket-footer').hide();
+            $('#mpwem_wizard_ticket_details_section').find('#mpwem_ticket_summary').hide();
+            
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem-ticket-cards-container').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area .mpwem_settings_area').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area ._bg_light_padding').show();
+
+            // Hide EARLY BIRD and SHOW ADVANCED COLUMN options, keep only ENABLE GLOBAL QTY
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__item').each(function() {
+                const $item = $(this);
+                if ($item.find('label').text().toUpperCase().indexOf('GLOBAL') !== -1) {
+                    $item.show();
+                } else {
+                    $item.hide();
+                }
+            });
+            // Hide dividers since we only show one option
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-action-bar__divider').hide();
+            // Show global settings card
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-ticket-global-card').show();
+            $('#mpwem_wizard_pricing_help_card').hide();
+            $('#mpwem_wizard_tickets_sidebar').show();
+        } else {
+            $('#mpwem_wizard_ticket_details_section').hide();
+            $('#mpwem_wizard_extra_services_card').hide();
+            $('#mpwem_wizard_pricing_help_card').hide();
+            $('#mpwem_wizard_tickets_sidebar').show();
+            $('#mpwem_wizard_ticket_details_section').find('.mpwem-rsvp-settings-area').hide();
+        }
+
+        // Show/hide legacy registration closed message setting card
+        if (mode === 'off') {
+            $('.reg_close_msg_dash').show();
+        } else {
+            $('.reg_close_msg_dash').hide();
+        }
+
+        // Re-calculate data-step indices for visible steps
+        const $visibleSteps = $steps.filter(function() { return $(this).css('display') !== 'none'; });
+        $visibleSteps.each(function (index) {
+            $(this).attr('data-step', index + 1);
+        });
+
+        // Update progress counters for the active step
+        const $activeStep = $steps.filter('.is-active');
+        if ($activeStep.length) {
+            const current = $visibleSteps.index($activeStep) + 1;
+            $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
+            $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
+            $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
         }
     }
 
@@ -4889,6 +5022,7 @@
 
             const h = parseHash();
             setActiveStep($root, h.stepKey || STEP_KEY_FALLBACK, { pushHash: false });
+            updateStepsVisibility($root);
         } catch (error) {
             if (window.console && window.console.error) {
                 window.console.error('MPWEM event edit initialization failed.', error);
@@ -4897,18 +5031,32 @@
             window.requestAnimationFrame(markReady);
         }
 
+        $(document).on('change', '#mep_reg_status', function() {
+            updateStepsVisibility($root);
+        });
+
+        $(document).on('click', '#mpwem_event_mode_toggle .mpwem-event-type-option', function() {
+            if ($(this).hasClass('is-disabled')) {
+                return;
+            }
+            const val = $(this).data('value');
+            $('#mpwem_event_mode_toggle .mpwem-event-type-option').removeClass('is-active');
+            $(this).addClass('is-active');
+            $('#mep_reg_status').val(val).trigger('change');
+        });
+
         $root.on('click', '.mpwem-step', function() {
             setActiveStep($root, $(this).data('step-key'), { pushHash: true, validate: true });
         });
 
         $root.on('click', '.mpwem-wizard-prev', function() {
-            const $steps = $root.find('.mpwem-step:visible');
+            const $steps = $root.find('.mpwem-step').filter(function() { return $(this).css('display') !== 'none'; });
             const idx = $steps.index($steps.filter('.is-active'));
             if (idx > 0) setActiveStep($root, $steps.eq(idx - 1).data('step-key'), { pushHash: true });
         });
 
         $root.on('click', '.mpwem-wizard-next', function() {
-            const $steps = $root.find('.mpwem-step:visible');
+            const $steps = $root.find('.mpwem-step').filter(function() { return $(this).css('display') !== 'none'; });
             const idx = $steps.index($steps.filter('.is-active'));
             if (idx < $steps.length - 1) {
                 setActiveStep($root, $steps.eq(idx + 1).data('step-key'), { pushHash: true, validate: true });

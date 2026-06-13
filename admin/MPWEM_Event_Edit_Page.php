@@ -1508,75 +1508,165 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 										<section class="mpwem-wizard-panel mp_tab_item" data-tab-item="#mpwem_wizard_tickets">
 											<div class="mpwem-event-wizard__grid">
 												<div class="mpwem-event-wizard__main">
-													<div class="mpwem-panel-mount mpwem-ticket-legacy-mount" id="mpwem_wizard_tickets_mount"></div>
-													<div class="mpwem-card" id="mpwem_wizard_extra_services_card" style="display:none;">
+													<div class="mpwem-card" id="mpwem_event_mode_card">
 														<div class="mpwem-card__head">
-															<h2><?php esc_html_e('Extra Services', 'mage-eventpress'); ?></h2>
-															<p><?php esc_html_e('Optional add-ons that attendees can purchase with tickets.', 'mage-eventpress'); ?></p>
+															<h2><?php esc_html_e('Registration & Tickets Settings', 'mage-eventpress'); ?></h2>
+															<p><?php esc_html_e('Configure how users register or purchase tickets for this event.', 'mage-eventpress'); ?></p>
 														</div>
 														<div class="mpwem-card__body">
-															<div class="mpwem_style" id="mpwem_extra_service_global_qty_mount">
-																<?php do_action('mpwem_before_extra_services_mount', $post_id); ?>
+															<div class="mpwem-field">
+																<span class="mpwem-field__label"><?php esc_html_e('Event Mode', 'mage-eventpress'); ?></span>
+																<?php 
+																$current_mode = get_post_meta($post_id, 'mep_reg_status', true);
+																if (empty($current_mode)) {
+																	$current_mode = MPWEM_Global_Function::has_woocommerce() ? 'on' : 'off';
+																}
+																$has_woo = MPWEM_Global_Function::has_woocommerce();
+																?>
+																<input type="hidden" name="mep_reg_status" id="mep_reg_status" value="<?php echo esc_attr($current_mode); ?>" />
+																
+																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(3, 1fr);">
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'off') ? 'is-active' : ''; ?>" data-value="off">
+																		<span class="dashicons dashicons-list-view"></span>
+																		<div>
+																			<strong><?php esc_html_e('Listing-Only', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('No Registration', 'mage-eventpress'); ?></small>
+																		</div>
+																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'rsvp') ? 'is-active' : ''; ?>" data-value="rsvp">
+																		<span class="dashicons dashicons-email-alt"></span>
+																		<div>
+																			<strong><?php esc_html_e('RSVP', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('Free Registration', 'mage-eventpress'); ?></small>
+																		</div>
+																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?>" data-value="on">
+																		<span class="dashicons dashicons-tickets-alt"></span>
+																		<div>
+																			<strong><?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?></strong>
+																			<small>
+																				<?php 
+																				if (!$has_woo) {
+																					esc_html_e('Explore Only (No WooCommerce)', 'mage-eventpress');
+																				} else {
+																					esc_html_e('Paid Registration', 'mage-eventpress');
+																				}
+																				?>
+																			</small>
+																		</div>
+																	</div>
+																</div>
 															</div>
-															<div class="mpwem-panel-mount" id="mpwem_wizard_extra_services_mount"></div>
 														</div>
 													</div>
-													<div class="mpwem-ticket-modal" id="mpwem_ticket_editor_modal" aria-hidden="true">
-														<div class="mpwem-ticket-modal__backdrop" data-mpwem-ticket-modal-close></div>
-														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_ticket_modal_title">
-															<div class="mpwem-ticket-modal__header">
-																<div class="mpwem-ticket-modal__header-copy">
-																	<h3 id="mpwem_ticket_modal_title"><?php esc_html_e('Manage ticket types', 'mage-eventpress'); ?></h3>
-																	<p id="mpwem_ticket_modal_description"><?php esc_html_e('Edit pricing, capacities, advanced columns, and ticket settings without leaving this step.', 'mage-eventpress'); ?></p>
-																</div>
-																<div class="mpwem-ticket-modal__header-actions">
-																	<div id="mpwem_ticket_modal_advance_toggle"></div>
-																	<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close ticket editor', 'mage-eventpress'); ?>" data-mpwem-ticket-modal-close>
-																		<span class="dashicons dashicons-no-alt"></span>
-																	</button>
-																</div>
+
+													<div id="mpwem_wizard_ticket_details_section">
+														<div class="mpwem-panel-mount mpwem-ticket-legacy-mount" id="mpwem_wizard_tickets_mount"></div>
+														<div class="mpwem-card" id="mpwem_wizard_extra_services_card" style="display:none;">
+															<div class="mpwem-card__head">
+																<h2><?php esc_html_e('Extra Services', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Optional add-ons that attendees can purchase with tickets.', 'mage-eventpress'); ?></p>
 															</div>
-															<div class="mpwem-ticket-modal__body">
-																<div class="mpwem-ticket-modal__mount" id="mpwem_ticket_modal_mount"></div>
+															<div class="mpwem-card__body">
+																<div class="mpwem_style" id="mpwem_extra_service_global_qty_mount">
+																	<?php do_action('mpwem_before_extra_services_mount', $post_id); ?>
+																</div>
+																<div class="mpwem-panel-mount" id="mpwem_wizard_extra_services_mount"></div>
 															</div>
-															<div class="mpwem-ticket-modal__footer">
-																<div class="mpwem-ticket-modal__footer-start" id="mpwem_ticket_modal_footer_start"></div>
-																<div class="mpwem-ticket-modal__footer-actions">
-																	<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-ticket-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
-																	<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-ticket-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+														</div>
+														<div class="mpwem-ticket-modal" id="mpwem_ticket_editor_modal" aria-hidden="true">
+															<div class="mpwem-ticket-modal__backdrop" data-mpwem-ticket-modal-close></div>
+															<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_ticket_modal_title">
+																<div class="mpwem-ticket-modal__header">
+																	<div class="mpwem-ticket-modal__header-copy">
+																		<h3 id="mpwem_ticket_modal_title"><?php esc_html_e('Manage ticket types', 'mage-eventpress'); ?></h3>
+																		<p id="mpwem_ticket_modal_description"><?php esc_html_e('Edit pricing, capacities, advanced columns, and ticket settings without leaving this step.', 'mage-eventpress'); ?></p>
+																	</div>
+																	<div class="mpwem-ticket-modal__header-actions">
+																		<div id="mpwem_ticket_modal_advance_toggle"></div>
+																		<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close ticket editor', 'mage-eventpress'); ?>" data-mpwem-ticket-modal-close>
+																			<span class="dashicons dashicons-no-alt"></span>
+																		</button>
+																	</div>
+																</div>
+																<div class="mpwem-ticket-modal__body">
+																	<div class="mpwem-ticket-modal__mount" id="mpwem_ticket_modal_mount"></div>
+																</div>
+																<div class="mpwem-ticket-modal__footer">
+																	<div class="mpwem-ticket-modal__footer-start" id="mpwem_ticket_modal_footer_start"></div>
+																	<div class="mpwem-ticket-modal__footer-actions">
+																		<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-ticket-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+																		<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-ticket-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<div class="mpwem-ticket-modal" id="mpwem_extra_service_editor_modal" aria-hidden="true">
-														<div class="mpwem-ticket-modal__backdrop" data-mpwem-extra-modal-close></div>
-														<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_extra_service_modal_title">
-															<div class="mpwem-ticket-modal__header">
-																<div class="mpwem-ticket-modal__header-copy">
-																	<h3 id="mpwem_extra_service_modal_title"><?php esc_html_e('Manage extra services', 'mage-eventpress'); ?></h3>
-																	<p id="mpwem_extra_service_modal_description"><?php esc_html_e('Edit optional add-ons, pricing, stock, and quantity settings without leaving this step.', 'mage-eventpress'); ?></p>
+														<div class="mpwem-ticket-modal" id="mpwem_extra_service_editor_modal" aria-hidden="true">
+															<div class="mpwem-ticket-modal__backdrop" data-mpwem-extra-modal-close></div>
+															<div class="mpwem-ticket-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_extra_service_modal_title">
+																<div class="mpwem-ticket-modal__header">
+																	<div class="mpwem-ticket-modal__header-copy">
+																		<h3 id="mpwem_extra_service_modal_title"><?php esc_html_e('Manage extra services', 'mage-eventpress'); ?></h3>
+																		<p id="mpwem_extra_service_modal_description"><?php esc_html_e('Edit optional add-ons, pricing, stock, and quantity settings without leaving this step.', 'mage-eventpress'); ?></p>
+																	</div>
+																	<div class="mpwem-ticket-modal__header-actions">
+																		<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close extra service editor', 'mage-eventpress'); ?>" data-mpwem-extra-modal-close>
+																			<span class="dashicons dashicons-no-alt"></span>
+																		</button>
+																	</div>
 																</div>
-																<div class="mpwem-ticket-modal__header-actions">
-																	<button type="button" class="mpwem-ticket-modal__close" aria-label="<?php esc_attr_e('Close extra service editor', 'mage-eventpress'); ?>" data-mpwem-extra-modal-close>
-																		<span class="dashicons dashicons-no-alt"></span>
-																	</button>
+																<div class="mpwem-ticket-modal__body">
+																	<div class="mpwem-ticket-modal__mount" id="mpwem_extra_service_modal_mount"></div>
 																</div>
-															</div>
-															<div class="mpwem-ticket-modal__body">
-																<div class="mpwem-ticket-modal__mount" id="mpwem_extra_service_modal_mount"></div>
-															</div>
-															<div class="mpwem-ticket-modal__footer">
-																<div class="mpwem-ticket-modal__footer-start" id="mpwem_extra_service_modal_footer_start"></div>
-																<div class="mpwem-ticket-modal__footer-actions">
-																	<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-extra-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
-																	<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-extra-service-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																<div class="mpwem-ticket-modal__footer">
+																	<div class="mpwem-ticket-modal__footer-start" id="mpwem_extra_service_modal_footer_start"></div>
+																	<div class="mpwem-ticket-modal__footer-actions">
+																		<button type="button" class="button mpwem-ticket-modal__footer-btn" data-mpwem-extra-modal-close><?php esc_html_e('Cancel', 'mage-eventpress'); ?></button>
+																		<button type="button" class="button button-primary mpwem-ticket-modal__footer-btn mpwem-extra-service-modal__save"><?php esc_html_e('Save Changes', 'mage-eventpress'); ?></button>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-												<aside class="mpwem-event-wizard__sidebar">
-													<div class="mpwem-card mpwem-card--help mpwem-card--help-pricing">
+												<aside class="mpwem-event-wizard__sidebar" id="mpwem_wizard_tickets_sidebar">
+													<div class="mpwem-card mpwem-card--help" id="mpwem_wizard_mode_help_card" style="margin-bottom: 20px;">
+														<div class="mpwem-card__head">
+															<h2><?php esc_html_e('Event Mode Manual', 'mage-eventpress'); ?></h2>
+															<p><?php esc_html_e('Learn what each event mode is designed for:', 'mage-eventpress'); ?></p>
+														</div>
+														<div class="mpwem-card__body">
+															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
+																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
+																	<span class="dashicons dashicons-list-view" style="font-size: 18px; width: 18px; height: 18px;"></span>
+																	<?php esc_html_e('Listing-Only', 'mage-eventpress'); ?>
+																</h4>
+																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
+																	<?php esc_html_e('Event details only. No registration required.', 'mage-eventpress'); ?>
+																</p>
+															</div>
+															<div class="mpwem-mode-manual-item" style="margin-bottom: 15px;">
+																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
+																	<span class="dashicons dashicons-email-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
+																	<?php esc_html_e('RSVP (Free)', 'mage-eventpress'); ?>
+																</h4>
+																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
+																	<?php esc_html_e('Free attendee registration. No WooCommerce needed.', 'mage-eventpress'); ?>
+																</p>
+															</div>
+															<div class="mpwem-mode-manual-item">
+																<h4 style="margin: 0 0 5px; color: var(--mpwem-text); font-weight: 700; display: flex; align-items: center; gap: 6px;">
+																	<span class="dashicons dashicons-tickets-alt" style="font-size: 18px; width: 18px; height: 18px;"></span>
+																	<?php esc_html_e('Ticket-Selling', 'mage-eventpress'); ?>
+																</h4>
+																<p style="margin: 0; font-size: 12px; line-height: 1.4; color: #64748b;">
+																	<?php esc_html_e('Sell tickets and accept payments. Requires WooCommerce or custom payment method.', 'mage-eventpress'); ?>
+																</p>
+															</div>
+														</div>
+													</div>
+
+													<div class="mpwem-card mpwem-card--help mpwem-card--help-pricing" id="mpwem_wizard_pricing_help_card">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Pricing Help', 'mage-eventpress'); ?></h2>
 															<p><?php esc_html_e('Quick tips for tickets.', 'mage-eventpress'); ?></p>

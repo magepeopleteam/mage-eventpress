@@ -97,7 +97,7 @@
 				$has_manual_fields = true;
 				$map_type        = mep_get_option( 'mep_google_map_type', 'general_setting_sec', 'iframe' );
 				$mep_org_address = is_array($values) && array_key_exists( 'mep_org_address', $values ) ? $values['mep_org_address'][0] : 0;
-				$map_visible     = is_array($values) && array_key_exists( 'mep_sgm', $values ) ? $values['mep_sgm'][0] : 0;
+				$map_visible     = is_array($values) && array_key_exists( 'mep_sgm', $values ) ? $values['mep_sgm'][0] : 1;
 				$author_id       = get_post_field( 'post_author', $post_id );
 				$event_type      = get_post_meta( $post_id, 'mep_event_type', true );
 				$organizer       = [

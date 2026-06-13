@@ -413,7 +413,7 @@
             if ($extraMount.length) {
                 $exService.addClass('mpwem_style');
                 $exService.detach().appendTo($extraMount);
-                $('#mpwem_wizard_extra_services_card').show();
+                $('#mpwem_wizard_extra_services_card').show().data('mpwem-mounted', true);
                 // Remove the legacy header from inside the card body since our new card has its own head
                 $exService.find('._bg_light_padding').first().hide();
             }
@@ -466,6 +466,7 @@
         mountPanel($root, '#mpwem_email_text_settings', 'mpwem_wizard_email_mount');
         mountPanel($root, '#mp_event_rich_text', 'mpwem_wizard_seo_mount');
         mountPanel($root, '#mp_event_reg_form_menu', 'mpwem_wizard_attendee_form_mount');
+        mountPanel($root, '#mep_deposit_settings_tab', 'mpwem_wizard_deposit_mount');
         mountDangerZone($root);
 
         const $legacySettingsPanel = $root.find('.mp_tab_item[data-tab-item="#mpwem_event_settings"]').first();
@@ -776,6 +777,33 @@
         return value || 'No short description yet.';
     }
 
+    function isEarlyBirdEnabled($root) {
+        const context = getTicketModalContext($root);
+        return context.$modalMount.find('input[name="mep_enable_early_bird_status"]').first().is(':checked');
+    }
+
+    function ticketRowEarlyBirdDates($row) {
+        const startDate = ($row.find('[name="option_sale_start_date[]"]').first().val() || '').toString().trim();
+        const startTime = ($row.find('[name="option_sale_start_time[]"]').first().val() || '').toString().trim();
+        const endDate = ($row.find('[name="option_sale_end_date[]"]').first().val() || '').toString().trim();
+        const endTime = ($row.find('[name="option_sale_end_time[]"]').first().val() || '').toString().trim();
+
+        const startCombined = (startDate + ' ' + startTime).trim();
+        const endCombined = (endDate + ' ' + endTime).trim();
+
+        return { start: startCombined, end: endCombined };
+    }
+
+    function formatEarlyBirdDate(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr.replace(/-/g, '/'));
+        if (isNaN(d.getTime())) return dateStr;
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const year = d.getFullYear();
+        return month + '/' + day + '/' + year;
+    }
+
     /* Delegates to the shared highlightRow helper defined near the top of this module. */
     function highlightTicketRow($row) {
         highlightRow($row);
@@ -798,13 +826,20 @@
             return;
         }
 
-        context.$summaryList.append(
-            $('<div class="mpwem-ticket-summary__header"></div>')
-                .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
-                .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
-                .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Total Qty'))
-                /* Planned: Action column header (.mpwem-ticket-summary__header-action) */
-        );
+        const earlyBirdEnabled = isEarlyBirdEnabled($root);
+
+        getPanel($root, '#mpwem_ticket_pricing_settings').find('#mpwem_ticket_summary').toggleClass('is-earlybird', earlyBirdEnabled);
+
+        const $headerRow = $('<div class="mpwem-ticket-summary__header"></div>')
+            .append($('<span class="mpwem-ticket-summary__header-ticket"></span>').text('Ticket Type'))
+            .append($('<span class="mpwem-ticket-summary__header-price"></span>').text('Price'))
+            .append($('<span class="mpwem-ticket-summary__header-capacity"></span>').text('Total Qty'));
+
+        if (earlyBirdEnabled) {
+            $headerRow.append($('<span class="mpwem-ticket-summary__header-earlybird"></span>').text('Sale Period'));
+        }
+
+        context.$summaryList.append($headerRow);
 
         if (!$rows.length) {
             context.$summaryList.append(
@@ -825,28 +860,47 @@
             const capacity = ticketSummaryQty($root, $row);
             const isDisabled = $row.hasClass('disable_row');
 
-            context.$summaryList.append(
-                $('<article class="mpwem-ticket-summary__item"></article>')
-                    .attr('data-ticket-row-index', index)
-                    .toggleClass('is-disabled', isDisabled)
-                    .append(
-                        $('<div class="mpwem-ticket-summary__item-main"></div>')
-                            .append(
-                                $('<div class="mpwem-ticket-summary__item-head"></div>')
-                                    .append($('<h4></h4>').text(name))
-                                    /* Planned: status badge (.mpwem-ticket-summary__status) showing Hidden/Active */
-                            )
-                    )
-                    .append(
-                        $('<div class="mpwem-ticket-summary__meta"></div>')
-                            .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))
-                    )
-                    .append(
-                        $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--capacity"></div>')
-                            .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(capacity))
-                    )
-                    /* Planned: per-row Details action button (data-mpwem-ticket-modal-open="details") */
-            );
+            const $item = $('<article class="mpwem-ticket-summary__item"></article>')
+                .attr('data-ticket-row-index', index)
+                .toggleClass('is-disabled', isDisabled)
+                .append(
+                    $('<div class="mpwem-ticket-summary__item-main"></div>')
+                        .append(
+                            $('<div class="mpwem-ticket-summary__item-head"></div>')
+                                .append($('<h4></h4>').text(name))
+                        )
+                )
+                .append(
+                    $('<div class="mpwem-ticket-summary__meta"></div>')
+                        .append($('<span class="mpwem-ticket-summary__price"></span>').text(price))
+                )
+                .append(
+                    $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--capacity"></div>')
+                        .append($('<span class="mpwem-ticket-summary__capacity"></span>').text(capacity))
+                );
+
+            if (earlyBirdEnabled) {
+                const dates = ticketRowEarlyBirdDates($row);
+                const startStr = formatEarlyBirdDate(dates.start);
+                const endStr = formatEarlyBirdDate(dates.end);
+                let periodText = '';
+                if (startStr && endStr) {
+                    periodText = startStr + ' - ' + endStr;
+                } else if (startStr) {
+                    periodText = 'From ' + startStr;
+                } else if (endStr) {
+                    periodText = 'Until ' + endStr;
+                } else {
+                    periodText = 'Not set';
+                }
+
+                $item.append(
+                    $('<div class="mpwem-ticket-summary__meta mpwem-ticket-summary__meta--earlybird"></div>')
+                        .append($('<span class="mpwem-ticket-summary__earlybird"></span>').text(periodText))
+                );
+            }
+
+            context.$summaryList.append($item);
         });
     }
 
@@ -1157,6 +1211,7 @@
 
         $root.on('change.mpwemTicketModal', '#mpwem_ticket_modal_mount input[name="mep_enable_early_bird_status"], #mpwem_ticket_modal_mount input[name="enable_global_qty"], #mpwem_ticket_modal_mount input[name="mep_show_advanced_column"], #mpwem_ticket_modal_mount select[name="mep_gq_type"], input[name="mpwem_show_mm"], select[name="mep_mm_min_max_type"]', function() {
             syncTicketAdvancedColumns($root);
+            renderTicketSummary($root);
         });
 
         $root.on('click.mpwemTicketModal', '[data-mpwem-open-particular-date-modal]', function(e) {
@@ -2423,6 +2478,13 @@
                 icon: 'dashicons-chart-bar'
             },
             {
+                mount: '#mpwem_wizard_deposit_mount',
+                className: 'mpwem-display-section--deposit',
+                title: 'Deposit / Partial Payment',
+                desc: 'Override the global deposit setting for this specific event.',
+                icon: 'dashicons-money-alt'
+            },
+            {
                 mount: '#mpwem_wizard_settings_mount',
                 className: 'mpwem-display-section--settings',
                 title: 'Access & Settings',
@@ -2851,6 +2913,15 @@
                     $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Hide Manual Fields');
                 }
             });
+
+            // If any manual address field already has a saved value, show the panel immediately on load
+            const hasManualValues = $manualPanel.find('input[type="text"]').toArray()
+                .some(function(el) { return $(el).val().trim() !== ''; });
+            if (hasManualValues) {
+                $manualPanel.show();
+                $toggleBtn.addClass('is-open');
+                $toggleBtn.find('.mpwem-manual-entry-btn__label').text('Hide Manual Fields');
+            }
         }
 
         // ── 3. Real-time iframe map update while typing in the venue field ─────
@@ -2896,6 +2967,7 @@
         if (!$origSection.length) return;
 
         const $wrapper = $('<div class="mpwem-event-type-card"></div>');
+        const $sectionTitle = $('<h4 class="mpwem-event-type-title">Event Type</h4>');
         const $toggle = $(
             '<div class="mpwem-event-type-toggle">' +
             '  <div class="mpwem-event-type-option" data-value="offline">' +
@@ -2913,6 +2985,7 @@
             '</div>'
         );
 
+        $wrapper.append($sectionTitle);
         $wrapper.append($toggle);
         $origSection.before($wrapper);
         $origSection.hide(); // Hide the original section entirely
@@ -2989,6 +3062,12 @@
 
             syncHybridTicketCols(val);
             syncTicketAdvancedColumns($root);
+
+            // Hide extra services card for virtual/online events (no physical services needed)
+            var $extraServicesCard = $('#mpwem_wizard_extra_services_card');
+            if ($extraServicesCard.length && $extraServicesCard.data('mpwem-mounted')) {
+                $extraServicesCard.toggle(val !== 'online');
+            }
         }
 
         // Keep hybrid columns in sync when new ticket rows are added

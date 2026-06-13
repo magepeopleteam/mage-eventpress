@@ -60,6 +60,9 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Template_Override_Settings.php';
 			}
 			public function flush_permalink() {
+				if ( wp_doing_ajax() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+					return;
+				}
 				if ( get_option( 'mep_flash_event_permalink' ) != 'completed' ) {
 					global $wp_rewrite;
 					$wp_rewrite->flush_rules();

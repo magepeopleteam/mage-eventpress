@@ -10,7 +10,8 @@
 		$total_sold          = MPWEM_Functions::get_total_sold( $event_id, $date );
 		$total_ticket        = MPWEM_Functions::get_total_ticket( $event_id, $date );
 		$total_reserve       = MPWEM_Functions::get_reserve_ticket( $event_id, $date );
-		$total_available     = $total_ticket - ( $total_sold + $total_reserve );
+		$temp_count = mep_temp_attendee_count( $event_id, '', $date );
+		$total_available     = $total_ticket - ($total_sold + $temp_count + $total_reserve );
 		?>
 		<div class="mep-default-sidrbar-price-seat">
 			<div class="setas-info">

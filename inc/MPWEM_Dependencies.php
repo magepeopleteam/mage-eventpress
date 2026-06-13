@@ -88,24 +88,63 @@
 				wp_enqueue_style( 'mpwem_slick', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick.css', array(), '1.8.1', 'all' );
 				wp_enqueue_script( 'mpwem_slick', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick.min.js', array( 'jquery' ), '1.8.1', false );
 				wp_enqueue_style( 'mpwem_slick_theme', MPWEM_PLUGIN_URL . '/assets/helper/slick/slick_theme.css', array( 'mpwem_slick' ), '1.8.1' );
-				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
-				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), MPWEM_PLUGIN_VERSION );
+				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				do_action( 'add_mpwem_common_script' );
-				wp_enqueue_style( 'mage-icons', MPWEM_PLUGIN_URL . '/assets/mage-icon/css/mage-icon.css', array(), time() );
+				wp_enqueue_style( 'mage-icons', MPWEM_PLUGIN_URL . '/assets/mage-icon/css/mage-icon.css', array(), MPWEM_PLUGIN_VERSION );
 			}
+			/**
+			 * Returns true when the current admin page belongs to this plugin.
+			 * Used to gate heavy assets that are only needed on MEP screens.
+			 */
+			private function is_mep_admin_page( $hook ) {
+				// Post edit / new screens for MEP post types
+				$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
+				if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+					global $post;
+					if ( $post && in_array( $post->post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+						return true;
+					}
+					if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+						return true;
+					}
+				}
+				// List table screens
+				if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+					return true;
+				}
+				// MEP submenu pages
+				if ( strpos( $hook, 'mep_events' ) !== false || strpos( $hook, 'mpwem_' ) !== false ) {
+					return true;
+				}
+				// Taxonomy edit screens for MEP taxonomies
+				$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( $_GET['taxonomy'] ) : '';
+				if ( in_array( $taxonomy, array( 'mep_cat', 'mep_org', 'mep_tag' ), true ) ) {
+					return true;
+				}
+				return false;
+			}
+
 			public function admin_enqueue( $hook ) {
-				wp_enqueue_editor();
+				$is_mep_page = $this->is_mep_admin_page( $hook );
+
+				// Heavy editor assets only needed on MEP post/page edit screens
+				if ( $is_mep_page ) {
+					wp_enqueue_editor();
+					wp_enqueue_style( 'wp-codemirror' );
+					wp_enqueue_script( 'wp-codemirror' );
+					wp_enqueue_script( 'editor' );
+					wp_enqueue_script( 'quicktags' );
+					wp_enqueue_script( 'media-upload' );
+					wp_enqueue_script( 'thickbox' );
+					wp_enqueue_style( 'thickbox' );
+					wp_enqueue_style( 'editor-buttons' );
+				}
+
+				// These are needed on all admin pages for MEP meta boxes / color pickers
 				wp_enqueue_script( 'jquery-ui-sortable' );
 				wp_enqueue_style( 'wp-color-picker' );
 				wp_enqueue_script( 'wp-color-picker' );
-				wp_enqueue_style( 'wp-codemirror' );
-				wp_enqueue_script( 'wp-codemirror' );
-				wp_enqueue_script( 'editor' );
-				wp_enqueue_script( 'quicktags' );
-				wp_enqueue_script( 'media-upload' );
-				wp_enqueue_script( 'thickbox' );
-				wp_enqueue_style( 'thickbox' );
-				wp_enqueue_style( 'editor-buttons' );
 				//********//
 				$this->global_enqueue();
 				//********//
@@ -130,8 +169,8 @@
 					wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js', array(), '3.9.1', true );
 					wp_enqueue_script( 'chartjs-date-adapter', 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js', array( 'chartjs' ), '2.0.0', true );
 					// Enqueue custom analytics scripts (renamed to avoid ad blocker blocking)
-					wp_enqueue_script( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.js', array( 'jquery', 'chartjs' ), time(), true );
-					wp_enqueue_style( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.css', array(), time() );
+					wp_enqueue_script( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.js', array( 'jquery', 'chartjs' ), MPWEM_PLUGIN_VERSION, true );
+					wp_enqueue_style( 'mep-event-stats', MPWEM_PLUGIN_URL . '/assets/admin/mep_event_stats.css', array(), MPWEM_PLUGIN_VERSION );
 					// Localize script with AJAX URL, nonce, and currency symbol
 					wp_localize_script( 'mep-event-stats', 'mep_analytics_data', array(
 						'ajax_url'        => admin_url( 'admin-ajax.php' ),
@@ -143,17 +182,17 @@
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				// Only load event lists scripts on relevant pages
 				if ( $hook == 'mep_events_page_mep_event_lists' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
-					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), time(), true );
+					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
 						'url'   => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'mep_nonce' )
 					) );
-					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), time() );
+					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), MPWEM_PLUGIN_VERSION );
 				}
 				/******************************/
 				// custom
-				wp_enqueue_style( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time() );
-				wp_enqueue_script( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.js', array( 'jquery' ), time(), true );
+				wp_enqueue_style( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), MPWEM_PLUGIN_VERSION );
+				wp_enqueue_script( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				wp_localize_script( 'mpwem_admin', 'mpwem_admin_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_admin_nonce' ) ) );
 				/******************************/
 				
@@ -176,14 +215,14 @@
 				wp_enqueue_style( 'mep-calendar-min-style', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.css', array() );
 				wp_enqueue_script( 'mep-calendar-scripts', MPWEM_PLUGIN_URL . '/assets/helper/calender/calendar.min.js', array( 'jquery', 'mep-moment-js' ), 1, true );
 				//custom
-				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), time(), true );
+				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), MPWEM_PLUGIN_VERSION, true );
 
 				if ($is_divi) {
-					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), time() );
+					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), MPWEM_PLUGIN_VERSION );
 				} else {
-					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), time() );
+					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
 				}
-				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), time(), true );
+				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_nonce' ) ) );
 				do_action( 'add_mpwem_frontend_script' );
 

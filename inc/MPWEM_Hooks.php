@@ -52,6 +52,7 @@
 				add_action( 'wp_ajax_mpwem_load_seat_status', array( $this, 'mpwem_load_seat_status' ) );
 				add_action( 'wp_ajax_mpwem_reload_seat_status', array( $this, 'mpwem_reload_seat_status' ) );
 
+				add_action( 'save_post_mep_events', array( $this, 'flush_meta_value_transients' ) );
 				/*************************************/
 				add_action( 'mpwem_list_thumb', [ $this, 'list_thumb' ], 10, 3 );
 				add_action( 'mpwem_list_location', [ $this, 'list_location' ], 10, 3 );
@@ -409,23 +410,23 @@
 				<?php }
 			}
 			public function list_organizer( $event_infos ) {
-		$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
-		$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
-		$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
-		if ( $hide_org_list == 'no' ) {
-			$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
-			if ( $organizer_name ) {
-				$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
-				$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
-				$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
-				$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
-				?>
-                    <div class="list_content upcomming_organizer">
-                        <span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
-                    </div>
-			<?php }
-		}
-	}
+				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
+				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
+				$hide_org_list          = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_organizer_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_organizer_list'] : 'no';
+				if ( $hide_org_list == 'no' ) {
+					$organizer_name = is_array($event_infos) && array_key_exists( 'organizer_name', $event_infos ) ? $event_infos['organizer_name'] : '';
+					if ( $organizer_name ) {
+						$organizer_title      = is_array($event_infos) && array_key_exists( 'organizer_title', $event_infos ) ? $event_infos['organizer_title'] : '';
+						$icon_setting_sec     = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
+						$icon_setting_sec     = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
+						$event_organizer_icon = is_array($icon_setting_sec) && array_key_exists( 'mep_event_organizer_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_organizer_icon'] : 'mi mi-user';
+						?>
+							<div class="list_content upcomming_organizer">
+								<span class="<?php echo esc_attr( $event_organizer_icon ); ?>"></span><?php echo esc_html( $organizer_title.' '.$organizer_name ); ?>
+							</div>
+					<?php }
+				}
+			}
 			public function list_price( $event_infos ) {
 				$event_list_setting_sec = is_array($event_infos) && array_key_exists( 'event_list_setting_sec', $event_infos ) ? $event_infos['event_list_setting_sec'] : [];
 				$event_list_setting_sec = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
@@ -898,6 +899,9 @@
 					wp_send_json_error( array( 'message' => esc_html__( 'Failed to submit RSVP. Please try again.', 'mage-eventpress' ) ) );
 				}
 			}
-		}
-		new MPWEM_Hooks();
+			public function flush_meta_value_transients() {
+				MPWEM_Query::flush_post_meta_value_cache();
+			}
 	}
+	new MPWEM_Hooks();
+}

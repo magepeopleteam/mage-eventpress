@@ -100,8 +100,6 @@
                                             .val(formattedDate)
                                             .trigger('change');
 
-                                        console.log(formattedDate);
-
                                     } else {
 
                                         let date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
@@ -404,7 +402,11 @@
 				return $options ? self::data_sanitize( $options ) : $default;
 			}
 			public static function get_settings( $section, $key, $default = '' ) {
-				$options = get_option( $section );
+				static $mep_options_cache = array();
+				if ( ! isset( $mep_options_cache[ $section ] ) ) {
+					$mep_options_cache[ $section ] = get_option( $section );
+				}
+				$options = $mep_options_cache[ $section ];
 				if ( isset( $options[ $key ] ) && $options[ $key ] ) {
 					$default = $options[ $key ];
 				}
@@ -829,14 +831,8 @@
 				return wp_get_attachment_image_url( $image_id, $size );
 			}
 			public static function get_page_by_slug( $slug ) {
-				if ( $pages = get_pages() ) {
-					foreach ( $pages as $page ) {
-						if ( $slug === $page->post_name ) {
-							return $page;
-						}
-					}
-				}
-				return false;
+				$page = get_page_by_path( $slug, OBJECT, 'page' );
+				return $page ? $page : false;
 			}
 			//***********************************//
 			public static function check_plugin( $plugin_dir_name, $plugin_file ): int {

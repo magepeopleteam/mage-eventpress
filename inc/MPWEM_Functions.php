@@ -132,8 +132,9 @@
 					$ticket_qty       = is_array($ticket_type) && array_key_exists( 'option_qty_t', $ticket_type ) ? $ticket_type['option_qty_t'] : 0;
 					$ticket_r_qty     = is_array($ticket_type) && array_key_exists( 'option_rsv_t', $ticket_type ) ? $ticket_type['option_rsv_t'] : 0;
 					$total_sold       = MPWEM_Query::attendee_query( $filter_args )->post_count;
+		 			$temp_count 	  = mep_temp_attendee_count( $event_id, $ticket_name, $date );
 					// echo '<pre>'; print_r(MPWEM_Query::attendee_query( $filter_args ));echo'</pre>';
-					$available_ticket = (int) $ticket_qty - ( $total_sold + (int) $ticket_r_qty );
+					$available_ticket = (int) $ticket_qty - ( ($total_sold + $temp_count) + (int) $ticket_r_qty );
 				}
 				return $available_ticket;
 			}
@@ -245,8 +246,14 @@
 				}
 				 $event_expire_on_date= $event_expire_on == 'event_start_datetime' ?  'event_start_datetime' : 'event_end_datetime';
 				 $up_coming_date = $date_type == 'no' ? get_post_meta( $event_id, $event_expire_on_date, true ) : $up_coming_date;
-				 
-				 update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+
+				 // Deduplicate: only write postmeta once per event per request to prevent
+				 // N write queries when this function is called inside a list-rendering loop.
+				 static $mep_updated_upcoming = array();
+				 if ( ! isset( $mep_updated_upcoming[ $event_id ] ) ) {
+				 	update_post_meta( $event_id, 'event_upcoming_datetime', $up_coming_date );
+				 	$mep_updated_upcoming[ $event_id ] = true;
+				 }
 				 return $up_coming_date;
 			}
 			public static function get_all_dates( $event_id ) {
@@ -609,6 +616,11 @@
 			}
 			//==========================//
 			public static function get_location( $event_id, $key = '' ) {
+				static $mep_location_cache = array();
+				if ( isset( $mep_location_cache[ $event_id ] ) ) {
+					$address = $mep_location_cache[ $event_id ];
+					return $key ? ( is_array( $address ) && array_key_exists( $key, $address ) ? $address[ $key ] : '' ) : $address;
+				}
 				$address_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_org_address' );
 				$address      = [];
 				if ( $address_type ) {
@@ -646,7 +658,8 @@
 				if ( $country ) {
 					$address['country'] = $country;
 				}
-				return $key ? ( is_array($address) && array_key_exists( $key, $address ) ? $address[ $key ] : '' ) : $address;
+				$mep_location_cache[ $event_id ] = $address;
+				return $key ? ( is_array( $address ) && array_key_exists( $key, $address ) ? $address[ $key ] : '' ) : $address;
 			}
 			//==========================//
 			public static function get_cpt(): string {

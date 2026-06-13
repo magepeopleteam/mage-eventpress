@@ -753,56 +753,26 @@
 /* **************************************************************timeline******************** */
 #mage-container.mage div.mpwem_timeline_area {
   margin: var(--dmp) 0 0 0;
+  background-color: #FFF;
+  border: 1px solid #EEEEF5;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
-#mage-container.mage div.timeline_item {
-  padding: 0 0 0 40px;
-  position: relative;
-  transition: transform 0.3s ease;
-}
-
-#mage-container.mage div.timeline_item:hover {
-  transform: translateY(-5px);
-}
-
-#mage-container.mage div.timeline_item .timeline_counter {
-  position: absolute;
-  left: 0;
-  top: 15px;
-  width: 30px;
-  height: 30px;
-  background-color: #FFFFFF;
-  border: 2px solid var(--color_theme);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: var(--color_theme);
-  font-size: 14px;
-  z-index: 2;
-}
-
-#mage-container.mage div.timeline_item div.timeline_content {
-  background-color: #FFFFFF;
+#mage-container.mage div.mpwem_timeline_area .timeline_section_header {
+  background: linear-gradient(135deg, #F7F7F7, #F7F7F7);
   padding: var(--dmp);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
-#mage-container.mage div.timeline_item div.timeline_content h6 {
-  font-size: 16px;
-  font-weight: 500;
-  text-transform: capitalize;
+#mage-container.mage div.mpwem_timeline_area .timeline_section_header h2 {
+  font-size: var(--fs_h5);
+  font-weight: normal;
+  color: #333;
   margin: 0;
 }
 
-#mage-container.mage div.mpwem_timeline_area .timeline_time {
-  font-size: 14px;
-  color: var(--color_theme);
-  font-weight: 500;
-  padding: 6px 12px;
-  background-color: var(--color_6);
-  border-radius: 20px;
+#mage-container.mage div.mpwem_timeline_area .timeline_body {
+  padding: var(--dmp);
 }
 
 #mage-container.mage div.mpwem_timeline_area .timeline_area {
@@ -814,10 +784,101 @@
   position: absolute;
   left: 15px;
   top: 15px;
-  height: calc(100% - 15px);
+  height: calc(100% - 30px);
   width: 2px;
-  background-color: #E0E0E0;
+  background-color: var(--color_theme);
+  opacity: 0.25;
   z-index: 0;
+}
+
+#mage-container.mage div.timeline_item {
+  padding: 0 0 20px 48px;
+  position: relative;
+}
+
+#mage-container.mage div.timeline_item:last-child {
+  padding-bottom: 0;
+}
+
+#mage-container.mage div.timeline_item .timeline_counter {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 30px;
+  height: 30px;
+  background-color: var(--color_theme);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #FFF;
+  font-size: 13px;
+  z-index: 2;
+}
+
+#mage-container.mage div.timeline_item .timeline_header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+#mage-container.mage div.timeline_item .timeline_tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color_6);
+  padding: 9px 26px 9px 14px;
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%);
+  flex-shrink: 0;
+  transition: filter 0.2s;
+}
+
+#mage-container.mage div.timeline_item .timeline_header:hover .timeline_tag {
+  filter: brightness(0.94);
+}
+
+#mage-container.mage div.timeline_item .tl_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-transform: capitalize;
+  white-space: nowrap;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#mage-container.mage div.timeline_item .timeline_connector {
+  flex: 1;
+  height: 0;
+  border-bottom: 1.5px dashed #D0D3EA;
+  min-width: 12px;
+}
+
+#mage-container.mage div.mpwem_timeline_area .timeline_time {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--color_theme);
+  font-weight: 600;
+  padding: 6px 12px;
+  background-color: var(--color_6);
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#mage-container.mage div.mpwem_timeline_area .timeline_time i {
+  font-size: 11px;
+}
+
+#mage-container.mage div.mpwem_timeline_area .timeline_content .mp_wp_editor {
+  margin-top: 12px;
+  background-color: var(--color_6);
+  padding: var(--dmp);
+  border-radius: 10px;
 }
 
 /* **************************************************************Sidebar******************** */
@@ -1275,7 +1336,8 @@
   transition: all 0.5s;
 }
 
-#mage-container.mage div.faq_area .item:hover {
+#mage-container.mage div.faq_area .item:hover,
+#mage-container.mage div.faq_area .item:has(.content.mActive) {
   background-color: #F0F0F0;
 }
 
@@ -1283,6 +1345,9 @@
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  margin: 5px 0;
+  border: 1px solid #ede8e8;
+  border-radius: 5px;
 }
 
 #mage-container.mage div.faq_area .item .title i {
@@ -4299,6 +4364,13 @@
   #mage-container.mage div.mep_event_winter_list div.spring_area .spring_item_2 {
     width: 100%;
   }
+
+  /* Timeline — tablet/mobile: tag expands, connector hidden, time stays right */
+  #mage-container.mage div.mpwem_timeline_area .timeline_body { padding: 12px; }
+  #mage-container.mage div.timeline_item { padding: 0 0 14px 42px; }
+  #mage-container.mage div.timeline_item .timeline_tag { flex: 1; }
+  #mage-container.mage div.timeline_item .tl_title { max-width: 100%; }
+  #mage-container.mage div.timeline_item .timeline_connector { display: none; }
 }
 
 @media only screen and (max-width: 650px) {
@@ -4419,6 +4491,17 @@
   #mage-container.mage div.column_style {
     min-width: calc(100% - 14px) !important;
   }
+}
+
+/* Timeline — small phones: stack tag and time vertically */
+@media only screen and (max-width: 420px) {
+  #mage-container.mage div.mpwem_timeline_area .timeline_body { padding: 10px; }
+  #mage-container.mage div.timeline_item { padding: 0 0 12px 36px; }
+  #mage-container.mage div.timeline_item .timeline_counter { width: 26px; height: 26px; font-size: 11px; top: 3px; }
+  #mage-container.mage div.timeline_item .timeline_header { flex-direction: column; align-items: flex-start; gap: 5px; }
+  #mage-container.mage div.timeline_item .timeline_tag { clip-path: none; border-radius: 6px; padding: 7px 13px; }
+  #mage-container.mage div.timeline_item .tl_title { white-space: normal; overflow: visible; text-overflow: clip; }
+  #mage-container.mage div.mpwem_timeline_area .timeline_time { font-size: 11px; padding: 4px 9px; }
 }
 
 /********************************************************************************************************************************************/

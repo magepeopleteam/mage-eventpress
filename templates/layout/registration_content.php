@@ -97,7 +97,7 @@
 	// Ticket/WooCommerce mode (default layout)
 	$all_dates = MPWEM_Functions::get_dates( $event_id );
 	$all_times = MPWEM_Functions::get_times( $event_id, $all_dates );
-	$user_date = $date;
+	$user_date = strpos($date, ':') === false ? $date . ' 00:00' : $date;
 	$event_type     = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 	// $date      = empty( $date ) || $event_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 // echo $date;

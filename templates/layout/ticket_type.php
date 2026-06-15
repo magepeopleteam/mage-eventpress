@@ -6,6 +6,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+	
 	$event_id           = $event_id ?? 0;
 	$all_dates          = MPWEM_Functions::get_dates( $event_id );
 	$all_times          =MPWEM_Functions::get_times( $event_id, $all_dates );

@@ -6,6 +6,7 @@
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
 	} // Cannot access pages directly.
+	// echo $user_date = date('Y-m-d H:i',strtotime($user_date)); 
 	$event_id           = $event_id ?? 0;
 	$all_dates          = MPWEM_Functions::get_dates( $event_id );
 	$all_times          =MPWEM_Functions::get_times( $event_id, $all_dates );
@@ -34,8 +35,6 @@
 							$ticket_permission = apply_filters( 'mpwem_ticket_permission', true, $ticket_type );
 							do_action( 'mep_ticket_type_loop_list_row_start', $event_id, $date, $ticket_type );
 							if ( $ticket_permission ) {
-								// echo '<pre>';print_r($ticket_type);echo '</pre>';
-								//  $user_date;
 								$ticket_name       = is_array($ticket_type) && array_key_exists( 'option_name_t', $ticket_type ) ? $ticket_type['option_name_t'] : '';
 								$ticket_mode       = is_array($ticket_type) && array_key_exists( 'option_ticket_mode_t', $ticket_type ) ? $ticket_type['option_ticket_mode_t'] : 'inperson';
 								$ticket_details    = is_array($ticket_type) && array_key_exists( 'option_details_t', $ticket_type ) ? $ticket_type['option_details_t'] : '';
@@ -51,17 +50,13 @@
 								$ticket_min_qty    = apply_filters( 'filter_mpwem_min_ticket', 0, $event_id, $ticket_type );
 								$ticket_max_qty    = apply_filters( 'filter_mpwem_max_ticket', '', $event_id, $ticket_type );
 								$ticket_input_type = is_array($ticket_type) && array_key_exists( 'option_qty_t_type', $ticket_type ) ? $ticket_type['option_qty_t_type'] : 'inputbox';
-								$date              = date('Y-m-d H:i',strtotime($date));
+								$date              = date('Y-m-d H:i',strtotime($user_date));
 								$available         = MPWEM_Functions::get_available_ticket( $event_id, $ticket_name, $date, $ticket_type );
 								$available         = apply_filters( 'filter_mpwem_gq_ticket', $available, $total_available, $event_id );
 								$available         = apply_filters( 'mpwem_group_ticket_qty', $available, $event_id, $ticket_name );
-								$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );
-
-
-
-
-								
+								$available         = apply_filters( 'mpwem_group_qty', $available, $event_id, $ticket_name );								
 								$available         = max( 0, floor( $available ) );
+
 								if ( $ticket_name ) {
 									$input_data['name']      = 'option_qty[]';
 									$input_data['price']     = $ticket_price;
@@ -86,10 +81,8 @@
                                             }
                                         }
                                     }
-
                                     if($early_msg == 'yes'){
-									?>
-									
+									?>									
                                     <div class="mep_ticket_item">
                                         <div class="ticket-data">
                                             <div class="ticket-info">

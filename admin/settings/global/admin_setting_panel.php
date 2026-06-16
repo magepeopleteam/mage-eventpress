@@ -958,6 +958,24 @@ tr.payment_tabs_html { display: none !important; }
 				$this->settings_api->set_fields( $this->get_settings_fields() );
 				//initialize settings
 				$this->settings_api->admin_init();
+
+				// Preserve PayPal/Stripe keys when the Settings API saves payment_setting_sec.
+				// Those fields are managed via their own AJAX modals and are never part of
+				// the settings form, so without this they get wiped on every "Save Changes".
+				add_filter( 'pre_update_option_payment_setting_sec', function( $new_value, $old_value ) {
+					$protected_keys = array(
+						'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret',
+						'mep_stripe_enable', 'mep_stripe_sandbox',
+						'mep_stripe_test_pub', 'mep_stripe_test_sec',
+						'mep_stripe_live_pub', 'mep_stripe_live_sec',
+					);
+					foreach ( $protected_keys as $key ) {
+						if ( isset( $old_value[ $key ] ) ) {
+							$new_value[ $key ] = $old_value[ $key ];
+						}
+					}
+					return $new_value;
+				}, 10, 2 );
 			}
 
 			function admin_menu() {
@@ -2236,18 +2254,22 @@ tr.payment_tabs_html { display: none !important; }
 </div>
 
 <!-- Booking Confirmation Page -->
-<div style="margin-top:24px; padding-top:20px; border-top:1px solid #e2e4e7;">
-    <label style="display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#1d2327;">' . __( "Booking Confirmation Page", "mage-eventpress" ) . '</label>
-    <p style="margin:0 0 8px; font-size:12px; color:#6b7280;">' . __( "Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.", "mage-eventpress" ) . '</p>
-    ' . wp_dropdown_pages( array(
-        'name'              => 'payment_setting_sec[mep_confirmation_page_id]',
-        'id'                => 'mep_confirmation_page_id',
-        'selected'          => ( function() { $o = get_option( 'payment_setting_sec', array() ); return ! empty( $o['mep_confirmation_page_id'] ) ? absint( $o['mep_confirmation_page_id'] ) : 0; } )(),
-        'show_option_none'  => __( '— Use event page (default) —', 'mage-eventpress' ),
-        'option_none_value' => '0',
-        'style'             => 'width:100%; max-width:420px; margin-top:4px;',
-        'echo'              => 0,
-    ) ) . '
+<div style="margin-top:24px; padding-top:20px; border-top:1px solid #e2e4e7; display:flex; align-items:flex-start; gap:0;">
+    <div style="width:30%; padding-right:20px; box-sizing:border-box;">
+        <label style="display:block; font-weight:600; font-size:13px; color:#1d2327; margin:0 0 4px;">' . __( "Booking Confirmation Page", "mage-eventpress" ) . '</label>
+        <span style="display:block; margin:0; font-size:11px; color:#9ca3af !important; line-height:1.6; font-weight:400;">' . __( "Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.", "mage-eventpress" ) . '</span>
+    </div>
+    <div style="width:70%; box-sizing:border-box;">
+        ' . wp_dropdown_pages( array(
+            'name'              => 'payment_setting_sec[mep_confirmation_page_id]',
+            'id'                => 'mep_confirmation_page_id',
+            'selected'          => ( function() { $o = get_option( 'payment_setting_sec', array() ); return ! empty( $o['mep_confirmation_page_id'] ) ? absint( $o['mep_confirmation_page_id'] ) : 0; } )(),
+            'show_option_none'  => __( '— Default —', 'mage-eventpress' ),
+            'option_none_value' => '0',
+            'style'             => 'width:100%; max-width:320px; border:1px solid #d1d5db; border-radius:6px; padding:6px 10px; font-size:13px;',
+            'echo'              => 0,
+        ) ) . '
+    </div>
 </div>
 '
 							)

@@ -314,21 +314,25 @@
 											$payment_opts    = get_option( 'payment_setting_sec', array() );
 											$confirm_page_id = ! empty( $payment_opts['mep_confirmation_page_id'] ) ? absint( $payment_opts['mep_confirmation_page_id'] ) : 0;
 											?>
-											<div style="margin-top:20px; padding-top:20px; border-top:1px solid #e2e4e7;">
-												<label style="display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#1d2327;">
-													<?php esc_html_e( 'Booking Confirmation Page', 'mage-eventpress' ); ?>
-												</label>
-												<p style="margin:0 0 8px; font-size:12px; color:#6b7280;">
-													<?php esc_html_e( 'Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.', 'mage-eventpress' ); ?>
-												</p>
-												<?php wp_dropdown_pages( array(
-													'name'              => 'mep_confirmation_page_id',
-													'id'                => 'mep_confirmation_page_id',
-													'selected'          => $confirm_page_id,
-													'show_option_none'  => __( '— Use event page (default) —', 'mage-eventpress' ),
-													'option_none_value' => '0',
-													'style'             => 'width:100%; max-width:420px;',
-												) ); ?>
+											<div style="margin-top:20px; padding-top:20px; border-top:1px solid #e2e4e7; display:flex; align-items:flex-start; justify-content:space-between; gap:20px;">
+												<div style="flex:1; min-width:0;">
+													<label style="display:block; font-weight:600; font-size:13px; color:#1d2327; margin:0 0 4px;">
+														<?php esc_html_e( 'Booking Confirmation Page', 'mage-eventpress' ); ?>
+													</label>
+													<p style="margin:0; font-size:12px; color:#9ca3af; line-height:1.5;">
+														<?php esc_html_e( 'Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.', 'mage-eventpress' ); ?>
+													</p>
+												</div>
+												<div style="flex-shrink:0; width:220px;">
+													<?php wp_dropdown_pages( array(
+														'name'              => 'mep_confirmation_page_id',
+														'id'                => 'mep_confirmation_page_id',
+														'selected'          => $confirm_page_id,
+														'show_option_none'  => __( '— Default —', 'mage-eventpress' ),
+														'option_none_value' => '0',
+														'style'             => 'width:100%; border:1px solid #d1d5db; border-radius:6px; padding:6px 10px; font-size:13px;',
+													) ); ?>
+												</div>
 											</div>
 									</div>
 								</div>

@@ -13,7 +13,7 @@
 
 	$reg_status = get_post_meta( $event_id, 'mep_reg_status', true );
 	if ( empty( $reg_status ) ) {
-		$reg_status = MPWEM_Global_Function::has_woocommerce() ? 'on' : 'off';
+		$reg_status = 'on'; // native checkout handles paid events when WooCommerce is not active
 	}
 
 	// Listing mode has no registration box at all

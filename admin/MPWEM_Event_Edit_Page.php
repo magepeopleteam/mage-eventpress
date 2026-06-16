@@ -1749,7 +1749,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														</div>
 														<div class="mpwem-card__body mpwem-display-stack">
 															<div class="mpwem-panel-mount" id="mpwem_wizard_template_mount"></div>
-															<div class="mpwem-panel-mount" id="mpwem_wizard_attendee_form_mount"></div>
+															<div class="mpwem-panel-mount" id="mpwem_wizard_attendee_form_mount">
+																<?php
+																$reg_form_status = get_post_meta($post_id, 'mep_event_reg_form_status', true);
+																if (empty($reg_form_status)) {
+																	$reg_form_status = 'on';
+																}
+																?>
+																<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+															</div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_terms_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_faq_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_timeline_mount"></div>
@@ -1939,6 +1947,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			}
 
 			$this->save_taxonomies($post_id);
+
+			$show_mm = isset($_POST['mpwem_show_mm']) ? 'on' : 'off';
+			update_post_meta($post_id, 'mpwem_show_mm', $show_mm);
+
+			$reg_form_status = isset($_POST['mep_event_reg_form_status']) ? 'on' : 'off';
+			update_post_meta($post_id, 'mep_event_reg_form_status', $reg_form_status);
+
 			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 

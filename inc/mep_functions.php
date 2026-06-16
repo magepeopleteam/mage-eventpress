@@ -1053,6 +1053,122 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $pid;
 		}
 	}
+	if ( ! function_exists( 'mep_native_ticket_attendee_create' ) ) {
+		/**
+		 * Creates a single mep_events_attendees record for native (non-WooCommerce) checkout.
+		 *
+		 * @param int    $event_id
+		 * @param int    $booking_id  Native booking reference (0 is valid).
+		 * @param array  $user_info   Keys: user_name, user_email, user_phone, user_event_date
+		 * @param array  $ticket_info Keys: ticket_name, ticket_qty, ticket_price
+		 * @param string $payment_method  'offline', 'paypal', 'stripe', etc.
+		 * @param string $order_status    'completed' or 'pending'
+		 * @param array  $extra_meta      Additional `ea_*` meta keys/values (e.g. from form-builder
+		 *                                 attendee fields) keyed by meta key, applied after the defaults
+		 *                                 so they can override the blank placeholders below.
+		 * @return int|false  The new post ID or false on failure.
+		 */
+		function mep_native_ticket_attendee_create( $event_id, $booking_id, $user_info, $ticket_info, $payment_method = 'offline', $order_status = 'pending', $extra_meta = array() ) {
+			$uname       = isset( $user_info['user_name'] ) ? sanitize_text_field( $user_info['user_name'] ) : '';
+			$email       = isset( $user_info['user_email'] ) ? sanitize_email( $user_info['user_email'] ) : '';
+			$phone       = isset( $user_info['user_phone'] ) ? sanitize_text_field( $user_info['user_phone'] ) : '';
+			$event_date  = isset( $user_info['user_event_date'] ) ? sanitize_text_field( $user_info['user_event_date'] ) : '';
+
+			$ticket_name  = isset( $ticket_info['ticket_name'] ) ? sanitize_text_field( $ticket_info['ticket_name'] ) : '';
+			$ticket_qty   = isset( $ticket_info['ticket_qty'] ) ? absint( $ticket_info['ticket_qty'] ) : 1;
+			$ticket_price = isset( $ticket_info['ticket_price'] ) ? (float) $ticket_info['ticket_price'] : 0.0;
+			$ticket_total = $ticket_price * $ticket_qty;
+
+			$new_post = array(
+				'post_title'  => $uname ?: $email,
+				'post_content' => '',
+				'post_status' => 'publish',
+				'post_type'   => 'mep_events_attendees',
+			);
+
+			$pid = wp_insert_post( $new_post );
+			if ( ! $pid || is_wp_error( $pid ) ) {
+				return false;
+			}
+
+			$pin = 'TKT' . $event_id . $pid . rand( 100, 999 );
+
+			update_post_meta( $pid, 'ea_name', mep_prevent_serialized_input( $uname ) );
+			update_post_meta( $pid, 'ea_email', mep_prevent_serialized_input( $email ) );
+			update_post_meta( $pid, 'ea_phone', mep_prevent_serialized_input( $phone ) );
+			update_post_meta( $pid, 'ea_address_1', '' );
+			update_post_meta( $pid, 'ea_gender', '' );
+			update_post_meta( $pid, 'ea_company', '' );
+			update_post_meta( $pid, 'ea_desg', '' );
+			update_post_meta( $pid, 'ea_website', '' );
+			update_post_meta( $pid, 'ea_vegetarian', '' );
+			update_post_meta( $pid, 'ea_tshirtsize', '' );
+
+			// Apply form-builder attendee fields, overriding the blank defaults above where provided.
+			foreach ( $extra_meta as $meta_key => $meta_value ) {
+				update_post_meta( $pid, sanitize_key( $meta_key ), mep_prevent_serialized_input( $meta_value ) );
+			}
+
+			update_post_meta( $pid, 'ea_ticket_type', $ticket_name );
+			update_post_meta( $pid, 'ea_ticket_qty', $ticket_qty );
+			update_post_meta( $pid, 'ea_ticket_price', $ticket_price );
+			update_post_meta( $pid, 'ea_ticket_order_amount', $ticket_total );
+			update_post_meta( $pid, 'ea_payment_method', sanitize_text_field( $payment_method ) );
+			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
+			update_post_meta( $pid, 'ea_event_id', $event_id );
+			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_order_id', $booking_id );
+			update_post_meta( $pid, 'ea_user_id', get_current_user_id() );
+			update_post_meta( $pid, 'mep_checkin', 'No' );
+			update_post_meta( $pid, 'ea_ticket_no', $pin );
+			update_post_meta( $pid, 'ea_order_status', sanitize_text_field( $order_status ) );
+			update_post_meta( $pid, 'ea_flag', 'native_checkout' );
+
+			do_action( 'mep_native_attendee_created', $pid, $event_id, $booking_id, $user_info, $ticket_info, $order_status );
+
+			return $pid;
+		}
+	}
+	if ( ! function_exists( 'mep_collect_attendee_form_fields' ) ) {
+		/**
+		 * Maps posted form-builder attendee fields to `ea_*` meta keys for native checkout.
+		 *
+		 * Cross-references the event's registration form definition (built-in optional fields
+		 * such as address/gender/company plus any custom form-builder fields) so values posted
+		 * under their `name` (e.g. `user_address`, a custom field id) are translated to the
+		 * `d_name` meta key (e.g. `ea_address_1`) expected by mep_native_ticket_attendee_create().
+		 *
+		 * @param int   $event_id
+		 * @param array $posted_fields Decoded `attendee_fields` payload, keyed by field `name`.
+		 * @return array `ea_*` meta key => sanitized value.
+		 */
+		function mep_collect_attendee_form_fields( $event_id, $posted_fields ) {
+			$extra_meta = array();
+			if ( ! is_array( $posted_fields ) || empty( $posted_fields ) ) {
+				return $extra_meta;
+			}
+
+			$form_array = MPWEM_Layout::get_form_array( $event_id );
+			foreach ( $form_array as $field ) {
+				$name   = is_array( $field ) && array_key_exists( 'name', $field ) ? $field['name'] : '';
+				$d_name = is_array( $field ) && array_key_exists( 'd_name', $field ) ? $field['d_name'] : '';
+				$type   = is_array( $field ) && array_key_exists( 'type', $field ) ? $field['type'] : '';
+
+				if ( ! $name || ! $d_name || $type === 'file' || $type === 'title' || ! array_key_exists( $name, $posted_fields ) ) {
+					continue;
+				}
+
+				$value = $posted_fields[ $name ];
+				if ( is_array( $value ) ) {
+					$value = reset( $value );
+				}
+
+				$extra_meta[ $d_name ] = ( $type === 'textarea' ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value );
+			}
+
+			return $extra_meta;
+		}
+	}
 	if ( ! function_exists( 'mep_attendee_extra_service_create' ) ) {
 		function mep_attendee_extra_service_create( $order_id, $event_id, $_event_extra_service ) {
 			$order        = wc_get_order( $order_id );

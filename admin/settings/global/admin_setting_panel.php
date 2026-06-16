@@ -507,6 +507,9 @@
 			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );
 			$fields   = $_POST['fields'] ?? array();
 			$existing = get_option( 'payment_setting_sec', array() );
+			if ( ! is_array( $existing ) ) {
+				$existing = array();
+			}
 
 			$allowed = array(
 				'paypal' => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
@@ -876,6 +879,7 @@ tr.payment_tabs_html { display: none !important; }
 				$payment_settings['mep_wc_after_order_redirect'] = isset( $_POST['mep_wc_after_order_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_after_order_redirect'] ) : 'plugin_thankyou';
 				$payment_settings['mep_wc_require_login'] = isset( $_POST['mep_wc_require_login'] ) ? sanitize_text_field( $_POST['mep_wc_require_login'] ) : '';
 				$payment_settings['mep_wc_show_billing_info'] = isset( $_POST['mep_wc_show_billing_info'] ) ? sanitize_text_field( $_POST['mep_wc_show_billing_info'] ) : '';
+				$payment_settings['mep_confirmation_page_id'] = isset( $_POST['mep_confirmation_page_id'] ) ? absint( $_POST['mep_confirmation_page_id'] ) : 0;
 				
 				if ( isset( $_POST['mep_wc_confirm_ticket_status'] ) && is_array( $_POST['mep_wc_confirm_ticket_status'] ) ) {
 					$statuses = array();
@@ -1011,6 +1015,10 @@ tr.payment_tabs_html { display: none !important; }
 					array(
 						'id'    => 'payment_setting_sec',
 						'title' => '<i class="mi mi-shopping-cart"></i>' . __( 'Payment', 'mage-eventpress' )
+					),
+					array(
+						'id'    => 'mep_currency_settings',
+						'title' => '<i class="mi mi-usd-circle"></i>' . __( 'Currency', 'mage-eventpress' )
 					),
 					array(
 						'id'    => 'mep_settings_licensing',
@@ -2229,6 +2237,66 @@ tr.payment_tabs_html { display: none !important; }
 '
 							)
 						)
+					),
+					'mep_currency_settings' => array(
+						array(
+							'name' => 'mep_currency_info',
+							'type' => 'html',
+							'desc' => ( function() {
+								$has_woo = MPWEM_Global_Function::has_woocommerce();
+								if ( $has_woo ) {
+									return '<div style="background:#e8f4fd;border-left:4px solid #2271b1;padding:14px 18px;border-radius:4px;font-size:13px;color:#1e3a5f;margin-bottom:4px;">'
+										. '<strong>' . esc_html__( 'WooCommerce is active', 'mage-eventpress' ) . '</strong> — '
+										. esc_html__( 'Currency display is controlled by WooCommerce settings. The settings below are used as a fallback when WooCommerce is deactivated.', 'mage-eventpress' )
+										. '</div>';
+								}
+								return '<div style="background:#fff3cd;border-left:4px solid #ffc107;padding:14px 18px;border-radius:4px;font-size:13px;color:#664d03;margin-bottom:4px;">'
+									. '<strong>' . esc_html__( 'WooCommerce is not active', 'mage-eventpress' ) . '</strong> — '
+									. esc_html__( 'These currency settings are used for price display and the native checkout flow.', 'mage-eventpress' )
+									. '</div>';
+							} )(),
+						),
+						array(
+							'name'    => 'mep_currency_symbol',
+							'label'   => __( 'Currency Symbol', 'mage-eventpress' ),
+							'desc'    => __( 'The symbol to display next to prices (e.g. $, €, £, ৳).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '$',
+						),
+						array(
+							'name'    => 'mep_currency_position',
+							'label'   => __( 'Currency Position', 'mage-eventpress' ),
+							'desc'    => __( 'Where the symbol appears relative to the price.', 'mage-eventpress' ),
+							'type'    => 'select',
+							'default' => 'left',
+							'options' => array(
+								'left'        => __( 'Left — $99', 'mage-eventpress' ),
+								'right'       => __( 'Right — 99$', 'mage-eventpress' ),
+								'left_space'  => __( 'Left with space — $ 99', 'mage-eventpress' ),
+								'right_space' => __( 'Right with space — 99 $', 'mage-eventpress' ),
+							),
+						),
+						array(
+							'name'    => 'mep_currency_decimal_sep',
+							'label'   => __( 'Decimal Separator', 'mage-eventpress' ),
+							'desc'    => __( 'Character used as the decimal separator (e.g. . or ,).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '.',
+						),
+						array(
+							'name'    => 'mep_currency_thousand_sep',
+							'label'   => __( 'Thousands Separator', 'mage-eventpress' ),
+							'desc'    => __( 'Character used as the thousands separator (e.g. , or .). Leave blank for none.', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => ',',
+						),
+						array(
+							'name'    => 'mep_currency_num_decimals',
+							'label'   => __( 'Number of Decimals', 'mage-eventpress' ),
+							'desc'    => __( 'How many decimal places to show in prices (e.g. 2 → $9.99).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '2',
+						),
 					),
 				);
 

@@ -37,6 +37,9 @@
 				if ( MPWEM_Global_Function::has_woocommerce() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
+				} else {
+					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Native_Checkout.php';
+					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Booking_Confirmation.php';
 				}
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';
@@ -223,7 +226,13 @@
 					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
 				}
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
-				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mpwem_nonce' ) ) );
+				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array(
+					'url'             => admin_url( 'admin-ajax.php' ),
+					'nonce'           => wp_create_nonce( 'mpwem_nonce' ),
+					'has_woocommerce' => MPWEM_Global_Function::has_woocommerce() ? '1' : '0',
+					'native_nonce'    => wp_create_nonce( 'mep_native_checkout_nonce' ),
+					'is_logged_in'    => is_user_logged_in() ? '1' : '0',
+				) );
 				do_action( 'add_mpwem_frontend_script' );
 
 			}
@@ -237,11 +246,18 @@
 			}
 			public function js_constant() {
 				$has_woo = MPWEM_Global_Function::has_woocommerce();
-				$currency_symbol = $has_woo ? get_woocommerce_currency_symbol() : '$';
-				$currency_position = $has_woo ? get_option( 'woocommerce_currency_pos' ) : 'left';
-				$currency_decimal = $has_woo ? wc_get_price_decimal_separator() : '.';
-				$currency_thousands = $has_woo ? wc_get_price_thousand_separator() : ',';
-				$num_of_decimals = $has_woo ? get_option( 'woocommerce_price_num_decimals', 2 ) : 2;
+				$currency_symbol   = MPWEM_Global_Function::get_currency_symbol();
+				$currency_position = MPWEM_Global_Function::get_currency_position();
+				if ( $has_woo ) {
+					$currency_decimal  = wc_get_price_decimal_separator();
+					$currency_thousands = wc_get_price_thousand_separator();
+					$num_of_decimals   = get_option( 'woocommerce_price_num_decimals', 2 );
+				} else {
+					$native            = MPWEM_Global_Function::get_native_currency_settings();
+					$currency_decimal  = (string) $native['mep_currency_decimal_sep'];
+					$currency_thousands = (string) $native['mep_currency_thousand_sep'];
+					$num_of_decimals   = (int) $native['mep_currency_num_decimals'];
+				}
 				?>
                 <script type="text/javascript">
                     let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";

@@ -806,9 +806,9 @@ tr.payment_tabs_html { display: none !important; }
 								var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
 								$("tr.woocommerce-field, div.woocommerce-field, tr.no-woocommerce-field").hide();
 								
-								// Hide save button on Custom Payment tab
+								// Show save button on Custom Payment tab (needed for Booking Confirmation Page)
 								if (activeTabId === 'no-woocommerce-field') {
-									$('#payment_setting_sec .submit').hide();
+									$('#payment_setting_sec .submit').show();
 								} else {
 									$('#payment_setting_sec .submit').show();
 								}
@@ -2233,6 +2233,21 @@ tr.payment_tabs_html { display: none !important; }
         ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<span class="gateway-status ' . ($st_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($st_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>' : '' ) . '
         ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>' : '<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="' . esc_attr__("Available in Pro version", "mage-eventpress") . '">PRO</span>' ) . '
     </div>
+</div>
+
+<!-- Booking Confirmation Page -->
+<div style="margin-top:24px; padding-top:20px; border-top:1px solid #e2e4e7;">
+    <label style="display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#1d2327;">' . __( "Booking Confirmation Page", "mage-eventpress" ) . '</label>
+    <p style="margin:0 0 8px; font-size:12px; color:#6b7280;">' . __( "Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.", "mage-eventpress" ) . '</p>
+    ' . wp_dropdown_pages( array(
+        'name'              => 'payment_setting_sec[mep_confirmation_page_id]',
+        'id'                => 'mep_confirmation_page_id',
+        'selected'          => ( function() { $o = get_option( 'payment_setting_sec', array() ); return ! empty( $o['mep_confirmation_page_id'] ) ? absint( $o['mep_confirmation_page_id'] ) : 0; } )(),
+        'show_option_none'  => __( '— Use event page (default) —', 'mage-eventpress' ),
+        'option_none_value' => '0',
+        'style'             => 'width:100%; max-width:420px; margin-top:4px;',
+        'echo'              => 0,
+    ) ) . '
 </div>
 '
 							)

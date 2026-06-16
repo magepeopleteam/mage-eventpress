@@ -308,30 +308,31 @@
 												<?php endif; ?>
 											</div>
 										</div>
+
+											<!-- Booking Confirmation Page -->
+											<?php
+											$payment_opts    = get_option( 'payment_setting_sec', array() );
+											$confirm_page_id = ! empty( $payment_opts['mep_confirmation_page_id'] ) ? absint( $payment_opts['mep_confirmation_page_id'] ) : 0;
+											?>
+											<div style="margin-top:20px; padding-top:20px; border-top:1px solid #e2e4e7;">
+												<label style="display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#1d2327;">
+													<?php esc_html_e( 'Booking Confirmation Page', 'mage-eventpress' ); ?>
+												</label>
+												<p style="margin:0 0 8px; font-size:12px; color:#6b7280;">
+													<?php esc_html_e( 'Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.', 'mage-eventpress' ); ?>
+												</p>
+												<?php wp_dropdown_pages( array(
+													'name'              => 'mep_confirmation_page_id',
+													'id'                => 'mep_confirmation_page_id',
+													'selected'          => $confirm_page_id,
+													'show_option_none'  => __( '— Use event page (default) —', 'mage-eventpress' ),
+													'option_none_value' => '0',
+													'style'             => 'width:100%; max-width:420px;',
+												) ); ?>
+											</div>
 									</div>
 								</div>
 							</div>
-							<?php if ( mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' ) && ! class_exists( 'WooCommerce' ) ) :
-								$payment_opts    = get_option( 'payment_setting_sec', array() );
-								$confirm_page_id = ! empty( $payment_opts['mep_confirmation_page_id'] ) ? absint( $payment_opts['mep_confirmation_page_id'] ) : 0;
-							?>
-							<div style="padding:16px 25px; border-top:1px solid #e2e4e7;">
-								<label style="display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:#1d2327;">
-									<?php esc_html_e( 'Booking Confirmation Page', 'mage-eventpress' ); ?>
-								</label>
-								<p style="margin:0 0 8px; font-size:12px; color:#6b7280;">
-									<?php esc_html_e( 'Select the page that contains the [mep_booking_confirmation] shortcode. After a successful booking the customer will be redirected here instead of back to the event page.', 'mage-eventpress' ); ?>
-								</p>
-								<?php wp_dropdown_pages( array(
-									'name'              => 'mep_confirmation_page_id',
-									'id'                => 'mep_confirmation_page_id',
-									'selected'          => $confirm_page_id,
-									'show_option_none'  => __( '— Use event page (default) —', 'mage-eventpress' ),
-									'option_none_value' => '0',
-									'style'             => 'width:100%; max-width:420px;',
-								) ); ?>
-							</div>
-							<?php endif; ?>
 							<div style="padding:15px 25px; border-top:1px solid #e2e4e7; background:#f8f9fa; display:flex; justify-content:flex-end; gap:10px;">
 								<span id="mep-payment-save-status" style="display:none; align-items:center; color:#0f5132; margin-right:auto; font-size:14px;"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Saved! Reloading...', 'mage-eventpress' ); ?></span>
 								<button type="button" class="button button-secondary mep-close-payment-modal"><?php esc_html_e( 'Cancel', 'mage-eventpress' ); ?></button>

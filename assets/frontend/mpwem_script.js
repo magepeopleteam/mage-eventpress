@@ -1432,14 +1432,17 @@ jQuery(function ($) {
 
         // Collect attendee field values from the main registration form so they are
         // saved with the order even though the fields are not shown inside this modal.
+        // Only take the first occurrence of each field name (handles multi-ticket layouts
+        // where the same attendee form is cloned once per ticket row).
         var attendeeSnapshot = {};
         parent.find('[data-field-name][data-d-name]').each(function () {
             var $inp  = $(this);
             var fname = $inp.data('field-name');
-            var val   = $inp.is(':checkbox') ? ($inp.prop('checked') ? $inp.val() : '') : $.trim($inp.val());
-            if (fname) {
-                attendeeSnapshot[fname] = val;
+            if (!fname || attendeeSnapshot.hasOwnProperty(fname)) {
+                return; // skip duplicates from multi-ticket clones
             }
+            var val = $.trim($inp.val());
+            attendeeSnapshot[fname] = val;
         });
         $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeSnapshot));
 
@@ -1564,13 +1567,19 @@ jQuery(function ($) {
                         try { sessionStorage.removeItem(PENDING_BOOKING_PREFIX + eventId); } catch (e) {}
                     }
                     $msg.text(response.data.message).addClass('success').show();
-                    setTimeout(function () {
-                        if (response.data.redirect) {
-                            window.location.href = response.data.redirect;
-                        } else {
-                            $modal.fadeOut(300);
-                        }
-                    }, 1800);
+                    // Gateway redirect (PayPal, Stripe) — go immediately, no delay
+                    if (response.data.requires_redirect && response.data.redirect) {
+                        window.location.href = response.data.redirect;
+                    } else {
+                        // Free / offline — show success message then redirect to confirmation page
+                        setTimeout(function () {
+                            if (response.data.redirect) {
+                                window.location.href = response.data.redirect;
+                            } else {
+                                $modal.fadeOut(300);
+                            }
+                        }, 1800);
+                    }
                 } else {
                     var errMsg = (response.data && response.data.message)
                         ? response.data.message

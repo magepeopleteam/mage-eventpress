@@ -39,23 +39,30 @@
                                 <label><span class="_mr"><?php esc_html_e( 'Speaker Icon', 'mage-eventpress' ); ?></span></label>
 								<?php do_action( 'mpwem_input_add_icon', 'mep_event_speaker_icon', $speaker_icon ); ?>
                             </div>
-                            <span class="info_text">
-                                <?php esc_html_e( 'Please select Speakers. You can add new speakers from ', 'mage-eventpress' ); ?>
-                                    <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) ?>"><?php esc_html_e( 'here', 'mage-eventpress' ); ?></a>
-                            </span>
+                            <span class="info_text"><?php esc_html_e( 'Please select the icon that will be used for the speaker section heading.', 'mage-eventpress' ); ?></span>
                         </div>
                         <div class="_padding_bt">
-                            <label class="_justify_between_align_center_wrap ">
-                                <span class="_mr"><?php esc_html_e( 'Speaker Icon', 'mage-eventpress' ); ?></span>
-                                <select name="mep_event_speakers_list[]" id="" multiple>
-									<?php foreach ( $all_speakers as $value ) { ?>
-                                        <option value="<?php echo esc_attr( $value ); ?>" <?php echo in_array( $value, $speaker_lists ) ? 'selected' : ''; ?>>
-											<?php echo esc_html( get_the_title( $value ) ); ?>
-                                        </option>
-									<?php } ?>
-                                </select>
-                            </label>
-                            <span class="info_text"><?php esc_html_e( 'Please select the icon that will be used for the speaker icon.', 'mage-eventpress' ); ?></span>
+                            <div class="_justify_between_align_center_wrap mpwem-speaker-row">
+                                <span class="_mr"><?php esc_html_e( 'Select Speakers', 'mage-eventpress' ); ?></span>
+                                <div class="mpwem-speaker-select">
+                                    <?php if ( ! empty( $all_speakers ) ) : ?>
+                                        <div class="mpwem-speaker-select__grid">
+                                            <?php foreach ( $all_speakers as $value ) : $checked = in_array( $value, $speaker_lists ); ?>
+                                                <label class="mpwem-speaker-option<?php echo $checked ? ' is-selected' : ''; ?>">
+                                                    <input type="checkbox" name="mep_event_speakers_list[]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $checked, true ); ?> />
+                                                    <span class="mpwem-speaker-option__name"><?php echo esc_html( get_the_title( $value ) ); ?></span>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else : ?>
+                                        <p class="mpwem-speaker-select__empty"><?php esc_html_e( 'No speakers found.', 'mage-eventpress' ); ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <span class="info_text">
+                                <?php esc_html_e( 'Tick a speaker to select/deselect. Add new speakers from ', 'mage-eventpress' ); ?>
+                                <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=mep_event_speaker' ) ) ?>" target="_blank"><?php esc_html_e( 'here', 'mage-eventpress' ); ?></a>
+                            </span>
                         </div>
                     </div>
                 </div>

@@ -613,7 +613,7 @@
 									<?php echo esc_html__('Ending Soon','mage-eventpress'); ?>
 								</div>
 								<?php
-							}elseif ($available_seat <10) {
+							}elseif ($available_seat > 0 && $available_seat < 10) {
 								?>
 								<div class="mpwem_get_status">
 									<i class="mi mi-shopping-cart"></i>

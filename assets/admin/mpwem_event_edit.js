@@ -399,6 +399,7 @@
             }
         });
         mountPanel($root, '#mp_event_venue', 'mpwem_wizard_venue_mount');
+        mountPanel($root, '#mpwem_speaker_settings', 'mpwem_wizard_speaker_mount');
         
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
@@ -493,7 +494,7 @@
                 const $p = $(this);
                 const id = $p.data('tab-item') || ('#' + this.id);
                 // Don't move if it's a step panel or already handled
-                if (stepPanelSelectors.indexOf(id) !== -1 || id === '#mp_event_venue' || id === '#ttbm_settings_gallery' || id === '#mpwem_event_settings' || $p.hasClass('mpwem-wizard-panel')) {
+                if (stepPanelSelectors.indexOf(id) !== -1 || id === '#mp_event_venue' || id === '#ttbm_settings_gallery' || id === '#mpwem_event_settings' || id === '#mpwem_speaker_settings' || $p.hasClass('mpwem-wizard-panel')) {
                     return;
                 }
 

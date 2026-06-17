@@ -2219,6 +2219,16 @@ tr.payment_tabs_html { display: none !important; }
 								'class'   => 'woocommerce-field'
 							),
 							array(
+								'name'     => 'mep_wc_payment_gateways_manager',
+								'label'    => '',
+								'class'    => 'woocommerce-field',
+								'callback' => function() {
+									if ( class_exists( 'WooCommerce' ) && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
+										MPWEM_WC_Payment_Manager::instance()->render();
+									}
+								},
+							),
+							array(
 								'name'    => 'payment_gateways_ui',
 								'type'    => 'html',
 								'class'   => 'no-woocommerce-field payment-gateways-container',

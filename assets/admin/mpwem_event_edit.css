@@ -11206,3 +11206,118 @@ code {
         padding: 20px 12px;
     }
 }
+
+/* ============================================================
+   Speaker Settings — Select Speakers (compact, borderless, right-aligned)
+   ============================================================ */
+/* Keep the label at the top-left while the speaker list sits on the right,
+   matching the other rows (label left / control right) in both editors. */
+.mpwem-speaker-row {
+    align-items: flex-start;
+}
+
+.mpwem-speaker-row > ._mr {
+    padding-top: 4px;
+}
+
+.mpwem-speaker-select {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 72%;
+}
+
+.mpwem-speaker-select__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px 22px;
+}
+
+.mpwem-speaker-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--mpwem-text);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Fully custom checkbox so the check renders identically in BOTH the
+   classic and the modern (wizard) editor — no reliance on the browser's
+   native control or accent-color, which differ across the two contexts. */
+.mpwem-speaker-option input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    position: relative;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 2px solid #94a3b8 !important;
+    border-radius: 4px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+
+/* Neutralise WordPress core's own checkmark so it never doubles up. */
+.mpwem-speaker-option input[type="checkbox"]::before {
+    content: "" !important;
+    display: none !important;
+}
+
+.mpwem-speaker-option input[type="checkbox"]:checked {
+    background: var(--mpwem-primary) !important;
+    border-color: var(--mpwem-primary) !important;
+}
+
+/* Our own checkmark, drawn for every browser. */
+.mpwem-speaker-option input[type="checkbox"]::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+.mpwem-speaker-option input[type="checkbox"]:checked::after {
+    opacity: 1;
+}
+
+.mpwem-speaker-option__name {
+    font-weight: 500;
+}
+
+.mpwem-speaker-option:hover .mpwem-speaker-option__name {
+    color: var(--mpwem-primary);
+}
+
+/* Selected feedback (live via :checked, also server-rendered class) */
+.mpwem-speaker-option.is-selected .mpwem-speaker-option__name,
+.mpwem-speaker-option:has(input[type="checkbox"]:checked) .mpwem-speaker-option__name {
+    color: var(--mpwem-primary);
+    font-weight: 600;
+}
+
+.mpwem-speaker-select__empty {
+    margin: 0;
+    color: var(--mpwem-muted);
+    font-size: 13px;
+    font-style: italic;
+}

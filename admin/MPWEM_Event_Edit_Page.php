@@ -1211,6 +1211,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$event_infos = $post_id ? MPWEM_Functions::get_all_info($post_id) : [];
 
+			$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+			$speaker_status = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+
 			$back_to_list = admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=mep_event_lists');
 			$screen_title = $post_id && $post ? $post->post_title : __('Create Event', 'mage-eventpress');
 			if ($post_id && '' === trim((string) $screen_title)) {
@@ -1447,6 +1450,17 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-panel-mount" id="mpwem_wizard_venue_mount"></div>
 														</div>
 													</div>
+													<?php if ($speaker_status === 'yes') : ?>
+													<div class="mpwem-card" id="mpwem_wizard_speaker_card">
+														<div class="mpwem-card__head">
+															<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
+															<p><?php esc_html_e('Select speakers for this event.', 'mage-eventpress'); ?></p>
+														</div>
+														<div class="mpwem-card__body">
+															<div class="mpwem-panel-mount" id="mpwem_wizard_speaker_mount"></div>
+														</div>
+													</div>
+													<?php endif; ?>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
 													<?php

@@ -1533,9 +1533,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<?php 
 																$current_mode = get_post_meta($post_id, 'mep_reg_status', true);
 																if (empty($current_mode)) {
-																	$current_mode = MPWEM_Global_Function::has_woocommerce() ? 'on' : 'off';
+																	$current_mode = ( method_exists( 'MPWEM_Global_Function', 'has_woocommerce' ) ? MPWEM_Global_Function::has_woocommerce() : ( class_exists( 'WooCommerce' ) || function_exists( 'WC' ) ) ) ? 'on' : 'off';
 																}
-																$has_woo = MPWEM_Global_Function::has_woocommerce();
+																// Defensive: a stale deploy, OPcache, or an add-on class collision can leave
+																	// MPWEM_Global_Function::has_woocommerce() undefined. Fall back to a direct
+																	// WooCommerce check so this admin screen renders instead of throwing a fatal.
+																	$has_woo = method_exists( 'MPWEM_Global_Function', 'has_woocommerce' ) ? MPWEM_Global_Function::has_woocommerce() : ( class_exists( 'WooCommerce' ) || function_exists( 'WC' ) );
 																?>
 																<input type="hidden" name="mep_reg_status" id="mep_reg_status" value="<?php echo esc_attr($current_mode); ?>" />
 																

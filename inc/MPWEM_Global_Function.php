@@ -22,7 +22,7 @@
 
 				foreach ( $dates as $date ) {
 					// Normalise: accept both flat 'Y-m-d' strings and the assoc
-					// shape ['time' => '...', 'end' => '...'] produced by
+					// shape ['time' => ..., 'end' => ...] produced by
 					// get_all_dates() / get_dates() for the 'no'/'yes' branches.
 					if ( is_array( $date ) ) {
 						$candidate = isset( $date['time'] ) ? $date['time'] : ( isset( $date['start_date'] ) ? $date['start_date'] : '' );
@@ -40,46 +40,37 @@
 				}
 
 				// minDate / maxDate from the available list (already off-date /
-				// off-day / special-date filtered by get_all_dates() / get_dates()).
-				// Clamp minDate to today so past dates are never selectable even
-				// when the earliest event date is in the past.
-				$today_y = (int) date( 'Y' );
-				$today_m = (int) date( 'n' ) - 1;
-				$today_d = (int) date( 'j' );
+				// off-day / special-date filtered). Clamp minDate to today so past
+				// dates are never selectable even when the earliest event date is
+				// in the past.
+				$first_ts = strtotime( $available_dates[0] );
+				$last_ts  = strtotime( end( $available_dates ) );
+				$today_ts = strtotime( date( 'Y-m-d' ) );
 
-				$first_y = (int) date( 'Y', strtotime( $available_dates[0] ) );
-				$first_m = (int) date( 'n', strtotime( $available_dates[0] ) ) - 1;
-				$first_d = (int) date( 'j', strtotime( $available_dates[0] ) );
+				$min_ts = $first_ts >= $today_ts ? $first_ts : $today_ts;
 
-				$last_y = (int) date( 'Y', strtotime( end( $available_dates ) ) );
-				$last_m = (int) date( 'n', strtotime( end( $available_dates ) ) ) - 1;
-				$last_d = (int) date( 'j', strtotime( end( $available_dates ) ) );
-
-				$first_ts = mktime( $first_m + 1, 0, 0, $first_m + 1, $first_d, $first_y );
-				$today_ts = mktime( 0, 0, 0, $today_m + 1, $today_d, $today_y );
-
-				$min_y = $first_ts >= $today_ts ? $first_y : $today_y;
-				$min_m = $first_ts >= $today_ts ? $first_m : $today_m;
-				$min_d = $first_ts >= $today_ts ? $first_d : $today_d;
-
-				wp_localize_script(
-					'jquery-ui-datepicker',
-					'mpwemDateData',
-					array(
-						'selector'       => $selector,
-						'availableDates' => $available_dates,
-						'minDate'        => array(
-							'year'  => $min_y,
-							'month' => $min_m,
-							'day'   => $min_d,
-						),
-						'maxDate'        => array(
-							'year'  => $last_y,
-							'month' => $last_m,
-							'day'   => $last_d,
-						),
-					)
+				$data = array(
+					'selector'       => $selector,
+					'availableDates' => array_values( array_unique( $available_dates ) ),
+					'minDate'        => array(
+						'year'  => (int) date( 'Y', $min_ts ),
+						'month' => (int) date( 'n', $min_ts ) - 1,
+						'day'   => (int) date( 'j', $min_ts ),
+					),
+					'maxDate'        => array(
+						'year'  => (int) date( 'Y', $last_ts ),
+						'month' => (int) date( 'n', $last_ts ) - 1,
+						'day'   => (int) date( 'j', $last_ts ),
+					),
 				);
+
+				// Inline <script> rather than wp_localize_script so the global is
+				// updated on every popup AJAX render, not just once per page load.
+				// The admin picker (mpwem_admin.js) and the frontend picker
+				// (mpwem_script.js) both read window.mpwemDateData — they share
+				// the same beforeShowDay filter via the inline initialiser in
+				// MPWEM_Global_Function::init_mpwem_date_picker().
+				echo '<script>window.mpwemDateData = ' . wp_json_encode( $data ) . ';</script>';
 			}			
 			public function date_picker_js( $selector, $dates ) {
 				if ( is_array( $dates ) && sizeof( $dates ) > 0 ) {

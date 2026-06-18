@@ -91,6 +91,48 @@ function mpwem_page_scroll_to(target) {
     }, 1000);
 }
 //====================================================Load Date picker==============//
+// Shared picker options used by both the public ticket-booking page
+// (mpwem_script.js reads window.mpwemDateData) and the admin popup
+// (this file). The data is emitted as <script>window.mpwemDateData =
+// {...}</script> inline by MPWEM_Global_Function::enqueue_date_picker()
+// on every popup AJAX render, so opening popup A then popup B always
+// reuses popup B's restrictions.
+function mpwem_date_picker_options() {
+    var data = (typeof window.mpwemDateData !== 'undefined') ? window.mpwemDateData : null;
+    var availableDates = (data && Array.isArray(data.availableDates)) ? data.availableDates : [];
+    var opts = {
+        dateFormat: mpwem_date_format,
+        //showButtonPanel: true,
+        minDate: new Date(),
+        autoSize: true,
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '1900:' + (new Date().getFullYear() + 10), // from 1900 to 10 years ahead
+        onSelect: function (dateString, data) {
+            var date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
+            jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
+        },
+    };
+    if (data && data.minDate && typeof data.minDate.year === 'number') {
+        opts.minDate = new window.Date(data.minDate.year, data.minDate.month, data.minDate.day);
+    }
+    if (data && data.maxDate && typeof data.maxDate.year === 'number') {
+        opts.maxDate = new window.Date(data.maxDate.year, data.maxDate.month, data.maxDate.day);
+    }
+    if (availableDates.length > 0) {
+        opts.beforeShowDay = function (date) {
+            var d = date.getDate();
+            var m = date.getMonth() + 1;
+            var y = date.getFullYear();
+            var dmy = d + '-' + m + '-' + y;
+            if (jQuery.inArray(dmy, availableDates) !== -1) {
+                return [true, "", "Available"];
+            }
+            return [false, "", "Unavailable"];
+        };
+    }
+    return opts;
+}
 function mpwem_load_date_picker(parent = jQuery('.mpwem_style')) {
     parent.find(".date_type.hasDatepicker").each(function () {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
@@ -123,78 +165,7 @@ function mpwem_load_date_picker(parent = jQuery('.mpwem_style')) {
     parent.find(".new-date_type.hasDatepicker").each(function () {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();
     }).promise().done(function () {
-        parent.find(".new-date_type").each(function () {
-            var $input = jQuery(this);
-            // Per-instance data takes precedence: each popup keeps its own
-            // off-date / off-day / special-date filtered list. Falls back to
-            // the global mpwemDateData registered by enqueue_date_picker.
-            // jQuery's .data() auto-parses JSON in data-* attributes, so the
-            // value may already be an array (object) rather than a string.
-            var inst = $input.data('mpwemAvailableDates');
-            var useInstance = false;
-            var instanceDates = [];
-            if (inst && Object.prototype.toString.call(inst) === '[object Array]' && inst.length > 0) {
-                instanceDates = inst;
-                useInstance = true;
-            } else if (typeof inst === 'string' && inst.length > 0) {
-                try { instanceDates = JSON.parse(inst); } catch (e) { instanceDates = []; }
-                if (Object.prototype.toString.call(instanceDates) === '[object Array]' && instanceDates.length > 0) {
-                    useInstance = true;
-                }
-            }
-            var useGlobal = !useInstance
-                && (typeof mpwemDateData !== 'undefined')
-                && mpwemDateData
-                && Array.isArray(mpwemDateData.availableDates)
-                && mpwemDateData.availableDates.length > 0;
-            var availableDates = useInstance ? instanceDates : (useGlobal ? mpwemDateData.availableDates : []);
-            var minData = null, maxData = null;
-            if (useInstance) {
-                var iy = parseInt($input.data('mpwemMinYear'), 10);
-                var im = parseInt($input.data('mpwemMinMonth'), 10);
-                var id_ = parseInt($input.data('mpwemMinDay'), 10);
-                var ay = parseInt($input.data('mpwemMaxYear'), 10);
-                var am = parseInt($input.data('mpwemMaxMonth'), 10);
-                var ad = parseInt($input.data('mpwemMaxDay'), 10);
-                if (!isNaN(iy) && !isNaN(im) && !isNaN(id_)) { minData = { year: iy, month: im, day: id_ }; }
-                if (!isNaN(ay) && !isNaN(am) && !isNaN(ad)) { maxData = { year: ay, month: am, day: ad }; }
-            } else if (useGlobal) {
-                minData = mpwemDateData.minData || mpwemDateData.minDate || null;
-                maxData = mpwemDateData.maxData || mpwemDateData.maxDate || null;
-            }
-            var pickerOptions = {
-                dateFormat: mpwem_date_format,
-                //showButtonPanel: true,
-                minDate: new Date(),
-                autoSize: true,
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '1900:' + (new Date().getFullYear() + 10), // from 1900 to 10 years ahead
-                onSelect: function (dateString, data) {
-                    var date = data.selectedYear + '-' + ('0' + (parseInt(data.selectedMonth) + 1)).slice(-2) + '-' + ('0' + parseInt(data.selectedDay)).slice(-2);
-                    jQuery(this).closest('label').find('input[type="hidden"]').val(date).trigger('change');
-                },
-            };
-            if (minData && typeof minData.year === 'number') {
-                pickerOptions.minDate = new window.Date(minData.year, minData.month, minData.day);
-            }
-            if (maxData && typeof maxData.year === 'number') {
-                pickerOptions.maxDate = new window.Date(maxData.year, maxData.month, maxData.day);
-            }
-            if (availableDates.length > 0) {
-                pickerOptions.beforeShowDay = function (date) {
-                    var d = date.getDate();
-                    var m = date.getMonth() + 1;
-                    var y = date.getFullYear();
-                    var dmy = d + '-' + m + '-' + y;
-                    if (jQuery.inArray(dmy, availableDates) !== -1) {
-                        return [true, "", "Available"];
-                    }
-                    return [false, "", "Unavailable"];
-                };
-            }
-            $input.datepicker(pickerOptions);
-        });
+        parent.find(".new-date_type").datepicker(mpwem_date_picker_options());
     });
     parent.find(".new-particular-date_type.hasDatepicker").each(function () {
         jQuery(this).removeClass('hasDatepicker').attr('id', '').removeData('datepicker').unbind();

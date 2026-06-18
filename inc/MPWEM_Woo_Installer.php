@@ -22,6 +22,8 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 		public function __construct() {
 			// On admin_init, check if our plugin was just activated (for redirect)
 			add_action( 'admin_init', array( $this, 'handle_activation_redirect' ) );
+			// Reset a previous dismissal once WooCommerce is active again
+			add_action( 'admin_init', array( $this, 'maybe_reset_dismissal' ) );
 			// Enqueue popup assets on all admin pages (only outputs if WooCommerce is missing)
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			// Render the popup markup in admin footer
@@ -80,12 +82,52 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 
 		/**
 		 * Should we show the popup on this page load?
-		 * Always show when WooCommerce is not active and our plugin is active.
+		 *
+		 * Shown when the current user can manage plugins and WooCommerce is not
+		 * active, so they are prompted to install/activate it. The per-user
+		 * dismissal (the × button) hides it; maybe_reset_dismissal() clears that
+		 * flag once WooCommerce is active again, so the prompt returns the next
+		 * time WooCommerce is deactivated rather than staying hidden forever.
 		 *
 		 * @return bool
 		 */
 		private function should_show_popup() {
-			return false; // Disabled by user request
+			// Only users who could actually act on the prompt.
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return false;
+			}
+
+			// WooCommerce already active → nothing to prompt.
+			if ( $this->is_woo_active() ) {
+				return false;
+			}
+
+			// User chose to hide it for now.
+			if ( get_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed', true ) ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
+		 * Clear the per-user popup dismissal once WooCommerce is active again,
+		 * so the prompt reappears the next time WooCommerce is deactivated
+		 * instead of staying hidden permanently after a single dismissal.
+		 *
+		 * @return void
+		 */
+		public function maybe_reset_dismissal() {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+
+			if (
+				$this->is_woo_active()
+				&& get_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed', true )
+			) {
+				delete_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed' );
+			}
 		}
 
 		/**

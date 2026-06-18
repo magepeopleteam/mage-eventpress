@@ -32,6 +32,14 @@
 		if (!anchor || anchor.tagName !== 'A') {
 			return false;
 		}
+		// Never intercept links inside the Appsero feedback survey (its
+		// "Skip & Deactivate" link's href is the real deactivate URL, so it
+		// would otherwise match below and loop us back to our own modal). Once
+		// the user is in that survey they have already passed through our modal;
+		// the link must navigate straight to the deactivate URL.
+		if (anchor.closest('.wd-dr-modal')) {
+			return false;
+		}
 		var href = anchor.getAttribute('href') || '';
 		if (href.indexOf('action=deactivate') === -1) {
 			return false;

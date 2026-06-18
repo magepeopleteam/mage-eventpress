@@ -868,6 +868,9 @@ tr.payment_tabs_html { display: none !important; }
 				}
 
 				$payment_settings = get_option( 'payment_setting_sec', array() );
+				if ( ! is_array( $payment_settings ) ) {
+					$payment_settings = array();
+				}
 				$payment_settings['mep_enable_wc_payment'] = isset( $_POST['mep_enable_wc_payment'] ) ? sanitize_text_field( $_POST['mep_enable_wc_payment'] ) : 'off';
 				$payment_settings['mep_paypal_enable'] = isset( $_POST['mep_paypal_enable'] ) ? sanitize_text_field( $_POST['mep_paypal_enable'] ) : 'off';
 				$payment_settings['mep_stripe_enable'] = isset( $_POST['mep_stripe_enable'] ) ? sanitize_text_field( $_POST['mep_stripe_enable'] ) : 'off';

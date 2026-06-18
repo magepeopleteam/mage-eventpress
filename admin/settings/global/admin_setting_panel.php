@@ -782,6 +782,59 @@ tr.payment_tabs_html { display: none !important; }
 .gateway-card.stripe-card input[type="text"]:focus, .gateway-card.stripe-card input[type="password"]:focus { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 0 1px #fff; }
 </style>
 
+				<style> /* Payment settings accordions (WooCommerce sub-tab) */
+					tr.mep-acc-header > td.mep-acc-header-cell {
+						padding: 0 !important;
+					}
+					tr.mep-acc-header .mep-acc-bar {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						gap: 10px;
+						cursor: pointer;
+						user-select: none;
+						background: #f6f7f7;
+						border: 1px solid #dcdcde;
+						border-radius: 8px;
+						padding: 12px 16px;
+						margin: 14px 0 4px;
+						transition: background 0.2s ease, border-color 0.2s ease;
+					}
+					tr.mep-acc-header .mep-acc-bar:hover {
+						background: #f0f0f1;
+						border-color: #c3c4c7;
+					}
+					tr.mep-acc-header.open .mep-acc-bar {
+						background: #eef5fb;
+						border-color: #2271b1;
+					}
+					tr.mep-acc-header .mep-acc-title {
+						display: flex;
+						align-items: center;
+						gap: 8px;
+						font-size: 14px;
+						font-weight: 600;
+						color: #1d2327;
+						margin: 0;
+					}
+					tr.mep-acc-header.open .mep-acc-title {
+						color: #2271b1;
+					}
+					tr.mep-acc-header .mep-acc-arrow {
+						transition: transform 0.2s ease;
+						color: #50575e;
+						line-height: 1;
+					}
+					tr.mep-acc-header.open .mep-acc-arrow {
+						transform: rotate(180deg);
+						color: #2271b1;
+					}
+					/* The accordion header already shows this title; avoid duplicating it
+					   inside the manager. Keep the bar (it holds the "Open in WooCommerce" link). */
+					tr.wc-payment-methods-field .mep-wc-pm-heading { display: none; }
+					tr.wc-payment-methods-field .mep-wc-payment-manager { margin-top: 4px; padding: 10px }
+				</style>
+
 				<script>
 					jQuery(document).ready(function($) {
 						var wc_active = <?php echo MPWEM_Global_Function::has_woocommerce() ? 'true' : 'false'; ?>;
@@ -795,12 +848,76 @@ tr.payment_tabs_html { display: none !important; }
 								var isChecked = $('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').is(':checked');
 								var $wcFields = $('tr.woocommerce-field').not('tr.woocommerce-main-toggle');
 								if (isChecked) {
-									$wcFields.fadeIn(200);
+									$wcFields.stop(true, true).fadeIn(200);
+									refreshAccordions();
 								} else {
 									$wcFields.hide();
 								}
 							}
-							
+
+							// --- WooCommerce sub-tab accordions: Payment Methods (open) + Additional Settings (collapsed) ---
+							var $methodsRows    = $('tr.wc-payment-methods-field');
+							var $additionalRows = $('tr.wc-additional-field');
+							var $methodsHeader  = $();
+							var $additionalHeader = $();
+
+							function buildAccordionHeader(extraClass, title, isOpen) {
+								return $(
+									'<tr class="woocommerce-field mep-acc-header ' + extraClass + (isOpen ? ' open' : '') + '">' +
+										'<td colspan="2" class="mep-acc-header-cell">' +
+											'<div class="mep-acc-bar">' +
+												'<span class="mep-acc-title">' + title + '</span>' +
+												'<span class="mep-acc-arrow dashicons dashicons-arrow-down-alt2"></span>' +
+											'</div>' +
+										'</td>' +
+									'</tr>'
+								);
+							}
+
+							function refreshAccordions() {
+								if ( ! $methodsHeader.length ) { return; }
+								if ( $methodsHeader.hasClass('open') ) { $methodsRows.show(); } else { $methodsRows.hide(); }
+								if ( $additionalHeader.hasClass('open') ) { $additionalRows.show(); } else { $additionalRows.hide(); }
+							}
+
+							if ( $methodsRows.length || $additionalRows.length ) {
+								var $toggleRow = $('tr.woocommerce-main-toggle');
+								$methodsHeader    = buildAccordionHeader('mep-acc-methods', '<?php echo esc_js( __( 'WooCommerce Payment Methods', 'mage-eventpress' ) ); ?>', true);
+								$additionalHeader = buildAccordionHeader('mep-acc-additional', '<?php echo esc_js( __( 'Additional Settings', 'mage-eventpress' ) ); ?>', false);
+
+								// Make the payment-methods row span the full table width. Without this,
+								// its hidden <th> + width:100% <td> distort the shared column widths and
+								// squeeze sibling rows (e.g. the Enable toggle above). colspan=2 spans both
+								// columns cleanly — same pattern as the accordion header bars.
+								$methodsRows.each(function () {
+									var $r = $(this);
+									$r.children('th').remove();
+									$r.children('td').attr('colspan', 2);
+								});
+
+								// Re-order: toggle -> [Payment Methods header + rows] -> [Additional Settings header + rows]
+								$methodsRows.detach();
+								$additionalRows.detach();
+								$toggleRow.after($methodsHeader);
+								$methodsHeader.after($methodsRows);
+								$methodsRows.last().after($additionalHeader);
+								$additionalHeader.after($additionalRows);
+
+								// Exclusive toggle: opening one closes the other; only one ever expanded.
+								$methodsHeader.find('.mep-acc-bar').on('click', function() {
+									var willOpen = ! $methodsHeader.hasClass('open');
+									$methodsHeader.toggleClass('open', willOpen);
+									if ( willOpen ) { $additionalHeader.removeClass('open'); }
+									refreshAccordions();
+								});
+								$additionalHeader.find('.mep-acc-bar').on('click', function() {
+									var willOpen = ! $additionalHeader.hasClass('open');
+									$additionalHeader.toggleClass('open', willOpen);
+									if ( willOpen ) { $methodsHeader.removeClass('open'); }
+									refreshAccordions();
+								});
+							}
+
 							$('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').on('change', toggleWcSettings);
 							function updateTabs() {
 								var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
@@ -962,6 +1079,11 @@ tr.payment_tabs_html { display: none !important; }
 				// Preserve PayPal/Stripe keys when the Settings API saves payment_setting_sec.
 				// Those fields are managed via their own AJAX modals and are never part of
 				// the settings form, so without this they get wiped on every "Save Changes".
+				//
+				// IMPORTANT: only restore a key when it is ABSENT from the incoming value.
+				// admin-ajax.php fires admin_init (and thus this filter) before the ajax
+				// action runs, so the gateway modals' own save (which DOES include these
+				// keys with new values) must not be clobbered back to the old values.
 				add_filter( 'pre_update_option_payment_setting_sec', function( $new_value, $old_value ) {
 					$protected_keys = array(
 						'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret',
@@ -969,8 +1091,11 @@ tr.payment_tabs_html { display: none !important; }
 						'mep_stripe_test_pub', 'mep_stripe_test_sec',
 						'mep_stripe_live_pub', 'mep_stripe_live_sec',
 					);
+					if ( ! is_array( $new_value ) ) {
+						return $new_value;
+					}
 					foreach ( $protected_keys as $key ) {
-						if ( isset( $old_value[ $key ] ) ) {
+						if ( ! isset( $new_value[ $key ] ) && isset( $old_value[ $key ] ) ) {
 							$new_value[ $key ] = $old_value[ $key ];
 						}
 					}
@@ -2174,7 +2299,7 @@ tr.payment_tabs_html { display: none !important; }
 									'cart'     => __( 'Cart', 'mage-eventpress' ),
 									'checkout' => __( 'Checkout', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_after_order_redirect',
@@ -2186,7 +2311,7 @@ tr.payment_tabs_html { display: none !important; }
 									'plugin_thankyou' => __( 'Plugin Thank You Page', 'mage-eventpress' ),
 									'woo_thankyou'    => __( 'WooCommerce Thank You Page', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_require_login',
@@ -2194,7 +2319,7 @@ tr.payment_tabs_html { display: none !important; }
 								'desc'    => __( 'Require login to purchase event tickets.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_show_billing_info',
@@ -2202,7 +2327,7 @@ tr.payment_tabs_html { display: none !important; }
 								'desc'    => __( 'Show billing info on WooCommerce checkout page.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_confirm_ticket_status',
@@ -2216,12 +2341,12 @@ tr.payment_tabs_html { display: none !important; }
 									'on-hold'    => __( 'On hold', 'mage-eventpress' ),
 									'completed'  => __( 'Completed', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'     => 'mep_wc_payment_gateways_manager',
 								'label'    => '',
-								'class'    => 'woocommerce-field',
+								'class'    => 'woocommerce-field wc-payment-methods-field',
 								'callback' => function() {
 									if ( class_exists( 'WooCommerce' ) && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
 										MPWEM_WC_Payment_Manager::instance()->render();

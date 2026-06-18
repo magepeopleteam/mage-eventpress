@@ -20,23 +20,17 @@
 		}
 
 		// -----------------------------------------------------------
-		// Break out of the WP settings form-table cell so the manager
-		// spans full content width. Move it to be a direct child of the
-		// form (outside the table). Tag with `woocommerce-field` so the
-		// existing payment-tab show/hide logic still manages visibility.
+		// Keep the manager inside its settings-table row so the
+		// "WooCommerce Payment Methods" accordion (built by the payment
+		// settings panel) can group it. Full width is handled by the CSS
+		// `:has()` fallback that hides the empty label cell and widens the
+		// content cell — no DOM break-out needed. We still tag the row with
+		// `woocommerce-field` so the existing payment-tab show/hide logic
+		// continues to manage its visibility.
 		// -----------------------------------------------------------
 		if ( ! $manager.data( 'mep-relocated' ) ) {
-			var $row = $manager.closest( 'tr' );
-			var $formTable = $manager.closest( 'table.form-table' );
-			var $target = $formTable.length ? $formTable : $row;
-
-			$manager.addClass( 'woocommerce-field' ).data( 'mep-relocated', true );
-			if ( $target.length ) {
-				$manager.insertAfter( $target );
-			}
-			if ( $row.length ) {
-				$row.remove();
-			}
+			$manager.closest( 'tr' ).addClass( 'woocommerce-field' );
+			$manager.data( 'mep-relocated', true );
 		}
 
 		// -----------------------------------------------------------

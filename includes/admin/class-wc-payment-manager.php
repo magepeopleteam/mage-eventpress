@@ -38,7 +38,15 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 		// ---------------------------------------------------------------
 
 		public function enqueue_assets( string $hook ): void {
-			if ( $hook !== 'mep_events_page_mep_event_settings_page' ) {
+			unset( $hook );
+
+			// Load on the Global Payment Settings page AND the event edit screens
+			// (classic post editor + the custom event edit page), since the same
+			// WooCommerce Payment Methods manager is reused inside the event-level
+			// Payment Configuration modal.
+			$screen  = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+			$allowed = array( 'mep_events_page_mep_event_settings_page', 'mep_events', 'mep_events_page_mpwem_event_edit' );
+			if ( ! $screen || ! in_array( $screen->id, $allowed, true ) ) {
 				return;
 			}
 

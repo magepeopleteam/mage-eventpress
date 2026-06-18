@@ -109,18 +109,65 @@
                             </label>
 							<?php
 						}
-					} else {
-						$date         = MPWEM_Functions::get_upcoming_date_time( $event_id );
-						$date_format  = MPWEM_Global_Function::date_picker_format();
-						$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
-						$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
-						$display_time = get_post_meta( $event_id, 'mep_disable_ticket_time', true );
-						$display_time = $display_time ?: 'no';
-						?>
+} else {
+					$date         = MPWEM_Functions::get_upcoming_date_time( $event_id );
+					$date_format  = MPWEM_Global_Function::date_picker_format();
+					$now          = date_i18n( $date_format, strtotime( current_time( 'Y-m-d' ) ) );
+					$all_times    = $all_times ?? MPWEM_Functions::get_times( $event_id, $all_dates, $date );
+					$display_time = get_post_meta( $event_id, 'mep_disable_ticket_time', true );
+					$display_time = $display_time ?: 'no';
+
+					// Per-instance available dates (off-date / off-day / special-date
+					// filtering already done in get_all_dates() / get_dates()). Each
+					// picker instance keeps its own data so opening the popup on a
+					// second event never reuses the first event's restrictions.
+					$_mep_dmy = [];
+					if ( is_array( $all_dates ) ) {
+						foreach ( $all_dates as $_mep_d ) {
+							$_mep_t = is_array( $_mep_d ) && isset( $_mep_d['time'] ) ? $_mep_d['time'] : ( is_array( $_mep_d ) && isset( $_mep_d['start_date'] ) ? $_mep_d['start_date'] : ( is_string( $_mep_d ) ? $_mep_d : '' ) );
+							if ( $_mep_t ) {
+								$_mep_dmy[] = date( 'j-n-Y', strtotime( $_mep_t ) );
+							}
+						}
+					}
+					$_mep_dmy_json = $_mep_dmy ? wp_json_encode( array_values( array_unique( $_mep_dmy ) ) ) : '';
+					$_mep_today_y  = (int) date( 'Y' );
+					$_mep_today_m  = (int) date( 'n' ) - 1;
+					$_mep_today_d  = (int) date( 'j' );
+					$_mep_first_y  = $_mep_today_y;
+					$_mep_first_m  = $_mep_today_m;
+					$_mep_first_d  = $_mep_today_d;
+					$_mep_last_y   = $_mep_today_y + 1;
+					$_mep_last_m   = $_mep_today_m;
+					$_mep_last_d   = $_mep_today_d;
+					if ( $_mep_dmy ) {
+						$_mep_first_ts = strtotime( date( 'Y-n-j', strtotime( str_replace( '-', '-', $_mep_dmy[0] ) ) ) );
+						$_mep_last_ts  = strtotime( date( 'Y-n-j', strtotime( str_replace( '-', '-', end( $_mep_dmy ) ) ) ) );
+						$_mep_today_ts = strtotime( date( 'Y-n-j' ) );
+						if ( $_mep_first_ts && $_mep_first_ts >= $_mep_today_ts ) {
+							$_mep_first_y = (int) date( 'Y', $_mep_first_ts );
+							$_mep_first_m = (int) date( 'n', $_mep_first_ts ) - 1;
+							$_mep_first_d = (int) date( 'j', $_mep_first_ts );
+						}
+						if ( $_mep_last_ts ) {
+							$_mep_last_y = (int) date( 'Y', $_mep_last_ts );
+							$_mep_last_m = (int) date( 'n', $_mep_last_ts ) - 1;
+							$_mep_last_d = (int) date( 'j', $_mep_last_ts );
+						}
+					}
+					?>
                         <div class="_dFlex">
                             <label>
                                 <input type="hidden" name="mpwem_date_time" value="" required/>
-                                <input id="mpwem_date_time" type="text" value="" class="new-date_type formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
+                                <input id="mpwem_date_time" type="text" value="" class="new-date_type formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required
+                                    data-mpwem-available-dates='<?php echo esc_attr( $_mep_dmy_json ); ?>'
+                                    data-mpwem-min-year="<?php echo esc_attr( (string) $_mep_first_y ); ?>"
+                                    data-mpwem-min-month="<?php echo esc_attr( (string) $_mep_first_m ); ?>"
+                                    data-mpwem-min-day="<?php echo esc_attr( (string) $_mep_first_d ); ?>"
+                                    data-mpwem-max-year="<?php echo esc_attr( (string) $_mep_last_y ); ?>"
+                                    data-mpwem-max-month="<?php echo esc_attr( (string) $_mep_last_m ); ?>"
+                                    data-mpwem-max-day="<?php echo esc_attr( (string) $_mep_last_d ); ?>"
+                                />
                             </label>
 							<?php if ( $display_time != 'no' && is_array( $all_times ) && sizeof( $all_times ) > 0 ) { ?>
                                 <div class="mpwem_time_area">

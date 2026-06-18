@@ -14,42 +14,69 @@
 			}
 			public static function enqueue_date_picker( $selector, $dates ) {
 
-				if ( empty( $dates ) ) {
+				if ( empty( $dates ) || ! is_array( $dates ) ) {
 					return;
 				}
-
-				$start_date = current( $dates );
-				$end_date   = end( $dates );
 
 				$available_dates = [];
 
 				foreach ( $dates as $date ) {
-					$available_dates[] = date( 'j-n-Y', strtotime( $date ) );
+					// Normalise: accept both flat 'Y-m-d' strings and the assoc
+					// shape ['time' => '...', 'end' => '...'] produced by
+					// get_all_dates() / get_dates() for the 'no'/'yes' branches.
+					if ( is_array( $date ) ) {
+						$candidate = isset( $date['time'] ) ? $date['time'] : ( isset( $date['start_date'] ) ? $date['start_date'] : '' );
+					} else {
+						$candidate = (string) $date;
+					}
+					if ( ! $candidate ) {
+						continue;
+					}
+					$available_dates[] = date( 'j-n-Y', strtotime( $candidate ) );
 				}
 
-				wp_enqueue_script(
-					'mpwem-datepicker',
-					plugin_dir_url( __FILE__ ) . '../assets/js/mpwem-datepicker.js',
-					array( 'jquery', 'jquery-ui-datepicker' ),
-					'1.0',
-					true
-				);
+				if ( empty( $available_dates ) ) {
+					return;
+				}
+
+				// minDate / maxDate from the available list (already off-date /
+				// off-day / special-date filtered by get_all_dates() / get_dates()).
+				// Clamp minDate to today so past dates are never selectable even
+				// when the earliest event date is in the past.
+				$today_y = (int) date( 'Y' );
+				$today_m = (int) date( 'n' ) - 1;
+				$today_d = (int) date( 'j' );
+
+				$first_y = (int) date( 'Y', strtotime( $available_dates[0] ) );
+				$first_m = (int) date( 'n', strtotime( $available_dates[0] ) ) - 1;
+				$first_d = (int) date( 'j', strtotime( $available_dates[0] ) );
+
+				$last_y = (int) date( 'Y', strtotime( end( $available_dates ) ) );
+				$last_m = (int) date( 'n', strtotime( end( $available_dates ) ) ) - 1;
+				$last_d = (int) date( 'j', strtotime( end( $available_dates ) ) );
+
+				$first_ts = mktime( $first_m + 1, 0, 0, $first_m + 1, $first_d, $first_y );
+				$today_ts = mktime( 0, 0, 0, $today_m + 1, $today_d, $today_y );
+
+				$min_y = $first_ts >= $today_ts ? $first_y : $today_y;
+				$min_m = $first_ts >= $today_ts ? $first_m : $today_m;
+				$min_d = $first_ts >= $today_ts ? $first_d : $today_d;
 
 				wp_localize_script(
-					'mpwem-datepicker',
+					'jquery-ui-datepicker',
 					'mpwemDateData',
 					array(
 						'selector'       => $selector,
 						'availableDates' => $available_dates,
 						'minDate'        => array(
-							'year'  => (int) date( 'Y', strtotime( $start_date ) ),
-							'month' => (int) date( 'n', strtotime( $start_date ) ) - 1,
-							'day'   => (int) date( 'j', strtotime( $start_date ) ),
+							'year'  => $min_y,
+							'month' => $min_m,
+							'day'   => $min_d,
 						),
 						'maxDate'        => array(
-							'year'  => (int) date( 'Y', strtotime( $end_date ) ),
-							'month' => (int) date( 'n', strtotime( $end_date ) ) - 1,
-							'day'   => (int) date( 'j', strtotime( $end_date ) ),
+							'year'  => $last_y,
+							'month' => $last_m,
+							'day'   => $last_d,
 						),
 					)
 				);

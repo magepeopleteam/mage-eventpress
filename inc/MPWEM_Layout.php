@@ -120,7 +120,7 @@
                         <div class="_dFlex">
                             <label>
                                 <input type="hidden" name="mpwem_date_time" value="" required/>
-                                <input id="mpwem_date_time" type="text" value="" class="formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
+                                <input id="mpwem_date_time" type="text" value="" class="new-date_type formControl _min_250" placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>
                             </label>
 							<?php if ( $display_time != 'no' && is_array( $all_times ) && sizeof( $all_times ) > 0 ) { ?>
                                 <div class="mpwem_time_area">

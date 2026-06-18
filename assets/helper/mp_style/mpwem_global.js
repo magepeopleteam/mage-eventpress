@@ -128,10 +128,15 @@ function mpwem_load_date_picker(parent = jQuery('.mpwem_style')) {
             // Per-instance data takes precedence: each popup keeps its own
             // off-date / off-day / special-date filtered list. Falls back to
             // the global mpwemDateData registered by enqueue_date_picker.
+            // jQuery's .data() auto-parses JSON in data-* attributes, so the
+            // value may already be an array (object) rather than a string.
             var inst = $input.data('mpwemAvailableDates');
             var useInstance = false;
             var instanceDates = [];
-            if (typeof inst === 'string' && inst.length > 0) {
+            if (inst && Object.prototype.toString.call(inst) === '[object Array]' && inst.length > 0) {
+                instanceDates = inst;
+                useInstance = true;
+            } else if (typeof inst === 'string' && inst.length > 0) {
                 try { instanceDates = JSON.parse(inst); } catch (e) { instanceDates = []; }
                 if (Object.prototype.toString.call(instanceDates) === '[object Array]' && instanceDates.length > 0) {
                     useInstance = true;

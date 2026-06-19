@@ -2217,6 +2217,16 @@
             openParticularDateModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
+        $root.on('click.mpwemDateModal', '#mpwem_particular_date_summary .mpwem-ticket-summary__item', function(e) {
+            if ($(e.target).closest('[data-mpwem-date-modal-open], button, a, input, select, textarea').length) {
+                return;
+            }
+
+            e.preventDefault();
+            const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
+            openParticularDateModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
         $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-close]', function(e) {
             e.preventDefault();
             closeParticularDateModal($root);

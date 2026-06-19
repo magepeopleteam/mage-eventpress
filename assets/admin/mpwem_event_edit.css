@@ -2846,6 +2846,13 @@ div.mep_reg_status_show_msg_txt_sec textarea.formControl {
     cursor: pointer;
 }
 
+#mpwem_particular_date_summary .mpwem-ticket-summary__item {
+    padding: 8px 14px;
+    gap: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .mpwem-ticket-summary__item:nth-child(even) {
     background: #fafcff;
     border-color: #dbe5f2;

@@ -501,7 +501,11 @@
 
 		function ajax_save_gateway_settings() {
 			check_ajax_referer( 'mep_save_gateway', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			// The PayPal/Stripe Configure modals are reachable from both the Global
+			// Payment Settings page (manage_options) and the Event Edit → Payment
+			// Configuration modal (edit_posts). Allow either so the real-time save
+			// works in both contexts.
+			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
 				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
 			}
 			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );

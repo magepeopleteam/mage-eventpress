@@ -266,53 +266,63 @@
 										</div><!-- /.mpwem-pm-card -->
 
 										<div class="mep-modal-wc-fields" style="display: <?php echo ($woo_enabled && $wc_active) ? 'block' : 'none'; ?>;">
-											<div class="mpwem-pm-card">
-												<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'Checkout Behavior', 'mage-eventpress' ); ?></h4>
-												<div class="mpwem-pm-field">
-													<label class="mpwem-pm-label"><?php esc_html_e( 'After Adding to Cart, Redirect to', 'mage-eventpress' ); ?></label>
-													<select class="mpwem-pm-control" name="mep_wc_add_to_cart_redirect">
-														<option value="cart" <?php selected( $wc_add_to_cart_redirect, 'cart' ); ?>><?php esc_html_e( 'Cart', 'mage-eventpress' ); ?></option>
-														<option value="checkout" <?php selected( $wc_add_to_cart_redirect, 'checkout' ); ?>><?php esc_html_e( 'Checkout', 'mage-eventpress' ); ?></option>
-													</select>
-												</div>
-												<div class="mpwem-pm-field">
-													<label class="mpwem-pm-label"><?php esc_html_e( 'After Confirming the Order, Redirect To', 'mage-eventpress' ); ?></label>
-													<select class="mpwem-pm-control" name="mep_wc_after_order_redirect">
-														<option value="plugin_thankyou" <?php selected( $wc_after_order_redirect, 'plugin_thankyou' ); ?>><?php esc_html_e( 'Plugin Thank You Page', 'mage-eventpress' ); ?></option>
-														<option value="woo_thankyou" <?php selected( $wc_after_order_redirect, 'woo_thankyou' ); ?>><?php esc_html_e( 'WooCommerce Thank You Page', 'mage-eventpress' ); ?></option>
-													</select>
-												</div>
-												<div class="mpwem-pm-checks">
-													<label class="mpwem-pm-check">
-														<input type="checkbox" name="mep_wc_require_login" value="on" <?php checked( $wc_require_login ); ?> />
-														<span><?php esc_html_e( 'Require Account Login to Purchase', 'mage-eventpress' ); ?></span>
-													</label>
-													<label class="mpwem-pm-check">
-														<input type="checkbox" name="mep_wc_show_billing_info" value="on" <?php checked( $wc_show_billing_info ); ?> />
-														<span><?php esc_html_e( 'Show Billing Info on Checkout', 'mage-eventpress' ); ?></span>
-													</label>
+											<!-- Payment Methods accordion (expanded by default) -->
+											<div class="mpwem-pm-acc mpwem-pm-acc--methods is-open">
+												<button type="button" class="mpwem-pm-acc__bar">
+													<span class="mpwem-pm-acc__title"><?php esc_html_e( 'Payment Methods', 'mage-eventpress' ); ?></span>
+													<span class="mpwem-pm-acc__arrow dashicons dashicons-arrow-down-alt2"></span>
+												</button>
+												<div class="mpwem-pm-acc__panel">
+													<p class="mpwem-pm-card__sub"><?php esc_html_e( 'Enable and configure the WooCommerce gateways customers can pay with.', 'mage-eventpress' ); ?></p>
+													<?php
+													if ( $wc_active && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
+														MPWEM_WC_Payment_Manager::instance()->render();
+													}
+													?>
 												</div>
 											</div>
 
-											<div class="mpwem-pm-card">
-												<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'Ticket Confirmation', 'mage-eventpress' ); ?></h4>
-												<p class="mpwem-pm-card__sub"><?php esc_html_e( 'Confirm tickets when the order reaches any of these payment statuses.', 'mage-eventpress' ); ?></p>
-												<div class="mpwem-pm-checks mpwem-pm-checks--inline">
-													<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="pending" <?php echo in_array('pending', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Pending', 'mage-eventpress' ); ?></span></label>
-													<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="processing" <?php echo in_array('processing', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Processing', 'mage-eventpress' ); ?></span></label>
-													<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="on-hold" <?php echo in_array('on-hold', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'On hold', 'mage-eventpress' ); ?></span></label>
-													<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="completed" <?php echo in_array('completed', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></span></label>
+											<!-- Additional accordion (collapsed by default) -->
+											<div class="mpwem-pm-acc mpwem-pm-acc--additional">
+												<button type="button" class="mpwem-pm-acc__bar">
+													<span class="mpwem-pm-acc__title"><?php esc_html_e( 'Additional', 'mage-eventpress' ); ?></span>
+													<span class="mpwem-pm-acc__arrow dashicons dashicons-arrow-down-alt2"></span>
+												</button>
+												<div class="mpwem-pm-acc__panel" style="display:none;">
+													<div class="mpwem-pm-field">
+														<label class="mpwem-pm-label"><?php esc_html_e( 'After Adding to Cart, Redirect to', 'mage-eventpress' ); ?></label>
+														<select class="mpwem-pm-control" name="mep_wc_add_to_cart_redirect">
+															<option value="cart" <?php selected( $wc_add_to_cart_redirect, 'cart' ); ?>><?php esc_html_e( 'Cart', 'mage-eventpress' ); ?></option>
+															<option value="checkout" <?php selected( $wc_add_to_cart_redirect, 'checkout' ); ?>><?php esc_html_e( 'Checkout', 'mage-eventpress' ); ?></option>
+														</select>
+													</div>
+													<div class="mpwem-pm-field">
+														<label class="mpwem-pm-label"><?php esc_html_e( 'After Confirming the Order, Redirect To', 'mage-eventpress' ); ?></label>
+														<select class="mpwem-pm-control" name="mep_wc_after_order_redirect">
+															<option value="plugin_thankyou" <?php selected( $wc_after_order_redirect, 'plugin_thankyou' ); ?>><?php esc_html_e( 'Plugin Thank You Page', 'mage-eventpress' ); ?></option>
+															<option value="woo_thankyou" <?php selected( $wc_after_order_redirect, 'woo_thankyou' ); ?>><?php esc_html_e( 'WooCommerce Thank You Page', 'mage-eventpress' ); ?></option>
+														</select>
+													</div>
+													<div class="mpwem-pm-checks">
+														<label class="mpwem-pm-check">
+															<input type="checkbox" name="mep_wc_require_login" value="on" <?php checked( $wc_require_login ); ?> />
+															<span><?php esc_html_e( 'Require Account Login to Purchase', 'mage-eventpress' ); ?></span>
+														</label>
+														<label class="mpwem-pm-check">
+															<input type="checkbox" name="mep_wc_show_billing_info" value="on" <?php checked( $wc_show_billing_info ); ?> />
+															<span><?php esc_html_e( 'Show Billing Info on Checkout', 'mage-eventpress' ); ?></span>
+														</label>
+													</div>
+													<div class="mpwem-pm-field" style="margin-top:6px;">
+														<label class="mpwem-pm-label"><?php esc_html_e( 'Confirm Ticket Based on Payment Status', 'mage-eventpress' ); ?></label>
+														<div class="mpwem-pm-checks mpwem-pm-checks--inline">
+															<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="pending" <?php echo in_array('pending', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Pending', 'mage-eventpress' ); ?></span></label>
+															<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="processing" <?php echo in_array('processing', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Processing', 'mage-eventpress' ); ?></span></label>
+															<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="on-hold" <?php echo in_array('on-hold', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'On hold', 'mage-eventpress' ); ?></span></label>
+															<label class="mpwem-pm-check"><input type="checkbox" name="mep_wc_confirm_ticket_status[]" value="completed" <?php echo in_array('completed', $wc_confirm_ticket_status) ? 'checked' : ''; ?>> <span><?php esc_html_e( 'Completed', 'mage-eventpress' ); ?></span></label>
+														</div>
+													</div>
 												</div>
-											</div>
-
-											<div class="mpwem-pm-card mpwem-pm-card--methods">
-												<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'Payment Methods', 'mage-eventpress' ); ?></h4>
-												<p class="mpwem-pm-card__sub"><?php esc_html_e( 'Enable and configure the WooCommerce gateways customers can pay with.', 'mage-eventpress' ); ?></p>
-												<?php
-												if ( $wc_active && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
-													MPWEM_WC_Payment_Manager::instance()->render();
-												}
-												?>
 											</div>
 										</div><!-- /.mep-modal-wc-fields -->
 									</div>
@@ -459,6 +469,19 @@
 							$('.mep-modal-tab-content').hide();
 							$($(this).data('target')).fadeIn(200);
 						});
+
+						// WooCommerce accordions — only one open at a time
+						$(document).on('click', '.mpwem-pm-acc__bar', function(e) {
+							e.preventDefault();
+							var $acc = $(this).closest('.mpwem-pm-acc');
+							if ($acc.hasClass('is-open')) {
+								$acc.removeClass('is-open').find('.mpwem-pm-acc__panel').stop(true, true).slideUp(180);
+								return;
+							}
+							$acc.siblings('.mpwem-pm-acc.is-open').removeClass('is-open')
+								.find('.mpwem-pm-acc__panel').stop(true, true).slideUp(180);
+							$acc.addClass('is-open').find('.mpwem-pm-acc__panel').stop(true, true).slideDown(180);
+						});
 						
 						// Save Payment Settings
 						$('#mep-save-payment-settings').click(function() {
@@ -513,6 +536,9 @@
 						backdrop-filter: blur(3px);
 						align-items: center; justify-content: center;
 					}
+					/* PayPal/Stripe configuration modals (rendered separately) must
+					   stack ABOVE this modal when opened from the Custom Payment tab. */
+					.mep-gw-modal { z-index: 1000001 !important; }
 					.mpwem-pm-dialog {
 						background: #fff; border-radius: 14px;
 						width: 640px; max-width: 94vw; max-height: 92vh;
@@ -631,10 +657,84 @@
 					.mpwem-pm-confirm-row__control { flex-shrink: 0; width: 240px; }
 					.mpwem-pm-confirm-row__control .mpwem-pm-control { max-width: 100%; }
 
-					/* WooCommerce Payment Methods manager embedded in the card */
-					.mpwem-pm-card--methods .mep-wc-payment-manager { margin-top: 4px; }
-					.mpwem-pm-card--methods .mep-wc-pm-heading { display: none; }
-					.mpwem-pm-card--methods .mep-wc-pm-bar { margin-bottom: 12px; justify-content: flex-end; }
+					/* Accordions (WooCommerce tab) */
+					.mpwem-pm-acc {
+						background: #fff; border: 1px solid #e2e4e7; border-radius: 10px;
+						margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+					}
+					.mpwem-pm-acc:last-child { margin-bottom: 0; }
+					.mpwem-pm-acc.is-open { border-color: #2271b1; }
+					.mpwem-pm-acc__bar {
+						display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
+						background: #f6f7f9; border: none; border-bottom: 1px solid transparent;
+						padding: 14px 18px; cursor: pointer; text-align: left; transition: background .2s, color .2s;
+					}
+					.mpwem-pm-acc__bar:hover { background: #eef5fb; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__bar { background: #eef5fb; border-bottom-color: #e2e4e7; }
+					.mpwem-pm-acc__title { font-size: 14px; font-weight: 700; color: #1d2327; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__title { color: #2271b1; }
+					.mpwem-pm-acc__arrow { color: #50575e; transition: transform .2s ease; }
+					.mpwem-pm-acc.is-open .mpwem-pm-acc__arrow { transform: rotate(180deg); color: #2271b1; }
+					.mpwem-pm-acc__panel { padding: 16px 18px; }
+
+					/* WooCommerce Payment Methods manager embedded in the accordion */
+					.mpwem-pm-acc--methods .mep-wc-payment-manager { margin-top: 4px; }
+					.mpwem-pm-acc--methods .mep-wc-pm-heading { display: none; }
+					.mpwem-pm-acc--methods .mep-wc-pm-bar { margin-bottom: 12px; justify-content: flex-end; }
+
+					/* ---- Buttons: modern + consistent across the whole modal ---- */
+					#mep-payment-settings-modal .button,
+					#mep-payment-settings-modal .button-secondary,
+					#mep-payment-settings-modal .button-primary,
+					#mep-payment-settings-modal button.mep-gw-configure-btn,
+					#mep-payment-settings-modal button.mep-gw-save-btn {
+						display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+						height: auto; min-height: 34px; margin: 0;
+						padding: 7px 16px; border-radius: 8px;
+						font-size: 13px; font-weight: 600; line-height: 1.4; text-decoration: none;
+						border: 1px solid #d1d5db; background: #fff; color: #374151;
+						box-shadow: none; cursor: pointer;
+						transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .12s ease;
+					}
+					#mep-payment-settings-modal .button .dashicons,
+					#mep-payment-settings-modal .button-secondary .dashicons {
+						font-size: 16px; width: 16px; height: 16px; line-height: 1;
+					}
+					#mep-payment-settings-modal .button:hover,
+					#mep-payment-settings-modal .button-secondary:hover,
+					#mep-payment-settings-modal button.mep-gw-configure-btn:hover {
+						background: #f3f4f6; border-color: #9ca3af; color: #111827; transform: translateY(-1px);
+					}
+					/* Primary / call-to-action buttons */
+					#mep-payment-settings-modal .button-primary,
+					#mep-payment-settings-modal button.mep-gw-save-btn {
+						background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
+						border-color: #135e96; color: #fff;
+						box-shadow: 0 2px 6px rgba(34,113,177,0.25);
+						text-shadow: none;
+					}
+					#mep-payment-settings-modal .button-primary:hover,
+					#mep-payment-settings-modal button.mep-gw-save-btn:hover {
+						background: linear-gradient(135deg, #1f6aa6 0%, #0f5388 100%);
+						border-color: #0f5388; color: #fff;
+						box-shadow: 0 4px 12px rgba(34,113,177,0.35); transform: translateY(-1px);
+					}
+					#mep-payment-settings-modal .button:focus,
+					#mep-payment-settings-modal .button-secondary:focus,
+					#mep-payment-settings-modal .button-primary:focus,
+					#mep-payment-settings-modal button.mep-gw-configure-btn:focus,
+					#mep-payment-settings-modal button.mep-gw-save-btn:focus {
+						outline: none; box-shadow: 0 0 0 3px rgba(34,113,177,0.18);
+					}
+					#mep-payment-settings-modal .button:disabled,
+					#mep-payment-settings-modal .button-primary:disabled,
+					#mep-payment-settings-modal button.mep-gw-save-btn:disabled {
+						opacity: .6; cursor: not-allowed; transform: none; box-shadow: none;
+					}
+					/* "Open in WooCommerce" small link-button inside the methods accordion */
+					#mep-payment-settings-modal .mep-wc-pm-wc-link.button-small {
+						min-height: 0; padding: 5px 12px; font-size: 12px; font-weight: 600;
+					}
 
 					/* Footer */
 					.mpwem-pm-footer {
@@ -658,15 +758,9 @@
 					&& sanitize_key( wp_unslash( $_GET['page'] ) ) === 'mpwem_event_edit';
 				?>
                 <div class="_layout_default_xs_mp_zero mpwem-ticket-settings-head" style="border-radius: var(--mpwem-radius);">
-                    <div class="_bg_light_padding" style="display:flex; align-items:center; justify-content:space-between; gap:15px; flex-wrap:wrap;">
-                        <div>
-                            <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
-                            <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
-                        </div>
-                        <button type="button" class="button button-secondary mep-payment-settings-trigger" style="white-space:nowrap;">
-                            <span class="dashicons dashicons-money-alt" style="vertical-align:middle; margin-top:-2px;"></span>
-                            <?php esc_html_e( 'Payment Configuration', 'mage-eventpress' ); ?>
-                        </button>
+                    <div class="_bg_light_padding">
+                        <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Ticket & Pricing Settings', 'mage-eventpress' ); ?></h4>
+                        <span class="_mp_zero"><?php esc_html_e( 'Configure Your Ticket & Pricing Settings Here', 'mage-eventpress' ); ?></span>
                     </div>
 					<?php
 						do_action( 'mep_event_tab_before_ticket_pricing', $event_id );

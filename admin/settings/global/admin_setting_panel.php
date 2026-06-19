@@ -993,9 +993,11 @@ tr.payment_tabs_html { display: none !important; }
 
 				$payment_settings = get_option( 'payment_setting_sec', array() );
 				$payment_settings['mep_enable_wc_payment'] = isset( $_POST['mep_enable_wc_payment'] ) ? sanitize_text_field( $_POST['mep_enable_wc_payment'] ) : 'off';
-				$payment_settings['mep_paypal_enable'] = isset( $_POST['mep_paypal_enable'] ) ? sanitize_text_field( $_POST['mep_paypal_enable'] ) : 'off';
-				$payment_settings['mep_stripe_enable'] = isset( $_POST['mep_stripe_enable'] ) ? sanitize_text_field( $_POST['mep_stripe_enable'] ) : 'off';
-				
+				// mep_paypal_enable / mep_stripe_enable are managed solely by each gateway's
+				// Configure modal (its own enable toggle). The Custom Payment tab no longer
+				// has those checkboxes, so we must NOT touch those keys here or every save
+				// would disable the gateways.
+
 				$payment_settings['mep_wc_add_to_cart_redirect'] = isset( $_POST['mep_wc_add_to_cart_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_add_to_cart_redirect'] ) : 'checkout';
 				$payment_settings['mep_wc_after_order_redirect'] = isset( $_POST['mep_wc_after_order_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_after_order_redirect'] ) : 'plugin_thankyou';
 				$payment_settings['mep_wc_require_login'] = isset( $_POST['mep_wc_require_login'] ) ? sanitize_text_field( $_POST['mep_wc_require_login'] ) : '';

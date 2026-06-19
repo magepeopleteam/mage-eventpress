@@ -344,12 +344,6 @@
 													</span>
 													<div>
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'PayPal', 'mage-eventpress' ); ?></strong>
-														<?php if ( $is_pro ) : ?>
-															<label class="mpwem-pm-check mpwem-pm-gateway__enable">
-																<input type="checkbox" name="mep_paypal_enable" id="mep_modal_enable_paypal" value="on" <?php checked( $paypal_enabled ); ?> />
-																<span><?php esc_html_e( 'Enable PayPal', 'mage-eventpress' ); ?></span>
-															</label>
-														<?php endif; ?>
 													</div>
 												</div>
 												<?php if ( $is_pro ) : ?>
@@ -368,12 +362,6 @@
 													</span>
 													<div>
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'Stripe', 'mage-eventpress' ); ?></strong>
-														<?php if ( $is_pro ) : ?>
-															<label class="mpwem-pm-check mpwem-pm-gateway__enable">
-																<input type="checkbox" name="mep_stripe_enable" id="mep_modal_enable_stripe" value="on" <?php checked( $stripe_enabled ); ?> />
-																<span><?php esc_html_e( 'Enable Stripe', 'mage-eventpress' ); ?></span>
-															</label>
-														<?php endif; ?>
 													</div>
 												</div>
 												<?php if ( $is_pro ) : ?>
@@ -410,7 +398,7 @@
 								</div>
 							</div>
 							<div class="mpwem-pm-footer">
-								<span id="mep-payment-save-status" class="mpwem-pm-save-status" style="display:none;"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Saved! Reloading...', 'mage-eventpress' ); ?></span>
+								<span id="mep-payment-save-status" class="mpwem-pm-save-status" style="display:none;"><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Saved!', 'mage-eventpress' ); ?></span>
 								<button type="button" class="button button-secondary mep-close-payment-modal"><?php esc_html_e( 'Cancel', 'mage-eventpress' ); ?></button>
 								<button type="button" id="mep-save-payment-settings" class="button button-primary"><?php esc_html_e( 'Save Changes', 'mage-eventpress' ); ?></button>
 							</div>
@@ -498,10 +486,13 @@
 								data: formData + '&action=mep_save_payment_settings_modal',
 								success: function(response) {
 									if (response.success) {
+										// No page reload — reloading would re-render the PayPal/Stripe
+										// Configure modals from the DB and discard anything typed there
+										// that wasn't saved with the gateway's own Save button. Those
+										// gateways are saved independently via their own modals.
 										$status.css('color', '#0f5132').html('<span class="dashicons dashicons-yes"></span> ' + response.data).fadeIn(200);
-										setTimeout(function() {
-											location.reload();
-										}, 1000);
+										$btn.prop('disabled', false).css('opacity', '1');
+										setTimeout(function() { $status.fadeOut(300); }, 2500);
 									} else {
 										$status.css('color', '#dc3545').html('<span class="dashicons dashicons-no"></span> ' + (response.data || 'Error')).fadeIn(200);
 										$btn.prop('disabled', false).css('opacity', '1');

@@ -3,7 +3,8 @@
  * @Author      engr.sumonazma@gmail.com
  * Copyright:   mage-people.com
  *
- * Native checkout handler — processes event registrations when WooCommerce is not active.
+ * Native checkout handler — processes event registrations through the custom payment flow,
+ * used when WooCommerce is not active OR the "Enable WooCommerce Payment" setting is disabled.
  * Creates mep_events_attendees records directly using mep_native_ticket_attendee_create().
  */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -87,13 +88,27 @@ if ( ! class_exists( 'MPWEM_Native_Checkout' ) ) {
 			}
 
 			// 7. Determine payment path and booking status
-			$payment_opts   = get_option( 'payment_setting_sec', array() );
-			$paypal_enabled = ! empty( $payment_opts['mep_paypal_enable'] ) && $payment_opts['mep_paypal_enable'] === 'on';
-			$stripe_enabled = ! empty( $payment_opts['mep_stripe_enable'] ) && $payment_opts['mep_stripe_enable'] === 'on';
+			$payment_opts    = get_option( 'payment_setting_sec', array() );
+			$paypal_enabled  = ! empty( $payment_opts['mep_paypal_enable'] ) && $payment_opts['mep_paypal_enable'] === 'on';
+			$stripe_enabled  = ! empty( $payment_opts['mep_stripe_enable'] ) && $payment_opts['mep_stripe_enable'] === 'on';
+			$offline_enabled = ! empty( $payment_opts['mep_offline_enable'] ) && $payment_opts['mep_offline_enable'] === 'on';
+
+			// The customer's chosen method from the modal. Only honoured when that method
+			// is actually enabled; otherwise we fall back to the first available gateway.
+			$selected_method = isset( $_POST['payment_method'] ) ? sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ) : '';
 
 			if ( $total <= 0 ) {
 				$payment_method = 'free';
 				$order_status   = 'completed';
+			} elseif ( $selected_method === 'paypal' && $paypal_enabled ) {
+				$payment_method = 'paypal';
+				$order_status   = 'pending';
+			} elseif ( $selected_method === 'stripe' && $stripe_enabled ) {
+				$payment_method = 'stripe';
+				$order_status   = 'pending';
+			} elseif ( $selected_method === 'offline' && $offline_enabled ) {
+				$payment_method = 'offline';
+				$order_status   = 'pending';
 			} elseif ( $paypal_enabled ) {
 				$payment_method = 'paypal';
 				$order_status   = 'pending';
@@ -101,6 +116,7 @@ if ( ! class_exists( 'MPWEM_Native_Checkout' ) ) {
 				$payment_method = 'stripe';
 				$order_status   = 'pending';
 			} else {
+				// Offline / pay-later fallback (also covers the "no gateway configured" notice).
 				$payment_method = 'offline';
 				$order_status   = 'pending';
 			}

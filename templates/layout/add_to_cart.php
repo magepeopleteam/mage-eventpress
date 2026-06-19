@@ -39,9 +39,12 @@
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
         <?php
-        $is_woo_active = class_exists( 'WooCommerce' );
+        // Use the WooCommerce checkout flow only when WooCommerce is active AND the
+        // global "Enable WooCommerce Payment" setting is on. When it is disabled the
+        // booking falls back to the native checkout (custom payment) flow.
+        $use_wc_payment = MPWEM_Global_Function::use_wc_payment();
 
-        if ( $is_woo_active ) {
+        if ( $use_wc_payment ) {
         ?>
         <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>

@@ -264,6 +264,22 @@
 			public static function has_woocommerce(): bool {
 				return class_exists( 'WooCommerce' ) || self::check_woocommerce() === 1;
 			}
+			/**
+			 * Whether the WooCommerce checkout/payment flow should be used for bookings.
+			 *
+			 * Returns true only when WooCommerce is active AND the global
+			 * "Enable WooCommerce Payment" setting is on. When the admin disables it,
+			 * bookings fall back to the native checkout (custom payment) flow even if
+			 * WooCommerce itself is active.
+			 */
+			public static function use_wc_payment(): bool {
+				if ( ! self::has_woocommerce() ) {
+					return false;
+				}
+				$opts  = get_option( 'payment_setting_sec', array() );
+				$value = isset( $opts['mep_enable_wc_payment'] ) ? $opts['mep_enable_wc_payment'] : 'on';
+				return $value === 'on';
+			}
 			public static function get_admin_capability(): string {
 				return self::has_woocommerce() ? 'manage_woocommerce' : 'edit_posts';
 			}

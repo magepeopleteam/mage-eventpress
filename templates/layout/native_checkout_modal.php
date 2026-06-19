@@ -3,7 +3,8 @@
  * @Author      engr.sumonazma@gmail.com
  * Copyright:   mage-people.com
  *
- * Native checkout modal — rendered inside add_to_cart.php when WooCommerce is not active.
+ * Native checkout modal — rendered inside add_to_cart.php when the WooCommerce payment
+ * flow is not in use (WooCommerce inactive, or active but "Enable WooCommerce Payment" off).
  * Opened by JS when the user clicks "Register For This Event".
  * Attendee fields are shown in the ticket type section below; on open the JS snapshots
  * their values and passes them to the server so they are saved with the order.
@@ -13,9 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $event_id = $event_id ?? 0;
 $payment_opts   = get_option( 'payment_setting_sec', array() );
-$paypal_enabled = ! empty( $payment_opts['mep_paypal_enable'] ) && $payment_opts['mep_paypal_enable'] === 'on';
-$stripe_enabled = ! empty( $payment_opts['mep_stripe_enable'] ) && $payment_opts['mep_stripe_enable'] === 'on';
-$has_gateways   = $paypal_enabled || $stripe_enabled;
+$paypal_enabled  = ! empty( $payment_opts['mep_paypal_enable'] ) && $payment_opts['mep_paypal_enable'] === 'on';
+$stripe_enabled  = ! empty( $payment_opts['mep_stripe_enable'] ) && $payment_opts['mep_stripe_enable'] === 'on';
+$offline_enabled = ! empty( $payment_opts['mep_offline_enable'] ) && $payment_opts['mep_offline_enable'] === 'on';
+$offline_label   = ! empty( $payment_opts['mep_offline_label'] ) ? $payment_opts['mep_offline_label'] : __( 'Pay Later / Offline', 'mage-eventpress' );
+$has_gateways    = $paypal_enabled || $stripe_enabled || $offline_enabled;
 
 // Add-ons (e.g. Event Pro) can require a logged-in account to complete registration.
 $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $event_id ) && ! is_user_logged_in();
@@ -51,22 +54,28 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 		<div class="mep-native-modal-payment">
 			<h4 class="mep-native-section-title"><?php esc_html_e( 'Payment Method', 'mage-eventpress' ); ?></h4>
 			<div class="mep-native-payment-options">
+				<?php $method_selected = false; // Mark the first available method as the default. ?>
 				<?php if ( $paypal_enabled ) : ?>
 				<label class="mep-native-payment-option">
 					<input type="radio" name="mep_payment_method" value="paypal" checked="checked" />
 					<span><?php esc_html_e( 'PayPal', 'mage-eventpress' ); ?></span>
 				</label>
+				<?php $method_selected = true; ?>
 				<?php endif; ?>
 				<?php if ( $stripe_enabled ) : ?>
 				<label class="mep-native-payment-option">
-					<input type="radio" name="mep_payment_method" value="stripe" <?php echo ! $paypal_enabled ? 'checked="checked"' : ''; ?> />
+					<input type="radio" name="mep_payment_method" value="stripe" <?php echo $method_selected ? '' : 'checked="checked"'; ?> />
 					<span><?php esc_html_e( 'Credit / Debit Card (Stripe)', 'mage-eventpress' ); ?></span>
 				</label>
+				<?php $method_selected = true; ?>
 				<?php endif; ?>
+				<?php if ( $offline_enabled ) : ?>
 				<label class="mep-native-payment-option">
-					<input type="radio" name="mep_payment_method" value="offline" />
-					<span><?php esc_html_e( 'Pay Later / Offline', 'mage-eventpress' ); ?></span>
+					<input type="radio" name="mep_payment_method" value="offline" <?php echo $method_selected ? '' : 'checked="checked"'; ?> />
+					<span><?php echo esc_html( $offline_label ); ?></span>
 				</label>
+				<?php $method_selected = true; ?>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php else : ?>

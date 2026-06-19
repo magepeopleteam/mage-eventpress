@@ -37,7 +37,11 @@
 				if ( MPWEM_Global_Function::has_woocommerce() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
-				} else {
+				}
+				// Load the native checkout handler whenever the WooCommerce payment flow is
+				// not in use — i.e. WooCommerce is inactive, OR it is active but the global
+				// "Enable WooCommerce Payment" setting has been disabled.
+				if ( ! MPWEM_Global_Function::use_wc_payment() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Native_Checkout.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Booking_Confirmation.php';
 				}
@@ -263,7 +267,7 @@
                     let mp_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
                     let mpwem_ajax_url = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
-                    let mpwem_currency_symbol = "<?php echo esc_js( $currency_symbol ); ?>";
+                    let mpwem_currency_symbol = "<?php echo esc_js( html_entity_decode( $currency_symbol, ENT_QUOTES, 'UTF-8' ) ); ?>";
                     let mpwem_currency_position = "<?php echo esc_js( $currency_position ); ?>";
                     let mpwem_currency_decimal = "<?php echo esc_js( $currency_decimal ); ?>";
                     let mpwem_currency_thousands_separator = "<?php echo esc_js( $currency_thousands ); ?>";

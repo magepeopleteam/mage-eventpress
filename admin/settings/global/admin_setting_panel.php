@@ -201,6 +201,8 @@
 			$st_test_sec = esc_attr( $opts['mep_stripe_test_sec'] ?? '' );
 			$st_live_pub = esc_attr( $opts['mep_stripe_live_pub'] ?? '' );
 			$st_live_sec = esc_attr( $opts['mep_stripe_live_sec'] ?? '' );
+			$off_enabled = ! empty( $opts['mep_offline_enable'] ) && $opts['mep_offline_enable'] === 'on';
+			$off_label   = esc_attr( $opts['mep_offline_label'] ?? __( 'Offline Payment', 'mage-eventpress' ) );
 			$nonce       = wp_create_nonce( 'mep_save_gateway' );
 			?>
 			<style>
@@ -400,6 +402,47 @@
 				</div>
 			</div>
 
+			<!-- Offline Payment Config Modal -->
+			<div id="mep-offline-modal" class="mep-gw-modal" style="display:none;">
+				<div class="mep-gw-modal-box">
+					<div class="mep-gw-modal-header" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);">
+						<h2>
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3 19h18a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+								<path d="M2 10h20M6 14h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+							</svg>
+							<?php esc_html_e( 'Offline Payment Configuration', 'mage-eventpress' ); ?>
+						</h2>
+						<button type="button" class="mep-gw-modal-close">&times;</button>
+					</div>
+					<div class="mep-gw-modal-body">
+						<!-- Enable Offline Payment -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Enable Offline Payment', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Let customers pay offline (bank transfer, cash, pay at venue).', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_offline_enable" <?php checked( $off_enabled ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<hr class="mep-gw-divider">
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Payment Label', 'mage-eventpress' ); ?></label>
+							<input type="text" data-field="mep_offline_label" value="<?php echo $off_label; ?>" placeholder="<?php esc_attr_e( 'e.g. Pay at Venue / Bank Transfer', 'mage-eventpress' ); ?>">
+							<p style="margin:8px 0 0; font-size:12px; color:#6b7280;"><?php esc_html_e( 'This label is shown to customers on the frontend payment page.', 'mage-eventpress' ); ?></p>
+						</div>
+					</div>
+					<div class="mep-gw-modal-footer">
+						<button type="button" class="mep-gw-save-btn" data-gateway="offline" style="background: linear-gradient(135deg,#0f766e,#115e59);">
+							<?php esc_html_e( 'Save Offline Settings', 'mage-eventpress' ); ?>
+						</button>
+						<span class="mep-gw-save-msg"></span>
+					</div>
+				</div>
+			</div>
+
 			<script>
 			var mepGateway = <?php echo wp_json_encode(array(
 				'nonce'    => $nonce,
@@ -434,6 +477,10 @@
 				$(document).on('click', '#mep-stripe-configure-btn', function(e) {
 					e.preventDefault();
 					$('#mep-stripe-modal').css('display','flex').hide().fadeIn(220);
+				});
+				$(document).on('click', '#mep-offline-configure-btn', function(e) {
+					e.preventDefault();
+					$('#mep-offline-modal').css('display','flex').hide().fadeIn(220);
 				});
 				// Close modals
 				$(document).on('click', '.mep-gw-modal-close, .mep-gw-modal-backdrop', function() {
@@ -501,16 +548,24 @@
 
 		function ajax_save_gateway_settings() {
 			check_ajax_referer( 'mep_save_gateway', 'nonce' );
-			if ( ! current_user_can( 'manage_options' ) ) {
+			// The PayPal/Stripe Configure modals are reachable from both the Global
+			// Payment Settings page (manage_options) and the Event Edit → Payment
+			// Configuration modal (edit_posts). Allow either so the real-time save
+			// works in both contexts.
+			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
 				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
 			}
 			$gateway  = sanitize_key( $_POST['gateway'] ?? '' );
 			$fields   = $_POST['fields'] ?? array();
 			$existing = get_option( 'payment_setting_sec', array() );
+			if ( ! is_array( $existing ) ) {
+				$existing = array();
+			}
 
 			$allowed = array(
-				'paypal' => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
-				'stripe' => array( 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_stripe_test_pub', 'mep_stripe_test_sec', 'mep_stripe_live_pub', 'mep_stripe_live_sec' ),
+				'paypal'  => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
+				'stripe'  => array( 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_stripe_test_pub', 'mep_stripe_test_sec', 'mep_stripe_live_pub', 'mep_stripe_live_sec' ),
+				'offline' => array( 'mep_offline_enable', 'mep_offline_label' ),
 			);
 
 			if ( ! array_key_exists( $gateway, $allowed ) ) {
@@ -520,7 +575,7 @@
 			foreach ( $allowed[ $gateway ] as $key ) {
 				$val = isset( $fields[ $key ] ) ? $fields[ $key ] : 'off';
 				// Toggles are on/off; other fields are text
-				if ( in_array( $key, array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_stripe_enable', 'mep_stripe_sandbox' ), true ) ) {
+				if ( in_array( $key, array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_offline_enable' ), true ) ) {
 					$existing[ $key ] = ( $val === 'on' ) ? 'on' : 'off';
 				} else {
 					$existing[ $key ] = sanitize_text_field( $val );
@@ -777,7 +832,74 @@ tr.payment_tabs_html { display: none !important; }
 .gateway-card.stripe-card p.description { color: rgba(255,255,255,0.85); }
 .gateway-card.stripe-card input[type="text"], .gateway-card.stripe-card input[type="password"] { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
 .gateway-card.stripe-card input[type="text"]:focus, .gateway-card.stripe-card input[type="password"]:focus { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+/* Stripe is no longer the last card; restore its spacing above the Offline card. */
+.gateway-card.stripe-card { margin-bottom: 10px; }
+.gateway-card.offline-card {
+    background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+    border: none;
+    color: #fff;
+    margin-bottom: 0;
+}
+.gateway-card.offline-card .gateway-header { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.gateway-card.offline-card .gateway-header h3 { color: #fff; }
+.gateway-card.offline-card .gateway-header svg path { stroke: #fff !important; }
+.gateway-card.offline-card .gateway-status { background: rgba(255,255,255,0.2); color: #fff; }
+.gateway-card.offline-card .gateway-status.active { background: #fff; color: #0f766e; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.gateway-card.offline-card .gateway-configure-btn { color: #0f766e !important; background: #fff !important; border: none !important; font-weight:600 !important; border-radius: 6px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important; }
 </style>
+
+				<style> /* Payment settings accordions (WooCommerce sub-tab) */
+					tr.mep-acc-header > td.mep-acc-header-cell {
+						padding: 0 !important;
+					}
+					tr.mep-acc-header .mep-acc-bar {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						gap: 10px;
+						cursor: pointer;
+						user-select: none;
+						background: #f6f7f7;
+						border: 1px solid #dcdcde;
+						border-radius: 8px;
+						padding: 12px 16px;
+						margin: 14px 4px 4px;
+						transition: background 0.2s ease, border-color 0.2s ease;
+					}
+					tr.mep-acc-header .mep-acc-bar:hover {
+						background: #f0f0f1;
+						border-color: #c3c4c7;
+					}
+					tr.mep-acc-header.open .mep-acc-bar {
+						background: #eef5fb;
+						border-color: #2271b1;
+					}
+					tr.mep-acc-header .mep-acc-title {
+						display: flex;
+						align-items: center;
+						gap: 8px;
+						font-size: 14px;
+						font-weight: 600;
+						color: #1d2327;
+						margin: 0;
+					}
+					tr.mep-acc-header.open .mep-acc-title {
+						color: #2271b1;
+					}
+					tr.mep-acc-header .mep-acc-arrow {
+						transition: transform 0.2s ease;
+						color: #50575e;
+						line-height: 1;
+					}
+					tr.mep-acc-header.open .mep-acc-arrow {
+						transform: rotate(180deg);
+						color: #2271b1;
+					}
+					/* The accordion header already shows this title; avoid duplicating it
+					   inside the manager. Keep the bar (it holds the "Open in WooCommerce" link). */
+					tr.wc-payment-methods-field .mep-wc-pm-heading { display: none; }
+					tr.wc-payment-methods-field .mep-wc-payment-manager { margin-top: 4px; padding: 10px }
+				</style>
 
 				<script>
 					jQuery(document).ready(function($) {
@@ -792,20 +914,84 @@ tr.payment_tabs_html { display: none !important; }
 								var isChecked = $('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').is(':checked');
 								var $wcFields = $('tr.woocommerce-field').not('tr.woocommerce-main-toggle');
 								if (isChecked) {
-									$wcFields.fadeIn(200);
+									$wcFields.stop(true, true).fadeIn(200);
+									refreshAccordions();
 								} else {
 									$wcFields.hide();
 								}
 							}
-							
+
+							// --- WooCommerce sub-tab accordions: Payment Methods (open) + Additional Settings (collapsed) ---
+							var $methodsRows    = $('tr.wc-payment-methods-field');
+							var $additionalRows = $('tr.wc-additional-field');
+							var $methodsHeader  = $();
+							var $additionalHeader = $();
+
+							function buildAccordionHeader(extraClass, title, isOpen) {
+								return $(
+									'<tr class="woocommerce-field mep-acc-header ' + extraClass + (isOpen ? ' open' : '') + '">' +
+										'<td colspan="2" class="mep-acc-header-cell">' +
+											'<div class="mep-acc-bar">' +
+												'<span class="mep-acc-title">' + title + '</span>' +
+												'<span class="mep-acc-arrow dashicons dashicons-arrow-down-alt2"></span>' +
+											'</div>' +
+										'</td>' +
+									'</tr>'
+								);
+							}
+
+							function refreshAccordions() {
+								if ( ! $methodsHeader.length ) { return; }
+								if ( $methodsHeader.hasClass('open') ) { $methodsRows.show(); } else { $methodsRows.hide(); }
+								if ( $additionalHeader.hasClass('open') ) { $additionalRows.show(); } else { $additionalRows.hide(); }
+							}
+
+							if ( $methodsRows.length || $additionalRows.length ) {
+								var $toggleRow = $('tr.woocommerce-main-toggle');
+								$methodsHeader    = buildAccordionHeader('mep-acc-methods', '<?php echo esc_js( __( 'WooCommerce Payment Methods', 'mage-eventpress' ) ); ?>', true);
+								$additionalHeader = buildAccordionHeader('mep-acc-additional', '<?php echo esc_js( __( 'Additional Settings', 'mage-eventpress' ) ); ?>', false);
+
+								// Make the payment-methods row span the full table width. Without this,
+								// its hidden <th> + width:100% <td> distort the shared column widths and
+								// squeeze sibling rows (e.g. the Enable toggle above). colspan=2 spans both
+								// columns cleanly — same pattern as the accordion header bars.
+								$methodsRows.each(function () {
+									var $r = $(this);
+									$r.children('th').remove();
+									$r.children('td').attr('colspan', 2);
+								});
+
+								// Re-order: toggle -> [Payment Methods header + rows] -> [Additional Settings header + rows]
+								$methodsRows.detach();
+								$additionalRows.detach();
+								$toggleRow.after($methodsHeader);
+								$methodsHeader.after($methodsRows);
+								$methodsRows.last().after($additionalHeader);
+								$additionalHeader.after($additionalRows);
+
+								// Exclusive toggle: opening one closes the other; only one ever expanded.
+								$methodsHeader.find('.mep-acc-bar').on('click', function() {
+									var willOpen = ! $methodsHeader.hasClass('open');
+									$methodsHeader.toggleClass('open', willOpen);
+									if ( willOpen ) { $additionalHeader.removeClass('open'); }
+									refreshAccordions();
+								});
+								$additionalHeader.find('.mep-acc-bar').on('click', function() {
+									var willOpen = ! $additionalHeader.hasClass('open');
+									$additionalHeader.toggleClass('open', willOpen);
+									if ( willOpen ) { $methodsHeader.removeClass('open'); }
+									refreshAccordions();
+								});
+							}
+
 							$('#wpuf-payment_setting_sec\\[mep_enable_wc_payment\\]').on('change', toggleWcSettings);
 							function updateTabs() {
 								var activeTabId = $(".payment-sub-tabs .nav-tab-active").attr("href").replace("#", "");
 								$("tr.woocommerce-field, div.woocommerce-field, tr.no-woocommerce-field").hide();
 								
-								// Hide save button on Custom Payment tab
+								// Show save button on Custom Payment tab (needed for Booking Confirmation Page)
 								if (activeTabId === 'no-woocommerce-field') {
-									$('#payment_setting_sec .submit').hide();
+									$('#payment_setting_sec .submit').show();
 								} else {
 									$('#payment_setting_sec .submit').show();
 								}
@@ -872,13 +1058,16 @@ tr.payment_tabs_html { display: none !important; }
 					$payment_settings = array();
 				}
 				$payment_settings['mep_enable_wc_payment'] = isset( $_POST['mep_enable_wc_payment'] ) ? sanitize_text_field( $_POST['mep_enable_wc_payment'] ) : 'off';
-				$payment_settings['mep_paypal_enable'] = isset( $_POST['mep_paypal_enable'] ) ? sanitize_text_field( $_POST['mep_paypal_enable'] ) : 'off';
-				$payment_settings['mep_stripe_enable'] = isset( $_POST['mep_stripe_enable'] ) ? sanitize_text_field( $_POST['mep_stripe_enable'] ) : 'off';
-				
+				// mep_paypal_enable / mep_stripe_enable are managed solely by each gateway's
+				// Configure modal (its own enable toggle). The Custom Payment tab no longer
+				// has those checkboxes, so we must NOT touch those keys here or every save
+				// would disable the gateways.
+
 				$payment_settings['mep_wc_add_to_cart_redirect'] = isset( $_POST['mep_wc_add_to_cart_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_add_to_cart_redirect'] ) : 'checkout';
 				$payment_settings['mep_wc_after_order_redirect'] = isset( $_POST['mep_wc_after_order_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_after_order_redirect'] ) : 'plugin_thankyou';
 				$payment_settings['mep_wc_require_login'] = isset( $_POST['mep_wc_require_login'] ) ? sanitize_text_field( $_POST['mep_wc_require_login'] ) : '';
 				$payment_settings['mep_wc_show_billing_info'] = isset( $_POST['mep_wc_show_billing_info'] ) ? sanitize_text_field( $_POST['mep_wc_show_billing_info'] ) : '';
+				$payment_settings['mep_confirmation_page_id'] = isset( $_POST['mep_confirmation_page_id'] ) ? absint( $_POST['mep_confirmation_page_id'] ) : 0;
 				
 				if ( isset( $_POST['mep_wc_confirm_ticket_status'] ) && is_array( $_POST['mep_wc_confirm_ticket_status'] ) ) {
 					$statuses = array();
@@ -957,6 +1146,33 @@ tr.payment_tabs_html { display: none !important; }
 				$this->settings_api->set_fields( $this->get_settings_fields() );
 				//initialize settings
 				$this->settings_api->admin_init();
+
+				// Preserve PayPal/Stripe keys when the Settings API saves payment_setting_sec.
+				// Those fields are managed via their own AJAX modals and are never part of
+				// the settings form, so without this they get wiped on every "Save Changes".
+				//
+				// IMPORTANT: only restore a key when it is ABSENT from the incoming value.
+				// admin-ajax.php fires admin_init (and thus this filter) before the ajax
+				// action runs, so the gateway modals' own save (which DOES include these
+				// keys with new values) must not be clobbered back to the old values.
+				add_filter( 'pre_update_option_payment_setting_sec', function( $new_value, $old_value ) {
+					$protected_keys = array(
+						'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret',
+						'mep_stripe_enable', 'mep_stripe_sandbox',
+						'mep_stripe_test_pub', 'mep_stripe_test_sec',
+						'mep_stripe_live_pub', 'mep_stripe_live_sec',
+						'mep_offline_enable', 'mep_offline_label',
+					);
+					if ( ! is_array( $new_value ) ) {
+						return $new_value;
+					}
+					foreach ( $protected_keys as $key ) {
+						if ( ! isset( $new_value[ $key ] ) && isset( $old_value[ $key ] ) ) {
+							$new_value[ $key ] = $old_value[ $key ];
+						}
+					}
+					return $new_value;
+				}, 10, 2 );
 			}
 
 			function admin_menu() {
@@ -1016,6 +1232,10 @@ tr.payment_tabs_html { display: none !important; }
 						'title' => '<i class="mi mi-shopping-cart"></i>' . __( 'Payment', 'mage-eventpress' )
 					),
 					array(
+						'id'    => 'mep_currency_settings',
+						'title' => '<i class="mi mi-usd-circle"></i>' . __( 'Currency', 'mage-eventpress' )
+					),
+					array(
 						'id'    => 'mep_settings_licensing',
 						'title' => '<i class="mi mi-license"></i>'. __( 'License', 'mage-eventpress' )
 					)
@@ -1045,6 +1265,7 @@ tr.payment_tabs_html { display: none !important; }
 				$st_test_sec = isset($payment_opts['mep_stripe_test_sec']) ? esc_attr($payment_opts['mep_stripe_test_sec']) : '';
 				$st_live_pub = isset($payment_opts['mep_stripe_live_pub']) ? esc_attr($payment_opts['mep_stripe_live_pub']) : '';
 				$st_live_sec = isset($payment_opts['mep_stripe_live_sec']) ? esc_attr($payment_opts['mep_stripe_live_sec']) : '';
+				$off_enable = isset($payment_opts['mep_offline_enable']) ? checked($payment_opts['mep_offline_enable'], 'on', false) : '';
 				$settings_fields = array(
 					'general_setting_sec'      => apply_filters( 'mep_settings_general_arr', array(
 							array(
@@ -2151,7 +2372,7 @@ tr.payment_tabs_html { display: none !important; }
 									'cart'     => __( 'Cart', 'mage-eventpress' ),
 									'checkout' => __( 'Checkout', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_after_order_redirect',
@@ -2163,7 +2384,7 @@ tr.payment_tabs_html { display: none !important; }
 									'plugin_thankyou' => __( 'Plugin Thank You Page', 'mage-eventpress' ),
 									'woo_thankyou'    => __( 'WooCommerce Thank You Page', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_require_login',
@@ -2171,7 +2392,7 @@ tr.payment_tabs_html { display: none !important; }
 								'desc'    => __( 'Require login to purchase event tickets.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_show_billing_info',
@@ -2179,7 +2400,7 @@ tr.payment_tabs_html { display: none !important; }
 								'desc'    => __( 'Show billing info on WooCommerce checkout page.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_confirm_ticket_status',
@@ -2193,7 +2414,17 @@ tr.payment_tabs_html { display: none !important; }
 									'on-hold'    => __( 'On hold', 'mage-eventpress' ),
 									'completed'  => __( 'Completed', 'mage-eventpress' ),
 								),
-								'class'   => 'woocommerce-field'
+								'class'   => 'woocommerce-field wc-additional-field'
+							),
+							array(
+								'name'     => 'mep_wc_payment_gateways_manager',
+								'label'    => '',
+								'class'    => 'woocommerce-field wc-payment-methods-field',
+								'callback' => function() {
+									if ( class_exists( 'WooCommerce' ) && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
+										MPWEM_WC_Payment_Manager::instance()->render();
+									}
+								},
 							),
 							array(
 								'name'    => 'payment_gateways_ui',
@@ -2229,9 +2460,103 @@ tr.payment_tabs_html { display: none !important; }
         ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>' : '<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="' . esc_attr__("Available in Pro version", "mage-eventpress") . '">PRO</span>' ) . '
     </div>
 </div>
+
+<!-- Offline Payment Card -->
+<div class="gateway-card offline-card">
+    <div class="gateway-header">
+        <h3>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;">
+                <path d="M3 19h18a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M2 10h20M6 14h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            ' . __( "Offline Payment", "mage-eventpress" ) . '
+        </h3>
+        <span class="gateway-status ' . ($off_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($off_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
+        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-offline-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
+    </div>
+</div>
+
+<!-- Booking Confirmation Page -->
+<div style="margin-top:24px; padding-top:20px; border-top:1px solid #e2e4e7; display:flex; align-items:flex-start; gap:0;">
+    <div style="width:30%; padding-right:20px; box-sizing:border-box;">
+        <label style="display:block; font-weight:600; font-size:13px; color:#1d2327; margin:0 0 4px;">' . __( "Booking Confirmation Page", "mage-eventpress" ) . '</label>
+        <span style="display:block; margin:0; font-size:11px; color:#9ca3af !important; line-height:1.6; font-weight:400;">' . __( "Select a page with the [mep_booking_confirmation] shortcode. After booking, customers are redirected here instead of back to the event page.", "mage-eventpress" ) . '</span>
+    </div>
+    <div style="width:70%; box-sizing:border-box;">
+        ' . wp_dropdown_pages( array(
+            'name'              => 'payment_setting_sec[mep_confirmation_page_id]',
+            'id'                => 'mep_confirmation_page_id',
+            'selected'          => ( function() { $o = get_option( 'payment_setting_sec', array() ); return ! empty( $o['mep_confirmation_page_id'] ) ? absint( $o['mep_confirmation_page_id'] ) : 0; } )(),
+            'show_option_none'  => __( '— Default —', 'mage-eventpress' ),
+            'option_none_value' => '0',
+            'style'             => 'width:100%; max-width:320px; border:1px solid #d1d5db; border-radius:6px; padding:6px 10px; font-size:13px;',
+            'echo'              => 0,
+        ) ) . '
+    </div>
+</div>
 '
 							)
 						)
+					),
+					'mep_currency_settings' => array(
+						array(
+							'name' => 'mep_currency_info',
+							'type' => 'html',
+							'desc' => ( function() {
+								$has_woo = MPWEM_Global_Function::has_woocommerce();
+								if ( $has_woo ) {
+									return '<div style="background:#e8f4fd;border-left:4px solid #2271b1;padding:14px 18px;border-radius:4px;font-size:13px;color:#1e3a5f;margin-bottom:4px;">'
+										. '<strong>' . esc_html__( 'WooCommerce is active', 'mage-eventpress' ) . '</strong> — '
+										. esc_html__( 'Currency display is controlled by WooCommerce settings. The settings below are used as a fallback when WooCommerce is deactivated.', 'mage-eventpress' )
+										. '</div>';
+								}
+								return '<div style="background:#fff3cd;border-left:4px solid #ffc107;padding:14px 18px;border-radius:4px;font-size:13px;color:#664d03;margin-bottom:4px;">'
+									. '<strong>' . esc_html__( 'WooCommerce is not active', 'mage-eventpress' ) . '</strong> — '
+									. esc_html__( 'These currency settings are used for price display and the native checkout flow.', 'mage-eventpress' )
+									. '</div>';
+							} )(),
+						),
+						array(
+							'name'    => 'mep_currency_symbol',
+							'label'   => __( 'Currency Symbol', 'mage-eventpress' ),
+							'desc'    => __( 'The symbol to display next to prices (e.g. $, €, £, ৳).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '$',
+						),
+						array(
+							'name'    => 'mep_currency_position',
+							'label'   => __( 'Currency Position', 'mage-eventpress' ),
+							'desc'    => __( 'Where the symbol appears relative to the price.', 'mage-eventpress' ),
+							'type'    => 'select',
+							'default' => 'left',
+							'options' => array(
+								'left'        => __( 'Left — $99', 'mage-eventpress' ),
+								'right'       => __( 'Right — 99$', 'mage-eventpress' ),
+								'left_space'  => __( 'Left with space — $ 99', 'mage-eventpress' ),
+								'right_space' => __( 'Right with space — 99 $', 'mage-eventpress' ),
+							),
+						),
+						array(
+							'name'    => 'mep_currency_decimal_sep',
+							'label'   => __( 'Decimal Separator', 'mage-eventpress' ),
+							'desc'    => __( 'Character used as the decimal separator (e.g. . or ,).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '.',
+						),
+						array(
+							'name'    => 'mep_currency_thousand_sep',
+							'label'   => __( 'Thousands Separator', 'mage-eventpress' ),
+							'desc'    => __( 'Character used as the thousands separator (e.g. , or .). Leave blank for none.', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => ',',
+						),
+						array(
+							'name'    => 'mep_currency_num_decimals',
+							'label'   => __( 'Number of Decimals', 'mage-eventpress' ),
+							'desc'    => __( 'How many decimal places to show in prices (e.g. 2 → $9.99).', 'mage-eventpress' ),
+							'type'    => 'text',
+							'default' => '2',
+						),
 					),
 				);
 

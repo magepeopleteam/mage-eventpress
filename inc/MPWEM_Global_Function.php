@@ -282,6 +282,22 @@
 			public static function has_woocommerce(): bool {
 				return class_exists( 'WooCommerce' ) || self::check_woocommerce() === 1;
 			}
+			/**
+			 * Whether the WooCommerce checkout/payment flow should be used for bookings.
+			 *
+			 * Returns true only when WooCommerce is active AND the global
+			 * "Enable WooCommerce Payment" setting is on. When the admin disables it,
+			 * bookings fall back to the native checkout (custom payment) flow even if
+			 * WooCommerce itself is active.
+			 */
+			public static function use_wc_payment(): bool {
+				if ( ! self::has_woocommerce() ) {
+					return false;
+				}
+				$opts  = get_option( 'payment_setting_sec', array() );
+				$value = isset( $opts['mep_enable_wc_payment'] ) ? $opts['mep_enable_wc_payment'] : 'on';
+				return $value === 'on';
+			}
 			public static function get_admin_capability(): string {
 				return self::has_woocommerce() ? 'manage_woocommerce' : 'edit_posts';
 			}
@@ -482,6 +498,55 @@
 					'H:i'         => date( 'H:i' ),
 					'H\H i\m\i\n' => date( 'H\H i\m\i\n' ),
 				];
+			}
+			public static function get_native_currency_settings(): array {
+				return wp_parse_args(
+					(array) get_option( 'mep_currency_settings', [] ),
+					[
+						'mep_currency_symbol'       => '$',
+						'mep_currency_position'     => 'left',
+						'mep_currency_decimal_sep'  => '.',
+						'mep_currency_thousand_sep' => ',',
+						'mep_currency_num_decimals' => 2,
+					]
+				);
+			}
+			public static function get_currency_symbol(): string {
+				if ( self::has_woocommerce() ) {
+					return get_woocommerce_currency_symbol();
+				}
+				$opts = self::get_native_currency_settings();
+				return (string) $opts['mep_currency_symbol'];
+			}
+			public static function get_currency_position(): string {
+				if ( self::has_woocommerce() ) {
+					return (string) get_option( 'woocommerce_currency_pos', 'left' );
+				}
+				$opts = self::get_native_currency_settings();
+				return (string) $opts['mep_currency_position'];
+			}
+			public static function mep_format_price( $amount ): string {
+				$amount = (float) $amount;
+				if ( self::has_woocommerce() ) {
+					return wc_price( $amount );
+				}
+				$show_free = self::get_settings( 'general_setting_sec', 'mep_show_zero_as_free', 'yes' );
+				if ( $amount == 0 && $show_free === 'yes' ) {
+					return __( 'Free', 'mage-eventpress' );
+				}
+				$opts     = self::get_native_currency_settings();
+				$symbol   = (string) $opts['mep_currency_symbol'];
+				$position = (string) $opts['mep_currency_position'];
+				$dec_sep  = (string) $opts['mep_currency_decimal_sep'];
+				$thou_sep = (string) $opts['mep_currency_thousand_sep'];
+				$decimals = (int) $opts['mep_currency_num_decimals'];
+				$number   = number_format( $amount, $decimals, $dec_sep, $thou_sep );
+				switch ( $position ) {
+					case 'right':       return '<span class="woocommerce-Price-amount amount">' . $number . '<span class="woocommerce-Price-currencySymbol">' . $symbol . '</span></span>';
+					case 'left_space':  return '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $symbol . '</span>&nbsp;' . $number . '</span>';
+					case 'right_space': return '<span class="woocommerce-Price-amount amount">' . $number . '&nbsp;<span class="woocommerce-Price-currencySymbol">' . $symbol . '</span></span>';
+					default:            return '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $symbol . '</span>' . $number . '</span>';
+				}
 			}
 		}
 		new MPWEM_Global_Function();
@@ -978,7 +1043,6 @@
 				}
 				return $message;
 			}
-			//***********************************//
 			public static function get_country_list() {
 				return array(
 					'AF' => 'Afghanistan',

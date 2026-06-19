@@ -2218,6 +2218,16 @@
             openParticularDateModal($root, mode, Number.isNaN(rowIndex) ? null : rowIndex);
         });
 
+        $root.on('click.mpwemDateModal', '#mpwem_particular_date_summary .mpwem-ticket-summary__item', function(e) {
+            if ($(e.target).closest('[data-mpwem-date-modal-open], button, a, input, select, textarea').length) {
+                return;
+            }
+
+            e.preventDefault();
+            const rowIndex = parseInt($(this).attr('data-date-row-index'), 10);
+            openParticularDateModal($root, 'list', Number.isNaN(rowIndex) ? null : rowIndex);
+        });
+
         $root.on('click.mpwemDateModal', '[data-mpwem-date-modal-close]', function(e) {
             e.preventDefault();
             closeParticularDateModal($root);
@@ -2518,8 +2528,54 @@
                 }
             }
 
+            if (section.className === 'mpwem-display-section--attendee-form') {
+                const $head = $mount.children('.mpwem-display-section__head').first();
+                let $body = $mount.children('.mpwem-display-section__body').first();
+
+                if (!$body.length) {
+                    const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
+                    $body = $('<div class="mpwem-display-section__body"></div>');
+                    $body.append($bodyChildren);
+                    $mount.append($body);
+                }
+
+                // Find the real mep_event_reg_form_status checkbox inside the content
+                const $realCheckbox = $body.find('input[name="mep_event_reg_form_status"]').first();
+                const isInitiallyEnabled = $realCheckbox.length ? $realCheckbox.is(':checked') : false;
+
+                if ($head.length && !$head.find('.mpwem-display-toggle-wrap').length) {
+                    $head.append(
+                        $('<label class="mpwem-switch-wrap mpwem-display-toggle-wrap" aria-label="Toggle section"></label>')
+                            .append('<input type="checkbox" class="mpwem-switch-input mpwem-display-toggle" />')
+                            .append('<span class="mpwem-switch-slider"></span>')
+                    );
+                }
+
+                const $toggle = $head.find('.mpwem-display-toggle').first();
+                const syncAttendeeFormToggle = function(isExpanded, useAnimation) {
+                    $mount.toggleClass('is-collapsed', !isExpanded);
+                    $mount.toggleClass('is-expanded', isExpanded);
+                    $toggle.prop('checked', isExpanded).attr('aria-expanded', isExpanded ? 'true' : 'false');
+                    // Keep the real checkbox in sync so the value is submitted with the form
+                    if ($realCheckbox.length) {
+                        $realCheckbox.prop('checked', isExpanded);
+                    }
+
+                    if (useAnimation) {
+                        $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220);
+                    } else {
+                        $body.toggle(isExpanded);
+                    }
+                };
+
+                $toggle.off('change.mpwemSectionToggle').on('change.mpwemSectionToggle', function() {
+                    syncAttendeeFormToggle($(this).is(':checked'), true);
+                });
+
+                syncAttendeeFormToggle(isInitiallyEnabled, false);
+            }
+
             if (
-                section.className === 'mpwem-display-section--attendee-form' ||
                 section.className === 'mpwem-display-section--seo' ||
                 section.className === 'mpwem-display-section--email' ||
                 section.className === 'mpwem-display-section--email-reminder' ||

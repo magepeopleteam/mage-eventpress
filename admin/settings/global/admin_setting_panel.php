@@ -201,6 +201,8 @@
 			$st_test_sec = esc_attr( $opts['mep_stripe_test_sec'] ?? '' );
 			$st_live_pub = esc_attr( $opts['mep_stripe_live_pub'] ?? '' );
 			$st_live_sec = esc_attr( $opts['mep_stripe_live_sec'] ?? '' );
+			$off_enabled = ! empty( $opts['mep_offline_enable'] ) && $opts['mep_offline_enable'] === 'on';
+			$off_label   = esc_attr( $opts['mep_offline_label'] ?? __( 'Offline Payment', 'mage-eventpress' ) );
 			$nonce       = wp_create_nonce( 'mep_save_gateway' );
 			?>
 			<style>
@@ -400,6 +402,47 @@
 				</div>
 			</div>
 
+			<!-- Offline Payment Config Modal -->
+			<div id="mep-offline-modal" class="mep-gw-modal" style="display:none;">
+				<div class="mep-gw-modal-box">
+					<div class="mep-gw-modal-header" style="background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);">
+						<h2>
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3 19h18a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+								<path d="M2 10h20M6 14h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+							</svg>
+							<?php esc_html_e( 'Offline Payment Configuration', 'mage-eventpress' ); ?>
+						</h2>
+						<button type="button" class="mep-gw-modal-close">&times;</button>
+					</div>
+					<div class="mep-gw-modal-body">
+						<!-- Enable Offline Payment -->
+						<div class="mep-gw-toggle-row">
+							<div>
+								<div class="mep-gw-toggle-label"><?php esc_html_e( 'Enable Offline Payment', 'mage-eventpress' ); ?></div>
+								<div class="mep-gw-toggle-sub"><?php esc_html_e( 'Let customers pay offline (bank transfer, cash, pay at venue).', 'mage-eventpress' ); ?></div>
+							</div>
+							<label class="mep-gw-switch">
+								<input type="checkbox" data-field="mep_offline_enable" <?php checked( $off_enabled ); ?>>
+								<span class="mep-gw-slider"></span>
+							</label>
+						</div>
+						<hr class="mep-gw-divider">
+						<div class="mep-gw-field">
+							<label class="mep-gw-label"><?php esc_html_e( 'Payment Label', 'mage-eventpress' ); ?></label>
+							<input type="text" data-field="mep_offline_label" value="<?php echo $off_label; ?>" placeholder="<?php esc_attr_e( 'e.g. Pay at Venue / Bank Transfer', 'mage-eventpress' ); ?>">
+							<p style="margin:8px 0 0; font-size:12px; color:#6b7280;"><?php esc_html_e( 'This label is shown to customers on the frontend payment page.', 'mage-eventpress' ); ?></p>
+						</div>
+					</div>
+					<div class="mep-gw-modal-footer">
+						<button type="button" class="mep-gw-save-btn" data-gateway="offline" style="background: linear-gradient(135deg,#0f766e,#115e59);">
+							<?php esc_html_e( 'Save Offline Settings', 'mage-eventpress' ); ?>
+						</button>
+						<span class="mep-gw-save-msg"></span>
+					</div>
+				</div>
+			</div>
+
 			<script>
 			var mepGateway = <?php echo wp_json_encode(array(
 				'nonce'    => $nonce,
@@ -434,6 +477,10 @@
 				$(document).on('click', '#mep-stripe-configure-btn', function(e) {
 					e.preventDefault();
 					$('#mep-stripe-modal').css('display','flex').hide().fadeIn(220);
+				});
+				$(document).on('click', '#mep-offline-configure-btn', function(e) {
+					e.preventDefault();
+					$('#mep-offline-modal').css('display','flex').hide().fadeIn(220);
 				});
 				// Close modals
 				$(document).on('click', '.mep-gw-modal-close, .mep-gw-modal-backdrop', function() {
@@ -516,8 +563,9 @@
 			}
 
 			$allowed = array(
-				'paypal' => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
-				'stripe' => array( 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_stripe_test_pub', 'mep_stripe_test_sec', 'mep_stripe_live_pub', 'mep_stripe_live_sec' ),
+				'paypal'  => array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret' ),
+				'stripe'  => array( 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_stripe_test_pub', 'mep_stripe_test_sec', 'mep_stripe_live_pub', 'mep_stripe_live_sec' ),
+				'offline' => array( 'mep_offline_enable', 'mep_offline_label' ),
 			);
 
 			if ( ! array_key_exists( $gateway, $allowed ) ) {
@@ -527,7 +575,7 @@
 			foreach ( $allowed[ $gateway ] as $key ) {
 				$val = isset( $fields[ $key ] ) ? $fields[ $key ] : 'off';
 				// Toggles are on/off; other fields are text
-				if ( in_array( $key, array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_stripe_enable', 'mep_stripe_sandbox' ), true ) ) {
+				if ( in_array( $key, array( 'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_stripe_enable', 'mep_stripe_sandbox', 'mep_offline_enable' ), true ) ) {
 					$existing[ $key ] = ( $val === 'on' ) ? 'on' : 'off';
 				} else {
 					$existing[ $key ] = sanitize_text_field( $val );
@@ -784,6 +832,20 @@ tr.payment_tabs_html { display: none !important; }
 .gateway-card.stripe-card p.description { color: rgba(255,255,255,0.85); }
 .gateway-card.stripe-card input[type="text"], .gateway-card.stripe-card input[type="password"] { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
 .gateway-card.stripe-card input[type="text"]:focus, .gateway-card.stripe-card input[type="password"]:focus { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+/* Stripe is no longer the last card; restore its spacing above the Offline card. */
+.gateway-card.stripe-card { margin-bottom: 10px; }
+.gateway-card.offline-card {
+    background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+    border: none;
+    color: #fff;
+    margin-bottom: 0;
+}
+.gateway-card.offline-card .gateway-header { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.gateway-card.offline-card .gateway-header h3 { color: #fff; }
+.gateway-card.offline-card .gateway-header svg path { stroke: #fff !important; }
+.gateway-card.offline-card .gateway-status { background: rgba(255,255,255,0.2); color: #fff; }
+.gateway-card.offline-card .gateway-status.active { background: #fff; color: #0f766e; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.gateway-card.offline-card .gateway-configure-btn { color: #0f766e !important; background: #fff !important; border: none !important; font-weight:600 !important; border-radius: 6px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important; }
 </style>
 
 				<style> /* Payment settings accordions (WooCommerce sub-tab) */
@@ -801,7 +863,7 @@ tr.payment_tabs_html { display: none !important; }
 						border: 1px solid #dcdcde;
 						border-radius: 8px;
 						padding: 12px 16px;
-						margin: 14px 0 4px;
+						margin: 14px 4px 4px;
 						transition: background 0.2s ease, border-color 0.2s ease;
 					}
 					tr.mep-acc-header .mep-acc-bar:hover {
@@ -1096,6 +1158,7 @@ tr.payment_tabs_html { display: none !important; }
 						'mep_stripe_enable', 'mep_stripe_sandbox',
 						'mep_stripe_test_pub', 'mep_stripe_test_sec',
 						'mep_stripe_live_pub', 'mep_stripe_live_sec',
+						'mep_offline_enable', 'mep_offline_label',
 					);
 					if ( ! is_array( $new_value ) ) {
 						return $new_value;
@@ -1199,6 +1262,7 @@ tr.payment_tabs_html { display: none !important; }
 				$st_test_sec = isset($payment_opts['mep_stripe_test_sec']) ? esc_attr($payment_opts['mep_stripe_test_sec']) : '';
 				$st_live_pub = isset($payment_opts['mep_stripe_live_pub']) ? esc_attr($payment_opts['mep_stripe_live_pub']) : '';
 				$st_live_sec = isset($payment_opts['mep_stripe_live_sec']) ? esc_attr($payment_opts['mep_stripe_live_sec']) : '';
+				$off_enable = isset($payment_opts['mep_offline_enable']) ? checked($payment_opts['mep_offline_enable'], 'on', false) : '';
 				$settings_fields = array(
 					'general_setting_sec'      => apply_filters( 'mep_settings_general_arr', array(
 							array(
@@ -2391,6 +2455,21 @@ tr.payment_tabs_html { display: none !important; }
         </h3>
         ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<span class="gateway-status ' . ($st_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($st_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>' : '' ) . '
         ' . ( mep_check_plugin_installed( "mage-eventpress-pro/woocommerce-event-manager-pro.php" ) ? '<button type="button" class="button button-secondary gateway-configure-btn" id="mep-stripe-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>' : '<span style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border:none; box-shadow: 0 2px 4px rgba(253,160,133,0.3); user-select: none;" title="' . esc_attr__("Available in Pro version", "mage-eventpress") . '">PRO</span>' ) . '
+    </div>
+</div>
+
+<!-- Offline Payment Card -->
+<div class="gateway-card offline-card">
+    <div class="gateway-header">
+        <h3>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:4px;">
+                <path d="M3 19h18a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M2 10h20M6 14h4" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            ' . __( "Offline Payment", "mage-eventpress" ) . '
+        </h3>
+        <span class="gateway-status ' . ($off_enable ? "active" : "") . '" style="position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;">' . ($off_enable ? __("Enabled", "mage-eventpress") : __("Disabled", "mage-eventpress")) . '</span>
+        <button type="button" class="button button-secondary gateway-configure-btn" id="mep-offline-configure-btn">' . __( "Configure", "mage-eventpress" ) . '</button>
     </div>
 </div>
 

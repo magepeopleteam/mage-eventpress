@@ -328,7 +328,19 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 
 				/* Toggle switch */
 				.mep-gw-toggle { position:relative; display:inline-block; width:42px; height:24px; cursor:pointer; flex:0 0 auto; }
-				.mep-gw-toggle-input { opacity:0; width:0; height:0; position:absolute; }
+				/* Fully neutralise the native checkbox so WooCommerce/WP core checkbox
+				   styles (native appearance + the :checked ::before checkmark) can never
+				   flash into view during the toggle animation. The slider is the only
+				   visual; the input stays on top, invisible, for click + a11y. */
+				.mep-gw-toggle-input {
+					position:absolute; inset:0; margin:0; padding:0;
+					width:100%; height:100%; min-width:0 !important; min-height:0 !important;
+					opacity:0 !important; cursor:pointer; z-index:1;
+					-webkit-appearance:none !important; -moz-appearance:none !important; appearance:none !important;
+					background:none !important; border:none !important; box-shadow:none !important;
+				}
+				.mep-gw-toggle-input::before,
+				.mep-gw-toggle-input::after { content:none !important; display:none !important; }
 				.mep-gw-toggle-slider { position:absolute; inset:0; background:#b5b5ba; border-radius:24px; transition:background .2s; }
 				.mep-gw-toggle-slider::before { content:''; position:absolute; height:18px; width:18px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.3); }
 				.mep-gw-toggle-input:checked + .mep-gw-toggle-slider { background:#2271b1; }

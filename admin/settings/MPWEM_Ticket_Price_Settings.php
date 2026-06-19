@@ -36,17 +36,37 @@
 					$wc_active = MPWEM_Global_Function::has_woocommerce();
 					?>
 					<div class="mpwem-ticket-warnings <?php echo esc_attr( $active_reg_status ); ?>" data-collapse="#mep_reg_status" style="margin-bottom: 20px;">
-						<?php if ( $show_payment_warning ) : ?>
-							<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-								<div>
-									<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
-									<span style="font-size: 13px;"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
-								</div>
-								<div>
-									<button type="button" class="button button-primary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
-								</div>
+						<?php
+						// This row is always visible. The exact enabled state of WooCommerce
+						// gateways is resolved on the client (the modal already renders each
+						// gateway's enabled state), so we render both the warning and the
+						// "method enabled" state and let JS show the correct one. The data-*
+						// flags pass the server-known state (saved option, PayPal, Stripe).
+						?>
+						<div class="mpwem-payment-warning" style="background: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; border-radius: var(--mpwem-radius); display: <?php echo $show_payment_warning ? 'flex' : 'none'; ?>; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+							<div>
+								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i><?php esc_html_e( 'No Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+								<span style="font-size: 13px;"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
 							</div>
-						<?php endif; ?>
+							<div>
+								<button type="button" class="button button-primary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
+							</div>
+						</div>
+						<div class="mpwem-payment-status"
+							data-woo-enabled="<?php echo $woo_enabled ? '1' : '0'; ?>"
+							data-option-set="<?php echo isset( $payment_opts['mep_enable_wc_payment'] ) ? '1' : '0'; ?>"
+							data-wc-active="<?php echo $wc_active ? '1' : '0'; ?>"
+							data-paypal="<?php echo $paypal_enabled ? '1' : '0'; ?>"
+							data-stripe="<?php echo $stripe_enabled ? '1' : '0'; ?>"
+							style="background: #e6f4ea; color: #0a7c2f; padding: 15px; border-left: 4px solid #34c759; border-radius: var(--mpwem-radius); display: <?php echo $show_payment_warning ? 'none' : 'flex'; ?>; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+							<div>
+								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-check-circle" style="margin-right: 5px;"></i><?php esc_html_e( 'Payment Method Enabled', 'mage-eventpress' ); ?></strong>
+								<span style="font-size: 13px;"><?php esc_html_e( 'Active:', 'mage-eventpress' ); ?> <span class="mpwem-payment-status__methods" style="font-weight: 600;"></span></span>
+							</div>
+							<div>
+								<button type="button" class="button button-secondary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Change Payment Method', 'mage-eventpress' ); ?></button>
+							</div>
+						</div>
 					</div>
 					
 					<?php $this->setting_head( $event_id, $event_infos ); ?>
@@ -80,7 +100,12 @@
 				$rendered = true;
 
 				$payment_opts             = get_option( 'payment_setting_sec', array() );
-				$woo_enabled              = isset( $payment_opts['mep_enable_wc_payment'] ) && $payment_opts['mep_enable_wc_payment'] === 'on';
+				// Whether the admin has explicitly saved the WooCommerce gateway toggle
+				// before. When they have not, JS auto-enables it if WooCommerce already
+				// has an enabled gateway (detected from the rendered gateway list, so no
+				// extra server-side WooCommerce call is made here).
+				$wc_payment_option_set    = isset( $payment_opts['mep_enable_wc_payment'] );
+				$woo_enabled              = $wc_payment_option_set && $payment_opts['mep_enable_wc_payment'] === 'on';
 				$paypal_enabled           = isset( $payment_opts['mep_paypal_enable'] ) && $payment_opts['mep_paypal_enable'] === 'on';
 				$stripe_enabled           = isset( $payment_opts['mep_stripe_enable'] ) && $payment_opts['mep_stripe_enable'] === 'on';
 				$wc_add_to_cart_redirect  = isset( $payment_opts['mep_wc_add_to_cart_redirect'] ) ? $payment_opts['mep_wc_add_to_cart_redirect'] : 'checkout';
@@ -462,6 +487,70 @@
 							} else {
 								$('.mep-modal-wc-fields').stop(true, true).slideUp(200);
 							}
+						});
+
+						// Resolve the payment status row on the ticket tab and the modal
+						// toggle from the gateway state the modal already renders (no extra
+						// server-side WooCommerce call). The status row stays visible at all
+						// times: it shows the enabled method name + a "Change" button, or the
+						// "no method" warning when nothing is configured.
+						function mepRefreshPaymentStatus() {
+							var $statusRow = $('.mpwem-payment-status');
+							var $warnRow   = $('.mpwem-payment-warning');
+							if (!$statusRow.length) {
+								return;
+							}
+
+							var optionSet = $statusRow.data('option-set') == 1;
+							var wooOption = $statusRow.data('woo-enabled') == 1;
+							var wcActive  = $statusRow.data('wc-active') == 1;
+							var paypalOn  = $statusRow.data('paypal') == 1;
+							var stripeOn  = $statusRow.data('stripe') == 1;
+
+							// Names of the WooCommerce gateways that are currently enabled.
+							var gwNames = [];
+							$('.mep-gw-toggle-input:checked').each(function() {
+								var name = $(this).closest('.mep-gw-card').find('.mep-gw-title').first().text().trim();
+								if (name) {
+									gwNames.push(name);
+								}
+							});
+
+							// WooCommerce counts as an active method when it is active, has an
+							// enabled gateway, and the admin has not explicitly turned it off.
+							var wcOn = wcActive && gwNames.length > 0 && (wooOption || !optionSet);
+
+							var methods = [];
+							if (wcOn) {
+								methods.push('WooCommerce (' + gwNames.join(', ') + ')');
+							}
+							if (paypalOn) { methods.push('PayPal'); }
+							if (stripeOn) { methods.push('Stripe'); }
+
+							if (methods.length > 0) {
+								$statusRow.find('.mpwem-payment-status__methods').text(methods.join(', '));
+								$warnRow.hide();
+								$statusRow.css('display', 'flex');
+							} else {
+								$statusRow.hide();
+								$warnRow.css('display', 'flex');
+							}
+
+							// Auto-enable the modal toggle when WooCommerce has an enabled
+							// gateway and the admin has not explicitly configured it yet.
+							if (!optionSet && gwNames.length > 0) {
+								var $toggle = $('#mep_modal_enable_wc');
+								if ($toggle.length && !$toggle.is(':checked')) {
+									$toggle.prop('checked', true).trigger('change');
+								}
+							}
+						}
+
+						mepRefreshPaymentStatus();
+
+						// Keep the status row in sync when a gateway is toggled inside the modal.
+						$(document).on('change', '.mep-gw-toggle-input', function() {
+							mepRefreshPaymentStatus();
 						});
 
 						// Modal Tabs Switching

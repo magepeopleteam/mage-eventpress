@@ -1141,12 +1141,6 @@ tr.payment_tabs_html { display: none !important; }
 			}
 
 			function admin_init() {
-				//set the settings
-				$this->settings_api->set_sections( $this->get_settings_sections() );
-				$this->settings_api->set_fields( $this->get_settings_fields() );
-				//initialize settings
-				$this->settings_api->admin_init();
-
 				// Preserve PayPal/Stripe keys when the Settings API saves payment_setting_sec.
 				// Those fields are managed via their own AJAX modals and are never part of
 				// the settings form, so without this they get wiped on every "Save Changes".
@@ -1155,6 +1149,10 @@ tr.payment_tabs_html { display: none !important; }
 				// admin-ajax.php fires admin_init (and thus this filter) before the ajax
 				// action runs, so the gateway modals' own save (which DOES include these
 				// keys with new values) must not be clobbered back to the old values.
+				//
+				// This filter is cheap and is registered on EVERY admin request because the
+				// gateway modals save payment_setting_sec via update_option (bypassing
+				// options.php), so it must be active regardless of the page gate below.
 				add_filter( 'pre_update_option_payment_setting_sec', function( $new_value, $old_value ) {
 					$protected_keys = array(
 						'mep_paypal_enable', 'mep_paypal_sandbox', 'mep_paypal_client_id', 'mep_paypal_secret',
@@ -1173,6 +1171,47 @@ tr.payment_tabs_html { display: none !important; }
 					}
 					return $new_value;
 				}, 10, 2 );
+
+				// Building the settings schema (hundreds of fields + translations + a
+				// wp_dropdown_pages/get_pages query) and registering it is only needed when
+				// rendering the plugin's settings page or saving it. Doing it on every admin
+				// page was the primary cause of admin_init being slow site-wide, so gate it.
+				if ( ! $this->should_register_settings() ) {
+					return;
+				}
+
+				//set the settings
+				$this->settings_api->set_sections( $this->get_settings_sections() );
+				$this->settings_api->set_fields( $this->get_settings_fields() );
+				//initialize settings
+				$this->settings_api->admin_init();
+			}
+
+			/**
+			 * Whether the global settings schema needs to be built and registered on this
+			 * request. True only on the plugin's settings page (to render the form) or when
+			 * core options.php is saving one of the plugin's registered option groups (so
+			 * register_setting whitelisting + sanitize callbacks run). False everywhere else.
+			 *
+			 * @return bool
+			 */
+			private function should_register_settings() {
+				// Rendering the plugin settings page.
+				if ( isset( $_GET['page'] ) && $_GET['page'] === 'mep_event_settings_page' ) {
+					return true;
+				}
+
+				// Saving the settings form through core options.php.
+				$pagenow = isset( $GLOBALS['pagenow'] ) ? $GLOBALS['pagenow'] : '';
+				if ( $pagenow === 'options.php' && isset( $_POST['option_page'] ) ) {
+					$option_page = sanitize_text_field( wp_unslash( $_POST['option_page'] ) );
+					$section_ids = wp_list_pluck( $this->get_settings_sections(), 'id' );
+					if ( in_array( $option_page, $section_ids, true ) ) {
+						return true;
+					}
+				}
+
+				return false;
 			}
 
 			function admin_menu() {

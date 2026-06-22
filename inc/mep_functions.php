@@ -707,9 +707,15 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			if ( ! empty( $event_ticket_info_arr ) && is_array( $event_ticket_info_arr ) ) {
 				
 				// বিলিং নেম নেওয়া (যদি অর্ডার অবজেক্ট থাকে)
-				$billing_name = '';
+				// Order-level details (name, email, payment method) are identical for every
+				// ticket in this loop, so resolve them once before iterating.
+				$billing_name   = '';
+				$billing_email  = '';
+				$payment_method = '';
 				if ( $order instanceof WC_Order ) {
-					$billing_name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+					$billing_name   = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+					$billing_email  = $order->get_billing_email();
+					$payment_method = $order->get_payment_method_title();
 				}
 
 				foreach ( $event_ticket_info_arr as $ticket ) {
@@ -729,6 +735,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 
 					// ডাইনামিক ট্যাগ রিপ্লেস
 					$temp_body = str_replace( "{name}", $billing_name, $temp_body );
+					$temp_body = str_replace( "{email}", $billing_email, $temp_body );
 					$temp_body = str_replace( "{event}", $event_name, $temp_body );
 					$temp_body = str_replace( "{ticket_type}", ( isset( $ticket['ticket_name'] ) ? $ticket['ticket_name'] : '' ), $temp_body );
 					$temp_body = str_replace( "{amount_paid}", ( isset( $ticket['ticket_price'] ) ? wc_price( $ticket['ticket_price'] ) : '' ), $temp_body );
@@ -736,6 +743,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 					$temp_body = str_replace( "{event_time}", $t_time, $temp_body );
 					$temp_body = str_replace( "{event_datetime}", $t_date_time, $temp_body );
 					$temp_body = str_replace( "{order_id}", $order_id, $temp_body );
+					$temp_body = str_replace( "{payment_method}", $payment_method, $temp_body );
 
 					$final_output .= $temp_body . "<br><hr><br>";
 				}

@@ -596,7 +596,22 @@
 										// gateways are saved independently via their own modals.
 										$status.css('color', '#0f5132').html('<span class="dashicons dashicons-yes"></span> ' + response.data).fadeIn(200);
 										$btn.prop('disabled', false).css('opacity', '1');
-										setTimeout(function() { $status.fadeOut(300); }, 2500);
+
+										// Sync the ticket-step payment status with what was just saved so the
+										// "No Payment Method Enabled" banner clears without a page reload.
+										var $statusRow = $('.mpwem-payment-status');
+										if ($statusRow.length) {
+											var wooOn = $('#mep_modal_enable_wc').is(':checked') ? 1 : 0;
+											$statusRow.data('option-set', 1).attr('data-option-set', '1');
+											$statusRow.data('woo-enabled', wooOn).attr('data-woo-enabled', String(wooOn));
+										}
+										mepRefreshPaymentStatus();
+
+										// Confirm briefly, then auto-close the modal.
+										setTimeout(function() {
+											$status.fadeOut(300);
+											$('#mep-payment-settings-modal').fadeOut(200);
+										}, 1200);
 									} else {
 										$status.css('color', '#dc3545').html('<span class="dashicons dashicons-no"></span> ' + (response.data || 'Error')).fadeIn(200);
 										$btn.prop('disabled', false).css('opacity', '1');

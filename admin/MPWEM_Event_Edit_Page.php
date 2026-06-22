@@ -1450,17 +1450,28 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-panel-mount" id="mpwem_wizard_venue_mount"></div>
 														</div>
 													</div>
-													<?php if ($speaker_status === 'yes') : ?>
+													<?php
+													$event_speaker_enabled = $post_id ? get_post_meta($post_id, 'mep_event_enable_speaker', true) : '';
+													if ('' === $event_speaker_enabled) {
+														$event_speaker_enabled = 'no';
+													}
+													$speaker_is_enabled = ($event_speaker_enabled === 'yes');
+													?>
 													<div class="mpwem-card" id="mpwem_wizard_speaker_card">
-														<div class="mpwem-card__head">
-															<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
-															<p><?php esc_html_e('Select speakers for this event.', 'mage-eventpress'); ?></p>
+														<div class="mpwem-card__head mpwem-card__head--toggle">
+															<div class="mpwem-card__head-copy">
+																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
+																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
+															</div>
+															<label class="mpwem-event-setting-card__switch">
+																<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
+																<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+															</label>
 														</div>
-														<div class="mpwem-card__body">
+														<div class="mpwem-card__body" id="mpwem_speaker_card_body"<?php echo $speaker_is_enabled ? '' : ' style="display:none;"'; ?>>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_speaker_mount"></div>
 														</div>
 													</div>
-													<?php endif; ?>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
 													<?php
@@ -1921,6 +1932,127 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				);
 				wp_safe_redirect($redirect);
 				exit;
+			}
+
+			// Validate required Basic step fields before publishing.
+			if ($post_status_action === 'publish') {
+				$validation_error = '';
+
+				$event_type = isset($_POST['mep_event_type']) ? sanitize_text_field(wp_unslash($_POST['mep_event_type'])) : 'offline';
+				if (! in_array($event_type, ['online', 'offline', 'hybrid'], true)) {
+					$event_type = 'offline';
+				}
+				$venue_value   = isset($_POST['mep_location_venue']) ? trim(sanitize_text_field(wp_unslash($_POST['mep_location_venue']))) : '';
+				$virtual_value = isset($_POST['mp_event_virtual_type_des']) ? trim(wp_strip_all_tags(wp_unslash($_POST['mp_event_virtual_type_des']))) : '';
+
+				if ('' === $post_title) {
+					$validation_error = 'title';
+				} elseif (('offline' === $event_type || 'hybrid' === $event_type) && '' === $venue_value) {
+					$validation_error = 'venue';
+				} elseif (('online' === $event_type || 'hybrid' === $event_type) && '' === $virtual_value) {
+					$validation_error = 'virtual';
+				}
+
+				// Ticket-Selling (paid) mode requires valid ticket types and extra services.
+				$reg_status = isset($_POST['mep_reg_status']) ? sanitize_text_field(wp_unslash($_POST['mep_reg_status'])) : 'off';
+				if ('' === $validation_error && 'on' === $reg_status) {
+					$ticket_names  = isset($_POST['option_name_t']) && is_array($_POST['option_name_t']) ? (array) wp_unslash($_POST['option_name_t']) : [];
+					$ticket_prices = isset($_POST['option_price_t']) && is_array($_POST['option_price_t']) ? (array) wp_unslash($_POST['option_price_t']) : [];
+					$ticket_caps   = isset($_POST['option_qty_t']) && is_array($_POST['option_qty_t']) ? (array) wp_unslash($_POST['option_qty_t']) : [];
+					$global_qty_on = isset($_POST['enable_global_qty']) && 'on' === $_POST['enable_global_qty'];
+
+					$has_ticket = false;
+					foreach ($ticket_names as $i => $name) {
+						$name     = trim((string) $name);
+						$price    = isset($ticket_prices[$i]) ? trim((string) $ticket_prices[$i]) : '';
+						$capacity = isset($ticket_caps[$i]) ? trim((string) $ticket_caps[$i]) : '';
+
+						// Skip a completely empty row.
+						if ('' === $name && '' === $price && '' === $capacity) {
+							continue;
+						}
+
+						$has_ticket = true;
+						if ('' === $name || '' === $price || (! $global_qty_on && '' === $capacity)) {
+							$validation_error = 'ticket_fields';
+							break;
+						}
+					}
+
+					if ('' === $validation_error && ! $has_ticket) {
+						$validation_error = 'tickets';
+					}
+
+					if ('' === $validation_error) {
+						$ex_names  = isset($_POST['option_name']) && is_array($_POST['option_name']) ? (array) wp_unslash($_POST['option_name']) : [];
+						$ex_prices = isset($_POST['option_price']) && is_array($_POST['option_price']) ? (array) wp_unslash($_POST['option_price']) : [];
+						$ex_qtys   = isset($_POST['option_qty']) && is_array($_POST['option_qty']) ? (array) wp_unslash($_POST['option_qty']) : [];
+
+						foreach ($ex_names as $i => $name) {
+							$name = trim((string) $name);
+							if ('' === $name) {
+								continue;
+							}
+							$price = isset($ex_prices[$i]) ? trim((string) $ex_prices[$i]) : '';
+							$qty   = isset($ex_qtys[$i]) ? trim((string) $ex_qtys[$i]) : '';
+							if ('' === $price || '' === $qty) {
+								$validation_error = 'extra_service';
+								break;
+							}
+						}
+					}
+
+					// Global Qty "Full Event Base" requires a Total Qty.
+					if ('' === $validation_error && $global_qty_on) {
+						$gq_type = isset($_POST['mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_type'])) : 'global';
+						if ('global' === $gq_type) {
+							$total_seat = isset($_POST['mep_gq_total_seat']) ? trim((string) wp_unslash($_POST['mep_gq_total_seat'])) : '';
+							if ('' === $total_seat || ! is_numeric($total_seat) || (float) $total_seat <= 0) {
+								$validation_error = 'global_qty';
+							}
+						}
+					}
+
+					// Early bird requires a valid sale window (End after Start) per ticket.
+					if ('' === $validation_error && isset($_POST['mep_enable_early_bird_status']) && $_POST['mep_enable_early_bird_status']) {
+						$sd = isset($_POST['option_sale_start_date']) && is_array($_POST['option_sale_start_date']) ? (array) wp_unslash($_POST['option_sale_start_date']) : [];
+						$st = isset($_POST['option_sale_start_time']) && is_array($_POST['option_sale_start_time']) ? (array) wp_unslash($_POST['option_sale_start_time']) : [];
+						$ed = isset($_POST['option_sale_end_date']) && is_array($_POST['option_sale_end_date']) ? (array) wp_unslash($_POST['option_sale_end_date']) : [];
+						$et = isset($_POST['option_sale_end_time']) && is_array($_POST['option_sale_end_time']) ? (array) wp_unslash($_POST['option_sale_end_time']) : [];
+
+						foreach ($ticket_names as $i => $tname) {
+							if ('' === trim((string) $tname)) {
+								continue;
+							}
+							$s_date = isset($sd[$i]) ? trim((string) $sd[$i]) : '';
+							$s_time = isset($st[$i]) ? trim((string) $st[$i]) : '';
+							$e_date = isset($ed[$i]) ? trim((string) $ed[$i]) : '';
+							$e_time = isset($et[$i]) ? trim((string) $et[$i]) : '';
+
+							if ('' === $s_date || '' === $s_time || '' === $e_date || '' === $e_time) {
+								$validation_error = 'early_bird';
+								break;
+							}
+
+							$start_ts = strtotime($s_date . ' ' . $s_time);
+							$end_ts   = strtotime($e_date . ' ' . $e_time);
+							if (false === $start_ts || false === $end_ts || $end_ts <= $start_ts) {
+								$validation_error = 'early_bird_order';
+								break;
+							}
+						}
+					}
+				}
+
+				if ('' !== $validation_error) {
+					$error_step = in_array($validation_error, ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'], true) ? 'tickets' : 'basic';
+					$redirect = add_query_arg(
+						['mpwem_error' => $validation_error],
+						$this->edit_url($post_id, $error_step)
+					);
+					wp_safe_redirect($redirect);
+					exit;
+				}
 			}
 
 			$post_update = [

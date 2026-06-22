@@ -11328,3 +11328,42 @@ code {
     font-size: 13px;
     font-style: italic;
 }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Required-field validation highlight
+   Applied (via JS) when a required field is empty on Next / Publish.
+   ────────────────────────────────────────────────────────────────────── */
+input.mpwem-field-error,
+textarea.mpwem-field-error,
+select.mpwem-field-error,
+.mpwem-input.mpwem-field-error,
+.mpwem-card-input.mpwem-field-error,
+.mp_formControl.mpwem-field-error,
+.formControl.mpwem-field-error {
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.16) !important;
+    background: #fff7f8 !important;
+}
+
+/* A section/editor block that is required (e.g. virtual event details) */
+#mpev-online-event.mpwem-field-error,
+.mpwem-block-error {
+    border-radius: var(--mpwem-radius);
+    box-shadow: 0 0 0 2px #e11d48, 0 0 0 5px rgba(225, 29, 72, 0.14) !important;
+    animation: mpwemAttentionPulse 1.3s ease;
+}
+
+/* Pulsing attention ring for a control/button that needs action
+   (e.g. the "Configure Payments" button when no method is set). */
+.mpwem-attention-highlight {
+    position: relative;
+    z-index: 1;
+    border-color: #e11d48 !important;
+    animation: mpwemAttentionPulse 1.2s ease-in-out 2;
+}
+
+@keyframes mpwemAttentionPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.55); }
+    70%  { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}

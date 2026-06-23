@@ -3847,18 +3847,42 @@
     }
 
     function getDynamicDateMinDate($input) {
-        const fieldName = ($input.attr('name') || '').toString();
         const today = getTodayDateOnly();
+        // $input is the visible date field; its name lives on the hidden sibling.
+        const $hidden = $input.closest('label').find('input[type="hidden"]').first();
+        const fieldName = ($hidden.attr('name') || $input.attr('name') || '').toString();
 
+        // Start-date fields cannot be earlier than today.
         if (fieldName === 'event_start_date_everyday') {
             return today;
         }
 
-        if (fieldName === 'event_end_date_everyday') {
-            const $repeatSection = $input.closest('[data-collapse="#mep_everyday_event"]');
-            const startValue = ($repeatSection.find('input[name="event_start_date_everyday"]').first().val() || '').toString().trim();
+        // End-date fields: the minimum is the paired Start date, so any date
+        // before the start is disabled in the picker (End is always >= Start).
+        const endPairs = {
+            'event_end_date_everyday':      { start: 'event_start_date_everyday',      scope: '[data-collapse="#mep_everyday_event"]', floorToday: true },
+            'event_end_date_normal':        { start: 'event_start_date_normal',        scope: 'tr' },
+            'event_end_date':               { start: 'event_start_date',               scope: 'tr' },
+            'event_more_end_date_normal[]': { start: 'event_more_start_date_normal[]', scope: 'tr' },
+            'event_more_end_date[]':        { start: 'event_more_start_date[]',         scope: 'tr' }
+        };
+
+        const pair = endPairs[fieldName];
+        if (pair) {
+            const $scope = pair.scope === 'tr' ? $input.closest('tr') : $input.closest(pair.scope);
+            let startValue = ($scope.find('input[name="' + pair.start + '"]').first().val() || '').toString().trim();
+
+            // For the single main pairs (no [] in the name), fall back to the
+            // enclosing date section if the row lookup misses.
+            if (startValue === '' && pair.start.indexOf('[]') === -1) {
+                startValue = ($input.closest('[data-collapse]').find('input[name="' + pair.start + '"]').first().val() || '').toString().trim();
+            }
+
             const startDate = parseIsoDate(startValue);
-            return startDate && startDate > today ? startDate : today;
+            if (startDate) {
+                return pair.floorToday && startDate < today ? today : startDate;
+            }
+            return pair.floorToday ? today : normalizeMinDate($input.data('mpwemMinDate'));
         }
 
         return normalizeMinDate($input.data('mpwemMinDate'));

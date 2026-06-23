@@ -3885,6 +3885,34 @@
             return pair.floorToday ? today : normalizeMinDate($input.data('mpwemMinDate'));
         }
 
+        // "Add More Date" start fields: the minimum is the previous row's End
+        // date, so each additional schedule begins at/after the one above it
+        // (the first more-row starts from the main/top row's End date).
+        const moreStartPrevEnds = {
+            'event_more_start_date_normal[]': ['event_end_date_normal', 'event_more_end_date_normal[]'],
+            'event_more_start_date[]':        ['event_end_date', 'event_more_end_date[]']
+        };
+        const prevEndNames = moreStartPrevEnds[fieldName];
+        if (prevEndNames) {
+            const $prevRow = $input.closest('tr').prevAll('tr').filter(function() {
+                return $(this).closest('.mpwem_hidden_content').length === 0;
+            }).first();
+
+            if ($prevRow.length) {
+                let prevEndValue = '';
+                prevEndNames.forEach(function(name) {
+                    if (prevEndValue) return;
+                    const v = ($prevRow.find('input[name="' + name + '"]').first().val() || '').toString().trim();
+                    if (v) prevEndValue = v;
+                });
+                const prevEnd = parseIsoDate(prevEndValue);
+                if (prevEnd) {
+                    return prevEnd;
+                }
+            }
+            return normalizeMinDate($input.data('mpwemMinDate'));
+        }
+
         return normalizeMinDate($input.data('mpwemMinDate'));
     }
 

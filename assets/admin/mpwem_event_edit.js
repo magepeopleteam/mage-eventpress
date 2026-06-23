@@ -4126,13 +4126,25 @@
             syncRepeatedDateConstraints($wizard);
         });
 
+        // Changing a Start date reloads the paired End-date field via AJAX
+        // (load_event_*date actions) which injects fresh jQuery UI datepicker
+        // markup. Re-enhance it into the wizard's custom calendar so the End
+        // date picker keeps working for every event type (Single/Particular/
+        // Repeated, including "Add More Date" rows).
         $(document).ajaxComplete(function(event, xhr, settings) {
             if (!settings || typeof settings.data !== 'string') return;
-            if (settings.data.indexOf('action=load_event_start_date_everyday') === -1) return;
+            if (!/action=load_event_[a-z_]*date/.test(settings.data)) return;
 
             const $wizard = $('.mpwem-event-wizard').first();
             if (!$wizard.length) return;
 
+            ['#mpwem_wizard_date_mount', '#mpwem_particular_date_modal_mount'].forEach(function(selector) {
+                const $mount = $wizard.find(selector);
+                if ($mount.length) {
+                    enhanceDateFields($mount);
+                    enhanceCustomCalendar($mount);
+                }
+            });
             refreshRepeatedEndDateFieldUI($wizard);
         });
 

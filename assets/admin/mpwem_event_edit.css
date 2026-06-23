@@ -9432,7 +9432,7 @@ code {
 }
 
 .mpwem-card-input-wrapper--currency::before {
-    content: '$';
+    content: var(--mpwem-currency-symbol, '$');
     position: absolute;
     left: 12px;
     top: 50%;

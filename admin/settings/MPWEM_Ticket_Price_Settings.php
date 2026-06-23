@@ -19,7 +19,15 @@
 				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
 				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
+
+				// Currency symbol for the price inputs: WooCommerce currency when
+				// WooCommerce is active, otherwise Event Settings -> Currency Symbol
+				// (mep_currency_symbol). Drives the CSS ::before via a variable so
+				// dynamically cloned ticket rows pick it up too.
+				$currency_symbol = html_entity_decode( MPWEM_Global_Function::get_currency_symbol(), ENT_QUOTES, 'UTF-8' );
+				$css_currency    = "'" . str_replace( array( '\\', "'" ), array( '\\\\', "\\'" ), $currency_symbol ) . "'";
 				?>
+				<style>:root{--mpwem-currency-symbol:<?php echo $css_currency; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>;}</style>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
 					<?php
 					$payment_opts = get_option('payment_setting_sec', []);

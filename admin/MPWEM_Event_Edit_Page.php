@@ -2044,8 +2044,60 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					}
 				}
 
+				// Date & Time step (applies to every event regardless of mode).
+				if ('' === $validation_error) {
+					$recurring = isset($_POST['mep_enable_recurring']) ? sanitize_text_field(wp_unslash($_POST['mep_enable_recurring'])) : 'no';
+
+					if ('yes' === $recurring) {
+						$keys = ['event_start_date', 'event_start_time', 'event_end_date', 'event_end_time'];
+					} elseif ('everyday' === $recurring) {
+						$keys = ['event_start_date_everyday', 'event_start_time_everyday', 'event_end_date_everyday', 'event_end_time_everyday'];
+					} else {
+						$keys = ['event_start_date_normal', 'event_start_time_normal', 'event_end_date_normal', 'event_end_time_normal'];
+					}
+
+					$sdv = isset($_POST[$keys[0]]) ? trim((string) wp_unslash($_POST[$keys[0]])) : '';
+					$stv = isset($_POST[$keys[1]]) ? trim((string) wp_unslash($_POST[$keys[1]])) : '';
+					$edv = isset($_POST[$keys[2]]) ? trim((string) wp_unslash($_POST[$keys[2]])) : '';
+					$etv = isset($_POST[$keys[3]]) ? trim((string) wp_unslash($_POST[$keys[3]])) : '';
+
+					if ('' === $sdv || '' === $stv || '' === $edv || '' === $etv) {
+						$validation_error = 'date_required';
+					} else {
+						$start_ts = strtotime($sdv . ' ' . $stv);
+						$end_ts   = strtotime($edv . ' ' . $etv);
+						if (false === $start_ts || false === $end_ts || $end_ts <= $start_ts) {
+							$validation_error = 'date_order';
+						}
+					}
+
+					if ('' === $validation_error && 'everyday' === $recurring) {
+						$periods = isset($_POST['mep_repeated_periods']) ? trim((string) wp_unslash($_POST['mep_repeated_periods'])) : '';
+						if ('' === $periods || ! is_numeric($periods) || (int) $periods < 1) {
+							$validation_error = 'repeat_periods';
+						}
+					}
+
+					if ('' === $validation_error && isset($_POST['mep_enable_custom_dt_format']) && $_POST['mep_enable_custom_dt_format']) {
+						$dfv = isset($_POST['mep_event_date_format']) ? trim((string) wp_unslash($_POST['mep_event_date_format'])) : '';
+						$tfv = isset($_POST['mep_event_time_format']) ? trim((string) wp_unslash($_POST['mep_event_time_format'])) : '';
+						$tzv = isset($_POST['mep_time_zone_display']) ? trim((string) wp_unslash($_POST['mep_time_zone_display'])) : '';
+						if ('' === $dfv || '' === $tfv || ('yes' !== $tzv && 'no' !== $tzv)) {
+							$validation_error = 'date_format';
+						}
+					}
+				}
+
 				if ('' !== $validation_error) {
-					$error_step = in_array($validation_error, ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'], true) ? 'tickets' : 'basic';
+					$ticket_errors = ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'];
+					$date_errors   = ['date_required', 'date_order', 'repeat_periods', 'date_format'];
+					if (in_array($validation_error, $ticket_errors, true)) {
+						$error_step = 'tickets';
+					} elseif (in_array($validation_error, $date_errors, true)) {
+						$error_step = 'date';
+					} else {
+						$error_step = 'basic';
+					}
 					$redirect = add_query_arg(
 						['mpwem_error' => $validation_error],
 						$this->edit_url($post_id, $error_step)

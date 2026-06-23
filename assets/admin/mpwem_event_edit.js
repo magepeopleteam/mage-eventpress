@@ -4629,6 +4629,10 @@
             if (($activeStep.data('step-key') === 'tickets') && !validateTicketsStep($root, { focus: true })) {
                 return;
             }
+            // When leaving the Date step forward, enforce its requirements.
+            if (($activeStep.data('step-key') === 'date') && !validateDateStep($root, { focus: true })) {
+                return;
+            }
             if (!validateDateWiseGlobalQty($root)) {
                 return;
             }
@@ -5307,6 +5311,200 @@
         return false;
     }
 
+    // The visible date field paired with a hidden Y-m-d input (datepicker display).
+    function dateVisibleField($hidden) {
+        const $v = $hidden.closest('label').find('input').not('[type="hidden"]').first();
+        return $v.length ? $v : $hidden;
+    }
+
+    // True when a <select> has a real, non-placeholder option chosen.
+    function selectHasRealValue($select) {
+        if (!$select.length) return false;
+        const $opt = $select.find('option:selected').first();
+        if (!$opt.length || $opt.is('[disabled]')) return false;
+        if (typeof $opt.attr('value') === 'undefined') return false;
+        return ($select.val() || '').toString().trim() !== '';
+    }
+
+    // Validate a start/end date+time pair. Marks invalid fields and returns
+    // { message, $field } on the first problem, or null when valid.
+    function checkDateTimePair($sd, $st, $ed, $et, label) {
+        const $sdUI = dateVisibleField($sd);
+        const $edUI = dateVisibleField($ed);
+        [$sdUI, $st, $edUI, $et].forEach(function($f) { $f.removeClass('mpwem-field-error'); });
+
+        const sd = ($sd.val() || '').toString().trim();
+        const st = ($st.val() || '').toString().trim();
+        const ed = ($ed.val() || '').toString().trim();
+        const et = ($et.val() || '').toString().trim();
+
+        if (sd === '') { $sdUI.addClass('mpwem-field-error'); return { message: label + ' start date is required.', $field: $sdUI }; }
+        if (st === '') { $st.addClass('mpwem-field-error'); return { message: label + ' start time is required.', $field: $st }; }
+        if (ed === '') { $edUI.addClass('mpwem-field-error'); return { message: label + ' end date is required.', $field: $edUI }; }
+        if (et === '') { $et.addClass('mpwem-field-error'); return { message: label + ' end time is required.', $field: $et }; }
+
+        if (!(new Date(ed + 'T' + et).getTime() > new Date(sd + 'T' + st).getTime())) {
+            $edUI.addClass('mpwem-field-error');
+            $et.addClass('mpwem-field-error');
+            return { message: label + ' end date & time must be later than the start date & time.', $field: $edUI };
+        }
+        return null;
+    }
+
+    function validateDateStep($root, options) {
+        options = options || {};
+        const focus = options.focus !== false;
+
+        const type = ($root.find('select[name="mep_enable_recurring"]').first().val() || 'no').toString();
+        const findByName = function(name) {
+            return $root.find('[name="' + name + '"]').filter(function() {
+                return $(this).closest('.mpwem_hidden_content').length === 0;
+            });
+        };
+
+        let error = null;
+
+        let mainNames;
+        let moreNames = null;
+        if (type === 'yes') {
+            mainNames = { sd: 'event_start_date', st: 'event_start_time', ed: 'event_end_date', et: 'event_end_time' };
+            moreNames = { sd: 'event_more_start_date[]', st: 'event_more_start_time[]', ed: 'event_more_end_date[]', et: 'event_more_end_time[]' };
+        } else if (type === 'everyday') {
+            mainNames = { sd: 'event_start_date_everyday', st: 'event_start_time_everyday', ed: 'event_end_date_everyday', et: 'event_end_time_everyday' };
+        } else {
+            mainNames = { sd: 'event_start_date_normal', st: 'event_start_time_normal', ed: 'event_end_date_normal', et: 'event_end_time_normal' };
+            moreNames = { sd: 'event_more_start_date_normal[]', st: 'event_more_start_time_normal[]', ed: 'event_more_end_date_normal[]', et: 'event_more_end_time_normal[]' };
+        }
+
+        // Main schedule pair.
+        error = checkDateTimePair(
+            findByName(mainNames.sd).first(),
+            findByName(mainNames.st).first(),
+            findByName(mainNames.ed).first(),
+            findByName(mainNames.et).first(),
+            'Event'
+        );
+
+        // "Add More Date" rows (Single / Particular).
+        if (!error && moreNames) {
+            const $sds = findByName(moreNames.sd);
+            const $sts = findByName(moreNames.st);
+            const $eds = findByName(moreNames.ed);
+            const $ets = findByName(moreNames.et);
+            $sds.each(function(i) {
+                if (error) return;
+                error = checkDateTimePair($sds.eq(i), $sts.eq(i), $eds.eq(i), $ets.eq(i), 'Additional date');
+            });
+        }
+
+        // Repeated-event extras.
+        if (!error && type === 'everyday') {
+            const $periods = findByName('mep_repeated_periods').first();
+            const pv = ($periods.val() || '').toString().trim();
+            $periods.removeClass('mpwem-field-error');
+            if (pv === '' || isNaN(Number(pv)) || Number(pv) < 1) {
+                $periods.addClass('mpwem-field-error');
+                error = { message: 'After Repeated Days must be a number of at least 1.', $field: $periods };
+            }
+
+            // Off dates: each present row needs a date.
+            if (!error) {
+                const $offs = findByName('mep_ticket_off_dates[]');
+                $offs.each(function(i) {
+                    if (error) return;
+                    const $h = $offs.eq(i);
+                    if (($h.val() || '').toString().trim() === '') {
+                        const $ui = dateVisibleField($h);
+                        $ui.addClass('mpwem-field-error');
+                        error = { message: 'Please set a date for each off date (or remove the row).', $field: $ui };
+                    }
+                });
+            }
+
+            // Display time slots (only when "Display Time" is enabled).
+            if (!error && $root.find('input[name="mep_disable_ticket_time"]').first().is(':checked')) {
+                ['global', 'sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'].forEach(function(day) {
+                    if (error) return;
+                    const $labels = findByName('mep_ticket_times_' + day + '_label[]');
+                    const $times = findByName('mep_ticket_times_' + day + '_time[]');
+                    $labels.each(function(i) {
+                        if (error) return;
+                        const lv = ($labels.eq(i).val() || '').toString().trim();
+                        const tv = ($times.eq(i).val() || '').toString().trim();
+                        if (lv === '' && tv === '') return;
+                        if (lv === '') { $labels.eq(i).addClass('mpwem-field-error'); error = { message: 'Each time slot needs a label.', $field: $labels.eq(i) }; }
+                        else if (tv === '') { $times.eq(i).addClass('mpwem-field-error'); error = { message: 'Each time slot needs a time.', $field: $times.eq(i) }; }
+                    });
+                });
+            }
+
+            // Special dates.
+            if (!error) {
+                const $spNames = findByName('mep_special_date_name[]');
+                const $spStart = findByName('mep_special_start_date[]');
+                const $spEnd = findByName('mep_special_end_date[]');
+                $spNames.each(function(i) {
+                    if (error) return;
+                    const nm = ($spNames.eq(i).val() || '').toString().trim();
+                    const $sH = $spStart.eq(i);
+                    const $eH = $spEnd.eq(i);
+                    const sv = ($sH.val() || '').toString().trim();
+                    const ev = ($eH.val() || '').toString().trim();
+                    if (nm === '' && sv === '' && ev === '') return;
+                    const $sUI = dateVisibleField($sH);
+                    const $eUI = dateVisibleField($eH);
+                    if (nm === '') { $spNames.eq(i).addClass('mpwem-field-error'); error = { message: 'Each special date needs a label.', $field: $spNames.eq(i) }; return; }
+                    if (sv === '') { $sUI.addClass('mpwem-field-error'); error = { message: 'Each special date needs a start date.', $field: $sUI }; return; }
+                    if (ev === '') { $eUI.addClass('mpwem-field-error'); error = { message: 'Each special date needs an end date.', $field: $eUI }; return; }
+                    if (new Date(ev).getTime() < new Date(sv).getTime()) { $eUI.addClass('mpwem-field-error'); error = { message: 'Special date end must be on or after the start date.', $field: $eUI }; }
+                });
+            }
+        }
+
+        // Date/Time format settings.
+        if (!error && $root.find('input[name="mep_enable_custom_dt_format"]').first().is(':checked')) {
+            const $df = $root.find('select[name="mep_event_date_format"]').first();
+            const $tf = $root.find('select[name="mep_event_time_format"]').first();
+            const $tz = $root.find('select[name="mep_time_zone_display"]').first();
+            [$df, $tf, $tz].forEach(function($f) { $f.removeClass('mpwem-field-error'); });
+
+            if (!selectHasRealValue($df)) {
+                $df.addClass('mpwem-field-error'); error = { message: 'Please select a Date Format.', $field: $df };
+            } else if ($df.val() === 'custom' && ($root.find('input[name="mep_event_custom_date_format"]').first().val() || '').toString().trim() === '') {
+                const $c = $root.find('input[name="mep_event_custom_date_format"]').first(); $c.addClass('mpwem-field-error'); error = { message: 'Please enter the Custom Date Format.', $field: $c };
+            } else if (!selectHasRealValue($tf)) {
+                $tf.addClass('mpwem-field-error'); error = { message: 'Please select a Time Format.', $field: $tf };
+            } else if ($tf.val() === 'custom' && ($root.find('input[name="mep_custom_event_time_format"]').first().val() || '').toString().trim() === '') {
+                const $c = $root.find('input[name="mep_custom_event_time_format"]').first(); $c.addClass('mpwem-field-error'); error = { message: 'Please enter the Custom Time Format.', $field: $c };
+            } else if (!selectHasRealValue($tz)) {
+                $tz.addClass('mpwem-field-error'); error = { message: 'Please select Show Timezone.', $field: $tz };
+            }
+        }
+
+        if (!error) {
+            return true;
+        }
+
+        if (focus) {
+            const $field = error.$field;
+            setActiveStep($root, 'date', { pushHash: true, validate: false });
+            window.setTimeout(function() {
+                if ($field && $field.length && !$field.is(':visible') && $field.closest('#mpwem_particular_date_modal_mount').length) {
+                    openParticularDateModal($root, 'list');
+                }
+                window.setTimeout(function() {
+                    if ($field && $field.length) {
+                        try { $field[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+                        if ($field.is(':visible')) $field.trigger('focus');
+                        flashAttention($field);
+                    }
+                }, 220);
+            }, 120);
+            showToast(error.message, 'error');
+        }
+        return false;
+    }
+
     function submitEventForm($root, action) {
         const $form = $('#mpwem-event-edit-form');
         if (!$form.length) {
@@ -5318,6 +5516,9 @@
                 return;
             }
             if (!validateTicketsStep($root, { focus: true })) {
+                return;
+            }
+            if (!validateDateStep($root, { focus: true })) {
                 return;
             }
         }
@@ -5456,7 +5657,11 @@
                 extra_service: 'Each extra service with a name needs a price and available quantity.',
                 global_qty: 'Enter the Total Qty for the Full Event Base global quantity.',
                 early_bird: 'Early bird is on — set the sale Start and End date/time for each ticket.',
-                early_bird_order: 'The sale End date & time must be later than the Start date & time.'
+                early_bird_order: 'The sale End date & time must be later than the Start date & time.',
+                date_required: 'Set the event Start and End date & time.',
+                date_order: 'The event End date & time must be later than the Start.',
+                repeat_periods: 'After Repeated Days must be a number of at least 1.',
+                date_format: 'Complete the Date/Time format settings (Date Format, Time Format and Show Timezone).'
             };
             const message = errorMessages[errorCode] || 'Please complete the required fields.';
             window.setTimeout(function() {

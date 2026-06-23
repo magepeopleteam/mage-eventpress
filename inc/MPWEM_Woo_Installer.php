@@ -55,8 +55,8 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 		}
 
 		/**
-		 * Runs on admin_init. If the transient from activation exists
-		 * and WooCommerce IS active, redirect to event lists page.
+		 * Runs on admin_init. If the transient from activation exists,
+		 * redirect to event lists page regardless of WooCommerce status.
 		 */
 		public function handle_activation_redirect() {
 			if ( ! get_transient( 'mpwem_plugin_activated' ) ) {
@@ -69,45 +69,18 @@ if ( ! class_exists( 'MPWEM_Woo_Installer' ) ) {
 				return;
 			}
 
-			// WooCommerce is active → redirect immediately
-			if ( $this->is_woo_active() ) {
-				delete_transient( 'mpwem_plugin_activated' );
-				wp_safe_redirect( admin_url( 'edit.php?post_type=mep_events&page=mep_event_lists' ) );
-				exit;
-			}
-
-			// WooCommerce is NOT active → clear transient, popup will show via should_show_popup()
 			delete_transient( 'mpwem_plugin_activated' );
+			wp_safe_redirect( admin_url( 'edit.php?post_type=mep_events&page=mep_event_lists' ) );
+			exit;
 		}
 
 		/**
-		 * Should we show the popup on this page load?
-		 *
-		 * Shown when the current user can manage plugins and WooCommerce is not
-		 * active, so they are prompted to install/activate it. The per-user
-		 * dismissal (the × button) hides it; maybe_reset_dismissal() clears that
-		 * flag once WooCommerce is active again, so the prompt returns the next
-		 * time WooCommerce is deactivated rather than staying hidden forever.
+		 * WooCommerce is no longer required — popup is permanently disabled.
 		 *
 		 * @return bool
 		 */
 		private function should_show_popup() {
-			// Only users who could actually act on the prompt.
-			if ( ! current_user_can( 'activate_plugins' ) ) {
-				return false;
-			}
-
-			// WooCommerce already active → nothing to prompt.
-			if ( $this->is_woo_active() ) {
-				return false;
-			}
-
-			// User chose to hide it for now.
-			if ( get_user_meta( get_current_user_id(), 'mpwem_woo_installer_dismissed', true ) ) {
-				return false;
-			}
-
-			return true;
+			return false;
 		}
 
 		/**

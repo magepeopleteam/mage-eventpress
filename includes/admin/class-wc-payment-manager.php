@@ -31,6 +31,7 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ], 20 );
 			add_action( 'wp_ajax_mep_wc_save_gateway', [ $this, 'ajax_save_gateway' ] );
 			add_action( 'wp_ajax_mep_wc_toggle_gateway', [ $this, 'ajax_toggle_gateway' ] );
+			add_action( 'wp_ajax_mep_toggle_builtin_gateway', [ $this, 'ajax_toggle_builtin_gateway' ] );
 		}
 
 		// ---------------------------------------------------------------
@@ -220,58 +221,119 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 		}
 
 		// ---------------------------------------------------------------
-		// Render — called from the WooCommerce tab
+		// Built-in gateway specs (always shown regardless of WooCommerce)
+		// ---------------------------------------------------------------
+
+		private function builtin_gateway_specs(): array {
+			return [
+				'bacs' => [
+					'title' => __( 'Bank Transfer', 'mage-eventpress' ),
+					'desc'  => __( 'Allow customers to pay via direct bank transfer.', 'mage-eventpress' ),
+				],
+				'cod'  => [
+					'title' => __( 'Cash on Delivery', 'mage-eventpress' ),
+					'desc'  => __( 'Allow customers to pay with cash upon delivery or at the event.', 'mage-eventpress' ),
+				],
+			];
+		}
+
+		// ---------------------------------------------------------------
+		// Render — called from the Payment Configuration modal
 		// ---------------------------------------------------------------
 
 		public function render(): void {
-			if ( ! class_exists( 'WooCommerce' ) ) {
-				return;
+			$wc_active     = class_exists( 'WooCommerce' );
+			$builtin_specs = $this->builtin_gateway_specs();
+			$stored        = get_option( 'mep_builtin_gateways', [] );
+
+			// When WooCommerce is active, get its registered gateway objects.
+			$wc_gateways = $wc_active ? $this->get_all_gateways() : [];
+
+			// Build a unified render list: WC gateways first, then inject any
+			// built-in spec that WooCommerce hasn't registered, so BACS and COD
+			// are always present even on a fresh WooCommerce install or when
+			// WooCommerce is not active at all.
+			$render_items = [];
+
+			foreach ( $wc_gateways as $id => $gw ) {
+				$render_items[ $id ] = [
+					'id'      => $id,
+					'title'   => $gw->get_method_title() ?: $gw->get_title(),
+					'desc'    => $gw->get_method_description() ?: $gw->get_description(),
+					'enabled' => $gw->enabled === 'yes',
+					'source'  => 'wc',
+					'gw_obj'  => $gw,
+				];
 			}
 
-			$gateways = $this->get_all_gateways();
-			if ( empty( $gateways ) ) {
-				echo '<p>' . esc_html__( 'No payment gateways are registered.', 'mage-eventpress' ) . '</p>';
+			foreach ( $builtin_specs as $id => $spec ) {
+				if ( isset( $render_items[ $id ] ) ) {
+					continue; // Already covered by WooCommerce.
+				}
+				// Prefer the WooCommerce option value (accurate after WC is activated
+				// mid-session), fall back to plugin's own storage.
+				$wc_opt  = get_option( 'woocommerce_' . $id . '_settings', [] );
+				$enabled = isset( $wc_opt['enabled'] ) ? $wc_opt['enabled'] === 'yes'
+						 : ( isset( $stored[ $id ] ) && $stored[ $id ] === 'yes' );
+
+				$render_items[ $id ] = [
+					'id'      => $id,
+					'title'   => $spec['title'],
+					'desc'    => $spec['desc'],
+					'enabled' => $enabled,
+					'source'  => 'builtin',
+					'gw_obj'  => null,
+				];
+			}
+
+			if ( empty( $render_items ) ) {
 				return;
 			}
 			?>
 			<div class="mep-wc-payment-manager">
 				<div class="mep-wc-pm-bar">
-					<h3 class="mep-wc-pm-heading"><?php esc_html_e( 'WooCommerce Payment Methods', 'mage-eventpress' ); ?></h3>
+					<h3 class="mep-wc-pm-heading"><?php esc_html_e( 'Payment Methods', 'mage-eventpress' ); ?></h3>
+					<?php if ( $wc_active ) : ?>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ); ?>"
 					   class="button button-small mep-wc-pm-wc-link" target="_blank">
 						<?php esc_html_e( 'Open in WooCommerce', 'mage-eventpress' ); ?>
 						<span class="dashicons dashicons-external" style="font-size:14px;line-height:1.4;vertical-align:middle;"></span>
 					</a>
+					<?php endif; ?>
 				</div>
 
-				<?php foreach ( $gateways as $gateway ) :
-					$is_enabled = ( $gateway->enabled === 'yes' );
-					$title      = $gateway->get_method_title() ?: $gateway->get_title();
-					$desc       = $gateway->get_method_description() ?: $gateway->get_description();
+				<?php foreach ( $render_items as $item ) :
+					$is_enabled = $item['enabled'];
 				?>
-				<div class="mep-gw-card <?php echo $is_enabled ? 'is-enabled' : 'is-disabled'; ?>" data-gateway-id="<?php echo esc_attr( $gateway->id ); ?>">
+				<div class="mep-gw-card <?php echo $is_enabled ? 'is-enabled' : 'is-disabled'; ?>"
+				     data-gateway-id="<?php echo esc_attr( $item['id'] ); ?>"
+				     data-gateway-source="<?php echo esc_attr( $item['source'] ); ?>">
 					<div class="mep-gw-head">
 						<div class="mep-gw-head-main">
 							<label class="mep-gw-toggle" title="<?php esc_attr_e( 'Enable / disable', 'mage-eventpress' ); ?>">
-								<input type="checkbox" class="mep-gw-toggle-input" data-gateway-id="<?php echo esc_attr( $gateway->id ); ?>" <?php checked( $is_enabled ); ?>>
+								<input type="checkbox" class="mep-gw-toggle-input"
+								       data-gateway-id="<?php echo esc_attr( $item['id'] ); ?>"
+								       <?php checked( $is_enabled ); ?>>
 								<span class="mep-gw-toggle-slider"></span>
 							</label>
-							<span class="mep-gw-title"><?php echo esc_html( $title ); ?></span>
+							<span class="mep-gw-title"><?php echo esc_html( $item['title'] ); ?></span>
 							<span class="mep-gw-badge"><?php echo $is_enabled ? esc_html__( 'Enabled', 'mage-eventpress' ) : esc_html__( 'Disabled', 'mage-eventpress' ); ?></span>
 						</div>
+						<?php if ( $item['gw_obj'] ) : ?>
 						<button type="button" class="button mep-gw-configure-btn"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+						<?php endif; ?>
 					</div>
 
-					<?php if ( $desc ) : ?>
-						<div class="mep-gw-desc"><?php echo wp_kses_post( wpautop( $desc ) ); ?></div>
+					<?php if ( $item['desc'] ) : ?>
+					<div class="mep-gw-desc"><?php echo wp_kses_post( wpautop( $item['desc'] ) ); ?></div>
 					<?php endif; ?>
 
+					<?php if ( $item['gw_obj'] ) : ?>
 					<div class="mep-gw-body" style="display:none;">
-						<form class="mep-gw-form" data-gateway-id="<?php echo esc_attr( $gateway->id ); ?>">
+						<form class="mep-gw-form" data-gateway-id="<?php echo esc_attr( $item['id'] ); ?>">
 							<table class="form-table mep-gw-form-table">
 								<?php
-								// WooCommerce's OWN field rendering for this gateway.
-								echo $gateway->generate_settings_html( $gateway->get_form_fields(), false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo $item['gw_obj']->generate_settings_html( $item['gw_obj']->get_form_fields(), false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?>
 							</table>
 							<div class="mep-gw-form-footer">
@@ -280,12 +342,59 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 							</div>
 						</form>
 					</div>
+					<?php endif; ?>
 				</div>
 				<?php endforeach; ?>
 
 				<?php $this->render_styles(); ?>
 			</div>
 			<?php
+		}
+
+		// ---------------------------------------------------------------
+		// AJAX: toggle a built-in gateway (works without WooCommerce)
+		// ---------------------------------------------------------------
+
+		public function ajax_toggle_builtin_gateway(): void {
+			check_ajax_referer( 'mep_wc_payment_manager', 'nonce' );
+			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_woocommerce' ) ) {
+				wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ), 403 );
+			}
+
+			$gateway_id = sanitize_key( $_POST['gateway_id'] ?? '' );
+			$enabled    = ( isset( $_POST['enabled'] ) && $_POST['enabled'] === 'yes' ) ? 'yes' : 'no';
+
+			if ( empty( $gateway_id ) ) {
+				wp_send_json_error( __( 'Invalid gateway.', 'mage-eventpress' ) );
+			}
+
+			// Persist in the plugin's own store so state survives without WooCommerce.
+			$stored = get_option( 'mep_builtin_gateways', [] );
+			if ( ! is_array( $stored ) ) {
+				$stored = [];
+			}
+			$stored[ $gateway_id ] = $enabled;
+			update_option( 'mep_builtin_gateways', $stored );
+
+			// When WooCommerce is active, mirror the change in WooCommerce settings
+			// so enabling from here is also reflected in WC → Settings → Payments.
+			if ( class_exists( 'WooCommerce' ) ) {
+				$option_key = 'woocommerce_' . $gateway_id . '_settings';
+				$opts       = get_option( $option_key, [] );
+				if ( ! is_array( $opts ) ) {
+					$opts = [];
+				}
+				$opts['enabled'] = $enabled;
+				if ( $enabled === 'yes' ) {
+					$opts['_should_load'] = 'yes';
+				}
+				update_option( $option_key, $opts );
+				if ( WC()->payment_gateways() ) {
+					WC()->payment_gateways()->init();
+				}
+			}
+
+			wp_send_json_success( [ 'enabled' => $enabled ] );
 		}
 
 		private function render_styles(): void {

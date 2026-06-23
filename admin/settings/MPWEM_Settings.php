@@ -1,0 +1,803 @@
+<?php
+	/*
+* @Author 		engr.sumonazma@gmail.com
+* Copyright: 	mage-people.com
+*/
+	if ( ! defined( 'ABSPATH' ) ) {
+		die;
+	} // Cannot access pages directly.
+	if ( ! class_exists( 'MPWEM_Settings' ) ) {
+		class MPWEM_Settings {
+			public function __construct() {
+				add_action( 'add_meta_boxes', array( $this, 'event_meta_tab' ) );
+				add_action( 'save_post', array( $this, 'save_settings' ) );
+			}
+			public function event_meta_tab() {
+				$event_label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', __( 'Events', 'mage-eventpress' ) );
+				add_meta_box( 'mp_event_all_info_in_tab',
+					sprintf( '<i class="fas fa-info-circle"></i> %1$s Information: %2$s', esc_html( $event_label ), esc_html( get_the_title( get_the_ID() ) ) ),
+					array( $this, 'event_tab' ), 'mep_events', 'normal', 'high' );
+			}
+			public function event_tab() {
+				$post_id = get_the_id();
+				wp_nonce_field( 'mpwem_type_nonce', 'mpwem_type_nonce' );
+				$event_infos              = MPWEM_Functions::get_all_info( $post_id );
+				$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
+				$speaker_status           = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+				?>
+                <div class="mp_event_all_meta_in_tab mp_event_tab_area">
+                    <div class="mp_tab_menu">
+                        <ul>
+                            <li data-target-tabs="#mp_event_venue" title="<?php echo esc_attr__( 'Venue/Location', 'mage-eventpress' ); ?>"><i class="mi mi-marker"></i><?php esc_html_e( 'Venue/Location', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_ticket_pricing_settings" title="<?php echo esc_attr__( 'Ticket & Pricing', 'mage-eventpress' ); ?>"><i class="mi mi-coins"></i><?php esc_html_e( 'Ticket & Pricing', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_date_settings" title="<?php echo esc_attr__( 'Date & Time', 'mage-eventpress' ); ?>"><i class="mi mi-calendar-clock"></i><?php esc_html_e( 'Date & Time', 'mage-eventpress' ); ?> </li>
+                            <li data-target-tabs="#mpwem_event_settings" title="<?php echo esc_attr__( 'Settings', 'mage-eventpress' ); ?>"><i class="mi mi-settings"></i><?php esc_html_e( 'Settings', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_event_faq_meta" title="<?php echo esc_attr__( 'F.A.Q', 'mage-eventpress' ); ?>"><i class="mi mi-messages-question"></i><?php esc_html_e( 'F.A.Q', 'mage-eventpress' ); ?></li>
+							<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) { ?>
+                                <li data-target-tabs="#mp_event_tax_settings" title="<?php echo esc_attr__( 'Tax', 'mage-eventpress' ); ?>"><i class="mi mi-calendar-event-tax"></i><?php esc_html_e( 'Tax', 'mage-eventpress' ); ?></li>
+					<?php } ?>
+                            <li data-target-tabs="#mp_event_rich_text" title="<?php echo esc_attr__( 'SEO Content', 'mage-eventpress' ); ?>"><i class="mi mi-analyse"></i><?php esc_html_e( 'SEO Content', 'mage-eventpress' ); ?>  </li>
+                            <li data-target-tabs="#mpwem_email_text_settings" title="<?php echo esc_attr__( 'Email Text', 'mage-eventpress' ); ?>"><i class="mi mi-envelope-open-text"></i><?php esc_html_e( 'Email Text', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_event_template" title="<?php echo esc_attr__( 'Template', 'mage-eventpress' ); ?>"><i class="mi mi-table-layout"></i><?php esc_html_e( 'Template', 'mage-eventpress' ); ?></li>
+                            <li data-target-tabs="#mep_related_event_meta" title="<?php echo esc_attr__( 'Related Events', 'mage-eventpress' ); ?>"><i class="mi mi-plug-connection"></i><?php esc_html_e( 'Related Events', 'mage-eventpress' ); ?></li>
+					<?php if ( $speaker_status == 'yes' ) { ?>
+                                <li data-target-tabs="#mpwem_speaker_settings" title="<?php echo esc_attr__( 'Speaker Information', 'mage-eventpress' ); ?>"><i class="mi mi-microphone"></i><?php esc_html_e( 'Speaker Information', 'mage-eventpress' ); ?></li>
+							<?php } ?>
+							<?php do_action( 'mep_admin_event_details_before_tab_name_rich_text', $post_id ); ?>
+                            <li data-target-tabs="#mep_event_timeline_meta" title="<?php echo esc_attr__( 'Timeline Details', 'mage-eventpress' ); ?>"><i class="mi mi-list-timeline"></i><?php esc_html_e( 'Timeline Details', 'mage-eventpress' ); ?> </li>
+					<?php do_action( 'mp_event_all_in_tab_menu' ); ?>
+					<?php do_action( 'mep_admin_event_details_end_of_tab_name', $post_id ); ?>
+                            <li data-target-tabs="#ttbm_settings_gallery" title="<?php echo esc_attr__( 'Gallery', 'mage-eventpress' ); ?>"><i class="mi mi-gallery"></i><?php esc_html_e( 'Gallery ', 'mage-eventpress' ); ?></li>
+                        </ul>
+                    </div>
+                    <div class="mp_tab_details">
+						<?php do_action( 'mpwem_event_tab_setting_item', $post_id, $event_infos ); ?>
+                        <!-- ==================================  -->
+						<?php do_action( 'mep_admin_event_details_before_tab_details_location', $post_id ); ?>
+						<?php do_action( 'mp_event_all_in_tab_item', $post_id ); ?>
+                        <div class="mpwem_step_nav">
+                            <button type="button" class="button mpwem-step-prev"><?php esc_html_e( 'Back', 'mage-eventpress' ); ?></button>
+                            <button type="button" class="button button-primary mpwem-step-next"><?php esc_html_e( 'Next', 'mage-eventpress' ); ?></button>
+                            <span class="mpwem-step-status" aria-live="polite"></span>
+                        </div>
+                        <p style="font-size: 10px;text-align: right;position: absolute;bottom: -6px;right: 14px;"> #WC:<?php echo get_post_meta( $post_id, 'link_wc_product', true ); ?></p>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    jQuery(function ($) {
+                        $("#mp_event_all_info_in_tab").parent().removeClass('meta-box-sortables');
+                    });
+                </script>
+				<?php
+			}
+			public function save_settings( $post_id ) {
+				if ( ! isset( $_POST['mpwem_type_nonce'] ) || ! wp_verify_nonce( $_POST['mpwem_type_nonce'], 'mpwem_type_nonce' ) || defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || ! current_user_can( 'edit_post', $post_id ) ) {
+					return;
+				}
+
+				if ( get_post_type( $post_id ) == 'mep_events' ) {
+					$mep_event_type  = isset( $_POST['mep_event_type'] ) ? sanitize_text_field( $_POST['mep_event_type'] ) : 'offline';
+					if ( ! in_array( $mep_event_type, [ 'online', 'offline', 'hybrid' ] ) ) {
+						$mep_event_type = 'offline';
+					}
+					$mep_org_address = isset( $_POST['mep_org_address'] ) ? sanitize_text_field( $_POST['mep_org_address'] ) : "";
+					// Handle venue location with coordinate detection
+					if ( isset( $_POST['mep_location_venue'] ) ) {
+						$raw_venue_value = sanitize_text_field( wp_unslash( $_POST['mep_location_venue'] ) );
+						// Check if it looks like coordinates (lat,lng format)
+						if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', trim( $raw_venue_value ) ) ) {
+							// For coordinates, preserve comma, decimal point, and minus sign
+							$mep_location_venue = sanitize_text_field( trim( $raw_venue_value ) );
+						} else {
+							// For regular location names, preserve punctuation like commas.
+							$mep_location_venue = sanitize_text_field( $raw_venue_value );
+						}
+					} else {
+						$mep_location_venue = get_post_meta( $post_id, 'mep_location_venue', true );
+					}
+					$mep_street   = isset( $_POST['mep_street'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_street'] ) ) : "";
+					$mep_city     = isset( $_POST['mep_city'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_city'] ) ) : "";
+					$mep_state    = isset( $_POST['mep_state'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_state'] ) ) : "";
+					$mep_postcode = isset( $_POST['mep_postcode'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_postcode'] ) ) : "";
+					$mep_country  = isset( $_POST['mep_country'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_country'] ) ) : "";
+					$latitude     = isset( $_POST['latitude'] ) ? sanitize_text_field( trim( $_POST['latitude'] ) ) : get_post_meta( $post_id, 'latitude', true );
+					$longitude    = isset( $_POST['longitude'] ) ? sanitize_text_field( trim( $_POST['longitude'] ) ) : get_post_meta( $post_id, 'longitude', true );
+					if ( is_numeric( $latitude ) && is_numeric( $longitude ) ) {
+						$latitude  = (string) floatval( str_replace( ',', '.', $latitude ) );
+						$longitude = (string) floatval( str_replace( ',', '.', $longitude ) );
+						if ( floatval( $latitude ) < - 90 || floatval( $latitude ) > 90 || floatval( $longitude ) < - 180 || floatval( $longitude ) > 180 ) {
+							$latitude  = '';
+							$longitude = '';
+						}
+					}
+					$mep_sgm       = isset( $_POST['mep_sgm'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['mep_sgm'] ) ) : 0;
+					$location_name = isset( $_POST['location_name'] ) ? sanitize_text_field( mep_letters_numbers_spaces_only( $_POST['location_name'] ) ) : "";
+					update_post_meta( $post_id, 'mep_event_type', $mep_event_type );
+					update_post_meta( $post_id, 'mep_org_address', mep_letters_numbers_spaces_only( mep_prevent_serialized_input( $mep_org_address ) ) );
+					update_post_meta( $post_id, 'mep_location_venue', $mep_location_venue );
+					update_post_meta( $post_id, 'mep_street', $mep_street );
+					update_post_meta( $post_id, 'mep_city', $mep_city );
+					update_post_meta( $post_id, 'mep_state', $mep_state );
+					update_post_meta( $post_id, 'mep_postcode', $mep_postcode );
+					update_post_meta( $post_id, 'mep_country', $mep_country );
+					update_post_meta( $post_id, 'longitude', $longitude );
+					update_post_meta( $post_id, 'latitude', $latitude );
+					update_post_meta( $post_id, 'mep_sgm', $mep_sgm );
+					update_post_meta( $post_id, 'location_name', $location_name );
+					
+					$mep_reg_status = isset( $_POST['mep_reg_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status'] ) ) : 'off';
+					if ( ! in_array( $mep_reg_status, [ 'off', 'rsvp', 'on' ], true ) ) {
+						$mep_reg_status = 'off';
+					}
+
+					$mep_enable_early_bird_status = isset( $_POST['mep_enable_early_bird_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_early_bird_status'] ) ) ? 'on' : 'off';
+					$mep_show_advanced_column   = isset( $_POST['mep_show_advanced_column'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_advanced_column'] ) ) ? 'on' : 'off';
+					$mep_reg_status_msg     = isset( $_POST['mep_reg_status_show_msg'] ) && sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg'] ) ) ? 'on' : 'off';
+					$mep_reg_status_msg_txt = isset( $_POST['mep_reg_status_show_msg_txt'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_status_show_msg_txt'] ) ) : '';
+					update_post_meta( $post_id, 'mep_reg_status', $mep_reg_status );
+					update_post_meta( $post_id, 'mep_enable_early_bird_status', $mep_enable_early_bird_status );
+					update_post_meta( $post_id, 'mep_show_advanced_column', $mep_show_advanced_column );
+					update_post_meta( $post_id, 'mep_reg_status_show_msg', $mep_reg_status_msg );
+					update_post_meta( $post_id, 'mep_reg_status_show_msg_txt', $mep_reg_status_msg_txt );
+					
+					// RSVP Custom Labels
+					$mep_rsvp_name_label  = isset( $_POST['mep_rsvp_name_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_name_label'] ) ) : '';
+					$mep_rsvp_email_label = isset( $_POST['mep_rsvp_email_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_email_label'] ) ) : '';
+					$mep_rsvp_phone_label = isset( $_POST['mep_rsvp_phone_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_phone_label'] ) ) : '';
+					$mep_rsvp_qty_label   = isset( $_POST['mep_rsvp_qty_label'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rsvp_qty_label'] ) ) : '';
+					update_post_meta( $post_id, 'mep_rsvp_name_label', $mep_rsvp_name_label );
+					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
+					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
+					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
+					/********************************/
+					$new_ticket_type      = array();
+					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];
+					$details              = isset( $_POST['option_details_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_details_t'] ) ) : [];
+					$ticket_price         = isset( $_POST['option_price_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price_t'] ) ) : [];
+					$qty                  = isset( $_POST['option_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t'] ) ) : [];
+					$dflt_qty             = isset( $_POST['option_default_qty_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_default_qty_t'] ) ) : [];
+					$rsv                  = isset( $_POST['option_rsv_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_rsv_t'] ) ) : [];
+					$qty_type             = isset( $_POST['option_qty_t_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_t_type'] ) ) : [];
+					$sale_end_date        = isset( $_POST['option_sale_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_date'] ) ) : [];
+					$sale_end_time        = isset( $_POST['option_sale_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_end_time'] ) ) : [];
+					$sale_start_date      = isset( $_POST['option_sale_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_date'] ) ) : [];
+					$sale_start_time      = isset( $_POST['option_sale_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_sale_start_time'] ) ) : [];
+					$option_ticket_enable = isset( $_POST['option_ticket_enable'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_enable'] ) ) : [];
+					$ticket_mode_t        = isset( $_POST['option_ticket_mode_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_ticket_mode_t'] ) ) : [];
+					$count                = count( $names );
+					for ( $i = 0; $i < $count; $i ++ ) {
+						if ( $names[ $i ] ) {
+							$new_ticket_type[ $i ]['option_name_t']          = $names[ $i ];
+							$new_ticket_type[ $i ]['option_details_t']       = $details[ $i ];
+							$new_ticket_type[ $i ]['option_price_t']         = $ticket_price[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_qty_t']           = $qty[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_rsv_t']           = $rsv[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_default_qty_t']   = $dflt_qty[ $i ] ?? 0;
+							$new_ticket_type[ $i ]['option_qty_t_type']      = $qty_type[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_ticket_enable']   = $option_ticket_enable[ $i ] ?? 'yes';
+							$new_ticket_type[ $i ]['option_ticket_mode_t']   = in_array( $ticket_mode_t[ $i ] ?? '', [ 'inperson', 'online' ] ) ? $ticket_mode_t[ $i ] : 'inperson';
+							$new_ticket_type[ $i ]['option_sale_end_date']   = $sale_end_date[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_end_time']   = $sale_end_time[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_end_date_t'] = $sale_end_date[ $i ] . ' ' . $sale_end_time[ $i ];
+							$new_ticket_type[ $i ]['option_sale_start_date']   = $sale_start_date[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_time']   = $sale_start_time[ $i ] ?? '';
+							$new_ticket_type[ $i ]['option_sale_start_date_t'] = $sale_start_date[ $i ] . ' ' . $sale_start_time[ $i ];
+						}
+					}
+					$ticket_type_list = apply_filters( 'mep_ticket_type_arr_save', $new_ticket_type );
+					$ticket_type_list = apply_filters( 'mpwem_ticket_type_arr_save', $ticket_type_list );
+					update_post_meta( $post_id, 'mep_event_ticket_type', $ticket_type_list );
+					/**********Extra service**********/
+					$new_extra_service = array();
+					$extra_names       = isset( $_POST['option_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name'] ) ) : [];
+					$extra_price       = isset( $_POST['option_price'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_price'] ) ) : [];
+					$extra_qty         = isset( $_POST['option_qty'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty'] ) ) : [];
+					$extra_qty_type    = isset( $_POST['option_qty_type'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_qty_type'] ) ) : [];
+					$extra_count       = count( $extra_names );
+					for ( $i = 0; $i < $extra_count; $i ++ ) {
+						if ( $extra_names[ $i ] && $extra_price[ $i ] >= 0 && $extra_qty[ $i ] > 0 ) {
+							$new_extra_service[ $i ]['option_name']     = $extra_names[ $i ];
+							$new_extra_service[ $i ]['option_price']    = $extra_price[ $i ];
+							$new_extra_service[ $i ]['option_qty']      = $extra_qty[ $i ];
+							$new_extra_service[ $i ]['option_qty_type'] = $extra_qty_type[ $i ] ?? 'inputbox';
+						}
+					}
+					update_post_meta( $post_id, 'mep_events_extra_prices', $new_extra_service );
+					$date_type = isset( $_POST['mep_enable_recurring'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_enable_recurring'] ) ) : 'no';
+					update_post_meta( $post_id, 'mep_enable_recurring', $date_type );
+					//**********************//
+					if ( $date_type == 'no' ) {
+						$start_date = isset( $_POST['event_start_date_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_normal'] ) ) : '';
+						$start_time = isset( $_POST['event_start_time_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time_normal'] ) ) : '';
+						$end_date   = isset( $_POST['event_end_date_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date_normal'] ) ) : '';
+						$end_time   = isset( $_POST['event_end_time_normal'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_time_normal'] ) ) : '';
+						update_post_meta( $post_id, 'event_start_date', $start_date );
+						update_post_meta( $post_id, 'event_start_time', $start_time );
+						update_post_meta( $post_id, 'event_end_date', $end_date );
+						update_post_meta( $post_id, 'event_end_time', $end_time );
+						/********************/
+						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
+						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
+						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+						$start_date_more = isset( $_POST['event_more_start_date_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_date_normal'] ) ) : [];
+						$start_time_more = isset( $_POST['event_more_start_time_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_time_normal'] ) ) : [];
+						$end_date_more   = isset( $_POST['event_more_end_date_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_date_normal'] ) ) : [];
+						$end_time_more   = isset( $_POST['event_more_end_time_normal'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_time_normal'] ) ) : [];
+						$more_dates      = [];
+						if ( is_array( $start_date_more ) && sizeof( $start_date_more ) > 0 && is_array( $end_date_more ) && sizeof( $end_date_more ) ) {
+							foreach ( $start_date_more as $key => $start_date ) {
+								if ( $start_date && $end_date_more[ $key ] ) {
+									$more_dates[ $key ]['event_more_start_date'] = $start_date;
+									$more_dates[ $key ]['event_more_start_time'] = $start_time_more[ $key ];
+									$more_dates[ $key ]['event_more_end_date']   = $end_date_more[ $key ];
+									$more_dates[ $key ]['event_more_end_time']   = $end_time_more[ $key ];
+								}
+							}
+						}
+						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
+						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
+						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
+						$event_expire_datetime = is_array( $md ) && sizeof( $md ) > 0 ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
+					} elseif ( $date_type == 'yes' ) {
+						$start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
+						$start_time = isset( $_POST['event_start_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time'] ) ) : '';
+						$end_date   = isset( $_POST['event_end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date'] ) ) : '';
+						$end_time   = isset( $_POST['event_end_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_time'] ) ) : '';
+						update_post_meta( $post_id, 'event_start_date', $start_date );
+						update_post_meta( $post_id, 'event_start_time', $start_time );
+						update_post_meta( $post_id, 'event_end_date', $end_date );
+						update_post_meta( $post_id, 'event_end_time', $end_time );
+						/********************/
+						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
+						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
+						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+						$start_date_more = isset( $_POST['event_more_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_date'] ) ) : [];
+						$start_time_more = isset( $_POST['event_more_start_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_start_time'] ) ) : [];
+						$end_date_more   = isset( $_POST['event_more_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_date'] ) ) : [];
+						$end_time_more   = isset( $_POST['event_more_end_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_more_end_time'] ) ) : [];
+						$more_dates      = [];
+						if ( is_array( $start_date_more ) && sizeof( $start_date_more ) > 0 && is_array( $end_date_more ) && sizeof( $end_date_more ) ) {
+							foreach ( $start_date_more as $key => $start_date ) {
+								if ( $start_date && $end_date_more[ $key ] ) {
+									$more_dates[ $key ]['event_more_start_date'] = $start_date;
+									$more_dates[ $key ]['event_more_start_time'] = $start_time_more[ $key ];
+									$more_dates[ $key ]['event_more_end_date']   = $end_date_more[ $key ];
+									$more_dates[ $key ]['event_more_end_time']   = $end_time_more[ $key ];
+								}
+							}
+						}
+						$more_dates = apply_filters( 'mep_more_date_arr_save', $more_dates );
+						update_post_meta( $post_id, 'mep_event_more_date', $more_dates );
+						$md                    = is_array( $more_dates ) && sizeof( $more_dates ) > 0 ? end( $more_dates ) : array();
+						$event_expire_datetime = ( is_array( $md ) && sizeof( $md ) > 0 ) ? date( 'Y-m-d H:i:s', strtotime( $md['event_more_end_date'] . ' ' . $md['event_more_end_time'] ) ) : $event_end_datetime;
+						update_post_meta( $post_id, 'event_expire_datetime', $event_expire_datetime );
+					} else {
+						$start_date = isset( $_POST['event_start_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date_everyday'] ) ) : '';
+						$start_time = isset( $_POST['event_start_time_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_time_everyday'] ) ) : '';
+						$end_date   = isset( $_POST['event_end_date_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_date_everyday'] ) ) : '';
+						$end_time   = isset( $_POST['event_end_time_everyday'] ) ? sanitize_text_field( wp_unslash( $_POST['event_end_time_everyday'] ) ) : '';
+						update_post_meta( $post_id, 'event_start_date', $start_date );
+						update_post_meta( $post_id, 'event_start_time', $start_time );
+						update_post_meta( $post_id, 'event_end_date', $end_date );
+						update_post_meta( $post_id, 'event_end_time', $end_time );
+						/********************/
+						$event_start_datetime = date( 'Y-m-d H:i:s', strtotime( $start_date . ' ' . $start_time ) );
+						$event_end_datetime   = date( 'Y-m-d H:i:s', strtotime( $end_date . ' ' . $end_time ) );
+						update_post_meta( $post_id, 'event_start_datetime', $event_start_datetime );
+						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
+						update_post_meta( $post_id, 'event_expire_datetime', $event_end_datetime );
+						//*******************//
+						$periods = isset( $_POST['mep_repeated_periods'] ) ? (int) wp_unslash( $_POST['mep_repeated_periods'] ) : 1;
+						$periods = max( 1, $periods );
+						update_post_meta( $post_id, 'mep_repeated_periods', $periods );
+						$off_days = isset( $_POST['mep_ticket_offdays'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_ticket_offdays'] ) ) : '';
+						$off_days = $off_days ? explode( ',', $off_days ) : '';
+						update_post_meta( $post_id, 'mep_ticket_offdays', $off_days );
+						$all_off_dates = [];
+						$off_dates     = isset( $_POST['mep_ticket_off_dates'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_ticket_off_dates'] ) ) : [];
+						if ( is_array( $off_dates ) && sizeof( $off_dates ) > 0 ) {
+							foreach ( $off_dates as $key => $off_date ) {
+								if ( $off_date ) {
+									$all_off_dates[ $key ]['mep_ticket_off_date'] = $off_date;
+								}
+							}
+						}
+						update_post_meta( $post_id, 'mep_ticket_off_dates', $all_off_dates );
+						/******************************/
+						$display_time = isset( $_POST['mep_disable_ticket_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_disable_ticket_time'] ) ) : '';
+						$display_time = $display_time ? 'yes' : 'no';
+						update_post_meta( $post_id, 'mep_disable_ticket_time', $display_time );
+						/******************************/
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_global' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_sat' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_sun' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_mon' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_tue' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_wed' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_thu' );
+						$this->day_wise_slot_save( $post_id, 'mep_ticket_times_fri' );
+						//***************//
+						$special_dates = array();
+						$hidden_name   = isset( $_POST['mep_special_date_hidden_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_date_hidden_name'] ) ) : [];
+						$date_labels   = isset( $_POST['mep_special_date_name'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_date_name'] ) ) : [];
+						$start_date    = isset( $_POST['mep_special_start_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_start_date'] ) ) : [];
+						$end_date      = isset( $_POST['mep_special_end_date'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_special_end_date'] ) ) : [];
+						if ( count( $start_date ) > 0 ) {
+							for ( $i = 0; $i < count( $start_date ); $i ++ ) {
+								$time_labels = isset( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_label_' . $hidden_name[ $i ] ] ) ) : [];
+								$times       = isset( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'mep_special_time_value_' . $hidden_name[ $i ] ] ) ) : [];
+								if ( $start_date[ $i ] != '' && $end_date[ $i ] != '' && is_array( $time_labels ) && sizeof( $time_labels ) > 0 && is_array( $times ) && sizeof( $times ) > 0 ) {
+									$special_dates[ $i ]['date_label'] = $date_labels[ $i ];
+									$special_dates[ $i ]['start_date'] = date( 'Y-m-d', strtotime( $start_date[ $i ] ) );
+									$special_dates[ $i ]['end_date']   = date( 'Y-m-d', strtotime( $end_date[ $i ] ) );
+									$time_slot                         = array();
+									for ( $j = 0; $j < count( $time_labels ); $j ++ ) {
+										if ( $time_labels[ $j ] && $times[ $j ] != '' ) {
+											$time_slot[ $j ]['mep_ticket_time_name'] = $time_labels[ $j ];
+											$time_slot[ $j ]['mep_ticket_time']      = $times[ $j ];
+										}
+									}
+									$special_dates[ $i ]['time'] = $time_slot;
+								}
+							}
+						}
+						update_post_meta( $post_id, 'mep_special_date_info', $special_dates );
+						update_post_meta( $post_id, 'mep_special_date_info', $special_dates );
+					}
+					$buffer_time = isset( $_POST['mep_buffer_time'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_buffer_time'] ) ) : 0;
+					update_post_meta( $post_id, 'mep_buffer_time', $buffer_time );
+					/********************/
+					$mep_enable_custom_dt_format = isset( $_POST['mep_enable_custom_dt_format'] ) && sanitize_text_field( wp_unslash( $_POST['mep_enable_custom_dt_format'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_enable_custom_dt_format', $mep_enable_custom_dt_format );
+					$mep_event_date_format = isset( $_POST['mep_event_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_date_format'] ) ) : '';
+					update_post_meta( $post_id, 'mep_event_date_format', $mep_event_date_format );
+					$mep_event_custom_date_format = isset( $_POST['mep_event_custom_date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_custom_date_format'] ) ) : '';
+					update_post_meta( $post_id, 'mep_event_custom_date_format', $mep_event_custom_date_format );
+					$mep_event_time_format = isset( $_POST['mep_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_time_format'] ) ) : '';
+					update_post_meta( $post_id, 'mep_event_time_format', $mep_event_time_format );
+					$mep_custom_event_time_format = isset( $_POST['mep_custom_event_time_format'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_custom_event_time_format'] ) ) : '';
+					update_post_meta( $post_id, 'mep_custom_event_time_format', $mep_custom_event_time_format );
+					$mep_time_zone_display = isset( $_POST['mep_time_zone_display'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_time_zone_display'] ) ) : 'no';
+					update_post_meta( $post_id, 'mep_time_zone_display', $mep_time_zone_display );
+					$mep_full_name           = isset( $_POST['mep_full_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_full_name'] ) ) : "";
+					$mep_reg_email           = isset( $_POST['mep_reg_email'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_email'] ) ) : "";
+					$mep_reg_phone           = isset( $_POST['mep_reg_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_phone'] ) ) : "";
+					$mep_reg_address         = isset( $_POST['mep_reg_address'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_address'] ) ) : "";
+					$mep_reg_designation     = isset( $_POST['mep_reg_designation'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_designation'] ) ) : "";
+					$mep_reg_website         = isset( $_POST['mep_reg_website'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_website'] ) ) : "";
+					$mep_reg_veg             = isset( $_POST['mep_reg_veg'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_veg'] ) ) : "";
+					$mep_reg_company         = isset( $_POST['mep_reg_company'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_company'] ) ) : "";
+					$mep_reg_gender          = isset( $_POST['mep_reg_gender'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_gender'] ) ) : "";
+					$mep_reg_tshirtsize      = isset( $_POST['mep_reg_tshirtsize'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize'] ) ) : "";
+					$mep_reg_tshirtsize_list = isset( $_POST['mep_reg_tshirtsize_list'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_reg_tshirtsize_list'] ) ) : "";
+					update_post_meta( $post_id, 'mep_full_name', $mep_full_name );
+					update_post_meta( $post_id, 'mep_reg_email', $mep_reg_email );
+					update_post_meta( $post_id, 'mep_reg_phone', $mep_reg_phone );
+					update_post_meta( $post_id, 'mep_reg_address', $mep_reg_address );
+					update_post_meta( $post_id, 'mep_reg_designation', $mep_reg_designation );
+					update_post_meta( $post_id, 'mep_reg_website', $mep_reg_website );
+					update_post_meta( $post_id, 'mep_reg_veg', $mep_reg_veg );
+					update_post_meta( $post_id, 'mep_reg_company', $mep_reg_company );
+					update_post_meta( $post_id, 'mep_reg_gender', $mep_reg_gender );
+					update_post_meta( $post_id, 'mep_reg_tshirtsize', $mep_reg_tshirtsize );
+					update_post_meta( $post_id, 'mep_reg_tshirtsize_list', $mep_reg_tshirtsize_list );
+					$sku = isset( $_POST['mep_event_sku'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_sku'] ) ) : $post_id;
+					update_post_meta( $post_id, '_sku', $sku );
+					$mep_show_end_datetime = isset( $_POST['mep_show_end_datetime'] ) && sanitize_text_field( wp_unslash( $_POST['mep_show_end_datetime'] ) ) ? 'yes' : 'no';
+					update_post_meta( $post_id, 'mep_show_end_datetime', $mep_show_end_datetime );
+					$mep_available_seat = isset( $_POST['mep_available_seat'] ) && sanitize_text_field( wp_unslash( $_POST['mep_available_seat'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_available_seat', $mep_available_seat );
+					$mep_event_member_type = isset( $_POST['mep_member_only_event'] ) && sanitize_text_field( wp_unslash( $_POST['mep_member_only_event'] ) ) ? 'member_only' : 'for_all';
+					update_post_meta( $post_id, 'mep_member_only_event', $mep_event_member_type );
+					$mep_member_only_user_role = isset( $_POST['mep_member_only_user_role'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_member_only_user_role'] ) ) : [ 'all' ];
+					update_post_meta( $post_id, 'mep_member_only_user_role', $mep_member_only_user_role );
+					$_tax_status = isset( $_POST['_tax_status'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_status'] ) ) : 'none';
+					$_tax_class  = isset( $_POST['_tax_class'] ) ? sanitize_text_field( wp_unslash( $_POST['_tax_class'] ) ) : '';
+					update_post_meta( $post_id, '_tax_status', $_tax_status );
+					update_post_meta( $post_id, '_tax_class', $_tax_class );
+					update_post_meta( $post_id, '_stock_msg', 'new' );
+					update_post_meta( $post_id, '_sold_individually', 'no' );
+					update_post_meta( $post_id, '_price', 0 );
+					update_post_meta( $post_id, '_virtual', 'yes' );
+					$event_list    = isset( $_POST['event_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['event_list'] ) ) : [];
+					$column_number = isset( $_POST['event_list_column'] ) ? sanitize_text_field( wp_unslash( $_POST['event_list_column'] ) ) : '';
+					$section_label = isset( $_POST['related_section_label'] ) ? sanitize_text_field( wp_unslash( $_POST['related_section_label'] ) ) : '';
+					$event_status  = isset( $_POST['mep_related_event_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_related_event_status'] ) ) : 'off';
+					update_post_meta( $post_id, '_list_column', $column_number );
+					update_post_meta( $post_id, 'event_list', $event_list );
+					update_post_meta( $post_id, 'related_section_label', $section_label );
+					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
+					$speaker_title = isset( $_POST['mep_speaker_title'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_speaker_title'] ) ) : '';
+					$speaker_icon  = isset( $_POST['mep_event_speaker_icon'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speaker_icon'] ) ) : '';
+					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_speakers_list'] ) ) : [];
+					$enable_speaker = isset( $_POST['mep_event_enable_speaker'] ) && sanitize_text_field( wp_unslash( $_POST['mep_event_enable_speaker'] ) ) === 'yes' ? 'yes' : 'no';
+					update_post_meta( $post_id, 'mep_speaker_title', $speaker_title );
+					update_post_meta( $post_id, 'mep_event_speaker_icon', $speaker_icon );
+					update_post_meta( $post_id, 'mep_event_speakers_list', $speakers );
+					update_post_meta( $post_id, 'mep_event_enable_speaker', $enable_speaker );
+					$slider = isset( $_POST['mep_display_slider'] ) && sanitize_text_field( wp_unslash( $_POST['mep_display_slider'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_display_slider', $slider );
+					$images       = isset( $_POST['mep_gallery_images'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_gallery_images'] ) ) : '';
+					$single_image = isset( $_POST['mep_list_thumbnail'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_list_thumbnail'] ) ) : '';
+					$all_images   = explode( ',', $images );
+					update_post_meta( $post_id, 'mep_gallery_images', $all_images );
+					update_post_meta( $post_id, 'mep_list_thumbnail', $single_image );
+					$event_rt_status              = isset( $_POST['mep_rt_event_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_status'] ) ) : '';
+					$event_rt_atdnce_mode         = isset( $_POST['mep_rt_event_attandence_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_attandence_mode'] ) ) : '';
+					$event_rt_prv_date            = isset( $_POST['mep_rt_event_prvdate'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rt_event_prvdate'] ) ) : '';
+					$seat                         = 0;
+					$mep_event_template_file_name = isset( $_POST['mep_event_template'] ) && mep_isValidFilename( $_POST['mep_event_template'] ) ? sanitize_file_name( $_POST['mep_event_template'] ) : "default-theme.php";
+					$mep_event_template           = mep_template_file_validate( $mep_event_template_file_name );
+					$mep_rich_text_status         = isset( $_POST['mep_rich_text_status'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_rich_text_status'] ) ) : 'enable';
+					update_post_meta( $post_id, 'mep_rich_text_status', $mep_rich_text_status );
+					update_post_meta( $post_id, 'mep_rt_event_status', $event_rt_status );
+					update_post_meta( $post_id, 'mep_rt_event_attandence_mode', $event_rt_atdnce_mode );
+					update_post_meta( $post_id, 'mep_rt_event_prvdate', $event_rt_prv_date );
+					update_post_meta( $post_id, 'mep_event_template', $mep_event_template );
+					update_post_meta( $post_id, '_stock', $seat );
+					$mp_event_virtual_type_des = isset( $_POST['mp_event_virtual_type_des'] ) ? wp_kses_post( wp_unslash( $_POST['mp_event_virtual_type_des'] ) ) : '';
+					update_post_meta( $post_id, 'mp_event_virtual_type_des', $mp_event_virtual_type_des );
+					$mep_show_upcoming_event = isset( $_POST['mep_show_upcoming_event'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_show_upcoming_event'] ) ) : '';
+					update_post_meta( $post_id, 'mep_show_upcoming_event', $mep_show_upcoming_event );
+					/*******************************/
+					$mep_event_cc_email_text = isset( $_POST['mep_event_cc_email_text'] ) ? wp_kses_post( wp_unslash( $_POST['mep_event_cc_email_text'] ) ) : '';
+					update_post_meta( $post_id, 'mep_event_cc_email_text', $mep_event_cc_email_text );
+					do_action( 'mpwem_settings_save', $post_id );
+					$mep_faq_title   = isset( $_POST['mep_faq_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_faq_title'] ) ) : [];
+					$mep_faq_content = isset( $_POST['mep_faq_content'] ) ? wp_unslash( $_POST['mep_faq_content'] ) : [];
+					$faqs            = [];
+					if ( is_array( $mep_faq_title ) && sizeof( $mep_faq_title ) > 0 ) {
+						foreach ( $mep_faq_title as $key => $title ) {
+							if ( $title ) {
+								$faqs[ $key ]['mep_faq_title']   = $title;
+								$faqs[ $key ]['mep_faq_content'] = $mep_faq_content[ $key ];
+							}
+						}
+					}
+					update_post_meta( $post_id, 'mep_event_faq', $faqs );
+					$des = isset( $_POST['mep_faq_description'] ) ? wp_kses_post( wp_unslash( $_POST['mep_faq_description'] ) ) : '';
+					update_post_meta( $post_id, 'mep_faq_description', $des );
+					$mep_faq_status = isset( $_POST['mep_faq_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_faq_status'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_faq_status', $mep_faq_status );
+					$mep_faq_status = isset( $_POST['mep_timeline_status'] ) && sanitize_text_field( wp_unslash( $_POST['mep_timeline_status'] ) ) ? 'on' : 'off';
+					update_post_meta( $post_id, 'mep_timeline_status', $mep_faq_status );
+					$mep_faq_title   = isset( $_POST['mep_day_title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_day_title'] ) ) : [];
+					$mep_day_time    = isset( $_POST['mep_day_time'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_day_time'] ) ) : [];
+					$mep_faq_content = isset( $_POST['mep_day_content'] ) ? wp_unslash( $_POST['mep_day_content'] ) : [];
+					$faqs            = [];
+					if ( is_array( $mep_faq_title ) && sizeof( $mep_faq_title ) > 0 ) {
+						foreach ( $mep_faq_title as $key => $title ) {
+							if ( $title ) {
+								$faqs[ $key ]['mep_day_title']   = $title;
+								$faqs[ $key ]['mep_day_time']    = $mep_day_time[ $key ];
+								$faqs[ $key ]['mep_day_content'] = $mep_faq_content[ $key ];
+							}
+						}
+					}
+					update_post_meta( $post_id, 'mep_event_day', $faqs );
+				}
+			}
+			public function day_wise_slot_save( $post_id, $name ) {
+				$all_global   = [];
+				$global_label = isset( $_POST[ $name . '_label' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_label' ] ) ) : [];
+				$global_time  = isset( $_POST[ $name . '_time' ] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST[ $name . '_time' ] ) ) : [];
+				if ( is_array($global_time) && sizeof( $global_time ) > 0 && is_array($global_label) && sizeof( $global_label ) ) {
+					foreach ( $global_time as $key => $time ) {
+						if ( $time && $global_label[ $key ] ) {
+							$all_global[ $key ]['mep_ticket_time_name'] = $global_label[ $key ];
+							$all_global[ $key ]['mep_ticket_time']      = $time;
+						}
+					}
+				}
+				update_post_meta( $post_id, $name, $all_global );
+			}
+			public static function des_array( $key ) {
+				$des = array(
+					'mep_display_slider'           => __( 'By default slider is ON but you can keep it off by switching this option', 'mage-eventpress' ),
+					'mep_gallery_images'           => __( 'Please upload images for gallery', 'mage-eventpress' ),
+					'gallery_settings_description' => __( 'Here gallery image can be added  to event so that guest can understand about this event.', 'mage-eventpress' ),
+				);
+				$des = apply_filters( 'mpwem_filter_description_array', $des );
+				return $des[ $key ];
+			}
+			public static function des_p( $key ) {
+				echo self::des_array( $key );
+			}
+		}
+		new MPWEM_Settings();
+	}
+    if (!class_exists('MEP_Global_Quantity')) {
+        class MEP_Global_Quantity {
+            public function __construct() {
+
+                add_action( 'admin_init', [ $this, 'gq_update' ] );
+                add_action( 'mpwem_after_registration_on_off', [ $this, 'gq_settings' ] );
+                add_action( 'mpwem_before_extra_services_mount', [ $this, 'gq_ex_service_settings' ] );
+                /*********************************/
+                add_action('mep_date_table_head', [$this, 'date_table_head']);
+                add_action('mep_date_table_body_default_date', [$this, 'date_table_default_date']);
+                add_action('mep_date_table_empty', [$this, 'mep_gq_date_table_empty']);
+                add_action('mep_date_table_body_more_date', [$this, 'date_table_more_date'], 10, 2);
+                add_action('mpwem_settings_save', [$this, 'save_global_quantity']);
+                add_filter('mep_more_date_arr_save', [$this, 'mep_gq_more_date_arr_save'], 99);
+            }
+
+            public function gq_update() {
+                if (get_option('mpwem_gq_update') != 'completed') {
+                    $gq_type = MPWEM_Global_Function::get_settings('mep_gq_settings', 'mep_gq_type');
+                    if ($gq_type) {
+                        $query = MPWEM_Query::query_post_type(MPWEM_Functions::get_cpt());
+                        foreach ($query->posts as $result) {
+                            $post_id = $result->ID;
+                            if ($gq_type == 'global') {
+                                update_post_meta($post_id, 'mep_gq_type', $gq_type);
+                            } else {
+                                update_post_meta($post_id, 'mep_gq_type', 'date_wise');
+                            }
+                        }
+                    }
+                    $args = array(
+                        'post_type' => 'mep_events',
+                        'posts_per_page' => -1
+                    );
+                    $qr = new WP_Query($args);
+                    foreach ($qr->posts as $result) {
+                        $post_id = $result->ID;
+                        $seat_left = mep_count_total_available_seat($post_id);
+                        update_post_meta($post_id, 'mep_total_seat_left', $seat_left);
+                    }
+                    update_option('mpwem_gq_update', 'completed');
+                }
+            }
+            public function gq_settings($event_id) {
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $mep_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $checked = $enable_global_qty == 'off' ? '' : 'checked';
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_seat');
+                $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_total_resv_seat');
+                ?>
+                <div class="_padding_bt mpwem-global-qty-field old-mpem-global-qty-field">
+                    <div class="_justify_between_align_center_wrap mpwem-global-qty-field__toggle">
+                        <label><span class="_mr"><?php esc_html_e('Enable Global Qty? ', 'mage-eventpress-gq'); ?></span></label>
+                        <?php MPWEM_Custom_Layout::switch_button('enable_global_qty', $checked); ?>
+                    </div>
+                    <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please select if you want to enable global quantity for this event. when you turn on global qty total ticket type seat will not be count ', 'mage-eventpress-gq'); ?></span>
+                    <div class="mpwem-global-qty-field__panel _bg_light_padding_mt_xs <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#enable_global_qty">
+                        <div class="mpwem-global-qty-field__row">
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control"><span class="_mr"><?php esc_html_e('Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--select">
+                                    <select class="formControl mpwem-global-qty-field__input" name="mep_gq_type" data-collapse-target>
+                                        <option value="date_wise" data-option-target="#mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                        <option value="global" data-option-target="#mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                    </select>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please Select the global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control"><span class="_mr"><?php esc_html_e('Total Qty', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Seat of this event. ', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
+                                <span class="_mr"><?php esc_html_e('Reserve Qty', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Reserve Seat Qty of this event', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            public function gq_ex_service_settings($event_id) {
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $mep_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $checked = $enable_global_qty == 'off' ? '' : 'checked';
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_seat');
+                $reserve_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_total_resv_seat');
+                ?>
+                <div class="_padding_bt mpwem-global-qty-field">
+                    <div class="_justify_between_align_center_wrap mpwem-global-qty-field__toggle">
+                        <label><span class="_mr"><?php esc_html_e('Enable Extra service  Global Qty?', 'mage-eventpress-gq'); ?></span></label>
+                        <?php MPWEM_Custom_Layout::switch_button('ex_enable_global_qty', $checked); ?>
+                    </div>
+                    <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please select if you want to enable Extra service  global quantity for this event. when you turn on global qty total ticket type seat will not be count', 'mage-eventpress-gq'); ?></span>
+                    <div class="mpwem-global-qty-field__panel <?php echo esc_attr($enable_global_qty == 'on' ? 'mActive' : ''); ?>" data-collapse="#ex_enable_global_qty">
+                        <div class="mpwem-global-qty-field__row">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
+                                <span class="_mr"><?php esc_html_e('Extra service Global Quantity Type?', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--select">
+                                    <select class="formControl mpwem-global-qty-field__input" name="ex_mep_gq_type" data-collapse-target>
+                                        <option value="date_wise" data-option-target="#ex_mep_gq_type_date_wise" <?php echo esc_attr($mep_gq_type == 'date_wise' ? 'selected' : ''); ?>><?php esc_html_e('Particular Date Wise', 'mage-eventpress-gq'); ?></option>
+                                        <option value="global" data-option-target="#ex_mep_gq_type_global" <?php echo esc_attr($mep_gq_type == 'global' ? 'selected' : ''); ?>><?php esc_html_e('Full Event Base', 'mage-eventpress-gq'); ?></option>
+                                    </select>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Please Select Extra service global quantity type, If you want to apply it globally for all date and ticket type then select, If you have recurring event addon and want to set datewise global quantity then please select Datewise.', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
+                                <span class="_mr"><?php esc_html_e('Extra service Total Qty', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="ex_mep_gq_total_seat" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Extra service Reserve Seat Qty of this event ', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                        <div class="mpwem-global-qty-field__row <?php echo esc_attr($mep_gq_type == 'global' ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_global">
+                            <div class="divider"></div>
+                            <label class="_justify_between_align_center_wrap mpwem-global-qty-field__control">
+                                <span class="_mr"><?php esc_html_e('Extra service Reserve Qty', 'mage-eventpress-gq'); ?></span>
+                                <span class="mpwem-global-qty-field__input-wrap mpwem-global-qty-field__input-wrap--number">
+                                    <input class="formControl mpwem-global-qty-field__input" type="number" min="0" name="ex_mep_gq_total_resv_seat" step="1" placeholder="5" value="<?php echo esc_attr($reserve_qty); ?>"/>
+                                </span>
+                            </label>
+                            <span class="des_info mpwem-global-qty-field__help"><?php esc_html_e('Enter The Total Extra service Seat of this event', 'mage-eventpress-gq'); ?></span>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            //*******************//
+            public function date_table_head($event_id) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                ?>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise"><?php esc_html_e('Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  Qty', 'mage-eventpress-gq'); ?></th>
+                <th class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise"><?php esc_html_e('Extra service Global  reserve Qty', 'mage-eventpress-gq'); ?></th>
+                <?php
+            }
+            public function date_table_default_date($event_id) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $total_seat = MPWEM_Global_Function::get_post_info($event_id, 'event_date_gq');
+                $res_seat = MPWEM_Global_Function::get_post_info($event_id, 'event_date_gq_rev');
+                $ex_total_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_event_date_gq');
+                $ex_res_seat = MPWEM_Global_Function::get_post_info($event_id, 'ex_event_date_gq_rev');
+                ?>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_rev" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
+                </td>
+                <?php
+            }
+            public function date_table_more_date($event_id, $field = []) {
+                $gq_type = MPWEM_Global_Function::get_post_info($event_id, 'mep_gq_type', 'global');
+                $ex_gq_type = MPWEM_Global_Function::get_post_info($event_id, 'ex_mep_gq_type', 'global');
+                $enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'enable_global_qty', 'off');
+                $ex_enable_global_qty = MPWEM_Global_Function::get_post_info($event_id, 'ex_enable_global_qty', 'off');
+                $total_seat = is_array($field) && array_key_exists( 'event_date_gq_md', $field ) ? $field['event_date_gq_md'] : '';
+                $res_seat = is_array($field) && array_key_exists( 'event_date_gq_md_rev', $field ) ? $field['event_date_gq_md_rev'] : '';
+                $ex_total_seat = is_array($field) && array_key_exists( 'ex_event_date_gq_md', $field ) ? $field['ex_event_date_gq_md'] : '';
+                $ex_res_seat = is_array($field) && array_key_exists( 'ex_event_date_gq_md_rev', $field ) ? $field['ex_event_date_gq_md_rev'] : '';
+                ?>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($res_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_total_seat); ?>"/> </label>
+                </td>
+                <td class="<?php echo esc_attr(($enable_global_qty == 'on' && $gq_type == 'date_wise' && $ex_enable_global_qty == 'on' && $ex_gq_type == 'date_wise') ? 'mActive' : ''); ?>" data-collapse="#ex_mep_gq_type_date_wise">
+                    <label> <input class="formControl" type="number" min="0" name="ex_event_date_gq_md_rev[]" step="1" placeholder="0" value="<?php echo esc_attr($ex_res_seat); ?>"/> </label>
+                </td>
+                <?php
+            }
+            public function mep_gq_date_table_empty($event_id) {
+                $this->date_table_more_date($event_id);
+            }
+            public function save_global_quantity($post_id) {
+                if (get_post_type($post_id) == 'mep_events') {
+                    $global_qty = isset($_POST['enable_global_qty']) && sanitize_text_field(wp_unslash($_POST['enable_global_qty'])) ? 'on' : 'off';
+                    $esv_seat = isset($_POST['mep_gq_total_resv_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_resv_seat'])) : '';
+                    $total_seat = isset($_POST['mep_gq_total_seat']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_total_seat'])) : '';
+                    $mep_gq_type = isset($_POST['mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['mep_gq_type'])) : '';
+                    update_post_meta($post_id, 'enable_global_qty', $global_qty);
+                    update_post_meta($post_id, 'mep_gq_total_resv_seat', $esv_seat);
+                    update_post_meta($post_id, 'mep_gq_total_seat', $total_seat);
+                    $event_date_gq = isset($_POST['event_date_gq']) ? sanitize_text_field(wp_unslash($_POST['event_date_gq'])) : '';
+                    $event_date_gq_rev = isset($_POST['event_date_gq_rev']) ? sanitize_text_field(wp_unslash($_POST['event_date_gq_rev'])) : '';
+                    update_post_meta($post_id, 'event_date_gq', $event_date_gq);
+                    update_post_meta($post_id, 'event_date_gq_rev', $event_date_gq_rev);
+                    update_post_meta($post_id, 'mep_gq_type', $mep_gq_type);
+//========================//
+                    $ex_event_date_gq = isset($_POST['ex_event_date_gq']) ? sanitize_text_field(wp_unslash($_POST['ex_event_date_gq'])) : '';
+                    $ex_event_date_gq_rev = isset($_POST['ex_event_date_gq_rev']) ? sanitize_text_field(wp_unslash($_POST['ex_event_date_gq_rev'])) : '';
+                    update_post_meta($post_id, 'ex_event_date_gq', $ex_event_date_gq);
+                    update_post_meta($post_id, 'ex_event_date_gq_rev', $ex_event_date_gq_rev);
+                    $ex_global_qty = isset($_POST['ex_enable_global_qty']) && sanitize_text_field(wp_unslash($_POST['ex_enable_global_qty'])) ? 'on' : 'off';
+                    $ex_esv_seat = isset($_POST['ex_mep_gq_total_resv_seat']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_total_resv_seat'])) : '';
+                    $ex_total_seat = isset($_POST['ex_mep_gq_total_seat']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_total_seat'])) : '';
+                    $ex_mep_gq_type = isset($_POST['ex_mep_gq_type']) ? sanitize_text_field(wp_unslash($_POST['ex_mep_gq_type'])) : '';
+                    update_post_meta($post_id, 'ex_enable_global_qty', $ex_global_qty);
+                    update_post_meta($post_id, 'ex_mep_gq_total_resv_seat', $ex_esv_seat);
+                    update_post_meta($post_id, 'ex_mep_gq_total_seat', $ex_total_seat);
+                    update_post_meta($post_id, 'ex_mep_gq_type', $ex_mep_gq_type);
+                }
+            }
+            public function mep_gq_more_date_arr_save($data) {
+                $event_date_gq_md = isset($_POST['event_date_gq_md']) ? array_map('sanitize_text_field', wp_unslash($_POST['event_date_gq_md'])) : [];
+                $event_date_gq_md_rev = isset($_POST['event_date_gq_md_rev']) ? array_map('sanitize_text_field', wp_unslash($_POST['event_date_gq_md_rev'])) : [];
+                $ex_event_date_gq_md = isset($_POST['ex_event_date_gq_md']) ? array_map('sanitize_text_field', wp_unslash($_POST['ex_event_date_gq_md'])) : [];
+                $ex_event_date_gq_md_rev = isset($_POST['ex_event_date_gq_md_rev']) ? array_map('sanitize_text_field', wp_unslash($_POST['ex_event_date_gq_md_rev'])) : [];
+                if (sizeof($event_date_gq_md) > 0) {
+                    $count = count($event_date_gq_md);
+                    for ($i = 0; $i < $count; $i++) {
+                        if ($event_date_gq_md[$i] != '') {
+                            $data[$i]['event_date_gq_md'] = is_array($event_date_gq_md) && array_key_exists( $i, $event_date_gq_md ) ? $event_date_gq_md[$i] : '';
+                            $data[$i]['event_date_gq_md_rev'] = is_array($event_date_gq_md_rev) && array_key_exists( $i, $event_date_gq_md_rev ) ? $event_date_gq_md_rev[$i] : '';
+                            $data[$i]['ex_event_date_gq_md'] = is_array($ex_event_date_gq_md) && array_key_exists( $i, $ex_event_date_gq_md ) ? $ex_event_date_gq_md[$i] : '';
+                            $data[$i]['ex_event_date_gq_md_rev'] = is_array($ex_event_date_gq_md_rev) && array_key_exists( $i, $ex_event_date_gq_md_rev ) ? $ex_event_date_gq_md_rev[$i] : '';
+                        }
+                    }
+                }
+                return $data;
+            }
+        }
+        new MEP_Global_Quantity();
+    }
+    if (!class_exists('MP_Event_Eb_Settings')) {
+        class MP_Event_Eb_Settings {
+            public function __construct() {
+                add_filter('mep_settings_sec_reg', array($this, 'mep_eb_settings_sec'), 10);
+                add_filter('mep_settings_sec_fields', array($this, 'mep_eb_settings_fields'), 10);
+            }
+            public function mep_eb_settings_sec($default_sec) {
+                $sections = array(
+                    array(
+                        'id' => 'mep_eb_settings',
+                        'title' => '<i class="fas fa-dove"></i>' . __('Early Birds', 'mage-eventpress-mm')
+                    )
+                );
+                return array_merge($default_sec, $sections);
+            }
+            public function mep_eb_settings_fields($default_fields) {
+                $settings_fields = array(
+                    'mep_eb_settings' => array(
+                        array(
+                            'name' => 'mp_event_eb_type',
+                            'label' => __('Early bird ticket visible option', 'mage-eventpress'),
+                            'desc' => __('select Early bird ticket visible option', 'mage-eventpress'),
+                            'type' => 'select',
+                            'default' => '0',
+                            'options' => array(
+                                '0' => __('Depend on time', 'mage-eventpress'),
+                                '1' => __('Depend on order', 'mage-eventpress')
+                            )
+                        ),
+                    )
+                );
+                return array_merge($default_fields, $settings_fields);
+            }
+        }
+        new MP_Event_Eb_Settings();
+    }

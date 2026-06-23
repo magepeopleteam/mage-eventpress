@@ -1,0 +1,94 @@
+/* Editor Styles for Event List Block */
+.mep-event-block-preview {
+    background: #f8f9f9;
+    border: 1px solid #e2e4e7;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 0;
+}
+
+.mep-event-block-preview .components-placeholder {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.mep-event-block-preview .components-placeholder__label {
+    margin-bottom: 16px;
+}
+
+.mep-event-block-preview .components-placeholder__label svg {
+    margin-right: 8px;
+}
+
+.mep-event-block-preview-settings {
+    text-align: left;
+    margin-top: 16px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mep-event-block-preview-settings ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+}
+
+.mep-event-block-preview-settings li {
+    margin-bottom: 4px;
+    color: #555;
+}
+
+/* Inspector Controls Styling */
+.components-panel__body .components-base-control {
+    margin-bottom: 24px;
+}
+
+.components-panel__body .components-base-control:last-child {
+    margin-bottom: 8px;
+}
+
+.components-panel__body .components-toggle-control .components-base-control__field {
+    margin-bottom: 0;
+}
+
+.components-panel__body .components-range-control .components-base-control__field {
+    margin-bottom: 0;
+}
+
+/* Specific styling for different control types */
+.components-panel__body .components-select-control__input {
+    height: 36px;
+}
+
+.components-panel__body .components-text-control__input {
+    height: 36px;
+    padding: 6px 8px;
+}
+
+.components-panel__body .components-toggle-control .components-form-toggle {
+    margin-right: 12px;
+}
+
+/* Panel organization */
+.components-panel__body-title {
+    color: #1e1e1e;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.components-panel__body.is-opened > .components-panel__body-title {
+    margin-bottom: 16px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 600px) {
+    .mep-event-block-preview {
+        padding: 32px;
+    }
+    
+    .mep-event-block-preview-settings {
+        padding: 24px;
+    }
+}

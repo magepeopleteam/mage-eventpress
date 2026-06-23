@@ -1,0 +1,190 @@
+/* Front-end Styles for Event List Block */
+.wp-block-mage-event-list {
+    margin-bottom: 2em;
+}
+
+/* Ensure block styling doesn't conflict with theme styles */
+.wp-block-mage-event-list .mep_event_list {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Grid Layout Improvements */
+.wp-block-mage-event-list .mage_grid_box {
+    display: grid;
+    gap: 20px;
+    margin: 0;
+}
+
+/* Responsive grid columns */
+@media (min-width: 600px) {
+    .wp-block-mage-event-list .mage_grid_box.column_style {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+/* Filter Styles */
+.wp-block-mage-event-list .list_with_filter_section {
+    margin-bottom: 2em;
+}
+
+.wp-block-mage-event-list .list_with_filter_section .filter-button {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 16px;
+    margin: 0 8px 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wp-block-mage-event-list .list_with_filter_section .filter-button:hover,
+.wp-block-mage-event-list .list_with_filter_section .filter-button.mixitup-control-active {
+    background: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/* Pagination Styles */
+.wp-block-mage-event-list .mep_event_pagination {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.wp-block-mage-event-list .mep_event_pagination button,
+.wp-block-mage-event-list .mep_event_pagination .page-numbers {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.wp-block-mage-event-list .mep_event_pagination button:hover,
+.wp-block-mage-event-list .mep_event_pagination .page-numbers:hover,
+.wp-block-mage-event-list .mep_event_pagination .page-numbers.current {
+    background: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/* Carousel Styles */
+.wp-block-mage-event-list .owl-carousel .owl-nav button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9) !important;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-nav button.owl-prev {
+    left: -20px;
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-nav button.owl-next {
+    right: -20px;
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-dots {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-dot {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-dot span {
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #dee2e6;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.wp-block-mage-event-list .owl-carousel .owl-dot.active span {
+    background: #007bff;
+}
+
+/* Timeline Styles */
+.wp-block-mage-event-list .timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.wp-block-mage-event-list .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: #dee2e6;
+}
+
+.wp-block-mage-event-list .timeline .mep-event-list-loop {
+    position: relative;
+    width: calc(50% - 30px);
+    margin: 30px 0;
+}
+
+.wp-block-mage-event-list .timeline .mep-event-list-loop:nth-child(odd) {
+    margin-left: auto;
+}
+
+.wp-block-mage-event-list .timeline .mep-event-list-loop:nth-child(even) {
+    margin-right: auto;
+}
+
+/* Responsive Timeline */
+@media (max-width: 767px) {
+    .wp-block-mage-event-list .timeline::before {
+        left: 20px;
+    }
+    
+    .wp-block-mage-event-list .timeline .mep-event-list-loop {
+        width: calc(100% - 50px);
+        margin-left: 50px !important;
+    }
+}
+
+/* Search and Filter Section */
+.wp-block-mage-event-list .mep-event-search-section {
+    margin-bottom: 2em;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.wp-block-mage-event-list .mep-event-search-section input[type="text"],
+.wp-block-mage-event-list .mep-event-search-section select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+    .wp-block-mage-event-list .mep-event-search-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .wp-block-mage-event-list .mep-event-search-section input[type="text"],
+    .wp-block-mage-event-list .mep-event-search-section select {
+        margin-bottom: 0;
+    }
+}

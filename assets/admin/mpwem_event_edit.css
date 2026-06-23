@@ -11367,3 +11367,29 @@ select.mpwem-field-error,
     70%  { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
     100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
 }
+
+/* Date/Time step fields (Step 3): the custom-calendar date inputs and time
+   inputs carry their own !important borders and a blue :focus ring, and the
+   validator auto-focuses the first invalid field — so we need higher-specificity
+   error rules (incl. :focus) to make the red highlight win and stay visible. */
+.mpwem-date-input.mpwem-field-error,
+.mpwem-time-input.mpwem-field-error,
+.mpwem-date-input.mpwem-field-error:focus,
+.mpwem-time-input.mpwem-field-error:focus,
+input.mpwem-field-error:focus,
+select.mpwem-field-error:focus,
+textarea.mpwem-field-error:focus,
+.formControl.mpwem-field-error,
+.formControl.mpwem-field-error:focus {
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.20) !important;
+    background: #fff7f8 !important;
+}
+
+/* Ring the whole date/time field wrapper so the error reads clearly even with
+   the leading calendar/clock icon and table layout. */
+.mpwem-date-input-wrap:has(.mpwem-field-error),
+.mpwem-time-input-wrap:has(.mpwem-field-error) {
+    border-radius: 10px;
+    box-shadow: 0 0 0 2px #e11d48 !important;
+}

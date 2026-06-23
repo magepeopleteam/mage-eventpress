@@ -2546,6 +2546,14 @@
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 let $body = $mount.children('.mpwem-display-section__body').first();
 
+                // Attendee Form is powered by Event Booking Manager PRO — flag it as a PRO feature.
+                if ($head.length && !$head.find('.mpwem-pro-badge').length) {
+                    const $title = $head.find('h3').first();
+                    if ($title.length) {
+                        $title.append($('<span class="mpwem-pro-badge">PRO</span>'));
+                    }
+                }
+
                 if (!$body.length) {
                     const $bodyChildren = $mount.children().not('.mpwem-display-section__head');
                     $body = $('<div class="mpwem-display-section__body"></div>');
@@ -5569,6 +5577,93 @@
         return false;
     }
 
+    // Advanced (Display) step: FAQ, Timeline and Related Events requirements.
+    function validateDisplayStep($root, options) {
+        options = options || {};
+        const focus = options.focus !== false;
+
+        let error = null; // { message, $field, $flash }
+
+        const checkItemList = function(toggleName, containerId, itemSelector, titleName, addId, label, noun) {
+            const $toggle = $root.find('input[name="' + toggleName + '"]').first();
+            if (!$toggle.length || !$toggle.is(':checked')) return null;
+
+            // Require at least one item with a title. Blank rows are dropped on
+            // save, so they don't count and don't block on their own.
+            const $items = $root.find(containerId + ' ' + itemSelector);
+            let hasFilled = false;
+            let $firstTitle = $();
+            $items.each(function() {
+                const $t = $(this).find('input[name="' + titleName + '"]').first();
+                if (!$firstTitle.length) $firstTitle = $t;
+                if (($t.val() || '').toString().trim() !== '') { hasFilled = true; }
+            });
+
+            if (!hasFilled) {
+                if ($firstTitle.length) {
+                    $firstTitle.addClass('mpwem-field-error');
+                    return { message: label + ' is enabled — add at least one ' + noun + '.', $field: $firstTitle, $flash: $firstTitle.closest(itemSelector) };
+                }
+                const $add = $root.find(addId).first();
+                return { message: label + ' is enabled — add at least one ' + noun + '.', $field: $add, $flash: $add };
+            }
+            return null;
+        };
+
+        // FAQ.
+        error = checkItemList('mep_faq_status', '#faq-items-container', '.faq-item', 'mep_faq_title[]', '#add-faq-item', 'FAQ', 'FAQ item');
+
+        // Timeline.
+        if (!error) {
+            error = checkItemList('mep_timeline_status', '#timeline-items-container', '.timeline-item', 'mep_day_title[]', '#add-timeline-item', 'Timeline', 'timeline item');
+        }
+
+        // Related Events — when enabled, need a section label and at least one event.
+        if (!error) {
+            const $relToggle = $root.find('input[name="mep_related_event_status"]').first();
+            if ($relToggle.length && $relToggle.is(':checked')) {
+                const $label = $root.find('input[name="related_section_label"]').first();
+                $label.removeClass('mpwem-field-error');
+                const labelVal = ($label.val() || '').toString().trim();
+
+                let hasEvent = false;
+                $root.find('input[name="event_list[]"]').each(function() {
+                    if (($(this).val() || '').toString().trim() !== '') { hasEvent = true; }
+                });
+
+                if (labelVal === '') {
+                    $label.addClass('mpwem-field-error');
+                    error = { message: 'Related Events is enabled — add a section label.', $field: $label, $flash: $label };
+                } else if (!hasEvent) {
+                    const $search = $root.find('.mpwem-related-search-input').first();
+                    $search.addClass('mpwem-field-error');
+                    error = { message: 'Related Events is enabled — select at least one event.', $field: $search, $flash: $search };
+                }
+            }
+        }
+
+        if (!error) {
+            return true;
+        }
+
+        if (focus) {
+            const $field = error.$field;
+            const $flash = error.$flash && error.$flash.length ? error.$flash : $field;
+            setActiveStep($root, 'display', { pushHash: true, validate: false });
+            window.setTimeout(function() {
+                if ($flash && $flash.length) {
+                    try { $flash[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+                }
+                if ($field && $field.length && $field.is(':visible')) {
+                    $field.trigger('focus');
+                }
+                flashAttention($flash);
+            }, 160);
+            showToast(error.message, 'error');
+        }
+        return false;
+    }
+
     function submitEventForm($root, action) {
         const $form = $('#mpwem-event-edit-form');
         if (!$form.length) {
@@ -5583,6 +5678,9 @@
                 return;
             }
             if (!validateDateStep($root, { focus: true })) {
+                return;
+            }
+            if (!validateDisplayStep($root, { focus: true })) {
                 return;
             }
         }
@@ -5740,7 +5838,11 @@
                 date_required: 'Set the event Start and End date & time.',
                 date_order: 'The event End date & time must be later than the Start.',
                 repeat_periods: 'After Repeated Days must be a number of at least 1.',
-                date_format: 'Complete the Date/Time format settings (Date Format, Time Format and Show Timezone).'
+                date_format: 'Complete the Date/Time format settings (Date Format, Time Format and Show Timezone).',
+                faq_items: 'FAQ is enabled — add at least one FAQ item with a title.',
+                timeline_items: 'Timeline is enabled — add at least one timeline item with a title.',
+                related_label: 'Related Events is enabled — add a section label.',
+                related_list: 'Related Events is enabled — select at least one event.'
             };
             const message = errorMessages[errorCode] || 'Please complete the required fields.';
             window.setTimeout(function() {

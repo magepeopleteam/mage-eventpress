@@ -1774,7 +1774,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														</div>
 														<div class="mpwem-card__body mpwem-display-stack">
 															<div class="mpwem-panel-mount" id="mpwem_wizard_template_mount"></div>
-															<div class="mpwem-panel-mount" id="mpwem_wizard_attendee_form_mount">
+															<?php $attendee_pro_active = class_exists('MPWEM_Form_Settings'); ?>
+															<div class="mpwem-panel-mount<?php echo $attendee_pro_active ? '' : ' mpwem-pro-inactive'; ?>" id="mpwem_wizard_attendee_form_mount" data-pro-feature="1" data-pro-active="<?php echo $attendee_pro_active ? '1' : '0'; ?>">
 																<?php
 																$reg_form_status = get_post_meta($post_id, 'mep_event_reg_form_status', true);
 																if (empty($reg_form_status)) {
@@ -1782,6 +1783,13 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																}
 																?>
 																<input type="checkbox" data-no-mpwem-switch="1" name="mep_event_reg_form_status" value="on" style="display:none;" <?php checked($reg_form_status, 'on'); ?> />
+																<?php if (! $attendee_pro_active) : ?>
+																<div class="mpwem-pro-locked">
+																	<span class="dashicons dashicons-lock" aria-hidden="true"></span>
+																	<h4><?php esc_html_e('Attendee Form is a PRO feature', 'mage-eventpress'); ?></h4>
+																	<p><?php esc_html_e('Collect custom attendee details during checkout by activating Event Booking Manager PRO.', 'mage-eventpress'); ?></p>
+																</div>
+																<?php endif; ?>
 															</div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_terms_mount"></div>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_faq_mount"></div>
@@ -2088,13 +2096,44 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					}
 				}
 
+				// Advanced (Display) step — FAQ, Timeline and Related Events requirements.
+				if ('' === $validation_error && isset($_POST['mep_faq_status']) && $_POST['mep_faq_status']) {
+					$faq_titles = isset($_POST['mep_faq_title']) && is_array($_POST['mep_faq_title']) ? array_map('trim', (array) wp_unslash($_POST['mep_faq_title'])) : [];
+					if (empty(array_filter($faq_titles, 'strlen'))) {
+						$validation_error = 'faq_items';
+					}
+				}
+
+				if ('' === $validation_error && isset($_POST['mep_timeline_status']) && $_POST['mep_timeline_status']) {
+					$tl_titles = isset($_POST['mep_day_title']) && is_array($_POST['mep_day_title']) ? array_map('trim', (array) wp_unslash($_POST['mep_day_title'])) : [];
+					if (empty(array_filter($tl_titles, 'strlen'))) {
+						$validation_error = 'timeline_items';
+					}
+				}
+
+				if ('' === $validation_error) {
+					$rel_status = isset($_POST['mep_related_event_status']) ? sanitize_text_field(wp_unslash($_POST['mep_related_event_status'])) : 'off';
+					if ('on' === $rel_status) {
+						$rel_label = isset($_POST['related_section_label']) ? trim((string) wp_unslash($_POST['related_section_label'])) : '';
+						$rel_list  = isset($_POST['event_list']) && is_array($_POST['event_list']) ? array_filter(array_map('trim', (array) wp_unslash($_POST['event_list']))) : [];
+						if ('' === $rel_label) {
+							$validation_error = 'related_label';
+						} elseif (empty($rel_list)) {
+							$validation_error = 'related_list';
+						}
+					}
+				}
+
 				if ('' !== $validation_error) {
-					$ticket_errors = ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'];
-					$date_errors   = ['date_required', 'date_order', 'repeat_periods', 'date_format'];
+					$ticket_errors  = ['tickets', 'ticket_fields', 'extra_service', 'global_qty', 'early_bird', 'early_bird_order'];
+					$date_errors    = ['date_required', 'date_order', 'repeat_periods', 'date_format'];
+					$display_errors = ['faq_items', 'timeline_items', 'related_label', 'related_list'];
 					if (in_array($validation_error, $ticket_errors, true)) {
 						$error_step = 'tickets';
 					} elseif (in_array($validation_error, $date_errors, true)) {
 						$error_step = 'date';
+					} elseif (in_array($validation_error, $display_errors, true)) {
+						$error_step = 'display';
 					} else {
 						$error_step = 'basic';
 					}

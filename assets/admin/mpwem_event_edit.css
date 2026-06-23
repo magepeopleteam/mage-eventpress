@@ -4468,6 +4468,58 @@ body.mpwem-ticket-modal-open {
     line-height: 1.45;
 }
 
+/* "PRO" badge for features provided by Event Booking Manager PRO. */
+.mpwem-pro-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+/* Locked-state notice shown when the PRO plugin is not active. */
+.mpwem-pro-locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 24px 18px;
+    border: 1px dashed var(--mpwem-border, #d6dae3);
+    border-radius: 12px;
+    background: var(--mpwem-soft, #f8fafc);
+    text-align: center;
+}
+
+.mpwem-pro-locked .dashicons {
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    color: #d97706;
+}
+
+.mpwem-pro-locked h4 {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--mpwem-text, #1f2937);
+}
+
+.mpwem-pro-locked p {
+    margin: 0;
+    max-width: 360px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--mpwem-muted, #6b7280);
+}
+
 .mpwem-display-section__head>.round_switch_label {
     flex: 0 0 auto;
     margin-left: auto;

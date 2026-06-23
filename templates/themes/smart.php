@@ -14,6 +14,7 @@
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$speaker_status            = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+	$event_speaker_enabled     = is_array($event_infos) && array_key_exists( 'mep_event_enable_speaker', $event_infos ) ? $event_infos['mep_event_enable_speaker'] : 'no';
 	$hide_time                 = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_time', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_time'] : 'no';
 	$description_title         = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_description_title', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_description_title'] : 'no';
 	$left_sidebar_title        = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_left_sidebar_title', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_left_sidebar_title'] : 'no';
@@ -71,7 +72,7 @@
 				<?php do_action( 'mpwem_social', $event_id ,$event_infos); ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>
-			<?php if ( $speaker_status == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
+			<?php if ( $event_speaker_enabled == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                 <div class="mpwem_sidebar_content _mt">
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>

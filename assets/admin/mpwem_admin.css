@@ -603,7 +603,7 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	position: relative;
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-card-input-wrapper--currency::before {
-	content: "$";
+	content: var(--mpwem-currency-symbol, "$");
 	position: absolute;
 	left: 10px;
 	top: 50%;

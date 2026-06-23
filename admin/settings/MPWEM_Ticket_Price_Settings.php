@@ -19,7 +19,15 @@
 				$reg_status        = is_array($event_infos) && array_key_exists( 'mep_reg_status', $event_infos ) ? $event_infos['mep_reg_status'] : 'on';
 				$active_reg_status = $reg_status == 'on' ? 'mActive' : '';
 				$display_rsvp = $reg_status == 'rsvp' ? '' : 'display:none;';
+
+				// Currency symbol for the price inputs: WooCommerce currency when
+				// WooCommerce is active, otherwise Event Settings -> Currency Symbol
+				// (mep_currency_symbol). Drives the CSS ::before via a variable so
+				// dynamically cloned ticket rows pick it up too.
+				$currency_symbol = html_entity_decode( MPWEM_Global_Function::get_currency_symbol(), ENT_QUOTES, 'UTF-8' );
+				$css_currency    = "'" . str_replace( array( '\\', "'" ), array( '\\\\', "\\'" ), $currency_symbol ) . "'";
 				?>
+				<style>:root{--mpwem-currency-symbol:<?php echo $css_currency; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>;}</style>
                 <div class="mpwem_style mp_tab_item mpwem_ticket_pricing_settings" data-tab-item="#mpwem_ticket_pricing_settings">
 					<?php
 					$payment_opts = get_option('payment_setting_sec', []);
@@ -596,7 +604,22 @@
 										// gateways are saved independently via their own modals.
 										$status.css('color', '#0f5132').html('<span class="dashicons dashicons-yes"></span> ' + response.data).fadeIn(200);
 										$btn.prop('disabled', false).css('opacity', '1');
-										setTimeout(function() { $status.fadeOut(300); }, 2500);
+
+										// Sync the ticket-step payment status with what was just saved so the
+										// "No Payment Method Enabled" banner clears without a page reload.
+										var $statusRow = $('.mpwem-payment-status');
+										if ($statusRow.length) {
+											var wooOn = $('#mep_modal_enable_wc').is(':checked') ? 1 : 0;
+											$statusRow.data('option-set', 1).attr('data-option-set', '1');
+											$statusRow.data('woo-enabled', wooOn).attr('data-woo-enabled', String(wooOn));
+										}
+										mepRefreshPaymentStatus();
+
+										// Confirm briefly, then auto-close the modal.
+										setTimeout(function() {
+											$status.fadeOut(300);
+											$('#mep-payment-settings-modal').fadeOut(200);
+										}, 1200);
 									} else {
 										$status.css('color', '#dc3545').html('<span class="dashicons dashicons-no"></span> ' + (response.data || 'Error')).fadeIn(200);
 										$btn.prop('disabled', false).css('opacity', '1');

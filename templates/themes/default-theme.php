@@ -19,6 +19,7 @@
 	$single_event_setting_sec  = is_array( $_single_event_setting_sec ) && ! empty( $_single_event_setting_sec ) ? $_single_event_setting_sec : [];
 	$hide_date_list            = is_array($single_event_setting_sec) && array_key_exists( 'mep_event_hide_event_schedule_details', $single_event_setting_sec ) ? $single_event_setting_sec['mep_event_hide_event_schedule_details'] : 'no';
 	$speaker_status            = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+	$event_speaker_enabled     = is_array($event_infos) && array_key_exists( 'mep_event_enable_speaker', $event_infos ) ? $event_infos['mep_event_enable_speaker'] : 'no';
 	$icon_setting_sec          = is_array($event_infos) && array_key_exists( 'icon_setting_sec', $event_infos ) ? $event_infos['icon_setting_sec'] : [];
 	$icon_setting_sec          = empty( $icon_setting_sec ) && ! is_array( $icon_setting_sec ) ? [] : $icon_setting_sec;
 	$event_location_icon       = is_array($icon_setting_sec) && array_key_exists( 'mep_event_location_icon', $icon_setting_sec ) ? $icon_setting_sec['mep_event_location_icon'] : 'fas fa-map-marker-alt';
@@ -70,7 +71,7 @@
                     </div>
 				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id, $event_infos ); ?>
-				<?php if ( $speaker_status == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
+				<?php if ( $event_speaker_enabled == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">
                         <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
 						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>

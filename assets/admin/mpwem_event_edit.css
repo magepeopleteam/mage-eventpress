@@ -4468,6 +4468,58 @@ body.mpwem-ticket-modal-open {
     line-height: 1.45;
 }
 
+/* "PRO" badge for features provided by Event Booking Manager PRO. */
+.mpwem-pro-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+/* Locked-state notice shown when the PRO plugin is not active. */
+.mpwem-pro-locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 24px 18px;
+    border: 1px dashed var(--mpwem-border, #d6dae3);
+    border-radius: 12px;
+    background: var(--mpwem-soft, #f8fafc);
+    text-align: center;
+}
+
+.mpwem-pro-locked .dashicons {
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    color: #d97706;
+}
+
+.mpwem-pro-locked h4 {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--mpwem-text, #1f2937);
+}
+
+.mpwem-pro-locked p {
+    margin: 0;
+    max-width: 360px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--mpwem-muted, #6b7280);
+}
+
 .mpwem-display-section__head>.round_switch_label {
     flex: 0 0 auto;
     margin-left: auto;
@@ -9432,7 +9484,7 @@ code {
 }
 
 .mpwem-card-input-wrapper--currency::before {
-    content: '$';
+    content: var(--mpwem-currency-symbol, '$');
     position: absolute;
     left: 12px;
     top: 50%;
@@ -11327,4 +11379,69 @@ code {
     color: var(--mpwem-muted);
     font-size: 13px;
     font-style: italic;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Required-field validation highlight
+   Applied (via JS) when a required field is empty on Next / Publish.
+   ────────────────────────────────────────────────────────────────────── */
+input.mpwem-field-error,
+textarea.mpwem-field-error,
+select.mpwem-field-error,
+.mpwem-input.mpwem-field-error,
+.mpwem-card-input.mpwem-field-error,
+.mp_formControl.mpwem-field-error,
+.formControl.mpwem-field-error {
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.16) !important;
+    background: #fff7f8 !important;
+}
+
+/* A section/editor block that is required (e.g. virtual event details) */
+#mpev-online-event.mpwem-field-error,
+.mpwem-block-error {
+    border-radius: var(--mpwem-radius);
+    box-shadow: 0 0 0 2px #e11d48, 0 0 0 5px rgba(225, 29, 72, 0.14) !important;
+    animation: mpwemAttentionPulse 1.3s ease;
+}
+
+/* Pulsing attention ring for a control/button that needs action
+   (e.g. the "Configure Payments" button when no method is set). */
+.mpwem-attention-highlight {
+    position: relative;
+    z-index: 1;
+    border-color: #e11d48 !important;
+    animation: mpwemAttentionPulse 1.2s ease-in-out 2;
+}
+
+@keyframes mpwemAttentionPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.55); }
+    70%  { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}
+
+/* Date/Time step fields (Step 3): the custom-calendar date inputs and time
+   inputs carry their own !important borders and a blue :focus ring, and the
+   validator auto-focuses the first invalid field — so we need higher-specificity
+   error rules (incl. :focus) to make the red highlight win and stay visible. */
+.mpwem-date-input.mpwem-field-error,
+.mpwem-time-input.mpwem-field-error,
+.mpwem-date-input.mpwem-field-error:focus,
+.mpwem-time-input.mpwem-field-error:focus,
+input.mpwem-field-error:focus,
+select.mpwem-field-error:focus,
+textarea.mpwem-field-error:focus,
+.formControl.mpwem-field-error,
+.formControl.mpwem-field-error:focus {
+    border-color: #e11d48 !important;
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.20) !important;
+    background: #fff7f8 !important;
+}
+
+/* Ring the whole date/time field wrapper so the error reads clearly even with
+   the leading calendar/clock icon and table layout. */
+.mpwem-date-input-wrap:has(.mpwem-field-error),
+.mpwem-time-input-wrap:has(.mpwem-field-error) {
+    border-radius: 10px;
+    box-shadow: 0 0 0 2px #e11d48 !important;
 }

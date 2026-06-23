@@ -290,7 +290,8 @@
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
 						update_post_meta( $post_id, 'event_expire_datetime', $event_end_datetime );
 						//*******************//
-						$periods = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_repeated_periods'] ) ) : '1';
+						$periods = isset( $_POST['mep_repeated_periods'] ) ? (int) wp_unslash( $_POST['mep_repeated_periods'] ) : 1;
+						$periods = max( 1, $periods );
 						update_post_meta( $post_id, 'mep_repeated_periods', $periods );
 						$off_days = isset( $_POST['mep_ticket_offdays'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_ticket_offdays'] ) ) : '';
 						$off_days = $off_days ? explode( ',', $off_days ) : '';
@@ -412,9 +413,11 @@
 					$speaker_title = isset( $_POST['mep_speaker_title'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_speaker_title'] ) ) : '';
 					$speaker_icon  = isset( $_POST['mep_event_speaker_icon'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speaker_icon'] ) ) : '';
 					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_speakers_list'] ) ) : [];
+					$enable_speaker = isset( $_POST['mep_event_enable_speaker'] ) && sanitize_text_field( wp_unslash( $_POST['mep_event_enable_speaker'] ) ) === 'yes' ? 'yes' : 'no';
 					update_post_meta( $post_id, 'mep_speaker_title', $speaker_title );
 					update_post_meta( $post_id, 'mep_event_speaker_icon', $speaker_icon );
 					update_post_meta( $post_id, 'mep_event_speakers_list', $speakers );
+					update_post_meta( $post_id, 'mep_event_enable_speaker', $enable_speaker );
 					$slider = isset( $_POST['mep_display_slider'] ) && sanitize_text_field( wp_unslash( $_POST['mep_display_slider'] ) ) ? 'on' : 'off';
 					update_post_meta( $post_id, 'mep_display_slider', $slider );
 					$images       = isset( $_POST['mep_gallery_images'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_gallery_images'] ) ) : '';

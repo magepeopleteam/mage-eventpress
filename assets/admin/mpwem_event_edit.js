@@ -5702,6 +5702,21 @@
             }
         });
 
+        // Minimum-of-1 fields (e.g. "After Repeated Days"): never allow a value
+        // below 1 — typing 0/negative snaps to 1; clearing it resets to 1 on blur.
+        $root.on('input', '.mpwem-min-one', function() {
+            const value = ($(this).val() || '').toString();
+            if (value !== '' && Number(value) < 1) {
+                $(this).val(1);
+            }
+        });
+        $root.on('blur change', '.mpwem-min-one', function() {
+            const value = ($(this).val() || '').toString().trim();
+            if (value === '' || isNaN(Number(value)) || Number(value) < 1) {
+                $(this).val(1);
+            }
+        });
+
         // Surface server-side validation errors after a blocked publish redirect.
         (function() {
             let errorCode = '';

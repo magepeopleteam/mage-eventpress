@@ -751,7 +751,7 @@
                 <div class="_padding_bt">
                     <label class="_justify_between_align_center_wrap ">
                         <span class="_mr"><?php esc_html_e( 'After Repeated Days', 'mage-eventpress' ); ?></span>
-                        <input type="number" class="formControl _max_100 number_validation" name='mep_repeated_periods' value='<?php echo esc_attr( $periods ); ?>'/>
+                        <input type="number" min="1" step="1" class="formControl _max_100 number_validation mpwem-min-one" name='mep_repeated_periods' value='<?php echo esc_attr( max( 1, (int) $periods ) ); ?>'/>
                     </label>
                     <span class="label-text"><?php esc_html_e( 'Select After Repeated Days', 'mage-eventpress' ); ?></span>
                 </div>

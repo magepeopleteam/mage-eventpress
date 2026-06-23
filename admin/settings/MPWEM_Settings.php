@@ -290,7 +290,8 @@
 						update_post_meta( $post_id, 'event_end_datetime', $event_end_datetime );
 						update_post_meta( $post_id, 'event_expire_datetime', $event_end_datetime );
 						//*******************//
-						$periods = isset( $_POST['mep_repeated_periods'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_repeated_periods'] ) ) : '1';
+						$periods = isset( $_POST['mep_repeated_periods'] ) ? (int) wp_unslash( $_POST['mep_repeated_periods'] ) : 1;
+						$periods = max( 1, $periods );
 						update_post_meta( $post_id, 'mep_repeated_periods', $periods );
 						$off_days = isset( $_POST['mep_ticket_offdays'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_ticket_offdays'] ) ) : '';
 						$off_days = $off_days ? explode( ',', $off_days ) : '';

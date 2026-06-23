@@ -1975,8 +1975,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						$price    = isset($ticket_prices[$i]) ? trim((string) $ticket_prices[$i]) : '';
 						$capacity = isset($ticket_caps[$i]) ? trim((string) $ticket_caps[$i]) : '';
 
-						// Skip a completely empty row.
-						if ('' === $name && '' === $price && '' === $capacity) {
+						// Skip blank/template rows. A valid ticket always needs at least a
+						// name and a price, so any row missing both is a template placeholder.
+						// (The default capacity "0" must not prevent this skip.)
+						if ('' === $name && '' === $price) {
 							continue;
 						}
 

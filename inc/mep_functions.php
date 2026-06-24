@@ -3192,6 +3192,27 @@ die();
 			}
 		}
 	}
+	// Attaching product_cat to mep_events lets events be assigned WooCommerce
+	// product categories, but WordPress also auto-adds a "Categories" item to the
+	// Events admin menu. Drop just that menu item — the taxonomy/metabox stays.
+	add_action( 'admin_menu', 'mep_remove_product_cat_event_submenu', 999 );
+	if ( ! function_exists( 'mep_remove_product_cat_event_submenu' ) ) {
+		function mep_remove_product_cat_event_submenu() {
+			global $submenu;
+			$cpt    = class_exists( 'MPWEM_Functions' ) ? MPWEM_Functions::get_cpt() : 'mep_events';
+			$parent = 'edit.php?post_type=' . $cpt;
+			if ( empty( $submenu[ $parent ] ) ) {
+				return;
+			}
+			foreach ( $submenu[ $parent ] as $key => $item ) {
+				// $item[2] is the submenu slug; match the product_cat taxonomy page
+				// regardless of & vs &amp; encoding in the slug.
+				if ( isset( $item[2] ) && false !== strpos( $item[2], 'taxonomy=product_cat' ) ) {
+					unset( $submenu[ $parent ][ $key ] );
+				}
+			}
+		}
+	}
 	add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', 'mep_event_prevent_slug_conflict', 10, 4 );
 	add_filter( 'wp_unique_post_slug_is_bad_flat_slug', 'mep_event_prevent_slug_conflict', 10, 3 );
 	if ( ! function_exists( 'mep_event_prevent_slug_conflict' ) ) {

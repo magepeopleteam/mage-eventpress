@@ -34,7 +34,9 @@
 					$woo_enabled = isset($payment_opts['mep_enable_wc_payment']) && $payment_opts['mep_enable_wc_payment'] === 'on';
 					$paypal_enabled = isset($payment_opts['mep_paypal_enable']) && $payment_opts['mep_paypal_enable'] === 'on';
 					$stripe_enabled = isset($payment_opts['mep_stripe_enable']) && $payment_opts['mep_stripe_enable'] === 'on';
-					$show_payment_warning = !$woo_enabled && !$paypal_enabled && !$stripe_enabled;
+					$offline_enabled = isset($payment_opts['mep_offline_enable']) && $payment_opts['mep_offline_enable'] === 'on';
+					$offline_label = ! empty($payment_opts['mep_offline_label']) ? $payment_opts['mep_offline_label'] : __('Offline Payment', 'mage-eventpress');
+					$show_payment_warning = !$woo_enabled && !$paypal_enabled && !$stripe_enabled && !$offline_enabled;
 					
 					$wc_add_to_cart_redirect = isset($payment_opts['mep_wc_add_to_cart_redirect']) ? $payment_opts['mep_wc_add_to_cart_redirect'] : 'checkout';
 					$wc_after_order_redirect = isset($payment_opts['mep_wc_after_order_redirect']) ? $payment_opts['mep_wc_after_order_redirect'] : 'plugin_thankyou';
@@ -66,6 +68,8 @@
 							data-wc-active="<?php echo $wc_active ? '1' : '0'; ?>"
 							data-paypal="<?php echo $paypal_enabled ? '1' : '0'; ?>"
 							data-stripe="<?php echo $stripe_enabled ? '1' : '0'; ?>"
+							data-offline="<?php echo $offline_enabled ? '1' : '0'; ?>"
+							data-offline-label="<?php echo esc_attr( $offline_label ); ?>"
 							style="background: #e6f4ea; color: #0a7c2f; padding: 15px; border-left: 4px solid #34c759; border-radius: var(--mpwem-radius); display: <?php echo $show_payment_warning ? 'none' : 'flex'; ?>; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
 							<div>
 								<strong style="display: block; font-size: 14px; margin-bottom: 5px;"><i class="fas fa-check-circle" style="margin-right: 5px;"></i><?php esc_html_e( 'Payment Method Enabled', 'mage-eventpress' ); ?></strong>
@@ -286,7 +290,7 @@
 												</div>
 											</div>
 
-											<label class="mpwem-pm-toggle-row mep-woo-enable-label" style="display:flex;">
+											<label class="mpwem-pm-toggle-row mep-woo-enable-label" style="display: <?php echo $wc_active ? 'flex' : 'none'; ?>;">
 												<span class="mpwem-pm-toggle-row__text">
 													<span class="mpwem-pm-toggle-row__label"><?php esc_html_e( 'Enable WooCommerce Payment Gateway', 'mage-eventpress' ); ?></span>
 													<span class="mpwem-pm-toggle-row__sub"><?php esc_html_e( 'Process ticket checkout through WooCommerce.', 'mage-eventpress' ); ?></span>
@@ -298,7 +302,7 @@
 											</label>
 										</div><!-- /.mpwem-pm-card -->
 
-										<div class="mep-modal-wc-fields" style="display: <?php echo $woo_enabled ? 'block' : 'none'; ?>;">
+										<div class="mep-modal-wc-fields" style="display: <?php echo ( $wc_active && $woo_enabled ) ? 'block' : 'none'; ?>;">
 											<!-- Payment Methods accordion (expanded by default) -->
 											<div class="mpwem-pm-acc mpwem-pm-acc--methods is-open">
 												<button type="button" class="mpwem-pm-acc__bar">
@@ -416,7 +420,11 @@
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'Offline Payment', 'mage-eventpress' ); ?></strong>
 													</div>
 												</div>
-												<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php if ( $is_pro ) : ?>
+													<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+												<?php else : ?>
+													<span class="mpwem-pm-pro-badge" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
+												<?php endif; ?>
 											</div>
 										</div>
 
@@ -514,6 +522,8 @@
 							var wcActive  = $statusRow.data('wc-active') == 1;
 							var paypalOn  = $statusRow.data('paypal') == 1;
 							var stripeOn  = $statusRow.data('stripe') == 1;
+							var offlineOn = $statusRow.data('offline') == 1;
+							var offlineLabel = $statusRow.data('offline-label') || 'Offline Payment';
 
 							// Use the live checkbox state when the modal is open; fall back to
 							// saved data-attrs when the modal hasn't been opened yet.
@@ -549,6 +559,7 @@
 							}
 							if (paypalOn) { methods.push('PayPal'); }
 							if (stripeOn) { methods.push('Stripe'); }
+							if (offlineOn) { methods.push(offlineLabel); }
 
 							if (methods.length > 0) {
 								$statusRow.find('.mpwem-payment-status__methods').text(methods.join(', '));
@@ -574,6 +585,12 @@
 
 						// Keep the status row in sync when a gateway is toggled inside the modal.
 						$(document).on('change', '.mep-gw-toggle-input', function() {
+							mepRefreshPaymentStatus();
+						});
+						// The gateway manager fires this after it reconciles a toggle with
+						// the gateway's real saved state (a programmatic checkbox change does
+						// not emit a native 'change' event).
+						$(document).on('mep:gateways-refresh', function() {
 							mepRefreshPaymentStatus();
 						});
 
@@ -628,6 +645,16 @@
 											var wooOn = $('#mep_modal_enable_wc').is(':checked') ? 1 : 0;
 											$statusRow.data('option-set', 1).attr('data-option-set', '1');
 											$statusRow.data('woo-enabled', wooOn).attr('data-woo-enabled', String(wooOn));
+											// WooCommerce and custom gateways are mutually exclusive —
+											// turning WooCommerce on clears the custom gateway flags
+											// and unchecks the custom Configure-modal toggles so they
+											// don't flip everything back on the next save.
+											if (wooOn) {
+												$.each(['paypal', 'stripe', 'offline'], function(i, gw) {
+													$statusRow.data(gw, 0).attr('data-' + gw, '0');
+													$('input[data-field="mep_' + gw + '_enable"]').prop('checked', false);
+												});
+											}
 										}
 										mepRefreshPaymentStatus();
 

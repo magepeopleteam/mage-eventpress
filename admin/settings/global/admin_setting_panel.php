@@ -527,6 +527,26 @@
 									$badge.text(isEnabled ? mepGateway.enabled : mepGateway.disabled);
 									$badge.toggleClass('active', isEnabled);
 								}
+
+								// Reflect the change on the Event Edit → Payment status banner
+								// (when configured from inside the event modal) and enforce
+								// mutual exclusivity: enabling a custom gateway turns the
+								// WooCommerce payment toggle off.
+								var $statusRow = $('.mpwem-payment-status');
+								if ($statusRow.length) {
+									var gwOn = fields['mep_' + gateway + '_enable'] === 'on';
+									$statusRow.attr('data-' + gateway, gwOn ? '1' : '0').data(gateway, gwOn ? 1 : 0);
+									if (gateway === 'offline' && fields['mep_offline_label']) {
+										$statusRow.attr('data-offline-label', fields['mep_offline_label']).data('offline-label', fields['mep_offline_label']);
+									}
+									if (gwOn) {
+										$('#mep_modal_enable_wc').prop('checked', false);
+										$('.mep-modal-wc-fields').stop(true, true).slideUp(200);
+										$statusRow.attr('data-woo-enabled', '0').data('woo-enabled', 0);
+										$statusRow.attr('data-option-set', '1').data('option-set', 1);
+									}
+									$(document).trigger('mep:gateways-refresh');
+								}
 							} else {
 								$msg.css({'color':'#842029','background':'#f8d7da','border':'1px solid #f5c2c7'}).text(res.data).fadeIn(200);
 								setTimeout(function() { $msg.fadeOut(400); }, 1000);
@@ -580,6 +600,14 @@
 				} else {
 					$existing[ $key ] = sanitize_text_field( $val );
 				}
+			}
+
+			// Custom payment is mutually exclusive with the WooCommerce checkout.
+			// Switching a custom gateway on turns the WooCommerce payment master
+			// toggle off, so the banner and checkout never advertise both at once.
+			$enable_key = 'mep_' . $gateway . '_enable';
+			if ( isset( $existing[ $enable_key ] ) && 'on' === $existing[ $enable_key ] ) {
+				$existing['mep_enable_wc_payment'] = 'off';
 			}
 
 			update_option( 'payment_setting_sec', $existing );
@@ -1062,6 +1090,15 @@ tr.payment_tabs_html { display: none !important; }
 				// Configure modal (its own enable toggle). The Custom Payment tab no longer
 				// has those checkboxes, so we must NOT touch those keys here or every save
 				// would disable the gateways.
+				//
+				// Exception: WooCommerce and the custom (native checkout) gateways are
+				// mutually exclusive. When WooCommerce payment is turned ON, switch the
+				// custom gateways OFF so the banner/checkout never advertise both.
+				if ( 'on' === $payment_settings['mep_enable_wc_payment'] ) {
+					$payment_settings['mep_paypal_enable']  = 'off';
+					$payment_settings['mep_stripe_enable']  = 'off';
+					$payment_settings['mep_offline_enable'] = 'off';
+				}
 
 				$payment_settings['mep_wc_add_to_cart_redirect'] = isset( $_POST['mep_wc_add_to_cart_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_add_to_cart_redirect'] ) : 'checkout';
 				$payment_settings['mep_wc_after_order_redirect'] = isset( $_POST['mep_wc_after_order_redirect'] ) ? sanitize_text_field( $_POST['mep_wc_after_order_redirect'] ) : 'plugin_thankyou';

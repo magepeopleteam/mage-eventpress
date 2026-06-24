@@ -217,7 +217,38 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				WC()->payment_gateways()->init();
 			}
 
-			wp_send_json_success( [ 'enabled' => $enabled ] );
+			// WooCommerce can refuse to enable a gateway even after the option is
+			// saved — e.g. PayPal Standard force-disables itself for store currencies
+			// it doesn't support (BDT, etc.). Read the gateway back and report its
+			// REAL state instead of the requested one, so the toggle never shows a
+			// method as enabled that checkout cannot actually use.
+			$refreshed    = $this->get_gateway( $gateway_id );
+			$real_enabled = ( $refreshed && $refreshed->enabled === 'yes' ) ? 'yes' : 'no';
+			$response     = [ 'enabled' => $real_enabled ];
+
+			if ( 'yes' === $enabled && 'yes' !== $real_enabled ) {
+				// The enable did not take effect — don't leave a misleading saved
+				// flag that the banner/checkout would have to reconcile later.
+				$opts['enabled'] = 'no';
+				update_option( $option_key, $opts );
+
+				$name     = $refreshed ? ( $refreshed->get_method_title() ?: $refreshed->get_title() ) : $gateway_id;
+				$currency = function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : '';
+				$response['notice'] = $currency
+					? sprintf(
+						/* translators: 1: gateway name, 2: store currency code */
+						__( '%1$s can\'t be enabled for your store currency (%2$s). Choose a gateway that supports %2$s.', 'mage-eventpress' ),
+						$name,
+						$currency
+					)
+					: sprintf(
+						/* translators: %s: gateway name */
+						__( '%s can\'t be enabled for your store right now.', 'mage-eventpress' ),
+						$name
+					);
+			}
+
+			wp_send_json_success( $response );
 		}
 
 		// ---------------------------------------------------------------

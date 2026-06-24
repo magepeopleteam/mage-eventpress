@@ -1228,7 +1228,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
 		?>
-			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>">
+			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
@@ -1551,20 +1551,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<input type="hidden" name="mep_reg_status" id="mep_reg_status" value="<?php echo esc_attr($current_mode); ?>" />
 																
 																<div class="mpwem-event-type-toggle" id="mpwem_event_mode_toggle" style="margin-top: 10px; grid-template-columns: repeat(3, 1fr);">
-																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'off') ? 'is-active' : ''; ?>" data-value="off">
-																		<span class="dashicons dashicons-list-view"></span>
-																		<div>
-																			<strong><?php esc_html_e('Listing-Only', 'mage-eventpress'); ?></strong>
-																			<small><?php esc_html_e('No Registration', 'mage-eventpress'); ?></small>
-																		</div>
-																	</div>
-																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'rsvp') ? 'is-active' : ''; ?>" data-value="rsvp">
-																		<span class="dashicons dashicons-email-alt"></span>
-																		<div>
-																			<strong><?php esc_html_e('RSVP', 'mage-eventpress'); ?></strong>
-																			<small><?php esc_html_e('Free Registration', 'mage-eventpress'); ?></small>
-																		</div>
-																	</div>
 																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'on') ? 'is-active' : ''; ?>" data-value="on">
 																		<span class="dashicons dashicons-tickets-alt"></span>
 																		<div>
@@ -1578,6 +1564,20 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																				}
 																				?>
 																			</small>
+																		</div>
+																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'rsvp') ? 'is-active' : ''; ?>" data-value="rsvp">
+																		<span class="dashicons dashicons-email-alt"></span>
+																		<div>
+																			<strong><?php esc_html_e('RSVP', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('Free Registration', 'mage-eventpress'); ?></small>
+																		</div>
+																	</div>
+																	<div class="mpwem-event-type-option <?php echo ($current_mode === 'off') ? 'is-active' : ''; ?>" data-value="off">
+																		<span class="dashicons dashicons-list-view"></span>
+																		<div>
+																			<strong><?php esc_html_e('Listing-Only', 'mage-eventpress'); ?></strong>
+																			<small><?php esc_html_e('No Registration', 'mage-eventpress'); ?></small>
 																		</div>
 																	</div>
 																</div>
@@ -1897,6 +1897,32 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 <?php
 		}
 
+		/**
+		 * Whether a FAQ/Timeline section has at least one item with BOTH a title
+		 * and a (non-empty) description. Parallel arrays of titles and contents are
+		 * compared by index; fully blank rows are ignored, but any row that has one
+		 * of the two without the other makes the set incomplete.
+		 *
+		 * @param array $titles   Item titles (raw).
+		 * @param array $contents Item descriptions / HTML bodies (raw).
+		 */
+		private function display_items_complete(array $titles, array $contents): bool
+		{
+			$started = 0;
+			foreach ($titles as $i => $title) {
+				$title   = trim((string) $title);
+				$content = isset($contents[$i]) ? trim(wp_strip_all_tags(str_replace('&nbsp;', ' ', (string) $contents[$i]))) : '';
+				if ('' === $title && '' === $content) {
+					continue;
+				}
+				$started++;
+				if ('' === $title || '' === $content) {
+					return false;
+				}
+			}
+			return $started > 0;
+		}
+
 		public function handle_save(): void
 		{
 			if (! $this->can_manage_events()) {
@@ -2099,16 +2125,20 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				}
 
 				// Advanced (Display) step — FAQ, Timeline and Related Events requirements.
+				// Each enabled section needs at least one item with BOTH a title and
+				// a description; fully blank rows are dropped on save and ignored here.
 				if ('' === $validation_error && isset($_POST['mep_faq_status']) && $_POST['mep_faq_status']) {
-					$faq_titles = isset($_POST['mep_faq_title']) && is_array($_POST['mep_faq_title']) ? array_map('trim', (array) wp_unslash($_POST['mep_faq_title'])) : [];
-					if (empty(array_filter($faq_titles, 'strlen'))) {
+					$faq_titles   = isset($_POST['mep_faq_title']) && is_array($_POST['mep_faq_title']) ? array_values((array) wp_unslash($_POST['mep_faq_title'])) : [];
+					$faq_contents = isset($_POST['mep_faq_content']) && is_array($_POST['mep_faq_content']) ? array_values((array) wp_unslash($_POST['mep_faq_content'])) : [];
+					if (! $this->display_items_complete($faq_titles, $faq_contents)) {
 						$validation_error = 'faq_items';
 					}
 				}
 
 				if ('' === $validation_error && isset($_POST['mep_timeline_status']) && $_POST['mep_timeline_status']) {
-					$tl_titles = isset($_POST['mep_day_title']) && is_array($_POST['mep_day_title']) ? array_map('trim', (array) wp_unslash($_POST['mep_day_title'])) : [];
-					if (empty(array_filter($tl_titles, 'strlen'))) {
+					$tl_titles   = isset($_POST['mep_day_title']) && is_array($_POST['mep_day_title']) ? array_values((array) wp_unslash($_POST['mep_day_title'])) : [];
+					$tl_contents = isset($_POST['mep_day_content']) && is_array($_POST['mep_day_content']) ? array_values((array) wp_unslash($_POST['mep_day_content'])) : [];
+					if (! $this->display_items_complete($tl_titles, $tl_contents)) {
 						$validation_error = 'timeline_items';
 					}
 				}

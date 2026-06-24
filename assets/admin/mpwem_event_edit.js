@@ -4679,6 +4679,19 @@
         return !blockOnError;
     }
 
+    // Final-step save button: a not-yet-published event publishes on save, an
+    // already-published event updates in place. The button label mirrors the
+    // action it performs.
+    function isPublishedEvent($root) {
+        return String($root.data('is-published')) === '1';
+    }
+    function finalSaveAction($root) {
+        return isPublishedEvent($root) ? '' : 'publish';
+    }
+    function finalSaveLabel($root) {
+        return isPublishedEvent($root) ? 'Save & Update Event' : 'Save & Publish Event';
+    }
+
     function setActiveStep($root, stepKey, options) {
         if (stepKey !== 'tickets') {
             closeTicketModal($root);
@@ -4752,7 +4765,7 @@
         const current = $visibleSteps.index($targetStep) + 1;
         $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
         $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-        $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
+        $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? finalSaveLabel($root) : 'Next Step');
         $root.find('#mpwem_active_step').val(stepKey);
 
         if (options && options.pushHash) {
@@ -4849,7 +4862,7 @@
             const current = $visibleSteps.index($activeStep) + 1;
             $root.find('.mpwem-wizard-progress').text('Step ' + current + ' of ' + $visibleSteps.length);
             $root.find('.mpwem-wizard-prev').prop('disabled', current === 1);
-            $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? 'Save Event' : 'Next Step');
+            $root.find('.mpwem-wizard-next').text(current === $visibleSteps.length ? finalSaveLabel($root) : 'Next Step');
         }
     }
 
@@ -5590,38 +5603,79 @@
 
         let error = null; // { message, $field, $flash }
 
-        const checkItemList = function(toggleName, containerId, itemSelector, titleName, addId, label, noun) {
+        // Sync any TinyMCE editors back to their textareas so the FAQ/Timeline
+        // descriptions can be read even while the visual editor is active.
+        if (window.tinymce && typeof window.tinymce.triggerSave === 'function') {
+            try { window.tinymce.triggerSave(); } catch (e) {}
+        }
+
+        // A wp_editor body counts as empty when it has no text once tags and
+        // non-breaking spaces are stripped (an "empty" editor is often <p></p>).
+        const isBlankHtml = function(value) {
+            return (value || '').toString().replace(/<[^>]*>/g, '').replace(/&nbsp;/gi, '').replace(/\s+/g, '') === '';
+        };
+
+        const checkItemList = function(toggleName, containerId, itemSelector, titleName, descName, addId, label, noun) {
             const $toggle = $root.find('input[name="' + toggleName + '"]').first();
             if (!$toggle.length || !$toggle.is(':checked')) return null;
 
-            // Require at least one item with a title. Blank rows are dropped on
-            // save, so they don't count and don't block on their own.
+            // Require at least one item, and every non-blank item needs BOTH a
+            // title and a description. Fully blank rows are dropped on save, so
+            // they don't block on their own.
             const $items = $root.find(containerId + ' ' + itemSelector);
-            let hasFilled = false;
-            let $firstTitle = $();
+            let started = 0;
+            let $errField = $();
+            let $errFlash = $();
+            let errMsg = '';
+
             $items.each(function() {
-                const $t = $(this).find('input[name="' + titleName + '"]').first();
-                if (!$firstTitle.length) $firstTitle = $t;
-                if (($t.val() || '').toString().trim() !== '') { hasFilled = true; }
+                const $item = $(this);
+                const $t = $item.find('input[name="' + titleName + '"]').first();
+                const $d = $item.find('[name="' + descName + '"]').first();
+                $t.removeClass('mpwem-field-error');
+                $d.removeClass('mpwem-field-error');
+
+                const titleVal = ($t.val() || '').toString().trim();
+                const descBlank = isBlankHtml($d.val());
+
+                if (titleVal === '' && descBlank) {
+                    return; // fully blank row — ignored
+                }
+                started++;
+                if (!$errField.length) {
+                    if (titleVal === '') {
+                        $t.addClass('mpwem-field-error');
+                        $errField = $t; $errFlash = $item;
+                        errMsg = label + ' is enabled — each ' + noun + ' needs a title.';
+                    } else if (descBlank) {
+                        $d.addClass('mpwem-field-error');
+                        $errField = $d; $errFlash = $item;
+                        errMsg = label + ' is enabled — each ' + noun + ' needs a description.';
+                    }
+                }
             });
 
-            if (!hasFilled) {
+            if (started === 0) {
+                const $firstTitle = $items.first().find('input[name="' + titleName + '"]').first();
                 if ($firstTitle.length) {
                     $firstTitle.addClass('mpwem-field-error');
-                    return { message: label + ' is enabled — add at least one ' + noun + '.', $field: $firstTitle, $flash: $firstTitle.closest(itemSelector) };
+                    return { message: label + ' is enabled — add at least one ' + noun + ' with a title and description.', $field: $firstTitle, $flash: $firstTitle.closest(itemSelector) };
                 }
                 const $add = $root.find(addId).first();
-                return { message: label + ' is enabled — add at least one ' + noun + '.', $field: $add, $flash: $add };
+                return { message: label + ' is enabled — add at least one ' + noun + ' with a title and description.', $field: $add, $flash: $add };
+            }
+            if ($errField.length) {
+                return { message: errMsg, $field: $errField, $flash: $errFlash };
             }
             return null;
         };
 
         // FAQ.
-        error = checkItemList('mep_faq_status', '#faq-items-container', '.faq-item', 'mep_faq_title[]', '#add-faq-item', 'FAQ', 'FAQ item');
+        error = checkItemList('mep_faq_status', '#faq-items-container', '.faq-item', 'mep_faq_title[]', 'mep_faq_content[]', '#add-faq-item', 'FAQ', 'FAQ item');
 
         // Timeline.
         if (!error) {
-            error = checkItemList('mep_timeline_status', '#timeline-items-container', '.timeline-item', 'mep_day_title[]', '#add-timeline-item', 'Timeline', 'timeline item');
+            error = checkItemList('mep_timeline_status', '#timeline-items-container', '.timeline-item', 'mep_day_title[]', 'mep_day_content[]', '#add-timeline-item', 'Timeline', 'timeline item');
         }
 
         // Related Events — when enabled, need a section label and at least one event.
@@ -5849,8 +5903,8 @@
                 date_order: 'The event End date & time must be later than the Start.',
                 repeat_periods: 'After Repeated Days must be a number of at least 1.',
                 date_format: 'Complete the Date/Time format settings (Date Format, Time Format and Show Timezone).',
-                faq_items: 'FAQ is enabled — add at least one FAQ item with a title.',
-                timeline_items: 'Timeline is enabled — add at least one timeline item with a title.',
+                faq_items: 'FAQ is enabled — each FAQ item needs a title and a description.',
+                timeline_items: 'Timeline is enabled — each timeline item needs a title and a description.',
                 related_label: 'Related Events is enabled — add a section label.',
                 related_list: 'Related Events is enabled — select at least one event.'
             };
@@ -5916,7 +5970,7 @@
                 if (!validateDateWiseGlobalQty($root)) {
                     return;
                 }
-                submitEventForm($root, '');
+                submitEventForm($root, finalSaveAction($root));
             }
         });
 

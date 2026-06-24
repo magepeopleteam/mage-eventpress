@@ -71,7 +71,16 @@
 			} )
 				.done( function ( res ) {
 					if ( res && res.success ) {
-						applyEnabledState( $card, res.data.enabled === 'yes' );
+						// Reflect the gateway's REAL state — WooCommerce may have
+						// refused to enable it (e.g. unsupported store currency), in
+						// which case the checkbox snaps back and we explain why.
+						var reallyOn = !! ( res.data && res.data.enabled === 'yes' );
+						$input.prop( 'checked', reallyOn );
+						applyEnabledState( $card, reallyOn );
+						if ( res.data && res.data.notice ) {
+							window.alert( res.data.notice );
+						}
+						$( document ).trigger( 'mep:gateways-refresh' );
 					} else {
 						$input.prop( 'checked', ! $input.is( ':checked' ) );
 						window.alert( ( res && res.data ) || i18n.error );

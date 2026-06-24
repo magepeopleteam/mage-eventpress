@@ -55,17 +55,19 @@
 		// Quick enable/disable toggle in the card header
 		// -----------------------------------------------------------
 		$manager.on( 'change', '.mep-gw-toggle-input', function () {
-			var $input = $( this );
-			var $card = $input.closest( '.mep-gw-card' );
-			var gatewayId = $input.data( 'gateway-id' );
-			var enabled = $input.is( ':checked' ) ? 'yes' : 'no';
+			var $input     = $( this );
+			var $card      = $input.closest( '.mep-gw-card' );
+			var gatewayId  = $input.data( 'gateway-id' );
+			var enabled    = $input.is( ':checked' ) ? 'yes' : 'no';
+			var source     = $card.data( 'gateway-source' ) || 'wc';
+			var ajaxAction = source === 'builtin' ? 'mep_toggle_builtin_gateway' : 'mep_wc_toggle_gateway';
 
 			$input.prop( 'disabled', true );
 
 			ajax( {
-				action: 'mep_wc_toggle_gateway',
+				action:     ajaxAction,
 				gateway_id: gatewayId,
-				enabled: enabled,
+				enabled:    enabled,
 			} )
 				.done( function ( res ) {
 					if ( res && res.success ) {

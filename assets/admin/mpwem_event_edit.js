@@ -1207,7 +1207,7 @@
 
             persistTicketDraftRows($root);
             $button.prop('disabled', true).addClass('is-saving');
-            submitEventForm($root, '');
+            submitEventForm($root, '', { skipPaymentCheck: true, skipOtherSteps: true });
 
             window.setTimeout(function() {
                 if ($button.closest('body').length) {
@@ -1596,7 +1596,7 @@
 
             persistExtraServiceDraftRows($root);
             $button.prop('disabled', true).addClass('is-saving');
-            submitEventForm($root, '');
+            submitEventForm($root, '', { skipOtherSteps: true });
 
             window.setTimeout(function() {
                 if ($button.closest('body').length) {
@@ -2266,7 +2266,7 @@
 
             persistParticularDateDraftRows($root);
             $button.prop('disabled', true).addClass('is-saving');
-            submitEventForm($root, '');
+            submitEventForm($root, '', { skipOtherSteps: true });
 
             window.setTimeout(function() {
                 if ($button.closest('body').length) {
@@ -5158,6 +5158,7 @@
     function validateTicketsStep($root, options) {
         options = options || {};
         const focus = options.focus !== false;
+        const skipPaymentCheck = options.skipPaymentCheck === true;
 
         // Requirements only apply to the Ticket-Selling (paid) event mode.
         if (!isRegistrationEnabled($root)) {
@@ -5168,15 +5169,20 @@
         let onFix = null;
 
         // 1) At least one payment method must be configured.
-        const $paymentWarning = $('.mpwem-payment-warning');
-        if ($paymentWarning.length && $paymentWarning.is(':visible')) {
-            message = 'Please configure at least one payment method to sell tickets.';
-            onFix = function() {
-                try {
-                    $paymentWarning[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } catch (e) {}
-                flashAttention($paymentWarning.find('.mep-payment-settings-trigger').first());
-            };
+        //    Skipped when saving ticket types from the modal so the user can
+        //    build their ticket list first and configure payment later.
+        //    The check still runs on Next Step navigation and Publish/Update.
+        if (!skipPaymentCheck) {
+            const $paymentWarning = $('.mpwem-payment-warning');
+            if ($paymentWarning.length && $paymentWarning.is(':visible')) {
+                message = 'Please configure at least one payment method to sell tickets.';
+                onFix = function() {
+                    try {
+                        $paymentWarning[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } catch (e) {}
+                    flashAttention($paymentWarning.find('.mep-payment-settings-trigger').first());
+                };
+            }
         }
 
         // 2) At least one ticket type is required.
@@ -5664,23 +5670,27 @@
         return false;
     }
 
-    function submitEventForm($root, action) {
+    function submitEventForm($root, action, options) {
+        options = options || {};
         const $form = $('#mpwem-event-edit-form');
         if (!$form.length) {
             return;
         }
 
         if ((action || '') !== 'trash') {
-            if (!validateBasicStep($root, { focus: true })) {
+            // When saving from a step-specific modal (ticket/extra-service/date),
+            // only validate that step's own rules. Skipping cross-step validation
+            // prevents date/display failures from switching the active tab.
+            if (!options.skipOtherSteps && !validateBasicStep($root, { focus: true })) {
                 return;
             }
-            if (!validateTicketsStep($root, { focus: true })) {
+            if (!validateTicketsStep($root, { focus: true, skipPaymentCheck: options.skipPaymentCheck })) {
                 return;
             }
-            if (!validateDateStep($root, { focus: true })) {
+            if (!options.skipOtherSteps && !validateDateStep($root, { focus: true })) {
                 return;
             }
-            if (!validateDisplayStep($root, { focus: true })) {
+            if (!options.skipOtherSteps && !validateDisplayStep($root, { focus: true })) {
                 return;
             }
         }

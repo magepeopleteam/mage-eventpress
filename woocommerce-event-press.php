@@ -334,6 +334,13 @@
 if ( ! function_exists( 'mep_pro_modify_admin_menu_capabilities' ) ) {
 	add_action( 'admin_menu', 'mep_modify_admin_menu_capabilities', 999 );
 	function mep_modify_admin_menu_capabilities() {
+		// Only swap manage_options → manage_woocommerce when WooCommerce is active.
+		// Without WooCommerce, manage_woocommerce is an unregistered capability so
+		// no user would have it, which hides all plugin menus for everyone.
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
 		global $menu, $submenu;
 
 		if ( ! empty( $menu ) ) {

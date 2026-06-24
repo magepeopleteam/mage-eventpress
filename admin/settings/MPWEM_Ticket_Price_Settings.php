@@ -286,7 +286,7 @@
 												</div>
 											</div>
 
-											<label class="mpwem-pm-toggle-row mep-woo-enable-label" style="display:<?php echo $wc_active ? 'flex' : 'none'; ?>;">
+											<label class="mpwem-pm-toggle-row mep-woo-enable-label" style="display:flex;">
 												<span class="mpwem-pm-toggle-row__text">
 													<span class="mpwem-pm-toggle-row__label"><?php esc_html_e( 'Enable WooCommerce Payment Gateway', 'mage-eventpress' ); ?></span>
 													<span class="mpwem-pm-toggle-row__sub"><?php esc_html_e( 'Process ticket checkout through WooCommerce.', 'mage-eventpress' ); ?></span>
@@ -298,7 +298,7 @@
 											</label>
 										</div><!-- /.mpwem-pm-card -->
 
-										<div class="mep-modal-wc-fields" style="display: <?php echo ($woo_enabled && $wc_active) ? 'block' : 'none'; ?>;">
+										<div class="mep-modal-wc-fields" style="display: <?php echo $woo_enabled ? 'block' : 'none'; ?>;">
 											<!-- Payment Methods accordion (expanded by default) -->
 											<div class="mpwem-pm-acc mpwem-pm-acc--methods is-open">
 												<button type="button" class="mpwem-pm-acc__bar">
@@ -308,7 +308,7 @@
 												<div class="mpwem-pm-acc__panel">
 													<p class="mpwem-pm-card__sub"><?php esc_html_e( 'Enable and configure the WooCommerce gateways customers can pay with.', 'mage-eventpress' ); ?></p>
 													<?php
-													if ( $wc_active && class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
+													if ( class_exists( 'MPWEM_WC_Payment_Manager' ) ) {
 														MPWEM_WC_Payment_Manager::instance()->render();
 													}
 													?>
@@ -515,22 +515,37 @@
 							var paypalOn  = $statusRow.data('paypal') == 1;
 							var stripeOn  = $statusRow.data('stripe') == 1;
 
-							// Names of the WooCommerce gateways that are currently enabled.
-							var gwNames = [];
+							// Use the live checkbox state when the modal is open; fall back to
+							// saved data-attrs when the modal hasn't been opened yet.
+							var $wcToggle   = $('#mep_modal_enable_wc');
+							var wcSectionOn = $wcToggle.length ? $wcToggle.is(':checked') : (wooOption || !optionSet);
+
+							// Split enabled gateways: WC-registered vs built-in (BACS / COD).
+							var wcGwNames    = [];
+							var builtinNames = [];
 							$('.mep-gw-toggle-input:checked').each(function() {
-								var name = $(this).closest('.mep-gw-card').find('.mep-gw-title').first().text().trim();
-								if (name) {
-									gwNames.push(name);
+								var $card  = $(this).closest('.mep-gw-card');
+								var source = $card.data('gateway-source') || 'wc';
+								var name   = $card.find('.mep-gw-title').first().text().trim();
+								if (!name) { return; }
+								if (source === 'builtin') {
+									builtinNames.push(name);
+								} else {
+									wcGwNames.push(name);
 								}
 							});
 
-							// WooCommerce counts as an active method when it is active, has an
-							// enabled gateway, and the admin has not explicitly turned it off.
-							var wcOn = wcActive && gwNames.length > 0 && (wooOption || !optionSet);
-
 							var methods = [];
-							if (wcOn) {
-								methods.push('WooCommerce (' + gwNames.join(', ') + ')');
+							if (wcSectionOn) {
+								// WC-registered gateways only count when WooCommerce is active.
+								if (wcActive && wcGwNames.length > 0) {
+									methods.push('WooCommerce (' + wcGwNames.join(', ') + ')');
+								}
+								// Built-in gateways (Bank Transfer, Cash on Delivery) are always
+								// valid regardless of WooCommerce being active.
+								if (builtinNames.length > 0) {
+									methods = methods.concat(builtinNames);
+								}
 							}
 							if (paypalOn) { methods.push('PayPal'); }
 							if (stripeOn) { methods.push('Stripe'); }
@@ -544,9 +559,10 @@
 								$warnRow.css('display', 'flex');
 							}
 
-							// Auto-enable the modal toggle when WooCommerce has an enabled
-							// gateway and the admin has not explicitly configured it yet.
-							if (!optionSet && gwNames.length > 0) {
+							// Auto-enable the payment section toggle when a gateway is already
+							// enabled but the admin hasn't explicitly saved the setting yet.
+							var anyGwEnabled = wcGwNames.length > 0 || builtinNames.length > 0;
+							if (!optionSet && anyGwEnabled) {
 								var $toggle = $('#mep_modal_enable_wc');
 								if ($toggle.length && !$toggle.is(':checked')) {
 									$toggle.prop('checked', true).trigger('change');

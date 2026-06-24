@@ -95,7 +95,8 @@
 				?>
 				<style id="mep-menu-flyout-css">
 					#adminmenu .mep-menu-parent { position: relative; }
-					#adminmenu .mep-menu-arrow { float: right; opacity: .65; font-size: 11px; line-height: 1.6; }
+					#adminmenu .mep-menu-arrow { float: right; opacity: .65; font-size: 11px; line-height: 1.6; cursor: pointer; padding: 0 6px; transition: transform .15s ease; }
+					#adminmenu .mep-menu-parent.mep-open > a .mep-menu-arrow { transform: rotate(90deg); }
 					#adminmenu .mep-menu-flyout {
 						display: none;
 						position: absolute;
@@ -109,8 +110,29 @@
 						border-radius: 0 4px 4px 0;
 						z-index: 10000;
 					}
-					#adminmenu .mep-menu-parent:hover > .mep-menu-flyout,
+					/* Tap-to-open works on every device (touch + mobile). */
 					#adminmenu .mep-menu-parent.mep-open > .mep-menu-flyout { display: block; }
+					/* Hover-to-open only where a real pointer exists (desktop). */
+					@media screen and (min-width: 783px) {
+						#adminmenu .mep-menu-parent:hover > .mep-menu-flyout { display: block; }
+					}
+					/* On WordPress's mobile admin the menu is tap-driven and full width,
+					   so render the flyout inline (not an off-canvas absolute panel). */
+					@media screen and (max-width: 782px) {
+						#adminmenu .mep-menu-flyout {
+							position: static;
+							left: auto;
+							top: auto;
+							width: 100%;
+							min-width: 0;
+							padding: 0;
+							border-radius: 0;
+							box-shadow: none;
+							background: rgba(0,0,0,.18);
+						}
+						#adminmenu .mep-menu-flyout > li > a { padding: 12px 16px 12px 40px; font-size: 16px; }
+						#adminmenu .mep-menu-arrow { padding: 10px 14px; margin: -10px 0; }
+					}
 					#adminmenu .mep-menu-flyout > li { margin: 0; padding: 0; float: none; display: block; width: auto; }
 					#adminmenu .mep-menu-flyout > li > a {
 						display: block;
@@ -183,7 +205,19 @@
 							arrow.className = 'mep-menu-arrow';
 							arrow.setAttribute('aria-hidden', 'true');
 							arrow.textContent = '▸';
+							// Tap the arrow to open/close the flyout — the only way to
+							// reach it on touch/mobile, where there is no hover.
+							arrow.addEventListener('click', function (e) {
+								e.preventDefault();
+								e.stopPropagation();
+								parentLi.classList.toggle('mep-open');
+							});
 							parentLink.appendChild(arrow);
+						}
+
+						// On mobile keep the active group's flyout open by default.
+						if (anyCurrent && window.matchMedia && window.matchMedia('(max-width: 782px)').matches) {
+							parentLi.classList.add('mep-open');
 						}
 
 						parentLi.setAttribute('data-mep-flyout', '1');

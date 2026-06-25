@@ -189,12 +189,14 @@
 				wp_localize_script( 'mkb-admin', 'mep_ajax_var', array( 'url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'mep-ajax-nonce' ) ) );
 				// Only load event lists scripts on relevant pages
 				if ( $hook == 'mep_events_page_mep_event_lists' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'mep_events' && ( $hook == 'edit.php' || isset( $_GET['page'] ) && $_GET['page'] == 'mep_event_lists' ) ) ) {
-					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
+					$mpwem_el_js_ver  = file_exists( MPWEM_PLUGIN_DIR . '/assets/admin/mpwem_event_lists.js' ) ? filemtime( MPWEM_PLUGIN_DIR . '/assets/admin/mpwem_event_lists.js' ) : MPWEM_PLUGIN_VERSION;
+					$mpwem_el_css_ver = file_exists( MPWEM_PLUGIN_DIR . '/assets/admin/mpwem_event_lists.css' ) ? filemtime( MPWEM_PLUGIN_DIR . '/assets/admin/mpwem_event_lists.css' ) : MPWEM_PLUGIN_VERSION;
+					wp_enqueue_script( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.js', array( 'jquery' ), $mpwem_el_js_ver, true );
 					wp_localize_script( 'mpwem_event_lists', 'mep_ajax', array(
 						'url'   => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'mep_nonce' )
 					) );
-					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), MPWEM_PLUGIN_VERSION );
+					wp_enqueue_style( 'mpwem_event_lists', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_lists.css', array(), $mpwem_el_css_ver );
 				}
 				/******************************/
 				// custom

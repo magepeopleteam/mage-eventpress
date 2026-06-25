@@ -851,6 +851,14 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 				return;
 			}
 
+			// Only hijack the actual "edit" screen. Other post.php actions
+			// (trash, untrash, delete, editpost, …) must reach WordPress so the
+			// delete/trash icons in the event list keep working.
+			$action = isset($_GET['action']) ? sanitize_key(wp_unslash($_GET['action'])) : 'edit';
+			if ($action !== 'edit') {
+				return;
+			}
+
 			$post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
 			if (! $post_id || get_post_type($post_id) !== self::POST_TYPE) {
 				return;

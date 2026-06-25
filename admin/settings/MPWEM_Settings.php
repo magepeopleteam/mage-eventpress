@@ -23,7 +23,7 @@
 				wp_nonce_field( 'mpwem_type_nonce', 'mpwem_type_nonce' );
 				$event_infos              = MPWEM_Functions::get_all_info( $post_id );
 				$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-				$speaker_status           = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+				$speaker_status           = 'yes'; // Speaker list is always enabled (on/off setting removed).
 				?>
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                     <div class="mp_tab_menu">

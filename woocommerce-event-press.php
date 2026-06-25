@@ -3,7 +3,7 @@
 	 * Plugin Name: Event Booking Manager for WooCommerce
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 5.3.5
+	 * Version: 5.3.4
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
@@ -189,6 +189,20 @@
 	register_activation_hook( __FILE__, 'mpwem_on_plugin_activation' );
 	function mpwem_on_plugin_activation() {
 		set_transient( 'mpwem_plugin_activated', true, 60 );
+
+		// Re-enable the first-run "Import Dummy Events" prompt on activation when the
+		// site still has no published events. These flags otherwise persist across
+		// deactivate/reactivate, so once dismissed/imported the prompt never returns.
+		// (Query the DB directly: the mep_events post type may not be registered yet
+		// at activation time.)
+		global $wpdb;
+		$published_events = (int) $wpdb->get_var(
+			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'mep_events' AND post_status = 'publish'"
+		);
+		if ( 0 === $published_events ) {
+			delete_option( 'mep_dummy_already_inserted' );
+			delete_option( 'mep_dummy_import_dismissed' );
+		}
 	}
 
 	/**

@@ -1920,17 +1920,6 @@ tr.payment_tabs_html { display: none !important; }
 					),
 					'single_event_setting_sec' => apply_filters( 'mep_settings_single_event_arr', array(
 							array(
-								'name'    => 'mep_enable_speaker_list',
-								'label'   => __( 'On/Off Speaker List', 'mage-eventpress' ),
-								'desc'    => __( 'Please select \'Yes\' to display the speaker list. By default, the speaker list is disabled.', 'mage-eventpress' ),
-								'type'    => 'select',
-								'default' => mep_change_global_option_section( 'mep_enable_speaker_list', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
-								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No'
-								)
-							),
-							array(
 								'name'    => 'mep_show_product_cat_in_event',
 								'label'   => __( 'On/Off Product Category in Event', 'mage-eventpress' ),
 								'desc'    => __( 'Enabling this feature will allow you to assign a product category to the event edit page. If you have a product category-based coupon code that you want to use, you have to assign the event to the same product category. In order to enable this feature, please select \'Yes\'.', 'mage-eventpress' ),

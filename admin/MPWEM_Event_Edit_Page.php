@@ -1220,7 +1220,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$event_infos = $post_id ? MPWEM_Functions::get_all_info($post_id) : [];
 
 			$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
-			$speaker_status = is_array($single_event_setting_sec) && array_key_exists( 'mep_enable_speaker_list', $single_event_setting_sec ) ? $single_event_setting_sec['mep_enable_speaker_list'] : 'no';
+			$speaker_status = 'yes'; // Speaker list is always enabled (on/off setting removed).
 
 			$back_to_list = admin_url('edit.php?post_type=' . self::POST_TYPE . '&page=mep_event_lists');
 			$screen_title = $post_id && $post ? $post->post_title : __('Create Event', 'mage-eventpress');

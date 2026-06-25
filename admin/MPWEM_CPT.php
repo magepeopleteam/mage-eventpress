@@ -10,7 +10,8 @@
 				add_action( 'manage_mep_events_posts_custom_column', [ $this, 'posts_column_data' ], 10, 2 );
 			}
 			public function add_cpt() {
-				$speaker_status = mep_get_option( 'mep_enable_speaker_list', 'single_event_setting_sec', 'no' );
+				// Speaker list is always enabled (the on/off setting was removed).
+				$speaker_status = 'yes';
 				$event_label    = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
 				$event_slug     = mep_get_option( 'mep_event_slug', 'general_setting_sec', 'events' );
 				$event_icon     = mep_get_option( 'mep_event_icon', 'general_setting_sec', 'dashicons-calendar-alt' );

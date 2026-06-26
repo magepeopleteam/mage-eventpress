@@ -1446,6 +1446,21 @@ jQuery(function ($) {
         });
         $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeSnapshot));
 
+        // Prefill the billing form from the event's attendee name/email/phone fields
+        // (when present) so the user doesn't retype them.
+        var preBilling = { name: '', email: '', phone: '' };
+        parent.find('[data-field-name][data-d-name]').each(function () {
+            var dname = $(this).data('d-name');
+            var val   = $.trim($(this).val());
+            if (!val) { return; }
+            if (dname === 'ea_name'  && !preBilling.name)  { preBilling.name  = val; }
+            if (dname === 'ea_email' && !preBilling.email) { preBilling.email = val; }
+            if (dname === 'ea_phone' && !preBilling.phone) { preBilling.phone = val; }
+        });
+        if (preBilling.name)  { $modal.find('#mep-native-billing-name').val(preBilling.name); }
+        if (preBilling.email) { $modal.find('#mep-native-billing-email').val(preBilling.email); }
+        if (preBilling.phone) { $modal.find('#mep-native-billing-phone').val(preBilling.phone); }
+
         // When login is required to complete checkout, persist the ticket selection so it can
         // be restored once the user logs in and is redirected back to this page.
         if ($modal.find('.mep-native-login-required').length && window.sessionStorage) {
@@ -1521,18 +1536,39 @@ jQuery(function ($) {
             }
         } catch (e) {}
 
-        // Derive billing fields from the ea_* keys in the snapshot.
-        // We need to map field name → d-name, so look them up from the main form.
-        $('.mpwem_registration_area').find('[data-field-name][data-d-name]').each(function () {
-            var $inp  = $(this);
-            var fname = $inp.data('field-name');
-            var dname = $inp.data('d-name');
-            if (dname === 'ea_name'  && attendeeFields[fname] !== undefined) billingName  = attendeeFields[fname];
-            if (dname === 'ea_email' && attendeeFields[fname] !== undefined) billingEmail = attendeeFields[fname];
-            if (dname === 'ea_phone' && attendeeFields[fname] !== undefined) billingPhone = attendeeFields[fname];
-        });
+        // Read billing details from the modal's billing form (all fields required).
+        var $bName = $modal.find('#mep-native-billing-name');
+        if ($bName.length) {
+            var $bEmail = $modal.find('#mep-native-billing-email');
+            var $bPhone = $modal.find('#mep-native-billing-phone');
+            billingName  = $.trim($bName.val()  || '');
+            billingEmail = $.trim($bEmail.val() || '');
+            billingPhone = $.trim($bPhone.val() || '');
+
+            $modal.find('.mep-native-input').removeClass('mep-native-input-error');
+            var missing = [];
+            if (!billingName)  { missing.push($bName); }
+            if (!billingEmail) { missing.push($bEmail); }
+            if (!billingPhone) { missing.push($bPhone); }
+            if (missing.length) {
+                missing.forEach(function ($f) { $f.addClass('mep-native-input-error'); });
+                $msg.text('Please fill in all billing details (name, email and phone).').addClass('error').show();
+                return;
+            }
+        } else {
+            // Fallback (older template): derive billing from the attendee snapshot.
+            $('.mpwem_registration_area').find('[data-field-name][data-d-name]').each(function () {
+                var $inp  = $(this);
+                var fname = $inp.data('field-name');
+                var dname = $inp.data('d-name');
+                if (dname === 'ea_name'  && attendeeFields[fname] !== undefined) billingName  = attendeeFields[fname];
+                if (dname === 'ea_email' && attendeeFields[fname] !== undefined) billingEmail = attendeeFields[fname];
+                if (dname === 'ea_phone' && attendeeFields[fname] !== undefined) billingPhone = attendeeFields[fname];
+            });
+        }
 
         if (billingEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(billingEmail)) {
+            $modal.find('#mep-native-billing-email').addClass('mep-native-input-error');
             $msg.text('Please enter a valid email address.').addClass('error').show();
             return;
         }

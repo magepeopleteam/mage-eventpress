@@ -42,14 +42,7 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 			</div>
 		</div>
 
-		<?php if ( $needs_login ) : ?>
-		<!-- Login required before this registration can be completed -->
-		<div class="mep-native-login-required">
-			<p><?php esc_html_e( 'You need to be logged in to complete your registration for this event.', 'mage-eventpress' ); ?></p>
-		</div>
-		<?php else : ?>
-
-		<!-- Billing details (all fields required) -->
+		<!-- Billing details (all fields required) — shown for guests and logged-in users -->
 		<div class="mep-native-modal-billing">
 			<h4 class="mep-native-section-title"><?php esc_html_e( 'Billing Details', 'mage-eventpress' ); ?></h4>
 			<div class="mep-native-field">
@@ -65,6 +58,13 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 				<input type="tel" id="mep-native-billing-phone" class="mep-native-input" autocomplete="tel" required />
 			</div>
 		</div>
+
+		<?php if ( $needs_login ) : ?>
+		<!-- Login required before this registration can be completed -->
+		<div class="mep-native-login-required">
+			<p><?php esc_html_e( 'You need to be logged in to complete your registration for this event.', 'mage-eventpress' ); ?></p>
+		</div>
+		<?php else : ?>
 
 		<?php if ( $has_gateways ) : ?>
 		<!-- Payment method selection -->

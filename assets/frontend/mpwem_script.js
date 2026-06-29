@@ -1324,6 +1324,32 @@ jQuery(function ($) {
     // sessionStorage key prefix used to persist a booking intent across a login redirect.
     var PENDING_BOOKING_PREFIX = 'mep_pending_booking_';
 
+    // Helper: resolve the selected occurrence's full date AND time for native checkout.
+    // The hidden mep_event_start_date field can collapse to a date-only value (saved as
+    // "Y-m-d 00:00") for recurring events that have several times per day, which loses the
+    // chosen time slot. The date/time selectors always carry the full datetime, so prefer
+    // them: mpwem_time (date + time-slot) > mpwem_date_time (occurrence) > mep_event_start_date.
+    // This is native-only and deliberately does not touch the shared $user_date logic used
+    // by the WooCommerce flow.
+    function mepResolveEventDate(parent) {
+        var candidates = [
+            parent.find('[name="mpwem_time"]').val(),
+            parent.find('[name="mpwem_date_time"]').val(),
+            parent.find('[name="mep_event_start_date[]"]').first().val()
+        ];
+        // Prefer the first candidate that includes a time component.
+        for (var i = 0; i < candidates.length; i++) {
+            var v = $.trim(candidates[i] || '');
+            if (v && v.indexOf(':') !== -1) { return v; }
+        }
+        // No time component anywhere (genuinely date-only event) — use the first value present.
+        for (var j = 0; j < candidates.length; j++) {
+            var v2 = $.trim(candidates[j] || '');
+            if (v2) { return v2; }
+        }
+        return '';
+    }
+
     // Helper: collect ticket data from the registration form
     function mepCollectTickets(parent) {
         var tickets = [];
@@ -1422,7 +1448,7 @@ jQuery(function ($) {
         });
 
         var $modal    = $('#mep-native-checkout-modal');
-        var eventDate = parent.find('[name="mep_event_start_date[]"]').first().val() || '';
+        var eventDate = mepResolveEventDate(parent);
 
         $modal.find('#mep-native-ticket-summary').html(summaryHtml);
         $modal.find('#mep-native-total-display').text(mepNativeFormatPrice(total));

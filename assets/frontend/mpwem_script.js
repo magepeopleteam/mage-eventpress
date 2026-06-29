@@ -1350,6 +1350,19 @@ jQuery(function ($) {
         return '';
     }
 
+    // Helper: HTML-escape a string for safe insertion into the summary markup.
+    function mepNativeEsc(str) {
+        return $('<span>').text(str == null ? '' : String(str)).html();
+    }
+
+    // Helper: present the resolved event datetime, dropping a meaningless midnight time
+    // (e.g. "2026-07-22 00:00" → "2026-07-22") so only real times are shown.
+    function mepNativeFormatEventDate(raw) {
+        raw = $.trim(raw || '');
+        if (!raw) { return ''; }
+        return raw.replace(/\s+00:00(:00)?$/, '');
+    }
+
     // Helper: collect ticket data from the registration form
     function mepCollectTickets(parent) {
         var tickets = [];
@@ -1442,8 +1455,11 @@ jQuery(function ($) {
             var lineTotal = t.ticket_price * t.ticket_qty;
             total += lineTotal;
             summaryHtml += '<div class="mep-ticket-summary-row">'
-                + '<span>' + $('<span>').text(t.ticket_name).html() + ' &times; ' + t.ticket_qty + '</span>'
-                + '<span>' + mepNativeFormatPrice(lineTotal) + '</span>'
+                + '<div class="mep-tsr-info">'
+                +   '<span class="mep-tsr-name">' + mepNativeEsc(t.ticket_name) + '</span>'
+                +   '<span class="mep-tsr-sub">' + mepNativeEsc(String(t.ticket_qty)) + ' &times; ' + mepNativeFormatPrice(t.ticket_price) + '</span>'
+                + '</div>'
+                + '<span class="mep-tsr-total">' + mepNativeFormatPrice(lineTotal) + '</span>'
                 + '</div>';
         });
 
@@ -1452,6 +1468,11 @@ jQuery(function ($) {
 
         $modal.find('#mep-native-ticket-summary').html(summaryHtml);
         $modal.find('#mep-native-total-display').text(mepNativeFormatPrice(total));
+
+        // Event datetime line (hide the time when it's a meaningless midnight value).
+        var dtText = mepNativeFormatEventDate(eventDate);
+        var $dt    = $modal.find('#mep-native-event-datetime');
+        if (dtText) { $dt.text(dtText).show(); } else { $dt.text('').hide(); }
         $modal.find('#mep-native-ticket-data').val(JSON.stringify(tickets));
         $modal.find('#mep-native-event-date').val(eventDate);
         $modal.find('#mep-native-checkout-msg').hide().removeClass('success error').text('');
@@ -1460,7 +1481,11 @@ jQuery(function ($) {
         // saved with the order even though the fields are not shown inside this modal.
         // Only take the first occurrence of each field name (handles multi-ticket layouts
         // where the same attendee form is cloned once per ticket row).
+        // Billing name/email/phone already appear in the Billing section, so they are
+        // excluded from the registration-details list to avoid duplication.
+        var billingDNames = { ea_name: 1, ea_email: 1, ea_phone: 1 };
         var attendeeSnapshot = {};
+        var detailsHtml = '';
         parent.find('[data-field-name][data-d-name]').each(function () {
             var $inp  = $(this);
             var fname = $inp.data('field-name');
@@ -1469,8 +1494,29 @@ jQuery(function ($) {
             }
             var val = $.trim($inp.val());
             attendeeSnapshot[fname] = val;
+
+            // Build a readable "Label: value" row for the order summary.
+            var type   = ($inp.attr('type') || '').toLowerCase();
+            var dName  = $inp.data('d-name');
+            if (!val || type === 'file' || type === 'hidden' || billingDNames[dName]) {
+                return;
+            }
+            var label = $.trim($inp.closest('.mp_form_item').find('label span').first().text().replace(/\*+\s*$/, ''))
+                     || $.trim($inp.attr('placeholder') || '')
+                     || fname;
+            detailsHtml += '<div class="mep-native-detail-row">'
+                + '<span class="mep-ndr-label">' + mepNativeEsc(label) + '</span>'
+                + '<span class="mep-ndr-value">' + mepNativeEsc(val) + '</span>'
+                + '</div>';
         });
         $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeSnapshot));
+
+        var $details = $modal.find('#mep-native-attendee-details');
+        if (detailsHtml) {
+            $details.html('<div class="mep-native-detail-title">Registration Details</div>' + detailsHtml).show();
+        } else {
+            $details.empty().hide();
+        }
 
         // Prefill the billing form from the event's attendee name/email/phone fields
         // (when present) so the user doesn't retype them.

@@ -39,10 +39,15 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 
 		<div class="mep-native-modal-body">
 
-			<!-- Ticket summary (populated by JS) -->
+			<!-- Ticket summary (event name server-side; ticket lines, datetime & reg data by JS) -->
 			<div class="mep-native-modal-summary mep-native-card">
 				<h4 class="mep-native-section-title"><?php esc_html_e( 'Order Summary', 'mage-eventpress' ); ?></h4>
+				<div class="mep-native-event-head">
+					<span class="mep-native-event-name"><?php echo esc_html( get_the_title( $event_id ) ); ?></span>
+					<span class="mep-native-event-datetime" id="mep-native-event-datetime" style="display:none;"></span>
+				</div>
 				<div id="mep-native-ticket-summary"></div>
+				<div id="mep-native-attendee-details" class="mep-native-attendee-details" style="display:none;"></div>
 				<div class="mep-native-total-row">
 					<span><?php esc_html_e( 'Total', 'mage-eventpress' ); ?></span>
 					<span id="mep-native-total-display"></span>
@@ -266,14 +271,69 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 	padding: 16px 18px;
 	margin-bottom: 22px;
 }
+/* Event name + datetime header inside the summary */
+.mep-native-event-head {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding-bottom: 12px;
+	margin-bottom: 12px;
+	border-bottom: 1px solid var(--mep-line);
+}
+.mep-native-event-name {
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--mep-ink);
+	line-height: 1.3;
+}
+.mep-native-event-datetime {
+	font-size: 12.5px;
+	font-weight: 500;
+	color: var(--mep-ink-soft);
+}
+.mep-native-event-datetime::before {
+	content: "🗓";
+	margin-right: 5px;
+	opacity: .8;
+}
+
 #mep-native-ticket-summary .mep-ticket-summary-row {
 	display: flex;
+	align-items: flex-start;
 	justify-content: space-between;
 	gap: 12px;
 	font-size: 14px;
 	color: var(--mep-ink-soft);
-	padding: 5px 0;
+	padding: 6px 0;
 }
+.mep-tsr-info { display: flex; flex-direction: column; gap: 2px; }
+.mep-tsr-name { font-weight: 600; color: var(--mep-ink); }
+.mep-tsr-sub { font-size: 12.5px; color: var(--mep-muted); }
+.mep-tsr-total { font-weight: 600; color: var(--mep-ink); white-space: nowrap; }
+
+/* Registration-form details */
+.mep-native-attendee-details {
+	border-top: 1px solid var(--mep-line);
+	margin-top: 10px;
+	padding-top: 12px;
+}
+.mep-native-detail-title {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	color: var(--mep-muted);
+	margin-bottom: 8px;
+}
+.mep-native-detail-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	font-size: 13px;
+	padding: 3px 0;
+}
+.mep-ndr-label { color: var(--mep-ink-soft); }
+.mep-ndr-value { color: var(--mep-ink); font-weight: 600; text-align: right; word-break: break-word; }
 .mep-native-total-row {
 	display: flex;
 	justify-content: space-between;

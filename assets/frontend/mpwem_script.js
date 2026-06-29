@@ -1481,26 +1481,34 @@ jQuery(function ($) {
         // saved with the order even though the fields are not shown inside this modal.
         // Only take the first occurrence of each field name (handles multi-ticket layouts
         // where the same attendee form is cloned once per ticket row).
+        // Collect the registration-form fields once per seat, mirroring the WooCommerce
+        // flow: each field posts as an array indexed by the global seat order and the server
+        // builds one attendee per seat from it. Only the visible per-seat forms
+        // (.mep_attendee_info) are read — never the hidden clone template.
         // Billing name/email/phone already appear in the Billing section, so they are
-        // excluded from the registration-details list to avoid duplication.
+        // excluded from the registration-details preview to avoid duplication.
         var billingDNames = { ea_name: 1, ea_email: 1, ea_phone: 1 };
-        var attendeeSnapshot = {};
+        var attendeeFieldArrays = {};
         var detailsHtml = '';
-        parent.find('[data-field-name][data-d-name]').each(function () {
+        var detailSeen  = {};
+        parent.find('.mep_attendee_info [data-field-name][data-d-name]').each(function () {
             var $inp  = $(this);
             var fname = $inp.data('field-name');
-            if (!fname || attendeeSnapshot.hasOwnProperty(fname)) {
-                return; // skip duplicates from multi-ticket clones
+            var type  = ($inp.attr('type') || '').toLowerCase();
+            if (!fname || type === 'file') {
+                return; // file uploads are not supported in native checkout
             }
             var val = $.trim($inp.val());
-            attendeeSnapshot[fname] = val;
 
-            // Build a readable "Label: value" row for the order summary.
-            var type   = ($inp.attr('type') || '').toLowerCase();
-            var dName  = $inp.data('d-name');
-            if (!val || type === 'file' || type === 'hidden' || billingDNames[dName]) {
+            // One entry per seat, in DOM (seat) order.
+            (attendeeFieldArrays[fname] = attendeeFieldArrays[fname] || []).push(val);
+
+            // Registration-details preview shows the first attendee's values.
+            var dName = $inp.data('d-name');
+            if (detailSeen[fname] || !val || type === 'hidden' || billingDNames[dName]) {
                 return;
             }
+            detailSeen[fname] = true;
             var label = $.trim($inp.closest('.mp_form_item').find('label span').first().text().replace(/\*+\s*$/, ''))
                      || $.trim($inp.attr('placeholder') || '')
                      || fname;
@@ -1509,7 +1517,7 @@ jQuery(function ($) {
                 + '<span class="mep-ndr-value">' + mepNativeEsc(val) + '</span>'
                 + '</div>';
         });
-        $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeSnapshot));
+        $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeFieldArrays));
 
         var $details = $modal.find('#mep-native-attendee-details');
         if (detailsHtml) {
@@ -1628,14 +1636,17 @@ jQuery(function ($) {
                 return;
             }
         } else {
-            // Fallback (older template): derive billing from the attendee snapshot.
-            $('.mpwem_registration_area').find('[data-field-name][data-d-name]').each(function () {
+            // Fallback (older template): derive billing from the first attendee's fields.
+            $('.mpwem_registration_area').find('.mep_attendee_info [data-field-name][data-d-name]').each(function () {
                 var $inp  = $(this);
                 var fname = $inp.data('field-name');
                 var dname = $inp.data('d-name');
-                if (dname === 'ea_name'  && attendeeFields[fname] !== undefined) billingName  = attendeeFields[fname];
-                if (dname === 'ea_email' && attendeeFields[fname] !== undefined) billingEmail = attendeeFields[fname];
-                if (dname === 'ea_phone' && attendeeFields[fname] !== undefined) billingPhone = attendeeFields[fname];
+                var v = attendeeFields[fname];
+                if (Array.isArray(v)) { v = v[0]; }
+                if (v === undefined) { return; }
+                if (dname === 'ea_name'  && !billingName)  billingName  = v;
+                if (dname === 'ea_email' && !billingEmail) billingEmail = v;
+                if (dname === 'ea_phone' && !billingPhone) billingPhone = v;
             });
         }
 

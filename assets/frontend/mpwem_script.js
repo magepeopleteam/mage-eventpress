@@ -1485,12 +1485,10 @@ jQuery(function ($) {
         // flow: each field posts as an array indexed by the global seat order and the server
         // builds one attendee per seat from it. Only the visible per-seat forms
         // (.mep_attendee_info) are read — never the hidden clone template.
-        // Billing name/email/phone already appear in the Billing section, so they are
-        // excluded from the registration-details preview to avoid duplication.
-        var billingDNames = { ea_name: 1, ea_email: 1, ea_phone: 1 };
-        var attendeeFieldArrays = {};
-        var detailsHtml = '';
-        var detailSeen  = {};
+        var attendeeFieldArrays = {};   // field name -> [value per seat] (submitted to the server)
+        var fieldOrder  = [];           // field names, in display order
+        var fieldLabels = {};           // field name -> human label
+        var fieldTypes  = {};           // field name -> input type
         parent.find('.mep_attendee_info [data-field-name][data-d-name]').each(function () {
             var $inp  = $(this);
             var fname = $inp.data('field-name');
@@ -1498,30 +1496,44 @@ jQuery(function ($) {
             if (!fname || type === 'file') {
                 return; // file uploads are not supported in native checkout
             }
-            var val = $.trim($inp.val());
-
-            // One entry per seat, in DOM (seat) order.
-            (attendeeFieldArrays[fname] = attendeeFieldArrays[fname] || []).push(val);
-
-            // Registration-details preview shows the first attendee's values.
-            var dName = $inp.data('d-name');
-            if (detailSeen[fname] || !val || type === 'hidden' || billingDNames[dName]) {
-                return;
+            (attendeeFieldArrays[fname] = attendeeFieldArrays[fname] || []).push($.trim($inp.val()));
+            if (!fieldLabels.hasOwnProperty(fname)) {
+                fieldOrder.push(fname);
+                fieldTypes[fname]  = type;
+                fieldLabels[fname] = $.trim($inp.closest('.mp_form_item').find('label span').first().text().replace(/\*+\s*$/, ''))
+                                  || $.trim($inp.attr('placeholder') || '')
+                                  || fname;
             }
-            detailSeen[fname] = true;
-            var label = $.trim($inp.closest('.mp_form_item').find('label span').first().text().replace(/\*+\s*$/, ''))
-                     || $.trim($inp.attr('placeholder') || '')
-                     || fname;
-            detailsHtml += '<div class="mep-native-detail-row">'
-                + '<span class="mep-ndr-label">' + mepNativeEsc(label) + '</span>'
-                + '<span class="mep-ndr-value">' + mepNativeEsc(val) + '</span>'
-                + '</div>';
         });
         $modal.find('#mep-native-attendee-snapshot').val(JSON.stringify(attendeeFieldArrays));
 
+        // Build a compact, per-attendee preview of the registration details.
+        var seatCount = 0;
+        fieldOrder.forEach(function (f) { seatCount = Math.max(seatCount, attendeeFieldArrays[f].length); });
+        var detailsHtml = '';
+        for (var s = 0; s < seatCount; s++) {
+            var rows = '';
+            fieldOrder.forEach(function (fname) {
+                if (fieldTypes[fname] === 'hidden') { return; }
+                var v = attendeeFieldArrays[fname][s];
+                v = (v == null) ? '' : $.trim(v);
+                if (!v) { return; }
+                rows += '<div class="mep-native-detail-row">'
+                    + '<span class="mep-ndr-label">' + mepNativeEsc(fieldLabels[fname]) + '</span>'
+                    + '<span class="mep-ndr-value">' + mepNativeEsc(v) + '</span>'
+                    + '</div>';
+            });
+            if (rows) {
+                var heading = seatCount > 1 ? ('Attendee ' + (s + 1)) : 'Registration Details';
+                detailsHtml += '<div class="mep-native-attendee-block">'
+                    + '<div class="mep-native-detail-title">' + mepNativeEsc(heading) + '</div>'
+                    + rows + '</div>';
+            }
+        }
+
         var $details = $modal.find('#mep-native-attendee-details');
         if (detailsHtml) {
-            $details.html('<div class="mep-native-detail-title">Registration Details</div>' + detailsHtml).show();
+            $details.html(detailsHtml).show();
         } else {
             $details.empty().hide();
         }

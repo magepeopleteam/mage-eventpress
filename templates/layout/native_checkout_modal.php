@@ -317,6 +317,11 @@ $needs_login = apply_filters( 'mep_native_checkout_requires_login', false, $even
 	margin-top: 10px;
 	padding-top: 12px;
 }
+.mep-native-attendee-block + .mep-native-attendee-block {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px dashed var(--mep-line);
+}
 .mep-native-detail-title {
 	font-size: 11px;
 	font-weight: 700;

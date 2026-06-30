@@ -127,6 +127,15 @@
                 state.maxPages = Math.max(1, data.max_pages);
                 state.found = data.found;
 
+                // Trash view: reveal the Empty Trash button and keep the Trash count
+                // badge in sync with the actual number of trashed events.
+                if (state.status === 'trash') {
+                    $('#mpwem_empty_trash_btn').show();
+                    $('#mpwem_trash_count').text('(' + (data.found || 0) + ')');
+                } else {
+                    $('#mpwem_empty_trash_btn').hide();
+                }
+
                 if (append) {
                     $body.append(data.html || '');
                 } else if (!data.html || $.trim(data.html) === '') {
@@ -155,6 +164,10 @@
         let visible = $body.find('.mpwem_event_list_card').length;
         $('#visibleCount').text(visible);
         $('#totalCount').text(state.found);
+
+        // Only offer the Load More / Numbered mode switch when there is more than
+        // one page to page through; otherwise there is nothing to switch between.
+        $('#mpwem_pagination_switch').toggle(state.maxPages > 1);
 
         if (state.paginationMode === 'numbered') {
             $('#loadMoreBtn').hide();
@@ -293,8 +306,13 @@
     $(document).on('click', '.mpwem_filter_by_active_status', function () {
         $('.mpwem_filter_by_active_status').removeClass('mpwem_filter_btn_active_bg_color').addClass('mpwem_filter_btn_bg_color');
         $(this).removeClass('mpwem_filter_btn_bg_color').addClass('mpwem_filter_btn_active_bg_color');
+        // Reset the post-status chips when switching to a time-based (active/expired)
+        // filter, otherwise a previously selected post status (e.g. Private with 0
+        // events) stays applied and the active/expired view is wrongly empty.
+        $('.mpwem_filter_by_status').removeClass('mpwem_filter_btn_active_bg_color');
 
         state.activeStatus = $(this).attr('data-by-filter').toLowerCase();
+        state.status = 'all';
         reloadEvents();
     });
 
@@ -497,6 +515,76 @@
                         alert('An error occurred while trashing posts.');
                     }
                 });
+            }
+        });
+    });
+
+    /* ------------------------------------------------------------------ */
+    /* Trash management: restore / delete permanently / empty trash        */
+    /* ------------------------------------------------------------------ */
+
+    function mpwemTrashAjax(action, postId, onSuccess) {
+        var payload = { action: action, nonce: mep_ajax.nonce };
+        if (postId) { payload.post_id = postId; }
+        $.ajax({
+            url: mep_ajax.url,
+            type: 'POST',
+            data: payload,
+            success: function (res) {
+                if (res && res.success) {
+                    onSuccess();
+                } else {
+                    alert((res && res.data && res.data.message) ? res.data.message : 'Action failed. Please try again.');
+                }
+            },
+            error: function () {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    }
+
+    // Restore a single trashed event
+    $(document).on('click', '.mpwem_restore_event', function (e) {
+        e.preventDefault();
+        var postId = $(this).data('event-id');
+        var title = ($(this).closest('tr.mpwem_event_list_card').data('event-title') || '').toString().trim();
+        mpwemConfirm({
+            title: 'Restore this event?',
+            text: title ? 'Restore "' + title + '" from Trash?' : 'Restore this event from Trash?',
+            confirmText: 'Yes, restore',
+            cancelText: 'Cancel',
+            onConfirm: function () {
+                mpwemTrashAjax('mpwem_restore_event', postId, function () { reloadEvents(); });
+            }
+        });
+    });
+
+    // Permanently delete a single trashed event
+    $(document).on('click', '.mpwem_delete_permanently', function (e) {
+        e.preventDefault();
+        var postId = $(this).data('event-id');
+        var title = ($(this).closest('tr.mpwem_event_list_card').data('event-title') || '').toString().trim();
+        mpwemConfirm({
+            title: 'Delete permanently?',
+            text: (title ? '"' + title + '" ' : 'This event ') + 'will be permanently deleted. This cannot be undone.',
+            confirmText: 'Yes, delete permanently',
+            cancelText: 'Cancel',
+            onConfirm: function () {
+                mpwemTrashAjax('mpwem_delete_event_permanently', postId, function () { reloadEvents(); });
+            }
+        });
+    });
+
+    // Empty the whole Trash
+    $(document).on('click', '#mpwem_empty_trash_btn', function (e) {
+        e.preventDefault();
+        mpwemConfirm({
+            title: 'Empty Trash?',
+            text: 'All events in the Trash will be permanently deleted. This cannot be undone.',
+            confirmText: 'Yes, empty Trash',
+            cancelText: 'Cancel',
+            onConfirm: function () {
+                mpwemTrashAjax('mpwem_empty_event_trash', null, function () { reloadEvents(); });
             }
         });
     });

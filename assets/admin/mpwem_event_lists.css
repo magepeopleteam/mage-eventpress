@@ -702,6 +702,32 @@
     background-color: #c82333;
     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
 }
+.mpwem_event_list .mpwem_empty_trash_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.mpwem_event_list .mpwem_empty_trash_btn::before {
+    content: "\f182";
+    font-family: dashicons;
+    font-size: 16px;
+    line-height: 1;
+}
+.mpwem_event_list .mpwem_empty_trash_btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
 
 @media (max-width: 1024px) {
     .mpwem_event_list .analytics {

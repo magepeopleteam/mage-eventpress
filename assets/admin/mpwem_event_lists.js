@@ -293,8 +293,13 @@
     $(document).on('click', '.mpwem_filter_by_active_status', function () {
         $('.mpwem_filter_by_active_status').removeClass('mpwem_filter_btn_active_bg_color').addClass('mpwem_filter_btn_bg_color');
         $(this).removeClass('mpwem_filter_btn_bg_color').addClass('mpwem_filter_btn_active_bg_color');
+        // Reset the post-status chips when switching to a time-based (active/expired)
+        // filter, otherwise a previously selected post status (e.g. Private with 0
+        // events) stays applied and the active/expired view is wrongly empty.
+        $('.mpwem_filter_by_status').removeClass('mpwem_filter_btn_active_bg_color');
 
         state.activeStatus = $(this).attr('data-by-filter').toLowerCase();
+        state.status = 'all';
         reloadEvents();
     });
 

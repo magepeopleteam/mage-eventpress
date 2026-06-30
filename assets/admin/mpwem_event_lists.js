@@ -165,6 +165,10 @@
         $('#visibleCount').text(visible);
         $('#totalCount').text(state.found);
 
+        // Only offer the Load More / Numbered mode switch when there is more than
+        // one page to page through; otherwise there is nothing to switch between.
+        $('#mpwem_pagination_switch').toggle(state.maxPages > 1);
+
         if (state.paginationMode === 'numbered') {
             $('#loadMoreBtn').hide();
             renderNumberedPagination();

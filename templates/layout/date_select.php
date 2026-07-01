@@ -31,7 +31,11 @@
 					$date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : $date;
 
 					$date_format = MPWEM_Global_Function::check_time_exit_date( $date ) ? 'full' : 'date';
-					if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {
+					// A Single Event ('no') is never date-selectable: the booking always uses
+					// the first row's start/end date, so render a hidden input even when the
+					// event has additional dates (those still appear in the Event Schedule
+					// Details sidebar). Only Particular Events ('yes') get the date dropdown.
+					if ( $date_type == 'no' || ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) ) {
 						?>
                         <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>
 					<?php } else { ?>

@@ -119,6 +119,32 @@
 				if ( ! empty( $expire_filter ) ) {
 					$meta_query[] = $expire_filter;
 				}
+
+				if ( $event_order_by === 'meta_value' || $event_order_by === 'meta_value_num' ) {
+					// "Event Upcoming Date": order by the upcoming occurrence datetime the
+					// list actually displays (with a start-datetime fallback) rather than
+					// event_start_datetime, so recurring / everyday events aren't shown out
+					// of order relative to their upcoming date. Matches event_query().
+					$all_ids = get_posts( array(
+						'post_type'      => array( 'mep_events' ),
+						'post_status'    => array( 'publish' ),
+						'posts_per_page' => -1,
+						'fields'         => 'ids',
+						'no_found_rows'  => true,
+						'meta_query'     => $meta_query,
+					) );
+					$all_ids = self::sort_ids_by_upcoming_datetime( $all_ids, $sort );
+					$args = array(
+						'post_type'      => array( 'mep_events' ),
+						'paged'          => $paged,
+						'posts_per_page' => $show,
+						'post_status'    => array( 'publish' ),
+						'post__in'       => $all_ids,
+						'orderby'        => 'post__in',
+					);
+					return new WP_Query( $args );
+				}
+
 				$args = array(
 					'post_type'      => array( 'mep_events' ),
 					'paged'          => $paged,

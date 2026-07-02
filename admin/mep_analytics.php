@@ -270,71 +270,59 @@ function mep_analytics_collect_from_attendees( $events, $start_ts, $end_ts, $sta
 			'total_sales'  => 0,
 			'dates'        => array(),
 		);
-		$seen = array();
+
+		// Count uniformly from the attendee records that BOTH WooCommerce and native
+		// (custom-payment) checkout create, filtered by the paid ea_order_status set — so
+		// custom-payment bookings are always included. Tickets = ea_ticket_qty; sales =
+		// ea_ticket_order_amount. This matches MPWEM_Functions::registration_stats() so the
+		// Analytics figures agree with the Event Lists / Sales Report pages.
+		$paid_statuses = class_exists( 'MPWEM_Functions' ) ? MPWEM_Functions::paid_order_statuses() : $statuses;
 
 		foreach ( $attendees as $attendee ) {
-			$aid       = $attendee->ID;
-			$order_id  = get_post_meta( $aid, 'ea_order_id', true );
-			$t_type    = get_post_meta( $aid, 'ea_ticket_type', true );
-			$e_date    = get_post_meta( $aid, 'ea_event_date', true );
-			$t_price   = get_post_meta( $aid, 'ea_ticket_price', true );
-			$t_price   = is_numeric( $t_price ) ? floatval( $t_price ) : 0;
-
-			$order_date_ts = get_the_date( 'U', $attendee );
-
-			if ( ! empty( $order_id ) && MPWEM_Global_Function::has_woocommerce() ) {
-				$unique_key = $order_id . '_' . $eid . '_' . $e_date . '_' . $t_type;
-				if ( isset( $seen[ $unique_key ] ) ) {
-					continue;
-				}
-				$seen[ $unique_key ] = true;
-
-				$order = wc_get_order( $order_id );
-				if ( $order ) {
-					$order_status = $order->get_status();
-					if ( ! in_array( $order_status, $statuses, true ) ) {
-						continue;
-					}
-
-					$order_date_obj = $order->get_date_created();
-					if ( $order_date_obj ) {
-						$order_date_ts = $order_date_obj->getTimestamp();
-					}
-				} else {
-					continue;
-				}
-			} else {
-				$unique_key = 'rsvp_' . $aid;
-				if ( isset( $seen[ $unique_key ] ) ) {
-					continue;
-				}
-				$seen[ $unique_key ] = true;
+			$aid    = $attendee->ID;
+			$status = get_post_meta( $aid, 'ea_order_status', true );
+			if ( ! in_array( $status, $paid_statuses, true ) ) {
+				continue;
 			}
 
+			$order_date_ts = (int) get_the_date( 'U', $attendee );
 			if ( $order_date_ts < $start_ts || $order_date_ts > $end_ts ) {
 				continue;
 			}
 
+			$t_type = get_post_meta( $aid, 'ea_ticket_type', true );
+			$e_date = get_post_meta( $aid, 'ea_event_date', true );
+			$qty    = (float) get_post_meta( $aid, 'ea_ticket_qty', true );
+			if ( $qty <= 0 ) {
+				$qty = 1;
+			}
+			$amount = get_post_meta( $aid, 'ea_ticket_order_amount', true );
+			if ( ! is_numeric( $amount ) ) {
+				$price  = get_post_meta( $aid, 'ea_ticket_price', true );
+				$amount = ( is_numeric( $price ) ? floatval( $price ) : 0 ) * $qty;
+			}
+			$amount = floatval( $amount );
+
 			// Aggregate
-			$data['tickets_sold'] ++;
-			$data['total_sales'] += $t_price;
-			$event_data['tickets_sold'] ++;
-			$event_data['total_sales'] += $t_price;
+			$data['tickets_sold'] += $qty;
+			$data['total_sales'] += $amount;
+			$event_data['tickets_sold'] += $qty;
+			$event_data['total_sales'] += $amount;
 
 			$date_fmt = date( 'Y-m-d', $order_date_ts );
-			$data['sales_by_date'][ $date_fmt ] = ( $data['sales_by_date'][ $date_fmt ] ?? 0 ) + $t_price;
+			$data['sales_by_date'][ $date_fmt ] = ( $data['sales_by_date'][ $date_fmt ] ?? 0 ) + $amount;
 
 			$weekday = date( 'l', $order_date_ts );
-			$data['sales_by_weekday'][ $weekday ] = ( $data['sales_by_weekday'][ $weekday ] ?? 0 ) + $t_price;
+			$data['sales_by_weekday'][ $weekday ] = ( $data['sales_by_weekday'][ $weekday ] ?? 0 ) + $amount;
 
 			$type_label = $t_type ?: 'General';
-			$data['ticket_types'][ $type_label ] = ( $data['ticket_types'][ $type_label ] ?? 0 ) + 1;
+			$data['ticket_types'][ $type_label ] = ( $data['ticket_types'][ $type_label ] ?? 0 ) + $qty;
 
 			if ( ! isset( $event_data['dates'][ $e_date ] ) ) {
 				$event_data['dates'][ $e_date ] = array( 'tickets_sold' => 0, 'total_sales' => 0 );
 			}
-			$event_data['dates'][ $e_date ]['tickets_sold'] ++;
-			$event_data['dates'][ $e_date ]['total_sales'] += $t_price;
+			$event_data['dates'][ $e_date ]['tickets_sold'] += $qty;
+			$event_data['dates'][ $e_date ]['total_sales'] += $amount;
 		}
 
 		$data['tickets_by_event'][ $event_title ] = $event_data['tickets_sold'];
@@ -539,6 +527,21 @@ function mep_get_analytics_data() {
 		$raw = mep_analytics_collect_from_attendees( $events, $start_ts, $end_ts, $statuses );
 	} else {
 		$raw = mep_analytics_collect_from_orders( $events, $start_ts, $end_ts, $statuses );
+	}
+
+	// Headline summary uses the canonical, payment-source-agnostic totals (WooCommerce +
+	// native) so the Analytics cards match the Event Lists and Sales Report pages exactly.
+	// The per-event charts below remain a distribution of the currently published events.
+	// Skipped when a category filter is active, which the canonical query does not scope.
+	if ( '' === $category && class_exists( 'MPWEM_Functions' ) ) {
+		$canon                   = MPWEM_Functions::registration_stats(
+			date( 'Y-m-d H:i:s', $start_ts ),
+			date( 'Y-m-d H:i:s', $end_ts ),
+			( 'all' === $event_id ? 0 : (int) $event_id )
+		);
+		$raw['tickets_sold']     = $canon['tickets'];
+		$raw['total_sales']      = $canon['revenue'];
+		$raw['avg_ticket_price'] = $canon['tickets'] > 0 ? round( $canon['revenue'] / $canon['tickets'], 2 ) : 0;
 	}
 
 	// Sort sales by date

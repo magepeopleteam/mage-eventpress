@@ -484,19 +484,22 @@
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
-					$end_time                = is_array($event_infos) && array_key_exists( 'end_time', $event_infos ) ? $event_infos['end_time'] : '';
+					$end_date                = is_array($event_infos) && array_key_exists( 'event_end_date', $event_infos ) ? $event_infos['event_end_date'] : '';
+					$end_time                = is_array($event_infos) && array_key_exists( 'event_end_time', $event_infos ) ? $event_infos['event_end_time'] : '';
 					$event_id                = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
+					$end_date_time			 = $end_date.' '.$end_time;
+					// echo '<pre>'; print_r($event_infos); echo '</pre>';
 					?>
                     <div class="list_content upcomming_date_only_only">
                         <span class="<?php echo esc_attr( $event_date_icon ); ?>"></span><?php
 							echo esc_html( MPWEM_Global_Function::date_format( $start_time, $date_format, $event_id ) );
 							if ( $end_time && $hide_only_end_time_list == 'no' ) {
-								if ( strtotime( date( 'Y-m-d', strtotime( $upcoming_date ) ) ) == strtotime( date( 'Y-m-d', strtotime( $end_time ) ) ) ) {
+								if ( strtotime( date( 'Y-m-d', strtotime( $upcoming_date ) ) ) == strtotime( date( 'Y-m-d', strtotime( $end_date ) ) ) ) {
 									$end_date_format = 'time';
 								} else {
 									$end_date_format = MPWEM_Global_Function::check_time_exit_date( $end_time ) ? 'full' : 'date';
 								}
-								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_time, $end_date_format, $event_id ) );
+								echo ' - ' . esc_html( MPWEM_Global_Function::date_format( $end_date_time, $end_date_format, $event_id ) );
 							}
 						?>
                     </div>

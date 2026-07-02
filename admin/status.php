@@ -2,14 +2,33 @@
 	if (!defined('ABSPATH')) {
 		die;
 	} // Cannot access pages directly.
-//Add admin page to the menu
-	add_action('admin_menu', 'mep_event_status_admin_menu');
+// The Status screen now lives inside Event Settings as a "Status" tab. Register the tab
+// (it has no settings fields; its content is printed via the wsa_form_bottom hook below,
+// mirroring the License tab).
+	add_filter('mep_settings_sec_reg', 'mep_event_status_settings_section');
+	function mep_event_status_settings_section($sections) {
+		$sections[] = array(
+			'id'    => 'mep_status_setting_sec',
+			'title' => '<i class="mi mi-info"></i>' . __('Status', 'mage-eventpress'),
+		);
+		return $sections;
+	}
+	add_action('wsa_form_bottom_mep_status_setting_sec', 'mep_event_status_page');
+
+// Keep the legacy Status page registered but hidden from the admin menu. It is no longer
+// a visible submenu item (its content moved to the Event Settings → Status tab), but the
+// page must stay reachable so existing deep links keep working — e.g. the PRO PDF-support
+// "Install Now / Active Now" buttons that point to page=mep_event_status_page. Registering
+// then removing the submenu keeps it in $_registered_pages (accessible) while hiding the
+// menu link.
+	add_action('admin_menu', 'mep_event_status_admin_menu', 100);
 	function mep_event_status_admin_menu() {
-		add_submenu_page('edit.php?post_type=mep_events', __('Status', 'mage-eventpress'), '<span style="color:yellow">Status</span>', 'manage_options', 'mep_event_status_page', 'mep_event_status_page');
+		add_submenu_page('edit.php?post_type=mep_events', __('Status', 'mage-eventpress'), __('Status', 'mage-eventpress'), 'manage_options', 'mep_event_status_page', 'mep_event_status_page');
+		remove_submenu_page('edit.php?post_type=mep_events', 'mep_event_status_page');
 	}
 	function mep_event_status_page() {
 		$wp_v = get_bloginfo('version');
-		$wc_v = WC()->version;
+		$wc_v = ( function_exists('WC') && WC() ) ? WC()->version : '';
 		$wc_i = mep_woo_install_check();
 		$from_name = mep_get_option('mep_email_form_name', 'email_setting_sec', '');
 		$from_email = mep_get_option('mep_email_form_email', 'email_setting_sec', '');

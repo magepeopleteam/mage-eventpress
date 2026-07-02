@@ -13,6 +13,9 @@
 				add_action( 'admin_menu', array( $this, 'event_list_menu' ) );
 				add_action( 'admin_action_mpwem_duplicate_post', [ $this, 'mpwem_duplicate_post_function' ] );
 				add_action( 'wp_ajax_mpwem_trash_multiple_posts', [ $this, 'mpwem_trash_multiple_posts' ] );
+				add_action( 'wp_ajax_mpwem_restore_event', array( $this, 'mpwem_restore_event' ) );
+				add_action( 'wp_ajax_mpwem_delete_event_permanently', array( $this, 'mpwem_delete_event_permanently' ) );
+				add_action( 'wp_ajax_mpwem_empty_event_trash', array( $this, 'mpwem_empty_event_trash' ) );
 				add_action( 'wp_ajax_mpwem_load_event_list', array( $this, 'mpwem_load_event_list' ) );
 				add_action( 'wp_ajax_mpwem_dashboard_stats', array( $this, 'mpwem_dashboard_stats' ) );
 				add_action( 'wp_ajax_mpwem_quick_edit_event', array( $this, 'mpwem_quick_edit_event' ) );
@@ -37,7 +40,6 @@
 				$event_status_count = mpwem_active_expire_count();
 				$post_type          = 'mep_events';
 				$add_new_link       = admin_url( 'post-new.php?post_type=' . $post_type );
-				$trash_url          = admin_url( 'edit.php?post_status=trash&post_type=mep_events' );
 				// Heavy, order-scanning analytics (registrations + revenue) are loaded asynchronously
 				// via the mpwem_dashboard_stats AJAX handler so the page can paint immediately.
 				$get_all_categories         = get_all_event_taxonomy( 'mep_cat' );
@@ -110,12 +112,10 @@
                                         <span><?php esc_html_e( 'Expired', 'mage-eventpress' ); ?></span>
                                         <span class="stat-number">(<?php echo esc_html( $event_status_count['expire_count'] ); ?>)</span>
                                     </div>
-                                    <a href="<?php echo esc_url( $trash_url ); ?>">
-                                        <div class="stat-item">
-                                            <span><?php esc_html_e( 'Trash', 'mage-eventpress' ); ?></span>
-                                            <span class="stat-number">(<?php echo esc_html( $post_counts['trash'] ); ?>)</span>
-                                        </div>
-                                    </a>
+                                    <div class="stat-item mpwem_filter_by_status" data-by-filter="trash">
+                                        <span><?php esc_html_e( 'Trash', 'mage-eventpress' ); ?></span>
+                                        <span class="stat-number" id="mpwem_trash_count">(<?php echo esc_html( $post_counts['trash'] ); ?>)</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="controls">
@@ -123,6 +123,7 @@
                                     <button class="mpwem_multiple_trash_btn" id="mpwem_multiple_trash_btn">Trash</button>
                                     <input type="hidden" id='mpwem_multiple_trash_nonce' value="<?php echo esc_attr( wp_create_nonce( 'mpwem_multiple_trash_nonce' ) ); ?>">
                                 </div>
+                                <button type="button" class="mpwem_empty_trash_btn" id="mpwem_empty_trash_btn" style="display: none;"><?php esc_html_e( 'Empty Trash', 'mage-eventpress' ); ?></button>
                                 <div class="search-box">
                                     <div class="search-icon">🔍</div>
                                     <input id="mpwem_search_event_list" type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' ); ?>">
@@ -225,6 +226,72 @@
 				}
 				wp_send_json_success( [ 'message' => 'Selected posts moved to trash successfully.' ] );
 			}
+			/**
+			 * Restore a single trashed event (Trash → its previous status), like WordPress.
+			 */
+			public function mpwem_restore_event() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
+					wp_send_json_error( array( 'message' => 'Security check failed' ) );
+				}
+				if ( ! current_user_can( 'edit_posts' ) ) {
+					wp_send_json_error( array( 'message' => 'Permission denied' ) );
+				}
+				$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+				if ( ! $post_id || get_post_type( $post_id ) !== 'mep_events' ) {
+					wp_send_json_error( array( 'message' => 'Invalid event' ) );
+				}
+				if ( ! ( get_post_field( 'post_author', $post_id ) == get_current_user_id() || is_super_admin() ) ) {
+					wp_send_json_error( array( 'message' => 'Permission denied' ) );
+				}
+				wp_untrash_post( $post_id );
+				wp_send_json_success( array( 'message' => 'Event restored.' ) );
+			}
+			/**
+			 * Permanently delete a single trashed event, like WordPress.
+			 */
+			public function mpwem_delete_event_permanently() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
+					wp_send_json_error( array( 'message' => 'Security check failed' ) );
+				}
+				if ( ! current_user_can( 'delete_posts' ) ) {
+					wp_send_json_error( array( 'message' => 'Permission denied' ) );
+				}
+				$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+				if ( ! $post_id || get_post_type( $post_id ) !== 'mep_events' || get_post_status( $post_id ) !== 'trash' ) {
+					wp_send_json_error( array( 'message' => 'Invalid event' ) );
+				}
+				if ( ! ( get_post_field( 'post_author', $post_id ) == get_current_user_id() || is_super_admin() ) ) {
+					wp_send_json_error( array( 'message' => 'Permission denied' ) );
+				}
+				wp_delete_post( $post_id, true );
+				wp_send_json_success( array( 'message' => 'Event permanently deleted.' ) );
+			}
+			/**
+			 * Permanently delete every trashed event the user may delete (Empty Trash).
+			 */
+			public function mpwem_empty_event_trash() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
+					wp_send_json_error( array( 'message' => 'Security check failed' ) );
+				}
+				if ( ! current_user_can( 'delete_posts' ) ) {
+					wp_send_json_error( array( 'message' => 'Permission denied' ) );
+				}
+				$trashed = get_posts( array(
+					'post_type'      => 'mep_events',
+					'post_status'    => 'trash',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+				) );
+				$deleted = 0;
+				foreach ( $trashed as $pid ) {
+					if ( get_post_field( 'post_author', $pid ) == get_current_user_id() || is_super_admin() ) {
+						wp_delete_post( $pid, true );
+						$deleted ++;
+					}
+				}
+				wp_send_json_success( array( 'message' => 'Trash emptied.', 'deleted' => $deleted ) );
+			}
 			public function mpwem_load_event_list() {
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
 					wp_send_json_error( array( 'message' => 'Security check failed' ) );
@@ -243,8 +310,9 @@
 				$orderby       = isset( $_POST['orderby'] ) ? sanitize_text_field( wp_unslash( $_POST['orderby'] ) ) : '';
 				$order         = ( isset( $_POST['order'] ) && strtolower( $_POST['order'] ) === 'desc' ) ? 'DESC' : 'ASC';
 
-				$allowed_status = array( 'publish', 'draft', 'private' );
-				$post_status    = in_array( $status, $allowed_status, true ) ? array( $status ) : $allowed_status;
+				$allowed_status = array( 'publish', 'draft', 'private', 'trash' );
+				// "all" (or anything unrecognised) lists the live statuses but never Trash.
+				$post_status    = in_array( $status, $allowed_status, true ) ? array( $status ) : array( 'publish', 'draft', 'private' );
 
 				$args = array(
 					'post_type'      => 'mep_events',
@@ -323,23 +391,10 @@
 				if ( ! current_user_can( 'edit_posts' ) ) {
 					wp_send_json_error( array( 'message' => 'Permission denied' ) );
 				}
-				$order_status       = array( 'wc-completed', 'wc-processing' );
-				$total_registration = 0;
-				if ( MPWEM_Global_Function::has_woocommerce() ) {
-					$completed_orders   = wc_get_orders( array(
-						'status' => $order_status,
-						'limit'  => - 1,
-						'return' => 'ids',
-					) );
-					$total_registration = count( $completed_orders );
-				} else {
-					$rsvp_attendees     = get_posts( array(
-						'post_type'   => 'mep_events_attendees',
-						'numberposts' => - 1,
-						'post_status' => 'publish',
-					) );
-					$total_registration = count( $rsvp_attendees );
-				}
+				// Total registrations = paid attendees/tickets across BOTH WooCommerce and
+				// native (custom-payment) orders. Counted uniformly from the attendee records
+				// that both flows create, so custom-payment bookings are always included.
+				$total_registration = MPWEM_Functions::registration_stats()['tickets'];
 				$year       = date( 'Y' );
 				$month      = date( 'm' );
 				$prev_year  = $year;
@@ -661,47 +716,48 @@
 		if ( ! $month ) {
 			$month = date( 'm' );
 		}
-		$start_date             = "$year-$month-01 00:00:00";
-		$end_date               = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
+		$start_date = "$year-$month-01 00:00:00";
+		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
 
-		if ( ! MPWEM_Global_Function::has_woocommerce() ) {
-			$rsvp_attendees = get_posts( array(
-				'post_type'   => 'mep_events_attendees',
-				'numberposts' => -1,
-				'post_status' => 'publish',
-				'date_query'  => array(
-					array(
-						'after'     => $start_date,
-						'before'    => $end_date,
-						'inclusive' => true,
-					),
-				),
-			) );
-			return array(
-				'revenue'                 => 0,
-				'each_month_registration' => count( $rsvp_attendees ),
-			);
-		}
+		// Single source of truth: paid attendees/tickets for the month across BOTH
+		// WooCommerce and native (custom-payment) orders. See
+		// MPWEM_Functions::registration_stats().
+		$stats = MPWEM_Functions::registration_stats( $start_date, $end_date );
 
-		$order_status           = array( 'wc-completed', 'wc-processing' );
-		$orders                 = wc_get_orders( [
-			'limit'        => - 1,
-			'status'       => $order_status,
-			'date_created' => $start_date . '...' . $end_date,
-			'return'       => 'ids',
-		] );
-		$total                  = 0;
-		$each_month_order_count = count( $orders );
-		foreach ( $orders as $order_id ) {
-			$order = wc_get_order( $order_id );
-			if ( $order ) {
-				$total += $order->get_total();
-			}
-		}
 		return array(
-			'revenue'                 => $total,
-			'each_month_registration' => $each_month_order_count,
+			'revenue'                 => $stats['revenue'],
+			'each_month_registration' => $stats['tickets'],
 		);
+	}
+	/**
+	 * Sum the order totals of paid native (custom-payment) orders created within a
+	 * date range. Paid = post status "processing" or "publish" (native Completed),
+	 * mirroring WooCommerce's processing + completed revenue statuses.
+	 *
+	 * @param string $start_date 'Y-m-d H:i:s'
+	 * @param string $end_date   'Y-m-d H:i:s'
+	 * @return float
+	 */
+	function mpwem_native_orders_revenue( $start_date, $end_date ) {
+		$native_orders = get_posts( array(
+			'post_type'      => 'mep_custom_order',
+			'post_status'    => array( 'processing', 'publish' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'date_query'     => array(
+				array(
+					'after'     => $start_date,
+					'before'    => $end_date,
+					'inclusive' => true,
+				),
+			),
+		) );
+		$total = 0;
+		foreach ( $native_orders as $order_id ) {
+			$total += (float) get_post_meta( $order_id, '_mep_order_total', true );
+		}
+		return $total;
 	}
 	function get_change_in_percent( $current_month, $prev_month ) {
 		$change = $current_month - $prev_month;
@@ -940,11 +996,16 @@
                     <td>
                         <div class="actions">
 							<?php do_action( 'mep_before_dashboard_event_list', $id ); ?>
+							<?php if ( $status === 'trash' ) : ?>
+                            <a href="#" class="action-btn mpwem_restore_event" title="<?php esc_attr_e( 'Restore Event', 'mage-eventpress' ); ?>" data-event-id="<?php echo esc_attr( $id ); ?>"><span class="dashicons dashicons-image-rotate"></span></a>
+                            <a href="#" class="action-btn mpwem_delete_permanently" title="<?php esc_attr_e( 'Delete Permanently', 'mage-eventpress' ); ?>" data-event-id="<?php echo esc_attr( $id ); ?>"><span class="dashicons dashicons-trash"></span></a>
+							<?php else : ?>
                             <a href="<?php echo esc_url( $view_link ); ?>" class="action-btn view" title="View Event"><span class="mi mi-eye"></span></a>
                             <a href="#" class="action-btn quick-edit" title="Quick Edit" data-event-id="<?php echo esc_attr( $id ); ?>"><span class="mi mi-file-edit"></span></a>
                             <a href="<?php echo esc_url( $edit_link ); ?>" class="action-btn edit" title="Edit Event"><span class="mi mi-pencil"></span></a>
                             <a href="#" class="action-btn" data-mpwem_popup_attendee_statistic="mpwem_popup_attendee_statistic" data-event-id="<?php echo esc_attr( $id ); ?>" title="<?php esc_attr_e( 'Attendee Statistics', 'mage-eventpress' ); ?>"><i class="mi mi-stats"></i></a>
                             <a href="<?php echo esc_url( $delete_link ); ?>" class="action-btn delete" title="Delete Event"><span class="mi mi-trash"></span></a>
+							<?php endif; ?>
 							<?php do_action( 'mep_after_dashboard_event_list', $id ); ?>
                         </div>
                     </td>

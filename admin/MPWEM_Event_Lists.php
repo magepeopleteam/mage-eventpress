@@ -391,23 +391,10 @@
 				if ( ! current_user_can( 'edit_posts' ) ) {
 					wp_send_json_error( array( 'message' => 'Permission denied' ) );
 				}
-				$order_status       = array( 'wc-completed', 'wc-processing' );
-				$total_registration = 0;
-				if ( MPWEM_Global_Function::has_woocommerce() ) {
-					$completed_orders   = wc_get_orders( array(
-						'status' => $order_status,
-						'limit'  => - 1,
-						'return' => 'ids',
-					) );
-					$total_registration = count( $completed_orders );
-				} else {
-					$rsvp_attendees     = get_posts( array(
-						'post_type'   => 'mep_events_attendees',
-						'numberposts' => - 1,
-						'post_status' => 'publish',
-					) );
-					$total_registration = count( $rsvp_attendees );
-				}
+				// Total registrations = paid attendees/tickets across BOTH WooCommerce and
+				// native (custom-payment) orders. Counted uniformly from the attendee records
+				// that both flows create, so custom-payment bookings are always included.
+				$total_registration = MPWEM_Functions::registration_stats()['tickets'];
 				$year       = date( 'Y' );
 				$month      = date( 'm' );
 				$prev_year  = $year;
@@ -729,52 +716,17 @@
 		if ( ! $month ) {
 			$month = date( 'm' );
 		}
-		$start_date             = "$year-$month-01 00:00:00";
-		$end_date               = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
+		$start_date = "$year-$month-01 00:00:00";
+		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
 
-		// Native (custom-payment) order revenue for the month. These mep_custom_order
-		// records are independent of WooCommerce, so they must be counted whether or
-		// not WooCommerce is active. Paid statuses mirror WooCommerce's processing +
-		// completed (native "completed" is the post status "publish").
-		$native_revenue = mpwem_native_orders_revenue( $start_date, $end_date );
+		// Single source of truth: paid attendees/tickets for the month across BOTH
+		// WooCommerce and native (custom-payment) orders. See
+		// MPWEM_Functions::registration_stats().
+		$stats = MPWEM_Functions::registration_stats( $start_date, $end_date );
 
-		if ( ! MPWEM_Global_Function::has_woocommerce() ) {
-			$rsvp_attendees = get_posts( array(
-				'post_type'   => 'mep_events_attendees',
-				'numberposts' => -1,
-				'post_status' => 'publish',
-				'date_query'  => array(
-					array(
-						'after'     => $start_date,
-						'before'    => $end_date,
-						'inclusive' => true,
-					),
-				),
-			) );
-			return array(
-				'revenue'                 => $native_revenue,
-				'each_month_registration' => count( $rsvp_attendees ),
-			);
-		}
-
-		$order_status           = array( 'wc-completed', 'wc-processing' );
-		$orders                 = wc_get_orders( [
-			'limit'        => - 1,
-			'status'       => $order_status,
-			'date_created' => $start_date . '...' . $end_date,
-			'return'       => 'ids',
-		] );
-		$total                  = 0;
-		$each_month_order_count = count( $orders );
-		foreach ( $orders as $order_id ) {
-			$order = wc_get_order( $order_id );
-			if ( $order ) {
-				$total += $order->get_total();
-			}
-		}
 		return array(
-			'revenue'                 => $total + $native_revenue,
-			'each_month_registration' => $each_month_order_count,
+			'revenue'                 => $stats['revenue'],
+			'each_month_registration' => $stats['tickets'],
 		);
 	}
 	/**

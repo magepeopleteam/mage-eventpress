@@ -73,6 +73,37 @@ if ( ! class_exists( 'MPWEM_Native_Checkout' ) ) {
 				wp_send_json_error( array( 'message' => __( 'Please select at least one ticket.', 'mage-eventpress' ) ) );
 			}
 
+			// 4b. Re-derive every ticket price from the event's stored configuration.
+			//
+			// SECURITY: never trust the client-supplied ticket_price. This handler is reachable
+			// unauthenticated (wp_ajax_nopriv_mep_native_checkout) and the total drives the
+			// booking status — a forged ticket_price:0 would zero the total and be treated as a
+			// free, "completed" booking, granting a paid ticket for free. We therefore validate
+			// each ticket name against the event's configured ticket types and overwrite the
+			// price with the authoritative server-side value, mirroring the WooCommerce cart
+			// path (which already looks the price up by name). The client price is ignored.
+			$configured_types = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_ticket_type', array() );
+			$valid_names      = array();
+			if ( is_array( $configured_types ) ) {
+				foreach ( $configured_types as $configured_type ) {
+					$configured_name = is_array( $configured_type ) && isset( $configured_type['option_name_t'] ) ? $configured_type['option_name_t'] : '';
+					$valid_names[]   = html_entity_decode( urldecode( $configured_name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				}
+			}
+			foreach ( $tickets as $ticket_index => $ticket ) {
+				$qty = isset( $ticket['ticket_qty'] ) ? absint( $ticket['ticket_qty'] ) : 0;
+				if ( $qty <= 0 ) {
+					continue;
+				}
+				$name         = isset( $ticket['ticket_name'] ) ? sanitize_text_field( $ticket['ticket_name'] ) : '';
+				$name_decoded = html_entity_decode( urldecode( $name ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+				if ( '' === $name || ! in_array( $name_decoded, $valid_names, true ) ) {
+					wp_send_json_error( array( 'message' => __( 'Invalid ticket selected.', 'mage-eventpress' ) ) );
+				}
+				// Authoritative price from the event configuration; the client value is discarded.
+				$tickets[ $ticket_index ]['ticket_price'] = (float) MPWEM_Functions::get_ticket_price_by_name( $name, $event_id, $configured_types );
+			}
+
 			// 5. Capacity check
 			$availability_error = $this->check_availability( $event_id, $tickets, $event_date );
 			if ( $availability_error ) {

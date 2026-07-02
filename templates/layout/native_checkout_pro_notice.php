@@ -20,7 +20,8 @@ $event_id  = $event_id ?? 0;
 $is_admin_user = current_user_can( 'manage_options' );
 ?>
 <?php if ( $is_admin_user ) {
-	$upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', $event_id );
+	$upgrade_url  = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', $event_id );
+	$settings_url = admin_url( 'edit.php?post_type=mep_events&page=mep_event_settings_page#payment_setting_sec' );
 	?>
 	<div class="mep-native-pro-notice">
 		<span class="mep-native-pro-notice-icon fas fa-lock" aria-hidden="true"></span>
@@ -30,12 +31,20 @@ $is_admin_user = current_user_can( 'manage_options' );
 			<span class="mep-native-pro-notice-text">
 				<?php esc_html_e( 'Online registration with custom payment (PayPal, Stripe, Offline) — without WooCommerce — is available in the PRO version.', 'mage-eventpress' ); ?>
 			</span>
+			<span class="mep-native-pro-notice-text">
+				<?php esc_html_e( 'Or enable ticket sales for free: switch the payment method to WooCommerce. In Payment Settings turn on “Enable WooCommerce Payment” (the WooCommerce plugin is free), and customers can register and pay for this event right away.', 'mage-eventpress' ); ?>
+			</span>
 			<span class="mep-native-pro-notice-hint">
 				<?php esc_html_e( 'Only you (site administrators) can see this message.', 'mage-eventpress' ); ?>
 			</span>
-			<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-native-pro-notice-btn">
-				<?php esc_html_e( 'Upgrade to PRO', 'mage-eventpress' ); ?>
-			</a>
+			<div class="mep-native-pro-notice-actions">
+				<a href="<?php echo esc_url( $settings_url ); ?>" class="mep-native-pro-notice-btn mep-native-pro-notice-btn-alt">
+					<?php esc_html_e( 'Use WooCommerce (Free)', 'mage-eventpress' ); ?>
+				</a>
+				<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-native-pro-notice-btn">
+					<?php esc_html_e( 'Upgrade to PRO', 'mage-eventpress' ); ?>
+				</a>
+			</div>
 		</div>
 	</div>
 <?php } else { ?>
@@ -129,5 +138,24 @@ $is_admin_user = current_user_can( 'manage_options' );
 	.mep-native-pro-notice-btn:hover {
 		filter: brightness(1.08);
 		color: #fff !important;
+	}
+	.mep-native-pro-notice-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 10px;
+	}
+	.mep-native-pro-notice-actions .mep-native-pro-notice-btn {
+		margin-top: 0;
+	}
+	.mep-native-pro-notice-btn-alt {
+		background: #fff !important;
+		color: #4f46e5 !important;
+		border: 1px solid #c7d2fe;
+	}
+	.mep-native-pro-notice-btn-alt:hover {
+		background: #eef2ff !important;
+		color: #4338ca !important;
+		filter: none;
 	}
 </style>

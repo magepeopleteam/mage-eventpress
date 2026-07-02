@@ -222,6 +222,87 @@
 				}
 				return $price;
 			}
+			/**
+			 * Paid attendee order statuses (normalised, no "wc-" prefix).
+			 *
+			 * Both WooCommerce and native (custom-payment) checkout write these to each
+			 * attendee's `ea_order_status`, so filtering on them is payment-source agnostic.
+			 * Mirrors the configured "Seat Reserved Order Status" plus partially-paid.
+			 *
+			 * @return string[]
+			 */
+			public static function paid_order_statuses(): array {
+				$set = mep_get_option( 'seat_reserved_order_status', 'general_setting_sec', array( 'processing', 'completed' ) );
+				$set = is_array( $set ) && ! empty( $set ) ? array_values( $set ) : array( 'processing', 'completed' );
+				$set = array_map( static function ( $s ) {
+					return strpos( (string) $s, 'wc-' ) === 0 ? substr( $s, 3 ) : $s;
+				}, $set );
+				$set[] = 'partially-paid';
+				$set[] = 'completed'; // native "completed" bookings.
+				return array_values( array_unique( array_filter( $set ) ) );
+			}
+			/**
+			 * Canonical registration + revenue totals, counted uniformly from the
+			 * mep_events_attendees records that BOTH WooCommerce and native checkout create.
+			 *
+			 * This is the single source of truth for the "Total Registrations" / "Revenue"
+			 * figures shown on the Event Lists, Analytics and Sales Report screens, so every
+			 * page reports the same numbers and always includes custom-payment orders.
+			 *
+			 *  - tickets  = SUM(ea_ticket_qty)          (a booking of 3 tickets counts as 3)
+			 *  - revenue  = SUM(ea_ticket_order_amount) (price x qty per line)
+			 *  - lines    = number of attendee/booking rows
+			 *
+			 * @param string $start_date 'Y-m-d H:i:s' or '' for no lower bound.
+			 * @param string $end_date   'Y-m-d H:i:s' or '' for no upper bound.
+			 * @param int    $event_id   Limit to one event (ea_event_id), 0 = all events.
+			 * @return array{tickets:int,revenue:float,lines:int}
+			 */
+			public static function registration_stats( $start_date = '', $end_date = '', $event_id = 0 ) {
+				global $wpdb;
+				$statuses     = self::paid_order_statuses();
+				$status_place = implode( ',', array_fill( 0, count( $statuses ), '%s' ) );
+
+				$joins  = '';
+				$where  = array( "p.post_type = 'mep_events_attendees'", "p.post_status = 'publish'" );
+				$params = array();
+
+				$joins   .= " INNER JOIN {$wpdb->postmeta} st ON st.post_id = p.ID AND st.meta_key = 'ea_order_status' ";
+				$where[]  = "st.meta_value IN ($status_place)";
+				$params   = array_merge( $params, $statuses );
+
+				if ( $event_id ) {
+					$joins   .= " INNER JOIN {$wpdb->postmeta} ev ON ev.post_id = p.ID AND ev.meta_key = 'ea_event_id' ";
+					$where[]  = 'ev.meta_value = %d';
+					$params[] = $event_id;
+				}
+				if ( $start_date ) {
+					$where[]  = 'p.post_date >= %s';
+					$params[] = $start_date;
+				}
+				if ( $end_date ) {
+					$where[]  = 'p.post_date <= %s';
+					$params[] = $end_date;
+				}
+
+				$sql = "SELECT
+						COALESCE( SUM( CAST( qty.meta_value AS DECIMAL(20,2) ) ), 0 ) AS tickets,
+						COALESCE( SUM( CAST( amt.meta_value AS DECIMAL(20,2) ) ), 0 ) AS revenue,
+						COUNT( DISTINCT p.ID ) AS line_count
+					FROM {$wpdb->posts} p
+					{$joins}
+					LEFT JOIN {$wpdb->postmeta} qty ON qty.post_id = p.ID AND qty.meta_key = 'ea_ticket_qty'
+					LEFT JOIN {$wpdb->postmeta} amt ON amt.post_id = p.ID AND amt.meta_key = 'ea_ticket_order_amount'
+					WHERE " . implode( ' AND ', $where );
+
+				$row = $wpdb->get_row( $wpdb->prepare( $sql, $params ) );
+
+				return array(
+					'tickets' => $row ? (int) $row->tickets : 0,
+					'revenue' => $row ? (float) $row->revenue : 0.0,
+					'lines'   => $row ? (int) $row->line_count : 0,
+				);
+			}
 			//==========================//
 			public static function get_upcoming_date_time( $event_id, $all_dates = [], $all_times = [] ) {
 				$up_coming_date='';

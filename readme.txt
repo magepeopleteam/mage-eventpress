@@ -71,6 +71,24 @@ When you need to create something highly effective but have limited time availab
 
 ✔ **Theme Compatibility:** Compatible with any standards-compliant WordPress theme. No design or layout conflicts.
 
+✔ **Event Analytics Dashboard:** Track performance with interactive charts — sales over time, tickets sold by event, ticket-type distribution, sales by day of week, and occupancy rates — with date-range filtering and one-click CSV export.
+
+✔ **Modern Event Lists Dashboard:** Manage every event from a fast admin screen with live search, status filtering (published, draft, private), trash / restore / empty-trash, per-event attendee statistics, and at-a-glance Total Registrations and Revenue This Month figures.
+
+✔ **Step-by-Step Event Editor:** A modern, guided event-creation wizard that organizes tickets, dates, pricing, and details into clear steps with inline validation.
+
+✔ **Frontend Event Calendar:** Show your events in an interactive month/week calendar so visitors can browse and book by date.
+
+✔ **Multiple Event Types – Online, Offline & Hybrid:** Create in-person, virtual, or hybrid events, each with the right venue or joining details.
+
+✔ **RSVP Events:** Turn any event into a free RSVP instead of paid ticketing — let attendees confirm their attendance without payment, capture their details, and review all responses from the dashboard.
+
+✔ **Multiple Event List Layouts:** Display events as grid, list, minimal, timeline, native, or title-only styles, with optional pagination and carousel.
+
+✔ **Template Override Support:** Copy and customize event templates in your theme so plugin updates never overwrite your design changes.
+
+✔ **REST API Support:** Enable REST API access to your event data from the Event Settings page for headless or third-party integrations.
+
 
 
 

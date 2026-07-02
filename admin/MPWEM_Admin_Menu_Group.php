@@ -205,9 +205,8 @@
 		'landing_slug' => 'mep_event_settings_page',
 		'capability'   => 'manage_options',
 		'children'     => array(
-			'mep_event_settings_page', // Event Settings
+			'mep_event_settings_page', // Event Settings (now also hosts the Status tab)
 			'mep_calendar_settings',   // Calendar Settings
-			'mep_event_status_page',   // Status
 			'mpwem_quick_setup',       // Quick Setup
 			'mep_template_override',    // Template Override
 		),

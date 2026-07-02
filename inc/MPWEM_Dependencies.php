@@ -38,11 +38,13 @@
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
 				}
-				// Load the native checkout handler whenever the WooCommerce payment flow is
-				// not in use — i.e. WooCommerce is inactive, OR it is active but the global
-				// "Enable WooCommerce Payment" setting has been disabled.
+				// Custom (native) payment checkout is a PRO feature: the request handler ships
+				// with the PRO plugin (MEP_Pro_Native_Checkout). The free plugin no longer
+				// processes native checkout — when WooCommerce payment is not in use and PRO is
+				// absent, the frontend shows a "Custom Payment is a PRO feature" upsell instead.
+				// The booking-confirmation (thank-you) view is still loaded so PRO's completed
+				// bookings can render their confirmation.
 				if ( ! MPWEM_Global_Function::use_wc_payment() ) {
-					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Native_Checkout.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Booking_Confirmation.php';
 				}
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';

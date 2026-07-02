@@ -33,29 +33,40 @@
         <button type="submit" class="_button_theme">
 			<?php esc_html_e( 'Book Now ', 'mage-eventpress' ); ?>
         </button>
-	<?php } else { ?>
+	<?php } else {
+        // Use the WooCommerce checkout flow only when WooCommerce is active AND the
+        // global "Enable WooCommerce Payment" setting is on. Otherwise the booking uses
+        // the custom (native) payment checkout, which is a PRO feature — its request
+        // handler ships with the PRO plugin. We detect it by whether that handler is
+        // registered, so the free plugin never renders a non-functional checkout.
+        $use_wc_payment    = MPWEM_Global_Function::use_wc_payment();
+        $native_available  = has_action( 'wp_ajax_nopriv_mep_native_checkout' ) || has_action( 'wp_ajax_mep_native_checkout' );
+
+        if ( $use_wc_payment || $native_available ) {
+        ?>
         <button type="button" class="_button_theme mpwem_book_now">
             <i class='fa fa-shopping-cart _mr_xs'></i>
 			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
         </button>
         <?php
-        // Use the WooCommerce checkout flow only when WooCommerce is active AND the
-        // global "Enable WooCommerce Payment" setting is on. When it is disabled the
-        // booking falls back to the native checkout (custom payment) flow.
-        $use_wc_payment = MPWEM_Global_Function::use_wc_payment();
-
-        if ( $use_wc_payment ) {
-        ?>
-        <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
-			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
-        </button>
-        <?php } else {
-            // Native checkout mode — include the modal and a trigger button
-            require MPWEM_Functions::template_path( 'layout/native_checkout_modal.php' );
+            if ( $use_wc_payment ) {
             ?>
-        <button type="button" class="dNone mpwem_native_checkout_trigger">
-			<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
-        </button>
-        <?php } ?>
+            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $link_wc_product ); ?>" class="dNone mpwem_add_to_cart">
+				<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
+            </button>
+            <?php } else {
+                // Native (custom payment) mode with the PRO handler present — include the
+                // modal and a trigger button.
+                require MPWEM_Functions::template_path( 'layout/native_checkout_modal.php' );
+                ?>
+            <button type="button" class="dNone mpwem_native_checkout_trigger">
+				<?php esc_html_e( 'Register For This Event', 'mage-eventpress' ); ?>
+            </button>
+            <?php }
+        } else {
+            // Custom payment checkout is a PRO feature and PRO is not active — show an
+            // upsell notice instead of a booking button that could not be processed.
+            require MPWEM_Functions::template_path( 'layout/native_checkout_pro_notice.php' );
+        } ?>
 	<?php } ?>
 </div>

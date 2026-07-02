@@ -719,14 +719,34 @@
 		$start_date = "$year-$month-01 00:00:00";
 		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
 
-		// Single source of truth: paid attendees/tickets for the month across BOTH
-		// WooCommerce and native (custom-payment) orders. See
-		// MPWEM_Functions::registration_stats().
-		$stats = MPWEM_Functions::registration_stats( $start_date, $end_date );
+		// Native (custom-payment) order revenue for the month. These mep_custom_order
+		// records are independent of WooCommerce, so they must be counted whether or
+		// not WooCommerce is active. Paid statuses mirror WooCommerce's processing +
+		// completed (native "completed" is the post status "publish").
+		$native_revenue = mpwem_native_orders_revenue( $start_date, $end_date );
+
+		if ( ! MPWEM_Global_Function::has_woocommerce() ) {
+			$rsvp_attendees = get_posts( array(
+				'post_type'   => 'mep_events_attendees',
+				'numberposts' => -1,
+				'post_status' => 'publish',
+				'date_query'  => array(
+					array(
+						'after'     => $start_date,
+						'before'    => $end_date,
+						'inclusive' => true,
+					),
+				),
+			) );
+			return array(
+				'revenue'                 => $native_revenue,
+				'each_month_registration' => count( $rsvp_attendees ),
+			);
+		}
 
 		return array(
-			'revenue'                 => $stats['revenue'],
-			'each_month_registration' => $stats['tickets'],
+			'revenue'                 => $total + $native_revenue,
+			'each_month_registration' => $each_month_order_count,
 		);
 	}
 	/**

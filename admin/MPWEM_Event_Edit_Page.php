@@ -597,22 +597,30 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 		private function render_social_share_links_field(int $post_id): void
 		{
-			$share_links = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_social_share', [] );
-			$share_links = is_array( $share_links ) ? $share_links : [];
-			$networks    = [
+			$share_links  = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_social_share', [] );
+			$share_links  = is_array( $share_links ) ? $share_links : [];
+			$networks     = [
 				'facebook' => __( 'Facebook', 'mage-eventpress' ),
 				'twitter'  => __( 'Twitter', 'mage-eventpress' ),
 				'linkedin' => __( 'LinkedIn', 'mage-eventpress' ),
 				'whatsapp' => __( 'WhatsApp', 'mage-eventpress' ),
 				'email'    => __( 'Email', 'mage-eventpress' ),
 			];
+			$placeholders = [
+				'facebook' => 'https://www.facebook.com/sharer.php?u={url}',
+				'twitter'  => 'https://twitter.com/share?url={url}&text={title}',
+				'linkedin' => 'https://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&summary={excerpt}&source=web',
+				'whatsapp' => 'https://api.whatsapp.com/send?text={title} {url}',
+				'email'    => 'mailto:?subject=I wanted you to see this site&body={title} {url}',
+			];
 			?>
 			<div class="mpwem-event-setting-card__social">
 				<h3><?php esc_html_e( 'Social Share Links', 'mage-eventpress' ); ?></h3>
-				<p class="description"><?php esc_html_e( 'Leave empty to use the global/default share URL. Use {url}, {title} and {excerpt} placeholders.', 'mage-eventpress' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Leave empty to use the global/default share URL. Use {url}, {title} and {excerpt} placeholders. Each field shows the default pattern as a placeholder.', 'mage-eventpress' ); ?></p>
 				<div class="mpwem-event-setting-card__grid">
 					<?php foreach ( $networks as $key => $label ) :
-						$value = isset( $share_links[ $key ]['url'] ) ? $share_links[ $key ]['url'] : '';
+						$value       = isset( $share_links[ $key ]['url'] ) ? $share_links[ $key ]['url'] : '';
+						$placeholder = isset( $placeholders[ $key ] ) ? $placeholders[ $key ] : '';
 						?>
 						<div class="mpwem-event-setting-card__item">
 							<label class="mpwem-field" for="mep_event_social_share_<?php echo esc_attr( $key ); ?>">
@@ -623,7 +631,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 									type="text"
 									name="mep_event_social_share[<?php echo esc_attr( $key ); ?>][url]"
 									value="<?php echo esc_attr( $value ); ?>"
-									placeholder="<?php echo esc_attr( sprintf( __( 'Custom %s share URL', 'mage-eventpress' ), $label ) ); ?>" />
+									placeholder="<?php echo esc_attr( $placeholder ); ?>" />
 							</label>
 						</div>
 					<?php endforeach; ?>

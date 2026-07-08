@@ -121,25 +121,33 @@
 			}
 
 			public function social_share_links( $event_id ) {
-				$share_links = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_social_share', [] );
-				$share_links = is_array( $share_links ) ? $share_links : [];
-				$networks    = array(
+				$share_links  = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_social_share', [] );
+				$share_links  = is_array( $share_links ) ? $share_links : [];
+				$networks     = array(
 					'facebook'  => __( 'Facebook', 'mage-eventpress' ),
 					'twitter'   => __( 'Twitter', 'mage-eventpress' ),
 					'linkedin'  => __( 'LinkedIn', 'mage-eventpress' ),
 					'whatsapp'  => __( 'WhatsApp', 'mage-eventpress' ),
 					'email'     => __( 'Email', 'mage-eventpress' ),
 				);
+				$placeholders = array(
+					'facebook' => 'https://www.facebook.com/sharer.php?u={url}',
+					'twitter'  => 'https://twitter.com/share?url={url}&text={title}',
+					'linkedin' => 'https://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&summary={excerpt}&source=web',
+					'whatsapp' => 'https://api.whatsapp.com/send?text={title} {url}',
+					'email'    => 'mailto:?subject=I wanted you to see this site&body={title} {url}',
+				);
 				?>
                 <div class="_padding_bt">
                     <h5><?php esc_html_e( 'Social Share Links', 'mage-eventpress' ); ?></h5>
-                    <span class="label-text"><?php esc_html_e( 'Leave a field empty to use the global/default share URL for that network. Use {url}, {title} and {excerpt} placeholders.', 'mage-eventpress' ); ?></span>
+                    <span class="label-text"><?php esc_html_e( 'Leave a field empty to use the global/default share URL for that network. Use {url}, {title} and {excerpt} placeholders. Each field shows the default pattern as a placeholder.', 'mage-eventpress' ); ?></span>
 					<?php foreach ( $networks as $key => $label ) :
-						$value = isset( $share_links[ $key ]['url'] ) ? $share_links[ $key ]['url'] : '';
+						$value       = isset( $share_links[ $key ]['url'] ) ? $share_links[ $key ]['url'] : '';
+						$placeholder = isset( $placeholders[ $key ] ) ? $placeholders[ $key ] : '';
 						?>
                         <label class="_justify_between_align_center_wrap _padding_bt">
                             <span class="_mr"><?php echo esc_html( sprintf( __( '%s Share URL', 'mage-eventpress' ), $label ) ); ?></span>
-                            <input class="formControl" type="text" name="mep_event_social_share[<?php echo esc_attr( $key ); ?>][url]" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( sprintf( __( 'Custom %s share URL', 'mage-eventpress' ), $label ) ); ?>"/>
+                            <input class="formControl" type="text" name="mep_event_social_share[<?php echo esc_attr( $key ); ?>][url]" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"/>
                         </label>
 					<?php endforeach; ?>
                 </div>

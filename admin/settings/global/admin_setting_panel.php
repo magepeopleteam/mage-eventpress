@@ -2234,6 +2234,41 @@ tr.payment_tabs_html { display: none !important; }
 								'type'    => 'iconlib',
 								'default' => 'mi mi-envelope',
 							),
+							array(
+								'name'    => 'mep_event_ss_fb_url',
+								'label'   => __( 'Facebook Share URL', 'mage-eventpress' ),
+								'desc'    => __( 'Custom Facebook share URL. Use {url}, {title} and {excerpt} placeholders. Leave empty to use the default.', 'mage-eventpress' ),
+								'type'    => 'text',
+								'default' => '',
+							),
+							array(
+								'name'    => 'mep_event_ss_twitter_url',
+								'label'   => __( 'Twitter Share URL', 'mage-eventpress' ),
+								'desc'    => __( 'Custom Twitter share URL. Use {url}, {title} and {excerpt} placeholders. Leave empty to use the default.', 'mage-eventpress' ),
+								'type'    => 'text',
+								'default' => '',
+							),
+							array(
+								'name'    => 'mep_event_ss_linkedin_url',
+								'label'   => __( 'LinkedIn Share URL', 'mage-eventpress' ),
+								'desc'    => __( 'Custom LinkedIn share URL. Use {url}, {title} and {excerpt} placeholders. Leave empty to use the default.', 'mage-eventpress' ),
+								'type'    => 'text',
+								'default' => '',
+							),
+							array(
+								'name'    => 'mep_event_ss_whatsapp_url',
+								'label'   => __( 'WhatsApp Share URL', 'mage-eventpress' ),
+								'desc'    => __( 'Custom WhatsApp share URL. Use {url}, {title} and {excerpt} placeholders. Leave empty to use the default.', 'mage-eventpress' ),
+								'type'    => 'text',
+								'default' => '',
+							),
+							array(
+								'name'    => 'mep_event_ss_email_url',
+								'label'   => __( 'Email Share URL', 'mage-eventpress' ),
+								'desc'    => __( 'Custom email share URL (mailto:). Use {url}, {title} and {excerpt} placeholders. Leave empty to use the default.', 'mage-eventpress' ),
+								'type'    => 'text',
+								'default' => '',
+							),
 						)
 					),
 					'carousel_setting_sec'     => apply_filters( 'mep_settings_carousel_arr', array(

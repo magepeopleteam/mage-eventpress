@@ -29,6 +29,7 @@
 							$this->display_available_seat( $event_id );
 							$this->reset_booking();
 							$this->event_member( $event_id );
+							$this->social_share_links( $event_id );
 						?>
                     </div>
 					<?php do_action( 'mp_event_switching_button_hook', $event_id ); ?>
@@ -115,6 +116,32 @@
                         </select>
                     </label>
                     <span class="label-text"><?php esc_html_e( 'You can select event ticket role by going to the settings', 'mage-eventpress' ); ?></span>
+                </div>
+				<?php
+			}
+
+			public function social_share_links( $event_id ) {
+				$share_links = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_social_share', [] );
+				$share_links = is_array( $share_links ) ? $share_links : [];
+				$networks    = array(
+					'facebook'  => __( 'Facebook', 'mage-eventpress' ),
+					'twitter'   => __( 'Twitter', 'mage-eventpress' ),
+					'linkedin'  => __( 'LinkedIn', 'mage-eventpress' ),
+					'whatsapp'  => __( 'WhatsApp', 'mage-eventpress' ),
+					'email'     => __( 'Email', 'mage-eventpress' ),
+				);
+				?>
+                <div class="_padding_bt">
+                    <h5><?php esc_html_e( 'Social Share Links', 'mage-eventpress' ); ?></h5>
+                    <span class="label-text"><?php esc_html_e( 'Leave a field empty to use the global/default share URL for that network. Use {url}, {title} and {excerpt} placeholders.', 'mage-eventpress' ); ?></span>
+					<?php foreach ( $networks as $key => $label ) :
+						$value = isset( $share_links[ $key ]['url'] ) ? $share_links[ $key ]['url'] : '';
+						?>
+                        <label class="_justify_between_align_center_wrap _padding_bt">
+                            <span class="_mr"><?php echo esc_html( sprintf( __( '%s Share URL', 'mage-eventpress' ), $label ) ); ?></span>
+                            <input class="formControl" type="text" name="mep_event_social_share[<?php echo esc_attr( $key ); ?>][url]" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( sprintf( __( 'Custom %s share URL', 'mage-eventpress' ), $label ) ); ?>"/>
+                        </label>
+					<?php endforeach; ?>
                 </div>
 				<?php
 			}

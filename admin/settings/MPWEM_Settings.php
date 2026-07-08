@@ -149,6 +149,20 @@
 					update_post_meta( $post_id, 'mep_rsvp_email_label', $mep_rsvp_email_label );
 					update_post_meta( $post_id, 'mep_rsvp_phone_label', $mep_rsvp_phone_label );
 					update_post_meta( $post_id, 'mep_rsvp_qty_label', $mep_rsvp_qty_label );
+					// Save per-event social share link overrides
+					$mep_event_social_share = isset( $_POST['mep_event_social_share'] ) && is_array( $_POST['mep_event_social_share'] ) ? $_POST['mep_event_social_share'] : [];
+					$social_share_links     = [];
+					$networks               = [ 'facebook', 'twitter', 'linkedin', 'whatsapp', 'email' ];
+					foreach ( $mep_event_social_share as $network => $values ) {
+						$network = sanitize_key( $network );
+						if ( ! in_array( $network, $networks, true ) ) {
+							continue;
+						}
+						$social_share_links[ $network ] = [
+							'url' => isset( $values['url'] ) ? sanitize_text_field( wp_unslash( $values['url'] ) ) : '',
+						];
+					}
+					update_post_meta( $post_id, 'mep_event_social_share', $social_share_links );
 					/********************************/
 					$new_ticket_type      = array();
 					$names                = isset( $_POST['option_name_t'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['option_name_t'] ) ) : [];

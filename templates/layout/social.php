@@ -21,18 +21,77 @@
 		$find    = [ '&', '#038;' ];
 		$replace = [ 'and', '' ];
 		$t_title= html_entity_decode( str_replace( $find, $replace, $tile ) );
+
+		/**
+		 * Filter the list of social share links shown on the single event page.
+		 *
+		 * @param array  $links    Social link definitions.
+		 * @param int    $event_id Current event ID.
+		 * @param string $url      Event permalink.
+		 * @param string $t_title  Event title (decoded).
+		 */
+		$links = apply_filters( 'mep_social_share_links', [
+			'facebook' => [
+				'class'   => 'facebook',
+				'href'    => 'http://www.facebook.com/sharer.php?u=' . esc_url( $url ),
+				'onclick' => "window.open('https://www.facebook.com/sharer.php?u=" . esc_url( $url ) . "','Facebook','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;",
+				'title'   => __( 'Share on Facebook', 'mage-eventpress' ),
+				'icon'    => esc_attr( $fb_icon ),
+			],
+			'twitter' => [
+				'class'   => 'twitter',
+				'href'    => 'http://twitter.com/share?url=' . esc_url( $url ) . '&amp;text=' . esc_html( $t_title ),
+				'onclick' => "window.open('https://twitter.com/share?url=" . esc_url( $url ) . "&amp;text=" . esc_html( $t_title ) . "','Twitter share','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;",
+				'title'   => __( 'Tweet it', 'mage-eventpress' ),
+				'icon'    => esc_attr( $twitter_icon ),
+			],
+			'linkedin' => [
+				'class'   => 'linkedin',
+				'href'    => 'https://www.linkedin.com/shareArticle?mini=true&url=' . esc_url( $url ) . '&title=' . esc_html( $tile ) . ' &summary=' . esc_html( get_the_excerpt( $event_id ) ) . '&source=web',
+				'target'  => '_blank',
+				'title'   => __( 'Share on LinkedIn', 'mage-eventpress' ),
+				'icon'    => esc_attr( $linkedin_icon ),
+			],
+			'whatsapp' => [
+				'class'   => 'whatsapp',
+				'href'    => 'https://api.whatsapp.com/send?text=' . esc_html( $tile ) . ' ' . esc_url( $url ),
+				'target'  => '_blank',
+				'title'   => __( 'Share on WhatsApp', 'mage-eventpress' ),
+				'icon'    => esc_attr( $whatsapp_icon ),
+			],
+			'email' => [
+				'class'   => 'email',
+				'href'    => 'mailto:?subject=' . __( 'I wanted you to see this site', 'mage-eventpress' ) . '&amp;body=' . esc_html( $tile ) . ' ' . esc_url( $url ),
+				'title'   => __( 'Share by Email', 'mage-eventpress' ),
+				'icon'    => esc_attr( $email_icon ),
+			],
+		], $event_id, $url, $t_title );
 		?>
         <div class="share_widgets">
             <h5 class="share_widgets_title"><?php esc_html_e( 'Share This Event', 'mage-eventpress' ); ?></h5>
             <ul class="share_widgets_list">
 				<?php do_action( 'mep_before_social_share_list', $event_id ); ?>
-                <li><a class="facebook" onclick="window.open('https://www.facebook.com/sharer.php?u=<?php echo esc_url($url);?>','Facebook','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;" href="http://www.facebook.com/sharer.php?u=<?php echo esc_url($url); ?>" data-original-title="Share on Facebook"><i class="<?php echo esc_attr( $fb_icon ); ?>"></i></a></li>
-                <li><a class="twitter" onclick="window.open('https://twitter.com/share?url=<?php echo esc_url($url); ?>&amp;text=<?php echo esc_html($t_title) ; ?>','Twitter share','width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;" href="http://twitter.com/share?url=<?php echo esc_url($url); ?>&amp;text=<?php echo esc_html($t_title) ; ?>" data-original-title="Twittet it"><i class="<?php echo esc_attr( $twitter_icon ); ?>"></i></a></li>
-                <li><a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo esc_url($url);?>&title=<?php echo esc_html($tile)  . ' '; ?>&summary=<?php echo esc_html( get_the_excerpt( $event_id ) ); ?>&source=web" target="_blank"> <i class="<?php echo esc_attr( $linkedin_icon ); ?>"></i></a></li>
-                <li><a class="whatsapp" href="https://api.whatsapp.com/send?text=<?php echo esc_html($tile)  . ' '; ?><?php echo esc_url($url); ?>" target="_blank"> <i class="<?php echo esc_attr( $whatsapp_icon ); ?>"></i> </a></li>
-                <li><a class="email" href="mailto:?subject=I wanted you to see this site&amp;body=<?php echo esc_html($tile) . ' '; ?><?php echo esc_url($url); ?>" title="Share by Email"> <i class="<?php echo esc_attr( $email_icon ); ?>"></i> </a></li>
+				<?php foreach ( $links as $key => $link ) :
+					$link = wp_parse_args( $link, [
+						'class'   => $key,
+						'href'    => '#',
+						'onclick' => '',
+						'target'  => '',
+						'title'   => '',
+						'icon'    => '',
+					] );
+				?>
+				<li>
+					<a class="<?php echo esc_attr( $link['class'] ); ?>"
+					   <?php if ( $link['onclick'] ) : ?>onclick="<?php echo esc_attr( $link['onclick'] ); ?>"<?php endif; ?>
+					   href="<?php echo esc_url( $link['href'] ); ?>"
+					   <?php if ( $link['target'] ) : ?>target="<?php echo esc_attr( $link['target'] ); ?>"<?php endif; ?>
+					   data-original-title="<?php echo esc_attr( $link['title'] ); ?>">
+						<i class="<?php echo esc_attr( $link['icon'] ); ?>"></i>
+					</a>
+				</li>
+				<?php endforeach; ?>
             </ul>
         </div>
 		<?php
 	}
-

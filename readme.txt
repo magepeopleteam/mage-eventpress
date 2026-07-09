@@ -28,8 +28,8 @@ Accelerate your physical or virtual event management and offer attendees a smoot
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 ###  Explore The Demo:
 🌐 [Live Demo](https://wpevently.com/)
-📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
-❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
+📘 [Online Documentation](https://docs.mage-people.com/docs/plugins/wpevently/overview)
+❄️ [Available Shortcode List](https://docs.mage-people.com/docs/plugins/wpevently/shortcodes)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
 ### 🎯 Experience Smooth Event Management
@@ -197,7 +197,7 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 [event-list pagination='yes']
 `
-More ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
+More ❄️ [Available Shortcode List](https://docs.mage-people.com/docs/plugins/wpevently/shortcodes)
 
 
 ### Note:
@@ -236,7 +236,7 @@ You can check the demo of this plugin from here:
 [View Live PRO Version Demo For Business](https://wpevently.com/)
 
 = Q. Any Documentation? =
-A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
+A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/docs/plugins/wpevently/overview).
  
 = Q. Does the calendar feature use a bundled third-party library? =
 A. Yes. The frontend calendar bundles FullCalendar Standard Bundle v6.1.17.

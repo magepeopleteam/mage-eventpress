@@ -142,7 +142,8 @@
 				
 				// If dates is empty, get the upcoming date
 				if ( empty( $dates ) ) {
-					$dates = MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates, $all_times );
+					$date_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+					$dates     = $date_type == 'no' ? get_post_meta( $post_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $post_id, $all_dates, $all_times );
 				}
 				
 				// Process for everyday events with time slots

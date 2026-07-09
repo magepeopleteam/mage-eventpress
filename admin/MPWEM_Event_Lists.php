@@ -502,10 +502,10 @@
 					wp_die();
 				}
 				$all_dates = MPWEM_Functions::get_all_dates( $post_id );
-				$date      = MPWEM_Functions::get_upcoming_date_time( $post_id );
+				$date_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
+				$date      = $date_type == 'no' ? get_post_meta( $post_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $post_id );
 				$date      = $dates ?: $date;
 				if ( ! $date && is_array( $all_dates ) && sizeof( $all_dates ) > 0 ) {
-					$date_type = MPWEM_Global_Function::get_post_info( $post_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
 						$date = date( 'Y-m-d', strtotime( end( $all_dates )['time'] ) );
 					} else {

@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
 Requires at least: 5.3
-Stable tag: trunk
+Stable tag: 5.3.6
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7

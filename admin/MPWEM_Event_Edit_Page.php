@@ -1236,7 +1236,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
 		?>
-			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>">
+			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
@@ -1412,6 +1412,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="post_ID" id="post_ID" value="<?php echo esc_attr($post_id); ?>" />
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
+								<input type="hidden" name="mpwem_quiet_save" id="mpwem_quiet_save" value="" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 								<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
@@ -1953,6 +1954,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$thumb_id     = isset($_POST['_thumbnail_id']) ? absint($_POST['_thumbnail_id']) : 0;
 			$post_status_action = isset($_POST['mpwem_post_status_action']) ? sanitize_key(wp_unslash($_POST['mpwem_post_status_action'])) : '';
 			$active_step = isset($_POST['mpwem_active_step']) ? sanitize_key(wp_unslash($_POST['mpwem_active_step'])) : 'basic';
+			// Step-scoped mini-saves (ticket/extra-service/date modal "Save Changes")
+			// resubmit the whole form too, but shouldn't pop the success notice —
+			// only an explicit Publish/Update/Save as Draft should.
+			$quiet_save = isset($_POST['mpwem_quiet_save']) && '1' === $_POST['mpwem_quiet_save'];
 
 			if ($post_status_action === 'trash') {
 				if (! current_user_can('delete_post', $post_id)) {
@@ -2234,12 +2239,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
-			$redirect = add_query_arg(
-				[
-					$notice_key => 1,
-				],
-				$this->edit_url($post_id, $active_step ?: 'basic')
-			);
+			$redirect = $this->edit_url($post_id, $active_step ?: 'basic');
+			if (! $quiet_save) {
+				$redirect = add_query_arg([$notice_key => 1], $redirect);
+			}
 			wp_safe_redirect($redirect);
 			exit;
 		}

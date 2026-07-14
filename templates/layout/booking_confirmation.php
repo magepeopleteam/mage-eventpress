@@ -81,6 +81,10 @@ $form_array = MPWEM_Layout::get_form_array( $event_id );
 		<?php endif; ?>
 	</div>
 
+	<?php if ( class_exists( 'MPWEM_Social_Card' ) && $booking_id ) : ?>
+		<?php MPWEM_Social_Card::render_for_native( $event_id, $booking_id, $booking_status ); ?>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $attendees ) ) :
 		$order_total = 0.0;
 		?>

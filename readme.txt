@@ -1,8 +1,8 @@
-=== Event Booking Manager for WooCommerce  ===
+=== Event Booking Manager for WooCommerce - Registration, RSVP, Calendar & Tickets ===
 Contributors: magepeopleteam, aamahin
 Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
 Requires at least: 5.3
-Stable tag: trunk
+Stable tag: 5.3.6
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -88,8 +88,6 @@ When you need to create something highly effective but have limited time availab
 ✔ **Template Override Support:** Copy and customize event templates in your theme so plugin updates never overwrite your design changes.
 
 ✔ **REST API Support:** Enable REST API access to your event data from the Event Settings page for headless or third-party integrations.
-
-
 
 
 ### 🚀 Create Some Great Event Features With the Event Manager Pro Version
@@ -284,6 +282,17 @@ vulnerabilities.
 
 
 == Changelog ==
+
+= 5.3.6 =
+* Security Patch update
+* RSVP Events
+* Multiple Event Types – Online, Offline & Hybrid
+* Frontend Event Calendar
+* Step-by-Step Event Editor
+* Modern Event Lists Dashboard
+* Event Analytics Dashboard
+* Code Optimization
+  08 July 2026*
 
 = 5.3.4 =
 * Security Patch update

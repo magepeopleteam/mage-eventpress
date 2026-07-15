@@ -37,7 +37,6 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_RSVP_Responses.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_CPT.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/status.php';
-				require_once MPWEM_PLUGIN_DIR . '/admin/settings/MPWEM_Social_Card_Settings.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Welcome.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Quick_Setup.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/mep_analytics.php';

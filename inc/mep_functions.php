@@ -5646,7 +5646,7 @@ function mep_change_date_status() {
                     $sold    = MPWEM_Functions::get_total_sold( $event_id, $date )
                     ?>
                     <tr>
-                        <th><?php esc_html_e( '🌐 Global Quantity (All Ticket Types)', 'mage-eventpress-gq' ); ?></th>
+                        <th><?php esc_html_e( '🌐 Global Quantity (All Ticket Types)', 'mage-eventpress' ); ?></th>
                         <th><?php echo esc_html( $total ); ?></th>
                         <th><?php echo esc_html( $reserve ); ?></th>
                         <th><?php echo esc_html( $sold ); ?></th>

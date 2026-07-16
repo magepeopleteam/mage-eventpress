@@ -313,6 +313,11 @@
 				$allowed_status = array( 'publish', 'draft', 'private', 'trash' );
 				// "all" (or anything unrecognised) lists the live statuses but never Trash.
 				$post_status    = in_array( $status, $allowed_status, true ) ? array( $status ) : array( 'publish', 'draft', 'private' );
+				// "Active"/"Expired" are a breakdown of published events only — drafts
+				// and private events must not show up under either filter.
+				if ( $active_status === 'active' || $active_status === 'expired' ) {
+					$post_status = array( 'publish' );
+				}
 
 				$args = array(
 					'post_type'      => 'mep_events',
@@ -615,9 +620,12 @@
 	}
 	function mpwem_active_expire_count() {
 		$now    = current_time( 'mysql' );
+		// "Active"/"Expired" are a breakdown of published events only — drafts
+		// and private events have their own separate stat chips and must not
+		// be counted here regardless of their end date.
 		$base   = array(
 			'post_type'      => 'mep_events',
-			'post_status'    => array( 'publish', 'draft', 'private' ),
+			'post_status'    => 'publish',
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
 			'no_found_rows'  => false,

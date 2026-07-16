@@ -705,6 +705,12 @@
 				}
 				$address_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_org_address' );
 				$address      = [];
+				$location     = '';
+				$street       = '';
+				$city         = '';
+				$state        = '';
+				$zip          = '';
+				$country      = '';
 				if ( $address_type ) {
 					$org_arr  = get_the_terms( $event_id, 'mep_org' );
 					if ( is_array( $org_arr ) && ! empty( $org_arr ) ) {

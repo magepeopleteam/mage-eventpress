@@ -168,6 +168,61 @@
         $toast.data('mpwemToastTimer', timer);
     }
 
+    /* Success modal shown right after an event is published/updated/saved,
+       offering a "Preview" button that opens the front-end page in a new tab. */
+    function showSaveSuccessModal(title, message, previewUrl) {
+        let $modal = $('#mpwem_save_success_modal');
+        if (!$modal.length) {
+            $modal = $(
+                '<div class="mpwem-ticket-modal mpwem-success-modal" id="mpwem_save_success_modal" aria-hidden="true">' +
+                    '<div class="mpwem-ticket-modal__backdrop" data-mpwem-success-modal-close></div>' +
+                    '<div class="mpwem-success-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="mpwem_save_success_modal_title">' +
+                        '<button type="button" class="mpwem-success-modal__close" data-mpwem-success-modal-close aria-label="Close">' +
+                            '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>' +
+                        '</button>' +
+                        '<div class="mpwem-success-modal__icon"><span class="dashicons dashicons-yes-alt" aria-hidden="true"></span></div>' +
+                        '<h2 class="mpwem-success-modal__title" id="mpwem_save_success_modal_title"></h2>' +
+                        '<p class="mpwem-success-modal__message"></p>' +
+                        '<div class="mpwem-success-modal__actions">' +
+                            '<a href="#" target="_blank" rel="noopener noreferrer" class="button button-primary mpwem-success-modal__preview">' +
+                                '<span class="dashicons dashicons-external" aria-hidden="true"></span> Preview' +
+                            '</a>' +
+                            '<button type="button" class="button mpwem-success-modal__dismiss" data-mpwem-success-modal-close>Close</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+            );
+            $('body').append($modal);
+
+            $modal.on('click', '[data-mpwem-success-modal-close]', function(e) {
+                e.preventDefault();
+                $modal.attr('aria-hidden', 'true').removeClass('is-open');
+            });
+            $modal.on('click', '.mpwem-success-modal__preview', function() {
+                window.setTimeout(function() {
+                    $modal.attr('aria-hidden', 'true').removeClass('is-open');
+                }, 150);
+            });
+            $(document).on('keydown.mpwemSuccessModal', function(e) {
+                if (e.key === 'Escape' && $modal.hasClass('is-open')) {
+                    $modal.attr('aria-hidden', 'true').removeClass('is-open');
+                }
+            });
+        }
+
+        $modal.find('.mpwem-success-modal__title').text(title);
+        $modal.find('.mpwem-success-modal__message').text(message);
+
+        const $preview = $modal.find('.mpwem-success-modal__preview');
+        if (previewUrl) {
+            $preview.attr('href', previewUrl).show();
+        } else {
+            $preview.hide();
+        }
+
+        $modal.attr('aria-hidden', 'false').addClass('is-open');
+    }
+
     /* Briefly pulse an element (e.g. a button) to draw attention to it. */
     function flashAttention($el) {
         if (!$el || !$el.length) {
@@ -2642,6 +2697,34 @@
                 syncSimpleToggle(false, false);
             }
 
+            if (section.className === 'mpwem-display-section--settings') {
+                // "Member Only Event" reveals the "Allowed User Roles" checklist. The
+                // roles panel is server-rendered with/without .mActive based on the
+                // saved value (mpwem_event_edit.css hides it unless .mActive is set),
+                // but nothing wired the live checkbox to that class before — so toggling
+                // it in the browser (without saving + reloading) had no visible effect.
+                const $memberToggle = $mount.find('input[name="mep_member_only_event"]').first();
+                const $rolesPanel = $mount.find('[data-collapse="#mep_member_only_event"]').first();
+
+                if ($memberToggle.length && $rolesPanel.length) {
+                    const syncMemberRoles = function(useAnimation) {
+                        const isChecked = $memberToggle.is(':checked');
+                        $rolesPanel.toggleClass('mActive', isChecked);
+                        if (useAnimation) {
+                            $rolesPanel.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](220);
+                        } else {
+                            $rolesPanel.toggle(isChecked);
+                        }
+                    };
+
+                    $memberToggle.off('change.mpwemMemberRoles').on('change.mpwemMemberRoles', function() {
+                        syncMemberRoles(true);
+                    });
+
+                    syncMemberRoles(false);
+                }
+            }
+
             if (section.className === 'mpwem-display-section--faq') {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 const $sourceRow = $mount.find('> .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bt').first();
@@ -2665,7 +2748,8 @@
 
                     const syncFaqToggle = function(useAnimation) {
                         const isChecked = $checkbox.is(':checked');
-                        $checkbox.val(isChecked ? 'on' : 'off');
+                        const toggleValues = ($checkbox.attr('data-toggle-values') || 'on,off').split(',');
+                        $checkbox.val(isChecked ? toggleValues[0] : toggleValues[1]);
                         $mount.toggleClass('is-collapsed', !isChecked);
                         $mount.toggleClass('is-expanded', isChecked);
 
@@ -2769,7 +2853,8 @@
 
                     const syncTermsToggle = function(useAnimation) {
                         const isChecked = $checkbox.is(':checked');
-                        $checkbox.val(isChecked ? 'on' : 'off');
+                        const toggleValues = ($checkbox.attr('data-toggle-values') || 'on,off').split(',');
+                        $checkbox.val(isChecked ? toggleValues[0] : toggleValues[1]);
                         $mount.toggleClass('is-collapsed', !isChecked);
                         $mount.toggleClass('is-expanded', isChecked);
 
@@ -2813,7 +2898,8 @@
 
                     const syncTimelineToggle = function(useAnimation) {
                         const isChecked = $checkbox.is(':checked');
-                        $checkbox.val(isChecked ? 'on' : 'off');
+                        const toggleValues = ($checkbox.attr('data-toggle-values') || 'on,off').split(',');
+                        $checkbox.val(isChecked ? toggleValues[0] : toggleValues[1]);
                         $mount.toggleClass('is-collapsed', !isChecked);
                         $mount.toggleClass('is-expanded', isChecked);
 
@@ -2867,7 +2953,8 @@
 
                     const syncRelatedToggle = function(useAnimation) {
                         const isChecked = $checkbox.is(':checked');
-                        $checkbox.val(isChecked ? 'on' : 'off');
+                        const toggleValues = ($checkbox.attr('data-toggle-values') || 'on,off').split(',');
+                        $checkbox.val(isChecked ? toggleValues[0] : toggleValues[1]);
                         $mount.toggleClass('is-collapsed', !isChecked);
                         $mount.toggleClass('is-expanded', isChecked);
 
@@ -5751,6 +5838,9 @@
 
         $form.find('#mpwem_post_status_action').val(action || '');
         $form.find('#mpwem_active_step').val($root.find('.mpwem-step.is-active').data('step-key') || STEP_KEY_FALLBACK);
+        // Step-scoped mini-saves (ticket/extra-service/date modal) shouldn't pop
+        // the success notice — only an explicit Publish/Update/Save as Draft should.
+        $form.find('#mpwem_quiet_save').val(options.skipOtherSteps ? '1' : '');
         $form.trigger('submit');
     }
 
@@ -5912,6 +6002,46 @@
             window.setTimeout(function() {
                 showNotice($root, message, 'error');
                 showToast(message, 'error');
+            }, 400);
+        })();
+
+        // Show a success popup with a "Preview" button right after a
+        // publish/update/save redirect (see $notice_key in handle_save()).
+        (function() {
+            let params;
+            try {
+                params = new URLSearchParams(window.location.search);
+            } catch (e) {
+                return;
+            }
+
+            const successMessages = {
+                published: ['Event published', 'Your event is live. Attendees can now view and register for it.'],
+                drafted: ['Event switched to draft', 'Your event is saved as a draft and is not visible to the public yet.'],
+                saved: ['Event saved', 'Your changes have been saved successfully.']
+            };
+
+            let noticeKey = '';
+            for (const key in successMessages) {
+                if (params.get(key) === '1') {
+                    noticeKey = key;
+                    break;
+                }
+            }
+            if (!noticeKey) return;
+
+            // Strip the notice param so refreshing the page doesn't re-show the popup.
+            params.delete(noticeKey);
+            const cleanedSearch = params.toString();
+            const cleanedUrl = window.location.pathname + (cleanedSearch ? '?' + cleanedSearch : '') + window.location.hash;
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState(null, '', cleanedUrl);
+            }
+
+            const previewUrl = ($root.data('frontend-url') || '').toString();
+            const [title, message] = successMessages[noticeKey];
+            window.setTimeout(function() {
+                showSaveSuccessModal(title, message, previewUrl);
             }, 400);
         })();
 

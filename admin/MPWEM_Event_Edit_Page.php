@@ -589,6 +589,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'member_only'
 				);
 				$this->render_setting_roles_field($member_roles, $is_member_only);
+				// Classic-editor-only toggles ("Show Attendee list?" and "Enable Attendee
+				// information edit?"), provided by the Form Builder PRO addon via this
+				// hook (no-op when the addon isn't active — same as the classic tab's own
+				// do_action() call). Reusing the existing hook keeps a single source of
+				// truth for the markup and each addon's own save handler (which reads its
+				// own presence-marker field), rather than duplicating the toggles here.
+				// Each listener renders its own <section>, called as a direct grid child
+				// (not wrapped in one shared div) so mpwem_event_edit.css can style every
+				// <section> as its own separate card, same as the other settings items.
+				do_action('mp_event_switching_button_hook', $post_id);
 				?>
 			</div>
 			<?php

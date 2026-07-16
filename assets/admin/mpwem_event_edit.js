@@ -2697,6 +2697,34 @@
                 syncSimpleToggle(false, false);
             }
 
+            if (section.className === 'mpwem-display-section--settings') {
+                // "Member Only Event" reveals the "Allowed User Roles" checklist. The
+                // roles panel is server-rendered with/without .mActive based on the
+                // saved value (mpwem_event_edit.css hides it unless .mActive is set),
+                // but nothing wired the live checkbox to that class before — so toggling
+                // it in the browser (without saving + reloading) had no visible effect.
+                const $memberToggle = $mount.find('input[name="mep_member_only_event"]').first();
+                const $rolesPanel = $mount.find('[data-collapse="#mep_member_only_event"]').first();
+
+                if ($memberToggle.length && $rolesPanel.length) {
+                    const syncMemberRoles = function(useAnimation) {
+                        const isChecked = $memberToggle.is(':checked');
+                        $rolesPanel.toggleClass('mActive', isChecked);
+                        if (useAnimation) {
+                            $rolesPanel.stop(true, true)[isChecked ? 'slideDown' : 'slideUp'](220);
+                        } else {
+                            $rolesPanel.toggle(isChecked);
+                        }
+                    };
+
+                    $memberToggle.off('change.mpwemMemberRoles').on('change.mpwemMemberRoles', function() {
+                        syncMemberRoles(true);
+                    });
+
+                    syncMemberRoles(false);
+                }
+            }
+
             if (section.className === 'mpwem-display-section--faq') {
                 const $head = $mount.children('.mpwem-display-section__head').first();
                 const $sourceRow = $mount.find('> .mp_tab_item > ._layout_default_xs_mp_zero > ._padding_bt').first();

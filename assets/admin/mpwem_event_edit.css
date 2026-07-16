@@ -1348,12 +1348,13 @@ input#mpwem_location_venue {
 
 .mpwem-event-setting-card__grid {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 16px;
     align-items: stretch;
 }
 
 .mpwem-event-setting-card__item {
+    min-width: 0;
     padding: 16px;
     border: 1px solid #eef2f7;
     border-radius: 14px;
@@ -1363,6 +1364,57 @@ input#mpwem_location_venue {
 
 .mpwem-event-setting-card__item--roles {
     margin-top: 14px;
+    display: none;
+}
+
+.mpwem-event-setting-card__item--roles.mActive {
+    display: block;
+}
+
+/* "Show Attendee list?" and "Enable Attendee information edit?" — rendered
+   by the Form Builder PRO addon via the mp_event_switching_button_hook
+   action as plain <section> elements, one per listener. Styled here as
+   their own grid cards (matching .mpwem-event-setting-card__item) instead
+   of one shared block, so each toggle gets its own separate section like
+   Display End Datetime / Show Available Seat / Member Only Event. */
+.mpwem-event-setting-card__grid > section {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #eef2f7;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fcfdfd 0%, #f8fafc 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.mpwem-event-setting-card__grid > section .mpev-label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.mpwem-event-setting-card__grid > section .mpev-label > div:first-child {
+    min-width: 0;
+}
+
+.mpwem-event-setting-card__grid > section .mpev-label .mpev-switch {
+    flex: 0 0 auto;
+}
+
+.mpwem-event-setting-card__grid > section .mpev-label h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #20344d;
+    overflow-wrap: break-word;
+}
+
+/* The addon repeats the same string as both the heading and this line —
+   hidden here so the card reads like its siblings (title + toggle) instead
+   of showing the same text twice. */
+.mpwem-event-setting-card__grid > section .mpev-label .label-text {
+    display: none;
 }
 
 .mpwem-event-setting-card__item-head {

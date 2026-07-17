@@ -453,7 +453,7 @@
 						foreach ( $mep_faq_title as $key => $title ) {
 							if ( $title ) {
 								$faqs[ $key ]['mep_faq_title']   = $title;
-								$faqs[ $key ]['mep_faq_content'] = $mep_faq_content[ $key ];
+								$faqs[ $key ]['mep_faq_content'] = mep_prevent_serialized_html_input( $mep_faq_content[ $key ] );
 							}
 						}
 					}
@@ -473,7 +473,7 @@
 							if ( $title ) {
 								$faqs[ $key ]['mep_day_title']   = $title;
 								$faqs[ $key ]['mep_day_time']    = $mep_day_time[ $key ];
-								$faqs[ $key ]['mep_day_content'] = $mep_faq_content[ $key ];
+								$faqs[ $key ]['mep_day_content'] = mep_prevent_serialized_html_input( $mep_faq_content[ $key ] );
 							}
 						}
 					}

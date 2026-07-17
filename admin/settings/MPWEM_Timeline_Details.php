@@ -270,7 +270,7 @@
 				$key     = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
 				$time    = isset( $_POST['time'] ) ? sanitize_text_field( wp_unslash( $_POST['time'] ) ) : '';
-				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+				$content = isset( $_POST['content'] ) ? mep_prevent_serialized_html_input( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
 					$time_line_infos = get_post_meta($post_id,'mep_event_day',true);
 					if ( ! is_array( $time_line_infos ) ) {

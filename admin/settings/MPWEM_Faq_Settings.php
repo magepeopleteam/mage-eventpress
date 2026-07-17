@@ -278,7 +278,7 @@
 				$key     = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
 				$title   = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
 				$des     = isset( $_POST['des'] ) ? sanitize_text_field( wp_unslash( $_POST['des'] ) ) : '';
-				$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+				$content = isset( $_POST['content'] ) ? mep_prevent_serialized_html_input( wp_unslash( $_POST['content'] ) ) : '';
 				if ( $post_id ) {
 					$faq_infos = get_post_meta($post_id,'mep_event_faq',true);
 					// Ensure $faq_infos is an array to prevent sizeof() error

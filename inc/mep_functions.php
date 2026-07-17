@@ -18,6 +18,24 @@ if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
 	}
 }
 
+if ( ! function_exists( 'mep_prevent_serialized_html_input' ) ) {
+	/**
+	 * Same serialized-payload guard as mep_prevent_serialized_input(), but for
+	 * rich-text fields (event timeline / FAQ content) that are allowed to keep
+	 * safe HTML, so it sanitizes with wp_kses_post() instead of sanitize_text_field().
+	 */
+	function mep_prevent_serialized_html_input( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		// Block any serialized data (prevents PHP object injection)
+		if ( is_serialized( $value ) || preg_match( '/(^|;)O:\d+:"/m', $value ) ) {
+			return '';
+		}
+		return wp_kses_post( $value );
+	}
+}
+
 if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
 		if ( $post->post_type === 'mep_events' ) {

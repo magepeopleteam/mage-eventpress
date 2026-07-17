@@ -43,7 +43,12 @@
 					'edit.php?post_type=' . $cpt,
 					__( 'Attendee List', 'mage-eventpress' ),
 					__( 'Attendee List', 'mage-eventpress' ),
-					MPWEM_Global_Function::get_admin_capability(),
+					// Deliberately not get_admin_capability(): that falls back to the bare
+					// 'edit_posts' cap (Contributor-level) when WooCommerce is inactive, and
+					// this page lists every attendee's name/email/phone across every event
+					// site-wide with no per-event ownership check. manage_options matches the
+					// sibling Event Orders page added alongside this one.
+					'manage_options',
 					'attendee_list',
 					array( $this, 'render_page' )
 				);
@@ -382,7 +387,8 @@
 				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_admin_nonce' ) ) {
 					wp_send_json_error( 'Invalid nonce!' );
 				}
-				if ( ! current_user_can( MPWEM_Global_Function::get_admin_capability() ) ) {
+				// See passenger_menu() for why this is manage_options and not get_admin_capability().
+				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( 'Permission denied' );
 				}
 				$args = array(

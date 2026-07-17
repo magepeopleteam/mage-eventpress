@@ -609,7 +609,7 @@ class MEP_Custom_Orders_Page {
 		) );
 
 		foreach ( $orders as $o ) {
-			fputcsv( $out, array(
+			fputcsv( $out, array_map( array( __CLASS__, 'csv_safe_cell' ), array(
 				'#' . $o['ID'],
 				$o['source'] === 'shop_order' ? 'WooCommerce' : 'Native',
 				$o['order_status'],
@@ -620,11 +620,26 @@ class MEP_Custom_Orders_Page {
 				$o['total_raw'],
 				$o['gateway'],
 				$o['date'],
-			) );
+			) ) );
 		}
 
 		fclose( $out );
 		exit;
+	}
+
+	/**
+	 * Neutralise CSV/formula injection (CWE-1236): customer_name/phone/email come
+	 * from the unauthenticated native checkout billing form, so a cell starting
+	 * with =, +, -, @, tab or CR could be interpreted as a formula by Excel/Sheets
+	 * when an admin opens the export. Prefixing with a single quote forces those
+	 * spreadsheet apps to treat the cell as plain text.
+	 */
+	private static function csv_safe_cell( $value ) {
+		$value = (string) $value;
+		if ( isset( $value[0] ) && in_array( $value[0], array( '=', '+', '-', '@', "\t", "\r" ), true ) ) {
+			return "'" . $value;
+		}
+		return $value;
 	}
 
 	/* -----------------------------------------------------------------------

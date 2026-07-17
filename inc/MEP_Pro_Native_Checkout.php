@@ -145,6 +145,12 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 			// Store the WP user ID of the booker so user info can always be fetched fresh.
 			update_post_meta( $order_id, '_mep_user_id', get_current_user_id() );
 
+			// Random per-order secret required (alongside the order ID) to view the booking
+			// confirmation page — prevents enumerating mep_booking_id to read other
+			// customers' name/email/phone/order details (the confirmation page is public
+			// and otherwise has no ownership check).
+			update_post_meta( $order_id, '_mep_booking_token', wp_generate_password( 32, false ) );
+
 			update_post_meta( $order_id, '_mep_event_id',       $event_id );
 			update_post_meta( $order_id, '_mep_order_total',    $total );
 			update_post_meta( $order_id, '_mep_customer_name',  $billing_name );
@@ -458,8 +464,9 @@ if ( ! class_exists( 'MEP_Pro_Native_Checkout' ) ) {
 
 			return add_query_arg(
 				array(
-					'mep_booking'    => ( $order_status === 'completed' ) ? 'success' : 'pending',
-					'mep_booking_id' => $order_id,
+					'mep_booking'       => ( $order_status === 'completed' ) ? 'success' : 'pending',
+					'mep_booking_id'    => $order_id,
+					'mep_booking_token' => get_post_meta( $order_id, '_mep_booking_token', true ),
 				),
 				$base
 			);

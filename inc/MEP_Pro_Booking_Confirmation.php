@@ -21,12 +21,17 @@ if ( ! class_exists( 'MEP_Pro_Booking_Confirmation' ) ) {
 		}
 
 		public static function render( $atts ) {
-			$order_id = isset( $_GET['mep_booking_id'] ) ? absint( $_GET['mep_booking_id'] ) : 0;
-			$status   = isset( $_GET['mep_booking'] )    ? sanitize_key( $_GET['mep_booking'] ) : '';
+			$order_id = isset( $_GET['mep_booking_id'] )    ? absint( $_GET['mep_booking_id'] )                                : 0;
+			$status   = isset( $_GET['mep_booking'] )       ? sanitize_key( $_GET['mep_booking'] )                             : '';
+			$token    = isset( $_GET['mep_booking_token'] ) ? sanitize_text_field( wp_unslash( $_GET['mep_booking_token'] ) ) : '';
 
 			ob_start();
 
-			if ( ! $order_id || get_post_type( $order_id ) !== 'mep_custom_order' ) {
+			// The token ties this request to the person who placed the order — without
+			// it, mep_booking_id is a public sequential ID and anyone could page through
+			// every order to read other customers' name/email/phone/order details.
+			$stored_token = $order_id ? get_post_meta( $order_id, '_mep_booking_token', true ) : '';
+			if ( ! $order_id || get_post_type( $order_id ) !== 'mep_custom_order' || ! $stored_token || ! hash_equals( $stored_token, $token ) ) {
 				echo '<p class="mep-bc-notice mep-bc-error">' . esc_html__( 'No booking found.', 'mage-eventpress' ) . '</p>';
 				return ob_get_clean();
 			}

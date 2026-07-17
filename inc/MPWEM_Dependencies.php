@@ -38,14 +38,26 @@
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Woocommerce.php';
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_My_Account_Dashboard.php';
 				}
-				// Custom (native) payment checkout is a PRO feature: the request handler ships
-				// with the PRO plugin (MEP_Pro_Native_Checkout). The free plugin no longer
-				// processes native checkout — when WooCommerce payment is not in use and PRO is
-				// absent, the frontend shows a "Custom Payment is a PRO feature" upsell instead.
-				// The booking-confirmation (thank-you) view is still loaded so PRO's completed
-				// bookings can render their confirmation.
+				// The custom order CPT and the "Event Orders" admin list/detail page are
+				// always loaded — the list merges native orders with WooCommerce orders
+				// regardless of which checkout flow is currently active, so it stays
+				// available even while WooCommerce payment is in use.
+				require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Order_CPT.php';
+				MEP_Order_CPT::init();
+				require_once MPWEM_PLUGIN_DIR . '/admin/MEP_Custom_Orders_Page.php';
+				MEP_Custom_Orders_Page::init();
+
+				// Custom (native/offline) payment checkout — active whenever WooCommerce
+				// payment is not in use (WooCommerce entirely absent, or active with its
+				// payment flow turned off). Offline/pay-at-door works standalone here; PRO
+				// only adds PayPal/Stripe on top via MEP_Payment_Gateway_Manager, which
+				// MEP_Pro_Native_Checkout calls through a class_exists() guard.
 				if ( ! MPWEM_Global_Function::use_wc_payment() ) {
 					require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Booking_Confirmation.php';
+					require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Pro_Native_Checkout.php';
+					new MEP_Pro_Native_Checkout();
+					require_once MPWEM_PLUGIN_DIR . '/inc/MEP_Pro_Booking_Confirmation.php';
+					MEP_Pro_Booking_Confirmation::init();
 				}
 				require_once MPWEM_PLUGIN_DIR . '/inc/mep-google-maps-fix.php';
 				require_once MPWEM_PLUGIN_DIR . '/inc/MPWEM_Query.php';

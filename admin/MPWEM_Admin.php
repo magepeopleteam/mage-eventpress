@@ -34,6 +34,7 @@
 				//************************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Hidden_Product.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Event_Lists.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_Attendee_List.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_RSVP_Responses.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/MPWEM_CPT.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/status.php';

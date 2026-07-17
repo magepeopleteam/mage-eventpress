@@ -14,6 +14,11 @@
 	 * passenger_menu() below) the moment PRO is active, so upgrading is seamless
 	 * and there is nothing in this file a developer could re-enable to unlock
 	 * PRO behaviour without PRO actually being installed.
+	 *
+	 * The page shares its visual design and pagination component with the
+	 * Event Orders page (assets/admin/mep-orders-page.css/.mep-orders-*,
+	 * .mep-filter-*, .mep-page-btn* classes) so both admin screens look and
+	 * behave the same.
 	 */
 	if ( ! defined( 'ABSPATH' ) ) {
 		die;
@@ -21,9 +26,11 @@
 	if ( ! class_exists( 'MPWEM_Attendee_List_Free' ) ) {
 		class MPWEM_Attendee_List_Free {
 			const PRO_PLUGIN = 'mage-eventpress-pro/woocommerce-event-manager-pro.php';
+			const PER_PAGE   = 20;
 
 			public function __construct() {
 				add_action( 'admin_menu', array( $this, 'passenger_menu' ) );
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 				add_action( 'wp_ajax_mep_free_attendee_list_filter', array( $this, 'ajax_filter' ) );
 			}
 
@@ -42,16 +49,31 @@
 				);
 			}
 
+			public function enqueue_assets( $hook ) {
+				if ( strpos( $hook, 'attendee_list' ) === false ) {
+					return;
+				}
+				// Reuse the Event Orders page's stylesheet so both admin screens
+				// share an identical design system (header, filter panel, table,
+				// pagination) instead of a second, drifting copy of the same CSS.
+				wp_enqueue_style(
+					'mep-orders-page',
+					MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.css',
+					array(),
+					'1.3.6'
+				);
+			}
+
 			private function normalize_args( $args = array() ) {
 				$args     = is_array( $args ) ? $args : array();
 				$page     = isset( $args['page'] ) ? absint( $args['page'] ) : 1;
 				$post_id  = isset( $args['post_id'] ) ? absint( $args['post_id'] ) : 0;
-				$per_page = isset( $args['post_per_page'] ) ? absint( $args['post_per_page'] ) : 20;
+				$per_page = isset( $args['post_per_page'] ) ? absint( $args['post_per_page'] ) : self::PER_PAGE;
 
 				return array(
 					'page'          => max( 1, $page ),
 					'post_id'       => $post_id,
-					'post_per_page' => $per_page > 0 ? $per_page : 20,
+					'post_per_page' => $per_page > 0 ? $per_page : self::PER_PAGE,
 				);
 			}
 
@@ -59,45 +81,71 @@
 				$label = MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' );
 				?>
 				<div class="wrap">
-					<div class="mpwem_style mep-free-attlist">
-						<h1 class="mep-free-attlist-title"><?php esc_html_e( 'Attendee List', 'mage-eventpress' ); ?></h1>
-						<div class="mep-free-attlist-filter">
-							<div class="mep-free-attlist-filter-field">
-								<label for="mep_free_attlist_event" class="mep-free-attlist-filter-label">
-									<span class="dashicons dashicons-filter"></span>
-									<?php
-										/* translators: %s: the configured "Events" label */
-										printf( esc_html__( 'Filter by %s', 'mage-eventpress' ), esc_html( $label ) );
-									?>
-								</label>
-								<select id="mep_free_attlist_event" class="mep-free-attlist-select">
-									<option value="0"><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
-									<?php
-										$post_ids = MPWEM_Query::get_all_post_ids( 'mep_events' );
-										if ( is_array( $post_ids ) ) {
-											foreach ( $post_ids as $post_id ) {
-												?>
-												<option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></option>
-												<?php
-											}
-										}
-									?>
-								</select>
+					<div class="mep-orders-wrap mep-free-attlist">
+
+						<!-- Header -->
+						<div class="mep-orders-header">
+							<div class="mep-orders-title-group">
+								<h1 class="mep-orders-title">
+									<span class="dashicons dashicons-groups"></span>
+									<?php esc_html_e( 'Attendee List', 'mage-eventpress' ); ?>
+								</h1>
+								<p class="mep-orders-subtitle"><?php esc_html_e( 'View attendees registered across all your events.', 'mage-eventpress' ); ?></p>
 							</div>
-							<button type="button" class="mep-free-attlist-filter-btn" id="mep_free_attlist_filter_btn">
-								<span class="dashicons dashicons-search"></span> <?php esc_html_e( 'Filter', 'mage-eventpress' ); ?>
-							</button>
-							<div class="mep-free-attlist-filter-spacer"></div>
-							<span class="mep-free-attlist-pro-pill" title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
-								<span class="dashicons dashicons-lock"></span> <?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
-							</span>
-							<?php
-								$upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', 0 );
-							?>
-							<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-free-attlist-upgrade">
-								<?php esc_html_e( 'More filters, columns & actions in PRO', 'mage-eventpress' ); ?> &rarr;
-							</a>
+							<div class="mep-orders-header-actions">
+								<button type="button" class="mep-btn mep-btn-outline" disabled title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
+									<span class="dashicons dashicons-download"></span>
+									<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
+									<span class="mep-free-attlist-pro-flag"><span class="dashicons dashicons-lock"></span> <?php esc_html_e( 'PRO', 'mage-eventpress' ); ?></span>
+								</button>
+							</div>
 						</div>
+
+						<!-- Filter Panel -->
+						<div class="mep-filter-panel">
+							<div class="mep-filter-panel-header">
+								<span class="dashicons dashicons-filter"></span>
+								<strong><?php esc_html_e( 'Filter Attendees', 'mage-eventpress' ); ?></strong>
+								<button type="button" id="mep-attlist-filter-toggle" class="mep-filter-toggle" aria-expanded="true">
+									<span class="dashicons dashicons-arrow-up-alt2"></span>
+								</button>
+							</div>
+							<div class="mep-filter-body" id="mep-attlist-filter-body">
+								<div class="mep-filter-grid">
+									<div class="mep-filter-field">
+										<label for="mep_free_attlist_event">
+											<?php
+												/* translators: %s: the configured "Events" label */
+												printf( esc_html__( 'Filter by %s', 'mage-eventpress' ), esc_html( $label ) );
+											?>
+										</label>
+										<select id="mep_free_attlist_event">
+											<option value="0"><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
+											<?php
+												$post_ids = MPWEM_Query::get_all_post_ids( 'mep_events' );
+												if ( is_array( $post_ids ) ) {
+													foreach ( $post_ids as $post_id ) {
+														?>
+														<option value="<?php echo esc_attr( $post_id ); ?>"><?php echo esc_html( get_the_title( $post_id ) ); ?></option>
+														<?php
+													}
+												}
+											?>
+										</select>
+									</div>
+								</div><!-- .mep-filter-grid -->
+								<div class="mep-filter-actions">
+									<button type="button" class="mep-btn mep-btn-primary" id="mep_free_attlist_filter_btn">
+										<span class="dashicons dashicons-search"></span> <?php esc_html_e( 'Filter', 'mage-eventpress' ); ?>
+									</button>
+									<?php $upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', 0 ); ?>
+									<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-free-attlist-upgrade">
+										<?php esc_html_e( 'More filters, columns & actions in PRO', 'mage-eventpress' ); ?> &rarr;
+									</a>
+								</div>
+							</div><!-- .mep-filter-body -->
+						</div><!-- .mep-filter-panel -->
+
 						<div id="mep_free_attlist_result">
 							<?php $this->render_result(); ?>
 						</div>
@@ -127,68 +175,153 @@
 					$query = MPWEM_Query::attendee_query( $args, $args['post_per_page'], $args['page'] );
 					$total = (int) $query->post_count;
 				}
+
+				$found_posts = (int) $query->found_posts;
+				$pages       = max( 1, (int) $query->max_num_pages );
 				?>
-				<p class="mep-free-attlist-count">
-					<?php
-						printf(
-							/* translators: 1: shown count, 2: total found */
-							esc_html__( 'Showing %1$d of %2$d attendee(s).', 'mage-eventpress' ),
-							(int) $total,
-							(int) $query->found_posts
-						);
-					?>
-				</p>
-				<div class="mep-free-attlist-table-wrap">
-					<table class="mep-free-attlist-table">
-						<thead>
-						<tr>
-							<th><?php esc_html_e( 'SI.', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Order No', 'mage-eventpress' ); ?></th>
-							<th><?php echo esc_html( MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' ) ); ?></th>
-							<th><?php esc_html_e( 'Ticket', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Full Name', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Email', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Phone', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Event Datetime', 'mage-eventpress' ); ?></th>
-							<th><?php esc_html_e( 'Order Status', 'mage-eventpress' ); ?></th>
-							<th class="mep-free-attlist-action-head-cell">
-								<div class="mep-free-attlist-action-head">
-									<span><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></span>
-									<span class="mep-free-attlist-pro-flag" title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
-										<span class="dashicons dashicons-lock"></span> <?php esc_html_e( 'PRO', 'mage-eventpress' ); ?>
-									</span>
-								</div>
-							</th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php
-							if ( $total > 0 ) {
-								$count = ( max( 1, $args['page'] ) - 1 ) * $args['post_per_page'] + 1;
-								foreach ( $query->posts as $attendee ) {
-									$this->render_row( $attendee->ID, $count );
-									$count ++;
+				<div class="mep-table-wrap">
+					<div class="mep-table-toolbar">
+						<span class="mep-result-count">
+							<?php
+								printf(
+									/* translators: %d: total number of attendees found */
+									esc_html( _n( '%d attendee found', '%d attendees found', $found_posts, 'mage-eventpress' ) ),
+									esc_html( $found_posts )
+								);
+							?>
+						</span>
+					</div>
+
+					<div id="mep-attlist-table-container">
+						<table class="mep-orders-table">
+							<thead>
+							<tr>
+								<th><?php esc_html_e( 'SI.', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Order No', 'mage-eventpress' ); ?></th>
+								<th><?php echo esc_html( MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_event_label', 'Events' ) ); ?></th>
+								<th><?php esc_html_e( 'Ticket', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Full Name', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Email', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Phone', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Event Datetime', 'mage-eventpress' ); ?></th>
+								<th><?php esc_html_e( 'Order Status', 'mage-eventpress' ); ?></th>
+								<th class="mep-free-attlist-action-head-cell">
+									<div class="mep-free-attlist-action-head">
+										<span><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></span>
+										<span class="mep-free-attlist-pro-flag" title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
+											<span class="dashicons dashicons-lock"></span> <?php esc_html_e( 'PRO', 'mage-eventpress' ); ?>
+										</span>
+									</div>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<?php
+								if ( $total > 0 ) {
+									$count = ( max( 1, $args['page'] ) - 1 ) * $args['post_per_page'] + 1;
+									foreach ( $query->posts as $attendee ) {
+										$this->render_row( $attendee->ID, $count );
+										$count ++;
+									}
+								} else {
+									?>
+									<tr>
+										<td colspan="10" class="mep-no-orders">
+											<span class="dashicons dashicons-groups"></span>
+											<p><?php esc_html_e( 'No attendees found.', 'mage-eventpress' ); ?></p>
+										</td>
+									</tr>
+									<?php
 								}
-							} else {
-								?>
-								<tr>
-									<td colspan="10"><?php esc_html_e( 'No Record Found.', 'mage-eventpress' ); ?></td>
-								</tr>
-								<?php
-							}
-						?>
-						</tbody>
-					</table>
-				</div>
+							?>
+							</tbody>
+						</table>
+					</div><!-- #mep-attlist-table-container -->
+
+					<div class="mep-pagination" id="mep-attlist-pagination">
+						<?php $this->render_pagination( $args['page'], $pages, $found_posts, $args['post_per_page'] ); ?>
+					</div>
+				</div><!-- .mep-table-wrap -->
 				<?php
-				if ( $total > 0 ) {
-					$parameter = array(
-						'show'             => $args['post_per_page'],
-						'pagination'       => 'yes',
-						'pagination-style' => 'ajax',
-					);
-					do_action( 'add_mpwem_pagination_section', $parameter, (int) $query->found_posts, $args['page'] );
-				}
+			}
+
+			private function render_pagination( $current, $total_pages, $total_items, $per_page ) {
+				$start = ( ( $current - 1 ) * $per_page ) + 1;
+				$end   = min( $current * $per_page, $total_items );
+				?>
+				<div class="mep-pagination-info">
+					<?php
+						if ( $total_items > 0 ) {
+							printf( esc_html__( 'Showing %1$d–%2$d of %3$d attendees', 'mage-eventpress' ), $start, $end, $total_items );
+						}
+					?>
+				</div>
+
+				<?php if ( $total_pages > 1 ) : ?>
+				<div class="mep-pagination-links">
+					<!-- First -->
+					<button type="button" class="mep-page-btn mep-page-edge <?php echo $current <= 1 ? 'mep-page-btn-disabled' : ''; ?>"
+						data-page="1" <?php echo $current <= 1 ? 'disabled' : ''; ?> title="<?php esc_attr_e( 'First page', 'mage-eventpress' ); ?>">
+						<span class="dashicons dashicons-controls-skipback"></span>
+					</button>
+					<!-- Prev -->
+					<button type="button" class="mep-page-btn <?php echo $current <= 1 ? 'mep-page-btn-disabled' : ''; ?>"
+						data-page="<?php echo esc_attr( $current - 1 ); ?>" <?php echo $current <= 1 ? 'disabled' : ''; ?>>
+						<span class="dashicons dashicons-arrow-left-alt2"></span>
+					</button>
+
+					<!-- Leading ellipsis -->
+					<?php if ( $current > 3 ) : ?>
+						<button type="button" class="mep-page-btn" data-page="1">1</button>
+						<?php if ( $current > 4 ) : ?>
+							<span class="mep-page-ellipsis">…</span>
+						<?php endif; ?>
+					<?php endif; ?>
+
+					<!-- Numbered range -->
+					<?php
+					$range = 2;
+					for ( $i = max( 1, $current - $range ); $i <= min( $total_pages, $current + $range ); $i++ ) :
+						$active = $i === $current ? 'mep-page-btn-active' : '';
+					?>
+						<button type="button" class="mep-page-btn <?php echo esc_attr( $active ); ?>" data-page="<?php echo esc_attr( $i ); ?>">
+							<?php echo esc_html( $i ); ?>
+						</button>
+					<?php endfor; ?>
+
+					<!-- Trailing ellipsis -->
+					<?php if ( $current < $total_pages - 2 ) : ?>
+						<?php if ( $current < $total_pages - 3 ) : ?>
+							<span class="mep-page-ellipsis">…</span>
+						<?php endif; ?>
+						<button type="button" class="mep-page-btn" data-page="<?php echo esc_attr( $total_pages ); ?>">
+							<?php echo esc_html( $total_pages ); ?>
+						</button>
+					<?php endif; ?>
+
+					<!-- Next -->
+					<button type="button" class="mep-page-btn <?php echo $current >= $total_pages ? 'mep-page-btn-disabled' : ''; ?>"
+						data-page="<?php echo esc_attr( $current + 1 ); ?>" <?php echo $current >= $total_pages ? 'disabled' : ''; ?>>
+						<span class="dashicons dashicons-arrow-right-alt2"></span>
+					</button>
+					<!-- Last -->
+					<button type="button" class="mep-page-btn mep-page-edge <?php echo $current >= $total_pages ? 'mep-page-btn-disabled' : ''; ?>"
+						data-page="<?php echo esc_attr( $total_pages ); ?>" <?php echo $current >= $total_pages ? 'disabled' : ''; ?> title="<?php esc_attr_e( 'Last page', 'mage-eventpress' ); ?>">
+						<span class="dashicons dashicons-controls-skipforward"></span>
+					</button>
+				</div>
+
+				<div class="mep-pagination-jump">
+					<label for="mep-attlist-page-jump"><?php esc_html_e( 'Go to', 'mage-eventpress' ); ?></label>
+					<input type="number" id="mep-attlist-page-jump" min="1" max="<?php echo esc_attr( $total_pages ); ?>"
+						placeholder="<?php echo esc_attr( $current ); ?>" />
+					<button type="button" id="mep-attlist-page-jump-btn" class="mep-btn mep-btn-outline mep-btn-sm"
+						data-total-pages="<?php echo esc_attr( $total_pages ); ?>">
+						<?php esc_html_e( 'Go', 'mage-eventpress' ); ?>
+					</button>
+				</div>
+				<?php endif; ?>
+				<?php
 			}
 
 			private function render_row( $attendee_id, $count ) {
@@ -216,7 +349,7 @@
 				$phone = array_key_exists( 'ea_phone', $attendee_info ) && $attendee_info['ea_phone'] ? $attendee_info['ea_phone'] : ( $order && is_object( $order ) ? $order->get_billing_phone() : '' );
 
 				$order_status       = array_key_exists( 'ea_order_status', $attendee_info ) ? $attendee_info['ea_order_status'] : '';
-				$order_status_class = $order_status ? sanitize_html_class( strtolower( $order_status ) ) : 'default';
+				$order_status_class = $order_status ? sanitize_html_class( strtolower( str_replace( ' ', '-', $order_status ) ) ) : 'default';
 				$pro_tip            = esc_attr__( 'Available in PRO version', 'mage-eventpress' );
 				?>
 				<tr>
@@ -229,7 +362,7 @@
 					<td><?php echo esc_html( $phone ); ?></td>
 					<td><?php echo esc_html( MPWEM_Global_Function::date_format( $event_date, $date_format ) ); ?></td>
 					<td>
-						<span class="mep-free-attlist-status mep-free-attlist-status--<?php echo esc_attr( $order_status_class ); ?>">
+						<span class="mep-status-pill mep-status-<?php echo esc_attr( $order_status_class ); ?>">
 							<?php echo esc_html( $order_status ? ucfirst( $order_status ) : '—' ); ?>
 						</span>
 					</td>
@@ -255,7 +388,7 @@
 				$args = array(
 					'post_id'       => isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0,
 					'page'          => isset( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 1,
-					'post_per_page' => 20,
+					'post_per_page' => self::PER_PAGE,
 				);
 				ob_start();
 				$this->render_result( $args );
@@ -266,106 +399,36 @@
 			private function print_assets() {
 				?>
 				<style>
-					.mep-free-attlist-title { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-
-					/* ---- Filter bar ---------------------------------------------------- */
-					.mep-free-attlist-filter {
-						display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-						margin: 16px 0 20px; padding: 18px 22px;
-						background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%);
-						border: 1px solid #e0e7ff; border-radius: 14px;
-						box-shadow: 0 2px 10px -4px rgba(79, 70, 229, .12);
-					}
-					.mep-free-attlist-filter-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-					.mep-free-attlist-filter-label { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #334155; font-size: 13px; }
-					.mep-free-attlist-filter-label .dashicons { color: #6366f1; font-size: 16px; width: 16px; height: 16px; }
-					.mep-free-attlist-select {
-						min-width: 260px; height: 38px; padding: 0 12px; border-radius: 9px;
-						border: 1px solid #c7d2fe; background: #fff; font-size: 13px; color: #1e293b;
-						box-shadow: none; transition: border-color .15s ease, box-shadow .15s ease;
-					}
-					.mep-free-attlist-select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .15); outline: none; }
-					/* Qualified as ".mep-free-attlist .mep-free-attlist-filter-btn" (two classes) on
-					   purpose: the plugin's own global admin.css ships a bare ".mpwem_style button"
-					   reset (one class + the element type) that otherwise outranks a single-class
-					   selector here and silently strips the background/padding/appearance back to
-					   the browser's native button chrome. */
-					.mep-free-attlist .mep-free-attlist-filter-btn {
-						-webkit-appearance: none; appearance: none;
-						display: inline-flex; align-items: center; gap: 7px;
-						margin-left: 6px; padding: 9px 20px; border: 1px solid transparent; border-radius: 8px;
-						background-color: #4338ca; background-image: none; color: #ffffff; font-weight: 600; font-size: 13px;
-						line-height: 1.4; cursor: pointer; box-shadow: 0 2px 6px rgba(67, 56, 202, .3);
-						transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
-					}
-					.mep-free-attlist .mep-free-attlist-filter-btn:hover,
-					.mep-free-attlist .mep-free-attlist-filter-btn:focus {
-						background-color: #372aa8; color: #ffffff; outline: none;
-						box-shadow: 0 4px 10px rgba(67, 56, 202, .4); transform: translateY(-1px);
-					}
-					.mep-free-attlist .mep-free-attlist-filter-btn:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(67, 56, 202, .3); }
-					.mep-free-attlist .mep-free-attlist-filter-btn .dashicons { font-size: 14px; width: 14px; height: 14px; color: #ffffff; }
-					.mep-free-attlist-filter-spacer { flex: 1 1 auto; }
-					.mep-free-attlist-pro-pill {
-						display: inline-flex; align-items: center; gap: 4px;
+					/* ---- Header PRO flag on the (disabled) Export CSV button ------------- */
+					.mep-free-attlist-pro-flag {
+						display: inline-flex; align-items: center; gap: 3px;
 						background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-						color: #fff; padding: 8px 14px; border-radius: 9px;
-						font-weight: 700; font-size: 11px; text-transform: uppercase;
-						letter-spacing: .05em; cursor: not-allowed; box-shadow: 0 3px 8px -3px rgba(253, 160, 133, .6);
+						color: #fff; padding: 2px 7px; border-radius: 999px; margin-left: 6px;
+						font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
 					}
-					.mep-free-attlist-pro-pill .dashicons { font-size: 14px; width: 14px; height: 14px; }
-					.mep-free-attlist-upgrade { font-size: 12.5px; color: #4f46e5; text-decoration: none; font-weight: 500; }
+					.mep-free-attlist-pro-flag .dashicons { font-size: 10.5px; width: 10.5px; height: 10.5px; }
+					.mep-orders-header-actions .mep-btn[disabled] { cursor: not-allowed; opacity: .85; }
+
+					.mep-free-attlist-upgrade { font-size: 12.5px; color: #4f46e5; text-decoration: none; font-weight: 500; margin-left: auto; }
 					.mep-free-attlist-upgrade:hover { text-decoration: underline; }
 
-					/* ---- Result count --------------------------------------------------- */
-					.mep-free-attlist-count { font-size: 13px; color: #64748b; margin: 0 2px 10px; }
+					/* ---- Extra order-status colour not present on the Orders page ------- */
+					.mep-status-partially-paid { background: #e0e7ff; color: #3730a3; }
+					.mep-status-default { background: #f1f5f9; color: #64748b; }
 
-					/* ---- Table ------------------------------------------------------------ */
-					.mep-free-attlist-table-wrap {
-						overflow-x: auto; background: #fff; border: 1px solid #e2e8f0;
-						border-radius: 14px; box-shadow: 0 4px 16px -8px rgba(15, 23, 42, .12);
-					}
-					.mep-free-attlist-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-					.mep-free-attlist-table thead th {
-						background: linear-gradient(180deg, #f8fafc, #f1f5f9);
-						color: #475569; font-size: 11.5px; font-weight: 700; text-transform: uppercase;
-						letter-spacing: .045em; text-align: left; padding: 13px 14px;
-						border-bottom: 1px solid #e2e8f0; white-space: nowrap;
-					}
-					.mep-free-attlist-table thead th:first-child { border-top-left-radius: 14px; }
-					.mep-free-attlist-table thead th:last-child { border-top-right-radius: 14px; }
-					.mep-free-attlist-table tbody td {
-						padding: 11px 14px; border-bottom: 1px solid #f1f5f9;
-						font-size: 13px; color: #334155; white-space: nowrap;
-					}
-					.mep-free-attlist-table tbody tr:nth-child(even) { background: #fbfcff; }
-					.mep-free-attlist-table tbody tr:hover { background: #eef2ff; }
-					.mep-free-attlist-table tbody tr:last-child td { border-bottom: 0; }
 					.mep-free-attlist-si { color: #94a3b8; font-variant-numeric: tabular-nums; }
 					.mep-free-attlist-event { font-weight: 600; color: #1e293b; }
-
-					/* ---- Order status pill ------------------------------------------------ */
-					.mep-free-attlist-status {
-						display: inline-block; padding: 3px 11px; border-radius: 999px;
-						font-size: 11px; font-weight: 600; text-transform: capitalize; white-space: nowrap;
-					}
-					.mep-free-attlist-status--processing { background: #fef3c7; color: #92400e; }
-					.mep-free-attlist-status--completed { background: #d1fae5; color: #065f46; }
-					.mep-free-attlist-status--partially-paid { background: #e0e7ff; color: #3730a3; }
-					.mep-free-attlist-status--default { background: #f1f5f9; color: #64748b; }
 
 					/* ---- Action column: narrow, compact buttons + an always-visible PRO flag -- */
 					.mep-free-attlist-action-head-cell { width: 1%; }
 					.mep-free-attlist-action-head { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
-					.mep-free-attlist-pro-flag {
-						display: inline-flex; align-items: center; gap: 3px;
-						background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-						color: #fff; padding: 2px 7px; border-radius: 999px;
-						font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
-					}
-					.mep-free-attlist-pro-flag .dashicons { font-size: 10.5px; width: 10.5px; height: 10.5px; }
 					.mep-free-attlist-action-cell { width: 1%; }
 					.mep-free-attlist-actions { display: inline-flex; gap: 3px; }
+					/* Qualified as ".mep-free-attlist .mep-free-attlist-action-btn" (two classes) on
+					   purpose: the plugin's own global admin.css ships a bare ".mpwem_style button"
+					   reset (one class + the element type) that otherwise outranks a single-class
+					   selector here and silently strips the background/padding/appearance back to
+					   the browser's native button chrome. */
 					.mep-free-attlist .mep-free-attlist-action-btn {
 						-webkit-appearance: none; appearance: none;
 						width: 26px; height: 26px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
@@ -397,19 +460,36 @@
 								}
 							}).always(function () {
 								$result.css('opacity', 1);
+								$('html, body').animate({ scrollTop: $('#mep_free_attlist_result').offset().top - 40 }, 200);
 							});
 						}
 						$(document).on('click', '#mep_free_attlist_filter_btn', function () {
 							loadPage(1);
 						});
-						$(document).on('click', '#mep_free_attlist_result [data-pagination]', function () {
-							loadPage($(this).data('pagination'));
+						$(document).on('click', '#mep_free_attlist_result .mep-page-btn:not([disabled])', function () {
+							var page = parseInt($(this).data('page'), 10);
+							if (page) {
+								loadPage(page);
+							}
 						});
-						$(document).on('click', '#mep_free_attlist_result .page_prev, #mep_free_attlist_result .page_next', function () {
-							var $active = $('#mep_free_attlist_result .active_pagination');
-							var current = $active.length ? parseInt($active.data('pagination'), 10) : 1;
-							var page    = $(this).hasClass('page_prev') ? Math.max(1, current - 1) : current + 1;
-							loadPage(page);
+						$(document).on('click', '#mep-attlist-page-jump-btn', function () {
+							var totalPages = parseInt($(this).data('total-pages'), 10) || 1;
+							var page       = parseInt($('#mep-attlist-page-jump').val(), 10);
+							if (page && page >= 1 && page <= totalPages) {
+								loadPage(page);
+							}
+						});
+						$(document).on('keydown', '#mep-attlist-page-jump', function (e) {
+							if (e.key === 'Enter') {
+								$('#mep-attlist-page-jump-btn').trigger('click');
+							}
+						});
+						$(document).on('click', '#mep-attlist-filter-toggle', function () {
+							var $body = $('#mep-attlist-filter-body');
+							var $btn  = $(this);
+							$body.toggleClass('mep-hidden');
+							$btn.toggleClass('collapsed');
+							$btn.attr('aria-expanded', !$body.hasClass('mep-hidden'));
 						});
 					})(jQuery);
 				</script>

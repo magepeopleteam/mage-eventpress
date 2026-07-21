@@ -4679,6 +4679,27 @@ body.mpwem-ticket-modal-open {
     color: #a16207;
 }
 
+.mpwem-display-section--review::before {
+    background: #be185d;
+}
+
+.mpwem-display-section--review .mpwem-display-section__head {
+    background: linear-gradient(180deg, #fff5f8 0%, #ffe4ec 100%);
+}
+
+/* No .mpwem-display-section__badge icon in this card, so drop the generic
+   head-main grid's 36px icon column — same fix as --waitlist above — or the
+   title gets squeezed into that narrow column and wraps one word per line. */
+.mpwem-display-section--review .mpwem-display-section__head-main {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+}
+
+.mpwem-display-section--review .mpwem-display-section__head p {
+    grid-column: 1;
+    margin-top: 0;
+}
+
 .mpwem-display-section--timeline::before {
     background: #2563eb;
 }

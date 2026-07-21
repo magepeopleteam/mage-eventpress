@@ -322,6 +322,18 @@
 				$price = (float) $price;
 				return max( $price, 0 );
 			}
+			/**
+			 * Method parity with the ecab-taxi-booking-manager copy of this shared
+			 * class: whichever MagePeople plugin loads first wins the
+			 * MP_Global_Function name, so every copy must expose format_price() or
+			 * plugins that call it fatal when this copy shadows theirs.
+			 */
+			public static function format_price( $price ) {
+				if ( self::has_woocommerce() && function_exists( 'wc_price' ) ) {
+					return wc_price( $price );
+				}
+				return number_format( (float) $price, 2 );
+			}
 			public static function get_wc_raw_price( $price ) {
 				if ( ! self::has_woocommerce() ) {
 					return (float) $price;
@@ -845,6 +857,18 @@
 				$price = preg_replace( '/[^0-9.]/', '', $price );
 				$price = (float) $price;
 				return max( $price, 0 );
+			}
+			/**
+			 * Method parity with the ecab-taxi-booking-manager copy of this shared
+			 * class: whichever MagePeople plugin loads first wins the
+			 * MP_Global_Function name, so every copy must expose format_price() or
+			 * plugins that call it fatal when this copy shadows theirs.
+			 */
+			public static function format_price( $price ) {
+				if ( self::has_woocommerce() && function_exists( 'wc_price' ) ) {
+					return wc_price( $price );
+				}
+				return number_format( (float) $price, 2 );
 			}
 			public static function wc_price( $post_id, $price, $args = array() ): string {
 				if ( ! self::has_woocommerce() ) {

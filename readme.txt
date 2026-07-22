@@ -30,8 +30,8 @@ Accelerate your physical or virtual event management and offer attendees a smoot
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 ###  Explore The Demo:
 🌐 [Live Demo](https://wpevently.com/)
-📘 [Online Documentation](https://docs.mage-people.com/docs/plugins/wpevently/overview)
-❄️ [Available Shortcode List](https://docs.mage-people.com/docs/plugins/wpevently/shortcodes)
+📘 [Online Documentation](https://docs.mage-people.com/plugins/wpevently/overview)
+❄️ [Available Shortcode List](https://docs.mage-people.com/plugins/wpevently/shortcodes)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
 ### 🎯 Experience Smooth Event Management
@@ -197,7 +197,7 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 [event-list pagination='yes']
 `
-More ❄️ [Available Shortcode List](https://docs.mage-people.com/docs/plugins/wpevently/shortcodes)
+More ❄️ [Available Shortcode List](https://docs.mage-people.com/plugins/wpevently/shortcodes)
 
 
 ### Note:

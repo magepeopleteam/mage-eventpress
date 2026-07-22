@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.6
+Stable tag: 5.3.7
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,13 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.3.7 =
+* Security Fix: Hardened PHP Object Injection protection for event Timeline and F.A.Q. content (extended existing serialization guard and disabled class loading on unserialize).
+* Security Fix: Sanitized event Timeline content on save to prevent Stored XSS.
+* Security Fix: Added per-event ownership/capability check to the Quick Edit event AJAX action to prevent unauthorized modification of other posts/pages.
+* Credit: Thanks to Yaswanth Reddy Sunkara, via WPScan, for responsibly disclosing these issues.
+  17 July 2026*
 
 = 5.3.6 =
 * Security Patch update

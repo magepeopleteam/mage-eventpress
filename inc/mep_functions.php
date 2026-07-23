@@ -894,6 +894,23 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			}
 		}
 	}
+	if ( ! function_exists( 'mep_normalize_event_date_value' ) ) {
+		/**
+		 * ea_event_date meta must stay space-separated ('Y-m-d H:i' / 'Y-m-d') because sold/
+		 * capacity counts (mep_ticket_type_sold() and friends) do an exact-position meta_query
+		 * LIKE match against it. Some front-end date/time inputs (native HTML5 datetime-local,
+		 * third-party checkout widgets) submit ISO format ('Y-m-d\TH:i') instead, which silently
+		 * breaks that match and makes an event look like it has 0 sold. Normalize on the way
+		 * into storage so every write site is consistent regardless of what the client sent.
+		 */
+		function mep_normalize_event_date_value( $date ) {
+			$date = trim( (string) $date );
+			if ( $date === '' ) {
+				return $date;
+			}
+			return str_replace( 'T', ' ', $date );
+		}
+	}
 	if ( ! function_exists( 'mep_get_ticket_price_by_event' ) ) {
 		function mep_get_ticket_price_by_event( $event, $type, $default_price = 0 ) {
 			$ticket_type = get_post_meta( $event, 'mep_event_ticket_type', true );
@@ -1003,7 +1020,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $order_id, 'ea_user_id', $user_id );
 			update_post_meta( $order_id, 'order_type_name', 'mep_events' );
 			update_post_meta( $pid, 'ea_ticket_no', $pin );
-			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_event_date', mep_normalize_event_date_value( $event_date ) );
 			if ( $force_order_status == 'yes' ) {
 				update_post_meta( $pid, 'ea_order_status', $order_status );
 			}
@@ -1056,7 +1073,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_event_id', $event_id );
 			update_post_meta( $pid, 'mep_checkin', 'No' );
 			update_post_meta( $pid, 'ea_ticket_no', $pin );
-			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_event_date', mep_normalize_event_date_value( $event_date ) );
 			update_post_meta( $pid, 'ea_order_status', 'completed' );
 			update_post_meta( $pid, 'ea_flag', 'rsvp_processed' );
 
@@ -1143,7 +1160,7 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			update_post_meta( $pid, 'ea_payment_method', sanitize_text_field( $payment_method ) );
 			update_post_meta( $pid, 'ea_event_name', get_the_title( $event_id ) );
 			update_post_meta( $pid, 'ea_event_id', $event_id );
-			update_post_meta( $pid, 'ea_event_date', $event_date );
+			update_post_meta( $pid, 'ea_event_date', mep_normalize_event_date_value( $event_date ) );
 			update_post_meta( $pid, 'ea_order_id', $booking_id );
 			update_post_meta( $pid, 'ea_user_id', get_current_user_id() );
 			update_post_meta( $pid, 'mep_checkin', 'No' );

@@ -126,7 +126,7 @@
 					#adminmenu .mep-menu-flyout > li.current > a,
 					#adminmenu .mep-menu-flyout > li.current > a:hover { color: #fff; background: #2271b1; }
 					#adminmenu .mep-menu-parent.mep-current > a.menu-top,
-					#adminmenu .mep-menu-parent.mep-current > a { color: #fff; font-weight: 600; }
+					#adminmenu .mep-menu-parent.mep-current > a { color: #fff; background: #2271b1; font-weight: 600; }
 				</style>
 				<?php
 			}

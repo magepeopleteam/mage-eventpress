@@ -420,11 +420,7 @@
 														<strong class="mpwem-pm-gateway__name"><?php esc_html_e( 'Offline Payment', 'mage-eventpress' ); ?></strong>
 													</div>
 												</div>
-												<?php if ( $is_pro ) : ?>
-													<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
-												<?php else : ?>
-													<span class="mpwem-pm-pro-badge" title="<?php esc_attr_e('Available in Pro version', 'mage-eventpress'); ?>">PRO</span>
-												<?php endif; ?>
+												<button type="button" id="mep-offline-configure-btn" class="button button-secondary"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
 											</div>
 										</div>
 

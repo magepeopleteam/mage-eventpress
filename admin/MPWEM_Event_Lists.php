@@ -313,6 +313,11 @@
 				$allowed_status = array( 'publish', 'draft', 'private', 'trash' );
 				// "all" (or anything unrecognised) lists the live statuses but never Trash.
 				$post_status    = in_array( $status, $allowed_status, true ) ? array( $status ) : array( 'publish', 'draft', 'private' );
+				// "Active"/"Expired" are a breakdown of published events only — drafts
+				// and private events must not show up under either filter.
+				if ( $active_status === 'active' || $active_status === 'expired' ) {
+					$post_status = array( 'publish' );
+				}
 
 				$args = array(
 					'post_type'      => 'mep_events',
@@ -453,22 +458,24 @@
 			}
 			public function mpwem_quick_edit_event() {
 				// Verify nonce
-				if ( ! wp_verify_nonce( $_POST['nonce'], 'mep_nonce' ) ) {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mep_nonce' ) ) {
 					wp_send_json_error( array( 'message' => 'Security check failed' ) );
 				}
-				// Check user capabilities
-				if ( ! current_user_can( 'edit_posts' ) ) {
-					wp_send_json_error( array( 'message' => 'You do not have permission to edit events' ) );
-				}
-				$post_id = intval( $_POST['post_id'] );
-				if ( ! $post_id ) {
+				$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+				// Restrict to this plugin's own post type so the handler cannot be
+				// used to modify arbitrary posts/pages.
+				if ( ! $post_id || get_post_type( $post_id ) !== 'mep_events' ) {
 					wp_send_json_error( array( 'message' => 'Invalid event ID' ) );
+				}
+				// Check per-object edit capability, not just the generic 'edit_posts' cap.
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_send_json_error( array( 'message' => 'You do not have permission to edit this event' ) );
 				}
 				// Update post data
 				$post_data = array(
 					'ID'          => $post_id,
-					'post_title'  => sanitize_text_field( $_POST['post_title'] ),
-					'post_status' => sanitize_text_field( $_POST['post_status'] )
+					'post_title'  => sanitize_text_field( wp_unslash( $_POST['post_title'] ) ),
+					'post_status' => sanitize_text_field( wp_unslash( $_POST['post_status'] ) )
 				);
 				$result    = wp_update_post( $post_data );
 				if ( is_wp_error( $result ) ) {
@@ -615,9 +622,12 @@
 	}
 	function mpwem_active_expire_count() {
 		$now    = current_time( 'mysql' );
+		// "Active"/"Expired" are a breakdown of published events only — drafts
+		// and private events have their own separate stat chips and must not
+		// be counted here regardless of their end date.
 		$base   = array(
 			'post_type'      => 'mep_events',
-			'post_status'    => array( 'publish', 'draft', 'private' ),
+			'post_status'    => 'publish',
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
 			'no_found_rows'  => false,

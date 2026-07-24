@@ -264,7 +264,10 @@
 			}
 			public static function data_sanitize( $data ) {
 				if ( is_serialized( $data ) ) {
-					$data = unserialize( $data );
+					// allowed_classes => false prevents PHP object injection: any
+					// serialized object collapses to __PHP_Incomplete_Class instead
+					// of being instantiated.
+					$data = unserialize( $data, array( 'allowed_classes' => false ) );
 					$data = self::data_sanitize( $data );
 				} elseif ( is_string( $data ) ) {
 					$data = sanitize_text_field( stripslashes( strip_tags( $data ) ) );
@@ -634,7 +637,10 @@
 			}
 			public static function data_sanitize( $data ) {
 				if ( is_serialized( $data ) ) {
-					$data = unserialize( $data );
+					// allowed_classes => false prevents PHP object injection: any
+					// serialized object collapses to __PHP_Incomplete_Class instead
+					// of being instantiated.
+					$data = unserialize( $data, array( 'allowed_classes' => false ) );
 					$data = self::data_sanitize( $data );
 				} elseif ( is_string( $data ) ) {
 					$data = sanitize_text_field( stripslashes( strip_tags( $data ) ) );

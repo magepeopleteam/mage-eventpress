@@ -1,8 +1,8 @@
-=== Event Booking Manager for WooCommerce  ===
+=== Event Booking Manager for WooCommerce – Sell Tickets, Event Registration, RSVP & Event Calendar ===
 Contributors: magepeopleteam, aamahin
-Tags: event, WooCommerce events manager, event booking, WordPress Events plugin, event calendar
+Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.6
+Stable tag: 5.3.7
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -10,14 +10,16 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Flexible WooCommerce plugin for event booking, attendee management, and responsive ticketing with a modern event calendar.
+Sell event tickets with WooCommerce. Event registration, recurring events, RSVP, attendee management & event calendar — free.
 
 
 == Description ==
 
-The Event Manager plugin for WooCommerce simplifies the complicated event registration process. **Evently** is a complete [event booking and event manager plugin](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) for WordPress users who need a reliable way to **sell tickets**, **register attendees**, and **manage events**. Built to work seamlessly with **WooCommerce**, it gives you full control over pricing, ticket types, and attendee data collection.
+**Evently (Event Booking Manager for WooCommerce)** lets you create events, sell tickets, and manage attendees right inside WooCommerce — using the store, checkout, and payment gateways you already have.
 
-Whether you're hosting conferences, classes, concerts, or workshops, Evently is your all-in-one **WordPress event solution**.
+No new payment system to configure. No locked-down checkout. Evently works with **every WooCommerce payment gateway** — Stripe, PayPal, Klarna, bank transfer, cash on delivery, and 100+ local gateways — completely free. Custom payment method also posible like paypal,stripe and offline payment as Pro feature 
+
+Perfect for conferences, workshops, classes, concerts, tours, webinars, and community meetups — in-person or virtual and Hybrid 
 
 ## LET'S SEE HOW YOU CAN CREATE AN EVENT WITHIN 10 MINUTES
 https://www.youtube.com/watch?v=6eu3MowK8CQ
@@ -28,8 +30,8 @@ Accelerate your physical or virtual event management and offer attendees a smoot
 Whether you are a small event organizer or a large one, we have thousands of trusted businesses.
 ###  Explore The Demo:
 🌐 [Live Demo](https://wpevently.com/)
-📘 [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/)
-❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
+📘 [Online Documentation](https://docs.mage-people.com/plugins/wpevently/overview)
+❄️ [Available Shortcode List](https://docs.mage-people.com/plugins/wpevently/shortcodes)
 🛍️ [Buy Event Booking & Management Plugin for WooCommerce – WpEvently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
 
 ### 🎯 Experience Smooth Event Management
@@ -88,8 +90,6 @@ When you need to create something highly effective but have limited time availab
 ✔ **Template Override Support:** Copy and customize event templates in your theme so plugin updates never overwrite your design changes.
 
 ✔ **REST API Support:** Enable REST API access to your event data from the Event Settings page for headless or third-party integrations.
-
-
 
 
 ### 🚀 Create Some Great Event Features With the Event Manager Pro Version
@@ -197,7 +197,7 @@ If you want to show pagination with the event list, you can set the value to "ye
 `
 [event-list pagination='yes']
 `
-More ❄️ [Available Shortcode List](https://docs.mage-people.com/woocommerce-event-manager/events-list-style-shortcode/)
+More ❄️ [Available Shortcode List](https://docs.mage-people.com/plugins/wpevently/shortcodes)
 
 
 ### Note:
@@ -216,6 +216,13 @@ We have full confidence in our plugin and its ability to work well with any them
 **CHECK OUT OUR Themes** 
 [Event Theme](https://mage-people.com/product/vaincode-wordpress-theme-for-event-manager-and-travel-booking-plugin/)
 
+
+## Quality & support 
+
+Every release is tested against the latest WordPress and WooCommerce versions. Found an issue? Open a [support ticket](https://mage-people.com/submit-ticket-2/) or post in the forum — our team typically responds within 24 hours.
+
+
+
 ## Privacy Policy 
 This Plugin uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon the user's confirmation to troubleshoot problems faster & make product improvements.
 Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users. Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
@@ -229,61 +236,74 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 
 == Frequently Asked Questions ==
 
-= Q. Is Woocommerce Events Manager Free? =
-A. Yes! Woocommerce Events Manager is free.
+= Is Event Booking Manager for WooCommerce free? =
 
-You can check the demo of this plugin from here:
-[View Live PRO Version Demo For Business](https://wpevently.com/)
+Yes. The free version includes unlimited events, ticket types, recurring events, an event calendar, and payment through every WooCommerce gateway. [Evently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/) adds PDF tickets, a registration form builder, attendee management with CSV export, and sales reports.
 
-= Q. Any Documentation? =
-A. Yes! Here is the [Online Documentation](https://docs.mage-people.com/woocommerce-event-manager/).
- 
-= Q. Does the calendar feature use a bundled third-party library? =
-A. Yes. The frontend calendar bundles FullCalendar Standard Bundle v6.1.17.
+= Does it require WooCommerce? =
 
-Source repository: https://github.com/fullcalendar/fullcalendar
-Documentation and license details: https://fullcalendar.io/docs/initialize-globals
-Bundled file: `assets/helper/calendar/fullcalendar.index.global.min.js`
+Yes. Payments are processed through WooCommerce checkout, so you can use any payment gateway WooCommerce supports — Stripe, PayPal, Klarna, bank transfer, and many more.
 
+= How do I sell tickets for a recurring event? =
 
-= Q. I installed correctly,y but 404 error what can I do?  =
-A. You need to re-save the permalink setting,s it will solve the 404. If still does not work that means your permalink not working, or you may have httaccess problem or you have a server permission problem. 
+Create an event and choose a repeating schedule — daily, weekly, or custom. Customers select their preferred date before booking. Recurring events are included in the free version.
 
-= Q.How its work? =
-A. Woocommerce Events Manager is one of the simple event plugins for WordPress which is based on Woocommerce. It works as an individual event and its payment functionality is handled with woocommerce so there are no worries about the payment gateway you can use every payment gateway that supports woocommerce. The interesting part is the event post type is completely different there is no connection with woocommerce product so you can sell anything from the woocommerce product. 
+= How do I display the event list on a page? =
 
-= How can I get the attendee list? =
-A. After successful booking user data will be saved under the event attendee list, You can find the list from Events -> attendee list  or Go to event list and click on the attendee list on right side of event to get that particular event attendee list.
+Add the `[event-list]` shortcode to any page or post. Use `[event-list style='grid']` for a grid, or `[event-list cat=ID]` to filter by category.
 
-= Q.How can I display the event list? =
-A. You can display the event list on any page by using the ShortCode. Just use this shortcode to display all events list [event-list]. If you want to display any particular category events just use [event-list cat=ID] Here ID will be the category ID which will you find in the category section of the dashboard.
+= Where can I see the attendee list? =
 
-= Q.why my shortcode not displaying anything ?   =
-A. Please make sure that you added a shortcode in Text mode. if you add a shortcode in tag embedded it may not work 
+Attendee data is saved after each successful booking. The full attendee dashboard with editing and CSV export is part of [Evently Pro](https://mage-people.com/product/mage-woo-event-booking-manager-pro/).
 
+= Can I sell event tickets and normal WooCommerce products together? =
 
-= Q.Where Can I see the Attendee list?   =
-A. Attendee list included in our  [pro version](https://mage-people.com/product/mage-woo-event-booking-manager-pro/)
+Yes. Events use their own post type, separate from WooCommerce products, so tickets and products can be sold side by side without conflicts.
 
-= Q.What features are included in the pro version that are not in the Free version?   =
-A. Event Pro Version has major two versions. 
-    ➡ Attendee form builder and attendee list with CSV export 
-    ➡ PDF ticketing and Email Attachment
+= I get a 404 error on event pages. How do I fix it? =
 
-= Q.I need More features what can I do?   =
-A. You can create a support ticket here with the features details that you need, One of our support members will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
+Go to **Settings → Permalinks** and click **Save Changes** to flush permalinks. If the issue persists, check your `.htaccess` file permissions or contact your host.
 
-= Q.How can I get the best support from the plugin Company   =
-A. You can create a support ticket here with problem details with possible screenshots that you have a problem, One of our support members will back to you shortly. [Support Ticket](https://mage-people.com/submit-ticket-2/)
+= Why is my shortcode not displaying anything? =
 
-= Q.How can I report security bugs? =
-A. You can report security bugs through the Patchstack Vulnerability Disclosure
-Program. The Patchstack team helps validate, triage, and handle any security
-vulnerabilities.
-[Report a security vulnerability.](https://patchstack.com/database/vdp/mage-eventpress)
+Make sure the shortcode is added in **Text/Code mode** (or a Shortcode block), not wrapped inside other HTML tags.
+
+= Does the calendar use a third-party library? =
+
+Yes. The frontend calendar bundles the [FullCalendar](https://fullcalendar.io/) Standard Bundle v6.1.17.
+
+= Is the plugin translation-ready? =
+
+Yes. Fully translation-ready and compatible with WPML and Polylang. You can [contribute a translation](https://translate.wordpress.org/projects/wp-plugins/mage-eventpress) in your language.
+
+= How do I get support? =
+
+Post in the [support forum](https://wordpress.org/support/plugin/mage-eventpress/) or open a [support ticket](https://mage-people.com/submit-ticket-2/) with details and screenshots. Our team typically responds within 24 hours.
+
+= How can I report a security vulnerability? =
+
+Please report security bugs through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/mage-eventpress).
 
 
 == Changelog ==
+
+= 5.3.7 =
+* Security Fix: Hardened PHP Object Injection protection for event Timeline and F.A.Q. content (extended existing serialization guard and disabled class loading on unserialize).
+* Security Fix: Sanitized event Timeline content on save to prevent Stored XSS.
+* Security Fix: Added per-event ownership/capability check to the Quick Edit event AJAX action to prevent unauthorized modification of other posts/pages.
+* Credit: Thanks to Yaswanth Reddy Sunkara, via WPScan, for responsibly disclosing these issues.
+  17 July 2026*
+
+= 5.3.6 =
+* Security Patch update
+* RSVP Events
+* Multiple Event Types – Online, Offline & Hybrid
+* Frontend Event Calendar
+* Step-by-Step Event Editor
+* Modern Event Lists Dashboard
+* Event Analytics Dashboard
+* Code Optimization
+  08 July 2026*
 
 = 5.3.4 =
 * Security Patch update

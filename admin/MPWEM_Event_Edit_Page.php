@@ -465,6 +465,15 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 		private function is_waitlist_addon_active(): bool
 		{
+			// The Waitlist addon now ships bundled inside mage-eventpress-pro/lib
+			// (merged from the old standalone plugin), so it no longer appears in
+			// is_plugin_active() by its old plugin file path. Detect the bundled
+			// build via a function it unconditionally defines when loaded, and
+			// keep the legacy check as a fallback for a genuine standalone install.
+			if (function_exists('mepw_get_waitlist_status')) {
+				return true;
+			}
+
 			if (! function_exists('is_plugin_active')) {
 				include_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -497,6 +506,51 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 							</div>
 							<label class="mpwem-event-setting-card__switch">
 								<input type="checkbox" name="mep_show_waitlist" value="on" data-no-mpwem-switch="1" <?php checked($waitlist_enabled); ?> />
+								<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+		private function is_review_addon_active(): bool
+		{
+			// The Review & Rating addon ships bundled inside mage-eventpress-pro/lib
+			// and only loads once WooCommerce is active (it calls wc_customer_bought_product()
+			// for the "verified purchaser" permission mode). Detect it via a function it
+			// unconditionally defines when loaded — same pattern as the Waitlist check above.
+			return function_exists('check_review_permission');
+		}
+
+		private function render_review_sidebar_option(int $post_id): void
+		{
+			if (! $this->is_review_addon_active()) {
+				return;
+			}
+
+			// Unset meta means enabled (matches merr_get_review_status()'s default in the
+			// addon), so existing events keep showing the review form until an admin
+			// explicitly turns it off.
+			$review_enabled = get_post_meta($post_id, 'mep_show_review', true) !== 'off';
+			?>
+			<div class="mpwem-display-section mpwem-display-section--review is-expanded">
+				<div class="mpwem-display-section__head">
+					<div class="mpwem-display-section__head-main">
+						<h3><?php esc_html_e('Review & Rating', 'mage-eventpress'); ?></h3>
+						<p><?php esc_html_e('Show the review form for this event when the Review & Rating addon is active.', 'mage-eventpress'); ?></p>
+					</div>
+				</div>
+				<div class="mpwem-display-section__body">
+					<div class="mpwem-event-setting-card__item">
+						<div class="mpwem-event-setting-card__item-head">
+							<div class="mpwem-event-setting-card__copy">
+								<h3><?php esc_html_e('Show Review Form', 'mage-eventpress'); ?></h3>
+								<p><?php esc_html_e('Turn this off to hide the "Write a Review" button for this event.', 'mage-eventpress'); ?></p>
+							</div>
+							<label class="mpwem-event-setting-card__switch">
+								<input type="checkbox" name="mep_show_review" value="on" data-no-mpwem-switch="1" <?php checked($review_enabled); ?> />
 								<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
 							</label>
 						</div>
@@ -589,6 +643,16 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					'member_only'
 				);
 				$this->render_setting_roles_field($member_roles, $is_member_only);
+				// Classic-editor-only toggles ("Show Attendee list?" and "Enable Attendee
+				// information edit?"), provided by the Form Builder PRO addon via this
+				// hook (no-op when the addon isn't active — same as the classic tab's own
+				// do_action() call). Reusing the existing hook keeps a single source of
+				// truth for the markup and each addon's own save handler (which reads its
+				// own presence-marker field), rather than duplicating the toggles here.
+				// Each listener renders its own <section>, called as a direct grid child
+				// (not wrapped in one shared div) so mpwem_event_edit.css can style every
+				// <section> as its own separate card, same as the other settings items.
+				do_action('mp_event_switching_button_hook', $post_id);
 				?>
 			</div>
 			<?php
@@ -1236,7 +1300,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
 		?>
-			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>">
+			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
@@ -1412,6 +1476,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 								<input type="hidden" name="post_ID" id="post_ID" value="<?php echo esc_attr($post_id); ?>" />
 								<input type="hidden" name="mpwem_post_status_action" id="mpwem_post_status_action" value="" />
 								<input type="hidden" name="mpwem_active_step" id="mpwem_active_step" value="basic" />
+								<input type="hidden" name="mpwem_quiet_save" id="mpwem_quiet_save" value="" />
 								<?php wp_nonce_field(self::NONCE_ACTION_SAVE, '_mpwem_edit_nonce'); ?>
 								<?php wp_nonce_field('mpwem_type_nonce', 'mpwem_type_nonce'); ?>
 								<?php wp_nonce_field('mep_fw_nonce', 'mep_fw_nonce'); ?>
@@ -1825,6 +1890,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 														</div>
 													</div>
 													<?php $this->render_waitlist_sidebar_option($post_id); ?>
+													<?php $this->render_review_sidebar_option($post_id); ?>
 													<div class="mpwem-card mpwem-card--danger mpwem-card--danger-advanced" id="mpwem_advanced_danger_zone">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Danger Zone', 'mage-eventpress'); ?></h2>
@@ -1953,6 +2019,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$thumb_id     = isset($_POST['_thumbnail_id']) ? absint($_POST['_thumbnail_id']) : 0;
 			$post_status_action = isset($_POST['mpwem_post_status_action']) ? sanitize_key(wp_unslash($_POST['mpwem_post_status_action'])) : '';
 			$active_step = isset($_POST['mpwem_active_step']) ? sanitize_key(wp_unslash($_POST['mpwem_active_step'])) : 'basic';
+			// Step-scoped mini-saves (ticket/extra-service/date modal "Save Changes")
+			// resubmit the whole form too, but shouldn't pop the success notice —
+			// only an explicit Publish/Update/Save as Draft should.
+			$quiet_save = isset($_POST['mpwem_quiet_save']) && '1' === $_POST['mpwem_quiet_save'];
 
 			if ($post_status_action === 'trash') {
 				if (! current_user_can('delete_post', $post_id)) {
@@ -2234,12 +2304,10 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			do_action('mpwem_after_event_edit_save', $post_id);
 			$notice_key = $post_status_action === 'publish' ? 'published' : ($post_status_action === 'draft' ? 'drafted' : 'saved');
 
-			$redirect = add_query_arg(
-				[
-					$notice_key => 1,
-				],
-				$this->edit_url($post_id, $active_step ?: 'basic')
-			);
+			$redirect = $this->edit_url($post_id, $active_step ?: 'basic');
+			if (! $quiet_save) {
+				$redirect = add_query_arg([$notice_key => 1], $redirect);
+			}
 			wp_safe_redirect($redirect);
 			exit;
 		}

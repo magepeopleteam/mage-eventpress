@@ -18,6 +18,24 @@ if ( ! function_exists( 'mep_prevent_serialized_input' ) ) {
 	}
 }
 
+if ( ! function_exists( 'mep_prevent_serialized_html_input' ) ) {
+	/**
+	 * Same serialized-payload guard as mep_prevent_serialized_input(), but for
+	 * rich-text fields (event timeline / FAQ content) that are allowed to keep
+	 * safe HTML, so it sanitizes with wp_kses_post() instead of sanitize_text_field().
+	 */
+	function mep_prevent_serialized_html_input( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		// Block any serialized data (prevents PHP object injection)
+		if ( is_serialized( $value ) || preg_match( '/(^|;)O:\d+:"/m', $value ) ) {
+			return '';
+		}
+		return wp_kses_post( $value );
+	}
+}
+
 if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	function mep_add_show_sku_post_id_in_event_list_dashboard( $actions, $post ) {
 		if ( $post->post_type === 'mep_events' ) {
@@ -899,7 +917,6 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			if ( ! $order instanceof WC_Order ) {
 				return false;
 			}
-			$order_meta        = get_post_meta( $order_id );
 			$order_status      = $order->get_status();
 			$payment_method    = $order->get_payment_method_title();
 			$user_id           = $order->get_customer_id();
@@ -907,18 +924,20 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			$last_name         = $order->get_billing_last_name();
 			$billing_full_name = mep_prevent_serialized_input( $first_name . ' ' . $last_name );
 			if ( $type == 'billing' ) {
-				// Billing Information
-				$company     = isset( $order_meta['_billing_company'][0] ) ? sanitize_text_field( $order_meta['_billing_company'][0] ) : '';
-				$address_1   = isset( $order_meta['_billing_address_1'][0] ) ? sanitize_text_field( $order_meta['_billing_address_1'][0] ) : '';
-				$address_2   = isset( $order_meta['_billing_address_2'][0] ) ? sanitize_text_field( $order_meta['_billing_address_2'][0] ) : '';
+				// Billing Information — read via WC_Order getters (not get_post_meta( $order_id )),
+				// since High-Performance Order Storage keeps orders in wp_wc_orders, not wp_posts,
+				// so get_post_meta() on an HPOS order ID silently returns nothing.
+				$company     = sanitize_text_field( $order->get_billing_company() );
+				$address_1   = sanitize_text_field( $order->get_billing_address_1() );
+				$address_2   = sanitize_text_field( $order->get_billing_address_2() );
 				$address     = $address_1 . ' ' . $address_2;
 				$gender      = '';
 				$designation = '';
 				$website     = '';
 				$vegetarian  = '';
 				$tshirtsize  = '';
-				$email       = isset( $order_meta['_billing_email'][0] ) ? sanitize_text_field( $order_meta['_billing_email'][0] ) : '';
-				$phone       = isset( $order_meta['_billing_phone'][0] ) ? sanitize_text_field( $order_meta['_billing_phone'][0] ) : '';
+				$email       = sanitize_text_field( $order->get_billing_email() );
+				$phone       = sanitize_text_field( $order->get_billing_phone() );
 				$ticket_type = stripslashes( sanitize_text_field( $_user_info['ticket_name'] ) );
 				$event_date  = sanitize_text_field( $_user_info['event_date'] );
 				$ticket_qty  = sanitize_text_field( $_user_info['ticket_qty'] );
@@ -5646,7 +5665,7 @@ function mep_change_date_status() {
                     $sold    = MPWEM_Functions::get_total_sold( $event_id, $date )
                     ?>
                     <tr>
-                        <th><?php esc_html_e( '🌐 Global Quantity (All Ticket Types)', 'mage-eventpress-gq' ); ?></th>
+                        <th><?php esc_html_e( '🌐 Global Quantity (All Ticket Types)', 'mage-eventpress' ); ?></th>
                         <th><?php echo esc_html( $total ); ?></th>
                         <th><?php echo esc_html( $reserve ); ?></th>
                         <th><?php echo esc_html( $sold ); ?></th>

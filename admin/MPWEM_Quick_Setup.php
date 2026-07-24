@@ -14,10 +14,17 @@
 				}
 				add_action( 'admin_menu', array( $this, 'quick_setup_menu' ) );
 			}
-			public function add_admin_scripts() {
-				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), time() );
-				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), time(), true );
-				wp_enqueue_style( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), time() );
+			public function add_admin_scripts( $hook ) {
+				// This page's assets (mpwem_global/mpwem_admin/Font Awesome) are already
+				// enqueued for every MEP admin screen by MPWEM_Dependencies::admin_enqueue().
+				// Only load the extra copy here on the Quick Setup screen itself, and stop
+				// versioning with time() — that defeats browser caching on every request.
+				if ( strpos( (string) $hook, 'mpwem_quick_setup' ) === false ) {
+					return;
+				}
+				wp_enqueue_style( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.css', array(), MPWEM_PLUGIN_VERSION );
+				wp_enqueue_script( 'mpwem_global', MPWEM_PLUGIN_URL . '/assets/helper/mp_style/mpwem_global.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
+				wp_enqueue_style( 'mpwem_admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_admin.css', array(), MPWEM_PLUGIN_VERSION );
 				wp_enqueue_style( 'mp_font_awesome', '//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.4' );
 			}
 			public function quick_setup_menu() {

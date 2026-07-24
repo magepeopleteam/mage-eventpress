@@ -126,7 +126,7 @@
 					#adminmenu .mep-menu-flyout > li.current > a,
 					#adminmenu .mep-menu-flyout > li.current > a:hover { color: #fff; background: #2271b1; }
 					#adminmenu .mep-menu-parent.mep-current > a.menu-top,
-					#adminmenu .mep-menu-parent.mep-current > a { color: #fff; font-weight: 600; }
+					#adminmenu .mep-menu-parent.mep-current > a { color: #fff; background: #2271b1; font-weight: 600; }
 				</style>
 				<?php
 			}
@@ -199,15 +199,22 @@
 	}
 
 	// Group the core settings pages under a single "Settings" flyout.
-	new MPWEM_Admin_Menu_Group( array(
-		'parent_slug'  => 'mpwem_settings_hub',
-		'parent_label' => __( 'Settings', 'mage-eventpress' ),
-		'landing_slug' => 'mep_event_settings_page',
-		'capability'   => 'manage_options',
-		'children'     => array(
-			'mep_event_settings_page', // Event Settings (now also hosts the Status tab)
-			'mep_calendar_settings',   // Calendar Settings
-			'mpwem_quick_setup',       // Quick Setup
-			'mep_template_override',    // Template Override
-		),
-	) );
+	// Deferred to 'init' — this file loads immediately as part of the plugin's
+	// eager bootstrap (MPWEM_Dependencies -> MPWEM_Admin -> here), long before
+	// 'after_setup_theme'/'init'. The __('Settings', ...) call below used to run
+	// at that same immediate point, which is exactly what triggers WordPress's
+	// "Translation loading ... triggered too early" notice for this domain.
+	add_action( 'init', function () {
+		new MPWEM_Admin_Menu_Group( array(
+			'parent_slug'  => 'mpwem_settings_hub',
+			'parent_label' => __( 'Settings', 'mage-eventpress' ),
+			'landing_slug' => 'mep_event_settings_page',
+			'capability'   => 'manage_options',
+			'children'     => array(
+				'mep_event_settings_page', // Event Settings (now also hosts the Status tab)
+				'mep_calendar_settings',   // Calendar Settings
+				'mpwem_quick_setup',       // Quick Setup
+				'mep_template_override',    // Template Override
+			),
+		) );
+	} );

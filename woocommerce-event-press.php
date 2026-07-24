@@ -3,7 +3,7 @@
 	 * Plugin Name: Event Booking Manager for WooCommerce
 	 * Plugin URI: http://mage-people.com
 	 * Description: A Complete Event Solution for WordPress by MagePeople..
-	 * Version: 5.3.6
+	 * Version: 5.3.7
 	 * Author: MagePeople Team
 	 * Author URI: http://www.mage-people.com/
 	 * Text Domain: mage-eventpress
@@ -22,7 +22,7 @@
 		define('MPWEM_PLUGIN_URL', plugins_url() . '/' . plugin_basename(dirname(__FILE__)));
 	}
 	if (!defined('MPWEM_PLUGIN_VERSION')) {
-		define('MPWEM_PLUGIN_VERSION', '5.3.4');
+		define('MPWEM_PLUGIN_VERSION', '5.3.7');
 	}
 
 	// WooCommerce Fallback Stub Functions to prevent Fatal Errors when WooCommerce is inactive.
@@ -40,8 +40,13 @@
 			$is_activating = true;
 		}
 		if ( ! $is_activating && ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) || isset( $_SERVER['argv'] ) ) ) {
-			// Web activation check (single or bulk)
-			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'activate' ) {
+			// Web activation check (single or bulk). Bulk-selecting plugins and choosing
+			// "Activate" from the Bulk actions dropdown sends action=activate-selected,
+			// not "activate" — that case was previously missed entirely (the $_REQUEST
+			// ['checked'] loop below was nested inside the 'activate'-only check), so
+			// bulk-activating WooCommerce alongside other plugins still hit the
+			// "Cannot redeclare get_woocommerce_currency_symbol()" fatal.
+			if ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], array( 'activate', 'activate-selected', 'error_scrape' ), true ) ) {
 				if ( isset( $_REQUEST['plugin'] ) && strpos( $_REQUEST['plugin'], 'woocommerce.php' ) !== false ) {
 					$is_activating = true;
 				}

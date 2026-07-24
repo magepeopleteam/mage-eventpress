@@ -88,9 +88,8 @@
 					$date_type = MPWEM_Global_Function::get_post_info( $event_id, 'mep_enable_recurring', 'no' );
 					if ( $date_type == 'no' || $date_type == 'yes' ) {
 						if ( is_array( $all_dates ) && sizeof( $all_dates ) == 1 ) {
-							$date = MPWEM_Functions::get_upcoming_date_time( $event_id );
+							$date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id );
 							$date = ! empty( $date ) ? $date : current( $all_dates )['time'];
-							// $date = $date_type == 'no' ? get_post_meta( $event_id, 'event_start_datetime', true ) : MPWEM_Functions::get_upcoming_date_time( $event_id);
 
 							?>
                             <input type="hidden" id="mpwem_date_time" name='mpwem_date_time' value='<?php echo esc_attr( $date ); ?>'/>

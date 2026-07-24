@@ -28,8 +28,15 @@
 			 * Enqueue scripts and styles
 			 */
 			function admin_enqueue_scripts() {
+				// wp_enqueue_media() pulls in the full media-modal JS/Backbone bundle;
+				// only this plugin's own admin screens have fields that need it.
+				$screen = get_current_screen();
+				if ( ! $screen || ( strpos( $screen->id, 'mep_events' ) === false && strpos( $screen->id, 'mpwem_' ) === false ) ) {
+					return;
+				}
+
 				wp_enqueue_style( 'wp-color-picker' );
-				
+
 				wp_enqueue_media();
 				wp_enqueue_script( 'wp-color-picker' );
 				wp_enqueue_script( 'jquery' );

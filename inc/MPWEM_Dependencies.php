@@ -149,20 +149,24 @@
 			public function admin_enqueue( $hook ) {
 				$is_mep_page = $this->is_mep_admin_page( $hook );
 
-				// Heavy editor assets only needed on MEP post/page edit screens
-				if ( $is_mep_page ) {
-					wp_enqueue_editor();
-					wp_enqueue_style( 'wp-codemirror' );
-					wp_enqueue_script( 'wp-codemirror' );
-					wp_enqueue_script( 'editor' );
-					wp_enqueue_script( 'quicktags' );
-					wp_enqueue_script( 'media-upload' );
-					wp_enqueue_script( 'thickbox' );
-					wp_enqueue_style( 'thickbox' );
-					wp_enqueue_style( 'editor-buttons' );
+				// Everything below (editor assets, jQuery UI, select2, Font Awesome,
+				// the options framework, etc.) is only used on this plugin's own admin
+				// screens. Bailing out here keeps every other wp-admin page (Posts,
+				// Plugins, Dashboard, other plugins' settings...) from paying for it.
+				if ( ! $is_mep_page ) {
+					return;
 				}
 
-				// These are needed on all admin pages for MEP meta boxes / color pickers
+				wp_enqueue_editor();
+				wp_enqueue_style( 'wp-codemirror' );
+				wp_enqueue_script( 'wp-codemirror' );
+				wp_enqueue_script( 'editor' );
+				wp_enqueue_script( 'quicktags' );
+				wp_enqueue_script( 'media-upload' );
+				wp_enqueue_script( 'thickbox' );
+				wp_enqueue_style( 'thickbox' );
+				wp_enqueue_style( 'editor-buttons' );
+
 				wp_enqueue_script( 'jquery-ui-sortable' );
 				wp_enqueue_style( 'wp-color-picker' );
 				wp_enqueue_script( 'wp-color-picker' );

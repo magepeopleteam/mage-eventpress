@@ -52,8 +52,23 @@
 		} );
 
 		// -----------------------------------------------------------
-		// Quick enable/disable toggle in the card header
-		// -----------------------------------------------------------
+		// Quick enable/disable toggle in the card header AND the Configure
+		// form's Save both write the SAME woocommerce_{id}_settings option,
+		// each by reading the current value then writing the whole array
+		// back. Firing both close together (e.g. flipping the header switch
+		// right after editing the Configure form, or a slow connection
+		// letting the two requests overlap) is a lost-update race: whichever
+		// response lands second silently overwrites the fields the other
+		// one just saved — bank/instructions fields disappearing despite the
+		// gateway itself still working (its 'enabled' flag survives either
+		// way) matches exactly that failure mode. Serialize the two by
+		// disabling BOTH controls while EITHER request for this card is in
+		// flight, so only one write to the option can be outstanding at a time.
+		function setCardBusy( $card, busy ) {
+			$card.find( '.mep-gw-toggle-input' ).prop( 'disabled', busy );
+			$card.find( '.mep-gw-save-btn' ).prop( 'disabled', busy );
+		}
+
 		$manager.on( 'change', '.mep-gw-toggle-input', function () {
 			var $input     = $( this );
 			var $card      = $input.closest( '.mep-gw-card' );
@@ -62,7 +77,7 @@
 			var source     = $card.data( 'gateway-source' ) || 'wc';
 			var ajaxAction = source === 'builtin' ? 'mep_toggle_builtin_gateway' : 'mep_wc_toggle_gateway';
 
-			$input.prop( 'disabled', true );
+			setCardBusy( $card, true );
 
 			ajax( {
 				action:     ajaxAction,
@@ -91,7 +106,7 @@
 					window.alert( i18n.error );
 				} )
 				.always( function () {
-					$input.prop( 'disabled', false );
+					setCardBusy( $card, false );
 				} );
 		} );
 
@@ -113,7 +128,7 @@
 				payload[ f.name ] = f.value;
 			} );
 
-			$btn.prop( 'disabled', true );
+			setCardBusy( $card, true );
 			$status.removeClass( 'is-success is-error' ).text( i18n.saving || 'Saving…' );
 
 			ajax( payload )
@@ -134,7 +149,7 @@
 					$status.addClass( 'is-error' ).text( i18n.error );
 				} )
 				.always( function () {
-					$btn.prop( 'disabled', false );
+					setCardBusy( $card, false );
 				} );
 		} );
 

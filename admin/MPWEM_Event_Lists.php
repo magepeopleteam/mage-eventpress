@@ -729,65 +729,15 @@
 		$start_date = "$year-$month-01 00:00:00";
 		$end_date   = date( 'Y-m-t 23:59:59', strtotime( $start_date ) );
 
-		// Native (custom-payment) order revenue for the month. These mep_custom_order
-		// records are independent of WooCommerce, so they must be counted whether or
-		// not WooCommerce is active. Paid statuses mirror WooCommerce's processing +
-		// completed (native "completed" is the post status "publish").
-		$native_revenue = mpwem_native_orders_revenue( $start_date, $end_date );
-
-		if ( ! MPWEM_Global_Function::has_woocommerce() ) {
-			$rsvp_attendees = get_posts( array(
-				'post_type'   => 'mep_events_attendees',
-				'numberposts' => -1,
-				'post_status' => 'publish',
-				'date_query'  => array(
-					array(
-						'after'     => $start_date,
-						'before'    => $end_date,
-						'inclusive' => true,
-					),
-				),
-			) );
-			return array(
-				'revenue'                 => $native_revenue,
-				'each_month_registration' => count( $rsvp_attendees ),
-			);
-		}
+		// Single source of truth: paid attendees/tickets for the month across BOTH
+		// WooCommerce and native (custom-payment) orders. See
+		// MPWEM_Functions::registration_stats().
+		$stats = MPWEM_Functions::registration_stats( $start_date, $end_date );
 
 		return array(
-			'revenue'                 => $total + $native_revenue,
-			'each_month_registration' => $each_month_order_count,
+			'revenue'                 => $stats['revenue'],
+			'each_month_registration' => $stats['tickets'],
 		);
-	}
-	/**
-	 * Sum the order totals of paid native (custom-payment) orders created within a
-	 * date range. Paid = post status "processing" or "publish" (native Completed),
-	 * mirroring WooCommerce's processing + completed revenue statuses.
-	 *
-	 * @param string $start_date 'Y-m-d H:i:s'
-	 * @param string $end_date   'Y-m-d H:i:s'
-	 * @return float
-	 */
-	function mpwem_native_orders_revenue( $start_date, $end_date ) {
-		$native_orders = get_posts( array(
-			'post_type'      => 'mep_custom_order',
-			'post_status'    => array( 'processing', 'publish' ),
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-			'no_found_rows'  => true,
-			'date_query'     => array(
-				array(
-					'after'     => $start_date,
-					'before'    => $end_date,
-					'inclusive' => true,
-				),
-			),
-		) );
-		$total = 0;
-		foreach ( $native_orders as $order_id ) {
-			$total += (float) get_post_meta( $order_id, '_mep_order_total', true );
-		}
-		return $total;
 	}
 	function get_change_in_percent( $current_month, $prev_month ) {
 		$change = $current_month - $prev_month;

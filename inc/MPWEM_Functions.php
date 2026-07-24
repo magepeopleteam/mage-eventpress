@@ -326,7 +326,12 @@
 					$date_time = $date . ' ' . $start_time;
 					$up_coming_date= MPWEM_Global_Function::check_time_exit_date( $date_time ) ? date( 'Y-m-d H:i', strtotime( $date_time ) ) : date( 'Y-m-d', strtotime( $date_time ) );
 				}
-				 $event_expire_on_date= $event_expire_on == 'event_start_datetime' ?  'event_start_datetime' : 'event_end_datetime';
+				 // $event_expire_on is already normalized above to either 'event_start_datetime'
+				 // or 'event_expire_datetime' — the latter holds the true final expiry (last
+				 // recurring/multi-date occurrence), unlike 'event_end_datetime' which is only
+				 // the first occurrence's end. Using a hardcoded 'event_end_datetime' here made
+				 // "Event End Time" mode show the wrong (too-early) expiry for such events.
+				 $event_expire_on_date = $event_expire_on;
 				 $up_coming_date = $date_type == 'no' ? get_post_meta( $event_id, $event_expire_on_date, true ) : $up_coming_date;
 
 				 // Deduplicate: only write postmeta once per event per request to prevent

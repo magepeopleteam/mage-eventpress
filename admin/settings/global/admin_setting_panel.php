@@ -1077,7 +1077,9 @@ tr.payment_tabs_html { display: none !important; }
 
 
 			function ajax_save_payment_settings_modal() {
-				if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'edit_posts' ) ) {
+				check_ajax_referer( 'mep_save_payment_settings', 'nonce' );
+
+				if ( ! current_user_can( 'manage_options' ) ) {
 					wp_send_json_error( __( 'Permission denied.', 'mage-eventpress' ) );
 				}
 

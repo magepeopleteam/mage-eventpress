@@ -59,7 +59,11 @@
 								<span style="font-size: 13px;"><?php esc_html_e( 'Please configure at least one Payment gateway to start selling tickets.', 'mage-eventpress' ); ?></span>
 							</div>
 							<div>
+								<?php if ( current_user_can( 'manage_options' ) ) : ?>
 								<button type="button" class="button button-primary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Configure Payments', 'mage-eventpress' ); ?></button>
+								<?php else : ?>
+								<span style="font-size: 13px; font-style: italic;"><?php esc_html_e( 'Ask a site administrator to configure a payment method.', 'mage-eventpress' ); ?></span>
+								<?php endif; ?>
 							</div>
 						</div>
 						<div class="mpwem-payment-status"
@@ -76,7 +80,9 @@
 								<span style="font-size: 13px;"><?php esc_html_e( 'Active:', 'mage-eventpress' ); ?> <span class="mpwem-payment-status__methods" style="font-weight: 600;"></span></span>
 							</div>
 							<div>
+								<?php if ( current_user_can( 'manage_options' ) ) : ?>
 								<button type="button" class="button button-secondary mep-payment-settings-trigger" style="white-space: nowrap;"><?php esc_html_e( 'Change Payment Method', 'mage-eventpress' ); ?></button>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>
@@ -107,6 +113,12 @@
 				$screen  = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 				$allowed = array( 'mep_events', 'mep_events_page_mpwem_event_edit' );
 				if ( ! $screen || ! in_array( $screen->id, $allowed, true ) ) {
+					return;
+				}
+				// Saving payment_setting_sec requires manage_options (see
+				// ajax_save_payment_settings_modal()), so there's no point rendering a
+				// modal + trigger buttons that everyone but admins can't use.
+				if ( ! current_user_can( 'manage_options' ) ) {
 					return;
 				}
 				$rendered = true;
@@ -150,6 +162,7 @@
 
 							<div class="mpwem-pm-body">
 								<div id="mep-payment-settings-form">
+									<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'mep_save_payment_settings' ) ); ?>" />
 									<div id="mep-modal-tab-woo" class="mep-modal-tab-content">
 										<div class="mpwem-pm-card">
 											<h4 class="mpwem-pm-card__title"><?php esc_html_e( 'WooCommerce Payment', 'mage-eventpress' ); ?></h4>

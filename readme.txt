@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.7
+Stable tag: 5.3.8
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,12 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.3.8 =
+* Security Fix: Added nonce verification to the Payment Configuration save AJAX action (mep_save_payment_settings_modal), preventing forged requests from modifying payment settings.
+* Security Fix: Restricted the Payment Configuration save AJAX action to Administrators (manage_options), preventing lower-privileged roles (e.g. Contributor) from modifying site-wide payment settings.
+* Credit: Thanks to the Wordfence Threat Intelligence team for responsibly disclosing this issue.
+  25 July 2026*
 
 = 5.3.7 =
 * Security Fix: Hardened PHP Object Injection protection for event Timeline and F.A.Q. content (extended existing serialization guard and disabled class loading on unserialize).

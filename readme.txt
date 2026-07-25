@@ -290,6 +290,14 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 = 5.3.8 =
 * Security Fix: Added nonce verification to the Payment Configuration save AJAX action (mep_save_payment_settings_modal), preventing forged requests from modifying payment settings.
 * Security Fix: Restricted the Payment Configuration save AJAX action to Administrators (manage_options), preventing lower-privileged roles (e.g. Contributor) from modifying site-wide payment settings.
+* Fix: Prevented the WooCommerce gateway enable/disable toggle and its Configure form's Save from racing, which could silently overwrite saved bank/instruction details.
+* Fix: Corrected ticket “sold” counts intermittently showing as zero due to inconsistent event date formatting on certain checkout paths.
+* Fix: Corrected the expiry date for multi-date/recurring events, which could show as expired weeks before the actual last occurrence.
+* Fix: Corrected wrong Revenue/Registration figures and removed PHP warnings on the Event Lists dashboard.
+* Fix: Fixed the current-page highlight being invisible in the Settings menu under some WordPress admin color schemes.
+* Fix: Fixed a fatal error when bulk-activating WooCommerce together with other plugins from the Plugins list.
+* Fix: Resolved a “Translation loading... triggered too early” notice shown on some sites.
+* Improvement: Stopped loading this plugin’s admin assets (jQuery UI, Font Awesome, Google Maps, media library, etc.) on every wp-admin page — now limited to this plugin’s own screens.
 * Credit: Thanks to the Wordfence Threat Intelligence team for responsibly disclosing this issue.
   25 July 2026*
 

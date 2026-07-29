@@ -1038,9 +1038,58 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$switch_url = $this->get_editor_switch_url('modern', $post_id);
 			?>
-			<p class="mpwem-classic-editor-switch" style="margin: 0 0 10px;">
-				<a href="<?php echo esc_url($switch_url); ?>" class="button button-secondary">
-					<span class="dashicons dashicons-update" style="vertical-align: text-bottom;"></span>
+			<style>
+				.mpwem-classic-editor-switch {
+					display: flex;
+					justify-content: center;
+					margin: 0 0 14px;
+				}
+				.mpwem-classic-editor-switch__link {
+					display: inline-flex;
+					align-items: center;
+					gap: 8px;
+					padding: 8px 16px 8px 14px;
+					border-radius: 999px;
+					border: 1px solid var(--color_theme, #6046FF);
+					background: linear-gradient(135deg, var(--color_theme, #6046FF) 0%, var(--color_theme_ee, #6046FF) 100%);
+					color: #fff;
+					font-size: 13px;
+					font-weight: 600;
+					line-height: 1;
+					text-decoration: none;
+					box-shadow: 0 8px 18px -10px var(--color_theme_aa, rgba(96, 70, 255, .55));
+					transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+				}
+				.mpwem-classic-editor-switch__link .dashicons {
+					width: 15px;
+					height: 15px;
+					font-size: 15px;
+					line-height: 15px;
+					transition: transform .35s ease;
+				}
+				.mpwem-classic-editor-switch__link:hover .dashicons,
+				.mpwem-classic-editor-switch__link:focus .dashicons {
+					transform: rotate(180deg);
+				}
+				.mpwem-classic-editor-switch__link:hover,
+				.mpwem-classic-editor-switch__link:focus {
+					color: #fff;
+					transform: translateY(-1px);
+					filter: brightness(1.06);
+					box-shadow: 0 12px 24px -10px var(--color_theme_aa, rgba(96, 70, 255, .6));
+				}
+				.mpwem-classic-editor-switch__link:focus-visible {
+					outline: none;
+					box-shadow: 0 12px 24px -10px var(--color_theme_aa, rgba(96, 70, 255, .6)), 0 0 0 3px var(--color_theme_77, rgba(96, 70, 255, .25));
+				}
+				.mpwem-classic-editor-switch__link:active {
+					transform: translateY(0);
+					filter: brightness(.97);
+				}
+			</style>
+			<p class="mpwem-classic-editor-switch">
+				<a href="<?php echo esc_url($switch_url); ?>" class="mpwem-classic-editor-switch__link">
+					<span class="dashicons dashicons-update"></span>
 					<?php esc_html_e('Switch to Modern Editor', 'mage-eventpress'); ?>
 				</a>
 			</p>

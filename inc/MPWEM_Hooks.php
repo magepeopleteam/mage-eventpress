@@ -70,7 +70,13 @@
 			public function description( $event_id, $event_infos = [] ): void { require MPWEM_Functions::template_path( 'layout/description.php' ); }
 			public function organizer( $event_id, $event_infos = [], $only = '' ): void { require MPWEM_Functions::template_path( 'layout/organizer.php' ); }
 			public function taxonomy_filter( $taxonomy_name, $unq_id = '' ): void {
-				$taxonomies = MPWEM_Global_Function::get_taxonomy( $taxonomy_name );
+				$taxonomies    = MPWEM_Global_Function::get_taxonomy( $taxonomy_name, true );
+				$active_terms  = MPWEM_Query::get_non_expired_term_ids( $taxonomy_name );
+				if ( $taxonomies ) {
+					$taxonomies = array_filter( $taxonomies, function ( $term ) use ( $active_terms ) {
+						return in_array( $term->term_id, $active_terms );
+					} );
+				}
 				if ( $taxonomies ) {
 					?>
                     <div class="mep-events-cats-list">

@@ -48,6 +48,66 @@
 				global $wpdb;
 				$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_mep_pmv_%' OR option_name LIKE '_transient_timeout_mep_pmv_%'" );
 			}
+			/**
+			 * Term IDs (for the given taxonomy) that have at least one published,
+			 * non-expired event, using the same expiry meta/fallback logic as
+			 * event_list_query()/event_query() so it stays consistent with what
+			 * the event list itself shows.
+			 */
+			public static function get_non_expired_term_ids( $taxonomy ) {
+				$event_expire_on_old = mep_get_option( 'mep_event_expire_on_datetimes', 'general_setting_sec', 'event_start_datetime' );
+				$event_expire_on     = ( in_array( $event_expire_on_old, ['event_end_datetime', 'event_expire_datetime'] ) ) ? 'event_expire_datetime' : 'event_upcoming_datetime';
+				$now                 = current_time( 'mysql' );
+
+				if ( $event_expire_on === 'event_upcoming_datetime' ) {
+					$expire_filter = array(
+						'relation' => 'OR',
+						array(
+							'key'     => 'event_upcoming_datetime',
+							'value'   => $now,
+							'compare' => '>',
+							'type'    => 'DATETIME'
+						),
+						array(
+							'relation' => 'AND',
+							array(
+								'relation' => 'OR',
+								array( 'key' => 'event_upcoming_datetime', 'compare' => 'NOT EXISTS' ),
+								array( 'key' => 'event_upcoming_datetime', 'value' => '', 'compare' => '=' )
+							),
+							array(
+								'key'     => 'event_start_datetime',
+								'value'   => $now,
+								'compare' => '>',
+								'type'    => 'DATETIME'
+							)
+						)
+					);
+				} else {
+					$expire_filter = array(
+						'key'     => $event_expire_on,
+						'value'   => $now,
+						'compare' => '>',
+						'type'    => 'DATETIME'
+					);
+				}
+
+				$event_ids = get_posts( array(
+					'post_type'      => 'mep_events',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'meta_query'     => array( $expire_filter ),
+				) );
+
+				if ( empty( $event_ids ) ) {
+					return array();
+				}
+
+				$term_ids = wp_get_object_terms( $event_ids, $taxonomy, array( 'fields' => 'ids' ) );
+				return is_wp_error( $term_ids ) ? array() : $term_ids;
+			}
 			public static function event_list_query($show,$evnt_type = 'upcoming',$sort = '',$paged_override = 0) {
 				$etype          = $evnt_type == 'expired' ? '<' : '>';
 				$etype=$evnt_type=='today'?'LIKE':$etype;

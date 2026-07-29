@@ -145,7 +145,7 @@
                                                 <input type="text" name="filter_with_title" class="formControl" placeholder="<?php esc_html_e( 'Search by Title', 'mage-eventpress' ); ?>">
                                             </label>
 										<?php }
-										$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
+										$category_lists = MPWEM_Global_Function::get_all_term_data( 'mep_cat', 'name', true, true );
 										if ( $params['category-filter'] == 'yes' && is_array( $category_lists ) && sizeof( $category_lists ) > 0 ) {
 											?>
                                             <label>
@@ -157,7 +157,7 @@
                                                 </select>
                                             </label>
 										<?php }
-										$organizer_lists = MPWEM_Global_Function::get_all_term_data( 'mep_org' );
+										$organizer_lists = MPWEM_Global_Function::get_all_term_data( 'mep_org', 'name', true, true );
 										if ( $params['organizer-filter'] == 'yes' && is_array( $organizer_lists ) && sizeof( $organizer_lists ) > 0 ) {
 											?>
                                             <label>

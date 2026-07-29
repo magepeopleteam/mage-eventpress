@@ -3121,7 +3121,8 @@
         $venue.data('mpwemGridEnhanced', true);
     }
 
-    function enhanceEventType($root) {
+    function enhanceEventType($root, opts) {
+        const skipTicketSync = !!(opts && opts.skipTicketSync);
         const $venue = getPanel($root, '#mp_event_venue');
         if (!$venue.length) return;
 
@@ -3227,7 +3228,14 @@
             }
 
             syncHybridTicketCols(val);
-            syncTicketAdvancedColumns($root);
+            if (!skipTicketSync) {
+                // Builds/refreshes the wizard's "Simple Ticket Type" summary widget,
+                // which relies on initializeTicketPricingModal() also having run to
+                // wire up its buttons. The classic editor keeps its own separate
+                // ticket table UI, so skip this there to avoid injecting an inert
+                // duplicate widget onto that tab.
+                syncTicketAdvancedColumns($root);
+            }
 
             // Hide extra services card for virtual/online events (no physical services needed)
             var $extraServicesCard = $('#mpwem_wizard_extra_services_card');
@@ -5819,19 +5827,27 @@
         }
 
         if ((action || '') !== 'trash') {
+            // Required-field checks (title/venue/virtual details/date/display)
+            // only apply when actually publishing, matching the server-side
+            // validation in handle_save() — Draft/Update saves of an existing
+            // event must not be blocked by fields the site may intentionally
+            // leave empty (e.g. virtual event details when a separate
+            // confirmation email is already handled elsewhere).
+            const isPublishAttempt = (action || '') === 'publish';
+
             // When saving from a step-specific modal (ticket/extra-service/date),
             // only validate that step's own rules. Skipping cross-step validation
             // prevents date/display failures from switching the active tab.
-            if (!options.skipOtherSteps && !validateBasicStep($root, { focus: true })) {
+            if (isPublishAttempt && !options.skipOtherSteps && !validateBasicStep($root, { focus: true })) {
                 return;
             }
             if (!validateTicketsStep($root, { focus: true, skipPaymentCheck: options.skipPaymentCheck })) {
                 return;
             }
-            if (!options.skipOtherSteps && !validateDateStep($root, { focus: true })) {
+            if (isPublishAttempt && !options.skipOtherSteps && !validateDateStep($root, { focus: true })) {
                 return;
             }
-            if (!options.skipOtherSteps && !validateDisplayStep($root, { focus: true })) {
+            if (isPublishAttempt && !options.skipOtherSteps && !validateDisplayStep($root, { focus: true })) {
                 return;
             }
         }
@@ -6197,6 +6213,27 @@
                 closeStatusActionMenus();
             }
         });
+    });
+
+    // Classic event editor (post.php?...&mpwem_classic=1): the Venue/Location
+    // tab renders the same "Manual Entry" markup and hidden event-type input
+    // as the modern wizard, but there is no .mpwem-event-wizard wrapper here,
+    // so the bootstrap above never runs. Wire up just those two enhancements
+    // against the legacy .mp_event_all_meta_in_tab container instead.
+    $(function () {
+        if (getWizardRoot().length) return;
+
+        const $classicRoot = $('.mp_event_all_meta_in_tab').first();
+        if (!$classicRoot.length) return;
+
+        try {
+            enhanceVenueGrid($classicRoot);
+            enhanceEventType($classicRoot, { skipTicketSync: true });
+        } catch (error) {
+            if (window.console && window.console.error) {
+                window.console.error('MPWEM classic venue/event-type enhancement failed.', error);
+            }
+        }
     });
 
 })(jQuery);

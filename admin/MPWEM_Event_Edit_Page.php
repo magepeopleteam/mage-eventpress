@@ -40,6 +40,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			add_filter('admin_title', [$this, 'filter_admin_title'], 10, 2);
 			add_action('admin_post_mpwem_switch_event_editor', [$this, 'handle_editor_switch']);
 			add_action('admin_footer', [$this, 'render_classic_switch_title_button']);
+			add_action('mpwem_classic_editor_topbar', [$this, 'render_classic_editor_topbar_switch']);
 		}
 
 		public function register_menu(): void
@@ -1022,6 +1023,30 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			return $actions;
 		}
 
+		/**
+		 * Renders a "Switch to Modern Editor" link inside the classic editor's
+		 * own metabox content (hooked from MPWEM_Settings::event_tab()). This is
+		 * a plain server-rendered link — unlike render_classic_switch_title_button()
+		 * below, it does not depend on a .page-title-action element existing on
+		 * the page, so it can't silently fail to appear.
+		 */
+		public function render_classic_editor_topbar_switch(int $post_id): void
+		{
+			if ($post_id <= 0 || ! current_user_can('edit_post', $post_id)) {
+				return;
+			}
+
+			$switch_url = $this->get_editor_switch_url('modern', $post_id);
+			?>
+			<p class="mpwem-classic-editor-switch" style="margin: 0 0 10px;">
+				<a href="<?php echo esc_url($switch_url); ?>" class="button button-secondary">
+					<span class="dashicons dashicons-update" style="vertical-align: text-bottom;"></span>
+					<?php esc_html_e('Switch to Modern Editor', 'mage-eventpress'); ?>
+				</a>
+			</p>
+			<?php
+		}
+
 		public function render_classic_switch_title_button(): void
 		{
 			if (! $this->is_classic_event_post_screen()) {
@@ -1196,10 +1221,22 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 		{
 			unset($hook);
 
-			$is_classic = $this->is_classic_bypass()
-				&& function_exists('get_current_screen')
-				&& ($screen = get_current_screen())
-				&& $screen->post_type === self::POST_TYPE;
+			// The classic screen is reached two ways: an explicit ?mpwem_classic=1
+			// bypass, or the post/site edit mode already resolving to "classic"
+			// (see maybe_redirect_edit_screen()), in which case post.php never
+			// redirects to the modern wizard and no bypass param is present.
+			$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+			$is_event_post_screen = $screen && $screen->post_type === self::POST_TYPE && $screen->base === 'post';
+
+			$is_classic = false;
+			if ($is_event_post_screen) {
+				if ($this->is_classic_bypass()) {
+					$is_classic = true;
+				} else {
+					$post_id_for_mode = isset($_GET['post']) ? absint($_GET['post']) : 0;
+					$is_classic = ! $this->is_modern_mode_enabled($post_id_for_mode);
+				}
+			}
 
 			if (! $this->is_edit_screen() && ! $is_classic) {
 				return;
@@ -1213,6 +1250,18 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit.css',
 					['mpwem_admin'],
 					$this->get_asset_version('assets/admin/mpwem_event_edit.css')
+				);
+			} elseif ($is_classic) {
+				// The classic screen only gets the Manual Entry / Event Type
+				// enhancements (see the classic bootstrap in mpwem_event_edit.js),
+				// so it loads a small, scoped stylesheet for just those instead
+				// of the full wizard CSS — that file has unscoped selectors
+				// (e.g. .mpev-label) that collide with unrelated classic markup.
+				wp_enqueue_style(
+					'mpwem_event_edit_classic',
+					MPWEM_PLUGIN_URL . '/assets/admin/mpwem_event_edit_classic.css',
+					['mpwem_admin'],
+					$this->get_asset_version('assets/admin/mpwem_event_edit_classic.css')
 				);
 			}
 

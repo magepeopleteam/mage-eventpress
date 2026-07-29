@@ -349,16 +349,22 @@
 				return wp_get_attachment_image_url( $image_id, $size );
 			}
 			//=================//
-			public static function get_taxonomy( $name ) {
-				return get_terms( array( 'taxonomy' => $name, 'hide_empty' => false ) );
+			public static function get_taxonomy( $name, $hide_empty = false ) {
+				return get_terms( array( 'taxonomy' => $name, 'hide_empty' => $hide_empty ) );
 			}
 			public static function get_term_meta( $meta_id, $meta_key, $default = '' ) {
 				$data = get_term_meta( $meta_id, $meta_key, true ) ?: $default;
 				return self::data_sanitize( $data );
 			}
-			public static function get_all_term_data( $term_name, $value = 'name' ) {
+			public static function get_all_term_data( $term_name, $value = 'name', $hide_empty = false, $only_active = false ) {
 				$all_data   = [];
-				$taxonomies = self::get_taxonomy( $term_name );
+				$taxonomies = self::get_taxonomy( $term_name, $hide_empty );
+				if ( $only_active && $taxonomies && class_exists( 'MPWEM_Query' ) ) {
+					$active_terms = MPWEM_Query::get_non_expired_term_ids( $term_name );
+					$taxonomies   = array_filter( $taxonomies, function ( $term ) use ( $active_terms ) {
+						return in_array( $term->term_id, $active_terms );
+					} );
+				}
 				if ( $taxonomies && is_array( $taxonomies ) && sizeof( $taxonomies ) > 0 ) {
 					foreach ( $taxonomies as $taxonomy ) {
 						$all_data[] = $taxonomy->$value;

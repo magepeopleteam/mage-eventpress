@@ -1,28 +1,31 @@
 /**
  * Event Booking Manager – deactivation modal.
  *
+ * A single static modal — the deactivate-mode choice and the optional
+ * "why are you deactivating" feedback fields are both visible at once, no
+ * step/screen transitions. This used to hand off to a second, separate
+ * Appsero feedback survey popup after this modal closed; that hand-off is
+ * gone, and any reason the user picks here is instead posted straight to
+ * Appsero's own existing uninstall-reason endpoint (no popup involved), so
+ * that feedback channel keeps working without a second dialog.
+ *
  * Flow when the plugin's "Deactivate" link is clicked:
- *   1. Our modal opens (capture-phase listener, so it runs before – and suppresses –
- *      any other popup bound to the same link, e.g. the Appsero feedback survey).
- *   2. User chooses "Deactivate only" or "Delete all data".
- *      - Delete: data is removed in small batches with a progress bar (so sites with
- *        thousands of events + linked hidden products never time out).
- *   3. What happens next depends on the choice:
- *      - Deactivate only: we re-fire the original click with a pass-through flag so
- *        the Appsero feedback survey opens through its own handler (with the correct
- *        deactivate URL). If Appsero isn't present the click just navigates.
- *      - Delete all data: once the cleanup finishes we go straight to the deactivate
- *        URL and skip the survey entirely (the user has already committed to leaving,
- *        and the data is gone, so there is nothing to cancel back to).
+ *   1. Our modal opens (capture-phase listener stops the click before the
+ *      native deactivate link, or Appsero's own click handler, ever see it).
+ *   2. User picks "Deactivate only" or "Delete all data", optionally picks a
+ *      reason, and clicks the single action button.
+ *      - Deactivate only: reason (if any) posted to Appsero, then navigate
+ *        to the deactivate URL.
+ *      - Delete all data: data is removed in small batches with a progress
+ *        bar (so sites with thousands of events + linked hidden products
+ *        never time out); reason (if any) posted alongside, then navigate.
  */
 (function ($) {
 	'use strict';
 
 	var cfg = window.mpwemDeactivation || {};
 	var i18n = cfg.i18n || {};
-	var deactivateLinkEl = null; // the actual <a> we intercepted
 	var deactivateUrl = '';
-	var passThrough = false; // set right before we re-fire the click for Appsero/native
 
 	function $modal() {
 		return $('#mpwem-deact-modal');
@@ -30,14 +33,6 @@
 
 	function isOurDeactivateLink(anchor) {
 		if (!anchor || anchor.tagName !== 'A') {
-			return false;
-		}
-		// Never intercept links inside the Appsero feedback survey (its
-		// "Skip & Deactivate" link's href is the real deactivate URL, so it
-		// would otherwise match below and loop us back to our own modal). Once
-		// the user is in that survey they have already passed through our modal;
-		// the link must navigate straight to the deactivate URL.
-		if (anchor.closest('.wd-dr-modal')) {
 			return false;
 		}
 		var href = anchor.getAttribute('href') || '';
@@ -52,17 +47,26 @@
 		return cfg.basename && href.indexOf(encodeURIComponent(cfg.basename)) !== -1;
 	}
 
+	function updateSubmitLabel() {
+		var purge = selectedMode() === 'purge';
+		$modal().find('.mpwem-deact-submit')
+			.text(purge ? (i18n.deleteAndDeactivate || 'Delete & Deactivate') : (i18n.deactivate || 'Deactivate'));
+	}
+
 	function openModal() {
 		var $m = $modal();
 		$m.find('input[name="mpwem_deact_mode"][value="keep"]').prop('checked', true);
 		$m.find('#mpwem-deact-understand').prop('checked', false);
+		$m.find('input[name="mpwem_deact_reason"]').prop('checked', false);
+		$m.find('.mpwem-deact-reason-detail').val('').attr('placeholder', cfg.reasonPlaceholder || '');
 		$m.find('.mpwem-deact-confirm').attr('hidden', true);
 		$m.find('.mpwem-deact-error').attr('hidden', true).text('');
-		$m.find('.mpwem-deact-choice').attr('hidden', false);
+		$m.find('.mpwem-deact-choice, .mpwem-deact-reason').attr('hidden', false);
 		$m.find('.mpwem-deact-progress').attr('hidden', true);
 		$m.find('.mpwem-deact-bar__fill').css('width', '0%');
 		$m.find('.mpwem-deact-cancel').attr('hidden', false);
 		resetSubmit();
+		updateSubmitLabel();
 		$m.addClass('is-open').attr('aria-hidden', 'false');
 		document.body.classList.add('mpwem-deact-lock');
 	}
@@ -86,24 +90,37 @@
 		$modal().find('.mpwem-deact-error').text(msg).attr('hidden', false);
 	}
 
+	function goToDeactivateUrl() {
+		window.location.href = deactivateUrl;
+	}
+
 	/**
-	 * Continue to deactivation.
-	 *
-	 * @param {boolean} skipSurvey When true (the delete path) we navigate straight to
-	 *   the deactivate URL and bypass the Appsero survey. Otherwise we re-dispatch a
-	 *   real click that our capture listener lets through (passThrough), so the Appsero
-	 *   feedback survey can open via its own handler; if Appsero is absent the click
-	 *   simply navigates.
+	 * Submits the picked reason (if any) to Appsero's own AJAX endpoint —
+	 * reusing their existing feedback channel without opening their popup —
+	 * then navigates to the deactivate URL regardless of the AJAX outcome.
 	 */
-	function proceedToDeactivate(skipSurvey) {
-		if (skipSurvey || !deactivateLinkEl) {
-			window.location.href = deactivateUrl;
+	function submitReasonThenDeactivate() {
+		var $m = $modal();
+		var $radio = $m.find('input[name="mpwem_deact_reason"]:checked');
+		var reasonId = $radio.length ? $radio.val() : 'none';
+		var reasonInfo = $m.find('.mpwem-deact-reason-detail').val() || '';
+
+		if (!cfg.appseroAction || !cfg.appseroNonce) {
+			goToDeactivateUrl();
 			return;
 		}
-		passThrough = true;
-		closeModal();
-		// Native .click() fires a real event: capture (us, passes) -> bubble (Appsero).
-		deactivateLinkEl.click();
+
+		$.ajax({
+			url: cfg.ajaxUrl,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				action: cfg.appseroAction,
+				nonce: cfg.appseroNonce,
+				reason_id: reasonId,
+				reason_info: reasonInfo
+			}
+		}).always(goToDeactivateUrl);
 	}
 
 	function runPurge() {
@@ -112,7 +129,7 @@
 		var removed = 0;
 		var lastRemaining = Infinity;
 
-		$m.find('.mpwem-deact-choice').attr('hidden', true);
+		$m.find('.mpwem-deact-choice, .mpwem-deact-reason').attr('hidden', true);
 		$m.find('.mpwem-deact-progress').attr('hidden', false);
 		$m.find('.mpwem-deact-cancel').attr('hidden', true);
 		$m.find('.mpwem-deact-submit').addClass('is-loading').text(i18n.cleaning || 'Deleting data…');
@@ -131,10 +148,11 @@
 		}
 
 		function fail() {
-			$m.find('.mpwem-deact-choice').attr('hidden', false);
+			$m.find('.mpwem-deact-choice, .mpwem-deact-reason').attr('hidden', false);
 			$m.find('.mpwem-deact-progress').attr('hidden', true);
 			$m.find('.mpwem-deact-cancel').attr('hidden', false);
 			resetSubmit();
+			updateSubmitLabel();
 			showError(i18n.failed || 'Cleanup failed.');
 		}
 
@@ -155,8 +173,7 @@
 				}
 				if (res.data.done) {
 					setBar(total, true);
-					// Delete path: deactivate immediately, skip the Appsero survey.
-					proceedToDeactivate(true);
+					submitReasonThenDeactivate();
 					return;
 				}
 				var remaining = parseInt(res.data.remaining, 10) || 0;
@@ -189,14 +206,8 @@
 			if (!anchor || !isOurDeactivateLink(anchor)) {
 				return;
 			}
-			// Our re-fired click: let it flow through to Appsero / native navigation.
-			if (passThrough) {
-				passThrough = false;
-				return;
-			}
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			deactivateLinkEl = anchor;
 			deactivateUrl = anchor.getAttribute('href');
 			openModal();
 		},
@@ -210,16 +221,26 @@
 		}
 
 		cfg.submitText = $m.find('.mpwem-deact-submit').text();
+		cfg.reasonPlaceholder = $m.find('.mpwem-deact-reason-detail').attr('placeholder') || '';
 
 		$m.on('change', 'input[name="mpwem_deact_mode"]', function () {
 			var purge = selectedMode() === 'purge';
 			$m.find('.mpwem-deact-confirm').attr('hidden', !purge);
 			$m.find('.mpwem-deact-error').attr('hidden', true);
+			updateSubmitLabel();
 		});
 
 		$m.on('click', '.mpwem-deact-close, .mpwem-deact-cancel', function (e) {
 			e.preventDefault();
 			closeModal();
+		});
+
+		$m.on('click', 'input[name="mpwem_deact_reason"]', function () {
+			var $textarea = $m.find('.mpwem-deact-reason-detail');
+			var placeholder = $(this).data('placeholder');
+			if (placeholder) {
+				$textarea.attr('placeholder', placeholder);
+			}
 		});
 
 		$m.on('click', function (e) {
@@ -242,8 +263,8 @@
 			}
 
 			if (selectedMode() !== 'purge') {
-				// Deactivate only: show the Appsero feedback survey before leaving.
-				proceedToDeactivate(false);
+				$btn.addClass('is-loading').text(i18n.submitting || 'Deactivating…');
+				submitReasonThenDeactivate();
 				return;
 			}
 

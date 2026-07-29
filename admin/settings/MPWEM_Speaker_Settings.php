@@ -20,13 +20,29 @@
 				$general_setting_sec = is_array($event_infos) && array_key_exists( 'general_setting_sec', $event_infos ) ? $event_infos['general_setting_sec'] : [];
 				$event_label         = is_array($general_setting_sec) && array_key_exists( 'mep_event_label', $general_setting_sec ) ? $general_setting_sec['mep_event_label'] : __( 'Events', 'mage-eventpress' );
 				$all_speakers        = MPWEM_Query::get_all_post_ids( 'mep_event_speaker' );
+				$speaker_enabled     = $event_id ? get_post_meta( $event_id, 'mep_event_enable_speaker', true ) : '';
+				if ( '' === $speaker_enabled ) {
+					$speaker_enabled = 'no';
+				}
 				?>
                 <div class="mpwem_style mp_tab_item mpwem_speaker_settings" data-tab-item="#mpwem_speaker_settings">
-                    <div class="_layout_default_xs_mp_zero">
-                        <div class="_bg_light_padding">
-                            <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Speaker Settings', 'mage-eventpress' ); ?></h4>
-                            <span class="_mp_zero"><?php esc_html_e( 'Speaker Settings will be here.', 'mage-eventpress' ); ?></span>
+                    <div class="_bg_light_padding">
+                        <h4><?php echo esc_html( $event_label ) . ' ' . esc_html__( 'Speaker Settings', 'mage-eventpress' ); ?></h4>
+                        <span class="_mp_zero"><?php esc_html_e( 'Speaker Settings will be here.', 'mage-eventpress' ); ?></span>
+                    </div>
+                    <div class="_padding_bt">
+                        <div class="mpev-label">
+                            <div>
+                                <h2><?php esc_html_e( 'Enable Speaker Section', 'mage-eventpress' ); ?></h2>
+                                <span class="label-text"><?php esc_html_e( 'Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress' ); ?></span>
+                            </div>
+                            <label class="mpev-switch">
+                                <input type="checkbox" name="mep_event_enable_speaker" id="mep_event_enable_speaker" value="<?php echo esc_attr( $speaker_enabled ); ?>" <?php echo esc_attr( ( $speaker_enabled === 'yes' ) ? 'checked' : '' ); ?> data-collapse-target="#mpwem-speaker-fields" data-close-target="" data-toggle-values="yes,no">
+                                <span class="mpev-slider"></span>
+                            </label>
                         </div>
+                    </div>
+                    <div class="_layout_default_xs_mp_zero" id="mpwem-speaker-fields" style="display:<?php echo esc_attr( $speaker_enabled === 'yes' ? 'block' : 'none' ); ?>">
                         <div class="_padding_bt">
                             <label class="_justify_between_align_center_wrap ">
                                 <span class="_mr"><?php esc_html_e( 'Speaker Section\'s Label', 'mage-eventpress' ); ?></span>

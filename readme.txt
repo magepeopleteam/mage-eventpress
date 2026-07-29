@@ -298,8 +298,11 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 * Fix: Fixed a fatal error when bulk-activating WooCommerce together with other plugins from the Plugins list.
 * Fix: Resolved a “Translation loading... triggered too early” notice shown on some sites.
 * Improvement: Stopped loading this plugin’s admin assets (jQuery UI, Font Awesome, Google Maps, media library, etc.) on every wp-admin page — now limited to this plugin’s own screens.
+* Fix: Restored the “Manual Entry” button and Event Type (In-Person/Online/Hybrid) selector on the classic Venue/Location tab, which were unresponsive because their supporting script only initialized when the step-by-step editor’s markup was present.
+* Fix: Corrected the classic event editor loading none of its Venue/Location enhancements when a site’s default event edit mode is set to Classic, instead of only when reached via the internal Classic-editor bypass link.
+* Improvement: Reduced the styles loaded on the classic Venue/Location tab to a smaller, dedicated stylesheet, preventing layout conflicts with unrelated fields on that tab.
 * Credit: Thanks to the Wordfence Threat Intelligence team for responsibly disclosing this issue.
-  25 July 2026*
+  28 July 2026*
 
 = 5.3.7 =
 * Security Fix: Hardened PHP Object Injection protection for event Timeline and F.A.Q. content (extended existing serialization guard and disabled class loading on unserialize).

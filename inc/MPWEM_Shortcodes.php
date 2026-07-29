@@ -157,8 +157,8 @@
                         sort( $filter_states );
                         $filter_dates  = array_unique( $filter_dates );
                         sort( $filter_dates );
-                        $filter_categories = MPWEM_Global_Function::get_all_term_data( 'mep_cat' );
-                        $filter_organizers = MPWEM_Global_Function::get_all_term_data( 'mep_org' );
+                        $filter_categories = MPWEM_Global_Function::get_all_term_data( 'mep_cat', 'name', true, true );
+                        $filter_organizers = MPWEM_Global_Function::get_all_term_data( 'mep_org', 'name', true, true );
                         $filter_dates_json = wp_json_encode( array_values( $filter_dates ) );
                         ?>
                         <div class="mep_event_filter_panel" style="display:none;" data-event-dates='<?php echo esc_attr( $filter_dates_json ); ?>'>

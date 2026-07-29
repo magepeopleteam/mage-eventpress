@@ -1,0 +1,299 @@
+/*
+ * Styles for the modern Venue/Location enhancements (Manual Entry toggle +
+ * Event Type selector) on the classic event editor. This is a focused
+ * subset of mpwem_event_edit.css's rules for these same components — the
+ * full wizard stylesheet is not used here because several of its selectors
+ * (e.g. .mpev-label) are unscoped and collide with unrelated markup on the
+ * classic screen.
+ */
+
+:root {
+    --mpwem-primary: #2563eb;
+    --mpwem-primary-hover: #1d4ed8;
+    --mpwem-border: #e2e8f0;
+    --mpwem-text: #1e293b;
+    --mpwem-muted: #506b90;
+}
+
+/* Event Type card */
+.mpwem-event-type-card {
+    background: #f8fafc;
+    border: 1px solid var(--mpwem-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.mpwem-event-type-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 12px 0;
+    padding: 0;
+}
+
+.mpwem-event-type-toggle {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.mpwem-event-type-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid var(--mpwem-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mpwem-event-type-option.is-active {
+    border-color: var(--mpwem-primary);
+}
+
+.mpwem-event-type-option.is-active::after {
+    content: "\2713";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--mpwem-primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+    line-height: 1;
+}
+
+.mpwem-event-type-option .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--mpwem-muted);
+}
+
+.mpwem-event-type-option.is-active .dashicons {
+    color: var(--mpwem-primary);
+}
+
+.mpwem-event-type-option strong {
+    display: block;
+    font-size: 14px;
+}
+
+.mpwem-event-type-option small {
+    display: block;
+    font-size: 12px;
+    color: var(--mpwem-muted);
+}
+
+/* Venue Grid (manual address fields) */
+.mpwem-venue-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    border: 1px solid var(--mpwem-border);
+    margin-top: 2px;
+}
+
+.mpwem-venue-field {
+    background: #fff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.mpwem-venue-field.is-full {
+    grid-column: span 2;
+}
+
+.mpwem-venue-label {
+    display: block;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    color: var(--mpwem-muted);
+    margin-bottom: 5px;
+}
+
+.mpwem-venue-field input,
+.mpwem-venue-field select {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color .15s;
+}
+
+.mpwem-venue-field input:focus,
+.mpwem-venue-field select:focus {
+    border-color: var(--mpwem-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, .12);
+}
+
+.mpwem-venue-search-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mpwem-venue-search-label {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--mpwem-text);
+    margin-bottom: 2px;
+}
+
+.mpwem-venue-search-input {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.mpwem-venue-search-input:focus {
+    border-color: var(--mpwem-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.mpwem-venue-search-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.mpwem-venue-search-hint {
+    font-size: 11px;
+    color: #94a3b8;
+    flex: 1;
+}
+
+/* Manual Entry Toggle Button */
+.mpwem-manual-entry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mpwem-primary);
+    background: rgba(37, 99, 235, .07);
+    border: 1px solid rgba(37, 99, 235, .2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    white-space: nowrap;
+    line-height: 1.6;
+}
+
+.mpwem-manual-entry-btn:hover {
+    background: rgba(37, 99, 235, .14);
+    border-color: rgba(37, 99, 235, .38);
+    color: var(--mpwem-primary-hover);
+}
+
+.mpwem-manual-entry-btn.is-open {
+    background: #e0e7ff;
+    border-color: rgba(37, 99, 235, .35);
+    color: var(--mpwem-primary-hover);
+}
+
+.mpwem-manual-entry-btn .dashicons {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+@media (max-width: 991px) {
+    .mpwem-venue-grid {
+        gap: 8px;
+    }
+
+    .mpwem-venue-search-footer {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 767px) {
+    .mpwem-event-type-card {
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+
+    .mpwem-event-type-toggle {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .mpwem-event-type-option {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .mpwem-event-type-option strong {
+        font-size: 13px;
+    }
+
+    .mpwem-venue-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mpwem-venue-field.is-full {
+        grid-column: span 1;
+    }
+
+    .mpwem-venue-field {
+        padding: 9px 10px;
+    }
+
+    .mpwem-venue-search-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .mpwem-manual-entry-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .mpwem-venue-field input,
+    .mpwem-venue-field select {
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+
+    .mpwem-event-type-card {
+        margin-bottom: 12px;
+    }
+}

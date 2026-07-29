@@ -138,6 +138,46 @@ body.mpwem-deact-lock {
 	display: none !important;
 }
 
+/* Optional reason section — shown together with the choice above, in the
+   same view (not a separate step). */
+.mpwem-deact-reason {
+	margin-top: 16px;
+	padding-top: 16px;
+	border-top: 1px solid #e2e4e7;
+}
+.mpwem-deact-reason-list {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 10px;
+}
+.mpwem-deact-reason-option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 13px;
+	color: #1d2327;
+	transition: border-color 0.12s ease;
+}
+.mpwem-deact-reason-option:hover {
+	border-color: #2271b1;
+}
+.mpwem-deact-reason-detail {
+	width: 100%;
+	box-sizing: border-box;
+	resize: vertical;
+	margin-bottom: 8px;
+}
+.mpwem-deact-reason-note {
+	margin: 0;
+	font-size: 12px;
+	color: #757575;
+}
+
 /* Progress */
 .mpwem-deact-progress {
 	padding: 8px 0 4px;

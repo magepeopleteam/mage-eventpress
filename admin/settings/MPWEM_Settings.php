@@ -25,6 +25,7 @@
 				$single_event_setting_sec = is_array($event_infos) && array_key_exists( 'single_event_setting_sec', $event_infos ) ? $event_infos['single_event_setting_sec'] : [];
 				$speaker_status           = 'yes'; // Speaker list is always enabled (on/off setting removed).
 				?>
+				<?php do_action( 'mpwem_classic_editor_topbar', $post_id ); ?>
                 <div class="mp_event_all_meta_in_tab mp_event_tab_area">
                     <div class="mp_tab_menu">
                         <ul>

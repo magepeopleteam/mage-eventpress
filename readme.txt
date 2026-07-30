@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.8
+Stable tag: 5.3.9
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.3.9 =
+* Fix: Corrected the “View More Date” button label to read “View More Dates” on the event listing and single-event date list.
+  30 July 2026*
 
 = 5.3.8 =
 * Security Fix: Added nonce verification to the Payment Configuration save AJAX action (mep_save_payment_settings_modal), preventing forged requests from modifying payment settings.

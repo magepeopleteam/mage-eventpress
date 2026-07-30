@@ -305,6 +305,7 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 * Fix: Restored the “Manual Entry” button and Event Type (In-Person/Online/Hybrid) selector on the classic Venue/Location tab, which were unresponsive because their supporting script only initialized when the step-by-step editor’s markup was present.
 * Fix: Corrected the classic event editor loading none of its Venue/Location enhancements when a site’s default event edit mode is set to Classic, instead of only when reached via the internal Classic-editor bypass link.
 * Improvement: Reduced the styles loaded on the classic Venue/Location tab to a smaller, dedicated stylesheet, preventing layout conflicts with unrelated fields on that tab.
+* Fix: Restored the per-event “Enable Speaker Section” toggle on the classic event editor, missing since the step-by-step editor rework — its absence also silently reset every classic-saved event’s speaker section to off on each save. Restored the matching global “On/Off Speaker List” setting as well.
 * Credit: Thanks to the Wordfence Threat Intelligence team for responsibly disclosing this issue.
   28 July 2026*
 

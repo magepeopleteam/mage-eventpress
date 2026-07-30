@@ -4800,9 +4800,9 @@ die();
 				<?php if ( $show_multidate == 'yes' ) { ?>
                     <span class='mep_more_date_btn mp_event_visible_event_time'
                           data-event-id="<?php echo esc_attr( $event_id ); ?>"
-                          data-active-text="<?php echo esc_attr( mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__( 'View More Date', 'mage-eventpress' ) ) ); ?>"
+                          data-active-text="<?php echo esc_attr( mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', esc_html__( 'View More Dates', 'mage-eventpress' ) ) ); ?>"
                           data-hide-text="<?php echo esc_attr( mep_get_option( 'mep_event_hide_date_list_btn_text', 'label_setting_sec', __( 'Hide Date Lists', 'mage-eventpress' ) ) ); ?>">
-						<?php echo mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', __( 'View More Date', 'mage-eventpress' ) ); ?>
+						<?php echo mep_get_option( 'mep_event_view_more_date_btn_text', 'label_setting_sec', __( 'View More Dates', 'mage-eventpress' ) ); ?>
 					</span>
 				<?php } ?>
 				<?php

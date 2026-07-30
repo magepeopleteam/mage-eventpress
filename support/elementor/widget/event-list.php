@@ -285,7 +285,7 @@ class MEPEventListWidget extends Widget_Base {
 		$this->add_control(
 			'mep_event_show_view_more_date_ribbon',
 			[
-				'label' => __( 'Show View More Date Button', 'mage-eventpress' ),
+				'label' => __( 'Show View More Dates Button', 'mage-eventpress' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'inline',
 				'options' => [

@@ -143,9 +143,9 @@
 									<button type="button" class="mep-btn mep-btn-primary" id="mep_free_attlist_filter_btn">
 										<span class="dashicons dashicons-search"></span> <?php esc_html_e( 'Filter', 'mage-eventpress' ); ?>
 									</button>
-									<?php $upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/', 0 ); ?>
+									<?php $upgrade_url = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/', 0 ); ?>
 									<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-free-attlist-upgrade">
-										<?php esc_html_e( 'More filters, columns & actions in PRO', 'mage-eventpress' ); ?> &rarr;
+										<?php esc_html_e( 'Get more filters, buy PRO', 'mage-eventpress' ); ?> &rarr;
 									</a>
 								</div>
 							</div><!-- .mep-filter-body -->

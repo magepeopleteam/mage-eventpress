@@ -1688,30 +1688,51 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 		public function render_settings_page() {
 			$settings = mep_cal_get_all_settings();
 			?>
-			<div class="wrap mep-calendar-settings-wrap mpwem_style mep_settings_wrapper">
-				<h1><span class="dashicons dashicons-calendar-alt" style="font-size:28px;margin-right:8px;"></span><?php esc_html_e( 'Event Calendar Settings', 'mage-eventpress' ); ?></h1>
-				<p class="description"><?php esc_html_e( 'Configure the appearance and behavior of the event calendar.', 'mage-eventpress' ); ?></p>
+			<div class="wrap mep-calendar-settings-wrap">
+				<div class="mep-cal-shell">
+					<header class="mep-cal-hero">
+						<div class="mep-cal-hero-copy">
+							<span class="mep-cal-eyebrow">
+								<span class="dashicons dashicons-calendar-alt"></span>
+								<?php esc_html_e( 'Event tools', 'mage-eventpress' ); ?>
+							</span>
+							<h1 class="mep-cal-title"><?php esc_html_e( 'Calendar Settings', 'mage-eventpress' ); ?></h1>
+							<p class="mep-cal-subtitle"><?php esc_html_e( 'Configure appearance, navigation, and shortcode behavior for the frontend event calendar.', 'mage-eventpress' ); ?></p>
+						</div>
+						<div class="mep-cal-hero-meta">
+							<div class="mep-cal-chip">
+								<span class="mep-cal-chip-icon"><span class="dashicons dashicons-shortcode"></span></span>
+								<div>
+									<code>[mep-event-calendar]</code>
+									<small><?php esc_html_e( 'Default shortcode', 'mage-eventpress' ); ?></small>
+								</div>
+							</div>
+						</div>
+					</header>
 
 				<?php do_action( 'mep_calendar_settings_before' ); ?>
 
-				<form method="post" action="options.php">
+				<form method="post" action="options.php" class="mep-cal-form">
 					<?php settings_fields( 'mep_calendar_settings_group' ); ?>
 
-					<?php // Fixed by Shahnur — calendar settings tab layout and 2026-05-06 02:20 PM (Asia/Dhaka) ?>
-					<div class="mep-cal-settings-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Calendar settings sections', 'mage-eventpress' ); ?>">
-						<button type="button" class="mep-cal-settings-tab is-active" id="mep-cal-tab-general" data-tab-target="mep-cal-panel-general" role="tab" aria-selected="true" aria-controls="mep-cal-panel-general"><?php esc_html_e( 'General', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-navigation" data-tab-target="mep-cal-panel-navigation" role="tab" aria-selected="false" aria-controls="mep-cal-panel-navigation"><?php esc_html_e( 'Navigation', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-expired" data-tab-target="mep-cal-panel-expired" role="tab" aria-selected="false" aria-controls="mep-cal-panel-expired"><?php esc_html_e( 'Expired Events', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-colors" data-tab-target="mep-cal-panel-colors" role="tab" aria-selected="false" aria-controls="mep-cal-panel-colors"><?php esc_html_e( 'Colors', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-weekdays" data-tab-target="mep-cal-panel-weekdays" role="tab" aria-selected="false" aria-controls="mep-cal-panel-weekdays"><?php esc_html_e( 'Weekdays', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-backgrounds" data-tab-target="mep-cal-panel-backgrounds" role="tab" aria-selected="false" aria-controls="mep-cal-panel-backgrounds"><?php esc_html_e( 'Backgrounds', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-stock" data-tab-target="mep-cal-panel-stock" role="tab" aria-selected="false" aria-controls="mep-cal-panel-stock"><?php esc_html_e( 'Stock', 'mage-eventpress' ); ?></button>
-						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-shortcode" data-tab-target="mep-cal-panel-shortcode" role="tab" aria-selected="false" aria-controls="mep-cal-panel-shortcode"><?php esc_html_e( 'Shortcode', 'mage-eventpress' ); ?></button>
+					<nav class="mep-cal-settings-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Calendar settings sections', 'mage-eventpress' ); ?>">
+						<button type="button" class="mep-cal-settings-tab is-active" id="mep-cal-tab-general" data-tab-target="mep-cal-panel-general" data-subtitle="<?php esc_attr_e( 'View, locale & event source', 'mage-eventpress' ); ?>" role="tab" aria-selected="true" aria-controls="mep-cal-panel-general"><span class="dashicons dashicons-admin-generic"></span><span><?php esc_html_e( 'General', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-navigation" data-tab-target="mep-cal-panel-navigation" data-subtitle="<?php esc_attr_e( 'Prev/next & year controls', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-navigation"><span class="dashicons dashicons-leftright"></span><span><?php esc_html_e( 'Navigation', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-expired" data-tab-target="mep-cal-panel-expired" data-subtitle="<?php esc_attr_e( 'Visibility & faded styles', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-expired"><span class="dashicons dashicons-backup"></span><span><?php esc_html_e( 'Expired Events', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-colors" data-tab-target="mep-cal-panel-colors" data-subtitle="<?php esc_attr_e( 'Event & calendar palette', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-colors"><span class="dashicons dashicons-art"></span><span><?php esc_html_e( 'Colors', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-weekdays" data-tab-target="mep-cal-panel-weekdays" data-subtitle="<?php esc_attr_e( 'Column background colors', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-weekdays"><span class="dashicons dashicons-calendar"></span><span><?php esc_html_e( 'Weekdays', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-backgrounds" data-tab-target="mep-cal-panel-backgrounds" data-subtitle="<?php esc_attr_e( 'Day image rules', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-backgrounds"><span class="dashicons dashicons-format-image"></span><span><?php esc_html_e( 'Backgrounds', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-stock" data-tab-target="mep-cal-panel-stock" data-subtitle="<?php esc_attr_e( 'Sold out & low stock colors', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-stock"><span class="dashicons dashicons-tickets-alt"></span><span><?php esc_html_e( 'Stock', 'mage-eventpress' ); ?></span></button>
+						<button type="button" class="mep-cal-settings-tab" id="mep-cal-tab-shortcode" data-tab-target="mep-cal-panel-shortcode" data-subtitle="<?php esc_attr_e( 'Usage & parameters', 'mage-eventpress' ); ?>" role="tab" aria-selected="false" aria-controls="mep-cal-panel-shortcode"><span class="dashicons dashicons-shortcode"></span><span><?php esc_html_e( 'Shortcode', 'mage-eventpress' ); ?></span></button>
+					</nav>
+					<div class="mep-cal-panel-meta">
+						<strong id="mep-cal-panel-title"><?php esc_html_e( 'General', 'mage-eventpress' ); ?></strong>
+						<span id="mep-cal-panel-sub"><?php esc_html_e( 'View, locale & event source', 'mage-eventpress' ); ?></span>
 					</div>
 
 					<!-- General Settings -->
 					<div class="mep-cal-settings-section is-active" id="mep-cal-panel-general" role="tabpanel" aria-labelledby="mep-cal-tab-general">
-						<h2><?php esc_html_e( 'General Settings', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-admin-generic"></span><h2><?php esc_html_e( 'General Settings', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><label for="mep_cal_default_view"><?php esc_html_e( 'Default View', 'mage-eventpress' ); ?></label></th>
@@ -1798,7 +1819,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Navigation Settings -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-navigation" role="tabpanel" aria-labelledby="mep-cal-tab-navigation" hidden>
-						<h2><?php esc_html_e( 'Navigation Settings', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-leftright"></span><h2><?php esc_html_e( 'Navigation Settings', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><label for="mep_cal_show_prev_next"><?php esc_html_e( 'Show Previous/Next Buttons', 'mage-eventpress' ); ?></label></th>
@@ -1825,7 +1846,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Expired Events Settings -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-expired" role="tabpanel" aria-labelledby="mep-cal-tab-expired" hidden>
-						<h2><?php esc_html_e( 'Expired Event Settings', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-backup"></span><h2><?php esc_html_e( 'Expired Event Settings', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><label for="mep_cal_show_expired_events"><?php esc_html_e( 'Show Expired Events', 'mage-eventpress' ); ?></label></th>
@@ -1868,7 +1889,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Color Settings -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-colors" role="tabpanel" aria-labelledby="mep-cal-tab-colors" hidden>
-						<h2><?php esc_html_e( 'Color Settings', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-art"></span><h2><?php esc_html_e( 'Color Settings', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><label><?php esc_html_e( 'Event Background Color', 'mage-eventpress' ); ?></label></th>
@@ -1899,7 +1920,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Weekday Column Styles -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-weekdays" role="tabpanel" aria-labelledby="mep-cal-tab-weekdays" hidden>
-						<h2><?php esc_html_e( 'Weekday Column Styles', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-calendar"></span><h2><?php esc_html_e( 'Weekday Column Styles', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<?php foreach ( $this->get_weekday_labels() as $weekday_key => $weekday_label ) : ?>
 							<tr>
@@ -1927,7 +1948,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Day Background Images -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-backgrounds" role="tabpanel" aria-labelledby="mep-cal-tab-backgrounds" hidden>
-						<h2><?php esc_html_e( 'Day Background Images', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-format-image"></span><h2><?php esc_html_e( 'Day Background Images', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><?php esc_html_e( 'Background Rules', 'mage-eventpress' ); ?></th>
@@ -1950,6 +1971,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 										</div>
 										<p>
 											<button type="button" class="button button-secondary mep-cal-add-day-rule">
+												<span class="dashicons dashicons-plus-alt2" style="margin-top:3px;"></span>
 												<?php esc_html_e( 'Add Background Rule', 'mage-eventpress' ); ?>
 											</button>
 										</p>
@@ -1968,7 +1990,7 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Stock Color Settings -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-stock" role="tabpanel" aria-labelledby="mep-cal-tab-stock" hidden>
-						<h2><?php esc_html_e( 'Stock Indicator Colors', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-tickets-alt"></span><h2><?php esc_html_e( 'Stock Indicator Colors', 'mage-eventpress' ); ?></h2></div>
 						<table class="form-table">
 							<tr>
 								<th scope="row"><label><?php esc_html_e( 'Sold Out Event Color', 'mage-eventpress' ); ?></label></th>
@@ -1990,9 +2012,9 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 
 					<!-- Shortcode Reference -->
 					<div class="mep-cal-settings-section" id="mep-cal-panel-shortcode" role="tabpanel" aria-labelledby="mep-cal-tab-shortcode" hidden>
-						<h2><?php esc_html_e( 'Shortcode Reference', 'mage-eventpress' ); ?></h2>
+						<div class="mep-cal-card-head"><span class="dashicons dashicons-shortcode"></span><h2><?php esc_html_e( 'Shortcode Reference', 'mage-eventpress' ); ?></h2></div>
 						<div class="mep-cal-shortcode-ref">
-							<code>[mep-event-calendar]</code>
+							<code class="mep-cal-shortcode-main">[mep-event-calendar]</code>
 							<p><?php esc_html_e( 'Available parameters:', 'mage-eventpress' ); ?></p>
 							<table class="widefat striped">
 								<thead>
@@ -2043,14 +2065,21 @@ if ( ! class_exists( 'MPWEM_Calendar_Settings' ) ) {
 								</tbody>
 							</table>
 							<h4><?php esc_html_e( 'Example:', 'mage-eventpress' ); ?></h4>
-							<code>[mep-event-calendar event_source="specific" specific_events="12,15,18" style="lite" width="100%" height="700px" show_stock_details="yes" hide_time="yes" split_multi_day="yes" show_price="yes" show_location="yes" cat="5" show_category_filter="yes" show_organizer_filter="yes" show_location_filter="yes" show_date_range_filter="yes" show_search="yes"]</code>
+							<code class="mep-cal-shortcode-example">[mep-event-calendar event_source="specific" specific_events="12,15,18" style="lite" width="100%" height="700px" show_stock_details="yes" hide_time="yes" split_multi_day="yes" show_price="yes" show_location="yes" cat="5" show_category_filter="yes" show_organizer_filter="yes" show_location_filter="yes" show_date_range_filter="yes" show_search="yes"]</code>
 						</div>
 					</div>
 
 					<?php do_action( 'mep_calendar_settings_after' ); ?>
 
-					<?php submit_button(); ?>
+					<div class="mep-cal-action-bar">
+						<span class="mep-cal-action-hint">
+							<span class="dashicons dashicons-info-outline"></span>
+							<?php esc_html_e( 'Changes apply to all calendar shortcodes using the default settings.', 'mage-eventpress' ); ?>
+						</span>
+						<?php submit_button( __( 'Save Changes', 'mage-eventpress' ), 'primary', 'submit', false ); ?>
+					</div>
 				</form>
+				</div>
 			</div>
 			<?php
 		}

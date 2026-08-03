@@ -15,6 +15,7 @@
 				$this->settings_api = new MAGE_Setting_API;
 				add_action( 'admin_init', array( $this, 'admin_init' ) );
 				add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_modern_settings_assets' ) );
 				add_action( 'admin_footer', array( $this, 'payment_tabs_script' ) );
 				add_action( 'wp_ajax_mep_install_activate_wc', array( $this, 'ajax_install_activate_wc' ) );
 				add_action( 'wp_ajax_mep_save_gateway_settings', array( $this, 'ajax_save_gateway_settings' ) );
@@ -23,6 +24,32 @@
 				// Inject PayPal + Stripe config modals in footer
 				add_action( 'admin_footer', array( $this, 'render_gateway_modals' ) );
 				add_action( 'wp_ajax_mep_save_payment_settings_modal', array( $this, 'ajax_save_payment_settings_modal' ) );
+			}
+
+			/**
+			 * Assets for the modern global settings shell (bus-plugin style).
+			 */
+			function enqueue_modern_settings_assets( $hook ) {
+				if ( $hook !== 'mep_events_page_mep_event_settings_page' ) {
+					return;
+				}
+				$css = MPWEM_PLUGIN_DIR . '/assets/admin/mep-global-settings.css';
+				$js  = MPWEM_PLUGIN_DIR . '/assets/admin/mep-global-settings.js';
+				wp_enqueue_style(
+					'mep-global-settings',
+					MPWEM_PLUGIN_URL . '/assets/admin/mep-global-settings.css',
+					array(),
+					file_exists( $css ) ? filemtime( $css ) : MPWEM_PLUGIN_VERSION
+				);
+				wp_enqueue_script(
+					'mep-global-settings',
+					MPWEM_PLUGIN_URL . '/assets/admin/mep-global-settings.js',
+					array( 'jquery', 'wp-color-picker' ),
+					file_exists( $js ) ? filemtime( $js ) : MPWEM_PLUGIN_VERSION,
+					true
+				);
+				wp_enqueue_style( 'wp-color-picker' );
+				wp_enqueue_media();
 			}
 
 			function render_wc_warning_banner() {
@@ -2642,19 +2669,220 @@ tr.payment_tabs_html { display: none !important; }
 			}
 
 			function plugin_page() {
-				$label = get_plugin_data( __FILE__ )['Name'];
+				$this->render_modern_settings_page();
+			}
+
+			/**
+			 * Tab metadata for the modern settings sidebar (mirrors bus wbtm_settings_page).
+			 */
+			private function get_modern_tab_configs() {
+				return array(
+					'general_setting_sec'      => array(
+						'title'    => __( 'General Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-sliders-h',
+						'subtitle' => __( 'Core booking & plugin behavior', 'mage-eventpress' ),
+					),
+					'event_list_setting_sec'   => array(
+						'title'    => __( 'Event List Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-list',
+						'subtitle' => __( 'Archive & listing display', 'mage-eventpress' ),
+					),
+					'single_event_setting_sec' => array(
+						'title'    => __( 'Single Event Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-calendar-alt',
+						'subtitle' => __( 'Event details page options', 'mage-eventpress' ),
+					),
+					'email_setting_sec'        => array(
+						'title'    => __( 'Email Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-envelope',
+						'subtitle' => __( 'Confirmation emails', 'mage-eventpress' ),
+					),
+					'style_setting_sec'        => array(
+						'title'    => __( 'Style Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-palette',
+						'subtitle' => __( 'Colors & theme', 'mage-eventpress' ),
+					),
+					'icon_setting_sec'         => array(
+						'title'    => __( 'Icon Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-icons',
+						'subtitle' => __( 'Frontend icon library', 'mage-eventpress' ),
+					),
+					'carousel_setting_sec'     => array(
+						'title'    => __( 'Carousel Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-images',
+						'subtitle' => __( 'Event carousel options', 'mage-eventpress' ),
+					),
+					'mp_slider_settings'       => array(
+						'title'    => __( 'Slider Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-photo-video',
+						'subtitle' => __( 'Slider display options', 'mage-eventpress' ),
+					),
+					'payment_setting_sec'      => array(
+						'title'    => __( 'Payment', 'mage-eventpress' ),
+						'icon'     => 'fas fa-credit-card',
+						'subtitle' => __( 'Checkout & gateways', 'mage-eventpress' ),
+					),
+					'mep_currency_settings'    => array(
+						'title'    => __( 'Currency', 'mage-eventpress' ),
+						'icon'     => 'fas fa-dollar-sign',
+						'subtitle' => __( 'Currency display', 'mage-eventpress' ),
+					),
+					'mep_settings_licensing'   => array(
+						'title'    => __( 'License', 'mage-eventpress' ),
+						'icon'     => 'fas fa-key',
+						'subtitle' => __( 'Addon license keys', 'mage-eventpress' ),
+					),
+					'mep_status_setting_sec'   => array(
+						'title'    => __( 'Status', 'mage-eventpress' ),
+						'icon'     => 'fas fa-heartbeat',
+						'subtitle' => __( 'System status checks', 'mage-eventpress' ),
+					),
+				);
+			}
+
+			/**
+			 * Bus-style modern settings shell. Reuses the existing Settings API forms
+			 * (do_settings_sections + wsa_form_bottom hooks) so Payment / License / Status
+			 * keep working unchanged — only the chrome is new.
+			 */
+			private function render_modern_settings_page() {
+				$sections_raw = $this->get_settings_sections();
+				$fields       = $this->get_settings_fields();
+				$tab_configs  = $this->get_modern_tab_configs();
+
+				$sections = array();
+				if ( is_array( $sections_raw ) ) {
+					foreach ( $sections_raw as $sec ) {
+						if ( ! empty( $sec['id'] ) ) {
+							$sections[ $sec['id'] ] = $sec;
+						}
+					}
+				}
+
+				$visible_tabs = array();
+				foreach ( $tab_configs as $tab_id => $config ) {
+					if ( isset( $sections[ $tab_id ] ) ) {
+						$visible_tabs[ $tab_id ] = $config;
+					}
+				}
+				foreach ( $sections as $section_id => $section ) {
+					if ( isset( $visible_tabs[ $section_id ] ) ) {
+						continue;
+					}
+					$visible_tabs[ $section_id ] = array(
+						'title'    => wp_strip_all_tags( isset( $section['title'] ) ? $section['title'] : $section_id ),
+						'icon'     => 'fas fa-cog',
+						'subtitle' => '',
+					);
+				}
+
+				$first_tab = ! empty( $visible_tabs ) ? array_key_first( $visible_tabs ) : '';
+				$label     = mep_get_option( 'mep_event_label', 'general_setting_sec', 'Events' );
+				$has_pro   = mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' );
+
+				$tab_meta = array();
+				foreach ( $visible_tabs as $id => $cfg ) {
+					$tab_meta[ $id ] = array( $cfg['title'], isset( $cfg['subtitle'] ) ? $cfg['subtitle'] : '' );
+				}
+
+				wp_add_inline_script(
+					'mep-global-settings',
+					'window.mepGs = window.mepGs || {};'
+					. 'window.mepGs.tabMeta = ' . wp_json_encode( $tab_meta ) . ';'
+					. 'window.mepGs.defaultTab = ' . wp_json_encode( $first_tab ) . ';',
+					'before'
+				);
 				?>
-                <div class="wrap">
-                    <div class="mp_settings_panel_header">
-                        <h3>
-							<?php echo esc_html( $label . esc_html__( ' Global Settings', 'mage-eventpress' ) ); ?>
-                        </h3>
-                    </div>
-                    <div class="mp_settings_panel">
-						<?php $this->settings_api->show_navigation(); ?>
-						<?php $this->settings_api->show_forms(); ?>
-                    </div>
-                </div>
+				<div class="mep-gs__root">
+					<div class="mep-gs__wrap">
+						<div class="mep-gs__overlay" id="mep-overlay"></div>
+
+						<div class="mep-gs__sidebar" id="mep-sidebar">
+							<div class="mep-gs__sb-header">
+								<div class="mep-gs__sb-plugin-label"><?php echo esc_html( $label ); ?></div>
+								<div class="mep-gs__sb-title">
+									<span class="mep-gs__sb-dot"></span>
+									<?php esc_html_e( 'Global Settings', 'mage-eventpress' ); ?>
+								</div>
+							</div>
+							<nav class="mep-gs__sb-nav">
+								<?php foreach ( $visible_tabs as $tab_id => $config ) : ?>
+									<button type="button"
+										class="mep-gs__nav-item<?php echo $tab_id === $first_tab ? ' mep-gs--active' : ''; ?>"
+										data-tab="<?php echo esc_attr( $tab_id ); ?>">
+										<span class="mep-gs__nav-icon <?php echo esc_attr( isset( $config['icon'] ) ? $config['icon'] : 'fas fa-cog' ); ?>"></span>
+										<?php echo esc_html( $config['title'] ); ?>
+									</button>
+								<?php endforeach; ?>
+							</nav>
+							<div class="mep-gs__sb-footer">
+								<div class="mep-gs__lic-badge <?php echo $has_pro ? 'mep-gs--pro' : ''; ?>">
+									<span class="mep-gs__lic-dot"></span>
+									<span class="mep-gs__lic-text">
+										<?php
+										echo $has_pro
+											? esc_html__( 'PRO plan active', 'mage-eventpress' )
+											: esc_html__( 'Free plan active', 'mage-eventpress' );
+										?>
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="mep-gs__main">
+							<div class="mep-gs__topbar">
+								<button type="button" class="mep-gs__menu-btn" id="mep-menu-btn" aria-label="<?php esc_attr_e( 'Open menu', 'mage-eventpress' ); ?>">
+									<span class="fas fa-bars"></span>
+								</button>
+								<span class="mep-gs__topbar-title" id="mep-topbar-title">
+									<?php echo esc_html( isset( $visible_tabs[ $first_tab ]['title'] ) ? $visible_tabs[ $first_tab ]['title'] : '' ); ?>
+								</span>
+								<span class="mep-gs__topbar-sep">&rsaquo;</span>
+								<span class="mep-gs__topbar-sub" id="mep-topbar-sub">
+									<?php echo esc_html( isset( $visible_tabs[ $first_tab ]['subtitle'] ) ? $visible_tabs[ $first_tab ]['subtitle'] : '' ); ?>
+								</span>
+								<?php if ( ! empty( $visible_tabs ) ) : ?>
+									<button type="button" class="mep-gs__save-btn" id="mep-save-btn">
+										<span class="fas fa-save"></span>
+										<span class="mep-gs__save-text"><?php esc_html_e( 'Save Changes', 'mage-eventpress' ); ?></span>
+									</button>
+								<?php endif; ?>
+							</div>
+
+							<div class="mep-gs__content">
+								<?php foreach ( $visible_tabs as $tab_id => $config ) :
+									$has_fields = ! empty( $fields[ $tab_id ] );
+									$sec_arg    = isset( $sections[ $tab_id ] ) ? $sections[ $tab_id ] : array( 'id' => $tab_id );
+									?>
+									<div class="mep-gs__tab-panel<?php echo $tab_id === $first_tab ? ' mep-gs--active' : ''; ?>"
+										id="mep-tab-<?php echo esc_attr( $tab_id ); ?>">
+										<?php if ( $has_fields ) : ?>
+										<form method="post" action="options.php">
+										<?php endif; ?>
+											<div class="mep-gs__section-card">
+												<div class="mep-gs__section-head">
+													<span class="mep-gs__section-icon <?php echo esc_attr( isset( $config['icon'] ) ? $config['icon'] : 'fas fa-cog' ); ?>"></span>
+													<span class="mep-gs__section-head-label"><?php echo esc_html( $config['title'] ); ?></span>
+												</div>
+												<?php
+												do_action( 'wsa_form_top_' . $tab_id, $sec_arg );
+												if ( $has_fields ) {
+													settings_fields( $tab_id );
+													do_settings_sections( $tab_id );
+												}
+												do_action( 'wsa_form_bottom_' . $tab_id, $sec_arg );
+												?>
+											</div>
+										<?php if ( $has_fields ) : ?>
+												<div style="display:none;"><?php submit_button(); ?></div>
+										</form>
+										<?php endif; ?>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					</div>
+				</div>
 				<?php
 			}
 

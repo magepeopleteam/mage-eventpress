@@ -39,39 +39,47 @@
 			 * Render the template override settings page
 			 */
 			public function template_override_settings_page() {
+				$theme_path = get_stylesheet_directory() . '/mage-event/';
 				?>
-                <div class="mpwem-template-override-wrapper">
-                    <h2><?php esc_html_e( 'Template Override System', 'mage-eventpress' ); ?></h2>
-                    <p class="description">
-						<?php esc_html_e( 'This system allows you to automatically copy plugin templates to your active theme for customization. Templates copied to your theme will override the plugin defaults.', 'mage-eventpress' ); ?>
-                    </p>
-                    <div class="mpwem-template-override-notice">
-                        <p><strong><?php esc_html_e( 'Important:', 'mage-eventpress' ); ?></strong></p>
-                        <ul>
-                            <li><?php esc_html_e( 'Templates will be copied to: ', 'mage-eventpress' ); ?><code><?php echo esc_html( get_stylesheet_directory() ); ?>/mage-event/</code></li>
-                            <li><?php esc_html_e( 'Always backup your theme before making changes', 'mage-eventpress' ); ?></li>
-                            <li><?php esc_html_e( 'Template overrides will persist through plugin updates', 'mage-eventpress' ); ?></li>
-                        </ul>
+                <div class="mpwem-template-override-wrapper mpwem-to-modern">
+                    <div class="mpwem-to-hero">
+                        <div class="mpwem-to-hero-text">
+                            <span class="mpwem-to-eyebrow"><?php esc_html_e( 'Theme customization', 'mage-eventpress' ); ?></span>
+                            <h2><?php esc_html_e( 'Template Override System', 'mage-eventpress' ); ?></h2>
+                            <p><?php esc_html_e( 'Copy plugin templates into your active theme so you can customize layouts without editing the plugin. Overrides survive plugin updates.', 'mage-eventpress' ); ?></p>
+                        </div>
+                        <div class="mpwem-to-hero-meta">
+                            <span class="mpwem-to-meta-label"><?php esc_html_e( 'Override folder', 'mage-eventpress' ); ?></span>
+                            <code><?php echo esc_html( $theme_path ); ?></code>
+                        </div>
                     </div>
+
+                    <div class="mpwem-to-notice">
+                        <span class="mpwem-to-notice-icon dashicons dashicons-info-outline"></span>
+                        <div>
+                            <strong><?php esc_html_e( 'Before you start', 'mage-eventpress' ); ?></strong>
+                            <ul>
+                                <li><?php esc_html_e( 'Always backup your theme before making changes', 'mage-eventpress' ); ?></li>
+                                <li><?php esc_html_e( 'Copied files live under mage-event/ in your active theme', 'mage-eventpress' ); ?></li>
+                                <li><?php esc_html_e( 'Remove an override anytime to restore the plugin default', 'mage-eventpress' ); ?></li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="mpwem-template-categories">
-						<?php $this->render_template_category( 'themes', __( 'Event Themes', 'mage-eventpress' ), 'templates/themes/' ); ?>
-						<?php $this->render_template_category( 'layout', __( 'Layout Templates', 'mage-eventpress' ), 'templates/layout/' ); ?>
-						<?php //$this->render_template_category( 'single', __( 'Single Event Templates', 'mage-eventpress' ), 'templates/single/' ); ?>
-						<?php $this->render_template_category( 'list', __( 'Event List Templates', 'mage-eventpress' ), 'templates/list/' ); ?>
+						<?php $this->render_template_category( 'themes', __( 'Event Themes', 'mage-eventpress' ), 'templates/themes/', 'admin-appearance' ); ?>
+						<?php $this->render_template_category( 'layout', __( 'Layout Templates', 'mage-eventpress' ), 'templates/layout/', 'layout' ); ?>
+						<?php $this->render_template_category( 'list', __( 'Event List Templates', 'mage-eventpress' ), 'templates/list/', 'list-view' ); ?>
                     </div>
                 </div>
                 <script type="text/javascript">
-                    // Pass nonce to JavaScript
                     var mpwem_template_override_nonce = '<?php echo esc_js( wp_create_nonce( 'mep_template_override_nonce' ) ); ?>';
                 </script>
 				<?php
 			}
-			/**
-			 * Render a template category section
-			 */
-			private function render_template_category( $category, $title, $template_dir ) {
+
+			private function render_template_category( $category, $title, $template_dir, $icon = 'media-default' ) {
 				$plugin_template_dir = MPWEM_PLUGIN_DIR . '/' . $template_dir;
-				$theme_template_dir  = get_stylesheet_directory() . '/mage-event/' . str_replace( 'templates/', '', $template_dir );
 				if ( ! is_dir( $plugin_template_dir ) ) {
 					return;
 				}
@@ -79,9 +87,32 @@
 				if ( empty( $templates ) ) {
 					return;
 				}
+				$overridden_count = 0;
+				foreach ( $templates as $template_file ) {
+					if ( $this->is_template_overridden( $template_dir . $template_file ) ) {
+						$overridden_count++;
+					}
+				}
 				?>
-                <div class="mpwem-template-category">
-                    <h3><?php echo esc_html( $title ); ?></h3>
+                <div class="mpwem-template-category" data-category="<?php echo esc_attr( $category ); ?>">
+                    <div class="mpwem-to-cat-head">
+                        <div class="mpwem-to-cat-title">
+                            <span class="mpwem-to-cat-icon"><span class="dashicons dashicons-<?php echo esc_attr( $icon ); ?>"></span></span>
+                            <div>
+                                <h3><?php echo esc_html( $title ); ?></h3>
+                                <span class="mpwem-to-cat-count">
+									<?php
+									printf(
+										/* translators: 1: overridden count, 2: total templates */
+										esc_html__( '%1$d of %2$d overridden', 'mage-eventpress' ),
+										(int) $overridden_count,
+										(int) count( $templates )
+									);
+									?>
+								</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mpwem-template-list">
 						<?php foreach ( $templates as $template_file ) :
 							$template_path = $template_dir . $template_file;
@@ -89,8 +120,10 @@
 							$template_name = $this->get_template_display_name( $template_file );
 							?>
                             <div class="mpwem-template-item <?php echo $is_overridden ? 'overridden' : ''; ?>">
-                                <div class="mpwem-template-name"><?php echo esc_html( $template_name ); ?></div>
-                                <div class="mpwem-template-path"><?php echo esc_html( $template_path ); ?></div>
+                                <div class="mpwem-template-info">
+                                    <div class="mpwem-template-name"><?php echo esc_html( $template_name ); ?></div>
+                                    <div class="mpwem-template-path"><?php echo esc_html( $template_path ); ?></div>
+                                </div>
                                 <div class="mpwem-template-status">
 									<?php if ( $is_overridden ) : ?>
                                         <span class="mpwem-status-badge mpwem-status-overridden"><?php esc_html_e( 'Overridden', 'mage-eventpress' ); ?></span>
@@ -99,17 +132,17 @@
 									<?php endif; ?>
                                 </div>
                                 <div class="mpwem-template-actions">
-                                    <button class="mpwem-btn mpwem-btn-primary mpwem-copy-template<?php echo $is_overridden ? ' mpwem-hidden' : ''; ?>"
+                                    <button type="button" class="mpwem-btn mpwem-btn-primary mpwem-copy-template<?php echo $is_overridden ? ' mpwem-hidden' : ''; ?>"
                                             data-template="<?php echo esc_attr( $template_path ); ?>">
 										<?php esc_html_e( 'Copy to Theme', 'mage-eventpress' ); ?>
                                     </button>
-                                    <button class="mpwem-btn mpwem-btn-danger mpwem-remove-template<?php echo ! $is_overridden ? ' mpwem-hidden' : ''; ?>"
+                                    <button type="button" class="mpwem-btn mpwem-btn-danger mpwem-remove-template<?php echo ! $is_overridden ? ' mpwem-hidden' : ''; ?>"
                                             data-template="<?php echo esc_attr( $template_path ); ?>">
 										<?php esc_html_e( 'Remove Override', 'mage-eventpress' ); ?>
                                     </button>
                                     <a href="<?php echo esc_url( admin_url( 'theme-editor.php?file=mage-event/' . str_replace( 'templates/', '', $template_path ) . '&theme=' . get_stylesheet() ) ); ?>"
                                        class="mpwem-btn mpwem-btn-secondary mpwem-edit-template<?php echo ! $is_overridden ? ' mpwem-hidden' : ''; ?>"
-                                       target="_blank">
+                                       target="_blank" rel="noopener noreferrer">
 										<?php esc_html_e( 'Edit in Theme Editor', 'mage-eventpress' ); ?>
                                     </a>
                                 </div>

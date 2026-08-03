@@ -40,6 +40,11 @@ jQuery(document).ready(function($) {
 
         $tab.addClass('is-active').attr('aria-selected', 'true');
         $('#' + targetId).addClass('is-active').removeAttr('hidden');
+
+        var label = $.trim($tab.find('span').not('.dashicons').first().text() || $tab.text());
+        var subtitle = $tab.data('subtitle') || '';
+        $('#mep-cal-panel-title').text(label);
+        $('#mep-cal-panel-sub').text(subtitle);
     }
 
     initColorPickers(document);

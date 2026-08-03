@@ -117,8 +117,11 @@
 			/**
 			 * Returns true when the current admin page belongs to this plugin.
 			 * Used to gate heavy assets that are only needed on MEP screens.
+			 * Public/static so other admin-only output (e.g. class_icon_popup's
+			 * admin_footer markup) can reuse the exact same gate instead of
+			 * drifting out of sync with it.
 			 */
-			private function is_mep_admin_page( $hook ) {
+			public static function is_mep_admin_page( $hook ) {
 				// Post edit / new screens for MEP post types
 				$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
 				if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
@@ -147,7 +150,7 @@
 			}
 
 			public function admin_enqueue( $hook ) {
-				$is_mep_page = $this->is_mep_admin_page( $hook );
+				$is_mep_page = self::is_mep_admin_page( $hook );
 
 				// Everything below (editor assets, jQuery UI, select2, Font Awesome,
 				// the options framework, etc.) is only used on this plugin's own admin

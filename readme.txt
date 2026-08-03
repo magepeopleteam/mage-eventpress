@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.8
+Stable tag: 5.4.0
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -287,6 +287,14 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 5.4.0 =
+* Fix: Scoped the global icon-picker modal (and its 1,100+ icon markup, printed in admin_footer) to this plugin's own admin pages only — it was previously rendering on every wp-admin screen (e.g. the Plugins list), where it showed as an empty, unstyled grid since the Font Awesome stylesheet it needs is only loaded on this plugin's own screens.
+  3 August 2026*
+
+= 5.3.9 =
+* Fix: Corrected the “View More Date” button label to read “View More Dates” on the event listing and single-event date list.
+  30 July 2026*
+
 = 5.3.8 =
 * Security Fix: Added nonce verification to the Payment Configuration save AJAX action (mep_save_payment_settings_modal), preventing forged requests from modifying payment settings.
 * Security Fix: Restricted the Payment Configuration save AJAX action to Administrators (manage_options), preventing lower-privileged roles (e.g. Contributor) from modifying site-wide payment settings.
@@ -301,6 +309,7 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 * Fix: Restored the “Manual Entry” button and Event Type (In-Person/Online/Hybrid) selector on the classic Venue/Location tab, which were unresponsive because their supporting script only initialized when the step-by-step editor’s markup was present.
 * Fix: Corrected the classic event editor loading none of its Venue/Location enhancements when a site’s default event edit mode is set to Classic, instead of only when reached via the internal Classic-editor bypass link.
 * Improvement: Reduced the styles loaded on the classic Venue/Location tab to a smaller, dedicated stylesheet, preventing layout conflicts with unrelated fields on that tab.
+* Fix: Restored the per-event “Enable Speaker Section” toggle on the classic event editor, missing since the step-by-step editor rework — its absence also silently reset every classic-saved event’s speaker section to off on each save. Restored the matching global “On/Off Speaker List” setting as well.
 * Credit: Thanks to the Wordfence Threat Intelligence team for responsibly disclosing this issue.
   28 July 2026*
 

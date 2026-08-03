@@ -17,6 +17,15 @@ if ( ! class_exists( 'class_icon_popup' ) ) {
         }
 
         function mep_admin_icon_scripts(){
+            // admin_footer fires on every wp-admin screen, and this modal (1,100+
+            // icon radios) plus its inline script have no business printing
+            // anywhere but this plugin's own admin pages — reuses the exact same
+            // gate MPWEM_Dependencies::admin_enqueue() uses to scope the Font
+            // Awesome stylesheet these icons need, so the two stay in sync.
+            global $hook_suffix;
+            if ( ! class_exists( 'MPWEM_Dependencies' ) || ! MPWEM_Dependencies::is_mep_admin_page( $hook_suffix ) ) {
+                return;
+            }
             $icon_library = new mep_icon_library();
             $icon_library_list = $icon_library->mep_fontawesome_icons();
             ?>

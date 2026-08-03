@@ -35,6 +35,29 @@
 		}
 	}
 
+	function alignSearchWithFilters(wrap) {
+		if (wrap.querySelector('.mpwem-post-list-toolbar')) {
+			return;
+		}
+
+		var card = wrap.querySelector('.mpwem-post-list-card');
+		var sub = wrap.querySelector('ul.subsubsub');
+		var search = wrap.querySelector('#posts-filter > p.search-box, form#posts-filter p.search-box');
+		if (!card || !sub || !search) {
+			return;
+		}
+
+		var toolbar = el('div', { class: 'mpwem-post-list-toolbar' });
+		card.insertBefore(toolbar, card.firstChild);
+		toolbar.appendChild(sub);
+
+		// Keep search bound to #posts-filter after moving beside the filters.
+		search.querySelectorAll('input, select, textarea, button').forEach(function (field) {
+			field.setAttribute('form', 'posts-filter');
+		});
+		toolbar.appendChild(search);
+	}
+
 	function buildLayout(wrap) {
 		if (wrap.querySelector('.mpwem-post-list-layout')) {
 			return;
@@ -65,6 +88,7 @@
 		}
 
 		aside.appendChild(buildPromoPanel());
+		alignSearchWithFilters(wrap);
 	}
 
 	function buildPromoPanel() {

@@ -182,6 +182,26 @@ body.mpwem-post-list-ready.post-type-mep_events_review.edit-php .wrap::after {
 
 /* ---------- Status filters / search ---------- */
 
+.wrap.mpwem-post-list-modern-wrap .mpwem-post-list-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin: 0 0 14px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.wrap.mpwem-post-list-modern-wrap .mpwem-post-list-toolbar ul.subsubsub {
+	margin: 0;
+	padding: 0;
+	float: none;
+	color: transparent;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
 .wrap.mpwem-post-list-modern-wrap ul.subsubsub {
 	margin: 0 0 14px;
 	padding: 0;
@@ -216,6 +236,15 @@ body.mpwem-post-list-ready.post-type-mep_events_review.edit-php .wrap::after {
 .wrap.mpwem-post-list-modern-wrap ul.subsubsub a:hover {
 	background: #EFF6FF;
 	color: #2563EB;
+}
+
+.wrap.mpwem-post-list-modern-wrap .mpwem-post-list-toolbar .search-box {
+	float: none;
+	margin: 0;
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	flex: 0 0 auto;
 }
 
 .wrap.mpwem-post-list-modern-wrap .search-box {

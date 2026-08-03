@@ -1,0 +1,713 @@
+/* ==========================================================================
+   Modern reskin for Event Category taxonomy (mep_cat — edit-tags.php).
+   Scoped by PHP-side conditional enqueue (MPWEM_Taxonomy_Modern).
+   Layout/UX mirrors the bus plugin's wbtm-taxonomy-modern; colors follow
+   Event Manager's existing admin primary (#2563eb).
+   ========================================================================== */
+
+body.taxonomy-mep_cat #wpbody-content,
+body.taxonomy-mep_org #wpbody-content {
+	background: #F8FAFC;
+	min-height: calc(100vh - 32px);
+	box-sizing: border-box;
+}
+
+@media screen and (max-width: 782px) {
+	body.taxonomy-mep_cat #wpbody-content,
+	body.taxonomy-mep_org #wpbody-content {
+		min-height: calc(100vh - 46px);
+	}
+}
+
+.wrap.mpwem-taxonomy-modern-wrap {
+	background: #F8FAFC;
+	max-width: 1340px;
+	padding: 20px;
+	min-height: calc(100vh - 100px);
+	box-sizing: border-box;
+}
+
+/* ---------- Loading placeholder ---------- */
+
+body.taxonomy-mep_cat .wrap,
+body.taxonomy-mep_org .wrap {
+	position: relative;
+	min-height: 420px;
+}
+
+body.taxonomy-mep_cat .wrap > *,
+body.taxonomy-mep_org .wrap > * {
+	visibility: hidden;
+}
+
+body.taxonomy-mep_cat .wrap::before,
+body.taxonomy-mep_org .wrap::before,
+body.taxonomy-mep_cat .wrap::after,
+body.taxonomy-mep_org .wrap::after {
+	position: absolute;
+	left: 50%;
+}
+
+body.taxonomy-mep_cat .wrap::before,
+body.taxonomy-mep_org .wrap::before {
+	content: "";
+	top: 160px;
+	left: calc(50% - 18px);
+	width: 36px;
+	height: 36px;
+	border: 3px solid #BFDBFE;
+	border-top-color: #2563EB;
+	border-radius: 50%;
+	animation: mpwem-taxonomy-spin .8s linear infinite;
+}
+
+body.taxonomy-mep_cat .wrap::after,
+body.taxonomy-mep_org .wrap::after {
+	content: "Loading\2026";
+	top: 210px;
+	transform: translateX(-50%);
+	font-size: 13px;
+	color: #64748B;
+	white-space: nowrap;
+}
+
+@keyframes mpwem-taxonomy-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.taxonomy-mep_cat .wrap::before,
+	body.taxonomy-mep_org .wrap::before {
+		animation: none;
+	}
+}
+
+body.mpwem-taxonomy-ready.taxonomy-mep_cat .wrap,
+body.mpwem-taxonomy-ready.taxonomy-mep_org .wrap {
+	min-height: calc(100vh - 100px);
+}
+
+body.mpwem-taxonomy-ready.taxonomy-mep_cat .wrap > *,
+body.mpwem-taxonomy-ready.taxonomy-mep_org .wrap > * {
+	visibility: visible;
+}
+
+body.mpwem-taxonomy-ready.taxonomy-mep_cat .wrap::before,
+body.mpwem-taxonomy-ready.taxonomy-mep_org .wrap::before,
+body.mpwem-taxonomy-ready.taxonomy-mep_cat .wrap::after,
+body.mpwem-taxonomy-ready.taxonomy-mep_org .wrap::after {
+	content: none;
+}
+
+/* ---------- Heading ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap hr.wp-header-end {
+	display: none;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap h1.wp-heading-inline {
+	margin-left: 0;
+	padding-left: 30px;
+	font-size: 23px;
+	font-weight: 700;
+	color: #0F172A;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle {
+	margin: 6px 0 24px;
+	padding-left: 30px;
+	max-width: 640px;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #64748B;
+}
+
+/* ---------- Two-column layout ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap #col-container {
+	display: flex;
+	align-items: flex-start;
+	gap: 24px;
+	flex-wrap: wrap;
+	margin-top: 4px;
+	margin-left: 0;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap #col-left {
+	width: auto;
+	flex: 0 0 300px;
+	order: 2;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap #col-right {
+	width: auto;
+	flex: 1 1 480px;
+	min-width: 0;
+	order: 1;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap #col-left .col-wrap,
+.wrap.mpwem-taxonomy-modern-wrap #col-right .col-wrap {
+	padding: 0;
+}
+
+/* ---------- Add button ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-add-term-btn {
+	background: #2563EB;
+	border-color: #2563EB;
+	color: #FFFFFF;
+	font-weight: 600;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-add-term-btn:hover {
+	background: #1D4ED8;
+	border-color: #1D4ED8;
+	color: #FFFFFF;
+}
+
+/* ---------- Sidebar: Pro / addons promo panel ---------- */
+
+.mpwem-promo-panel {
+	background: linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 55%);
+	border: 1px solid #BFDBFE;
+	border-radius: 12px;
+	padding: 22px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+}
+
+.mpwem-promo-eyebrow {
+	display: inline-block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	color: #2563EB;
+	background: #FFFFFF;
+	border: 1px solid #BFDBFE;
+	border-radius: 999px;
+	padding: 3px 10px;
+	margin-bottom: 12px;
+}
+
+.mpwem-promo-panel h2 {
+	margin: 0 0 8px;
+	font-size: 17px;
+	font-weight: 700;
+	color: #0F172A;
+	line-height: 1.35;
+}
+
+.mpwem-promo-body {
+	margin: 0 0 16px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: #64748B;
+}
+
+.mpwem-promo-features {
+	list-style: none;
+	margin: 0 0 20px;
+	padding: 0;
+}
+
+.mpwem-promo-features li {
+	position: relative;
+	padding: 0 0 10px 22px;
+	font-size: 13px;
+	line-height: 1.5;
+	color: #334155;
+}
+
+.mpwem-promo-features li::before {
+	content: "\2713";
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #2563EB;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+.mpwem-promo-panel .mpwem-promo-cta {
+	display: block;
+	width: 100%;
+	text-align: center;
+	background: #2563EB;
+	border-color: #2563EB;
+	color: #FFFFFF;
+	font-weight: 600;
+	font-size: 13.5px;
+	padding: 9px 14px;
+	height: auto;
+	line-height: 1.5;
+	border-radius: 8px;
+	box-shadow: none;
+	text-shadow: none;
+	text-decoration: none;
+}
+
+.mpwem-promo-panel .mpwem-promo-cta:hover {
+	background: #1D4ED8;
+	border-color: #1D4ED8;
+	color: #FFFFFF;
+}
+
+/* ---------- Popup: Add/Edit ---------- */
+
+.mpwem-hidden {
+	display: none !important;
+}
+
+.mpwem-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(15, 23, 42, .5);
+	z-index: 100000;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 8vh 16px;
+}
+
+.mpwem-modal {
+	background: #FFFFFF;
+	border-radius: 12px;
+	width: 100%;
+	max-width: 480px;
+	box-shadow: 0 20px 40px rgba(15, 23, 42, .2);
+	max-height: 82vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.mpwem-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 22px;
+	border-bottom: 1px solid #EEF1F6;
+	flex: 0 0 auto;
+}
+
+.mpwem-modal-header h2 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 700;
+	color: #0F172A;
+}
+
+.mpwem-modal-close {
+	background: none;
+	border: none;
+	font-size: 22px;
+	line-height: 1;
+	color: #94A3B8;
+	cursor: pointer;
+	padding: 4px;
+}
+
+.mpwem-modal-close:hover {
+	color: #0F172A;
+}
+
+.mpwem-modal-body {
+	padding: 20px 22px;
+	overflow-y: auto;
+	flex: 1 1 auto;
+}
+
+.mpwem-modal-error {
+	margin: 0 0 16px;
+	padding: 10px 12px;
+	background: #EFF6FF;
+	border: 1px solid #BFDBFE;
+	border-radius: 8px;
+	color: #1D4ED8;
+	font-size: 13px;
+}
+
+.mpwem-modal .form-field {
+	margin: 0 0 18px;
+}
+
+.mpwem-modal .form-field:last-child {
+	margin-bottom: 0;
+}
+
+.mpwem-modal .form-field label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #0F172A;
+}
+
+.mpwem-modal .form-field input[type="text"],
+.mpwem-modal .form-field textarea {
+	width: 100%;
+	max-width: 100%;
+	border: 1px solid #D1D5DB;
+	border-radius: 8px;
+	padding: 9px 12px;
+	font-size: 14px;
+	color: #0F172A;
+	background: #FFFFFF;
+	box-shadow: none;
+}
+
+.mpwem-modal .form-field textarea {
+	min-height: 80px;
+	resize: vertical;
+}
+
+.mpwem-modal .form-field input[type="text"]:focus,
+.mpwem-modal .form-field textarea:focus {
+	border-color: #2563EB;
+	box-shadow: 0 0 0 3px #EFF6FF;
+	outline: none;
+}
+
+.mpwem-modal .form-field p {
+	margin: 6px 0 0;
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: #94A3B8;
+}
+
+.mpwem-org-meta-heading {
+	margin: 4px 0 14px;
+	padding-top: 8px;
+	border-top: 1px solid #EEF1F6;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: #64748B;
+}
+
+.mpwem-modal .mpwem-org-meta-fields .form-field {
+	margin-bottom: 14px;
+}
+
+.mpwem-modal-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	padding: 16px 22px;
+	border-top: 1px solid #EEF1F6;
+	flex: 0 0 auto;
+}
+
+.mpwem-modal-footer .button {
+	border-radius: 8px;
+	font-weight: 600;
+	font-size: 13.5px;
+	padding: 7px 16px;
+	height: auto;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.mpwem-modal-footer .button-primary {
+	background: #2563EB;
+	border-color: #2563EB;
+	color: #FFFFFF;
+}
+
+.mpwem-modal-footer .button-primary:hover {
+	background: #1D4ED8;
+	border-color: #1D4ED8;
+}
+
+.mpwem-modal-footer .button-primary:disabled {
+	opacity: .6;
+}
+
+/* ---------- List panel card ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap #col-right .col-wrap {
+	background: #FFFFFF;
+	border: 1px solid #E4E9F0;
+	border-radius: 12px;
+	padding: 18px 18px 6px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav {
+	height: auto;
+	margin: 0 0 14px;
+	padding: 0;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav.bottom {
+	margin: 14px 0 4px;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav.top {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-left: auto;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right .tablenav-pages {
+	float: none;
+	margin: 0;
+	height: auto;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav .displaying-num {
+	font-size: 13px;
+	color: #64748B;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav select,
+.wrap.mpwem-taxonomy-modern-wrap .tablenav .button.action,
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right .mpwem-add-term-btn {
+	box-sizing: border-box;
+	height: 34px;
+	display: inline-flex;
+	align-items: center;
+	font-size: 13px;
+	border-radius: 8px;
+	line-height: 1;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav select {
+	border: 1px solid #D1D5DB;
+	color: #0F172A;
+	padding: 0 28px 0 10px;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav .button.action {
+	border: 1px solid #2563EB;
+	background: #FFFFFF;
+	color: #2563EB;
+	font-weight: 600;
+	padding: 0 14px;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .tablenav .button.action:hover {
+	background: #EFF6FF;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-tablenav-right .mpwem-add-term-btn {
+	padding: 0 16px;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+/* ---------- Table ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table {
+	border: 1px solid #E5E7EB;
+	border-radius: 10px;
+	border-collapse: separate;
+	border-spacing: 0;
+	overflow: hidden;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(1),
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(1) {
+	width: 26%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(2),
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(2) {
+	width: 32%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(3),
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(3) {
+	width: 16%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(4),
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(4) {
+	width: 12%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(5),
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(5) {
+	width: 14%;
+}
+
+/* Organizer: 6 columns (Name, Description, Email, Slug, Count, Actions) */
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(1),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(1) {
+	width: 20%;
+}
+
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(2),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(2) {
+	width: 22%;
+}
+
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(3),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(3) {
+	width: 18%;
+}
+
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(4),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(4) {
+	width: 14%;
+}
+
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(5),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(5) {
+	width: 12%;
+}
+
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(6),
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(6) {
+	width: 14%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-name,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-description {
+	overflow-wrap: break-word;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table thead th,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table thead td {
+	background: #F8FAFC;
+	border-bottom: 1px solid #E5E7EB;
+	color: #64748B;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	padding: 12px 16px;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table thead th a {
+	color: #64748B;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table tbody td {
+	padding: 14px 16px;
+	border-bottom: 1px solid #F1F5F9;
+	font-size: 14px;
+	color: #0F172A;
+	vertical-align: middle;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table.striped tbody tr {
+	background: transparent;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table tbody tr:hover td {
+	background: #F8FAFC;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .column-name .row-title {
+	font-weight: 700;
+	color: #2563EB;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .row-actions {
+	display: none;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .column-description {
+	color: #94A3B8;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .column-posts a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 26px;
+	height: 22px;
+	padding: 0 8px;
+	background: #EFF5FF;
+	color: #2563EB;
+	font-weight: 700;
+	font-size: 12.5px;
+	border-radius: 999px;
+	text-decoration: none;
+}
+
+/* ---------- Slug pill ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-slug-badge {
+	display: inline-block;
+	padding: 3px 10px;
+	background: #F1F5F9;
+	color: #64748B;
+	font-size: 12px;
+	border-radius: 6px;
+}
+
+/* ---------- Actions column ---------- */
+
+.wrap.mpwem-taxonomy-modern-wrap th.column-mpwem-actions,
+.wrap.mpwem-taxonomy-modern-wrap td.column-mpwem-actions {
+	text-align: right;
+	white-space: nowrap;
+	width: 1%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-row-action-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	margin-left: 6px;
+	border-radius: 6px;
+	color: #64748B;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-row-action-icon .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-row-action-edit:hover {
+	background: #EFF5FF;
+	color: #2563EB;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-row-action-delete {
+	color: #E11D48;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap .mpwem-row-action-delete:hover {
+	background: #FFF1F4;
+	color: #9F1239;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table thead th.sorted .sorting-indicators,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table thead th.sortable .sorting-indicators {
+	margin-top: 2px;
+	opacity: .7;
+}
+
+@media (max-width: 782px) {
+	.wrap.mpwem-taxonomy-modern-wrap #col-left,
+	.wrap.mpwem-taxonomy-modern-wrap #col-right {
+		flex: 1 1 100%;
+	}
+}

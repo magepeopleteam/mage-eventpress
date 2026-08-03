@@ -2,7 +2,7 @@
 Contributors: magepeopleteam, aamahin
 Tags: events, event tickets, event registration, woocommerce, booking
 Requires at least: 5.3
-Stable tag: 5.3.9
+Stable tag: 5.4.0
 Tested up to: 7.0
 WC requires at least: 3.0
 WC tested up to: 10.7
@@ -286,6 +286,10 @@ Please report security bugs through the [Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 5.4.0 =
+* Fix: Scoped the global icon-picker modal (and its 1,100+ icon markup, printed in admin_footer) to this plugin's own admin pages only — it was previously rendering on every wp-admin screen (e.g. the Plugins list), where it showed as an empty, unstyled grid since the Font Awesome stylesheet it needs is only loaded on this plugin's own screens.
+  3 August 2026*
 
 = 5.3.9 =
 * Fix: Corrected the “View More Date” button label to read “View More Dates” on the event listing and single-event date list.

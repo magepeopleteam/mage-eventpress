@@ -34,107 +34,181 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			wp_enqueue_script( 'mpwem-rsvp-admin', MPWEM_PLUGIN_URL . '/assets/admin/mpwem_rsvp_admin.js', array( 'jquery' ), time(), true );
 			wp_localize_script( 'mpwem-rsvp-admin', 'mep_rsvp_ajax', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'mep_rsvp_nonce' )
+				'nonce'    => wp_create_nonce( 'mep_rsvp_nonce' ),
+				'i18n'     => array(
+					'loading'          => __( 'Loading responses…', 'mage-eventpress' ),
+					'updating'         => __( 'Updating…', 'mage-eventpress' ),
+					'error_load'       => __( 'Could not load RSVP responses.', 'mage-eventpress' ),
+					'error_status'     => __( 'Error updating status.', 'mage-eventpress' ),
+					'error_bulk'       => __( 'Error applying bulk action.', 'mage-eventpress' ),
+					'no_results'       => __( 'No RSVP responses found.', 'mage-eventpress' ),
+					'no_results_hint'  => __( 'Try adjusting your filters or search.', 'mage-eventpress' ),
+					'check_in'         => __( 'Check In', 'mage-eventpress' ),
+					'checked_in'       => __( 'Checked In', 'mage-eventpress' ),
+					'not_checked_in'   => __( 'Not Checked In', 'mage-eventpress' ),
+					'select_bulk'      => __( 'Please select a bulk action.', 'mage-eventpress' ),
+					'select_items'     => __( 'Please select at least one item.', 'mage-eventpress' ),
+					'confirm_delete'   => __( 'Are you sure you want to delete the selected RSVPs?', 'mage-eventpress' ),
+					'apply'            => __( 'Apply', 'mage-eventpress' ),
+					'applying'         => __( 'Applying…', 'mage-eventpress' ),
+					/* translators: %d: number of RSVPs */
+					'result_one'       => __( '%d response found', 'mage-eventpress' ),
+					/* translators: %d: number of RSVPs */
+					'result_many'      => __( '%d responses found', 'mage-eventpress' ),
+					'of'               => __( 'of', 'mage-eventpress' ),
+				),
 			) );
 		}
 
 		public function render_page() {
+			$events = get_posts( array(
+				'post_type'      => 'mep_events',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+			) );
 			?>
 			<div class="wrap mep-rsvp-admin-wrap">
+
 				<div class="mep-rsvp-header">
-					<h1 class="wp-heading-inline"><?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?></h1>
-					<a href="#" class="page-title-action mep-export-rsvp-csv"><?php esc_html_e( 'Export to CSV', 'mage-eventpress' ); ?></a>
-				</div>
-				
-				<div class="mep-rsvp-statistics">
-					<div class="mep-stat-box">
-						<div class="mep-stat-title"><?php esc_html_e( 'Total RSVPs', 'mage-eventpress' ); ?></div>
-						<div class="mep-stat-value" id="mep-total-rsvps">0</div>
+					<div class="mep-rsvp-title-group">
+						<h1 class="mep-rsvp-title">
+							<span class="dashicons dashicons-groups"></span>
+							<?php esc_html_e( 'RSVP Responses', 'mage-eventpress' ); ?>
+						</h1>
+						<p class="mep-rsvp-subtitle"><?php esc_html_e( 'Track attendees, manage check-ins, and export RSVP data.', 'mage-eventpress' ); ?></p>
 					</div>
-					<div class="mep-stat-box">
-						<div class="mep-stat-title"><?php esc_html_e( 'Checked In', 'mage-eventpress' ); ?></div>
-						<div class="mep-stat-value" id="mep-total-checkedin">0</div>
-					</div>
-				</div>
-
-				<div class="mep-rsvp-toolbar">
-					<div class="mep-toolbar-left">
-						<select id="mep-bulk-action-selector">
-							<option value="-1"><?php esc_html_e( 'Bulk Actions', 'mage-eventpress' ); ?></option>
-							<option value="checkin"><?php esc_html_e( 'Mark Checked In', 'mage-eventpress' ); ?></option>
-							<option value="uncheckin"><?php esc_html_e( 'Mark Not Checked In', 'mage-eventpress' ); ?></option>
-							<option value="delete"><?php esc_html_e( 'Delete', 'mage-eventpress' ); ?></option>
-						</select>
-						<button id="mep-do-bulk-action" class="button action"><?php esc_html_e( 'Apply', 'mage-eventpress' ); ?></button>
-						
-						<?php
-						$events = get_posts( array(
-							'post_type'      => 'mep_events',
-							'posts_per_page' => -1,
-							'post_status'    => 'publish',
-						) );
-						?>
-						<select id="mep-filter-event">
-							<option value=""><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
-							<?php foreach ( $events as $event ) : ?>
-								<option value="<?php echo esc_attr( $event->ID ); ?>"><?php echo esc_html( $event->post_title ); ?></option>
-							<?php endforeach; ?>
-						</select>
-
-						<select id="mep-filter-status">
-							<option value=""><?php esc_html_e( 'All Statuses', 'mage-eventpress' ); ?></option>
-							<option value="checked_in"><?php esc_html_e( 'Checked In', 'mage-eventpress' ); ?></option>
-							<option value="not_checked_in"><?php esc_html_e( 'Not Checked In', 'mage-eventpress' ); ?></option>
-						</select>
-					</div>
-					<div class="mep-toolbar-right">
-						<input type="search" id="mep-rsvp-search" placeholder="<?php esc_attr_e( 'Search by Name or Email', 'mage-eventpress' ); ?>">
-						<button id="mep-do-search" class="button"><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></button>
+					<div class="mep-rsvp-header-actions">
+						<a href="#" class="mep-rsvp-btn mep-rsvp-btn-outline mep-export-rsvp-csv">
+							<span class="dashicons dashicons-download"></span>
+							<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
+						</a>
 					</div>
 				</div>
 
-				<div class="mep-rsvp-table-container">
-					<table class="wp-list-table widefat fixed striped mep-rsvp-table">
-						<thead>
-							<tr>
-								<td class="manage-column column-cb check-column">
-									<input type="checkbox" id="mep-select-all">
-								</td>
-								<th class="column-name"><?php esc_html_e( 'Attendee', 'mage-eventpress' ); ?></th>
-								<th class="column-event"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></th>
-								<th class="column-event-date"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?></th>
-								<th class="column-qty"><?php esc_html_e( 'Qty', 'mage-eventpress' ); ?></th>
-								<th class="column-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></th>
-								<th class="column-date"><?php esc_html_e( 'Date', 'mage-eventpress' ); ?></th>
-								<th class="column-actions"><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
-								<?php do_action('mep_rsvp_table_header'); ?>
-							</tr>
-						</thead>
-						<tbody id="mep-rsvp-table-body">
-							<tr>
-								<td colspan="8" class="mep-loading-msg"><?php esc_html_e( 'Loading...', 'mage-eventpress' ); ?></td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<td class="manage-column column-cb check-column">
-									<input type="checkbox" id="mep-select-all-footer">
-								</td>
-								<th class="column-name"><?php esc_html_e( 'Attendee', 'mage-eventpress' ); ?></th>
-								<th class="column-event"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></th>
-								<th class="column-event-date"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?></th>
-								<th class="column-qty"><?php esc_html_e( 'Qty', 'mage-eventpress' ); ?></th>
-								<th class="column-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></th>
-								<th class="column-date"><?php esc_html_e( 'Date', 'mage-eventpress' ); ?></th>
-								<th class="column-actions"><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
-								<?php do_action('mep_rsvp_table_footer'); ?>
-							</tr>
-						</tfoot>
-					</table>
+				<div class="mep-rsvp-stats">
+					<div class="mep-rsvp-stat-card mep-rsvp-stat-total">
+						<span class="mep-rsvp-stat-icon dashicons dashicons-tickets-alt"></span>
+						<div class="mep-rsvp-stat-info">
+							<span class="mep-rsvp-stat-value" id="mep-total-rsvps">—</span>
+							<span class="mep-rsvp-stat-label"><?php esc_html_e( 'Total RSVPs', 'mage-eventpress' ); ?></span>
+						</div>
+					</div>
+					<div class="mep-rsvp-stat-card mep-rsvp-stat-checked">
+						<span class="mep-rsvp-stat-icon dashicons dashicons-yes-alt"></span>
+						<div class="mep-rsvp-stat-info">
+							<span class="mep-rsvp-stat-value" id="mep-total-checkedin">—</span>
+							<span class="mep-rsvp-stat-label"><?php esc_html_e( 'Checked In', 'mage-eventpress' ); ?></span>
+						</div>
+					</div>
+					<div class="mep-rsvp-stat-card mep-rsvp-stat-pending">
+						<span class="mep-rsvp-stat-icon dashicons dashicons-clock"></span>
+						<div class="mep-rsvp-stat-info">
+							<span class="mep-rsvp-stat-value" id="mep-total-pending">—</span>
+							<span class="mep-rsvp-stat-label"><?php esc_html_e( 'Pending', 'mage-eventpress' ); ?></span>
+						</div>
+					</div>
+					<div class="mep-rsvp-stat-card mep-rsvp-stat-rate">
+						<span class="mep-rsvp-stat-icon dashicons dashicons-chart-bar"></span>
+						<div class="mep-rsvp-stat-info">
+							<span class="mep-rsvp-stat-value" id="mep-checkin-rate">—</span>
+							<span class="mep-rsvp-stat-label"><?php esc_html_e( 'Check-in Rate', 'mage-eventpress' ); ?></span>
+						</div>
+					</div>
 				</div>
-				<div class="mep-rsvp-pagination tablenav-pages">
-					<!-- Pagination injected via JS -->
+
+				<div class="mep-rsvp-filter-panel">
+					<div class="mep-rsvp-filter-header">
+						<span class="dashicons dashicons-filter"></span>
+						<strong><?php esc_html_e( 'Filter Responses', 'mage-eventpress' ); ?></strong>
+					</div>
+					<div class="mep-rsvp-filter-body">
+						<div class="mep-rsvp-filter-grid">
+							<div class="mep-rsvp-filter-field mep-rsvp-filter-search">
+								<label for="mep-rsvp-search"><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></label>
+								<div class="mep-rsvp-input-icon">
+									<span class="dashicons dashicons-search"></span>
+									<input type="search" id="mep-rsvp-search" placeholder="<?php esc_attr_e( 'Name or email…', 'mage-eventpress' ); ?>" autocomplete="off">
+								</div>
+							</div>
+							<div class="mep-rsvp-filter-field">
+								<label for="mep-filter-event"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></label>
+								<select id="mep-filter-event">
+									<option value=""><?php esc_html_e( 'All Events', 'mage-eventpress' ); ?></option>
+									<?php foreach ( $events as $event ) : ?>
+										<option value="<?php echo esc_attr( $event->ID ); ?>"><?php echo esc_html( $event->post_title ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+							<div class="mep-rsvp-filter-field">
+								<label for="mep-filter-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></label>
+								<select id="mep-filter-status">
+									<option value=""><?php esc_html_e( 'All Statuses', 'mage-eventpress' ); ?></option>
+									<option value="checked_in"><?php esc_html_e( 'Checked In', 'mage-eventpress' ); ?></option>
+									<option value="not_checked_in"><?php esc_html_e( 'Not Checked In', 'mage-eventpress' ); ?></option>
+								</select>
+							</div>
+							<div class="mep-rsvp-filter-actions">
+								<button type="button" id="mep-do-search" class="mep-rsvp-btn mep-rsvp-btn-primary">
+									<span class="dashicons dashicons-search"></span>
+									<?php esc_html_e( 'Search', 'mage-eventpress' ); ?>
+								</button>
+								<button type="button" id="mep-reset-filters" class="mep-rsvp-btn mep-rsvp-btn-ghost">
+									<span class="dashicons dashicons-dismiss"></span>
+									<?php esc_html_e( 'Reset', 'mage-eventpress' ); ?>
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
+
+				<div class="mep-rsvp-table-wrap">
+					<div class="mep-rsvp-table-toolbar">
+						<span class="mep-rsvp-result-count" id="mep-result-count"><?php esc_html_e( 'Loading…', 'mage-eventpress' ); ?></span>
+						<div class="mep-rsvp-bulk-actions">
+							<select id="mep-bulk-action-selector">
+								<option value="-1"><?php esc_html_e( 'Bulk actions…', 'mage-eventpress' ); ?></option>
+								<option value="checkin"><?php esc_html_e( 'Mark Checked In', 'mage-eventpress' ); ?></option>
+								<option value="uncheckin"><?php esc_html_e( 'Mark Not Checked In', 'mage-eventpress' ); ?></option>
+								<option value="delete"><?php esc_html_e( 'Delete', 'mage-eventpress' ); ?></option>
+							</select>
+							<button type="button" id="mep-do-bulk-action" class="mep-rsvp-btn mep-rsvp-btn-outline" disabled>
+								<?php esc_html_e( 'Apply', 'mage-eventpress' ); ?>
+							</button>
+							<span class="mep-rsvp-bulk-count" id="mep-bulk-count"></span>
+						</div>
+					</div>
+
+					<div class="mep-rsvp-table-container">
+						<table class="mep-rsvp-table">
+							<thead>
+								<tr>
+									<th class="column-cb">
+										<input type="checkbox" id="mep-select-all" aria-label="<?php esc_attr_e( 'Select all', 'mage-eventpress' ); ?>">
+									</th>
+									<th class="column-name"><?php esc_html_e( 'Attendee', 'mage-eventpress' ); ?></th>
+									<th class="column-event"><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></th>
+									<th class="column-event-date"><?php esc_html_e( 'Event Date', 'mage-eventpress' ); ?></th>
+									<th class="column-qty"><?php esc_html_e( 'Qty', 'mage-eventpress' ); ?></th>
+									<th class="column-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></th>
+									<th class="column-date"><?php esc_html_e( 'Submitted', 'mage-eventpress' ); ?></th>
+									<th class="column-actions"><?php esc_html_e( 'Actions', 'mage-eventpress' ); ?></th>
+									<?php do_action( 'mep_rsvp_table_header' ); ?>
+								</tr>
+							</thead>
+							<tbody id="mep-rsvp-table-body">
+								<tr>
+									<td colspan="8" class="mep-rsvp-loading">
+										<span class="mep-rsvp-spinner"></span>
+										<?php esc_html_e( 'Loading responses…', 'mage-eventpress' ); ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="mep-rsvp-pagination" id="mep-rsvp-pagination"></div>
+				</div>
+
 			</div>
 			<?php
 		}
@@ -152,7 +226,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				'post_status'    => 'publish',
 				'posts_per_page' => 20,
 				'paged'          => $paged,
-				'meta_query'     => array()
+				'meta_query'     => array(),
 			);
 
 			if ( ! empty( $search ) ) {
@@ -184,16 +258,13 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 					array(
 						'key'     => 'mep_checkin',
 						'compare' => 'NOT EXISTS',
-					)
+					),
 				);
 			}
 
 			$query = new WP_Query( $args );
 			$rsvps = array();
 
-			$total_checked_in = 0;
-
-			// Quick count of overall checked in (approximate, since it runs a separate query if needed)
 			$checkin_count_args = array(
 				'post_type'      => 'mep_rsvp_responses',
 				'post_status'    => 'publish',
@@ -204,8 +275,8 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						'key'     => 'mep_checkin',
 						'value'   => 'Yes',
 						'compare' => '=',
-					)
-				)
+					),
+				),
 			);
 			if ( $event_id > 0 ) {
 				$checkin_count_args['meta_query'][] = array(
@@ -217,28 +288,50 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 			$checked_in_posts = new WP_Query( $checkin_count_args );
 			$total_checked_in = $checked_in_posts->found_posts;
 
+			$total_all_args = array(
+				'post_type'      => 'mep_rsvp_responses',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			);
+			if ( $event_id > 0 ) {
+				$total_all_args['meta_query'] = array(
+					array(
+						'key'     => 'ea_event_id',
+						'value'   => $event_id,
+						'compare' => '=',
+					),
+				);
+			}
+			$total_all_query = new WP_Query( $total_all_args );
+			$total_all       = $total_all_query->found_posts;
+
 			if ( $query->have_posts() ) {
 				while ( $query->have_posts() ) {
 					$query->the_post();
 					$id = get_the_ID();
-					
-					$name       = get_post_meta( $id, 'ea_name', true );
-					if ( empty($name) ) $name = get_the_title();
 
-					$email      = get_post_meta( $id, 'ea_email', true );
-					$phone      = get_post_meta( $id, 'ea_phone', true ); // Or 'mep_phone'
-					$qty        = get_post_meta( $id, 'ea_ticket_qty', true );
-					if ( empty($qty) ) $qty = 1;
+					$name = get_post_meta( $id, 'ea_name', true );
+					if ( empty( $name ) ) {
+						$name = get_the_title();
+					}
+
+					$email = get_post_meta( $id, 'ea_email', true );
+					$phone = get_post_meta( $id, 'ea_phone', true );
+					$qty   = get_post_meta( $id, 'ea_ticket_qty', true );
+					if ( empty( $qty ) ) {
+						$qty = 1;
+					}
 
 					$e_id       = get_post_meta( $id, 'ea_event_id', true );
 					$event_name = get_the_title( $e_id );
 					$event_date = get_post_meta( $id, 'ea_event_date', true );
-					
+
 					$checkin    = get_post_meta( $id, 'mep_checkin', true );
 					$is_checked = ( 'Yes' === $checkin );
 
 					ob_start();
-					do_action('mep_rsvp_table_row_actions', $id);
+					do_action( 'mep_rsvp_table_row_actions', $id );
 					$extra_actions = ob_get_clean();
 
 					$rsvps[] = array(
@@ -251,7 +344,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						'event_date'    => $event_date,
 						'date'          => get_the_date(),
 						'is_checked_in' => $is_checked,
-						'extra_actions' => $extra_actions
+						'extra_actions' => $extra_actions,
 					);
 				}
 			}
@@ -261,8 +354,9 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				'rsvps'         => $rsvps,
 				'total_pages'   => $query->max_num_pages,
 				'total_items'   => $query->found_posts,
+				'total_all'     => $total_all,
 				'total_checked' => $total_checked_in,
-				'current_page'  => $paged
+				'current_page'  => $paged,
 			) );
 		}
 
@@ -301,7 +395,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 				} elseif ( 'uncheckin' === $action ) {
 					update_post_meta( $id, 'mep_checkin', 'No' );
 				} elseif ( 'delete' === $action ) {
-					wp_delete_post( $id, true ); // force delete
+					wp_delete_post( $id, true );
 				}
 			}
 
@@ -310,12 +404,12 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 
 		public function export_csv() {
 			if ( isset( $_GET['mep_export_rsvps'] ) && current_user_can( 'manage_options' ) ) {
-				
+
 				$args = array(
 					'post_type'      => 'mep_rsvp_responses',
 					'post_status'    => 'publish',
 					'posts_per_page' => -1,
-					'meta_query'     => array()
+					'meta_query'     => array(),
 				);
 
 				$search   = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
@@ -351,7 +445,7 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 						array(
 							'key'     => 'mep_checkin',
 							'compare' => 'NOT EXISTS',
-						)
+						),
 					);
 				}
 
@@ -371,22 +465,25 @@ if ( ! class_exists( 'MPWEM_RSVP_Responses' ) ) {
 					while ( $query->have_posts() ) {
 						$query->the_post();
 						$id = get_the_ID();
-						
-						$name       = get_post_meta( $id, 'ea_name', true );
-						if ( empty($name) ) $name = get_the_title();
 
-						$email      = get_post_meta( $id, 'ea_email', true );
-						$phone      = get_post_meta( $id, 'ea_phone', true ); 
-						$qty        = get_post_meta( $id, 'ea_ticket_qty', true );
-						if ( empty($qty) ) $qty = 1;
+						$name = get_post_meta( $id, 'ea_name', true );
+						if ( empty( $name ) ) {
+							$name = get_the_title();
+						}
 
-						$e_id       = get_post_meta( $id, 'ea_event_id', true );
-						$event_name = get_the_title( $e_id );
-						
-						$checkin    = get_post_meta( $id, 'mep_checkin', true );
+						$email = get_post_meta( $id, 'ea_email', true );
+						$phone = get_post_meta( $id, 'ea_phone', true );
+						$qty   = get_post_meta( $id, 'ea_ticket_qty', true );
+						if ( empty( $qty ) ) {
+							$qty = 1;
+						}
+
+						$e_id        = get_post_meta( $id, 'ea_event_id', true );
+						$event_name  = get_the_title( $e_id );
+						$checkin     = get_post_meta( $id, 'mep_checkin', true );
 						$checkin_str = ( 'Yes' === $checkin ) ? 'Checked In' : 'Not Checked In';
+						$event_date  = get_post_meta( $id, 'ea_event_date', true );
 
-						$event_date = get_post_meta( $id, 'ea_event_date', true );
 						fputcsv( $output, array( $id, $name, $email, $phone, $qty, $event_name, $event_date, $checkin_str, get_the_date() ), ',', '"', '\\' );
 					}
 				}

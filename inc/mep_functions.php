@@ -3941,23 +3941,58 @@ die();
 		$global_time_slots = get_post_meta( $event_id, 'mep_ticket_times_global', true ) ? get_post_meta( $event_id, 'mep_ticket_times_global', true ) : [];
 		$global_off_days   = get_post_meta( $event_id, 'mep_ticket_offdays', true ) ? maybe_unserialize( get_post_meta( $event_id, 'mep_ticket_offdays', true ) ) : '';
 		$global_off_dates  = get_post_meta( $event_id, 'mep_ticket_off_dates', true ) ? get_post_meta( $event_id, 'mep_ticket_off_dates', true ) : '';
-		$event_start_date  = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_start_date', true ) ) );
-		$event_end_date    = date( 'Y-m-d H:i:s', strtotime( get_post_meta( $event_id, 'event_end_date', true ) ) );
+		$raw_start         = get_post_meta( $event_id, 'event_start_date', true );
+		$raw_end           = get_post_meta( $event_id, 'event_end_date', true );
+		$event_start_ts    = $raw_start ? strtotime( $raw_start ) : false;
+		$event_end_ts      = $raw_end ? strtotime( $raw_end ) : false;
+		$event_start_date  = $event_start_ts ? date( 'Y-m-d H:i:s', $event_start_ts ) : '';
+		$event_end_date    = $event_end_ts ? date( 'Y-m-d H:i:s', $event_end_ts ) : $event_start_date;
 		$interval          = get_post_meta( $event_id, 'mep_repeated_periods', true ) ? get_post_meta( $event_id, 'mep_repeated_periods', true ) : 1;
-		$period            = mep_re_get_repeted_event_period_date_arr( $event_start_date, $event_end_date, $interval );
-		//    $nd = mep_re_date_range($event_start_date, $event_end_date, $interval);
 		$global_on_days_arr = [];
-		foreach ( $period as $key => $value ) {
-			//  print_r($value);
-			$global_on_days_arr[] = $value->format( 'Y-m-d' );
+		if ( $event_start_date && $event_end_date ) {
+			$period             = mep_re_get_repeted_event_period_date_arr( $event_start_date, $event_end_date, $interval );
+			foreach ( $period as $key => $value ) {
+				$global_on_days_arr[] = $value->format( 'Y-m-d' );
+			}
+			$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
+			$global_on_days_arr = $event_start_date == $event_end_date ? array( date( 'Y-m-d', strtotime( $event_start_date ) ) ) : $global_on_days_arr;
 		}
-		$global_on_days_arr = mep_re_date_range( $event_start_date, $event_end_date, $interval );
-		$global_on_days_arr = $event_start_date == $event_end_date ? array( $event_start_date ) : $global_on_days_arr;
 		$event_date_display = mep_re_get_the_upcomming_date_arr( $event_id );
 		$datepicker_format  = mep_get_option( 'mep_datepicker_format', 'general_setting_sec', 'yy-mm-dd' );
 		$date_format        = mep_rec_get_datepicker_php_format( $datepicker_format );
+
+		// Resolve a safe default date (avoid 1970-01-01 from empty/invalid strtotime).
+		$default_raw_date = '';
+		if ( is_array( $event_date_display ) && ! empty( $event_date_display[0] ) ) {
+			$default_raw_date = $event_date_display[0];
+		} elseif ( is_array( $global_on_days_arr ) && ! empty( $global_on_days_arr ) ) {
+			$default_raw_date = end( $global_on_days_arr );
+			reset( $global_on_days_arr );
+		} elseif ( $raw_start ) {
+			$default_raw_date = $raw_start;
+		} else {
+			$default_raw_date = current_time( 'Y-m-d' );
+		}
+		$default_ts = strtotime( $default_raw_date );
+		if ( ! $default_ts || $default_ts < 0 ) {
+			$default_ts = strtotime( current_time( 'Y-m-d' ) );
+		}
+		$default_datepicker_value = date( $date_format, $default_ts );
+		$default_ymd              = date( 'Y-m-d', $default_ts );
+
 		if ( is_array( $global_on_days_arr ) && sizeof( $global_on_days_arr ) > 0 ) {
-			$date_parameter = isset( $_GET['date'] ) ? sanitize_text_field( date( $date_format, $_GET['date'] ) ) : null;
+			$date_parameter = null;
+			$parameter_ts   = 0;
+			if ( isset( $_GET['date'] ) && $_GET['date'] !== '' ) {
+				$get_date = sanitize_text_field( wp_unslash( $_GET['date'] ) );
+				$get_ts   = is_numeric( $get_date ) ? (int) $get_date : strtotime( $get_date );
+				if ( $get_ts && $get_ts > 0 ) {
+					$date_parameter = date( $date_format, $get_ts );
+					$parameter_ts   = $get_ts;
+				}
+			}
+			$display_date_value = $date_parameter ? $date_parameter : $default_datepicker_value;
+			$display_ymd        = $parameter_ts ? date( 'Y-m-d', $parameter_ts ) : $default_ymd;
 			ob_start();
 			?>
             <div class='mep_everyday_date_secs'>
@@ -3975,13 +4010,13 @@ die();
 								} ?></span>
                             <input <?php if ( ! is_admin() ) {
 								echo 'readonly';
-							} ?> type="hidden" name='mep_everyday_dates' id='mep_everyday_datepicker' value="<?php echo $date_parameter ?? mep_esc_html( $global_on_days_arr[0] ); ?>">
+							} ?> type="hidden" name='mep_everyday_dates' id='mep_everyday_datepicker' value="<?php echo esc_attr( $date_parameter ?? $global_on_days_arr[0] ); ?>">
 						<?php } else { ?>
                             <span class='mep_recurring_datepicker_section'>
                     <span class='mep-datepicker-input-box'>
                         <input <?php if ( ! is_admin() ) {
 	                        echo 'readonly';
-                        } ?> type="text" name='mep_everyday_dates' id='mep_everyday_datepicker' value="<?php echo $date_parameter ?? date( $date_format, strtotime( mep_re_get_the_upcomming_date_arr( $event_id )[0] ) ); ?>">
+                        } ?> type="text" name='mep_everyday_dates' id='mep_everyday_datepicker' value="<?php echo esc_attr( $display_date_value ); ?>">
                     </span>
                     </span>
 						<?php } ?>
@@ -3993,7 +4028,7 @@ die();
 		                            ?>
                                     <input type="hidden" name='time_slot_name' id='time_slot_name' value=''>
 		                            <?php
-		                            mep_re_default_load_ticket_time_list( $event_id, $global_on_days_arr[0] );
+		                            mep_re_default_load_ticket_time_list( $event_id, $display_ymd );
 	                            }
                             ?>
                         </span>

@@ -1,9 +1,8 @@
 <?php
 	/*
 	 * Modern reskin of Event taxonomy screens (edit-tags.php for mep_cat and
-	 * mep_org) — pure CSS/JS on top of WordPress's own term list + add-term
-	 * form. Organizer screens also surface contact/location term meta in the
-	 * Add/Edit modal (same keys as mep_tax_meta.php).
+	 * mep_org) — CSS/JS on top of WordPress's term list, with modal CRUD,
+	 * view details, Events column, and AJAX pagination (parity with Speakers).
 	 *
 	 * @Author MagePeople Team
 	 */
@@ -18,6 +17,8 @@
 			];
 
 			const ORG_TAXONOMY = 'mep_org';
+
+			const TERM_PER_PAGE = 10;
 
 			const ORG_META_KEYS = [
 				'org_location',
@@ -38,10 +39,14 @@
 				add_action( 'wp_ajax_mpwem_get_taxonomy_term', [ $this, 'ajax_get_term' ] );
 				add_action( 'wp_ajax_mpwem_edit_taxonomy_term', [ $this, 'ajax_edit_term' ] );
 				add_action( 'wp_ajax_mpwem_delete_taxonomy_term', [ $this, 'ajax_delete_term' ] );
+				add_action( 'wp_ajax_mpwem_taxonomy_list_paginate', [ $this, 'ajax_list_paginate' ] );
+				add_filter( 'edit_tags_per_page', [ $this, 'force_term_per_page' ] );
 				foreach ( self::TAXONOMIES as $taxonomy ) {
 					add_filter( "manage_edit-{$taxonomy}_columns", [ $this, 'modern_columns' ], 20 );
+					add_filter( "manage_{$taxonomy}_custom_column", [ $this, 'render_custom_column' ], 10, 3 );
+					add_filter( "edit_{$taxonomy}_per_page", [ $this, 'force_term_user_per_page' ] );
+					add_filter( "get_user_option_edit_{$taxonomy}_per_page", [ $this, 'force_term_user_per_page' ] );
 				}
-				add_filter( 'manage_mep_org_custom_column', [ $this, 'render_org_email_column' ], 10, 3 );
 			}
 
 			private function current_target_taxonomy() {
@@ -70,35 +75,163 @@
 				return $show_screen;
 			}
 
+			/**
+			 * Force Category / Organizer lists to 10 items per page.
+			 *
+			 * @param int $per_page Per-page value.
+			 * @return int
+			 */
+			public function force_term_per_page( $per_page ) {
+				if ( $this->current_target_taxonomy() ) {
+					return self::TERM_PER_PAGE;
+				}
+
+				return $per_page;
+			}
+
+			/**
+			 * Override stored user screen option for terms per page.
+			 *
+			 * @return int
+			 */
+			public function force_term_user_per_page() {
+				return self::TERM_PER_PAGE;
+			}
+
 			public function modern_columns( $columns ) {
+				$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( wp_unslash( $_GET['taxonomy'] ) ) : '';
+				if ( ! $taxonomy && function_exists( 'get_current_screen' ) ) {
+					$screen   = get_current_screen();
+					$taxonomy = ( $screen && ! empty( $screen->taxonomy ) ) ? $screen->taxonomy : '';
+				}
+
 				$cols = [
-					'name'        => __( 'Name', 'mage-eventpress' ),
-					'description' => __( 'Description', 'mage-eventpress' ),
-					'slug'        => __( 'Slug', 'mage-eventpress' ),
-					'posts'       => __( 'Count', 'mage-eventpress' ),
+					'name'            => __( 'Name', 'mage-eventpress' ),
+					'description'     => __( 'Description', 'mage-eventpress' ),
+					'mep_term_events' => __( 'Event', 'mage-eventpress' ),
+					'slug'            => __( 'Slug', 'mage-eventpress' ),
+					'posts'           => __( 'Count', 'mage-eventpress' ),
 				];
 
-				$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( wp_unslash( $_GET['taxonomy'] ) ) : '';
 				if ( self::ORG_TAXONOMY === $taxonomy ) {
 					$cols = [
-						'name'        => __( 'Name', 'mage-eventpress' ),
-						'description' => __( 'Description', 'mage-eventpress' ),
-						'org_email'   => __( 'Email', 'mage-eventpress' ),
-						'slug'        => __( 'Slug', 'mage-eventpress' ),
-						'posts'       => __( 'Count', 'mage-eventpress' ),
+						'name'            => __( 'Name', 'mage-eventpress' ),
+						'org_email'       => __( 'Email', 'mage-eventpress' ),
+						'mep_term_events' => __( 'Event', 'mage-eventpress' ),
+						'posts'           => __( 'Count', 'mage-eventpress' ),
 					];
 				}
 
 				return $cols;
 			}
 
-			public function render_org_email_column( $out, $column_name, $term_id ) {
-				if ( 'org_email' !== $column_name ) {
-					return $out;
+			/**
+			 * Custom column content for Event + Email.
+			 *
+			 * @param string $out         Existing output.
+			 * @param string $column_name Column key.
+			 * @param int    $term_id     Term ID.
+			 * @return string
+			 */
+			public function render_custom_column( $out, $column_name, $term_id ) {
+				$taxonomy = $this->current_target_taxonomy();
+				if ( ! $taxonomy ) {
+					$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( wp_unslash( $_GET['taxonomy'] ) ) : '';
 				}
-				$email = get_term_meta( (int) $term_id, 'org_email', true );
 
-				return $email ? esc_html( $email ) : '&#8212;';
+				if ( 'org_email' === $column_name ) {
+					$email = get_term_meta( (int) $term_id, 'org_email', true );
+
+					return $email ? esc_html( $email ) : '&#8212;';
+				}
+
+				if ( 'mep_term_events' === $column_name && in_array( $taxonomy, self::TAXONOMIES, true ) ) {
+					ob_start();
+					$this->render_term_event_cell( (int) $term_id, $taxonomy );
+
+					return ob_get_clean();
+				}
+
+				return $out;
+			}
+
+			/**
+			 * @param int    $term_id  Term ID.
+			 * @param string $taxonomy Taxonomy slug.
+			 * @param int    $limit    Max events to resolve (0 = all for view).
+			 * @return array<int,array{id:int,title:string,url:string}>
+			 */
+			private function get_events_for_term( $term_id, $taxonomy, $limit = 8 ) {
+				$term_id = absint( $term_id );
+				if ( ! $term_id || ! in_array( $taxonomy, self::TAXONOMIES, true ) ) {
+					return [];
+				}
+
+				$args = [
+					'post_type'              => 'mep_events',
+					'post_status'            => [ 'publish', 'draft', 'pending', 'private', 'future' ],
+					'posts_per_page'         => $limit > 0 ? $limit : -1,
+					'fields'                 => 'ids',
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+					'tax_query'              => [
+						[
+							'taxonomy' => $taxonomy,
+							'field'    => 'term_id',
+							'terms'    => $term_id,
+						],
+					],
+				];
+
+				$event_ids = get_posts( $args );
+				if ( empty( $event_ids ) ) {
+					return [];
+				}
+
+				$events = [];
+				foreach ( $event_ids as $event_id ) {
+					$event_id    = absint( $event_id );
+					$event_title = wp_specialchars_decode( get_the_title( $event_id ), ENT_QUOTES );
+					$edit_link   = get_edit_post_link( $event_id, 'raw' );
+					$events[]    = [
+						'id'    => $event_id,
+						'title' => $event_title ? $event_title : sprintf( __( 'Event #%d', 'mage-eventpress' ), $event_id ),
+						'url'   => $edit_link ? $edit_link : '',
+					];
+				}
+
+				return $events;
+			}
+
+			/**
+			 * Output the Event column cell for a term.
+			 *
+			 * @param int    $term_id  Term ID.
+			 * @param string $taxonomy Taxonomy slug.
+			 */
+			private function render_term_event_cell( $term_id, $taxonomy ) {
+				$events = $this->get_events_for_term( $term_id, $taxonomy, 5 );
+				if ( empty( $events ) ) {
+					echo '<span class="mpwem-term-list-event-empty">' . esc_html__( 'Not assigned', 'mage-eventpress' ) . '</span>';
+					return;
+				}
+				echo '<div class="mpwem-term-list-events">';
+				foreach ( $events as $event ) {
+					if ( ! empty( $event['url'] ) ) {
+						printf(
+							'<a class="mpwem-term-list-event" href="%s">%s</a>',
+							esc_url( $event['url'] ),
+							esc_html( $event['title'] )
+						);
+					} else {
+						printf(
+							'<span class="mpwem-term-list-event">%s</span>',
+							esc_html( $event['title'] )
+						);
+					}
+				}
+				echo '</div>';
 			}
 
 			private function asset_ver( $rel_path ) {
@@ -153,6 +286,12 @@
 					'descPlaceholder' => sprintf( esc_attr__( 'Enter a detailed description of this %s…', 'mage-eventpress' ), $singular_lc ),
 					'submit'          => sprintf( esc_html__( 'Add New %s', 'mage-eventpress' ), $singular ),
 					'confirmDelete'   => sprintf( esc_html__( 'Delete this %s? This cannot be undone.', 'mage-eventpress' ), $singular_lc ),
+					'deleteTitle'     => sprintf( esc_html__( 'Delete %s?', 'mage-eventpress' ), $singular ),
+					'deleteText'      => sprintf( esc_html__( 'This %s will be permanently deleted. This cannot be undone.', 'mage-eventpress' ), $singular_lc ),
+					'viewTitle'       => sprintf( esc_html__( '%s Details', 'mage-eventpress' ), $singular ),
+					'viewEdit'        => sprintf( esc_html__( 'Edit %s', 'mage-eventpress' ), $singular ),
+					'emptyList'       => sprintf( esc_html__( 'No %s found.', 'mage-eventpress' ), $singular_lc ),
+					'itemsLabel'      => function_exists( 'mb_strtolower' ) ? mb_strtolower( $labels->name ) : strtolower( $labels->name ),
 					'hasOrgMeta'      => self::ORG_TAXONOMY === $taxonomy,
 				];
 			}
@@ -215,8 +354,8 @@
 
 				$taxonomy        = $this->taxonomy_from_request();
 				$taxonomy_object = $taxonomy ? get_taxonomy( $taxonomy ) : false;
-				if ( ! $taxonomy_object || ! current_user_can( $taxonomy_object->cap->edit_terms ) ) {
-					wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit this item.', 'mage-eventpress' ) ], 403 );
+				if ( ! $taxonomy_object || ! current_user_can( $taxonomy_object->cap->manage_terms ) ) {
+					wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to view this item.', 'mage-eventpress' ) ], 403 );
 				}
 
 				$term_id = isset( $_POST['term_id'] ) ? absint( $_POST['term_id'] ) : 0;
@@ -225,11 +364,17 @@
 					wp_send_json_error( [ 'message' => esc_html__( 'That item could not be found.', 'mage-eventpress' ) ], 404 );
 				}
 
+				$events = $this->get_events_for_term( $term_id, $taxonomy, 0 );
+
 				$data = [
 					'id'          => (int) $term->term_id,
 					'name'        => $term->name,
 					'slug'        => $term->slug,
 					'description' => $term->description,
+					'count'       => (int) $term->count,
+					'events'      => $events,
+					'can_edit'    => current_user_can( $taxonomy_object->cap->edit_terms ),
+					'can_delete'  => current_user_can( $taxonomy_object->cap->delete_terms ),
 				];
 
 				if ( self::ORG_TAXONOMY === $taxonomy ) {
@@ -303,6 +448,219 @@
 				wp_send_json_success( [ 'message' => esc_html__( 'Deleted.', 'mage-eventpress' ) ] );
 			}
 
+			/**
+			 * AJAX: Category / Organizer table page (10 per page).
+			 */
+			public function ajax_list_paginate() {
+				check_ajax_referer( 'mpwem_taxonomy_list_paginate', 'nonce' );
+
+				$taxonomy        = $this->taxonomy_from_request();
+				$taxonomy_object = $taxonomy ? get_taxonomy( $taxonomy ) : false;
+				if ( ! $taxonomy_object || ! current_user_can( $taxonomy_object->cap->manage_terms ) ) {
+					wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to manage these items.', 'mage-eventpress' ) ], 403 );
+				}
+
+				$page   = max( 1, isset( $_POST['paged'] ) ? absint( wp_unslash( $_POST['paged'] ) ) : 1 );
+				$search = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : '';
+
+				$query = $this->query_terms( $taxonomy, $page, $search );
+				$total = (int) $query['total'];
+				$pages = max( 1, (int) ceil( $total / self::TERM_PER_PAGE ) );
+				if ( $page > $pages ) {
+					$page  = $pages;
+					$query = $this->query_terms( $taxonomy, $page, $search );
+					$total = (int) $query['total'];
+					$pages = max( 1, (int) ceil( $total / self::TERM_PER_PAGE ) );
+				}
+
+				$bundle = $this->per_taxonomy_bundle( $taxonomy );
+				ob_start();
+				if ( empty( $query['terms'] ) ) {
+					$colspan = self::ORG_TAXONOMY === $taxonomy ? 4 : 5;
+					?>
+					<tr class="no-items">
+						<td class="colspanchange" colspan="<?php echo esc_attr( $colspan ); ?>">
+							<?php echo esc_html( $bundle['emptyList'] ); ?>
+						</td>
+					</tr>
+					<?php
+				} else {
+					foreach ( $query['terms'] as $term ) {
+						$this->render_term_list_row( $term, $taxonomy, $taxonomy_object );
+					}
+				}
+				$tbody = ob_get_clean();
+
+				wp_send_json_success(
+					[
+						'tbody'      => $tbody,
+						'pagination' => $this->render_pagination_html( $page, $pages, $total, $bundle ),
+						'page'       => $page,
+						'pages'      => $pages,
+						'total'      => $total,
+					]
+				);
+			}
+
+			/**
+			 * @param string $taxonomy Taxonomy slug.
+			 * @param int    $page     Page number.
+			 * @param string $search   Search string.
+			 * @return array{terms:array<int,\WP_Term>,total:int}
+			 */
+			private function query_terms( $taxonomy, $page, $search ) {
+				$args = [
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+					'number'     => self::TERM_PER_PAGE,
+					'offset'     => ( max( 1, (int) $page ) - 1 ) * self::TERM_PER_PAGE,
+					'orderby'    => 'name',
+					'order'      => 'ASC',
+				];
+				if ( $search ) {
+					$args['search'] = $search;
+				}
+
+				$terms = get_terms( $args );
+				if ( is_wp_error( $terms ) ) {
+					$terms = [];
+				}
+
+				$count_args = [
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+					'fields'     => 'count',
+				];
+				if ( $search ) {
+					$count_args['search'] = $search;
+				}
+				$total = get_terms( $count_args );
+				if ( is_wp_error( $total ) ) {
+					$total = 0;
+				}
+
+				return [
+					'terms' => $terms,
+					'total' => (int) $total,
+				];
+			}
+
+			/**
+			 * @param \WP_Term $term             Term object.
+			 * @param string   $taxonomy         Taxonomy slug.
+			 * @param object   $taxonomy_object  Taxonomy object.
+			 */
+			private function render_term_list_row( $term, $taxonomy, $taxonomy_object ) {
+				$term_id    = (int) $term->term_id;
+				$can_edit   = current_user_can( $taxonomy_object->cap->edit_terms );
+				$can_delete = current_user_can( $taxonomy_object->cap->delete_terms );
+				$is_org     = self::ORG_TAXONOMY === $taxonomy;
+				$desc       = $term->description ? wp_trim_words( wp_strip_all_tags( $term->description ), 18, '…' ) : '—';
+				$list_url   = admin_url( 'edit.php?post_type=mep_events&' . $taxonomy . '=' . $term->slug );
+				?>
+				<tr id="tag-<?php echo esc_attr( $term_id ); ?>" class="level-0" data-term-id="<?php echo esc_attr( $term_id ); ?>">
+					<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name', 'mage-eventpress' ); ?>">
+						<strong><span class="row-title"><?php echo esc_html( $term->name ); ?></span></strong>
+						<div class="row-actions">
+							<?php if ( $can_edit ) : ?>
+								<span class="edit"><a href="#" data-term-edit="<?php echo esc_attr( $term_id ); ?>"><?php esc_html_e( 'Edit', 'mage-eventpress' ); ?></a></span>
+							<?php endif; ?>
+							<?php if ( $can_delete ) : ?>
+								<?php if ( $can_edit ) : ?> | <?php endif; ?>
+								<span class="delete"><a class="delete-tag" href="#" data-term-delete="<?php echo esc_attr( $term_id ); ?>" data-term-name="<?php echo esc_attr( $term->name ); ?>"><?php esc_html_e( 'Delete', 'mage-eventpress' ); ?></a></span>
+							<?php endif; ?>
+						</div>
+					</td>
+					<?php if ( ! $is_org ) : ?>
+						<td class="description column-description" data-colname="<?php esc_attr_e( 'Description', 'mage-eventpress' ); ?>">
+							<?php echo esc_html( $desc ); ?>
+						</td>
+					<?php endif; ?>
+					<?php if ( $is_org ) : ?>
+						<td class="org_email column-org_email" data-colname="<?php esc_attr_e( 'Email', 'mage-eventpress' ); ?>">
+							<?php
+							$email = get_term_meta( $term_id, 'org_email', true );
+							echo $email ? esc_html( $email ) : '&#8212;';
+							?>
+						</td>
+					<?php endif; ?>
+					<td class="mep_term_events column-mep_term_events" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
+						<?php $this->render_term_event_cell( $term_id, $taxonomy ); ?>
+					</td>
+					<?php if ( ! $is_org ) : ?>
+						<td class="slug column-slug" data-colname="<?php esc_attr_e( 'Slug', 'mage-eventpress' ); ?>">
+							<?php echo esc_html( $term->slug ); ?>
+						</td>
+					<?php endif; ?>
+					<td class="posts column-posts" data-colname="<?php esc_attr_e( 'Count', 'mage-eventpress' ); ?>">
+						<a href="<?php echo esc_url( $list_url ); ?>"><?php echo esc_html( (string) (int) $term->count ); ?></a>
+					</td>
+				</tr>
+				<?php
+			}
+
+			/**
+			 * @param int   $current Current page.
+			 * @param int   $pages   Total pages.
+			 * @param int   $total   Total items.
+			 * @param array $bundle  Taxonomy copy bundle.
+			 * @return string
+			 */
+			private function render_pagination_html( $current, $pages, $total, $bundle ) {
+				$per_page = self::TERM_PER_PAGE;
+				$start    = $total > 0 ? ( ( $current - 1 ) * $per_page ) + 1 : 0;
+				$end      = min( $current * $per_page, $total );
+				$items_label = isset( $bundle['itemsLabel'] ) ? $bundle['itemsLabel'] : __( 'items', 'mage-eventpress' );
+				$info        = $total > 0
+					? sprintf(
+						/* translators: 1: start, 2: end, 3: total, 4: item label */
+						esc_html__( 'Showing %1$d–%2$d of %3$d %4$s', 'mage-eventpress' ),
+						(int) $start,
+						(int) $end,
+						(int) $total,
+						$items_label
+					)
+					: sprintf(
+						/* translators: %s: item label */
+						esc_html__( '0 %s', 'mage-eventpress' ),
+						$items_label
+					);
+
+				ob_start();
+				?>
+				<div class="mpwem-term-pagination" data-page="<?php echo esc_attr( $current ); ?>" data-pages="<?php echo esc_attr( $pages ); ?>">
+					<div class="mpwem-term-pagination-info"><?php echo esc_html( $info ); ?></div>
+					<?php if ( $pages > 1 ) : ?>
+						<div class="mpwem-term-pagination-links">
+							<button type="button" class="mpwem-term-page-btn" data-page="1" <?php disabled( $current <= 1 ); ?> title="<?php esc_attr_e( 'First page', 'mage-eventpress' ); ?>">
+								<span class="dashicons dashicons-controls-skipback"></span>
+							</button>
+							<button type="button" class="mpwem-term-page-btn" data-page="<?php echo esc_attr( max( 1, $current - 1 ) ); ?>" <?php disabled( $current <= 1 ); ?> title="<?php esc_attr_e( 'Previous page', 'mage-eventpress' ); ?>">
+								<span class="dashicons dashicons-controls-back"></span>
+							</button>
+							<?php
+							$window = 2;
+							$from   = max( 1, $current - $window );
+							$to     = min( $pages, $current + $window );
+							for ( $i = $from; $i <= $to; $i++ ) :
+								?>
+								<button type="button" class="mpwem-term-page-btn<?php echo $i === $current ? ' is-active' : ''; ?>" data-page="<?php echo esc_attr( $i ); ?>">
+									<?php echo esc_html( (string) $i ); ?>
+								</button>
+							<?php endfor; ?>
+							<button type="button" class="mpwem-term-page-btn" data-page="<?php echo esc_attr( min( $pages, $current + 1 ) ); ?>" <?php disabled( $current >= $pages ); ?> title="<?php esc_attr_e( 'Next page', 'mage-eventpress' ); ?>">
+								<span class="dashicons dashicons-controls-forward"></span>
+							</button>
+							<button type="button" class="mpwem-term-page-btn" data-page="<?php echo esc_attr( $pages ); ?>" <?php disabled( $current >= $pages ); ?> title="<?php esc_attr_e( 'Last page', 'mage-eventpress' ); ?>">
+								<span class="dashicons dashicons-controls-skipforward"></span>
+							</button>
+						</div>
+					<?php endif; ?>
+				</div>
+				<?php
+				return ob_get_clean();
+			}
+
 			public function enqueue() {
 				$taxonomy = $this->current_target_taxonomy();
 				if ( ! $taxonomy ) {
@@ -337,10 +695,13 @@
 						'subheading'     => $bundle['subheading'],
 						'addButtonLabel' => $bundle['addButtonLabel'],
 						'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
+						'ajaxPagination' => true,
+						'perPage'        => self::TERM_PER_PAGE,
 						'nonce'          => wp_create_nonce( 'mpwem_add_taxonomy_term' ),
 						'getNonce'       => wp_create_nonce( 'mpwem_get_taxonomy_term' ),
 						'editNonce'      => wp_create_nonce( 'mpwem_edit_taxonomy_term' ),
 						'deleteNonce'    => wp_create_nonce( 'mpwem_delete_taxonomy_term' ),
+						'paginateNonce'  => wp_create_nonce( 'mpwem_taxonomy_list_paginate' ),
 						'proUrl'         => 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/',
 						'perTaxonomy'    => [ $taxonomy => $bundle ],
 						'strings'        => [
@@ -364,8 +725,26 @@
 							'saveChanges'     => esc_html__( 'Save Changes', 'mage-eventpress' ),
 							'saving'          => esc_html__( 'Saving…', 'mage-eventpress' ),
 							'loadingTerm'     => esc_html__( 'Loading…', 'mage-eventpress' ),
+							'loading'         => esc_html__( 'Loading…', 'mage-eventpress' ),
 							'confirmDelete'   => $bundle['confirmDelete'],
+							'deleteTitle'     => $bundle['deleteTitle'],
+							'deleteText'      => $bundle['deleteText'],
+							'deleteConfirm'   => esc_html__( 'Delete Permanently', 'mage-eventpress' ),
+							'deleting'        => esc_html__( 'Deleting…', 'mage-eventpress' ),
 							'deleteFailed'    => esc_html__( 'Could not delete this item. Please try again.', 'mage-eventpress' ),
+							'view'            => esc_html__( 'View', 'mage-eventpress' ),
+							'edit'            => esc_html__( 'Edit', 'mage-eventpress' ),
+							'delete'          => esc_html__( 'Delete', 'mage-eventpress' ),
+							'viewTitle'       => $bundle['viewTitle'],
+							'viewEdit'        => $bundle['viewEdit'],
+							'viewClose'       => esc_html__( 'Close', 'mage-eventpress' ),
+							'viewDesc'        => esc_html__( 'Description', 'mage-eventpress' ),
+							'viewSlug'        => esc_html__( 'Slug', 'mage-eventpress' ),
+							'viewCount'       => esc_html__( 'Assigned Events Count', 'mage-eventpress' ),
+							'viewEvents'      => esc_html__( 'Assigned Events', 'mage-eventpress' ),
+							'viewEmpty'       => esc_html__( '—', 'mage-eventpress' ),
+							'viewNoEvents'    => esc_html__( 'Not assigned to any event.', 'mage-eventpress' ),
+							'loadError'       => esc_html__( 'Could not load details.', 'mage-eventpress' ),
 							'promoEyebrow'    => esc_html__( 'EVENT PRO', 'mage-eventpress' ),
 							'promoTitle'      => esc_html__( 'Get more out of your events', 'mage-eventpress' ),
 							'promoBody'       => esc_html__( 'Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons.', 'mage-eventpress' ),

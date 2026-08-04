@@ -525,7 +525,7 @@
                         <div class="popupHeader">
                             <input type="hidden" name="mpwem_post_id" value="<?php echo esc_attr( $post_id ); ?>"/>
                             <div class="_dFlex_fdColumn_align_center">
-                                <h4 class="_mb_xs"><?php echo esc_html( get_the_title( $post_id ) ); ?></h4>
+                                <h4 class="_mb_xs"><?php echo esc_html( wp_specialchars_decode( get_the_title( $post_id ), ENT_QUOTES ) ); ?></h4>
                                 <div class="date_time_area">
 									<?php MPWEM_Layout::load_date( $post_id, $all_dates ); ?>
                                 </div>
@@ -787,7 +787,7 @@
 		if ( ! empty( $posts ) ) {
 			foreach ( $posts as $post ) {
 				$id             = $post->ID;
-				$title          = get_the_title( $id );
+				$title          = wp_specialchars_decode( get_the_title( $id ), ENT_QUOTES );
 				$thumbnail_url  = get_the_post_thumbnail_url( $id, 'small' );
 				$status         = get_post_status( $id );
 				$edit_link      = get_edit_post_link( $id );
@@ -892,7 +892,7 @@
                     <td class="mpwem_event_title">
                         <div class="event-name">
                             <strong class="row-title">
-                                <a href="<?php echo esc_url( $edit_link ); ?>" class="row-title-link"><?php echo esc_attr( $title . ' ' . $event_type_status ); ?></a>
+                                <a href="<?php echo esc_url( $edit_link ); ?>" class="row-title-link"><?php echo esc_html( $title . ' ' . $event_type_status ); ?></a>
                             </strong>
                             <div class="event-status-inline">
 								<?php if ( $status === 'publish' ) { ?>

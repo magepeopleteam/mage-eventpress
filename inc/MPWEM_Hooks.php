@@ -491,10 +491,18 @@
 					$event_list_setting_sec  = empty( $event_list_setting_sec ) && ! is_array( $event_list_setting_sec ) ? [] : $event_list_setting_sec;
 					$hide_only_end_time_list = is_array($event_list_setting_sec) && array_key_exists( 'mep_event_hide_end_time_list', $event_list_setting_sec ) ? $event_list_setting_sec['mep_event_hide_end_time_list'] : 'no';
 					$date_format             = MPWEM_Global_Function::check_time_exit_date( $start_time ) ? 'full' : 'date';
-					$end_date                = is_array($event_infos) && array_key_exists( 'event_end_date', $event_infos ) ? $event_infos['event_end_date'] : '';
-					$end_time                = is_array($event_infos) && array_key_exists( 'event_end_time', $event_infos ) ? $event_infos['event_end_time'] : '';
+					if ( isset( $first_date ) && is_array( $first_date ) && array_key_exists( 'end', $first_date ) ) {
+						// Use the end paired with the same occurrence as $start_time (not the primary event's raw meta),
+						// otherwise a "Particular Date" occurrence's start gets shown against an unrelated occurrence's end.
+						$end_date_time = $first_date['end'];
+						$end_date      = $end_date_time ? date( 'Y-m-d', strtotime( $end_date_time ) ) : '';
+						$end_time      = ( $end_date_time && MPWEM_Global_Function::check_time_exit_date( $end_date_time ) ) ? date( 'H:i:s', strtotime( $end_date_time ) ) : '';
+					} else {
+						$end_date      = is_array($event_infos) && array_key_exists( 'event_end_date', $event_infos ) ? $event_infos['event_end_date'] : '';
+						$end_time      = is_array($event_infos) && array_key_exists( 'event_end_time', $event_infos ) ? $event_infos['event_end_time'] : '';
+						$end_date_time = $end_date.' '.$end_time;
+					}
 					$event_id                = is_array($event_infos) && array_key_exists( 'event_id', $event_infos ) ? $event_infos['event_id'] : '';
-					$end_date_time			 = $end_date.' '.$end_time;
 					// echo '<pre>'; print_r($event_infos); echo '</pre>';
 					?>
                     <div class="list_content upcomming_date_only_only">

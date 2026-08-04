@@ -3146,6 +3146,8 @@ tr.payment_tabs_html { display: none !important; }
 											<?php MPWEM_AI_Assistant_Settings_UI::render( $fields ); ?>
 										<?php elseif ( 'mep_social_card_setting_sec' === $tab_id ) : ?>
 											<?php MPWEM_Social_Card_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'mep_gsheet_settings' === $tab_id ) : ?>
+											<?php MPWEM_Google_Sheets_Settings_UI::render(); ?>
 										<?php else : ?>
 											<?php MPWEM_Modern_Section_Settings_UI::render( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>

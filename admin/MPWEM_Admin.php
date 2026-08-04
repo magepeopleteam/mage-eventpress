@@ -29,6 +29,10 @@
 				require_once( dirname( __DIR__ ) . '/lib/classes/class-icon-popup.php' );
 				//****************Global settings************************//
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MAGE_Setting_API.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Email_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_General_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Style_Icon_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Slider_Carousel_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/admin_setting_panel.php';
 				require_once MPWEM_PLUGIN_DIR . '/includes/admin/class-wc-payment-manager.php';
 				//************************************//

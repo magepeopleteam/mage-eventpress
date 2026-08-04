@@ -1318,19 +1318,25 @@ tr.payment_tabs_html { display: none !important; }
 					),
 					array(
 						'id'    => 'style_setting_sec',
-						'title' => '<i class="mi mi-palette"></i>' . __( 'Style Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-palette"></i>' . __( 'Style & Icon', 'mage-eventpress' )
 					),
 					array(
-						'id'    => 'icon_setting_sec',
-						'title' => '<i class="mi mi-icon-star"></i>' . __( 'Icon Settings', 'mage-eventpress' )
-					),
-					array(
-						'id'    => 'carousel_setting_sec',
-						'title' => '<i class="mi mi-copy-image"></i>' . __( 'Carousel Settings', 'mage-eventpress' )
+						'id'        => 'icon_setting_sec',
+						'title'     => '<i class="mi mi-icon-star"></i>' . __( 'Icon Settings', 'mage-eventpress' ),
+						'parent'    => 'style_setting_sec',
+						'sub_label' => __( 'Icon', 'mage-eventpress' ),
+						'sub_icon'  => 'fas fa-icons',
 					),
 					array(
 						'id'    => 'mp_slider_settings',
-						'title' => '<i class="mi mi-settings-sliders"></i>' . __( 'Slider Settings', 'mage-eventpress' )
+						'title' => '<i class="mi mi-settings-sliders"></i>' . __( 'Slider & Carousel', 'mage-eventpress' )
+					),
+					array(
+						'id'        => 'carousel_setting_sec',
+						'title'     => '<i class="mi mi-copy-image"></i>' . __( 'Carousel Settings', 'mage-eventpress' ),
+						'parent'    => 'mp_slider_settings',
+						'sub_label' => __( 'Carousel', 'mage-eventpress' ),
+						'sub_icon'  => 'fas fa-images',
 					),
 					array(
 						'id'    => 'payment_setting_sec',
@@ -2689,24 +2695,14 @@ tr.payment_tabs_html { display: none !important; }
 						'subtitle' => __( 'Confirmation, PDF & waitlist emails', 'mage-eventpress' ),
 					),
 					'style_setting_sec'        => array(
-						'title'    => __( 'Style Settings', 'mage-eventpress' ),
+						'title'    => __( 'Style & Icon', 'mage-eventpress' ),
 						'icon'     => 'fas fa-palette',
-						'subtitle' => __( 'Colors & theme', 'mage-eventpress' ),
-					),
-					'icon_setting_sec'         => array(
-						'title'    => __( 'Icon Settings', 'mage-eventpress' ),
-						'icon'     => 'fas fa-icons',
-						'subtitle' => __( 'Frontend icon library', 'mage-eventpress' ),
-					),
-					'carousel_setting_sec'     => array(
-						'title'    => __( 'Carousel Settings', 'mage-eventpress' ),
-						'icon'     => 'fas fa-images',
-						'subtitle' => __( 'Event carousel options', 'mage-eventpress' ),
+						'subtitle' => __( 'Colors & frontend icons', 'mage-eventpress' ),
 					),
 					'mp_slider_settings'       => array(
-						'title'    => __( 'Slider Settings', 'mage-eventpress' ),
+						'title'    => __( 'Slider & Carousel', 'mage-eventpress' ),
 						'icon'     => 'fas fa-photo-video',
-						'subtitle' => __( 'Slider display options', 'mage-eventpress' ),
+						'subtitle' => __( 'Slider & carousel display options', 'mage-eventpress' ),
 					),
 					'payment_setting_sec'      => array(
 						'title'    => __( 'Payment', 'mage-eventpress' ),
@@ -2742,7 +2738,7 @@ tr.payment_tabs_html { display: none !important; }
 				$subtabs = array(
 					'email_setting_sec' => array(
 						'label' => __( 'Confirmation Email', 'mage-eventpress' ),
-						'icon'  => 'fas fa-envelope-open-text',
+						'icon'  => 'fas fa-paper-plane',
 					),
 				);
 
@@ -2754,7 +2750,7 @@ tr.payment_tabs_html { display: none !important; }
 					),
 					'mep_waitlist_email_settings' => array(
 						'label' => __( 'Waitlist Email', 'mage-eventpress' ),
-						'icon'  => 'fas fa-user-clock',
+						'icon'  => 'fas fa-hourglass-half',
 					),
 				);
 
@@ -2771,6 +2767,72 @@ tr.payment_tabs_html { display: none !important; }
 					$subtabs[ $section_id ] = array(
 						'label' => isset( $section['sub_label'] ) ? $section['sub_label'] : $defaults['label'],
 						'icon'  => isset( $section['sub_icon'] ) ? $section['sub_icon'] : $defaults['icon'],
+					);
+				}
+
+				return $subtabs;
+			}
+
+			/**
+			 * Sections nested under Style & Icon (Style / Icon).
+			 * Option keys stay identical so existing saved data keeps working.
+			 *
+			 * @param array $sections Section map keyed by id.
+			 * @return array Subtab definitions keyed by section id.
+			 */
+			private function get_style_icon_settings_subtabs( $sections ) {
+				$subtabs = array(
+					'style_setting_sec' => array(
+						'label' => __( 'Style', 'mage-eventpress' ),
+						'icon'  => 'fas fa-palette',
+					),
+					'icon_setting_sec'  => array(
+						'label' => __( 'Icon', 'mage-eventpress' ),
+						'icon'  => 'fas fa-icons',
+					),
+				);
+
+				foreach ( $sections as $section_id => $section ) {
+					$parent = isset( $section['parent'] ) ? $section['parent'] : '';
+					if ( 'style_setting_sec' !== $parent ) {
+						continue;
+					}
+					$subtabs[ $section_id ] = array(
+						'label' => isset( $section['sub_label'] ) ? $section['sub_label'] : wp_strip_all_tags( isset( $section['title'] ) ? $section['title'] : $section_id ),
+						'icon'  => isset( $section['sub_icon'] ) ? $section['sub_icon'] : 'fas fa-icons',
+					);
+				}
+
+				return $subtabs;
+			}
+
+			/**
+			 * Sections nested under Slider & Carousel (Slider / Carousel).
+			 * Option keys stay identical so existing saved data keeps working.
+			 *
+			 * @param array $sections Section map keyed by id.
+			 * @return array Subtab definitions keyed by section id.
+			 */
+			private function get_slider_carousel_settings_subtabs( $sections ) {
+				$subtabs = array(
+					'mp_slider_settings'   => array(
+						'label' => __( 'Slider', 'mage-eventpress' ),
+						'icon'  => 'fas fa-photo-video',
+					),
+					'carousel_setting_sec' => array(
+						'label' => __( 'Carousel', 'mage-eventpress' ),
+						'icon'  => 'fas fa-images',
+					),
+				);
+
+				foreach ( $sections as $section_id => $section ) {
+					$parent = isset( $section['parent'] ) ? $section['parent'] : '';
+					if ( 'mp_slider_settings' !== $parent ) {
+						continue;
+					}
+					$subtabs[ $section_id ] = array(
+						'label' => isset( $section['sub_label'] ) ? $section['sub_label'] : wp_strip_all_tags( isset( $section['title'] ) ? $section['title'] : $section_id ),
+						'icon'  => isset( $section['sub_icon'] ) ? $section['sub_icon'] : 'fas fa-images',
 					);
 				}
 
@@ -2834,20 +2896,34 @@ tr.payment_tabs_html { display: none !important; }
 				}
 
 				$email_subtabs = $this->get_email_settings_subtabs( $sections );
-				$child_ids     = array_values( array_filter( array_keys( $email_subtabs ), function( $id ) {
+				$email_child_ids = array_values( array_filter( array_keys( $email_subtabs ), function( $id ) {
 					return 'email_setting_sec' !== $id;
 				} ) );
-				$show_email_subnav = count( $email_subtabs ) > 1;
+
+				$si_subtabs = $this->get_style_icon_settings_subtabs( $sections );
+				$si_child_ids = array_values( array_filter( array_keys( $si_subtabs ), function( $id ) {
+					return 'style_setting_sec' !== $id;
+				} ) );
+
+				$sc_subtabs = $this->get_slider_carousel_settings_subtabs( $sections );
+				$sc_child_ids = array_values( array_filter( array_keys( $sc_subtabs ), function( $id ) {
+					return 'mp_slider_settings' !== $id;
+				} ) );
+
+				$nested_child_ids = array_merge( $email_child_ids, $si_child_ids, $sc_child_ids );
 
 				$visible_tabs = array();
 				foreach ( $tab_configs as $tab_id => $config ) {
+					if ( in_array( $tab_id, $nested_child_ids, true ) ) {
+						continue;
+					}
 					if ( isset( $sections[ $tab_id ] ) ) {
 						$visible_tabs[ $tab_id ] = $config;
 					}
 				}
 				foreach ( $sections as $section_id => $section ) {
-					// Nested email sections belong under Email Settings, not the sidebar.
-					if ( ! empty( $section['parent'] ) || in_array( $section_id, $child_ids, true ) ) {
+					// Nested sections belong under their parent hub, not the sidebar.
+					if ( ! empty( $section['parent'] ) || in_array( $section_id, $nested_child_ids, true ) ) {
 						continue;
 					}
 					if ( isset( $visible_tabs[ $section_id ] ) ) {
@@ -2874,6 +2950,11 @@ tr.payment_tabs_html { display: none !important; }
 					$email_sub_meta[ $sub_id ] = isset( $sub_cfg['label'] ) ? $sub_cfg['label'] : $sub_id;
 				}
 
+				$si_sub_meta = array();
+				foreach ( $si_subtabs as $sub_id => $sub_cfg ) {
+					$si_sub_meta[ $sub_id ] = isset( $sub_cfg['label'] ) ? $sub_cfg['label'] : $sub_id;
+				}
+
 				wp_add_inline_script(
 					'mep-global-settings',
 					'window.mepGs = window.mepGs || {};'
@@ -2881,7 +2962,20 @@ tr.payment_tabs_html { display: none !important; }
 					. 'window.mepGs.defaultTab = ' . wp_json_encode( $first_tab ) . ';'
 					. 'window.mepGs.emailParent = "email_setting_sec";'
 					. 'window.mepGs.emailSubtabs = ' . wp_json_encode( array_keys( $email_subtabs ) ) . ';'
-					. 'window.mepGs.emailSubMeta = ' . wp_json_encode( $email_sub_meta ) . ';',
+					. 'window.mepGs.emailSubMeta = ' . wp_json_encode( $email_sub_meta ) . ';'
+					. 'window.mepGs.styleParent = "style_setting_sec";'
+					. 'window.mepGs.styleSubtabs = ' . wp_json_encode( array_keys( $si_subtabs ) ) . ';'
+					. 'window.mepGs.styleSubMeta = ' . wp_json_encode( $si_sub_meta ) . ';'
+					. 'window.mepGs.sliderParent = "mp_slider_settings";'
+					. 'window.mepGs.sliderSubtabs = ' . wp_json_encode( array_keys( $sc_subtabs ) ) . ';'
+					. 'window.mepGs.testEmail = ' . wp_json_encode( array(
+						'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+						'nonce'   => wp_create_nonce( 'mep_send_test_email' ),
+						'i18n'    => array(
+							'sending' => __( 'Sending…', 'mage-eventpress' ),
+							'error'   => __( 'Something went wrong. Please try again.', 'mage-eventpress' ),
+						),
+					) ) . ';',
 					'before'
 				);
 				?>
@@ -2945,45 +3039,14 @@ tr.payment_tabs_html { display: none !important; }
 								<?php foreach ( $visible_tabs as $tab_id => $config ) : ?>
 									<div class="mep-gs__tab-panel<?php echo $tab_id === $first_tab ? ' mep-gs--active' : ''; ?>"
 										id="mep-tab-<?php echo esc_attr( $tab_id ); ?>">
-										<?php if ( 'email_setting_sec' === $tab_id && $show_email_subnav ) : ?>
-											<nav class="mep-gs__email-subnav" role="tablist" aria-label="<?php esc_attr_e( 'Email Settings', 'mage-eventpress' ); ?>">
-												<?php
-												$first_sub = true;
-												foreach ( $email_subtabs as $sub_id => $sub_cfg ) :
-													?>
-													<button type="button"
-														class="mep-gs__email-subnav-btn<?php echo $first_sub ? ' mep-gs--active' : ''; ?>"
-														role="tab"
-														aria-selected="<?php echo $first_sub ? 'true' : 'false'; ?>"
-														data-email-sub="<?php echo esc_attr( $sub_id ); ?>">
-														<span class="mep-gs__email-subnav-icon <?php echo esc_attr( $sub_cfg['icon'] ); ?>"></span>
-														<span class="mep-gs__email-subnav-label"><?php echo esc_html( $sub_cfg['label'] ); ?></span>
-													</button>
-													<?php
-													$first_sub = false;
-												endforeach;
-												?>
-											</nav>
-											<div class="mep-gs__email-subpanels">
-												<?php
-												$first_sub = true;
-												foreach ( $email_subtabs as $sub_id => $sub_cfg ) :
-													$sub_config = array(
-														'title' => $sub_cfg['label'],
-														'icon'  => $sub_cfg['icon'],
-													);
-													?>
-													<div class="mep-gs__email-subpanel<?php echo $first_sub ? ' mep-gs--active' : ''; ?>"
-														id="mep-email-sub-<?php echo esc_attr( $sub_id ); ?>"
-														data-email-sub="<?php echo esc_attr( $sub_id ); ?>"
-														role="tabpanel">
-														<?php $this->render_settings_section_form( $sub_id, $sub_config, $fields, $sections ); ?>
-													</div>
-													<?php
-													$first_sub = false;
-												endforeach;
-												?>
-											</div>
+										<?php if ( 'email_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Email_Settings_UI::render_hub( $email_subtabs, $fields ); ?>
+										<?php elseif ( 'style_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Style_Icon_Settings_UI::render_hub( $si_subtabs, $fields, $sections ); ?>
+										<?php elseif ( 'mp_slider_settings' === $tab_id ) : ?>
+											<?php MPWEM_Slider_Carousel_Settings_UI::render_hub( $sc_subtabs, $fields, $sections ); ?>
+										<?php elseif ( 'general_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_General_Settings_UI::render( $fields ); ?>
 										<?php else : ?>
 											<?php $this->render_settings_section_form( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>

@@ -829,6 +829,9 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			// Event Specific Text
 			$event_email_text = get_post_meta( $event_id, 'mep_event_cc_email_text', true );
 			$email_body       = ! empty( $event_email_text ) ? $event_email_text : $global_email_text;
+			if ( empty( $email_body ) && class_exists( 'MPWEM_Email_Settings_UI' ) ) {
+				$email_body = MPWEM_Email_Settings_UI::get_preset_template( 'confirmation' );
+			}
 			// Dynamic Content Replace
 			$email_body = mep_email_dynamic_content( $email_body, $event_id, $order_id, $attendee_id, $event_ticket_info_arr );
 			// Allow filter

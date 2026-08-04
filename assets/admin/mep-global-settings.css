@@ -1055,6 +1055,69 @@
   gap: 0;
 }
 
+/* ── Email Settings nested sub-nav (Confirmation / PDF / Waitlist) ── */
+.mep-gs__email-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px;
+  margin: 0 0 18px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+.mep-gs__email-subnav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+.mep-gs__email-subnav-btn:hover {
+  background: #fff;
+  color: #334155;
+}
+.mep-gs__email-subnav-btn.mep-gs--active {
+  background: #fff;
+  color: #4f46e5;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(99, 102, 241, 0.18);
+  font-weight: 600;
+}
+.mep-gs__email-subnav-icon {
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  color: #94a3b8;
+}
+.mep-gs__email-subnav-btn.mep-gs--active .mep-gs__email-subnav-icon {
+  color: #6366f1;
+}
+.mep-gs__email-subpanel {
+  display: none;
+}
+.mep-gs__email-subpanel.mep-gs--active {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .mep-gs__email-subnav {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mep-gs__email-subnav-btn {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
 .mep-gs__root .payment-sub-tabs.nav-tab-wrapper {
   border: 0 !important;
   padding: 0 !important;

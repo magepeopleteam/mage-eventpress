@@ -2686,7 +2686,7 @@ tr.payment_tabs_html { display: none !important; }
 					'email_setting_sec'        => array(
 						'title'    => __( 'Email Settings', 'mage-eventpress' ),
 						'icon'     => 'fas fa-envelope',
-						'subtitle' => __( 'Confirmation emails', 'mage-eventpress' ),
+						'subtitle' => __( 'Confirmation, PDF & waitlist emails', 'mage-eventpress' ),
 					),
 					'style_setting_sec'        => array(
 						'title'    => __( 'Style Settings', 'mage-eventpress' ),
@@ -2732,6 +2732,89 @@ tr.payment_tabs_html { display: none !important; }
 			}
 
 			/**
+			 * Sections nested under Email Settings (Confirmation / PDF / Waitlist).
+			 * Option keys stay identical so existing saved data keeps working.
+			 *
+			 * @param array $sections Section map keyed by id.
+			 * @return array Subtab definitions keyed by section id.
+			 */
+			private function get_email_settings_subtabs( $sections ) {
+				$subtabs = array(
+					'email_setting_sec' => array(
+						'label' => __( 'Confirmation Email', 'mage-eventpress' ),
+						'icon'  => 'fas fa-envelope-open-text',
+					),
+				);
+
+				// Known email child sections (fallback if parent meta is missing on older addons).
+				$known_children = array(
+					'mep_pdf_email_settings'      => array(
+						'label' => __( 'PDF Email', 'mage-eventpress' ),
+						'icon'  => 'fas fa-file-pdf',
+					),
+					'mep_waitlist_email_settings' => array(
+						'label' => __( 'Waitlist Email', 'mage-eventpress' ),
+						'icon'  => 'fas fa-user-clock',
+					),
+				);
+
+				foreach ( $sections as $section_id => $section ) {
+					$parent = isset( $section['parent'] ) ? $section['parent'] : '';
+					$is_known = isset( $known_children[ $section_id ] );
+					if ( 'email_setting_sec' !== $parent && ! $is_known ) {
+						continue;
+					}
+					$defaults = $is_known ? $known_children[ $section_id ] : array(
+						'label' => wp_strip_all_tags( isset( $section['title'] ) ? $section['title'] : $section_id ),
+						'icon'  => 'fas fa-envelope',
+					);
+					$subtabs[ $section_id ] = array(
+						'label' => isset( $section['sub_label'] ) ? $section['sub_label'] : $defaults['label'],
+						'icon'  => isset( $section['sub_icon'] ) ? $section['sub_icon'] : $defaults['icon'],
+					);
+				}
+
+				return $subtabs;
+			}
+
+			/**
+			 * Render one settings section card + form (shared by top-level tabs and email subtabs).
+			 *
+			 * @param string $tab_id  Section / option group id.
+			 * @param array  $config  Display config (title, icon).
+			 * @param array  $fields  All settings fields.
+			 * @param array  $sections All sections keyed by id.
+			 */
+			private function render_settings_section_form( $tab_id, $config, $fields, $sections ) {
+				$has_fields = ! empty( $fields[ $tab_id ] );
+				$sec_arg    = isset( $sections[ $tab_id ] ) ? $sections[ $tab_id ] : array( 'id' => $tab_id );
+				$title      = isset( $config['title'] ) ? $config['title'] : ( isset( $config['label'] ) ? $config['label'] : $tab_id );
+				$icon       = isset( $config['icon'] ) ? $config['icon'] : 'fas fa-cog';
+				?>
+				<?php if ( $has_fields ) : ?>
+				<form method="post" action="options.php">
+				<?php endif; ?>
+					<div class="mep-gs__section-card">
+						<div class="mep-gs__section-head">
+							<span class="mep-gs__section-icon <?php echo esc_attr( $icon ); ?>"></span>
+							<span class="mep-gs__section-head-label"><?php echo esc_html( $title ); ?></span>
+						</div>
+						<?php
+						do_action( 'wsa_form_top_' . $tab_id, $sec_arg );
+						if ( $has_fields ) {
+							settings_fields( $tab_id );
+							do_settings_sections( $tab_id );
+						}
+						do_action( 'wsa_form_bottom_' . $tab_id, $sec_arg );
+						?>
+					</div>
+				<?php if ( $has_fields ) : ?>
+						<div style="display:none;"><?php submit_button(); ?></div>
+				</form>
+				<?php endif;
+			}
+
+			/**
 			 * Bus-style modern settings shell. Reuses the existing Settings API forms
 			 * (do_settings_sections + wsa_form_bottom hooks) so Payment / License / Status
 			 * keep working unchanged — only the chrome is new.
@@ -2750,6 +2833,12 @@ tr.payment_tabs_html { display: none !important; }
 					}
 				}
 
+				$email_subtabs = $this->get_email_settings_subtabs( $sections );
+				$child_ids     = array_values( array_filter( array_keys( $email_subtabs ), function( $id ) {
+					return 'email_setting_sec' !== $id;
+				} ) );
+				$show_email_subnav = count( $email_subtabs ) > 1;
+
 				$visible_tabs = array();
 				foreach ( $tab_configs as $tab_id => $config ) {
 					if ( isset( $sections[ $tab_id ] ) ) {
@@ -2757,6 +2846,10 @@ tr.payment_tabs_html { display: none !important; }
 					}
 				}
 				foreach ( $sections as $section_id => $section ) {
+					// Nested email sections belong under Email Settings, not the sidebar.
+					if ( ! empty( $section['parent'] ) || in_array( $section_id, $child_ids, true ) ) {
+						continue;
+					}
 					if ( isset( $visible_tabs[ $section_id ] ) ) {
 						continue;
 					}
@@ -2776,11 +2869,19 @@ tr.payment_tabs_html { display: none !important; }
 					$tab_meta[ $id ] = array( $cfg['title'], isset( $cfg['subtitle'] ) ? $cfg['subtitle'] : '' );
 				}
 
+				$email_sub_meta = array();
+				foreach ( $email_subtabs as $sub_id => $sub_cfg ) {
+					$email_sub_meta[ $sub_id ] = isset( $sub_cfg['label'] ) ? $sub_cfg['label'] : $sub_id;
+				}
+
 				wp_add_inline_script(
 					'mep-global-settings',
 					'window.mepGs = window.mepGs || {};'
 					. 'window.mepGs.tabMeta = ' . wp_json_encode( $tab_meta ) . ';'
-					. 'window.mepGs.defaultTab = ' . wp_json_encode( $first_tab ) . ';',
+					. 'window.mepGs.defaultTab = ' . wp_json_encode( $first_tab ) . ';'
+					. 'window.mepGs.emailParent = "email_setting_sec";'
+					. 'window.mepGs.emailSubtabs = ' . wp_json_encode( array_keys( $email_subtabs ) ) . ';'
+					. 'window.mepGs.emailSubMeta = ' . wp_json_encode( $email_sub_meta ) . ';',
 					'before'
 				);
 				?>
@@ -2841,32 +2942,50 @@ tr.payment_tabs_html { display: none !important; }
 							</div>
 
 							<div class="mep-gs__content">
-								<?php foreach ( $visible_tabs as $tab_id => $config ) :
-									$has_fields = ! empty( $fields[ $tab_id ] );
-									$sec_arg    = isset( $sections[ $tab_id ] ) ? $sections[ $tab_id ] : array( 'id' => $tab_id );
-									?>
+								<?php foreach ( $visible_tabs as $tab_id => $config ) : ?>
 									<div class="mep-gs__tab-panel<?php echo $tab_id === $first_tab ? ' mep-gs--active' : ''; ?>"
 										id="mep-tab-<?php echo esc_attr( $tab_id ); ?>">
-										<?php if ( $has_fields ) : ?>
-										<form method="post" action="options.php">
-										<?php endif; ?>
-											<div class="mep-gs__section-card">
-												<div class="mep-gs__section-head">
-													<span class="mep-gs__section-icon <?php echo esc_attr( isset( $config['icon'] ) ? $config['icon'] : 'fas fa-cog' ); ?>"></span>
-													<span class="mep-gs__section-head-label"><?php echo esc_html( $config['title'] ); ?></span>
-												</div>
+										<?php if ( 'email_setting_sec' === $tab_id && $show_email_subnav ) : ?>
+											<nav class="mep-gs__email-subnav" role="tablist" aria-label="<?php esc_attr_e( 'Email Settings', 'mage-eventpress' ); ?>">
 												<?php
-												do_action( 'wsa_form_top_' . $tab_id, $sec_arg );
-												if ( $has_fields ) {
-													settings_fields( $tab_id );
-													do_settings_sections( $tab_id );
-												}
-												do_action( 'wsa_form_bottom_' . $tab_id, $sec_arg );
+												$first_sub = true;
+												foreach ( $email_subtabs as $sub_id => $sub_cfg ) :
+													?>
+													<button type="button"
+														class="mep-gs__email-subnav-btn<?php echo $first_sub ? ' mep-gs--active' : ''; ?>"
+														role="tab"
+														aria-selected="<?php echo $first_sub ? 'true' : 'false'; ?>"
+														data-email-sub="<?php echo esc_attr( $sub_id ); ?>">
+														<span class="mep-gs__email-subnav-icon <?php echo esc_attr( $sub_cfg['icon'] ); ?>"></span>
+														<span class="mep-gs__email-subnav-label"><?php echo esc_html( $sub_cfg['label'] ); ?></span>
+													</button>
+													<?php
+													$first_sub = false;
+												endforeach;
+												?>
+											</nav>
+											<div class="mep-gs__email-subpanels">
+												<?php
+												$first_sub = true;
+												foreach ( $email_subtabs as $sub_id => $sub_cfg ) :
+													$sub_config = array(
+														'title' => $sub_cfg['label'],
+														'icon'  => $sub_cfg['icon'],
+													);
+													?>
+													<div class="mep-gs__email-subpanel<?php echo $first_sub ? ' mep-gs--active' : ''; ?>"
+														id="mep-email-sub-<?php echo esc_attr( $sub_id ); ?>"
+														data-email-sub="<?php echo esc_attr( $sub_id ); ?>"
+														role="tabpanel">
+														<?php $this->render_settings_section_form( $sub_id, $sub_config, $fields, $sections ); ?>
+													</div>
+													<?php
+													$first_sub = false;
+												endforeach;
 												?>
 											</div>
-										<?php if ( $has_fields ) : ?>
-												<div style="display:none;"><?php submit_button(); ?></div>
-										</form>
+										<?php else : ?>
+											<?php $this->render_settings_section_form( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>

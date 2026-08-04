@@ -228,13 +228,13 @@ class MEP_Custom_Orders_Page {
 			'mep-orders-page',
 			MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.css',
 			array(),
-			'1.3.6'
+			'1.3.7'
 		);
 		wp_enqueue_script(
 			'mep-orders-page',
 			MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.js',
 			array( 'jquery' ),
-			'1.3.6',
+			'1.3.7',
 			true
 		);
 		wp_localize_script( 'mep-orders-page', 'mepOrders', array(
@@ -1147,7 +1147,7 @@ class MEP_Custom_Orders_Page {
 				<div class="mep-filter-body" id="mep-filter-body">
 					<div class="mep-filter-grid">
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--search">
 							<label for="mep-search"><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></label>
 							<div class="mep-input-icon-wrap">
 								<span class="dashicons dashicons-search"></span>
@@ -1167,7 +1167,7 @@ class MEP_Custom_Orders_Page {
 							</select>
 						</div>
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--sm">
 							<label for="mep-status"><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></label>
 							<select id="mep-status" name="mep_status">
 								<option value=""><?php esc_html_e( 'All Statuses', 'mage-eventpress' ); ?></option>
@@ -1177,7 +1177,7 @@ class MEP_Custom_Orders_Page {
 							</select>
 						</div>
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--sm">
 							<label for="mep-gateway"><?php esc_html_e( 'Payment Gateway', 'mage-eventpress' ); ?></label>
 							<select id="mep-gateway" name="mep_gateway">
 								<option value=""><?php esc_html_e( 'All Gateways', 'mage-eventpress' ); ?></option>
@@ -1189,7 +1189,7 @@ class MEP_Custom_Orders_Page {
 							</select>
 						</div>
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--sm">
 							<label for="mep-source"><?php esc_html_e( 'Order Source', 'mage-eventpress' ); ?></label>
 							<select id="mep-source" name="mep_source">
 								<option value="all"              <?php selected( $filters['source'], 'all' ); ?>><?php esc_html_e( 'All Sources', 'mage-eventpress' ); ?></option>
@@ -1200,23 +1200,24 @@ class MEP_Custom_Orders_Page {
 							</select>
 						</div>
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--date">
 							<label for="mep-date-from"><?php esc_html_e( 'Date From', 'mage-eventpress' ); ?></label>
 							<input type="date" id="mep-date-from" name="mep_date_from" value="<?php echo esc_attr( $filters['date_from'] ); ?>" />
 						</div>
 
-						<div class="mep-filter-field">
+						<div class="mep-filter-field mep-filter-field--date">
 							<label for="mep-date-to"><?php esc_html_e( 'Date To', 'mage-eventpress' ); ?></label>
 							<input type="date" id="mep-date-to" name="mep_date_to" value="<?php echo esc_attr( $filters['date_to'] ); ?>" />
 						</div>
 
+						<div class="mep-filter-actions">
+							<button type="button" id="mep-reset-filters" class="mep-btn mep-btn-ghost">
+								<span class="dashicons dashicons-dismiss"></span>
+								<?php esc_html_e( 'Reset', 'mage-eventpress' ); ?>
+							</button>
+						</div>
+
 					</div><!-- .mep-filter-grid -->
-					<div class="mep-filter-actions">
-						<button type="button" id="mep-reset-filters" class="mep-btn mep-btn-ghost">
-							<span class="dashicons dashicons-dismiss"></span>
-							<?php esc_html_e( 'Reset', 'mage-eventpress' ); ?>
-						</button>
-					</div>
 				</div><!-- .mep-filter-body -->
 			</div><!-- .mep-filter-panel -->
 

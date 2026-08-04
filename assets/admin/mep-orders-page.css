@@ -254,7 +254,7 @@
 }
 
 .mep-filter-body {
-	padding: 20px;
+	padding: 16px 20px;
 	transition: all 0.2s ease;
 }
 
@@ -263,30 +263,52 @@
 }
 
 .mep-filter-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 16px;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: flex-end;
+	gap: 10px;
 }
 
 .mep-filter-field {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.mep-filter-field--search {
+	flex: 1.35 1 0;
+	min-width: 140px;
+}
+
+.mep-filter-field--sm {
+	flex: 0.9 1 0;
+	min-width: 110px;
+}
+
+.mep-filter-field--date {
+	flex: 0 0 132px;
+	width: 132px;
+	min-width: 132px;
 }
 
 .mep-filter-field label {
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: 600;
 	color: #475569;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .mep-filter-field input[type="text"],
 .mep-filter-field input[type="date"],
 .mep-filter-field select {
 	width: 100%;
-	padding: 8px 12px;
+	padding: 8px 10px;
 	border: 1.5px solid #e2e8f0;
 	border-radius: 8px;
 	font-size: 13px;
@@ -327,11 +349,18 @@
 
 .mep-filter-actions {
 	display: flex;
-	justify-content: flex-end;
-	gap: 8px;
-	margin-top: 16px;
-	padding-top: 16px;
-	border-top: 1px solid #f1f5f9;
+	align-items: flex-end;
+	flex: 0 0 auto;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.mep-filter-actions .mep-btn {
+	height: 38px;
+	padding: 0 12px;
+	white-space: nowrap;
+	box-sizing: border-box;
 }
 
 /* ---- Table Wrap ---- */
@@ -831,7 +860,22 @@
 
 @media ( max-width: 960px ) {
 	.mep-filter-grid {
-		grid-template-columns: repeat(2, 1fr);
+		flex-wrap: wrap;
+	}
+	.mep-filter-field,
+	.mep-filter-field--search,
+	.mep-filter-field--sm {
+		flex: 1 1 calc(50% - 6px);
+		min-width: calc(50% - 6px);
+	}
+	.mep-filter-field--date {
+		flex: 1 1 calc(50% - 6px);
+		width: auto;
+		min-width: calc(50% - 6px);
+	}
+	.mep-filter-actions {
+		flex: 1 1 100%;
+		justify-content: flex-end;
 	}
 	.mep-stats-bar {
 		gap: 12px;
@@ -853,7 +897,7 @@
 		padding: 0 12px 40px;
 	}
 	.mep-filter-grid {
-		grid-template-columns: repeat(2, 1fr);
+		flex-wrap: wrap;
 	}
 	.mep-stats-bar {
 		flex-wrap: wrap;
@@ -873,7 +917,23 @@
 		padding: 0 8px 40px;
 	}
 	.mep-filter-grid {
-		grid-template-columns: 1fr;
+		flex-wrap: wrap;
+	}
+	.mep-filter-field,
+	.mep-filter-field--search,
+	.mep-filter-field--sm,
+	.mep-filter-field--date {
+		flex: 1 1 100%;
+		width: 100%;
+		min-width: 100%;
+	}
+	.mep-filter-actions {
+		flex: 1 1 100%;
+		justify-content: stretch;
+	}
+	.mep-filter-actions .mep-btn {
+		width: 100%;
+		justify-content: center;
 	}
 	.mep-orders-header {
 		flex-direction: column;

@@ -423,6 +423,9 @@
 						var $wrap = $el.closest('[data-mep-pdf-color]');
 						var val = $el.val() || $el.data('default-color') || '#FFFFFF';
 						$wrap.find('.mep-pdf__color-swatch').css('background-color', val);
+						if (typeof window.mepPdfRefreshPreview === 'function') {
+							window.mepPdfRefreshPreview();
+						}
 					}
 					if ($el.hasClass('mep-ssc__color-hex') || $el.closest('[data-mep-ssc-color]').length) {
 						var $sscWrap = $el.closest('[data-mep-ssc-color]');
@@ -729,6 +732,9 @@
 				if (typeof window.mepSscRefreshPreview === 'function') {
 					window.mepSscRefreshPreview();
 				}
+				if (typeof window.mepPdfRefreshPreview === 'function') {
+					window.mepPdfRefreshPreview();
+				}
 			});
 			file_frame.open();
 		});
@@ -744,6 +750,9 @@
 			$(this).prop('hidden', true);
 			if (typeof window.mepSscRefreshPreview === 'function') {
 				window.mepSscRefreshPreview();
+			}
+			if (typeof window.mepPdfRefreshPreview === 'function') {
+				window.mepPdfRefreshPreview();
 			}
 		});
 
@@ -809,6 +818,60 @@
 			syncSscColorSwatch($(this));
 		});
 		mepSscRefreshPreview();
+
+		function mepPdfThemeSlug(theme) {
+			var map = {
+				'default.php': 'default',
+				'ticket2.php': 'ticket2',
+				'rcmmaa.php': 'rcmmaa',
+				'gsound.php': 'gsound',
+				'PWTinvoice.php': 'pwtinvoice',
+				'invoice-style.php': 'invoice'
+			};
+			var file = String(theme || 'default.php').split(/[\\/]/).pop();
+			return map[file] || 'default';
+		}
+		function mepPdfRefreshPreview() {
+			var $preview = $('#mep-pdf-preview');
+			if (!$preview.length) {
+				return;
+			}
+			var $root = $preview.closest('.mep-pdf');
+			var $theme = $root.find('[data-pdf-preview="theme"]');
+			var theme = $theme.val() || 'default.php';
+			var slug = mepPdfThemeSlug(theme);
+			var bg = $root.find('[data-pdf-preview="bg"]').val() || '#FFFFFF';
+			var text = $root.find('[data-pdf-preview="text"]').val() || '#1C1C22';
+			var showPrice = $root.find('[data-pdf-preview="price"]').is(':checked');
+			var logo = $root.find('[data-pdf-preview="logo"]').val() || '';
+			$preview
+				.removeClass('mep-pdf__preview--default mep-pdf__preview--ticket2 mep-pdf__preview--rcmmaa mep-pdf__preview--gsound mep-pdf__preview--pwtinvoice mep-pdf__preview--invoice')
+				.addClass('mep-pdf__preview--' + slug)
+				.attr('data-theme', theme)
+				.css({
+					'--mep-pdf-preview-bg': bg,
+					'--mep-pdf-preview-text': text
+				});
+			$preview.find('[data-pdf-preview-price]').toggleClass('is-hidden', !showPrice);
+			var $logoWrap = $preview.find('[data-pdf-preview-logo-wrap]');
+			if (logo) {
+				$logoWrap.addClass('has-img').html('<img src="' + logo + '" alt="" data-pdf-preview-logo />');
+			} else {
+				$logoWrap.removeClass('has-img').html('<span data-pdf-preview-logo-fallback>LOGO</span>');
+			}
+			var themeLabel = $theme.find('option:selected').text() || theme;
+			$('#mep-pdf-preview-theme-name').text($.trim(themeLabel));
+		}
+		window.mepPdfRefreshPreview = mepPdfRefreshPreview;
+		$(document).on('change input', '.mep-pdf [data-pdf-preview]', function () {
+			mepPdfRefreshPreview();
+		});
+		$(document).on('click', '#mep-pdf-refresh-preview', function (e) {
+			e.preventDefault();
+			mepPdfRefreshPreview();
+		});
+		mepPdfRefreshPreview();
+
 		$(document).on('click', '.mep-pdf__color-swatch, .mep-pdf__color-name', function () {
 			var $input = $(this).closest('[data-mep-pdf-color]').find('.mep-pdf__color-hex');
 			if ($input.length && $input.data('wpWpColorPicker')) {
@@ -825,6 +888,19 @@
 			} else {
 				$input.trigger('focus').trigger('click');
 			}
+		});
+
+		$(document).on('click', '.mep-se__template[data-mep-template]', function (e) {
+			e.preventDefault();
+			var $btn = $(this);
+			var $row = $btn.closest('.mep-se__template-row');
+			var value = $btn.data('mep-template');
+			if (!value || !$row.length) {
+				return;
+			}
+			$row.find('input[type="hidden"]').val(value);
+			$row.find('.mep-se__template').removeClass('is-active').attr('aria-selected', 'false');
+			$btn.addClass('is-active').attr('aria-selected', 'true');
 		});
 
 		$(document).on('click', '.mep-pay__tab[data-pay-sub]', function (e) {

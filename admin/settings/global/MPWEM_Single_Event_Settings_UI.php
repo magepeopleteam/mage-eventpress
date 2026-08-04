@@ -147,6 +147,84 @@
 			}
 
 			/**
+			 * Event page template picker with screenshot thumbnails.
+			 *
+			 * @param array $field Field def.
+			 */
+			private static function render_template_picker( $field ) {
+				$name    = isset( $field['name'] ) ? $field['name'] : 'mep_global_single_template';
+				$label   = isset( $field['label'] ) ? $field['label'] : __( 'Event Page Template', 'mage-eventpress' );
+				$hint    = isset( $field['desc'] ) ? $field['desc'] : '';
+				$default = isset( $field['default'] ) ? $field['default'] : 'default-theme.php';
+				$value   = (string) self::get_opt( $name, $default );
+				$options = isset( $field['options'] ) && is_array( $field['options'] ) ? $field['options'] : array();
+				if ( empty( $options ) && function_exists( 'mep_event_template_name' ) ) {
+					$options = mep_event_template_name();
+				}
+				if ( empty( $options ) ) {
+					$options = array(
+						'default-theme.php' => __( 'Default Theme', 'mage-eventpress' ),
+						'smart.php'         => __( 'Smart Theme', 'mage-eventpress' ),
+						'virtual.php'       => __( 'Virtual Event', 'mage-eventpress' ),
+					);
+				}
+				if ( ! isset( $options[ $value ] ) ) {
+					$value = $default;
+				}
+				$id      = 'mep-se-' . sanitize_html_class( $name );
+				$shot_dir = trailingslashit( MPWEM_PLUGIN_DIR ) . 'templates/screenshot/';
+				$shot_url = trailingslashit( MPWEM_PLUGIN_URL ) . 'templates/screenshot/';
+				?>
+				<div class="mep-el__row mep-el__row--stack mep-se__template-row">
+					<div class="mep-el__row-text">
+						<span class="mep-el__row-label" id="<?php echo esc_attr( $id ); ?>-label"><?php echo esc_html( $label ); ?></span>
+						<?php if ( $hint ) : ?>
+							<p class="mep-el__row-desc"><?php echo esc_html( $hint ); ?></p>
+						<?php endif; ?>
+					</div>
+					<input type="hidden" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( self::SECTION . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+					<div class="mep-se__templates" role="listbox" aria-labelledby="<?php echo esc_attr( $id ); ?>-label">
+						<?php foreach ( $options as $file => $lab ) :
+							$file     = (string) $file;
+							$active   = ( (string) $value === $file );
+							$slug     = preg_replace( '/\.php$/i', '', basename( $file ) );
+							$webp     = $slug . '.webp';
+							$png      = $slug . '.png';
+							$jpg      = $slug . '.jpg';
+							$img      = '';
+							if ( file_exists( $shot_dir . $webp ) ) {
+								$img = $shot_url . $webp;
+							} elseif ( file_exists( $shot_dir . $png ) ) {
+								$img = $shot_url . $png;
+							} elseif ( file_exists( $shot_dir . $jpg ) ) {
+								$img = $shot_url . $jpg;
+							}
+							$thumb_class = 'mep-se__template-thumb' . ( $img ? '' : ' mep-se__template-thumb--empty' );
+							?>
+							<button
+								type="button"
+								class="mep-se__template<?php echo $active ? ' is-active' : ''; ?>"
+								role="option"
+								aria-selected="<?php echo $active ? 'true' : 'false'; ?>"
+								data-mep-template="<?php echo esc_attr( $file ); ?>"
+							>
+								<span class="<?php echo esc_attr( $thumb_class ); ?>">
+									<?php if ( $img ) : ?>
+										<img src="<?php echo esc_url( $img ); ?>" alt="" loading="lazy" />
+									<?php else : ?>
+										<span class="mep-se__template-fallback" aria-hidden="true"><?php echo esc_html( strtoupper( substr( $slug, 0, 1 ) ) ); ?></span>
+									<?php endif; ?>
+								</span>
+								<span class="mep-se__template-name"><?php echo esc_html( trim( $lab ) ); ?></span>
+								<span class="mep-se__template-badge"><?php esc_html_e( 'Active', 'mage-eventpress' ); ?></span>
+							</button>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<?php
+			}
+
+			/**
 			 * Render a field as toggle or select/text row.
 			 *
 			 * @param array $field Field def.
@@ -168,6 +246,11 @@
 				// Toggle ON = virtual product (stored yes), matching the field label.
 				if ( 'mep_event_product_type' === $name ) {
 					self::render_toggle_row( $field, 'yes', 'no' );
+					return;
+				}
+
+				if ( 'mep_global_single_template' === $name ) {
+					self::render_template_picker( $field );
 					return;
 				}
 

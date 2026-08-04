@@ -110,8 +110,18 @@
 			 * @param array $by Fields by name.
 			 */
 			private static function render_design_card( $by ) {
+				$theme   = self::get_opt( 'mep_pdf_theme', 'default.php' );
+				$bg      = self::get_opt( 'mep_pdf_bg_color', '#FFFFFF' );
+				$text    = self::get_opt( 'mep_pdf_text_color', '#1C1C22' );
+				$show    = self::get_opt( 'mep_pdf_show_price', 'yes' );
+				$logo    = self::get_opt( 'mep_pdf_logo', '' );
+				$theme   = $theme ? $theme : 'default.php';
+				$bg      = $bg ? $bg : '#FFFFFF';
+				$text    = $text ? $text : '#1C1C22';
+				$preview = self::theme_preview_slug( $theme );
 				?>
-				<div class="mep-pdf__card">
+				<div class="mep-pdf__top">
+				<div class="mep-pdf__card mep-pdf__card--design">
 					<div class="mep-pdf__card-head">
 						<span class="mep-pdf__card-icon mep-pdf__card-icon--purple"><i class="fas fa-ticket-alt"></i></span>
 						<div>
@@ -122,7 +132,7 @@
 					<div class="mep-pdf__card-body">
 						<div class="mep-pdf__grid mep-pdf__grid--2">
 							<?php self::render_select_field( isset( $by['mep_pdf_lib'] ) ? $by['mep_pdf_lib'] : null, 'mep_pdf_lib' ); ?>
-							<?php self::render_select_field( isset( $by['mep_pdf_theme'] ) ? $by['mep_pdf_theme'] : null, 'mep_pdf_theme' ); ?>
+							<?php self::render_select_field( isset( $by['mep_pdf_theme'] ) ? $by['mep_pdf_theme'] : null, 'mep_pdf_theme', 'theme' ); ?>
 						</div>
 
 						<div class="mep-pdf__field">
@@ -180,7 +190,97 @@
 						</div>
 					</div>
 				</div>
+
+					<div class="mep-pdf__card mep-pdf__card--preview">
+						<div class="mep-pdf__preview-label">
+							<span class="fas fa-eye" aria-hidden="true"></span>
+							<?php esc_html_e( 'Live Preview', 'mage-eventpress' ); ?>
+						</div>
+						<div class="mep-pdf__preview-stage">
+							<div
+								id="mep-pdf-preview"
+								class="mep-pdf__preview mep-pdf__preview--<?php echo esc_attr( $preview ); ?>"
+								data-theme="<?php echo esc_attr( $theme ); ?>"
+								style="--mep-pdf-preview-bg:<?php echo esc_attr( $bg ); ?>;--mep-pdf-preview-text:<?php echo esc_attr( $text ); ?>;"
+							>
+								<div class="mep-pdf__preview-accent" aria-hidden="true"></div>
+								<div class="mep-pdf__preview-head">
+									<div class="mep-pdf__preview-brand">
+										<span class="mep-pdf__preview-logo<?php echo $logo ? ' has-img' : ''; ?>" data-pdf-preview-logo-wrap>
+											<?php if ( $logo ) : ?>
+												<img src="<?php echo esc_url( $logo ); ?>" alt="" data-pdf-preview-logo />
+											<?php else : ?>
+												<span data-pdf-preview-logo-fallback><?php esc_html_e( 'LOGO', 'mage-eventpress' ); ?></span>
+											<?php endif; ?>
+										</span>
+										<span class="mep-pdf__preview-org"><?php esc_html_e( 'Event Organizer', 'mage-eventpress' ); ?></span>
+									</div>
+									<span class="mep-pdf__preview-badge"><?php esc_html_e( 'TICKET', 'mage-eventpress' ); ?></span>
+								</div>
+								<div class="mep-pdf__preview-title"><?php esc_html_e( 'Summer Music Festival', 'mage-eventpress' ); ?></div>
+								<div class="mep-pdf__preview-meta">
+									<span><?php esc_html_e( 'Aug 15, 2026 · 7:00 PM', 'mage-eventpress' ); ?></span>
+									<span><?php esc_html_e( 'VIP Pass', 'mage-eventpress' ); ?></span>
+								</div>
+								<div class="mep-pdf__preview-body">
+									<div class="mep-pdf__preview-attendee">
+										<strong><?php esc_html_e( 'Alex Johnson', 'mage-eventpress' ); ?></strong>
+										<span><?php esc_html_e( 'alex@example.com', 'mage-eventpress' ); ?></span>
+									</div>
+									<div class="mep-pdf__preview-qr" aria-hidden="true"></div>
+								</div>
+								<div class="mep-pdf__preview-foot">
+									<span class="mep-pdf__preview-price<?php echo ( 'yes' === (string) $show ) ? '' : ' is-hidden'; ?>" data-pdf-preview-price>$99.00</span>
+									<span class="mep-pdf__preview-code">#TKT-2048</span>
+								</div>
+							</div>
+						</div>
+						<p class="mep-pdf__preview-theme-name" id="mep-pdf-preview-theme-name"><?php echo esc_html( self::theme_preview_label( $theme, $by ) ); ?></p>
+						<button type="button" class="mep-pdf__refresh" id="mep-pdf-refresh-preview">
+							<span class="fas fa-sync-alt" aria-hidden="true"></span>
+							<?php esc_html_e( 'Refresh Preview', 'mage-eventpress' ); ?>
+						</button>
+					</div>
+				</div>
 				<?php
+			}
+
+			/**
+			 * @param string $theme Theme filename.
+			 * @return string
+			 */
+			private static function theme_preview_slug( $theme ) {
+				$map = array(
+					'default.php'       => 'default',
+					'ticket2.php'       => 'ticket2',
+					'rcmmaa.php'        => 'rcmmaa',
+					'gsound.php'        => 'gsound',
+					'PWTinvoice.php'    => 'pwtinvoice',
+					'invoice-style.php' => 'invoice',
+				);
+				$file = basename( (string) $theme );
+				return isset( $map[ $file ] ) ? $map[ $file ] : 'default';
+			}
+
+			/**
+			 * @param string $theme Theme filename.
+			 * @param array  $by    Fields by name.
+			 * @return string
+			 */
+			private static function theme_preview_label( $theme, $by ) {
+				$file = basename( (string) $theme );
+				if ( isset( $by['mep_pdf_theme']['options'][ $file ] ) ) {
+					return trim( preg_replace( '/\s+/', ' ', (string) $by['mep_pdf_theme']['options'][ $file ] ) );
+				}
+				$labels = array(
+					'default.php'       => __( 'Default Theme', 'mage-eventpress' ),
+					'ticket2.php'       => __( 'Two Ticket', 'mage-eventpress' ),
+					'rcmmaa.php'        => __( 'RCMMAA Theme', 'mage-eventpress' ),
+					'gsound.php'        => __( 'G-Sound', 'mage-eventpress' ),
+					'PWTinvoice.php'    => __( 'PWT Invoice', 'mage-eventpress' ),
+					'invoice-style.php' => __( 'Invoice Style', 'mage-eventpress' ),
+				);
+				return isset( $labels[ $file ] ) ? $labels[ $file ] : $file;
 			}
 
 			/**
@@ -295,10 +395,11 @@
 			}
 
 			/**
-			 * @param array|null $field Field def.
-			 * @param string     $name  Field name.
+			 * @param array|null $field   Field def.
+			 * @param string     $name    Field name.
+			 * @param string     $preview Optional data-pdf-preview key.
 			 */
-			private static function render_select_field( $field, $name ) {
+			private static function render_select_field( $field, $name, $preview = '' ) {
 				if ( ! $field ) {
 					return;
 				}
@@ -311,7 +412,7 @@
 				?>
 				<div class="mep-pdf__field">
 					<label class="mep-pdf__label" for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?></label>
-					<select class="mep-pdf__control" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>">
+					<select class="mep-pdf__control" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>"<?php echo $preview ? ' data-pdf-preview="' . esc_attr( $preview ) . '"' : ''; ?>>
 						<?php foreach ( $options as $k => $lab ) : ?>
 							<option value="<?php echo esc_attr( $k ); ?>" <?php selected( (string) $value, (string) $k ); ?>><?php echo esc_html( trim( preg_replace( '/\s+/', ' ', (string) $lab ) ) ); ?></option>
 						<?php endforeach; ?>
@@ -341,7 +442,7 @@
 				<div class="mep-pdf__field">
 					<span class="mep-pdf__label"><?php echo esc_html( $label ); ?></span>
 					<div class="mep-pdf__upload<?php echo $has ? ' has-file' : ''; ?>" data-mep-pdf-upload>
-						<input type="hidden" class="wpsa-url mep-pdf__upload-url" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+						<input type="hidden" class="wpsa-url mep-pdf__upload-url" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo ( 'mep_pdf_logo' === $name ) ? ' data-pdf-preview="logo"' : ''; ?> />
 						<button type="button" class="mep-pdf__upload-zone wpsa-browse" data-uploader_title="<?php echo esc_attr( $label ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use this image', 'mage-eventpress' ); ?>">
 							<span class="mep-pdf__upload-preview" <?php echo $has ? '' : 'hidden'; ?>>
 								<img src="<?php echo esc_url( $value ); ?>" alt="" />
@@ -380,6 +481,7 @@
 				$value   = self::get_opt( $name, $default );
 				$id      = 'mep-pdf-' . sanitize_html_class( $name );
 				$checked = ( (string) $value === (string) $on_val );
+				$preview = ( 'mep_pdf_show_price' === $name ) ? ' data-pdf-preview="price"' : '';
 				?>
 				<div class="mep-pdf__toggle-row">
 					<div class="mep-pdf__toggle-text">
@@ -388,7 +490,7 @@
 					</div>
 					<label class="mep-pdf__switch">
 						<input type="hidden" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $off_val ); ?>" />
-						<input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $on_val ); ?>" <?php checked( $checked ); ?> />
+						<input type="checkbox" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $on_val ); ?>" <?php checked( $checked ); ?><?php echo $preview; ?> />
 						<span class="mep-pdf__switch-ui"></span>
 					</label>
 				</div>
@@ -410,13 +512,14 @@
 				$value   = self::get_opt( $name, $default );
 				$value   = $value ? $value : $default;
 				$id      = 'mep-pdf-' . sanitize_html_class( $name );
+				$preview = ( 'mep_pdf_bg_color' === $name ) ? 'bg' : ( ( 'mep_pdf_text_color' === $name ) ? 'text' : '' );
 				?>
 				<div class="mep-pdf__field mep-pdf__color" data-mep-pdf-color>
 					<div class="mep-pdf__color-box">
 						<span class="mep-pdf__color-swatch" style="background-color: <?php echo esc_attr( $value ); ?>;"></span>
 						<div class="mep-pdf__color-meta">
 							<span class="mep-pdf__color-name"><?php echo esc_html( $label ); ?></span>
-							<input type="text" class="mep-pdf__color-hex wp-color-picker-field" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default ); ?>" />
+							<input type="text" class="mep-pdf__color-hex wp-color-picker-field" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $sec . '[' . $name . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" data-default-color="<?php echo esc_attr( $default ); ?>"<?php echo $preview ? ' data-pdf-preview="' . esc_attr( $preview ) . '"' : ''; ?> />
 						</div>
 					</div>
 				</div>

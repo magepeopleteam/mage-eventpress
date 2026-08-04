@@ -228,24 +228,36 @@ class MEP_Custom_Orders_Page {
 			'mep-orders-page',
 			MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.css',
 			array(),
-			'1.3.7'
+			'1.4.0'
 		);
 		wp_enqueue_script(
 			'mep-orders-page',
 			MPWEM_PLUGIN_URL . '/assets/admin/mep-orders-page.js',
 			array( 'jquery' ),
-			'1.3.7',
+			'1.4.0',
 			true
 		);
 		wp_localize_script( 'mep-orders-page', 'mepOrders', array(
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'mep_orders_nonce' ),
-			'i18n'    => array(
+			'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+			'nonce'           => wp_create_nonce( 'mep_orders_nonce' ),
+			'filtersEnabled'  => self::is_pro_active(),
+			'i18n'            => array(
 				'loading'   => __( 'Loading orders…', 'mage-eventpress' ),
 				'noOrders'  => __( 'No orders found.', 'mage-eventpress' ),
 				'error'     => __( 'Something went wrong. Please try again.', 'mage-eventpress' ),
+				'proOnly'   => __( 'Order filters are available in the PRO version.', 'mage-eventpress' ),
 			),
 		) );
+	}
+
+	/**
+	 * Whether Event Manager Pro is active.
+	 *
+	 * @return bool
+	 */
+	private static function is_pro_active() {
+		return function_exists( 'mep_check_plugin_installed' )
+			&& mep_check_plugin_installed( 'mage-eventpress-pro/woocommerce-event-manager-pro.php' );
 	}
 
 	/* -----------------------------------------------------------------------
@@ -518,6 +530,19 @@ class MEP_Custom_Orders_Page {
 	}
 
 	private static function sanitize_filters_from_request() {
+		// Advanced filters are a PRO feature — free installs always get an unfiltered list.
+		if ( ! self::is_pro_active() ) {
+			return array(
+				'search'    => '',
+				'event_id'  => 0,
+				'status'    => '',
+				'gateway'   => '',
+				'date_from' => '',
+				'date_to'   => '',
+				'source'    => 'all',
+			);
+		}
+
 		return array(
 			'search'    => isset( $_REQUEST['mep_search'] )    ? sanitize_text_field( wp_unslash( $_REQUEST['mep_search'] ) )    : '',
 			'event_id'  => isset( $_REQUEST['mep_event_id'] )  ? absint( $_REQUEST['mep_event_id'] )                             : 0,
@@ -1090,6 +1115,8 @@ class MEP_Custom_Orders_Page {
 		$slice    = array_slice( $all_data, ( $page - 1 ) * $per_page, $per_page );
 
 		$total_revenue = array_sum( array_column( $all_data, 'total_raw' ) );
+		$is_pro        = self::is_pro_active();
+		$upgrade_url   = apply_filters( 'mep_pro_upgrade_url', 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/', 0 );
 		?>
 		<div class="mep-orders-wrap">
 
@@ -1136,15 +1163,44 @@ class MEP_Custom_Orders_Page {
 			</div>
 
 			<!-- Filter Panel -->
-			<div class="mep-filter-panel">
+			<div class="mep-filter-panel<?php echo $is_pro ? '' : ' mep-filter-panel--pro-locked'; ?>">
 				<div class="mep-filter-panel-header">
 					<span class="dashicons dashicons-filter"></span>
 					<strong><?php esc_html_e( 'Filter Orders', 'mage-eventpress' ); ?></strong>
+					<?php if ( ! $is_pro ) : ?>
+						<span class="mep-pro-badge" title="<?php esc_attr_e( 'Available in PRO version', 'mage-eventpress' ); ?>">
+							<span class="dashicons dashicons-lock"></span>
+							<?php esc_html_e( 'PRO', 'mage-eventpress' ); ?>
+						</span>
+					<?php endif; ?>
 					<button type="button" id="mep-filter-toggle" class="mep-filter-toggle" aria-expanded="true">
 						<span class="dashicons dashicons-arrow-up-alt2"></span>
 					</button>
 				</div>
-				<div class="mep-filter-body" id="mep-filter-body">
+				<div class="mep-filter-body<?php echo $is_pro ? '' : ' mep-filter-body--disabled'; ?>" id="mep-filter-body">
+					<?php if ( ! $is_pro ) : ?>
+						<div class="mep-filter-pro-card">
+							<div class="mep-filter-pro-icon" aria-hidden="true">
+								<span class="dashicons dashicons-lock"></span>
+							</div>
+							<div class="mep-filter-pro-content">
+								<span class="mep-filter-pro-eyebrow"><?php esc_html_e( 'PRO Feature', 'mage-eventpress' ); ?></span>
+								<strong class="mep-filter-pro-title"><?php esc_html_e( 'Order filters are available in PRO', 'mage-eventpress' ); ?></strong>
+								<p class="mep-filter-pro-text"><?php esc_html_e( 'Search and filter bookings by event, status, payment gateway, source, and date range.', 'mage-eventpress' ); ?></p>
+								<ul class="mep-filter-pro-chips">
+									<li><?php esc_html_e( 'Search', 'mage-eventpress' ); ?></li>
+									<li><?php esc_html_e( 'Event', 'mage-eventpress' ); ?></li>
+									<li><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></li>
+									<li><?php esc_html_e( 'Gateway', 'mage-eventpress' ); ?></li>
+									<li><?php esc_html_e( 'Date range', 'mage-eventpress' ); ?></li>
+								</ul>
+							</div>
+							<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="mep-filter-pro-cta">
+								<?php esc_html_e( 'Upgrade to PRO', 'mage-eventpress' ); ?>
+								<span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
+							</a>
+						</div>
+					<?php else : ?>
 					<div class="mep-filter-grid">
 
 						<div class="mep-filter-field mep-filter-field--search">
@@ -1218,6 +1274,7 @@ class MEP_Custom_Orders_Page {
 						</div>
 
 					</div><!-- .mep-filter-grid -->
+					<?php endif; ?>
 				</div><!-- .mep-filter-body -->
 			</div><!-- .mep-filter-panel -->
 

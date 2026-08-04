@@ -1376,7 +1376,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'seat_reserved_order_status',
 								'label'   => __( 'Seat Reserved Order Status', 'mage-eventpress' ),
-								'desc'    => __( 'Please select in which order status seat will mark as reserved/booked. By Default is Processing & Completed.', 'mage-eventpress' ),
+								'desc'    => __( 'Choose which order statuses count a seat as booked. Default: Processing and Completed.', 'mage-eventpress' ),
 								'type'    => 'multicheck',
 								'default' => array( 'processing' => 'processing', 'completed' => 'completed' ),
 								'options' => array(
@@ -1389,8 +1389,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_disable_block_editor',
-								'label'   => __( 'Block/Gutenberg Editor In Event', 'mage-eventpress' ),
-								'desc'    => __( 'By default, the Gutenberg editor is disabled. To enable the Gutenberg editor, you need to activate this option and also ensure that the REST API is enabled in the settings below.', 'mage-eventpress' ),
+								'label'   => __( 'Block Editor for Events', 'mage-eventpress' ),
+								'desc'    => __( 'Enable the WordPress block editor for events. Also turn on the REST API below.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1400,8 +1400,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_list_page_style',
-								'label'   => __( 'Dashboard Event List Page Style', 'mage-eventpress' ),
-								'desc'    => __( 'You can choose the Event List Page Design in Dasboard', 'mage-eventpress' ),
+								'label'   => __( 'Admin Event List Style', 'mage-eventpress' ),
+								'desc'    => __( 'Choose how events appear in the admin list.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'new',
 								'options' => array(
@@ -1411,8 +1411,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_edit_page_mode',
-								'label'   => __( 'Event Edit Page Mode', 'mage-eventpress' ),
-								'desc'    => __( 'Choose which editor opens by default when you add or edit an event.', 'mage-eventpress' ),
+								'label'   => __( 'Event Edit Screen', 'mage-eventpress' ),
+								'desc'    => __( 'Choose which editor opens when you add or edit an event.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'modern',
 								'options' => array(
@@ -1422,8 +1422,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_rest_api_status',
-								'label'   => __( 'Enable Rest API?', 'mage-eventpress' ),
-								'desc'    => __( 'If you want to enable event data available in the Rest API Please enable this.', 'mage-eventpress' ),
+								'label'   => __( 'REST API', 'mage-eventpress' ),
+								'desc'    => __( 'Allow event data to be accessed through the WordPress REST API.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
@@ -1433,8 +1433,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_multi_lang_plugin',
-								'label'   => __( 'Choose Multilingual Plugin', 'mage-eventpress' ),
-								'desc'    => __( 'Please select the name of your multilingual plugin from the list below.', 'mage-eventpress' ),
+								'label'   => __( 'Multilingual Plugin', 'mage-eventpress' ),
+								'desc'    => __( 'Select the translation plugin you use, if any.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'none',
 								'options' => array(
@@ -1445,8 +1445,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_list_order_by',
-								'label'   => __( 'Event List Order By', 'mage-eventpress' ),
-								'desc'    => __( 'Please select Event list order by which value Event Title or Event Date. By Default is: Event Upcoming Date', 'mage-eventpress' ),
+								'label'   => __( 'Event List Sort Order', 'mage-eventpress' ),
+								'desc'    => __( 'Sort the event list by upcoming date or title.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'meta_value',
 								'options' => array(
@@ -1457,56 +1457,56 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_event_label',
 								'label'   => __( 'Event Label', 'mage-eventpress' ),
-								'desc'    => __( 'It will change the event post type label for the entire plugin.', 'mage-eventpress' ),
+								'desc'    => __( 'Name shown for events throughout the admin and site.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'Events'
 							),
 							array(
 								'name'    => 'mep_event_slug',
 								'label'   => __( 'Event Slug', 'mage-eventpress' ),
-								'desc'    => __( 'It will change the event slug throughout the entire plugin. Remember, after changing this slug you need to flush permalinks. Just go to <strong>Settings->Permalinks</strong> hit the Save Settings button', 'mage-eventpress' ),
+								'desc'    => __( 'URL slug for event pages. After changing it, go to <strong>Settings → Permalinks</strong> and click Save.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'events'
 							),
 							array(
 								'name'    => 'mep_event_icon',
 								'label'   => __( 'Event Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please enter the icon class name for the event custom post type. You can find icons here: Example: dashicons-calendar-alt. Find Icons: <a href="https://developer.wordpress.org/resource/dashicons/">Dashicons</a>', 'mage-eventpress' ),
+								'desc'    => __( 'Dashicon class for the Events menu. Example: dashicons-calendar-alt. <a href="https://developer.wordpress.org/resource/dashicons/">Browse icons</a>', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'dashicons-calendar-alt'
 							),
 							array(
 								'name'    => 'mep_event_cat_label',
-								'label'   => __( 'Event Category Label', 'mage-eventpress' ),
-								'desc'    => __( 'This change will apply the event category label to the whole plugin.', 'mage-eventpress' ),
+								'label'   => __( 'Category Label', 'mage-eventpress' ),
+								'desc'    => __( 'Name shown for event categories.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'Category'
 							),
 							array(
 								'name'    => 'mep_event_cat_slug',
-								'label'   => __( 'Event Category Slug', 'mage-eventpress' ),
-								'desc'    => __( 'It will change the category slug for the entire plugin. Remember that after you change this slug, you need to flush permalinks. To do this, just go to <strong>Settings->Permalinks</strong> hit the Save Settings button.', 'mage-eventpress' ),
+								'label'   => __( 'Category Slug', 'mage-eventpress' ),
+								'desc'    => __( 'URL slug for category pages. After changing it, save <strong>Settings → Permalinks</strong>.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'mep_cat'
 							),
 							array(
 								'name'    => 'mep_event_org_label',
-								'label'   => __( 'Event Organizer Label', 'mage-eventpress' ),
-								'desc'    => __( 'This will change the event organizer label throughout the plugin.', 'mage-eventpress' ),
+								'label'   => __( 'Organizer Label', 'mage-eventpress' ),
+								'desc'    => __( 'Name shown for event organizers.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'Organizer'
 							),
 							array(
 								'name'    => 'mep_event_org_slug',
-								'label'   => __( 'Event Organizer Slug', 'mage-eventpress' ),
-								'desc'    => __( 'Changing the event organizer slug will have an effect on the entire plugin. Remember, after changing the slug, you will need to flush the permalinks. To do so, simply go to your settings page and select the flush permalinks option. <strong>Settings->Permalinks</strong> hit the Save Settings button.', 'mage-eventpress' ),
+								'label'   => __( 'Organizer Slug', 'mage-eventpress' ),
+								'desc'    => __( 'URL slug for organizer pages. After changing it, save <strong>Settings → Permalinks</strong>.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'mep_org'
 							),
 							array(
 								'name'    => 'mep_google_map_type',
 								'label'   => __( 'Google Map Type', 'mage-eventpress' ),
-								'desc'    => __( 'Please select the preferred map type you want to be displayed on the front page.<br><strong>Note:</strong> It"s been known that Iframe does not always show the precise location, whereas the API enabled map has a drag and drop feature for more accuracy. So if necessary, you can drag the point to the desired location.', 'mage-eventpress' ),
+								'desc'    => __( 'Choose how maps appear on the site. API maps are more accurate and support drag-and-drop.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1518,14 +1518,14 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'google-map-api',
 								'label'   => __( 'Google Map API Key', 'mage-eventpress' ),
-								'desc'    => __( 'Enter Your Google Map API key. <a href=https://developers.google.com/maps/documentation/javascript/get-api-key target=_blank>Get API Key</a>. <br><strong>Note:</strong> You must enter your billing address and information into the Google Maps API account to make it perfectly workable on your website.', 'mage-eventpress' ),
+								'desc'    => __( 'Required for API maps. <a href=https://developers.google.com/maps/documentation/javascript/get-api-key target=_blank>Get an API key</a>. Billing must be enabled in Google Cloud.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => ''
 							),
 							array(
 								'name'    => 'mep_event_expire_on_datetimes',
-								'label'   => __( 'When will the event expire', 'mage-eventpress' ),
-								'desc'    => __( 'Please select when the event will end', 'mage-eventpress' ),
+								'label'   => __( 'Event Expiry Time', 'mage-eventpress' ),
+								'desc'    => __( 'When the event should stop accepting bookings.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'mep_event_start_date',
 								'options' => array(
@@ -1535,8 +1535,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_old_date',
-								'label'   => __( 'Hide old date from date picker', 'mage-eventpress' ),
-								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
+								'label'   => __( 'Hide Past Dates in Date Picker', 'mage-eventpress' ),
+								'desc'    => __( 'Hide past dates in the booking date picker.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1546,8 +1546,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_expire_ticket',
-								'label'   => __( 'Hide expire ticket type', 'mage-eventpress' ),
-								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
+								'label'   => __( 'Hide Expired Ticket Types', 'mage-eventpress' ),
+								'desc'    => __( 'Hide ticket types that are no longer available.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1557,8 +1557,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_location_from_order_page',
-								'label'   => __( 'Hide Location From Order Details & Email Section', 'mage-eventpress' ),
-								'desc'    => __( 'If you would like to hide the location details from the order details section on the thank you page and confirmation email body, please choose "Yes". If you would like to show the location details, please choose "No". The default setting is "No".', 'mage-eventpress' ),
+								'label'   => __( 'Hide Location in Orders & Emails', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the event location on the thank-you page and in confirmation emails.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1568,8 +1568,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_date_from_order_page',
-								'label'   => __( 'Hide Date From Order Details & Email Section', 'mage-eventpress' ),
-								'desc'    => __( 'This toggle determines whether or not the date is shown in the order details section of the thank you page and confirmation email body. Choose "Yes" to hide the date or "No" to show it. The default is "No".', 'mage-eventpress' ),
+								'label'   => __( 'Hide Date in Orders & Emails', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the event date on the thank-you page and in confirmation emails.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1579,8 +1579,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_expired_date_in_calendar',
-								'label'   => __( 'Hide Expired Event from Calendar', 'mage-eventpress' ),
-								'desc'    => __( 'If you want to hide the expired event from the calendar please select Yes. Its applicable for the Free Calendar', 'mage-eventpress' ),
+								'label'   => __( 'Hide Expired Events in Calendar', 'mage-eventpress' ),
+								'desc'    => __( 'Hide past events from the free calendar view.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1590,8 +1590,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_direct_checkout',
-								'label'   => __( 'Redirect Checkout after Booking', 'mage-eventpress' ),
-								'desc'    => __( 'This setting controls whether or not the checkout page is redirected after booking an event.', 'mage-eventpress' ),
+								'label'   => __( 'Go to Checkout After Booking', 'mage-eventpress' ),
+								'desc'    => __( 'Send customers straight to checkout after they book.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1601,8 +1601,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_zero_as_free',
-								'label'   => __( 'Show 0 Price as Free', 'mage-eventpress' ),
-								'desc'    => __( 'This setting enables you to a "Free" at a price of 0. By default, this setting is enabled.', 'mage-eventpress' ),
+								'label'   => __( 'Show Zero Price as Free', 'mage-eventpress' ),
+								'desc'    => __( 'Display "Free" instead of 0 when a ticket has no price.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1612,24 +1612,24 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'        => 'mep_ticket_expire_time',
-								'label'       => __( 'Event Ticket Expire before minutes', 'mage-eventpress' ),
-								'desc'        => __( 'Please enter the number of minutes before the event that an attendee cannot book/register a ticket.', 'mage-eventpress' ),
+								'label'       => __( 'Stop Sales Before Event (Minutes)', 'mage-eventpress' ),
+								'desc'        => __( 'Minutes before the event when ticket sales close. Use 0 for no limit.', 'mage-eventpress' ),
 								'type'        => 'text',
 								'default'     => '0',
 								'placeholder' => '15'
 							),
 							array(
 								'name'        => 'mep_ticket_expire_time_on_cart',
-								'label'       => __( 'Event Expire Time on Cart', 'mage-eventpress' ),
-								'desc'        => __( 'Please enter the number of minutes after that the event will removed from the cart', 'mage-eventpress' ),
+								'label'       => __( 'Cart Hold Time (Minutes)', 'mage-eventpress' ),
+								'desc'        => __( 'Minutes before tickets are removed from an abandoned cart.', 'mage-eventpress' ),
 								'type'        => 'text',
 								'default'     => '10',
 								'placeholder' => '10'
 							),							
 							array(
 								'name'    => 'mep_load_fontawesome_from_theme',
-								'label'   => __( 'Load Font Awesome From Theme?', 'mage-eventpress' ),
-								'desc'    => __( 'If the icons are not working and you want to disable Font Awesome loading from the plugin, select Yes.', 'mage-eventpress' ),
+								'label'   => __( 'Use Theme Font Awesome', 'mage-eventpress' ),
+								'desc'    => __( 'Turn on if your theme already loads Font Awesome and icons conflict.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1639,8 +1639,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_load_flaticon_from_theme',
-								'label'   => __( 'Load Flat Icon From Theme?', 'mage-eventpress' ),
-								'desc'    => __( 'If the icons are not working, and you want to remove Flat Icon load from the plugin, select "Yes."', 'mage-eventpress' ),
+								'label'   => __( 'Use Theme Flat Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Turn on if your theme already loads Flat Icon and icons conflict.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1650,8 +1650,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_speed_up_list_page',
-								'label'   => __( 'Speed up the Event List Page Loading?', 'mage-eventpress' ),
-								'desc'    => __( 'If your event list page is loading slowly, you can select this option to improve performance. Keep in mind that selecting this option will disable Waitlist and Seat count features. ', 'mage-eventpress' ),
+								'label'   => __( 'Faster Event List Loading', 'mage-eventpress' ),
+								'desc'    => __( 'Speeds up the event list. Disables waitlist and seat counts on that page.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1661,8 +1661,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_not_available_event_from_list_page',
-								'label'   => __( 'Disappear Event from list when fully booked?', 'mage-eventpress' ),
-								'desc'    => __( 'If you want your event to be removed from the list once it is fully booked, you can select "Yes" here.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Fully Booked Events', 'mage-eventpress' ),
+								'desc'    => __( 'Remove events from the list when no seats remain.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1672,8 +1672,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_sold_out_ribbon_list_page',
-								'label'   => __( 'Show Sold out Ribon?', 'mage-eventpress' ),
-								'desc'    => __( 'You can show a "Sold Out" Ribbon on the event list when it is fully booked by selecting "Yes" here.', 'mage-eventpress' ),
+								'label'   => __( 'Show Sold Out Ribbon', 'mage-eventpress' ),
+								'desc'    => __( 'Show a Sold Out badge on fully booked events in the list.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1683,8 +1683,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_limited_availability_ribbon',
-								'label'   => __( 'Show Limited Availability Ribbon?', 'mage-eventpress' ),
-								'desc'    => __( 'Display a "Limited Availability" ribbon when tickets are running low but not sold out yet.', 'mage-eventpress' ),
+								'label'   => __( 'Show Limited Availability Ribbon', 'mage-eventpress' ),
+								'desc'    => __( 'Show a badge when only a few seats are left.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1695,7 +1695,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'        => 'mep_limited_availability_threshold',
 								'label'       => __( 'Limited Availability Threshold', 'mage-eventpress' ),
-								'desc'        => __( 'Show "Limited Availability" ribbon when available seats are less than or equal to this number.', 'mage-eventpress' ),
+								'desc'        => __( 'Show the ribbon when remaining seats are at or below this number.', 'mage-eventpress' ),
 								'type'        => 'number',
 								'default'     => '0',
 								'placeholder' => '5'
@@ -1703,15 +1703,15 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'        => 'mep_limited_availability_text',
 								'label'       => __( 'Limited Availability Ribbon Text', 'mage-eventpress' ),
-								'desc'        => __( 'The text to display on the limited availability ribbon.', 'mage-eventpress' ),
+								'desc'        => __( 'Text shown on the limited availability badge.', 'mage-eventpress' ),
 								'type'        => 'text',
 								'default'     => 'Limited Availability',
 								'placeholder' => 'Limited Availability'
 							),
 							array(
 								'name'    => 'mep_show_low_stock_warning',
-								'label'   => __( 'Show Low Stock Warning?', 'mage-eventpress' ),
-								'desc'    => __( 'Enable this to show a warning message when event seats are running low.', 'mage-eventpress' ),
+								'label'   => __( 'Show Low Stock Warning', 'mage-eventpress' ),
+								'desc'    => __( 'Show a warning when seats are running low.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1722,7 +1722,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'        => 'mep_low_stock_threshold',
 								'label'       => __( 'Low Stock Threshold', 'mage-eventpress' ),
-								'desc'        => __( 'Show low stock warning when available seats are less than or equal to this number.', 'mage-eventpress' ),
+								'desc'        => __( 'Show the warning when remaining seats are at or below this number.', 'mage-eventpress' ),
 								'type'        => 'number',
 								'default'     => '0',
 								'placeholder' => '3'
@@ -1730,15 +1730,15 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'        => 'mep_low_stock_text',
 								'label'       => __( 'Low Stock Warning Text', 'mage-eventpress' ),
-								'desc'        => __( 'The text to display when seats are running low.', 'mage-eventpress' ),
+								'desc'        => __( 'Warning text. Use %s for the number of seats left.', 'mage-eventpress' ),
 								'type'        => 'text',
 								'default'     => 'Hurry! Only %s seats left',
 								'placeholder' => 'Hurry! Only %s seats left'
 							),
 							array(
 								'name'    => 'mep_enable_low_stock_email',
-								'label'   => __( 'Send Low Stock Email Notifications?', 'mage-eventpress' ),
-								'desc'    => __( 'Enable this to send email notifications to admin when event seats are running low.', 'mage-eventpress' ),
+								'label'   => __( 'Low Stock Email Alerts', 'mage-eventpress' ),
+								'desc'    => __( 'Email the admin when seats are running low.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -1748,8 +1748,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_hidden_wc_product',
-								'label'   => __( 'Show Hidden Woocommerce Products?', 'mage-eventpress' ),
-								'desc'    => __( 'With every creation of an event there is a Woocommerce product is also created. By default its hidden in the Product list. If you want to show them in the list select Yes', 'mage-eventpress' ),
+								'label'   => __( 'Show Hidden WooCommerce Products', 'mage-eventpress' ),
+								'desc'    => __( 'Show the hidden WooCommerce products created for each event.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1759,8 +1759,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_google_map_zoom_level',
-								'label'   => __( 'Set the Google Map Zoom Level', 'mage-eventpress' ),
-								'desc'    => __( 'Select the Google Map zoom level. By default is 17', 'mage-eventpress' ),
+								'label'   => __( 'Map Zoom Level', 'mage-eventpress' ),
+								'desc'    => __( 'Default zoom level for Google Maps. Higher is closer.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => '17',
 								'options' => array(
@@ -1789,8 +1789,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_event_sidebar',
-								'label'   => __( 'Show Event Sidebar Widgets?', 'mage-eventpress' ),
-								'desc'    => __( 'If you enable this then a Widget area will be registred and you can add any widgets from the Widget Menu. By default its disabled', 'mage-eventpress' ),
+								'label'   => __( 'Event Sidebar', 'mage-eventpress' ),
+								'desc'    => __( 'Register a widget area for the event page. Add widgets under Appearance → Widgets.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
@@ -1800,8 +1800,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_clear_cart_after_checkout',
-								'label'   => __( 'Clear Cart after Checkout Order Placed?', 'mage-eventpress' ),
-								'desc'    => __( 'By default we clear the cart after order placed, But some payment gateway need cart data after order placed. If you get any warning after order placed please disabled this and try again. Unless please do not change this settings.', 'mage-eventpress' ),
+								'label'   => __( 'Clear Cart After Order', 'mage-eventpress' ),
+								'desc'    => __( 'Empty the cart after an order is placed. Disable only if a payment gateway needs cart data.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'enable',
 								'options' => array(
@@ -1811,8 +1811,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_manual_seat_Left_fix',
-								'label'   => __( 'Manual Seat Left Fixing?', 'mage-eventpress' ),
-								'desc'    => __( 'If you encounter the message "Sorry, There Are No Seats Available" after updating to version 4.3.0 or later, you may enable this setting. Otherwise, please keep it unchanged.', 'mage-eventpress' ),
+								'label'   => __( 'Seat Count Fix', 'mage-eventpress' ),
+								'desc'    => __( 'Enable only if you see "Sorry, There Are No Seats Available" after updating.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
@@ -1822,8 +1822,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_fix_details_page_fatal_error',
-								'label'   => __( 'Event Details Page Fatal Error Fix?', 'mage-eventpress' ),
-								'desc'    => __( 'If you encounter a Fatal Error message on the event details page, you can enable this patch and check if the error persists. However, if there is no error, we recommend keeping the patch disabled', 'mage-eventpress' ),
+								'label'   => __( 'Event Page Error Fix', 'mage-eventpress' ),
+								'desc'    => __( 'Enable only if the event page shows a fatal error. Leave off otherwise.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'disable',
 								'options' => array(
@@ -1834,7 +1834,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_datepicker_format',
 								'label'   => __( 'Date Picker Format', 'mage-eventpress' ),
-								'desc'    => __( 'If you want to change Date Picker Format, please select format. Default is yy-mm-dd. <b>Text Based Date format will not works in other language except english. Is your website is not English language please do not use any text based datepicker.</b>', 'mage-eventpress' ),
+								'desc'    => __( 'Date format for the date picker. Avoid text-based formats on non-English sites.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
 								'options' => array(
@@ -1859,8 +1859,8 @@ tr.payment_tabs_html { display: none !important; }
 					'event_list_setting_sec'   => apply_filters( 'mep_settings_event_list_arr', array(
 							array(
 								'name'    => 'mep_event_price_show',
-								'label'   => __( 'On/Off Event Price in List', 'mage-eventpress' ),
-								'desc'    => __( 'This enables or disables the event price in the list. By default, it is enabled.', 'mage-eventpress' ),
+								'label'   => __( 'Show Price in Event List', 'mage-eventpress' ),
+								'desc'    => __( 'Show the event price on event list pages.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_price_show', 'general_setting_sec', 'event_list_setting_sec', 'yes' ),
 								'options' => array(
@@ -1870,8 +1870,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_date_list_in_event_listing',
-								'label'   => __( 'On/Off Multi Date List in Event listing Page', 'mage-eventpress' ),
-								'desc'    => __( 'This feature enables or disables the full date list for multi-date events in the event listing page. By default, this feature is enabled.', 'mage-eventpress' ),
+								'label'   => __( 'Show Multi-Date List', 'mage-eventpress' ),
+								'desc'    => __( 'Show all dates for multi-date events in the list.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_date_list_in_event_listing', 'general_setting_sec', 'event_list_setting_sec', 'yes' ),
 								'options' => array(
@@ -1881,8 +1881,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_organizer_list',
-								'label'   => __( 'Hide Organizer Section from list', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Organizer in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the organizer on event list cards.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_organizer_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
@@ -1892,8 +1892,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_location_list',
-								'label'   => __( 'Hide Location Section from list', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Location in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the location on event list cards.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_location_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
@@ -1903,8 +1903,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_time_list',
-								'label'   => __( 'Hide Full Time Section from list', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Time in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the full time on event list cards.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
@@ -1914,8 +1914,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_end_time_list',
-								'label'   => __( 'Hide Only End Time Section from list', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide End Time in List', 'mage-eventpress' ),
+								'desc'    => __( 'Hide only the end time on event list cards.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_end_time_list', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
@@ -1925,8 +1925,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_hide_event_hover_btn',
-								'label'   => __( 'Hide/Show Event Hover Book Now Button', 'mage-eventpress' ),
-								'desc'    => __( 'Please select either \'Yes\' to hide or \'No\' to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Book Now on Hover', 'mage-eventpress' ),
+								'desc'    => __( 'Hide the Book Now button that appears on hover in the event list.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_hide_event_hover_btn', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
 								'options' => array(
@@ -1936,8 +1936,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
                             array(
                                 'name'    => 'mep_hide_event_list_msg',
-                                'label'   => __( 'Hide/Show Event list Massage', 'mage-eventpress' ),
-                                'desc'    => __( 'Please select either \'Yes\' to hide or \'No\' to display.', 'mage-eventpress' ),
+                                'label'   => __( 'Hide Event List Message', 'mage-eventpress' ),
+                                'desc'    => __( 'Hide the message shown on the event list page.', 'mage-eventpress' ),
                                 'type'    => 'select',
                                 'default' => mep_change_global_option_section( 'mep_hide_event_list_msg', 'general_setting_sec', 'event_list_setting_sec', 'no' ),
                                 'options' => array(
@@ -1950,8 +1950,8 @@ tr.payment_tabs_html { display: none !important; }
 					'single_event_setting_sec' => apply_filters( 'mep_settings_single_event_arr', array(
 							array(
 								'name'    => 'mep_enable_speaker_list',
-								'label'   => __( 'On/Off Speaker List', 'mage-eventpress' ),
-								'desc'    => __( 'Please select \'Yes\' to display the speaker list. By default, the speaker list is disabled. Each event also has its own Speaker Section toggle in the event editor.', 'mage-eventpress' ),
+								'label'   => __( 'Show Speaker List', 'mage-eventpress' ),
+								'desc'    => __( 'Show the speaker list on the event page. You can also control this per event in the event editor.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_enable_speaker_list', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -1961,7 +1961,7 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_show_product_cat_in_event',
-								'label'   => __( 'On/Off Product Category in Event', 'mage-eventpress' ),
+								'label'   => __( 'WooCommerce Product Categories', 'mage-eventpress' ),
 								'desc'    => __( 'Enabling this feature will allow you to assign a product category to the event edit page. If you have a product category-based coupon code that you want to use, you have to assign the event to the same product category. In order to enable this feature, please select \'Yes\'.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_show_product_cat_in_event', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
@@ -1972,15 +1972,15 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_global_single_template',
-								'label'   => __( 'Single Event Page Template', 'mage-eventpress' ),
-								'desc'    => __( 'This change will impact the template for the single event details page.', 'mage-eventpress' ),
+								'label'   => __( 'Event Page Template', 'mage-eventpress' ),
+								'desc'    => __( 'Layout used for the single event page.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'default-theme.php',
 								'options' => mep_event_template_name()
 							),
 							array(
 								'name'    => 'mep_event_product_type',
-								'label'   => __( 'On/Off Shipping Method on event', 'mage-eventpress' ),
+								'label'   => __( 'Virtual Event Product', 'mage-eventpress' ),
 								'desc'    => __( 'The event product type in WooCommerce is set to virtual by default. If you change this type, you will need to save all of your events again.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_product_type', 'general_setting_sec', 'single_event_setting_sec', 'yes' ),
@@ -1991,8 +1991,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_date_from_details',
-								'label'   => __( 'Hide Event Date Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Date on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_date_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2002,8 +2002,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_time_from_details',
-								'label'   => __( 'Hide Event Time Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Time on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2013,8 +2013,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_location_from_details',
-								'label'   => __( 'Hide Event Location Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Location on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_location_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2024,8 +2024,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_total_seat_from_details',
-								'label'   => __( 'Hide Event Total Seats Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Seat Count on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_total_seat_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2035,8 +2035,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_org_from_details',
-								'label'   => __( 'Hide "Org By" Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Organizer on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_org_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2046,8 +2046,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_address_from_details',
-								'label'   => __( 'Hide Event Address Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Address on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_address_from_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2057,8 +2057,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_event_schedule_details',
-								'label'   => __( 'Hide Event Schedule Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Schedule on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_event_schedule_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2068,8 +2068,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_share_this_details',
-								'label'   => __( 'Hide Event Share this Section from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Social Share on Event Page', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_share_this_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2079,8 +2079,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_calendar_details',
-								'label'   => __( 'Hide Add Calendar Button from Single Event Details page', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Add to Calendar', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_calendar_details', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2091,7 +2091,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_event_hide_description_title',
 								'label'   => __( 'Hide Description Title', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_description_title', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2101,8 +2101,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_left_sidebar_title',
-								'label'   => __( 'Hide Left Sidebar Title', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Sidebar Title', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_left_sidebar_title', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2112,8 +2112,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_event_hide_time',
-								'label'   => __( 'Hide Display Event Time Below Title', 'mage-eventpress' ),
-								'desc'    => __( 'Please select "Yes" to hide or "No" to display.', 'mage-eventpress' ),
+								'label'   => __( 'Hide Time Below Title', 'mage-eventpress' ),
+								'desc'    => __( 'Choose Yes to hide this on the event page, or No to show it.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => mep_change_global_option_section( 'mep_event_hide_time', 'general_setting_sec', 'single_event_setting_sec', 'no' ),
 								'options' => array(
@@ -2126,8 +2126,8 @@ tr.payment_tabs_html { display: none !important; }
 					'email_setting_sec'        => apply_filters( 'mep_settings_email_arr', array(
 							array(
 								'name'    => 'mep_email_sending_order_status',
-								'label'   => __( 'Email Sent on order status', 'mage-eventpress' ),
-								'desc'    => __( 'Please select when you would like the customer to receive an email confirming their order status event.', 'mage-eventpress' ),
+								'label'   => __( 'Send Confirmation on Order Status', 'mage-eventpress' ),
+								'desc'    => __( 'Choose which order statuses trigger the confirmation email.', 'mage-eventpress' ),
 								'type'    => 'multicheck',
 								'default' => array( 'completed' => 'completed' ),
 								'options' => array(
@@ -2137,45 +2137,36 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_email_form_name',
-								'label'   => __( 'Email From Name', 'mage-eventpress' ),
-								'desc'    => __( 'Email From Name', 'mage-eventpress' ),
+								'label'   => __( 'From Name', 'mage-eventpress' ),
+								'desc'    => __( 'Sender name shown on confirmation emails.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => get_bloginfo( 'name' )
 							),
 							array(
 								'name'    => 'mep_email_form_email',
 								'label'   => __( 'From Email', 'mage-eventpress' ),
-								'desc'    => __( 'From Email', 'mage-eventpress' ),
+								'desc'    => __( 'Sender address for confirmation emails.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => get_option( 'admin_email' )
 							),
 							array(
 								'name'    => 'mep_email_subject',
 								'label'   => __( 'Email Subject', 'mage-eventpress' ),
-								'desc'    => __( 'Email Subject', 'mage-eventpress' ),
+								'desc'    => __( 'Subject line for the confirmation email.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => 'Event Notification'
 							),
 							array(
 								'name'    => 'mep_confirmation_email_text',
-								'label'   => __( 'Confirmation Email Text', 'mage-eventpress' ),
-								'desc'    => __( 'Confirmation Email Text <b>Usable Dynamic tags:</b><br/> Attendee
-                                        Name:<b>{name}</b><br/>
-                                        Event Name: <b>{event}</b><br/>
-                                        Ticket Type: <b>{ticket_type}</b><br/>
-										Order ID: <b>{order_id}</b><br/>
-                                        Event Date: <b>{event_date}</b><br/>
-                                        Start Time: <b>{event_time}</b><br/>
-                                        Full DateTime: <b>{event_datetime}</b><br/>
-                                        Payment Method: <b>{payment_method}</b><br/>
-                                        Amount Paid: <b>{amount_paid}</b>', 'mage-eventpress' ),
+								'label'   => __( 'Confirmation Email Body', 'mage-eventpress' ),
+								'desc'    => __( 'Email content. Placeholders: <b>{name}</b>, <b>{event}</b>, <b>{ticket_type}</b>, <b>{order_id}</b>, <b>{event_date}</b>, <b>{event_time}</b>, <b>{event_datetime}</b>, <b>{payment_method}</b>, <b>{amount_paid}</b>', 'mage-eventpress' ),
 								'type'    => 'wysiwyg',
 								'default' => 'Hi {name},<br><br>Thanks for joining the event.<br><br>Here are the event details:<br><br>Event Name: {event}<br><br>Ticket Type: {ticket_type}<br><br>Event Date: {event_date}<br><br>Start Time: {event_time}<br><br>Full DateTime: {event_datetime}<br><br>Payment Method: {payment_method}<br><br>Amount Paid: {amount_paid}<br><br>Thanks',
 							),
 							array(
 								'name'    => 'mep_send_confirmation_to_billing_email',
-								'label'   => __( 'Send Confirmation Email to Billing Email Address', 'mage-eventpress' ),
-								'desc'    => __( 'By default Plugin sent the Event Confirmation Email to the Billing Email Address. If you want to turn off this you can disbale this setting.', 'mage-eventpress' ),
+								'label'   => __( 'Send Confirmation to Billing Email', 'mage-eventpress' ),
+								'desc'    => __( 'Send the confirmation email to the billing email address.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'enable',
 								'options' => array(
@@ -2190,14 +2181,14 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mpev_primary_color',
 								'label'   => __( 'Primary Color', 'mage-eventpress' ),
-								'desc'    => __( 'Choose a basic color, it will change the icon background color & border color.', 'mage-eventpress' ),
+								'desc'    => __( 'Main color for icons, buttons, and borders.', 'mage-eventpress' ),
 								'type'    => 'color',
 								'default' => '#6046ff'
 							),
 							array(
 								'name'    => 'mpev_secondary_color',
 								'label'   => __( 'Secondary Color', 'mage-eventpress' ),
-								'desc'    => __( 'Choose a basic text color, it will change the text color.', 'mage-eventpress' ),
+								'desc'    => __( 'Secondary text and accent color.', 'mage-eventpress' ),
 								'type'    => 'color',
 								'default' => '#f1f5ff'
 							),
@@ -2206,71 +2197,71 @@ tr.payment_tabs_html { display: none !important; }
 					'icon_setting_sec'         => apply_filters( 'mep_settings_icon_arr', array(
 							array(
 								'name'    => 'mep_event_date_icon',
-								'label'   => __( 'Choose Event Date Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event date icon.', 'mage-eventpress' ),
+								'label'   => __( 'Event Date Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon shown next to the event date.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-calendar',
 							),
 							array(
 								'name'    => 'mep_event_time_icon',
-								'label'   => __( 'Choose Event Time Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event time icon.', 'mage-eventpress' ),
+								'label'   => __( 'Event Time Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon shown next to the event time.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-clock',
 							),
 							array(
 								'name'    => 'mep_event_location_icon',
-								'label'   => __( 'Choose Event Location Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event location icon.', 'mage-eventpress' ),
+								'label'   => __( 'Event Location Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon shown next to the event location.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-marker',
 							),
 							array(
 								'name'    => 'mep_event_organizer_icon',
-								'label'   => __( 'Choose Event Organizer Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event organizer icon.', 'mage-eventpress' ),
+								'label'   => __( 'Event Organizer Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon shown next to the organizer.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-badge',
 							),
 							array(
 								'name'    => 'mep_event_location_list_icon',
-								'label'   => __( 'Choose Event Sidebar Location List Icon', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event sidebar location list icon.', 'mage-eventpress' ),
+								'label'   => __( 'Sidebar Location Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for locations in the event sidebar.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-arrow-circle-right',
 							),
 							array(
 								'name'    => 'mep_event_ss_fb_icon',
-								'label'   => __( 'Choose Event Social Share Icon for Facebook', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event social share icon for facebook.', 'mage-eventpress' ),
+								'label'   => __( 'Facebook Share Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for sharing on Facebook.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'fab fa-facebook-f',
 							),
 							array(
 								'name'    => 'mep_event_ss_twitter_icon',
-								'label'   => __( 'Choose Event Social Share Icon for Twitter', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event social share icon for twitter.', 'mage-eventpress' ),
+								'label'   => __( 'Twitter Share Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for sharing on Twitter.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'fab fa-twitter',
 							),
 							array(
 								'name'    => 'mep_event_ss_linkedin_icon',
-								'label'   => __( 'Choose Event Social Share Icon for Linkedin', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event social share icon for linkedin.', 'mage-eventpress' ),
+								'label'   => __( 'LinkedIn Share Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for sharing on LinkedIn.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'fab fa-linkedin',
 							),
 							array(
 								'name'    => 'mep_event_ss_whatsapp_icon',
-								'label'   => __( 'Choose Event Social Share Icon for Whatsapp', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event social share icon for whatsapp.', 'mage-eventpress' ),
+								'label'   => __( 'WhatsApp Share Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for sharing on WhatsApp.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'fab fa-whatsapp',
 							),
 							array(
 								'name'    => 'mep_event_ss_email_icon',
-								'label'   => __( 'Choose Event Social Share Icon for Email', 'mage-eventpress' ),
-								'desc'    => __( 'Please choose event social share icon for email.', 'mage-eventpress' ),
+								'label'   => __( 'Email Share Icon', 'mage-eventpress' ),
+								'desc'    => __( 'Icon for sharing by email.', 'mage-eventpress' ),
 								'type'    => 'iconlib',
 								'default' => 'mi mi-envelope',
 							),
@@ -2279,7 +2270,7 @@ tr.payment_tabs_html { display: none !important; }
 					'carousel_setting_sec'     => apply_filters( 'mep_settings_carousel_arr', array(
 							array(
 								'name'    => 'mep_load_carousal_from_theme',
-								'label'   => __( 'Load Owl Carousel From Theme', 'mage-eventpress' ),
+								'label'   => __( 'Use Theme Owl Carousel', 'mage-eventpress' ),
 								'desc'    => __( 'Select "Yes" only if your theme already includes Owl Carousel library. Select "No" (recommended) to let the plugin load its own Owl Carousel library. If carousel is not working, ensure this is set to "No".', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'no',
@@ -2291,7 +2282,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_autoplay_carousal',
 								'label'   => __( 'Auto Play', 'mage-eventpress' ),
-								'desc'    => __( 'Please select Carousel will auto play or not.', 'mage-eventpress' ),
+								'desc'    => __( 'Automatically advance carousel slides.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -2302,7 +2293,7 @@ tr.payment_tabs_html { display: none !important; }
 							array(
 								'name'    => 'mep_loop_carousal',
 								'label'   => __( 'Infinite Loop', 'mage-eventpress' ),
-								'desc'    => __( 'Please select Carousel will Infinite Loop or not.', 'mage-eventpress' ),
+								'desc'    => __( 'Restart the carousel after the last slide.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'yes',
 								'options' => array(
@@ -2312,8 +2303,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_speed_carousal',
-								'label'   => __( 'Carousel Auto Play Speed', 'mage-eventpress' ),
-								'desc'    => __( 'Please Enter Carousel Auto Play Speed. Default is 5000', 'mage-eventpress' ),
+								'label'   => __( 'Autoplay Speed (ms)', 'mage-eventpress' ),
+								'desc'    => __( 'Time between slides in milliseconds. Default: 5000.', 'mage-eventpress' ),
 								'type'    => 'text',
 								'default' => '5000'
 							),
@@ -2323,7 +2314,7 @@ tr.payment_tabs_html { display: none !important; }
 						array(
 							'name'    => 'slider_type',
 							'label'   => esc_html__( 'Slider Type', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Type Default Slider', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Choose the slider layout.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'slider',
 							'options' => array(
@@ -2334,7 +2325,7 @@ tr.payment_tabs_html { display: none !important; }
 						array(
 							'name'    => 'slider_style',
 							'label'   => esc_html__( 'Slider Style', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Style Default Style One', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Choose the visual style of the slider.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'style_1',
 							'options' => array(
@@ -2344,8 +2335,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'indicator_visible',
-							'label'   => esc_html__( 'Slider Indicator Visible?', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Indicator Visible or Not? Default ON', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Show Slider Indicators', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Show navigation dots or icons on the slider.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'on',
 							'options' => array(
@@ -2355,8 +2346,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'indicator_type',
-							'label'   => esc_html__( 'Slider Indicator Type', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Indicator Type Default Icon', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Indicator Type', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Please Select Indicator Type Default Icon', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'icon',
 							'options' => array(
@@ -2366,8 +2357,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'showcase_visible',
-							'label'   => esc_html__( 'Slider Showcase Visible?', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Showcase Visible or Not? Default ON', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Show Showcase Thumbnails', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Show thumbnail previews beside the slider.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'on',
 							'options' => array(
@@ -2377,8 +2368,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'showcase_position',
-							'label'   => esc_html__( 'Slider Showcase Position', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Showcase Position Default Right', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Showcase Position', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Please Select Showcase Position Default Right', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'right',
 							'options' => array(
@@ -2390,8 +2381,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'popup_image_indicator',
-							'label'   => esc_html__( 'Slider Popup Image Indicator', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Popup Indicator Image ON or Off? Default ON', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Popup Image Indicator', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Show image indicators in the slider popup.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'on',
 							'options' => array(
@@ -2401,8 +2392,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'popup_icon_indicator',
-							'label'   => esc_html__( 'Slider Popup Icon Indicator', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Popup Indicator Icon ON or Off? Default ON', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Popup Icon Indicator', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Show icon indicators in the slider popup.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'on',
 							'options' => array(
@@ -2412,8 +2403,8 @@ tr.payment_tabs_html { display: none !important; }
 						),
 						array(
 							'name'    => 'slider_height',
-							'label'   => esc_html__( 'Slider height', 'mage-eventpress' ),
-							'desc'    => esc_html__( 'Please Select Slider Height', 'mage-eventpress' ),
+							'label'   => esc_html__( 'Slider Height', 'mage-eventpress' ),
+							'desc'    => esc_html__( 'Height of the image slider.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'avg',
 							'options' => array(
@@ -2461,16 +2452,16 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_enable_wc_payment',
-								'label'   => __( 'Enable WooCommerce Payment', 'mage-eventpress' ),
-								'desc'    => __( 'If enabled, WooCommerce payment gateway will be used for checkout.', 'mage-eventpress' ),
+								'label'   => __( 'Use WooCommerce Checkout', 'mage-eventpress' ),
+								'desc'    => __( 'Process ticket payments through WooCommerce.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => 'on',
 								'class'   => 'woocommerce-field woocommerce-main-toggle'
 							),
 							array(
 								'name'    => 'mep_wc_add_to_cart_redirect',
-								'label'   => __( 'After Adding to Cart, Redirect to', 'mage-eventpress' ),
-								'desc'    => __( 'Select where to redirect after adding tickets to cart.', 'mage-eventpress' ),
+								'label'   => __( 'After Add to Cart', 'mage-eventpress' ),
+								'desc'    => __( 'Where to send customers after tickets are added to the cart.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'checkout',
 								'options' => array(
@@ -2481,8 +2472,8 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_wc_after_order_redirect',
-								'label'   => __( 'After Confirming the Order, Redirect To', 'mage-eventpress' ),
-								'desc'    => __( 'Select where to redirect after confirming the order.', 'mage-eventpress' ),
+								'label'   => __( 'After Order Confirmation', 'mage-eventpress' ),
+								'desc'    => __( 'Where to send customers after the order is confirmed.', 'mage-eventpress' ),
 								'type'    => 'select',
 								'default' => 'plugin_thankyou',
 								'options' => array(
@@ -2493,24 +2484,24 @@ tr.payment_tabs_html { display: none !important; }
 							),
 							array(
 								'name'    => 'mep_wc_require_login',
-								'label'   => __( 'Require Account Login', 'mage-eventpress' ),
-								'desc'    => __( 'Require login to purchase event tickets.', 'mage-eventpress' ),
+								'label'   => __( 'Require Login to Buy', 'mage-eventpress' ),
+								'desc'    => __( 'Customers must log in before buying tickets.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
 								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_show_billing_info',
-								'label'   => __( 'Show Billing Info', 'mage-eventpress' ),
-								'desc'    => __( 'Show billing info on WooCommerce checkout page.', 'mage-eventpress' ),
+								'label'   => __( 'Show Billing Fields', 'mage-eventpress' ),
+								'desc'    => __( 'Show billing fields on the WooCommerce checkout page.', 'mage-eventpress' ),
 								'type'    => 'checkbox',
 								'default' => '',
 								'class'   => 'woocommerce-field wc-additional-field'
 							),
 							array(
 								'name'    => 'mep_wc_confirm_ticket_status',
-								'label'   => __( 'Confirm Ticket Based on Payment Status', 'mage-eventpress' ),
-								'desc'    => __( 'Select the payment statuses that will trigger ticket confirmation.', 'mage-eventpress' ),
+								'label'   => __( 'Confirm Tickets on Payment Status', 'mage-eventpress' ),
+								'desc'    => __( 'Order statuses that mark tickets as confirmed.', 'mage-eventpress' ),
 								'type'    => 'multicheck',
 								'default' => array( 'processing' => 'processing', 'completed' => 'completed' ),
 								'options' => array(
@@ -2631,7 +2622,7 @@ tr.payment_tabs_html { display: none !important; }
 						array(
 							'name'    => 'mep_currency_position',
 							'label'   => __( 'Currency Position', 'mage-eventpress' ),
-							'desc'    => __( 'Where the symbol appears relative to the price.', 'mage-eventpress' ),
+							'desc'    => __( 'Place the currency symbol before or after the price.', 'mage-eventpress' ),
 							'type'    => 'select',
 							'default' => 'left',
 							'options' => array(
@@ -2644,14 +2635,14 @@ tr.payment_tabs_html { display: none !important; }
 						array(
 							'name'    => 'mep_currency_decimal_sep',
 							'label'   => __( 'Decimal Separator', 'mage-eventpress' ),
-							'desc'    => __( 'Character used as the decimal separator (e.g. . or ,).', 'mage-eventpress' ),
+							'desc'    => __( 'Character used for decimals (for example . or ,).', 'mage-eventpress' ),
 							'type'    => 'text',
 							'default' => '.',
 						),
 						array(
 							'name'    => 'mep_currency_thousand_sep',
 							'label'   => __( 'Thousands Separator', 'mage-eventpress' ),
-							'desc'    => __( 'Character used as the thousands separator (e.g. , or .). Leave blank for none.', 'mage-eventpress' ),
+							'desc'    => __( 'Character used for thousands (for example , or .). Leave blank for none.', 'mage-eventpress' ),
 							'type'    => 'text',
 							'default' => ',',
 						),

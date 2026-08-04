@@ -209,27 +209,31 @@
   overflow: hidden;
 }
 .mep-gs__section-head {
-  padding: 12px 18px;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .mep-gs__section-head .mep-gs__section-icon { font-size: 15px; color: #6366f1; }
-.mep-gs__section-head-label { font-size: 16px; font-weight: 600; color: #334155; }
+.mep-gs__section-head-label { font-size: 15px; font-weight: 600; color: #1d2327; }
 
-/* ── FIELD ROWS ── */
+/* ── FIELD ROWS (classic WP settings: ~30% label / ~70% control) ── */
 .mep-gs__field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(200px, 30%) minmax(0, 1fr);
+  column-gap: 32px;
   align-items: start;
-  border-bottom: 1px solid #f8fafc;
+  border-bottom: 1px solid #f0f0f1;
 }
 .mep-gs__field-row:last-child { border-bottom: none; }
-.mep-gs__field-label-cell { padding: 12px 18px; background: #fafafa; }
-.mep-gs__field-label { font-size: 14px; font-weight: 500; color: #334155; margin-bottom: 2px; }
-.mep-gs__field-hint { font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 2px; }
-.mep-gs__field-control-cell { padding: 10px 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.mep-gs__field-label-cell { padding: 20px 0 20px 24px; background: transparent; }
+.mep-gs__field-label { font-size: 14px; font-weight: 600; color: #1d2327; margin: 0; line-height: 1.4; }
+.mep-gs__field-hint { font-size: 13px; color: #646970; line-height: 1.55; margin-top: 5px; }
+.mep-gs__field-control-cell {
+  padding: 20px 24px 20px 0;
+  display: block;
+}
 
 /* ── FORM CONTROLS ── */
 .mep-gs__select,
@@ -237,41 +241,41 @@
   width: 100%;
   max-width: 400px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px;
-  color: #1e293b;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #2c3338;
   font-family: inherit;
   outline: none;
   transition: border-color .15s, box-shadow .15s;
-  min-height: 38px;
+  min-height: 36px;
   line-height: 1.4;
 }
 .mep-gs__select:focus,
 .mep-gs__input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
 }
 .mep-gs__input--sm { width: 100px; min-width: 100px; max-width: 140px; }
 .mep-gs__textarea {
   width: 100%;
-  max-width: 600px;
+  max-width: 520px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px;
-  color: #1e293b;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #2c3338;
   font-family: inherit;
   outline: none;
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
   transition: border-color .15s, box-shadow .15s;
 }
 .mep-gs__textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
 }
 
 /* ── CHECKBOXES ── */
@@ -595,16 +599,16 @@
   }
   .mep-gs__menu-btn { display: flex; }
   .mep-gs__content { padding: 14px; }
-  .mep-gs__field-row { grid-template-columns: 1fr; }
-  .mep-gs__field-label-cell { padding: 12px 14px 6px; background: #fafafa; border-bottom: none; }
-  .mep-gs__field-control-cell { padding: 8px 14px 12px; background: #fff; }
+  .mep-gs__field-row { grid-template-columns: 1fr; column-gap: 0; }
+  .mep-gs__field-label-cell { padding: 16px 16px 4px; background: transparent; border-bottom: none; }
+  .mep-gs__field-control-cell { padding: 4px 16px 16px; background: #fff; }
   .mep-gs__save-btn .mep-gs__save-text { display: none; }
   /* On mobile the sidebar is an off-canvas drawer and the admin bar is 46px and
      scrolls, so drop the sticky topbar + full-height divider here. */
   .mep-gs__main { border-left: none; }
   .mep-gs__topbar { padding: 0 14px; gap: 8px; position: static; }
-  .mep-gs__section-head { padding: 10px 14px; }
-  .mep-gs__section-head-label { font-size: 12px; }
+  .mep-gs__section-head { padding: 14px 16px; }
+  .mep-gs__section-head-label { font-size: 14px; }
 }
 
 @media (max-width: 480px) {
@@ -635,27 +639,27 @@
   -moz-appearance: none;
   appearance: none;
   width: 100%;
-  max-width: 400px;
-  min-height: 38px;
+  max-width: 280px;
+  min-height: 36px;
   height: auto;
   line-height: 1.4;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  color: #1e293b;
-  padding: 8px 32px 8px 10px;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  color: #2c3338;
+  padding: 6px 28px 6px 10px;
   background-color: #fff;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2350575e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px 12px;
   box-shadow: none;
   cursor: pointer;
 }
-.mep-gs__root .mep-gs__select:hover { border-color: #cbd5e1; color: #1e293b; }
+.mep-gs__root .mep-gs__select:hover { border-color: #8c8f94; color: #2c3338; }
 .mep-gs__root .mep-gs__select:focus {
-  border-color: #6366f1;
-  color: #1e293b;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+  border-color: #2271b1;
+  color: #2c3338;
+  box-shadow: 0 0 0 1px #2271b1;
   outline: none;
 }
 
@@ -663,25 +667,25 @@
    the dropdowns and immune to the active admin colour scheme */
 .mep-gs__root .mep-gs__input,
 .mep-gs__root .mep-gs__textarea {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  color: #1e293b;
-  min-height: 38px;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  color: #2c3338;
+  min-height: 36px;
   box-shadow: none;
 }
-.mep-gs__root .mep-gs__textarea { min-height: 80px; }
+.mep-gs__root .mep-gs__textarea { min-height: 90px; }
 .mep-gs__root .mep-gs__input:focus,
 .mep-gs__root .mep-gs__textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
   outline: none;
 }
 
 /* Pin text colours so nothing inherits the admin colour scheme */
 .mep-gs__root .mep-gs__section-head-label,
-.mep-gs__root .mep-gs__field-label { color: #334155; }
-.mep-gs__root .mep-gs__field-hint { color: #000; }
-.mep-gs__root .mep-gs__field-hint a { color: #6366f1; text-decoration: none; }
+.mep-gs__root .mep-gs__field-label { color: #1d2327; }
+.mep-gs__root .mep-gs__field-hint { color: #646970; }
+.mep-gs__root .mep-gs__field-hint a { color: #2271b1; text-decoration: none; }
 .mep-gs__root .mep-gs__field-hint a:hover { text-decoration: underline; }
 .mep-gs__root .mep-gs__checkbox-item { color: #475569; }
 
@@ -811,43 +815,102 @@
 .mep-gs__root .wbtm_add_icon_image_button_area button:hover { background: #e0e7ff; }
 .mep-gs__root .wbtm_add_icon_image_button_area button span { margin: 0; }
 
-/* ── WP form-table → bus-style cards (Event Settings hybrid) ── */
+/* ── WP form-table → classic General Settings layout (attachment match) ──
+   Label ~32% / control ~68%, white rows, bold labels, help text under fields. */
 .mep-gs__root .form-table { width: 100%; border-collapse: collapse; margin: 0; }
 .mep-gs__root .form-table th,
 .mep-gs__root .form-table td { margin: 0; padding: 0; border: 0; vertical-align: top; }
 .mep-gs__root .form-table > tbody > tr {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(200px, 30%) minmax(0, 1fr);
+  column-gap: 32px;
   align-items: start;
-  border-bottom: 1px solid #f8fafc;
+  border-bottom: 1px solid #f0f0f1;
   background: #fff !important;
 }
 .mep-gs__root .form-table > tbody > tr:last-child { border-bottom: none; }
 .mep-gs__root .form-table > tbody > tr > th {
   width: auto !important;
-  padding: 14px 18px !important;
-  background: #fafafa;
+  padding: 20px 0 20px 24px !important;
+  background: transparent !important;
   font-size: 14px;
-  font-weight: 500;
-  color: #334155;
+  font-weight: 600;
+  color: #1d2327;
   text-align: left;
+  line-height: 1.4;
+  box-sizing: border-box;
 }
+.mep-gs__root .form-table > tbody > tr > th label {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+/* Block layout so help text always stacks under the control (not beside it) */
 .mep-gs__root .form-table > tbody > tr > td {
-  padding: 12px 14px !important;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  padding: 20px 24px 20px 0 !important;
+  display: block !important;
+  box-sizing: border-box;
+  vertical-align: top;
 }
-.mep-gs__root .form-table .description {
+
+/* Full-width custom blocks (payment manager, gateway cards, HTML fields) */
+.mep-gs__root .form-table > tbody > tr.payment-gateways-container > td,
+.mep-gs__root .form-table > tbody > tr.wc-payment-methods-field > td,
+.mep-gs__root .form-table > tbody > tr.payment_tabs_html > td {
+  grid-column: 1 / -1;
+  padding: 16px 24px !important;
+}
+.mep-gs__root .form-table > tbody > tr.mep-acc-header > td {
+  grid-column: 1 / -1;
+  padding: 0 24px !important;
+}
+.mep-gs__root .form-table > tbody > tr.payment-gateways-container > th,
+.mep-gs__root .form-table > tbody > tr.wc-payment-methods-field > th,
+.mep-gs__root .form-table > tbody > tr.mep-acc-header > th,
+.mep-gs__root .form-table > tbody > tr.payment_tabs_html > th {
+  display: none !important;
+}
+
+/* Descriptions always under the field */
+.mep-gs__root .form-table .description,
+.mep-gs__root .form-table p.description,
+.mep-gs__root .form-table td > .description,
+.mep-gs__root .form-table td > p.description,
+.mep-gs__root .form-table fieldset > .description,
+.mep-gs__root .form-table fieldset > p.description {
+  display: block !important;
+  float: none !important;
+  clear: both !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  font-size: 13px !important;
+  color: #646970 !important;
+  line-height: 1.55 !important;
+  margin: 5px 0 0 !important;
+  padding: 0 !important;
+  font-weight: 400 !important;
+}
+.mep-gs__root .form-table .wp-picker-container {
   display: block;
-  font-size: 11px !important;
-  color: #94a3b8 !important;
-  line-height: 1.5;
-  margin: 4px 0 0;
-  font-weight: 400;
+}
+.mep-gs__root .form-table input.wpsa-url {
+  display: inline-block;
+  width: auto;
+  max-width: 280px;
+  vertical-align: middle;
+}
+.mep-gs__root .form-table .wpsa-browse {
+  display: inline-block;
+  margin: 0 0 0 8px;
+  vertical-align: middle;
 }
 .mep-gs__root h2 { display: none; }
+
+/* Controls — clean WP-admin style */
 .mep-gs__root select,
 .mep-gs__root input[type="text"],
 .mep-gs__root input[type="number"],
@@ -855,89 +918,203 @@
 .mep-gs__root input[type="url"],
 .mep-gs__root input[type="password"],
 .mep-gs__root textarea {
-  max-width: 420px;
+  display: block;
+  width: 100%;
+  max-width: 400px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px;
-  color: #1e293b;
-  min-height: 38px;
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #2c3338;
+  min-height: 36px;
   line-height: 1.4;
   box-shadow: none;
+  margin: 0;
 }
+.mep-gs__root select {
+  max-width: 280px;
+  padding-right: 28px;
+}
+.mep-gs__root textarea { max-width: 520px; min-height: 90px; }
 .mep-gs__root select:focus,
 .mep-gs__root input[type="text"]:focus,
 .mep-gs__root input[type="number"]:focus,
+.mep-gs__root input[type="email"]:focus,
+.mep-gs__root input[type="url"]:focus,
+.mep-gs__root input[type="password"]:focus,
 .mep-gs__root textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
   outline: none;
 }
 .mep-gs__root .submit { display: none !important; }
-.mep-gs__root fieldset { border: 0; margin: 0; padding: 0; }
-.mep-gs__root fieldset label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #475569;
-  margin: 0 12px 8px 0;
+
+/* Radios / checkboxes — stacked; generous space between input and option text */
+.mep-gs__root fieldset,
+.mep-gs__root fieldset.mep-gs__choice-list {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
 }
+.mep-gs__root fieldset > input[type="hidden"],
+.mep-gs__root fieldset input[type="hidden"] {
+  display: none !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+.mep-gs__root fieldset label {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 14px;
+  color: #2c3338;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.45;
+  cursor: pointer;
+  max-width: 100%;
+}
+.mep-gs__root fieldset label .mep-gs__choice-text {
+  display: inline-block;
+  padding-top: 0;
+  line-height: 1.45;
+  color: #2c3338;
+}
+.mep-gs__root fieldset br { display: none; }
+.mep-gs__root fieldset label input[type="checkbox"],
+.mep-gs__root fieldset label input[type="radio"],
 .mep-gs__root input[type="checkbox"],
-.mep-gs__root input[type="radio"] { accent-color: #6366f1; margin: 0; }
+.mep-gs__root input[type="radio"] {
+  accent-color: #2271b1;
+  margin: 1px 0 0 0 !important;
+  padding: 0 !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  flex-shrink: 0;
+  position: relative;
+  top: 0;
+}
+
 .mep-gs__root .mep-licensing-page,
-.mep-gs__root .wc_status_table_wrapper { padding: 0 4px 8px; }
+.mep-gs__root .wc_status_table_wrapper { padding: 8px 24px 20px; }
 .mep-gs__root .mep-licensing-table,
 .mep-gs__root .wc_status_table_wrapper table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .mep-gs__root .mep-licensing-table th,
 .mep-gs__root .wc_status_table_wrapper th {
-  background: #f8fafc;
-  padding: 10px 14px;
+  background: #f6f7f7;
+  padding: 12px 16px;
   text-align: left;
   font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .5px;
-  color: #64748b;
-  border-bottom: 1px solid #e2e8f0;
+  color: #646970;
+  border-bottom: 1px solid #e0e0e0;
 }
 .mep-gs__root .mep-licensing-table td,
 .mep-gs__root .wc_status_table_wrapper td {
-  padding: 12px 14px;
-  border-bottom: 1px solid #f8fafc;
-  color: #334155;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f0f1;
+  color: #2c3338;
 }
+
+/* Nested gateway tables keep classic table layout */
+.mep-gs__root .mep-gw-form-table { width: 100%; border-collapse: collapse; }
+.mep-gs__root .mep-gw-form-table > tbody > tr {
+  display: table-row !important;
+  grid-template-columns: none !important;
+  column-gap: 0;
+  border-bottom: none;
+  background: transparent !important;
+}
+.mep-gs__root .mep-gw-form-table > tbody > tr > th {
+  width: 200px !important;
+  padding: 14px 16px 14px 0 !important;
+  background: transparent !important;
+  font-weight: 600;
+  vertical-align: top;
+  display: table-cell !important;
+}
+.mep-gs__root .mep-gw-form-table > tbody > tr > td {
+  padding: 14px 0 !important;
+  display: table-cell !important;
+  flex-direction: unset;
+  gap: 0;
+}
+
 .mep-gs__root .payment-sub-tabs.nav-tab-wrapper {
   border: 0 !important;
   padding: 0 !important;
-  margin: 0 0 12px !important;
+  margin: 0 0 16px !important;
   background: transparent !important;
   display: flex;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .mep-gs__root .payment-sub-tabs .nav-tab {
   float: none !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 8px !important;
+  border: 1px solid #c3c4c7 !important;
+  border-radius: 4px !important;
   background: #fff !important;
-  color: #64748b !important;
+  color: #2c3338 !important;
   padding: 8px 14px !important;
   margin: 0 !important;
   font-weight: 500;
 }
 .mep-gs__root .payment-sub-tabs .nav-tab-active {
-  background: #eef2ff !important;
-  color: #4f46e5 !important;
-  border-color: #c7d2fe !important;
+  background: #2271b1 !important;
+  color: #fff !important;
+  border-color: #2271b1 !important;
 }
+
 body.mep_events_page_mep_event_settings_page #wpcontent { padding-left: 0; }
 body.mep_events_page_mep_event_settings_page #wpbody-content { padding-bottom: 0; }
 body.mep_events_page_mep_event_settings_page .notice,
 body.mep_events_page_mep_event_settings_page .updated,
 body.mep_events_page_mep_event_settings_page .error { margin: 12px 20px 0; }
+
 @media (max-width: 900px) {
-  .mep-gs__root .form-table > tbody > tr { grid-template-columns: 1fr; }
+  .mep-gs__root .form-table > tbody > tr {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+  .mep-gs__root .form-table > tbody > tr > th {
+    padding: 16px 16px 4px !important;
+  }
+  .mep-gs__root .form-table > tbody > tr > td {
+    padding: 4px 16px 16px !important;
+  }
+  .mep-gs__root select,
+  .mep-gs__root input[type="text"],
+  .mep-gs__root input[type="number"],
+  .mep-gs__root input[type="email"],
+  .mep-gs__root input[type="url"],
+  .mep-gs__root input[type="password"],
+  .mep-gs__root textarea {
+    max-width: 100%;
+  }
+  .mep-gs__root .mep-gw-form-table > tbody > tr > th,
+  .mep-gs__root .mep-gw-form-table > tbody > tr > td {
+    display: block !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .mep-gs__root .mep-gw-form-table > tbody > tr > th { padding-bottom: 6px !important; }
+  .mep-gs__root .mep-gw-form-table > tbody > tr > td { padding-top: 0 !important; padding-bottom: 14px !important; }
 }
 .mep-gs__root .wrap { margin: 0; padding: 0; max-width: none; }
 .mep-gs__root .wrap > h1,

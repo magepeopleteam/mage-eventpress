@@ -183,6 +183,41 @@
 #mp_event_all_info_in_tab .mpwem_timeline_save_close { background-color: var(--color_theme); color: var(--color_white);}
 #mp_event_all_info_in_tab .mpwem_faq_save,
 #mp_event_all_info_in_tab .mpwem_timeline_save { background-color: var(--color_theme); color: var(--color_white);}
+/* Event Registration Form builder (Global Reg Form edit screen, meta box #mep_reg_form_cb).
+   Scoped to this meta box id so it doesn't affect the same .mp_form_builder_table classes
+   reused inside the main Event edit screen's Advanced tab. */
+#mep_reg_form_cb .mep_fb_global_reg_form_list { display: none;} /* placeholder markup — its label/heading text is currently commented out, leaving only empty elements that added stray blank space */
+#mep_reg_form_cb.postbox { border: none; box-shadow: 0 20px 40px -20px rgba(31, 41, 55, .25); border-radius: 16px; overflow: hidden;}
+#mep_reg_form_cb > .postbox-header,
+#mep_reg_form_cb > .hndle { background: linear-gradient(120deg, var(--color_theme), var(--color_theme_cc)); border: none; padding: 0;}
+#mep_reg_form_cb > .postbox-header .hndle,
+#mep_reg_form_cb > .hndle { color: #FFF; font-size: 15px; font-weight: 700; letter-spacing: .2px; padding: 16px 20px;}
+#mep_reg_form_cb > .postbox-header .handle-actions .toggle-indicator:before { color: #FFF;}
+#mep_reg_form_cb .mpwem_style { padding: var(--dmp) 0 0;}
+#mep_reg_form_cb #mp_event_all_info_in_tab { background: linear-gradient(180deg, #F7F9FF 0%, #FFF 220px); padding: 26px;}
+#mep_reg_form_cb p.event_meta_help_txt { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 14px 18px; font-size: 12.5px; font-weight: 600; letter-spacing: .1px; color: #FFF; background: linear-gradient(90deg, var(--color_theme), var(--color_theme_cc)); border: none; border-radius: 12px; box-shadow: 0 10px 20px -10px var(--color_theme_aa);}
+#mep_reg_form_cb p.event_meta_help_txt:before { color: #FFF; opacity: .9;}
+#mep_reg_form_cb table.mp_form_builder_table { width: 100%; border-collapse: separate; border-spacing: 0 12px;}
+#mep_reg_form_cb table.mp_form_builder_table tr:not(:first-child) { background: #FFF; border-radius: 14px; box-shadow: 0 2px 10px -4px rgba(31, 41, 55, .12); transition: box-shadow .2s ease, transform .2s ease;}
+#mep_reg_form_cb table.mp_form_builder_table tr:not(:first-child):hover { box-shadow: 0 10px 24px -8px var(--color_theme_aa); transform: translateY(-2px);}
+#mep_reg_form_cb table.mp_form_builder_table td,
+#mep_reg_form_cb table.mp_form_builder_table th { padding: 16px 18px; vertical-align: middle; border: none;}
+#mep_reg_form_cb table.mp_form_builder_table td:not(:last-child) { border-right: 1px dashed #E6E9F2;}
+#mep_reg_form_cb table.mp_form_builder_table td label { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #1F2937; cursor: pointer;}
+#mep_reg_form_cb table.mp_form_builder_table td label span { transition: color .15s ease;}
+#mep_reg_form_cb table.mp_form_builder_table td label:has(input:checked) span { color: var(--color_theme);}
+#mep_reg_form_cb table.mp_form_builder_table td label + label { margin-top: 10px; font-weight: 400;}
+
+/* Pill-style toggle switch (pure CSS, replaces the plain checkbox — no markup changes) */
+#mep_reg_form_cb table.mp_form_builder_table td label input[type="checkbox"] { appearance: none; -webkit-appearance: none; position: relative; width: 38px; height: 21px; margin: 0; flex-shrink: 0; cursor: pointer; background: #DEE3ED; border-radius: 20px; transition: background .2s ease;}
+#mep_reg_form_cb table.mp_form_builder_table td label input[type="checkbox"]::after { content: ""; position: absolute; top: 2px; left: 2px; width: 17px; height: 17px; border-radius: 50%; background: #FFF; box-shadow: 0 1px 3px rgba(0, 0, 0, .35); transition: transform .2s ease;}
+#mep_reg_form_cb table.mp_form_builder_table td label input[type="checkbox"]:checked { background: linear-gradient(120deg, var(--color_theme), var(--color_theme_cc));}
+#mep_reg_form_cb table.mp_form_builder_table td label input[type="checkbox"]:checked::after { transform: translateX(17px);}
+#mep_reg_form_cb table.mp_form_builder_table td label input[type="checkbox"]:focus-visible { outline: 2px solid var(--color_theme); outline-offset: 2px;}
+
+#mep_reg_form_cb table.mp_form_builder_table .mp_formControl { background: #F7F9FC !important; border: 1.5px solid #E6E9F2; border-radius: 10px; padding: 9px 12px; box-shadow: inset 0 1px 2px rgba(16, 24, 40, .03); transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;}
+#mep_reg_form_cb table.mp_form_builder_table .mp_formControl:focus { outline: none; border-color: var(--color_theme); box-shadow: 0 0 0 4px var(--color_theme_88); background: var(--color_white) !important;}
+#mep_reg_form_cb table.mp_form_builder_table .mp_formControl::placeholder { color: #94A3B8;}
 @media only screen and (min-width: 10px) {
 	.mpwem-template-override-wrapper { max-width: 1200px; margin: 20px 0; }
 	.mpwem-template-override-notice { background: #FFF3CD; border: 1px solid #FFEAA7; border-radius: 4px; padding: 15px; margin: 20px 0; }

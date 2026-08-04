@@ -126,15 +126,15 @@
 				$post_type = isset( $_GET['post_type'] ) ? sanitize_key( $_GET['post_type'] ) : '';
 				if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 					global $post;
-					if ( $post && in_array( $post->post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+					if ( $post && in_array( $post->post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees', 'mep_events_reg_form' ), true ) ) {
 						return true;
 					}
-					if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+					if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees', 'mep_events_reg_form' ), true ) ) {
 						return true;
 					}
 				}
 				// List table screens
-				if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees' ), true ) ) {
+				if ( in_array( $post_type, array( 'mep_events', 'mep_event_speaker', 'mep_events_attendees', 'mep_events_reg_form' ), true ) ) {
 					return true;
 				}
 				// MEP submenu pages

@@ -39,8 +39,8 @@
 						'icon'     => 'fas fa-certificate',
 					),
 					'mep_ai_assistant_settings'     => array(
-						'title'    => __( 'AI Assistant Settings', 'mage-eventpress' ),
-						'subtitle' => __( 'Connect AI providers and manage API keys for the event assistant.', 'mage-eventpress' ),
+						'title'    => __( 'AI Settings', 'mage-eventpress' ),
+						'subtitle' => __( 'Configure your artificial intelligence preferences, API keys, and default models across various providers.', 'mage-eventpress' ),
 						'icon'     => 'fas fa-robot',
 					),
 					'mep_deposit_settings'          => array(
@@ -55,7 +55,7 @@
 					),
 					'mep_social_card_setting_sec'   => array(
 						'title'    => __( 'Social Share Card', 'mage-eventpress' ),
-						'subtitle' => __( 'Branding and options for downloadable social share cards.', 'mage-eventpress' ),
+						'subtitle' => __( 'Configure the digital share cards generated for your attendees.', 'mage-eventpress' ),
 						'icon'     => 'fas fa-share-alt',
 					),
 					'mep_settings_licensing'        => array(

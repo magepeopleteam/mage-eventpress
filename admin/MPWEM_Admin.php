@@ -36,6 +36,8 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Payment_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Currency_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Modern_Section_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_AI_Assistant_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Social_Card_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_PDF_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_License_Status_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Style_Icon_Settings_UI.php';

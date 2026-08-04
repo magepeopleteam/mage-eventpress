@@ -2744,9 +2744,9 @@ tr.payment_tabs_html { display: none !important; }
 						'subtitle' => __( 'Certificate templates & branding', 'mage-eventpress' ),
 					),
 					'mep_ai_assistant_settings' => array(
-						'title'    => __( 'AI Assistant Settings', 'mage-eventpress' ),
+						'title'    => __( 'AI Settings', 'mage-eventpress' ),
 						'icon'     => 'fas fa-robot',
-						'subtitle' => __( 'AI providers & API keys', 'mage-eventpress' ),
+						'subtitle' => __( 'API keys & default models', 'mage-eventpress' ),
 					),
 					'mep_deposit_settings'     => array(
 						'title'    => __( 'Deposit / Partial Payment', 'mage-eventpress' ),
@@ -2761,7 +2761,7 @@ tr.payment_tabs_html { display: none !important; }
 					'mep_social_card_setting_sec' => array(
 						'title'    => __( 'Social Share Card', 'mage-eventpress' ),
 						'icon'     => 'fas fa-share-alt',
-						'subtitle' => __( 'Share card branding & networks', 'mage-eventpress' ),
+						'subtitle' => __( 'Design, triggers & networks', 'mage-eventpress' ),
 					),
 					'mep_gsheet_settings'      => array(
 						'title'    => __( 'Google Sheets', 'mage-eventpress' ),
@@ -3142,6 +3142,10 @@ tr.payment_tabs_html { display: none !important; }
 											<?php MPWEM_License_Status_Settings_UI::render_hub(); ?>
 										<?php elseif ( 'mep_pdf_gen_settings' === $tab_id ) : ?>
 											<?php MPWEM_PDF_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'mep_ai_assistant_settings' === $tab_id ) : ?>
+											<?php MPWEM_AI_Assistant_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'mep_social_card_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Social_Card_Settings_UI::render( $fields ); ?>
 										<?php else : ?>
 											<?php MPWEM_Modern_Section_Settings_UI::render( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>

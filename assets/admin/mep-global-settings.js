@@ -15,6 +15,8 @@
 	var styleSubtabs = mepGs.styleSubtabs || [];
 	var sliderParent = mepGs.sliderParent || 'mp_slider_settings';
 	var sliderSubtabs = mepGs.sliderSubtabs || [];
+	var licenseParent = mepGs.licenseParent || 'mep_settings_licensing';
+	var licenseSubtabs = mepGs.licenseSubtabs || [];
 	var testEmail = mepGs.testEmail || {};
 	var wlEditorMap = {
 		admin: 'mep_waitlist_email_settings-mep_waitlist_email_template',
@@ -34,8 +36,12 @@
 		return sliderSubtabs.indexOf(id) !== -1 && id !== sliderParent;
 	}
 
+	function isLicenseChild(id) {
+		return licenseSubtabs.indexOf(id) !== -1 && id !== licenseParent;
+	}
+
 	function isNestedChild(id) {
-		return isEmailChild(id) || isStyleChild(id) || isSliderChild(id);
+		return isEmailChild(id) || isStyleChild(id) || isSliderChild(id) || isLicenseChild(id);
 	}
 
 	function getActiveEmailSub() {
@@ -205,6 +211,9 @@
 		} else if (isSliderChild(id) || id === sliderParent || (sliderSubtabs.indexOf(id) !== -1)) {
 			targetTab = sliderParent;
 			hubKind = 'slider';
+		} else if (isLicenseChild(id) || id === licenseParent || (licenseSubtabs.indexOf(id) !== -1)) {
+			targetTab = licenseParent;
+			hubKind = 'license';
 		}
 
 		$('.mep-gs__tab-panel').removeClass('mep-gs--active');
@@ -407,7 +416,15 @@
 
 		$('.wp-color-picker-field').wpColorPicker({
 			change: function () {
-				window.setTimeout(syncSiPreview, 10);
+				var $el = $(this);
+				window.setTimeout(function () {
+					syncSiPreview();
+					if ($el.hasClass('mep-pdf__color-hex') || $el.closest('[data-mep-pdf-color]').length) {
+						var $wrap = $el.closest('[data-mep-pdf-color]');
+						var val = $el.val() || $el.data('default-color') || '#FFFFFF';
+						$wrap.find('.mep-pdf__color-swatch').css('background-color', val);
+					}
+				}, 10);
 			},
 			clear: function () {
 				window.setTimeout(syncSiPreview, 10);
@@ -674,6 +691,14 @@
 		$('.wpsa-browse').on('click', function (event) {
 			event.preventDefault();
 			var self = $(this);
+			var $upload = self.closest('[data-mep-pdf-upload]');
+			var $url = self.prev('.wpsa-url');
+			if (!$url.length) {
+				$url = self.siblings('.wpsa-url');
+			}
+			if (!$url.length) {
+				$url = self.closest('.mep-ms__file, td, .mep-el__row, [data-mep-pdf-upload]').find('.wpsa-url').first();
+			}
 			var file_frame = wp.media.frames.file_frame = wp.media({
 				title: self.data('uploader_title'),
 				button: { text: self.data('uploader_button_text') },
@@ -681,9 +706,49 @@
 			});
 			file_frame.on('select', function () {
 				var attachment = file_frame.state().get('selection').first().toJSON();
-				self.prev('.wpsa-url').val(attachment.url).change();
+				$url.val(attachment.url).trigger('change');
+				if ($upload.length) {
+					$upload.addClass('has-file');
+					$upload.find('.mep-pdf__upload-preview').prop('hidden', false).find('img').attr('src', attachment.url);
+					$upload.find('.mep-pdf__upload-empty').prop('hidden', true);
+					$upload.find('.mep-pdf__upload-clear').prop('hidden', false);
+				}
 			});
 			file_frame.open();
+		});
+
+		$(document).on('click', '.mep-pdf__upload-clear', function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var $upload = $(this).closest('[data-mep-pdf-upload]');
+			$upload.removeClass('has-file');
+			$upload.find('.wpsa-url').val('').trigger('change');
+			$upload.find('.mep-pdf__upload-preview').prop('hidden', true).find('img').attr('src', '');
+			$upload.find('.mep-pdf__upload-empty').prop('hidden', false);
+			$(this).prop('hidden', true);
+		});
+
+		function syncPdfColorSwatch($input) {
+			var $wrap = $input.closest('[data-mep-pdf-color]');
+			if (!$wrap.length) {
+				return;
+			}
+			var val = $input.val() || $input.data('default-color') || '#FFFFFF';
+			$wrap.find('.mep-pdf__color-swatch').css('background-color', val);
+		}
+		$(document).on('change input irischange', '.mep-pdf__color-hex', function () {
+			syncPdfColorSwatch($(this));
+		});
+		$('.mep-pdf__color-hex').each(function () {
+			syncPdfColorSwatch($(this));
+		});
+		$(document).on('click', '.mep-pdf__color-swatch, .mep-pdf__color-name', function () {
+			var $input = $(this).closest('[data-mep-pdf-color]').find('.mep-pdf__color-hex');
+			if ($input.length && $input.data('wpWpColorPicker')) {
+				$input.wpColorPicker('open');
+			} else {
+				$input.trigger('focus').trigger('click');
+			}
 		});
 
 		$(document).on('click', '.mep-pay__tab[data-pay-sub]', function (e) {

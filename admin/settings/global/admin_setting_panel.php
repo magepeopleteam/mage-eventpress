@@ -1352,8 +1352,8 @@ tr.payment_tabs_html { display: none !important; }
 					),
 					array(
 						'id'    => 'mep_settings_licensing',
-						'title' => '<i class="mi mi-license"></i>'. __( 'License', 'mage-eventpress' )
-					)
+						'title' => '<i class="mi mi-license"></i>' . __( 'License & Status', 'mage-eventpress' )
+					),
 				);
 
 				return apply_filters( 'mep_settings_sec_reg', $sections );
@@ -2719,14 +2719,54 @@ tr.payment_tabs_html { display: none !important; }
 						'subtitle' => __( 'Currency display', 'mage-eventpress' ),
 					),
 					'mep_settings_licensing'   => array(
-						'title'    => __( 'License', 'mage-eventpress' ),
+						'title'    => __( 'License & Status', 'mage-eventpress' ),
 						'icon'     => 'fas fa-key',
-						'subtitle' => __( 'Addon license keys', 'mage-eventpress' ),
+						'subtitle' => __( 'Licenses & system environment', 'mage-eventpress' ),
 					),
-					'mep_status_setting_sec'   => array(
-						'title'    => __( 'Status', 'mage-eventpress' ),
-						'icon'     => 'fas fa-heartbeat',
-						'subtitle' => __( 'System status checks', 'mage-eventpress' ),
+					'mep_eb_settings'          => array(
+						'title'    => __( 'Early Birds', 'mage-eventpress' ),
+						'icon'     => 'fas fa-dove',
+						'subtitle' => __( 'Early bird ticket display rules', 'mage-eventpress' ),
+					),
+					'mep_pdf_gen_settings'     => array(
+						'title'    => __( 'PDF Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-file-pdf',
+						'subtitle' => __( 'Customize PDF ticket design, company details, and billing fields.', 'mage-eventpress' ),
+					),
+					'csv_checkout_export_fileds_sec' => array(
+						'title'    => __( 'CSV Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-file-csv',
+						'subtitle' => __( 'CSV export column options', 'mage-eventpress' ),
+					),
+					'mep_certificate_settings' => array(
+						'title'    => __( 'Certificate Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-certificate',
+						'subtitle' => __( 'Certificate templates & branding', 'mage-eventpress' ),
+					),
+					'mep_ai_assistant_settings' => array(
+						'title'    => __( 'AI Assistant Settings', 'mage-eventpress' ),
+						'icon'     => 'fas fa-robot',
+						'subtitle' => __( 'AI providers & API keys', 'mage-eventpress' ),
+					),
+					'mep_deposit_settings'     => array(
+						'title'    => __( 'Deposit / Partial Payment', 'mage-eventpress' ),
+						'icon'     => 'fas fa-percentage',
+						'subtitle' => __( 'Deposit and balance due options', 'mage-eventpress' ),
+					),
+					'mep_review_permission_settings' => array(
+						'title'    => __( 'Review & Rating', 'mage-eventpress' ),
+						'icon'     => 'fas fa-star',
+						'subtitle' => __( 'Review permissions & display', 'mage-eventpress' ),
+					),
+					'mep_social_card_setting_sec' => array(
+						'title'    => __( 'Social Share Card', 'mage-eventpress' ),
+						'icon'     => 'fas fa-share-alt',
+						'subtitle' => __( 'Share card branding & networks', 'mage-eventpress' ),
+					),
+					'mep_gsheet_settings'      => array(
+						'title'    => __( 'Google Sheets', 'mage-eventpress' ),
+						'icon'     => 'fas fa-table',
+						'subtitle' => __( 'Sync orders to Google Sheets', 'mage-eventpress' ),
 					),
 				);
 			}
@@ -2844,6 +2884,38 @@ tr.payment_tabs_html { display: none !important; }
 			}
 
 			/**
+			 * Sections nested under License & Status.
+			 *
+			 * @param array $sections Section map keyed by id.
+			 * @return array Subtab definitions keyed by section id.
+			 */
+			private function get_license_status_settings_subtabs( $sections ) {
+				$subtabs = array(
+					'mep_settings_licensing' => array(
+						'label' => __( 'License', 'mage-eventpress' ),
+						'icon'  => 'fas fa-key',
+					),
+					'mep_status_setting_sec' => array(
+						'label' => __( 'Status', 'mage-eventpress' ),
+						'icon'  => 'fas fa-heartbeat',
+					),
+				);
+
+				foreach ( $sections as $section_id => $section ) {
+					$parent = isset( $section['parent'] ) ? $section['parent'] : '';
+					if ( 'mep_settings_licensing' !== $parent ) {
+						continue;
+					}
+					$subtabs[ $section_id ] = array(
+						'label' => isset( $section['sub_label'] ) ? $section['sub_label'] : wp_strip_all_tags( isset( $section['title'] ) ? $section['title'] : $section_id ),
+						'icon'  => isset( $section['sub_icon'] ) ? $section['sub_icon'] : 'fas fa-heartbeat',
+					);
+				}
+
+				return $subtabs;
+			}
+
+			/**
 			 * Render one settings section card + form (shared by top-level tabs and email subtabs).
 			 *
 			 * @param string $tab_id  Section / option group id.
@@ -2914,7 +2986,12 @@ tr.payment_tabs_html { display: none !important; }
 					return 'mp_slider_settings' !== $id;
 				} ) );
 
-				$nested_child_ids = array_merge( $email_child_ids, $si_child_ids, $sc_child_ids );
+				$ls_subtabs = $this->get_license_status_settings_subtabs( $sections );
+				$ls_child_ids = array_values( array_filter( array_keys( $ls_subtabs ), function( $id ) {
+					return 'mep_settings_licensing' !== $id;
+				} ) );
+
+				$nested_child_ids = array_merge( $email_child_ids, $si_child_ids, $sc_child_ids, $ls_child_ids );
 
 				$visible_tabs = array();
 				foreach ( $tab_configs as $tab_id => $config ) {
@@ -2972,6 +3049,8 @@ tr.payment_tabs_html { display: none !important; }
 					. 'window.mepGs.styleSubMeta = ' . wp_json_encode( $si_sub_meta ) . ';'
 					. 'window.mepGs.sliderParent = "mp_slider_settings";'
 					. 'window.mepGs.sliderSubtabs = ' . wp_json_encode( array_keys( $sc_subtabs ) ) . ';'
+					. 'window.mepGs.licenseParent = "mep_settings_licensing";'
+					. 'window.mepGs.licenseSubtabs = ' . wp_json_encode( array_keys( $ls_subtabs ) ) . ';'
 					. 'window.mepGs.testEmail = ' . wp_json_encode( array(
 						'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 						'nonce'   => wp_create_nonce( 'mep_send_test_email' ),
@@ -3059,8 +3138,12 @@ tr.payment_tabs_html { display: none !important; }
 											<?php MPWEM_Payment_Settings_UI::render( $fields ); ?>
 										<?php elseif ( 'mep_currency_settings' === $tab_id ) : ?>
 											<?php MPWEM_Currency_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'mep_settings_licensing' === $tab_id ) : ?>
+											<?php MPWEM_License_Status_Settings_UI::render_hub(); ?>
+										<?php elseif ( 'mep_pdf_gen_settings' === $tab_id ) : ?>
+											<?php MPWEM_PDF_Settings_UI::render( $fields ); ?>
 										<?php else : ?>
-											<?php $this->render_settings_section_form( $tab_id, $config, $fields, $sections ); ?>
+											<?php MPWEM_Modern_Section_Settings_UI::render( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>
 									</div>
 								<?php endforeach; ?>
@@ -3118,24 +3201,25 @@ tr.payment_tabs_html { display: none !important; }
 	function mep_licensing_page( $form ) {
 		?>
         <div class='mep-licensing-page'>
-            <h3>Event Manager For Woocommerce Licensing</h3>
-            <p>Thank you for using our Event Manager for WooCommerce plugin! This plugin is free to use and no license is required. However, we do have some additional add-ons which enhance the features and functionality of this plugin. If you have any of these add-ons, you will need to enter a valid license key below in order to continue using them. </p>
+            <p class="mep-ms__intro"><?php esc_html_e( 'Thank you for using Event Manager for WooCommerce. The free plugin needs no license. Enter license keys below for any Pro add-ons you use.', 'mage-eventpress' ); ?></p>
             <div class="mep_licensae_info"></div>
+            <div class="mep-ms__table-wrap">
             <table class='wp-list-table widefat striped posts mep-licensing-table'>
                 <thead>
                 <tr>
-                    <th>Plugin Name</th>
-                    <th width=10%>Order No</th>
-                    <th width=15%>Expire on</th>
-                    <th width=30%>License Key</th>
-                    <th width=10%>Status</th>
-                    <th width=10%>Action</th>
+                    <th><?php esc_html_e( 'Plugin Name', 'mage-eventpress' ); ?></th>
+                    <th width=10%><?php esc_html_e( 'Order No', 'mage-eventpress' ); ?></th>
+                    <th width=15%><?php esc_html_e( 'Expire on', 'mage-eventpress' ); ?></th>
+                    <th width=30%><?php esc_html_e( 'License Key', 'mage-eventpress' ); ?></th>
+                    <th width=10%><?php esc_html_e( 'Status', 'mage-eventpress' ); ?></th>
+                    <th width=10%><?php esc_html_e( 'Action', 'mage-eventpress' ); ?></th>
                 </tr>
                 </thead>
                 <tbody>
 				<?php do_action( 'mep_license_page_addon_list' ); ?>
                 </tbody>
             </table>
+            </div>
         </div>
 		<?php
 	}

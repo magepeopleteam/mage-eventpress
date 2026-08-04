@@ -31,6 +31,10 @@
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MAGE_Setting_API.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Email_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_General_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Event_List_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Single_Event_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Payment_Settings_UI.php';
+				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Currency_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Style_Icon_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/MPWEM_Slider_Carousel_Settings_UI.php';
 				require_once MPWEM_PLUGIN_DIR . '/admin/settings/global/admin_setting_panel.php';

@@ -958,6 +958,10 @@ tr.payment_tabs_html { display: none !important; }
 
 				<script>
 					jQuery(document).ready(function($) {
+						// Modern Payment hub handles its own UI — skip legacy table tabs/accordions.
+						if ($('.mep-pay').length) {
+							return;
+						}
 						var wc_active = <?php echo MPWEM_Global_Function::has_woocommerce() ? 'true' : 'false'; ?>;
 						if (!wc_active) {
 							$('head').append('<style id="mep-woo-warning-style">tr.woocommerce-field { display: none !important; }</style>');
@@ -3047,6 +3051,14 @@ tr.payment_tabs_html { display: none !important; }
 											<?php MPWEM_Slider_Carousel_Settings_UI::render_hub( $sc_subtabs, $fields, $sections ); ?>
 										<?php elseif ( 'general_setting_sec' === $tab_id ) : ?>
 											<?php MPWEM_General_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'event_list_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Event_List_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'single_event_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Single_Event_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'payment_setting_sec' === $tab_id ) : ?>
+											<?php MPWEM_Payment_Settings_UI::render( $fields ); ?>
+										<?php elseif ( 'mep_currency_settings' === $tab_id ) : ?>
+											<?php MPWEM_Currency_Settings_UI::render( $fields ); ?>
 										<?php else : ?>
 											<?php $this->render_settings_section_form( $tab_id, $config, $fields, $sections ); ?>
 										<?php endif; ?>

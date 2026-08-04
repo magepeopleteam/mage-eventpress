@@ -162,6 +162,30 @@
 	// Back-compat alias used by Style & Icon.
 	mepGs.saveStyleIconForms = mepGs.saveMultiOptionForms;
 
+	mepGs.switchPaymentSub = function (subId) {
+		if (!subId || !$('#mep-pay-sub-' + subId).length) {
+			return;
+		}
+		var $hub = $('#mep-tab-payment_setting_sec');
+		$hub.find('.mep-pay__tab').removeClass('mep-pay--active').attr('aria-selected', 'false');
+		$hub.find('.mep-pay__panel').removeClass('mep-pay--active');
+
+		$hub.find('.mep-pay__tab[data-pay-sub="' + subId + '"]')
+			.addClass('mep-pay--active')
+			.attr('aria-selected', 'true');
+		$('#mep-pay-sub-' + subId).addClass('mep-pay--active');
+
+		var label = $hub.find('.mep-pay__tab[data-pay-sub="' + subId + '"]').data('pay-label') || subId;
+		var parentMeta = tabMeta.payment_setting_sec || ['Payment', ''];
+		$('#mep-topbar-title').text(parentMeta[0] || 'Payment');
+		$('#mep-topbar-sub').text(label);
+
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('mep_payment_subtab', subId);
+			localStorage.setItem('mep_activetab', 'payment_setting_sec');
+		}
+	};
+
 	mepGs.switchTab = function (id, btn) {
 		var targetTab = id;
 		var targetSub = null;
@@ -206,6 +230,23 @@
 				sub = emailSubtabs[0] || emailParent;
 			}
 			mepGs.switchEmailSub(sub);
+		} else if (targetTab === 'payment_setting_sec' && $('#mep-tab-payment_setting_sec .mep-pay').length) {
+			var paySub = null;
+			if (typeof localStorage !== 'undefined') {
+				paySub = localStorage.getItem('mep_payment_subtab');
+			}
+			if (!paySub || !$('#mep-pay-sub-' + paySub).length) {
+				paySub = 'woocommerce';
+			}
+			mepGs.switchPaymentSub(paySub);
+			var hasForm = $('#mep-tab-' + targetTab).find('form').length > 0;
+			$('#mep-save-btn').toggle(hasForm);
+			if (typeof localStorage !== 'undefined') {
+				localStorage.setItem('mep_activetab', targetTab);
+			}
+			if (window.history && window.history.replaceState) {
+				window.history.replaceState(null, '', '#' + targetTab);
+			}
 		} else {
 			var hasForm = $('#mep-tab-' + targetTab).find('form').length > 0;
 			$('#mep-save-btn').toggle(hasForm);
@@ -643,6 +684,16 @@
 				self.prev('.wpsa-url').val(attachment.url).change();
 			});
 			file_frame.open();
+		});
+
+		$(document).on('click', '.mep-pay__tab[data-pay-sub]', function (e) {
+			e.preventDefault();
+			mepGs.switchPaymentSub($(this).data('pay-sub'));
+		});
+
+		$(document).on('change', '.mep-pay__wc-enable', function () {
+			var on = $(this).is(':checked');
+			$('.mep-pay__wc-body').prop('hidden', !on);
 		});
 
 		var startTab = defaultTab;

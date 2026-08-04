@@ -100,6 +100,12 @@
 				settings_fields( $sec );
 				?>
 				<div class="mep-gn">
+					<div class="mep-gn__header">
+						<div class="mep-gn__header-text">
+							<h2 class="mep-gn__title"><?php esc_html_e( 'General Settings', 'mage-eventpress' ); ?></h2>
+							<p class="mep-gn__subtitle"><?php esc_html_e( 'Configure core booking behavior, labels, maps, and plugin-wide options.', 'mage-eventpress' ); ?></p>
+						</div>
+					</div>
 					<div class="mep-gn__grid">
 						<div class="mep-gn__col">
 							<?php self::card_general( $g ); ?>

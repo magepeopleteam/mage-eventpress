@@ -233,7 +233,7 @@
     transition: all 0.2s ease;
     background: white;
 }
-.mpwem_event_list .filter-btn, .mpwem_event_list .category-select {
+.mpwem_event_list .filter-btn {
     padding: 10px 16px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -241,6 +241,77 @@
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s ease;
+}
+.mpwem_event_list .mpwem-category-filter {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 200px;
+    max-width: 280px;
+    flex: 0 1 240px;
+}
+.mpwem_event_list .mpwem-category-filter__icon,
+.mpwem_event_list .mpwem-category-filter__chevron {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    color: #7b879c;
+}
+.mpwem_event_list .mpwem-category-filter__icon {
+    left: 12px;
+    color: #1b3a8c;
+}
+.mpwem_event_list .mpwem-category-filter__chevron {
+    right: 12px;
+    color: #94a3b8;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.mpwem_event_list .mpwem-category-filter:focus-within .mpwem-category-filter__chevron {
+    color: #1b3a8c;
+}
+.mpwem_event_list .category-select,
+.mpwem_event_list #mpwem_event_filter_by_category {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    margin: 0;
+    padding: 10px 40px 10px 40px;
+    border: 1px solid #d9e2ef;
+    border-radius: 10px;
+    background: #fff;
+    color: #132555;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.mpwem_event_list .category-select:hover,
+.mpwem_event_list #mpwem_event_filter_by_category:hover {
+    border-color: #9db4d4;
+    background: #f8fbff;
+}
+.mpwem_event_list .category-select:focus,
+.mpwem_event_list #mpwem_event_filter_by_category:focus {
+    outline: none;
+    border-color: #1b3a8c;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(27, 58, 140, 0.14);
+}
+.mpwem_event_list .category-select option {
+    color: #132555;
+    font-weight: 500;
 }
 .mpwem_event_list .date-filter-container {
     display: flex;

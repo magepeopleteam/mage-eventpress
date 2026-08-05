@@ -159,16 +159,20 @@
                                     <div class="search-icon">🔍</div>
                                     <input id="mpwem_search_event_list" type="text" placeholder="<?php esc_attr_e( 'Search events, locations, or organizers...', 'mage-eventpress' ); ?>">
                                 </div>
-                                <select class="category-select" id="mpwem_event_filter_by_category">
-                                    <option value=""><?php esc_html_e( 'All Categories', 'mage-eventpress' ); ?></option>
-									<?php
-										if ( is_array( $get_all_categories ) && ! empty( $get_all_categories ) ) {
-											foreach ( $get_all_categories as $key => $event_categories ) { ?>
-                                                <option value="<?php echo esc_attr( $key ); ?>" data-slug="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $event_categories ); ?></option>
-											<?php }
-										}
-									?>
-                                </select>
+                                <div class="mpwem-category-filter">
+                                    <span class="mpwem-category-filter__icon dashicons dashicons-category" aria-hidden="true"></span>
+                                    <select class="category-select" id="mpwem_event_filter_by_category" aria-label="<?php esc_attr_e( 'Filter by category', 'mage-eventpress' ); ?>">
+                                        <option value=""><?php esc_html_e( 'All Categories', 'mage-eventpress' ); ?></option>
+										<?php
+											if ( is_array( $get_all_categories ) && ! empty( $get_all_categories ) ) {
+												foreach ( $get_all_categories as $key => $event_categories ) { ?>
+                                                    <option value="<?php echo esc_attr( $key ); ?>" data-slug="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $event_categories ); ?></option>
+												<?php }
+											}
+										?>
+                                    </select>
+                                    <span class="mpwem-category-filter__chevron dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
+                                </div>
                                 <div class="date-filter-container">
                                     <label for="mpwem_date_from"><?php esc_html_e( 'From:', 'mage-eventpress' ); ?></label>
                                     <div class="date-filter-input-wrap">

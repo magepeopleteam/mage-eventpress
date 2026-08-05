@@ -478,26 +478,68 @@ function mpwem_attendee_management(parent, total_qty) {
         }
     });
     /************conditional form*************/
-    $(document).on('change', '.mep_form_item [data-target-condition-id]', function () {
-        let condition_id = $(this).attr('data-target-condition-id');
-        //alert(condition_id);
-        if (condition_id) {
-            //alert(condition_id);
-            let child_id = $(this).find('option:selected').attr('data-target-child-id');
-            let parent = $(this).closest('.mep_form_item');
-            $(this).find('option').each(function () {
-                parent.find('[data-condition-id="' + condition_id + '"]').each(function () {
-                    let condition_value = $(this).attr('data-condition-value');
-                    if (condition_value) {
-                        if (condition_value === child_id) {
-                            $(this).removeClass('dNone').slideDown('fast');
-                        } else {
-                            $(this).slideUp('fast')
-                        }
-                    }
-                });
-            });
+    function mep_get_condition_trigger_value($el) {
+        if ($el.is('select')) {
+            let $opt = $el.find('option:selected');
+            return ($opt.attr('data-target-child-id') || $el.val() || '').toString();
         }
+        return ($el.val() || '').toString();
+    }
+
+    function mep_condition_value_matches(selected, expected) {
+        selected = (selected || '').toString().trim();
+        expected = (expected || '').toString().trim();
+        if (!expected) {
+            return false;
+        }
+        if (!selected) {
+            return false;
+        }
+        if (selected.indexOf(',') !== -1) {
+            return selected.split(',').map(function (part) {
+                return part.trim();
+            }).indexOf(expected) !== -1;
+        }
+        return selected === expected;
+    }
+
+    function mep_apply_field_conditions($trigger) {
+        let condition_id = $trigger.attr('data-target-condition-id');
+        if (!condition_id) {
+            return;
+        }
+        let selected_value = mep_get_condition_trigger_value($trigger);
+        // Scope to the attendee block (siblings), not the parent field wrapper.
+        let $scope = $trigger.closest('.mep_attendee_info, .mep_attendee_info_hidden');
+        if (!$scope.length) {
+            $scope = $trigger.closest('.mpwem_registration_area, .mpwem_style');
+        }
+        if (!$scope.length) {
+            $scope = $trigger.closest('form');
+        }
+        if (!$scope.length) {
+            $scope = jQuery(document);
+        }
+        $scope.find('[data-condition-id="' + condition_id + '"]').each(function () {
+            let $item = jQuery(this);
+            let depend = ($item.attr('data-depend') || '').toString();
+            if (depend === 'mep_ticket_type') {
+                return;
+            }
+            let condition_value = $item.attr('data-condition-value');
+            if (!condition_value) {
+                return;
+            }
+            if (mep_condition_value_matches(selected_value, condition_value)) {
+                $item.removeClass('dNone').stop(true, true).slideDown('fast');
+            } else {
+                $item.addClass('dNone').stop(true, true).slideUp('fast');
+            }
+        });
+    }
+
+    $(document).on('change', '.mep_form_item [data-target-condition-id]', function () {
+        mep_apply_field_conditions(jQuery(this));
     });
 }(jQuery));
 //*****************************Related Event***********************************//

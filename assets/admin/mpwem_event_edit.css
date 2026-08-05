@@ -5737,6 +5737,31 @@ body.mpwem-ticket-modal-open {
     box-shadow: none !important;
 }
 
+.mpwem-display-section--attendee-form #mep-fb-event-builder-wrap input[type="checkbox"],
+.mpwem-display-section--attendee-form #mep-fb-builder input[type="checkbox"],
+.mpwem-display-section--attendee-form #mep-fb-event-builder-wrap input.form-control[type="checkbox"],
+.mpwem-display-section--attendee-form #mep-fb-builder input.form-control[type="checkbox"] {
+    -webkit-appearance: checkbox !important;
+    -moz-appearance: checkbox !important;
+    appearance: auto !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    max-width: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #94a3b8 !important;
+    border-radius: 4px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    accent-color: #6366f1 !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    flex: 0 0 18px !important;
+}
+
 .mpwem-display-section--attendee-form input[type="checkbox"]:checked {
     background-color: var(--mpwem-primary) !important;
     border-color: var(--mpwem-primary) !important;
@@ -5772,10 +5797,45 @@ body.mpwem-ticket-modal-open {
 }
 
 .mpwem-display-section--attendee-form .mep_condition_item {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 8px !important;
     background: #fff !important;
     border: 1px solid #e1e8f0 !important;
     border-radius: 10px !important;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    padding: 10px 12px !important;
+    overflow: visible !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mpwem-display-section--attendee-form .mep_condition_item > label:not(.mp_event_drop_list_hidden) {
+    flex: 1 1 150px !important;
+    min-width: 140px !important;
+    max-width: 100% !important;
+}
+
+.mpwem-display-section--attendee-form .mep_condition_item .mpwem-select-wrapper {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.mpwem-display-section--attendee-form .mep_condition_item .mp_formControl,
+.mpwem-display-section--attendee-form .mep_condition_item select.mp_formControl,
+.mpwem-display-section--attendee-form .mep_condition_item input.mp_formControl {
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 0 28px 0 8px !important;
+    font-size: 12px !important;
+    border-radius: 7px !important;
+    background-position: right 8px center !important;
+    background-size: 14px !important;
+}
+
+.mpwem-display-section--attendee-form .mep_condition_item input.mp_formControl {
+    padding-right: 8px !important;
 }
 
 .mpwem-display-section--attendee-form .mp_event_custom_form_table {

@@ -3489,7 +3489,12 @@
 
         return $select.closest('#mp_event_custom_form_table, .mp_event_custom_form_table').length > 0
             || $select.closest('#mpwem_wizard_attendee_form_mount table, .mpwem-display-section--attendee-form table').length > 0
+            || $select.closest('.mep_condition_item, .mep_conditional_form_hidden, .conditional_form_area').length > 0
             || name === 'mep_event_reg_form_id'
+            || name === 'mep_type_condition[]'
+            || name === 'mep_conditional_parent[]'
+            || name === 'mep_conditional_parent_value[]'
+            || name === 'mep_conditional_child[]'
             || /\[mep_global_single_template\]$/.test(name);
     }
 

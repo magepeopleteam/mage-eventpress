@@ -1833,6 +1833,7 @@
 
         window.setTimeout(function() {
             enhanceDateFields($root);
+            enhanceCustomCalendar($root);
             initializeParticularDateTableDragScroll($root);
             syncDateWiseGlobalQtyColumns($root);
             syncParticularDateModalFooter($root);
@@ -1938,6 +1939,7 @@
         context.$modalMount.find('.mep-special-datetime section.bg-light').hide();
         decorateDateSections(context.$modalMount);
         enhanceDateFields(context.$modalMount);
+        enhanceCustomCalendar(context.$modalMount);
         enhanceOffDayPicker(context.$modalMount);
         enhanceRepeatedScheduleLayout(context.$modalMount);
         ensureParticularDateTableHints($root);
@@ -2159,6 +2161,8 @@
         }
         initializeParticularDateTableDragScroll($root);
         syncDateWiseGlobalQtyColumns($root);
+        enhanceDateFields(context.$modalMount);
+        enhanceCustomCalendar(context.$modalMount);
 
         context.$modal.attr('aria-hidden', 'false').addClass('is-open');
         lockBodyScroll();
@@ -2256,6 +2260,7 @@
 
         decorateDateSections(context.$modalMount);
         enhanceDateFields(context.$modalMount);
+        enhanceCustomCalendar(context.$modalMount);
         enhanceOffDayPicker(context.$modalMount);
         enhanceRepeatedScheduleLayout(context.$modalMount);
         ensureParticularDateTableHints($root);
@@ -3800,6 +3805,8 @@
 
             $label.data('mpwemDateEnhanced', true);
         });
+
+        enhanceCustomTimePicker($panel);
     }
 
     function parseIsoDate(value) {
@@ -4128,6 +4135,8 @@
     }
 
     function openCustomCalendar($input) {
+        closeCustomTimePicker();
+
         if ($.datepicker && $input.hasClass('hasDatepicker')) {
             try {
                 $input.datepicker('destroy');
@@ -4249,6 +4258,7 @@
             e.stopPropagation();
             const $label = $(this).closest('label');
             $label.find('.mpwem-time-input').first().val('').trigger('change');
+            closeCustomTimePicker();
         });
 
         $(document).on('input change', '.mpwem-event-wizard input[name="event_start_date_everyday"], .mpwem-event-wizard input[name="event_end_date_everyday"]', function() {
@@ -4281,15 +4291,25 @@
 
         $(document).on('mousedown', function(e) {
             const $target = $(e.target);
-            if ($target.closest('.mpwem-custom-calendar, .mpwem-date-input-wrap').length) return;
-            closeCustomCalendar();
+            if (!$target.closest('.mpwem-custom-calendar, .mpwem-date-input-wrap').length) {
+                closeCustomCalendar();
+            }
+            if (!$target.closest('.mpwem-custom-time-picker, .mpwem-time-input-wrap').length) {
+                closeCustomTimePicker();
+            }
         });
 
         $(window).on('resize scroll', function() {
             const $calendar = $('#mpwem_custom_calendar.is-open');
-            const state = $calendar.data('mpwemState');
-            if ($calendar.length && state && state.$input) {
-                positionCustomCalendar($calendar, state.$input);
+            const calendarState = $calendar.data('mpwemState');
+            if ($calendar.length && calendarState && calendarState.$input) {
+                positionCustomCalendar($calendar, calendarState.$input);
+            }
+
+            const $picker = $('#mpwem_custom_time_picker.is-open');
+            const timeState = $picker.data('mpwemState');
+            if ($picker.length && timeState && timeState.$input) {
+                positionCustomTimePicker($picker, timeState.$input);
             }
         });
 
@@ -4313,6 +4333,366 @@
 
             $input.attr('autocomplete', 'off');
             $input.data('mpwemCustomCalendar', true);
+        });
+        enhanceCustomTimePicker($panel);
+    }
+
+    function parseTimeValue(value) {
+        const raw = (value || '').toString().trim();
+        if (!raw) return null;
+
+        const match24 = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+        if (match24) {
+            let hour = parseInt(match24[1], 10);
+            const minute = parseInt(match24[2], 10);
+            if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+                return { hour: hour, minute: minute };
+            }
+        }
+
+        const match12 = raw.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if (match12) {
+            let hour = parseInt(match12[1], 10);
+            const minute = parseInt(match12[2], 10);
+            const period = match12[3].toUpperCase();
+            if (hour >= 1 && hour <= 12 && minute >= 0 && minute <= 59) {
+                if (period === 'AM') {
+                    hour = hour === 12 ? 0 : hour;
+                } else {
+                    hour = hour === 12 ? 12 : hour + 12;
+                }
+                return { hour: hour, minute: minute };
+            }
+        }
+
+        return null;
+    }
+
+    function formatTimeValue(hour, minute) {
+        return String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0');
+    }
+
+    function formatTimeDisplay(hour, minute) {
+        const period = hour >= 12 ? 'PM' : 'AM';
+        let hour12 = hour % 12;
+        if (hour12 === 0) hour12 = 12;
+        return String(hour12).padStart(2, '0') + ':' + String(minute).padStart(2, '0') + ' ' + period;
+    }
+
+    function toPickerParts(hour24, minute) {
+        const period = hour24 >= 12 ? 'PM' : 'AM';
+        let hour12 = hour24 % 12;
+        if (hour12 === 0) hour12 = 12;
+        return { hour12: hour12, minute: minute, period: period };
+    }
+
+    function fromPickerParts(hour12, minute, period) {
+        let hour24 = hour12 % 12;
+        if (period === 'PM') hour24 += 12;
+        return { hour: hour24, minute: minute };
+    }
+
+    function ensureCustomTimePicker() {
+        let $picker = $('#mpwem_custom_time_picker');
+        if ($picker.length) return $picker;
+
+        const hourButtons = [];
+        for (let h = 1; h <= 12; h++) {
+            hourButtons.push('<button type="button" class="mpwem-custom-time-picker__chip" data-time-hour="' + h + '">' + String(h).padStart(2, '0') + '</button>');
+        }
+
+        const minuteButtons = [];
+        for (let m = 0; m < 60; m += 5) {
+            minuteButtons.push('<button type="button" class="mpwem-custom-time-picker__chip" data-time-minute="' + m + '">' + String(m).padStart(2, '0') + '</button>');
+        }
+
+        $picker = $(
+            '<div id="mpwem_custom_time_picker" class="mpwem-custom-time-picker" role="dialog" aria-modal="false" aria-label="Choose time">' +
+            '  <div class="mpwem-custom-time-picker__preview" aria-live="polite">' +
+            '    <span class="mpwem-custom-time-picker__preview-hour">12</span>' +
+            '    <span class="mpwem-custom-time-picker__preview-colon">:</span>' +
+            '    <span class="mpwem-custom-time-picker__preview-minute">00</span>' +
+            '    <span class="mpwem-custom-time-picker__preview-period">AM</span>' +
+            '  </div>' +
+            '  <div class="mpwem-custom-time-picker__period" role="group" aria-label="AM or PM">' +
+            '    <button type="button" class="mpwem-custom-time-picker__period-btn" data-time-period="AM">AM</button>' +
+            '    <button type="button" class="mpwem-custom-time-picker__period-btn" data-time-period="PM">PM</button>' +
+            '  </div>' +
+            '  <div class="mpwem-custom-time-picker__grid">' +
+            '    <div class="mpwem-custom-time-picker__section">' +
+            '      <div class="mpwem-custom-time-picker__label">Hour</div>' +
+            '      <div class="mpwem-custom-time-picker__hours">' + hourButtons.join('') + '</div>' +
+            '    </div>' +
+            '    <div class="mpwem-custom-time-picker__section">' +
+            '      <div class="mpwem-custom-time-picker__label">Minute</div>' +
+            '      <div class="mpwem-custom-time-picker__minutes">' + minuteButtons.join('') + '</div>' +
+            '    </div>' +
+            '  </div>' +
+            '  <div class="mpwem-custom-time-picker__presets" role="group" aria-label="Quick times">' +
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="09:00">9:00 AM</button>' +
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="12:00">12:00 PM</button>' +
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="15:00">3:00 PM</button>' +
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="18:00">6:00 PM</button>' +
+            '    <button type="button" class="mpwem-custom-time-picker__preset" data-preset="20:00">8:00 PM</button>' +
+            '  </div>' +
+            '  <div class="mpwem-custom-time-picker__foot">' +
+            '    <button type="button" class="mpwem-custom-time-picker__now">Now</button>' +
+            '    <div class="mpwem-custom-time-picker__foot-actions">' +
+            '      <button type="button" class="mpwem-custom-time-picker__clear">Clear</button>' +
+            '      <button type="button" class="mpwem-custom-time-picker__done">Done</button>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>'
+        );
+
+        $('body').append($picker);
+        return $picker;
+    }
+
+    function positionCustomTimePicker($picker, $input) {
+        const offset = $input.offset();
+        const wasOpen = $picker.hasClass('is-open');
+        const previousVisibility = $picker.css('visibility');
+
+        if (!wasOpen) {
+            $picker.css('visibility', 'hidden').addClass('is-open');
+        }
+
+        const width = $picker.outerWidth();
+        const height = $picker.outerHeight();
+        const inputHeight = $input.outerHeight();
+        const scrollTop = $(window).scrollTop();
+        const viewportRight = $(window).scrollLeft() + $(window).width();
+        const viewportBottom = scrollTop + $(window).height();
+        const spaceBelow = viewportBottom - (offset.top + inputHeight);
+        const spaceAbove = offset.top - scrollTop;
+        let left = offset.left;
+        let top = offset.top + inputHeight + 8;
+
+        if (left + width > viewportRight - 12) {
+            left = Math.max(12, viewportRight - width - 12);
+        }
+
+        if (height && spaceBelow < height + 12 && spaceAbove > spaceBelow) {
+            top = Math.max(scrollTop + 12, offset.top - height - 8);
+        }
+
+        $picker.css({
+            top: top,
+            left: left
+        });
+
+        if (!wasOpen) {
+            $picker.removeClass('is-open').css('visibility', previousVisibility);
+        }
+    }
+
+    function renderCustomTimePicker($picker) {
+        const state = $picker.data('mpwemState');
+        if (!state) return;
+
+        const parts = toPickerParts(state.hour, state.minute);
+        $picker.find('.mpwem-custom-time-picker__preview-hour').text(String(parts.hour12).padStart(2, '0'));
+        $picker.find('.mpwem-custom-time-picker__preview-minute').text(String(parts.minute).padStart(2, '0'));
+        $picker.find('.mpwem-custom-time-picker__preview-period').text(parts.period);
+
+        $picker.find('[data-time-hour]').removeClass('is-selected').filter('[data-time-hour="' + parts.hour12 + '"]').addClass('is-selected');
+        $picker.find('[data-time-minute]').removeClass('is-selected').filter('[data-time-minute="' + parts.minute + '"]').addClass('is-selected');
+        $picker.find('[data-time-period]').removeClass('is-selected').filter('[data-time-period="' + parts.period + '"]').addClass('is-selected');
+
+        const $minutes = $picker.find('.mpwem-custom-time-picker__minutes');
+        $minutes.find('[data-time-minute].is-custom').remove();
+        if (parts.minute % 5 !== 0) {
+            const $custom = $('<button type="button" class="mpwem-custom-time-picker__chip is-custom is-selected"></button>')
+                .attr('data-time-minute', parts.minute)
+                .text(String(parts.minute).padStart(2, '0'));
+            $minutes.append($custom);
+        }
+    }
+
+    function applyCustomTimePickerValue($picker, closeAfter) {
+        const state = $picker.data('mpwemState');
+        if (!state || !state.$input) return;
+
+        state.$input.val(formatTimeValue(state.hour, state.minute)).trigger('change');
+        if (closeAfter) closeCustomTimePicker();
+    }
+
+    function openCustomTimePicker($input) {
+        closeCustomCalendar();
+
+        const $picker = ensureCustomTimePicker();
+        const parsed = parseTimeValue($input.val());
+        const now = new Date();
+        const hour = parsed ? parsed.hour : now.getHours();
+        const minute = parsed ? parsed.minute : Math.round(now.getMinutes() / 5) * 5 % 60;
+
+        $picker.data('mpwemState', {
+            $input: $input,
+            hour: hour,
+            minute: minute
+        });
+
+        renderCustomTimePicker($picker);
+        positionCustomTimePicker($picker, $input);
+        $picker.addClass('is-open');
+        $input.addClass('is-time-picker-open');
+    }
+
+    function closeCustomTimePicker() {
+        const $picker = $('#mpwem_custom_time_picker');
+        const state = $picker.data('mpwemState');
+        if (state && state.$input) {
+            state.$input.removeClass('is-time-picker-open');
+        }
+        $picker.removeClass('is-open');
+    }
+
+    function bindCustomTimePicker() {
+        if (window.mpwemCustomTimePickerBound) return;
+
+        $(document).on('mousedown click focus', '.mpwem-time-input.mpwem-custom-time-enabled', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $input = $(this);
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if ($picker.hasClass('is-open') && state && state.$input && state.$input[0] === $input[0]) {
+                return;
+            }
+            if (typeof this.blur === 'function') {
+                this.blur();
+            }
+            openCustomTimePicker($input);
+        });
+
+        $(document).on('keydown', '.mpwem-time-input.mpwem-custom-time-enabled', function(e) {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                openCustomTimePicker($(this));
+            } else if (e.key === 'Escape') {
+                closeCustomTimePicker();
+            } else if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Delete') {
+                // Keep the field keyboard-locked; the custom picker owns edits.
+                e.preventDefault();
+            }
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__chip[data-time-hour]', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if (!state) return;
+
+            const parts = toPickerParts(state.hour, state.minute);
+            const next = fromPickerParts(parseInt($(this).data('time-hour'), 10), parts.minute, parts.period);
+            state.hour = next.hour;
+            state.minute = next.minute;
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, false);
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__chip[data-time-minute]', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if (!state) return;
+
+            state.minute = parseInt($(this).data('time-minute'), 10);
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, false);
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__period-btn', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if (!state) return;
+
+            const parts = toPickerParts(state.hour, state.minute);
+            const next = fromPickerParts(parts.hour12, parts.minute, $(this).data('time-period'));
+            state.hour = next.hour;
+            state.minute = next.minute;
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, false);
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__preset', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            const parsed = parseTimeValue($(this).data('preset'));
+            if (!state || !parsed) return;
+
+            state.hour = parsed.hour;
+            state.minute = parsed.minute;
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, true);
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__now', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if (!state) return;
+
+            const now = new Date();
+            state.hour = now.getHours();
+            state.minute = Math.round(now.getMinutes() / 5) * 5 % 60;
+            $picker.data('mpwemState', state);
+            renderCustomTimePicker($picker);
+            applyCustomTimePickerValue($picker, true);
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__clear', function(e) {
+            e.preventDefault();
+            const $picker = $('#mpwem_custom_time_picker');
+            const state = $picker.data('mpwemState');
+            if (!state || !state.$input) return;
+
+            state.$input.val('').trigger('change');
+            closeCustomTimePicker();
+        });
+
+        $(document).on('click', '.mpwem-custom-time-picker__done', function(e) {
+            e.preventDefault();
+            applyCustomTimePickerValue($('#mpwem_custom_time_picker'), true);
+        });
+
+        window.mpwemCustomTimePickerBound = true;
+    }
+
+    function enhanceCustomTimePicker($panel) {
+        bindCustomTimePicker();
+        $panel.find('input[type="time"]').each(function() {
+            const $input = $(this);
+            if ($input.data('mpwemCustomTime')) return;
+
+            const $label = $input.closest('label');
+            if ($label.length) {
+                $label.addClass('mpwem-time-input-wrap');
+            } else if (!$input.parent().hasClass('mpwem-time-input-wrap')) {
+                $input.wrap('<span class="mpwem-time-input-wrap"></span>');
+            }
+
+            $input
+                .addClass('mpwem-time-input mpwem-custom-time-enabled')
+                .attr({
+                    autocomplete: 'off',
+                    readonly: 'readonly',
+                    inputmode: 'none'
+                })
+                .data('mpwemCustomTime', true);
+
+            if (this.addEventListener) {
+                this.addEventListener('showPicker', function(event) {
+                    event.preventDefault();
+                });
+            }
         });
     }
 

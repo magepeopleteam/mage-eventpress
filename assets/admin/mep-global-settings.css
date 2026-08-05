@@ -2834,14 +2834,18 @@ body.mep_events_page_mep_event_settings_page .error { margin: 12px 20px 0; }
 .mep-pay #mep_confirmation_page_id {
   width: 100%;
   max-width: 360px;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 10px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 5px !important;
   background: #fff !important;
   color: #0f172a !important;
   font-size: 13px !important;
   padding: 10px 12px !important;
   box-shadow: none !important;
   min-height: 42px;
+}
+select#mep_confirmation_page_id {
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 .mep-pay__checks {
   display: flex;

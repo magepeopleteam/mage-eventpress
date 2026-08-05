@@ -826,6 +826,10 @@
 					.mpwem-pm-confirm-row__text .mpwem-pm-card__sub { margin: 4px 0 0; }
 					.mpwem-pm-confirm-row__control { flex-shrink: 0; width: 240px; }
 					.mpwem-pm-confirm-row__control .mpwem-pm-control { max-width: 100%; }
+					select#mep_confirmation_page_id {
+						border: 1px solid #ddd;
+						border-radius: 5px;
+					}
 
 					/* Accordions (WooCommerce tab) */
 					.mpwem-pm-acc {

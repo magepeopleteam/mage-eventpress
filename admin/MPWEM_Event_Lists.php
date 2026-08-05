@@ -183,7 +183,11 @@
                                     <button type="button" id="mpwem_clear_date_filter" class="clear-date-btn"><?php esc_html_e( 'Clear', 'mage-eventpress' ); ?></button>
                                 </div>
                             </div>
-                            <div class="table-container">
+                            <div class="table-container is-loading" id="mpwem_event_table_wrap">
+                                <div class="mpwem-table-loading-overlay" aria-live="polite" aria-busy="true">
+                                    <div class="mpwem-table-spinner" aria-hidden="true"></div>
+                                    <span class="mpwem-table-loading-text"><?php esc_html_e( 'Loading events…', 'mage-eventpress' ); ?></span>
+                                </div>
                                 <table class="event-table">
                                     <thead>
                                     <tr>
@@ -199,11 +203,19 @@
                                     </tr>
                                     </thead>
                                     <tbody id="mpwem_event_list_body">
-                                    <tr class="mpwem_event_list_loading_row">
-                                        <td colspan="9" style="text-align:center;padding:30px;">
-                                            <?php esc_html_e( 'Loading events…', 'mage-eventpress' ); ?>
-                                        </td>
+                                    <?php for ( $i = 0; $i < 5; $i++ ) : ?>
+                                    <tr class="mpwem_event_list_skeleton_row" aria-hidden="true">
+                                        <td><span class="mpwem-skel mpwem-skel-check"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-thumb"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:70%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:55%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:60%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:45%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:50%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:40%"></span></td>
+                                        <td><span class="mpwem-skel mpwem-skel-line" style="width:48%"></span></td>
                                     </tr>
+                                    <?php endfor; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -795,12 +807,19 @@
 		$now            = current_time( 'timestamp' );
 		$future_found   = false;
 		$closest_future = null;
-		foreach ( $all_dates as $date_info ) {
-			$date_str = is_array( $date_info ) && isset( $date_info['time'] ) ? $date_info['time'] : $date_info;
-			$date_ts  = strtotime( $date_str );
-			if ( $date_ts > $now && ( ! $closest_future || $date_ts < $closest_future ) ) {
-				$closest_future = $date_ts;
-				$future_found   = true;
+		$has_any_date   = false;
+		if ( is_array( $all_dates ) ) {
+			foreach ( $all_dates as $date_info ) {
+				$date_str = is_array( $date_info ) && isset( $date_info['time'] ) ? $date_info['time'] : $date_info;
+				$date_ts  = ! empty( $date_str ) ? strtotime( $date_str ) : false;
+				if ( ! $date_ts || $date_ts <= 0 ) {
+					continue;
+				}
+				$has_any_date = true;
+				if ( $date_ts > $now && ( ! $closest_future || $date_ts < $closest_future ) ) {
+					$closest_future = $date_ts;
+					$future_found   = true;
+				}
 			}
 		}
 		if ( $future_found && $closest_future ) {
@@ -811,12 +830,19 @@
 			return sprintf( '%d days, %d hours, %d minutes remaining', $days, $hours, $minutes );
 		}
 		// fallback: check end_date
-		if ( strtotime( $end_date ) > $now ) {
-			$interval = strtotime( $end_date ) - $now;
-			$days     = floor( $interval / 86400 );
-			$hours    = floor( ( $interval % 86400 ) / 3600 );
-			$minutes  = floor( ( $interval % 3600 ) / 60 );
-			return sprintf( '%d days, %d hours, %d minutes remaining', $days, $hours, $minutes );
+		$end_ts = ! empty( $end_date ) ? strtotime( $end_date ) : false;
+		if ( $end_ts && $end_ts > 0 ) {
+			$has_any_date = true;
+			if ( $end_ts > $now ) {
+				$interval = $end_ts - $now;
+				$days     = floor( $interval / 86400 );
+				$hours    = floor( ( $interval % 86400 ) / 3600 );
+				$minutes  = floor( ( $interval % 3600 ) / 60 );
+				return sprintf( '%d days, %d hours, %d minutes remaining', $days, $hours, $minutes );
+			}
+		}
+		if ( ! $has_any_date ) {
+			return __( 'Date not set', 'mage-eventpress' );
 		}
 		return 'Expired!';
 	}
@@ -830,51 +856,65 @@
 				$edit_link      = get_edit_post_link( $id );
 				$delete_link    = get_delete_post_link( $id ); // Moves to Trash
 				$view_link      = get_permalink( $id );
-				$start_date     = get_post_meta( $id, 'event_start_datetime', true );
-				$start_date     = date( 'F j, Y', strtotime( $start_date ) );
-				$start_time     = get_post_meta( $id, 'event_start_time', true );
-				$end_date       = get_post_meta( $id, 'event_end_datetime', true );
-				$upcoming_date  = get_post_meta( $id, 'event_upcoming_datetime', true );
-				$ticket_type    = get_post_meta( $id, 'mep_event_ticket_type', true );
-				$location       = get_post_meta( $id, 'mep_location_venue', true );
-				$time_remaining = get_time_remaining_fixed( $id, $upcoming_date );
-				$event_type     = MPWEM_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
-				$event_id       = $id ?? 0;
-				$all_dates      = MPWEM_Functions::get_dates( $event_id );
-				$all_times      = MPWEM_Functions::get_times( $event_id, $all_dates );
+				$raw_start_datetime = get_post_meta( $id, 'event_start_datetime', true );
+				$raw_end_datetime   = get_post_meta( $id, 'event_end_datetime', true );
+				$start_time_meta    = get_post_meta( $id, 'event_start_time', true );
+				$start_ts           = ( ! empty( $raw_start_datetime ) ) ? strtotime( $raw_start_datetime ) : false;
+				$end_ts             = ( ! empty( $raw_end_datetime ) ) ? strtotime( $raw_end_datetime ) : false;
+				$has_valid_start    = ( $start_ts && $start_ts > 0 );
+				$has_valid_end      = ( $end_ts && $end_ts > 0 );
+				$start_date         = $has_valid_start ? date( 'F j, Y', $start_ts ) : '';
+				$start_time         = $start_time_meta;
+				$end_date           = $raw_end_datetime;
+				$upcoming_date      = get_post_meta( $id, 'event_upcoming_datetime', true );
+				$ticket_type        = get_post_meta( $id, 'mep_event_ticket_type', true );
+				$location           = trim( (string) get_post_meta( $id, 'mep_location_venue', true ) );
+				$time_remaining     = get_time_remaining_fixed( $id, $upcoming_date );
+				$event_type         = MPWEM_Global_Function::get_post_info( $id, 'mep_enable_recurring', 'no' );
+				$event_id           = $id ?? 0;
+				$all_dates          = MPWEM_Functions::get_dates( $event_id );
+				$all_times          = MPWEM_Functions::get_times( $event_id, $all_dates );
 				if ( ! empty( $all_dates ) ) {
 					$date = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
 				} else {
-					$date = $start_date;
+					$date = $has_valid_start ? $raw_start_datetime : '';
 				}
 				if ( ! empty( $all_dates ) && ! empty( $all_times ) ) {
 					$time = MPWEM_Functions::get_upcoming_date_time( $event_id, $all_dates, $all_times );
-					$time = date( 'H:i', strtotime( $time ) );
+					$time_ts = ! empty( $time ) ? strtotime( $time ) : false;
+					$time = ( $time_ts && $time_ts > 0 ) ? date( 'H:i', $time_ts ) : '';
 				} else {
 					$time = $start_time;
 				}
-				
 
-				$date 			= $event_type == 'no' ? date('Y-m-d H:i', strtotime(get_post_meta( $id, 'event_start_datetime', true ))) : date('Y-m-d H:i', strtotime($date));
-				$time =$event_type == 'no' ? date('H:i', strtotime(get_post_meta( $id, 'event_start_datetime', true ))) : $time;
+				if ( $event_type == 'no' ) {
+					$date = $has_valid_start ? date( 'Y-m-d H:i', $start_ts ) : '';
+					$time = $has_valid_start ? date( 'H:i', $start_ts ) : '';
+				} else {
+					$date_ts = ! empty( $date ) ? strtotime( $date ) : false;
+					$date    = ( $date_ts && $date_ts > 0 ) ? date( 'Y-m-d H:i', $date_ts ) : '';
+				}
 				$total_ticket = MPWEM_Functions::get_total_ticket( $id, $date );
 				// $total_sold   = mep_get_event_total_seat_left( $id );
 				$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				if ( $event_type === 'everyday' ) {
 					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
-					$start_date        = date( 'F j, Y', strtotime( $date ) );
+					$date_ts           = ! empty( $date ) ? strtotime( $date ) : false;
+					$start_date        = ( $date_ts && $date_ts > 0 ) ? date( 'F j, Y', $date_ts ) : '';
 					$event_type_status = 'Recurring Event (Repeated)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
 					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else if ( $event_type === 'yes' ) {
 					$time_remaining    = get_time_remaining_fixed( $id, $upcoming_date );
-					$start_date        = date( 'F j, Y', strtotime( $date ) );
+					$date_ts           = ! empty( $date ) ? strtotime( $date ) : false;
+					$start_date        = ( $date_ts && $date_ts > 0 ) ? date( 'F j, Y', $date_ts ) : '';
 					$event_type_status = 'Recurring Event (Selected Dates)';
 					// $total_sold        = mep_get_event_total_seat_left( $id, $date );
 					$total_sold = (int) mep_ticket_type_sold( $event_id, '', $date );
 				} else {
 					$event_type_status = '';
 				}
+				$has_display_date = ! empty( $start_date );
 				if ( $total_ticket === $total_sold ) {
 					$text       = 'Full';
 					$full_class = 'capacity-full';
@@ -887,26 +927,31 @@
 				$category        = isset( $cat_data['cat_data'][0] ) ? $cat_data['cat_data'][0]['name'] : '';
 				$event_category  = isset( $cat_data['all_category'] ) ? $cat_data['all_category'] : '';
 				$event_organiser = isset( $organiser_data['all_category'] ) ? $organiser_data['all_category'] : '';
-				$start_timestamp = strtotime( $start_date );
-				$end_timestamp   = strtotime( $end_date );
+				$start_timestamp = $has_valid_start ? $start_ts : 0;
+				$end_timestamp   = $has_valid_end ? $end_ts : 0;
 				$now             = current_time( 'timestamp' );
-				if ( $now < $start_timestamp ) {
+				if ( ! $has_valid_start ) {
+					$event_status       = '';
+					$event_status_class = '';
+				} elseif ( $now < $start_timestamp ) {
 					$event_status       = 'Active';
 					$event_status_class = 'status-active';
-				} elseif ( $now >= $start_timestamp && $now <= $end_timestamp ) {
+				} elseif ( $has_valid_end && $now >= $start_timestamp && $now <= $end_timestamp ) {
 					$event_status       = 'Active';
 					$event_status_class = 'status-active';
-				} elseif ( $now > $end_timestamp ) {
+				} elseif ( $has_valid_end && $now > $end_timestamp ) {
 					$event_status       = 'Expired';
 					$event_status_class = 'status-expired';
 				} else {
-					$event_status       = '';
-					$event_status_class = '';
+					$event_status       = 'Active';
+					$event_status_class = 'status-active';
 				}
 				if ( $time_remaining === 'Expired!' ) {
 					$event_status_class = 'status-expired';
 				}
 				$ticket_type_count = 0;
+				$qe_start_value    = $has_valid_start ? date( 'Y-m-d\TH:i', $start_ts ) : '';
+				$qe_end_value      = $has_valid_end ? date( 'Y-m-d\TH:i', $end_ts ) : '';
 				?>
                 <tr class="mpwem_event_list_card"
                     data-event-status="<?php echo esc_attr( $status ); ?>"
@@ -914,7 +959,7 @@
                     data-filter-by-category="<?php echo esc_attr( $event_category ); ?>"
                     data-filter-by-event-name="<?php echo esc_attr( $title ); ?>"
                     data-filter-by-event-organiser="<?php echo esc_attr( $event_organiser ); ?>"
-                    data-event-date="<?php echo esc_attr( strtotime( $start_date ) ); ?>"
+                    data-event-date="<?php echo esc_attr( $has_display_date ? strtotime( $start_date ) : '' ); ?>"
                     data-event-title="<?php echo esc_attr( $title ); ?>"
                     data-event-id="<?php echo esc_attr( $id ); ?>"
                 >
@@ -964,14 +1009,24 @@
                         <div class="event-category" style='margin:10px 0;'><?php echo esc_html( $category ); ?></div>
                     </td>
                     <td>
+						<?php if ( $location !== '' ) : ?>
                         <div class="location">
                             <i class="mi mi-marker"></i> <?php echo esc_html( $location ); ?>
                         </div>
+						<?php else : ?>
+                        <span class="mpwem-empty-meta"><?php esc_html_e( '—', 'mage-eventpress' ); ?></span>
+						<?php endif; ?>
                     </td>
                     <td>
                         <div class="date-time">
+							<?php if ( $has_display_date ) : ?>
                             <span><?php echo esc_html( $start_date ); ?></span>
+								<?php if ( ! empty( $time ) ) : ?>
                             <span class="time"><?php echo esc_html( $time ); ?></span>
+								<?php endif; ?>
+							<?php else : ?>
+                            <span class="mpwem-empty-meta"><?php esc_html_e( 'Date not set', 'mage-eventpress' ); ?></span>
+							<?php endif; ?>
                         </div>
                     </td>
                     <td>
@@ -1042,13 +1097,13 @@
                                 <label>
                                     <span class="title"><?php esc_html_e( 'Event Start Date', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
-                                        <input type="datetime-local" name="event_start_datetime" class="event-start-date" value="<?php echo esc_attr( date( 'Y-m-d\TH:i', strtotime( $start_date . ' ' . $start_time ) ) ); ?>">
+                                        <input type="datetime-local" name="event_start_datetime" class="event-start-date" value="<?php echo esc_attr( $qe_start_value ); ?>">
                                     </span>
                                 </label>
                                 <label>
                                     <span class="title"><?php esc_html_e( 'Event End Date', 'mage-eventpress' ); ?></span>
                                     <span class="input-text-wrap">
-                                        <input type="datetime-local" name="event_end_datetime" class="event-end-date" value="<?php echo esc_attr( date( 'Y-m-d\TH:i', strtotime( $end_date ) ) ); ?>">
+                                        <input type="datetime-local" name="event_end_datetime" class="event-end-date" value="<?php echo esc_attr( $qe_end_value ); ?>">
                                     </span>
                                 </label>
                                 <label>
@@ -1105,6 +1160,23 @@
                 </tr>
 			<?php }
 		} else {
-			echo '<p>No posts found.</p>';
+			$add_new_url = admin_url( 'post-new.php?post_type=mep_events' );
+			?>
+            <tr class="mpwem-empty-state-row">
+                <td colspan="9">
+                    <div class="mpwem-empty-state">
+                        <div class="mpwem-empty-state-icon" aria-hidden="true">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                        </div>
+                        <h3 class="mpwem-empty-state-title"><?php esc_html_e( 'No events found', 'mage-eventpress' ); ?></h3>
+                        <p class="mpwem-empty-state-text"><?php esc_html_e( 'There are no events to show right now. Try adjusting your filters, or create your first event to get started.', 'mage-eventpress' ); ?></p>
+                        <a class="mpwem-empty-state-btn" href="<?php echo esc_url( $add_new_url ); ?>">
+                            <span>+</span>
+							<?php esc_html_e( 'Add New Event', 'mage-eventpress' ); ?>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+			<?php
 		}
 	}

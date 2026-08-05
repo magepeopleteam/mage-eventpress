@@ -45,6 +45,47 @@
     };
 
     const $body = $('#mpwem_event_list_body');
+    const $tableWrap = $('#mpwem_event_table_wrap');
+
+    function setTableLoading(isLoading) {
+        if (!$tableWrap.length) {
+            return;
+        }
+        if (isLoading) {
+            const currentHeight = $tableWrap.outerHeight();
+            if (currentHeight && currentHeight > 120) {
+                $tableWrap.css('min-height', currentHeight + 'px');
+            }
+            $tableWrap.addClass('is-loading');
+            $tableWrap.find('.mpwem-table-loading-overlay').attr('aria-busy', 'true');
+        } else {
+            $tableWrap.removeClass('is-loading');
+            $tableWrap.find('.mpwem-table-loading-overlay').attr('aria-busy', 'false');
+            // Release locked height after content paints so layout can shrink/grow naturally
+            window.setTimeout(function () {
+                if (!$tableWrap.hasClass('is-loading')) {
+                    $tableWrap.css('min-height', '');
+                }
+            }, 80);
+        }
+    }
+
+    function getEmptyStateHtml() {
+        const addUrl = (mep_ajax && mep_ajax.url)
+            ? String(mep_ajax.url).replace(/admin-ajax\.php.*$/, 'post-new.php?post_type=mep_events')
+            : 'post-new.php?post_type=mep_events';
+        return '' +
+            '<tr class="mpwem-empty-state-row">' +
+                '<td colspan="9">' +
+                    '<div class="mpwem-empty-state">' +
+                        '<div class="mpwem-empty-state-icon" aria-hidden="true"><span class="dashicons dashicons-calendar-alt"></span></div>' +
+                        '<h3 class="mpwem-empty-state-title">No events found</h3>' +
+                        '<p class="mpwem-empty-state-text">There are no events to show right now. Try adjusting your filters, or create your first event to get started.</p>' +
+                        '<a class="mpwem-empty-state-btn" href="' + addUrl + '"><span>+</span> Add New Event</a>' +
+                    '</div>' +
+                '</td>' +
+            '</tr>';
+    }
 
     function debounce(fn, wait) {
         let t;
@@ -97,8 +138,9 @@
         state.loading = true;
         $('#loadMoreBtn').prop('disabled', true);
 
+        // Keep existing rows visible under a dimmed overlay (no height collapse).
         if (!append) {
-            $body.html('<tr class="mpwem_event_list_loading_row"><td colspan="9" style="text-align:center;padding:30px;">Loading events…</td></tr>');
+            setTableLoading(true);
         }
 
         $.ajax({
@@ -120,7 +162,9 @@
             },
             success: function (response) {
                 if (!response || !response.success) {
-                    $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">Unable to load events.</td></tr>');
+                    if (!append) {
+                        $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">Unable to load events.</td></tr>');
+                    }
                     return;
                 }
                 const data = response.data;
@@ -139,7 +183,7 @@
                 if (append) {
                     $body.append(data.html || '');
                 } else if (!data.html || $.trim(data.html) === '') {
-                    $body.html('<tr><td colspan="9" style="text-align:center;padding:30px;">No events found.</td></tr>');
+                    $body.html(getEmptyStateHtml());
                 } else {
                     $body.html(data.html);
                 }
@@ -155,6 +199,9 @@
             complete: function () {
                 state.loading = false;
                 $('#loadMoreBtn').prop('disabled', false);
+                if (!append) {
+                    setTableLoading(false);
+                }
             }
         });
     }

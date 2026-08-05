@@ -24,6 +24,8 @@
 			public function __construct() {
 				add_filter( 'screen_options_show_screen', [ $this, 'maybe_hide_screen_options' ], 10, 2 );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_editor' ] );
+				add_action( 'all_admin_notices', [ $this, 'render_editor_back_button' ] );
 				add_filter( 'manage_mep_event_speaker_posts_columns', [ $this, 'speaker_columns' ] );
 				add_action( 'manage_mep_event_speaker_posts_custom_column', [ $this, 'speaker_column_content' ], 10, 2 );
 				add_filter( 'edit_posts_per_page', [ $this, 'force_speaker_per_page' ], 10, 2 );
@@ -49,6 +51,67 @@
 				}
 
 				return null;
+			}
+
+			/**
+			 * post.php / post-new.php for secondary Event CPTs (templates, speakers, etc.).
+			 */
+			private function current_editor_post_type() {
+				if ( ! function_exists( 'get_current_screen' ) ) {
+					return null;
+				}
+				$screen = get_current_screen();
+				if ( ! $screen || empty( $screen->post_type ) || ! in_array( $screen->base, [ 'post', 'post-new' ], true ) ) {
+					return null;
+				}
+				if ( in_array( $screen->post_type, self::POST_TYPES, true ) ) {
+					return $screen->post_type;
+				}
+
+				return null;
+			}
+
+			private function editor_back_label( $post_type ) {
+				$map = [
+					'mep_waitlist_email'  => __( 'Back to Template List', 'mage-eventpress' ),
+					'mep_event_speaker'   => __( 'Back to Speakers', 'mage-eventpress' ),
+					'mep_events_reg_form' => __( 'Back to Forms', 'mage-eventpress' ),
+					'mep_events_review'   => __( 'Back to Reviews', 'mage-eventpress' ),
+				];
+
+				return isset( $map[ $post_type ] ) ? $map[ $post_type ] : __( 'Back to List', 'mage-eventpress' );
+			}
+
+			public function enqueue_editor() {
+				$post_type = $this->current_editor_post_type();
+				if ( ! $post_type ) {
+					return;
+				}
+
+				wp_enqueue_style(
+					'mpwem-post-list-modern',
+					MPWEM_PLUGIN_URL . '/assets/admin/css/mpwem-post-list-modern.css',
+					[],
+					$this->asset_ver( '/assets/admin/css/mpwem-post-list-modern.css' )
+				);
+			}
+
+			public function render_editor_back_button() {
+				$post_type = $this->current_editor_post_type();
+				if ( ! $post_type ) {
+					return;
+				}
+
+				$list_url = admin_url( 'edit.php?post_type=' . $post_type );
+				$label    = $this->editor_back_label( $post_type );
+				?>
+				<div class="mpwem-editor-back-bar">
+					<a class="mpwem-editor-back-btn" href="<?php echo esc_url( $list_url ); ?>">
+						<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
+						<span><?php echo esc_html( $label ); ?></span>
+					</a>
+				</div>
+				<?php
 			}
 
 			public function maybe_hide_screen_options( $show_screen, $screen ) {

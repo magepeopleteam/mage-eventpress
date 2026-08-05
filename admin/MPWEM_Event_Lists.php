@@ -140,9 +140,15 @@
                                 </select>
                                 <div class="date-filter-container">
                                     <label for="mpwem_date_from"><?php esc_html_e( 'From:', 'mage-eventpress' ); ?></label>
-                                    <input type="date" id="mpwem_date_from" class="date-filter">
+                                    <div class="date-filter-input-wrap">
+                                        <input type="text" id="mpwem_date_from" class="date-filter" placeholder="<?php esc_attr_e( 'YYYY-MM-DD', 'mage-eventpress' ); ?>" autocomplete="off" readonly>
+                                        <span class="date-filter-icon dashicons dashicons-calendar-alt" aria-hidden="true"></span>
+                                    </div>
                                     <label for="mpwem_date_to"><?php esc_html_e( 'To:', 'mage-eventpress' ); ?></label>
-                                    <input type="date" id="mpwem_date_to" class="date-filter">
+                                    <div class="date-filter-input-wrap">
+                                        <input type="text" id="mpwem_date_to" class="date-filter" placeholder="<?php esc_attr_e( 'YYYY-MM-DD', 'mage-eventpress' ); ?>" autocomplete="off" readonly>
+                                        <span class="date-filter-icon dashicons dashicons-calendar-alt" aria-hidden="true"></span>
+                                    </div>
                                     <button type="button" id="mpwem_clear_date_filter" class="clear-date-btn"><?php esc_html_e( 'Clear', 'mage-eventpress' ); ?></button>
                                 </div>
                             </div>

@@ -49,17 +49,20 @@
                         <div class="container">
                             <div class="header">
                                 <div class="header-top">
-                                    <h1><?php esc_html_e( 'Event Management Dashboard', 'mage-eventpress' ) ?></h1>
-                                    <div style="display: flex; gap: 10px;">
+                                    <div class="header-titles">
+                                        <h1><?php esc_html_e( 'Event Management Dashboard', 'mage-eventpress' ) ?></h1>
+                                        <p class="header-subtitle"><?php esc_html_e( 'Monitor, manage, and scale your event operations.', 'mage-eventpress' ); ?></p>
+                                    </div>
+                                    <div class="header-actions">
                                         <?php if ( get_option('mep_dummy_already_inserted') !== 'yes' && empty($post_counts['publish']) && \Admin\mep_dummy_import::check_plugin('mage-eventpress', 'woocommerce-event-press.php') == 1 ) : ?>
-                                            <button type="button" class="add-event-btn" id="mep-trigger-dummy-import-btn" style="background-color: #6366f1; color: white; border: none;">
-                                                <span style="margin-right: 5px;">↓</span>
+                                            <button type="button" class="add-event-btn add-event-btn--secondary" id="mep-trigger-dummy-import-btn">
+                                                <span>↓</span>
                                                 <?php esc_html_e( 'Import Dummy Data', 'mage-eventpress' ) ?>
                                             </button>
                                         <?php endif; ?>
-                                        <a href="<?php echo esc_url( $add_new_link ); ?>">
-                                            <button class="add-event-btn">
-                                                <span>+</span>
+                                        <a class="add-event-btn-link" href="<?php echo esc_url( $add_new_link ); ?>">
+                                            <button type="button" class="add-event-btn">
+                                                <span class="add-event-btn-plus">+</span>
                                                 <?php esc_html_e( 'Add New Event', 'mage-eventpress' ) ?>
                                             </button>
                                         </a>
@@ -67,24 +70,52 @@
                                 </div>
                                 <div class="analytics">
                                     <div class="analytics-card">
-                                        <h3><?php echo esc_html( $total_event ); ?></h3>
-                                        <p><?php esc_html_e( 'Total Events', 'mage-eventpress' ); ?></p>
-                                        <div class="trend up">↗ +12% this month</div>
+                                        <div class="analytics-card-top">
+                                            <span class="analytics-label"><?php esc_html_e( 'Total Events', 'mage-eventpress' ); ?></span>
+                                            <span class="analytics-icon" aria-hidden="true">
+                                                <span class="dashicons dashicons-calendar-alt"></span>
+                                            </span>
+                                        </div>
+                                        <div class="analytics-card-value">
+                                            <h3><?php echo esc_html( $total_event ); ?></h3>
+                                            <div class="trend up">↗ +12% this month</div>
+                                        </div>
                                     </div>
                                     <div class="analytics-card">
-                                        <h3><?php echo esc_html( $event_status_count['active_count'] ); ?></h3>
-                                        <p><?php esc_html_e( 'Active Events', 'mage-eventpress' ); ?></p>
-                                        <div class="trend neutral">→ <?php esc_html_e( 'Same as last week', 'mage-eventpress' ); ?></div>
+                                        <div class="analytics-card-top">
+                                            <span class="analytics-label"><?php esc_html_e( 'Active Events', 'mage-eventpress' ); ?></span>
+                                            <span class="analytics-icon" aria-hidden="true">
+                                                <span class="dashicons dashicons-controls-play"></span>
+                                            </span>
+                                        </div>
+                                        <div class="analytics-card-value">
+                                            <h3><?php echo esc_html( $event_status_count['active_count'] ); ?></h3>
+                                            <div class="trend neutral">— <?php esc_html_e( 'Same as last week', 'mage-eventpress' ); ?></div>
+                                        </div>
                                     </div>
                                     <div class="analytics-card">
-                                        <h3 id="mpwem_total_registration" class="mpwem-stat-loading">&hellip;</h3>
-                                        <p><?php esc_html_e( 'Total Registrations', 'mage-eventpress' ); ?></p>
-                                        <div class="trend up" id="mpwem_registration_trend">&nbsp;</div>
+                                        <div class="analytics-card-top">
+                                            <span class="analytics-label"><?php esc_html_e( 'Total Registrations', 'mage-eventpress' ); ?></span>
+                                            <span class="analytics-icon" aria-hidden="true">
+                                                <span class="dashicons dashicons-groups"></span>
+                                            </span>
+                                        </div>
+                                        <div class="analytics-card-value">
+                                            <h3 id="mpwem_total_registration" class="mpwem-stat-loading">&hellip;</h3>
+                                            <div class="trend up" id="mpwem_registration_trend">&nbsp;</div>
+                                        </div>
                                     </div>
-                                    <div class="analytics-card">
-                                        <h3 id="mpwem_month_revenue" class="mpwem-stat-loading">&hellip;</h3>
-                                        <p><?php esc_html_e( 'Revenue This Month', 'mage-eventpress' ); ?></p>
-                                        <div class="trend up" id="mpwem_revenue_trend">&nbsp;</div>
+                                    <div class="analytics-card analytics-card--highlight">
+                                        <div class="analytics-card-top">
+                                            <span class="analytics-label"><?php esc_html_e( 'Revenue This Month', 'mage-eventpress' ); ?></span>
+                                            <span class="analytics-icon" aria-hidden="true">
+                                                <span class="dashicons dashicons-money-alt"></span>
+                                            </span>
+                                        </div>
+                                        <div class="analytics-card-value">
+                                            <h3 id="mpwem_month_revenue" class="mpwem-stat-loading">&hellip;</h3>
+                                            <div class="trend up" id="mpwem_revenue_trend">&nbsp;</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="stats-summary">

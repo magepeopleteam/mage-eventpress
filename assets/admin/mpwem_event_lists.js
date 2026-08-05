@@ -795,6 +795,14 @@
             state.perPage = DEFAULT_PER_PAGE;
             $pp.val(String(DEFAULT_PER_PAGE));
         }
+        // Default filter: All Events active on first load
+        $('.mpwem_filter_by_status, .mpwem_filter_by_active_status')
+            .removeClass('mpwem_filter_btn_active_bg_color');
+        $('.mpwem_filter_by_status[data-by-filter="all"]')
+            .addClass('mpwem_filter_btn_active_bg_color');
+        state.status = 'all';
+        state.activeStatus = 'all';
+
         syncPaginationSwitch();
         loadDashboardStats();
         reloadEvents();

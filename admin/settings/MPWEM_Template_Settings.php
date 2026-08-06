@@ -34,11 +34,16 @@
                         <div class="mep-template-section">
                             <input type="hidden" name="mep_event_template" value="<?php echo esc_attr( $_current_template ); ?>"/>
 							<?php foreach ( $templates as $template ) {
-								$image = preg_replace( '/\.php$/', '.webp', $template['value'] );
+								$image     = preg_replace( '/\.php$/', '.webp', $template['value'] );
+								$image_url = MPWEM_PLUGIN_URL . '/templates/screenshot/' . $image;
+								$image_path = MPWEM_PLUGIN_DIR . '/templates/screenshot/' . $image;
+								if ( ! file_exists( $image_path ) ) {
+									$image_url = MPWEM_PLUGIN_URL . '/templates/screenshot/default-theme.webp';
+								}
 								?>
                                 <div class="mep-template <?php echo $_current_template == $template['value'] ? 'active' : ''; ?>">
-                                    <img src="<?php echo esc_attr( MPWEM_PLUGIN_URL . '/templates/screenshot/' .$image); ?>" data-mep-template="<?php echo $template['value']; ?>">
-                                    <h5><?php echo $template['name']; ?></h5>
+                                    <img src="<?php echo esc_url( $image_url ); ?>" data-mep-template="<?php echo esc_attr( $template['value'] ); ?>" alt="<?php echo esc_attr( $template['name'] ); ?>">
+                                    <h5><?php echo esc_html( $template['name'] ); ?></h5>
                                 </div>
 							<?php } ?>
                         </div>

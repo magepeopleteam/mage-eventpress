@@ -260,8 +260,66 @@
 					'native_nonce'    => wp_create_nonce( 'mep_native_checkout_nonce' ),
 					'is_logged_in'    => is_user_logged_in() ? '1' : '0',
 				) );
+				$this->enqueue_horizon_theme_assets();
 				do_action( 'add_mpwem_frontend_script' );
 
+			}
+			/**
+			 * Load Horizon theme CSS/JS only when that template is active.
+			 * Keeps Default, Smart, and Virtual templates unchanged.
+			 */
+			private function enqueue_horizon_theme_assets() {
+				$event_id = 0;
+				if ( is_singular( 'mep_events' ) ) {
+					$event_id = (int) get_the_ID();
+				} elseif ( isset( $_GET['post'] ) && is_admin() ) {
+					// Skip admin — frontend only.
+					return;
+				}
+				if ( $event_id <= 0 ) {
+					return;
+				}
+				$template = MPWEM_Functions::get_details_template_name( $event_id );
+				if ( $template !== 'horizon.php' ) {
+					return;
+				}
+				add_filter( 'body_class', function ( $classes ) {
+					$classes[] = 'mep-horizon-active';
+					return $classes;
+				} );
+				wp_enqueue_style(
+					'mpwem_horizon_theme',
+					MPWEM_PLUGIN_URL . '/assets/frontend/horizon-theme.css',
+					array( 'mpwem_style' ),
+					MPWEM_PLUGIN_VERSION
+				);
+				wp_enqueue_script(
+					'mpwem_horizon_theme',
+					MPWEM_PLUGIN_URL . '/assets/frontend/horizon-theme.js',
+					array( 'jquery', 'mpwem_script' ),
+					MPWEM_PLUGIN_VERSION,
+					true
+				);
+				wp_localize_script(
+					'mpwem_horizon_theme',
+					'mep_horizon_i18n',
+					array(
+						'register'       => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserve'        => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserveTicket'  => __( 'Reserve 1 Ticket →', 'mage-eventpress' ),
+						'reserveTickets' => __( 'Reserve %d Tickets →', 'mage-eventpress' ),
+						'available'      => __( 'Available', 'mage-eventpress' ),
+						'ticketType'     => __( 'Ticket Type', 'mage-eventpress' ),
+						'date'           => __( 'Date', 'mage-eventpress' ),
+						'time'           => __( 'Time', 'mage-eventpress' ),
+						'total'          => __( 'Total', 'mage-eventpress' ),
+						'extraService'   => __( 'Extra Service', 'mage-eventpress' ),
+						'addCalendar'    => __( 'Add to Calendar', 'mage-eventpress' ),
+						'hideCalendar'   => __( 'Hide Calendar', 'mage-eventpress' ),
+						'loadMore'       => __( 'Load more', 'mage-eventpress' ),
+						'showLess'       => __( 'Show less', 'mage-eventpress' ),
+					)
+				);
 			}
 			public function add_admin_head() {
 				$this->js_constant();

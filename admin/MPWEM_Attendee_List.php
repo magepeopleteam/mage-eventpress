@@ -58,6 +58,9 @@
 				if ( strpos( $hook, 'attendee_list' ) === false ) {
 					return;
 				}
+				if ( mep_check_plugin_installed( self::PRO_PLUGIN ) ) {
+					return; // PRO renders this page now and enqueues its own assets.
+				}
 				// Reuse the Event Orders page's stylesheet so both admin screens
 				// share an identical design system (header, filter panel, table,
 				// pagination) instead of a second, drifting copy of the same CSS.

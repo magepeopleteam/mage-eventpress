@@ -303,8 +303,47 @@
 					];
 				}
 				$custom_forms = self::get_custom_form_array( $event_id, $form_id );
-				return array_merge( $form_array, $custom_forms );
+				$form_array   = array_merge( $form_array, $custom_forms );
+				return self::apply_conditional_infos_to_form( $form_array, $form_id );
 			}
+
+			/**
+			 * Attach mep_conditional_infos rules onto any form field (custom or predefined)
+			 * whose name matches the rule child_id.
+			 */
+			public static function apply_conditional_infos_to_form( $form_array, $form_id ) {
+				if ( ! is_array( $form_array ) || ! $form_id ) {
+					return is_array( $form_array ) ? $form_array : array();
+				}
+				$conditional_check = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_form_check', 'off' );
+				$conditional_infos = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_infos', array() );
+				if ( 'on' !== $conditional_check || ! is_array( $conditional_infos ) || ! $conditional_infos ) {
+					return $form_array;
+				}
+				foreach ( $conditional_infos as $conditional_info ) {
+					if ( ! is_array( $conditional_info ) ) {
+						continue;
+					}
+					$child_id = array_key_exists( 'child_id', $conditional_info ) ? $conditional_info['child_id'] : '';
+					if ( ! $child_id ) {
+						continue;
+					}
+					foreach ( $form_array as $key => $field ) {
+						if ( ! is_array( $field ) ) {
+							continue;
+						}
+						$fname = array_key_exists( 'name', $field ) ? $field['name'] : $key;
+						if ( (string) $fname !== (string) $child_id && (string) $key !== (string) $child_id ) {
+							continue;
+						}
+						$form_array[ $key ]['depend']       = array_key_exists( 'type', $conditional_info ) ? $conditional_info['type'] : '';
+						$form_array[ $key ]['parent_id']    = array_key_exists( 'parent_id', $conditional_info ) ? $conditional_info['parent_id'] : '';
+						$form_array[ $key ]['parent_value'] = array_key_exists( 'parent_value', $conditional_info ) ? $conditional_info['parent_value'] : '';
+					}
+				}
+				return $form_array;
+			}
+
 			public static function get_custom_form_array( $event_id, $form_id = '' ) {
 				if ( ! $form_id ) {
 					$form_id = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
@@ -313,8 +352,6 @@
 				$form_array   = [];
 				$custom_forms = MPWEM_Global_Function::get_post_info( $form_id, 'mep_form_builder_data', [] );
 				if ( is_array( $custom_forms ) && sizeof( $custom_forms ) > 0 ) {
-					$conditional_infos = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_infos', [] );
-					$conditional_check = MPWEM_Global_Function::get_post_info( $form_id, 'mep_conditional_form_check', 'off' );
 					foreach ( $custom_forms as $custom_form ) {
 						$type  = is_array($custom_form) && array_key_exists( 'mep_fbc_type', $custom_form ) ? $custom_form['mep_fbc_type'] : '';
 						$id    = is_array($custom_form) && array_key_exists( 'mep_fbc_id', $custom_form ) ? $custom_form['mep_fbc_id'] : '';
@@ -327,17 +364,6 @@
 							$form_array[ $id ]['required'] = is_array($custom_form) && array_key_exists( 'mep_fbc_required', $custom_form ) ? $custom_form['mep_fbc_required'] : '';
 							$form_array[ $id ]['data']     = is_array($custom_form) && array_key_exists( 'mep_fbc_dp_data', $custom_form ) ? $custom_form['mep_fbc_dp_data'] : '';
 							$form_array[ $id ]['tag']      = is_array($custom_form) && array_key_exists( 'mep_title_type', $custom_form ) ? $custom_form['mep_title_type'] : '';
-							$active_condition              = is_array($custom_form) && array_key_exists( 'mep_active_conditional', $custom_form ) ? $custom_form['mep_active_conditional'] : 0;
-							if ( $conditional_check == 'on' && $active_condition > 0 && is_array( $conditional_infos ) && sizeof( $conditional_infos ) > 0 ) {
-								foreach ( $conditional_infos as $conditional_info ) {
-									$type_id = is_array($conditional_info) && array_key_exists( 'child_id', $conditional_info ) ? $conditional_info['child_id'] : '';
-									if ( $id == $type_id ) {
-										$form_array[ $id ]['depend']       = is_array($conditional_info) && array_key_exists( 'type', $conditional_info ) ? $conditional_info['type'] : '';
-										$form_array[ $id ]['parent_id']    = is_array($conditional_info) && array_key_exists( 'parent_id', $conditional_info ) ? $conditional_info['parent_id'] : '';
-										$form_array[ $id ]['parent_value'] = is_array($conditional_info) && array_key_exists( 'parent_value', $conditional_info ) ? $conditional_info['parent_value'] : '';
-									}
-								}
-							}
 						}
 					}
 				}

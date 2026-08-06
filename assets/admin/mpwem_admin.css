@@ -703,21 +703,31 @@ body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_
 	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
 }
 .mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn {
-	background: var(--mpwem-btn-primary-bg, #2563eb);
-	color: var(--mpwem-btn-primary-text, #ffffff);
+	background: #1b3a8c;
+	color: #ffffff;
 	border: none;
-	padding: 10px 24px;
-	border-radius: 8px;
+	padding: 11px 22px;
+	border-radius: 999px;
 	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.2s ease;
-	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+	box-shadow: 0 8px 18px rgba(27, 58, 140, 0.28);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 }
 .mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn:hover {
-	background: var(--mpwem-btn-primary-hover, #1d4ed8);
+	background: #163178;
 	transform: translateY(-1px);
-	box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+	box-shadow: 0 10px 22px rgba(27, 58, 140, 0.34);
+}
+.mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn--secondary {
+	background: #6366f1;
+	box-shadow: 0 8px 18px rgba(99, 102, 241, 0.28);
+}
+.mpwem_event_list.mpwem_style.mpwem_welcome_page .add-event-btn--secondary:hover {
+	background: #5458e8;
 }
 body.post-type-mep_events:not(.mpwem-event-wizard-screen) #mp_event_all_info_in_tab .mpwem_ticket_pricing_settings .mpwem-ticket-cards-container > .mpwem-ticket-card {
 	margin: 0 0 12px;
@@ -1044,21 +1054,22 @@ h3.mep_virtual_sec_title { border-bottom: 1px solid #DDD; padding-bottom: 10px;}
 #ui-datepicker-div a.ui-state-default:hover,
 #ui-datepicker-div .ui-state-active { background-color: var(--color_theme); color: var(--color_white);}
 #ui-datepicker-div .ui-datepicker-title { background-color: var(--color_theme);}
+#ui-datepicker-div .ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-next { top: 10px !important;}
 /*******************************/
 div.mpPopup.mpwem_timeline_popup .popupBody { min-height: 400px;}
 div.mpwem_faq_popup .formControl,
 div.mpwem_timeline_popup .timeline_input .formControl { width: 100%; max-width: 100%; margin-bottom: 20px; padding: 10px 5px;}
-/* Date Filter Styles */
-.date-filter-container { display: flex; align-items: center; gap: 10px; margin-left: 15px; flex-wrap: wrap;}
-.date-filter-container label { font-weight: 500; color: #555; font-size: 13px; margin: 0;}
-.date-filter { padding: 6px 8px; border: 1px solid #DDD; border-radius: 4px; font-size: 13px; background: #FFF; min-width: 140px;}
-.date-filter:focus { border-color: #007CBA; outline: none; box-shadow: 0 0 0 1px #007CBA;}
-.clear-date-btn { padding: 6px 12px; background: #F1F1F1; border: 1px solid #DDD; border-radius: 4px; font-size: 13px; cursor: pointer; color: #555; transition: all 0.2s ease;}
-.clear-date-btn:hover { background: #E0E0E0; border-color: #999;}
-.clear-date-btn:active { background: #D0D0D0;}
-/* Responsive adjustments */
+/* Date Filter Styles — base fallbacks; event list page uses mpwem_event_lists.css */
+.date-filter-container { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
+.date-filter-container label { font-weight: 500; color: #374151; font-size: 0.9rem; margin: 0;}
+.date-filter { padding: 10px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.9rem; background: #fff; min-width: 150px; color: #374151; transition: all 0.2s ease;}
+.date-filter:focus { border-color: #93c5fd; outline: none; box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.35);}
+.clear-date-btn { padding: 10px 16px; background: #fff; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.9rem; cursor: pointer; color: #374151; transition: all 0.2s ease;}
+.clear-date-btn:hover { background: #f9fafb; border-color: #9ca3af;}
+.clear-date-btn:active { background: #f3f4f6;}
 @media (max-width: 768px) {
-	.date-filter-container { margin-left: 0; margin-top: 10px; width: 100%; }
+	.date-filter-container { width: 100%; }
 	.date-filter { min-width: 120px; }
 }
 div.mpwem_style.mep-quick-setup .formControl { max-width: 100%; margin: 8px 0; padding: 14px 16px; border: 2px solid #E5E7EB; border-radius: 12px; font-size: 16px; transition: all 0.3s ease; background: white; color: #374151; font-weight: normal;}

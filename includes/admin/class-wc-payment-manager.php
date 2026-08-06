@@ -326,9 +326,9 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 					<h3 class="mep-wc-pm-heading"><?php esc_html_e( 'Payment Methods', 'mage-eventpress' ); ?></h3>
 					<?php if ( $wc_active ) : ?>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ); ?>"
-					   class="button button-small mep-wc-pm-wc-link" target="_blank">
+					   class="mep-wc-pm-wc-link" target="_blank" rel="noopener noreferrer">
 						<?php esc_html_e( 'Open in WooCommerce', 'mage-eventpress' ); ?>
-						<span class="dashicons dashicons-external" style="font-size:14px;line-height:1.4;vertical-align:middle;"></span>
+						<span class="dashicons dashicons-external" aria-hidden="true"></span>
 					</a>
 					<?php endif; ?>
 				</div>
@@ -351,7 +351,7 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 							<span class="mep-gw-badge"><?php echo $is_enabled ? esc_html__( 'Enabled', 'mage-eventpress' ) : esc_html__( 'Disabled', 'mage-eventpress' ); ?></span>
 						</div>
 						<?php if ( $item['gw_obj'] ) : ?>
-						<button type="button" class="button mep-gw-configure-btn"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
+						<button type="button" class="mep-gw-configure-btn"><?php esc_html_e( 'Configure', 'mage-eventpress' ); ?></button>
 						<?php endif; ?>
 					</div>
 
@@ -440,9 +440,39 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				.mp_settings_panel table tr:has(.mep-wc-payment-manager) > td { width:100% !important; box-sizing:border-box; padding:0 !important; }
 
 				.mep-wc-payment-manager { display:block; width:100%; box-sizing:border-box; margin-top:24px; }
-				.mep-wc-pm-bar { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+				.mep-wc-pm-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
 				.mep-wc-pm-heading { margin:0; font-size:15px; }
-				.mep-wc-pm-wc-link { font-size:12px; font-weight:normal; }
+				.mep-wc-pm-wc-link {
+					display:inline-flex;
+					align-items:center;
+					gap:6px;
+					margin-left:auto;
+					padding:8px 14px;
+					border:1px solid #c7d2fe;
+					border-radius:10px;
+					background:#f5f7ff;
+					color:#4f46e5;
+					font-size:12px;
+					font-weight:600;
+					line-height:1.3;
+					text-decoration:none;
+					box-shadow:none;
+					transition:background .15s ease, border-color .15s ease, color .15s ease;
+				}
+				.mep-wc-pm-wc-link:hover,
+				.mep-wc-pm-wc-link:focus {
+					background:#eef2ff;
+					border-color:#a5b4fc;
+					color:#4338ca;
+					text-decoration:none;
+					box-shadow:none;
+				}
+				.mep-wc-pm-wc-link .dashicons {
+					font-size:14px;
+					width:14px;
+					height:14px;
+					line-height:1;
+				}
 
 				.mep-gw-card { border:1px solid #dcdcde; border-radius:8px; background:#fff; margin-bottom:14px; overflow:hidden; }
 				.mep-gw-card.is-enabled { border-left:3px solid #2271b1; }
@@ -451,6 +481,33 @@ if ( ! class_exists( 'MPWEM_WC_Payment_Manager' ) ) :
 				.mep-gw-title { font-size:14px; font-weight:600; color:#1d2327; }
 				.mep-gw-badge { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; padding:2px 8px; border-radius:9px; background:#f0f0f1; color:#646970; }
 				.mep-gw-card.is-enabled .mep-gw-badge { background:#e6f4ea; color:#0a7c2f; }
+				.mep-gw-configure-btn {
+					display:inline-flex;
+					align-items:center;
+					justify-content:center;
+					flex-shrink:0;
+					margin:0;
+					padding:8px 14px;
+					border:1px solid #c7d2fe;
+					border-radius:10px;
+					background:#f5f7ff;
+					color:#4f46e5;
+					font-size:13px;
+					font-weight:600;
+					line-height:1.3;
+					cursor:pointer;
+					box-shadow:none;
+					height:auto;
+					transition:background .15s ease, border-color .15s ease, color .15s ease;
+				}
+				.mep-gw-configure-btn:hover,
+				.mep-gw-configure-btn:focus {
+					background:#eef2ff;
+					border-color:#a5b4fc;
+					color:#4338ca;
+					box-shadow:none;
+					outline:none;
+				}
 				.mep-gw-desc { padding:0 16px 12px; color:#50575e; font-size:13px; }
 				.mep-gw-desc p { margin:0 0 6px; }
 

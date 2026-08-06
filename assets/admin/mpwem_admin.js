@@ -494,6 +494,15 @@ function mpwem_initWpEditor(id) {
         }
     });
     ////// templete override js //////
+    function mpwemRefreshTemplateCategoryCount($category) {
+        if (!$category || !$category.length) {
+            return;
+        }
+        var total = $category.find('.mpwem-template-item').length;
+        var overridden = $category.find('.mpwem-template-item.overridden').length;
+        $category.find('.mpwem-to-cat-count').text(overridden + ' of ' + total + ' overridden');
+    }
+
     // Copy template to theme
     $(document).on('click', '.mpwem-copy-template', function (e) {
         e.preventDefault();
@@ -510,6 +519,7 @@ function mpwem_initWpEditor(id) {
                     templateItem.find('.mpwem-template-status').html('<span class="mpwem-status-badge mpwem-status-overridden">Overridden</span>');
                     button.addClass('mpwem-hidden');
                     templateItem.find('.mpwem-remove-template, .mpwem-edit-template').removeClass('mpwem-hidden');
+                    mpwemRefreshTemplateCategoryCount(templateItem.closest('.mpwem-template-category'));
                     alert('Template copied successfully!');
                 } else {
                     alert('Error: ' + response.data);
@@ -542,6 +552,7 @@ function mpwem_initWpEditor(id) {
                     button.addClass('mpwem-hidden');
                     templateItem.find('.mpwem-edit-template').addClass('mpwem-hidden');
                     templateItem.find('.mpwem-copy-template').removeClass('mpwem-hidden');
+                    mpwemRefreshTemplateCategoryCount(templateItem.closest('.mpwem-template-category'));
                     alert('Template override removed successfully!');
                 } else {
                     alert('Error: ' + response.data);

@@ -8,8 +8,11 @@
 	add_filter('mep_settings_sec_reg', 'mep_event_status_settings_section');
 	function mep_event_status_settings_section($sections) {
 		$sections[] = array(
-			'id'    => 'mep_status_setting_sec',
-			'title' => '<i class="mi mi-info"></i>' . __('Status', 'mage-eventpress'),
+			'id'        => 'mep_status_setting_sec',
+			'title'     => '<i class="mi mi-info"></i>' . __('Status', 'mage-eventpress'),
+			'parent'    => 'mep_settings_licensing',
+			'sub_label' => __('Status', 'mage-eventpress'),
+			'sub_icon'  => 'fas fa-heartbeat',
 		);
 		return $sections;
 	}
@@ -33,16 +36,14 @@
 		$from_name = mep_get_option('mep_email_form_name', 'email_setting_sec', '');
 		$from_email = mep_get_option('mep_email_form_email', 'email_setting_sec', '');
 		?>
-		<!-- Create a header in the default WordPress 'wrap' container -->
-		
 		<?php do_action('mep_event_status_notice_sec'); ?>
-		<div class="wrap">
-			<div class="wc_status_table_wrapper">
+		<div class="mep-status-page">
+			<div class="wc_status_table_wrapper mep-ms__table-wrap">
 				<table class="wc_status_table widefat" cellspacing="0" id="status">
 					<thead>
 					<tr>
 						<th colspan="3" data-export-label="WordPress Environment">
-							<h2>Event Manager For Woocommerce Environment Status</h2>
+							<h2><?php esc_html_e( 'Environment Status', 'mage-eventpress' ); ?></h2>
 						</th>
 					</tr>
 					</thead>

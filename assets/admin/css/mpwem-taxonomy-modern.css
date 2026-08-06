@@ -124,6 +124,182 @@ body.mpwem-taxonomy-ready.taxonomy-mep_org .wrap::after {
 	color: #64748B;
 }
 
+/* ---------- Hero header + stats bar (Category & Organizer) ----------
+   Rendered server-side (all_admin_notices) by MPWEM_Taxonomy_Modern::
+   render_hero(), before .wrap, matching the Speakers Management page
+   design. The native h1 + JS-inserted subtitle would otherwise duplicate
+   this hero's title/subtitle, so they're hidden here. */
+
+body.taxonomy-mep_cat .wrap.mpwem-taxonomy-modern-wrap h1.wp-heading-inline,
+body.taxonomy-mep_cat .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle,
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap h1.wp-heading-inline,
+body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle {
+	display: none;
+}
+
+.mpwem-taxonomy-hero-wrap {
+	max-width: 1340px;
+	margin: 20px 20px 0;
+	box-sizing: border-box;
+}
+
+.mpwem-taxonomy-hero-wrap * {
+	box-sizing: border-box;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	padding: 22px 24px;
+	margin: 0 0 16px;
+	background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 55%);
+	border: 1px solid #E4E9F0;
+	border-radius: 12px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+}
+
+.mpwem-taxonomy-hero-wrap .bde-hero-copy {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 0;
+	flex: 1 1 280px;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+	color: #2563EB;
+	margin: 0 0 8px;
+	line-height: 1.3;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-eyebrow .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-title {
+	font-size: 23px;
+	font-weight: 700;
+	color: #0F172A;
+	margin: 0 0 6px;
+	line-height: 1.25;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-subtitle {
+	font-size: 14px;
+	color: #64748B;
+	max-width: 560px;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-hero-badge {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: #fff;
+	border: 1px solid #E4E9F0;
+	border-radius: 10px;
+	padding: 8px 14px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #0F172A;
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.mpwem-taxonomy-hero-wrap .bde-hero-badge .dashicons {
+	color: #2563EB;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stats-bar {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-card {
+	flex: 1;
+	min-width: 160px;
+	background: #fff;
+	border: 1px solid #E4E9F0;
+	border-radius: 10px;
+	padding: 14px 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-icon {
+	flex: 0 0 44px;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #EFF6FF;
+	color: #2563EB;
+	font-size: 20px;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-card:nth-child(2) .mep-stat-icon {
+	background: #ECFDF5;
+	color: #059669;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-card:nth-child(3) .mep-stat-icon {
+	background: #FFF7ED;
+	color: #ea580c;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-value {
+	font-size: 22px;
+	font-weight: 700;
+	color: #0F172A;
+	line-height: 1.2;
+}
+
+.mpwem-taxonomy-hero-wrap .mep-stat-label {
+	font-size: 12px;
+	color: #64748B;
+}
+
+@media screen and (max-width: 782px) {
+	.mpwem-taxonomy-hero-wrap {
+		margin: 12px 12px 0;
+	}
+
+	.mpwem-taxonomy-hero-wrap .bde-hero {
+		padding: 18px 16px;
+	}
+
+	.mpwem-taxonomy-hero-wrap .bde-title {
+		font-size: 20px;
+	}
+
+	.mpwem-taxonomy-hero-wrap .bde-hero-badge {
+		align-self: flex-start;
+	}
+}
+
 /* ---------- Two-column layout ---------- */
 
 .wrap.mpwem-taxonomy-modern-wrap #col-container {
@@ -725,24 +901,49 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nt
 .mpwem-term-list-events {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 6px;
+	max-width: 280px;
 }
 
 .mpwem-term-list-event {
-	display: inline-flex;
-	align-items: center;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
 	max-width: 100%;
+	padding: 6px 10px;
+	background: #F8FAFC;
+	border: 1px solid #E4E9F0;
+	border-radius: 8px;
 	font-size: 12.5px;
 	font-weight: 600;
-	line-height: 1.35;
-	color: #2563EB;
+	line-height: 1.4;
+	color: #1E293B;
 	text-decoration: none;
 	overflow-wrap: anywhere;
+	transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+}
+
+.mpwem-term-list-event-icon {
+	flex: 0 0 20px;
+	width: 20px;
+	height: 20px;
+	margin-top: 1px;
+	border-radius: 50%;
+	background: #EFF6FF;
+	color: #2563EB;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	line-height: 1;
+	opacity: 1;
 }
 
 a.mpwem-term-list-event:hover {
+	background: #EFF6FF;
+	border-color: #BFDBFE;
 	color: #1D4ED8;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 .mpwem-term-list-event-empty {

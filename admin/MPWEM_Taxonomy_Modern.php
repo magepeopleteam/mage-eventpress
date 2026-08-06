@@ -35,6 +35,7 @@
 			public function __construct() {
 				add_filter( 'screen_options_show_screen', [ $this, 'maybe_hide_screen_options' ], 10, 2 );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+				add_action( 'all_admin_notices', [ $this, 'render_hero' ] );
 				add_action( 'wp_ajax_mpwem_add_taxonomy_term', [ $this, 'ajax_add_term' ] );
 				add_action( 'wp_ajax_mpwem_get_taxonomy_term', [ $this, 'ajax_get_term' ] );
 				add_action( 'wp_ajax_mpwem_edit_taxonomy_term', [ $this, 'ajax_edit_term' ] );
@@ -220,13 +221,13 @@
 				foreach ( $events as $event ) {
 					if ( ! empty( $event['url'] ) ) {
 						printf(
-							'<a class="mpwem-term-list-event" href="%s">%s</a>',
+							'<a class="mpwem-term-list-event" href="%s"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span>%s</a>',
 							esc_url( $event['url'] ),
 							esc_html( $event['title'] )
 						);
 					} else {
 						printf(
-							'<span class="mpwem-term-list-event">%s</span>',
+							'<span class="mpwem-term-list-event"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span>%s</span>',
 							esc_html( $event['title'] )
 						);
 					}
@@ -294,6 +295,129 @@
 					'itemsLabel'      => function_exists( 'mb_strtolower' ) ? mb_strtolower( $labels->name ) : strtolower( $labels->name ),
 					'hasOrgMeta'      => self::ORG_TAXONOMY === $taxonomy,
 				];
+			}
+
+			private function taxonomy_icon( $taxonomy ) {
+				return self::ORG_TAXONOMY === $taxonomy ? 'dashicons-building' : 'dashicons-category';
+			}
+
+			/**
+			 * Friendly plural/singular nouns for hero copy — the taxonomies' own
+			 * registered labels (e.g. "Events Category") read awkwardly in a
+			 * "9 Events Category" count, so use plain words here instead.
+			 */
+			private function taxonomy_noun( $taxonomy, $count = 2 ) {
+				if ( self::ORG_TAXONOMY === $taxonomy ) {
+					return 1 === $count ? esc_html__( 'Organizer', 'mage-eventpress' ) : esc_html__( 'Organizers', 'mage-eventpress' );
+				}
+
+				return 1 === $count ? esc_html__( 'Category', 'mage-eventpress' ) : esc_html__( 'Categories', 'mage-eventpress' );
+			}
+
+			/**
+			 * Server-rendered hero header + stats bar for the Category / Organizer
+			 * list screens, matching the Speakers Management page design.
+			 */
+			public function render_hero() {
+				if ( ! function_exists( 'get_current_screen' ) ) {
+					return;
+				}
+				$screen = get_current_screen();
+				if ( ! $screen || 'edit-tags' !== $screen->base ) {
+					return;
+				}
+				$taxonomy = $this->current_target_taxonomy();
+				if ( ! $taxonomy ) {
+					return;
+				}
+				$bundle = $this->per_taxonomy_bundle( $taxonomy );
+				if ( ! $bundle ) {
+					return;
+				}
+
+				$icon   = $this->taxonomy_icon( $taxonomy );
+				$is_org = self::ORG_TAXONOMY === $taxonomy;
+
+				$total = (int) wp_count_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => false ] );
+				$in_use_ids = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => true, 'fields' => 'ids' ] );
+				$in_use     = is_array( $in_use_ids ) ? count( $in_use_ids ) : 0;
+
+				if ( $is_org ) {
+					$third_label = esc_html__( 'With Email', 'mage-eventpress' );
+					$with_email  = get_terms(
+						[
+							'taxonomy'   => $taxonomy,
+							'hide_empty' => false,
+							'fields'     => 'ids',
+							'meta_query' => [
+								[
+									'key'     => 'org_email',
+									'value'   => '',
+									'compare' => '!=',
+								],
+							],
+						]
+					);
+					$third_value = is_array( $with_email ) ? count( $with_email ) : 0;
+					$third_icon  = 'dashicons-email';
+				} else {
+					$third_label = esc_html__( 'Unused', 'mage-eventpress' );
+					$third_value = max( 0, $total - $in_use );
+					$third_icon  = 'dashicons-hidden';
+				}
+
+				$eyebrow = $is_org
+					? esc_html__( 'Organizer tools', 'mage-eventpress' )
+					: esc_html__( 'Category tools', 'mage-eventpress' );
+				?>
+				<div class="mpwem-taxonomy-hero-wrap">
+					<header class="bde-hero">
+						<div class="bde-hero-copy">
+							<span class="bde-eyebrow"><span class="dashicons <?php echo esc_attr( $icon ); ?>" aria-hidden="true"></span> <?php echo esc_html( $eyebrow ); ?></span>
+							<h1 class="bde-title"><?php echo esc_html( $bundle['heading'] ); ?></h1>
+							<p class="bde-subtitle"><?php echo esc_html( $bundle['subheading'] ); ?></p>
+						</div>
+						<div class="bde-hero-badge">
+							<span class="dashicons <?php echo esc_attr( $icon ); ?>" aria-hidden="true"></span>
+							<span>
+								<?php
+								echo esc_html(
+									sprintf(
+										/* translators: 1: count, 2: "Category"/"Categories" or "Organizer"/"Organizers" */
+										'%1$s %2$s',
+										number_format_i18n( $total ),
+										$this->taxonomy_noun( $taxonomy, $total )
+									)
+								);
+								?>
+							</span>
+						</div>
+					</header>
+					<div class="mep-stats-bar">
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons <?php echo esc_attr( $icon ); ?>" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $total ) ); ?></div>
+								<div class="mep-stat-label"><?php echo esc_html( sprintf( esc_html__( 'Total %s', 'mage-eventpress' ), $this->taxonomy_noun( $taxonomy, 2 ) ) ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $in_use ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Assigned to Events', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons <?php echo esc_attr( $third_icon ); ?>" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $third_value ) ); ?></div>
+								<div class="mep-stat-label"><?php echo esc_html( $third_label ); ?></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
 			}
 
 			private function save_org_meta( $term_id ) {

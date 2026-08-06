@@ -501,13 +501,13 @@
 					$edit_link = get_edit_post_link( $event['id'], 'raw' );
 					if ( $edit_link ) {
 						printf(
-							'<a class="mpwem-speaker-list-event" href="%s">%s</a>',
+							'<a class="mpwem-speaker-list-event" href="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span>%s</a>',
 							esc_url( $edit_link ),
 							esc_html( $event['title'] )
 						);
 					} else {
 						printf(
-							'<span class="mpwem-speaker-list-event">%s</span>',
+							'<span class="mpwem-speaker-list-event"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span>%s</span>',
 							esc_html( $event['title'] )
 						);
 					}

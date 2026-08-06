@@ -1170,6 +1170,7 @@ body.mpwem-speaker-modal-open {
 }
 
 .mpwem-speaker-modal__field input[type="text"],
+.mpwem-speaker-modal__field input[type="email"],
 .mpwem-speaker-modal__field select,
 .mpwem-speaker-modal__field textarea {
 	width: 100%;
@@ -1195,6 +1196,52 @@ body.mpwem-speaker-modal-open {
 	border-color: #2563EB;
 	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 	outline: none;
+}
+
+/* Review modal star rating */
+.mpwem-review-rating {
+	display: inline-flex;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+	gap: 2px;
+	padding: 4px 0;
+}
+
+.mpwem-review-rating__star {
+	display: inline-flex;
+	cursor: pointer;
+	margin: 0;
+	padding: 2px;
+}
+
+.mpwem-review-rating__star input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.mpwem-review-rating__star .dashicons {
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+	color: #E2E8F0;
+	transition: color .12s ease, transform .12s ease;
+}
+
+.mpwem-review-rating__star:hover .dashicons,
+.mpwem-review-rating__star:hover ~ .mpwem-review-rating__star .dashicons,
+.mpwem-review-rating__star:has(input:checked) .dashicons,
+.mpwem-review-rating__star:has(input:checked) ~ .mpwem-review-rating__star .dashicons {
+	color: #F59E0B;
+}
+
+.mpwem-review-rating__star:hover .dashicons {
+	transform: scale(1.08);
+}
+
+.mpwem-review-modal .mpwem-speaker-modal__icon {
+	background: #FFFBEB;
+	color: #D97706;
 }
 
 .mpwem-speaker-modal__image {

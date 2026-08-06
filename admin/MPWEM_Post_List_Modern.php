@@ -2,8 +2,7 @@
 	/*
 	 * Modern reskin of secondary Event CPT list screens (edit.php):
 	 * Speakers, Waitlist Email Templates, Global Reg Forms, Reviews.
-	 * Presentation-only — Add/Edit still go to post-new.php / post.php
-	 * because those screens have rich editors and meta boxes.
+	 * Speakers and Reviews support modal + AJAX create from the list screen.
 	 *
 	 * @Author MagePeople Team
 	 */
@@ -37,6 +36,7 @@
 				add_action( 'wp_ajax_mpwem_speaker_update', [ $this, 'ajax_speaker_update' ] );
 				add_action( 'wp_ajax_mpwem_speaker_delete', [ $this, 'ajax_speaker_delete' ] );
 				add_action( 'wp_ajax_mpwem_waitlist_email_preview', [ $this, 'ajax_waitlist_email_preview' ] );
+				add_action( 'wp_ajax_mpwem_review_create', [ $this, 'ajax_review_create' ] );
 			}
 
 			private function current_target_post_type() {
@@ -957,6 +957,107 @@
 				);
 			}
 
+			/**
+			 * AJAX: create a review from the Reviews Management modal.
+			 */
+			public function ajax_review_create() {
+				check_ajax_referer( 'mpwem_review_list', 'nonce' );
+
+				$pto = get_post_type_object( 'mep_events_review' );
+				if ( ! $pto || ! current_user_can( $pto->cap->create_posts ) ) {
+					wp_send_json_error( __( 'You do not have permission to create reviews.', 'mage-eventpress' ), 403 );
+				}
+
+				$title     = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
+				$content   = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+				$cust_name = isset( $_POST['cust_name'] ) ? sanitize_text_field( wp_unslash( $_POST['cust_name'] ) ) : '';
+				$cust_email = isset( $_POST['cust_email'] ) ? sanitize_email( wp_unslash( $_POST['cust_email'] ) ) : '';
+				$event_id  = isset( $_POST['event_id'] ) ? absint( wp_unslash( $_POST['event_id'] ) ) : 0;
+				$rating    = isset( $_POST['rating'] ) ? absint( wp_unslash( $_POST['rating'] ) ) : 0;
+				$status    = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'publish';
+
+				if ( '' === $title ) {
+					wp_send_json_error( __( 'Review title is required.', 'mage-eventpress' ) );
+				}
+				if ( ! $event_id || 'mep_events' !== get_post_type( $event_id ) ) {
+					wp_send_json_error( __( 'Please select a valid event.', 'mage-eventpress' ) );
+				}
+				if ( $rating < 1 || $rating > 5 ) {
+					wp_send_json_error( __( 'Please choose a rating from 1 to 5.', 'mage-eventpress' ) );
+				}
+				if ( '' === $cust_name ) {
+					wp_send_json_error( __( 'Reviewer name is required.', 'mage-eventpress' ) );
+				}
+				if ( $cust_email && ! is_email( $cust_email ) ) {
+					wp_send_json_error( __( 'Please enter a valid email address.', 'mage-eventpress' ) );
+				}
+				if ( ! in_array( $status, [ 'publish', 'draft', 'pending' ], true ) ) {
+					$status = 'publish';
+				}
+
+				$post_id = wp_insert_post(
+					[
+						'post_type'    => 'mep_events_review',
+						'post_status'  => $status,
+						'post_title'   => $title,
+						'post_content' => $content,
+					],
+					true
+				);
+
+				if ( is_wp_error( $post_id ) ) {
+					wp_send_json_error( $post_id->get_error_message() );
+				}
+
+				update_post_meta( $post_id, 'mep_event_id', $event_id );
+				update_post_meta( $post_id, 'mep_event_rating', (string) $rating );
+				update_post_meta( $post_id, 'mep_event_review_cust_name', $cust_name );
+				update_post_meta( $post_id, 'mep_event_review_cust_email', $cust_email );
+				update_post_meta( $post_id, 'mep_event_review_cust_ID', 0 );
+
+				wp_send_json_success(
+					[
+						'id'      => (int) $post_id,
+						'message' => __( 'Review created successfully.', 'mage-eventpress' ),
+						'editUrl' => get_edit_post_link( $post_id, 'raw' ),
+					]
+				);
+			}
+
+			/**
+			 * @return array<int,array{id:int,title:string}>
+			 */
+			private function get_events_for_select() {
+				$event_ids = get_posts(
+					[
+						'post_type'              => 'mep_events',
+						'post_status'            => [ 'publish', 'draft', 'pending', 'private', 'future' ],
+						'posts_per_page'         => 200,
+						'orderby'                => 'title',
+						'order'                  => 'ASC',
+						'fields'                 => 'ids',
+						'no_found_rows'          => true,
+						'update_post_meta_cache' => false,
+						'update_post_term_cache' => false,
+					]
+				);
+				if ( empty( $event_ids ) ) {
+					return [];
+				}
+
+				$events = [];
+				foreach ( $event_ids as $event_id ) {
+					$event_id = absint( $event_id );
+					$title    = wp_specialchars_decode( get_the_title( $event_id ), ENT_QUOTES );
+					$events[] = [
+						'id'    => $event_id,
+						'title' => $title ? $title : sprintf( __( 'Event #%d', 'mage-eventpress' ), $event_id ),
+					];
+				}
+
+				return $events;
+			}
+
 			private function bundle_for( $post_type ) {
 				$pto = get_post_type_object( $post_type );
 				if ( ! $pto ) {
@@ -1050,6 +1151,7 @@
 
 				$is_speaker = ( 'mep_event_speaker' === $post_type );
 				$is_email   = ( 'mep_waitlist_email' === $post_type );
+				$is_review  = ( 'mep_events_review' === $post_type );
 				$script_deps = [];
 				if ( $is_speaker ) {
 					wp_enqueue_media();
@@ -1064,6 +1166,111 @@
 					true
 				);
 
+				$strings = [
+					'actionsColumn'      => esc_html__( 'Actions', 'mage-eventpress' ),
+					'promoEyebrow'       => esc_html__( 'EVENT PRO', 'mage-eventpress' ),
+					'promoTitle'         => esc_html__( 'Get more out of your events', 'mage-eventpress' ),
+					'promoBody'          => esc_html__( 'Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons.', 'mage-eventpress' ),
+					'promoCta'           => esc_html__( 'Explore Pro & Addons', 'mage-eventpress' ),
+					'loading'            => esc_html__( 'Loading…', 'mage-eventpress' ),
+					'error'              => esc_html__( 'Could not load speakers. Please try again.', 'mage-eventpress' ),
+					'modalTitle'         => esc_html__( 'Add New Speaker', 'mage-eventpress' ),
+					'modalSubtitle'      => esc_html__( 'Create a speaker profile to assign on event pages.', 'mage-eventpress' ),
+					'editModalTitle'     => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
+					'editModalSubtitle'  => esc_html__( 'Update this speaker profile.', 'mage-eventpress' ),
+					'nameLabel'          => esc_html__( 'Speaker Name', 'mage-eventpress' ),
+					'namePlaceholder'    => esc_html__( 'e.g. Alex Rivera', 'mage-eventpress' ),
+					'roleLabel'          => esc_html__( 'Role / Title', 'mage-eventpress' ),
+					'rolePlaceholder'    => esc_html__( 'e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress' ),
+					'descLabel'          => esc_html__( 'Description', 'mage-eventpress' ),
+					'descPlaceholder'    => esc_html__( 'Short biography shown on event pages…', 'mage-eventpress' ),
+					'imageLabel'         => esc_html__( 'Featured Image', 'mage-eventpress' ),
+					'imageSelect'        => esc_html__( 'Select Image', 'mage-eventpress' ),
+					'imageChange'        => esc_html__( 'Change Image', 'mage-eventpress' ),
+					'imageRemove'        => esc_html__( 'Remove', 'mage-eventpress' ),
+					'statusLabel'        => esc_html__( 'Status', 'mage-eventpress' ),
+					'statusPublish'      => esc_html__( 'Publish', 'mage-eventpress' ),
+					'statusDraft'        => esc_html__( 'Draft', 'mage-eventpress' ),
+					'cancel'             => esc_html__( 'Cancel', 'mage-eventpress' ),
+					'save'               => esc_html__( 'Create Speaker', 'mage-eventpress' ),
+					'update'             => esc_html__( 'Update Speaker', 'mage-eventpress' ),
+					'saving'             => esc_html__( 'Creating…', 'mage-eventpress' ),
+					'updating'           => esc_html__( 'Updating…', 'mage-eventpress' ),
+					'nameRequired'       => esc_html__( 'Please enter a speaker name.', 'mage-eventpress' ),
+					'createError'        => esc_html__( 'Could not create speaker. Please try again.', 'mage-eventpress' ),
+					'updateError'        => esc_html__( 'Could not update speaker. Please try again.', 'mage-eventpress' ),
+					'loadError'          => esc_html__( 'Could not load speaker details.', 'mage-eventpress' ),
+					'createSuccess'      => esc_html__( 'Speaker created successfully.', 'mage-eventpress' ),
+					'updateSuccess'      => esc_html__( 'Speaker updated successfully.', 'mage-eventpress' ),
+					'deleteTitle'        => esc_html__( 'Delete Speaker?', 'mage-eventpress' ),
+					'deleteText'         => esc_html__( 'This speaker will be moved to Trash. You can restore it later.', 'mage-eventpress' ),
+					'deleteForceText'    => esc_html__( 'This speaker will be permanently deleted. This cannot be undone.', 'mage-eventpress' ),
+					'deleteConfirm'      => esc_html__( 'Move to Trash', 'mage-eventpress' ),
+					'deleteForceConfirm' => esc_html__( 'Delete Permanently', 'mage-eventpress' ),
+					'deleting'           => esc_html__( 'Deleting…', 'mage-eventpress' ),
+					'deleteError'        => esc_html__( 'Could not delete speaker. Please try again.', 'mage-eventpress' ),
+					'edit'               => esc_html__( 'Edit', 'mage-eventpress' ),
+					'delete'             => esc_html__( 'Delete', 'mage-eventpress' ),
+					'view'               => esc_html__( 'View', 'mage-eventpress' ),
+					'preview'            => esc_html__( 'Preview', 'mage-eventpress' ),
+					'previewTitle'       => esc_html__( 'Email Template Preview', 'mage-eventpress' ),
+					'previewEmpty'       => esc_html__( 'This template has no content yet.', 'mage-eventpress' ),
+					'previewError'       => esc_html__( 'Could not load email preview. Please try again.', 'mage-eventpress' ),
+					'previewEdit'        => esc_html__( 'Edit Template', 'mage-eventpress' ),
+					'previewClose'       => esc_html__( 'Close', 'mage-eventpress' ),
+					'viewTitle'          => esc_html__( 'Speaker Details', 'mage-eventpress' ),
+					'viewRole'           => esc_html__( 'Role / Title', 'mage-eventpress' ),
+					'viewDesc'           => esc_html__( 'Description', 'mage-eventpress' ),
+					'viewEvents'         => esc_html__( 'Assigned Events', 'mage-eventpress' ),
+					'viewStatus'         => esc_html__( 'Status', 'mage-eventpress' ),
+					'viewDate'           => esc_html__( 'Created', 'mage-eventpress' ),
+					'viewEmpty'          => esc_html__( '—', 'mage-eventpress' ),
+					'viewNoEvents'       => esc_html__( 'Not assigned to any event.', 'mage-eventpress' ),
+					'viewEdit'           => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
+					'viewClose'          => esc_html__( 'Close', 'mage-eventpress' ),
+					'at'                 => esc_html__( 'at', 'mage-eventpress' ),
+				];
+
+				if ( $is_review ) {
+					$strings = array_merge(
+						$strings,
+						[
+							'modalTitle'        => esc_html__( 'Add New Review & Rating', 'mage-eventpress' ),
+							'modalSubtitle'     => esc_html__( 'Create a review for an event. Ratings appear on the event page.', 'mage-eventpress' ),
+							'titleLabel'        => esc_html__( 'Review Title', 'mage-eventpress' ),
+							'titlePlaceholder'  => esc_html__( 'e.g. Amazing experience', 'mage-eventpress' ),
+							'eventLabel'        => esc_html__( 'Event', 'mage-eventpress' ),
+							'eventPlaceholder'  => esc_html__( 'Select an event…', 'mage-eventpress' ),
+							'ratingLabel'       => esc_html__( 'Rating', 'mage-eventpress' ),
+							'nameLabel'         => esc_html__( 'Full Name', 'mage-eventpress' ),
+							'namePlaceholder'   => esc_html__( 'e.g. Jane Doe', 'mage-eventpress' ),
+							'emailLabel'        => esc_html__( 'Email', 'mage-eventpress' ),
+							'emailPlaceholder'  => esc_html__( 'name@example.com', 'mage-eventpress' ),
+							'reviewLabel'       => esc_html__( 'Review', 'mage-eventpress' ),
+							'reviewPlaceholder' => esc_html__( 'Write the review text…', 'mage-eventpress' ),
+							'statusPending'     => esc_html__( 'Pending', 'mage-eventpress' ),
+							'save'              => esc_html__( 'Create Review', 'mage-eventpress' ),
+							'saving'            => esc_html__( 'Creating…', 'mage-eventpress' ),
+							'titleRequired'     => esc_html__( 'Please enter a review title.', 'mage-eventpress' ),
+							'eventRequired'     => esc_html__( 'Please select an event.', 'mage-eventpress' ),
+							'ratingRequired'    => esc_html__( 'Please choose a rating.', 'mage-eventpress' ),
+							'nameRequired'      => esc_html__( 'Please enter the reviewer name.', 'mage-eventpress' ),
+							'createError'       => esc_html__( 'Could not create review. Please try again.', 'mage-eventpress' ),
+							'createSuccess'     => esc_html__( 'Review created successfully.', 'mage-eventpress' ),
+							'noEvents'          => esc_html__( 'No events found. Create an event first.', 'mage-eventpress' ),
+						]
+					);
+				}
+
+				$nonce = '';
+				if ( $is_speaker ) {
+					$nonce = wp_create_nonce( 'mpwem_speaker_list' );
+				} elseif ( $is_review ) {
+					$nonce = wp_create_nonce( 'mpwem_review_list' );
+				} elseif ( $is_email ) {
+					$nonce = wp_create_nonce( 'mpwem_email_preview' );
+				}
+
 				wp_localize_script(
 					'mpwem-post-list-modern',
 					'mpwemPostListModern',
@@ -1076,74 +1283,12 @@
 						'proUrl'         => 'https://mage-people.com/product/mage-woo-event-booking-manager-pro/',
 						'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 						'ajaxPagination' => $is_speaker,
-						'ajaxCreate'     => $is_speaker,
+						'ajaxCreate'     => $is_speaker || $is_review,
 						'emailPreview'   => $is_email,
 						'perPage'        => $is_speaker ? self::SPEAKER_PER_PAGE : 0,
-						'nonce'          => $is_speaker ? wp_create_nonce( 'mpwem_speaker_list' ) : ( $is_email ? wp_create_nonce( 'mpwem_email_preview' ) : '' ),
-						'strings'        => [
-							'actionsColumn'   => esc_html__( 'Actions', 'mage-eventpress' ),
-							'promoEyebrow'    => esc_html__( 'EVENT PRO', 'mage-eventpress' ),
-							'promoTitle'      => esc_html__( 'Get more out of your events', 'mage-eventpress' ),
-							'promoBody'       => esc_html__( 'Unlock advanced attendee tools, PDF tickets, and reporting with Event Manager Pro and addons.', 'mage-eventpress' ),
-							'promoCta'        => esc_html__( 'Explore Pro & Addons', 'mage-eventpress' ),
-							'loading'         => esc_html__( 'Loading…', 'mage-eventpress' ),
-							'error'           => esc_html__( 'Could not load speakers. Please try again.', 'mage-eventpress' ),
-							'modalTitle'      => esc_html__( 'Add New Speaker', 'mage-eventpress' ),
-							'modalSubtitle'   => esc_html__( 'Create a speaker profile to assign on event pages.', 'mage-eventpress' ),
-							'editModalTitle'  => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
-							'editModalSubtitle' => esc_html__( 'Update this speaker profile.', 'mage-eventpress' ),
-							'nameLabel'       => esc_html__( 'Speaker Name', 'mage-eventpress' ),
-							'namePlaceholder' => esc_html__( 'e.g. Alex Rivera', 'mage-eventpress' ),
-							'roleLabel'       => esc_html__( 'Role / Title', 'mage-eventpress' ),
-							'rolePlaceholder' => esc_html__( 'e.g. Keynote Speaker · CEO, TechVision', 'mage-eventpress' ),
-							'descLabel'       => esc_html__( 'Description', 'mage-eventpress' ),
-							'descPlaceholder' => esc_html__( 'Short biography shown on event pages…', 'mage-eventpress' ),
-							'imageLabel'      => esc_html__( 'Featured Image', 'mage-eventpress' ),
-							'imageSelect'     => esc_html__( 'Select Image', 'mage-eventpress' ),
-							'imageChange'     => esc_html__( 'Change Image', 'mage-eventpress' ),
-							'imageRemove'     => esc_html__( 'Remove', 'mage-eventpress' ),
-							'statusLabel'     => esc_html__( 'Status', 'mage-eventpress' ),
-							'statusPublish'   => esc_html__( 'Publish', 'mage-eventpress' ),
-							'statusDraft'     => esc_html__( 'Draft', 'mage-eventpress' ),
-							'cancel'          => esc_html__( 'Cancel', 'mage-eventpress' ),
-							'save'            => esc_html__( 'Create Speaker', 'mage-eventpress' ),
-							'update'          => esc_html__( 'Update Speaker', 'mage-eventpress' ),
-							'saving'          => esc_html__( 'Creating…', 'mage-eventpress' ),
-							'updating'        => esc_html__( 'Updating…', 'mage-eventpress' ),
-							'nameRequired'    => esc_html__( 'Please enter a speaker name.', 'mage-eventpress' ),
-							'createError'     => esc_html__( 'Could not create speaker. Please try again.', 'mage-eventpress' ),
-							'updateError'     => esc_html__( 'Could not update speaker. Please try again.', 'mage-eventpress' ),
-							'loadError'       => esc_html__( 'Could not load speaker details.', 'mage-eventpress' ),
-							'createSuccess'   => esc_html__( 'Speaker created successfully.', 'mage-eventpress' ),
-							'updateSuccess'   => esc_html__( 'Speaker updated successfully.', 'mage-eventpress' ),
-							'deleteTitle'     => esc_html__( 'Delete Speaker?', 'mage-eventpress' ),
-							'deleteText'      => esc_html__( 'This speaker will be moved to Trash. You can restore it later.', 'mage-eventpress' ),
-							'deleteForceText' => esc_html__( 'This speaker will be permanently deleted. This cannot be undone.', 'mage-eventpress' ),
-							'deleteConfirm'   => esc_html__( 'Move to Trash', 'mage-eventpress' ),
-							'deleteForceConfirm' => esc_html__( 'Delete Permanently', 'mage-eventpress' ),
-							'deleting'        => esc_html__( 'Deleting…', 'mage-eventpress' ),
-							'deleteError'     => esc_html__( 'Could not delete speaker. Please try again.', 'mage-eventpress' ),
-							'edit'            => esc_html__( 'Edit', 'mage-eventpress' ),
-							'delete'          => esc_html__( 'Delete', 'mage-eventpress' ),
-							'view'            => esc_html__( 'View', 'mage-eventpress' ),
-							'preview'         => esc_html__( 'Preview', 'mage-eventpress' ),
-							'previewTitle'    => esc_html__( 'Email Template Preview', 'mage-eventpress' ),
-							'previewEmpty'    => esc_html__( 'This template has no content yet.', 'mage-eventpress' ),
-							'previewError'    => esc_html__( 'Could not load email preview. Please try again.', 'mage-eventpress' ),
-							'previewEdit'     => esc_html__( 'Edit Template', 'mage-eventpress' ),
-							'previewClose'    => esc_html__( 'Close', 'mage-eventpress' ),
-							'viewTitle'       => esc_html__( 'Speaker Details', 'mage-eventpress' ),
-							'viewRole'        => esc_html__( 'Role / Title', 'mage-eventpress' ),
-							'viewDesc'        => esc_html__( 'Description', 'mage-eventpress' ),
-							'viewEvents'      => esc_html__( 'Assigned Events', 'mage-eventpress' ),
-							'viewStatus'      => esc_html__( 'Status', 'mage-eventpress' ),
-							'viewDate'        => esc_html__( 'Created', 'mage-eventpress' ),
-							'viewEmpty'       => esc_html__( '—', 'mage-eventpress' ),
-							'viewNoEvents'    => esc_html__( 'Not assigned to any event.', 'mage-eventpress' ),
-							'viewEdit'        => esc_html__( 'Edit Speaker', 'mage-eventpress' ),
-							'viewClose'       => esc_html__( 'Close', 'mage-eventpress' ),
-							'at'              => esc_html__( 'at', 'mage-eventpress' ),
-						],
+						'nonce'          => $nonce,
+						'events'         => $is_review ? $this->get_events_for_select() : [],
+						'strings'        => $strings,
 						'proFeatures'    => [
 							esc_html__( 'Attendee management & custom forms', 'mage-eventpress' ),
 							esc_html__( 'PDF ticketing & custom emailing', 'mage-eventpress' ),

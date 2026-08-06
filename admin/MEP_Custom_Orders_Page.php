@@ -1121,21 +1121,28 @@ class MEP_Custom_Orders_Page {
 		<div class="mep-orders-wrap">
 
 			<!-- Header -->
-			<div class="mep-orders-header">
-				<div class="mep-orders-title-group">
-					<h1 class="mep-orders-title">
+			<header class="bde-hero">
+				<div class="bde-hero-copy">
+					<span class="bde-eyebrow">
 						<span class="dashicons dashicons-clipboard"></span>
-						<?php esc_html_e( 'Event Orders', 'mage-eventpress' ); ?>
-					</h1>
-					<p class="mep-orders-subtitle"><?php esc_html_e( 'Manage and track all event bookings in one place.', 'mage-eventpress' ); ?></p>
+						<?php esc_html_e( 'Orders', 'mage-eventpress' ); ?>
+					</span>
+					<h1 class="bde-title"><?php esc_html_e( 'Event Orders', 'mage-eventpress' ); ?></h1>
+					<p class="bde-subtitle"><?php esc_html_e( 'Manage and track all event bookings in one place.', 'mage-eventpress' ); ?></p>
 				</div>
-				<div class="mep-orders-header-actions">
-					<button type="button" id="mep-export-csv" class="mep-btn mep-btn-outline">
-						<span class="dashicons dashicons-download"></span>
-						<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
-					</button>
+				<div class="bde-hero-side">
+					<div class="bde-hero-badge">
+						<span class="dashicons dashicons-cart"></span>
+						<span><?php echo esc_html( sprintf( _n( '%s order', '%s orders', $total, 'mage-eventpress' ), number_format_i18n( $total ) ) ); ?></span>
+					</div>
+					<div class="bde-hero-actions">
+						<button type="button" id="mep-export-csv" class="mep-btn mep-btn-outline">
+							<span class="dashicons dashicons-download"></span>
+							<?php esc_html_e( 'Export CSV', 'mage-eventpress' ); ?>
+						</button>
+					</div>
 				</div>
-			</div>
+			</header>
 
 			<!-- Stats Bar -->
 			<div class="mep-stats-bar">

@@ -26,6 +26,7 @@
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_editor' ] );
 				add_action( 'all_admin_notices', [ $this, 'render_editor_back_button' ] );
+				add_action( 'all_admin_notices', [ $this, 'render_hero_header' ] );
 				add_filter( 'manage_mep_event_speaker_posts_columns', [ $this, 'speaker_columns' ] );
 				add_action( 'manage_mep_event_speaker_posts_custom_column', [ $this, 'speaker_column_content' ], 10, 2 );
 				add_filter( 'edit_posts_per_page', [ $this, 'force_speaker_per_page' ], 10, 2 );
@@ -110,6 +111,171 @@
 						<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
 						<span><?php echo esc_html( $label ); ?></span>
 					</a>
+				</div>
+				<?php
+			}
+
+			/**
+			 * Server-rendered hero header + stats bar for the Speakers Management
+			 * and Review & Rating Management list screens only. Fires on
+			 * `all_admin_notices`, which runs inside #wpbody-content before the
+			 * native list table markup, so this never depends on JS and never
+			 * flashes unstyled content.
+			 */
+			public function render_hero_header() {
+				$post_type = $this->current_target_post_type();
+				if ( 'mep_event_speaker' === $post_type ) {
+					$this->render_speaker_hero();
+				} elseif ( 'mep_events_review' === $post_type ) {
+					$this->render_review_hero();
+				}
+			}
+
+			/**
+			 * Hero + stats bar for Speakers Management.
+			 */
+			private function render_speaker_hero() {
+				global $wpdb;
+
+				$total = (int) wp_count_posts( 'mep_event_speaker' )->publish;
+
+				$this->build_speaker_event_map();
+				$assigned = count( $this->speaker_event_map );
+
+				$first_of_month = current_time( 'Y-m-01 00:00:00' );
+				$new_this_month  = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish' AND post_date >= %s",
+						'mep_event_speaker',
+						$first_of_month
+					)
+				);
+				?>
+				<div class="mpwem-post-list-hero-wrap">
+					<header class="bde-hero">
+						<div class="bde-hero-copy">
+							<span class="bde-eyebrow">
+								<span class="dashicons dashicons-microphone" aria-hidden="true"></span>
+								<?php esc_html_e( 'Speaker tools', 'mage-eventpress' ); ?>
+							</span>
+							<h1 class="bde-title"><?php esc_html_e( 'Speakers Management', 'mage-eventpress' ); ?></h1>
+							<p class="bde-subtitle"><?php esc_html_e( 'Add, edit and organize the speakers featured across your events.', 'mage-eventpress' ); ?></p>
+						</div>
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-groups" aria-hidden="true"></span>
+							<span>
+								<?php
+								printf(
+									/* translators: %s: number of speakers, formatted. */
+									esc_html( _n( '%s speaker', '%s speakers', $total, 'mage-eventpress' ) ),
+									esc_html( number_format_i18n( $total ) )
+								);
+								?>
+							</span>
+						</div>
+					</header>
+					<div class="mep-stats-bar">
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-microphone" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $total ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Total Speakers', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $assigned ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Assigned to Events', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-plus-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $new_this_month ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Added This Month', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
+			}
+
+			/**
+			 * Hero + stats bar for Review & Rating Management.
+			 */
+			private function render_review_hero() {
+				global $wpdb;
+
+				$total = (int) wp_count_posts( 'mep_events_review' )->publish;
+
+				$avg_rating = (float) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT AVG(CAST(pm.meta_value AS DECIMAL(10,2)))
+						FROM {$wpdb->postmeta} pm
+						INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+						WHERE pm.meta_key = %s AND p.post_type = %s AND p.post_status = 'publish'",
+						'mep_event_rating',
+						'mep_events_review'
+					)
+				);
+				$avg_display = $total ? number_format_i18n( $avg_rating, 1 ) : '—';
+
+				$first_of_month = current_time( 'Y-m-01 00:00:00' );
+				$new_this_month = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s AND post_status = 'publish' AND post_date >= %s",
+						'mep_events_review',
+						$first_of_month
+					)
+				);
+				?>
+				<div class="mpwem-post-list-hero-wrap">
+					<header class="bde-hero">
+						<div class="bde-hero-copy">
+							<span class="bde-eyebrow">
+								<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
+								<?php esc_html_e( 'Feedback tools', 'mage-eventpress' ); ?>
+							</span>
+							<h1 class="bde-title"><?php esc_html_e( 'Review & Rating Management', 'mage-eventpress' ); ?></h1>
+							<p class="bde-subtitle"><?php esc_html_e( 'Moderate attendee reviews and ratings submitted for your events.', 'mage-eventpress' ); ?></p>
+						</div>
+						<div class="bde-hero-badge">
+							<span class="dashicons dashicons-testimonial" aria-hidden="true"></span>
+							<span>
+								<?php
+								printf(
+									/* translators: %s: number of reviews, formatted. */
+									esc_html( _n( '%s review', '%s reviews', $total, 'mage-eventpress' ) ),
+									esc_html( number_format_i18n( $total ) )
+								);
+								?>
+							</span>
+						</div>
+					</header>
+					<div class="mep-stats-bar">
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-testimonial" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $total ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Total Reviews', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-star-filled" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( $avg_display ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Average Rating', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+						<div class="mep-stat-card">
+							<div class="mep-stat-icon"><span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span></div>
+							<div>
+								<div class="mep-stat-value"><?php echo esc_html( number_format_i18n( $new_this_month ) ); ?></div>
+								<div class="mep-stat-label"><?php esc_html_e( 'Reviews This Month', 'mage-eventpress' ); ?></div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<?php
 			}

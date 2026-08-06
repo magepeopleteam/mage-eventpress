@@ -208,8 +208,17 @@
                 }
 			}
 			public static function get_form_array( $event_id ) {
-				$form_id    = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
-				$form_id    = $form_id == 'custom_form' ? $event_id : $form_id;
+				$form_id = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_id', 'custom_form' );
+				$form_id = $form_id == 'custom_form' ? $event_id : $form_id;
+
+				// Prefer the exact field order configured in the visual form builder
+				// (Pro add-on) so the frontend renders fields in the same sequence
+				// the admin arranged them in, instead of a fixed built-in-first order.
+				$ordered_array = self::get_ordered_form_array( $form_id );
+				if ( ! empty( $ordered_array ) ) {
+					return self::apply_conditional_infos_to_form( $ordered_array, $form_id );
+				}
+
 				$form_array = [];
 				if ( MPWEM_Global_Function::get_post_info( $form_id, 'mep_full_name' ) ) {
 					$form_array['user_name'] = [
@@ -305,6 +314,127 @@
 				$custom_forms = self::get_custom_form_array( $event_id, $form_id );
 				$form_array   = array_merge( $form_array, $custom_forms );
 				return self::apply_conditional_infos_to_form( $form_array, $form_id );
+			}
+
+			/**
+			 * Build the frontend field array in the exact sequence saved by the visual
+			 * form builder (mep_fb_formbuilder_json), mixing built-in and custom fields
+			 * in whatever order the admin dragged them into, instead of the legacy
+			 * "all built-ins first, then custom fields" order produced by get_form_array()'s
+			 * fallback path. Returns [] when there's no builder JSON to read (legacy/global
+			 * forms saved without the visual builder), so callers can fall back safely.
+			 *
+			 * @param int|string $form_id Event ID or Global Reg Form post ID.
+			 * @return array Ordered field definitions, or [] to signal "no order data".
+			 */
+			private static function get_ordered_form_array( $form_id ) {
+				$json = MPWEM_Global_Function::get_post_info( $form_id, 'mep_fb_formbuilder_json', '' );
+				if ( ! is_string( $json ) || '' === $json || '[]' === $json ) {
+					return [];
+				}
+				$decoded = json_decode( $json, true );
+				if ( ! is_array( $decoded ) || empty( $decoded ) ) {
+					return [];
+				}
+
+				// Reserved formBuilder field names → the legacy meta keys that store
+				// whether each one is enabled, its custom label, and its rendering info.
+				// Kept in sync with MPWEM_Form_Manager::$builtin_map (Pro form-builder addon).
+				$builtins = [
+					'user_name'        => [ 'flag' => 'mep_full_name', 'label_meta' => 'mep_name_label', 'type' => 'text', 'd_name' => 'ea_name', 'array_key' => 'user_name', 'default_label' => esc_html__( 'Name', 'mage-eventpress' ) ],
+					'user_email'       => [ 'flag' => 'mep_reg_email', 'label_meta' => 'mep_email_label', 'type' => 'email', 'd_name' => 'ea_email', 'array_key' => 'user_email', 'default_label' => esc_html__( 'Email', 'mage-eventpress' ) ],
+					'user_phone'       => [ 'flag' => 'mep_reg_phone', 'label_meta' => 'mep_phone_label', 'type' => 'text', 'd_name' => 'ea_phone', 'array_key' => 'user_phone', 'default_label' => esc_html__( 'Phone', 'mage-eventpress' ) ],
+					'user_address'     => [ 'flag' => 'mep_reg_address', 'label_meta' => 'mep_address_label', 'type' => 'textarea', 'd_name' => 'ea_address_1', 'array_key' => 'user_address', 'default_label' => esc_html__( 'Address', 'mage-eventpress' ) ],
+					'user_tshirtsize'  => [ 'flag' => 'mep_reg_tshirtsize', 'label_meta' => 'mep_tshirt_label', 'type' => 'select', 'd_name' => 'ea_tshirtsize', 'array_key' => 'tshirtsize', 'options_meta' => 'mep_reg_tshirtsize_list', 'default_label' => esc_html__( 'T-Shirt Size', 'mage-eventpress' ) ],
+					'user_gender'      => [ 'flag' => 'mep_reg_gender', 'label_meta' => 'mep_gender_label', 'type' => 'gender', 'd_name' => 'ea_gender', 'array_key' => 'gender', 'default_label' => esc_html__( 'Gender', 'mage-eventpress' ) ],
+					'user_company'     => [ 'flag' => 'mep_reg_company', 'label_meta' => 'mep_company_label', 'type' => 'text', 'd_name' => 'ea_company', 'array_key' => 'user_company', 'default_label' => esc_html__( 'Company', 'mage-eventpress' ) ],
+					'user_designation' => [ 'flag' => 'mep_reg_designation', 'label_meta' => 'mep_desg_label', 'type' => 'text', 'd_name' => 'ea_desg', 'array_key' => 'user_designation', 'default_label' => esc_html__( 'Designation', 'mage-eventpress' ) ],
+					'user_website'     => [ 'flag' => 'mep_reg_website', 'label_meta' => 'mep_website_label', 'type' => 'text', 'd_name' => 'ea_website', 'array_key' => 'user_website', 'default_label' => esc_html__( 'Website', 'mage-eventpress' ) ],
+					'user_vegetarian'  => [ 'flag' => 'mep_reg_veg', 'label_meta' => 'mep_veg_label', 'type' => 'vegetarian', 'd_name' => 'ea_vegetarian', 'array_key' => 'vegetarian', 'default_label' => esc_html__( 'Vegetarian', 'mage-eventpress' ) ],
+				];
+
+				// Index saved custom-field rows by id for lookup while walking the JSON order.
+				$custom_meta  = MPWEM_Global_Function::get_post_info( $form_id, 'mep_form_builder_data', [] );
+				$custom_by_id = [];
+				if ( is_array( $custom_meta ) ) {
+					foreach ( $custom_meta as $row ) {
+						if ( is_array( $row ) && ! empty( $row['mep_fbc_id'] ) ) {
+							$custom_by_id[ $row['mep_fbc_id'] ] = $row;
+						}
+					}
+				}
+
+				$form_array    = [];
+				$seen_customs  = [];
+				foreach ( $decoded as $field ) {
+					if ( ! is_array( $field ) || empty( $field['name'] ) ) {
+						continue;
+					}
+					$name = sanitize_title( $field['name'] );
+
+					if ( isset( $builtins[ $name ] ) ) {
+						$def = $builtins[ $name ];
+						if ( ! MPWEM_Global_Function::get_post_info( $form_id, $def['flag'] ) ) {
+							continue; // Field exists in the JSON snapshot but is currently disabled.
+						}
+						$entry = [
+							'type'     => $def['type'],
+							'name'     => $name,
+							'd_name'   => $def['d_name'],
+							'required' => 1,
+							'label'    => MPWEM_Global_Function::get_post_info( $form_id, $def['label_meta'], $def['default_label'] ),
+						];
+						if ( ! empty( $def['options_meta'] ) ) {
+							$entry['data'] = MPWEM_Global_Function::get_post_info( $form_id, $def['options_meta'] );
+						}
+						$form_array[ $def['array_key'] ] = $entry;
+						continue;
+					}
+
+					if ( ! isset( $custom_by_id[ $name ] ) ) {
+						continue; // Field was removed from the builder since this JSON snapshot.
+					}
+					$row = $custom_by_id[ $name ];
+					if ( empty( $row['mep_fbc_type'] ) || empty( $row['mep_fbc_label'] ) ) {
+						continue;
+					}
+					$seen_customs[ $name ] = true;
+					$form_array[ $name ]   = [
+						'type'     => $row['mep_fbc_type'],
+						'name'     => $name,
+						'd_name'   => 'ea_' . $name,
+						'label'    => $row['mep_fbc_label'],
+						'required' => isset( $row['mep_fbc_required'] ) ? $row['mep_fbc_required'] : '',
+						'data'     => isset( $row['mep_fbc_dp_data'] ) ? $row['mep_fbc_dp_data'] : '',
+						'tag'      => isset( $row['mep_title_type'] ) ? $row['mep_title_type'] : '',
+					];
+				}
+
+				// Custom rows saved but absent from the JSON snapshot (shouldn't normally
+				// happen since both are written together) — append at the end so nothing
+				// configured is silently dropped.
+				if ( is_array( $custom_meta ) ) {
+					foreach ( $custom_meta as $row ) {
+						if ( ! is_array( $row ) || empty( $row['mep_fbc_id'] ) || isset( $seen_customs[ $row['mep_fbc_id'] ] ) ) {
+							continue;
+						}
+						if ( empty( $row['mep_fbc_type'] ) || empty( $row['mep_fbc_label'] ) ) {
+							continue;
+						}
+						$id                  = $row['mep_fbc_id'];
+						$form_array[ $id ]   = [
+							'type'     => $row['mep_fbc_type'],
+							'name'     => $id,
+							'd_name'   => 'ea_' . $id,
+							'label'    => $row['mep_fbc_label'],
+							'required' => isset( $row['mep_fbc_required'] ) ? $row['mep_fbc_required'] : '',
+							'data'     => isset( $row['mep_fbc_dp_data'] ) ? $row['mep_fbc_dp_data'] : '',
+							'tag'      => isset( $row['mep_title_type'] ) ? $row['mep_title_type'] : '',
+						];
+					}
+				}
+
+				return $form_array;
 			}
 
 			/**

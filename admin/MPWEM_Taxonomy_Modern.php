@@ -108,16 +108,13 @@
 
 				$cols = [
 					'name'            => __( 'Name', 'mage-eventpress' ),
-					'description'     => __( 'Description', 'mage-eventpress' ),
 					'mep_term_events' => __( 'Event', 'mage-eventpress' ),
-					'slug'            => __( 'Slug', 'mage-eventpress' ),
 					'posts'           => __( 'Count', 'mage-eventpress' ),
 				];
 
 				if ( self::ORG_TAXONOMY === $taxonomy ) {
 					$cols = [
 						'name'            => __( 'Name', 'mage-eventpress' ),
-						'org_email'       => __( 'Email', 'mage-eventpress' ),
 						'mep_term_events' => __( 'Event', 'mage-eventpress' ),
 						'posts'           => __( 'Count', 'mage-eventpress' ),
 					];
@@ -212,24 +209,54 @@
 			 * @param string $taxonomy Taxonomy slug.
 			 */
 			private function render_term_event_cell( $term_id, $taxonomy ) {
-				$events = $this->get_events_for_term( $term_id, $taxonomy, 5 );
+				$visible = 3;
+				$events  = $this->get_events_for_term( $term_id, $taxonomy, $visible + 1 );
 				if ( empty( $events ) ) {
 					echo '<span class="mpwem-term-list-event-empty">' . esc_html__( 'Not assigned', 'mage-eventpress' ) . '</span>';
 					return;
 				}
+
+				$term  = get_term( $term_id, $taxonomy );
+				$total = ( $term && ! is_wp_error( $term ) ) ? (int) $term->count : count( $events );
+				$show  = array_slice( $events, 0, $visible );
+				$extra = max( 0, $total - count( $show ) );
+
 				echo '<div class="mpwem-term-list-events">';
-				foreach ( $events as $event ) {
+				foreach ( $show as $event ) {
+					$title = $event['title'];
 					if ( ! empty( $event['url'] ) ) {
 						printf(
-							'<a class="mpwem-term-list-event" href="%s"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span>%s</a>',
+							'<a class="mpwem-term-list-event" href="%s" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span><span class="mpwem-term-list-event-label">%s</span></a>',
 							esc_url( $event['url'] ),
-							esc_html( $event['title'] )
+							esc_attr( $title ),
+							esc_html( $title )
 						);
 					} else {
 						printf(
-							'<span class="mpwem-term-list-event"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span>%s</span>',
-							esc_html( $event['title'] )
+							'<span class="mpwem-term-list-event" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-term-list-event-icon" aria-hidden="true"></span><span class="mpwem-term-list-event-label">%s</span></span>',
+							esc_attr( $title ),
+							esc_html( $title )
 						);
+					}
+				}
+				if ( $extra > 0 ) {
+					$list_url = '';
+					if ( $term && ! is_wp_error( $term ) ) {
+						$list_url = admin_url( 'edit.php?post_type=mep_events&' . $taxonomy . '=' . $term->slug );
+					}
+					$more_label = sprintf(
+						/* translators: %d: number of additional events */
+						_n( '+%d more', '+%d more', $extra, 'mage-eventpress' ),
+						$extra
+					);
+					if ( $list_url ) {
+						printf(
+							'<a class="mpwem-term-list-event-more" href="%s">%s</a>',
+							esc_url( $list_url ),
+							esc_html( $more_label )
+						);
+					} else {
+						printf( '<span class="mpwem-term-list-event-more">%s</span>', esc_html( $more_label ) );
 					}
 				}
 				echo '</div>';
@@ -678,8 +705,6 @@
 				$term_id    = (int) $term->term_id;
 				$can_edit   = current_user_can( $taxonomy_object->cap->edit_terms );
 				$can_delete = current_user_can( $taxonomy_object->cap->delete_terms );
-				$is_org     = self::ORG_TAXONOMY === $taxonomy;
-				$desc       = $term->description ? wp_trim_words( wp_strip_all_tags( $term->description ), 18, '…' ) : '—';
 				$list_url   = admin_url( 'edit.php?post_type=mep_events&' . $taxonomy . '=' . $term->slug );
 				?>
 				<tr id="tag-<?php echo esc_attr( $term_id ); ?>" class="level-0" data-term-id="<?php echo esc_attr( $term_id ); ?>">
@@ -695,27 +720,9 @@
 							<?php endif; ?>
 						</div>
 					</td>
-					<?php if ( ! $is_org ) : ?>
-						<td class="description column-description" data-colname="<?php esc_attr_e( 'Description', 'mage-eventpress' ); ?>">
-							<?php echo esc_html( $desc ); ?>
-						</td>
-					<?php endif; ?>
-					<?php if ( $is_org ) : ?>
-						<td class="org_email column-org_email" data-colname="<?php esc_attr_e( 'Email', 'mage-eventpress' ); ?>">
-							<?php
-							$email = get_term_meta( $term_id, 'org_email', true );
-							echo $email ? esc_html( $email ) : '&#8212;';
-							?>
-						</td>
-					<?php endif; ?>
 					<td class="mep_term_events column-mep_term_events" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
 						<?php $this->render_term_event_cell( $term_id, $taxonomy ); ?>
 					</td>
-					<?php if ( ! $is_org ) : ?>
-						<td class="slug column-slug" data-colname="<?php esc_attr_e( 'Slug', 'mage-eventpress' ); ?>">
-							<?php echo esc_html( $term->slug ); ?>
-						</td>
-					<?php endif; ?>
 					<td class="posts column-posts" data-colname="<?php esc_attr_e( 'Count', 'mage-eventpress' ); ?>">
 						<a href="<?php echo esc_url( $list_url ); ?>"><?php echo esc_html( (string) (int) $term->count ); ?></a>
 					</td>

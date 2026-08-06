@@ -697,71 +697,23 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap .mpwem-taxonomy-subtitle 
 	width: 100%;
 }
 
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(1),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(1) {
-	width: 20%;
-}
-
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(2),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(2) {
-	width: 24%;
-}
-
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(3),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(3) {
-	width: 18%;
-}
-
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(4),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(4) {
-	width: 14%;
-}
-
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(5),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(5) {
-	width: 10%;
-}
-
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(6),
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(6) {
-	width: 14%;
-}
-
-/* Organizer: Name, Email, Event, Count, Actions */
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(1),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(1) {
-	width: 24%;
-}
-
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(2),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(2) {
-	width: 22%;
-}
-
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(3),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(3) {
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th.column-name,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-name {
 	width: 28%;
 }
 
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(4),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(4) {
-	width: 12%;
-}
-
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(5),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(5) {
-	width: 14%;
-}
-
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(6),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(6),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th:nth-child(7),
-body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nth-child(7) {
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th.column-mep_term_events,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-mep_term_events {
 	width: auto;
+	min-width: 42%;
 }
 
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-name,
-.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-description {
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table th.column-posts,
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-posts {
+	width: 10%;
+}
+
+.wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td.column-name {
 	overflow-wrap: break-word;
 }
 
@@ -900,43 +852,48 @@ body.taxonomy-mep_org .wrap.mpwem-taxonomy-modern-wrap table.wp-list-table td:nt
 
 .mpwem-term-list-events {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
 	gap: 6px;
-	max-width: 280px;
+	max-width: 100%;
 }
 
 .mpwem-term-list-event {
-	display: flex;
-	align-items: flex-start;
-	gap: 8px;
-	max-width: 100%;
-	padding: 6px 10px;
-	background: #F8FAFC;
-	border: 1px solid #E4E9F0;
-	border-radius: 8px;
-	font-size: 12.5px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	max-width: min(100%, 220px);
+	padding: 5px 10px 5px 6px;
+	background: #F1F5F9;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	font-size: 12px;
 	font-weight: 600;
-	line-height: 1.4;
-	color: #1E293B;
+	line-height: 1.25;
+	color: #334155;
 	text-decoration: none;
-	overflow-wrap: anywhere;
-	transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+	transition: background-color .12s ease, border-color .12s ease, color .12s ease, box-shadow .12s ease;
+}
+
+.mpwem-term-list-event-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
 }
 
 .mpwem-term-list-event-icon {
-	flex: 0 0 20px;
-	width: 20px;
-	height: 20px;
-	margin-top: 1px;
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
 	border-radius: 50%;
-	background: #EFF6FF;
+	background: #DBEAFE;
 	color: #2563EB;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 12px;
+	font-size: 11px;
 	line-height: 1;
-	opacity: 1;
 }
 
 a.mpwem-term-list-event:hover {
@@ -944,12 +901,50 @@ a.mpwem-term-list-event:hover {
 	border-color: #BFDBFE;
 	color: #1D4ED8;
 	text-decoration: none;
+	box-shadow: 0 1px 2px rgba(37, 99, 235, .08);
+}
+
+a.mpwem-term-list-event:hover .mpwem-term-list-event-icon {
+	background: #BFDBFE;
+}
+
+.mpwem-term-list-event-more {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: #EEF2FF;
+	border: 1px solid #E0E7FF;
+	color: #4338CA;
+	font-size: 11.5px;
+	font-weight: 700;
+	line-height: 1.25;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+}
+
+a.mpwem-term-list-event-more:hover {
+	background: #E0E7FF;
+	border-color: #C7D2FE;
+	color: #3730A3;
+	text-decoration: none;
 }
 
 .mpwem-term-list-event-empty {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: #F8FAFC;
+	border: 1px dashed #E2E8F0;
 	font-size: 12px;
+	font-weight: 500;
+	font-style: normal;
 	color: #94A3B8;
-	font-style: italic;
+	line-height: 1.25;
 }
 
 /* ---------- AJAX pagination ---------- */

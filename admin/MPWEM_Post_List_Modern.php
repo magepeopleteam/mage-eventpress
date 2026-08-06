@@ -317,7 +317,7 @@
 			}
 
 			/**
-			 * Speakers list: Image + Description + Event columns (no Date).
+			 * Speakers list: Image + Event columns (no Date / Description).
 			 *
 			 * @param array $columns Existing columns.
 			 * @return array
@@ -335,7 +335,6 @@
 					if ( 'title' === $key ) {
 						$new['mep_speaker_image'] = __( 'Image', 'mage-eventpress' );
 						$new[ $key ]             = $label;
-						$new['mep_speaker_desc']  = __( 'Description', 'mage-eventpress' );
 						$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
 						continue;
 					}
@@ -347,13 +346,10 @@
 						$new
 					);
 				}
-				if ( ! isset( $new['mep_speaker_desc'] ) ) {
-					$new['mep_speaker_desc'] = __( 'Description', 'mage-eventpress' );
-				}
 				if ( ! isset( $new['mep_speaker_event'] ) ) {
 					$new['mep_speaker_event'] = __( 'Event', 'mage-eventpress' );
 				}
-				unset( $new['date'] );
+				unset( $new['date'], $new['mep_speaker_desc'] );
 
 				return $new;
 			}
@@ -496,21 +492,42 @@
 					echo '<span class="mpwem-speaker-list-event-empty">' . esc_html__( 'Not assigned', 'mage-eventpress' ) . '</span>';
 					return;
 				}
+
+				$visible = 3;
+				$total   = count( $events );
+				$show    = array_slice( $events, 0, $visible );
+				$extra   = max( 0, $total - count( $show ) );
+
 				echo '<div class="mpwem-speaker-list-events">';
-				foreach ( $events as $event ) {
+				foreach ( $show as $event ) {
+					$title     = $event['title'];
 					$edit_link = get_edit_post_link( $event['id'], 'raw' );
 					if ( $edit_link ) {
 						printf(
-							'<a class="mpwem-speaker-list-event" href="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span>%s</a>',
+							'<a class="mpwem-speaker-list-event" href="%s" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span><span class="mpwem-speaker-list-event-label">%s</span></a>',
 							esc_url( $edit_link ),
-							esc_html( $event['title'] )
+							esc_attr( $title ),
+							esc_html( $title )
 						);
 					} else {
 						printf(
-							'<span class="mpwem-speaker-list-event"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span>%s</span>',
-							esc_html( $event['title'] )
+							'<span class="mpwem-speaker-list-event" title="%s"><span class="dashicons dashicons-calendar-alt mpwem-speaker-list-event-icon" aria-hidden="true"></span><span class="mpwem-speaker-list-event-label">%s</span></span>',
+							esc_attr( $title ),
+							esc_html( $title )
 						);
 					}
+				}
+				if ( $extra > 0 ) {
+					printf(
+						'<span class="mpwem-speaker-list-event-more">%s</span>',
+						esc_html(
+							sprintf(
+								/* translators: %d: number of additional events */
+								_n( '+%d more', '+%d more', $extra, 'mage-eventpress' ),
+								$extra
+							)
+						)
+					);
 				}
 				echo '</div>';
 			}
@@ -660,9 +677,6 @@
 								</span>
 							<?php endif; ?>
 						</div>
-					</td>
-					<td class="mep_speaker_desc column-mep_speaker_desc" data-colname="<?php esc_attr_e( 'Description', 'mage-eventpress' ); ?>">
-						<?php $this->speaker_column_content( 'mep_speaker_desc', $post_id ); ?>
 					</td>
 					<td class="mep_speaker_event column-mep_speaker_event" data-colname="<?php esc_attr_e( 'Event', 'mage-eventpress' ); ?>">
 						<?php $this->speaker_column_content( 'mep_speaker_event', $post_id ); ?>

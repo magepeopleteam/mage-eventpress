@@ -2490,4 +2490,397 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	}
 }
 
+/* ========== ATTENDEE DRAWER ========== */
+.horizon_theme .horizon_ticket_body .hz-attendee-home {
+	display: none !important;
+}
+
+/* Keep sidebar compact while forms are briefly restored for qty cloning */
+.horizon_theme .horizon_ticket_body .mep_ticket_item > .mep_attendee_info,
+.horizon_theme .horizon_ticket_body .mpwem_booking_panel > .mep_attendee_info {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	border: 0 !important;
+	visibility: hidden !important;
+}
+
+/* Per-ticket attendee status (under each ticket type) */
+.horizon_theme .horizon_attendee_status {
+	display: none;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	margin: 0 20px 10px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	border: 1px solid #E8E4F5;
+	background: #F8F7FC;
+	font-family: var(--hz-sans);
+	box-sizing: border-box;
+}
+
+.horizon_theme .horizon_attendee_status.is-visible {
+	display: flex;
+}
+
+.horizon_theme .horizon_attendee_status.is-incomplete {
+	border-color: #E8B4B4;
+	background: #FFF8F8;
+	cursor: pointer;
+}
+
+.horizon_theme .horizon_attendee_status.is-complete {
+	border-color: #B9E4C9;
+	background: #F3FBF6;
+}
+
+.horizon_theme .horizon_attendee_status__icon {
+	width: 20px;
+	height: 20px;
+	border-radius: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	color: var(--hz-purple);
+	border: 1px solid #E8E4F5;
+	flex-shrink: 0;
+	font-size: 12px;
+}
+
+.horizon_theme .horizon_attendee_status.is-complete .horizon_attendee_status__icon {
+	color: #1F7A45;
+	border-color: #CDEAD7;
+}
+
+.horizon_theme .horizon_attendee_status.is-incomplete .horizon_attendee_status__icon {
+	color: #C24141;
+	border-color: #F0CACA;
+}
+
+.horizon_theme .horizon_attendee_status__icon .fa-user-check,
+.horizon_theme .horizon_attendee_status.is-incomplete .horizon_attendee_status__icon .fa-user-check {
+	display: inline-block;
+}
+
+.horizon_theme .horizon_attendee_status__text {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--hz-text);
+	line-height: 1.35;
+}
+
+.horizon_theme .horizon_attendee_status__edit {
+	flex-shrink: 0;
+	border: 0;
+	background: transparent;
+	color: var(--hz-purple);
+	font-size: 12px;
+	font-weight: 700;
+	font-family: var(--hz-sans);
+	cursor: pointer;
+	padding: 0;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.horizon_theme .horizon_attendee_status.is-incomplete .horizon_attendee_status__edit {
+	color: #C24141;
+	text-decoration: none;
+}
+
+.horizon_theme .mpwem_form_submit_area > .horizon_attendee_status,
+.horizon_theme .mpwem_booking_panel > .horizon_attendee_status {
+	margin: 0 0 12px;
+}
+
+.horizon_theme .mep_ticket_item > .horizon_attendee_status {
+	position: relative;
+	visibility: visible;
+	width: auto;
+	height: auto;
+	clip: auto;
+	overflow: visible;
+}
+
+.horizon_theme > .horizon_attendee_drawer[hidden],
+.horizon_theme .horizon_attendee_drawer[hidden] {
+	display: none !important;
+}
+
+.horizon_theme > .horizon_attendee_drawer,
+.horizon_theme .horizon_attendee_drawer {
+	position: fixed;
+	inset: 0;
+	z-index: 100060;
+	display: flex;
+	justify-content: flex-end;
+	align-items: stretch;
+	width: 100%;
+	height: 100%;
+	max-height: 100dvh;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+}
+
+.horizon_theme > .horizon_attendee_drawer:not([hidden]),
+.horizon_theme .horizon_attendee_drawer:not([hidden]) {
+	pointer-events: auto;
+}
+
+.horizon_theme .horizon_attendee_drawer__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(16, 14, 28, 0.5);
+	backdrop-filter: blur(2px);
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.horizon_theme .horizon_attendee_drawer__panel {
+	position: relative;
+	z-index: 1;
+	width: min(480px, 100%);
+	max-width: 100%;
+	height: 100%;
+	max-height: 100dvh;
+	max-height: 100vh;
+	background: #fff;
+	box-shadow: -18px 0 48px rgba(12, 10, 28, 0.22);
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow: hidden;
+	animation: hzDrawerIn 0.28s ease both;
+}
+
+@keyframes hzDrawerIn {
+	from { transform: translateX(18px); opacity: 0.7; }
+	to { transform: translateX(0); opacity: 1; }
+}
+
+.horizon_theme .horizon_attendee_drawer__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 22px 22px 16px;
+	border-bottom: 1px solid #EEEAF8;
+	background: linear-gradient(180deg, #F4F0FF 0%, #FAF8FF 100%);
+	flex: 0 0 auto;
+}
+
+.horizon_theme .horizon_attendee_drawer__eyebrow {
+	display: block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--hz-purple);
+	margin-bottom: 6px;
+}
+
+.horizon_theme .horizon_attendee_drawer__title {
+	font-family: var(--hz-serif) !important;
+	font-size: 1.35rem !important;
+	line-height: 1.25 !important;
+	margin: 0 0 6px !important;
+	color: var(--hz-text) !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__help {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_attendee_drawer__close {
+	width: 36px;
+	height: 36px;
+	border: 0;
+	border-radius: 50%;
+	background: #fff;
+	color: #5B5B66;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	border: 1px solid #E8E4F5;
+}
+
+.horizon_theme .horizon_attendee_drawer__close:hover {
+	background: var(--hz-purple-soft);
+	color: var(--hz-purple);
+}
+
+.horizon_theme .horizon_attendee_drawer__body {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 18px 22px 24px;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info,
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info_hidden {
+	margin: 0 0 12px !important;
+	display: none !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info.is-hz-active-ticket {
+	display: block !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info:empty,
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info.is-hz-active-ticket:empty {
+	display: none !important;
+	margin: 0 !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_form_item,
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block {
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	padding: 0 !important;
+	margin: 0 0 20px !important;
+	box-shadow: none !important;
+	display: grid !important;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px 14px;
+	align-items: start;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_form_item > h6,
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block > h6 {
+	grid-column: 1 / -1;
+	font-family: var(--hz-sans) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	color: var(--hz-text) !important;
+	margin: 0 0 2px !important;
+	padding: 0 0 10px !important;
+	border-bottom: 1px solid #EEEAF8;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item,
+.horizon_theme .mep_attendee_info .mp_form_item {
+	margin: 0 !important;
+	min-width: 0;
+	padding: 0 7px;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea) {
+	grid-column: 1 / -1;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item label {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin: 0 !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item label > span {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: #6B6B78;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item input,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea {
+	width: 100% !important;
+	border: 1px solid #E7E7EF !important;
+	border-radius: 8px !important;
+	background: #fff !important;
+	padding: 8px 10px !important;
+	font-size: 13px !important;
+	line-height: 1.35 !important;
+	color: var(--hz-text) !important;
+	box-shadow: none !important;
+	min-height: 38px;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea {
+	min-height: 72px;
+	resize: vertical;
+	grid-column: 1 / -1;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl.is-hz-invalid,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item input.is-hz-invalid,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select.is-hz-invalid,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea.is-hz-invalid {
+	border-color: #EF4444 !important;
+	box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__foot {
+	padding: 14px 22px calc(18px + env(safe-area-inset-bottom, 0px));
+	border-top: 1px solid #EEEAF8;
+	background: #fff;
+	flex: 0 0 auto;
+}
+
+.horizon_theme .horizon_attendee_drawer__continue {
+	width: 100%;
+	border: 0;
+	border-radius: 12px;
+	background: var(--hz-purple);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 13px 16px;
+	cursor: pointer;
+	font-family: var(--hz-sans);
+	transition: background 0.2s ease;
+}
+
+.horizon_theme .horizon_attendee_drawer__continue:hover {
+	background: var(--hz-purple-dark);
+}
+
+body.horizon-attendee-drawer-open {
+	overflow: hidden;
+}
+
+@media (max-width: 640px) {
+	.horizon_theme .horizon_attendee_drawer__panel {
+		width: 100%;
+	}
+
+	.horizon_theme .horizon_attendee_drawer__head,
+	.horizon_theme .horizon_attendee_drawer__body,
+	.horizon_theme .horizon_attendee_drawer__foot {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.horizon_theme .horizon_attendee_drawer__body .mep_form_item,
+	.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block {
+		grid-template-columns: 1fr;
+		gap: 10px;
+	}
+
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea) {
+		grid-column: 1;
+	}
+}
+
 

@@ -13,6 +13,7 @@
 				$this->load_file();
 				add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 90 );
 				add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue' ), 90 );
+				add_action( 'enqueue_block_assets', array( $this, 'enqueue_cart_details_block_assets' ), 20 );
 				add_action( 'admin_head', array( $this, 'add_admin_head' ), 5 );
 				add_action( 'wp_head', array( $this, 'add_frontend_head' ), 5 );
 			}
@@ -261,8 +262,51 @@
 					'is_logged_in'    => is_user_logged_in() ? '1' : '0',
 				) );
 				$this->enqueue_horizon_theme_assets();
+				$this->enqueue_cart_details_assets();
 				do_action( 'add_mpwem_frontend_script' );
 
+			}
+			/**
+			 * Cart / checkout event details card styles (classic + Woo Blocks).
+			 */
+			private function enqueue_cart_details_assets() {
+				// Always load on storefront pages so Woo Blocks cart/checkout keep spacing.
+				if ( is_admin() ) {
+					return;
+				}
+				$load = true;
+				if ( function_exists( 'is_cart' ) || function_exists( 'is_checkout' ) ) {
+					$load = ( function_exists( 'is_cart' ) && is_cart() )
+						|| ( function_exists( 'is_checkout' ) && is_checkout() )
+						|| ( function_exists( 'is_account_page' ) && is_account_page() )
+						|| ( function_exists( 'has_block' ) && ( has_block( 'woocommerce/cart' ) || has_block( 'woocommerce/checkout' ) ) );
+				}
+				if ( ! $load ) {
+					return;
+				}
+				wp_enqueue_style(
+					'mep_cart_details',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-cart-details.css',
+					array(),
+					MPWEM_PLUGIN_VERSION
+				);
+			}
+			public function enqueue_cart_details_block_assets() {
+				if ( is_admin() ) {
+					return;
+				}
+				$load = ( function_exists( 'is_cart' ) && is_cart() )
+					|| ( function_exists( 'is_checkout' ) && is_checkout() )
+					|| ( function_exists( 'is_account_page' ) && is_account_page() );
+				if ( ! $load ) {
+					return;
+				}
+				wp_enqueue_style(
+					'mep_cart_details',
+					MPWEM_PLUGIN_URL . '/assets/frontend/mep-cart-details.css',
+					array(),
+					MPWEM_PLUGIN_VERSION
+				);
 			}
 			/**
 			 * Load Horizon theme CSS/JS only when that template is active.
@@ -304,20 +348,32 @@
 					'mpwem_horizon_theme',
 					'mep_horizon_i18n',
 					array(
-						'register'       => __( 'Reserve Tickets →', 'mage-eventpress' ),
-						'reserve'        => __( 'Reserve Tickets →', 'mage-eventpress' ),
-						'reserveTicket'  => __( 'Reserve 1 Ticket →', 'mage-eventpress' ),
-						'reserveTickets' => __( 'Reserve %d Tickets →', 'mage-eventpress' ),
-						'available'      => __( 'Available', 'mage-eventpress' ),
-						'ticketType'     => __( 'Ticket Type', 'mage-eventpress' ),
-						'date'           => __( 'Date', 'mage-eventpress' ),
-						'time'           => __( 'Time', 'mage-eventpress' ),
-						'total'          => __( 'Total', 'mage-eventpress' ),
-						'extraService'   => __( 'Extra Service', 'mage-eventpress' ),
-						'addCalendar'    => __( 'Add to Calendar', 'mage-eventpress' ),
-						'hideCalendar'   => __( 'Hide Calendar', 'mage-eventpress' ),
-						'loadMore'       => __( 'Load more', 'mage-eventpress' ),
-						'showLess'       => __( 'Show less', 'mage-eventpress' ),
+						'register'            => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserve'             => __( 'Reserve Tickets →', 'mage-eventpress' ),
+						'reserveTicket'       => __( 'Reserve 1 Ticket →', 'mage-eventpress' ),
+						'reserveTickets'      => __( 'Reserve %d Tickets →', 'mage-eventpress' ),
+						'available'           => __( 'Available', 'mage-eventpress' ),
+						'ticketType'          => __( 'Ticket Type', 'mage-eventpress' ),
+						'date'                => __( 'Date', 'mage-eventpress' ),
+						'time'                => __( 'Time', 'mage-eventpress' ),
+						'total'               => __( 'Total', 'mage-eventpress' ),
+						'extraService'        => __( 'Extra Service', 'mage-eventpress' ),
+						'addCalendar'         => __( 'Add to Calendar', 'mage-eventpress' ),
+						'hideCalendar'        => __( 'Hide Calendar', 'mage-eventpress' ),
+						'loadMore'            => __( 'Load more', 'mage-eventpress' ),
+						'showLess'            => __( 'Show less', 'mage-eventpress' ),
+						'attendeeDetails'     => __( 'Enter attendee details', 'mage-eventpress' ),
+						'attendeeEdit'        => __( 'Edit', 'mage-eventpress' ),
+						'attendeeDrawerTitle' => __( 'Attendee details', 'mage-eventpress' ),
+						'attendeeDrawerHelp'  => __( 'Complete the required fields for this ticket, then save.', 'mage-eventpress' ),
+						'attendeeContinue'    => __( 'Save attendee details', 'mage-eventpress' ),
+						'attendeeIncomplete'  => __( 'Required', 'mage-eventpress' ),
+						'attendeeComplete'    => __( 'Completed', 'mage-eventpress' ),
+						'attendeeMissing'     => __( 'Please complete attendee details before booking.', 'mage-eventpress' ),
+						'attendeeAdded'       => __( 'Attendee details added', 'mage-eventpress' ),
+						'attendeeForTicket'   => __( 'Attendees for %s', 'mage-eventpress' ),
+						'close'               => __( 'Close', 'mage-eventpress' ),
+						'sameAttendee'        => MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ),
 					)
 				);
 			}

@@ -99,31 +99,33 @@
 			}
 			public function get_item_data( $item_data, $cart_item ) {
 				ob_start();
-				$eid = is_array($cart_item) && array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0; //$cart_item['event_id'];
+				$eid = is_array( $cart_item ) && array_key_exists( 'event_id', $cart_item ) ? $cart_item['event_id'] : 0;
 				if ( get_post_type( $eid ) == 'mep_events' ) {
-					$general_setting_sec  =  MPWEM_Global_Function::get_setting('general_setting_sec') ;
-					$hide_location_status = is_array($general_setting_sec) && array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
-					$hide_date_status     = is_array($general_setting_sec) && array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
-					$user_info            = is_array($cart_item) && array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];
-					$ticket_type_arr      = is_array($cart_item) && array_key_exists( 'event_ticket_info', $cart_item ) ? $cart_item['event_ticket_info'] : [];
-					$event_extra_service  = is_array($cart_item) && array_key_exists( 'event_extra_service', $cart_item ) ? $cart_item['event_extra_service'] : [];
-					$event_date           = is_array($cart_item) && array_key_exists( 'event_cart_date', $cart_item ) ? $cart_item['event_cart_date'] : '';
+					$general_setting_sec  = MPWEM_Global_Function::get_setting( 'general_setting_sec' );
+					$hide_location_status = is_array( $general_setting_sec ) && array_key_exists( 'mep_hide_location_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_location_from_order_page'] : 'no';
+					$hide_date_status     = is_array( $general_setting_sec ) && array_key_exists( 'mep_hide_date_from_order_page', $general_setting_sec ) ? $general_setting_sec['mep_hide_date_from_order_page'] : 'no';
+					$user_info            = is_array( $cart_item ) && array_key_exists( 'event_user_info', $cart_item ) ? $cart_item['event_user_info'] : [];
+					$ticket_type_arr      = is_array( $cart_item ) && array_key_exists( 'event_ticket_info', $cart_item ) ? $cart_item['event_ticket_info'] : [];
+					$event_extra_service  = is_array( $cart_item ) && array_key_exists( 'event_extra_service', $cart_item ) ? $cart_item['event_extra_service'] : [];
+					$event_date           = is_array( $cart_item ) && array_key_exists( 'event_cart_date', $cart_item ) ? $cart_item['event_cart_date'] : '';
 					$date_format          = MPWEM_Global_Function::check_time_exit_date( $event_date ) ? 'full' : 'date';
-					$location             = is_array($cart_item) && array_key_exists( 'event_cart_location', $cart_item ) ? $cart_item['event_cart_location'] : '';
-					$same_attendee        = is_array($general_setting_sec) && array_key_exists( 'mep_enable_same_attendee', $general_setting_sec ) ? $general_setting_sec['mep_enable_same_attendee'] : 'no';
-					// echo '<pre>';print_r(MPWEM_Form_Builder::get_form_array($eid));echo '</pre>';
-					$form_array = MPWEM_Layout::get_form_array( $eid );
+					$location             = is_array( $cart_item ) && array_key_exists( 'event_cart_location', $cart_item ) ? $cart_item['event_cart_location'] : '';
+					$same_attendee        = is_array( $general_setting_sec ) && array_key_exists( 'mep_enable_same_attendee', $general_setting_sec ) ? $general_setting_sec['mep_enable_same_attendee'] : 'no';
+					$form_array           = MPWEM_Layout::get_form_array( $eid );
 					?>
-                    <div class="mpwem_style">
-						<?php if ( $hide_date_status == 'no' ) { ?>
-                            <h6 class="_mp_zero"><?php echo esc_html__( " Date : ", 'mage-eventpress' ) . ' ' . MPWEM_Global_Function::date_format( $event_date, $date_format,$eid ); ?></h6>
-						<?php } ?>
-						<?php if ( $location && $hide_location_status == 'no' ) { ?>
-                            <h6 class="_mp_zero"><?php echo esc_html__( " Location : ", 'mage-eventpress' ) . ' ' . esc_html( $location ); ?></h6>
+                    <div class="mep-cart-details" style="display:block;width:100%;margin:6px 0 0;padding:0;font-size:13px;line-height:1.5;color:#2c2c34;text-align:left;">
+						<?php if ( $hide_date_status == 'no' || ( $location && $hide_location_status == 'no' ) ) { ?>
+                            <div class="mep-cart-details__section" style="display:block;margin:0 0 12px;padding:12px;background:#f7f7f9;border:1px solid #ececf1;">
+								<?php if ( $hide_date_status == 'no' ) { ?>
+                                    <strong style="color:#6f6f7a;"><?php esc_html_e( 'Date', 'mage-eventpress' ); ?>:</strong>&nbsp;<?php echo esc_html( MPWEM_Global_Function::date_format( $event_date, $date_format, $eid ) ); ?><br />
+								<?php } ?>
+								<?php if ( $location && $hide_location_status == 'no' ) { ?>
+                                    <strong style="color:#6f6f7a;"><?php esc_html_e( 'Location', 'mage-eventpress' ); ?>:</strong>&nbsp;<?php echo esc_html( $location ); ?><br />
+								<?php } ?>
+                            </div>
 						<?php }
 							if ( ( $same_attendee == 'yes' || $same_attendee == 'must' ) && is_array( $user_info ) && sizeof( $user_info ) > 0 && is_array( $form_array ) && sizeof( $form_array ) > 0 ) {
 								if ( is_array( $ticket_type_arr ) && sizeof( $ticket_type_arr ) > 0 ) {
-									// Build ticket mode map for hybrid events.
 									$_event_type_ci = MPWEM_Global_Function::get_post_info( $eid, 'mep_event_type', 'offline' );
 									$_mode_map_ci   = [];
 									if ( $_event_type_ci === 'hybrid' ) {
@@ -137,10 +139,10 @@
 										}
 									}
 									?>
-                                    <div class="_layout_info_xs_mt_xs">
-                                        <h6 class="_mp_zero"><?php esc_html_e( 'Ticket Information', 'mage-eventpress' ); ?></h6>
-                                        <div class="_divider_xs"></div>
-                                        <ul class="cart_list">
+                                    <div class="mep-cart-details__section" style="display:block;margin:0 0 12px;padding:12px;background:#f7f7f9;border:1px solid #ececf1;">
+                                        <p style="margin:0 0 10px;padding:0 0 8px;border-bottom:1px solid #e4e4ec;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#5b5b66;"><?php esc_html_e( 'Ticket Information', 'mage-eventpress' ); ?></p>
+                                        <table class="mep-cart-details-table" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">
+                                            <tbody>
 											<?php
 												foreach ( $ticket_type_arr as $ticket ) {
 													$_badge = '';
@@ -148,14 +150,20 @@
 														$_mode  = isset( $_mode_map_ci[ $ticket['ticket_name'] ] ) ? $_mode_map_ci[ $ticket['ticket_name'] ] : 'inperson';
 														$_label = $_mode === 'online' ? esc_html__( 'Online Event', 'mage-eventpress' ) : esc_html__( 'In Person', 'mage-eventpress' );
 														$_cls   = $_mode === 'online' ? 'mep-ticket-mode-badge--online' : 'mep-ticket-mode-badge--inperson';
-														$_badge = ' <span class="mep-ticket-mode-badge ' . $_cls . '">' . $_label . '</span>';
+														$_badge = ' <span class="mep-ticket-mode-badge ' . $_cls . '" style="display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:700;line-height:1.4;vertical-align:middle;">' . $_label . '</span>';
 													}
-													$ticket_text = '<li>' . esc_html( $ticket['ticket_name'] ) . $_badge . '&nbsp;&nbsp;' . wc_price( (float) $ticket['ticket_price'] ) . '&nbsp;x&nbsp;' . esc_attr( $ticket['ticket_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'] ) . '</li>';
+													$line_total  = (float) $ticket['ticket_price'] * (float) $ticket['ticket_qty'];
+													$ticket_text = '<tr>'
+														. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket['ticket_name'] ) . $_badge . '</td>'
+														. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket['ticket_price'] ) . ' &times; ' . esc_html( $ticket['ticket_qty'] ) . '</td>'
+														. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
+														. '</tr>';
 													echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $ticket, $eid );
 													do_action( 'mep_cart_after_ticket_type', $ticket );
 												}
 											?>
-                                        </ul>
+                                            </tbody>
+                                        </table>
                                     </div>
 									<?php
 								}
@@ -170,14 +178,20 @@
 							}
 							if ( is_array( $event_extra_service ) && sizeof( $event_extra_service ) > 0 ) {
 								?>
-                                <div class="_layout_info_xs_mt_xs">
-                                    <h6 class="_mp_zero"><?php esc_html_e( 'Extra Service', 'mage-eventpress' ); ?></h6>
-                                    <div class="_divider_xs"></div>
-                                    <ul class="cart_list">
+                                <div class="mep-cart-details__section" style="display:block;margin:0 0 12px;padding:12px;background:#f7f7f9;border:1px solid #ececf1;">
+                                    <p style="margin:0 0 10px;padding:0 0 8px;border-bottom:1px solid #e4e4ec;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#5b5b66;"><?php esc_html_e( 'Extra Service', 'mage-eventpress' ); ?></p>
+                                    <table class="mep-cart-details-table" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">
+                                        <tbody>
 										<?php foreach ( $event_extra_service as $extra_service ) {
-											echo '<li>' . esc_html( $extra_service['service_name'] ) . " - " . wc_price( $extra_service['service_price'] ) . '&nbsp;x&nbsp;' . esc_html( $extra_service['service_qty'] ) . '&nbsp;=&nbsp;' . wc_price( (float) $extra_service['service_price'] * (float) $extra_service['service_qty'] ) . '</li>';
+											$ex_total = (float) $extra_service['service_price'] * (float) $extra_service['service_qty'];
+											echo '<tr>'
+												. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $extra_service['service_name'] ) . '</td>'
+												. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $extra_service['service_price'] ) . ' &times; ' . esc_html( $extra_service['service_qty'] ) . '</td>'
+												. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $ex_total ) . '</td>'
+												. '</tr>';
 										} ?>
-                                    </ul>
+                                        </tbody>
+                                    </table>
                                 </div>
 								<?php
 							}
@@ -690,45 +704,52 @@
 				return apply_filters( 'mep_cart_user_data_prepare', $attendee_info, $post_id );
 			}
 			public static function show_attendee( $user, $form_array, $same_attendee = 'yes' ) {
-				if ( is_array( $user ) && sizeof( $user ) >0) {
-					$post_id = is_array($user) && array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
+				if ( is_array( $user ) && sizeof( $user ) > 0 ) {
+					$post_id = is_array( $user ) && array_key_exists( 'user_event_id', $user ) ? $user['user_event_id'] : '';
 					?>
-                    <div class="_layout_info_xs_mt_xs">
+                    <div class="mep-cart-details__section" style="display:block;margin:0 0 12px;padding:12px;background:#f7f7f9;border:1px solid #ececf1;">
 						<?php if ( $same_attendee == 'yes' ) { ?>
-                            <h6 class="_mp_zero"><?php esc_html_e( 'Attendee Information', 'mage-eventpress' ); ?></h6>
-                            <div class="_divider_xs"></div>
+                            <p style="margin:0 0 10px;padding:0 0 8px;border-bottom:1px solid #e4e4ec;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#5b5b66;"><?php esc_html_e( 'Attendee Information', 'mage-eventpress' ); ?></p>
 						<?php } ?>
-                        <ul class="cart_list">
-							<?php
-								if ( $same_attendee == 'no' ) {
-									$ticket_name = is_array($user) && array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
-									$ticket_price = is_array($user) && array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
-									$ticket_qty = is_array($user) && array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
-									$ticket_text = '<li>' . esc_attr( $ticket_name) . " &nbsp;&nbsp;" . wc_price( (float) $ticket_price) . '&nbsp;x&nbsp;' . esc_attr( $ticket_qty ) . '&nbsp;=&nbsp;' . wc_price( (float) $ticket_price * (float) $ticket_qty ) . '</li>';
-                                    //echo '<li><pre>'.print_r($user).'</pre></li>';
-									echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
-									do_action( 'mep_cart_after_ticket_type', $user );
-								}
-								foreach ( $form_array as $form ) {
-									if ( is_array( $form ) && sizeof( $form ) > 0 ) {
-										$type = is_array($form) && array_key_exists( 'type', $form ) ? $form['type'] : '';
-										$name = is_array($form) && array_key_exists( 'name', $form ) ? $form['name'] : '';
-										if ( $type && $name && $type != 'title' && is_array($user) && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {
-											$label = is_array($form) && array_key_exists( 'label', $form ) ? $form['label'] : '';
-											if ( $type == 'file' ) {
-												$upload_dir = wp_upload_dir();
-												$file_url   = $upload_dir['baseurl'] . '/mep_attendee_file_list/' . $user[ $name ];
-												$file_url   = str_replace( 'http://', 'https://', $file_url );
-												echo '<li>' . esc_html( $label ) . ' : <a href="' . esc_url( $file_url ) . '" target="_blank">📎 ' . esc_html( $user[ $name ] ) . '</a></li>';
-											} else {
-												echo '<li>' . esc_html( $label . ' : ' . $user[ $name ] ) . '</li>';
-											}
+						<?php
+							if ( $same_attendee == 'no' ) {
+								$ticket_name  = is_array( $user ) && array_key_exists( 'ticket_name', $user ) ? $user['ticket_name'] : '';
+								$ticket_price = is_array( $user ) && array_key_exists( 'ticket_price', $user ) ? $user['ticket_price'] : 0;
+								$ticket_qty   = is_array( $user ) && array_key_exists( 'ticket_qty', $user ) ? $user['ticket_qty'] : 1;
+								$line_total   = (float) $ticket_price * (float) $ticket_qty;
+								$ticket_text  = '<table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:0 0 10px;"><tr>'
+									. '<td style="padding:8px 0;vertical-align:top;border-bottom:1px solid #ececf1;font-weight:600;color:#1f1f27;">' . esc_html( $ticket_name ) . '</td>'
+									. '<td style="padding:8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;color:#6f6f7a;font-size:12px;">' . wc_price( (float) $ticket_price ) . ' &times; ' . esc_html( $ticket_qty ) . '</td>'
+									. '<td style="padding:8px 0 8px 8px;vertical-align:top;border-bottom:1px solid #ececf1;text-align:right;white-space:nowrap;font-weight:700;color:#1f1f27;">' . wc_price( $line_total ) . '</td>'
+									. '</tr></table>';
+								echo apply_filters( 'mpwem_display_ticket_in_cart_list', $ticket_text, $user, $post_id );
+								do_action( 'mep_cart_after_ticket_type', $user );
+							}
+						?>
+						<?php
+							foreach ( $form_array as $form ) {
+								if ( is_array( $form ) && sizeof( $form ) > 0 ) {
+									$type = is_array( $form ) && array_key_exists( 'type', $form ) ? $form['type'] : '';
+									$name = is_array( $form ) && array_key_exists( 'name', $form ) ? $form['name'] : '';
+									if ( $type && $name && $type != 'title' && is_array( $user ) && array_key_exists( $name, $user ) && $user[ $name ] != '' ) {
+										$label = is_array( $form ) && array_key_exists( 'label', $form ) ? $form['label'] : '';
+										echo '<strong style="color:#6f6f7a;">' . esc_html( $label ) . ':</strong>&nbsp;';
+										if ( $type == 'file' ) {
+											$upload_dir = wp_upload_dir();
+											$file_url   = $upload_dir['baseurl'] . '/mep_attendee_file_list/' . $user[ $name ];
+											$file_url   = str_replace( 'http://', 'https://', $file_url );
+											echo '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $user[ $name ] ) . '</a>';
+										} else {
+											echo esc_html( $user[ $name ] );
 										}
+										echo "\n<br />\n";
 									}
-								} ?>
-                        </ul>
+								}
+							}
+						?>
                     </div>
-				<?php }
+					<?php
+				}
 			}
 			public function account_dashboard() {
 				ob_start();

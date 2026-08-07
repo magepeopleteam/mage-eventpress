@@ -136,6 +136,16 @@
 			</aside>
 		</div>
 
+		<?php
+			/**
+			 * Reviews sit after the main/sidebar row and before related events.
+			 * Pro review addon hooks here on Horizon so the list stays inside .horizon_theme.
+			 */
+		?>
+		<section class="horizon_section horizon_reviews_wrap" aria-label="<?php esc_attr_e( 'Event reviews', 'mage-eventpress' ); ?>">
+			<?php do_action( 'mpwem_horizon_reviews', $event_id ); ?>
+		</section>
+
 		<section class="horizon_related_wrap">
 			<?php
 				if ( file_exists( $horizon_dir . 'related.php' ) ) {

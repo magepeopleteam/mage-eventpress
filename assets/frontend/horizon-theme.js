@@ -63,6 +63,60 @@
 		return '$' + n.toFixed(2);
 	}
 
+	function dateKeyFromValue(raw) {
+		var d = parseDateValue(raw);
+		if (!d) {
+			var m = String(raw || '').match(/(\d{4}-\d{2}-\d{2})/);
+			return m ? m[1] : '';
+		}
+		var y = d.getFullYear();
+		var mo = d.getMonth() + 1;
+		var day = d.getDate();
+		return y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (day < 10 ? '0' : '') + day;
+	}
+
+	function collectDateTimeSlots($select) {
+		var slots = [];
+		$select.find('option').each(function () {
+			var $opt = $(this);
+			var value = $opt.attr('value');
+			if (value === undefined || value === null || value === '') {
+				return;
+			}
+			value = String(value);
+			var key = dateKeyFromValue(value);
+			if (!key) {
+				return;
+			}
+			slots.push({
+				value: value,
+				dateKey: key,
+				dateLabel: formatShortDate(value),
+				timeLabel: formatTime(value) || $.trim($opt.text()) || value
+			});
+		});
+		return slots;
+	}
+
+	function uniqueDateEntries(slots) {
+		var seen = {};
+		var list = [];
+		slots.forEach(function (slot) {
+			if (seen[slot.dateKey]) {
+				return;
+			}
+			seen[slot.dateKey] = 1;
+			list.push({ dateKey: slot.dateKey, dateLabel: slot.dateLabel });
+		});
+		return list;
+	}
+
+	function slotsForDate(slots, dateKey) {
+		return slots.filter(function (slot) {
+			return slot.dateKey === dateKey;
+		});
+	}
+
 	function enhanceDateTime($root) {
 		var $header = $root.find('.horizon_ticket_body .date-time-header').first();
 		if (!$header.length) {
@@ -91,39 +145,126 @@
 			$label.find('i').remove();
 		});
 
-		var $dateSelect = $area.find('#mpwem_date_time, select[name="mpwem_date_time"]').first();
-		if ($dateSelect.length && $dateSelect.is('select') && !$dateSelect.data('hz-short')) {
-			$dateSelect.data('hz-short', 1);
-			$dateSelect.find('option').each(function () {
-				var $opt = $(this);
-				var val = $opt.attr('value') || $opt.val();
-				if (val) {
-					$opt.text(formatShortDate(val));
-				}
-			});
+		// Everyday / recurring: real #mpwem_time already exists — keep it interactive.
+		if ($area.find('#mpwem_time, select[name="mpwem_time"]').length) {
+			$area.find('.horizon_dt_time_display').remove();
+			return;
 		}
 
-		if ($area.find('select, input[type="text"]').filter(':visible').length <= 1 && !$area.find('.horizon_dt_time').length) {
-			var $select = $area.find('select, input').first();
-			var $timeWrap = $(
-				'<label class="horizon_dt_time horizon_dt_time_display">' +
-					'<span>' + i18n('time', 'Time') + '</span>' +
-					'<div class="horizon_dt_fake"></div>' +
-				'</label>'
+		var $source = $area.find('select#mpwem_date_time, select[name="mpwem_date_time"]').first();
+		if (!$source.length || !$source.is('select')) {
+			return;
+		}
+
+		// Already split into interactive Date + Time controls.
+		if ($source.data('hz-dt-split')) {
+			return;
+		}
+
+		var slots = collectDateTimeSlots($source);
+		if (!slots.length) {
+			return;
+		}
+
+		$source.data('hz-dt-split', 1);
+
+		var dates = uniqueDateEntries(slots);
+		var currentValue = $source.val() || ($source.find('option:selected').attr('value') || '');
+		var currentKey = dateKeyFromValue(currentValue) || (dates[0] && dates[0].dateKey) || '';
+		var currentSlots = slotsForDate(slots, currentKey);
+		if (!currentSlots.length && dates[0]) {
+			currentKey = dates[0].dateKey;
+			currentSlots = slotsForDate(slots, currentKey);
+		}
+		if (!currentValue && currentSlots[0]) {
+			currentValue = currentSlots[0].value;
+			$source.val(currentValue);
+		}
+
+		var $dateLabel = $source.closest('label');
+		if (!$dateLabel.length) {
+			$dateLabel = $('<label class="horizon_dt_date"></label>').prependTo($area);
+			$dateLabel.append($source);
+		}
+		$dateLabel.addClass('horizon_dt_date');
+		if (!$dateLabel.children('span').length) {
+			$dateLabel.prepend($('<span></span>').text(i18n('date', 'Date')));
+		} else {
+			$dateLabel.children('span').first().text(i18n('date', 'Date'));
+		}
+
+		// Visible date select (no name — source keeps mpwem_date_time).
+		var $uiDate = $('<select class="formControl horizon_dt_date_select" aria-label="' + i18n('date', 'Date') + '"></select>');
+		dates.forEach(function (entry) {
+			$uiDate.append(
+				$('<option></option>').attr('value', entry.dateKey).text(entry.dateLabel)
 			);
-			$area.append($timeWrap);
+		});
+		$uiDate.val(currentKey);
+		$source.hide().attr('tabindex', '-1').attr('aria-hidden', 'true');
+		$source.after($uiDate);
 
-			function syncTime() {
-				var raw = $select.is('select') ? ($select.val() || $select.find('option:selected').attr('value')) : $select.val();
-				$timeWrap.find('.horizon_dt_fake').text(formatTime(raw) || '—');
+		// Interactive time select (replaces old fake display).
+		$area.find('.horizon_dt_time_display').remove();
+		var $timeLabel = $(
+			'<label class="horizon_dt_time horizon_dt_time_select_wrap">' +
+				'<span>' + i18n('time', 'Time') + '</span>' +
+			'</label>'
+		);
+		var $uiTime = $('<select class="formControl horizon_dt_time_select" aria-label="' + i18n('time', 'Time') + '"></select>');
+		$timeLabel.append($uiTime);
+		$area.append($timeLabel);
+
+		function fillTimes(dateKey, preferredValue) {
+			var daySlots = slotsForDate(slots, dateKey);
+			$uiTime.empty();
+			if (!daySlots.length) {
+				$uiTime.append($('<option></option>').attr('value', '').text('—'));
+				$uiTime.prop('disabled', true);
+				return '';
 			}
-			syncTime();
-			$select.off('change.horizonDt').on('change.horizonDt', syncTime);
-		} else if ($area.find('.horizon_dt_time_display').length && $dateSelect.length) {
-			$dateSelect.off('change.horizonDtSync').on('change.horizonDtSync', function () {
-				$area.find('.horizon_dt_fake').text(formatTime($(this).val()) || '—');
+			$uiTime.prop('disabled', false);
+			daySlots.forEach(function (slot) {
+				$uiTime.append(
+					$('<option></option>').attr('value', slot.value).text(slot.timeLabel)
+				);
 			});
+			var next = preferredValue;
+			var match = daySlots.some(function (slot) {
+				return slot.value === preferredValue;
+			});
+			if (!match) {
+				next = daySlots[0].value;
+			}
+			$uiTime.val(next);
+			return next;
 		}
+
+		function commitValue(nextValue, triggerChange) {
+			if (!nextValue || $source.val() === nextValue) {
+				if (triggerChange && nextValue) {
+					$source.trigger('change');
+				}
+				return;
+			}
+			$source.val(nextValue);
+			if (triggerChange) {
+				$source.trigger('change');
+			}
+		}
+
+		fillTimes(currentKey, currentValue);
+		commitValue($uiTime.val() || currentValue, false);
+
+		$uiDate.off('change.horizonDtSplit').on('change.horizonDtSplit', function () {
+			var key = $(this).val();
+			var next = fillTimes(key, '');
+			commitValue(next, true);
+		});
+
+		$uiTime.off('change.horizonDtSplit').on('change.horizonDtSplit', function () {
+			commitValue($(this).val(), true);
+		});
 	}
 
 	function cleanTicketName($item) {
@@ -1220,6 +1361,138 @@
 		}
 	}
 
+	function buildStarRow(score) {
+		var n = Math.max(0, Math.min(5, parseInt(score, 10) || 0));
+		var html = '';
+		var i;
+		for (i = 1; i <= 5; i++) {
+			html += '<span class="' + (i <= n ? 'is-filled' : 'is-empty') + '" aria-hidden="true">★</span>';
+		}
+		return $('<span class="horizon_reviews_stars" role="img" aria-label="' + n + ' out of 5 stars"></span>').html(html);
+	}
+
+	function ratingFromImageSrc(src) {
+		var match = String(src || '').match(/\/(\d)\.png(?:\?|$)/i);
+		if (match) {
+			return parseInt(match[1], 10);
+		}
+		return 0;
+	}
+
+	function enhanceReviews($root) {
+		var $panel = $root.find('.horizon_reviews_panel').first();
+		if (!$panel.length || $panel.data('hz-reviews-ready')) {
+			return;
+		}
+		$panel.data('hz-reviews-ready', 1);
+
+		var $list = $panel.find('.mep-event-review-list').first();
+		var $items = $list.find('.mep-event-review-item');
+		var $btn = $panel.find('#give-review-btn').first();
+		var $avg = $list.find('.mep-event-review-avg').first();
+		var count = $items.length;
+		var countLabel = '';
+
+		if ($avg.length) {
+			var headerCount = parseInt($.trim($avg.find('.mep-avg-review-header h4 span').first().text()), 10);
+			if (!isNaN(headerCount) && headerCount > 0) {
+				count = headerCount;
+			}
+			if (!$avg.find('.mep-avg-review-item').length) {
+				$avg.hide();
+			}
+		}
+
+		if (count === 1) {
+			countLabel = i18n('reviewSingular', '1 review');
+		} else if (count > 1) {
+			countLabel = i18n('reviewPlural', '%d reviews').replace('%d', String(count));
+		} else {
+			countLabel = i18n('noReviewsYet', 'Be the first to share your experience.');
+		}
+
+		var summaryScore = 0;
+		var scored = 0;
+		$items.each(function () {
+			var score = ratingFromImageSrc($(this).find('.mep-event-review-rating img').attr('src'));
+			if (score > 0) {
+				summaryScore += score;
+				scored += 1;
+			}
+		});
+		var avgScore = scored ? Math.round(summaryScore / scored) : 0;
+
+		if (!$panel.children('.horizon_reviews_head').length) {
+			var $head = $(
+				'<div class="horizon_reviews_head">' +
+					'<div class="horizon_reviews_head__copy">' +
+						'<span class="horizon_reviews_eyebrow"></span>' +
+						'<h2 class="horizon_reviews_title"></h2>' +
+						'<div class="horizon_reviews_meta"></div>' +
+					'</div>' +
+				'</div>'
+			);
+			$head.find('.horizon_reviews_eyebrow').text(i18n('reviewsEyebrow', 'Reviews'));
+			$head.find('.horizon_reviews_title').text(i18n('reviewsTitle', 'What attendees say'));
+
+			var $meta = $head.find('.horizon_reviews_meta');
+			if (avgScore > 0) {
+				$meta.append(buildStarRow(avgScore));
+			}
+			$meta.append($('<span class="horizon_reviews_count"></span>').text(countLabel));
+
+			if ($btn.length) {
+				$head.append($btn);
+			}
+			$panel.prepend($head);
+		}
+
+		$items.each(function () {
+			var $item = $(this);
+			if ($item.data('hz-review-card')) {
+				return;
+			}
+			$item.data('hz-review-card', 1);
+
+			var $imgWrap = $item.find('.mep-event-review-img').first();
+			var $avatar = $imgWrap.find('img').first();
+			var $name = $imgWrap.find('.mep-event-review-name').first();
+			var $rating = $item.find('.mep-event-review-rating').first();
+			var $date = $rating.find('.mep-event-review-date').first();
+			var score = ratingFromImageSrc($rating.find('img').attr('src'));
+
+			var $top = $('<div class="horizon_review_card__top"></div>');
+			if ($avatar.length) {
+				$avatar.addClass('horizon_review_avatar');
+				$top.append($avatar);
+			}
+			var $meta = $('<div class="horizon_review_meta"></div>');
+			if ($name.length) {
+				$name.addClass('horizon_review_name');
+				$meta.append($name);
+			}
+			if ($date.length) {
+				$date.addClass('horizon_review_date');
+				$meta.append($date);
+			}
+			$top.append($meta);
+			if (score > 0) {
+				$top.append(buildStarRow(score));
+			}
+			$item.prepend($top);
+			$imgWrap.remove();
+			$rating.remove();
+		});
+
+		if (!$items.length && !$panel.find('.horizon_reviews_empty').length) {
+			$list.append(
+				$('<div class="horizon_reviews_empty"></div>').text(
+					i18n('noReviewsYet', 'Be the first to share your experience.')
+				)
+			);
+		}
+	}
+
 	function initHorizonTicket() {
 		var $root = $('.horizon_theme');
 		if (!$root.length) {
@@ -1234,6 +1507,7 @@
 		enhanceShare($root);
 		bindLocationModal($root);
 		bindAttendeeDrawer($root);
+		enhanceReviews($root);
 	}
 
 	function bindHeroDesc($root) {
@@ -1263,6 +1537,31 @@
 	$(document).ready(initHorizonTheme);
 	$(document).on('mpwem_ticket_reload mpwem_registration_reload', function () {
 		setTimeout(initHorizonTicket, 80);
+	});
+
+	// Core get_mpwem_ticket replaces .mpwem_booking_panel HTML but does not fire
+	// mpwem_ticket_reload — re-apply Horizon ticket layout after that AJAX.
+	$(document).ajaxComplete(function (event, xhr, settings) {
+		if (!$('.horizon_theme').length || !settings) {
+			return;
+		}
+		var payload = settings.data;
+		var query = '';
+		if (typeof payload === 'string') {
+			query = payload;
+		} else if (payload && typeof payload === 'object' && typeof $.param === 'function' && !(payload instanceof FormData)) {
+			try {
+				query = $.param(payload);
+			} catch (e) {
+				query = '';
+			}
+		}
+		if (!query || query.indexOf('get_mpwem_ticket') === -1) {
+			return;
+		}
+		setTimeout(function () {
+			initHorizonTicket();
+		}, 60);
 	});
 
 	// Restore attendee blocks into ticket DOM before core qty/attendee cloning runs.
@@ -1400,4 +1699,48 @@
 			closeAttendeeDrawer($root);
 		}
 	});
+
+	// Horizon-only review modal (Pro addon markup when template is horizon.php).
+	(function initHorizonReviewModal() {
+		var modal = document.getElementById('mageModal');
+		if (!modal || !modal.classList.contains('merr-modal--horizon')) {
+			return;
+		}
+		var btn = document.getElementById('give-review-btn');
+
+		function openModal(e) {
+			if (e) {
+				e.preventDefault();
+			}
+			modal.style.display = 'flex';
+			modal.classList.add('is-open');
+			modal.setAttribute('aria-hidden', 'false');
+			document.body.classList.add('mage-modal-open');
+		}
+
+		function closeModal() {
+			modal.style.display = 'none';
+			modal.classList.remove('is-open');
+			modal.setAttribute('aria-hidden', 'true');
+			document.body.classList.remove('mage-modal-open');
+		}
+
+		if (btn) {
+			btn.addEventListener('click', openModal);
+		}
+
+		modal.addEventListener('click', function (e) {
+			var closer = e.target.closest('[data-mage-modal-close], .mage-modal-close, .mage-modal-header .close');
+			if (closer || e.target.classList.contains('mage-modal-backdrop')) {
+				e.preventDefault();
+				closeModal();
+			}
+		});
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+				closeModal();
+			}
+		});
+	})();
 })(jQuery);

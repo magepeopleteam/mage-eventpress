@@ -1170,6 +1170,15 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	padding: 0 !important;
 	border: 0 !important;
 	background: transparent !important;
+	position: relative;
+	z-index: 2;
+}
+
+.horizon_theme .horizon_ticket_body .mpwem_booking_panel {
+	position: relative;
+	z-index: 1;
+	margin-top: 4px;
+	clear: both;
 }
 
 .horizon_theme .horizon_ticket_body .ticket-title {
@@ -1185,6 +1194,29 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	margin: 0 !important;
 	padding: 0 !important;
 	width: 100% !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem_time_area {
+	display: block !important;
+	width: 100% !important;
+	min-width: 0;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area select[name="mpwem_date_time"][aria-hidden="true"],
+.horizon_theme .horizon_ticket_body .date-time-area select#mpwem_date_time[aria-hidden="true"] {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	min-height: 0 !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	border: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area label,
@@ -1347,6 +1379,18 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	border: 0 !important;
 	width: 100% !important;
 	background: transparent !important;
+}
+
+/* Fallback when AJAX HTML has not been enhanced yet */
+.horizon_theme .horizon_ticket_body .mep_ticket_item .ticket-data:not(:has(.horizon_ticket_top)) {
+	padding: 18px 20px !important;
+	gap: 12px !important;
+	box-sizing: border-box;
+}
+
+.horizon_theme .horizon_ticket_body .mep_ticket_item .ticket-data:not(:has(.horizon_ticket_top)) > .quantity-control,
+.horizon_theme .horizon_ticket_body .mep_ticket_item .ticket-data:not(:has(.horizon_ticket_top)) > .ticket-price {
+	align-self: flex-end;
 }
 
 .horizon_theme .horizon_ticket_body .horizon_ticket_top {
@@ -2156,8 +2200,348 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
 .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data {
-	padding: 0 !important;
+	padding: 18px 20px !important;
 	border-bottom: 0 !important;
+	box-sizing: border-box;
+}
+
+body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data:has(.horizon_ticket_top),
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data:has(.horizon_ticket_top) {
+	padding: 0 !important;
+}
+
+/* ========== REVIEWS (Horizon placement) ========== */
+.horizon_theme .horizon_reviews_wrap {
+	margin-top: 48px;
+}
+
+.horizon_theme .horizon_reviews_wrap:empty {
+	display: none;
+	margin: 0;
+}
+
+.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+.horizon_theme .horizon_reviews_head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px 24px;
+	flex-wrap: wrap;
+	margin-bottom: 22px;
+}
+
+.horizon_theme .horizon_reviews_head__copy {
+	min-width: 0;
+	flex: 1 1 220px;
+}
+
+.horizon_theme .horizon_reviews_eyebrow {
+	display: inline-block;
+	margin: 0 0 8px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--hz-purple);
+}
+
+.horizon_theme .horizon_reviews_title {
+	font-family: var(--hz-serif) !important;
+	font-size: 1.75rem !important;
+	font-weight: 700 !important;
+	color: var(--hz-text) !important;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	margin: 0 0 8px !important;
+}
+
+.horizon_theme .horizon_reviews_meta {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px 10px;
+	color: var(--hz-muted);
+	font-size: 0.92rem;
+	font-weight: 500;
+}
+
+.horizon_theme .horizon_reviews_stars {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	line-height: 1;
+	color: #F5B301;
+	letter-spacing: 0.02em;
+}
+
+.horizon_theme .horizon_reviews_stars .is-empty {
+	color: #D9D6E5;
+}
+
+.horizon_theme .horizon_reviews_count {
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_reviews_head #give-review-btn,
+.horizon_theme .horizon_reviews_panel #give-review-btn {
+	appearance: none;
+	-webkit-appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin: 0;
+	padding: 12px 18px;
+	border: 0;
+	border-radius: 999px;
+	background: linear-gradient(145deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+	color: #fff !important;
+	font-family: var(--hz-sans) !important;
+	font-size: 0.92rem;
+	font-weight: 700;
+	line-height: 1.2;
+	cursor: pointer;
+	box-shadow: 0 10px 24px rgba(123, 97, 255, 0.28);
+	transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+	flex: 0 0 auto;
+	text-transform: none;
+}
+
+.horizon_theme .horizon_reviews_head #give-review-btn:hover,
+.horizon_theme .horizon_reviews_panel #give-review-btn:hover {
+	filter: brightness(1.04);
+	box-shadow: 0 12px 28px rgba(123, 97, 255, 0.34);
+	transform: translateY(-1px);
+	text-decoration: none;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-avg {
+	margin: 0 0 4px;
+	padding: 20px 22px;
+	background: var(--hz-card);
+	border: 1px solid var(--hz-border);
+	border-radius: var(--hz-radius);
+	box-shadow: var(--hz-shadow);
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-header {
+	display: none;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-content:empty,
+.horizon_theme .horizon_reviews_panel .mep-event-review-avg:not(:has(.mep-avg-review-item)) {
+	display: none;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item {
+	display: grid;
+	grid-template-columns: 84px minmax(0, 1fr) 44px;
+	gap: 12px;
+	align-items: center;
+	margin: 0 0 10px;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item:last-child {
+	margin-bottom: 0;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item .rating-text {
+	flex: none;
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item .rating-bar {
+	flex: none;
+	width: 100%;
+	height: 8px;
+	background: var(--hz-purple-soft);
+	border-radius: 999px;
+	box-shadow: none;
+	overflow: hidden;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item .rating-bar span {
+	background: linear-gradient(90deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+	border-radius: 999px;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item.r-1 .rating-bar span,
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item.r-2 .rating-bar span,
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item.r-3 .rating-bar span,
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item.r-4 .rating-bar span,
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item.r-5 .rating-bar span {
+	background: linear-gradient(90deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+}
+
+.horizon_theme .horizon_reviews_panel .mep-avg-review-item .rating-percent {
+	flex: none;
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--hz-text);
+	text-align: right;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-item {
+	display: block;
+	margin: 0;
+	padding: 20px 22px;
+	background: var(--hz-card);
+	border: 1px solid var(--hz-border);
+	border-radius: var(--hz-radius);
+	box-shadow: var(--hz-shadow);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-item:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--hz-shadow-lg);
+}
+
+.horizon_theme .horizon_review_card__top {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 14px;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-img {
+	display: contents;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-img > img,
+.horizon_theme .horizon_review_avatar {
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	object-fit: cover;
+	display: block;
+	margin: 0;
+	flex: 0 0 auto;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px var(--hz-purple-mid);
+}
+
+.horizon_theme .horizon_review_meta {
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-name,
+.horizon_theme .horizon_review_name {
+	font-size: 0.98rem;
+	font-weight: 700;
+	color: var(--hz-text);
+	line-height: 1.3;
+	margin: 0 0 2px;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-date,
+.horizon_theme .horizon_review_date {
+	display: block;
+	color: var(--hz-muted);
+	font-size: 0.82rem;
+	font-weight: 500;
+	margin: 0;
+}
+
+.horizon_theme .horizon_review_card__top .horizon_reviews_stars {
+	flex: 0 0 auto;
+	margin-left: auto;
+	font-size: 1rem;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-rating {
+	display: none;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-info {
+	min-width: 0;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-info .mep-review-title {
+	margin: 0 0 8px;
+	font-family: var(--hz-serif) !important;
+	font-size: 1.15rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--hz-text);
+	letter-spacing: -0.01em;
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-info .mep-event-review-content,
+.horizon_theme .horizon_reviews_panel .mep-event-review-info .mep-event-review-content p {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.7;
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_reviews_panel .mep-event-review-info .mep-event-review-content p + p {
+	margin-top: 8px;
+}
+
+.horizon_theme .horizon_reviews_empty {
+	padding: 28px 22px;
+	text-align: center;
+	background: var(--hz-card);
+	border: 1px dashed var(--hz-purple-mid);
+	border-radius: var(--hz-radius);
+	color: var(--hz-muted);
+	font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+	.horizon_theme .horizon_reviews_head {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.horizon_theme .horizon_reviews_head #give-review-btn,
+	.horizon_theme .horizon_reviews_panel #give-review-btn {
+		width: 100%;
+	}
+
+	.horizon_theme .horizon_reviews_title {
+		font-size: 1.45rem !important;
+	}
+
+	.horizon_theme .horizon_reviews_panel .mep-event-review-item {
+		padding: 16px;
+	}
+
+	.horizon_theme .horizon_review_card__top {
+		flex-wrap: wrap;
+	}
+
+	.horizon_theme .horizon_review_card__top .horizon_reviews_stars {
+		width: 100%;
+		margin-left: 66px;
+		margin-top: -4px;
+	}
+
+	.horizon_theme .horizon_reviews_panel .mep-avg-review-item {
+		grid-template-columns: 72px minmax(0, 1fr) 40px;
+		gap: 8px;
+	}
 }
 
 /* ========== RELATED ========== */
@@ -2307,10 +2691,16 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data,
 .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data {
-	padding: 0 !important;
+	padding: 18px 20px !important;
 	border-bottom: 0 !important;
 	align-items: stretch !important;
 	flex-wrap: nowrap !important;
+	box-sizing: border-box;
+}
+
+body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data:has(.horizon_ticket_top),
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item .ticket-data:has(.horizon_ticket_top) {
+	padding: 0 !important;
 }
 
 .horizon_theme .horizon_ticket_body .mep_ticket_item .horizon_ticket_top,
@@ -3043,4 +3433,383 @@ body.horizon-attendee-drawer-open {
 	.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_file_item {
 		grid-column: 1;
 	}
+}
+
+/* =========================================================
+   Horizon-only: review modal redesign (does not affect other templates)
+   ========================================================= */
+
+body.mep-horizon-active .mage-modal {
+    display: none;
+    position: fixed;
+    z-index: 100080;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 32px 16px;
+    box-sizing: border-box;
+}
+body.mep-horizon-active .mage-modal.is-open,
+body.mep-horizon-active .mage-modal[style*="display: block"],
+body.mep-horizon-active .mage-modal[style*="display:block"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+body.mep-horizon-active .mage-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 14, 28, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 0;
+}
+body.mep-horizon-active .mage-modal-content {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #EAE7F4;
+    width: min(640px, 100%);
+    max-width: 640px;
+    max-height: calc(100vh - 64px);
+    overflow: auto;
+    border-radius: 18px;
+    box-shadow: 0 28px 64px rgba(16, 14, 28, 0.28);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.28s;
+    animation-name: animatetop;
+    animation-duration: 0.28s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        transform: translateY(16px) scale(0.98);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes animatetop {
+    from {
+        transform: translateY(16px) scale(0.98);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+body.mep-horizon-active .mage-modal-header .close,
+body.mep-horizon-active .mage-modal-close {
+    color: #5B5B66;
+    float: none;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #E8E4F5;
+    border-radius: 50%;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+body.mep-horizon-active .mage-modal-header .close:hover,
+body.mep-horizon-active .mage-modal-header .close:focus,
+body.mep-horizon-active .mage-modal-close:hover,
+body.mep-horizon-active .mage-modal-close:focus {
+    color: #16161D;
+    background: #F4F0FF;
+    border-color: #DED5FF;
+    text-decoration: none;
+}
+
+body.mep-horizon-active .mage-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px 22px 16px;
+    color: #16161D;
+    border-bottom: 1px solid #EEEAF8;
+    background: linear-gradient(180deg, #F7F4FF 0%, #FFFFFF 100%);
+}
+body.mep-horizon-active .mage-modal-eyebrow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7B61FF;
+}
+body.mep-horizon-active .mage-modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #16161D;
+}
+
+body.mep-horizon-active .mage-modal-body {
+    padding: 8px 22px 22px;
+}
+
+body.mep-horizon-active .mage-modal-footer {
+    padding: 12px 22px;
+    color: #565656;
+    border-top: 1px solid #EEEAF8;
+}
+body.mep-horizon-active .mage-modal-footer h3 {
+    font-size: 1em;
+}
+/* Mage Modal form */
+body.mep-horizon-active .mep-event-review-form .group {
+    margin-bottom: 18px;
+}
+body.mep-horizon-active .mep-event-review-form .group.col-tow {
+    display: flex;
+    width: 100%;
+    gap: 14px;
+    justify-content: space-between;
+}
+body.mep-horizon-active .mep-event-review-form .group.col-tow > div {
+    flex: 1 1 0;
+    min-width: 0;
+}
+body.mep-horizon-active .mep-event-review-form .group::after {
+    display: none;
+}
+body.mep-horizon-active .mep-event-review-form p {
+    margin-bottom: 10px;
+}
+body.mep-horizon-active .mep-event-review-form .mep-event-review-heading {
+    margin: 8px 0 22px;
+}
+body.mep-horizon-active .mep-event-review-form .mep-event-review-heading h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #16161D;
+}
+body.mep-horizon-active .mep-event-review-form .mep-event-review-heading p {
+    margin: 0;
+    font-size: 0.92em;
+    line-height: 1.5;
+    color: #6E6E7A;
+}
+body.mep-horizon-active .mep-event-review-form .label {
+    font-weight: 600;
+    font-size: 0.86em;
+    display: block;
+    margin-bottom: 8px;
+    color: #3F3F4A;
+}
+body.mep-horizon-active .mep-event-review-form--content {
+    width: 100%;
+}
+body.mep-horizon-active .mep-event-review-form input[type="text"],
+body.mep-horizon-active .mep-event-review-form input[type="email"],
+body.mep-horizon-active .mage-modal #mep-event-review-form--title,
+body.mep-horizon-active .mage-modal #mep-event-review-form--name,
+body.mep-horizon-active .mage-modal #mep-event-review-form--email {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    border: 1px solid #E4E1EF !important;
+    border-radius: 11px !important;
+    background: #FBFBFD !important;
+    padding: 12px 14px !important;
+    font-size: 14px !important;
+    color: #16161D !important;
+    min-height: 46px !important;
+    height: auto !important;
+    margin: 0 !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+body.mep-horizon-active .mep-event-review-form input[type="text"]:focus,
+body.mep-horizon-active .mep-event-review-form input[type="email"]:focus {
+    outline: none;
+    border-color: #7B61FF;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.16);
+}
+body.mep-horizon-active .mep-event-review-form .radio-inline {
+    display: none;
+}
+body.mep-horizon-active .mep-review-stars {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 4px;
+}
+body.mep-horizon-active .mep-review-star {
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+}
+body.mep-horizon-active .mep-review-star input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+body.mep-horizon-active .mep-review-star__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 24px;
+    line-height: 1;
+    color: #D8D5E8;
+    background: #F7F6FB;
+    border: 1px solid #EEEAF8;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+body.mep-horizon-active .mep-review-star:hover .mep-review-star__icon,
+body.mep-horizon-active .mep-review-star:hover ~ .mep-review-star .mep-review-star__icon {
+	color: #F5A524;
+	background: #FFF8E8;
+	border-color: #F6E0A8;
+}
+body.mep-horizon-active .mep-review-star:has(input:checked) .mep-review-star__icon,
+body.mep-horizon-active .mep-review-star:has(input:checked) ~ .mep-review-star .mep-review-star__icon {
+	color: #F5A524;
+	background: #FFF8E8;
+	border-color: #F6E0A8;
+}
+body.mep-horizon-active .mep-review-star:hover .mep-review-star__icon {
+	transform: translateY(-1px);
+}
+body.mep-horizon-active body.mage-modal-open {
+	overflow: hidden;
+}
+body.mep-horizon-active .mep-review-comments-group .wp-editor-wrap,
+body.mep-horizon-active .mep-review-comments-group .wp-editor-container,
+body.mep-horizon-active .mep-review-comments-group .mce-tinymce {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+body.mep-horizon-active .mep-review-comments-group .wp-editor-container {
+    border: 1px solid #E4E1EF !important;
+}
+body.mep-horizon-active .mep-review-comments-group .wp-editor-tools {
+    margin-bottom: 8px;
+}
+body.mep-horizon-active .mep-review-comments-group .wp-switch-editor {
+    border-radius: 8px 8px 0 0 !important;
+}
+body.mep-horizon-active .mep-review-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    padding-top: 8px;
+}
+body.mep-horizon-active .mep-review-cancel {
+    border: 1px solid #E4E1EF;
+    background: #fff;
+    color: #4F4F5C;
+    border-radius: 11px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 46px;
+}
+body.mep-horizon-active .mep-review-cancel:hover {
+    background: #F7F6FB;
+    color: #16161D;
+}
+body.mep-horizon-active .mep-event-review-form input[type="submit"],
+body.mep-horizon-active .mep-event-review-form button[type="submit"] {
+    background: linear-gradient(145deg, #7B61FF 0%, #6548f0 100%);
+    padding: 12px 20px;
+    text-transform: none;
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 46px;
+    box-shadow: 0 10px 22px rgba(123, 97, 255, 0.28);
+    transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+body.mep-horizon-active .mep-event-review-form input[type="submit"]:hover,
+body.mep-horizon-active .mep-event-review-form button[type="submit"]:hover {
+    text-decoration: none;
+    filter: brightness(1.04);
+    box-shadow: 0 12px 26px rgba(123, 97, 255, 0.34);
+}
+body.mep-horizon-active .mep-event-review-form {
+    width: 100%;
+    margin: 0 auto;
+    padding: 4px 0 8px;
+}
+body.mep-horizon-active .screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+body.mep-horizon-active .review_form_error {
+    color: #cd2653;
+    font-size: .7em;
+    margin-top: 5px!important;
+    display: block;
+}
+body.mep-horizon-active .mce-widget.mce-btn {
+    display: inline-block;
+}
+
+@media only screen and (max-width: 1199px) {
+body.mep-horizon-active .mep-event-review-form {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+body.mep-horizon-active .mage-modal {
+        padding: 16px 10px;
+    }
+body.mep-horizon-active .mage-modal-content {
+        max-height: calc(100vh - 32px);
+        border-radius: 14px;
+    }
+body.mep-horizon-active .mage-modal-header,
+body.mep-horizon-active .mage-modal-body {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+body.mep-horizon-active .mep-event-review-form .group.col-tow {
+        flex-direction: column;
+        gap: 18px;
+    }
+body.mep-horizon-active .mep-review-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
 }

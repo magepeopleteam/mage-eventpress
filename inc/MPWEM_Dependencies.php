@@ -373,6 +373,11 @@
 						'attendeeAdded'       => __( 'Attendee details added', 'mage-eventpress' ),
 						'attendeeForTicket'   => __( 'Attendees for %s', 'mage-eventpress' ),
 						'close'               => __( 'Close', 'mage-eventpress' ),
+						'reviewsEyebrow'      => __( 'Reviews', 'mage-eventpress' ),
+						'reviewsTitle'        => __( 'What attendees say', 'mage-eventpress' ),
+						'reviewSingular'      => __( '1 review', 'mage-eventpress' ),
+						'reviewPlural'        => __( '%d reviews', 'mage-eventpress' ),
+						'noReviewsYet'        => __( 'Be the first to share your experience.', 'mage-eventpress' ),
 						'sameAttendee'        => MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ),
 					)
 				);

@@ -1359,12 +1359,18 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.horizon_theme .horizon_ticket_body .mep_ticket_item:hover {
+.horizon_theme .horizon_ticket_body .mep_ticket_item:hover,
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item:hover,
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item:hover {
 	border-color: #DED5FF !important;
 	background: #F5F3FB !important;
 }
 
-.horizon_theme .horizon_ticket_body .mep_ticket_item.is-selected {
+.horizon_theme .horizon_ticket_body .mep_ticket_item.is-selected,
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item.is-selected,
+.horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item.is-selected,
+body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-body .mep_ticket_item.is-selected,
+body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_panel .mpwem_ex_service .card-body .mep_ticket_item.is-selected {
 	border: 1.5px solid var(--hz-purple) !important;
 	box-shadow: 0 8px 22px rgba(123, 97, 255, 0.12);
 	background: #F3F0FF !important;

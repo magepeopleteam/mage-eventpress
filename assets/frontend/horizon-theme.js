@@ -312,7 +312,15 @@
 			var $info = $data.find('> .ticket-info, > .horizon_ticket_top > .ticket-info').first();
 			var $qty = $data.find('> .quantity-control, > .horizon_ticket_bottom > .quantity-control').first();
 			var $price = $data.find('> .ticket-price, > .horizon_ticket_top > .ticket-price').first();
-			var qtyVal = parseInt($item.find('.inputIncDec, select[name="option_qty[]"], select[name="event_extra_service_qty[]"]').val(), 10) || 0;
+			var isExtra = $item.closest('.mpwem_ex_service').length > 0;
+			var qtyVal = parseInt(
+				$item.find(
+					isExtra
+						? '[name="event_extra_service_qty[]"], .inputIncDec'
+						: '[name="option_qty[]"], .inputIncDec'
+				).first().val(),
+				10
+			) || 0;
 
 			$item.toggleClass('is-selected', qtyVal > 0);
 			$item.removeClass('is-premium');
@@ -1525,12 +1533,44 @@
 		});
 	}
 
+	function bindFaqAccordion($root) {
+		var $list = $root.find('.horizon_faq_list');
+		if (!$list.length) {
+			return;
+		}
+
+		$list.off('click.horizonFaq', '.horizon_faq_trigger').on('click.horizonFaq', '.horizon_faq_trigger', function (e) {
+			e.preventDefault();
+			var $btn = $(this);
+			var $item = $btn.closest('.horizon_faq_item');
+			var $answer = $item.children('.horizon_faq_answer').first();
+			var willOpen = !$item.hasClass('is-open');
+
+			// Accordion: close siblings
+			$item.siblings('.horizon_faq_item.is-open').each(function () {
+				var $other = $(this);
+				$other.removeClass('is-open');
+				$other.children('.horizon_faq_trigger').attr('aria-expanded', 'false');
+				$other.children('.horizon_faq_answer').attr('hidden', true);
+			});
+
+			$item.toggleClass('is-open', willOpen);
+			$btn.attr('aria-expanded', willOpen ? 'true' : 'false');
+			if (willOpen) {
+				$answer.removeAttr('hidden');
+			} else {
+				$answer.attr('hidden', true);
+			}
+		});
+	}
+
 	function initHorizonTheme() {
 		var $root = $('.horizon_theme');
 		if (!$root.length) {
 			return;
 		}
 		bindHeroDesc($root);
+		bindFaqAccordion($root);
 		initHorizonTicket();
 	}
 
@@ -1576,10 +1616,14 @@
 		if (!t.closest('.incQty, .decQty, .qtyIncDec')) {
 			return;
 		}
+		// Extra services never collect attendee info — leave drawer alone.
+		if (t.closest('.mpwem_ex_service')) {
+			return;
+		}
 		var $root = $('.horizon_theme');
 		$root.data('hz-prev-total-qty', getTicketQty($root));
 		var $item = $(t).closest('.mep_ticket_item');
-		if ($item.length && !$item.closest('.mpwem_ex_service').length) {
+		if ($item.length) {
 			$root.data('hz-focus-ticket-key', getTicketKeyFromItem($item));
 			$root.data('hz-prev-item-qty', getItemQty($item));
 		}
@@ -1591,13 +1635,16 @@
 		if (!t || !t.closest || !t.closest('.horizon_theme')) {
 			return;
 		}
+		if (t.closest('.mpwem_ex_service')) {
+			return;
+		}
 		if (!t.matches || !t.matches('.inputIncDec, select[name="option_qty[]"], [name="option_qty[]"]')) {
 			return;
 		}
 		var $root = $('.horizon_theme');
 		$root.data('hz-prev-total-qty', getTicketQty($root));
 		var $item = $(t).closest('.mep_ticket_item');
-		if ($item.length && !$item.closest('.mpwem_ex_service').length) {
+		if ($item.length) {
 			$root.data('hz-focus-ticket-key', getTicketKeyFromItem($item));
 			$root.data('hz-prev-item-qty', getItemQty($item));
 		}
@@ -1611,6 +1658,9 @@
 		if (!t.closest('.horizon_theme')) {
 			return;
 		}
+		if (t.closest('.mpwem_ex_service')) {
+			return;
+		}
 		if (!t.matches || !t.matches('.inputIncDec, select[name="option_qty[]"], [name="option_qty[]"]')) {
 			return;
 		}
@@ -1619,7 +1669,15 @@
 
 	$(document).on('click', '.horizon_theme .qtyIncDec .incQty, .horizon_theme .qtyIncDec .decQty', function () {
 		var $root = $('.horizon_theme');
-		var $item = $(this).closest('.mep_ticket_item');
+		var $btn = $(this);
+		// Extra service qty must not open the attendee drawer.
+		if ($btn.closest('.mpwem_ex_service').length) {
+			setTimeout(function () {
+				refreshTicketUi($root);
+			}, 80);
+			return;
+		}
+		var $item = $btn.closest('.mep_ticket_item');
 		var ticketKey = $root.data('hz-focus-ticket-key') || getTicketKeyFromItem($item);
 		var prevItemQty = parseInt($root.data('hz-prev-item-qty'), 10);
 		if (isNaN(prevItemQty)) {
@@ -1639,7 +1697,9 @@
 		function () {
 			var $root = $('.horizon_theme');
 			var $el = $(this);
-			if (!$el.is('[name="option_qty[]"], .inputIncDec')) {
+			var isExtraService = $el.closest('.mpwem_ex_service').length > 0 ||
+				$el.is('[name="event_extra_service_qty[]"]');
+			if (isExtraService || !$el.is('[name="option_qty[]"], .inputIncDec')) {
 				setTimeout(function () {
 					refreshTicketUi($root);
 				}, 80);

@@ -142,7 +142,9 @@
         const toastType = type || 'info';
         const iconClass = toastType === 'error'
             ? 'dashicons-warning'
-            : (toastType === 'warning' ? 'dashicons-info-outline' : 'dashicons-update-alt');
+            : (toastType === 'warning'
+                ? 'dashicons-info-outline'
+                : (toastType === 'success' ? 'dashicons-yes-alt' : 'dashicons-update-alt'));
 
         if ($toast.length === 0) {
             $toast = $(`
@@ -163,7 +165,7 @@
 
         const timer = window.setTimeout(function() {
             $toast.removeClass('show');
-        }, toastType === 'error' ? 4200 : (toastType === 'warning' ? 3600 : 2600));
+        }, toastType === 'error' ? 4200 : (toastType === 'warning' ? 3600 : (toastType === 'success' ? 3200 : 2600)));
 
         $toast.data('mpwemToastTimer', timer);
     }
@@ -6408,42 +6410,58 @@
 
         // Show a success popup with a "Preview" button right after a
         // publish/update/save redirect (see $notice_key in handle_save()).
+        // Prefer the server-rendered data-save-notice attribute so the modal
+        // still appears if the query string is altered before JS runs.
         (function() {
-            let params;
-            try {
-                params = new URLSearchParams(window.location.search);
-            } catch (e) {
-                return;
-            }
-
             const successMessages = {
                 published: ['Event published', 'Your event is live. Attendees can now view and register for it.'],
                 drafted: ['Event switched to draft', 'Your event is saved as a draft and is not visible to the public yet.'],
                 saved: ['Event saved', 'Your changes have been saved successfully.']
             };
 
-            let noticeKey = '';
-            for (const key in successMessages) {
-                if (params.get(key) === '1') {
-                    noticeKey = key;
-                    break;
-                }
+            let noticeKey = ($root.attr('data-save-notice') || '').toString();
+            if (!successMessages[noticeKey]) {
+                noticeKey = '';
+            }
+
+            let params = null;
+            try {
+                params = new URLSearchParams(window.location.search);
+            } catch (e) {
+                params = null;
+            }
+
+            if (!noticeKey && params) {
+                Object.keys(successMessages).some(function(key) {
+                    const val = params.get(key);
+                    if (val === '1' || val === 'true') {
+                        noticeKey = key;
+                        return true;
+                    }
+                    return false;
+                });
             }
             if (!noticeKey) return;
 
             // Strip the notice param so refreshing the page doesn't re-show the popup.
-            params.delete(noticeKey);
-            const cleanedSearch = params.toString();
-            const cleanedUrl = window.location.pathname + (cleanedSearch ? '?' + cleanedSearch : '') + window.location.hash;
-            if (window.history && window.history.replaceState) {
-                window.history.replaceState(null, '', cleanedUrl);
+            if (params) {
+                params.delete(noticeKey);
+                const cleanedSearch = params.toString();
+                const cleanedUrl = window.location.pathname + (cleanedSearch ? '?' + cleanedSearch : '') + window.location.hash;
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, '', cleanedUrl);
+                }
             }
+            $root.removeAttr('data-save-notice');
 
-            const previewUrl = ($root.data('frontend-url') || '').toString();
-            const [title, message] = successMessages[noticeKey];
+            const previewUrl = ($root.attr('data-frontend-url') || $root.data('frontendUrl') || '').toString();
+            const pair = successMessages[noticeKey];
+            const title = pair[0];
+            const message = pair[1];
             window.setTimeout(function() {
                 showSaveSuccessModal(title, message, previewUrl);
-            }, 400);
+                showNotice($root, message, 'success');
+            }, 500);
         })();
 
         try {
@@ -6505,13 +6523,13 @@
             }
         });
 
-        // Topbar "Save" Button Handler
+        // Topbar "Save as Draft" — keep status as draft and show the drafted notice.
         $root.on('click', '.mpwem-wizard-save-draft', function(e) {
             e.preventDefault();
             if (!validateDateWiseGlobalQty($root)) {
                 return;
             }
-            submitEventForm($root, '');
+            submitEventForm($root, 'draft');
         });
 
         $root.on('click', '.mpwem-status-actions__primary', function(e) {

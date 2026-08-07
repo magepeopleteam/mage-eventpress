@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Horizon Theme â€” isolated. Only applies inside .horizon_theme / .mep-horizon-active
    Does NOT affect Default / Smart / Virtual templates.
    ========================================================================== */
@@ -2729,76 +2729,183 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	min-height: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
-	padding: 18px 22px 24px;
+	padding: 18px 20px 28px;
+	background:
+		radial-gradient(120% 80% at 100% 0%, rgba(123, 97, 255, 0.06), transparent 55%),
+		#F7F6FB;
 	-webkit-overflow-scrolling: touch;
 	overscroll-behavior: contain;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info,
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info_hidden {
-	margin: 0 0 12px !important;
-	display: none !important;
-}
-
-.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info.is-hz-active-ticket {
-	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 14px !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info:empty,
-.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info.is-hz-active-ticket:empty {
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info_hidden:empty {
 	display: none !important;
-	margin: 0 !important;
 }
 
-.horizon_theme .horizon_attendee_drawer__body .mep_form_item,
-.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block {
-	background: transparent !important;
-	border: 0 !important;
-	border-radius: 0 !important;
-	padding: 0 !important;
-	margin: 0 0 20px !important;
-	box-shadow: none !important;
+/* One attendee = one modern card */
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item,
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item {
 	display: grid !important;
 	grid-template-columns: 1fr 1fr;
-	gap: 12px 14px;
+	gap: 14px 12px;
 	align-items: start;
+	margin: 0 !important;
+	padding: 16px 16px 18px !important;
+	background: #fff !important;
+	border: 1px solid #EAE7F4 !important;
+	border-radius: 16px !important;
+	box-shadow: 0 10px 28px rgba(22, 22, 29, 0.05) !important;
 }
 
-.horizon_theme .horizon_attendee_drawer__body .mep_form_item > h6,
-.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block > h6 {
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item > h6,
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__head {
 	grid-column: 1 / -1;
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	margin: 0 0 4px !important;
+	padding: 0 0 14px !important;
+	border-bottom: 1px solid #F0EDF8 !important;
 	font-family: var(--hz-sans) !important;
-	font-size: 13px !important;
-	font-weight: 700 !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
 	color: var(--hz-text) !important;
-	margin: 0 0 2px !important;
-	padding: 0 0 10px !important;
-	border-bottom: 1px solid #EEEAF8;
+	background: transparent !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__index {
+	flex: 0 0 auto;
+	width: 36px;
+	height: 36px;
+	border-radius: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 13px;
+	font-weight: 700;
+	color: #fff;
+	background: linear-gradient(145deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+	box-shadow: 0 8px 16px rgba(123, 97, 255, 0.28);
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__label {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__ticket {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	max-width: 100%;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--hz-text);
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__ticket-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_card__pill {
+	flex: 0 0 auto;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 700;
+	color: var(--hz-purple);
+	background: var(--hz-purple-soft);
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item > h6 .mpwem_ticket_name {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--hz-purple);
+	background: var(--hz-purple-soft);
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item > h6 .mpwem_ticket_count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 22px;
+	height: 22px;
+	margin-left: 6px;
+	padding: 0 6px;
+	border-radius: 8px;
+	font-size: 12px;
+	font-weight: 700;
+	color: #fff;
+	background: var(--hz-purple);
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item,
 .horizon_theme .mep_attendee_info .mp_form_item {
 	margin: 0 !important;
 	min-width: 0;
-	padding: 0 7px;
+	padding: 0 !important;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
 }
 
-.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea) {
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea),
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(select[multiple]),
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_checkbox_item,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_radio_item,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_file_item {
 	grid-column: 1 / -1;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item label {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: 7px;
 	margin: 0 !important;
+	width: 100%;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item label > span {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	letter-spacing: 0.01em;
-	color: #6B6B78;
+	color: #4F4F5C;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item label > span .textRequired,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item .textRequired {
+	color: #E11D48 !important;
+	margin-left: 2px;
+	font-weight: 700;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl,
@@ -2806,21 +2913,52 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item select,
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea {
 	width: 100% !important;
-	border: 1px solid #E7E7EF !important;
-	border-radius: 8px !important;
-	background: #fff !important;
-	padding: 8px 10px !important;
-	font-size: 13px !important;
-	line-height: 1.35 !important;
+	max-width: 100% !important;
+	border: 1px solid #E4E1EF !important;
+	border-radius: 11px !important;
+	background: #FBFBFD !important;
+	padding: 11px 12px !important;
+	font-family: var(--hz-sans) !important;
+	font-size: 13.5px !important;
+	line-height: 1.4 !important;
 	color: var(--hz-text) !important;
 	box-shadow: none !important;
-	min-height: 38px;
+	min-height: 44px;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl:hover,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item input:hover,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select:hover,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea:hover {
+	border-color: #D4CFE8 !important;
+	background: #fff !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl:focus,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item input:focus,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select:focus,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea:focus {
+	outline: none !important;
+	border-color: var(--hz-purple) !important;
+	background: #fff !important;
+	box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.16) !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select.formControl,
+.horizon_theme .horizon_attendee_drawer__body .mp_form_item select {
+	appearance: none;
+	-webkit-appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236E6E7A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 12px center !important;
+	background-color: #FBFBFD !important;
+	padding-right: 34px !important;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea {
-	min-height: 72px;
+	min-height: 88px;
 	resize: vertical;
-	grid-column: 1 / -1;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item .formControl.is-hz-invalid,
@@ -2828,11 +2966,23 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item select.is-hz-invalid,
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item textarea.is-hz-invalid {
 	border-color: #EF4444 !important;
-	box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+	box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+	background: #FFF8F8 !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_checkbox_item,
+.horizon_theme .horizon_attendee_drawer__body .mep_radio_item {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	padding: 10px 12px !important;
+	border-radius: 12px !important;
+	background: #F8F7FC !important;
+	border: 1px solid #EEEAF8 !important;
 }
 
 .horizon_theme .horizon_attendee_drawer__foot {
-	padding: 14px 22px calc(18px + env(safe-area-inset-bottom, 0px));
+	padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px));
 	border-top: 1px solid #EEEAF8;
 	background: #fff;
 	flex: 0 0 auto;
@@ -2842,18 +2992,24 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	width: 100%;
 	border: 0;
 	border-radius: 12px;
-	background: var(--hz-purple);
+	background: linear-gradient(145deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
 	color: #fff;
 	font-size: 14px;
 	font-weight: 700;
-	padding: 13px 16px;
+	padding: 14px 16px;
 	cursor: pointer;
 	font-family: var(--hz-sans);
-	transition: background 0.2s ease;
+	box-shadow: 0 10px 22px rgba(123, 97, 255, 0.28);
+	transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .horizon_theme .horizon_attendee_drawer__continue:hover {
-	background: var(--hz-purple-dark);
+	filter: brightness(1.03);
+	box-shadow: 0 12px 26px rgba(123, 97, 255, 0.34);
+}
+
+.horizon_theme .horizon_attendee_drawer__continue:active {
+	transform: translateY(1px);
 }
 
 body.horizon-attendee-drawer-open {
@@ -2868,19 +3024,23 @@ body.horizon-attendee-drawer-open {
 	.horizon_theme .horizon_attendee_drawer__head,
 	.horizon_theme .horizon_attendee_drawer__body,
 	.horizon_theme .horizon_attendee_drawer__foot {
-		padding-left: 16px;
-		padding-right: 16px;
+		padding-left: 14px;
+		padding-right: 14px;
 	}
 
-	.horizon_theme .horizon_attendee_drawer__body .mep_form_item,
-	.horizon_theme .horizon_attendee_drawer__body .horizon_attendee_block {
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item,
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item {
 		grid-template-columns: 1fr;
-		gap: 10px;
+		gap: 12px;
+		padding: 14px !important;
+		border-radius: 14px !important;
 	}
 
-	.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea) {
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(textarea),
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item:has(select[multiple]),
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_checkbox_item,
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_radio_item,
+	.horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_file_item {
 		grid-column: 1;
 	}
 }
-
-

@@ -3058,6 +3058,9 @@ tr.payment_tabs_html { display: none !important; }
 							'sending' => __( 'Sending…', 'mage-eventpress' ),
 							'error'   => __( 'Something went wrong. Please try again.', 'mage-eventpress' ),
 						),
+					) ) . ';'
+					. 'window.mepGs.i18n = ' . wp_json_encode( array(
+						'saved' => __( 'Settings saved successfully.', 'mage-eventpress' ),
 					) ) . ';',
 					'before'
 				);
@@ -3117,6 +3120,13 @@ tr.payment_tabs_html { display: none !important; }
 									</button>
 								<?php endif; ?>
 							</div>
+
+							<?php if ( isset( $_GET['settings-updated'] ) && 'true' === (string) wp_unslash( $_GET['settings-updated'] ) ) : ?>
+								<div class="mep-gs__saved-banner" id="mep-gs-saved-banner" role="status">
+									<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>
+									<span><?php esc_html_e( 'Settings saved successfully.', 'mage-eventpress' ); ?></span>
+								</div>
+							<?php endif; ?>
 
 							<div class="mep-gs__content">
 								<?php foreach ( $visible_tabs as $tab_id => $config ) : ?>

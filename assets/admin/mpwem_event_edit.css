@@ -9721,10 +9721,14 @@ code {
     animation: none;
 }
 
-.mpwem-toast.is-info .dashicons,
-.mpwem-toast.is-success .dashicons {
+.mpwem-toast.is-info .dashicons {
     color: #38bdf8;
     animation: mpwem-spin 1s linear infinite;
+}
+
+.mpwem-toast.is-success .dashicons {
+    color: #4ade80;
+    animation: none;
 }
 
 @keyframes mpwem-spin {
@@ -11882,6 +11886,10 @@ textarea.mpwem-field-error:focus,
 /* Ring the whole date/time field wrapper so the error reads clearly even with
    the leading calendar/clock icon and table layout. */
 /* Success popup shown after publish/update/save, with a Preview action. */
+.mpwem-ticket-modal.mpwem-success-modal.is-open {
+    display: block !important;
+}
+
 .mpwem-success-modal__dialog {
     position: relative;
     z-index: 1;

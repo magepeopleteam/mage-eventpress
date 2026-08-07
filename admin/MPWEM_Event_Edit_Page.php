@@ -1397,8 +1397,17 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 			$can_publish  = $post_id && current_user_can('publish_post', $post_id);
 			$can_trash    = $post_id && current_user_can('delete_post', $post_id);
 
+			// Post-save confirmation flag (also mirrored in the redirect query string for JS).
+			$save_notice = '';
+			foreach (array('published', 'drafted', 'saved') as $notice_flag) {
+				if (isset($_GET[$notice_flag]) && (string) wp_unslash($_GET[$notice_flag]) === '1') {
+					$save_notice = $notice_flag;
+					break;
+				}
+			}
+
 		?>
-			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>">
+			<div class="mpwem-event-wizard is-loading" data-event-id="<?php echo esc_attr($post_id); ?>" data-is-published="<?php echo $is_published ? '1' : '0'; ?>" data-can-publish="<?php echo $can_publish ? '1' : '0'; ?>" data-frontend-url="<?php echo esc_url($frontend_url); ?>" data-save-notice="<?php echo esc_attr($save_notice); ?>">
 				<div class="mpwem-event-wizard__skeleton" aria-hidden="true">
 					<div class="mpwem-skeleton-topbar">
 						<span class="mpwem-skeleton-line mpwem-skeleton-line--back"></span>
@@ -2404,7 +2413,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 
 			$redirect = $this->edit_url($post_id, $active_step ?: 'basic');
 			if (! $quiet_save) {
-				$redirect = add_query_arg([$notice_key => 1], $redirect);
+				$redirect = add_query_arg([$notice_key => '1'], $redirect);
 			}
 			wp_safe_redirect($redirect);
 			exit;

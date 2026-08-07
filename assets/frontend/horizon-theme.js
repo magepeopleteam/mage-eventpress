@@ -431,12 +431,23 @@
 		$root.data('hz-attendee-saved', map);
 	}
 
-	function getAttendeeScope($root, ticketKey) {
-		var $body = $root.find('.horizon_attendee_drawer__body');
+	function getDrawerForTicket($root, ticketKey) {
 		if (!ticketKey) {
-			return $body;
+			return $root.children('.horizon_attendee_drawer').first();
 		}
-		return $body.children('.mep_attendee_info[data-hz-ticket-key="' + cssEscape(ticketKey) + '"]');
+		return $root.children('.horizon_attendee_drawer[data-hz-drawer-ticket="' + cssEscape(ticketKey) + '"]');
+	}
+
+	function getAttendeeScope($root, ticketKey) {
+		if (!ticketKey) {
+			return $root.find('.horizon_attendee_drawer__body');
+		}
+		var $drawer = getDrawerForTicket($root, ticketKey);
+		if ($drawer.length) {
+			return $drawer.find('.horizon_attendee_drawer__body').children('.mep_attendee_info');
+		}
+		// Fallback while forms are still under ticket rows (before first relocate).
+		return $root.find('.mep_attendee_info[data-hz-ticket-key="' + cssEscape(ticketKey) + '"]');
 	}
 
 	function getAttendeeFields($root, ticketKey) {
@@ -539,11 +550,18 @@
 		$scope.find('input[form], select[form], textarea[form]').removeAttr('form');
 	}
 
-	function ensureAttendeeDrawer($root, $area) {
-		var $drawer = $root.children('.horizon_attendee_drawer');
-		if (!$drawer.length) {
-			$drawer = $area.find('.horizon_attendee_drawer').first();
-		}
+	function drawerTitleId(ticketKey) {
+		var safe = String(ticketKey || 'same').replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'ticket';
+		return 'horizon_attendee_drawer_title_' + safe;
+	}
+
+	/**
+	 * One modal instance per ticket type (or a single __same__ modal when
+	 * "same attendee" mode is on). Opening ticket A never shows ticket B fields.
+	 */
+	function ensureAttendeeDrawer($root, $area, ticketKey) {
+		ticketKey = ticketKey || '__same__';
+		var $drawer = getDrawerForTicket($root, ticketKey);
 		if ($drawer.length) {
 			if (!$drawer.parent().is($root)) {
 				$root.append($drawer);
@@ -551,14 +569,30 @@
 			return $drawer;
 		}
 
+		// Migrate a legacy single shared drawer (no ticket key) once.
+		var $legacy = $root.children('.horizon_attendee_drawer:not([data-hz-drawer-ticket])').first();
+		if (!$legacy.length && $area && $area.length) {
+			$legacy = $area.find('.horizon_attendee_drawer:not([data-hz-drawer-ticket])').first();
+		}
+		if ($legacy.length) {
+			$legacy.attr('data-hz-drawer-ticket', ticketKey);
+			$legacy.find('.horizon_attendee_drawer__title').attr('id', drawerTitleId(ticketKey));
+			$legacy.find('.horizon_attendee_drawer__panel').attr('aria-labelledby', drawerTitleId(ticketKey));
+			if (!$legacy.parent().is($root)) {
+				$root.append($legacy);
+			}
+			return $legacy;
+		}
+
+		var titleId = drawerTitleId(ticketKey);
 		$drawer = $(
 			'<div class="horizon_attendee_drawer" hidden>' +
 				'<button type="button" class="horizon_attendee_drawer__backdrop" data-hz-attendee-close aria-label="' + i18n('close', 'Close') + '"></button>' +
-				'<div class="horizon_attendee_drawer__panel" role="dialog" aria-modal="true" aria-labelledby="horizon_attendee_drawer_title">' +
+				'<div class="horizon_attendee_drawer__panel" role="dialog" aria-modal="true" aria-labelledby="' + titleId + '">' +
 					'<div class="horizon_attendee_drawer__head">' +
 						'<div>' +
 							'<span class="horizon_attendee_drawer__eyebrow">' + i18n('attendeeDetails', 'Enter attendee details') + '</span>' +
-							'<h3 class="horizon_attendee_drawer__title" id="horizon_attendee_drawer_title">' + i18n('attendeeDrawerTitle', 'Attendee details') + '</h3>' +
+							'<h3 class="horizon_attendee_drawer__title" id="' + titleId + '">' + i18n('attendeeDrawerTitle', 'Attendee details') + '</h3>' +
 							'<p class="horizon_attendee_drawer__help">' + i18n('attendeeDrawerHelp', 'Complete the required fields for this ticket, then save.') + '</p>' +
 						'</div>' +
 						'<button type="button" class="horizon_attendee_drawer__close" data-hz-attendee-close aria-label="' + i18n('close', 'Close') + '">' +
@@ -572,6 +606,7 @@
 				'</div>' +
 			'</div>'
 		);
+		$drawer.attr('data-hz-drawer-ticket', ticketKey);
 		$root.append($drawer);
 		return $drawer;
 	}
@@ -615,12 +650,8 @@
 		if (!$area.length) {
 			return;
 		}
-		var $drawerBody = $root.find('.horizon_attendee_drawer__body');
-		if (!$drawerBody.length) {
-			return;
-		}
 
-		$drawerBody.children('.mep_attendee_info').each(function () {
+		$root.find('.horizon_attendee_drawer__body').children('.mep_attendee_info').each(function () {
 			var $info = $(this);
 			var id = $info.attr('data-hz-home-id');
 			if (!id) {
@@ -640,8 +671,6 @@
 			return;
 		}
 
-		var $drawer = ensureAttendeeDrawer($root, $area);
-		var $drawerBody = $drawer.find('.horizon_attendee_drawer__body');
 		var formId = getRegistrationFormId($area);
 		var sameMode = isSameAttendeeMode($area);
 
@@ -666,20 +695,51 @@
 				$info.after($home);
 			}
 			$home.attr('data-hz-ticket-key', ticketKey);
+
+			var $drawer = ensureAttendeeDrawer($root, $area, ticketKey);
+			var $drawerBody = $drawer.find('.horizon_attendee_drawer__body');
 			$drawerBody.append($info);
 		});
 
+		// Move panels that landed in the wrong ticket modal (e.g. after upgrading
+		// from a shared drawer) into the drawer that matches their ticket key.
+		$root.find('.horizon_attendee_drawer__body > .mep_attendee_info').each(function () {
+			var $info = $(this);
+			var ticketKey = $info.attr('data-hz-ticket-key') || (sameMode ? '__same__' : '');
+			if (!ticketKey) {
+				var homeId = $info.attr('data-hz-home-id');
+				var $home = homeId ? $area.find('.hz-attendee-home[data-hz-placeholder="' + homeId + '"]').first() : $();
+				ticketKey = ($home.attr('data-hz-ticket-key') || '') || (sameMode ? '__same__' : '');
+			}
+			if (!ticketKey) {
+				return;
+			}
+			$info.attr('data-hz-ticket-key', ticketKey);
+			var $targetDrawer = ensureAttendeeDrawer($root, $area, ticketKey);
+			var $targetBody = $targetDrawer.find('.horizon_attendee_drawer__body');
+			if (!$info.parent().is($targetBody)) {
+				$targetBody.append($info);
+			}
+		});
+
+		// Merge any orphaned form clones left in home placeholders back into their panel.
 		$area.find('.hz-attendee-home').each(function () {
 			var $home = $(this);
 			var id = $home.attr('data-hz-placeholder');
+			var ticketKey = $home.attr('data-hz-ticket-key') || '__same__';
+			var $drawerBody = getDrawerForTicket($root, ticketKey).find('.horizon_attendee_drawer__body');
 			var $info = $drawerBody.children('.mep_attendee_info[data-hz-home-id="' + id + '"]');
 			if ($info.length && $home.children().length) {
 				$info.append($home.children());
 			}
 		});
 
-		$drawerBody.find('.mep_attendee_info, .mep_form_item').addClass('horizon_attendee_block');
-		bindDrawerFieldsToForm($drawerBody, formId);
+		$root.find('.horizon_attendee_drawer__body .mep_attendee_info, .horizon_attendee_drawer__body .mep_form_item')
+			.addClass('horizon_attendee_block is-hz-active-ticket');
+		$root.find('.horizon_attendee_drawer__body').each(function () {
+			bindDrawerFieldsToForm($(this), formId);
+			enhanceAttendeeFormCards($(this));
+		});
 	}
 
 	function ticketHasAttendeeForms($root, ticketKey) {
@@ -687,12 +747,10 @@
 	}
 
 	function setActiveTicketInDrawer($root, ticketKey) {
-		var $drawer = $root.find('.horizon_attendee_drawer');
-		var $body = $drawer.find('.horizon_attendee_drawer__body');
-		$body.children('.mep_attendee_info').removeClass('is-hz-active-ticket').each(function () {
-			var key = $(this).attr('data-hz-ticket-key') || '';
-			$(this).toggleClass('is-hz-active-ticket', key === ticketKey);
-		});
+		var $drawer = getDrawerForTicket($root, ticketKey);
+		if (!$drawer.length) {
+			return;
+		}
 
 		var title = i18n('attendeeDrawerTitle', 'Attendee details');
 		var label = '';
@@ -720,8 +778,19 @@
 		if (!ticketKey || !ticketHasAttendeeForms($root, ticketKey)) {
 			return;
 		}
-		var $drawer = ensureAttendeeDrawer($root, $area);
+
+		// Close every other ticket modal so only this ticket type is visible.
+		$root.find('.horizon_attendee_drawer').each(function () {
+			var $other = $(this);
+			if (($other.attr('data-hz-drawer-ticket') || '') !== ticketKey) {
+				$other.attr('hidden', true);
+			}
+		});
+
+		var $drawer = ensureAttendeeDrawer($root, $area, ticketKey);
 		setActiveTicketInDrawer($root, ticketKey);
+		$drawer.find('.horizon_attendee_drawer__body .mep_attendee_info').addClass('is-hz-active-ticket');
+		enhanceAttendeeFormCards($drawer.find('.horizon_attendee_drawer__body'));
 		$drawer.removeAttr('hidden');
 		$('body').addClass('horizon-attendee-drawer-open horizon-modal-open');
 		setTimeout(function () {
@@ -732,31 +801,42 @@
 		}, 40);
 	}
 
-	function closeAttendeeDrawer($root) {
-		var $drawer = $root.find('.horizon_attendee_drawer');
-		if (!$drawer.length) {
+	function closeAttendeeDrawer($root, ticketKey) {
+		var $drawers = ticketKey
+			? getDrawerForTicket($root, ticketKey)
+			: $root.find('.horizon_attendee_drawer');
+		if (!$drawers.length) {
 			return;
 		}
-		$drawer.attr('hidden', true);
-		$('body').removeClass('horizon-attendee-drawer-open');
-		if (!$root.find('.horizon_modal:not([hidden])').length) {
+		$drawers.attr('hidden', true);
+		if (!$root.find('.horizon_attendee_drawer:not([hidden])').length) {
+			$('body').removeClass('horizon-attendee-drawer-open');
+		}
+		if (!$root.find('.horizon_modal:not([hidden]), .horizon_attendee_drawer:not([hidden])').length) {
 			$('body').removeClass('horizon-modal-open');
 		}
 		updateAttendeeStatusCards($root);
 	}
 
 	function ensureStatusCard($host, ticketKey) {
-		var $card = $host.children('.horizon_attendee_status[data-hz-ticket-key="' + cssEscape(ticketKey) + '"]');
+		var $card = $();
+		$host.children('.horizon_attendee_status').each(function () {
+			if (($(this).attr('data-hz-ticket-key') || '') === ticketKey) {
+				$card = $(this);
+				return false;
+			}
+		});
 		if ($card.length) {
 			return $card;
 		}
 		$card = $(
-			'<div class="horizon_attendee_status" data-hz-ticket-key="' + $('<div>').text(ticketKey).html() + '">' +
+			'<div class="horizon_attendee_status">' +
 				'<span class="horizon_attendee_status__icon" aria-hidden="true"><i class="fas fa-user-check"></i></span>' +
 				'<span class="horizon_attendee_status__text"></span>' +
 				'<button type="button" class="horizon_attendee_status__edit"></button>' +
 			'</div>'
 		);
+		$card.attr('data-hz-ticket-key', ticketKey);
 		$host.append($card);
 		return $card;
 	}
@@ -866,8 +946,67 @@
 		return incomplete;
 	}
 
+	function enhanceAttendeeFormCards($scope) {
+		if (!$scope || !$scope.length) {
+			return;
+		}
+		$scope.find('.mep_attendee_info > .mep_form_item').each(function () {
+			var $card = $(this);
+			if ($card.data('hzCardEnhanced')) {
+				var $count = $card.find('.mpwem_ticket_count').first();
+				var $name = $card.find('.mpwem_ticket_name').first();
+				var countText = $.trim($count.text()) || '1';
+				var nameText = $.trim($name.text()) || '';
+				$card.find('.horizon_attendee_card__index').text(countText);
+				$card.find('.horizon_attendee_card__pill').text('#' + countText);
+				if (nameText) {
+					$card.find('.horizon_attendee_card__ticket-name').text(nameText);
+				}
+				return;
+			}
+			var $h6 = $card.children('h6').first();
+			if (!$h6.length) {
+				return;
+			}
+			var ticketName = $.trim($h6.find('.mpwem_ticket_name').first().text()) || '';
+			var ticketCount = $.trim($h6.find('.mpwem_ticket_count').first().text()) || '1';
+			var $head = $(
+				'<div class="horizon_attendee_card__head">' +
+					'<span class="horizon_attendee_card__index" aria-hidden="true"></span>' +
+					'<div class="horizon_attendee_card__meta">' +
+						'<span class="horizon_attendee_card__label"></span>' +
+						'<span class="horizon_attendee_card__ticket">' +
+							'<span class="horizon_attendee_card__ticket-name"></span>' +
+							'<span class="horizon_attendee_card__pill"></span>' +
+						'</span>' +
+					'</div>' +
+				'</div>'
+			);
+			$head.find('.horizon_attendee_card__index').text(ticketCount);
+			$head.find('.horizon_attendee_card__label').text(i18n('attendeeCardLabel', 'Attendee'));
+			$head.find('.horizon_attendee_card__ticket-name').text(ticketName || i18n('attendeeDrawerTitle', 'Attendee details'));
+			$head.find('.horizon_attendee_card__pill').text('#' + ticketCount);
+			// Keep legacy spans (visually hidden) so qty sync / clone scripts still find them.
+			var $legacySpans = $h6.find('.mpwem_ticket_name, .mpwem_ticket_count').detach();
+			$legacySpans.css({
+				position: 'absolute',
+				width: '1px',
+				height: '1px',
+				padding: 0,
+				margin: '-1px',
+				overflow: 'hidden',
+				clip: 'rect(0, 0, 0, 0)',
+				border: 0
+			});
+			$h6.replaceWith($head);
+			$head.append($legacySpans);
+			$card.data('hzCardEnhanced', 1);
+		});
+	}
+
 	function enhanceAttendee($root) {
 		updateAttendeeStatusCards($root);
+		enhanceAttendeeFormCards($root.find('.horizon_attendee_drawer__body'));
 	}
 
 	function bindAttendeeDrawer($root) {
@@ -883,12 +1022,16 @@
 
 		$root.off('click.hzAttendeeClose').on('click.hzAttendeeClose', '[data-hz-attendee-close]', function (e) {
 			e.preventDefault();
-			closeAttendeeDrawer($root);
+			var ticketKey = $(this).closest('.horizon_attendee_drawer').attr('data-hz-drawer-ticket') || '';
+			closeAttendeeDrawer($root, ticketKey);
 		});
 
 		$root.off('click.hzAttendeeContinue').on('click.hzAttendeeContinue', '.horizon_attendee_drawer__continue', function (e) {
 			e.preventDefault();
-			var ticketKey = $root.data('hz-active-ticket-key') || $root.find('.horizon_attendee_drawer').attr('data-hz-active-ticket') || '';
+			var $drawer = $(this).closest('.horizon_attendee_drawer');
+			var ticketKey = $drawer.attr('data-hz-drawer-ticket') ||
+				$drawer.attr('data-hz-active-ticket') ||
+				$root.data('hz-active-ticket-key') || '';
 			var $invalid = markInvalidAttendeeFields($root, ticketKey);
 			if ($invalid && $invalid.length) {
 				openAttendeeDrawer($root, ticketKey);
@@ -896,7 +1039,7 @@
 				return;
 			}
 			setTicketSaved($root, ticketKey, true);
-			closeAttendeeDrawer($root);
+			closeAttendeeDrawer($root, ticketKey);
 		});
 
 		$root.off('input.hzAttendeeChange change.hzAttendeeChange').on(
@@ -904,7 +1047,8 @@
 			'.horizon_attendee_drawer__body input, .horizon_attendee_drawer__body select, .horizon_attendee_drawer__body textarea',
 			function () {
 				$(this).removeClass('is-hz-invalid');
-				var ticketKey = $root.data('hz-active-ticket-key') || '';
+				var ticketKey = $(this).closest('.horizon_attendee_drawer').attr('data-hz-drawer-ticket') ||
+					$root.data('hz-active-ticket-key') || '';
 				if (ticketKey) {
 					setTicketSaved($root, ticketKey, false);
 				}

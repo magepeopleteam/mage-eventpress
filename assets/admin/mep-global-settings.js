@@ -352,7 +352,62 @@
 			});
 	}
 
+	function showSettingsSavedBanner() {
+		var $banner = $('#mep-gs-saved-banner');
+		if (!$banner.length) {
+			$banner = $(
+				'<div class="mep-gs__saved-banner" id="mep-gs-saved-banner" role="status">' +
+					'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span>' +
+					'<span></span>' +
+				'</div>'
+			);
+			$banner.find('span').last().text(
+				(mepGs.i18n && mepGs.i18n.saved) || 'Settings saved successfully.'
+			);
+			$('.mep-gs__topbar').first().after($banner);
+		}
+
+		$banner.stop(true, true).show();
+		window.clearTimeout($banner.data('mepGsSavedTimer'));
+		$banner.data(
+			'mepGsSavedTimer',
+			window.setTimeout(function () {
+				$banner.fadeOut(400, function () {
+					$(this).remove();
+				});
+			}, 4000)
+		);
+
+		if (window.history && window.history.replaceState) {
+			try {
+				var url = new URL(window.location.href);
+				url.searchParams.delete('settings-updated');
+				window.history.replaceState({}, '', url.toString());
+			} catch (e) {
+				/* ignore */
+			}
+		}
+	}
+
 	$(function () {
+		if (!$('.mep-gs__root').length) {
+			return;
+		}
+
+		// Confirmation after options.php redirect or multi-form AJAX save reload.
+		if ($('#mep-gs-saved-banner').length) {
+			showSettingsSavedBanner();
+		} else {
+			try {
+				var bootParams = new URLSearchParams(window.location.search);
+				if (bootParams.get('settings-updated') === 'true') {
+					showSettingsSavedBanner();
+				}
+			} catch (e) {
+				/* ignore */
+			}
+		}
+
 		function syncSiPreview() {
 			var $preview = $('#mep-si-color-preview');
 			if (!$preview.length) {

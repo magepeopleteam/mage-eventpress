@@ -1183,7 +1183,7 @@
 }
 
 #mage-container.mage #mpwem_map_area .map_section {
-  padding: var(--dmp);
+  padding: var(--dmp) 0;
 }
 
 #mage-container.mage div.mpwem_location_sidebar {

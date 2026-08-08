@@ -1357,7 +1357,7 @@ div.share_widgets .share_widgets_list a.email:hover i {
 }
 
 #mpwem_map_area .map_section {
-	padding: var(--dmp);
+	padding: var(--dmp) 0;
 }
 
 div.mpwem_location_sidebar {

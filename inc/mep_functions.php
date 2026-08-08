@@ -1684,32 +1684,124 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 			return $newformat;
 		}
 	}
-	if ( ! function_exists( 'mep_event_template_name' ) ) {
-		function mep_event_template_name() {
-			$template_name = 'index.php';
-			$template_path = get_stylesheet_directory() . '/mage-event/themes/';
-			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/themes/';
-			$template      = locate_template( array( $template_path . $template_name ) );
-			if ( ! $template ) :
-				$template = $default_path . $template_name;
-			endif;
-			if ( is_dir( $template_path ) ) {
-				$thedir = glob( $template_path . "*" );
-			} else {
-				$thedir = glob( $default_path . "*" );
+	if ( ! function_exists( 'mep_event_template_display_name' ) ) {
+		/**
+		 * Read "Template Name:" from a details-theme PHP file header.
+		 *
+		 * @param string $filename Absolute path to the template file.
+		 * @param string $fallback Fallback label when the header is missing.
+		 *
+		 * @return string
+		 */
+		function mep_event_template_display_name( $filename, $fallback = '' ) {
+			$fallback = $fallback ? $fallback : basename( $filename );
+			if ( ! is_readable( $filename ) ) {
+				return $fallback;
 			}
-			$theme = array();
-			
-			foreach ( $thedir as $filename ) {
-				
-				if ( is_file( $filename ) ) {
-					$file  = basename( $filename );
-					$naame = str_replace( "?>", "", strip_tags( file_get_contents( $filename, false, null, 25, 15 ) ) );
+			$file_content = file_get_contents( $filename, false, null, 0, 8192 );
+			if ( false === $file_content ) {
+				return $fallback;
+			}
+			if ( preg_match( '/Template Name:\s*(.+)/i', $file_content, $matches ) ) {
+				$name = trim( wp_strip_all_tags( $matches[1] ) );
+				if ( $name ) {
+					return $name;
 				}
-				$theme[ $file ] = $naame;
 			}
-			
-			return $theme;
+
+			return $fallback;
+		}
+	}
+	if ( ! function_exists( 'mep_event_template_theme_key' ) ) {
+		/**
+		 * Build the selectable key for a theme-provided details template.
+		 *
+		 * @param string $file Basename such as default-theme.php.
+		 *
+		 * @return string
+		 */
+		function mep_event_template_theme_key( $file ) {
+			return 'theme-override-' . ltrim( (string) $file, '/' );
+		}
+	}
+	if ( ! function_exists( 'mep_event_template_parse' ) ) {
+		/**
+		 * Parse a stored template key into source + basename.
+		 *
+		 * @param string $template_key Stored mep_event_template value.
+		 *
+		 * @return array{source:string,file:string}
+		 */
+		function mep_event_template_parse( $template_key ) {
+			$template_key = (string) $template_key;
+			$prefix       = 'theme-override-';
+			if ( 0 === strpos( $template_key, $prefix ) ) {
+				return array(
+					'source' => 'theme',
+					'file'   => substr( $template_key, strlen( $prefix ) ),
+				);
+			}
+
+			return array(
+				'source' => 'plugin',
+				'file'   => $template_key,
+			);
+		}
+	}
+	if ( ! function_exists( 'mep_event_template_name' ) ) {
+		/**
+		 * Build the selectable event details templates list.
+		 *
+		 * Always includes plugin templates. Theme copies in /mage-event/themes/
+		 * are listed as separate choices (theme-override-*.php keys) so users can
+		 * pick either the plugin original or the theme override.
+		 *
+		 * @return array<string, string> template key => display name
+		 */
+		function mep_event_template_name() {
+			$theme_path   = trailingslashit( get_stylesheet_directory() ) . 'mage-event/themes/';
+			$default_path = plugin_dir_path( __DIR__ ) . 'templates/themes/';
+			$themes       = array();
+			$fallback     = static function ( $file ) {
+				return ucwords( str_replace( array( '-', '_' ), ' ', preg_replace( '/\.php$/', '', $file ) ) );
+			};
+
+			if ( is_dir( $default_path ) ) {
+				$files = glob( trailingslashit( $default_path ) . '*.php' );
+				if ( ! empty( $files ) ) {
+					foreach ( $files as $filename ) {
+						if ( ! is_file( $filename ) ) {
+							continue;
+						}
+						$file           = basename( $filename );
+						$themes[ $file ] = mep_event_template_display_name( $filename, $fallback( $file ) );
+					}
+				}
+			}
+
+			if ( is_dir( $theme_path ) ) {
+				$files = glob( trailingslashit( $theme_path ) . '*.php' );
+				if ( ! empty( $files ) ) {
+					foreach ( $files as $filename ) {
+						if ( ! is_file( $filename ) ) {
+							continue;
+						}
+						$file = basename( $filename );
+						$name = mep_event_template_display_name( $filename, $fallback( $file ) );
+						$key  = mep_event_template_theme_key( $file );
+						if ( isset( $themes[ $file ] ) ) {
+							/* translators: %s: event details template display name */
+							$name = sprintf( __( '%s (Theme Override)', 'mage-eventpress' ), $name );
+						} else {
+							/* translators: %s: event details template display name */
+							$name = sprintf( __( '%s (Theme)', 'mage-eventpress' ), $name );
+						}
+						$themes[ $key ] = $name;
+					}
+				}
+			}
+
+			return $themes;
 		}
 	}
 	if ( ! function_exists( 'mep_field_generator' ) ) {
@@ -1947,19 +2039,28 @@ if ( ! function_exists( 'mep_add_show_sku_post_id_in_event_list_dashboard' ) ) {
 	}
 	if ( ! function_exists( 'mep_template_file_validate' ) ) {
 		function mep_template_file_validate( $file_name ) {
+			$parsed        = mep_event_template_parse( $file_name );
+			$base_file     = $parsed['file'];
 			$template_path = get_stylesheet_directory() . '/mage-event/';
 			$default_path  = plugin_dir_path( __DIR__ ) . 'templates/';
-			// Check theme directory first
-			$_themedir = $template_path . "themes/" . $file_name;
-			if ( file_exists( $_themedir ) ) {
-				return $file_name;
+
+			if ( 'theme' === $parsed['source'] ) {
+				$_themedir = $template_path . 'themes/' . $base_file;
+				if ( file_exists( $_themedir ) ) {
+					return mep_event_template_theme_key( $base_file );
+				}
 			}
-			// Fallback to plugin directory
-			$_plugindir = $default_path . "themes/" . $file_name;
+
+			$_plugindir = $default_path . 'themes/' . $base_file;
 			if ( file_exists( $_plugindir ) ) {
-				return $file_name;
+				return $base_file;
 			}
-			// Default fallback
+
+			$_themedir = $template_path . 'themes/' . $base_file;
+			if ( file_exists( $_themedir ) ) {
+				return mep_event_template_theme_key( $base_file );
+			}
+
 			return 'default-theme.php';
 		}
 	}

@@ -10,17 +10,30 @@
 		class MPWEM_Functions {
 			public function __construct() { }
 			public static function details_template_path( $file_name ): string {
-				$template_path       = get_stylesheet_directory() . '/mage-event/themes/';
-				$default_dir         = MPWEM_PLUGIN_DIR . '/templates/themes/';
-				$default_path        = $default_dir . $file_name;
-				$theme_template_path = $template_path . $file_name;
-				if ( file_exists( $theme_template_path ) ) {
-					return $theme_template_path;
-				} elseif ( file_exists( $default_path ) ) {
-					return $default_path;
-				} else {
-					return $default_dir . 'default-theme.php';
+				$template_path = trailingslashit( get_stylesheet_directory() ) . 'mage-event/themes/';
+				$default_dir   = trailingslashit( MPWEM_PLUGIN_DIR ) . 'templates/themes/';
+				$parsed        = function_exists( 'mep_event_template_parse' )
+					? mep_event_template_parse( $file_name )
+					: array( 'source' => 'plugin', 'file' => $file_name );
+				$base_file     = $parsed['file'];
+				$plugin_path   = $default_dir . $base_file;
+				$theme_path    = $template_path . $base_file;
+
+				// Explicit theme override choice (theme-override-*.php keys).
+				if ( 'theme' === $parsed['source'] && file_exists( $theme_path ) ) {
+					return $theme_path;
 				}
+
+				// Plugin / bare filename: always prefer the plugin file so theme
+				// overrides remain an optional separate selection.
+				if ( file_exists( $plugin_path ) ) {
+					return $plugin_path;
+				}
+				if ( file_exists( $theme_path ) ) {
+					return $theme_path;
+				}
+
+				return $default_dir . 'default-theme.php';
 			}
 			public static function template_path( $file_name ): string {
 				$template_path       = get_stylesheet_directory() . '/mage-event/';

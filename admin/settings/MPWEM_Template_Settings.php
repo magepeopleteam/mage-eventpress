@@ -34,8 +34,9 @@
                         <div class="mep-template-section">
                             <input type="hidden" name="mep_event_template" value="<?php echo esc_attr( $_current_template ); ?>"/>
 							<?php foreach ( $templates as $template ) {
-								$image     = preg_replace( '/\.php$/', '.webp', $template['value'] );
-								$image_url = MPWEM_PLUGIN_URL . '/templates/screenshot/' . $image;
+								$parsed     = function_exists( 'mep_event_template_parse' ) ? mep_event_template_parse( $template['value'] ) : array( 'file' => $template['value'] );
+								$image      = preg_replace( '/\.php$/', '.webp', $parsed['file'] );
+								$image_url  = MPWEM_PLUGIN_URL . '/templates/screenshot/' . $image;
 								$image_path = MPWEM_PLUGIN_DIR . '/templates/screenshot/' . $image;
 								if ( ! file_exists( $image_path ) ) {
 									$image_url = MPWEM_PLUGIN_URL . '/templates/screenshot/default-theme.webp';

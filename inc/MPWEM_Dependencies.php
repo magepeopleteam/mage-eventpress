@@ -324,7 +324,10 @@
 					return;
 				}
 				$template = MPWEM_Functions::get_details_template_name( $event_id );
-				if ( $template !== 'horizon.php' ) {
+				$base     = function_exists( 'mep_event_template_parse' )
+					? mep_event_template_parse( $template )['file']
+					: $template;
+				if ( 'horizon.php' !== $base ) {
 					return;
 				}
 				add_filter( 'body_class', function ( $classes ) {
@@ -377,6 +380,7 @@
 						'reviewsTitle'        => __( 'What attendees say', 'mage-eventpress' ),
 						'reviewSingular'      => __( '1 review', 'mage-eventpress' ),
 						'reviewPlural'        => __( '%d reviews', 'mage-eventpress' ),
+						'noReviewsTitle'      => __( 'No reviews yet', 'mage-eventpress' ),
 						'noReviewsYet'        => __( 'Be the first to share your experience.', 'mage-eventpress' ),
 						'sameAttendee'        => MPWEM_Global_Function::get_settings( 'general_setting_sec', 'mep_enable_same_attendee', 'no' ),
 					)

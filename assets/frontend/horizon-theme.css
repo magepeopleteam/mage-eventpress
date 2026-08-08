@@ -671,6 +671,10 @@ body.horizon-modal-open {
 }
 
 /* ========== ABOUT ========== */
+.horizon_theme .horizon_section.horizon_about {
+	margin-top: 20px;
+}
+
 .horizon_theme .horizon_about_content,
 .horizon_theme .horizon_about_content p {
 	font-size: 15px;
@@ -1080,6 +1084,62 @@ body.horizon-modal-open {
 	top: 24px;
 	align-self: start;
 	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+/* Organizer + seat stats live above the ticket card in the sidebar. */
+.horizon_theme .horizon_sidebar .horizon_organizer_card {
+	margin: 0;
+	padding: 18px;
+	border-radius: 22px;
+	gap: 16px;
+	animation: hzFadeUp 0.5s ease both;
+}
+
+.horizon_theme .horizon_sidebar .horizon_organizer_info {
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.horizon_theme .horizon_sidebar .horizon_organizer_avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+}
+
+.horizon_theme .horizon_sidebar .horizon_organizer_name {
+	font-size: 16px !important;
+	white-space: normal;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.horizon_theme .horizon_sidebar .horizon_follow_btn {
+	margin-left: auto;
+	padding: 9px 16px;
+	font-size: 13px;
+}
+
+.horizon_theme .horizon_sidebar .horizon_organizer_stats {
+	gap: 8px;
+}
+
+.horizon_theme .horizon_sidebar .horizon_stat {
+	padding: 12px 10px;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.horizon_theme .horizon_sidebar .horizon_stat strong {
+	font-size: 20px;
+}
+
+.horizon_theme .horizon_sidebar .horizon_stat span {
+	font-size: 11px;
 }
 
 .horizon_theme .horizon_ticket_card {
@@ -2231,59 +2291,117 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 }
 
 .horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
 	max-width: none;
 	width: 100%;
 	margin: 0;
-	padding: 0;
-	background: transparent;
-	border: 0;
-	border-radius: 0;
-	box-shadow: none;
+	padding: 28px 28px 30px;
+	background:
+		radial-gradient(120% 90% at 0% 0%, var(--hz-purple-soft), transparent 52%),
+		var(--hz-card);
+	border: 1px solid var(--hz-border);
+	border-radius: 24px;
+	box-shadow: var(--hz-shadow);
 	box-sizing: border-box;
+	position: relative;
+	overflow: hidden;
+}
+
+.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel::before {
+	content: none !important;
+	display: none !important;
 }
 
 .horizon_theme .horizon_reviews_head {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
-	gap: 16px 24px;
+	gap: 18px 28px;
 	flex-wrap: wrap;
-	margin-bottom: 22px;
+	margin: 0;
+	position: relative;
+	z-index: 1;
 }
 
 .horizon_theme .horizon_reviews_head__copy {
 	min-width: 0;
-	flex: 1 1 220px;
+	flex: 1 1 240px;
+}
+
+.horizon_theme .horizon_reviews_head__actions {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
 }
 
 .horizon_theme .horizon_reviews_eyebrow {
-	display: inline-block;
-	margin: 0 0 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 10px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: var(--hz-purple-soft);
 	font-size: 11px;
 	font-weight: 700;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: var(--hz-purple);
+	color: var(--hz-purple-dark);
+	line-height: 1;
 }
 
 .horizon_theme .horizon_reviews_title {
 	font-family: var(--hz-serif) !important;
-	font-size: 1.75rem !important;
+	font-size: clamp(1.45rem, 2.4vw, 1.85rem) !important;
 	font-weight: 700 !important;
 	color: var(--hz-text) !important;
-	letter-spacing: -0.02em;
+	letter-spacing: -0.025em;
 	line-height: 1.2;
-	margin: 0 0 8px !important;
+	margin: 0 0 12px !important;
 }
 
 .horizon_theme .horizon_reviews_meta {
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
-	gap: 8px 10px;
+	gap: 10px 14px;
 	color: var(--hz-muted);
 	font-size: 0.92rem;
 	font-weight: 500;
+	min-height: 0;
+}
+
+.horizon_theme .horizon_reviews_meta:empty {
+	display: none;
+}
+
+.horizon_theme .horizon_reviews_score {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 12px 8px 10px;
+	border-radius: 14px;
+	background: #fff;
+	border: 1px solid var(--hz-border);
+	box-shadow: 0 4px 14px rgba(22, 22, 29, 0.04);
+}
+
+.horizon_theme .horizon_reviews_score__value {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.1rem;
+	height: 2.1rem;
+	padding: 0 6px;
+	border-radius: 10px;
+	background: linear-gradient(145deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+	color: #fff;
+	font-size: 0.95rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	line-height: 1;
 }
 
 .horizon_theme .horizon_reviews_stars {
@@ -2293,6 +2411,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	line-height: 1;
 	color: #F5B301;
 	letter-spacing: 0.02em;
+	font-size: 0.95rem;
 }
 
 .horizon_theme .horizon_reviews_stars .is-empty {
@@ -2301,10 +2420,12 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 .horizon_theme .horizon_reviews_count {
 	color: var(--hz-muted);
+	font-weight: 600;
 }
 
 .horizon_theme .horizon_reviews_head #give-review-btn,
-.horizon_theme .horizon_reviews_panel #give-review-btn {
+.horizon_theme .horizon_reviews_panel #give-review-btn,
+.horizon_theme .horizon_reviews_write {
 	appearance: none;
 	-webkit-appearance: none;
 	display: inline-flex;
@@ -2312,43 +2433,64 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	justify-content: center;
 	gap: 8px;
 	margin: 0;
-	padding: 12px 18px;
+	padding: 13px 20px;
+	min-height: 46px;
 	border: 0;
 	border-radius: 999px;
-	background: linear-gradient(145deg, var(--hz-purple) 0%, var(--hz-purple-dark) 100%);
+	background: var(--hz-text);
 	color: #fff !important;
 	font-family: var(--hz-sans) !important;
 	font-size: 0.92rem;
 	font-weight: 700;
 	line-height: 1.2;
 	cursor: pointer;
-	box-shadow: 0 10px 24px rgba(123, 97, 255, 0.28);
-	transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+	box-shadow: 0 10px 24px rgba(22, 22, 29, 0.14);
+	transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 	flex: 0 0 auto;
 	text-transform: none;
+	white-space: nowrap;
+}
+
+.horizon_theme .horizon_reviews_write__icon {
+	display: inline-flex;
+	font-size: 0.78rem;
+	line-height: 1;
+	opacity: 0.9;
 }
 
 .horizon_theme .horizon_reviews_head #give-review-btn:hover,
-.horizon_theme .horizon_reviews_panel #give-review-btn:hover {
-	filter: brightness(1.04);
-	box-shadow: 0 12px 28px rgba(123, 97, 255, 0.34);
+.horizon_theme .horizon_reviews_panel #give-review-btn:hover,
+.horizon_theme .horizon_reviews_write:hover {
+	background: var(--hz-purple);
+	box-shadow: 0 12px 28px rgba(123, 97, 255, 0.28);
 	transform: translateY(-1px);
 	text-decoration: none;
+}
+
+.horizon_theme .horizon_reviews_head #give-review-btn:focus-visible,
+.horizon_theme .horizon_reviews_panel #give-review-btn:focus-visible,
+.horizon_theme .horizon_reviews_write:focus-visible {
+	outline: 2px solid var(--hz-purple);
+	outline-offset: 3px;
 }
 
 .horizon_theme .horizon_reviews_panel .mep-event-review-list {
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 1;
 }
 
 .horizon_theme .horizon_reviews_panel .mep-event-review-avg {
-	margin: 0 0 4px;
-	padding: 20px 22px;
-	background: var(--hz-card);
+	margin: 0;
+	padding: 18px 20px;
+	background: rgba(255, 255, 255, 0.72);
 	border: 1px solid var(--hz-border);
-	border-radius: var(--hz-radius);
-	box-shadow: var(--hz-shadow);
+	border-radius: 18px;
+	box-shadow: none;
 }
 
 .horizon_theme .horizon_reviews_panel .mep-avg-review-header {
@@ -2414,16 +2556,17 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	display: block;
 	margin: 0;
 	padding: 20px 22px;
-	background: var(--hz-card);
+	background: #fff;
 	border: 1px solid var(--hz-border);
-	border-radius: var(--hz-radius);
-	box-shadow: var(--hz-shadow);
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	border-radius: 18px;
+	box-shadow: 0 4px 16px rgba(22, 22, 29, 0.03);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .horizon_theme .horizon_reviews_panel .mep-event-review-item:hover {
 	transform: translateY(-2px);
-	box-shadow: var(--hz-shadow-lg);
+	border-color: var(--hz-purple-mid);
+	box-shadow: var(--hz-shadow);
 }
 
 .horizon_theme .horizon_review_card__top {
@@ -2443,11 +2586,21 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	height: 52px;
 	border-radius: 50%;
 	object-fit: cover;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	margin: 0;
 	flex: 0 0 auto;
 	border: 2px solid #fff;
 	box-shadow: 0 0 0 1px var(--hz-purple-mid);
+	background: var(--hz-purple-soft);
+}
+
+.horizon_theme .horizon_review_avatar--fallback {
+	font-size: 0.95rem;
+	font-weight: 800;
+	color: var(--hz-purple-dark);
+	letter-spacing: 0.02em;
 }
 
 .horizon_theme .horizon_review_meta {
@@ -2490,7 +2643,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_reviews_panel .mep-event-review-info .mep-review-title {
 	margin: 0 0 8px;
 	font-family: var(--hz-serif) !important;
-	font-size: 1.15rem;
+	font-size: 1.1rem;
 	font-weight: 700;
 	line-height: 1.35;
 	color: var(--hz-text);
@@ -2510,28 +2663,81 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 }
 
 .horizon_theme .horizon_reviews_empty {
-	padding: 28px 22px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 42px 24px;
 	text-align: center;
-	background: var(--hz-card);
+	background:
+		linear-gradient(180deg, rgba(241, 237, 255, 0.55) 0%, rgba(255, 255, 255, 0.9) 100%);
 	border: 1px dashed var(--hz-purple-mid);
-	border-radius: var(--hz-radius);
+	border-radius: 18px;
 	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_reviews_empty__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	margin-bottom: 6px;
+	width: 64px;
+	height: 64px;
+	border-radius: 20px;
+	background: #fff;
+	border: 1px solid var(--hz-border);
+	box-shadow: 0 8px 22px rgba(123, 97, 255, 0.12);
+	color: #F5B301;
+	font-size: 1.05rem;
+	line-height: 1;
+}
+
+.horizon_theme .horizon_reviews_empty__icon span:nth-child(2) {
+	font-size: 1.35rem;
+	transform: translateY(-1px);
+}
+
+.horizon_theme .horizon_reviews_empty__title {
+	margin: 0;
+	font-family: var(--hz-serif) !important;
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: var(--hz-text);
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+}
+
+.horizon_theme .horizon_reviews_empty__text {
+	margin: 0;
+	max-width: 34ch;
 	font-size: 0.95rem;
+	line-height: 1.55;
+	color: var(--hz-muted);
 }
 
 @media (max-width: 640px) {
+	.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel {
+		padding: 20px 16px 22px;
+		border-radius: 20px;
+		gap: 18px;
+	}
+
 	.horizon_theme .horizon_reviews_head {
 		flex-direction: column;
 		align-items: stretch;
 	}
 
+	.horizon_theme .horizon_reviews_head__actions,
 	.horizon_theme .horizon_reviews_head #give-review-btn,
-	.horizon_theme .horizon_reviews_panel #give-review-btn {
+	.horizon_theme .horizon_reviews_panel #give-review-btn,
+	.horizon_theme .horizon_reviews_write {
 		width: 100%;
 	}
 
 	.horizon_theme .horizon_reviews_title {
-		font-size: 1.45rem !important;
+		font-size: 1.4rem !important;
 	}
 
 	.horizon_theme .horizon_reviews_panel .mep-event-review-item {
@@ -2551,6 +2757,10 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	.horizon_theme .horizon_reviews_panel .mep-avg-review-item {
 		grid-template-columns: 72px minmax(0, 1fr) 40px;
 		gap: 8px;
+	}
+
+	.horizon_theme .horizon_reviews_empty {
+		padding: 32px 16px;
 	}
 }
 
@@ -3179,7 +3389,10 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 		padding: 12px 14px;
 	}
 
-	.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel,
+	.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel {
+		padding: 16px 12px 18px;
+	}
+
 	.horizon_theme .horizon_reviews_panel .mep-event-review-item {
 		padding: 14px;
 	}

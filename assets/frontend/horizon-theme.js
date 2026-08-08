@@ -1400,11 +1400,13 @@
 		var $avg = $list.find('.mep-event-review-avg').first();
 		var count = $items.length;
 		var countLabel = '';
+		var isEmpty = count === 0;
 
 		if ($avg.length) {
 			var headerCount = parseInt($.trim($avg.find('.mep-avg-review-header h4 span').first().text()), 10);
 			if (!isNaN(headerCount) && headerCount > 0) {
 				count = headerCount;
+				isEmpty = false;
 			}
 			if (!$avg.find('.mep-avg-review-item').length) {
 				$avg.hide();
@@ -1415,8 +1417,6 @@
 			countLabel = i18n('reviewSingular', '1 review');
 		} else if (count > 1) {
 			countLabel = i18n('reviewPlural', '%d reviews').replace('%d', String(count));
-		} else {
-			countLabel = i18n('noReviewsYet', 'Be the first to share your experience.');
 		}
 
 		var summaryScore = 0;
@@ -1428,7 +1428,11 @@
 				scored += 1;
 			}
 		});
-		var avgScore = scored ? Math.round(summaryScore / scored) : 0;
+		var avgScore = scored ? Math.round((summaryScore / scored) * 10) / 10 : 0;
+		var avgStars = scored ? Math.round(summaryScore / scored) : 0;
+
+		$panel.toggleClass('is-empty', isEmpty);
+		$panel.toggleClass('has-reviews', !isEmpty);
 
 		if (!$panel.children('.horizon_reviews_head').length) {
 			var $head = $(
@@ -1438,19 +1442,33 @@
 						'<h2 class="horizon_reviews_title"></h2>' +
 						'<div class="horizon_reviews_meta"></div>' +
 					'</div>' +
+					'<div class="horizon_reviews_head__actions"></div>' +
 				'</div>'
 			);
 			$head.find('.horizon_reviews_eyebrow').text(i18n('reviewsEyebrow', 'Reviews'));
 			$head.find('.horizon_reviews_title').text(i18n('reviewsTitle', 'What attendees say'));
 
 			var $meta = $head.find('.horizon_reviews_meta');
-			if (avgScore > 0) {
-				$meta.append(buildStarRow(avgScore));
+			if (!isEmpty && avgStars > 0) {
+				var $score = $('<div class="horizon_reviews_score"></div>');
+				$score.append(
+					$('<span class="horizon_reviews_score__value"></span>').text(
+						avgScore % 1 === 0 ? String(avgScore.toFixed(0)) : String(avgScore.toFixed(1))
+					)
+				);
+				$score.append(buildStarRow(avgStars));
+				$meta.append($score);
 			}
-			$meta.append($('<span class="horizon_reviews_count"></span>').text(countLabel));
+			if (countLabel) {
+				$meta.append($('<span class="horizon_reviews_count"></span>').text(countLabel));
+			}
 
 			if ($btn.length) {
-				$head.append($btn);
+				$btn.addClass('horizon_reviews_write');
+				if (!$btn.find('.horizon_reviews_write__icon').length) {
+					$btn.prepend('<span class="horizon_reviews_write__icon" aria-hidden="true">✦</span>');
+				}
+				$head.find('.horizon_reviews_head__actions').append($btn);
 			}
 			$panel.prepend($head);
 		}
@@ -1473,17 +1491,22 @@
 			if ($avatar.length) {
 				$avatar.addClass('horizon_review_avatar');
 				$top.append($avatar);
+			} else {
+				var initial = $.trim($name.text()).charAt(0) || '?';
+				$top.append(
+					$('<span class="horizon_review_avatar horizon_review_avatar--fallback" aria-hidden="true"></span>').text(initial.toUpperCase())
+				);
 			}
-			var $meta = $('<div class="horizon_review_meta"></div>');
+			var $cardMeta = $('<div class="horizon_review_meta"></div>');
 			if ($name.length) {
 				$name.addClass('horizon_review_name');
-				$meta.append($name);
+				$cardMeta.append($name);
 			}
 			if ($date.length) {
 				$date.addClass('horizon_review_date');
-				$meta.append($date);
+				$cardMeta.append($date);
 			}
-			$top.append($meta);
+			$top.append($cardMeta);
 			if (score > 0) {
 				$top.append(buildStarRow(score));
 			}
@@ -1492,12 +1515,37 @@
 			$rating.remove();
 		});
 
-		if (!$items.length && !$panel.find('.horizon_reviews_empty').length) {
-			$list.append(
-				$('<div class="horizon_reviews_empty"></div>').text(
-					i18n('noReviewsYet', 'Be the first to share your experience.')
-				)
+		var $existingEmpty = $panel.find('.horizon_reviews_empty').first();
+		if (isEmpty) {
+			if (!$existingEmpty.length) {
+				$existingEmpty = $(
+					'<div class="horizon_reviews_empty" role="status">' +
+						'<div class="horizon_reviews_empty__icon" aria-hidden="true">' +
+							'<span>★</span><span>★</span><span>★</span>' +
+						'</div>' +
+						'<h3 class="horizon_reviews_empty__title"></h3>' +
+						'<p class="horizon_reviews_empty__text"></p>' +
+					'</div>'
+				);
+				$list.append($existingEmpty);
+			} else if (!$existingEmpty.find('.horizon_reviews_empty__title').length) {
+				$existingEmpty
+					.attr('role', 'status')
+					.empty()
+					.append(
+						'<div class="horizon_reviews_empty__icon" aria-hidden="true">' +
+							'<span>★</span><span>★</span><span>★</span>' +
+						'</div>' +
+						'<h3 class="horizon_reviews_empty__title"></h3>' +
+						'<p class="horizon_reviews_empty__text"></p>'
+					);
+			}
+			$existingEmpty.find('.horizon_reviews_empty__title').text(i18n('noReviewsTitle', 'No reviews yet'));
+			$existingEmpty.find('.horizon_reviews_empty__text').text(
+				i18n('noReviewsYet', 'Be the first to share your experience.')
 			);
+		} else {
+			$existingEmpty.remove();
 		}
 	}
 

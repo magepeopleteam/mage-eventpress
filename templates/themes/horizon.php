@@ -28,12 +28,6 @@
 	<div class="horizon_shell">
 		<div class="horizon_body">
 			<div class="horizon_main">
-				<?php
-					if ( file_exists( $horizon_dir . 'organizer.php' ) ) {
-						include $horizon_dir . 'organizer.php';
-					}
-				?>
-
 				<section class="horizon_section horizon_about">
 					<?php
 						if ( file_exists( $horizon_dir . 'about.php' ) ) {
@@ -133,6 +127,11 @@
 						</div>
 					</div>
 				</div>
+				<?php
+					if ( file_exists( $horizon_dir . 'organizer.php' ) ) {
+						include $horizon_dir . 'organizer.php';
+					}
+				?>
 			</aside>
 		</div>
 

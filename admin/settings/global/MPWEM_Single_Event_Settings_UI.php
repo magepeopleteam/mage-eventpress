@@ -187,7 +187,8 @@
 						<?php foreach ( $options as $file => $lab ) :
 							$file     = (string) $file;
 							$active   = ( (string) $value === $file );
-							$slug     = preg_replace( '/\.php$/i', '', basename( $file ) );
+							$base     = function_exists( 'mep_event_template_parse' ) ? mep_event_template_parse( $file )['file'] : $file;
+							$slug     = preg_replace( '/\.php$/i', '', basename( $base ) );
 							$webp     = $slug . '.webp';
 							$png      = $slug . '.png';
 							$jpg      = $slug . '.jpg';

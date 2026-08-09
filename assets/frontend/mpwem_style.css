@@ -1696,6 +1696,7 @@ div.faq_area .item .content {
 .mep-event-tags {
 	display: flex;
 	flex-direction: column;
+	padding: 20px;
 	align-items: flex-start;
 	gap: 12px;
 }

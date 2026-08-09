@@ -15,28 +15,28 @@
                 <div class="timeline_area">
                     <?php
                         foreach ( $time_line_infos as $time_line_info ) {
-                            $title        = is_array($time_line_info) && array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
-                            $time         = is_array($time_line_info) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
-                            $content      = is_array($time_line_info) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
+                            $title        = is_array( $time_line_info ) && array_key_exists( 'mep_day_title', $time_line_info ) ? $time_line_info['mep_day_title'] : '';
+                            $time         = is_array( $time_line_info ) && array_key_exists( 'mep_day_time', $time_line_info ) ? $time_line_info['mep_day_time'] : '';
+                            $content      = is_array( $time_line_info ) && array_key_exists( 'mep_day_content', $time_line_info ) ? $time_line_info['mep_day_content'] : '';
                             $collapse_id  = uniqid( 'mpwem_time_line' );
-                            $active_class = $counter == 0 ? 'mActive' : '';
+                            $is_open      = $counter === 0;
+                            $active_class = $is_open ? 'mActive' : '';
                             $counter++;
                             ?>
                             <div class="timeline_item">
-                                <span class="timeline_counter"><?php echo esc_html( $counter ); ?></span>
+                                <span class="timeline_counter" aria-hidden="true"><?php echo esc_html( (string) $counter ); ?></span>
                                 <div class="timeline_content">
-                                    <div class="timeline_header" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>">
+                                    <div class="timeline_header" data-collapse-target="<?php echo esc_attr( $collapse_id ); ?>" role="button" tabindex="0" aria-expanded="<?php echo $is_open ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $collapse_id ); ?>">
                                         <span class="timeline_tag">
                                             <span class="tl_title"><?php echo esc_html( $title ); ?></span>
                                         </span>
-                                        <span class="timeline_connector"></span>
                                         <?php if ( $time ) : ?>
                                             <span class="timeline_time">
-                                                <i class="fa fa-clock-o"></i><?php echo esc_html( $time ); ?>
+                                                <i class="far fa-clock" aria-hidden="true"></i><?php echo esc_html( $time ); ?>
                                             </span>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="mp_wp_editor <?php echo esc_attr( $active_class ); ?>" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
+                                    <div id="<?php echo esc_attr( $collapse_id ); ?>" class="mp_wp_editor <?php echo esc_attr( $active_class ); ?>" data-collapse="<?php echo esc_attr( $collapse_id ); ?>">
                                         <?php echo apply_filters( 'the_content', $content ); ?>
                                     </div>
                                 </div>

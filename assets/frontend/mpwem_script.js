@@ -547,27 +547,33 @@ function mpwem_attendee_management(parent, total_qty) {
     "use strict";
     $(document).ready(function () {
         //$('.mpwem_related_area').slideDown('fast').promise().done(function () {
-        $('.mpwem_related_area .related_item').slick({
+        var $relatedSlider = $('.mpwem_related_area .related_item');
+        if (!$relatedSlider.length || $relatedSlider.hasClass('slick-initialized')) {
+            $('.mpwem_related_area').removeClass('on_load_off');
+            return;
+        }
+        $relatedSlider.slick({
             dots: false,
             arrows: true,
-            prevArrow: '.related_prev',
-            nextArrow: '.related_next',
-            infinite: true,
-            centerMode: false, // Make sure centerMode is false
+            prevArrow: '.mpwem_related_area .related_prev',
+            nextArrow: '.mpwem_related_area .related_next',
+            infinite: $relatedSlider.children('.mpwem_related_card').length > 3,
+            centerMode: false,
             autoplay: false,
             autoplaySpeed: 2000,
             centerPadding: '0px',
             slidesToShow: 3,
             slidesToScroll: 1,
+            adaptiveHeight: false,
             responsive: [
                 {
                     breakpoint: 1024,
                     settings: {
                         slidesToShow: 2,
                         slidesToScroll: 1,
-                        infinite: true,
+                        infinite: $relatedSlider.children('.mpwem_related_card').length > 2,
                         dots: false,
-                        centerMode: false // Ensure left alignment on responsive
+                        centerMode: false
                     }
                 },
                 {
@@ -575,9 +581,9 @@ function mpwem_attendee_management(parent, total_qty) {
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        infinite: true,
+                        infinite: $relatedSlider.children('.mpwem_related_card').length > 1,
                         dots: false,
-                        centerMode: false // Ensure left alignment on responsive
+                        centerMode: false
                     }
                 },
             ]

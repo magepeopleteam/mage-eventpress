@@ -63,11 +63,6 @@
                     </div>
 				<?php } ?>
 				<?php do_action( 'mpwem_location', $event_id, $event_infos, 'sidebar' ); ?>
-				<?php if ( has_term( '', 'mep_tag', $event_id ) ): ?>
-                    <div class="mep-default-sidebar-tags">
-						<?php do_action( 'mep_event_tags', $event_id ); ?>
-                    </div>
-				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id, $event_infos ); ?>
 				<?php if ( $event_speaker_enabled == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">

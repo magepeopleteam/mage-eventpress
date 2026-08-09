@@ -2070,6 +2070,12 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	position: relative;
 }
 
+.horizon_theme .horizon_ticket_calendar .mpwem_calender_area__head,
+.horizon_theme .horizon_ticket_calendar .mpwem_calender_area__hint,
+.horizon_theme .horizon_ticket_calendar .mpwem_calender_area__meta {
+	display: none !important;
+}
+
 .horizon_theme .horizon_ticket_calendar .horizon_cal_btn,
 .horizon_theme .horizon_ticket_calendar .mpwem_calender_area > button {
 	width: 100% !important;

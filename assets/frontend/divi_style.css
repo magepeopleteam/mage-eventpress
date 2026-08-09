@@ -914,8 +914,21 @@
 }
 
 #mage-container.mage div.mpwem_calender_area {
-  padding: var(--dmp);
-  border-top: 1px solid var(--color_border);
+  padding: 20px;
+  border: 1px solid #eceef2;
+  border-radius: 18px;
+  background: #fff;
+}
+
+#mage-container.mage div.mpwem_calender_area .mpwem_calender_toggle {
+  width: 100%;
+  border-radius: 999px;
+}
+
+#mage-container.mage div.mpwem_calender_area .mpwem_calender_providers__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 /* ************************************************************Event Date List******************** */
@@ -1498,7 +1511,7 @@
 
 /* **********************************************************TAG******************** */
 #mage-container.mage .mep-event-tags-widget {
-  margin: 24px 0;
+  margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -1508,20 +1521,51 @@
 #mage-container.mage .mep-event-tags {
   display: flex;
   flex-direction: column;
+  gap: 14px;
   padding: 20px;
-  align-items: flex-start;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid #eceef2;
+  border-radius: 18px;
+}
+
+#mage-container.mage .mep-event-tags__head {
+  display: flex;
+  align-items: center;
   gap: 12px;
+}
+
+#mage-container.mage .mep-event-tags__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eceef2;
+  color: var(--color_theme, #111827);
+}
+
+#mage-container.mage .mep-event-tags__eyebrow {
+  display: block;
+  margin: 0 0 2px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
 }
 
 #mage-container.mage .mep-event-tags-widget .location-title,
 #mage-container.mage .mep-event-tags__title {
   margin: 0;
   padding: 0;
-  font-size: 13px;
+  font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #64748b;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #111827;
   line-height: 1.3;
 }
 
@@ -1539,29 +1583,40 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 32px;
-  padding: 6px 14px;
+  gap: 2px;
+  min-height: 34px;
+  padding: 7px 14px;
   margin: 0;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #eceef2;
   border-radius: 999px;
   background: #f8fafc;
-  color: #334155;
-  font-size: 13px;
-  font-weight: 500;
+  color: #111827;
+  font-size: 0.84rem;
+  font-weight: 600;
   line-height: 1;
   text-decoration: none;
   box-shadow: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+#mage-container.mage .mep-event-tags-list a.mep-tag-link .mep-tag-link__hash {
+  color: #6b7280;
+  font-weight: 700;
 }
 
 #mage-container.mage .mep-event-tags-list a.mep-tag-link:hover,
 #mage-container.mage .mep-event-tags-list a.mep-tag-link:focus-visible {
-  background: var(--color_theme);
-  border-color: var(--color_theme);
+  background: var(--color_theme, #111827);
+  border-color: var(--color_theme, #111827);
   color: #fff;
-  transform: none;
+  transform: translateY(-1px);
   box-shadow: none;
   outline: none;
+}
+
+#mage-container.mage .mep-event-tags-list a.mep-tag-link:hover .mep-tag-link__hash,
+#mage-container.mage .mep-event-tags-list a.mep-tag-link:focus-visible .mep-tag-link__hash {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* *************************************************************Slider******************** */

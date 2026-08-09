@@ -1274,18 +1274,6 @@ div.mpwem_timeline_area .timeline_content .mp_wp_editor {
 	letter-spacing: -0.02em;
 }
 
-.mep_smart_theme .mpwem_timeline_area .timeline_section_header h2::before {
-	content: 'Schedule';
-	display: block;
-	margin-bottom: 8px;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--color_theme, #2563eb);
-	line-height: 1;
-}
-
 .mep_smart_theme .mpwem_timeline_area .timeline_body {
 	padding: 14px 0 0;
 }
@@ -2369,18 +2357,6 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	text-transform: none;
 }
 
-.mep_smart_theme #mpwem_map_area .map_title::before {
-	content: 'Map';
-	display: block;
-	margin-bottom: 8px;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--color_theme, #2563eb);
-	line-height: 1;
-}
-
 .mep_smart_theme #mpwem_map_area .map_section {
 	padding: 0 14px 14px;
 }
@@ -2713,18 +2689,6 @@ div.faq_area .item .content {
 	text-align: left !important;
 	border-radius: 0 !important;
 	letter-spacing: -0.02em;
-}
-
-.mep_smart_theme .faq_area > h2::before {
-	content: 'FAQ';
-	display: block;
-	margin-bottom: 8px;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--color_theme, #2563eb);
-	line-height: 1;
 }
 
 .mep_smart_theme .faq_area .description {
@@ -3118,18 +3082,6 @@ div.mpwem_related_area div.mep-event-list-loop {
 	line-height: 1.25 !important;
 	color: #111827 !important;
 	letter-spacing: -0.02em;
-}
-
-.mep_smart_theme .mpwem_related_area .related_title h3::before {
-	content: 'Discover';
-	display: block;
-	margin-bottom: 8px;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--color_theme, #2563eb);
-	line-height: 1;
 }
 
 .mep_smart_theme .mpwem_related_area .related_navigation {

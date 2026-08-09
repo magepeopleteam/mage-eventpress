@@ -1746,6 +1746,14 @@ div.mep_smart_theme .mpwem_organizer h5 {
 	color: var(--color_theme);
 }
 
+/* Hero metainfo organizer must stay white over the image */
+div.mep_smart_theme .smart_theme_metainfo > .mpwem_organizer,
+div.mep_smart_theme .smart_theme_metainfo > .mpwem_organizer a,
+div.mep_smart_theme .smart_theme_metainfo > .mpwem_organizer h5 {
+	color: #fff !important;
+	margin: 0;
+}
+
 div.mpwem_timeline_area {
 	margin: var(--dmp) 0 0 0;
 	background: transparent;

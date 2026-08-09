@@ -32,7 +32,8 @@
                                         <span class="timeline_connector"></span>
                                         <?php if ( $time ) : ?>
                                             <span class="timeline_time">
-                                                <i class="fa fa-clock-o"></i><?php echo esc_html( $time ); ?>
+                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                                <span><?php echo esc_html( $time ); ?></span>
                                             </span>
                                         <?php endif; ?>
                                     </div>

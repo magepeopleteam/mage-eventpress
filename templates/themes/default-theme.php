@@ -11,7 +11,8 @@
 	$upcoming_date             = is_array($event_infos) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
 	$event_type                = is_array($event_infos) && array_key_exists( 'mep_event_type', $event_infos ) ? $event_infos['mep_event_type'] : 'offline';
 	$mep_enable_recurring      = is_array($event_infos) && array_key_exists( 'mep_enable_recurring', $event_infos ) ? $event_infos['mep_enable_recurring'] : 'no';
-	$speaker_title             = is_array($event_infos) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : __( "Speaker", "mage-eventpress" );
+	$speaker_title             = is_array( $event_infos ) && array_key_exists( 'mep_speaker_title', $event_infos ) ? trim( (string) $event_infos['mep_speaker_title'] ) : '';
+	$speaker_title             = $speaker_title !== '' ? $speaker_title : __( 'Speakers', 'mage-eventpress' );
 	$speaker_icon              = is_array($event_infos) && array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 	$speaker_lists             = is_array($event_infos) && array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 	$speaker_lists             = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
@@ -73,7 +74,12 @@
 				<?php do_action( 'mpwem_social', $event_id, $event_infos ); ?>
 				<?php if ( $event_speaker_enabled == 'yes' && is_array( $speaker_lists ) && sizeof( $speaker_lists ) > 0 ) { ?>
                     <div class="event_speaker_list_area">
-                        <h5><span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span><?php echo esc_html( $speaker_title ); ?></h5>
+                        <h5>
+							<?php if ( ! empty( $speaker_icon ) ) : ?>
+                                <span class="<?php echo esc_attr( $speaker_icon ); ?> _mr_xs"></span>
+							<?php endif; ?>
+							<?php echo esc_html( $speaker_title ); ?>
+                        </h5>
 						<?php do_action( 'mpwem_speaker', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>

@@ -207,6 +207,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 },
                 success: function (data) {
                     target.html(data).slideDown('fast').promise().done(function () {
+                        mpwem_init_modern_time_select(parent);
                         const date = parent.find('[name="mpwem_time"]').val();
                         get_mpwem_ticket(target, date);
                     });
@@ -1258,6 +1259,23 @@ jQuery(document).ready(function ($) {
         autoSize: true,
         changeMonth: true,
         changeYear: true,
+        showButtonPanel: false,
+
+        beforeShow: function (input, inst) {
+            if (inst && inst.dpDiv) {
+                inst.dpDiv
+                    .addClass('mpwem-datepicker-modern')
+                    .attr('data-mpwem-picker', '1');
+            }
+        },
+
+        onClose: function (dateText, inst) {
+            if (inst && inst.dpDiv) {
+                inst.dpDiv
+                    .removeClass('mpwem-datepicker-modern')
+                    .removeAttr('data-mpwem-picker');
+            }
+        },
 
         beforeShowDay: function (date) {
 
@@ -1268,10 +1286,10 @@ jQuery(document).ready(function ($) {
             let dmy = d + "-" + m + "-" + y;
 
             if ($.inArray(dmy, availableDates) !== -1) {
-                return [true, "", "Available"];
+                return [true, "mpwem-day-available", "Available"];
             }
 
-            return [false, "", "Unavailable"];
+            return [false, "mpwem-day-unavailable", "Unavailable"];
         },
         onSelect: function (dateText, data) {
 
@@ -1809,6 +1827,166 @@ jQuery(function ($) {
             mepRestoreAttendeeFields($area, pending.attendeeFields);
             mepOpenNativeModal($area);
         });
+    });
+
+    /**
+     * Modern custom dropdown for #mpwem_time (keeps native select synced for booking AJAX).
+     */
+    function mpwem_close_modern_selects($except) {
+        $('.mpwem-modern-select.is-open').each(function () {
+            var $wrap = $(this);
+            if ($except && $wrap.is($except)) {
+                return;
+            }
+            $wrap.removeClass('is-open');
+            $wrap.find('.mpwem-modern-select__trigger').attr('aria-expanded', 'false');
+            $wrap.find('.mpwem-modern-select__menu').attr('hidden', true);
+            $wrap.closest('.date-time-area').removeClass('has-modern-select-open');
+        });
+    }
+
+    function mpwem_sync_modern_time_select($select) {
+        var $wrap = $select.closest('.mpwem-modern-select');
+        if (!$wrap.length) {
+            return;
+        }
+        var $selected = $select.find('option:selected');
+        var label = $.trim($selected.text()) || $.trim($select.find('option').first().text()) || '';
+        var value = $select.val() || '';
+        $wrap.find('.mpwem-modern-select__value').text(label);
+        $wrap.find('.mpwem-modern-select__option').each(function () {
+            var $opt = $(this);
+            var isActive = $opt.attr('data-value') === value;
+            $opt.toggleClass('is-selected', isActive).attr('aria-selected', isActive ? 'true' : 'false');
+        });
+    }
+
+    function mpwem_build_modern_time_select($select) {
+        if (!$select.length || $select.data('mpwemModernSelect')) {
+            return;
+        }
+
+        var $wrap = $('<div class="mpwem-modern-select" />');
+        var uid = 'mpwem-modern-select-' + Math.random().toString(36).slice(2, 9);
+        var $trigger = $(
+            '<button type="button" class="mpwem-modern-select__trigger" aria-haspopup="listbox" aria-expanded="false">' +
+            '<span class="mpwem-modern-select__value"></span>' +
+            '<span class="mpwem-modern-select__chevron" aria-hidden="true"></span>' +
+            '</button>'
+        );
+        var $menu = $('<ul class="mpwem-modern-select__menu" role="listbox" hidden></ul>');
+
+        $trigger.attr('aria-controls', uid);
+        $menu.attr('id', uid);
+
+        $select.find('option').each(function () {
+            var $option = $(this);
+            var value = $option.attr('value');
+            if (typeof value === 'undefined') {
+                return;
+            }
+            var $item = $('<li class="mpwem-modern-select__option" role="option" tabindex="-1"></li>');
+            $item.attr('data-value', value);
+            $item.attr('aria-selected', $option.is(':selected') ? 'true' : 'false');
+            $item.toggleClass('is-selected', $option.is(':selected'));
+            $item.text($.trim($option.text()));
+            $menu.append($item);
+        });
+
+        $select
+            .addClass('mpwem-modern-select__native')
+            .attr('tabindex', '-1')
+            .attr('aria-hidden', 'true')
+            .after($wrap);
+
+        $wrap.append($select);
+        $wrap.append($trigger);
+        $wrap.append($menu);
+        $select.data('mpwemModernSelect', true);
+        mpwem_sync_modern_time_select($select);
+
+        $trigger.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var willOpen = !$wrap.hasClass('is-open');
+            mpwem_close_modern_selects(willOpen ? $wrap : null);
+            if (!willOpen) {
+                return;
+            }
+            $wrap.addClass('is-open');
+            $trigger.attr('aria-expanded', 'true');
+            $menu.removeAttr('hidden');
+            $wrap.closest('.date-time-area').addClass('has-modern-select-open');
+            $menu.find('.mpwem-modern-select__option.is-selected').trigger('focus');
+        });
+
+        $menu.on('click', '.mpwem-modern-select__option', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var value = $(this).attr('data-value');
+            if ($select.val() !== value) {
+                $select.val(value).trigger('change');
+            } else {
+                mpwem_sync_modern_time_select($select);
+            }
+            mpwem_close_modern_selects();
+            $trigger.trigger('focus');
+        });
+
+        $select.on('change.mpwemModernSelect', function () {
+            mpwem_sync_modern_time_select($select);
+        });
+
+        $trigger.on('keydown', function (e) {
+            if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (!$wrap.hasClass('is-open')) {
+                    $trigger.trigger('click');
+                }
+            } else if (e.key === 'Escape') {
+                mpwem_close_modern_selects();
+            }
+        });
+
+        $menu.on('keydown', '.mpwem-modern-select__option', function (e) {
+            var $items = $menu.find('.mpwem-modern-select__option');
+            var index = $items.index(this);
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                $items.eq(Math.min(index + 1, $items.length - 1)).trigger('focus');
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                $items.eq(Math.max(index - 1, 0)).trigger('focus');
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                $(this).trigger('click');
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                mpwem_close_modern_selects();
+                $trigger.trigger('focus');
+            }
+        });
+    }
+
+    function mpwem_init_modern_time_select(context) {
+        var $root = context ? $(context) : $(document);
+        $root.find('select#mpwem_time, select[name="mpwem_time"]').each(function () {
+            mpwem_build_modern_time_select($(this));
+        });
+    }
+
+    $(document).on('click', function () {
+        mpwem_close_modern_selects();
+    });
+
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape') {
+            mpwem_close_modern_selects();
+        }
+    });
+
+    $(function () {
+        mpwem_init_modern_time_select('.mpwem_registration_area');
     });
 
 }(jQuery));

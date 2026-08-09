@@ -63,7 +63,7 @@
 					?>
                     <div class="date-time-area">
                         <label>
-                            <span><?php esc_html_e( 'Select date', 'mage-eventpress' ); ?></span>
+                                <span><?php esc_html_e( 'Select Date', 'mage-eventpress' ); ?></span>
                             <i class="far fa-calendar"></i>
                             <input type="hidden" name="mpwem_date_time" value="<?php echo esc_attr( $hidden_date ); ?>" required/>
                             <input id="mpwem_date_time" type="text" value="<?php echo esc_attr( $visible_date ); ?>" class="formControl " placeholder="<?php echo esc_attr( $now ); ?>" readonly required/>

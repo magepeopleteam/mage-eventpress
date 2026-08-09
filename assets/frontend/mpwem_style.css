@@ -111,31 +111,65 @@ div.mpwem_related_area.on_load_off {
 }
 
 .mep-default-content h2._mb,
-.mep-default-content h3,
+.mep-default-content .mpwem_details > h2,
+.mep-default-content .faq_area > h2,
+.mep-default-content .mpwem_timeline_area .timeline_section_header h2,
+.mep-default-content .mpwem_related_area .related_title h3,
+.mep-default-content .mpwem_registration_area .section-title {
+	margin: 0 0 1.25rem;
+	padding: 0;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	color: #111827;
+	text-align: left;
+	text-transform: none;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
+.mep-default-content .mpwem_registration_area .date-time-header .ticket-title {
+	margin: 0;
+	padding: 0;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	color: #111827;
+	text-align: left;
+	text-transform: none;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
 .mep-default-content h4,
 .mep-default-content h5,
 .mep-default-content h6 {
-	font-size: 22px;
-	font-weight: normal;
+	font-size: 1rem;
+	font-weight: 600;
 }
 
 div.mpwem_related_area .related_title h3 {
 	padding: 0;
 	margin: 0;
-	font-size: 1.5rem;
-	font-weight: 600;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
 	line-height: 1.25;
 	color: #111827;
 	letter-spacing: -0.02em;
+	text-align: left;
 }
 
 div.mpwem_related_area .related_title {
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	padding: 0 0 20px;
-	margin: 0 0 4px;
+	padding: 0;
+	margin: 0 0 1.25rem;
 	background: none;
 	border-radius: 0;
 }
@@ -313,6 +347,20 @@ div.default_theme .mpwem_tile {
 	margin: 0 0 var(--dmp_xs) 0;
 	color: var(--color_black);
 	font-size: 36px;
+}
+
+div.mpwem_details > h2,
+div.mpwem_details > h2._mb {
+	margin: 0 0 1.25rem;
+	padding: 0;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	color: #111827;
+	text-align: left;
+	background: transparent;
+	border: 0;
 }
 
 div.mpwem_details {
@@ -544,22 +592,27 @@ div.mpwem_style .kera_ticket_area [data-tabs-target] {
 }
 
 .mpwem_registration_area .section-title {
-	font-size: 25px;
-	font-weight: bold;
-	margin: 10px 0;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	margin: 0 0 1.25rem;
+	padding: 0;
+	color: #111827;
+	text-align: left;
 }
 
 .mpwem_registration_area .date-time-header {
-	padding: 10px 25px;
-	background: var(--color_theme);
-	border-radius: 12px 12px 0 0;
-	margin-bottom: -10px;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+	padding: 0;
+	background: transparent;
+	border-radius: 0;
+	margin: 0 0 1.25rem;
+	box-shadow: none;
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
-	gap: 20px;
-	border: 1px solid var(--color_theme);
+	align-items: stretch;
+	gap: 1.25rem;
+	border: 0;
 	position: relative;
 	z-index: 1;
 	flex-direction: column;
@@ -568,50 +621,622 @@ div.mpwem_style .kera_ticket_area [data-tabs-target] {
 .mpwem_registration_area .date-time-header .ticket-title {
 	margin: 0;
 	padding: 0;
-	font-size: 18px;
-	font-weight: normal;
-	color: var(--color_7);
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.25;
+	color: #111827;
+	text-align: left;
 }
 
 .mpwem_registration_area .date-time-area {
-	display: flex;
-	flex-direction: column;
-	align-items: start;
-	gap: 20px;
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: stretch;
+	gap: 0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #e5e7eb;
+	border-radius: 14px;
+	background: #fff;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.mpwem_registration_area .date-time-area:has(.mpwem_time_area) {
+	grid-template-columns: 1fr 1fr;
+}
+
+.mpwem_registration_area .date-time-area .mpwem_time_area {
+	display: contents;
+	margin: 0;
+	padding: 0;
+	width: auto;
 }
 
 .mpwem_registration_area .date-time-area label {
-	display: flex;
-	flex-direction: row;
+	display: grid;
+	grid-template-columns: 20px minmax(0, 1fr);
+	grid-template-areas:
+		"lbl lbl"
+		"ico ctl";
 	align-items: center;
-	justify-content: space-between;
-	gap: 15px;
+	column-gap: 10px;
+	row-gap: 10px;
 	width: 100%;
+	margin: 0;
+	padding: 16px 18px;
+	position: relative;
+	border: 0;
+	box-sizing: border-box;
+	transition: background-color 0.15s ease;
+}
+
+.mpwem_registration_area .date-time-area > label {
+	border-right: 1px solid #e5e7eb;
+}
+
+.mpwem_registration_area .date-time-area:not(:has(.mpwem_time_area)) > label,
+.mpwem_registration_area .date-time-area .mpwem_time_area label {
+	border-right: 0;
+}
+
+.mpwem_registration_area .date-time-area label:hover,
+.mpwem_registration_area .date-time-area label:focus-within {
+	background-color: #fafafa;
 }
 
 .mpwem_registration_area .date-time-area label span {
-	font-size: 16px;
-	font-weight: normal;
-	color: var(--color_7);
+	grid-area: lbl;
+	display: block;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	line-height: 1.2;
+	color: #6b7280;
 }
 
 .mpwem_registration_area .date-time-area label i {
-	color: var(--color_7);
+	grid-area: ico;
+	position: static;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	color: #111827;
+	font-size: 14px;
+	line-height: 1;
+	opacity: 0.72;
+	pointer-events: none;
+}
+
+.mpwem_registration_area .date-time-area label input[type="hidden"] {
+	display: none;
 }
 
 .mpwem_registration_area .date-time-area .formControl {
-	border-radius: 5px;
-	padding: 10px 15px;
-	max-width: 100%;
-	box-sizing: border-box;
-}
-
-.mpwem_registration_area .date-time-area .formControl {
-	border-radius: 5px;
-	padding: 10px 15px;
+	grid-area: ctl;
 	width: 100%;
 	max-width: 100%;
+	min-height: 0;
+	margin: 0;
+	padding: 0 22px 0 0;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: 12px 8px;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 1.35;
+	color: #111827;
+	box-shadow: none;
 	box-sizing: border-box;
+	appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+}
+
+.mpwem_registration_area .date-time-area .formControl:focus {
+	outline: none;
+	box-shadow: none;
+}
+
+/* Modern custom time dropdown (#mpwem_time) */
+.mpwem_registration_area .date-time-area .mpwem-modern-select {
+	grid-area: ctl;
+	position: relative;
+	width: 100%;
+	min-width: 0;
+	z-index: 2;
+}
+
+.mpwem_registration_area .date-time-area.has-modern-select-open {
+	overflow: visible;
+	z-index: 20;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__native {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	background-image: none !important;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #111827;
+	font: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 1.35;
+	text-align: left;
+	cursor: pointer;
+	box-shadow: none;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__trigger:focus {
+	outline: none;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__trigger:focus-visible {
+	outline: 2px solid #111827;
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__value {
+	display: block;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__chevron {
+	flex: 0 0 auto;
+	width: 12px;
+	height: 8px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 12px 8px;
+	transition: transform 0.18s ease;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select.is-open .mpwem-modern-select__chevron {
+	transform: rotate(180deg);
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__menu {
+	position: absolute;
+	top: calc(100% + 12px);
+	left: -30px;
+	right: -18px;
+	z-index: 40;
+	margin: 0;
+	padding: 6px;
+	list-style: none;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06);
+	box-sizing: border-box;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__menu[hidden] {
+	display: none !important;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option {
+	display: block;
+	margin: 0;
+	padding: 11px 12px;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	color: #374151;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+	cursor: pointer;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option:hover,
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option:focus {
+	outline: none;
+	background: #f3f4f6;
+	color: #111827;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option.is-selected {
+	background: #111827;
+	color: #fff;
+	font-weight: 600;
+}
+
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option.is-selected:hover,
+.mpwem_registration_area .date-time-area .mpwem-modern-select__option.is-selected:focus {
+	background: #111827;
+	color: #fff;
+}
+
+@media only screen and (max-width: 640px) {
+	.mpwem_registration_area .date-time-area:has(.mpwem_time_area) {
+		grid-template-columns: 1fr;
+	}
+
+	.mpwem_registration_area .date-time-area > label {
+		border-right: 0;
+		border-bottom: 1px solid #e5e7eb;
+	}
+
+	.mpwem_registration_area .date-time-area:not(:has(.mpwem_time_area)) > label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label {
+		border-bottom: 0;
+	}
+
+	.mpwem_registration_area .date-time-area .mpwem-modern-select__menu {
+		left: -30px;
+		right: -18px;
+	}
+}
+
+/* ===== Modern jQuery UI datepicker (ticket calendars) ===== */
+#ui-datepicker-div.mpwem-datepicker-modern {
+	width: 308px !important;
+	min-width: 280px !important;
+	max-width: calc(100vw - 24px) !important;
+	padding: 12px !important;
+	margin-top: 6px !important;
+	background: #fff !important;
+	border: 1px solid #e5e7eb !important;
+	border-radius: 14px !important;
+	box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+	font-family: inherit !important;
+	font-size: 13px !important;
+	line-height: 1.25 !important;
+	color: #111827 !important;
+	box-sizing: border-box !important;
+	z-index: 100050 !important;
+	overflow: visible !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern.ui-datepicker,
+#ui-datepicker-div.mpwem-datepicker-modern.ui-widget,
+#ui-datepicker-div.mpwem-datepicker-modern.ui-widget-content {
+	background: #fff !important;
+	border: 1px solid #e5e7eb !important;
+	color: #111827 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-header,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-widget-header {
+	display: grid !important;
+	grid-template-columns: 34px minmax(0, 1fr) 34px !important;
+	grid-template-rows: 34px !important;
+	align-items: center !important;
+	column-gap: 8px !important;
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	padding: 0 0 10px !important;
+	margin: 0 !important;
+	position: relative !important;
+	float: none !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-header::before,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-header::after {
+	display: none !important;
+	content: none !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next {
+	position: relative !important;
+	top: auto !important;
+	left: auto !important;
+	right: auto !important;
+	float: none !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 34px !important;
+	height: 34px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 1px solid #e5e7eb !important;
+	border-radius: 10px !important;
+	background: #fff !important;
+	cursor: pointer !important;
+	box-sizing: border-box !important;
+	text-decoration: none !important;
+	opacity: 1 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev {
+	grid-column: 1 !important;
+	grid-row: 1 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next {
+	grid-column: 3 !important;
+	grid-row: 1 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev:hover,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next:hover {
+	background: #f3f4f6 !important;
+	border-color: #d1d5db !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev.ui-state-disabled,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next.ui-state-disabled,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev.ui-state-disabled:hover,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next.ui-state-disabled:hover {
+	opacity: 0.35 !important;
+	background: #fff !important;
+	border-color: #e5e7eb !important;
+	cursor: default !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev span,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next span,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev .ui-icon,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next .ui-icon {
+	display: none !important;
+	background-image: none !important;
+	text-indent: -9999px !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev::after,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next::after {
+	content: "" !important;
+	display: block !important;
+	width: 7px !important;
+	height: 7px !important;
+	border-top: 1.75px solid #374151 !important;
+	border-right: 1.75px solid #374151 !important;
+	box-sizing: border-box !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev::after {
+	transform: translateX(1px) rotate(-135deg) !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next::after {
+	transform: translateX(-1px) rotate(45deg) !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-title {
+	grid-column: 2 !important;
+	grid-row: 1 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 6px !important;
+	float: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1.2 !important;
+	color: #111827 !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	min-width: 0 !important;
+	width: auto !important;
+	background: transparent !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-title select,
+#ui-datepicker-div.mpwem-datepicker-modern select.ui-datepicker-month,
+#ui-datepicker-div.mpwem-datepicker-modern select.ui-datepicker-year {
+	display: inline-block !important;
+	float: none !important;
+	margin: 0 !important;
+	padding: 0 22px 0 8px !important;
+	height: 34px !important;
+	border: 1px solid #e5e7eb !important;
+	border-radius: 8px !important;
+	background-color: #f9fafb !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 7px center !important;
+	background-size: 10px 6px !important;
+	color: #111827 !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	line-height: 32px !important;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: 52% !important;
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	cursor: pointer !important;
+	box-shadow: none !important;
+	box-sizing: border-box !important;
+	vertical-align: middle !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-title select:focus {
+	outline: none !important;
+	border-color: #cbd5e1 !important;
+	box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.06) !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern table.ui-datepicker-calendar {
+	width: 100% !important;
+	margin: 0 !important;
+	border: 0 !important;
+	border-collapse: separate !important;
+	border-spacing: 2px !important;
+	table-layout: fixed !important;
+	font-size: 13px !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern th {
+	padding: 4px 0 !important;
+	width: 14.2857% !important;
+	border: 0 !important;
+	background: transparent !important;
+	color: #9ca3af !important;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.04em !important;
+	text-transform: uppercase !important;
+	text-align: center !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern th span {
+	color: inherit !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td {
+	padding: 0 !important;
+	width: 14.2857% !important;
+	height: auto !important;
+	border: 0 !important;
+	background: transparent !important;
+	text-align: center !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td .ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td span.ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td a.ui-state-default {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 100% !important;
+	max-width: 36px !important;
+	height: 34px !important;
+	min-height: 34px !important;
+	margin: 0 auto !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 10px !important;
+	background: transparent !important;
+	color: #111827 !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	line-height: 1 !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+	box-sizing: border-box !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td a.ui-state-default:hover {
+	background: #f3f4f6 !important;
+	color: #111827 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-datepicker-today .ui-state-default {
+	background: #f9fafb !important;
+	box-shadow: inset 0 0 0 1px #d1d5db !important;
+	font-weight: 700 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td .ui-state-active,
+#ui-datepicker-div.mpwem-datepicker-modern td a.ui-state-active,
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-datepicker-current-day .ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-datepicker-current-day a.ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-widget-content .ui-state-active {
+	background: #111827 !important;
+	color: #fff !important;
+	font-weight: 700 !important;
+	box-shadow: none !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-datepicker-unselectable .ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-state-disabled .ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td.ui-datepicker-other-month .ui-state-default,
+#ui-datepicker-div.mpwem-datepicker-modern td.mpwem-day-unavailable .ui-state-default {
+	color: #d1d5db !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	font-weight: 500 !important;
+	cursor: default !important;
+	opacity: 1 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td.mpwem-day-available a.ui-state-default:not(.ui-state-active),
+#ui-datepicker-div.mpwem-datepicker-modern td[title="Available"] a.ui-state-default:not(.ui-state-active) {
+	background: #f3f4f6 !important;
+	color: #111827 !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern td.mpwem-day-available a.ui-state-default:not(.ui-state-active):hover,
+#ui-datepicker-div.mpwem-datepicker-modern td[title="Available"] a.ui-state-default:not(.ui-state-active):hover {
+	background: #e5e7eb !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-buttonpane {
+	display: none !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-icon {
+	background-image: none !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-state-hover,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-widget-content .ui-state-hover,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-widget-header .ui-state-hover {
+	border-color: #e5e7eb !important;
+	background: #f3f4f6 !important;
+	font-weight: inherit !important;
+	color: inherit !important;
+}
+
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-prev.ui-state-hover,
+#ui-datepicker-div.mpwem-datepicker-modern .ui-datepicker-next.ui-state-hover {
+	background: #f3f4f6 !important;
+}
+
+@media only screen and (max-width: 360px) {
+	#ui-datepicker-div.mpwem-datepicker-modern {
+		width: calc(100vw - 20px) !important;
+		min-width: 0 !important;
+		padding: 10px !important;
+	}
+
+	#ui-datepicker-div.mpwem-datepicker-modern td .ui-state-default,
+	#ui-datepicker-div.mpwem-datepicker-modern td span.ui-state-default,
+	#ui-datepicker-div.mpwem-datepicker-modern td a.ui-state-default {
+		height: 30px !important;
+		min-height: 30px !important;
+		font-size: 12px !important;
+		border-radius: 8px !important;
+	}
 }
 
 .mpwem_registration_area .mpwem_booking_panel {
@@ -900,16 +1525,6 @@ div.mpwem_ex_service {
 	display: none;
 }
 
-.mpwem_registration_area .date-time-header {
-	flex-direction: row;
-}
-
-.mpwem_registration_area .date-time-area {
-	flex-direction: row;
-	justify-content: end;
-	align-items: center;
-}
-
 .mep_smart_theme .mpwem_content_area {
 	margin: 40px 0 0 0;
 	flex-direction: row;
@@ -925,27 +1540,16 @@ div.mpwem_ex_service {
 	width: 100%;
 }
 
-.mpwem_registration_area input#mpwem_date_time {
-	border-radius: 5px !important;
-	position: relative;
-}
-
-.mpwem_registration_area input#mpwem_date_time {
-	width: 220px;
+.mpwem_registration_area .date-time-area input#mpwem_date_time {
+	width: 100%;
 	max-width: 100%;
+	border-radius: 0;
 	box-sizing: border-box;
 }
 
-.mpwem_registration_area .date-time-area>label::after {
-	content: "\f078";
-	font-family: "Font Awesome 5 Free";
-	font-size: 17px;
-	font-weight: 900;
-	position: absolute;
-	right: 8px;
-	top: 50%;
-	transform: translateY(-50%);
-	color: #a6c0cb;
+.mpwem_registration_area .date-time-area > label::after {
+	display: none;
+	content: none;
 }
 
 .ticket-price .mep-limited-availability-ribbon {
@@ -1149,8 +1753,8 @@ div.mpwem_timeline_area {
 
 div.mpwem_timeline_area .timeline_section_header {
 	background: transparent;
-	padding: 0 0 1.25rem;
-	margin: 0;
+	padding: 0;
+	margin: 0 0 1.25rem;
 }
 
 div.mpwem_timeline_area .timeline_section_header h2 {
@@ -1160,6 +1764,8 @@ div.mpwem_timeline_area .timeline_section_header h2 {
 	line-height: 1.25;
 	color: #111827;
 	margin: 0;
+	padding: 0;
+	text-align: left;
 }
 
 div.mpwem_timeline_area .timeline_body {
@@ -1633,42 +2239,281 @@ div.mep_smart_theme .mpwem_sidebar_content > .mpwem_calender_area {
 }
 
 div.event_date_list_area {
-	padding: var(--dmp_xs) var(--dmp);
+	padding: 16px var(--dmp) var(--dmp_xs);
 }
 
-div.event_date_list_area .date_list_area {
-	max-height: 500px;
-	overflow: auto;
-	margin: 0 0 var(--dmp_xs) 0;
-}
-
-div.event_date_list_area .date_item {
-	padding: 0 0 0 15px;
-	position: relative;
+/* Schedule list — clean rows, no scroll panel */
+div.event_date_list_area .date_list_area,
+div.event_date_list_area .mpwem-date-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	max-height: none;
+	overflow: visible;
+	margin: 0 0 12px 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-sizing: border-box;
 }
 
 div.event_date_list_area .date_item::before {
+	display: none;
+}
+
+div.event_date_list_area .date-list-item,
+div.event_date_list_area .mpwem-date-card {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+div.event_date_list_area .mpwem-date-card + .mpwem-date-card {
+	border-top: 0;
+}
+
+div.event_date_list_area .mpwem-date-card__inner {
+	display: grid;
+	grid-template-columns: 48px minmax(0, 1fr);
+	align-items: start;
+	column-gap: 12px;
+	row-gap: 0;
+	padding: 12px 0;
+	border: 0;
+	border-bottom: 1px solid #e5e7eb;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	box-sizing: border-box;
+	position: relative;
+	transition: none;
+}
+
+div.event_date_list_area .mpwem-date-card:last-child .mpwem-date-card__inner {
+	border-bottom: 0;
+}
+
+div.event_date_list_area .mpwem-date-card--sessions .mpwem-date-card__inner {
+	grid-template-columns: 48px minmax(0, 1fr);
+}
+
+div.event_date_list_area .mpwem-date-card:hover .mpwem-date-card__inner {
+	border-color: #e5e7eb;
+	box-shadow: none;
+	background: transparent;
+}
+
+div.event_date_list_area .mpwem-date-card.is-active .mpwem-date-card__inner {
+	background: transparent;
+	border-color: #e5e7eb;
+	box-shadow: none;
+}
+
+div.event_date_list_area .mpwem-date-card.is-active .mpwem-date-card__inner::before {
 	content: "";
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
 	position: absolute;
-	top: 8px;
 	left: 0;
-	background-color: var(--color_theme);
+	top: 14px;
+	bottom: 14px;
+	width: 2px;
+	border-radius: 2px;
+	background: #111827;
 }
 
-div.event_date_list_area .date_item a {
-	color: inherit;
-	display: block;
-}
-
-div.event_date_list_area .date-list-item {
+div.event_date_list_area .mpwem-date-card__badge {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	min-height: 48px;
+	padding: 6px 4px;
 	border-radius: 10px;
+	background: #f3f4f6;
+	color: #111827;
+	flex-shrink: 0;
+	box-sizing: border-box;
+}
+
+div.event_date_list_area .mpwem-date-card.is-active .mpwem-date-card__badge {
+	background: #111827;
+	color: #fff;
+}
+
+div.event_date_list_area .mpwem-date-card__month {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	line-height: 1;
+	color: #6b7280;
+	opacity: 1;
+}
+
+div.event_date_list_area .mpwem-date-card.is-active .mpwem-date-card__month {
+	color: rgba(255, 255, 255, 0.72);
+}
+
+div.event_date_list_area .mpwem-date-card__day {
+	margin-top: 4px;
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1;
+	color: inherit;
+}
+
+div.event_date_list_area .mpwem-date-card__content {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+	padding-top: 2px;
+}
+
+div.event_date_list_area .mpwem-date-card__weekday {
+	display: block;
+	margin: 0;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	line-height: 1.2;
+	color: #9ca3af;
+}
+
+div.event_date_list_area .mpwem-date-card.is-active .mpwem-date-card__weekday {
+	color: #6b7280;
+}
+
+div.event_date_list_area .mpwem-date-card__date {
+	display: block;
+	margin: 0;
+	padding: 0;
+	color: #111827;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.3;
+	text-decoration: none;
+}
+
+div.event_date_list_area .mpwem-date-card__date:hover {
+	color: #111827;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+div.event_date_list_area .mpwem-date-card__meta {
+	display: block;
+	color: #6b7280;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.35;
+}
+
+div.event_date_list_area .mpwem-date-card__sessions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0;
+}
+
+div.event_date_list_area .mpwem-date-card__session {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 4px;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #6b7280;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.4;
+	text-decoration: none;
+	box-sizing: border-box;
+	transition: color 0.15s ease;
+}
+
+div.event_date_list_area .mpwem-date-card__session:not(:last-child)::after {
+	content: "·";
+	display: inline;
+	margin: 0 8px 0 4px;
+	color: #d1d5db;
+	font-weight: 400;
+	pointer-events: none;
+}
+
+div.event_date_list_area .mpwem-date-card__session:hover {
+	background: transparent;
+	border-color: transparent;
+	color: #111827;
+}
+
+div.event_date_list_area .mpwem-date-card__session.is-active {
+	background: transparent;
+	border-color: transparent;
+	color: #111827;
+	font-weight: 600;
+}
+
+div.event_date_list_area .mpwem-date-card__session-label {
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+}
+
+div.event_date_list_area .mpwem-date-card__session-time {
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	opacity: 1;
+}
+
+div.event_date_list_area .mpwem-date-card__session.is-active .mpwem-date-card__session-time {
+	opacity: 1;
+	font-weight: inherit;
+}
+
+div.event_date_list_area .mpwem-date-card__go {
+	display: none;
+}
+
+div.event_date_list_area .mpwem-date-list__more,
+button.mpwem_get_date_list {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 40px;
+	margin: 4px 0 0;
+	padding: 10px 14px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: transparent;
+	color: #374151;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+div.event_date_list_area .mpwem-date-list__more:hover,
+button.mpwem_get_date_list:hover {
+	background: #fafafa;
+	border-style: solid;
+	color: #111827;
 }
 
 button.mpwem_get_date_list {
-	border-radius: 20px;
+	border-radius: 12px;
 }
 
 div.event_speaker_list_area {
@@ -2342,8 +3187,8 @@ div.faq_area .description {
 div.faq_area h2 {
 	background: transparent;
 	color: #111827;
-	padding: 0 0 1.25rem;
-	margin: 0;
+	padding: 0;
+	margin: 0 0 1.25rem;
 	font-size: clamp(1.25rem, 2vw, 1.5rem);
 	font-weight: 700;
 	letter-spacing: -0.02em;
@@ -5816,11 +6661,6 @@ div.mpwem_style [data-bg-image] {
 		width: 75%;
 	}
 
-	.mpwem_registration_area .date-time-area {
-		flex-direction: column;
-		justify-content: center;
-		align-items: end;
-	}
 }
 
 @media only screen and (max-width: 991px) {
@@ -6137,113 +6977,99 @@ div.mpwem_style [data-bg-image] {
 		width: 100%;
 	}
 
-	/* Mobile responsive for Ticket Options section */
+	/* Mobile: Ticket Options stacks as a single bordered panel */
 	.mpwem_registration_area .date-time-header {
-		padding: 15px 20px !important;
+		padding: 0 !important;
 		flex-direction: column !important;
-		gap: 15px !important;
+		gap: 1.25rem !important;
 		align-items: stretch !important;
 	}
 
 	.mpwem_registration_area .date-time-header .ticket-title {
-		font-size: 17px !important;
-		text-align: center !important;
+		font-size: 1.375rem !important;
+		text-align: left !important;
 		width: 100% !important;
 	}
 
 	.mpwem_registration_area .date-time-area {
-		flex-direction: row !important;
-		align-items: center !important;
-		justify-content: space-between !important;
-		gap: 12px !important;
+		display: grid !important;
+		grid-template-columns: 1fr !important;
+		gap: 0 !important;
 		width: 100% !important;
-		flex-wrap: wrap !important;
+		align-items: stretch !important;
 	}
 
-	.mpwem_registration_area .date-time-area label {
-		flex-direction: row !important;
-		align-items: center !important;
-		gap: 8px !important;
-		width: calc(70% - 6px) !important;
-		position: relative !important;
-		flex: 0 0 calc(70% - 6px) !important;
+	.mpwem_registration_area .date-time-area:has(.mpwem_time_area) {
+		grid-template-columns: 1fr !important;
 	}
 
-	.mpwem_registration_area .date-time-area label span {
+	.mpwem_registration_area .date-time-area .mpwem_time_area {
+		display: contents !important;
 		width: auto !important;
-		text-align: left !important;
-		font-size: 15px !important;
-		display: inline-block !important;
-		white-space: nowrap !important;
-		flex-shrink: 0 !important;
+		flex: none !important;
 	}
 
-	.mpwem_registration_area .date-time-area label i {
-		position: absolute !important;
-		right: 12px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
-		pointer-events: none !important;
-	}
-
-	.mpwem_registration_area .date-time-area .formControl {
+	.mpwem_registration_area .date-time-area label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label {
+		display: grid !important;
+		grid-template-columns: 20px minmax(0, 1fr) !important;
+		grid-template-areas:
+			"lbl lbl"
+			"ico ctl" !important;
 		width: 100% !important;
-		min-width: 0 !important;
-		max-width: 100% !important;
-		box-sizing: border-box !important;
-		padding-right: 40px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area input#mpwem_date_time {
-		width: 100% !important;
-		min-width: 0 !important;
-		max-width: 100% !important;
-		box-sizing: border-box !important;
-		padding-right: 40px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area .date-time-area select.formControl {
-		width: 100% !important;
-		min-width: 0 !important;
-		max-width: 100% !important;
-		box-sizing: border-box !important;
-		padding-right: 40px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area {
-		width: calc(30% - 6px) !important;
-		flex: 0 0 calc(30% - 6px) !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label {
-		width: 100% !important;
-		flex-direction: row !important;
-		align-items: center !important;
+		flex: none !important;
+		flex-direction: unset !important;
+		gap: 0 !important;
+		column-gap: 10px !important;
+		row-gap: 10px !important;
+		padding: 16px 18px !important;
+		border-right: 0 !important;
 		position: relative !important;
 	}
 
-	.mpwem_registration_area .mpwem_time_area label span {
+	.mpwem_registration_area .date-time-area > label {
+		border-bottom: 1px solid #e5e7eb !important;
+	}
+
+	.mpwem_registration_area .date-time-area:not(:has(.mpwem_time_area)) > label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label {
+		border-bottom: 0 !important;
+	}
+
+	.mpwem_registration_area .date-time-area label span,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label span {
+		grid-area: lbl !important;
+		display: block !important;
 		width: auto !important;
-		display: inline-block !important;
-		white-space: nowrap !important;
+		font-size: 11px !important;
+		font-weight: 700 !important;
+		letter-spacing: 0.08em !important;
+		text-transform: uppercase !important;
+		white-space: normal !important;
 		flex-shrink: 0 !important;
 	}
 
-	.mpwem_registration_area .mpwem_time_area label i {
-		position: absolute !important;
-		right: 12px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
+	.mpwem_registration_area .date-time-area label i,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label i {
+		grid-area: ico !important;
+		position: static !important;
+		right: auto !important;
+		top: auto !important;
+		transform: none !important;
 		pointer-events: none !important;
 	}
 
-	.mpwem_registration_area .mpwem_time_area select.formControl {
+	.mpwem_registration_area .date-time-area .formControl,
+	.mpwem_registration_area .date-time-area input#mpwem_date_time,
+	.mpwem_registration_area .date-time-area select.formControl,
+	.mpwem_registration_area .date-time-area .mpwem_time_area select.formControl {
+		grid-area: ctl !important;
 		width: 100% !important;
-		padding-right: 40px !important;
-		flex: 1 !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+		box-sizing: border-box !important;
+		padding: 0 22px 0 0 !important;
+		flex: none !important;
 	}
 
 	.mep_smart_theme .mpwem_content_area {
@@ -6356,106 +7182,20 @@ div.mpwem_style [data-bg-image] {
 		flex-direction: column;
 	}
 
-	/* Mobile responsive for Ticket Options section - 650px */
+	/* Ticket Options — keep stacked panel at 650px */
 	.mpwem_registration_area .date-time-header {
-		padding: 12px 15px !important;
-		flex-direction: column !important;
-		gap: 10px !important;
+		padding: 0 !important;
+		gap: 1rem !important;
 	}
 
 	.mpwem_registration_area .date-time-header .ticket-title {
-		font-size: 16px !important;
-		text-align: center !important;
-		width: 100% !important;
-	}
-
-	.mpwem_registration_area .date-time-area {
-		flex-direction: row !important;
-		align-items: center !important;
-		justify-content: space-between !important;
-		gap: 10px !important;
-		width: 100% !important;
-		flex-wrap: wrap !important;
-	}
-
-	.mpwem_registration_area .date-time-area label {
-		flex-direction: row !important;
-		align-items: center !important;
-		gap: 6px !important;
-		width: calc(70% - 5px) !important;
-		position: relative !important;
-		flex: 0 0 calc(70% - 5px) !important;
-	}
-
-	.mpwem_registration_area .date-time-area label span {
-		font-size: 14px !important;
-		width: auto !important;
+		font-size: 1.25rem !important;
 		text-align: left !important;
-		display: inline-block !important;
-		white-space: nowrap !important;
-		flex-shrink: 0 !important;
 	}
 
-	.mpwem_registration_area .date-time-area label i {
-		position: absolute !important;
-		right: 10px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
-		pointer-events: none !important;
-		font-size: 14px !important;
-	}
-
-	.mpwem_registration_area .date-time-area .formControl {
-		width: 100% !important;
-		min-width: 0 !important;
-		max-width: 100% !important;
-		box-sizing: border-box !important;
-		padding: 10px 35px 10px 12px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area input#mpwem_date_time {
-		width: 100% !important;
-		min-width: 0 !important;
-		max-width: 100% !important;
-		box-sizing: border-box !important;
-		padding: 10px 35px 10px 12px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area .date-time-area select.formControl {
-		width: 100% !important;
-		padding: 10px 35px 10px 12px !important;
-		flex: 1 !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area {
-		width: calc(30% - 5px) !important;
-		flex: 0 0 calc(30% - 5px) !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label {
-		flex-direction: row !important;
-		align-items: center !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label span {
-		width: auto !important;
-		white-space: nowrap !important;
-		flex-shrink: 0 !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label i {
-		position: absolute !important;
-		right: 10px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
-		font-size: 14px !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area select.formControl {
-		padding: 10px 35px 10px 12px !important;
-		flex: 1 !important;
+	.mpwem_registration_area .date-time-area label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label {
+		padding: 14px 16px !important;
 	}
 }
 
@@ -6510,74 +7250,26 @@ div.mpwem_style [data-bg-image] {
 		min-width: calc(100% - 14px) !important;
 	}
 
-	/* Mobile responsive for Ticket Options section - 500px */
+	/* Ticket Options — keep stacked panel at 500px */
 	.mpwem_registration_area .date-time-header {
-		padding: 10px 12px !important;
+		padding: 0 !important;
 	}
 
 	.mpwem_registration_area .date-time-header .ticket-title {
-		font-size: 15px !important;
+		font-size: 1.25rem !important;
+		text-align: left !important;
 	}
 
-	.mpwem_registration_area .date-time-area {
-		gap: 8px !important;
+	.mpwem_registration_area .date-time-area label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area label {
+		padding: 14px 16px !important;
 	}
 
-	.mpwem_registration_area .date-time-area label {
-		width: calc(70% - 4px) !important;
-		flex: 0 0 calc(70% - 4px) !important;
-		gap: 4px !important;
-	}
-
-	.mpwem_registration_area .date-time-area label span {
-		font-size: 13px !important;
-	}
-
-	.mpwem_registration_area .date-time-area label i {
-		font-size: 13px !important;
-		right: 8px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
-	}
-
-	.mpwem_registration_area .date-time-area .formControl {
-		padding: 8px 32px 8px 8px !important;
-		font-size: 13px !important;
-	}
-
-	.mpwem_registration_area input#mpwem_date_time {
-		padding: 8px 32px 8px 8px !important;
-		font-size: 13px !important;
-	}
-
+	.mpwem_registration_area .date-time-area .formControl,
+	.mpwem_registration_area .date-time-area input#mpwem_date_time,
 	.mpwem_registration_area .date-time-area select.formControl {
-		padding: 8px 32px 8px 8px !important;
-		font-size: 13px !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area {
-		width: calc(30% - 4px) !important;
-		flex: 0 0 calc(30% - 4px) !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label {
-		gap: 4px !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label span {
-		font-size: 13px !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area label i {
-		right: 8px !important;
-		top: 50% !important;
-		transform: translateY(-50%) !important;
-		font-size: 13px !important;
-	}
-
-	.mpwem_registration_area .mpwem_time_area select.formControl {
-		padding: 8px 32px 8px 8px !important;
-		font-size: 13px !important;
+		font-size: 14px !important;
+		padding: 0 22px 0 0 !important;
 	}
 
 	.mpwem_registration_area .mpwem_booking_panel .mpwem_ticket_type .card-header,
@@ -6642,33 +7334,31 @@ div.mpwem_style [data-bg-image] {
 }
 
 /********************************************************************************************************************************************/
-/* Fix mobile layout for ticket date/time selectors */
+/* Mobile ticket date/time — reinforce stacked panel + select2 full width */
 @media only screen and (max-width: 767px) {
 	.mpwem_registration_area .date-time-area {
-		flex-direction: column !important;
+		display: grid !important;
+		grid-template-columns: 1fr !important;
 		align-items: stretch !important;
-		gap: 10px !important;
+		gap: 0 !important;
 	}
 
-	.mpwem_registration_area .date-time-area>label,
-	.mpwem_registration_area .date-time-area>.mpwem_time_area {
+	.mpwem_registration_area .date-time-area > label,
+	.mpwem_registration_area .date-time-area .mpwem_time_area {
 		width: 100% !important;
-		flex: 0 0 100% !important;
+		flex: none !important;
 	}
 
-	.mpwem_registration_area .date-time-area>label,
-	.mpwem_registration_area .date-time-area .mpwem_time_area label {
-		flex-wrap: wrap !important;
-		gap: 6px !important;
-		width: 100% !important;
+	.mpwem_registration_area .date-time-area .mpwem_time_area {
+		display: contents !important;
 	}
 
-	.mpwem_registration_area .date-time-area>label .formControl,
-	.mpwem_registration_area .date-time-area>label input#mpwem_date_time,
+	.mpwem_registration_area .date-time-area > label .formControl,
+	.mpwem_registration_area .date-time-area > label input#mpwem_date_time,
 	.mpwem_registration_area .date-time-area .mpwem_time_area select.formControl {
 		width: 100% !important;
 		max-width: 100% !important;
-		flex: 0 0 100% !important;
+		flex: none !important;
 	}
 
 	.mpwem_registration_area .date-time-area .mpwem_time_area .select2,
@@ -6680,7 +7370,7 @@ div.mpwem_style [data-bg-image] {
 		min-width: 100% !important;
 	}
 
-	.mpwem_registration_area .date-time-area>label i,
+	.mpwem_registration_area .date-time-area > label i,
 	.mpwem_registration_area .date-time-area .mpwem_time_area label i {
 		position: static !important;
 		transform: none !important;
@@ -6724,12 +7414,13 @@ div.mpwem_style [data-bg-image] {
 }
 
 .mpwem_registration_area .date-time-area .formControl {
-	min-width: min(75px, 100%);
+	min-width: 0;
 	z-index: 1;
 }
 
-.mpwem_registration_area .date-time-area>label::after {
-	z-index: 0;
+.mpwem_registration_area .date-time-area > label::after {
+	display: none;
+	content: none;
 }
 
 .woocommerce-order-details ul.wc-item-meta li>p {
@@ -6737,7 +7428,7 @@ div.mpwem_style [data-bg-image] {
 }
 
 .mpwem_registration_area .date-time-area label {
-	width: max-content;
+	width: 100%;
 }
 
 .mpTabs.kera_ticket_area {

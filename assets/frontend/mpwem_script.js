@@ -631,6 +631,91 @@ function mpwem_attendee_management(parent, total_qty) {
         }
     });
 
+    /**
+     * Single-event Schedule: load remaining dates via AJAX after the first 5.
+     */
+    $(document).on('click', 'button.mpwem_get_schedule_more, button.mpwem-date-list__more.mpwem_get_schedule_more', function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        if ($btn.data('mpwemBusy')) {
+            return;
+        }
+
+        var eventId = $btn.data('event-id');
+        var offset = parseInt($btn.data('offset'), 10) || 5;
+        var $list = $btn.prevAll('.mpwem-date-list, .date_list_area.mpwem-date-list').first();
+        if (!$list.length) {
+            $list = $btn.closest('.evently-event-schedule, .event_date_list_area, .mpwem_style').find('.mpwem-date-list').first();
+        }
+        var $extra = $list.find('.mpwem-date-list__ajax').first();
+        if (!$extra.length) {
+            $extra = $('<div class="mpwem-date-list__ajax" hidden></div>').appendTo($list);
+        }
+
+        var setButtonState = function (open) {
+            $btn.toggleClass('is-open', open);
+            $btn.attr('aria-expanded', open ? 'true' : 'false');
+            var $text = $btn.find('[data-text]');
+            if ($text.length) {
+                $text.text(open
+                    ? ($btn.attr('data-open-text') || 'Hide Date Lists')
+                    : ($btn.attr('data-close-text') || 'View More Dates')
+                );
+            }
+        };
+
+        // Already loaded — just toggle visibility.
+        if ($btn.data('mpwemLoaded')) {
+            var isHidden = $extra.prop('hidden') === true || $extra.is('[hidden]');
+            if (isHidden) {
+                $extra.prop('hidden', false).removeAttr('hidden');
+                setButtonState(true);
+            } else {
+                $extra.prop('hidden', true).attr('hidden', 'hidden');
+                setButtonState(false);
+            }
+            return;
+        }
+
+        if (!eventId) {
+            return;
+        }
+
+        $btn.data('mpwemBusy', true);
+        jQuery.ajax({
+            type: 'POST',
+            url: (typeof mpwem_script_var !== 'undefined' && mpwem_script_var.url) ? mpwem_script_var.url : mpwem_ajax_url,
+            data: {
+                action: 'mpwem_get_schedule_more_dates',
+                post_id: eventId,
+                offset: offset,
+                nonce: (typeof mpwem_script_var !== 'undefined') ? mpwem_script_var.nonce : ''
+            },
+            beforeSend: function () {
+                if (typeof mpwem_loader_xs === 'function') {
+                    mpwem_loader_xs($btn);
+                }
+            },
+            success: function (data) {
+                if (typeof data === 'object' && data && data.success === false) {
+                    return;
+                }
+                $extra.html(data).prop('hidden', false).removeAttr('hidden');
+                $btn.data('mpwemLoaded', true);
+                setButtonState(true);
+            },
+            error: function () {
+                console.error('Error loading more schedule dates');
+            },
+            complete: function () {
+                $btn.data('mpwemBusy', false);
+                if (typeof mpwem_loader_remove === 'function') {
+                    mpwem_loader_remove($btn);
+                }
+            }
+        });
+    });
+
     $(document).on('click', 'button.mep_event_list_grid', function () {
         let $this = $(this);
         let parent = $this.closest('.list_with_filter_section');

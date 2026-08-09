@@ -2276,10 +2276,13 @@ div.event_date_list_area .mpwem-date-card,
 	background: transparent;
 }
 
-/* First 5 dates visible; remaining stay collapsed until View More */
-div.event_date_list_area .mpwem-date-card[data-collapse]:not(.mActive),
-.mpwem-date-list .mpwem-date-card[data-collapse]:not(.mActive),
-.mpwem-date-list .date-list-item[data-collapse]:not(.mActive) {
+.mpwem-date-list__ajax,
+div.event_date_list_area .mpwem-date-list__ajax {
+	display: contents;
+}
+
+.mpwem-date-list__ajax[hidden],
+div.event_date_list_area .mpwem-date-list__ajax[hidden] {
 	display: none !important;
 }
 

@@ -1167,7 +1167,12 @@ let pagination_style=target_data.attr('data-pagination-style');
         $(this).closest('tr').next('tr.mep_virtual_event_info_sec').slideToggle('fast');
     });
     $(document).on('click', '.faq_items [data-collapse-target]', function () {
-        $(this).find('i').toggleClass('fa-chevron-right fa-chevron-down');
+        var $trigger = $(this);
+        var targetId = $trigger.data('collapse-target');
+        var $panel = $('[data-collapse="' + targetId + '"]');
+        window.setTimeout(function () {
+            $trigger.attr('aria-expanded', $panel.hasClass('mActive') ? 'true' : 'false');
+        }, 260);
     });
 }(jQuery));
 /******************** Remove below function after 2025**********************/

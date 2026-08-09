@@ -48,12 +48,11 @@
             $date                    = $url_date ?: $upcoming_date;
             if (MPWEM_Global_Function::check_time_exit_date($date)) {
                 ?>
-                <div class="short_item">
-                    <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr($mep_event_time_icon); ?>"></span></h4>
-                    <div class="_fdColumn">
-                        <h6><?php esc_html_e('Event Time:', 'mage-eventpress'); ?></h6>
-                        <p class="mep_time_status"><?php echo get_mep_datetime( $date, 'time' ); ?></p>
-
+                <div class="short_item short_item--time">
+                    <span class="short_item__icon" aria-hidden="true"><span class="<?php echo esc_attr( $mep_event_time_icon ); ?>"></span></span>
+                    <div class="short_item__body">
+                        <span class="short_item__label"><?php esc_html_e( 'Time', 'mage-eventpress' ); ?></span>
+                        <p class="short_item__value mep_time_status"><?php echo get_mep_datetime( $date, 'time' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                     </div>
                 </div>
                 <?php

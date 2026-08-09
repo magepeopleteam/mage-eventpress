@@ -88,11 +88,11 @@
                     <div><?php echo esc_html( $full_address ); ?></div>
                 </div>
 			<?php } elseif ( $type == 'only' ) { ?>
-                <div class="short_item">
-                    <h4 class="__icon_circle_mr"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></h4>
-                    <div class="_fdColumn">
-                        <h6><?php esc_html_e( 'Event Location:', 'mage-eventpress' ); ?></h6>
-                        <p><?php echo esc_html( $full_address ); ?></p>
+                <div class="short_item short_item--location">
+                    <span class="short_item__icon" aria-hidden="true"><span class="<?php echo esc_attr( $location_icon ); ?>"></span></span>
+                    <div class="short_item__body">
+                        <span class="short_item__label"><?php esc_html_e( 'Location', 'mage-eventpress' ); ?></span>
+                        <p class="short_item__value"><?php echo esc_html( $full_address ); ?></p>
                     </div>
                 </div>
 				<?php

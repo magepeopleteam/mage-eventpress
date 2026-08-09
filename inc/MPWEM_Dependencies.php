@@ -249,9 +249,11 @@
 				wp_enqueue_script( 'filter_pagination', MPWEM_PLUGIN_URL . '/assets/frontend/filter_pagination.js', array(), MPWEM_PLUGIN_VERSION, true );
 
 				if ($is_divi) {
-					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), MPWEM_PLUGIN_VERSION );
+					$divi_css = MPWEM_PLUGIN_DIR . '/assets/frontend/divi_style.css';
+					wp_enqueue_style( 'divi_style', MPWEM_PLUGIN_URL . '/assets/frontend/divi_style.css', array(), file_exists( $divi_css ) ? (string) filemtime( $divi_css ) : MPWEM_PLUGIN_VERSION );
 				} else {
-					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), MPWEM_PLUGIN_VERSION );
+					$mpwem_css = MPWEM_PLUGIN_DIR . '/assets/frontend/mpwem_style.css';
+					wp_enqueue_style( 'mpwem_style', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_style.css', array(), file_exists( $mpwem_css ) ? (string) filemtime( $mpwem_css ) : MPWEM_PLUGIN_VERSION );
 				}
 				wp_enqueue_script( 'mpwem_script', MPWEM_PLUGIN_URL . '/assets/frontend/mpwem_script.js', array( 'jquery' ), MPWEM_PLUGIN_VERSION, true );
 				wp_localize_script( 'mpwem_script', 'mpwem_script_var', array(

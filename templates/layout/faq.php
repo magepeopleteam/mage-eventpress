@@ -15,15 +15,17 @@
 		?>
         <div class="faq_area">
             <h2><?php esc_html_e( 'Frequently asked questions', 'mage-eventpress' ); ?></h2>
-            <div class="description"><?php echo wp_kses_post( $faq_description ); ?></div>
+            <?php if ( $faq_description !== '' ) : ?>
+                <div class="description"><?php echo wp_kses_post( $faq_description ); ?></div>
+            <?php endif; ?>
             <div class="faq_items">
 				<?php foreach ( $faqs as $key => $faq ) { ?>
                     <div class="item">
-                        <div class="title" data-collapse-target="faq-content-<?php echo esc_attr( $key ); ?>">
+                        <div class="title" data-collapse-target="faq-content-<?php echo esc_attr( $key ); ?>" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-content-<?php echo esc_attr( $key ); ?>">
                             <h3><?php echo esc_html( $faq['mep_faq_title'] ); ?></h3>
-                            <i class="fa fa-chevron-right"></i>
+                            <i class="fas fa-plus" aria-hidden="true"></i>
                         </div>
-                        <div class="content" data-collapse="faq-content-<?php echo esc_attr( $key ); ?>">
+                        <div class="content" id="faq-content-<?php echo esc_attr( $key ); ?>" data-collapse="faq-content-<?php echo esc_attr( $key ); ?>">
                             <?php
                                 $content = $faq['mep_faq_content'] ?? '';
                                 $content = preg_replace('/href\s*=\s*"wp-content\//i', 'href="/wp-content/', $content);

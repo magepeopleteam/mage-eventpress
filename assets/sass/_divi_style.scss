@@ -278,21 +278,24 @@
 }
 /* **********************************************************F.A.Q******************** */
 #mage-container.mage {
-	div.faq_area { background-color: #FFF; border: 1px solid #F7F7F7; border-radius: 12px; margin-bottom: var(--dmp); }
-	div.faq_area .description {padding: var(--dmp_xs) var(--dmp);}
-	div.faq_area h2 { background: linear-gradient(135deg, #F7F7F7, #F7F7F7); color: #333; padding: var(--dmp); font-size: var(--fs_h5); font-weight: 600; text-align: left; border-radius: 12px 12px 0 0; }
-	div.faq_area .faq_items { padding: 0 var(--dmp); }
-	div.faq_area .item { background-color: white; cursor: pointer; color: #333; border-bottom: 1px solid #F0F0F0; transition: all .5s; }
-	div.faq_area .item:hover { background-color: #F0F0F0; }
-	div.faq_area .item .title { padding: 15px; display: flex; justify-content: space-between; }
-	div.faq_area .item .title i { color: var(--color_theme); }
-	div.faq_area .item .title h3 { font-size: var(--fs);margin: 0; }
-	div.faq_area .item .content { padding: var(--dmp_xs) var(--dmp); }
-	.mep_smart_theme .faq_area { background-color: #F8FAFC; padding: var(--dmp); border-radius: 10px; }
-	.mep_smart_theme .faq_area h2 { font-size: var(--fs_h3);background: transparent; }
-	.mep_smart_theme .faq_area .faq_items { margin-top: var(--dmp); padding: 0;}
-	.mep_smart_theme .faq_area .faq_items .item { padding: var(--dmp_xs); margin: var(--dmp) 0 0 0;box-shadow: 0 0 5px #DDDDDD; border-radius: 10px; }
-	.mep_smart_theme .faq_area .faq_items .item .title h3 { font-size: var(--fs_h6);color: var(--color_theme); }
+	div.faq_area { background: transparent; border: 0; border-radius: 0; margin-bottom: var(--dmp); overflow: visible; }
+	div.faq_area .description { padding: 0 0 1rem; color: #6b7280; font-size: 0.95rem; line-height: 1.6; }
+	div.faq_area h2 { background: transparent; color: #111827; padding: 0 0 1.25rem; margin: 0; font-size: clamp(1.25rem, 2vw, 1.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; text-align: left; border-radius: 0; }
+	div.faq_area .faq_items { display: flex; flex-direction: column; margin: 0; padding: 0; border: 1px solid #e5e7eb; border-radius: 14px; background: #fff; overflow: hidden; }
+	div.faq_area .item { margin: 0; padding: 0; background: transparent; color: #111827; border: 0; border-bottom: 1px solid #e5e7eb; border-radius: 0; box-shadow: none; cursor: default; transition: background-color .2s ease; }
+	div.faq_area .item:last-child { border-bottom: 0; }
+	div.faq_area .item:hover,
+	div.faq_area .item:has(.content.mActive) { background-color: #fafafa; }
+	div.faq_area .item .title { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0; padding: 1.125rem 1.25rem; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
+	div.faq_area .item .title i { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 28px; height: 28px; border-radius: 999px; background: #f3f4f6; color: #374151; font-size: 0.7rem; line-height: 1; transition: transform .25s ease, background-color .2s ease, color .2s ease; }
+	div.faq_area .item:has(.content.mActive) .title i { transform: rotate(45deg); background: var(--color_theme, #111827); color: #fff; }
+	div.faq_area .item .title h3 { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.4; }
+	div.faq_area .item .content { padding: 0 1.25rem 1.25rem; color: #6b7280; font-size: 0.9375rem; line-height: 1.65; }
+	.mep_smart_theme .faq_area { background: transparent; padding: 0; border-radius: 0; }
+	.mep_smart_theme .faq_area h2 { font-size: clamp(1.25rem, 2vw, 1.5rem); background: transparent; }
+	.mep_smart_theme .faq_area .faq_items { margin-top: 0; padding: 0; }
+	.mep_smart_theme .faq_area .faq_items .item { padding: 0; margin: 0; box-shadow: none; border-radius: 0; }
+	.mep_smart_theme .faq_area .faq_items .item .title h3 { font-size: 1rem; color: inherit; }
 	/****************/
 	.mep-event-faq-part { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 0 1px rgba(0, 0, 0, 0.08); }
 	.mep-event-faq-part .faq-body .mep-event-faq-set { margin-bottom: 10px; border-radius: 8px; overflow: hidden; border-bottom: 1px solid #EAEAEA; }

@@ -169,38 +169,156 @@
 
 /* **************************************************************Date time location short area in default theme**************************** */
 #mage-container.mage div.mpwem_style div.date_time_location_short {
-  display: -webkit-flex;
-  display: flex;
-  gap: 15px;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin: var(--dmp) 0 0 0;
+  --mpwem-short-border: #eceef2;
+  --mpwem-short-muted: #6b7280;
+  --mpwem-short-text: #111827;
+  --mpwem-short-soft: #f8fafc;
+  --mpwem-short-theme: var(--color_theme, #2563eb);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 24px 0 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid var(--mpwem-short-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 #mage-container.mage div.date_time_location_short .short_item {
+  position: relative;
   width: 100%;
-  max-width: calc(33.333% - 10px);
-  padding: var(--dmp_xs);
-  background: #F7F7F7;
-  display: -webkit-flex;
+  max-width: none;
   display: flex;
-  border-radius: var(--dbrl);
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 18px 20px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+#mage-container.mage div.date_time_location_short .short_item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  right: 0;
+  bottom: 16px;
+  width: 1px;
+  background: var(--mpwem-short-border);
+}
+
+#mage-container.mage div.date_time_location_short .short_item:hover {
+  background: var(--mpwem-short-soft);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+#mage-container.mage div.date_time_location_short .short_item__datechip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  min-height: 52px;
+  padding: 6px 4px;
+  border-radius: 14px;
+  background: var(--mpwem-short-theme);
+  color: #fff;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+#mage-container.mage div.date_time_location_short .short_item__day {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+#mage-container.mage div.date_time_location_short .short_item__month {
+  margin-top: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+#mage-container.mage div.date_time_location_short .short_item__icon,
+#mage-container.mage div.date_time_location_short .short_item h4.__icon_circle_mr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  margin: 0;
+  padding: 0;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--mpwem-short-theme) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--mpwem-short-theme) 18%, #fff);
+  color: var(--mpwem-short-theme);
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 #mage-container.mage div.date_time_location_short .short_item h4 {
-  font-size: 22px;
+  font-size: 1.05rem;
 }
 
+#mage-container.mage div.date_time_location_short .short_item__body,
+#mage-container.mage div.date_time_location_short .short_item ._fdColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+#mage-container.mage div.date_time_location_short .short_item__label,
 #mage-container.mage div.date_time_location_short .short_item h6 {
-  font-size: 16px;
-  font-weight: 500;
-  text-transform: capitalize;
   margin: 0;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mpwem-short-muted);
+  line-height: 1.2;
 }
 
+#mage-container.mage div.date_time_location_short .short_item__value,
 #mage-container.mage div.date_time_location_short .short_item p {
-  color: #878787;
-  margin: 5px 0 0 0;
+  margin: 0;
+  padding: 0;
+  color: var(--mpwem-short-text);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}
+
+#mage-container.mage div.date_time_location_short .short_item--location .short_item__value {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@supports not (background: color-mix(in srgb, #000 10%, #fff)) {
+  #mage-container.mage div.date_time_location_short .short_item__icon,
+  #mage-container.mage div.date_time_location_short .short_item h4.__icon_circle_mr {
+    background: var(--mpwem-short-soft);
+    border-color: var(--mpwem-short-border);
+  }
 }
 
 #mage-container.mage div.mpwem_location,
@@ -923,6 +1041,7 @@
 #mage-container.mage div.mpwem_calender_area .mpwem_calender_toggle {
   width: 100%;
   border-radius: 999px;
+  background: #f3f4f6;
 }
 
 #mage-container.mage div.mpwem_calender_area .mpwem_calender_providers__list {
@@ -1103,23 +1222,37 @@
 
 /* ************************************************************Social Share section******************** */
 #mage-container.mage div.share_widgets {
-  padding: var(--dmp);
-  border-top: 1px solid var(--color_border);
-  color: #333;
+  margin: 0;
+  padding: 20px;
+  border: 1px solid #eceef2;
+  border-radius: 18px;
+  background: #fff;
+  color: #111827;
+}
+
+#mage-container.mage div.share_widgets .share_widgets__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_title {
-  margin: 0 0 var(--dmp) 0;
-  text-align: center;
-  text-transform: capitalize;
+  margin: 0;
+  text-align: left;
+  text-transform: none;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list {
-  display: -webkit-flex;
   display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-  gap: var(--dmp_xs);
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list li,
@@ -1129,60 +1262,94 @@
   color: inherit;
 }
 
+#mage-container.mage div.share_widgets .share_widgets_list a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #eceef2;
+  background: #f8fafc;
+}
+
 #mage-container.mage div.share_widgets .share_widgets_list i {
-  width: 40px;
-  height: 40px;
-  font-size: 22px;
+  width: auto;
+  height: auto;
+  font-size: 0.95rem;
   padding: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.4s;
-  background-color: #F7F7F7;
+  border-radius: 0;
+  background-color: transparent;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.facebook i {
-  color: #3B5998;
+  color: #1877f2;
+}
+
+#mage-container.mage div.share_widgets .share_widgets_list a.facebook:hover {
+  background-color: #1877f2;
+  border-color: #1877f2;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.facebook:hover i {
-  background-color: #3B5998;
-  color: #FFF;
+  background-color: transparent;
+  color: #fff;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.twitter i {
-  color: #1DA1F2;
+  color: #111827;
+}
+
+#mage-container.mage div.share_widgets .share_widgets_list a.twitter:hover {
+  background-color: #111827;
+  border-color: #111827;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.twitter:hover i {
-  background-color: #1DA1F2;
-  color: #FFF;
+  background-color: transparent;
+  color: #fff;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.linkedin i {
-  color: #0077B5;
+  color: #0a66c2;
+}
+
+#mage-container.mage div.share_widgets .share_widgets_list a.linkedin:hover {
+  background-color: #0a66c2;
+  border-color: #0a66c2;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.linkedin:hover i {
-  background-color: #0077B5;
-  color: #FFF;
+  background-color: transparent;
+  color: #fff;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.whatsapp i {
-  color: #25D366;
+  color: #25d366;
+}
+
+#mage-container.mage div.share_widgets .share_widgets_list a.whatsapp:hover {
+  background-color: #25d366;
+  border-color: #25d366;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.whatsapp:hover i {
-  background-color: #25D366;
-  color: #FFF;
+  background-color: transparent;
+  color: #fff;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.email i {
-  color: #DD4B39;
+  color: #ea4335;
+}
+
+#mage-container.mage div.share_widgets .share_widgets_list a.email:hover {
+  background-color: #ea4335;
+  border-color: #ea4335;
 }
 
 #mage-container.mage div.share_widgets .share_widgets_list a.email:hover i {
-  background-color: #DD4B39;
-  color: #FFF;
+  background-color: transparent;
+  color: #fff;
 }
 
 /* **********************************************************Map******************** */
@@ -1245,6 +1412,7 @@
 #mage-container.mage div.mpwem_location_sidebar .mpwem_location_map_btn {
   width: 100%;
   border-radius: 999px;
+  background: #f3f4f6;
 }
 
 /* **********************************************************Speaker******************** */
@@ -1344,91 +1512,142 @@
 }
 
 #mage-container.mage div.faq_area {
-  background-color: #FFF;
-  border: 1px solid #F7F7F7;
-  border-radius: 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   margin-bottom: var(--dmp);
+  overflow: visible;
 }
 
 #mage-container.mage div.faq_area .description {
-  padding: var(--dmp_xs) var(--dmp);
+  padding: 0 0 1rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 #mage-container.mage div.faq_area h2 {
-  background: linear-gradient(135deg, #F7F7F7, #F7F7F7);
-  color: #333;
-  padding: var(--dmp);
-  font-size: var(--fs_h5);
-  font-weight: 600;
+  background: transparent;
+  color: #111827;
+  padding: 0 0 1.25rem;
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   text-align: left;
-  border-radius: 12px 12px 0 0;
+  border-radius: 0;
 }
 
 #mage-container.mage div.faq_area .faq_items {
-  padding: 0 var(--dmp);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
 }
 
 #mage-container.mage div.faq_area .item {
-  background-color: white;
-  cursor: pointer;
-  color: #333;
-  border-bottom: 1px solid #F0F0F0;
-  transition: all 0.5s;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #111827;
+  border: 0;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: default;
+  transition: background-color 0.2s ease;
+}
+
+#mage-container.mage div.faq_area .item:last-child {
+  border-bottom: 0;
 }
 
 #mage-container.mage div.faq_area .item:hover,
 #mage-container.mage div.faq_area .item:has(.content.mActive) {
-  background-color: #F0F0F0;
+  background-color: #fafafa;
 }
 
 #mage-container.mage div.faq_area .item .title {
-  padding: 15px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin: 5px 0;
-  border: 1px solid #ede8e8;
-  border-radius: 5px;
+  gap: 1rem;
+  margin: 0;
+  padding: 1.125rem 1.25rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 #mage-container.mage div.faq_area .item .title i {
-  color: var(--color_theme);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: transform 0.25s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+#mage-container.mage div.faq_area .item:has(.content.mActive) .title i {
+  transform: rotate(45deg);
+  background: var(--color_theme, #111827);
+  color: #fff;
 }
 
 #mage-container.mage div.faq_area .item .title h3 {
-  font-size: var(--fs);
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 #mage-container.mage div.faq_area .item .content {
-  padding: var(--dmp_xs) var(--dmp);
+  padding: 0 1.25rem 1.25rem;
+  color: #6b7280;
+  font-size: 0.9375rem;
+  line-height: 1.65;
 }
 
 #mage-container.mage .mep_smart_theme .faq_area {
-  background-color: #F8FAFC;
-  padding: var(--dmp);
-  border-radius: 10px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 #mage-container.mage .mep_smart_theme .faq_area h2 {
-  font-size: var(--fs_h3);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
   background: transparent;
 }
 
 #mage-container.mage .mep_smart_theme .faq_area .faq_items {
-  margin-top: var(--dmp);
+  margin-top: 0;
   padding: 0;
 }
 
 #mage-container.mage .mep_smart_theme .faq_area .faq_items .item {
-  padding: var(--dmp_xs);
-  margin: var(--dmp) 0 0 0;
-  box-shadow: 0 0 5px #DDDDDD;
-  border-radius: 10px;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 #mage-container.mage .mep_smart_theme .faq_area .faq_items .item .title h3 {
-  font-size: var(--fs_h6);
-  color: var(--color_theme);
+  font-size: 1rem;
+  color: inherit;
 }
 
 #mage-container.mage .mep-event-faq-part {
@@ -4146,10 +4365,6 @@
   #mage-container.mage .mep-default-sidebar {
     width: 275px;
   }
-
-  #mage-container.mage div.date_time_location_short .short_item {
-    max-width: calc(50% - 8px);
-  }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -4458,8 +4673,22 @@
     gap: 6px;
   }
 
+  #mage-container.mage div.mpwem_style div.date_time_location_short {
+    grid-template-columns: 1fr;
+  }
+
   #mage-container.mage div.date_time_location_short .short_item {
-    max-width: 100%;
+    max-width: none;
+    padding: 16px 18px;
+  }
+
+  #mage-container.mage div.date_time_location_short .short_item:not(:last-child)::after {
+    top: auto;
+    right: 18px;
+    left: 18px;
+    bottom: 0;
+    width: auto;
+    height: 1px;
   }
 
   #mage-container.mage div.spring_area .spring_item_2 {

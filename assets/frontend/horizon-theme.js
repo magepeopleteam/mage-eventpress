@@ -145,9 +145,30 @@
 			$label.find('i').remove();
 		});
 
-		// Everyday / recurring: real #mpwem_time already exists — keep it interactive.
-		if ($area.find('#mpwem_time, select[name="mpwem_time"]').length) {
+		// Everyday / particular-with-slots: datepicker + #mpwem_time modern select.
+		var $timeSelect = $area.find('#mpwem_time, select[name="mpwem_time"]').first();
+		if ($timeSelect.length) {
 			$area.find('.horizon_dt_time_display').remove();
+			$area.addClass('horizon_dt_grid--picker');
+
+			var $dateText = $area.find('input#mpwem_date_time[type="text"]');
+			if ($dateText.length) {
+				$dateText.closest('label').addClass('horizon_dt_date--picker');
+				if (!$dateText.parent().hasClass('horizon_dt_field')) {
+					$dateText.wrap('<div class="horizon_dt_field horizon_dt_field--date"></div>');
+				}
+			}
+
+			var $timeLabel = $timeSelect.closest('label');
+			$timeLabel.addClass('horizon_dt_time');
+			var $modern = $timeLabel.find('.mpwem-modern-select').first();
+			if ($modern.length && !$modern.parent().hasClass('horizon_dt_field')) {
+				$modern.wrap('<div class="horizon_dt_field horizon_dt_field--time"></div>');
+			} else if (!$modern.length && !$timeSelect.parent().hasClass('horizon_dt_field')) {
+				$timeSelect.wrap('<div class="horizon_dt_field horizon_dt_field--time"></div>');
+			}
+
+			$area.attr('data-hz-dt-ready', '1');
 			return;
 		}
 
@@ -1515,37 +1536,34 @@
 			$rating.remove();
 		});
 
-		var $existingEmpty = $panel.find('.horizon_reviews_empty').first();
+		var $existingEmpty = $panel.find('.horizon_reviews_empty, .mep-reviews-empty');
 		if (isEmpty) {
-			if (!$existingEmpty.length) {
-				$existingEmpty = $(
-					'<div class="horizon_reviews_empty" role="status">' +
-						'<div class="horizon_reviews_empty__icon" aria-hidden="true">' +
-							'<span>★</span><span>★</span><span>★</span>' +
-						'</div>' +
-						'<h3 class="horizon_reviews_empty__title"></h3>' +
-						'<p class="horizon_reviews_empty__text"></p>' +
-					'</div>'
-				);
-				$list.append($existingEmpty);
-			} else if (!$existingEmpty.find('.horizon_reviews_empty__title').length) {
-				$existingEmpty
-					.attr('role', 'status')
-					.empty()
-					.append(
-						'<div class="horizon_reviews_empty__icon" aria-hidden="true">' +
-							'<span>★</span><span>★</span><span>★</span>' +
-						'</div>' +
-						'<h3 class="horizon_reviews_empty__title"></h3>' +
-						'<p class="horizon_reviews_empty__text"></p>'
+			// Keep Horizon empty state minimal: header + Write button only.
+			$existingEmpty.remove();
+			$list.hide();
+			var $head = $panel.children('.horizon_reviews_head').first();
+			if ($head.length) {
+				$head.find('.horizon_reviews_eyebrow').hide();
+				$head.find('.horizon_reviews_title').text(i18n('reviewsEyebrow', 'Reviews'));
+				var $meta = $head.find('.horizon_reviews_meta');
+				$meta.empty();
+				if ($btn.length || $head.find('.horizon_reviews_write, #give-review-btn').length) {
+					$meta.append(
+						$('<span class="horizon_reviews_count"></span>').text(
+							i18n('beFirstReview', 'Be the first to review')
+						)
 					);
+				} else {
+					$meta.append(
+						$('<span class="horizon_reviews_count"></span>').text(
+							i18n('noReviewsTitle', 'No reviews yet')
+						)
+					);
+				}
 			}
-			$existingEmpty.find('.horizon_reviews_empty__title').text(i18n('noReviewsTitle', 'No reviews yet'));
-			$existingEmpty.find('.horizon_reviews_empty__text').text(
-				i18n('noReviewsYet', 'Be the first to share your experience.')
-			);
 		} else {
 			$existingEmpty.remove();
+			$list.show();
 		}
 	}
 
@@ -1558,12 +1576,46 @@
 		$('body').addClass('mep-horizon-active');
 
 		enhanceDateTime($root);
+		if (typeof window.mpwem_init_modern_time_select === 'function') {
+			window.mpwem_init_modern_time_select($root.find('.date-time-area'));
+			enhanceDateTime($root);
+		}
 		refreshTicketUi($root);
 		enhanceCalendar($root);
 		enhanceShare($root);
 		bindLocationModal($root);
 		bindAttendeeDrawer($root);
 		enhanceReviews($root);
+	}
+
+	function bindDatesMore($root) {
+		$root.find('.horizon_dates_more').off('click.horizonDatesMore').on('click.horizonDatesMore', function () {
+			var $btn = $(this);
+			var $section = $btn.closest('.horizon_dates');
+			var $extras = $section.find('.horizon_date_card--extra');
+			if (!$extras.length) {
+				return;
+			}
+			var open = !$section.hasClass('is-expanded');
+			$section.toggleClass('is-expanded', open);
+			$btn.toggleClass('is-open', open);
+			$btn.attr('aria-expanded', open ? 'true' : 'false');
+			$extras.each(function () {
+				if (open) {
+					this.removeAttribute('hidden');
+				} else {
+					this.setAttribute('hidden', 'hidden');
+				}
+			});
+			var $text = $btn.find('[data-text]').first();
+			if ($text.length) {
+				$text.text(open
+					? ($btn.attr('data-open-text') || 'Less')
+					: ($btn.attr('data-close-text') || 'More')
+				);
+			}
+			$btn.find('.horizon_dates_more_count').toggle(!open);
+		});
 	}
 
 	function bindHeroDesc($root) {
@@ -1618,6 +1670,7 @@
 			return;
 		}
 		bindHeroDesc($root);
+		bindDatesMore($root);
 		bindFaqAccordion($root);
 		initHorizonTicket();
 	}

@@ -922,6 +922,68 @@ body.horizon-modal-open {
 }
 
 /* ========== DATES (circular) ========== */
+.horizon_theme .horizon_dates_head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.horizon_theme .horizon_dates_head .horizon_section_title {
+	margin: 0 !important;
+}
+
+.horizon_theme .horizon_dates_more {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0;
+	padding: 5px 10px;
+	border: 1px solid var(--hz-border);
+	border-radius: 999px;
+	background: var(--hz-card);
+	color: var(--hz-muted);
+	font-family: var(--hz-sans);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: none;
+	transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.horizon_theme .horizon_dates_more:hover {
+	background: var(--hz-purple-soft);
+	border-color: var(--hz-purple-mid);
+	color: var(--hz-purple);
+}
+
+.horizon_theme .horizon_dates_more.is-open {
+	background: var(--hz-purple-soft);
+	border-color: var(--hz-purple-mid);
+	color: var(--hz-purple);
+}
+
+.horizon_theme .horizon_dates_more_count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	padding: 2px 6px;
+	border-radius: 999px;
+	background: var(--hz-purple);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.horizon_theme .horizon_dates_more.is-open .horizon_dates_more_count {
+	opacity: 0.45;
+}
+
 .horizon_theme .horizon_dates_row {
 	display: flex;
 	gap: 12px;
@@ -944,6 +1006,15 @@ body.horizon-modal-open {
 	gap: 2px;
 	color: var(--hz-muted);
 	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horizon_theme .horizon_date_card[hidden],
+.horizon_theme .horizon_date_card--extra[hidden] {
+	display: none !important;
+}
+
+.horizon_theme .horizon_dates.is-expanded .horizon_date_card--extra {
+	display: flex !important;
 }
 
 .horizon_theme .horizon_date_card:hover {
@@ -1147,7 +1218,7 @@ body.horizon-modal-open {
 	border-radius: 22px;
 	box-shadow: 0 18px 48px rgba(22, 22, 29, 0.1);
 	border: 1px solid var(--hz-border);
-	overflow: hidden;
+	overflow: visible;
 	padding: 0;
 	animation: hzFadeUp 0.55s ease 0.08s both;
 }
@@ -1157,6 +1228,8 @@ body.horizon-modal-open {
 	background: linear-gradient(180deg, #F4F0FF 0%, #FAF8FF 100%);
 	padding: 22px 22px 18px;
 	border-bottom: 1px solid #EDE8FF;
+	overflow: hidden;
+	border-radius: 22px 22px 0 0;
 }
 
 .horizon_theme .horizon_ticket_eyebrow {
@@ -1195,6 +1268,9 @@ body.horizon-modal-open {
 
 .horizon_theme .horizon_ticket_body {
 	padding: 18px 22px 8px;
+	overflow: visible !important;
+	position: relative;
+	z-index: 5;
 }
 
 .horizon_theme .horizon_ticket_body .mpwem_style,
@@ -1228,14 +1304,15 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	margin: 0 !important;
 }
 
-/* Date / Time — soft gray pill dropdowns */
+/* Date / Time — modern Horizon field cards */
 .horizon_theme .horizon_ticket_body .date-time-header {
 	margin: 0 0 18px !important;
 	padding: 0 !important;
 	border: 0 !important;
 	background: transparent !important;
 	position: relative;
-	z-index: 2;
+	z-index: 30;
+	overflow: visible !important;
 }
 
 .horizon_theme .horizon_ticket_body .mpwem_booking_panel {
@@ -1250,22 +1327,35 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area,
-.horizon_theme .horizon_ticket_body .horizon_dt_grid {
+.horizon_theme .horizon_ticket_body .horizon_dt_grid,
+.horizon_theme .mpwem_registration_area .date-time-area {
 	display: grid !important;
-	grid-template-columns: 1fr 1fr;
-	gap: 12px;
-	align-items: start;
+	grid-template-columns: 1fr 1fr !important;
+	gap: 12px !important;
+	align-items: stretch !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	width: 100% !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	overflow: visible !important;
 }
 
-.horizon_theme .horizon_ticket_body .date-time-area .mpwem_time_area {
+.horizon_theme .horizon_ticket_body .date-time-area:not(:has(.mpwem_time_area)) {
+	grid-template-columns: 1fr !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem_time_area,
+.horizon_theme .mpwem_registration_area .date-time-area .mpwem_time_area {
 	display: block !important;
 	width: 100% !important;
-	min-width: 0;
+	min-width: 0 !important;
 	margin: 0 !important;
 	padding: 0 !important;
+	position: static !important;
+	height: auto !important;
+	overflow: visible !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area select[name="mpwem_date_time"][aria-hidden="true"],
@@ -1290,16 +1380,27 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .mpwem_registration_area .date-time-area label {
 	display: flex !important;
 	flex-direction: column !important;
-	align-items: unset !important;
+	align-items: stretch !important;
+	justify-content: flex-start !important;
 	gap: 8px !important;
 	margin: 0 !important;
-	padding: 0 !important;
-	position: relative;
-	min-width: 0;
+	padding: 14px 14px 12px !important;
+	position: relative !important;
+	min-width: 0 !important;
 	width: 100% !important;
-	background: transparent !important;
-	border: 0 !important;
+	background: #F7F7FA !important;
+	border: 1px solid #E8E8F0 !important;
+	border-radius: 16px !important;
 	box-shadow: none !important;
+	box-sizing: border-box !important;
+	transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area label:hover,
+.horizon_theme .horizon_ticket_body .date-time-area label:focus-within {
+	background: #fff !important;
+	border-color: #D9D4F2 !important;
+	box-shadow: 0 8px 20px rgba(123, 97, 255, 0.08) !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area label::before,
@@ -1310,16 +1411,27 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area label > span {
-	display: block;
+	display: block !important;
 	font-family: var(--hz-sans) !important;
 	font-size: 11px !important;
-	font-weight: 600 !important;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: #A0A0AB !important;
-	line-height: 1;
+	font-weight: 700 !important;
+	letter-spacing: 0.1em !important;
+	text-transform: uppercase !important;
+	color: #9A9AA8 !important;
+	line-height: 1 !important;
 	margin: 0 !important;
 	padding: 0 !important;
+	grid-area: unset !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area label input[type="hidden"] {
+	display: none !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .horizon_dt_field {
+	position: relative;
+	width: 100%;
+	min-width: 0;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .formControl,
@@ -1327,18 +1439,21 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_ticket_body .date-time-area select.formControl,
 .horizon_theme .horizon_ticket_body .date-time-area input[type="text"],
 .horizon_theme .horizon_ticket_body .horizon_dt_fake {
+	display: block !important;
 	width: 100% !important;
 	max-width: 100% !important;
-	height: 48px !important;
-	min-height: 48px !important;
-	border: 1px solid #E6E6EE !important;
-	border-radius: 14px !important;
-	background-color: #F6F6F8 !important;
-	padding: 0 40px 0 16px !important;
+	height: 42px !important;
+	min-height: 42px !important;
+	margin: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background-color: transparent !important;
+	padding: 0 28px 0 0 !important;
 	font-family: var(--hz-sans) !important;
-	font-size: 14px !important;
-	font-weight: 600 !important;
-	line-height: 48px !important;
+	font-size: 15px !important;
+	font-weight: 650 !important;
+	line-height: 42px !important;
+	letter-spacing: -0.01em !important;
 	color: #1A1A22 !important;
 	box-shadow: none !important;
 	outline: none !important;
@@ -1349,26 +1464,43 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	overflow: hidden;
 	white-space: nowrap;
 	cursor: pointer;
+	background-image: none !important;
+	grid-area: unset !important;
+	transition: color 0.18s ease;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .horizon_dt_date--picker input#mpwem_date_time[type="text"],
+.horizon_theme .horizon_ticket_body .date-time-area .horizon_dt_field--date input#mpwem_date_time[type="text"] {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Crect x='2' y='3.5' width='12' height='10.5' rx='2' stroke='%237B61FF' stroke-width='1.4'/%3E%3Cpath stroke='%237B61FF' stroke-width='1.4' stroke-linecap='round' d='M2 6.5h12M5.25 2v3M10.75 2v3'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 2px center !important;
+	background-size: 16px 16px !important;
+	padding-right: 28px !important;
+	cursor: pointer !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area select.formControl,
+.horizon_theme .horizon_ticket_body .date-time-area .horizon_dt_date_select,
+.horizon_theme .horizon_ticket_body .date-time-area .horizon_dt_time_select {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' viewBox='0 0 12 8'%3E%3Cpath stroke='%2322222A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1.5 1.75 6 6.25l4.5-4.5'/%3E%3C/svg%3E") !important;
 	background-repeat: no-repeat !important;
-	background-position: right 16px center !important;
+	background-position: right 2px center !important;
 	background-size: 12px 8px !important;
-	transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .formControl:hover,
 .horizon_theme .horizon_ticket_body .date-time-area select:hover,
 .horizon_theme .horizon_ticket_body .date-time-area input[type="text"]:hover,
 .horizon_theme .horizon_ticket_body .horizon_dt_fake:hover {
-	border-color: #D8D8E2 !important;
-	background-color: #F2F2F5 !important;
+	border-color: transparent !important;
+	background-color: transparent !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .formControl:focus,
 .horizon_theme .horizon_ticket_body .date-time-area select:focus,
 .horizon_theme .horizon_ticket_body .date-time-area input[type="text"]:focus {
-	border-color: #C8C0F0 !important;
-	background-color: #fff !important;
+	border-color: transparent !important;
+	background-color: transparent !important;
 }
 
 .horizon_theme .horizon_ticket_body .horizon_dt_fake {
@@ -1385,29 +1517,170 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	display: none !important;
 }
 
+/* Modern time select — Horizon card layout */
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select,
+.horizon_theme .mpwem_registration_area .date-time-area .mpwem-modern-select {
+	position: relative !important;
+	width: 100% !important;
+	min-width: 0 !important;
+	z-index: 2 !important;
+	grid-area: unset !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.has-modern-select-open,
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select.is-open {
+	z-index: 40 !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__native {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	border: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	background-image: none !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__trigger {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+	gap: 10px !important;
+	width: 100% !important;
+	min-height: 42px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: #1A1A22 !important;
+	font-family: var(--hz-sans) !important;
+	font-size: 15px !important;
+	font-weight: 650 !important;
+	letter-spacing: -0.01em !important;
+	line-height: 1.3 !important;
+	text-align: left !important;
+	cursor: pointer !important;
+	box-shadow: none !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__trigger:focus-visible {
+	outline: 2px solid var(--hz-purple) !important;
+	outline-offset: 3px !important;
+	border-radius: 8px !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__value {
+	display: block !important;
+	min-width: 0 !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+	color: inherit !important;
+	font-weight: inherit !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__chevron {
+	flex: 0 0 auto !important;
+	width: 12px !important;
+	height: 8px !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' viewBox='0 0 12 8'%3E%3Cpath stroke='%2322222A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1.5 1.75 6 6.25l4.5-4.5'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	background-size: 12px 8px !important;
+	transition: transform 0.18s ease !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select.is-open .mpwem-modern-select__chevron {
+	transform: rotate(180deg) !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__menu {
+	position: absolute !important;
+	top: calc(100% + 10px) !important;
+	left: 0 !important;
+	right: 0 !important;
+	z-index: 80 !important;
+	margin: 0 !important;
+	padding: 6px !important;
+	list-style: none !important;
+	border: 1px solid #E8E8F0 !important;
+	border-radius: 14px !important;
+	background: #fff !important;
+	box-shadow: 0 18px 40px rgba(22, 22, 29, 0.14), 0 2px 8px rgba(22, 22, 29, 0.05) !important;
+	box-sizing: border-box !important;
+	max-height: 220px !important;
+	overflow: auto !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__menu[hidden] {
+	display: none !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option {
+	display: block !important;
+	margin: 0 !important;
+	padding: 11px 12px !important;
+	border: 0 !important;
+	border-radius: 10px !important;
+	background: transparent !important;
+	color: #3F3F4A !important;
+	font-family: var(--hz-sans) !important;
+	font-size: 14px !important;
+	font-weight: 550 !important;
+	line-height: 1.35 !important;
+	letter-spacing: -0.01em !important;
+	cursor: pointer !important;
+	transition: background-color 0.12s ease, color 0.12s ease !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option:hover,
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option:focus {
+	outline: none !important;
+	background: #F4F0FF !important;
+	color: #1A1A22 !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option.is-selected {
+	background: var(--hz-purple) !important;
+	color: #fff !important;
+	font-weight: 650 !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option.is-selected:hover,
+.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__option.is-selected:focus {
+	background: var(--hz-purple) !important;
+	color: #fff !important;
+}
+
 /* Select2 (if present) — match soft gray pills */
 .horizon_theme .horizon_ticket_body .date-time-area .select2-container,
 .horizon_theme .horizon_ticket_body .date-time-area .select2-container .select2-selection--single {
-	height: 48px !important;
-	border: 1px solid #E6E6EE !important;
-	border-radius: 14px !important;
-	background: #F6F6F8 !important;
+	height: 42px !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
 	box-shadow: none !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .select2-container .select2-selection__rendered {
-	line-height: 46px !important;
-	padding-left: 16px !important;
-	padding-right: 40px !important;
+	line-height: 42px !important;
+	padding-left: 0 !important;
+	padding-right: 28px !important;
 	font-family: var(--hz-sans) !important;
-	font-size: 14px !important;
-	font-weight: 600 !important;
+	font-size: 15px !important;
+	font-weight: 650 !important;
 	color: #1A1A22 !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .select2-container .select2-selection__arrow {
-	height: 46px !important;
-	right: 12px !important;
+	height: 42px !important;
+	right: 0 !important;
 }
 
 /* Ticket cards — match attachment */
@@ -1416,7 +1689,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	border: 1px solid #EDE9F8 !important;
 	border-radius: 18px !important;
 	padding: 0 !important;
-	margin: 0 0 10px 0 !important;
+	margin: 0 5px 10px 0 !important;
 	background: #F8F7FC !important;
 	box-shadow: none;
 	overflow: hidden;
@@ -2319,6 +2592,61 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	overflow: hidden;
 }
 
+/* Minimal empty state — compact header row only */
+.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel.is-empty {
+	gap: 0;
+	padding: 16px 18px;
+	background: var(--hz-card);
+	border-radius: 16px;
+	box-shadow: none;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_head {
+	align-items: center;
+	gap: 12px 16px;
+	flex-wrap: nowrap;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_eyebrow {
+	display: none !important;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_title {
+	font-family: var(--hz-sans) !important;
+	font-size: 1rem !important;
+	font-weight: 700 !important;
+	margin: 0 0 2px !important;
+	letter-spacing: -0.01em;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_meta {
+	gap: 0;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_count {
+	font-size: 0.86rem;
+	font-weight: 500;
+	color: var(--hz-muted);
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_write,
+.horizon_theme .horizon_reviews_panel.is-empty #give-review-btn {
+	min-height: 36px;
+	padding: 8px 14px;
+	font-size: 13px;
+	border-radius: 999px;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_write__icon {
+	display: none;
+}
+
+.horizon_theme .horizon_reviews_panel.is-empty .mep-event-review-list,
+.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_empty,
+.horizon_theme .horizon_reviews_panel.is-empty .mep-reviews-empty {
+	display: none !important;
+}
+
 .horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel::before {
 	content: none !important;
 	display: none !important;
@@ -2734,9 +3062,23 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 		gap: 18px;
 	}
 
+	.horizon_theme .mep-event-review-list-wrapper.horizon_reviews_panel.is-empty {
+		padding: 14px 14px;
+		border-radius: 14px;
+	}
+
+	.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_head {
+		flex-wrap: wrap;
+	}
+
 	.horizon_theme .horizon_reviews_head {
 		flex-direction: column;
 		align-items: stretch;
+	}
+
+	.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_head {
+		flex-direction: row;
+		align-items: center;
 	}
 
 	.horizon_theme .horizon_reviews_head__actions,
@@ -2746,8 +3088,19 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 		width: 100%;
 	}
 
+	.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_head__actions,
+	.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_write,
+	.horizon_theme .horizon_reviews_panel.is-empty #give-review-btn {
+		width: auto;
+		margin-left: auto;
+	}
+
 	.horizon_theme .horizon_reviews_title {
 		font-size: 1.4rem !important;
+	}
+
+	.horizon_theme .horizon_reviews_panel.is-empty .horizon_reviews_title {
+		font-size: 1rem !important;
 	}
 
 	.horizon_theme .horizon_reviews_panel .mep-event-review-item {
@@ -3241,13 +3594,20 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	.horizon_theme .horizon_ticket_body .date-time-area .formControl,
 	.horizon_theme .horizon_ticket_body .date-time-area select,
 	.horizon_theme .horizon_ticket_body .date-time-area input[type="text"],
-	.horizon_theme .horizon_ticket_body .horizon_dt_fake {
-		height: 44px !important;
-		min-height: 44px !important;
-		line-height: 44px !important;
-		padding: 0 34px 0 12px !important;
+	.horizon_theme .horizon_ticket_body .horizon_dt_fake,
+	.horizon_theme .horizon_ticket_body .date-time-area .mpwem-modern-select__trigger {
+		height: 40px !important;
+		min-height: 40px !important;
+		line-height: 40px !important;
+		padding: 0 28px 0 0 !important;
 		font-size: 13px !important;
-		border-radius: 12px !important;
+	}
+
+	.horizon_theme .horizon_ticket_body .date-time-area label,
+	.horizon_theme .horizon_ticket_body .horizon_dt_date,
+	.horizon_theme .horizon_ticket_body .horizon_dt_time {
+		padding: 12px !important;
+		border-radius: 14px !important;
 	}
 
 	.horizon_theme .horizon_ticket_body .mep_ticket_item .ticket-data {

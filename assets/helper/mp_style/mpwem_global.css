@@ -543,8 +543,8 @@
 		position: absolute;
 		z-index: 120;
 		top: 16px;
-		left: 16px;
-		right: auto;
+		left: auto;
+		right: 16px;
 		bottom: auto;
 	}
 	div.superSlider.mpwem-slider--style-2 .mpwem-slider-style2__view-all-btn {

@@ -655,13 +655,14 @@ function mpwem_attendee_management(parent, total_qty) {
         var setButtonState = function (open) {
             $btn.toggleClass('is-open', open);
             $btn.attr('aria-expanded', open ? 'true' : 'false');
-            var $text = $btn.find('[data-text]');
+            var $text = $btn.find('[data-text]').first();
             if ($text.length) {
                 $text.text(open
                     ? ($btn.attr('data-open-text') || 'Hide Date Lists')
                     : ($btn.attr('data-close-text') || 'View More Dates')
                 );
             }
+            $btn.find('.mpwem-date-list__more-count').toggle(!open);
         };
 
         // Already loaded — just toggle visibility.
@@ -2083,6 +2084,7 @@ jQuery(function ($) {
             mpwem_build_modern_time_select($(this));
         });
     }
+    window.mpwem_init_modern_time_select = mpwem_init_modern_time_select;
 
     $(document).on('click', function () {
         mpwem_close_modern_selects();

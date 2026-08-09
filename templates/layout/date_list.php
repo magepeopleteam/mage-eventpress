@@ -263,14 +263,22 @@
 		<?php echo $items_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template markup. ?>
 		<div class="mpwem-date-list__ajax" hidden></div>
 	</div>
-	<?php if ( $total_dates > $initial_limit ) { ?>
+	<?php if ( $total_dates > $initial_limit ) {
+		$remaining_dates = (int) $total_dates - (int) $initial_limit;
+		?>
 		<button type="button"
-			class="mpwem-date-list__more mpwem_get_schedule_more _button_theme_margin_auto"
+			class="mpwem-date-list__more mpwem_get_schedule_more"
 			data-event-id="<?php echo esc_attr( (string) $event_id ); ?>"
 			data-offset="<?php echo esc_attr( (string) $initial_limit ); ?>"
 			data-open-text="<?php esc_attr_e( 'Hide Date Lists', 'mage-eventpress' ); ?>"
 			data-close-text="<?php esc_attr_e( 'View More Dates', 'mage-eventpress' ); ?>"
 			aria-expanded="false">
-			<span data-text><?php esc_html_e( 'View More Dates', 'mage-eventpress' ); ?></span>
+			<span class="mpwem-date-list__more-copy">
+				<span class="mpwem-date-list__more-label" data-text><?php esc_html_e( 'View More Dates', 'mage-eventpress' ); ?></span>
+				<?php if ( $remaining_dates > 0 ) { ?>
+					<span class="mpwem-date-list__more-count">+<?php echo esc_html( (string) $remaining_dates ); ?></span>
+				<?php } ?>
+			</span>
+			<span class="mpwem-date-list__more-icon" aria-hidden="true"></span>
 		</button>
 	<?php }

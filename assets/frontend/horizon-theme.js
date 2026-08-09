@@ -133,7 +133,7 @@
 		$area.addClass('horizon_dt_grid');
 		$area.find('label').each(function () {
 			var $label = $(this);
-			var $span = $label.children('span').first();
+			var $span = $label.children('span').not('.horizon_dt_icon').first();
 			var text = ($span.text() || '').toLowerCase();
 			if (text.indexOf('time') !== -1) {
 				$span.text(i18n('time', 'Time'));
@@ -142,11 +142,33 @@
 				$span.text(i18n('date', 'Date'));
 				$label.addClass('horizon_dt_date');
 			}
-			$label.find('i').remove();
+			$label.children('i').remove();
 		});
 
+		var hasTimeControl = $area.find('#mpwem_time, select[name="mpwem_time"], .mpwem_time_area').length > 0;
+		var $pickerInput = $area.find('input#mpwem_date_time[type="text"], input.formControl.hasDatepicker').first();
+
+		if ($pickerInput.length) {
+			$area.addClass('horizon_dt_picker');
+			var $dateLabel = $pickerInput.closest('label');
+			$dateLabel.addClass('horizon_dt_date horizon_dt_picker_label');
+			if (!$dateLabel.find('.horizon_dt_icon').length) {
+				$dateLabel.prepend(
+					$('<span class="horizon_dt_icon" aria-hidden="true"></span>').html('<i class="far fa-calendar-alt"></i>')
+				);
+			}
+			if ($area.find('.mpwem_time_area label').length && !$area.find('.mpwem_time_area .horizon_dt_icon').length) {
+				$area.find('.mpwem_time_area label').prepend(
+					$('<span class="horizon_dt_icon" aria-hidden="true"></span>').html('<i class="far fa-clock"></i>')
+				);
+			}
+		}
+
+		$area.toggleClass('horizon_dt_single', !hasTimeControl && $area.find('.horizon_dt_time, .mpwem_time_area, .horizon_dt_time_select_wrap').length === 0);
+
 		// Everyday / recurring: real #mpwem_time already exists — keep it interactive.
-		if ($area.find('#mpwem_time, select[name="mpwem_time"]').length) {
+		if (hasTimeControl) {
+			$area.removeClass('horizon_dt_single');
 			$area.find('.horizon_dt_time_display').remove();
 			return;
 		}
@@ -214,6 +236,7 @@
 		var $uiTime = $('<select class="formControl horizon_dt_time_select" aria-label="' + i18n('time', 'Time') + '"></select>');
 		$timeLabel.append($uiTime);
 		$area.append($timeLabel);
+		$area.removeClass('horizon_dt_single');
 
 		function fillTimes(dateKey, preferredValue) {
 			var daySlots = slotsForDate(slots, dateKey);
@@ -1501,6 +1524,61 @@
 		}
 	}
 
+	function enhanceHorizonDatepicker($root) {
+		var $inputs = $root.find('.horizon_ticket_body #mpwem_date_time, .horizon_ticket_body input.hasDatepicker');
+		if (!$inputs.length || typeof $.datepicker === 'undefined') {
+			return;
+		}
+
+		function stylePopup() {
+			var $dp = $('#ui-datepicker-div');
+			if (!$dp.length) {
+				return;
+			}
+			$dp.addClass('horizon_datepicker');
+			if ($dp[0] && $dp[0].style && typeof $dp[0].style.setProperty === 'function') {
+				$dp[0].style.setProperty('z-index', '100050', 'important');
+			} else {
+				$dp.css('z-index', 100050);
+			}
+		}
+
+		$inputs.each(function () {
+			var $input = $(this);
+			if (!$input.hasClass('hasDatepicker')) {
+				return;
+			}
+			if ($input.data('hz-datepicker-skin')) {
+				return;
+			}
+			$input.data('hz-datepicker-skin', 1);
+
+			var prevBeforeShow = $input.datepicker('option', 'beforeShow');
+			$input.datepicker('option', 'beforeShow', function (input, inst) {
+				var result;
+				if (typeof prevBeforeShow === 'function') {
+					result = prevBeforeShow.apply(this, arguments);
+				}
+				window.setTimeout(stylePopup, 0);
+				return result;
+			});
+
+			var prevOnChangeMonthYear = $input.datepicker('option', 'onChangeMonthYear');
+			$input.datepicker('option', 'onChangeMonthYear', function () {
+				if (typeof prevOnChangeMonthYear === 'function') {
+					prevOnChangeMonthYear.apply(this, arguments);
+				}
+				window.setTimeout(stylePopup, 0);
+			});
+		});
+
+		$(document)
+			.off('click.horizonDp focus.horizonDp', '.horizon_ticket_body #mpwem_date_time, .horizon_ticket_body input.hasDatepicker')
+			.on('click.horizonDp focus.horizonDp', '.horizon_ticket_body #mpwem_date_time, .horizon_ticket_body input.hasDatepicker', function () {
+				window.setTimeout(stylePopup, 0);
+			});
+	}
+
 	function initHorizonTicket() {
 		var $root = $('.horizon_theme');
 		if (!$root.length) {
@@ -1510,6 +1588,10 @@
 		$('body').addClass('mep-horizon-active');
 
 		enhanceDateTime($root);
+		enhanceHorizonDatepicker($root);
+		window.setTimeout(function () {
+			enhanceHorizonDatepicker($('.horizon_theme'));
+		}, 250);
 		refreshTicketUi($root);
 		enhanceCalendar($root);
 		enhanceShare($root);

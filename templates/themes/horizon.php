@@ -28,12 +28,6 @@
 	<div class="horizon_shell">
 		<div class="horizon_body">
 			<div class="horizon_main">
-				<?php
-					if ( file_exists( $horizon_dir . 'organizer.php' ) ) {
-						include $horizon_dir . 'organizer.php';
-					}
-				?>
-
 				<section class="horizon_section horizon_about">
 					<?php
 						if ( file_exists( $horizon_dir . 'about.php' ) ) {
@@ -90,6 +84,29 @@
 						echo '</section>';
 					}
 				?>
+
+				<?php
+					/**
+					 * Reviews and related events stay in the main column on Horizon.
+					 * Pro review addon hooks here so the list stays inside .horizon_theme.
+					 */
+				?>
+				<section class="horizon_section horizon_reviews_wrap" aria-label="<?php esc_attr_e( 'Event reviews', 'mage-eventpress' ); ?>">
+					<?php do_action( 'mpwem_horizon_reviews', $event_id ); ?>
+				</section>
+
+				<section class="horizon_related_wrap">
+					<?php
+						if ( file_exists( $horizon_dir . 'related.php' ) ) {
+							include $horizon_dir . 'related.php';
+						} else {
+							if ( empty( $event_infos['related_section_label'] ) ) {
+								$event_infos['related_section_label'] = __( 'You Might Also Like', 'mage-eventpress' );
+							}
+							do_action( 'mpwem_related', $event_id, $event_infos );
+						}
+					?>
+				</section>
 			</div>
 
 			<aside class="horizon_sidebar">
@@ -133,31 +150,13 @@
 						</div>
 					</div>
 				</div>
+				<?php
+					if ( file_exists( $horizon_dir . 'organizer.php' ) ) {
+						include $horizon_dir . 'organizer.php';
+					}
+				?>
 			</aside>
 		</div>
-
-		<?php
-			/**
-			 * Reviews sit after the main/sidebar row and before related events.
-			 * Pro review addon hooks here on Horizon so the list stays inside .horizon_theme.
-			 */
-		?>
-		<section class="horizon_section horizon_reviews_wrap" aria-label="<?php esc_attr_e( 'Event reviews', 'mage-eventpress' ); ?>">
-			<?php do_action( 'mpwem_horizon_reviews', $event_id ); ?>
-		</section>
-
-		<section class="horizon_related_wrap">
-			<?php
-				if ( file_exists( $horizon_dir . 'related.php' ) ) {
-					include $horizon_dir . 'related.php';
-				} else {
-					if ( empty( $event_infos['related_section_label'] ) ) {
-						$event_infos['related_section_label'] = __( 'You Might Also Like', 'mage-eventpress' );
-					}
-					do_action( 'mpwem_related', $event_id, $event_infos );
-				}
-			?>
-		</section>
 	</div>
 
 	<?php do_action( 'mpwem_template_footer', $event_id ); ?>

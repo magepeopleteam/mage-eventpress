@@ -495,7 +495,7 @@ body.horizon-modal-open {
 	border-radius: 22px;
 	padding: 22px 24px;
 	box-shadow: 0 8px 28px rgba(22, 22, 29, 0.05);
-	margin: 0;
+	margin: 20px 0px;
 	animation: hzFadeUp 0.5s ease both;
 }
 
@@ -655,7 +655,7 @@ body.horizon-modal-open {
 .horizon_theme .horizon_body {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) 400px;
-	gap: 70px;
+	gap: 40px;
 	align-items: start;
 }
 
@@ -1080,6 +1080,9 @@ body.horizon-modal-open {
 	top: 24px;
 	align-self: start;
 	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .horizon_theme .horizon_ticket_card {
@@ -1194,10 +1197,14 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	display: grid !important;
 	grid-template-columns: 1fr 1fr;
 	gap: 12px;
-	align-items: start;
+	align-items: stretch;
 	margin: 0 !important;
 	padding: 0 !important;
 	width: 100% !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_single {
+	grid-template-columns: 1fr !important;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .mpwem_time_area {
@@ -1249,7 +1256,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	content: none !important;
 }
 
-.horizon_theme .horizon_ticket_body .date-time-area label > span {
+.horizon_theme .horizon_ticket_body .date-time-area label > span:not(.horizon_dt_icon) {
 	display: block;
 	font-family: var(--hz-sans) !important;
 	font-size: 11px !important;
@@ -1293,7 +1300,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	background-repeat: no-repeat !important;
 	background-position: right 16px center !important;
 	background-size: 12px 8px !important;
-	transition: border-color 0.2s ease, background-color 0.2s ease;
+	transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area .formControl:hover,
@@ -1309,6 +1316,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_ticket_body .date-time-area input[type="text"]:focus {
 	border-color: #C8C0F0 !important;
 	background-color: #fff !important;
+	box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.12) !important;
 }
 
 .horizon_theme .horizon_ticket_body .horizon_dt_fake {
@@ -1321,7 +1329,447 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 }
 
 .horizon_theme .horizon_ticket_body .date-time-area i,
-.horizon_theme .horizon_ticket_body .date-time-area label i {
+.horizon_theme .horizon_ticket_body .date-time-area label > i {
+	display: none !important;
+}
+
+/* Datepicker card — calendar icon + full-width field */
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .horizon_dt_picker_label,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .mpwem_time_area label {
+	display: grid !important;
+	grid-template-columns: 48px minmax(0, 1fr);
+	grid-template-rows: auto auto;
+	column-gap: 14px;
+	row-gap: 4px !important;
+	align-items: center;
+	padding: 14px 16px !important;
+	border: 1px solid #E8E4F6 !important;
+	border-radius: 16px !important;
+	background: linear-gradient(180deg, #FBF9FF 0%, #F7F5FC 100%) !important;
+	box-shadow: 0 6px 18px rgba(22, 22, 29, 0.04) !important;
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .horizon_dt_picker_label:hover,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .mpwem_time_area label:hover {
+	border-color: #D7CFF5 !important;
+	box-shadow: 0 10px 24px rgba(123, 97, 255, 0.08) !important;
+	background: #fff !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .horizon_dt_icon {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border: 1px solid #E8E4F6;
+	box-shadow: 0 4px 12px rgba(123, 97, 255, 0.08);
+	color: var(--hz-purple);
+	flex-shrink: 0;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker .horizon_dt_icon i {
+	display: inline-block !important;
+	font-size: 18px;
+	line-height: 1;
+	color: var(--hz-purple);
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker label > span:not(.horizon_dt_icon) {
+	grid-column: 2;
+	grid-row: 1;
+	margin: 0 !important;
+	color: #8B86A8 !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker input[type="hidden"] {
+	display: none !important;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker input#mpwem_date_time,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker input[type="text"].formControl,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker select.formControl,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker #mpwem_time {
+	grid-column: 2;
+	grid-row: 2;
+	height: auto !important;
+	min-height: 0 !important;
+	line-height: 1.35 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	color: var(--hz-text) !important;
+	letter-spacing: -0.01em;
+}
+
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker input#mpwem_date_time:hover,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker input#mpwem_date_time:focus,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker select.formControl:hover,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker select.formControl:focus,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker #mpwem_time:hover,
+.horizon_theme .horizon_ticket_body .date-time-area.horizon_dt_picker #mpwem_time:focus {
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+/* jQuery UI datepicker — modern Horizon skin
+   Must beat #ui-datepicker-div rules from mpwem_global.css (ID specificity). */
+body.mep-horizon-active #ui-datepicker-div,
+body.mep-horizon-active #ui-datepicker-div.ui-datepicker,
+body.mep-horizon-active #ui-datepicker-div.horizon_datepicker {
+	font-family: var(--hz-sans, 'Outfit', sans-serif) !important;
+	box-sizing: border-box !important;
+	width: 320px !important;
+	max-width: calc(100vw - 24px) !important;
+	padding: 16px !important;
+	border: 1px solid #E8E4F6 !important;
+	border-radius: 20px !important;
+	background: #fff !important;
+	background-color: #fff !important;
+	background-image: none !important;
+	box-shadow: 0 24px 64px rgba(22, 22, 29, 0.18), 0 2px 8px rgba(123, 97, 255, 0.06) !important;
+	z-index: 100050 !important;
+	color: #1A1A22 !important;
+	line-height: 1.3 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div *,
+body.mep-horizon-active #ui-datepicker-div *::before,
+body.mep-horizon-active #ui-datepicker-div *::after {
+	box-sizing: border-box;
+	font-family: inherit !important;
+}
+
+/* Kill jQuery UI clearfix pseudo nodes that break grid/flex headers */
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header.ui-helper-clearfix::before,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header.ui-helper-clearfix::after {
+	content: none !important;
+	display: none !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header {
+	display: grid !important;
+	grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+	grid-template-rows: 36px !important;
+	align-items: center !important;
+	justify-content: stretch !important;
+	column-gap: 8px !important;
+	row-gap: 0 !important;
+	position: relative !important;
+	background: #F7F4FF !important;
+	background-color: #F7F4FF !important;
+	background-image: none !important;
+	border: 1px solid #E8E4F6 !important;
+	border-color: #E8E4F6 !important;
+	border-radius: 14px !important;
+	padding: 10px !important;
+	margin: 0 0 14px !important;
+	color: #1A1A22 !important;
+	min-height: 56px !important;
+	height: auto !important;
+	font-size: 13px !important;
+	overflow: hidden;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header .ui-icon {
+	display: none !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-title {
+	grid-column: 2 !important;
+	grid-row: 1 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 6px !important;
+	float: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1 !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	color: #1A1A22 !important;
+	background: transparent !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	position: relative !important;
+	z-index: 1;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-title select,
+body.mep-horizon-active #ui-datepicker-div select.ui-datepicker-month,
+body.mep-horizon-active #ui-datepicker-div select.ui-datepicker-year {
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	float: none !important;
+	display: inline-block !important;
+	height: 34px !important;
+	min-height: 34px !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 26px 0 10px !important;
+	border: 1px solid #E0DBF2 !important;
+	border-radius: 10px !important;
+	background-color: #fff !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%235B5675' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='m1 1 4 4 4-4'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 9px center !important;
+	background-size: 10px 6px !important;
+	color: #1A1A22 !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 34px !important;
+	text-align: left !important;
+	visibility: visible !important;
+	cursor: pointer !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div select.ui-datepicker-month {
+	flex: 1 1 auto !important;
+	width: 100% !important;
+	max-width: 108px !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div select.ui-datepicker-year {
+	flex: 0 0 auto !important;
+	width: 82px !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-title select:hover,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-title select:focus {
+	border-color: #C8BFF3 !important;
+	box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.12) !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-prev,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-next {
+	position: relative !important;
+	top: auto !important;
+	left: auto !important;
+	right: auto !important;
+	float: none !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 36px !important;
+	height: 36px !important;
+	min-width: 36px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border-radius: 10px !important;
+	border: 1px solid #E0DBF2 !important;
+	border-color: #E0DBF2 !important;
+	background: #fff !important;
+	background-color: #fff !important;
+	background-image: none !important;
+	color: #5B5675 !important;
+	cursor: pointer !important;
+	text-indent: 0 !important;
+	overflow: hidden !important;
+	box-shadow: none !important;
+	outline: none !important;
+	z-index: 2 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-prev {
+	grid-column: 1 !important;
+	grid-row: 1 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-next {
+	grid-column: 3 !important;
+	grid-row: 1 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev:hover,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev:focus,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next:hover,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next:focus,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header .ui-state-hover {
+	background: #EFEAFF !important;
+	background-color: #EFEAFF !important;
+	background-image: none !important;
+	border-color: #C8BFF3 !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: var(--hz-purple, #7B61FF) !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev.ui-state-disabled,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next.ui-state-disabled {
+	opacity: 0.35 !important;
+	cursor: default !important;
+	pointer-events: none !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev span,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next span {
+	display: none !important;
+}
+
+/* Neutralize global "<" / ">" ::before arrows from mpwem_global.css */
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-prev::before,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-next::before {
+	content: none !important;
+	display: none !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev::after,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next::after,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-prev::after,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-next::after {
+	content: '' !important;
+	display: block !important;
+	position: static !important;
+	top: auto !important;
+	left: auto !important;
+	width: 7px !important;
+	height: 7px !important;
+	margin: 0 !important;
+	border: 0 !important;
+	border-left: 2px solid currentColor !important;
+	border-bottom: 2px solid currentColor !important;
+	background: none !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	color: #5B5675 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-prev::after,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-prev::after {
+	transform: rotate(45deg) !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-next::after,
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-header a.ui-datepicker-next::after {
+	transform: rotate(-135deg) !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div table.ui-datepicker-calendar {
+	width: 100% !important;
+	max-width: 100% !important;
+	margin: 0 !important;
+	border-collapse: separate !important;
+	border-spacing: 4px !important;
+	table-layout: fixed !important;
+	font-size: 13px !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div th {
+	color: #9A95B0 !important;
+	font-weight: 700 !important;
+	font-size: 11px !important;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	padding: 0 0 6px !important;
+	border: 0 !important;
+	background: transparent !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div th span {
+	display: block;
+	text-align: center;
+}
+
+body.mep-horizon-active #ui-datepicker-div.ui-datepicker td,
+body.mep-horizon-active #ui-datepicker-div td {
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+	background-color: transparent !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div td span,
+body.mep-horizon-active #ui-datepicker-div td a,
+body.mep-horizon-active #ui-datepicker-div .ui-state-default {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 100% !important;
+	min-width: 0 !important;
+	height: auto !important;
+	min-height: 36px !important;
+	padding: 0 !important;
+	border-radius: 11px !important;
+	border: 0 !important;
+	background: transparent !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	color: #1A1A22 !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.mep-horizon-active #ui-datepicker-div td[title="Available"] a,
+body.mep-horizon-active #ui-datepicker-div td:not(.ui-datepicker-unselectable) a {
+	background: #F4F0FF !important;
+	background-color: #F4F0FF !important;
+	color: var(--hz-purple, #7B61FF) !important;
+	font-weight: 700 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div a.ui-state-default:hover,
+body.mep-horizon-active #ui-datepicker-div td a:hover {
+	background: var(--hz-purple, #7B61FF) !important;
+	background-color: var(--hz-purple, #7B61FF) !important;
+	color: #fff !important;
+	box-shadow: 0 8px 18px rgba(123, 97, 255, 0.28);
+}
+
+body.mep-horizon-active #ui-datepicker-div td.ui-datepicker-today a,
+body.mep-horizon-active #ui-datepicker-div td.ui-datepicker-today span {
+	box-shadow: inset 0 0 0 1.5px #C8BFF3;
+}
+
+body.mep-horizon-active #ui-datepicker-div td.ui-datepicker-current-day a,
+body.mep-horizon-active #ui-datepicker-div td .ui-state-active,
+body.mep-horizon-active #ui-datepicker-div .ui-state-active {
+	background: var(--hz-purple, #7B61FF) !important;
+	background-color: var(--hz-purple, #7B61FF) !important;
+	color: #fff !important;
+	box-shadow: 0 8px 18px rgba(123, 97, 255, 0.28) !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div td.ui-datepicker-unselectable span,
+body.mep-horizon-active #ui-datepicker-div td.ui-state-disabled span,
+body.mep-horizon-active #ui-datepicker-div td[title="Unavailable"] span {
+	color: #C9C5D8 !important;
+	background: transparent !important;
+	opacity: 1 !important;
+	font-weight: 500 !important;
+	cursor: default;
+}
+
+body.mep-horizon-active #ui-datepicker-div td.ui-datepicker-other-month span {
+	opacity: 0 !important;
+}
+
+body.mep-horizon-active #ui-datepicker-div .ui-datepicker-buttonpane {
 	display: none !important;
 }
 
@@ -2222,7 +2670,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 /* ========== REVIEWS (Horizon placement) ========== */
 .horizon_theme .horizon_reviews_wrap {
-	margin-top: 48px;
+	margin-top: 0;
 }
 
 .horizon_theme .horizon_reviews_wrap:empty {
@@ -2556,7 +3004,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 /* ========== RELATED ========== */
 .horizon_theme .horizon_related_wrap {
-	margin-top: 56px;
+	margin-top: 0;
 }
 
 .horizon_theme .horizon_related_grid {
@@ -2651,36 +3099,106 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 10px;
+	gap: 12px;
 	margin-top: auto;
-	padding-top: 8px;
+	padding-top: 14px;
+	border-top: 1px solid #EEEAF8;
+}
+
+.horizon_theme .horizon_related_price_wrap {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: baseline;
+	gap: 6px;
+	min-width: 0;
+}
+
+.horizon_theme .horizon_related_price_label {
+	display: inline-block;
+	font-family: var(--hz-sans);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #A09BB5;
+	line-height: 1;
+	white-space: nowrap;
 }
 
 .horizon_theme .horizon_related_price,
 .horizon_theme .horizon_related_price * {
-	font-size: 16px !important;
+	display: inline !important;
+	font-family: var(--hz-sans) !important;
+	font-size: 18px !important;
 	font-weight: 700 !important;
+	line-height: 1.2 !important;
 	color: var(--hz-text) !important;
+	letter-spacing: -0.02em;
+	white-space: nowrap;
+	vertical-align: baseline;
+}
+
+.horizon_theme .horizon_related_price .woocommerce-Price-amount,
+.horizon_theme .horizon_related_price .amount {
+	display: inline !important;
+	white-space: nowrap !important;
+}
+
+.horizon_theme .horizon_related_price .woocommerce-Price-currencySymbol {
+	display: inline !important;
+	font-size: 0.85em !important;
+	font-weight: 700 !important;
+	margin-right: 1px;
+	color: var(--hz-purple) !important;
+}
+
+.horizon_theme .horizon_related_price--empty {
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	color: var(--hz-muted) !important;
+	letter-spacing: 0 !important;
 }
 
 .horizon_theme .horizon_related_btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--hz-purple-soft);
-	color: var(--hz-purple) !important;
+	gap: 8px;
+	flex-shrink: 0;
+	background: var(--hz-purple);
+	color: #fff !important;
+	font-family: var(--hz-sans);
 	font-size: 12px;
 	font-weight: 700;
-	padding: 8px 14px;
-	border-radius: 999px;
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
-	transition: background 0.2s ease, color 0.2s ease;
+	line-height: 1;
+	padding: 11px 14px;
+	border-radius: 12px;
+	text-transform: none;
+	letter-spacing: 0;
+	box-shadow: 0 8px 18px rgba(123, 97, 255, 0.22);
+	transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horizon_theme .horizon_related_btn i {
+	font-size: 11px;
+	line-height: 1;
+	transition: transform 0.2s ease;
 }
 
 .horizon_theme .horizon_related_btn:hover {
-	background: var(--hz-purple);
+	background: var(--hz-purple-dark, #6548f0);
 	color: #fff !important;
+	transform: translateY(-1px);
+	box-shadow: 0 12px 22px rgba(123, 97, 255, 0.28);
+}
+
+.horizon_theme .horizon_related_btn:hover i {
+	transform: translateX(2px);
+}
+
+.horizon_theme .horizon_related_card:hover .horizon_related_btn {
+	background: var(--hz-purple-dark, #6548f0);
 }
 
 /* Hide default related carousel chrome if fallback used */
@@ -2864,7 +3382,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 	.horizon_theme .horizon_reviews_wrap,
 	.horizon_theme .horizon_related_wrap {
-		margin-top: 40px;
+		margin-top: 0;
 	}
 }
 
@@ -3128,7 +3646,7 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 	.horizon_theme .horizon_reviews_wrap,
 	.horizon_theme .horizon_related_wrap {
-		margin-top: 32px;
+		margin-top: 0;
 	}
 
 	.horizon_theme .horizon_review_card__top .horizon_reviews_stars {

@@ -65,8 +65,18 @@
 						<?php endif; ?>
 					</div>
 					<div class="horizon_related_foot">
-						<span class="horizon_related_price"><?php echo $price_html ? wp_kses_post( $price_html ) : '&nbsp;'; ?></span>
-						<a class="horizon_related_btn" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'View Details', 'mage-eventpress' ); ?></a>
+						<div class="horizon_related_price_wrap">
+							<?php if ( $price_html ) : ?>
+								<span class="horizon_related_price_label"><?php esc_html_e( 'From', 'mage-eventpress' ); ?></span>
+								<span class="horizon_related_price"><?php echo wp_kses_post( $price_html ); ?></span>
+							<?php else : ?>
+								<span class="horizon_related_price horizon_related_price--empty"><?php esc_html_e( 'See tickets', 'mage-eventpress' ); ?></span>
+							<?php endif; ?>
+						</div>
+						<a class="horizon_related_btn" href="<?php echo esc_url( $link ); ?>">
+							<span><?php esc_html_e( 'View Details', 'mage-eventpress' ); ?></span>
+							<i class="fas fa-arrow-right" aria-hidden="true"></i>
+						</a>
 					</div>
 				</div>
 			</article>

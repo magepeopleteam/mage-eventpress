@@ -49,36 +49,59 @@
 			public function slider( $post_id, $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					$showcase_position = MPWEM_Global_Function::get_slider_settings( 'showcase_position', 'right' );
-					$column_class      = $showcase_position == 'top' || $showcase_position == 'bottom' ? 'area_column' : '';
 					$slider_style      = MPWEM_Global_Function::get_slider_settings( 'slider_style', 'style_1' );
+					$is_style_two      = ( $slider_style === 'style_2' );
+					$column_class      = ( ! $is_style_two && ( $showcase_position == 'top' || $showcase_position == 'bottom' ) ) ? 'area_column' : '';
+					$image_count       = count( $image_ids );
 					?>
-                    <div class="superSlider placeholder_area fdColumn">
+                    <div class="superSlider placeholder_area fdColumn <?php echo $is_style_two ? 'mpwem-slider--style-2' : 'mpwem-slider--style-1'; ?>">
                         <input type="hidden" name="slider_height_type" value="<?php echo esc_attr( MPWEM_Global_Function::get_slider_settings( 'slider_height', 'avg' ) ); ?>"/>
-                        <div class="dFlex  <?php echo esc_attr( $column_class ); ?>">
+                        <div class="dFlex <?php echo esc_attr( $column_class ); ?>">
 							<?php
-								if ( $showcase_position == 'top' || $showcase_position == 'left' ) {
+								if ( ! $is_style_two && ( $showcase_position == 'top' || $showcase_position == 'left' ) ) {
 									$this->slider_showcase( $image_ids );
 								}
-								$this->slider_all_item( $image_ids );
-								if ( $showcase_position == 'bottom' || $showcase_position == 'right' ) {
+								$this->slider_all_item( $image_ids, '', $is_style_two ? 'force' : '' );
+								if ( ! $is_style_two && ( $showcase_position == 'bottom' || $showcase_position == 'right' ) ) {
 									$this->slider_showcase( $image_ids );
 								}
-								if ( $slider_style == 'style_2' ) {
+								if ( $is_style_two ) {
 									?>
-                                    <div class="_pab_top_left">
-                                        <button type="button" class="_button_default_bgWhite_text_default" data-target-popup="superSlider" data-slide-index="1">
-											<?php echo esc_html__( 'View All', 'mage-eventpress' ) . ' ' . (is_array( $image_ids ) ? sizeof( $image_ids ) : 0) . ' ' . esc_html__( 'Images', 'mage-eventpress' ); ?>
+                                    <div class="mpwem-slider-style2__view-all">
+                                        <button type="button" class="mpwem-slider-style2__view-all-btn" data-target-popup="superSlider" data-slide-index="1">
+											<?php
+											echo esc_html(
+												sprintf(
+													/* translators: %d: number of gallery images */
+													__( 'View All %d Images', 'mage-eventpress' ),
+													$image_count
+												)
+											);
+											?>
                                         </button>
+                                    </div>
+                                    <div class="mpwem-slider-style2__count" aria-hidden="true">
+										<?php
+										echo esc_html(
+											sprintf(
+												/* translators: %d: number of gallery images */
+												_n( '%d photo', '%d photos', $image_count, 'mage-eventpress' ),
+												$image_count
+											)
+										);
+										?>
                                     </div>
 									<?php
 								}
 							?>
                         </div>
 						<?php
-							$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
-							$icon             = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
-							if ( $slider_indicator == 'on' && $icon == 'image' ) {
-								$this->image_indicator( $image_ids );
+							if ( ! $is_style_two ) {
+								$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
+								$icon             = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
+								if ( $slider_indicator == 'on' && $icon == 'image' ) {
+									$this->image_indicator( $image_ids );
+								}
 							}
 						?>
 						<?php $this->slider_popup( $post_id, $image_ids ); ?>
@@ -97,7 +120,7 @@
 					<?php
 				}
 			}
-			public function slider_all_item( $image_ids, $popup_slider_icon = '' ) {
+			public function slider_all_item( $image_ids, $popup_slider_icon = '', $force_icons = '' ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {
 					?>
                     <div class="sliderAllItem">
@@ -114,8 +137,10 @@
 						?>
 						<?php
 							$icon = MPWEM_Global_Function::get_slider_settings( 'indicator_type', 'icon' );
-							if ( ( $icon == 'icon' || $popup_slider_icon == 'on' ) && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
-								$this->icon_indicator( $popup_slider_icon );
+							if ( $force_icons === 'force' || ( ( $icon == 'icon' || $popup_slider_icon == 'on' ) && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) ) {
+								if ( $force_icons === 'force' || $popup_slider_icon == 'on' || MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' ) == 'on' ) {
+									$this->icon_indicator( $force_icons === 'force' ? 'style_2' : $popup_slider_icon );
+								}
 							}
 						?>
                     </div>
@@ -202,13 +227,15 @@
 			}
 			public function icon_indicator( $popup_slider_icon = '' ) {
 				$slider_indicator = MPWEM_Global_Function::get_slider_settings( 'indicator_visible', 'on' );
-				if ( $slider_indicator == 'on' || $popup_slider_icon == 'on' ) {
+				if ( $slider_indicator == 'on' || $popup_slider_icon == 'on' || $popup_slider_icon == 'style_2' ) {
+					$prev_icon = ( $popup_slider_icon === 'style_2' ) ? 'fas fa-chevron-left' : 'fas fa-chevron-circle-left';
+					$next_icon = ( $popup_slider_icon === 'style_2' ) ? 'fas fa-chevron-right' : 'fas fa-chevron-circle-right';
 					?>
-                    <div class="iconIndicator prevItem">
-                        <span class="fas fa-chevron-circle-left"></span>
+                    <div class="iconIndicator prevItem" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Previous image', 'mage-eventpress' ); ?>">
+                        <span class="<?php echo esc_attr( $prev_icon ); ?>"></span>
                     </div>
-                    <div class="iconIndicator nextItem">
-                        <span class="fas fa-chevron-circle-right"></span>
+                    <div class="iconIndicator nextItem" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Next image', 'mage-eventpress' ); ?>">
+                        <span class="<?php echo esc_attr( $next_icon ); ?>"></span>
                     </div>
 					<?php
 				}

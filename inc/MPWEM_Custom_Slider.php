@@ -66,6 +66,11 @@
 									$this->slider_showcase( $image_ids );
 								}
 								if ( $is_style_two ) {
+									$event_template_key = MPWEM_Global_Function::get_post_info( $post_id, 'mep_event_template', '' );
+									$event_template_file = function_exists( 'mep_event_template_parse' )
+										? mep_event_template_parse( $event_template_key )['file']
+										: $event_template_key;
+									$hide_style2_count = ( $event_template_file === 'smart.php' );
 									?>
                                     <div class="mpwem-slider-style2__view-all">
                                         <button type="button" class="mpwem-slider-style2__view-all-btn" data-target-popup="superSlider" data-slide-index="1">
@@ -80,6 +85,7 @@
 											?>
                                         </button>
                                     </div>
+									<?php if ( ! $hide_style2_count ) : ?>
                                     <div class="mpwem-slider-style2__count" aria-hidden="true">
 										<?php
 										echo esc_html(
@@ -91,6 +97,7 @@
 										);
 										?>
                                     </div>
+									<?php endif; ?>
 									<?php
 								}
 							?>

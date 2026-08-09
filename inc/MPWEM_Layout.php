@@ -313,6 +313,40 @@
 				}
 				$custom_forms = self::get_custom_form_array( $event_id, $form_id );
 				$form_array   = array_merge( $form_array, $custom_forms );
+
+				// Attendee form toggle can be ON while builder meta is still empty []
+				// (admin shows virtual defaults; save previously wiped flags). Seed the
+				// same core fields so qty still opens the attendee form.
+				if ( empty( $form_array ) ) {
+					$reg_form_status = MPWEM_Global_Function::get_post_info( $event_id, 'mep_event_reg_form_status', 'on' );
+					if ( '' === $reg_form_status ) {
+						$reg_form_status = 'on';
+					}
+					if ( 'on' === $reg_form_status ) {
+						$form_array['user_name']  = [
+							'type'     => 'text',
+							'name'     => 'user_name',
+							'd_name'   => 'ea_name',
+							'required' => 1,
+							'label'    => esc_html__( 'Name', 'mage-eventpress' ),
+						];
+						$form_array['user_email'] = [
+							'type'     => 'email',
+							'name'     => 'user_email',
+							'd_name'   => 'ea_email',
+							'required' => 1,
+							'label'    => esc_html__( 'Email', 'mage-eventpress' ),
+						];
+						$form_array['user_phone'] = [
+							'type'     => 'text',
+							'name'     => 'user_phone',
+							'd_name'   => 'ea_phone',
+							'required' => 1,
+							'label'    => esc_html__( 'Phone', 'mage-eventpress' ),
+						];
+					}
+				}
+
 				return self::apply_conditional_infos_to_form( $form_array, $form_id );
 			}
 

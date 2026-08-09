@@ -1077,6 +1077,155 @@ div.mpwem_calender_area {
 	border-top: 1px solid var(--color_border);
 }
 
+/* ========== Smart Theme — Add Calendar ========== */
+.mep_smart_theme .mpwem_calender_area {
+	padding: 18px 18px 16px;
+	border-top: 1px solid #eef2f7;
+}
+
+.mep_smart_theme .mpwem_calender_area > button,
+.mep_smart_theme .mpwem_calender_area > button._button_theme_margin_auto_min_150 {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0 !important;
+	min-height: 46px;
+	margin: 0 !important;
+	padding: 12px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--color_theme, #2563eb) 28%, #e8edf5) !important;
+	border-radius: 12px !important;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 8%, #fff) !important;
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.mep_smart_theme .mpwem_calender_area > button::before {
+	content: '\f073';
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1;
+}
+
+.mep_smart_theme .mpwem_calender_area > button span {
+	color: inherit !important;
+}
+
+.mep_smart_theme .mpwem_calender_area > button:hover {
+	background: var(--color_theme, #2563eb) !important;
+	border-color: var(--color_theme, #2563eb) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--color_theme, #2563eb) 24%, transparent) !important;
+}
+
+.mep_smart_theme .mpwem_calender_area > [data-collapse] {
+	margin-top: 12px;
+}
+
+.mep_smart_theme .mpwem_calender_area > [data-collapse].mActive {
+	display: block !important;
+}
+
+.mep_smart_theme .mpwem_calender_area ._mt_xs_fdColumn {
+	display: grid !important;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+	margin: 0 !important;
+	padding: 0;
+}
+
+.mep_smart_theme .mpwem_calender_area a._button_general_mt_xs {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 42px;
+	margin: 0 !important;
+	padding: 10px 12px !important;
+	border: 1px solid #e8edf5 !important;
+	border-radius: 12px !important;
+	background: #fff !important;
+	color: #111827 !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	text-decoration: none !important;
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.mep_smart_theme .mpwem_calender_area a._button_general_mt_xs:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="calendar.google.com"] {
+	border-color: color-mix(in srgb, #4285F4 22%, #e8edf5) !important;
+	background: color-mix(in srgb, #4285F4 8%, #fff) !important;
+	color: #1a73e8 !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="calendar.google.com"]:hover {
+	background: #4285F4 !important;
+	border-color: #4285F4 !important;
+	color: #fff !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="calendar.yahoo.com"] {
+	border-color: color-mix(in srgb, #6001D2 22%, #e8edf5) !important;
+	background: color-mix(in srgb, #6001D2 8%, #fff) !important;
+	color: #6001D2 !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="calendar.yahoo.com"]:hover {
+	background: #6001D2 !important;
+	border-color: #6001D2 !important;
+	color: #fff !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="outlook.live.com"] {
+	border-color: color-mix(in srgb, #0078D4 22%, #e8edf5) !important;
+	background: color-mix(in srgb, #0078D4 8%, #fff) !important;
+	color: #0078D4 !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="outlook.live.com"]:hover {
+	background: #0078D4 !important;
+	border-color: #0078D4 !important;
+	color: #fff !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="download-ics.php"] {
+	border-color: color-mix(in srgb, #111827 16%, #e8edf5) !important;
+	background: color-mix(in srgb, #111827 5%, #fff) !important;
+	color: #111827 !important;
+}
+
+.mep_smart_theme .mpwem_calender_area a[href*="download-ics.php"]:hover {
+	background: #111827 !important;
+	border-color: #111827 !important;
+	color: #fff !important;
+}
+
+@media (max-width: 640px) {
+	.mep_smart_theme .mpwem_calender_area {
+		padding: 14px;
+	}
+
+	.mep_smart_theme .mpwem_calender_area ._mt_xs_fdColumn {
+		grid-template-columns: 1fr;
+	}
+}
+
 div.event_date_list_area {
 	padding: var(--dmp_xs) var(--dmp);
 }
@@ -1110,6 +1259,198 @@ div.event_date_list_area .date_item a {
 
 div.event_date_list_area .date-list-item {
 	border-radius: 10px;
+}
+
+/* ========== Smart Theme — Event Schedule Details ========== */
+.mep_smart_theme .event_date_list_area {
+	padding: 18px 18px 16px;
+}
+
+.mep_smart_theme .event_date_list_area > h5 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: #111827 !important;
+	letter-spacing: -0.01em;
+}
+
+.mep_smart_theme .event_date_list_area > h5 > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 12%, #fff);
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 14px;
+	flex-shrink: 0;
+}
+
+.mep_smart_theme .event_date_list_area .date_list_area {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-height: 340px;
+	overflow: auto;
+	margin: 0;
+	padding: 2px 2px 4px;
+	scrollbar-width: thin;
+	scrollbar-color: #d5dbe7 transparent;
+}
+
+.mep_smart_theme .event_date_list_area .date_list_area::-webkit-scrollbar {
+	width: 6px;
+}
+
+.mep_smart_theme .event_date_list_area .date_list_area::-webkit-scrollbar-thumb {
+	background: #d5dbe7;
+	border-radius: 999px;
+}
+
+.mep_smart_theme .event_date_list_area .date-list-item,
+.mep_smart_theme .event_date_list_area ._layout_info_xs.date-list-item {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 12px !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+.mep_smart_theme .event_date_list_area .date_item {
+	position: relative;
+	padding: 0 !important;
+}
+
+.mep_smart_theme .event_date_list_area .date_item::before {
+	display: none !important;
+	content: none !important;
+}
+
+.mep_smart_theme .event_date_list_area .date_item a {
+	position: relative;
+	display: flex !important;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	padding: 12px 40px 12px 12px !important;
+	margin: 0 !important;
+	border: 1px solid #e8edf5;
+	border-radius: 12px;
+	background: #fff;
+	color: #111827 !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	line-height: 1.35 !important;
+	text-decoration: none !important;
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+	transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, color 0.18s ease;
+}
+
+.mep_smart_theme .event_date_list_area .date_item a::before {
+	content: '';
+	flex-shrink: 0;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 75%, #fff);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color_theme, #2563eb) 12%, transparent);
+}
+
+.mep_smart_theme .event_date_list_area .date_item a::after {
+	content: '';
+	position: absolute;
+	right: 14px;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	border-right: 2px solid #9aa3b5;
+	border-bottom: 2px solid #9aa3b5;
+	transform: translateY(-50%) rotate(-45deg);
+	transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.mep_smart_theme .event_date_list_area .date_item a:hover {
+	border-color: color-mix(in srgb, var(--color_theme, #2563eb) 35%, #e8edf5);
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 6%, #fff);
+	color: var(--color_theme, #2563eb) !important;
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--color_theme, #2563eb) 12%, transparent);
+	transform: translateY(-1px);
+}
+
+.mep_smart_theme .event_date_list_area .date_item a:hover::after {
+	border-color: var(--color_theme, #2563eb);
+	transform: translateY(-50%) translateX(2px) rotate(-45deg);
+}
+
+.mep_smart_theme .event_date_list_area .date_item a._ml {
+	padding-left: 34px !important;
+	font-weight: 500 !important;
+	color: #4b5563 !important;
+}
+
+.mep_smart_theme .event_date_list_area .date_item a._ml::before {
+	width: 6px;
+	height: 6px;
+	box-shadow: none;
+	opacity: 0.7;
+}
+
+.mep_smart_theme .event_date_list_area button[data-collapse-target],
+.mep_smart_theme .event_date_list_area ._button_theme_margin_auto {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 42px;
+	margin: 12px 0 0 !important;
+	padding: 10px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--color_theme, #2563eb) 28%, #e8edf5) !important;
+	border-radius: 12px !important;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 8%, #fff) !important;
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.mep_smart_theme .event_date_list_area button[data-collapse-target]:hover,
+.mep_smart_theme .event_date_list_area ._button_theme_margin_auto:hover {
+	background: var(--color_theme, #2563eb) !important;
+	border-color: var(--color_theme, #2563eb) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+}
+
+.mep_smart_theme .event_date_list_area button[data-collapse-target] span,
+.mep_smart_theme .event_date_list_area ._button_theme_margin_auto span {
+	color: inherit !important;
+}
+
+@media (max-width: 640px) {
+	.mep_smart_theme .event_date_list_area {
+		padding: 14px;
+	}
+
+	.mep_smart_theme .event_date_list_area .date_list_area {
+		max-height: 280px;
+	}
+
+	.mep_smart_theme .event_date_list_area .date_item a {
+		padding: 11px 36px 11px 11px !important;
+		font-size: 12px !important;
+	}
 }
 
 button.mpwem_get_date_list {
@@ -1309,6 +1650,203 @@ div.share_widgets .share_widgets_list a.email:hover i {
 	color: #FFF;
 }
 
+/* ========== Smart Theme — Share This Event ========== */
+.mep_smart_theme .share_widgets {
+	padding: 18px 18px 16px;
+	border-top: 1px solid #eef2f7;
+	color: #111827;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_title {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	margin: 0 0 14px !important;
+	padding: 0;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: #111827 !important;
+	text-align: left !important;
+	text-transform: none;
+	letter-spacing: -0.01em;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_title::before {
+	content: '\f1e0';
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 12%, #fff);
+	color: var(--color_theme, #2563eb);
+	font-size: 13px;
+	flex-shrink: 0;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list li {
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 1px solid #e8edf5;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+	text-decoration: none !important;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list i {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	width: auto !important;
+	height: auto !important;
+	min-width: 0;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	font-size: 16px !important;
+	line-height: 1 !important;
+	transition: color 0.18s ease;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.facebook {
+	border-color: color-mix(in srgb, #1877F2 22%, #e8edf5);
+	background: color-mix(in srgb, #1877F2 8%, #fff);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.facebook i {
+	color: #1877F2 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.facebook:hover {
+	background: #1877F2 !important;
+	border-color: #1877F2 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.facebook:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.twitter {
+	border-color: color-mix(in srgb, #111827 18%, #e8edf5);
+	background: color-mix(in srgb, #111827 6%, #fff);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.twitter i {
+	color: #111827 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.twitter:hover {
+	background: #111827 !important;
+	border-color: #111827 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.twitter:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.linkedin {
+	border-color: color-mix(in srgb, #0A66C2 22%, #e8edf5);
+	background: color-mix(in srgb, #0A66C2 8%, #fff);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.linkedin i {
+	color: #0A66C2 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.linkedin:hover {
+	background: #0A66C2 !important;
+	border-color: #0A66C2 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.linkedin:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp {
+	border-color: color-mix(in srgb, #25D366 22%, #e8edf5);
+	background: color-mix(in srgb, #25D366 8%, #fff);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp i {
+	color: #25D366 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp:hover {
+	background: #25D366 !important;
+	border-color: #25D366 !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.whatsapp:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.email {
+	border-color: color-mix(in srgb, var(--color_theme, #2563eb) 22%, #e8edf5);
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 8%, #fff);
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.email i {
+	color: var(--color_theme, #2563eb) !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.email:hover {
+	background: var(--color_theme, #2563eb) !important;
+	border-color: var(--color_theme, #2563eb) !important;
+}
+
+.mep_smart_theme .share_widgets .share_widgets_list a.email:hover i {
+	color: #fff !important;
+	background: transparent !important;
+}
+
+@media (max-width: 640px) {
+	.mep_smart_theme .share_widgets {
+		padding: 14px;
+	}
+
+	.mep_smart_theme .share_widgets .share_widgets_list a {
+		width: 42px;
+		height: 42px;
+	}
+}
+
 #mpwem_map_area {
 	margin: var(--dmp) 0 0;
 	background: white;
@@ -1360,6 +1898,109 @@ div.mpwem_location_sidebar p {
 
 div.mpwem_location_sidebar #mpwem_map_area {
 	margin: 0;
+}
+
+/* ========== Smart Theme — Event Location ========== */
+.mep_smart_theme .mpwem_location_sidebar {
+	padding: 18px 18px 16px;
+	border-top: 1px solid #eef2f7;
+	color: #111827;
+}
+
+.mep_smart_theme .mpwem_location_sidebar .widgets_title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 12px !important;
+	padding: 0;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 1.3 !important;
+	color: #111827 !important;
+	text-transform: none;
+	letter-spacing: -0.01em;
+}
+
+.mep_smart_theme .mpwem_location_sidebar .widgets_title > span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 !important;
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 12%, #fff);
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 14px;
+	flex-shrink: 0;
+}
+
+.mep_smart_theme .mpwem_location_sidebar > p {
+	display: block;
+	margin: 0 0 14px !important;
+	padding: 12px 14px !important;
+	border: 1px solid #e8edf5;
+	border-radius: 12px;
+	background: #f8fafc;
+	color: #374151 !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1.55 !important;
+}
+
+.mep_smart_theme .mpwem_location_sidebar button[data-target-popup],
+.mep_smart_theme .mpwem_location_sidebar button._button_theme_margin_auto,
+.mep_smart_theme .mpwem_location_sidebar > button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0 !important;
+	min-height: 46px;
+	margin: 0 !important;
+	padding: 12px 16px !important;
+	border: 1px solid color-mix(in srgb, var(--color_theme, #2563eb) 28%, #e8edf5) !important;
+	border-radius: 12px !important;
+	background: color-mix(in srgb, var(--color_theme, #2563eb) 8%, #fff) !important;
+	color: var(--color_theme, #2563eb) !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.mep_smart_theme .mpwem_location_sidebar button[data-target-popup]:hover,
+.mep_smart_theme .mpwem_location_sidebar button._button_theme_margin_auto:hover,
+.mep_smart_theme .mpwem_location_sidebar > button:hover {
+	background: var(--color_theme, #2563eb) !important;
+	border-color: var(--color_theme, #2563eb) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px color-mix(in srgb, var(--color_theme, #2563eb) 24%, transparent) !important;
+}
+
+.mep_smart_theme .mpwem_location_sidebar button[data-target-popup] i,
+.mep_smart_theme .mpwem_location_sidebar button._button_theme_margin_auto i,
+.mep_smart_theme .mpwem_location_sidebar > button i,
+.mep_smart_theme .mpwem_location_sidebar button[data-target-popup] span,
+.mep_smart_theme .mpwem_location_sidebar button._button_theme_margin_auto span,
+.mep_smart_theme .mpwem_location_sidebar > button span {
+	color: inherit !important;
+	margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+	.mep_smart_theme .mpwem_location_sidebar {
+		padding: 14px;
+	}
+
+	.mep_smart_theme .mpwem_location_sidebar > p {
+		padding: 11px 12px !important;
+		font-size: 12px !important;
+	}
 }
 
 .mep_speaker_thumbnail {

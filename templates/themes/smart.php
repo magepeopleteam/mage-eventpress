@@ -59,16 +59,11 @@
             <div class="mpwem_sidebar_content">
 				<?php if ( is_array( $all_dates ) && sizeof( $all_dates ) > 0 && $hide_date_list == 'no' ) { ?>
                     <div class="event_date_list_area">
-                        <h5 class="_mb_xs"><span class="<?php echo esc_attr( $event_location_icon ); ?> _mr_xs"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
+                        <h5 class="_mb_xs"><span class="far fa-calendar-alt _mr_xs" aria-hidden="true"></span><?php esc_html_e( 'Event Schedule Details', 'mage-eventpress' ) ?></h5>
 						<?php do_action( 'mpwem_date_list', $event_id, $event_infos ); ?>
                     </div>
 				<?php } ?>
 				<?php do_action( 'mpwem_location', $event_id,$event_infos, 'sidebar' ); ?>
-				<?php if ( has_term( '', 'mep_tag', $event_id ) ): ?>
-                    <div class="mep-default-sidebar-tags">
-						<?php do_action( 'mep_event_tags', $event_id ); ?>
-                    </div>
-				<?php endif; ?>
 				<?php do_action( 'mpwem_social', $event_id ,$event_infos); ?>
 				<?php do_action( 'mpwem_add_calender', $event_id, $all_dates, $upcoming_date ); ?>
             </div>

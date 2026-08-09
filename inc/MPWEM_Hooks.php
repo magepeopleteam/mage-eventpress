@@ -44,6 +44,8 @@
 				add_action( 'wp_ajax_nopriv_mpwem_load_event_list_page', array( $this, 'mpwem_load_event_list_page' ) );
 				add_action( 'wp_ajax_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
 				add_action( 'wp_ajax_nopriv_mpwem_get_date_list', array( $this, 'mpwem_get_date_list' ) );
+				add_action( 'wp_ajax_mpwem_get_schedule_more_dates', array( $this, 'mpwem_get_schedule_more_dates' ) );
+				add_action( 'wp_ajax_nopriv_mpwem_get_schedule_more_dates', array( $this, 'mpwem_get_schedule_more_dates' ) );
 				add_action( 'wp_ajax_mpwem_load_date', array( $this, 'mpwem_load_date' ) );
 				add_action( 'wp_ajax_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
 				add_action( 'wp_ajax_nopriv_mep_submit_rsvp', array( $this, 'mep_submit_rsvp' ) );
@@ -338,6 +340,32 @@
                     </div>
 					<?php
 				}
+				wp_die();
+			}
+
+			/**
+			 * Schedule: load remaining date cards via AJAX (after first 5).
+			 */
+			public function mpwem_get_schedule_more_dates() {
+				if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'mpwem_nonce' ) ) {
+					wp_send_json_error( __( 'Invalid nonce!', 'mage-eventpress' ) );
+					wp_die();
+				}
+
+				$event_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : 0;
+				$offset   = isset( $_POST['offset'] ) ? absint( wp_unslash( $_POST['offset'] ) ) : 5;
+
+				if ( ! $event_id || get_post_type( $event_id ) !== 'mep_events' || get_post_status( $event_id ) !== 'publish' ) {
+					wp_send_json_error( __( 'Invalid or unpublished Event.', 'mage-eventpress' ) );
+					wp_die();
+				}
+
+				$event_infos         = MPWEM_Functions::get_all_info( $event_id );
+				$schedule_offset     = $offset;
+				$schedule_limit      = 0; // all remaining
+				$schedule_items_only = true;
+
+				require MPWEM_Functions::template_path( 'layout/date_list.php' );
 				wp_die();
 			}
 			/***********************/

@@ -113,15 +113,19 @@
 				if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) {
 					?>
                     <div class="location-widgets mep-event-tags-widget">
-                        <div>
-                            <div class="location-title"><?php echo esc_html( mep_get_option( 'mep_tags_text', 'label_setting_sec', __( 'Event Tags', 'mage-eventpress' ) ) ); ?></div>
-                            <p class="mep-event-tags-list">
+                        <div class="mep-event-tags">
+                            <div class="location-title mep-event-tags__title"><?php echo esc_html( mep_get_option( 'mep_tags_text', 'label_setting_sec', __( 'Event Tags', 'mage-eventpress' ) ) ); ?></div>
+                            <div class="mep-event-tags-list" role="list">
 								<?php
 									foreach ( $tags as $tag ) {
-										echo '<a href="' . esc_url( get_term_link( $tag->term_id, 'mep_tag' ) ) . '" rel="tag" class="mep-tag-link">' . esc_html( $tag->name ) . '</a>';
+										$term_link = get_term_link( $tag->term_id, 'mep_tag' );
+										if ( is_wp_error( $term_link ) ) {
+											continue;
+										}
+										echo '<a href="' . esc_url( $term_link ) . '" rel="tag" class="mep-tag-link" role="listitem">' . esc_html( $tag->name ) . '</a>';
 									}
 								?>
-                            </p>
+                            </div>
                         </div>
                     </div>
 					<?php

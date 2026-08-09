@@ -253,6 +253,7 @@ function mpwem_slider_resize(target) {
     let main_div_width = target.innerWidth();
     //console.log(main_div_width);
     let item_count = target.find('.sliderItem').length;
+    let is_style_two = target.closest('.superSlider').hasClass('mpwem-slider--style-2');
     target.find('[data-bg-image]').each(function () {
         let width = jQuery(this).outerWidth();
         let height = jQuery(this).outerHeight();
@@ -267,22 +268,28 @@ function mpwem_slider_resize(target) {
         totalHeight = totalHeight + (imgHeight * main_div_width) / imgWidth;
         imgCount++;
         if (imgCount === item_count) {
-            let slider_height_type = target.closest('.superSlider').find('input[name="slider_height_type"]').val();
-            let height_content = totalHeight / imgCount;
-            if (slider_height_type === 'min') {
-                height_content = Math.min(...all_height);
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
-            } else if (slider_height_type === 'max') {
-                height_content = Math.max(...all_height);
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
+            // Style Two uses CSS aspect-ratio + cover; do not pin inline heights.
+            if (!is_style_two) {
+                let slider_height_type = target.closest('.superSlider').find('input[name="slider_height_type"]').val();
+                let height_content = totalHeight / imgCount;
+                if (slider_height_type === 'min') {
+                    height_content = Math.min(...all_height);
+                    target.find('.sliderItem').css({"min-height": height_content});
+                    target.find('.sliderItem').css({"max-height": height_content});
+                } else if (slider_height_type === 'max') {
+                    height_content = Math.max(...all_height);
+                    target.find('.sliderItem').css({"min-height": height_content});
+                    target.find('.sliderItem').css({"max-height": height_content});
+                } else {
+                    target.find('.sliderItem').css({"min-height": height_content});
+                    target.find('.sliderItem').css({"max-height": height_content});
+                }
+                target.css({"max-height": height_content});
+                target.siblings('.sliderShowcase').css({"max-height": height_content});
             } else {
-                target.find('.sliderItem').css({"min-height": height_content});
-                target.find('.sliderItem').css({"max-height": height_content});
+                target.css({height: '', maxHeight: '', minHeight: ''});
+                target.find('.sliderItem').css({height: '', maxHeight: '', minHeight: ''});
             }
-            target.css({"max-height": height_content});
-            target.siblings('.sliderShowcase').css({"max-height": height_content});
         }
         jQuery(this).css('background-image', 'url("' + bg_url + '")').promise().done(function () {
             mpwem_loader_remove(jQuery(this));

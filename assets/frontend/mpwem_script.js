@@ -1905,6 +1905,15 @@ jQuery(function ($) {
         $select.data('mpwemModernSelect', true);
         mpwem_sync_modern_time_select($select);
 
+        $select.closest('label').on('click.mpwemModernSelect', function (e) {
+            if ($(e.target).closest('.mpwem-modern-select__menu, .mpwem-modern-select__option, .mpwem-modern-select__trigger').length) {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            $trigger.trigger('focus').trigger('click');
+        });
+
         $trigger.on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();

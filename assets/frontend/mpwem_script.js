@@ -189,11 +189,10 @@ function mpwem_attendee_management(parent, total_qty) {
     });
     $(document).on('change', '.mpwem_registration_area [name="mpwem_date_time"]', function () {
         const parent = $(this).closest('.mpwem_registration_area');
-        const time_slot = parent.find('#mpwem_time');
-        if (time_slot.length > 0) {
+        const target = parent.find('.mpwem_time_area');
+        if (target.length > 0) {
             const post_id = parent.find('[name="mpwem_post_id"]').val();
             const dates = parent.find('[name="mpwem_date_time"]').val();
-            const target = parent.find('.mpwem_time_area');
             jQuery.ajax({
                 type: 'POST',
                 url: mpwem_ajax_url,
@@ -206,11 +205,19 @@ function mpwem_attendee_management(parent, total_qty) {
                     mpwem_loader_xs(target);
                 },
                 success: function (data) {
-                    target.html(data).slideDown('fast').promise().done(function () {
-                        mpwem_init_modern_time_select(parent);
-                        const date = parent.find('[name="mpwem_time"]').val();
-                        get_mpwem_ticket(target, date);
-                    });
+                    // Avoid slideDown here: it sets inline display/height on
+                    // .mpwem_time_area and breaks display:contents grid + modern select.
+                    target
+                        .stop(true, true)
+                        .removeAttr('style')
+                        .removeClass('pRelative')
+                        .html(data);
+
+                    mpwem_loader_remove(target);
+                    mpwem_init_modern_time_select(target);
+
+                    const date = parent.find('[name="mpwem_time"]').val();
+                    get_mpwem_ticket(target, date);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error loading time slots:', error);
@@ -218,6 +225,7 @@ function mpwem_attendee_management(parent, total_qty) {
                 },
                 complete: function () {
                     mpwem_loader_remove(target);
+                    target.removeAttr('style').removeClass('pRelative');
                 }
             });
         } else {
@@ -1979,7 +1987,14 @@ jQuery(function ($) {
 
     function mpwem_init_modern_time_select(context) {
         var $root = context ? $(context) : $(document);
-        $root.find('select#mpwem_time, select[name="mpwem_time"]').each(function () {
+        // Context may be the .mpwem_time_area itself (display:contents) or a parent.
+        var $selects = $root.is('select#mpwem_time, select[name="mpwem_time"]')
+            ? $root
+            : $root.find('select#mpwem_time, select[name="mpwem_time"]');
+        if (!$selects.length && $root.find('.mpwem_time_area').length) {
+            $selects = $root.find('.mpwem_time_area select#mpwem_time, .mpwem_time_area select[name="mpwem_time"]');
+        }
+        $selects.each(function () {
             mpwem_build_modern_time_select($(this));
         });
     }

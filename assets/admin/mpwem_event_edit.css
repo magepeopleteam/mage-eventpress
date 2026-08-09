@@ -889,6 +889,27 @@ body.mpwem-event-wizard-screen {
     flex-shrink: 0;
 }
 
+.mpwem-card__head--toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.mpwem-card__head--toggle .mpwem-card__head-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.mpwem-card__head--toggle .mpwem-card__head-actions {
+    margin-left: auto;
+    align-self: center;
+}
+
+#mpwem_wizard_speaker_card .mpwem-card__head--toggle .mpwem-event-setting-card__switch {
+    margin-left: auto;
+}
+
 .mpwem-taxonomy-card .mpwem-card__head {
     display: flex;
     align-items: center;
@@ -11712,118 +11733,397 @@ code {
 }
 
 /* ============================================================
-   Speaker Settings — Select Speakers (compact, borderless, right-aligned)
+   Speaker Settings — modern panel + card picker
    ============================================================ */
-/* Keep the label at the top-left while the speaker list sits on the right,
-   matching the other rows (label left / control right) in both editors. */
-.mpwem-speaker-row {
-    align-items: flex-start;
-}
-
-.mpwem-speaker-row > ._mr {
-    padding-top: 4px;
-}
-
-.mpwem-speaker-select {
-    flex: 0 1 auto;
-    min-width: 0;
-    max-width: 72%;
-}
-
-.mpwem-speaker-select__grid {
+.mpwem-speaker-panel {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 8px 22px;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.mpwem-speaker-option {
+.mpwem-speaker-panel__intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+    background:
+        radial-gradient(120% 120% at 0% 0%, rgba(37, 99, 235, 0.08), transparent 55%),
+        var(--mpwem-surface, #fff);
+}
+
+.mpwem-speaker-panel__intro-icon {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    font-size: 13px;
-    line-height: 1.4;
-    color: var(--mpwem-text);
-    cursor: pointer;
-    user-select: none;
-}
-
-/* Fully custom checkbox so the check renders identically in BOTH the
-   classic and the modern (wizard) editor — no reliance on the browser's
-   native control or accent-color, which differ across the two contexts. */
-.mpwem-speaker-option input[type="checkbox"] {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    position: relative;
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 2px solid #94a3b8 !important;
-    border-radius: 4px !important;
-    background: #fff !important;
-    box-shadow: none !important;
-    cursor: pointer;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--mpwem-primary);
     flex: 0 0 auto;
-    transition: background-color .15s ease, border-color .15s ease;
 }
 
-/* Neutralise WordPress core's own checkmark so it never doubles up. */
-.mpwem-speaker-option input[type="checkbox"]::before {
-    content: "" !important;
+.mpwem-speaker-panel__intro-icon .dashicons {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.mpwem-speaker-panel__intro-copy h4 {
+    margin: 0 0 4px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: var(--mpwem-text) !important;
+    line-height: 1.3 !important;
+}
+
+.mpwem-speaker-panel__intro-copy p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--mpwem-muted);
+}
+
+.mpwem-speaker-panel__enable {
+    padding: 14px 16px;
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+    background: var(--mpwem-surface, #fff);
+}
+
+.mpwem-speaker-panel__enable .mpev-label {
+    margin: 0;
+}
+
+.mpwem-speaker-panel__enable .mpev-label h2 {
+    margin: 0 0 4px !important;
+    font-size: 14px !important;
+    font-weight: 650 !important;
+}
+
+.mpwem-speaker-panel__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+div#mpwem-speaker-fields {
+    border: none;
+    padding: 10px;
+}
+
+.mpwem-speaker-field {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    gap: 16px 20px;
+    align-items: start;
+    padding: 16px 18px;
+    border: 1px solid var(--mpwem-border);
+    border-radius: var(--mpwem-radius);
+    background: var(--mpwem-surface, #fff);
+}
+
+.mpwem-speaker-field--select {
+    grid-template-columns: 1fr;
+}
+
+.mpwem-speaker-field__label {
+    display: block;
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--mpwem-text);
+    line-height: 1.35;
+}
+
+.mpwem-speaker-field__meta .info_text {
+    display: block;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--mpwem-muted);
+}
+
+.mpwem-speaker-field__control .formControl,
+.mpwem-speaker-field__control input[type="text"] {
+    width: 100%;
+    max-width: 360px;
+    min-height: 40px;
+    border-radius: 10px !important;
+}
+
+.mpwem-speaker-field__control--icon {
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Wizard card already has enable + title — hide duplicates when embedded */
+.mpwem-embedded-panel.mpwem_speaker_settings .mpwem-speaker-panel__intro,
+.mpwem-embedded-panel.mpwem_speaker_settings .mpwem-speaker-panel__enable {
     display: none !important;
 }
 
-.mpwem-speaker-option input[type="checkbox"]:checked {
-    background: var(--mpwem-primary) !important;
-    border-color: var(--mpwem-primary) !important;
+.mpwem-embedded-panel.mpwem_speaker_settings .mpwem-speaker-panel__fields {
+    display: flex !important;
 }
 
-/* Our own checkmark, drawn for every browser. */
-.mpwem-speaker-option input[type="checkbox"]::after {
+.mpwem-embedded-panel.mpwem_speaker_settings .mpwem-speaker-field {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.mpwem-embedded-panel.mpwem_speaker_settings .mpwem-speaker-field + .mpwem-speaker-field {
+    padding-top: 14px;
+    border-top: 1px solid var(--mpwem-border);
+}
+
+.mpwem-speaker-select {
+    width: 100%;
+    min-width: 0;
+}
+
+.mpwem-speaker-select__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.mpwem-speaker-select__count {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.mpwem-speaker-select__add {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--mpwem-primary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.mpwem-speaker-select__add:hover,
+.mpwem-speaker-select__add:focus {
+    color: var(--mpwem-primary-hover);
+}
+
+.mpwem-speaker-select__add .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.mpwem-speaker-select__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+}
+
+.mpwem-speaker-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 12px 14px 12px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    color: var(--mpwem-text);
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease, transform .18s ease;
+}
+
+.mpwem-speaker-card:hover {
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+    transform: translateY(-1px);
+}
+
+.mpwem-speaker-card input[type="checkbox"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none;
+}
+
+.mpwem-speaker-card__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background: linear-gradient(145deg, #dbeafe, #eff6ff);
+    color: var(--mpwem-primary);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+.mpwem-speaker-card__avatar.has-image {
+    background: #e2e8f0;
+}
+
+.mpwem-speaker-card__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.mpwem-speaker-card__initials {
+    line-height: 1;
+}
+
+.mpwem-speaker-card__body {
+    min-width: 0;
+    flex: 1 1 auto;
+    padding-right: 18px;
+}
+
+.mpwem-speaker-card__name {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--mpwem-text);
+    word-break: break-word;
+}
+
+.mpwem-speaker-card__check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    background: #fff;
+    box-sizing: border-box;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+
+.mpwem-speaker-card__check::after {
     content: "";
     position: absolute;
     left: 5px;
-    top: 1px;
-    width: 5px;
-    height: 10px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
     border: solid #fff;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     opacity: 0;
 }
 
-.mpwem-speaker-option input[type="checkbox"]:checked::after {
+.mpwem-speaker-card.is-selected,
+.mpwem-speaker-card:has(input[type="checkbox"]:checked) {
+    border-color: rgba(37, 99, 235, 0.55);
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, #fff 70%);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.mpwem-speaker-card.is-selected .mpwem-speaker-card__name,
+.mpwem-speaker-card:has(input[type="checkbox"]:checked) .mpwem-speaker-card__name {
+    color: var(--mpwem-primary);
+}
+
+.mpwem-speaker-card.is-selected .mpwem-speaker-card__check,
+.mpwem-speaker-card:has(input[type="checkbox"]:checked) .mpwem-speaker-card__check {
+    background: var(--mpwem-primary);
+    border-color: var(--mpwem-primary);
+}
+
+.mpwem-speaker-card.is-selected .mpwem-speaker-card__check::after,
+.mpwem-speaker-card:has(input[type="checkbox"]:checked) .mpwem-speaker-card__check::after {
     opacity: 1;
 }
 
-.mpwem-speaker-option__name {
-    font-weight: 500;
-}
-
-.mpwem-speaker-option:hover .mpwem-speaker-option__name {
-    color: var(--mpwem-primary);
-}
-
-/* Selected feedback (live via :checked, also server-rendered class) */
-.mpwem-speaker-option.is-selected .mpwem-speaker-option__name,
-.mpwem-speaker-option:has(input[type="checkbox"]:checked) .mpwem-speaker-option__name {
-    color: var(--mpwem-primary);
-    font-weight: 600;
+.mpwem-speaker-card:focus-within {
+    outline: 2px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
 }
 
 .mpwem-speaker-select__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     margin: 0;
+    padding: 28px 16px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 14px;
+    background: #f8fafc;
+    text-align: center;
     color: var(--mpwem-muted);
+}
+
+.mpwem-speaker-select__empty .dashicons {
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+    color: #94a3b8;
+}
+
+.mpwem-speaker-select__empty p {
+    margin: 0;
     font-size: 13px;
-    font-style: italic;
+}
+
+.mpwem-speaker-select__empty a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mpwem-primary);
+    text-decoration: none;
+}
+
+.mpwem-speaker-select__empty a:hover {
+    color: var(--mpwem-primary-hover);
+}
+
+@media (max-width: 782px) {
+    .mpwem-speaker-field {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .mpwem-speaker-field__control .formControl,
+    .mpwem-speaker-field__control input[type="text"] {
+        max-width: none;
+    }
+
+    .mpwem-speaker-select__grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ──────────────────────────────────────────────────────────────────────

@@ -264,6 +264,65 @@
         }
     }
 
+    function prepareEmbeddedSpeakerPanel($root) {
+        const $panel = $root.find('.mpwem_speaker_settings.mpwem-embedded-panel').first();
+        if (!$panel.length) {
+            return;
+        }
+
+        // Wizard card owns the enable toggle — prevent duplicate POST fields.
+        $panel.find('#mep_event_enable_speaker').each(function() {
+            const $input = $(this);
+            $input.removeAttr('name').attr('data-mpwem-speaker-legacy-enable', '1');
+        });
+
+        const $fields = $panel.find('#mpwem-speaker-fields');
+        if ($fields.length) {
+            $fields.show().addClass('mActive');
+        }
+    }
+
+    function syncSpeakerCardSelection($scope) {
+        const $root = $scope && $scope.length ? $scope : $(document);
+        $root.find('.mpwem-speaker-select').each(function() {
+            const $select = $(this);
+            const $cards = $select.find('.mpwem-speaker-card');
+            let selected = 0;
+
+            $cards.each(function() {
+                const $card = $(this);
+                const isChecked = $card.find('input[type="checkbox"]').is(':checked');
+                $card.toggleClass('is-selected', isChecked);
+                if (isChecked) {
+                    selected += 1;
+                }
+            });
+
+            const $count = $select.find('[data-mpwem-speaker-count]');
+            if ($count.length) {
+                const total = $cards.length;
+                const template = ($count.attr('data-label-template') || '%1$d of %2$d selected').toString();
+                $count.text(
+                    template
+                        .replace('%1$d', String(selected))
+                        .replace('%2$d', String(total))
+                );
+            }
+        });
+    }
+
+    function bindSpeakerCardSelection() {
+        if (window.mpwemSpeakerCardsBound) {
+            return;
+        }
+
+        $(document).on('change', '.mpwem-speaker-card input[type="checkbox"]', function() {
+            syncSpeakerCardSelection($(this).closest('.mpwem-speaker-select'));
+        });
+
+        window.mpwemSpeakerCardsBound = true;
+    }
+
     function normalizePanelLabel(text) {
         return (text || '')
             .toString()
@@ -471,6 +530,7 @@
         });
         mountPanel($root, '#mp_event_venue', 'mpwem_wizard_venue_mount');
         mountPanel($root, '#mpwem_speaker_settings', 'mpwem_wizard_speaker_mount');
+        prepareEmbeddedSpeakerPanel($root);
         
         // Mount into Tickets Step
         mountPanel($root, '#mpwem_ticket_pricing_settings', 'mpwem_wizard_tickets_mount');
@@ -2645,10 +2705,17 @@
                         $realCheckbox.prop('checked', isExpanded);
                     }
 
+                    const afterToggle = function() {
+                        if (isExpanded && typeof window.mepFbEventBuilderInit === 'function') {
+                            window.mepFbEventBuilderInit(true);
+                        }
+                    };
+
                     if (useAnimation) {
-                        $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220);
+                        $body.stop(true, true)[isExpanded ? 'slideDown' : 'slideUp'](220, afterToggle);
                     } else {
                         $body.toggle(isExpanded);
+                        afterToggle();
                     }
                 };
 
@@ -5229,6 +5296,12 @@
             if (stepKey === 'date') {
                 enhanceDateStep($root);
             }
+            // formBuilder cannot init while Display is hidden — rebuild Attendee Form when shown.
+            if (stepKey === 'display' && typeof window.mepFbEventBuilderInit === 'function') {
+                window.setTimeout(function () {
+                    window.mepFbEventBuilderInit(true);
+                }, 80);
+            }
         }
 
         // Legacy hook: #mpwem_event_edit_sidebar may be rendered by add-on panels
@@ -6344,10 +6417,14 @@
         const syncSpeakerToggle = function() {
             const $toggle = $root.find('#mpwem_enable_speaker_toggle');
             if (!$toggle.length) return;
-            $root.find('#mpwem_speaker_card_body').toggle($toggle.is(':checked'));
+            const enabled = $toggle.is(':checked');
+            $root.find('#mpwem_speaker_card_body').toggle(enabled);
+            $root.find('.mpwem_speaker_settings #mpwem-speaker-fields').toggle(enabled).toggleClass('mActive', enabled);
         };
         $root.on('change', '#mpwem_enable_speaker_toggle', syncSpeakerToggle);
         syncSpeakerToggle();
+        bindSpeakerCardSelection();
+        syncSpeakerCardSelection($root);
 
         // Clear the required-field highlight as soon as the user fills the field.
         $root.on('input change', '.mpwem-field-error', function() {
@@ -6632,6 +6709,8 @@
         try {
             enhanceVenueGrid($classicRoot);
             enhanceEventType($classicRoot, { skipTicketSync: true });
+            bindSpeakerCardSelection();
+            syncSpeakerCardSelection($classicRoot);
         } catch (error) {
             if (window.console && window.console.error) {
                 window.console.error('MPWEM classic venue/event-type enhancement failed.', error);

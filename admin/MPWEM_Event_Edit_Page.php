@@ -1643,10 +1643,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<h2><?php esc_html_e('Speaker Information', 'mage-eventpress'); ?></h2>
 																<p><?php esc_html_e('Enable this to select speakers for this event. When disabled, the speaker section will not appear on the event page.', 'mage-eventpress'); ?></p>
 															</div>
-															<label class="mpwem-event-setting-card__switch">
-																<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
-																<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
-															</label>
+															<div class="mpwem-card__head-actions">
+																<label class="mpwem-event-setting-card__switch" for="mpwem_enable_speaker_toggle" aria-label="<?php esc_attr_e('Enable Speaker Section', 'mage-eventpress'); ?>">
+																	<input type="checkbox" name="mep_event_enable_speaker" id="mpwem_enable_speaker_toggle" value="yes" data-no-mpwem-switch="1" <?php checked($speaker_is_enabled); ?> />
+																	<span class="mpwem-event-setting-card__switch-ui" aria-hidden="true"></span>
+																</label>
+															</div>
 														</div>
 														<div class="mpwem-card__body" id="mpwem_speaker_card_body"<?php echo $speaker_is_enabled ? '' : ' style="display:none;"'; ?>>
 															<div class="mpwem-panel-mount" id="mpwem_wizard_speaker_mount"></div>

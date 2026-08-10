@@ -16,10 +16,13 @@
 		?>
         <div class="mpwem_related_area on_load_off">
             <div class="related_title _align_center_justify_between">
-                <h3><?php echo esc_html($related_label); ?></h3>
+                <div class="related_title_text">
+                    <h3><?php echo esc_html($related_label); ?></h3>
+                    <p class="related_title_sub"><?php esc_html_e( 'More events you might enjoy', 'mage-eventpress' ); ?></p>
+                </div>
                 <div class="related_navigation">
-                    <button class="related_prev _button_theme_xs" type="button"><span class="fas fa-chevron-left"></span></button>
-                    <button class="related_next _button_theme_xs" type="button"><span class="fas fa-chevron-right"></span></button>
+                    <button class="related_prev _button_theme_xs" type="button" aria-label="<?php esc_attr_e( 'Previous related events', 'mage-eventpress' ); ?>"><span class="fas fa-chevron-left"></span></button>
+                    <button class="related_next _button_theme_xs" type="button" aria-label="<?php esc_attr_e( 'Next related events', 'mage-eventpress' ); ?>"><span class="fas fa-chevron-right"></span></button>
                 </div>
             </div>
 

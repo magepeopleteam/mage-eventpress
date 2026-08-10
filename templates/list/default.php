@@ -40,10 +40,11 @@
          data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
          data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>"
          style="width:calc(<?php echo esc_attr( $width ); ?>% - 14px);">
+		<div class="mep_event_card__surface">
 		<?php do_action( 'mep_event_list_loop_header', $event_id ); ?>
-		<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
 
 		<div class="mep_event_card__media">
+			<?php do_action( 'mpwem_list_sort_date', $event_infos ); ?>
 			<?php do_action( 'mpwem_list_thumb', $event_infos ); ?>
 			<?php if ( $first_category ) : ?>
 				<span class="mep_event_card__category"><?php echo esc_html( $first_category ); ?></span>
@@ -82,5 +83,6 @@
 
         </div>
 		<?php do_action( 'mpwem_list_hover', $event_infos ); ?>
+		</div>
     </div>
 <?php

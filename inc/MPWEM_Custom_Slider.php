@@ -17,14 +17,19 @@
 			public function super_slider( $post_id = '', $event_infos = [] ) {
 				$event_infos = is_array( $event_infos ) && sizeof( $event_infos ) > 0 ? $event_infos : MPWEM_Functions::get_all_info( $post_id );
 				$display     = is_array($event_infos) && array_key_exists( 'mep_display_slider', $event_infos ) ? $event_infos['mep_display_slider'] : 'on';
+				$type        = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
+				$post_id     = $post_id > 0 ? $post_id : get_the_id();
+				$image_ids   = $this->get_slider_ids( $post_id, 'mep_gallery_images' );
+				$has_gallery = is_array( $image_ids ) && sizeof( $image_ids ) > 0 && $display == 'on';
+				$has_slider  = $has_gallery && $type == 'slider' && sizeof( $image_ids ) > 1;
+				$showcase_visible  = MPWEM_Global_Function::get_slider_settings( 'showcase_visible', 'on' );
+				$showcase_position = MPWEM_Global_Function::get_slider_settings( 'showcase_position', 'right' );
 					?>
-                    <div class="mpwem_slider_area">
+                    <div class="mpwem_slider_area mpwem_style is-loading" data-slider-ready="0">
 					<?php
-					$type      = MPWEM_Global_Function::get_slider_settings( 'slider_type', 'slider' );
-					$post_id   = $post_id > 0 ? $post_id : get_the_id();
-					$image_ids = $this->get_slider_ids( $post_id, 'mep_gallery_images' );
-					if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 && $display == 'on' ) {
-						if ( $type == 'slider' && is_array( $image_ids ) && sizeof( $image_ids ) > 1 ) {
+					$this->render_slider_skeleton( $has_slider, $showcase_visible, $showcase_position );
+					if ( $has_gallery ) {
+						if ( $has_slider ) {
 							$this->slider( $post_id, $image_ids );
 						} else {
 							$this->post_thumbnail( $image_ids[0] );
@@ -34,6 +39,48 @@
 						$this->post_thumbnail($thumb_id);
 					}
 					?></div><?php
+			}
+
+			/**
+			 * Skeleton placeholder matching superSlider layout (main + optional showcase).
+			 */
+			public function render_slider_skeleton( $has_slider = false, $showcase_visible = 'on', $showcase_position = 'right' ) {
+				$show_showcase = $has_slider && $showcase_visible === 'on';
+				$position      = in_array( $showcase_position, array( 'left', 'right', 'top', 'bottom' ), true ) ? $showcase_position : 'right';
+				$layout_class  = $show_showcase ? 'has-showcase showcase-' . $position : 'is-single';
+				if ( $show_showcase && ( $position === 'top' || $position === 'bottom' ) ) {
+					$layout_class .= ' is-column';
+				}
+				?>
+				<div class="mpwem_slider_skeleton <?php echo esc_attr( $layout_class ); ?>" aria-hidden="true" aria-busy="true">
+					<div class="mpwem_slider_skeleton__layout">
+						<?php if ( $show_showcase && ( $position === 'left' || $position === 'top' ) ) {
+							$this->render_slider_skeleton_showcase();
+						} ?>
+						<div class="mpwem_slider_skeleton__main">
+							<span class="mpwem_slider_skeleton__shimmer mpwem_slider_skeleton__media"></span>
+							<?php if ( $has_slider ) { ?>
+								<span class="mpwem_slider_skeleton__nav mpwem_slider_skeleton__nav--prev"></span>
+								<span class="mpwem_slider_skeleton__nav mpwem_slider_skeleton__nav--next"></span>
+							<?php } ?>
+						</div>
+						<?php if ( $show_showcase && ( $position === 'right' || $position === 'bottom' ) ) {
+							$this->render_slider_skeleton_showcase();
+						} ?>
+					</div>
+				</div>
+				<?php
+			}
+
+			public function render_slider_skeleton_showcase() {
+				?>
+				<div class="mpwem_slider_skeleton__showcase">
+					<span class="mpwem_slider_skeleton__shimmer"></span>
+					<span class="mpwem_slider_skeleton__shimmer"></span>
+					<span class="mpwem_slider_skeleton__shimmer"></span>
+					<span class="mpwem_slider_skeleton__shimmer"></span>
+				</div>
+				<?php
 			}
 			public function super_slider_only( $image_ids ) {
 				if ( is_array( $image_ids ) && sizeof( $image_ids ) > 0 ) {

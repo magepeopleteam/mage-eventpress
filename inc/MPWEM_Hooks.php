@@ -389,9 +389,20 @@
 					// Fall back to featured image
 					$thumbnail_url = MPWEM_Global_Function::get_image_url( $event_id, '', 'full' );
 				}
+				$permalink = get_the_permalink( $event_id );
+				$thumb_alt = get_the_title( $event_id );
 				?>
                 <div class="mep_list_thumb mpwem_style">
-                    <div data-href="<?php echo esc_url( get_the_permalink( $event_id ) ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
+					<?php if ( $thumbnail_url ) { ?>
+						<img
+							class="mep_list_thumb_img"
+							src="<?php echo esc_url( $thumbnail_url ); ?>"
+							alt="<?php echo esc_attr( $thumb_alt ); ?>"
+							loading="lazy"
+							decoding="async"
+						/>
+					<?php } ?>
+                    <div data-href="<?php echo esc_url( $permalink ); ?>" data-bg-image="<?php echo esc_url( $thumbnail_url ); ?>"></div>
 					<?php do_action( 'mpwem_list_ribbon', $event_id ); ?>
 				</div>
 				<?php

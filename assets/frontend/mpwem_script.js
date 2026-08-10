@@ -546,45 +546,69 @@ function mpwem_attendee_management(parent, total_qty) {
 (function ($) {
     "use strict";
     $(document).ready(function () {
-        //$('.mpwem_related_area').slideDown('fast').promise().done(function () {
-        $('.mpwem_related_area .related_item').slick({
-            dots: false,
-            arrows: true,
-            prevArrow: '.related_prev',
-            nextArrow: '.related_next',
-            infinite: true,
-            centerMode: false, // Make sure centerMode is false
-            autoplay: false,
-            autoplaySpeed: 2000,
-            centerPadding: '0px',
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: false,
-                        centerMode: false // Ensure left alignment on responsive
+        $('.mpwem_related_area').each(function () {
+            var $area = $(this);
+            var $slider = $area.find('.related_item');
+            if (!$slider.length || $slider.hasClass('slick-initialized')) {
+                return;
+            }
+            $slider.slick({
+                dots: false,
+                arrows: true,
+                prevArrow: $area.find('.related_prev'),
+                nextArrow: $area.find('.related_next'),
+                infinite: true,
+                centerMode: false,
+                autoplay: false,
+                autoplaySpeed: 2000,
+                centerPadding: '0px',
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1,
+                            infinite: true,
+                            dots: false,
+                            centerMode: false
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            infinite: true,
+                            dots: false,
+                            centerMode: false
+                        }
                     }
-                },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: false,
-                        centerMode: false // Ensure left alignment on responsive
+                ]
+            }).promise().done(function () {
+                $area.removeClass('on_load_off');
+                // Re-apply lazy bg images after slick has real slide widths (incl. clones).
+                $slider.find('.mep_list_thumb [data-bg-image]').each(function () {
+                    var $img = $(this);
+                    var bg_url = $img.data('bg-image');
+                    if (!bg_url) {
+                        return;
                     }
-                },
-            ]
-        }).promise().done(function () {
-            $('.mpwem_related_area').removeClass('on_load_off');
+                    if ($img.css('background-image') === 'none' || !$img.css('background-image')) {
+                        $img.css({
+                            'background-image': 'url("' + bg_url + '")',
+                            'background-size': 'cover',
+                            'background-position': 'center center',
+                            'background-repeat': 'no-repeat'
+                        });
+                    }
+                });
+                if (typeof mpwem_load_bg_image === 'function') {
+                    mpwem_load_bg_image();
+                }
+            });
         });
-        //});
     });
 }(jQuery));
 //*****************************Event list***********************************//
@@ -1806,4 +1830,130 @@ jQuery(function ($) {
         });
     });
 
+}(jQuery));
+
+//*****************************Description Read More***********************************//
+(function ($) {
+    "use strict";
+
+    function mpwemCountWords(text) {
+        var trimmed = (text || '').replace(/\s+/g, ' ').trim();
+        if (!trimmed) {
+            return 0;
+        }
+        return trimmed.split(' ').length;
+    }
+
+    function mpwemTruncateNodeByWords(root, limit) {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+        var count = 0;
+        var node;
+        var reached = false;
+
+        while ((node = walker.nextNode())) {
+            var value = node.nodeValue;
+            if (!value || !value.replace(/\s+/g, '').length) {
+                if (reached) {
+                    node.nodeValue = '';
+                }
+                continue;
+            }
+
+            if (reached) {
+                node.nodeValue = '';
+                continue;
+            }
+
+            var parts = value.split(/(\s+)/);
+            var kept = '';
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                if (part === '') {
+                    continue;
+                }
+                if (/^\s+$/.test(part)) {
+                    if (count > 0 && count < limit) {
+                        kept += part;
+                    }
+                    continue;
+                }
+                if (count >= limit) {
+                    reached = true;
+                    break;
+                }
+                count += 1;
+                kept += part;
+            }
+            node.nodeValue = kept;
+        }
+
+        // Remove emptied trailing elements for cleaner markup.
+        $(root).find('*').each(function () {
+            var $el = $(this);
+            if (!$el.text().trim() && !$el.is('img, br, hr, iframe, video, audio, svg, table')) {
+                $el.remove();
+            }
+        });
+    }
+
+    function mpwemInitDetailsReadMore() {
+        $('.mpwem_details--has-readmore').each(function () {
+            var $wrap = $(this);
+            if ($wrap.data('readmore-ready')) {
+                return;
+            }
+
+            var $content = $wrap.find('.mpwem_details_content').first();
+            var $button = $wrap.find('.mpwem_details_readmore').first();
+            if (!$content.length || !$button.length) {
+                return;
+            }
+
+            var limit = parseInt($wrap.attr('data-readmore-words'), 10) || 200;
+            var fullHtml = $content.html();
+            var wordCount = mpwemCountWords($content.text());
+
+            if (wordCount <= limit) {
+                $content.removeClass('is-collapsed');
+                $button.remove();
+                $wrap.removeClass('mpwem_details--has-readmore');
+                $wrap.data('readmore-ready', true);
+                return;
+            }
+
+            var $clone = $('<div/>').html(fullHtml);
+            mpwemTruncateNodeByWords($clone.get(0), limit);
+            var shortHtml = $clone.html();
+
+            $wrap.data('full-html', fullHtml);
+            $wrap.data('short-html', shortHtml);
+            $content.html(shortHtml).addClass('is-collapsed');
+            $wrap.addClass('is-collapsed').data('readmore-ready', true);
+        });
+    }
+
+    $(document).ready(function () {
+        mpwemInitDetailsReadMore();
+    });
+
+    $(document).on('click', '.mpwem_details_readmore', function (e) {
+        e.preventDefault();
+        var $button = $(this);
+        var $wrap = $button.closest('.mpwem_details--has-readmore');
+        var $content = $wrap.find('.mpwem_details_content').first();
+        if (!$wrap.length || !$content.length) {
+            return;
+        }
+
+        var expanded = $wrap.hasClass('is-expanded');
+        if (expanded) {
+            $content.html($wrap.data('short-html')).addClass('is-collapsed');
+            $wrap.removeClass('is-expanded').addClass('is-collapsed');
+            $button.attr('aria-expanded', 'false');
+        } else {
+            $content.html($wrap.data('full-html')).removeClass('is-collapsed');
+            $wrap.addClass('is-expanded').removeClass('is-collapsed');
+            $button.attr('aria-expanded', 'true');
+        }
+    });
 }(jQuery));

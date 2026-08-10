@@ -84,6 +84,34 @@ function mpwem_loader_placeholder_remove(target) {
         target.removeClass('mpwem_loader_placeholder');
     })
 }
+function mpwem_mark_slider_areas_ready() {
+    jQuery('.mpwem_slider_area.is-loading').each(function () {
+        var $area = jQuery(this);
+        $area.find('.sliderAllItem [data-bg-image], .sliderShowcase [data-bg-image], .post_thumb img').each(function () {
+            var $el = jQuery(this);
+            if ($el.is('img')) {
+                return;
+            }
+            var bg_url = $el.data('bg-image');
+            if (!bg_url) {
+                return;
+            }
+            if ($el.css('background-image') === 'none' || !$el.css('background-image')) {
+                $el.css({
+                    'background-image': 'url("' + bg_url + '")',
+                    'background-size': 'cover',
+                    'background-position': 'center center',
+                    'background-repeat': 'no-repeat'
+                });
+            }
+        });
+        var $sliderAll = $area.find('.sliderAllItem').first();
+        if ($sliderAll.length && typeof mpwem_slider_resize === 'function') {
+            mpwem_slider_resize($sliderAll);
+        }
+        $area.removeClass('is-loading').addClass('is-ready').attr('data-slider-ready', '1');
+    });
+}
 //======================================================Page Scroll==============//
 function mpwem_page_scroll_to(target) {
     jQuery('html, body').animate({
@@ -306,8 +334,13 @@ function mpwem_resize_bg_image_area(target, bg_url) {
         $('body').find('div.mpwem_style [data-bg-image]').each(function () {
             mpwem_loader($(this));
         });
+        // Apply classic placeholder shimmer on slider frames until images resolve.
+        $('.mpwem_slider_area.is-loading.mpwem_style').each(function () {
+            mpwem_loader_placeholder($(this));
+        });
         $(window).on('load', function () {
             load_initial();
+            setTimeout(mpwem_mark_slider_areas_ready, 80);
         });
         if (!bg_image_load) {
             load_initial();
@@ -315,6 +348,8 @@ function mpwem_resize_bg_image_area(target, bg_url) {
                 load_initial();
             });
         }
+        // Never leave the slider skeleton stuck if image init is delayed.
+        setTimeout(mpwem_mark_slider_areas_ready, 2800);
     });
     $(document).on('click', 'div.mpwem_style [data-href]', function () {
         let href = $(this).data('href');
@@ -347,7 +382,7 @@ function mpwem_resize_bg_image_area(target, bg_url) {
         if (!bg_image_load) {
             if (mpwem_load_bg_image()) {
                 bg_image_load = true;
-                mpwem_loader_placeholder_remove($('.mpwem_style.mpwem_loader_placeholder'))
+                mpwem_loader_placeholder_remove($('.mpwem_style.mpwem_loader_placeholder'));
             }
         }
     }

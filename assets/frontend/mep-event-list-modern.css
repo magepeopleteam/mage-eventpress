@@ -16,6 +16,43 @@
 	margin: 0 auto;
 }
 
+/* Inner surface: passthrough so existing card chrome on .filter_item still works */
+.list_with_filter_section.mep_event_list .mep_event_card__surface {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	width: 100%;
+	min-height: 0;
+	height: 100%;
+	background: transparent;
+	border: 0;
+	border-radius: inherit;
+	overflow: visible;
+}
+
+.list_with_filter_section.mep_event_list .mep_list_thumb_img {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	object-fit: cover;
+	object-position: center;
+}
+
+.list_with_filter_section.mep_event_list .mep_list_thumb:has(.mep_list_thumb_img) > [data-bg-image],
+.list_with_filter_section.mep_event_list .mep_list_thumb:has(.mep_list_thumb_img) > div[data-href] {
+	background-image: none !important;
+	background-color: transparent !important;
+	z-index: 2;
+}
+
 /* ── Grid shell ─────────────────────────────────────────────────── */
 
 .list_with_filter_section.mep_event_list div.mage_grid_box {

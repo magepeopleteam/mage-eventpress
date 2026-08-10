@@ -6780,6 +6780,43 @@
         syncSpeakerToggle();
         initSpeakerPicker($root);
 
+        // Description editor: keep visual padding inside the TinyMCE content area.
+        (function padDescriptionEditor() {
+            const applyPadding = function(editor) {
+                if (!editor || !editor.getBody) {
+                    return;
+                }
+                const body = editor.getBody();
+                if (!body) {
+                    return;
+                }
+                body.style.padding = '16px 18px';
+                body.style.margin = '0';
+                body.style.boxSizing = 'border-box';
+            };
+
+            if (window.tinymce) {
+                const existing = window.tinymce.get('mpwem_wizard_content');
+                if (existing) {
+                    if (existing.initialized) {
+                        applyPadding(existing);
+                    } else {
+                        existing.on('init', function() {
+                            applyPadding(existing);
+                        });
+                    }
+                }
+                window.tinymce.on('AddEditor', function(event) {
+                    if (!event || !event.editor || event.editor.id !== 'mpwem_wizard_content') {
+                        return;
+                    }
+                    event.editor.on('init', function() {
+                        applyPadding(event.editor);
+                    });
+                });
+            }
+        })();
+
         // Clear the required-field highlight as soon as the user fills the field.
         $root.on('input change', '.mpwem-field-error', function() {
             const value = ($(this).val() || '').toString().trim();

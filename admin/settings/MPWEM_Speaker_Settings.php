@@ -14,6 +14,10 @@
 			}
 			public function speaker_tab_setting_item( $event_id, $event_infos ) {
 				$speaker_title       = is_array( $event_infos ) && array_key_exists( 'mep_speaker_title', $event_infos ) ? $event_infos['mep_speaker_title'] : '';
+				$speaker_title       = is_string( $speaker_title ) ? trim( $speaker_title ) : '';
+				if ( '' === $speaker_title ) {
+					$speaker_title = __( 'Speaker', 'mage-eventpress' );
+				}
 				$speaker_icon        = is_array( $event_infos ) && array_key_exists( 'mep_event_speaker_icon', $event_infos ) ? $event_infos['mep_event_speaker_icon'] : '';
 				$speaker_lists       = is_array( $event_infos ) && array_key_exists( 'mep_event_speakers_list', $event_infos ) ? $event_infos['mep_event_speakers_list'] : [];
 				$speaker_lists       = is_array( $speaker_lists ) ? $speaker_lists : explode( ',', $speaker_lists );
@@ -50,13 +54,11 @@
                     <div class="mpwem-speaker-panel" id="mpwem-speaker-fields" style="display:<?php echo esc_attr( $speaker_enabled === 'yes' ? 'block' : 'none' ); ?>">
                         <div class="mpwem-speaker-display" data-mpwem-speaker-display="1">
                             <div class="mpwem-speaker-display__head">
-                                <span class="mpwem-speaker-display__badge" aria-hidden="true">
-                                    <span class="dashicons dashicons-art"></span>
-                                </span>
                                 <div class="mpwem-speaker-display__head-copy">
                                     <h3 class="mpwem-speaker-display__title"><?php esc_html_e( 'Section Display', 'mage-eventpress' ); ?></h3>
                                     <p class="mpwem-speaker-display__subtitle"><?php esc_html_e( 'Choose the heading and icon shown above speakers on the event page.', 'mage-eventpress' ); ?></p>
                                 </div>
+                                <span class="mpwem-speaker-display__chip"><?php esc_html_e( 'Frontend', 'mage-eventpress' ); ?></span>
                             </div>
                             <div class="mpwem-speaker-display__body">
                                 <div class="mpwem-speaker-display__row mpwem-speaker-display__row--label">
@@ -69,7 +71,7 @@
                                     <div class="mpwem-speaker-display__control">
                                         <div class="mpwem-speaker-display__input-wrap">
                                             <span class="dashicons dashicons-editor-textcolor" aria-hidden="true"></span>
-                                            <input type="text" class="formControl mpwem-speaker-display__input" id="mep_speaker_title" name="mep_speaker_title" value="<?php echo esc_attr( $speaker_title ); ?>" placeholder="<?php esc_attr_e( 'Speakers', 'mage-eventpress' ); ?>"/>
+                                            <input type="text" class="formControl mpwem-speaker-display__input" id="mep_speaker_title" name="mep_speaker_title" value="<?php echo esc_attr( $speaker_title ); ?>" placeholder="<?php esc_attr_e( 'Speaker', 'mage-eventpress' ); ?>"/>
                                         </div>
                                     </div>
                                 </div>

@@ -412,7 +412,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<p class="mpwem-taxonomy-card__help"><?php echo esc_html($help); ?></p>
 					<?php endif; ?>
 					<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url($manage_url); ?>" target="_blank" rel="noopener noreferrer">
-						<?php echo esc_html($manage_text); ?>
+						<span class="dashicons dashicons-external" aria-hidden="true"></span>
+						<span><?php echo esc_html($manage_text); ?></span>
 					</a>
 				</div>
 			</div>
@@ -791,7 +792,8 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 						<div class="mpwem-taxonomy-card__meta">
 							<p class="mpwem-taxonomy-card__help"><?php esc_html_e('Type existing tags or add new ones. Separate each tag with a comma.', 'mage-eventpress'); ?></p>
 							<a class="mpwem-taxonomy-card__manage-link" href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=mep_tag&post_type=' . self::POST_TYPE)); ?>" target="_blank" rel="noopener noreferrer">
-								<?php esc_html_e('Manage tags', 'mage-eventpress'); ?>
+								<span class="dashicons dashicons-external" aria-hidden="true"></span>
+								<span><?php esc_html_e('Manage tags', 'mage-eventpress'); ?></span>
 							</a>
 						</div>
 					</div>
@@ -1641,7 +1643,7 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																<input id="title" name="post_title" type="text" class="regular-text mpwem-input" value="<?php echo esc_attr($post ? $post->post_title : ''); ?>" required />
 															</label>
 
-															<div class="mpwem-field">
+															<div class="mpwem-field mpwem-field--description">
 																<span class="mpwem-field__label"><?php esc_html_e('Description', 'mage-eventpress'); ?></span>
 																<?php
 																wp_editor(
@@ -1651,6 +1653,9 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 																		'textarea_name' => 'content',
 																		'textarea_rows' => 10,
 																		'media_buttons' => true,
+																		'tinymce'       => [
+																			'content_style' => 'body{padding:16px 18px!important;margin:0;box-sizing:border-box;}body.mce-content-body{padding:16px 18px!important;}p{margin:0 0 1em;}',
+																		],
 																	]
 																);
 																?>
@@ -1692,12 +1697,6 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 													</div>
 												</div>
 												<aside class="mpwem-event-wizard__sidebar">
-													<?php
-													$this->render_slug_card($post_id);
-													$this->render_category_card($post_id);
-													$this->render_organizer_card($post_id);
-													$this->render_tag_card($post_id);
-													?>
 													<div class="mpwem-card">
 														<div class="mpwem-card__head">
 															<h2><?php esc_html_e('Featured Image', 'mage-eventpress'); ?></h2>
@@ -1743,6 +1742,12 @@ if (! class_exists('MPWEM_Event_Edit_Page')) {
 															<div class="mpwem-media-mount" id="mpwem_wizard_thumbnail_mount_basic"></div>
 														</div>
 													</div>
+													<?php
+													$this->render_slug_card($post_id);
+													$this->render_category_card($post_id);
+													$this->render_organizer_card($post_id);
+													$this->render_tag_card($post_id);
+													?>
 												</aside>
 											</div>
 										</section>

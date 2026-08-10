@@ -412,6 +412,10 @@
 					update_post_meta( $post_id, 'related_section_label', $section_label );
 					update_post_meta( $post_id, 'mep_related_event_status', $event_status );
 					$speaker_title = isset( $_POST['mep_speaker_title'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_speaker_title'] ) ) : '';
+					$speaker_title = trim( (string) $speaker_title );
+					if ( '' === $speaker_title ) {
+						$speaker_title = __( 'Speaker', 'mage-eventpress' );
+					}
 					$speaker_icon  = isset( $_POST['mep_event_speaker_icon'] ) ? sanitize_text_field( wp_unslash( $_POST['mep_event_speaker_icon'] ) ) : '';
 					$speakers      = isset( $_POST['mep_event_speakers_list'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['mep_event_speakers_list'] ) ) : [];
 					$enable_speaker = isset( $_POST['mep_event_enable_speaker'] ) && sanitize_text_field( wp_unslash( $_POST['mep_event_enable_speaker'] ) ) === 'yes' ? 'yes' : 'no';

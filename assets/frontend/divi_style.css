@@ -2118,14 +2118,14 @@
   padding: var(--dmp);
 }
 
-#mage-container.mage div.default_theme .speaker_list {
+#mage-container.mage div.default_theme .speaker_list:not(.mep-default-speakers) {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
-#mage-container.mage div.default_theme .speaker_list a {
+#mage-container.mage div.default_theme .speaker_list:not(.mep-default-speakers) a {
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: center;
@@ -2138,14 +2138,14 @@
   max-width: 120px;
 }
 
-#mage-container.mage div.default_theme .speaker_list a [data-bg-image] {
+#mage-container.mage div.default_theme .speaker_list:not(.mep-default-speakers) a [data-bg-image] {
   width: 90px;
   height: 90px;
   border-radius: 100%;
   overflow: hidden;
 }
 
-#mage-container.mage div.default_theme .speaker_list a h6 {
+#mage-container.mage div.default_theme .speaker_list:not(.mep-default-speakers) a h6 {
   margin: var(--dmp_xs) 0 0 0;
   font-size: 16px;
   font-weight: 500;

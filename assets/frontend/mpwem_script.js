@@ -83,6 +83,17 @@ function mpwem_ex_price(parent) {
     });
     return total;
 }
+/**
+ * Attendee blocks with more than 4 fields get a 2-column layout class.
+ */
+function mpwem_mark_attendee_form_columns(parent) {
+    const $scope = parent && parent.length ? parent : jQuery('.mpwem_registration_area');
+    $scope.find('.mep_attendee_info .mep_form_item, .mep_attendee_info_hidden .mep_form_item').each(function () {
+        const $card = jQuery(this);
+        const fieldCount = $card.children('.mp_form_item').length;
+        $card.toggleClass('mep-form--cols-2', fieldCount > 4);
+    });
+}
 function mpwem_attendee_management(parent, total_qty) {
     let form_target = parent.find('.mep_attendee_info');
     let same_attendee = parent.find('[name="mep_same_attendee"]').val();
@@ -116,6 +127,7 @@ function mpwem_attendee_management(parent, total_qty) {
                                 form_target.find('.mep-originally-required').attr('required', 'required');
                             }).promise().done(function () {
                                 mpwem_load_date_picker(parent);
+                                mpwem_mark_attendee_form_columns(parent);
                             });
                         }
                     }).promise().done(function () {
@@ -128,7 +140,10 @@ function mpwem_attendee_management(parent, total_qty) {
                                 }
                             });
                         }
+                        mpwem_mark_attendee_form_columns(parent);
                     });
+                } else {
+                    mpwem_mark_attendee_form_columns(parent);
                 }
             } else {
                 parent.find('[name="option_qty[]"]').each(function () {
@@ -162,16 +177,20 @@ function mpwem_attendee_management(parent, total_qty) {
                                                 jQuery(this).slideDown('fast').removeClass('dNone');
                                             }
                                         });
+                                        mpwem_mark_attendee_form_columns(parent);
                                     });
                                 }).promise().done(function () {
                                     mpwem_load_date_picker(parent);
+                                    mpwem_mark_attendee_form_columns(parent);
                                 });
                             }
                         }
                     }
                 });
+                mpwem_mark_attendee_form_columns(parent);
             }
         }
+        mpwem_mark_attendee_form_columns(parent);
     } else {
         if (same_attendee === 'yes' || same_attendee === 'must') {
             form_target.slideUp(250);
@@ -185,6 +204,7 @@ function mpwem_attendee_management(parent, total_qty) {
     $(document).ready(function () {
         $('body').find('.mpwem_registration_area').each(function () {
             mpwem_price_calculation($(this));
+            mpwem_mark_attendee_form_columns($(this));
         });
     });
     $(document).on('change', '.mpwem_registration_area [name="mpwem_date_time"]', function () {

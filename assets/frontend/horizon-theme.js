@@ -1124,6 +1124,9 @@
 		}
 		$scope.find('.mep_attendee_info > .mep_form_item').each(function () {
 			var $card = $(this);
+			var fieldCount = $card.children('.mp_form_item').length;
+			$card.toggleClass('mep-form--cols-2', fieldCount > 4);
+
 			if ($card.data('hzCardEnhanced')) {
 				var $count = $card.find('.mpwem_ticket_count').first();
 				var $name = $card.find('.mpwem_ticket_name').first();

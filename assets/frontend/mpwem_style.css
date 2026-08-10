@@ -741,17 +741,52 @@ div.mpwem_style .kera_ticket_area [data-tabs-target] {
 }
 
 .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 10px 16px;
+	align-items: start;
 	padding: 10px;
 	margin: 5px 0;
 	background-color: #ECECEC;
 	border-radius: 12px;
 }
 
-.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item h6 {
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item > h6 {
+	grid-column: 1 / -1;
 	padding: 5px 10px;
 	margin: 0;
 	text-transform: none;
 	font-size: 15px;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item > .mp_form_item {
+	min-width: 0;
+	margin: 0;
+}
+
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2 > .mp_form_item:has(textarea),
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item:has(textarea),
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2 > .mp_form_item:has(select[multiple]),
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item:has(select[multiple]),
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_checkbox_item,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_checkbox_item,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_radio_item,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_radio_item,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_file_item,
+.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_file_item {
+	grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item.mep-form--cols-2,
+	.mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item:has(> .mp_form_item:nth-of-type(5)) {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 
 .mpwem_registration_area .mpwem_booking_panel .mep_attendee_info .mep_form_item .mp_form_item label {

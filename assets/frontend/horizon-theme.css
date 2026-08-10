@@ -2228,6 +2228,10 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 
 .horizon_theme .horizon_ticket_body .mep_form_item,
 .horizon_theme .horizon_ticket_body .horizon_attendee_block {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 10px 14px;
+	align-items: start;
 	background: #F8F7FC;
 	border: 1px solid #E8E4F5;
 	border-radius: 14px;
@@ -2235,17 +2239,39 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	margin: 10px 0 0 !important;
 }
 
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2,
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)),
+.horizon_theme .horizon_ticket_body .horizon_attendee_block.mep-form--cols-2,
+.horizon_theme .horizon_ticket_body .horizon_attendee_block:has(> .mp_form_item:nth-of-type(5)) {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .horizon_theme .horizon_ticket_body .mep_form_item > h6,
 .horizon_theme .horizon_ticket_body .horizon_attendee_block > h6 {
+	grid-column: 1 / -1;
 	font-family: var(--hz-sans) !important;
 	font-size: 13px !important;
 	font-weight: 700 !important;
 	color: var(--hz-text) !important;
-	margin: 0 0 12px !important;
+	margin: 0 !important;
 }
 
 .horizon_theme .horizon_ticket_body .mp_form_item {
-	margin: 0 0 10px !important;
+	margin: 0 !important;
+	min-width: 0;
+}
+
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2 > .mp_form_item:has(textarea),
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item:has(textarea),
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2 > .mp_form_item:has(select[multiple]),
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item:has(select[multiple]),
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_checkbox_item,
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_checkbox_item,
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_radio_item,
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_radio_item,
+.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2 > .mp_form_item.mep_file_item,
+.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) > .mp_form_item.mep_file_item {
+	grid-column: 1 / -1;
 }
 
 .horizon_theme .horizon_ticket_body .mp_form_item:last-child {
@@ -3998,11 +4024,11 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	display: none !important;
 }
 
-/* One attendee = one modern card */
+/* One attendee = one modern card (1 col by default; 2 cols when >4 fields) */
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item,
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item {
 	display: grid !important;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 14px 12px;
 	align-items: start;
 	margin: 0 !important;
@@ -4011,6 +4037,13 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 	border: 1px solid #EAE7F4 !important;
 	border-radius: 16px !important;
 	box-shadow: 0 10px 28px rgba(22, 22, 29, 0.05) !important;
+}
+
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item.mep-form--cols-2,
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item:has(> .mp_form_item:nth-of-type(5)),
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item.mep-form--cols-2,
+.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item:has(> .mp_form_item:nth-of-type(5)) {
+	grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item > h6,
@@ -4128,6 +4161,17 @@ body.mep-horizon-active .horizon_theme .mpwem_registration_area .mpwem_booking_p
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_radio_item,
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item.mep_file_item {
 	grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item.mep-form--cols-2,
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .mep_form_item:has(> .mp_form_item:nth-of-type(5)),
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item.mep-form--cols-2,
+	.horizon_theme .horizon_attendee_drawer__body .mep_attendee_info > .horizon_attendee_block.mep_form_item:has(> .mp_form_item:nth-of-type(5)),
+	.horizon_theme .horizon_ticket_body .mep_form_item.mep-form--cols-2,
+	.horizon_theme .horizon_ticket_body .mep_form_item:has(> .mp_form_item:nth-of-type(5)) {
+		grid-template-columns: minmax(0, 1fr) !important;
+	}
 }
 
 .horizon_theme .horizon_attendee_drawer__body .mp_form_item label {

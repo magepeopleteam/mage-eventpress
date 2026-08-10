@@ -78,12 +78,24 @@
 					} );
 				}
 				if ( $taxonomies ) {
+					$tax_key = sanitize_html_class( str_replace( 'mep_', '', (string) $taxonomy_name ) );
+					$tax_key = $tax_key ? $tax_key : 'tax';
+					$aria_labels = array(
+						'cat' => __( 'Categories', 'mage-eventpress' ),
+						'org' => __( 'Organizers', 'mage-eventpress' ),
+						'tag' => __( 'Tags', 'mage-eventpress' ),
+					);
+					$aria_label = isset( $aria_labels[ $tax_key ] ) ? $aria_labels[ $tax_key ] : __( 'Filter', 'mage-eventpress' );
 					?>
-                    <div class="mep-events-cats-list">
-                        <div class="mep-event-cat-controls">
-                            <button type="button" class="mep-cat-control" data-mixitup-control data-filter="all"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+                    <div class="mep-events-cats-list mep-events-cats-list--<?php echo esc_attr( $tax_key ); ?>">
+                        <div class="mep-event-cat-controls" role="toolbar" aria-label="<?php echo esc_attr( $aria_label ); ?>">
+                            <button type="button" class="mep-cat-control mixitup-control-active" data-mixitup-control data-filter="all">
+                                <span class="mep-cat-control__text"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></span>
+                            </button>
 							<?php foreach ( $taxonomies as $_terms ) { ?>
-                                <button type="button" class="mep-cat-control" data-mixitup-control data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>"><?php echo esc_html( $_terms->name ); ?></button>
+                                <button type="button" class="mep-cat-control" data-mixitup-control data-filter=".<?php echo esc_attr( $unq_id . 'mage-' . $_terms->term_id ); ?>">
+                                    <span class="mep-cat-control__text"><?php echo esc_html( $_terms->name ); ?></span>
+                                </button>
 							<?php } ?>
                         </div>
                     </div>

@@ -46,12 +46,47 @@
 					$taxonomy_organizer = implode( ', ', $org_names );
 				}
 				if ( $style == 'title' ) {
+					$title         = get_the_title( $event_id );
+					$permalink     = get_the_permalink( $event_id );
+					$upcoming_date = is_array( $event_infos ) && array_key_exists( 'upcoming_date', $event_infos ) ? $event_infos['upcoming_date'] : '';
+					$date_month    = $upcoming_date ? date_i18n( 'M', strtotime( $upcoming_date ) ) : '';
+					$date_day      = $upcoming_date ? date_i18n( 'd', strtotime( $upcoming_date ) ) : '';
+					$first_category = '';
+					if ( $taxonomy_category !== '' ) {
+						$category_parts = array_map( 'trim', explode( ',', $taxonomy_category ) );
+						$first_category = $category_parts[0] ?? '';
+					}
 					?>
-                    <div class='mep_event_title_list_item mix <?php echo esc_attr( $org_class . ' ' . $cat_class ); ?>'>
-                        <a href='<?php echo esc_attr( get_the_permalink( $event_id ) ); ?>'><?php echo esc_html( get_the_title( $event_id ) ); ?></a>
-						<?php if ( $torg && ! is_wp_error( $torg ) && count( $torg ) > 0 ) {
-							echo ' - <span class="mep_title_list_organizer"><i class="' . esc_attr( $event_organizer_icon ) . '"></i> ' . esc_html( $torg[0]->name ) . '</span>';
-						} ?>
+                    <div class="mep_event_title_list_item mix <?php echo esc_attr( $org_class . ' ' . $cat_class . ' ' . $tag_class ); ?>"
+                         data-title="<?php echo esc_attr( $title ); ?>"
+                         data-date="<?php echo esc_attr( $upcoming_date ? date( 'Y-m-d', strtotime( $upcoming_date ) ) : '' ); ?>"
+                         data-category="<?php echo esc_attr( $taxonomy_category ); ?>"
+                         data-organizer="<?php echo esc_attr( $taxonomy_organizer ); ?>">
+                        <a class="mep_title_list_link" href="<?php echo esc_url( $permalink ); ?>">
+							<?php if ( $date_day ) : ?>
+                                <span class="mep_title_list_date" aria-hidden="true">
+                                    <span class="mep_title_list_month"><?php echo esc_html( $date_month ); ?></span>
+                                    <span class="mep_title_list_day"><?php echo esc_html( $date_day ); ?></span>
+                                </span>
+							<?php endif; ?>
+                            <span class="mep_title_list_body">
+                                <span class="mep_title_list_name"><?php echo esc_html( $title ); ?></span>
+                                <span class="mep_title_list_meta">
+									<?php if ( $first_category ) : ?>
+                                        <span class="mep_title_list_category"><?php echo esc_html( $first_category ); ?></span>
+									<?php endif; ?>
+									<?php if ( $torg && ! is_wp_error( $torg ) && count( $torg ) > 0 ) : ?>
+                                        <span class="mep_title_list_organizer">
+                                            <i class="<?php echo esc_attr( $event_organizer_icon ); ?>" aria-hidden="true"></i>
+                                            <?php echo esc_html( $torg[0]->name ); ?>
+                                        </span>
+									<?php endif; ?>
+                                </span>
+                            </span>
+                            <span class="mep_title_list_arrow" aria-hidden="true">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </a>
                     </div>
 					<?php
 				} else {

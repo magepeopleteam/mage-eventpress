@@ -871,11 +871,30 @@
 				ob_start();
 				$city_lists = MPWEM_Query::get_all_post_meta_value( 'mep_city' );
 				if ( is_array( $city_lists ) && sizeof( $city_lists ) > 0 ) {
+					$city_count = count( $city_lists );
 					?>
-                    <div class='mep-city-list'>
-                        <ul>
-							<?php foreach ( $city_lists as $city_name ) { ?>
-                                <li><a href='<?php echo esc_url( get_site_url() ); ?>/event-by-city-name/<?php echo esc_attr( $city_name ); ?>/'><?php echo esc_html( $city_name ); ?></a></li>
+                    <div class="mep-city-list" data-count="<?php echo esc_attr( $city_count ); ?>">
+                        <ul class="mep-city-list__grid">
+							<?php foreach ( $city_lists as $city_name ) {
+								$city_url = trailingslashit( get_site_url() ) . 'event-by-city-name/' . rawurlencode( $city_name ) . '/';
+								$initial  = function_exists( 'mb_substr' ) ? mb_strtoupper( mb_substr( $city_name, 0, 1 ) ) : strtoupper( substr( $city_name, 0, 1 ) );
+								?>
+                                <li class="mep-city-list__cell">
+                                    <a class="mep-city-list__item" href="<?php echo esc_url( $city_url ); ?>">
+                                        <span class="mep-city-list__media" aria-hidden="true">
+                                            <span class="mep-city-list__initial"><?php echo esc_html( $initial ); ?></span>
+                                            <span class="mep-city-list__pin"><i class="fas fa-map-marker-alt"></i></span>
+                                        </span>
+                                        <span class="mep-city-list__body">
+                                            <span class="mep-city-list__name"><?php echo esc_html( $city_name ); ?></span>
+                                            <span class="mep-city-list__hint"><?php esc_html_e( 'Explore events', 'mage-eventpress' ); ?></span>
+                                        </span>
+                                        <span class="mep-city-list__cta">
+                                            <span class="mep-city-list__cta-text"><?php esc_html_e( 'Browse', 'mage-eventpress' ); ?></span>
+                                            <span class="mep-city-list__chevron" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                                        </span>
+                                    </a>
+                                </li>
 							<?php } ?>
                         </ul>
                     </div>

@@ -104,17 +104,31 @@
                         }
                         ?>
                         <div class="mep_event_list_doc_area">
-                            <div class="mep_event_list_doc">
-                                <button type="button" class="mep_event_list_all active"><?php esc_attr_e('All','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_attr_e('Today','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr(date('Y-m-d', strtotime('+7 days', time()))); ?>"><?php esc_attr_e('This Week','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_this_month"><?php esc_attr_e('This Month','mage-eventpress'); ?></button>
+                            <div class="mep_event_list_doc mep_event_list_doc--range" role="group" aria-label="<?php echo esc_attr__( 'Event date range', 'mage-eventpress' ); ?>">
+                                <button type="button" class="mep_event_list_all active"><?php esc_html_e( 'All', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_today" data-today="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"><?php esc_html_e( 'Today', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_this_week" data-week="<?php echo esc_attr( date( 'Y-m-d', strtotime( '+7 days', time() ) ) ); ?>"><?php esc_html_e( 'This Week', 'mage-eventpress' ); ?></button>
+                                <button type="button" class="mep_event_list_this_month"><?php esc_html_e( 'This Month', 'mage-eventpress' ); ?></button>
                             </div>
-                            <div class="mep_event_list_doc">
-                                <button type="button" class="mep_event_list_filter_toggle"><i class="fas fa-filter"></i><?php esc_attr_e('Filter','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_grid active"><i class="fa-solid fa-border-all"></i><?php esc_attr_e('Grid','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_list"><i class="fa-solid fa-list"></i><?php esc_attr_e('List','mage-eventpress'); ?></button>
-                                <button type="button" class="mep_event_list_calender"><i class="fa-regular fa-calendar-days"></i><?php esc_attr_e('Calender','mage-eventpress'); ?></button>
+                            <div class="mep_event_list_doc mep_event_list_doc--tools" role="group" aria-label="<?php echo esc_attr__( 'Event list tools', 'mage-eventpress' ); ?>">
+                                <button type="button" class="mep_event_list_filter_toggle">
+                                    <i class="fas fa-filter" aria-hidden="true"></i>
+                                    <span><?php esc_html_e( 'Filter', 'mage-eventpress' ); ?></span>
+                                </button>
+                                <div class="mep_event_list_view_switch" role="group" aria-label="<?php echo esc_attr__( 'Layout', 'mage-eventpress' ); ?>">
+                                    <button type="button" class="mep_event_list_grid active" aria-pressed="true">
+                                        <i class="fa-solid fa-border-all" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'Grid', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                    <button type="button" class="mep_event_list_list" aria-pressed="false">
+                                        <i class="fa-solid fa-list" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'List', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                    <button type="button" class="mep_event_list_calender" aria-pressed="false">
+                                        <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                                        <span><?php esc_html_e( 'Calender', 'mage-eventpress' ); ?></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <?php
